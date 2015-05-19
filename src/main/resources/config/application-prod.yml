@@ -1,0 +1,13 @@
+server:
+    port: 8080
+
+spring:
+    profiles:
+        active: prod
+
+
+http:
+    cache:
+        timeToLiveInDays: 31
+
+
