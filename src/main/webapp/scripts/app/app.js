@@ -1,17 +1,10 @@
 'use strict';
 
 angular.module('dbWebuiApp', ['ui.router'])
-.config(function ($stateProvider) {
+.config(function ($stateProvider, $urlRouterProvider) {
+    $urlRouterProvider.otherwise('/whoisobject/select');
 
     $stateProvider
-    .state('main', {
-        url: '/',
-        abstract: true,
-        controller: ['$scope', '$state',
-            function( $scope, $state) {
-                $state.go('select');
-            }]
-    })
     .state('select', {
         url: '/whoisobject/select',
         templateUrl: 'scripts/app/select.html',
