@@ -296,7 +296,6 @@
                     <expandEmptyElements>false</expandEmptyElements>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -384,7 +383,7 @@
                                     <goal>build</goal>
                                 </goals>
                                 <configuration>
-                                    <skipTests>true</skipTests>
+                                    <skipTests>false</skipTests>
                                     <buildTool>grunt</buildTool>
                                     <buildArgs>compass:server --force</buildArgs>
                                 </configuration>
