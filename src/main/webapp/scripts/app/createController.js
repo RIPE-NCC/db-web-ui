@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('dbWebuiApp')
-.controller('CreateController', ['$scope', '$routeParams', '$location','WhoisMetaService', 'WhoisRestService',
-        function ($scope, $routeParams, $location, WhoisMetaService, WhoisRestService) {
+.controller('CreateController', ['$scope', '$stateParams', '$location','WhoisMetaService', 'WhoisRestService',
+        function ($scope, $stateParams, $location, WhoisMetaService, WhoisRestService) {
         // extract parameters from the url
-        $scope.objectType = $routeParams.objectType;
-        $scope.source = $routeParams.source;
+        $scope.objectType = $stateParams.objectType;
+        $scope.source = $stateParams.source;
 
 	// Initalize the UI
         $scope.errors = [];

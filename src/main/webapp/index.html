@@ -2,12 +2,13 @@
 <html lang="en-US">
 <head>
     <script src="bower_components/angular/angular.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-route.min.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+
 </head>
 
 <body ng-app="dbWebuiApp">
 
-    <div ng-view=""></div>
+    <div ui-view></div>
 
     <script src="scripts/app/app.js"></script>
     <script src="scripts/app/whoisMetaService.js"></script>

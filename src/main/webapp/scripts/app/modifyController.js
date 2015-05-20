@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('dbWebuiApp')
-.controller('ModifyController', ['$scope', '$routeParams', '$location','WhoisMetaService', 'WhoisRestService',
-function ($scope, $routeParams, $location, WhoisMetaService, WhoisRestService) {
+.controller('ModifyController', ['$scope', '$stateParams', '$location','WhoisMetaService', 'WhoisRestService',
+function ($scope, $stateParams, $location, WhoisMetaService, WhoisRestService) {
 	$scope.errors = [];
 	$scope.warnings = [];
 
-	$scope.objectType = $routeParams.objectType;
-	$scope.objectUid = $routeParams.objectUid;
+	$scope.objectType = $stateParams.objectType;
+	$scope.objectUid = $stateParams.objectUid;
 
         $scope.attributesWithValues = WhoisRestService.getObject($scope.objectType, $scope.objectUid);
         $scope.errors = WhoisRestService.getErrors();
