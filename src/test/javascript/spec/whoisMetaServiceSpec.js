@@ -23,4 +23,22 @@ describe('dbWebuiApp: whoisMetaService', function () {
         expect(true).toBe(true)
     });
 
+    it('should return all objectTypes', function(){
+
+    });
+
+    it('should fail when no object supplied', function(){
+
+    });
+
+    it('should return all attributes for a given type', function(){
+
+    });
+
+    it('should return exactly the mandatory attributes for a given type', function(){
+
+    });
+
+
+
 });
