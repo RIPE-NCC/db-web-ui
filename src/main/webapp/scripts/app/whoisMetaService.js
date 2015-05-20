@@ -6,31 +6,31 @@ angular.module('dbWebuiApp')
 
   this.getObjectTypes = function() {
       var keys = [];
-      for(var key in _objectTypesMap) {
+      for(var key in this._objectTypesMap) {
           keys.push(key);
       }
       return keys;
-  }
+  };
 
   this.getAllAttributesOnObjectType = function( objectTypeName ) {
       if( objectTypeName == null ) {
           return [];
       }
-      return _objectTypesMap[objectTypeName].attributes;
-  }
+      return this._objectTypesMap[objectTypeName].attributes;
+  };
 
   this.getMandatoryAttributesOnObjectType = function( objectTypeName ) {
       if( objectTypeName == null ) {
           return [];
       }
-      return _objectTypesMap[objectTypeName].attributes.filter(
+      return this._objectTypesMap[objectTypeName].attributes.filter(
           function(attr) {
               return attr.mandatory == true;
           }
       );
-  }
+  };
 
-  var _objectTypesMap =
+  this._objectTypesMap =
   {
       "as-block" : { "name": "as-block", "description":null,
          "attributes":[
