@@ -1,0 +1,22 @@
+<h1>Select object type to create</h1>
+    
+<form id="selectForm">    
+    <div>    
+	    <label>Select object-type</label>
+	    <select ng-model="selectedObjectType" 
+	            ng-required="true"
+	            ng-options="objectType for objectType in objectTypes"></select>
+	</div>
+    </br>
+
+    <div>    
+		<label>Select source</label>
+    	<select ng-model="selectedSource" 
+    	        ng-required="true"
+                ng-options="source for source in sources"></select>
+	</div>
+    </br>
+
+    <button ng-click="navigateToCreate()">Create</button>
+<form>
+
