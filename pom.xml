@@ -16,9 +16,37 @@
 
     <name>whois_webui</name>
 
+    <organization>
+        <name>RIPE NCC, the Netherlands</name>
+        <url>http://www.ripe.net/</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>BSD</name>
+            <url>https://raw.github.com/RIPE-NCC/whois/master/LICENSE.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <prerequisites>
         <maven>3.0.0</maven>
     </prerequisites>
+
+    <scm>
+        <developerConnection>scm:git:http://stash.ripe.net/scm/swe/db-web-ui.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>ripe-releases</id>
+            <url>http://nexus.ripe.net/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>ripe-snapshots</id>
+            <url>http://nexus.ripe.net/nexus/content/repositories/snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <properties>
         <assertj-core.version>2.0.0</assertj-core.version>
@@ -41,7 +69,6 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hppc</artifactId>
@@ -144,6 +171,29 @@
         </dependency>
 
     </dependencies>
+
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>ripe-releases</id>
+            <url>http://nexus.ripe.net/nexus/content/repositories/releases</url>
+        </repository>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>ripe-snapshots</id>
+            <url>http://nexus.ripe.net/nexus/content/repositories/snapshots</url>
+        </repository>
+    </repositories>
     <build>
         <resources>
             <resource>
@@ -161,6 +211,7 @@
                 </excludes>
             </resource>
         </resources>
+        <finalName>db-web-ui</finalName>
         <pluginManagement>
             <plugins>
                 <!--This plugin's configuration is used to store Eclipse m2e settings
@@ -295,7 +346,6 @@
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${sonar-maven-plugin.version}</version>
             </plugin>
-
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
