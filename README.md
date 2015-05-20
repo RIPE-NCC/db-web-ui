@@ -19,3 +19,12 @@ The server can be started from the command-line:
 
     % mvn spring-boot:run
 
+
+IntelliJ Preferences
+--------------------
+* Editor
+	* File Types
+		* Ignore Files and Folders
+			* Add: node_modules
+	
+
