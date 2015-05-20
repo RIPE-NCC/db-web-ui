@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('dbWebuiApp')
 .controller('DisplayController', ['$scope', '$routeParams', '$location', 'WhoisRestService',
 	function ($scope, $routeParams, $location, WhoisRestService ) {
     // extract parameters from url
@@ -24,4 +24,4 @@ angular.module('dbWebApp')
     }
 
 
-}]); 
+}]);

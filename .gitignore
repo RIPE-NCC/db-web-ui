@@ -2,6 +2,7 @@
 # Project Specific
 ######################
 src/main/webapp/dist
+src/main/webapp/scripts/app/app.constants.js
 
 ######################
 # Node

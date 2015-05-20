@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('dbWebuiApp')
 .controller('ModifyController', ['$scope', '$routeParams', '$location','WhoisMetaService', 'WhoisRestService',
 function ($scope, $routeParams, $location, WhoisMetaService, WhoisRestService) {
 	$scope.errors = [];
@@ -27,15 +27,15 @@ function ($scope, $routeParams, $location, WhoisMetaService, WhoisRestService) {
 
         $scope.clearAttributeErrors = function() {
                 if( $scope.attributesWithValues != null ) {
-                        $scope.attributesWithValues.map( function(attr) { 
+                        $scope.attributesWithValues.map( function(attr) {
                                 attr.error = null;
                         });
                 }
         }
-        
+
         $scope.submit = function() {
         	var errorFound = false;
-        	$scope.attributesWithValues.map( function(attr) { 
+        	$scope.attributesWithValues.map( function(attr) {
         		if( attr.mandatory == true && attr.value == null) {
         			attr.error = 'Mandatory attribute must be set';
         			errorFound = true;
@@ -43,7 +43,7 @@ function ($scope, $routeParams, $location, WhoisMetaService, WhoisRestService) {
         	});
 
         	if( errorFound == false ) {
-	        	WhoisRestService.modifyObject($scope.objectType, $scope.objectUid, 
+	        	WhoisRestService.modifyObject($scope.objectType, $scope.objectUid,
                     $scope.attributesWithValues);
 	        	$scope.errors = WhoisRestService.getErrors();
                 $scope.warnings = WhoisRestService.getWarnings();
@@ -54,4 +54,4 @@ function ($scope, $routeParams, $location, WhoisMetaService, WhoisRestService) {
         	}
         }
 
-}]); 
+}]);

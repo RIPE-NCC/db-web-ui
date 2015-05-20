@@ -1,7 +1,7 @@
 
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('dbWebuiApp')
 .service('WhoisMetaService', function() {
 
   this.getObjectTypes = function() {
@@ -30,7 +30,7 @@ angular.module('dbWebApp')
       );
   }
 
-  var _objectTypesMap = 
+  var _objectTypesMap =
   {
       "as-block" : { "name": "as-block", "description":null,
          "attributes":[

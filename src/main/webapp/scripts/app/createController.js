@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('dbWebuiApp')
 .controller('CreateController', ['$scope', '$routeParams', '$location','WhoisMetaService', 'WhoisRestService',
         function ($scope, $routeParams, $location, WhoisMetaService, WhoisRestService) {
         // extract parameters from the url
@@ -11,7 +11,7 @@ angular.module('dbWebApp')
         $scope.errors = [];
 	$scope.warnings = [];
         $scope.allAttributes = WhoisMetaService.getAllAttributesOnObjectType($scope.objectType);
-        
+
         $scope.hasErrors = function() {
         	return $scope.errors.length > 0;
         }
@@ -25,14 +25,14 @@ angular.module('dbWebApp')
         }
 
         $scope.clearAttributeErrors = function() {
-                $scope.allAttributes.map( function(attr) { 
+                $scope.allAttributes.map( function(attr) {
                         attr.error = null;
                 });
         }
- 
+
         $scope.validateForm = function() {
                 var errorFound = false;
-                $scope.allAttributes.map( function(attr) { 
+                $scope.allAttributes.map( function(attr) {
                         if( attr.mandatory == true && attr.value == null) {
                                 attr.error = 'Mandatory attribute not set';
                                 errorFound = true;
@@ -53,4 +53,4 @@ angular.module('dbWebApp')
         	}
         }
 
-}]); 
+}]);

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp', ['ngRoute'])
+angular.module('dbWebuiApp', ['ngRoute'])
 .config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
