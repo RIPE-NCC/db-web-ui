@@ -1,6 +1,13 @@
 README for whois_webui
 ==========================
 
+Pre-requisites
+-----------------
+npm
+grunt
+bower
+
+
 Development Server
 ------------------
 
