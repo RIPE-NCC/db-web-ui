@@ -1,0 +1,20 @@
+<h1>{{objectType}} with uid {{objectUid}}</h1>
+
+<div ng-if="hasWarnings()">
+    <h2>Warnings</h2>
+    <li ng-repeat="warning in warnings">{{warning}}</li>
+</div>
+
+<h2>Attributes</h2>
+<ul>
+    <li ng-repeat="attribute in attributes">
+      <div>
+      	<label>{{attribute.name}}</label>
+      	<input value="{{attribute.value}}" readonly />
+      <div>
+    </li>
+</ul>
+
+<button ng-click="navigateToBegin()">Done</button>
+<button ng-click="navigateToModify()">Modify</button>
+
