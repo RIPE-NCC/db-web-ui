@@ -10,25 +10,25 @@ angular.module('dbWebuiApp')
 	// Initalize the UI
         $scope.errors = [];
 	$scope.warnings = [];
-        $scope.allAttributes = WhoisMetaService.getAllAttributesOnObjectType($scope.objectType);
+        $scope.allAttributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
 
         $scope.hasErrors = function() {
         	return $scope.errors.length > 0;
-        }
+        };
 
         $scope.hasWarnings = function() {
         	return $scope.warnings.length > 0;
-        }
+        };
 
         $scope.attributeHasError = function(attribute) {
         	return attribute.error != null;
-        }
+        };
 
         $scope.clearAttributeErrors = function() {
                 $scope.allAttributes.map( function(attr) {
                         attr.error = null;
                 });
-        }
+        };
 
         $scope.validateForm = function() {
                 var errorFound = false;
@@ -39,7 +39,7 @@ angular.module('dbWebuiApp')
                         }
                 });
                 return errorFound == false;
-        }
+        };
 
         $scope.submit = function() {
         	if( $scope.validateForm() == true ) {
@@ -51,6 +51,6 @@ angular.module('dbWebuiApp')
 			    $location.path( '/whoisobject/display/' + $scope.objectType +'/' + $scope.objectUid);
 	        	}
         	}
-        }
+        };
 
 }]);
