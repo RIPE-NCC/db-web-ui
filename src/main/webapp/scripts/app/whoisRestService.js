@@ -13,9 +13,7 @@ angular.module('dbWebuiApp')
        return _attributes;
     }
 
-    this.createObject = function( objectType, attributes) {
-       _objectType = objectType;
-       _attributes = attributes;
+    this.createObject = function(object) {
        _warnings[0] = "Deprecated attribute 'changed' used";
        return "123";
     }

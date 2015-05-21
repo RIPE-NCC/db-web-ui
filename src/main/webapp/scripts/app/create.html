@@ -13,12 +13,12 @@
 <h2>Attributes</h2>
 <form id="createForm">
     <ul>
-        <li ng-repeat="attribute in allAttributes">
+        <li ng-repeat="attribute in attributes">
           <div>
               <label>{{attribute.name}}</label>
-              <input type="text" name="{{attribute.name}}" ng-model="attribute.value" 
+              <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                       ng-required="{{attribute.mandatory}}" />
-              <span ng-if="attributeHasError(attribute)">{{attribute.error}}</span>
+              <span ng-if="attributeHasError(attribute)">{{attribute.$error}}</span>
           </div>
         </li>
     </ul>
