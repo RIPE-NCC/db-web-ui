@@ -14,10 +14,5 @@ angular.module('dbWebuiApp', ['ui.router'])
         url: '/whoisobject/create/:objectType/:source',
         templateUrl: 'scripts/app/create.html',
         controller: 'CreateController'
-    })
-    .state('modify', {
-        url: '/whoisobject/modify/:objectType/:objectUid',
-        templateUrl: 'scripts/app/modify.html',
-        controller: 'ModifyController'
     });
 });

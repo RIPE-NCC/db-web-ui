@@ -1,4 +1,4 @@
-<span ng-show="createStep">
+<span ng-show="creationSteps.create">
 
     <h1>Create {{objectType}} in source {{source}}</h1>
 
@@ -29,7 +29,7 @@
     </form>
 </span>
 
-<span ng-show="displayStep">
+<span ng-show="creationSteps.display">
     <h1>{{objectType}} with uid {{objectUid}}</h1>
 
     <div ng-if="hasWarnings()">
@@ -48,6 +48,5 @@
     </ul>
 
     <button ng-click="navigateToSelect()">Done</button>
-    <button ng-click="navigateToModify()">Modify</button>
 
 </span>
