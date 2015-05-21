@@ -1,28 +1,53 @@
-<h1>Create {{objectType}} in source {{source}}</h1>
+<span ng-show="createStep">
 
-<div ng-if="hasErrors()">
-    <h2>Errors</h2>
-    <li ng-repeat="error in errors">{{error}}</li>
-</div>
+    <h1>Create {{objectType}} in source {{source}}</h1>
 
-<div ng-if="hasWarnings()">
-    <h2>Warnings</h2>
-    <li ng-repeat="warning in warnings">{{warning}}</li>
-</div>
+    <div ng-if="hasErrors()">
+        <h2>Errors</h2>
+        <li ng-repeat="error in errors">{{error}}</li>
+    </div>
 
-<h2>Attributes</h2>
-<form id="createForm">
+    <div ng-if="hasWarnings()">
+        <h2>Warnings</h2>
+        <li ng-repeat="warning in warnings">{{warning}}</li>
+    </div>
+
+    <h2>Attributes</h2>
+    <form id="createForm">
+        <ul>
+            <li ng-repeat="attribute in attributes">
+              <div>
+                  <label>{{attribute.name}}</label>
+                  <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
+                          ng-required="{{attribute.mandatory}}" />
+                  <span ng-if="attributeHasError(attribute)">{{attribute.$error}}</span>
+              </div>
+            </li>
+        </ul>
+
+        <button ng-click="submit()">Submit</button>
+    </form>
+</span>
+
+<span ng-show="displayStep">
+    <h1>{{objectType}} with uid {{objectUid}}</h1>
+
+    <div ng-if="hasWarnings()">
+        <h2>Warnings</h2>
+        <li ng-repeat="warning in warnings">{{warning}}</li>
+    </div>
+
+    <h2>Attributes</h2>
     <ul>
         <li ng-repeat="attribute in attributes">
-          <div>
-              <label>{{attribute.name}}</label>
-              <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
-                      ng-required="{{attribute.mandatory}}" />
-              <span ng-if="attributeHasError(attribute)">{{attribute.$error}}</span>
-          </div>
+            <div>
+                <label>{{attribute.name}}</label>
+                <input value="{{attribute.value}}" readonly />
+            </div>
         </li>
     </ul>
 
-    <button ng-click="submit()">Submit</button>
-</form>
+    <button ng-click="navigateToSelect()">Done</button>
+    <button ng-click="navigateToModify()">Modify</button>
 
+</span>

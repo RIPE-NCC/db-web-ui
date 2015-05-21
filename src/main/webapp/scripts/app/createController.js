@@ -3,6 +3,9 @@
 angular.module('dbWebuiApp')
 .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', 'WhoisRestService',
         function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService) {
+
+        $scope.createStep = true;
+
         // extract parameters from the url
         $scope.objectType = $stateParams.objectType;
         $scope.source = $stateParams.source;
@@ -70,9 +73,19 @@ angular.module('dbWebuiApp')
 	        	$scope.warnings = WhoisRestService.getWarnings();
 	        	if( $scope.hasErrors() == false ) {
 	            	    $scope.clearAttributeErrors();
-                    $state.transitionTo('display', {objectType:'ot', objectUid: 'oi'});
+                    $scope.displayStep = true;
+                    $scope.createStep = false;
 	            }
+
         	}
         };
+
+        $scope.navigateToSelect= function() {
+            $state.transitionTo('select');
+        }
+
+        $scope.navigateToModify = function() {
+            $state.transitionTo('modify');
+        }
 
 }]);

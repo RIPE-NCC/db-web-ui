@@ -15,13 +15,7 @@ angular.module('dbWebuiApp')
 		  return $scope.warnings.length > 0;
 	  }
 
-    $scope.navigateToBegin = function() {
-      $location.path( '/whoisobject');
-    }
 
-    $scope.navigateToModify = function() {
-      $location.path( '/whoisobject/modify/'+ $scope.objectType + '/'+ $scope.objectUid);
-    }
 
 
 }]);
