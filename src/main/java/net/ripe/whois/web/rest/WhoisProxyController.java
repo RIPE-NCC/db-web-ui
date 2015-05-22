@@ -3,6 +3,7 @@ package net.ripe.whois.web.rest;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.WebUtils;
 
+import javax.inject.Inject;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -25,9 +27,11 @@ import java.util.Arrays;
 public class WhoisProxyController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
 
-
     private final RestTemplate restTemplate;
     private static final String CROWD_TOKEN_KEY = "crowd.token_key";
+
+    @Inject
+    private Environment env;
 
     public WhoisProxyController() {
         restTemplate = createRestTemplate();
@@ -38,7 +42,7 @@ public class WhoisProxyController {
 
         final URI uri = composeWhoisUrl(request);
 
-        final HttpHeaders headers = createHeaders( request);
+        final HttpHeaders headers = createHeaders(request);
 
         return restTemplate.exchange(
             uri,
@@ -63,7 +67,8 @@ public class WhoisProxyController {
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
-            final StringBuilder sb = new StringBuilder("http://db-dev-1.dev.ripe.net:1081/whois")
+
+            final StringBuilder sb = new StringBuilder(env.getProperty("rest.api.ripeUrl"))
                 .append(request.getRequestURI().replace("/whois",""));
 
             if (StringUtils.isNotBlank(request.getQueryString())) {

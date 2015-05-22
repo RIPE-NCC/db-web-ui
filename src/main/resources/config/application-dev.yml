@@ -5,6 +5,7 @@ spring:
     profiles:
         active: dev
 
-
-
+rest:
+    api:
+       ripeUrl: http://db-dev-1.dev.ripe.net:1081/whois
 
