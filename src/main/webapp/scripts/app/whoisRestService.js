@@ -2,7 +2,7 @@
 'use strict';
 
 angular.module('dbWebuiApp')
-.service('WhoisRestService', function() {
+.service('WhoisRestService', ['$resource', function($resource) {
 	  var _objectType = null;
 	  var _objectUid = null;
 	  var _attributes = [];
@@ -13,7 +13,11 @@ angular.module('dbWebuiApp')
        return _attributes;
     }
 
-    this.createObject = function(object) {
+    this.createObject = function(source, objectType, object) {
+        $resource('https://rest-dev.db.ripe.net/:source/:objectType', {source: source, objectType: objectType}).save(object,
+            function(data){console.log('SSSS=======>'+data);},
+            function(data){console.log('EEEE=======>'+data);});
+
        _warnings[0] = "Deprecated attribute 'changed' used";
        return "123";
     }
@@ -38,4 +42,4 @@ angular.module('dbWebuiApp')
     	return _warnings;
     }
 
-});
+}]);
