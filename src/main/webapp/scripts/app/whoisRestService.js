@@ -14,7 +14,7 @@ angular.module('dbWebuiApp')
     }
 
     this.createObject = function(source, objectType, object) {
-        $resource('https://rest-dev.db.ripe.net/:source/:objectType', {source: source, objectType: objectType}).save(object,
+        $resource('whois/:source/:objectType', {source: source, objectType: objectType}).save(object,
             function(data){console.log('SSSS=======>'+data);},
             function(data){console.log('EEEE=======>'+data);});
 
