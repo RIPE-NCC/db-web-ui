@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dbWebuiApp', ['ui.router'])
-.config(function ($stateProvider, $urlRouterProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('/whoisobject/select');
 
     $stateProvider
@@ -15,4 +15,10 @@ angular.module('dbWebuiApp', ['ui.router'])
         templateUrl: 'scripts/app/create.html',
         controller: 'CreateController'
     });
+    
+	$locationProvider.html5Mode({
+         enabled: true,
+         requireBase: false
+	});
+    
 });
