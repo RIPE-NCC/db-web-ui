@@ -13,7 +13,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService) {
     $scope.warnings = [];
     var allAttributesOnObjectType = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
     $scope.attributes = _.map(allAttributesOnObjectType, function (x) {
-        return {name: x.name, value: x.value, $mandatory: x.mandatory}
+        return {name: x.name, value: x.value, $$mandatory: x.mandatory}
     });
 
     $scope.objects = {
@@ -39,12 +39,12 @@ function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService) {
     };
 
     $scope.attributeHasError = function (attribute) {
-        return attribute.$error != null;
+        return attribute.$$error != null;
     };
 
     $scope.clearAttributeErrors = function () {
         allAttributesOnObjectType.map(function (attr) {
-            getAttrWithName(attr.name).$error = null;
+            getAttrWithName(attr.name).$$error = null;
         });
     };
 
@@ -59,7 +59,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService) {
         allAttributesOnObjectType.map(function (attrTemplate) {
             var attr = getAttrWithName(attrTemplate.name);
             if (attrTemplate.mandatory == true && attr.value == null) {
-                attr.$error = 'Mandatory attribute not set';
+                attr.$$error = 'Mandatory attribute not set';
                 errorFound = true;
             }
         });

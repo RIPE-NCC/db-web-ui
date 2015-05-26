@@ -333,7 +333,7 @@ angular.module('dbWebuiApp')
                 { "name":"notify", "mandatory":false, "multiple":true, "description":null},
                 { "name":"abuse-mailbox", "mandatory":false, "multiple":true, "description":null},
                 { "name":"mnt-by", "mandatory":true, "multiple":true, "description":null},
-                { "name":"changed", "mandatory":false, "multiple":true, "description":null},
+                { "name":"changed", "mandatory":true, "multiple":true, "description":null},
                 { "name":"created", "mandatory":false, "multiple":false, "description":null},
                 { "name":"last-modified", "mandatory":false, "multiple":false, "description":null},
                 { "name":"source", "mandatory":true, "multiple":false, "description":null}
