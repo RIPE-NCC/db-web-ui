@@ -1,11 +1,12 @@
 <h1>Select object type to create</h1>
-    
-<form id="selectForm">    
+
+<section>
+<form id="selectForm" class="grey padding pull-left" style="width: 100%;">    
     <div>    
 	    <label>Select object-type</label>
 	    <select ng-model="selectedObjectType" 
 	            ng-required="true"
-	            ng-options="objectType for objectType in objectTypes"></select>
+	            ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
 	</div>
     </br>
 
@@ -13,10 +14,11 @@
 		<label>Select source</label>
     	<select ng-model="selectedSource" 
     	        ng-required="true"
-                ng-options="source for source in sources"></select>
+                ng-options="source for source in sources" class="form-control select-height"></select>
 	</div>
     </br>
 
-    <button ng-click="navigateToCreate()">Create</button>
-<form>
+    <button ng-click="navigateToCreate()" class="blue-button pull-right">Create</button>
+</form>
+</section>
 
