@@ -9,6 +9,6 @@ spring:
 
 rest:
     api:
-       ripeUrl: http://locahost:1080/whois
-       
+       ripeUrl: http://localhost:1080/whois
+
 
