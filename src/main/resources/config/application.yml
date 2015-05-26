@@ -10,4 +10,5 @@ async:
     maxPoolSize: 50
     queueCapacity: 10000
 
+server.contextPath: /db-web-ui
 
