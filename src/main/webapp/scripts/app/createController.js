@@ -68,7 +68,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService) {
 
     $scope.submit = function () {
         if ($scope.validateForm() == true) {
-            $scope.objectUid = WhoisRestService.createObject($scope.objects);
+            $scope.response = WhoisRestService.createObject($scope.source, $scope.objectType, $scope.objects);
             $scope.errors = WhoisRestService.getErrors();
             $scope.warnings = WhoisRestService.getWarnings();
             if ($scope.hasErrors() == false) {
