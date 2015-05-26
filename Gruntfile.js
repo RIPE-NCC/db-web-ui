@@ -96,7 +96,7 @@ module.exports = function (grunt) {
             },
             server: {
                 options: {
-                    debugInfo: false
+                	outputStyle: 'compressed'
                 }
             }
         },
@@ -179,10 +179,6 @@ module.exports = function (grunt) {
             }
         }
     });
-    
-    
-	grunt.loadNpmTasks('grunt-contrib-compass');
-	grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', [
         'clean:server',
@@ -202,9 +198,9 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'ngconstant:prod',
-        'useminPrepare',
         'ngtemplates',
         'concurrent:dist',
-        'ngAnnotate'
+        'ngAnnotate',
+        'compass:server'
     ]);
 };
