@@ -13,18 +13,6 @@ var parseVersionFromPomXml = function() {
     return version;
 };
 
-// usemin custom step
-var useminAutoprefixer = {
-    name: 'autoprefixer',
-    createConfig: function(context, block) {
-        if(block.src.length === 0) {
-            return {};
-        } else {
-            return require('grunt-usemin/lib/config/cssmin').createConfig(context, block) // Reuse cssmins createConfig
-        }
-    }
-};
-
 module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
@@ -45,8 +33,8 @@ module.exports = function (grunt) {
                 tasks: ['ngconstant:dev']
             },
             css: {
-                files: ['src/main/scss/**/*.{scss,sass}'],
-                tasks: ['default']
+                files: ['**/*.{scss,sass}'],
+                tasks: ['compass']
             }
         },
         wiredep: {
@@ -103,21 +91,12 @@ module.exports = function (grunt) {
         },
         compass: {
             options: {
-                sassDir: 'src/main/scss',
-                cssDir: 'src/main/webapp/assets/styles',
-                generatedImagesDir: '.tmp/assets/images/generated',
-                imagesDir: 'src/main/webapp/assets/images',
-                javascriptsDir: 'src/main/webapp/scripts',
-                fontsDir: 'src/main/webapp/assets/fonts',
-                importPath: 'src/main/webapp/bower_components',
-                httpImagesPath: '/assets/images',
-                httpGeneratedImagesPath: '/assets/images/generated',
-                httpFontsPath: '/assets/fonts',
-                relativeAssets: false
+                sassDir: 'src/main/webapp/assets/scss',
+                cssDir: 'src/main/webapp/assets/css'
             },
             server: {
                 options: {
-                    debugInfo: true
+                    debugInfo: false
                 }
             }
         },
@@ -200,20 +179,17 @@ module.exports = function (grunt) {
             }
         }
     });
+    
+    
+	grunt.loadNpmTasks('grunt-contrib-compass');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
     grunt.registerTask('default', [
         'clean:server',
         'wiredep',
         'ngconstant:dev',
-        'concurrent:server',
-        'browserSync',
         'watch'
     ]);
-
-    grunt.registerTask('server', function (target) {
-        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-        grunt.task.run([target ? ('serve:' + target) : 'serve']);
-    });
 
     grunt.registerTask('test', [
         'clean:server',
