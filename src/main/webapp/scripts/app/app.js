@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebuiApp', ['ui.router'])
+angular.module('dbWebuiApp', ['ui.router',  'ngResource'])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
     $urlRouterProvider.otherwise('/whoisobject/select');
 
