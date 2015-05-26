@@ -9,5 +9,6 @@ spring:
 
 rest:
     api:
-       ripeUrl: http://db-dev-1.dev.ripe.net:1081/whois
+       ripeUrl: http://locahost:1080/whois
+       
 
