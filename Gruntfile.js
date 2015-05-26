@@ -44,25 +44,10 @@ module.exports = function (grunt) {
                 files: ['Gruntfile.js', 'pom.xml'],
                 tasks: ['ngconstant:dev']
             },
-            compass: {
+            css: {
                 files: ['src/main/scss/**/*.{scss,sass}'],
-                tasks: ['compass:server']
-            },
-            styles: {
-                files: ['src/main/webapp/assets/styles/**/*.css']
+                tasks: ['default']
             }
-        },
-        autoprefixer: {
-        // not used since Uglify task does autoprefixer,
-        //    options: ['last 1 version'],
-        //    dist: {
-        //        files: [{
-        //            expand: true,
-        //            cwd: '.tmp/styles/',
-        //            src: '**/*.css',
-        //            dest: '.tmp/styles/'
-        //        }]
-        //    }
         },
         wiredep: {
             app: {
@@ -92,24 +77,6 @@ module.exports = function (grunt) {
                 }
             }
         },
-        browserSync: {
-            dev: {
-                bsFiles: {
-                    src : [
-                        'src/main/webapp/**/*.html',
-                        'src/main/webapp/**/*.json',
-                        'src/main/webapp/assets/styles/**/*.css',
-                        'src/main/webapp/scripts/**/*.js',
-                        'src/main/webapp/assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-                        'tmp/**/*.{css,js}'
-                    ]
-                }
-            },
-            options: {
-                watchTask: true,
-                proxy: "localhost:8080"
-            }
-        },
         clean: {
             dist: {
                 files: [{
@@ -134,30 +101,6 @@ module.exports = function (grunt) {
                 'src/main/webapp/scripts/components/**/*.js'
             ]
         },
-        coffee: {
-            options: {
-                sourceMap: true,
-                sourceRoot: ''
-            },
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/main/webapp/scripts',
-                    src: ['scripts/app/**/*.coffee', 'scripts/components/**/*.coffee'],
-                    dest: '.tmp/scripts',
-                    ext: '.js'
-                }]
-            },
-            test: {
-                files: [{
-                    expand: true,
-                    cwd: 'test/spec',
-                    src: '**/*.coffee',
-                    dest: '.tmp/spec',
-                    ext: '.js'
-                }]
-            }
-        },
         compass: {
             options: {
                 sassDir: 'src/main/scss',
@@ -172,96 +115,13 @@ module.exports = function (grunt) {
                 httpFontsPath: '/assets/fonts',
                 relativeAssets: false
             },
-            dist: {},
             server: {
                 options: {
                     debugInfo: true
                 }
             }
         },
-        concat: {
-        // not used since Uglify task does concat,
-        // but still available if needed
-        //    dist: {}
-        },
-        rev: {
-            dist: {
-                files: {
-                    src: [
-                        '<%= yeoman.dist %>/scripts/**/*.js',
-                        '<%= yeoman.dist %>/assets/styles/**/*.css',
-                        '<%= yeoman.dist %>/assets/images/**/*.{png,jpg,jpeg,gif,webp,svg}',
-                        '<%= yeoman.dist %>/assets/fonts/*'
-                    ]
-                }
-            }
-        },
-        useminPrepare: {
-            html: 'src/main/webapp/**/*.html',
-            options: {
-                dest: '<%= yeoman.dist %>',
-                flow: {
-                    html: {
-                        steps: {
-                            js: ['concat', 'uglifyjs'],
-                            css: ['cssmin', useminAutoprefixer] // Let cssmin concat files so it corrects relative paths to fonts and images
-                        },
-                            post: {}
-                        }
-                    }
-            }
-        },
-        usemin: {
-            html: ['<%= yeoman.dist %>/**/*.html'],
-            css: ['<%= yeoman.dist %>/assets/styles/**/*.css'],
-            js: ['<%= yeoman.dist %>/scripts/**/*.js'],
-            options: {
-                assetsDirs: ['<%= yeoman.dist %>', '<%= yeoman.dist %>/assets/styles', '<%= yeoman.dist %>/assets/images', '<%= yeoman.dist %>/assets/fonts'],
-                patterns: {
-                    js: [
-                        [/(assets\/images\/.*?\.(?:gif|jpeg|jpg|png|webp|svg))/gm, 'Update the JS to reference our revved images']
-                    ]
-                },
-                dirs: ['<%= yeoman.dist %>']
-            }
-        },
-        imagemin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/main/webapp/assets/images',
-                src: '**/*.{jpg,jpeg}', // we don't optimize PNG files as it doesn't work on Linux. If you are not on Linux, feel free to use '**/*.{png,jpg,jpeg}'
-                    dest: '<%= yeoman.dist %>/assets/images'
-                }]
-            }
-        },
-        svgmin: {
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: 'src/main/webapp/assets/images',
-                    src: '**/*.svg',
-                    dest: '<%= yeoman.dist %>/assets/images'
-                }]
-            }
-        },
-        cssmin: {
-            // By default, your `index.html` <!-- Usemin Block --> will take care of
-            // minification. This option is pre-configured if you do not wish to use
-            // Usemin blocks.
-            // dist: {
-            //     files: {
-            //         '<%= yeoman.dist %>/styles/main.css': [
-            //             '.tmp/styles/**/*.css',
-            //             'styles/**/*.css'
-            //         ]
-            //     }
-            // }
-            options: {
-                root: 'src/main/webapp' // Replace relative paths for static resources with absolute path
-            }
-        },
-        ngtemplates:    {
+        ngtemplates: {
             dist: {
                 cwd: 'src/main/webapp',
                 src: ['scripts/app/**/*.html', 'scripts/components/**/*.html',],
@@ -283,82 +143,10 @@ module.exports = function (grunt) {
                 }
             }
         },
-        htmlmin: {
-            dist: {
-                options: {
-                    removeCommentsFromCDATA: true,
-                    // https://github.com/yeoman/grunt-usemin/issues/44
-                    collapseWhitespace: true,
-                    collapseBooleanAttributes: true,
-                    conservativeCollapse: true,
-                    removeAttributeQuotes: true,
-                    removeRedundantAttributes: true,
-                    useShortDoctype: true,
-                    removeEmptyAttributes: true,
-                    keepClosingSlash: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: '<%= yeoman.dist %>',
-                    src: ['*.html'],
-                    dest: '<%= yeoman.dist %>'
-                }]
-            }
-        },
-        // Put files not handled in other tasks here
-        copy: {
-            dist: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: 'src/main/webapp',
-                    dest: '<%= yeoman.dist %>',
-                    src: [
-                        '*.html',
-                        'scripts/**/*.html',
-                        'assets/images/**/*.{png,gif,webp,jpg,jpeg,svg}',
-                        'assets/fonts/*'
-                    ]
-                }, {
-                    expand: true,
-                    cwd: '.tmp/assets/images',
-                    dest: '<%= yeoman.dist %>/assets/images',
-                    src: [
-                        'generated/*'
-                    ]
-                }]
-            },
-            generateOpenshiftDirectory: {
-                    expand: true,
-                    dest: 'deploy/openshift',
-                    src: [
-                        'pom.xml',
-                        'src/main/**'
-                ]
-            }
-        },
-        concurrent: {
-            server: [
-                'compass:server'
-            ],
-            test: [
-                'compass'
-            ],
-            dist: [
-                'compass:dist',
-                'imagemin',
-                'svgmin'
-            ]
-        },
         karma: {
             unit: {
                 configFile: 'src/test/javascript/karma.conf.js',
                 singleRun: true
-            }
-        },
-        cdnify: {
-            dist: {
-                html: ['<%= yeoman.dist %>/*.html']
             }
         },
         ngAnnotate: {
@@ -413,7 +201,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask('serve', [
+    grunt.registerTask('default', [
         'clean:server',
         'wiredep',
         'ngconstant:dev',
@@ -431,7 +219,6 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep:test',
         'ngconstant:dev',
-        'concurrent:test',
         'karma'
     ]);
 
@@ -442,49 +229,6 @@ module.exports = function (grunt) {
         'useminPrepare',
         'ngtemplates',
         'concurrent:dist',
-        'concat',
-        'copy:dist',
-        'ngAnnotate',
-        'cssmin',
-        'autoprefixer',
-        'uglify',
-        'rev',
-        'usemin',
-        'htmlmin'
-    ]);
-
-	grunt.registerTask('appendSkipBower', 'Force skip of bower for Gradle', function () {
-
-		if (!grunt.file.exists(filepath)) {
-			// Assume this is a maven project
-			return true;
-		}
-
-		var fileContent = grunt.file.read(filepath);
-		var skipBowerIndex = fileContent.indexOf("skipBower=true");
-
-		if (skipBowerIndex != -1) {
-			return true;
-		}
-
-		grunt.file.write(filepath, fileContent + "\nskipBower=true\n");
-	});
-
-    grunt.registerTask('buildOpenshift', [
-        'test',
-        'build',
-        'copy:generateOpenshiftDirectory',
-    ]);
-
-    grunt.registerTask('deployOpenshift', [
-        'test',
-        'build',
-        'copy:generateOpenshiftDirectory',
-        'buildcontrol:openshift'
-    ]);
-
-    grunt.registerTask('default', [
-        'test',
-        'build'
+        'ngAnnotate'
     ]);
 };
