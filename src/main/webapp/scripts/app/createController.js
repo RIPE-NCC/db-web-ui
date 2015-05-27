@@ -103,7 +103,7 @@ function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisRestSe
                     $scope.infos[0] = 'Success! Go to the next level :)';
                 },
                 function(response){
-                    console.log('EEEE.JSON.stringify(response)=======>'+JSON.stringify(response.data));
+                    console.log('EEEE.JSON.stringify(response)=======>'+JSON.stringify(response));
                     $scope.errors = response.data.errormessages.errormessage;
                     $scope.warnings = [];
                     console.log('error response status:' + response.status)
