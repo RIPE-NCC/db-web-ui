@@ -58,7 +58,7 @@ function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisRestSe
         return _.find($scope.objects.objects.object[0].attributes.attribute, function (attr) {
             return attr.name == name;
         })
-    }
+    };
 
     $scope.validateForm = function () {
         var errorFound = false;
@@ -96,7 +96,7 @@ function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisRestSe
             $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType}).save($scope.objects,
                 function(response){
                     console.log('SSSS.stringify data=======>'+JSON.stringify(response));
-                    console.log('response status:' + response)
+                    console.log('response status:' + response);
                     $scope.attributes = response.objects.object[0].attributes.attribute;
                     $scope.errors = [];
                     $scope.warnings = [];
@@ -104,12 +104,18 @@ function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisRestSe
                 },
                 function(response){
                     console.log('EEEE.JSON.stringify(response)=======>'+JSON.stringify(response));
-                    $scope.errors = response.data.errormessages.errormessage;
-                    $scope.warnings = [];
+
+                    if (response.status / 100 == 5){
+                        $scope.errors[0] = 'Internal Server Error';
+                        console.log('error response:\n' + response)
+                    } else{
+                        $scope.errors = response.data.errormessages.errormessage;
+                        $scope.warnings = [];
+                    }
                     console.log('error response status:' + response.status)
                 });
             if ($scope.hasErrors() == false) {
-                console.log('going to display')
+                console.log('going to display');
                 $scope.clearAttributeErrors();
                 changeToStep('display');
             }
@@ -118,7 +124,7 @@ function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisRestSe
 
     $scope.navigateToSelect = function () {
         $state.transitionTo('select');
-    }
+    };
 
     $scope.creationSteps = {select: false, create: true, display: false};
 

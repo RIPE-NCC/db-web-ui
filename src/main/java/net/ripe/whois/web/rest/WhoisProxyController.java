@@ -59,8 +59,10 @@ public class WhoisProxyController {
         while (headerNames.hasMoreElements()) {
             final String header = headerNames.nextElement();
 
-            while (request.getHeaders(header).hasMoreElements()) {
-                headers.add(header, request.getHeaders(header).nextElement());
+            final Enumeration<String> values = request.getHeaders(header);
+            while (values.hasMoreElements()) {
+                final String value = values.nextElement();
+                headers.add(header, value);
             }
         }
         //Connection value "keep-alive" has problems with resttemplate
