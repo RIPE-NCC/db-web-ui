@@ -6,8 +6,9 @@
     https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template
   -->
  <head>
-	 <base href="/" />
+	 <base href="/db-web-ui/" />
      <script src="bower_components/angular/angular.js"></script>
+     <script src="bower_components/angular-resource/angular-resource.js"></script>
      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
      <script src="bower_components/lodash/lodash.js"></script>
      <script src="bower_components/lodash/lodash.js"></script>
@@ -16,10 +17,6 @@
      <meta charset="UTF-8">
 
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-
-
-
 
 
      <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" name="description" />
@@ -37,32 +34,13 @@
      <![endif]-->
 
 
-
-
-
-
      <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
-
 
 
      <link rel="shortcut icon" type="image/x-icon" href="https://www.ripe.net/favicon.ico" />
      <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png" />
 
-
-
-
-
-
-
-
-
      <link rel="search" href="https://www.ripe.net/search" title="Search this site" />
-
-
-
-
-
-
 
 
      <!-- your custom styles here CSSMARKER -->
@@ -102,7 +80,15 @@
 
 
  <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr">
-
+ <!-- Google Tag Manager -->
+ <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WTWTB7"
+                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+ <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+     '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+ })(window,document,'script','dataLayer','GTM-WTWTB7');</script>
+ <!-- End Google Tag Manager -->
 
 
 
@@ -129,9 +115,6 @@
                      <a href="notification" id="notifications"></a>
                  </div>
              </div>
-
-
-
 
 
              <div class="header-item">
@@ -986,7 +969,7 @@
 
 
                      <div>
-                         <div id="external" ng-app="dbWebuiApp">
+                         <div id="external" ng-app="dbWebApp">
                              <!-- End of header ENDHEADERMARKER -->
                              <div ui-view></div>
                              <!-- Insert your content here CONTENTMARKER -->
@@ -1066,12 +1049,16 @@
 
 
 
+
      <script src="scripts/app/app.js"></script>
      <script src="scripts/app/whoisMetaService.js"></script>
      <script src="scripts/app/whoisRestService.js"></script>
-     <script src="scripts/app/selectController.js"></script>
-     <script src="scripts/app/createController.js"></script>
-     <script src="scripts/app/modifyController.js"></script>
+
+     <script src="scripts/app/webupdates/webUpdatesStates.js"></script>
+     <script src="scripts/app/webupdates/selectController.js"></script>
+     <script src="scripts/app/webupdates/createController.js"></script>
+     <script src="scripts/app/webupdates/displayController.js"></script>
+
  </body>
 
  </html>

@@ -1,11 +1,12 @@
 'use strict';
 
-describe('dbWebuiApp: WhoisMetaService', function () {
+describe('dbWebApp: WhoisMetaService', function () {
 
     var $whoisMetaService;
 
 
-    beforeEach(module('dbWebuiApp'));
+    beforeEach(module('dbWebApp'));
+    beforeEach(module('webUpdates'));
 
     beforeEach(inject(function (WhoisMetaService) {
         $whoisMetaService = WhoisMetaService;
