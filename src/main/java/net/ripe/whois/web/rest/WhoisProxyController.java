@@ -37,8 +37,6 @@ public class WhoisProxyController {
         restTemplate = createRestTemplate();
     }
 
-
-
     @RequestMapping(value = "/**")
     public ResponseEntity<String> proxyRestCalls(@RequestBody final String body, final HttpServletRequest request) throws Exception {
 
@@ -58,25 +56,17 @@ public class WhoisProxyController {
 
         final Enumeration<String> headerNames = request.getHeaderNames();
 
-        boolean found_X_Forwarded_For = false;
         while (headerNames.hasMoreElements()) {
             final String header = headerNames.nextElement();
-            final Enumeration<String> values = request.getHeaders(header);
 
+            final Enumeration<String> values = request.getHeaders(header);
             while (values.hasMoreElements()) {
                 final String value = values.nextElement();
                 headers.add(header, value);
-                if (header.equals(com.google.common.net.HttpHeaders.X_FORWARDED_FOR)
-                    && StringUtils.isNotBlank(value)){
-                    found_X_Forwarded_For = true;
-                }
             }
         }
-
-        if (!found_X_Forwarded_For){
-            headers.set(com.google.common.net.HttpHeaders.X_FORWARDED_FOR, request.getRemoteAddr());
-        }
-
+        //Connection value "keep-alive" has problems with resttemplate
+        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         return headers;
     }
 

@@ -3,11 +3,11 @@
     <h1>Create &quot;{{objectType}}&quot; in source {{source}}</h1>
 
     <div ng-if="hasErrors()" class="alert-expired alert alert-danger">
-        <p ng-repeat="error in errors">{{error}}</p>
+        <p ng-repeat="error in errors">{{error.text}}</p>
     </div>
 
     <div ng-if="hasWarnings()" class="alert alert-warning">
-        <p ng-repeat="warning in warnings">{{warning}}</p>
+        <p ng-repeat="warning in warnings">{{warning.text}}</p>
     </div>
 
     <form id="createForm" class="grey padding pull-left" style="width: 100%;">
@@ -25,15 +25,23 @@
 </span>
 
 <span ng-show="creationSteps.display">
-    
-    <div class="alert alert-success">
-        <p>Your object has been successfully created</p>
+
+    <div ng-if="hasInfos()" class="alert alert-success">
+        <p ng-repeat="info in infos">{{info.text}}</p>
+    </div>
+
+    <div ng-if="hasErrors()" class="alert-expired alert alert-danger">
+        <p ng-repeat="error in errors">{{error.text}}</p>
     </div>
 
     <div ng-if="hasWarnings()" class="alert alert-warning">
-        <p ng-repeat="warning in warnings">{{warning}}</p>
+        <p ng-repeat="warning in warnings">{{warning.text}}</p>
     </div>
-    
+
+    <div ng-if="hasInfos()" class="alert alert-success">
+        <p ng-repeat="info in infos">{{info}}</p>
+    </div>
+
     <h1>{{objectType}} with uid &quot;{{objectUid}}&quot;</h1>
 
 <section class="grey padding pull-left" style="width: 100%;">
