@@ -24,35 +24,3 @@
     </form>
 </span>
 
-<span ng-show="creationSteps.display">
-
-    <div ng-if="hasInfos()" class="alert alert-success">
-        <p ng-repeat="info in infos">{{info.text}}</p>
-    </div>
-
-    <div ng-if="hasErrors()" class="alert-expired alert alert-danger">
-        <p ng-repeat="error in errors">{{error.text}}</p>
-    </div>
-
-    <div ng-if="hasWarnings()" class="alert alert-warning">
-        <p ng-repeat="warning in warnings">{{warning.text}}</p>
-    </div>
-
-    <div ng-if="hasInfos()" class="alert alert-success">
-        <p ng-repeat="info in infos">{{info}}</p>
-    </div>
-
-    <h1>{{objectType}} with uid &quot;{{objectUid}}&quot;</h1>
-
-<section class="grey padding pull-left" style="width: 100%;">
-    <ul class="form-fields">
-        <li ng-repeat="attribute in attributes">
-            <label>{{attribute.name}}</label>
-            <input value="{{attribute.value}}" class="form-control" readonly />
-        </li>
-    </ul>
-
-    <button ng-click="navigateToSelect()" class="blue-button pull-right">Back to Create object</button>
-</section>
-
-</span>

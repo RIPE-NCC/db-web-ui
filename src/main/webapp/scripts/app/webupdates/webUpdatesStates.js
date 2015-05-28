@@ -14,6 +14,11 @@ angular.module('webUpdates', ['dbWebApp'])
                 url: '/webupdates/create/:objectType/:source',
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
+            })
+            .state('display', {
+                url: '/webupdates/display/:objectType/:name',
+                templateUrl: 'scripts/app/webupdates/display.html',
+                controller: 'DisplayController'
             });
 
     });

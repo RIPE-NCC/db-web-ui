@@ -101,19 +101,21 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource) {
                     $scope.attributes = response.objects.object[0].attributes.attribute;
                     $scope.errors = [];
                     $scope.warnings = [];
-                    $scope.infos[0] = 'Success! Go to the next level :)';
+
+                    $state.transitionTo('display', {objectType:$scope.objectType, name:response.objects.object[0]['primary-key'].attribute[0].value});
                 },
                 function(response){
                     console.log('EEEE.JSON.stringify(response)=======>'+JSON.stringify(response));
 
                     if (response.status / 100 == 5){
                         $scope.errors[0] = 'Internal Server Error';
-                        console.log('error response:\n' + response)
+                        console.log('error response:\n' + response);
                     } else{
                         $scope.errors = response.data.errormessages.errormessage;
                         $scope.warnings = [];
                     }
-                    console.log('error response status:' + response.status)
+                    console.log('error response status:' + response.status);
+
                 });
             if ($scope.hasErrors() == false) {
                 console.log('going to display');
