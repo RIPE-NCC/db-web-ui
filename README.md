@@ -30,24 +30,26 @@ IntelliJ Preferences
 
 Architecture
 ------------
+
 Rules of thumb:
- * All rest calls from angular ui go via java-proxy. Java proxy transparently forwards to backends.
- * In the new angular CRUD-ui (searching, creating, modifying and deleting whois objects) we stick to the "whoisresources-objects-object"-protocol.
+
+* All rest calls from angular ui go via java-proxy. Java proxy transparently forwards to backends.
+* In the new angular CRUD-ui (searching, creating, modifying and deleting whois objects) we stick to the "whoisresources-objects-object"-protocol.
     So when searching for maintainers of sso-user, we return a regular search result. What todo with the star?
     For the service that delivers info for the upper-right-sso-info, we use a dedicated protocol.
- * When designing new urls for the java-proxy, stick to the whois conventions
- * UI should be as simple as possibly: So fetching or pushing information should be done with a single call. The java proxy can aggregate to achieve this.
- * Always try to solve problem in backend. if not possible in java-proxy, as last resort in angular UI. We could promote functions from java-proxy to backend over time, so others can also profit.
- * All services a provided by the java-proxy shall be protected by sso. If not logged in, a 403 shall be returned. The angular UI shall redirect to access.ripe.net on a REST 403
+* When designing new urls for the java-proxy, stick to the whois conventions
+* UI should be as simple as possibly: So fetching or pushing information should be done with a single call. The java proxy can aggregate to achieve this.
+* Always try to solve problem in backend. if not possible in java-proxy, as last resort in angular UI. We could promote functions from java-proxy to backend over time, so others can also profit.
+* All services a provided by the java-proxy shall be protected by sso. If not logged in, a 403 shall be returned. The angular UI shall redirect to access.ripe.net on a REST 403
 
 Responsibilities of java-proxy: Non functionals only
- * Security
- * Aggregation
- * Same origin
- * Api-key to backends
- * Caching
- * Flexibilty: fix whois problems temporarily
- *
+
+* Security
+* Aggregation
+* Same origin
+* Api-key to backends
+* Caching
+* Flexibilty: fix whois problems temporarily
 
 
 
