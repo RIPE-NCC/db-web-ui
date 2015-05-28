@@ -1,7 +1,7 @@
 
 'use strict';
 
-angular.module('dbWebuiApp')
+angular.module('dbWebApp')
 .service('WhoisMetaService', function() {
 
   this.getObjectTypes = function() {

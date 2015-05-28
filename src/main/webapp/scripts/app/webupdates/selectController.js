@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebuiApp')
+angular.module('webUpdates')
 .controller('SelectController', ['$scope', '$location', 'WhoisMetaService',
 	function ($scope, $location, WhoisMetaService) {
         $scope.objectTypes   = WhoisMetaService.getObjectTypes();
@@ -9,7 +9,7 @@ angular.module('dbWebuiApp')
         $scope.selectedSource = $scope.sources[0];
 
         $scope.navigateToCreate = function() {
-          $location.path( '/whoisobject/create/' + $scope.selectedObjectType + '/' + $scope.selectedSource );
+          $location.path( '/webupdates/create/' + $scope.selectedObjectType + '/' + $scope.selectedSource );
           //NavigationService.navigateToCreate( $scope.selectedObjectType, $scope.selectedSource );
         }
 }]);

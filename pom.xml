@@ -49,10 +49,12 @@
     </distributionManagement>
 
     <properties>
+        <apache-httpclient>4.4</apache-httpclient>
         <assertj-core.version>2.0.0</assertj-core.version>
         <awaitility.version>1.4.0</awaitility.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-lang.version>2.6</commons-lang.version>
+        <google-guava-version>18.0</google-guava-version>
         <java.version>1.7</java.version>
         <javax.inject.version>1</javax.inject.version>
         <json-path.version>0.9.1</json-path.version>
@@ -66,8 +68,6 @@
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
-        <google-guava-version>18.0</google-guava-version>
-        <apache-httpclient>4.4</apache-httpclient>
     </properties>
 
     <dependencies>
@@ -89,11 +89,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${google-guava-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${apache-httpclient}</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.awaitility</groupId>
@@ -125,6 +120,11 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>${apache-httpclient}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>

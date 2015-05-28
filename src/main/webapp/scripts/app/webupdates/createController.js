@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebuiApp')
+angular.module('webUpdates')
 .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', 'WhoisRestService',
 function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService) {
 
