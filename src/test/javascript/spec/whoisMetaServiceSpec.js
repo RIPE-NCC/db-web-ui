@@ -2,38 +2,31 @@
 
 describe('dbWebApp: WhoisMetaService', function () {
 
-    var $whoisMetaService;
+    var whoisMetaService;
 
+    beforeEach(function() {
+        module('dbWebApp');
 
-    beforeEach(module('dbWebApp'));
-    beforeEach(module('webUpdates'));
-
-    beforeEach(inject(function (WhoisMetaService) {
-        $whoisMetaService = WhoisMetaService;
-    }));
-
-    afterEach(function() {
+        inject(function (_WhoisMetaService_) {
+            whoisMetaService = _WhoisMetaService_;
+        })
 
     });
 
     it('should return all objectTypes', function(){
-        $whoisMetaService._objectTypesMap =
+        whoisMetaService._objectTypesMap =
         {
             "type1" : { "name": "type1", "description":"Z"},
             "type2" : { "name": "type2", "description":"X"}
         };
 
-        expect($whoisMetaService.getObjectTypes()).toEqual([
+        expect(whoisMetaService.getObjectTypes()).toEqual([
             "type1", "type2"])
-    });
-
-    it('should fail when no object supplied', function(){
-
     });
 
     it('should return all attributes for a given type', function(){
 
-        $whoisMetaService._objectTypesMap =
+        whoisMetaService._objectTypesMap =
         {
             "type1" : { "name": "type1", "description":"Z",
                 "attributes":[
@@ -43,7 +36,7 @@ describe('dbWebApp: WhoisMetaService', function () {
             }
         };
 
-        expect($whoisMetaService.getAllAttributesOnObjectType("type1")).toEqual([
+        expect(whoisMetaService.getAllAttributesOnObjectType("type1")).toEqual([
             { "name":"mandatory1", "mandatory":true, "multiple":false, "description":"A"},
             { "name":"optional1", "mandatory":false, "multiple":true, "description":"B"}
         ])
@@ -51,7 +44,7 @@ describe('dbWebApp: WhoisMetaService', function () {
 
     it('should return exactly the mandatory attributes for a given type', function(){
 
-        $whoisMetaService._objectTypesMap =
+        whoisMetaService._objectTypesMap =
         {
             "type1" : { "name": "type1", "description":"Z",
                 "attributes":[
@@ -61,11 +54,9 @@ describe('dbWebApp: WhoisMetaService', function () {
             }
         };
 
-        expect($whoisMetaService.getMandatoryAttributesOnObjectType("type1")).toEqual([
+        expect(whoisMetaService.getMandatoryAttributesOnObjectType("type1")).toEqual([
             { "name":"mandatory1", "mandatory":true, "multiple":false, "description":"A"}
         ])
     });
-
-
 
 });
