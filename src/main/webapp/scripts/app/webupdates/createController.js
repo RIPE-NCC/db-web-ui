@@ -59,8 +59,13 @@ function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService, Mess
                     $state.transitionTo('display', {objectType:$scope.objectType, name:response.objects.object[0]['primary-key'].attribute[0].value});
                 },
                 function(response){
-                    $scope.errors = response.data.errormessages.errormessage;
-                    $scope.warnings = [];
+                    if (response.status / 100 == 5){
+                        $scope.errors[0] = 'Internal Server Error';
+                        console.log('error response:\n' + response);
+                    } else{
+                        $scope.errors = response.data.errormessages.errormessage;
+                        $scope.warnings = [];
+                    }
                 }
             );
         }
