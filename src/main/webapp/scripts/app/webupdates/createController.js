@@ -52,7 +52,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService, Mess
     };
 
     $scope.submit = function () {
-        if ($scope.validateForm() == true) {
+        if ($scope.validateForm()) {
             WhoisRestService.createObject($scope.source, $scope.objectType, $scope.objects,
                 function(response){
                     MessageBus.add('objectCreated', response.objects.object[0]);
