@@ -13,13 +13,9 @@ angular.module('dbWebApp')
        return _attributes;
     }
 
-    this.createObject = function(source, objectType, object) {
-        $resource('whois/:source/:objectType', {source: source, objectType: objectType}).save(object,
-            function(data){console.log('SSSS=======>'+data);},
-            function(data){console.log('EEEE=======>'+data);});
-
-       _warnings[0] = "Deprecated attribute 'changed' used";
-       return "123";
+    this.createObject = function(source, objectType, object, success, fail) {
+        return $resource('whois/:source/:objectType', {source: source, objectType: objectType})
+            .save(object, success, fail);
     }
 
     this.modifyObject = function( objectType, objectUid, attributes) {

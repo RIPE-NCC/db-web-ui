@@ -1,26 +1,25 @@
-<span ng-show="creationSteps.create">
+<h1>Create &quot;{{objectType}}&quot; in source {{source}}</h1>
 
-    <h1>Create &quot;{{objectType}}&quot; in source {{source}}</h1>
+<div ng-if="hasErrors()" class="alert-expired alert alert-danger">
+    <p ng-repeat="error in errors">{{error.text}}</p>
+</div>
 
-    <div ng-if="hasErrors()" class="alert-expired alert alert-danger">
-        <p ng-repeat="error in errors">{{error.text}}</p>
-    </div>
+<div ng-if="hasWarnings()" class="alert alert-warning">
+    <p ng-repeat="warning in warnings">{{warning.text}}</p>
+</div>
 
-    <div ng-if="hasWarnings()" class="alert alert-warning">
-        <p ng-repeat="warning in warnings">{{warning.text}}</p>
-    </div>
-
-    <form id="createForm" class="grey padding pull-left" style="width: 100%;">
-        <ul class="form-fields">
-            <li ng-repeat="attribute in attributes">
-              <label>{{attribute.name}}</label>
-              <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
-                      ng-required="{{attribute.$$mandatory}}" class="form-control" />
-              <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
-            </li>
-        </ul>
-<p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
-        <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
-    </form>
-</span>
+<form id="createForm" class="grey padding pull-left" style="width: 100%;">
+    <ul class="form-fields">
+        <li ng-repeat="attribute in attributes">
+            <label>{{attribute.name}}</label>
+            <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
+                   ng-required="{{attribute.$$mandatory}}" class="form-control"/>
+            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
+        </li>
+    </ul>
+    <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the
+        <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
+    </p>
+    <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
+</form>
 
