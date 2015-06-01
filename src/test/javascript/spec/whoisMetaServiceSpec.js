@@ -5,7 +5,6 @@ describe('dbWebApp: WhoisMetaService', function () {
     var $whoisMetaService;
 
     beforeEach(module('dbWebApp'));
-    beforeEach(module('webUpdates'));
 
     beforeEach(inject(function (WhoisMetaService) {
         $whoisMetaService = WhoisMetaService;
@@ -24,10 +23,6 @@ describe('dbWebApp: WhoisMetaService', function () {
 
         expect($whoisMetaService.getObjectTypes()).toEqual([
             "type1", "type2"])
-    });
-
-    it('should fail when no object supplied', function(){
-
     });
 
     it('should enrich attributes with meta attributes for a given type', function(){
@@ -122,7 +117,5 @@ describe('dbWebApp: WhoisMetaService', function () {
             { "name":"mandatory1",  $$meta: {"$$mandatory":true, "$$description":"A"}}
         ])
     });
-
-
 
 });

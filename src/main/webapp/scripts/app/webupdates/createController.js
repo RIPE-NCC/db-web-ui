@@ -22,6 +22,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
                     attributes: {
                         attribute: $scope.attributes
                     }
+
                 }
             ]
         }

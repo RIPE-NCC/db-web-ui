@@ -8,17 +8,13 @@ function ($scope, $stateParams, $state, MessageStore) {
     $scope.objectType = $stateParams.objectType;
     $scope.name = $stateParams.name;
 
-    var getAttributeValues = function (type, name) {
-        var object = MessageStore.get(name);
-        if (object === null) {
-            return undefined;
-        }
-
-        return object.attributes.attribute;
-    };
-
     // fetch just created object from temporary store
-    $scope.attributes = getAttributeValues($scope.objectType, $scope.name);
+    var object = MessageStore.get($scope.name);
+    if (object) {
+        $scope.attributes = object.attributes.attribute;
+    } else {
+        // TODO fetch from rest
+    }
 
     $scope.navigateToSelect = function () {
         $state.transitionTo('select');
