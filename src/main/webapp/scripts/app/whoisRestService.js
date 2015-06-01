@@ -1,8 +1,8 @@
-
 'use strict';
 
 angular.module('dbWebApp')
 .service('WhoisRestService', ['$resource', function($resource) {
+      var _uid = null;
 	  var _objectType = null;
 	  var _objectUid = null;
 	  var _attributes = [];
