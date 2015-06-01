@@ -9,20 +9,5 @@ angular.module('dbWebApp', [
         enabled: true,
         requireBase: false
     });
-})
-.factory('MessageBus', function(){
-    var messages = {};
-
-    messages.add = function(key, value){
-        messages[key] = value;
-    };
-
-    messages.get = function(key){
-        var value = messages[key];
-        delete messages[key];
-        return value;
-    };
-
-    return messages;
 });
 

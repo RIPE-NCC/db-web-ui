@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-.controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', '$resource', 'WhoisResourcesUtil',  //'MessageBus',
-function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResourcesUtil ) { //},  MessageBus ) {
+.controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', '$resource', 'WhoisResourcesUtil', 'MessageStore',
+function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResourcesUtil,  MessageStore ) {
 
     // extract parameters from the url
     $scope.objectType = $stateParams.objectType;
@@ -50,10 +50,11 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
                 function(response){
                     $scope.whoisResources = response;
                     console.log('Post-success resp:' + JSON.stringify($scope.whoisResources));
+                    var objectName = WhoisResourcesUtil.getObjectUid($scope.whoisResources);
                     // stick created object in temporary store
-                    //MessageBus.add('objectCreated', response.objects.object[0]);
+                    MessageStore.add(objectName, response.objects.object[0]);
                     // make transition to next display screen
-                    $state.transitionTo('display', {objectType:$scope.objectType, name:WhoisResourcesUtil.getObjectUid($scope.whoisResources)});
+                    $state.transitionTo('display', {objectType:$scope.objectType, name:objectName});
                 },
                 function(response){
                     console.log('Post-failure resp:' + JSON.stringify(response));
