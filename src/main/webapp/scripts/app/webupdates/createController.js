@@ -40,16 +40,15 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     };
 
     $scope.attributeHasError = function (attribute) {
-        return attribute.$$error != null;
+        return attribute.$$error !== null;
     };
 
     $scope.submit = function () {
-        if (validateForm() == true) {
+        if (validateForm() === true) {
             $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
                 .save($scope.whoisResources,
                 function(response){
                     $scope.whoisResources = response;
-                    console.log('Post-success resp:' + JSON.stringify($scope.whoisResources));
                     var objectName = WhoisResourcesUtil.getObjectUid($scope.whoisResources);
                     // stick created object in temporary store
                     MessageStore.add(objectName, response.objects.object[0]);
@@ -57,10 +56,9 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
                     $state.transitionTo('display', {objectType:$scope.objectType, name:objectName});
                 },
                 function(response){
-                    console.log('Post-failure resp:' + JSON.stringify(response));
                     $scope.whoisResources = response.data;
                     $scope.attributes = WhoisResourcesUtil.getAttributes($scope.whoisResources);
-                    console.log('Attributes:' + JSON.stringify($scope.attributes));
+
                     $scope.attributes = WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes);
                     $scope.errors = WhoisResourcesUtil.getGlobalErrors($scope.whoisResources);
                     $scope.warnings = WhoisResourcesUtil.getGlobalWarnings($scope.whoisResources);
@@ -71,13 +69,13 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     var validateForm = function () {
         var errorFound = false;
         $scope.attributes.map(function (attr) {
-            if (attr.$$meta.$$mandatory == true && attr.value == null) {
+            if (attr.$$meta.$$mandatory === true && attr.value === null) {
                 attr.$$error = 'Mandatory attribute not set';
                 errorFound = true;
             }
         });
-        return errorFound == false;
-    }
+        return errorFound === false;
+    };
 
 
 }]);

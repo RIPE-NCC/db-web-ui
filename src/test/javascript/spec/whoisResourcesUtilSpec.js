@@ -5,7 +5,6 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
     var $whoisResourcesUtil;
 
     beforeEach(module('dbWebApp'));
-    beforeEach(module('webUpdates'));
 
     beforeEach(inject(function (WhoisResourcesUtil) {
         $whoisResourcesUtil = WhoisResourcesUtil;

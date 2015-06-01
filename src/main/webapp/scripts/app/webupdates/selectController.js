@@ -11,5 +11,5 @@ angular.module('webUpdates')
         $scope.navigateToCreate = function() {
           $location.path( '/webupdates/create/' + $scope.selectedObjectType + '/' + $scope.selectedSource );
           //NavigationService.navigateToCreate( $scope.selectedObjectType, $scope.selectedSource );
-        }
+        };
 }]);

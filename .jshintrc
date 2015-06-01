@@ -18,5 +18,9 @@
     "trailing": true,
     "smarttabs": true,
     "white": true,
-    "predef": ["angular"]
+    "predef": ["angular"],
+    "globals": {
+        "angular": false,
+        "_": false
+    }
 }

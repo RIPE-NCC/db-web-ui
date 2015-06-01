@@ -8,7 +8,14 @@ function ($scope, $stateParams, $state, MessageStore) {
     $scope.objectType = $stateParams.objectType;
     $scope.name = $stateParams.name;
 
-    console.log("display: type:" + $scope.objectType + " name:" + $scope.name );
+    var getAttributeValues = function (type, name) {
+        var object = MessageStore.get(name);
+        if (object === null) {
+            return undefined;
+        }
+
+        return object.attributes.attribute;
+    };
 
     // fetch just created object from temporary store
     $scope.attributes = getAttributeValues($scope.objectType, $scope.name);
@@ -17,15 +24,4 @@ function ($scope, $stateParams, $state, MessageStore) {
         $state.transitionTo('select');
     };
 
-    var getAttributeValues = function (type, name) {
-        var object = MessageStore.get(name);
-        if (object == null) {
-            console.log("No object found for key:" + name);
-            return undefined;
-        }
-
-        console.log("object:" + JSON.stringify(object));
-        return object.attributes.attribute;
-    };
-
-    }]);
+}]);
