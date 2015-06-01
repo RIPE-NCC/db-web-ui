@@ -11,21 +11,17 @@ function ($scope, $stateParams, $state, MessageStore) {
     console.log("display: type:" + $scope.objectType + " name:" + $scope.name );
 
     // fetch just created object from temporary store
-    $scope.attributes = getAttributeValues($scope.objectType, $scope.name);
+    var object = MessageStore.get($scope.name);
+    if (object == null) {
+        console.log("No object found for key:" + $scope.name);
+        // TODO fetch from rest
+    } else {
+        console.log("object:" + JSON.stringify(object));
+        $scope.attributes = object.attributes.attribute;
+    }
 
     $scope.navigateToSelect = function () {
         $state.transitionTo('select');
     };
 
-    var getAttributeValues = function (type, name) {
-        var object = MessageStore.get(name);
-        if (object == null) {
-            console.log("No object found for key:" + name);
-            return undefined;
-        }
-
-        console.log("object:" + JSON.stringify(object));
-        return object.attributes.attribute;
-    };
-
-    }]);
+}]);
