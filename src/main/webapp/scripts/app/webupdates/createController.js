@@ -15,19 +15,6 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
 
     $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
 
-    $scope.whoisResources = {
-        objects: {
-            object: [
-                {
-                    attributes: {
-                        attribute: $scope.attributes
-                    }
-
-                }
-            ]
-        }
-    };
-
     $scope.hasErrors = function () {
         return $scope.errors.length > 0;
     };
@@ -47,22 +34,19 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     $scope.submit = function () {
         if (validateForm() === true) {
             $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
-                .save($scope.whoisResources,
+                .save({objects:{ object: [ { attributes: { attribute: $scope.attributes } } ] } },
                 function(response){
                     $scope.whoisResources = response;
                     var objectName = WhoisResourcesUtil.getObjectUid($scope.whoisResources);
                     // stick created object in temporary store
-                    MessageStore.add(objectName, response.objects.object[0]);
+                    MessageStore.add(objectName, response);
                     // make transition to next display screen
                     $state.transitionTo('display', {objectType:$scope.objectType, name:objectName});
                 },
                 function(response){
-                    $scope.whoisResources = response.data;
-                    $scope.attributes = WhoisResourcesUtil.getAttributes($scope.whoisResources);
-
-                    $scope.attributes = WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes);
-                    $scope.errors = WhoisResourcesUtil.getGlobalErrors($scope.whoisResources);
-                    $scope.warnings = WhoisResourcesUtil.getGlobalWarnings($scope.whoisResources);
+                    var whoisResources = response.data;
+                    $scope.errors = WhoisResourcesUtil.getGlobalErrors(whoisResources);
+                    $scope.warnings = WhoisResourcesUtil.getGlobalWarnings(whoisResources);
                 });
         }
     };

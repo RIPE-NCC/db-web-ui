@@ -9,7 +9,6 @@ angular.module('dbWebApp').service('MessageStore', [ function( ) {
 
     messages.get = function(key){
         var value = messages[key];
-
         delete messages[key];
         return value;
     };
