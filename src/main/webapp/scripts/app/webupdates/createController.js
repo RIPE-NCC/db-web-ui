@@ -46,7 +46,8 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
                     var whoisResources = response.data;
                     $scope.errors = WhoisResourcesUtil.getGlobalErrors(whoisResources);
                     $scope.warnings = WhoisResourcesUtil.getGlobalWarnings(whoisResources);
-                    populateFieldSpecificErrors(whoisResources)
+                    validateForm();
+                    populateFieldSpecificErrors(whoisResources);
                 });
         }
     };
@@ -54,9 +55,11 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     var validateForm = function () {
         var errorFound = false;
         $scope.attributes.map(function (attr) {
-            if (attr.$$meta.$$mandatory === true && attr.value === null) {
+            if (attr.$$meta.$$mandatory === true && ! attr.value ) {
                 attr.$$error = 'Mandatory attribute not set';
                 errorFound = true;
+            } else {
+                attr.$$error = undefined;
             }
         });
         return errorFound === false;
@@ -64,10 +67,12 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
 
     var populateFieldSpecificErrors = function( whoisResources ) {
         _.map($scope.attributes, function (attr) {
-            var errors = WhoisResourcesUtil.getErrorsOnAttribute(whoisResources, attr.name);
-            console.log("errors  for " + attr.name + ":" + JSON.stringify(errors));
-            if( errors && errors.length > 0 ) {
-                attr.$$error = errors[0].text;
+            if(!attr.$$error) {
+                var errors = WhoisResourcesUtil.getErrorsOnAttribute(whoisResources, attr.name);
+                console.log("errors  for " + attr.name + ":" + JSON.stringify(errors));
+                if (errors && errors.length > 0) {
+                    attr.$$error = errors[0].text;
+                }
             }
             return attr;
         });
