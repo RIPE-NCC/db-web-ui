@@ -21,20 +21,5 @@ angular.module('dbWebApp', [
     $rootScope.$on(ERROR_EVENTS.serverError, function () {
         $state.go('error');
     });
-})
-.factory('MessageBus', function(){
-    var messages = {};
-
-    messages.add = function(key, value){
-        messages[key] = value;
-    };
-
-    messages.get = function(key){
-        var value = messages[key];
-        delete messages[key];
-        return value;
-    };
-
-    return messages;
 });
 

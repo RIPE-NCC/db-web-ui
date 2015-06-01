@@ -40,11 +40,11 @@ describe('webUpdates: CreateController', function() {
         expect($scope.source).toBe(SOURCE);
     });
 
-    it('should get roas and store a copy as originalRoas', function() {
-        $scope.validateForm = function(){ return true; }
-        spyOn(whoisRestService, 'createObject');
-        $scope.submit();
-        expect(whoisRestService.createObject).toHaveBeenCalled();
-    });
+    //it('should get roas and store a copy as originalRoas', function() {
+    //    $scope.validateForm = function(){ return true; }
+    //    spyOn(whoisRestService, 'createObject');
+    //    $scope.submit();
+    //    expect(whoisRestService.createObject).toHaveBeenCalled();
+    //});
 
 });

@@ -1,9 +1,8 @@
 'use strict';
 
-
 angular.module('webUpdates')
-.controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', 'WhoisRestService', 'MessageBus',
-function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService, MessageBus) {
+.controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', '$resource', 'WhoisResourcesUtil', 'MessageStore',
+function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResourcesUtil,  MessageStore ) {
 
     // extract parameters from the url
     $scope.objectType = $stateParams.objectType;
@@ -14,55 +13,18 @@ function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService, Mess
     $scope.warnings = [];
     $scope.infos = [];
 
-    var allAttributesOnObjectType = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
-    $scope.attributes = _.map(allAttributesOnObjectType, function (x) {
-        return {name: x.name, value: x.value, $$mandatory: x.mandatory}
-    });
+    $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
 
-    $scope.objects = {
+    $scope.whoisResources = {
         objects: {
             object: [
                 {
-                    source: {
-                        id: $scope.source
-                    },
                     attributes: {
                         attribute: $scope.attributes
                     }
-                }]
-        }
-    };
 
-    var getAttrWithName = function (name) {
-        return _.find($scope.objects.objects.object[0].attributes.attribute, function (attr) {
-            return attr.name == name;
-        })
-    };
-
-    $scope.validateForm = function () {
-        var errorFound = false;
-        allAttributesOnObjectType.map(function (attrTemplate) {
-            var attr = getAttrWithName(attrTemplate.name);
-            if (attrTemplate.mandatory == true && attr.value == null) {
-                attr.$$error = 'Mandatory attribute not set';
-                errorFound = true;
-            }
-        });
-        return errorFound == false;
-    };
-
-    $scope.submit = function () {
-        if ($scope.validateForm()) {
-            WhoisRestService.createObject($scope.source, $scope.objectType, $scope.objects,
-                function(response){
-                    MessageBus.add('objectCreated', response.objects.object[0]);
-                    $state.transitionTo('display', {objectType:$scope.objectType, name:response.objects.object[0]['primary-key'].attribute[0].value});
-                },
-                function(response){
-                    $scope.errors = response.data.errormessages.errormessage;
-                    $scope.warnings = [];
                 }
-            );
+            ]
         }
     };
 
@@ -82,10 +44,41 @@ function ($scope, $stateParams, $state, WhoisMetaService, WhoisRestService, Mess
         return attribute.$$error != null;
     };
 
-    $scope.clearAttributeErrors = function () {
-        allAttributesOnObjectType.map(function (attr) {
-            getAttrWithName(attr.name).$$error = null;
-        });
+    $scope.submit = function () {
+        if (validateForm() == true) {
+            $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
+                .save($scope.whoisResources,
+                function(response){
+                    $scope.whoisResources = response;
+                    console.log('Post-success resp:' + JSON.stringify($scope.whoisResources));
+                    var objectName = WhoisResourcesUtil.getObjectUid($scope.whoisResources);
+                    // stick created object in temporary store
+                    MessageStore.add(objectName, response.objects.object[0]);
+                    // make transition to next display screen
+                    $state.transitionTo('display', {objectType:$scope.objectType, name:objectName});
+                },
+                function(response){
+                    console.log('Post-failure resp:' + JSON.stringify(response));
+                    $scope.whoisResources = response.data;
+                    $scope.attributes = WhoisResourcesUtil.getAttributes($scope.whoisResources);
+                    console.log('Attributes:' + JSON.stringify($scope.attributes));
+                    $scope.attributes = WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes);
+                    $scope.errors = WhoisResourcesUtil.getGlobalErrors($scope.whoisResources);
+                    $scope.warnings = WhoisResourcesUtil.getGlobalWarnings($scope.whoisResources);
+                });
+        }
     };
+
+    var validateForm = function () {
+        var errorFound = false;
+        $scope.attributes.map(function (attr) {
+            if (attr.$$meta.$$mandatory == true && attr.value == null) {
+                attr.$$error = 'Mandatory attribute not set';
+                errorFound = true;
+            }
+        });
+        return errorFound == false;
+    }
+
 
 }]);
