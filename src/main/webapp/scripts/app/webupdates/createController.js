@@ -35,9 +35,8 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
         if (validateForm() === true) {
             $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
                 .save({objects:{ object: [ { attributes: { attribute: $scope.attributes } } ] } },
-                function(response){
-                    $scope.whoisResources = response;
-                    var objectName = WhoisResourcesUtil.getObjectUid($scope.whoisResources);
+                function(whoisResources){
+                    var objectName = WhoisResourcesUtil.getObjectUid(whoisResources);
                     // stick created object in temporary store
                     MessageStore.add(objectName, whoisResources);
                     // make transition to next display screen

@@ -9,9 +9,9 @@ function ($scope, $stateParams, $state, MessageStore) {
     $scope.name = $stateParams.name;
 
     // fetch just created object from temporary store
-    var object = MessageStore.get($scope.name);
-    if (object) {
-        $scope.attributes = object.attributes.attribute;
+    var whoisResources = MessageStore.get($scope.name);
+    if (whoisResources) {
+        $scope.attributes = whoisResources.objects.object[0].attributes.attribute;
     } else {
         // TODO fetch from rest
     }
