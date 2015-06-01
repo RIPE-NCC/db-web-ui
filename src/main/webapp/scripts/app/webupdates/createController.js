@@ -39,7 +39,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
                     $scope.whoisResources = response;
                     var objectName = WhoisResourcesUtil.getObjectUid($scope.whoisResources);
                     // stick created object in temporary store
-                    MessageStore.add(objectName, response);
+                    MessageStore.add(objectName, whoisResources);
                     // make transition to next display screen
                     $state.transitionTo('display', {objectType:$scope.objectType, name:objectName});
                 },
