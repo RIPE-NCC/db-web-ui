@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webUpdates', ['dbWebApp'])
+angular.module('webUpdates')
     .config(function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('webupdates/select');
 
