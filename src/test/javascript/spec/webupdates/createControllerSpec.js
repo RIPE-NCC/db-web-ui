@@ -9,11 +9,10 @@ describe('webUpdates: CreateController', function() {
     beforeEach(function() {
         module('webUpdates');
 
-        inject(function ($controller, $rootScope, _$httpBackend_, _$state_, _$stateParams_, _WhoisRestService_) {
+        inject(function ($controller, $rootScope, _$httpBackend_, _$state_, _$stateParams_) {
             $httpBackend = _$httpBackend_;
             $state = _$state_;
             $scope = $rootScope.$new();
-            whoisRestService = _WhoisRestService_;
 
             _$stateParams_.objectType = OBJECT_TYPE;
             _$stateParams_.source = SOURCE;
@@ -25,7 +24,7 @@ describe('webUpdates: CreateController', function() {
                 ];
             };
 
-            $controller('CreateController', {$scope: $scope, $state: $state, $stateParams:_$stateParams_, WhoisMetaService:whoisMetaService, WhoisRestService:whoisRestService});
+            $controller('CreateController', {$scope: $scope, $state: $state, $stateParams:_$stateParams_, WhoisMetaService:whoisMetaService});
 
             $httpBackend.whenGET('scripts/app/webupdates/select.html').respond(200);
             $httpBackend.flush();
