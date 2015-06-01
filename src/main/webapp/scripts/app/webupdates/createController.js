@@ -71,7 +71,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
                 var errors = WhoisResourcesUtil.getErrorsOnAttribute(whoisResources, attr.name);
                 console.log("errors  for " + attr.name + ":" + JSON.stringify(errors));
                 if (errors && errors.length > 0) {
-                    attr.$$error = errors[0].text;
+                    attr.$$error = errors[0].plainText;
                 }
             }
             return attr;

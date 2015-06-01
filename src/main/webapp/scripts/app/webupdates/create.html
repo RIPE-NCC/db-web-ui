@@ -1,11 +1,11 @@
 <h1>Create &quot;{{objectType}}&quot; in source {{source}}</h1>
 
 <div ng-if="hasErrors()" class="alert-expired alert alert-danger">
-    <p ng-repeat="error in errors">{{error.text}}</p>
+    <p ng-repeat="error in errors">{{error.plainText}}</p>
 </div>
 
 <div ng-if="hasWarnings()" class="alert alert-warning">
-    <p ng-repeat="warning in warnings">{{warning.text}}</p>
+    <p ng-repeat="warning in warnings">{{warning.plainText}}</p>
 </div>
 
 <form id="createForm" class="grey padding pull-left" style="width: 100%;">

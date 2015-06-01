@@ -14,6 +14,7 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
 
     });
 
+
     it('should work with error response', function () {
 
         var whoisResourcesWithErrorsAnsWarnings = {
@@ -40,12 +41,28 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
             }
         }
 
+        expect($whoisResourcesUtil.readableError( {
+            'severity': 'Error',
+            'text': 'Unrecognized source: %s %s',
+            'args': [{'value': 'INVALID_SOURCE'}]
+        })).toEqual(
+            'Unrecognized source: INVALID_SOURCE %s'
+        );
+
+        expect($whoisResourcesUtil.readableError(whoisResourcesWithErrorsAnsWarnings.errormessages.errormessage[0])).toEqual(
+            'Unrecognized source: INVALID_SOURCE'
+        );
+
+        expect($whoisResourcesUtil.readableError(whoisResourcesWithErrorsAnsWarnings.errormessages.errormessage[1])).toEqual(
+            'Not authenticated'
+        );
+
         expect($whoisResourcesUtil.getGlobalErrors(whoisResourcesWithErrorsAnsWarnings)).toEqual([
-            {'severity': 'Error', 'text': 'Unrecognized source: %s', 'args': [{'value': 'INVALID_SOURCE'}]}
+            {'severity': 'Error', 'text': 'Unrecognized source: %s', 'args': [{'value': 'INVALID_SOURCE'}], 'plainText': 'Unrecognized source: INVALID_SOURCE'}
         ]);
 
         expect($whoisResourcesUtil.getGlobalWarnings(whoisResourcesWithErrorsAnsWarnings)).toEqual([
-            {'severity': 'Warning', 'text': 'Not authenticated'}
+            {'severity': 'Warning', 'text': 'Not authenticated', 'plainText':'Not authenticated'}
         ]);
 
         expect($whoisResourcesUtil.getErrorsOnAttribute(whoisResourcesWithErrorsAnsWarnings, 'admin-c')).toEqual([
@@ -56,7 +73,8 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
                     'value': 'INVALID'
                 },
                 'text': '\'%s\' is not valid for this object type',
-                'args': [{'value': 'admin-c'}]
+                'args': [{'value': 'admin-c'}],
+                plainText: '\'admin-c\' is not valid for this object type'
             }
         ]);
 

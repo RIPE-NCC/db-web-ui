@@ -3,13 +3,28 @@
 angular.module('dbWebApp')
     .service('WhoisResourcesUtil', function () {
 
+        this.readableError = function( errorMessage ) {
+            var idx=0;
+            var readableErrorText = errorMessage.text.replace(/%s/g, function(match) {
+                if( errorMessage.args.length-1 >= idx ) {
+                    var arg = errorMessage.args[idx].value;
+                    idx++;
+                    return arg;
+                } else {
+                    return match;
+                }
+            });
+            return readableErrorText;
+        };
+
         this.getGlobalErrors = function (whoisResources) {
             if( !whoisResources.errormessages ) {
                 return [];
             }
+            var self = this;
             return whoisResources.errormessages.errormessage.filter(
                 function (errorMessage) {
-                    //errorMessage.msg = errorMessage.text.format(errorMessage.args);
+                    errorMessage.plainText = self.readableError(errorMessage);
                     return errorMessage.severity === 'Error' && !errorMessage.attribute;
                 });
         };
@@ -18,10 +33,23 @@ angular.module('dbWebApp')
             if( !whoisResources.errormessages ) {
                 return [];
             }
+            var self = this;
             return whoisResources.errormessages.errormessage.filter(
                 function (errorMessage) {
-                    //errorMessage.msg = errorMessage.text.format(errorMessage.args);
+                    errorMessage.plainText = self.readableError(errorMessage);
                     return errorMessage.severity === 'Warning' && !errorMessage.attribute;
+                });
+        };
+
+        this.getGlobalInfos = function (whoisResources) {
+            if( !whoisResources.errormessages ) {
+                return [];
+            }
+            var self = this;
+            return whoisResources.errormessages.errormessage.filter(
+                function (errorMessage) {
+                    errorMessage.plainText = self.readableError(errorMessage);
+                    return errorMessage.severity === 'Info' && !errorMessage.attribute;
                 });
         };
 
@@ -29,10 +57,11 @@ angular.module('dbWebApp')
             if( !whoisResources.errormessages ) {
                 return [];
             }
+            var self = this;
             return whoisResources.errormessages.errormessage.filter(
                 function (errorMessage) {
-                    //errorMessage.msg = errorMessage.text.format(errorMessage.args);
                     if (errorMessage.attribute) {
+                        errorMessage.plainText = self.readableError(errorMessage);
                         return errorMessage.attribute.name === attributeName;
                     }
                     return false;
