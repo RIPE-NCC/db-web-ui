@@ -46,6 +46,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
                     var whoisResources = response.data;
                     $scope.errors = WhoisResourcesUtil.getGlobalErrors(whoisResources);
                     $scope.warnings = WhoisResourcesUtil.getGlobalWarnings(whoisResources);
+                    populateFieldSpecificErrors(whoisResources)
                 });
         }
     };
@@ -60,6 +61,17 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
         });
         return errorFound === false;
     };
+
+    var populateFieldSpecificErrors = function( whoisResources ) {
+        _.map($scope.attributes, function (attr) {
+            var errors = WhoisResourcesUtil.getErrorsOnAttribute(whoisResources, attr.name);
+            console.log("errors  for " + attr.name + ":" + JSON.stringify(errors));
+            if( errors && errors.length > 0 ) {
+                attr.$$error = errors[0].text;
+            }
+            return attr;
+        });
+    }
 
 
 }]);
