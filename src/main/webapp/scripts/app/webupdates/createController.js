@@ -14,6 +14,8 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     $scope.infos = [];
 
     $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
+    WhoisResourcesUtil.setAttribute($scope.attributes, 'source', $scope.source);
+    WhoisResourcesUtil.setAttribute($scope.attributes, 'nic-hdl', 'AUTO-1');
 
     $scope.hasErrors = function () {
         return $scope.errors.length > 0;

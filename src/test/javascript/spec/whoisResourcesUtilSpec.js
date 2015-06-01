@@ -142,12 +142,10 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
 
         expect($whoisResourcesUtil.getObjectUid(whoisSuccessResponse)).toEqual("MG20276-RIPE");
 
-        expect($whoisResourcesUtil.getAttributes(whoisSuccessResponse)).toEqual( [
-                { "name": "as-block",  "value": "a"  },
-                { "name": "mnt-by", "value": "b"  },
-                { "name": "source",  "value": "c"  }
+        expect($whoisResourcesUtil.getGlobalErrors(whoisSuccessResponse)).toEqual([
         ]);
 
     });
 
-});
+
+    });

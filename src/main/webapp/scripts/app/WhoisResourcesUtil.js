@@ -70,7 +70,7 @@ angular.module('dbWebApp')
 
         this.getObjectUid = function (whoisResources) {
             if( !whoisResources.objects ) {
-                return null;
+                return undefined;
             }
             return whoisResources.objects.object[0]['primary-key'].attribute[0].value;
         };
@@ -82,32 +82,29 @@ angular.module('dbWebApp')
             return whoisResources.objects.object[0].attributes.attribute;
         };
 
-        this.getSingleAttributeOnName = function (whoisResources, attributeName) {
-            if( whoisResources.objects  || whoisResources.objects.object[0] ) {
-                return {};
+        this.getSingleAttributeOnName = function (attrs, name) {
+            if( attrs ) {
+                return undefined;
             }
-            var attributes = whoisResources.objects.object[0].attributes.attribute.filter(
-                function (attribute) {
-                    return attribute.name === attributeName;
-                });
-            if (attributes === null || attributes.length === 0) {
-                return null;
-            }
-            return attributes[0];
+            return _.find(attrs,  function (attr) {
+                return attr.name === name;
+            });
         };
 
-        this.getAllAttributesOnName = function (whoisResources, attributeName) {
-            return whoisResources.objects.object[0].attributes.attribute.filter(
+        this.getAllAttributesOnName = function (attrs, attributeName) {
+            return attrs.attribute.filter(
                 function (attribute) {
                     return attribute.name === attributeName;
                 });
         };
 
-        this.setAttributeValueOnName = function (whoisResources, attributeName, attributeValue) {
-            var attributes = this.getSingleAttributeOnName(whoisResources, attributeName);
-            if (attributes) {
-                attributes[0].value = attributeValue;
-            }
+        this.setAttribute = function (attrs, name, value) {
+            return _.map(attrs, function(attr) {
+                if( attr.name === name ) {
+                    attr.value = value;
+                }
+                return attr;
+            });
         };
 
         this.addAttributeValueOnName = function (whoisResources, attributeName, attributeValue) {
