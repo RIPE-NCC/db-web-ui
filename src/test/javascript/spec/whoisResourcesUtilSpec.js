@@ -202,19 +202,6 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'source', value: 'd'}
         ]);
 
-        var mntners = [
-            {name: 'mnt-by', value: 'b'},
-            {name: 'mnt-by', value: 'c'}];
-
-        expect(whoisAttributes.mergeWith(
-            [ {name: 'as-block', value:'a'},
-            {name: 'source', value: 'd'}], [])).toEqual([
-            {name: 'as-block', value:'a'},
-            {name: 'mnt-by', value: 'b'},
-            {name: 'mnt-by', value: 'c'},
-            {name: 'source', value: 'd'}
-        ]);
-
         expect(whoisAttributes.getAllAttributesOnName('non-existing')).toEqual([]);
 
         expect(whoisAttributes.setSingleAttributeOnName('source', 'RIPE')).toEqual([
