@@ -11,5 +11,16 @@ rest:
     api:
         ripeUrl: http://db-dev-1.dev.ripe.net:1080/whois
 
+internal:
+    api:
+        url: http://int-dev.db.ripe.net
+        key: DB-WHOIS-d5395e7fbf8d
+
+# SSO translation properties
+crowd:
+    rest:
+        url: http://serval.prepdev.ripe.net:8095/crowd
+        user: db
+        password: evarylli
 
 

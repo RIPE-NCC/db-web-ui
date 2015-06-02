@@ -1,4 +1,4 @@
-package net.ripe.whois.web.rest;
+package net.ripe.whois.web.api.whois;
 
 import net.ripe.whois.Application;
 import org.junit.Before;

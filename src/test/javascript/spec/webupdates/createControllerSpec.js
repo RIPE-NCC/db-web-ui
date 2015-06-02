@@ -2,7 +2,7 @@
 
 describe('webUpdates: CreateController', function() {
 
-    var $scope, $state, $httpBackend, whoisRestService;
+    var $scope, $state, $httpBackend;
     var OBJECT_TYPE = 'someType';
     var SOURCE = 'source';
 

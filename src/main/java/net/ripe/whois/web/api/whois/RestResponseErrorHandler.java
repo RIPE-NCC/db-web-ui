@@ -1,4 +1,4 @@
-package net.ripe.whois.web.rest;
+package net.ripe.whois.web.api.whois;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

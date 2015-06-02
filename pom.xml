@@ -68,6 +68,7 @@
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
+        <whois.version>1.80</whois.version>
     </properties>
 
     <dependencies>
@@ -120,6 +121,29 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.ripe.db</groupId>
+            <artifactId>whois-client</artifactId>
+            <version>${whois.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jul-to-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -496,7 +520,7 @@
             </build>
             <properties>
                 <!-- log configuration -->
-                <logback.loglevel>INFO</logback.loglevel>
+                <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
             <dependencies>
                 <dependency>

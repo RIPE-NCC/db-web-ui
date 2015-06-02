@@ -32,7 +32,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     $scope.submit = function () {
         if (validateForm() === true) {
             clearErrors();
-            $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
+            $resource('api/whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
                 .save(WhoisResourcesUtil.embedAttributes($scope.attributes),
                 function(resp){
                     var whoisResources  = WhoisResourcesUtil.wrapWhoisResources(resp);

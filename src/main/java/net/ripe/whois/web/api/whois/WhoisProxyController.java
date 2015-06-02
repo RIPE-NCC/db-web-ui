@@ -1,10 +1,11 @@
-package net.ripe.whois.web.rest;
+package net.ripe.whois.web.api.whois;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,20 +18,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Enumeration;
 
 @RestController
-@RequestMapping("/whois")
+@RequestMapping("/api/whois")
 public class WhoisProxyController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
 
     private final RestTemplate restTemplate;
 
-    @Inject
+    @Autowired
     private Environment env;
 
     public WhoisProxyController() {
