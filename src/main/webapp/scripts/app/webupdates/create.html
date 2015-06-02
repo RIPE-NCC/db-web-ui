@@ -10,7 +10,20 @@
 
 <form id="createForm" class="grey padding pull-left" style="width: 100%;">
     <ul class="form-fields">
-        <li ng-repeat="attribute in attributes">
+        <strong>Mntnrs:</strong><br/>
+        <li ng-repeat="attribute in (attributes | filter: {name: 'mnt-by'})">
+
+            <!-- <li ng-repeat="attribute in attributes"> -->
+            <label>{{attribute.name}}</label>
+            <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
+                   ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
+            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
+        </li>
+
+        <strong>Other attributes:</strong><br/>
+        <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})">
+
+                <!-- <li ng-repeat="attribute in attributes"> -->
             <label>{{attribute.name}}</label>
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>

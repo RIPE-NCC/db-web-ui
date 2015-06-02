@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('WhoisResourcesUtil', function () {
+    .service('WhoisResources', function () {
 
         var readableError = function( errorMessage ) {
             var idx=0;
@@ -114,7 +114,14 @@ angular.module('dbWebApp')
             });
         };
 
-       var getAllAttributesOnName = function (attributeName) {
+       var getAllAttributesNotOnName = function (attributeName) {
+            return _.filter(this,
+                function (attribute) {
+                    return attribute.name !== attributeName;
+                });
+        };
+
+        var getAllAttributesOnName = function (attributeName) {
             return _.filter(this,
                 function (attribute) {
                     return attribute.name === attributeName;
@@ -142,6 +149,7 @@ angular.module('dbWebApp')
             }
             attrs.toString = toString;
             attrs.getAllAttributesOnName = getAllAttributesOnName;
+            attrs.getAllAttributesNotOnName = getAllAttributesNotOnName;
             attrs.getSingleAttributeOnName = getSingleAttributeOnName;
             attrs.setSingleAttributeOnName = setSingleAttributeOnName;
 
