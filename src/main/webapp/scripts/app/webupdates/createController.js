@@ -12,9 +12,10 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     $scope.errors = [];
     $scope.warnings = [];
 
-    $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
-    WhoisResourcesUtil.setAttribute($scope.attributes, 'source', $scope.source);
-    WhoisResourcesUtil.setAttribute($scope.attributes, 'nic-hdl', 'AUTO-1');
+    $scope.attributes = WhoisResourcesUtil.wrapAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
+    $scope.attributes.setSingleAttributeOnName('source', $scope.source);
+    $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+    $scope.attributes.setSingleAttributeOnName('mnt-by', 'GROLSSO-MNT');
 
     $scope.hasErrors = function () {
         return $scope.errors.length > 0;
@@ -31,25 +32,22 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     $scope.submit = function () {
         if (validateForm() === true) {
             clearErrors();
-            // wrap attributes in whois-resources object
             $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
                 .save(WhoisResourcesUtil.embedAttributes($scope.attributes),
-                function(whoisResources){
-                    console.log("success resp:"+ JSON.stringify(whoisResources));
-                    var objectName = WhoisResourcesUtil.getObjectUid(whoisResources);
+                function(resp){
+                    var whoisResources  = WhoisResourcesUtil.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display can fetch it from here
-                    MessageStore.add(objectName, whoisResources);
+                    MessageStore.add(whoisResources.getObjectUid(), whoisResources);
                     // make transition to next display screen
-                    $state.transitionTo('display', {objectType:$scope.objectType, name:objectName});
+                    $state.transitionTo('display', {objectType:$scope.objectType, name:whoisResources.getObjectUid()});
                 },
-                function(response){
-                    if( !response.data) {
-                        // TIMEOUT?
+                function(resp){
+                    if( !resp.data) {
+                        // TIMEOUT: to be handled globally by response interceptor
                     } else {
-                        var whoisResources = response.data;
-                        console.log("error resp:" + JSON.stringify(response));
-                        $scope.errors = WhoisResourcesUtil.getGlobalErrors(whoisResources);
-                        $scope.warnings = WhoisResourcesUtil.getGlobalWarnings(whoisResources);
+                        var whoisResources = WhoisResourcesUtil.wrapWhoisResources(resp.data);
+                        $scope.errors = whoisResources.getGlobalErrors();
+                        $scope.warnings = whoisResources.getGlobalWarnings();
                         validateForm();
                         populateFieldSpecificErrors(whoisResources);
                     }
@@ -82,7 +80,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
         _.map($scope.attributes, function (attr) {
             // keep existing error messages
             if(!attr.$$error) {
-                var errors = WhoisResourcesUtil.getErrorsOnAttribute(whoisResources, attr.name);
+                var errors = whoisResources.getErrorsOnAttribute(attr.name);
                 console.log("errors  for " + attr.name + ":" + JSON.stringify(errors));
                 if (errors && errors.length > 0) {
                     attr.$$error = errors[0].plainText;
@@ -90,7 +88,6 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
             }
             return attr;
         });
-    }
-
+    };
 
 }]);
