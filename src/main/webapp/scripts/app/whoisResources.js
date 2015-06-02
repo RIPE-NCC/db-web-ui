@@ -149,7 +149,6 @@ angular.module('dbWebApp')
 
             // add meta to items without meta
             var enriched = _.map(combined, function(attr) {
-                console.log("attr:" + JSON.stringify(attr));
                 if( ! attr.$$meta ) {
                    attr.$$meta = objecTypeIndex[attr.name];
                }
@@ -190,9 +189,6 @@ angular.module('dbWebApp')
             _.map(this, function (attr) {
                 if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length == 0 ) {
                     attr.$$error = 'Mandatory attribute not set';
-                    errorFound = true;
-                } else if( attr.$$meta.$$multiple === false && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length > 0 ) {
-                    attr.$$error = 'Multiple attributes not allowed';
                     errorFound = true;
                 } else {
                     attr.$$error = undefined;

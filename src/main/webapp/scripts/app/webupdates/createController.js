@@ -15,14 +15,16 @@ angular.module('webUpdates')
             $scope.attributes = WhoisResources.wrapAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
             $scope.attributes.setSingleAttributeOnName('source', $scope.source);
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-            //$scope.attributes.setSingleAttributeOnName('mnt-by', 'GROLSSO-MNT');
 
             $resource('api/user/maintainers',{ get: { method: "GET", isArray: false } })
                 .get(
                 function(resp) {
                     var whoisResources  = WhoisResources.wrapWhoisResources(resp);
                     console.log("success::" + whoisResources);
-                    $scope.attributes.mergeSorted('mnt-by', whoisResources.getAttributes())
+                    if( whoisResources.objects.object) {
+                        // tempoary hack: invalid json response returned
+                        $scope.attributes.mergeSorted('mnt-by', whoisResources.getAttributes());
+                    }
                 },
                 function(resp) {
                     if( ! resp.data) {
@@ -45,10 +47,14 @@ angular.module('webUpdates')
                 return attribute.$$error !== null;
             };
 
+            $scope.hasMntners = function() {
+                return $scope.attributes.getAllAttributesWithValueOnName('mnt-by').length > 0;
+            };
 
             $scope.submit = function () {
                 if (validateForm() === true) {
                     clearErrors();
+                    console.log("request:" + JSON.stringify($scope.attributes));
                     $resource('api/whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
                         .save(WhoisResources.embedAttributes($scope.attributes),
                         function(resp){
