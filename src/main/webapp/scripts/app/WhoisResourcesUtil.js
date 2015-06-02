@@ -3,17 +3,7 @@
 angular.module('dbWebApp')
     .service('WhoisResourcesUtil', function () {
 
-        this.embedAttributes = function( attrs ) {
-            return {
-                objects:{
-                    object: [
-                        { attributes: { attribute: attrs } }
-                    ]
-                }
-            }
-        };
-
-        this.readableError = function( errorMessage ) {
+        var readableError = function( errorMessage ) {
             var idx=0;
             var readableErrorText = errorMessage.text.replace(/%s/g, function(match) {
                 if( errorMessage.args.length-1 >= idx ) {
@@ -27,48 +17,48 @@ angular.module('dbWebApp')
             return readableErrorText;
         };
 
-        this.getGlobalErrors = function (whoisResources) {
-            if( !whoisResources.errormessages ) {
+        var getGlobalErrors = function () {
+            if( !this.errormessages ) {
                 return [];
             }
             var self = this;
-            return whoisResources.errormessages.errormessage.filter(
+            return this.errormessages.errormessage.filter(
                 function (errorMessage) {
                     errorMessage.plainText = self.readableError(errorMessage);
                     return errorMessage.severity === 'Error' && !errorMessage.attribute;
                 });
         };
 
-        this.getGlobalWarnings = function (whoisResources) {
-            if( !whoisResources.errormessages ) {
+         var getGlobalWarnings = function () {
+            if( !this.errormessages ) {
                 return [];
             }
             var self = this;
-            return whoisResources.errormessages.errormessage.filter(
+            return this.errormessages.errormessage.filter(
                 function (errorMessage) {
                     errorMessage.plainText = self.readableError(errorMessage);
                     return errorMessage.severity === 'Warning' && !errorMessage.attribute;
                 });
         };
 
-        this.getGlobalInfos = function (whoisResources) {
-            if( !whoisResources.errormessages ) {
+         var getGlobalInfos = function () {
+            if( !this.errormessages ) {
                 return [];
             }
             var self = this;
-            return whoisResources.errormessages.errormessage.filter(
+            return this.errormessages.errormessage.filter(
                 function (errorMessage) {
                     errorMessage.plainText = self.readableError(errorMessage);
                     return errorMessage.severity === 'Info' && !errorMessage.attribute;
                 });
         };
 
-        this.getErrorsOnAttribute = function (whoisResources, attributeName) {
-            if( !whoisResources.errormessages ) {
+        var getErrorsOnAttribute = function (attributeName) {
+            if( !this.errormessages ) {
                 return [];
             }
             var self = this;
-            return whoisResources.errormessages.errormessage.filter(
+            return this.errormessages.errormessage.filter(
                 function (errorMessage) {
                     if (errorMessage.attribute) {
                         errorMessage.plainText = self.readableError(errorMessage);
@@ -78,59 +68,86 @@ angular.module('dbWebApp')
                 });
         };
 
-        this.getObjectUid = function (whoisResources) {
-            if( !whoisResources.objects ) {
+        var getObjectUid = function () {
+            if( !this.objects ) {
                 return undefined;
             }
-            return whoisResources.objects.object[0]['primary-key'].attribute[0].value;
+            return this.objects.object[0]['primary-key'].attribute[0].value;
         };
 
-        this.getAttributes = function (whoisResources) {
-            if( !whoisResources.objects ) {
+        var getAttributes = function () {
+            if( !this.objects ) {
                 return [];
             }
-            return whoisResources.objects.object[0].attributes.attribute;
+            return this.objects.object[0].attributes.attribute;
         };
 
-        this.getSingleAttributeOnName = function (attrs, name) {
-            if( attrs ) {
+        this.embedAttributes = function( attrs ) {
+            return{
+                objects:{
+                    object: [
+                        { attributes: { attribute: attrs } }
+                    ]
+                }
+            };
+        };
+
+        this.wrapWhoisResources  = function( whoisResources ) {
+            if ( !whoisResources ) {
                 return undefined;
             }
-            return _.find(attrs,  function (attr) {
+            whoisResources.toString = toString;
+            whoisResources.readableError = readableError;
+            whoisResources.getGlobalErrors = getGlobalErrors;
+            whoisResources.getGlobalWarnings = getGlobalWarnings;
+            whoisResources.getGlobalInfos = getGlobalInfos;
+            whoisResources.getErrorsOnAttribute = getErrorsOnAttribute;
+            whoisResources.getAttributes = getAttributes;
+            whoisResources.getObjectUid = getObjectUid;
+
+            return whoisResources;
+        };
+
+        var getSingleAttributeOnName = function (name) {
+            return _.find(this,  function (attr) {
                 return attr.name === name;
             });
         };
 
-        this.getAllAttributesOnName = function (attrs, attributeName) {
-            return attrs.attribute.filter(
+       var getAllAttributesOnName = function (attributeName) {
+            return _.filter(this,
                 function (attribute) {
                     return attribute.name === attributeName;
                 });
         };
 
-        this.setAttribute = function (attrs, name, value) {
-            return _.map(attrs, function(attr) {
-                if( attr.name === name ) {
+        var setSingleAttributeOnName = function( name, value) {
+            var found = false;
+             return _.map(this, function(attr) {
+                if( attr.name === name && found == false) {
                     attr.value = value;
+                    found = true
                 }
                 return attr;
             });
         };
 
-        this.addAttributeValueOnName = function (whoisResources, attributeName, attributeValue) {
-            whoisResources.objects.object[0].attributes.attribute.push({
-                'name': attributeName,
-                'value': attributeValue
-            });
+        var toString = function() {
+            return JSON.stringify(this);
         };
 
-        this.getObjectType = function (whoisResources) {
-            return whoisResources.objects.object[0].type;
+        this.wrapAttributes  = function( attrs ) {
+            if ( !attrs ) {
+                return [];
+            }
+            attrs.toString = toString;
+            attrs.getAllAttributesOnName = getAllAttributesOnName;
+            attrs.getSingleAttributeOnName = getSingleAttributeOnName;
+            attrs.setSingleAttributeOnName = setSingleAttributeOnName;
+
+            return attrs;
         };
 
-        this.setObjectType = function (whoisResources, objectType) {
-            whoisResources.objects.object[0].type = objectType;
-        };
 
     });
 
