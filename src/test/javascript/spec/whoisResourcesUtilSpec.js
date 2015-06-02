@@ -1,13 +1,13 @@
 'use strict';
 
-describe('dbWebApp: WhoisResourcesUtil', function () {
+describe('dbWebApp: WhoisResources', function () {
 
-    var $whoisResourcesUtil;
+    var $whoisResources;
 
     beforeEach(module('dbWebApp'));
 
-    beforeEach(inject(function (WhoisResourcesUtil) {
-        $whoisResourcesUtil = WhoisResourcesUtil;
+    beforeEach(inject(function (WhoisResources) {
+        $whoisResources = WhoisResources;
     }));
 
     afterEach(function () {
@@ -15,7 +15,7 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
     });
 
     it('should work with a request', function () {
-        expect($whoisResourcesUtil.embedAttributes([
+        expect($whoisResources.embedAttributes([
             {name: 'mnt-by', value: 'b'},
             {name: 'source'}
         ])).toEqual({
@@ -35,7 +35,7 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
 
     it('should work with error response', function () {
 
-        var errorResponse = $whoisResourcesUtil.wrapWhoisResources({
+        var errorResponse = $whoisResources.wrapWhoisResources({
             errormessages: {
                 errormessage: [
                     {
@@ -110,9 +110,9 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
 
     it('should work with success response', function () {
 
-        expect($whoisResourcesUtil.wrapWhoisResources(null)).toEqual(undefined);
+        expect($whoisResources.wrapWhoisResources(null)).toEqual(undefined);
 
-        var successResponse = $whoisResourcesUtil.wrapWhoisResources({
+        var successResponse = $whoisResources.wrapWhoisResources({
             link: {
                 type: 'locator',
                 href: 'http://localhost.dev.ripe.net:8443/RIPE/person'
@@ -177,9 +177,9 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
 
     it('should work with attributes', function () {
 
-        expect($whoisResourcesUtil.wrapAttributes(null)).toEqual([]);
+        expect($whoisResources.wrapAttributes(null)).toEqual([]);
 
-        var whoisAttributes = $whoisResourcesUtil.wrapAttributes([
+        var whoisAttributes = $whoisResources.wrapAttributes([
             {name: 'as-block', value:'a'},
             {name: 'mnt-by', value: 'b'},
             {name: 'mnt-by', value: 'c'},
@@ -195,6 +195,24 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
         expect(whoisAttributes.getAllAttributesOnName('mnt-by')).toEqual([
             {name: 'mnt-by', value: 'b'},
             {name: 'mnt-by', value: 'c'}
+        ]);
+
+        expect(whoisAttributes.getAllAttributesNotOnName('mnt-by')).toEqual([
+            {name: 'as-block', value:'a'},
+            {name: 'source', value: 'd'}
+        ]);
+
+        var mntners = [
+            {name: 'mnt-by', value: 'b'},
+            {name: 'mnt-by', value: 'c'}];
+
+        expect(whoisAttributes.mergeWith(
+            [ {name: 'as-block', value:'a'},
+            {name: 'source', value: 'd'}], [])).toEqual([
+            {name: 'as-block', value:'a'},
+            {name: 'mnt-by', value: 'b'},
+            {name: 'mnt-by', value: 'c'},
+            {name: 'source', value: 'd'}
         ]);
 
         expect(whoisAttributes.getAllAttributesOnName('non-existing')).toEqual([]);
@@ -216,7 +234,6 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
             {name: 'mnt-by', value: 'c'},
             {name: 'source', value: 'RIPE'}
         ]);
-
 
     });
 });

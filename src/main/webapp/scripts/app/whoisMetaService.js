@@ -33,14 +33,18 @@ angular.module('dbWebApp')
             if (objectTypeName === null) {
                 return [];
             }
+            var idx = 0;
             return _.map(this._getMetaAttributesOnObjectType(objectTypeName,false), function (am) {
-                return {
+                var meta = {
                     name: am.name,
                     $$meta: {
+                        $$idx:idx,
                         $$mandatory:am.mandatory,
                         $$description:am.description
                     }
                 };
+                idx++;
+                return meta;
             });
         };
 

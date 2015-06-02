@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-.controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResourcesUtil','MessageStore',
-function ($scope, $stateParams, $state, $resource, WhoisResourcesUtil, MessageStore) {
+.controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources','MessageStore',
+function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore) {
 
     // extract parameters from the url
     $scope.objectType = $stateParams.objectType;
@@ -13,7 +13,7 @@ function ($scope, $stateParams, $state, $resource, WhoisResourcesUtil, MessageSt
     $scope.warnings = [];
 
     // fetch just created object from temporary store
-    var whoisResources = WhoisResourcesUtil.wrapWhoisResources(MessageStore.get($scope.name));
+    var whoisResources = WhoisResources.wrapWhoisResources(MessageStore.get($scope.name));
     if (whoisResources) {
         // Use version that we was just before created or modified
         $scope.attributes = whoisResources.getAttributes();

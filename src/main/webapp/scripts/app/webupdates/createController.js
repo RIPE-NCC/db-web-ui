@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-.controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', '$resource', 'WhoisResourcesUtil', 'MessageStore',
-function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResourcesUtil,  MessageStore ) {
+.controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', '$resource', 'WhoisResources', 'MessageStore',
+function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResources,  MessageStore ) {
 
     // extract parameters from the url
     $scope.objectType = $stateParams.objectType;
@@ -12,7 +12,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     $scope.errors = [];
     $scope.warnings = [];
 
-    $scope.attributes = WhoisResourcesUtil.wrapAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
+    $scope.attributes = WhoisResources.wrapAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
     $scope.attributes.setSingleAttributeOnName('mnt-by', 'GROLSSO-MNT');
@@ -33,9 +33,9 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
         if (validateForm() === true) {
             clearErrors();
             $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
-                .save(WhoisResourcesUtil.embedAttributes($scope.attributes),
+                .save(WhoisResources.embedAttributes($scope.attributes),
                 function(resp){
-                    var whoisResources  = WhoisResourcesUtil.wrapWhoisResources(resp);
+                    var whoisResources  = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display can fetch it from here
                     MessageStore.add(whoisResources.getObjectUid(), whoisResources);
                     // make transition to next display screen
@@ -45,7 +45,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
                     if( !resp.data) {
                         // TIMEOUT: to be handled globally by response interceptor
                     } else {
-                        var whoisResources = WhoisResourcesUtil.wrapWhoisResources(resp.data);
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
                         $scope.errors = whoisResources.getGlobalErrors();
                         $scope.warnings = whoisResources.getGlobalWarnings();
                         validateForm();
