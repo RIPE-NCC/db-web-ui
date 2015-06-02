@@ -128,6 +128,51 @@ angular.module('dbWebApp')
                 });
         };
 
+        var getAllAttributesWithValueOnName = function (attributeName) {
+            return _.filter(this,
+                function (attribute) {
+                    return attribute.value && attribute.name === attributeName;
+                });
+        };
+
+        var mergeSortAttributes = function (attrType, attrs) {
+            // know the idnex of each kind of attributes in an object
+            var objecTypeIndex = {};
+            _.map(this, function(attr) {
+                objecTypeIndex[attr.name] = attr.$$meta;
+            });
+            //console.log("field-index:" + JSON.stringify(objecTypeIndex));
+
+            // apppend the two arrays
+            var combined = this.concat(attrs);
+            //console.log("combined:" + JSON.stringify(combined));
+
+            // add meta to items without meta
+            var enriched = _.map(combined, function(attr) {
+                console.log("attr:" + JSON.stringify(attr));
+                if( ! attr.$$meta ) {
+                   attr.$$meta = objecTypeIndex[attr.name];
+               }
+                return attr;
+            });
+            //console.log("enriched:" + JSON.stringify(enriched));
+
+            // add meta to items without meta
+            var stripped = _.filter(enriched, function(attr) {
+                if( attr.name === attrType && ! attr.value ) {
+                    return false;
+                }
+                return true;
+            });
+            //console.log("stripped:" + JSON.stringify(stripped));
+
+            var sorted = _.sortBy(stripped, function (attr) {
+                return attr.$$meta.$$idx;
+            })
+            //console.log("sorted:" + JSON.stringify(sorted));
+            return sorted;
+        };
+
         var setSingleAttributeOnName = function( name, value) {
             var found = false;
              return _.map(this, function(attr) {
@@ -138,6 +183,29 @@ angular.module('dbWebApp')
                 return attr;
             });
         };
+
+        var validate = function() {
+            var errorFound = false;
+            self = this;
+            _.map(this, function (attr) {
+                if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length == 0 ) {
+                    attr.$$error = 'Mandatory attribute not set';
+                    errorFound = true;
+                } else if( attr.$$meta.$$multiple === false && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length > 0 ) {
+                    attr.$$error = 'Multiple attributes not allowed';
+                    errorFound = true;
+                } else {
+                    attr.$$error = undefined;
+                }
+            });
+            return errorFound === false;
+        };
+
+        var clearErrors = function() {
+            _.map(this, function (attr) {
+                attr.$$error = undefined;
+            });
+        }
 
         var toString = function() {
             return JSON.stringify(this);
@@ -150,8 +218,12 @@ angular.module('dbWebApp')
             attrs.toString = toString;
             attrs.getAllAttributesOnName = getAllAttributesOnName;
             attrs.getAllAttributesNotOnName = getAllAttributesNotOnName;
+            attrs.getAllAttributesWithValueOnName = getAllAttributesWithValueOnName;
             attrs.getSingleAttributeOnName = getSingleAttributeOnName;
             attrs.setSingleAttributeOnName = setSingleAttributeOnName;
+            attrs.mergeSortAttributes = mergeSortAttributes;
+            attrs.validate = validate;
+            attrs.clearErrors = clearErrors;
 
             return attrs;
         };

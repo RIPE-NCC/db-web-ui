@@ -19,8 +19,9 @@
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
         </li>
-
-        <strong>Other attributes:</strong><br/>
+    </ul>
+    <ul class="form-fields" ng-if="hasMntners()">
+    <strong>Other attributes:</strong><br/>
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})">
 
                 <!-- <li ng-repeat="attribute in attributes"> -->

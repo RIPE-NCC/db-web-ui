@@ -181,7 +181,7 @@ describe('dbWebApp: WhoisResources', function () {
 
         var whoisAttributes = $whoisResources.wrapAttributes([
             {name: 'as-block', value:'a'},
-            {name: 'mnt-by', value: 'b'},
+            {name: 'mnt-by', value: null},
             {name: 'mnt-by', value: 'c'},
             {name: 'source', value: 'd'}
         ]);
@@ -193,7 +193,7 @@ describe('dbWebApp: WhoisResources', function () {
         expect(whoisAttributes.getSingleAttributeOnName('non-existing')).toEqual(undefined);
 
         expect(whoisAttributes.getAllAttributesOnName('mnt-by')).toEqual([
-            {name: 'mnt-by', value: 'b'},
+            {name: 'mnt-by', value: null},
             {name: 'mnt-by', value: 'c'}
         ]);
 
@@ -204,9 +204,26 @@ describe('dbWebApp: WhoisResources', function () {
 
         expect(whoisAttributes.getAllAttributesOnName('non-existing')).toEqual([]);
 
+        expect(whoisAttributes.getAllAttributesWithValueOnName('mnt-by')).toEqual([
+            {name: 'mnt-by', value: 'c'}
+        ]);
+
+        var whoisAttributesWithMeta = $whoisResources.wrapAttributes([
+            {name: 'as-block', value:'a',   $$meta:{$$idx:0}},
+            {name: 'mnt-by',   value: null, $$meta:{$$idx:1}},
+            {name: 'mnt-by',   value: 'c',  $$meta:{$$idx:1}},
+            {name: 'source',   value: 'd',  $$meta:{$$idx:2}},
+        ]);
+        expect(whoisAttributesWithMeta.mergeSortAttributes( 'mnt-by', [{name: 'mnt-by', value: 'e'}])).toEqual([
+            {name: 'as-block', value: 'a', $$meta:{$$idx:0}},
+            {name: 'mnt-by',   value: 'c', $$meta:{$$idx:1}},
+            {name: 'mnt-by',   value: 'e', $$meta:{$$idx:1}},
+            {name: 'source',   value: 'd', $$meta:{$$idx:2}}
+        ]);
+
         expect(whoisAttributes.setSingleAttributeOnName('source', 'RIPE')).toEqual([
             {name: 'as-block', value:'a'},
-            {name: 'mnt-by', value: 'b'},
+            {name: 'mnt-by', value: null},
             {name: 'mnt-by', value: 'c'},
             {name: 'source', value: 'RIPE'}
         ]);
@@ -221,6 +238,94 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'mnt-by', value: 'c'},
             {name: 'source', value: 'RIPE'}
         ]);
+    });
+
+    it('should accept a correct object', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by',   value: 'c', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'mnt-by',   value: 'e', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source',   value: 'd', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+        ]);
+
+        expect(attrs.validate()).toEqual(true);
+        expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
+        expect(attrs.getAllAttributesOnName('mnt-by')[0].$$error).toEqual(undefined);
+        expect(attrs.getAllAttributesOnName('mnt-by')[1].$$error).toEqual(undefined);
+        expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
 
     });
+
+    it('should accept a correct object with second multiple null', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a',  $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by',   value: 'c',  $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'mnt-by',   value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+        ]);
+
+        expect(attrs.validate()).toEqual(true);
+        expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
+        expect(attrs.getAllAttributesOnName('mnt-by')[0].$$error).toEqual(undefined);
+        expect(attrs.getAllAttributesOnName('mnt-by')[1].$$error).toEqual(undefined);
+        expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
+    });
+
+    it('should detect missing single mandatory attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: null, $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by',   value: 'c',  $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'mnt-by',   value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+        ]);
+
+        expect(attrs.validate()).toEqual(false);
+        expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual('Mandatory attribute not set');
+        expect(attrs.getSingleAttributeOnName('mnt-by').$$error).toEqual(undefined);
+        expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
+    });
+
+    it('should detect missing multiple mandatory attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a',  $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by',   value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+        ]);
+
+        expect(attrs.validate()).toEqual(false);
+        expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
+        expect(attrs.getSingleAttributeOnName('mnt-by').$$error).toEqual('Mandatory attribute not set');
+        expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
+    });
+    //
+    //it('should detect multiple single attribute', function () {
+    //    var attrs = $whoisResources.wrapAttributes([
+    //        {name: 'as-block', value: 'a',  $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+    //        {name: 'mnt-by',   value: 'c',  $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+    //        {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+    //        {name: 'source',   value: 'e',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+    //    ]);
+    //
+    //    expect(attrs.validate()).toEqual(false);
+    //    console.log("attrs:"+ JSON.stringify(attrs));
+    //    console.log("sources:"+ JSON.stringify(attrs.getAllAttributesNotOnName('source')));
+    //    expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
+    //    expect(attrs.getAllAttributesOnName('`source')[0].$$error).toEqual('Multiple attributes not allowed');
+    //    expect(attrs.getAllAttributesOnName('`source')[1].$$error).toEqual('Multiple attributes not allowed');
+    //});
+
+    it('should detect missing multiple mandatory attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a',  $$error:'my error', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by',   value: null, $$error:'my error', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source',   value: 'd',  $$error:'my error', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+        ]);
+        expect(attrs.getSingleAttributeOnName('mnt-by').$$error).toEqual('my error');
+
+        attrs.clearErrors();
+        expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
+        expect(attrs.getSingleAttributeOnName('mnt-by').$$error).toEqual(undefined);
+        expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
+    });
+
 });
