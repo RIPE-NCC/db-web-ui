@@ -15,7 +15,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     $scope.attributes = WhoisResourcesUtil.wrapAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-    $scope.attributes.setSingleAttributeOnName('mnt-by', 'GROLSSO-MNT');
+    $scope.attributes.setSingleAttributeOnName('mnt-by', '');
 
     $scope.hasErrors = function () {
         return $scope.errors.length > 0;

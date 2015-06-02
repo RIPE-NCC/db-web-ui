@@ -6,11 +6,8 @@ angular.module('dbWebApp', [
     'webUpdates',
     'interceptors'])
 .config(function ($stateProvider, $locationProvider) {
-    $locationProvider.html5Mode({
-        enabled: true,
-        requireBase: false
-    });
-
+	//$locationProvider.html5Mode(true);
+	
     $stateProvider
         .state('error', {
             url: '/public/error',
