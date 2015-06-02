@@ -22,4 +22,3 @@ angular.module('dbWebApp', [
         $state.go('error');
     });
 });
-
