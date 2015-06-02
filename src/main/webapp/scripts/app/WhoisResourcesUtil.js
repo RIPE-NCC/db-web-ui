@@ -3,6 +3,16 @@
 angular.module('dbWebApp')
     .service('WhoisResourcesUtil', function () {
 
+        this.embedAttributes = function( attrs ) {
+            return {
+                objects:{
+                    object: [
+                        { attributes: { attribute: attrs } }
+                    ]
+                }
+            }
+        };
+
         this.readableError = function( errorMessage ) {
             var idx=0;
             var readableErrorText = errorMessage.text.replace(/%s/g, function(match) {

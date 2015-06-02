@@ -41,7 +41,7 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
             }
         }
 
-        expect($whoisResourcesUtil.readableError( {
+        expect($whoisResourcesUtil.readableError({
             'severity': 'Error',
             'text': 'Unrecognized source: %s %s',
             'args': [{'value': 'INVALID_SOURCE'}]
@@ -58,11 +58,16 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
         );
 
         expect($whoisResourcesUtil.getGlobalErrors(whoisResourcesWithErrorsAnsWarnings)).toEqual([
-            {'severity': 'Error', 'text': 'Unrecognized source: %s', 'args': [{'value': 'INVALID_SOURCE'}], 'plainText': 'Unrecognized source: INVALID_SOURCE'}
+            {
+                'severity': 'Error',
+                'text': 'Unrecognized source: %s',
+                'args': [{'value': 'INVALID_SOURCE'}],
+                'plainText': 'Unrecognized source: INVALID_SOURCE'
+            }
         ]);
 
         expect($whoisResourcesUtil.getGlobalWarnings(whoisResourcesWithErrorsAnsWarnings)).toEqual([
-            {'severity': 'Warning', 'text': 'Not authenticated', 'plainText':'Not authenticated'}
+            {'severity': 'Warning', 'text': 'Not authenticated', 'plainText': 'Not authenticated'}
         ]);
 
         expect($whoisResourcesUtil.getErrorsOnAttribute(whoisResourcesWithErrorsAnsWarnings, 'admin-c')).toEqual([
@@ -78,8 +83,7 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
             }
         ]);
 
-        expect($whoisResourcesUtil.getAttributes(whoisResourcesWithErrorsAnsWarnings)).toEqual([
-        ])
+        expect($whoisResourcesUtil.getAttributes(whoisResourcesWithErrorsAnsWarnings)).toEqual([])
 
     });
 
@@ -117,7 +121,7 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
                                 },
                                 {
                                     "name": "mnt-by",
-                                    "value": "b",
+                                    "value": "b"
                                 },
                                 {
                                     "name": "source",
@@ -134,18 +138,34 @@ describe('dbWebApp: WhoisResourcesUtil', function () {
             }
         };
 
-        expect($whoisResourcesUtil.getGlobalErrors(whoisSuccessResponse)).toEqual([
-        ]);
+        expect($whoisResourcesUtil.getGlobalErrors(whoisSuccessResponse)).toEqual([]);
 
-        expect($whoisResourcesUtil.getGlobalWarnings(whoisSuccessResponse)).toEqual([
-        ]);
+        expect($whoisResourcesUtil.getGlobalWarnings(whoisSuccessResponse)).toEqual([]);
 
         expect($whoisResourcesUtil.getObjectUid(whoisSuccessResponse)).toEqual("MG20276-RIPE");
 
-        expect($whoisResourcesUtil.getGlobalErrors(whoisSuccessResponse)).toEqual([
+        expect($whoisResourcesUtil.setAttribute([
+            {"name": "mnt-by", "value": "b"},
+            {"name": "source"}
+        ], 'source', 'RIPE')).toEqual([
+            {"name": "mnt-by", "value": "b"},
+            {"name": "source", "value": "RIPE"}
         ]);
 
-    });
+        expect($whoisResourcesUtil.embedAttributes([
+            { "name": "mnt-by", "value": "b"},
+            { "name": "source"}
+        ])).toEqual({
+            objects:{
+                object: [
+                    { attributes: { attribute: [
+                        { "name": "mnt-by", "value": "b"},
+                        { "name": "source"}]
+                    } }
+                ]
+            }
+        });
 
 
-    });
+    })
+});

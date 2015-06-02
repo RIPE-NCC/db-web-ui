@@ -11,7 +11,6 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
     // Initalize the UI
     $scope.errors = [];
     $scope.warnings = [];
-    $scope.infos = [];
 
     $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
     WhoisResourcesUtil.setAttribute($scope.attributes, 'source', $scope.source);
@@ -25,38 +24,50 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
         return $scope.warnings.length > 0;
     };
 
-    $scope.hasInfos = function () {
-        return $scope.infos.length > 0;
-    };
-
     $scope.attributeHasError = function (attribute) {
         return attribute.$$error !== null;
     };
 
     $scope.submit = function () {
         if (validateForm() === true) {
+            clearErrors();
+            // wrap attributes in whois-resources object
             $resource('whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
-                .save({objects:{ object: [ { attributes: { attribute: $scope.attributes } } ] } },
+                .save(WhoisResourcesUtil.embedAttributes($scope.attributes),
                 function(whoisResources){
+                    console.log("success resp:"+ JSON.stringify(whoisResources));
                     var objectName = WhoisResourcesUtil.getObjectUid(whoisResources);
-                    // stick created object in temporary store
+                    // stick created object in temporary store, so display can fetch it from here
                     MessageStore.add(objectName, whoisResources);
                     // make transition to next display screen
                     $state.transitionTo('display', {objectType:$scope.objectType, name:objectName});
                 },
                 function(response){
-                    var whoisResources = response.data;
-                    $scope.errors = WhoisResourcesUtil.getGlobalErrors(whoisResources);
-                    $scope.warnings = WhoisResourcesUtil.getGlobalWarnings(whoisResources);
-                    validateForm();
-                    populateFieldSpecificErrors(whoisResources);
+                    if( !response.data) {
+                        // TIMEOUT?
+                    } else {
+                        var whoisResources = response.data;
+                        console.log("error resp:" + JSON.stringify(response));
+                        $scope.errors = WhoisResourcesUtil.getGlobalErrors(whoisResources);
+                        $scope.warnings = WhoisResourcesUtil.getGlobalWarnings(whoisResources);
+                        validateForm();
+                        populateFieldSpecificErrors(whoisResources);
+                    }
                 });
         }
     };
 
+    var clearErrors = function() {
+        $scope.errors = [];
+        $scope.warnings = [];
+        $scope.attributes.map(function (attr) {
+            attr.$$error = undefined;
+        });
+    }
+
     var validateForm = function () {
         var errorFound = false;
-        $scope.attributes.map(function (attr) {
+        _.map($scope.attributes, function (attr) {
             if (attr.$$meta.$$mandatory === true && ! attr.value ) {
                 attr.$$error = 'Mandatory attribute not set';
                 errorFound = true;
@@ -69,6 +80,7 @@ function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResour
 
     var populateFieldSpecificErrors = function( whoisResources ) {
         _.map($scope.attributes, function (attr) {
+            // keep existing error messages
             if(!attr.$$error) {
                 var errors = WhoisResourcesUtil.getErrorsOnAttribute(whoisResources, attr.name);
                 console.log("errors  for " + attr.name + ":" + JSON.stringify(errors));
