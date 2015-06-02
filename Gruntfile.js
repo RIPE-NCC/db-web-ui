@@ -16,6 +16,7 @@ var parseVersionFromPomXml = function() {
 module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
+    var urlRewrite = require('grunt-connect-rewrite');
 
     grunt.initConfig({
         yeoman: {
@@ -177,14 +178,38 @@ module.exports = function (grunt) {
                     VERSION: parseVersionFromPomXml()
                 }
             }
-        }
+        },
+        connect: {
+	      server: {
+	        options: {
+	          port: 9001,
+	          base: 'build',
+	          middleware: function(connect, options) {
+	            // Return array of whatever middlewares you want
+	            return [
+	              // redirect all urls to index.html in build folder
+	              urlRewrite('build', 'index.html'),
+	 
+	              // Serve static files.
+	              connect.static(options.base),
+	 
+	              // Make empty directories browsable.
+	              connect.directory(options.base)
+	            ];
+	          }
+	        }
+	      }
+	    }
     });
+    
+    grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.registerTask('default', [
         'clean:server',
         'wiredep',
         'ngconstant:dev',
-        'watch'
+        'watch',
+        'connect'
     ]);
 
     grunt.registerTask('test', [

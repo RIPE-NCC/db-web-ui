@@ -23,7 +23,7 @@
     "angular-cache-buster": "0.4.3",
     "ngInfiniteScroll": "1.2.0",
     "lodash": "3.1.0",
-    "angularytics": "0.4.0"
+    "angulartics": "0.17.2"
 
   },
   "devDependencies": {
