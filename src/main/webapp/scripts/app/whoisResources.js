@@ -96,7 +96,7 @@ angular.module('dbWebApp')
             return this.objects.object[0].attributes.attribute;
         };
 
-        this.isValidWhoisResources = function( whoisResources) {
+        var isValidWhoisResources = function( whoisResources) {
             if( _.isUndefined(whoisResources) || _.isNull(whoisResources) ) {
                 return false;
             }
@@ -108,7 +108,7 @@ angular.module('dbWebApp')
         };
 
         this.wrapWhoisResources  = function( whoisResources ) {
-            if ( ! this.isValidWhoisResources(whoisResources) ) {
+            if ( !  isValidWhoisResources(whoisResources) ) {
                 return undefined;
             }
             // enrich data with methods
