@@ -72,7 +72,7 @@ public class WhoisProxyController {
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
         final StringBuilder sb = new StringBuilder(env.getProperty("rest.api.ripeUrl"))
-            .append(request.getRequestURI().replace("/whois", "").replace(env.getProperty("server.contextPath"), ""));
+            .append(request.getRequestURI().replace("/api/whois", "").replace(env.getProperty("server.contextPath"), ""));
 
             if (StringUtils.isNotBlank(request.getQueryString())) {
                 sb.append(request.getQueryString());
