@@ -1,5 +1,6 @@
 package net.ripe.whois.web.api.whois;
 
+import net.ripe.whois.external.clients.RestClient;
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -7,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,17 +23,11 @@ import java.util.Enumeration;
 
 @RestController
 @RequestMapping("/api/whois")
-public class WhoisProxyController {
+public class WhoisProxyController extends RestClient {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
-
-    private final RestTemplate restTemplate;
 
     @Autowired
     private Environment env;
-
-    public WhoisProxyController() {
-        restTemplate = createRestTemplate();
-    }
 
     @RequestMapping(value = "/**")
     public ResponseEntity<String> proxyRestCalls(@RequestBody final String body, final HttpServletRequest request) throws Exception {
@@ -80,13 +72,5 @@ public class WhoisProxyController {
 
         LOGGER.info("uri = " + sb.toString());
         return new URI(sb.toString());
-    }
-
-    private RestTemplate createRestTemplate() {
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
-        restTemplate.setErrorHandler(new RestResponseErrorHandler());
-        return restTemplate;
     }
 }
