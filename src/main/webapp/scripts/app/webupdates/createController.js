@@ -12,29 +12,34 @@ angular.module('webUpdates')
             $scope.errors = [];
             $scope.warnings = [];
 
+            // Populate the UI
             $scope.attributes = WhoisResources.wrapAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
             $scope.attributes.setSingleAttributeOnName('source', $scope.source);
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
-            $resource('api/user/maintainers',{ get: { method: "GET", isArray: false } })
-                .get(
-                function(resp) {
-                    var whoisResources  = WhoisResources.wrapWhoisResources(resp);
-                    console.log("success::" + whoisResources);
-                    if( whoisResources.objects.object) {
-                        // tempoary hack: invalid json response returned
-                        $scope.attributes.mergeSorted('mnt-by', whoisResources.getAttributes());
-                    }
-                },
-                function(resp) {
-                    if( ! resp.data) {
-                        console.log("failure without details:" + resp);
-                    } else {
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                        console.log("failure:" + whoisResources);
-                    }
-                });
+            var mntnersForSsoAccount = function() {
+                $resource('api/user/maintainers', {get: {method: "GET", isArray: false}})
+                    .get(
+                    function (resp) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                        console.log("success::" + whoisResources);
+                        if (whoisResources.objects.object) {
+                            // tempoary hack: invalid json response returned
+                            $scope.attributes.mergeSorted('mnt-by', whoisResources.getAttributes());
+                        }
+                    },
+                    function (resp) {
+                        if (!resp.data) {
+                            console.log("failure without details:" + resp);
+                        } else {
+                            var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
+                            console.log("failure:" + whoisResources);
+                        }
+                    });
+            };
+            mntnersForSsoAccount();
 
+            // Methods called from the template
             $scope.hasErrors = function () {
                 return $scope.errors.length > 0;
             };
@@ -69,14 +74,17 @@ angular.module('webUpdates')
                                 // TIMEOUT: to be handled globally by response interceptor
                             } else {
                                 var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                                $scope.errors = whoisResources.getGlobalErrors();
-                                $scope.warnings = whoisResources.getGlobalWarnings();
-                                validateForm();
-                                populateFieldSpecificErrors(whoisResources);
+                                if( ! _.isUndefined(whoisResources)) {
+                                    $scope.errors = whoisResources.getGlobalErrors();
+                                    $scope.warnings = whoisResources.getGlobalWarnings();
+                                    validateForm();
+                                    populateFieldSpecificErrors(whoisResources);
+                                }
                             }
                         });
                 }
             };
+
 
             var validateForm = function () {
                 return $scope.attributes.validate();
