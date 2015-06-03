@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisMetaService', '$resource', 'WhoisResources', 'MessageStore',
-        function ($scope, $stateParams, $state, WhoisMetaService, $resource, WhoisResources,  MessageStore ) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisMetaService',  'WhoisResources', 'MessageStore',
+        function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisResources,  MessageStore ) {
 
             // extract parameters from the url
             $scope.objectType = $stateParams.objectType;
@@ -18,7 +18,7 @@ angular.module('webUpdates')
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
             var mntnersForSsoAccount = function() {
-                $resource('api/user/maintainers', {get: {method: "GET", isArray: false}})
+                $resource('api/user/maintainers')
                     .get(
                     function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
