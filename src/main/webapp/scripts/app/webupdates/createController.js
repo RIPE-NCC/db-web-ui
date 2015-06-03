@@ -53,7 +53,10 @@ angular.module('webUpdates')
             };
 
             $scope.hasMntners = function() {
-                return $scope.attributes.getAllAttributesWithValueOnName('mnt-by').length > 0;
+                return _.find($scope.attributes.getAllAttributesWithValueOnName('mnt-by'), function (attr) {
+                    //Must be at least 2 characters long
+                    return attr.value.length > 1;
+                });
             };
 
             $scope.submit = function () {
