@@ -1,6 +1,5 @@
-package net.ripe.whois.services;
+package net.ripe.whois.services.rest;
 
-import net.ripe.whois.web.api.whois.RestResponseErrorHandler;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.http.client.ClientHttpRequestFactory;

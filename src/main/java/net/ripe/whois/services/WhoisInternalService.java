@@ -1,18 +1,19 @@
 package net.ripe.whois.services;
 
 import com.google.common.collect.Maps;
+import net.ripe.whois.services.rest.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-@Component
+@Service
 public class WhoisInternalService extends RestClient {
 
     private final String apiUrl;

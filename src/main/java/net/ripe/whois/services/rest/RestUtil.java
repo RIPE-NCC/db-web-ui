@@ -1,4 +1,4 @@
-package net.ripe.whois.web.api.whois;
+package net.ripe.whois.services.rest;
 
 import org.springframework.http.HttpStatus;
 
