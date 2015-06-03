@@ -59,6 +59,7 @@ angular.module('dbWebApp')
                 var meta = {
                     name: x.name,
                     $$meta: {
+                        $$idx:idx,
                         $$mandatory:x.mandatory,
                         $$description:x.description
                     }

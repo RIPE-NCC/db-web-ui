@@ -22,11 +22,9 @@ angular.module('webUpdates')
                     .get(
                     function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                        console.log("success::" + whoisResources);
-                        if (whoisResources.objects.object) {
-                            // tempoary hack: invalid json response returned
-                            $scope.attributes.mergeSorted('mnt-by', whoisResources.getAttributes());
-                        }
+                        $scope.attributes = WhoisResources.wrapAttributes(
+                            $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by')))
+                        ;
                     },
                     function (resp) {
                         if (!resp.data) {

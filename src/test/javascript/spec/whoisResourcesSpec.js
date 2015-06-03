@@ -365,22 +365,6 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs.getSingleAttributeOnName('mnt-by').$$error).toEqual('Mandatory attribute not set');
         expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
     });
-    //
-    //it('should detect multiple single attribute', function () {
-    //    var attrs = $whoisResources.wrapAttributes([
-    //        {name: 'as-block', value: 'a',  $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
-    //        {name: 'mnt-by',   value: 'c',  $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-    //        {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
-    //        {name: 'source',   value: 'e',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
-    //    ]);
-    //
-    //    expect(attrs.validate()).toEqual(false);
-    //    console.log("attrs:"+ JSON.stringify(attrs));
-    //    console.log("sources:"+ JSON.stringify(attrs.getAllAttributesNotOnName('source')));
-    //    expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
-    //    expect(attrs.getAllAttributesOnName('`source')[0].$$error).toEqual('Multiple attributes not allowed');
-    //    expect(attrs.getAllAttributesOnName('`source')[1].$$error).toEqual('Multiple attributes not allowed');
-    //});
 
     it('should detect missing multiple mandatory attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
@@ -395,5 +379,27 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs.getSingleAttributeOnName('mnt-by').$$error).toEqual(undefined);
         expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
     });
+
+    it('should convert mntnrs to mnt-by attrs', function () {
+        var mntnerForSsoResponse = $whoisResources.wrapWhoisResources({
+            objects: {
+                object: [
+                    { 'primary-key': { attribute: [ { name: 'mntner', value: 'TEST-MNT'    } ] }  },
+                    { 'primary-key': { attribute: [ { name: 'mntner', value: 'TESTSSO-MNT' } ]  } }
+                ]
+            }
+        });
+
+        expect(mntnerForSsoResponse).toBeDefined();
+
+        expect(mntnerForSsoResponse.objectNamesAsAttributes('mnt-by')).toEqual(
+            [
+                {name:'mnt-by', value:'TEST-MNT'},
+                {name:'mnt-by', value:'TESTSSO-MNT'}
+            ]
+        );
+
+    });
+
 
 });

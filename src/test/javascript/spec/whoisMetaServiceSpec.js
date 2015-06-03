@@ -114,7 +114,7 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getMandatoryAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1',  $$meta: {'$$mandatory':true, '$$description':'A'}}
+            { name:'mandatory1',  $$meta: {$$idx:0,'$$mandatory':true, '$$description':'A'}}
         ])
     });
 

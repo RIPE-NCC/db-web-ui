@@ -32,7 +32,7 @@ angular.module('dbWebApp')
         };
 
         var getGlobalErrors = function () {
-            if( !this.errormessages ) {
+            if( ! this.errormessages ) {
                 return [];
             }
             var self = this;
@@ -44,10 +44,10 @@ angular.module('dbWebApp')
         };
 
          var getGlobalWarnings = function () {
-            if( !this.errormessages ) {
-                return [];
-            }
-            var self = this;
+             if( ! this.errormessages ) {
+                 return [];
+             }
+             var self = this;
             return this.errormessages.errormessage.filter(
                 function (errorMessage) {
                     errorMessage.plainText = self.readableError(errorMessage);
@@ -56,9 +56,9 @@ angular.module('dbWebApp')
         };
 
          var getGlobalInfos = function () {
-            if( !this.errormessages ) {
-                return [];
-            }
+             if( ! this.errormessages ) {
+                 return [];
+             }
             var self = this;
             return this.errormessages.errormessage.filter(
                 function (errorMessage) {
@@ -68,7 +68,7 @@ angular.module('dbWebApp')
         };
 
         var getErrorsOnAttribute = function (attributeName) {
-            if( !this.errormessages ) {
+            if( ! this.errormessages ) {
                 return [];
             }
             var self = this;
@@ -83,14 +83,14 @@ angular.module('dbWebApp')
         };
 
         var getObjectUid = function () {
-            if( !this.objects ) {
+            if( ! this.objects ) {
                 return undefined;
             }
             return this.objects.object[0]['primary-key'].attribute[0].value;
         };
 
         var getAttributes = function () {
-            if( !this.objects ) {
+            if( ! this.objects ) {
                 return [];
             }
             return this.objects.object[0].attributes.attribute;
@@ -107,6 +107,12 @@ angular.module('dbWebApp')
             return true;
         };
 
+        var objectNamesAsAttributes = function( attributeType) {
+            return _.map(this.objects.object,  function (obj) {
+                return { name: attributeType, value:obj['primary-key'].attribute[0].value };
+            });
+        };
+
         this.wrapWhoisResources  = function( whoisResources ) {
             if ( !  isValidWhoisResources(whoisResources) ) {
                 return undefined;
@@ -120,6 +126,7 @@ angular.module('dbWebApp')
             whoisResources.getErrorsOnAttribute = getErrorsOnAttribute;
             whoisResources.getAttributes = getAttributes;
             whoisResources.getObjectUid = getObjectUid;
+            whoisResources.objectNamesAsAttributes = objectNamesAsAttributes;
 
             return whoisResources;
         };
@@ -157,11 +164,11 @@ angular.module('dbWebApp')
             _.map(this, function(attr) {
                 objecTypeIndex[attr.name] = attr.$$meta;
             });
-            //console.log("field-index:" + JSON.stringify(objecTypeIndex));
+            console.log("field-index:" + JSON.stringify(objecTypeIndex));
 
             // apppend the two arrays
             var combined = this.concat(attrs);
-            //console.log("combined:" + JSON.stringify(combined));
+            console.log("combined:" + JSON.stringify(combined));
 
             // add meta to items without meta
             var enriched = _.map(combined, function(attr) {
@@ -170,7 +177,7 @@ angular.module('dbWebApp')
                }
                 return attr;
             });
-            //console.log("enriched:" + JSON.stringify(enriched));
+            console.log("enriched:" + JSON.stringify(enriched));
 
             // add meta to items without meta
             var stripped = _.filter(enriched, function(attr) {
@@ -179,12 +186,12 @@ angular.module('dbWebApp')
                 }
                 return true;
             });
-            //console.log("stripped:" + JSON.stringify(stripped));
+            console.log("stripped:" + JSON.stringify(stripped));
 
             var sorted = _.sortBy(stripped, function (attr) {
                 return attr.$$meta.$$idx;
             })
-            //console.log("sorted:" + JSON.stringify(sorted));
+            console.log("sorted:" + JSON.stringify(sorted));
             return sorted;
         };
 
