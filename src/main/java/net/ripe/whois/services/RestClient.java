@@ -1,4 +1,4 @@
-package net.ripe.whois.external.clients;
+package net.ripe.whois.services;
 
 import net.ripe.whois.web.api.whois.RestResponseErrorHandler;
 import org.apache.http.impl.client.CloseableHttpClient;

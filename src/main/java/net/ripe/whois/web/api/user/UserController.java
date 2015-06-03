@@ -1,10 +1,9 @@
 package net.ripe.whois.web.api.user;
 
-import com.google.common.collect.ImmutableMap;
 import net.ripe.db.whois.common.sso.CrowdClient;
 import net.ripe.db.whois.common.sso.CrowdClientException;
 import net.ripe.db.whois.common.sso.UserSession;
-import net.ripe.whois.external.clients.WhoisInternalClient;
+import net.ripe.whois.services.WhoisInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ public class UserController {
     private CrowdClient crowdClient;
 
     @Autowired
-    private WhoisInternalClient whoisInternalClient;
+    private WhoisInternalService whoisInternalService;
 
     @RequestMapping(value = "/maintainers", method = RequestMethod.GET)
     public ResponseEntity<?> getMaintainers(@CookieValue(value = "crowd.token_key", required = true) final String crowdToken)throws Exception {
@@ -40,6 +39,6 @@ public class UserController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        return ok(whoisInternalClient.getMaintainers(uuid));
+        return ok(whoisInternalService.getMaintainers(uuid));
     }
 }

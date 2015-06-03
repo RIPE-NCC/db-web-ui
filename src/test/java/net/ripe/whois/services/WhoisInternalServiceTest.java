@@ -1,4 +1,4 @@
-package net.ripe.whois.external.clients;
+package net.ripe.whois.services;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
@@ -10,7 +10,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.junit.Assert.assertEquals;
 
 
-public class WhoisInternalClientTest {
+public class WhoisInternalServiceTest {
 
     private static final String VALID_RESPONSE = "{\"objects\":{\"object\":[{\"type\":\"mntner\",\"link\":{\"type\":\"locator\",\"href\":\"https://rest-dev.db.ripe.net/ripe/mntner/THIAGO-MNT\"},\"source\":{\"id\":\"ripe\"},\"primary-key\":{\"attribute\":[{\"name\":\"mntner\",\"value\":\"THIAGO-MNT\"}]},\"attributes\":{\"attribute\":[{\"name\":\"mntner\",\"value\":\"THIAGO-MNT\"},{\"name\":\"descr\",\"value\":\"skjdhfsjkdl\"},{\"name\":\"admin-c\",\"value\":\"DW-RIPE\"},{\"name\":\"auth\",\"value\":\"SSO\",\"comment\":\"Filtered\"},{\"name\":\"mnt-by\",\"value\":\"THIAGO-MNT\"},{\"name\":\"created\",\"value\":\"2015-05-29T09:11:39Z\"},{\"name\":\"last-modified\",\"value\":\"2015-05-29T09:11:39Z\"},{\"name\":\"source\",\"value\":\"RIPE\",\"comment\":\"Filtered\"}]}}]}}";
     private static final String MOCK_WHOIS_INTERNAL_URL = "http://localhost:8089";
@@ -21,7 +21,7 @@ public class WhoisInternalClientTest {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8089);
 
-    private final WhoisInternalClient whoisInternalClient = new WhoisInternalClient(MOCK_WHOIS_INTERNAL_URL, API_KEY);
+    private final WhoisInternalService whoisInternalService = new WhoisInternalService(MOCK_WHOIS_INTERNAL_URL, API_KEY);
 
     @Test
     public void shouldSendRequestToGetMaintainers() {
@@ -32,7 +32,7 @@ public class WhoisInternalClientTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(VALID_RESPONSE)));
 
-        whoisInternalClient.getMaintainers(USER_UUID);
+        whoisInternalService.getMaintainers(USER_UUID);
 
         verify(getRequestedFor(urlEqualTo(URL))
             .withHeader("Content-Type", matching("application/json")));
@@ -48,7 +48,7 @@ public class WhoisInternalClientTest {
                 .withHeader("Content-Type", "application/json")
                 .withBody(VALID_RESPONSE)));
 
-        assertEquals(VALID_RESPONSE, whoisInternalClient.getMaintainers(USER_UUID));
+        assertEquals(VALID_RESPONSE, whoisInternalService.getMaintainers(USER_UUID));
     }
 
 

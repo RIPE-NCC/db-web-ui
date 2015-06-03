@@ -1,4 +1,4 @@
-package net.ripe.whois.external.clients;
+package net.ripe.whois.services;
 
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +13,14 @@ import java.util.HashMap;
 import java.util.UUID;
 
 @Component
-public class WhoisInternalClient extends RestClient {
+public class WhoisInternalService extends RestClient {
 
     private final String apiUrl;
     private final String apiKey;
 
 
     @Autowired
-    public WhoisInternalClient(@Value("${internal.api.url}") final String apiUrl,  @Value("${internal.api.key}") final String apiKey) {
+    public WhoisInternalService(@Value("${internal.api.url}") final String apiUrl, @Value("${internal.api.key}") final String apiKey) {
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;
     }
