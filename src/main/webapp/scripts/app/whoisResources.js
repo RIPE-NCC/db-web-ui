@@ -3,6 +3,20 @@
 angular.module('dbWebApp')
     .service('WhoisResources', function () {
 
+        this.embedAttributes = function( attrs ) {
+            return{
+                objects:{
+                    object: [
+                        { attributes: { attribute: attrs } }
+                    ]
+                }
+            };
+        };
+
+        var toString = function() {
+            return JSON.stringify(this);
+        };
+
         var readableError = function( errorMessage ) {
             var idx=0;
             var readableErrorText = errorMessage.text.replace(/%s/g, function(match) {
@@ -82,20 +96,22 @@ angular.module('dbWebApp')
             return this.objects.object[0].attributes.attribute;
         };
 
-        this.embedAttributes = function( attrs ) {
-            return{
-                objects:{
-                    object: [
-                        { attributes: { attribute: attrs } }
-                    ]
-                }
-            };
+        this.isValidWhoisResources = function( whoisResources) {
+            if( _.isUndefined(whoisResources) || _.isNull(whoisResources) ) {
+                return false;
+            }
+            if( _.has(whoisResources,'objects' ) == false && _.has(whoisResources,'errormessages' ) == false ) {
+                return false;
+            }
+
+            return true;
         };
 
         this.wrapWhoisResources  = function( whoisResources ) {
-            if ( !whoisResources ) {
+            if ( ! this.isValidWhoisResources(whoisResources) ) {
                 return undefined;
             }
+            // enrich data with methods
             whoisResources.toString = toString;
             whoisResources.readableError = readableError;
             whoisResources.getGlobalErrors = getGlobalErrors;
@@ -202,10 +218,6 @@ angular.module('dbWebApp')
                 attr.$$error = undefined;
             });
         }
-
-        var toString = function() {
-            return JSON.stringify(this);
-        };
 
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {

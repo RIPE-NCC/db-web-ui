@@ -14,6 +14,19 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
+    it('should detect invalid whoisressources', function () {
+        expect($whoisResources.wrapWhoisResources(null)).toBeUndefined();
+        expect($whoisResources.wrapWhoisResources('garbage')).toBeUndefined();
+        expect($whoisResources.wrapWhoisResources({otherField:"hi", otherRef:{number:4}})).toBeUndefined();
+
+        expect($whoisResources.wrapWhoisResources({objects:{object:[]}})).toBeDefined();
+        expect($whoisResources.wrapWhoisResources({errormessages:{errormessage:[  {
+            severity: 'Warning',
+            text: 'Not authenticated'
+        }]}})).toBeDefined();
+
+    });
+
     it('should embed attributes within a whoisressources-request', function () {
 
         expect($whoisResources.embedAttributes([
@@ -59,6 +72,20 @@ describe('dbWebApp: WhoisResources', function () {
                 ]
             }
         });
+        expect(errorResponse).toBeDefined();
+
+        expect(errorResponse.getGlobalErrors(errorResponse)).toEqual([
+            {
+                severity: 'Error',
+                text: 'Unrecognized source: %s',
+                args: [{value: 'INVALID_SOURCE'}],
+                plainText: 'Unrecognized source: INVALID_SOURCE'
+            }
+        ]);
+
+        expect(errorResponse.getGlobalWarnings()).toEqual([
+            {severity: 'Warning', text: 'Not authenticated', plainText: 'Not authenticated'}
+        ]);
 
         expect(errorResponse.readableError(errorResponse.errormessages.errormessage[0])).toEqual(
             'Unrecognized source: INVALID_SOURCE'
@@ -77,18 +104,6 @@ describe('dbWebApp: WhoisResources', function () {
             'Unrecognized source: INVALID_SOURCE %s'
         );
 
-        expect(errorResponse.getGlobalErrors(errorResponse)).toEqual([
-            {
-                severity: 'Error',
-                text: 'Unrecognized source: %s',
-                args: [{value: 'INVALID_SOURCE'}],
-                plainText: 'Unrecognized source: INVALID_SOURCE'
-            }
-        ]);
-
-        expect(errorResponse.getGlobalWarnings()).toEqual([
-            {severity: 'Warning', text: 'Not authenticated', plainText: 'Not authenticated'}
-        ]);
 
         expect(errorResponse.getErrorsOnAttribute('admin-c')).toEqual([
             {
@@ -111,7 +126,6 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('should interact with whoisresources success-response', function () {
 
-        expect($whoisResources.wrapWhoisResources(null)).toEqual(undefined);
 
         var successResponse = $whoisResources.wrapWhoisResources({
             link: {
@@ -161,6 +175,8 @@ describe('dbWebApp: WhoisResources', function () {
                 href: 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
             }
         });
+
+        expect(successResponse).toBeDefined();
 
         expect(successResponse.getGlobalErrors()).toEqual([]);
 
