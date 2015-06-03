@@ -6,7 +6,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -28,7 +27,7 @@ public class WhoisInternalClient {
         this.restTemplate = createRestTemplate();
     }
 
-    public ResponseEntity<String> getMaintainers(String uuid) {
+    public String getMaintainers(String uuid) {
         final HashMap<String, String> variables = Maps.newHashMap();
         variables.put("apiUrl", apiUrl);
         variables.put("apiKey", apiKey);
@@ -36,7 +35,7 @@ public class WhoisInternalClient {
         return restTemplate.getForEntity(
             "{apiUrl}/api/user/{uuid}/maintainers?apiKey={apiKey}",
             String.class,
-            variables);
+            variables).getBody();
     }
 
     private RestTemplate createRestTemplate() {
