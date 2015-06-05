@@ -166,7 +166,8 @@ module.exports = function (grunt) {
                 },
                 constants: {
                     ENV: 'dev',
-                    VERSION: parseVersionFromPomXml()
+                    VERSION: parseVersionFromPomXml(),
+                    LOGIN_URL: 'https://access.prepdev.ripe.net/'
                 }
             },
             prod: {
@@ -175,7 +176,8 @@ module.exports = function (grunt) {
                 },
                 constants: {
                     ENV: 'prod',
-                    VERSION: parseVersionFromPomXml()
+                    VERSION: parseVersionFromPomXml(),
+                    LOGIN_URL: 'https://access.ripe.net/'
                 }
             }
         },
@@ -189,10 +191,10 @@ module.exports = function (grunt) {
 	            return [
 	              // redirect all urls to index.html in build folder
 	              urlRewrite('build', 'index.html'),
-	 
+
 	              // Serve static files.
 	              connect.static(options.base),
-	 
+
 	              // Make empty directories browsable.
 	              connect.directory(options.base)
 	            ];
@@ -201,7 +203,7 @@ module.exports = function (grunt) {
 	      }
 	    }
     });
-    
+
     grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.registerTask('default', [
