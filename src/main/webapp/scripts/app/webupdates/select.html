@@ -1,22 +1,32 @@
 <h1>Select object type to create</h1>
 
 <section>
-<form id="selectForm" class="grey padding pull-left" style="width: 100%;">    
-    <div>    
+<form id="selectForm" class="grey padding pull-left" style="width: 100%;">
+    <div>
 	    <label>Select object-type</label>
-	    <select ng-model="selectedObjectType" 
+	    <select ng-model="selectedObjectType"
 	            ng-required="true"
 	            ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
 	</div>
     </br>
 
-    <div>    
+    <div>
 		<label>Select source</label>
-    	<select ng-model="selectedSource" 
+    	<select ng-model="selectedSource"
     	        ng-required="true"
                 ng-options="source for source in sources" class="form-control select-height"></select>
 	</div>
-    </br>
+
+    <br/>
+
+	<div>
+        <label>Autocomplete</label>
+        <input type="text" ng-change="autocomplete()" ng-model="selected" placeholder="{{placeholderSelected}}" class="form-control select-height"/>
+    </div>
+
+    <div>
+        <pre>{{states}}</pre>
+    </div>
 
     <button ng-click="navigateToCreate()" class="blue-button pull-right">Create</button>
 </form>

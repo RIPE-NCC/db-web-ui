@@ -24,3 +24,7 @@ crowd:
         password: evarylli
 
 
+autocomplete:
+    api:
+        url: https://rest-dev.db.ripe.net/autocomplete
+
