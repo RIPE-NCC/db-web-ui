@@ -2,6 +2,7 @@ package net.ripe.whois;
 
 import net.ripe.db.whois.common.sso.CrowdClient;
 import net.ripe.db.whois.common.sso.CrowdClientException;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -26,7 +27,7 @@ public class CrowdInterceptor implements Filter {
             crowdClient.getUserSession(getCookie(request));
             chain.doFilter(req, res);
         } catch (CrowdClientException e) {
-            response.setStatus(403);
+            response.setStatus(HttpStatus.UNAUTHORIZED.ordinal());
         }
     }
 

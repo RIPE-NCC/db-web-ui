@@ -5,7 +5,7 @@ angular.module('interceptors')
 
     return {
         responseError: function (response) {
-            if(response.status === 403) {
+            if(response.status === 401) {
                 var redirectLocation = LOGIN_URL;
                 if (!_.isUndefined($location.absUrl())) {
                     redirectLocation += '?originalUrl=' + $location.absUrl();
