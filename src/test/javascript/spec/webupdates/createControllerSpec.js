@@ -3,7 +3,6 @@
 describe('webUpdates: CreateController', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
-    var createController;
     var MessageStore;
     var WhoisResources;
     var OBJECT_TYPE = 'as-block';
@@ -12,43 +11,38 @@ describe('webUpdates: CreateController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function ( $injector) {
-            var $rootScope = $injector.get('$rootScope');
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
+
+            var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
 
-            $httpBackend = $injector.get('$httpBackend');
+            $state =  _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            MessageStore = _MessageStore_;
+            WhoisResources = _WhoisResources_;
 
-            MessageStore = $injector.get('MessageStore');
-            WhoisResources = $injector.get('WhoisResources');
-
-            $state = $injector.get('$state');
-            $stateParams = $injector.get('$stateParams');
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
 
-            var $controller = $injector.get('$controller');
-            createController = function() {
-                return $controller('CreateController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams
-                });
-            };
+            _$controller_('CreateController', {
+                $scope: $scope, $state: $state, $stateParams: $stateParams
+            });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
-            $httpBackend.whenGET('api/user/maintainers').respond(function(method,url) {
-                    var whoisRsources = {
-                        objects: {
-                            object: [
-                                {'primary-key': {attribute: [{name: 'mntner', value: 'TEST-MNT'}]}},
-                                {'primary-key': {attribute: [{name: 'mntner', value: 'TESTSSO-MNT'}]}}
-                            ]
-                        }
-                    };
-                    return [200, whoisRsources, {}];
+            $httpBackend.whenGET('api/user/maintainers').respond({
+                objects: {
+                    object: [
+                        {'primary-key': {attribute: [{name: 'mntner', value: 'TEST-MNT'}]}},
+                        {'primary-key': {attribute: [{name: 'mntner', value: 'TESTSSO-MNT'}]}}
+                    ]
+                }
             });
 
-        });
+            $httpBackend.flush();
 
+        });
     });
 
     afterEach(function() {
@@ -57,23 +51,14 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('should get objectType from url', function () {
-        createController();
-        $httpBackend.flush();
-
         expect($scope.objectType).toBe(OBJECT_TYPE);
     });
 
     it('should get source from url', function () {
-        createController();
-        $httpBackend.flush();
-
         expect($scope.source).toBe(SOURCE);
     });
 
     it('should populate the ui based on object-tyoem meta model and source', function () {
-        createController();
-        $httpBackend.flush();
-
         var stateBefore = $state.current.name;
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toBeUndefined();
@@ -94,9 +79,6 @@ describe('webUpdates: CreateController', function () {
 
 
     it('should display field specific errors upon submit click on form with missing values', function () {
-        createController();
-        $httpBackend.flush();
-
         var stateBefore = $state.current.name;
 
         $scope.submit();
@@ -117,29 +99,25 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('should handle success post upon submit click when form is complete', function () {
-        createController();
-        $httpBackend.flush();
 
         // api/whois/RIPE/as-block
-        $httpBackend.whenPOST('api/whois/RIPE/as-block').respond(function(method,url) {
-            var resp = {
-                objects: {
-                    object: [
-                        {
-                            'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
-                             attributes: {
-                                attribute: [
-                                    {name: 'as-block', value: 'MY-AS-BLOCK'},
-                                    {name: 'mnt-by', value: 'TEST-MNT'},
-                                    {name: 'source', value: 'RIPE'}
-                                ]
-                            }
+        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond({
+            objects: {
+                object: [
+                    {
+                        'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                        attributes: {
+                            attribute: [
+                                {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                {name: 'mnt-by', value: 'TEST-MNT'},
+                                {name: 'source', value: 'RIPE'}
+                            ]
                         }
-                    ]
-                }
-            };
-            return [200, resp, {}];
+                    }
+                ]
+            }
         });
+
         $scope.attributes.setSingleAttributeOnName('as-block', "A");
 
         $scope.submit();
@@ -155,43 +133,35 @@ describe('webUpdates: CreateController', function () {
         expect($state.current.name).toBe('display');
         expect($stateParams.objectType).toBe('as-block');
         expect($stateParams.name).toBe('MY-AS-BLOCK');
-
-
     });
 
 
     it('should handle error post upon submit click when form is complete', function () {
-        createController();
-        $httpBackend.flush();
-
         var stateBefore = $state.current.name;
 
         // api/whois/RIPE/as-block
-        $httpBackend.whenPOST('api/whois/RIPE/as-block').respond(function(method,url) {
-            var resp = {
-                errormessages: {
-                    errormessage: [
-                        {
-                            severity: 'Error',
-                            text: 'Unrecognized source: %s',
-                            'args': [{value: 'INVALID_SOURCE'}]
+        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond(400, {
+            errormessages: {
+                errormessage: [
+                    {
+                        severity: 'Error',
+                        text: 'Unrecognized source: %s',
+                        'args': [{value: 'INVALID_SOURCE'}]
+                    },
+                    {
+                        severity: 'Warning',
+                        text: 'Not authenticated'
+                    }, {
+                        severity: 'Error',
+                        attribute: {
+                            name: 'as-block',
+                            value: 'INVALID'
                         },
-                        {
-                            severity: 'Warning',
-                            text: 'Not authenticated'
-                        }, {
-                            severity: 'Error',
-                            attribute: {
-                                name: 'as-block',
-                                value: 'INVALID'
-                            },
-                            text: '\'%s\' is not valid for this object type',
-                            args: [{value: 'XYZ'}]
-                        }
-                    ]
-                }
-            };
-            return [400, resp, {}];
+                        text: '\'%s\' is not valid for this object type',
+                        args: [{value: 'XYZ'}]
+                    }
+                ]
+            }
         });
         $scope.attributes.setSingleAttributeOnName('as-block', "A");
 

@@ -60,7 +60,6 @@ angular.module('webUpdates')
             $scope.submit = function () {
                 if (validateForm() === true) {
                     clearErrors();
-                    console.log("request:" + JSON.stringify($scope.attributes));
                     $resource('api/whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
                         .save(WhoisResources.embedAttributes($scope.attributes),
                         function(resp){
