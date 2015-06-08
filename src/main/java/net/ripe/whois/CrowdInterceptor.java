@@ -27,7 +27,7 @@ public class CrowdInterceptor implements Filter {
             crowdClient.getUserSession(getCookie(request));
             chain.doFilter(req, res);
         } catch (CrowdClientException e) {
-            response.setStatus(HttpStatus.UNAUTHORIZED.ordinal());
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
         }
     }
 
