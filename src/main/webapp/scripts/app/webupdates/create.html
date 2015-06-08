@@ -29,6 +29,28 @@
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
+
+            <span class="input-group-btn">
+                <a id="addAttribute" href="#" class="btn btn-default" title="Add another attribute of this type">
+                    <span class="fa fa-arrow-down degree-25"></span>
+                </a>
+                <a id="addAnyAttribute" href="#" class="btn btn-default" title="Add any attribute (opens dialog)">
+                    <span class="fa fa-plus"></span>
+                </a>
+                <a id="removeAttribute" href="#" class="btn btn-default disabled" title="Remove current attribute">
+                    <span class="fa fa-trash"></span>
+                </a>
+                <a id="help" href="#" class="btn btn-default">
+                    <span class="fa fa-question"></span>
+                </a>
+                <a id="changePassword" title="Add/change Password (opens dialog)" class="btn btn-default hidden">
+                    <span class="fa fa-lock fa-3"></span>
+                </a>
+                <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
+                    <span class="fa fa-certificate"></span>
+                </a>
+            </span>
+
         </li>
     </ul>
     <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
