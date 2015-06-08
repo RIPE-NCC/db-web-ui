@@ -208,7 +208,7 @@ angular.module('dbWebApp')
 
         var validate = function() {
             var errorFound = false;
-            self = this;
+            var self = this;
             _.map(this, function (attr) {
                 if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length == 0 ) {
                     attr.$$error = 'Mandatory attribute not set';
@@ -224,7 +224,27 @@ angular.module('dbWebApp')
             _.map(this, function (attr) {
                 attr.$$error = undefined;
             });
-        }
+        };
+
+        var removeAttribute = function(attr) {
+            return _.filter(this, function(next) {
+                return !(attr.name === next.name && attr.value === next.value);
+            });
+        };
+
+        var duplicateAttribute = function(attr) {
+            var result = [];
+
+            _.each(this, function(next){
+                result.push(next);
+                if (next.name == attr.name && next.value == attr.value) {
+                    result.push({name:attr.name});
+                }
+            });
+
+            return result;
+        };
+
 
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {
@@ -239,6 +259,9 @@ angular.module('dbWebApp')
             attrs.mergeSortAttributes = mergeSortAttributes;
             attrs.validate = validate;
             attrs.clearErrors = clearErrors;
+
+            attrs.removeAttribute = removeAttribute;
+            attrs.duplicateAttribute = duplicateAttribute;
 
             return attrs;
         };

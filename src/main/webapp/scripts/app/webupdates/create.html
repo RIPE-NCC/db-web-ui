@@ -22,7 +22,9 @@
     </ul>
     <ul class="form-fields" ng-if="hasMntners()">
     <strong>Other attributes:</strong><br/>
-        <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})">
+
+
+        <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
 
                 <!-- <li ng-repeat="attribute in attributes"> -->
             <label>{{attribute.name}}</label>
@@ -31,19 +33,19 @@
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
 
             <span class="input-group-btn">
-                <a id="addAttribute" href="#" class="btn btn-default" title="Add another attribute of this type">
+                <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type" ng-click="duplicateAttribute(attribute)">
                     <span class="fa fa-arrow-down degree-25"></span>
                 </a>
-                <a id="addAnyAttribute" href="#" class="btn btn-default" title="Add any attribute (opens dialog)">
+                <a id="addAnyAttribute" class="btn btn-default disabled" title="Add any attribute (opens dialog)">
                     <span class="fa fa-plus"></span>
                 </a>
-                <a id="removeAttribute" href="#" class="btn btn-default disabled" title="Remove current attribute">
+                <a id="removeAttribute" class="btn btn-default" title="Remove current attribute" ng-click="removeAttribute(attribute)">
                     <span class="fa fa-trash"></span>
                 </a>
-                <a id="help" href="#" class="btn btn-default">
+                <a id="help" class="btn btn-default disabled">
                     <span class="fa fa-question"></span>
                 </a>
-                <a id="changePassword" title="Add/change Password (opens dialog)" class="btn btn-default hidden">
+                <a id="changePassword" class="btn btn-default hidden" title="Add/change Password (opens dialog)">
                     <span class="fa fa-lock fa-3"></span>
                 </a>
                 <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
