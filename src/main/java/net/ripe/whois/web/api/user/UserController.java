@@ -7,19 +7,16 @@ import net.ripe.whois.services.WhoisInternalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
-
-import static org.springframework.http.ResponseEntity.ok;
-
 
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+
+    public static final String REQUEST_USER = "requestUser";
 
     @Autowired
     private CrowdClient crowdClient;
@@ -28,17 +25,24 @@ public class UserController {
     private WhoisInternalService whoisInternalService;
 
     @RequestMapping(value = "/maintainers", method = RequestMethod.GET)
-    public ResponseEntity<?> getMaintainers(@CookieValue(value = "crowd.token_key", required = true) final String crowdToken)throws Exception {
+    public ResponseEntity<?> getMaintainers(HttpServletRequest request)throws Exception {
 
         final UUID uuid;
         try {
-            final UserSession userSession = crowdClient.getUserSession(crowdToken);
-            userSession.setUuid(crowdClient.getUuid(userSession.getUsername()));
-            uuid = UUID.fromString(userSession.getUuid());
+            String userName = getUserSession(request).getUsername();
+            uuid = UUID.fromString(crowdClient.getUuid(userName));
         } catch (CrowdClientException e){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
 
-        return ok(whoisInternalService.getMaintainers(uuid));
+        return whoisInternalService.getMaintainers(uuid);
+    }
+
+    public static void setUserSession(HttpServletRequest request, UserSession user) {
+        request.setAttribute(REQUEST_USER, user);
+    }
+
+    private UserSession getUserSession(HttpServletRequest request) {
+        return (UserSession) request.getAttribute(REQUEST_USER);
     }
 }

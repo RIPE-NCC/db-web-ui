@@ -3,6 +3,8 @@ package net.ripe.whois.services;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
 
@@ -24,12 +26,11 @@ public class WhoisInternalServiceTest {
     private final WhoisInternalService whoisInternalService = new WhoisInternalService(MOCK_WHOIS_INTERNAL_URL, API_KEY);
 
     @Test
-    public void shouldSendRequestToGetMaintainers() {
+    public void shouldSendRequestToGetMaintainersWithJsonContentType() {
 
         stubFor(get(urlEqualTo(URL))
             .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
+                .withStatus(HttpStatus.OK.value())
                 .withBody(VALID_RESPONSE)));
 
         whoisInternalService.getMaintainers(USER_UUID);
@@ -40,16 +41,16 @@ public class WhoisInternalServiceTest {
     }
 
     @Test
-    public void shouldReturnTheRawBody() {
-
+    public void shouldReturnTheRawResponse() {
         stubFor(get(urlEqualTo(URL))
             .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader("Content-Type", "application/json")
+                .withStatus(HttpStatus.OK.value())
                 .withBody(VALID_RESPONSE)));
 
-        assertEquals(VALID_RESPONSE, whoisInternalService.getMaintainers(USER_UUID));
-    }
+        ResponseEntity<String> response = whoisInternalService.getMaintainers(USER_UUID);
 
+        assertEquals(VALID_RESPONSE, response.getBody());
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
 
 }

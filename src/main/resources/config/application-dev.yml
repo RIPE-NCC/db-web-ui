@@ -23,3 +23,5 @@ crowd:
         user: db
         password: evarylli
 
+logging.level.org.springframework.web: DEBUG
+logging.level.org.hibernate: ERROR

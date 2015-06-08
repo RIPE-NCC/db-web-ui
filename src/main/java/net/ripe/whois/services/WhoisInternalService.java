@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
@@ -26,7 +27,7 @@ public class WhoisInternalService extends RestClient {
         this.apiKey = apiKey;
     }
 
-    public String getMaintainers(UUID uuid) {
+    public ResponseEntity<String> getMaintainers(UUID uuid) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("apiUrl", apiUrl);
         variables.put("apiKey", apiKey);
@@ -39,7 +40,7 @@ public class WhoisInternalService extends RestClient {
             HttpMethod.GET,
             new HttpEntity<>(headers),
             String.class,
-            variables).getBody();
+            variables);
     }
 
 }

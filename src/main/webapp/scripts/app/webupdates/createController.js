@@ -18,23 +18,14 @@ angular.module('webUpdates')
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
             var mntnersForSsoAccount = function() {
-                $resource('api/user/maintainers')
-                    .get(
-                    function (resp) {
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                        $scope.attributes = WhoisResources.wrapAttributes(
-                            $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by')))
-                        ;
-                    },
-                    function (resp) {
-                        if (!resp.data) {
-                            console.log("failure without details:" + resp);
-                        } else {
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                            console.log("failure:" + whoisResources);
-                        }
-                    });
+                $resource('api/user/maintainers').get(function (resp) {
+                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                    $scope.attributes = WhoisResources.wrapAttributes(
+                        $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by'))
+                    );
+                })
             };
+
             mntnersForSsoAccount();
 
             // Methods called from the template
