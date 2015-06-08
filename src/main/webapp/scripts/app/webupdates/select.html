@@ -16,17 +16,7 @@
     	        ng-required="true"
                 ng-options="source for source in sources" class="form-control select-height"></select>
 	</div>
-
-    <br/>
-
-	<div>
-        <label>Autocomplete</label>
-        <input type="text" ng-change="autocomplete()" ng-model="selected" placeholder="{{placeholderSelected}}" class="form-control select-height"/>
-    </div>
-
-    <div>
-        <pre>{{states}}</pre>
-    </div>
+    </br>
 
     <button ng-click="navigateToCreate()" class="blue-button pull-right">Create</button>
 </form>
