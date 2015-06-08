@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CrowdInterceptor implements Filter {
+    public static final String CROWD_TOKEN_KEY = "crowd.token_key";
     private final CrowdClient crowdClient;
 
     public CrowdInterceptor(CrowdClient crowdClient) {
@@ -42,7 +43,7 @@ public class CrowdInterceptor implements Filter {
     private String getCookie(HttpServletRequest request) {
         if(request.getCookies() != null)
             for(Cookie c: request.getCookies()){
-                if("crowd.token_key".equals(c.getName())){
+                if(CROWD_TOKEN_KEY.equals(c.getName())){
                     return c.getValue();
                 }
             }
