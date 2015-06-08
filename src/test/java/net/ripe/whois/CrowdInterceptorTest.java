@@ -5,6 +5,7 @@ import net.ripe.db.whois.common.sso.CrowdClient;
 import net.ripe.db.whois.common.sso.CrowdClientException;
 import net.ripe.db.whois.common.sso.UserSession;
 import net.ripe.whois.web.api.user.UserController;
+import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockFilterChain;
@@ -102,5 +103,25 @@ public class CrowdInterceptorTest {
         verify(crowdClient).getUserSession("");
     }
 
+    @Test
+    public void itShouldRetrieveUserSessionOnceWhileValid() throws Exception {
+        when(crowdClient.getUserSession(CROWD_TOKEN)).thenReturn(userSession);
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        verify(crowdClient, times(1)).getUserSession(CROWD_TOKEN);
+    }
+
+    @Test
+    public void itShouldRetrieveUserSessionAgainIfExpired() throws Exception {
+        LocalDateTime expiryDate = LocalDateTime.now().minusHours(1);
+        when(crowdClient.getUserSession(CROWD_TOKEN)).thenReturn(new UserSession("someone@ripe.net", true, expiryDate.toString()));
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        verify(crowdClient, times(2)).getUserSession(CROWD_TOKEN);
+    }
 
 }
