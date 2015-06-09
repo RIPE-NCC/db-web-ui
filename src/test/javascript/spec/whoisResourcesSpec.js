@@ -470,9 +470,9 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('duplicate an attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'as-block', value: 'a'},
-            {name: 'mnt-by',   value: 'b'},
-            {name: 'source',   value: 'c'},
+            {name: 'as-block', value: 'a', $$meta:{$$mandatory:true, $$multiple:false}},
+            {name: 'mnt-by',   value: 'b', $$meta:{$$mandatory:true, $$multiple:true}},
+            {name: 'source',   value: 'c', $$meta:{$$mandatory:true, $$multiple:false}}
         ]);
 
         attrs = attrs.duplicateAttribute(attrs[1]);

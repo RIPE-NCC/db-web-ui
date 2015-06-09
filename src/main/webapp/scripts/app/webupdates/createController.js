@@ -9,16 +9,58 @@ angular.module('webUpdates')
             // extract parameters from the url
             $scope.source = $stateParams.source;
             $scope.objectType = $stateParams.objectType;
+            $scope.name = $stateParams.name;
 
             // Initalize the errors and warnings
             $scope.errors = [];
             $scope.warnings = [];
             $scope.infos = [];
 
+            var fetchObjectViaRest = function() {
+                $resource('api/whois/:source/:objectType/:name', {source: $scope.source, objectType: $scope.objectType, name:$scope.name})
+                    .get(function (resp) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
+
+                        $scope.attributes = WhoisResources.wrapAttributes(
+                            WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, whoisResources.getAttributes())
+                        );
+
+                    }, function(resp) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
+                        if( ! _.isUndefined(whoisResources)) {
+                            $scope.attributes = WhoisResources.wrapAttributes(
+                                WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, whoisResources.getAttributes())
+                            );
+                            setErrors(whoisResources);
+                        }
+                    });
+            };
+
+            var mntnersForSsoAccount = function() {
+                $resource('api/user/maintainers').get(function (resp) {
+                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                    $scope.attributes = WhoisResources.wrapAttributes(
+                        $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by'))
+                    );
+
+                })
+            };
+
             // Populate attributes in the UI
-            $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
-            $scope.attributes.setSingleAttributeOnName('source', $scope.source);
-            $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+           if( ! $scope.name ) {
+               $scope.operation = "Create";
+
+               $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
+               $scope.attributes.setSingleAttributeOnName('source', $scope.source);
+               $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+
+               // start fetching maintainers for sso-login
+               mntnersForSsoAccount();
+            } else {
+               $scope.operation = "Modify";
+               $scope.attributes =  WhoisResources.wrapAttributes([]);
+               fetchObjectViaRest();
+            }
 
             // "select attribute to add"-fields popup
             $scope.addableAttributes = WhoisMetaService.getAddableAttributes($scope.objectType);
@@ -31,18 +73,6 @@ angular.module('webUpdates')
             $scope.passwordAgain;
             $scope.authPasswordMessage;
             $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-            var mntnersForSsoAccount = function() {
-                $resource('api/user/maintainers').get(function (resp) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                    $scope.attributes = WhoisResources.wrapAttributes(
-                        $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by'))
-                    );
-
-                })
-            };
-            // start fetching maintainers for sso-login
-            mntnersForSsoAccount();
 
             // End of initialisation phase
 
@@ -67,39 +97,31 @@ angular.module('webUpdates')
             };
 
             $scope.hasMntners = function() {
-                return $scope.attributes.getAllAttributesWithValueOnName('mnt-by').length >= 1;
-                //return true;
+                var attrs =  $scope.attributes.getAllAttributesWithValueOnName('mnt-by');
+                if( ! attrs || attrs.length ==0 ) {
+                    return false;
+                }
+                return true;
             };
 
             $scope.submit = function () {
                 if (validateForm() === false ) {
                 } else {
                     clearErrors();
-                    $resource('api/whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
-                        .save(WhoisResources.embedAttributes($scope.attributes),
-                        function(resp){
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                            // stick created object in temporary store, so display can fetch it from here
-                            MessageStore.add(whoisResources.getObjectUid(), whoisResources);
-                            // make transition to next display screen
-                            $state.transitionTo('display', {source:$scope.source, objectType:$scope.objectType, name:whoisResources.getObjectUid()});
-                        },
-                        function(resp){
-                            if( !resp.data) {
-                                // TIMEOUT: to be handled globally by response interceptor
-                            } else {
-                                var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                                if( ! _.isUndefined(whoisResources)) {
-                                   $scope.attributes = WhoisResources.wrapAttributes(
-                                        WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType,whoisResources.getAttributes())
-                                    );
-
-                                    validateForm();
-                                    setErrors(whoisResources);
-
-                                }
-                            }
-                        });
+                    if (! $scope.name ) {
+                        $resource('api/whois/:source/:objectType',
+                            {source: $scope.source, objectType: $scope.objectType})
+                            .save(WhoisResources.embedAttributes($scope.attributes),
+                                    onSubmitSuccess,
+                                    onSubmitError);
+                    } else {
+                        $resource('api/whois/:source/:objectType/:name',
+                            { source: $scope.source, objectType: $scope.objectType, name:$scope.name},
+                            { 'update': { method:'PUT' } })
+                            .update(WhoisResources.embedAttributes($scope.attributes),
+                                    onSubmitSuccess,
+                                    onSubmitError);
+                    }
                 }
             };
 
@@ -108,7 +130,9 @@ angular.module('webUpdates')
             };
 
             $scope.duplicateAttribute = function(attr) {
-                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.duplicateAttribute(attr));
+                $scope.attributes = WhoisResources.wrapAttributes(
+                    WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes.duplicateAttribute(attr))
+                );
             };
 
             $scope.canAttributeBeRemoved = function(attr) {
@@ -194,6 +218,34 @@ angular.module('webUpdates')
                 $scope.errors = [];
                 $scope.warnings = [];
                 $scope.attributes.clearErrors();
+            };
+
+            var onSubmitSuccess = function( resp ) {
+                var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                // stick created object in temporary store, so display can fetch it from here
+                MessageStore.add(whoisResources.getObjectUid(), whoisResources);
+                // make transition to next display screen
+                $state.transitionTo('display', {
+                    source: $scope.source,
+                    objectType: $scope.objectType,
+                    name: whoisResources.getObjectUid()
+                });
+            };
+
+            var onSubmitError = function( resp ) {
+                if (!resp.data) {
+                    // TIMEOUT: to be handled globally by response interceptor
+                } else {
+                    var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
+                    if (!_.isUndefined(whoisResources)) {
+                        $scope.attributes = WhoisResources.wrapAttributes(
+                            WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, whoisResources.getAttributes())
+                        );
+
+                        validateForm();
+                        setErrors(whoisResources);
+                    }
+                }
             };
 
         }]);

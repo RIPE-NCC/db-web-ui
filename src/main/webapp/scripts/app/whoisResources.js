@@ -239,7 +239,13 @@ angular.module('dbWebApp')
             _.each(this, function(next){
                 result.push(next);
                 if (next.name == attr.name && next.value == attr.value) {
-                    result.push({name:attr.name});
+                    result.push(
+                        {
+                            name:attr.name, $$meta:{
+                            $$mandatory:next.$$mandatory,
+                            $$multiple:next.$$meta.multiple,
+                            $$description:next.$$description
+                        }});
                 }
             });
 

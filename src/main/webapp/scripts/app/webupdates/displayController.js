@@ -46,5 +46,8 @@ function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore)
         $state.transitionTo('select');
     };
 
+    $scope.navigateToModify = function () {
+        $state.transitionTo('modify',  {source:$scope.objectSource, objectType:$scope.objectType, name: $scope.objectName});
+};
 
 }]);

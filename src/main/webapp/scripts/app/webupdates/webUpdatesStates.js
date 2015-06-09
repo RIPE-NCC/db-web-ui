@@ -15,6 +15,11 @@ angular.module('webUpdates')
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
             })
+            .state('modify', {
+                url: '/webupdates/modify/:source/:objectType/:name',
+                templateUrl: 'scripts/app/webupdates/create.html',
+                controller: 'CreateController'
+            })
             .state('display', {
                 url: '/webupdates/display/:source/:objectType/:name',
                 templateUrl: 'scripts/app/webupdates/display.html',

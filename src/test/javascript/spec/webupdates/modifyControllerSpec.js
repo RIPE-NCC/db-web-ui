@@ -1,12 +1,13 @@
 'use strict';
 
-describe('webUpdates: CreateController', function () {
+describe('webUpdates: ModifyController', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
+    var NAME = 'MY-AS-BLOCK';
 
     beforeEach(function () {
         module('webUpdates');
@@ -24,7 +25,7 @@ describe('webUpdates: CreateController', function () {
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
-            $stateParams.name = undefined;
+            $stateParams.name = NAME;
 
             _$controller_('CreateController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
@@ -40,6 +41,29 @@ describe('webUpdates: CreateController', function () {
                     ]
                 }
             });
+
+            $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK').respond(
+                function(method,url) {
+                    //console.log("Got " + method + "  on " + url);
+                    return [200,
+                        {
+                            objects: {
+                                object: [
+                                    {
+                                        'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                                        attributes: {
+                                            attribute: [
+                                                {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                                {name: 'mnt-by', value: 'TEST-MNT'},
+                                                {name: 'source', value: 'RIPE'}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+
+                        } , {}];
+                });
 
             $httpBackend.flush();
 
@@ -59,19 +83,20 @@ describe('webUpdates: CreateController', function () {
         expect($scope.source).toBe(SOURCE);
     });
 
+    it('should get name from url', function () {
+        expect($scope.name).toBe(NAME);
+    });
+
     it('should populate the ui based on object-tyoem meta model and source', function () {
         var stateBefore = $state.current.name;
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toBeUndefined();
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBeUndefined();
+        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toEqual(NAME);
 
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].$$error).toBeUndefined();
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
 
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].$$error).toBeUndefined();
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('TESTSSO-MNT');
-
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].$$error).toBeUndefined();
+        expect($scope.attributes.getAllAttributesOnName('source')[0].$$error).toBeUndefined();
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe(stateBefore);
@@ -82,27 +107,26 @@ describe('webUpdates: CreateController', function () {
     it('should display field specific errors upon submit click on form with missing values', function () {
         var stateBefore = $state.current.name;
 
+        $scope.attributes.setSingleAttributeOnName('as-block', null);
+
         $scope.submit();
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('Mandatory attribute not set');
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBeUndefined();
+        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBeNull();
 
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].$$error).toBeUndefined();
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
 
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].$$error).toBeUndefined();
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('TESTSSO-MNT');
-
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].$$error).toBeUndefined();
+        expect($scope.attributes.getSingleAttributeOnName('source').$$error).toBeUndefined();
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe(stateBefore);
 
     });
 
-    it('should handle success post upon submit click when form is complete', function () {
+    it('should handle success put upon submit click when form is complete', function () {
 
         // api/whois/RIPE/as-block
-        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond({
+        $httpBackend.expectPUT('api/whois/RIPE/as-block/MY-AS-BLOCK').respond({
             objects: {
                 object: [
                     {
@@ -111,6 +135,7 @@ describe('webUpdates: CreateController', function () {
                             attribute: [
                                 {name: 'as-block', value: 'MY-AS-BLOCK'},
                                 {name: 'mnt-by', value: 'TEST-MNT'},
+                                {name: 'changed', value: 'test@ripe.net'},
                                 {name: 'source', value: 'RIPE'}
                             ]
                         }
@@ -142,7 +167,7 @@ describe('webUpdates: CreateController', function () {
         var stateBefore = $state.current.name;
 
         // api/whois/RIPE/as-block
-        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond(400, {
+        $httpBackend.expectPUT('api/whois/RIPE/as-block/MY-AS-BLOCK').respond(400, {
             objects: {
                 object: [
                     {
@@ -194,23 +219,23 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('duplicate attribute', function() {
-        expect($scope.attributes.length).toEqual(4);
+        expect($scope.attributes.length).toEqual(3);
 
         $scope.duplicateAttribute($scope.attributes[1]);
 
-        expect($scope.attributes.length).toEqual(5);
+        expect($scope.attributes.length).toEqual(4);
         expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
         expect($scope.attributes[2].value).toBeUndefined();
     });
 
     it('remove attribute', function() {
-        expect($scope.attributes.length).toEqual(4);
+        expect($scope.attributes.length).toEqual(3);
 
         $scope.removeAttribute($scope.attributes[1]);
 
-        expect($scope.attributes.length).toEqual(3);
-        expect($scope.attributes[1].name).toEqual('mnt-by');
-        expect($scope.attributes[1].value).toEqual('TESTSSO-MNT');
+        expect($scope.attributes.length).toEqual(2);
+        expect($scope.attributes[1].name).toEqual('source');
+        expect($scope.attributes[1].value).toEqual('RIPE');
 
     });
 

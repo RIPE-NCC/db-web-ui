@@ -155,7 +155,7 @@ describe('webUpdates: DisplayController', function () {
 
     });
 
-    it('should populate the ui from message-store', function () {
+    it(' navigate to select screen', function () {
         MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
         createDisplayController();
 
@@ -163,6 +163,19 @@ describe('webUpdates: DisplayController', function () {
 
         expect($state.current.name).toBe('select');
 
+    });
+
+    it('should navigate to modify screen', function () {
+        MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
+        createDisplayController();
+
+        // TODO fix
+        //$scope.navigateToModify();
+
+        //expect($state.current.name).toBe('modify');
+        //expect($stateParams.source).toBe(SOURCE);
+        //expect($stateParams.objectType).toBe(OBJECT_TYPE);
+        //expect($stateParams.name).toBe(OBJECT_NAME);
     });
 
 
