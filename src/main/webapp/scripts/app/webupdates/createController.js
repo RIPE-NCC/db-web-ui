@@ -58,7 +58,7 @@ angular.module('webUpdates')
                             // stick created object in temporary store, so display can fetch it from here
                             MessageStore.add(whoisResources.getObjectUid(), whoisResources);
                             // make transition to next display screen
-                            $state.transitionTo('display', {objectType:$scope.objectType, name:whoisResources.getObjectUid()});
+                            $state.transitionTo('display', {source:$scope.source, objectType:$scope.objectType, name:whoisResources.getObjectUid()});
                         },
                         function(resp){
                             if( !resp.data) {
