@@ -7,6 +7,11 @@
     <p ng-repeat="warning in warnings">{{warning.plainText}}</p>
 </div>
 
+<div ng-if="hasInfos()" class="alert alert-warning">
+    <p ng-repeat="info in infos">{{info.plainText}}</p>
+</div>
+
+
 <form id="createForm">
     <ul class="form-fields maintainer-fields">
         <strong>Please select your maintainers before creating the object</strong>

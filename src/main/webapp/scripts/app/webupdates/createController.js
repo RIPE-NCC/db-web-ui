@@ -4,15 +4,18 @@ angular.module('webUpdates')
     .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisMetaService',  'WhoisResources', 'MessageStore', 'md5',
         function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisResources,  MessageStore, md5 ) {
 
-            // extract parameters from the url
-            $scope.objectType = $stateParams.objectType;
-            $scope.source = $stateParams.source;
+            // Start of initialisation phase
 
-            // Initalize the UI
+            // extract parameters from the url
+            $scope.source = $stateParams.source;
+            $scope.objectType = $stateParams.objectType;
+
+            // Initalize the errors and warnings
             $scope.errors = [];
             $scope.warnings = [];
+            $scope.infos = [];
 
-            // Populate the UI
+            // Populate attributes in the UI
             $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
             $scope.attributes.setSingleAttributeOnName('source', $scope.source);
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
@@ -38,8 +41,13 @@ angular.module('webUpdates')
 
                 })
             };
-
+            // start fetching maintainers for sso-login
             mntnersForSsoAccount();
+
+            // End of initialisation phase
+
+
+            // Methods called from the html-teplate
 
             // Methods called from the template
             $scope.hasErrors = function () {
@@ -50,15 +58,17 @@ angular.module('webUpdates')
                 return $scope.warnings.length > 0;
             };
 
+            $scope.hasInfos = function () {
+                return $scope.infos.length > 0;
+            };
+
             $scope.attributeHasError = function (attribute) {
                 return attribute.$$error !== null;
             };
 
             $scope.hasMntners = function() {
-                return _.find($scope.attributes.getAllAttributesWithValueOnName('mnt-by'), function (attr) {
-                    //Must be at least 2 characters long
-                    return attr.value.length > 1;
-                });
+                return $scope.attributes.getAllAttributesWithValueOnName('mnt-by').length >= 1;
+                //return true;
             };
 
             $scope.submit = function () {
@@ -80,14 +90,13 @@ angular.module('webUpdates')
                             } else {
                                 var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
                                 if( ! _.isUndefined(whoisResources)) {
-                                    $scope.errors = whoisResources.getGlobalErrors();
-                                    $scope.warnings = whoisResources.getGlobalWarnings();
-                                    $scope.attributes = WhoisResources.wrapAttributes(
+                                   $scope.attributes = WhoisResources.wrapAttributes(
                                         WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType,whoisResources.getAttributes())
                                     );
 
                                     validateForm();
-                                    populateFieldSpecificErrors(whoisResources);
+                                    setErrors(whoisResources);
+
                                 }
                             }
                         });
@@ -116,7 +125,9 @@ angular.module('webUpdates')
             };
 
             $scope.addAttributeAfterAttribute = function() {
-                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute));
+                $scope.attributes = WhoisResources.wrapAttributes(
+                    $scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute)
+                );
             };
 
             // auth (password) modal popup
@@ -152,17 +163,18 @@ angular.module('webUpdates')
                 return result;
             };
 
-            //
+            // Private methods
 
             var validateForm = function () {
                 var status = $scope.attributes.validate();
                 return status;
             };
 
-            var clearErrors = function() {
-                $scope.errors = [];
-                $scope.warnings = [];
-                $scope.attributes.clearErrors();
+            var setErrors = function(whoisResources) {
+                populateFieldSpecificErrors(whoisResources);
+                $scope.errors = whoisResources.getGlobalErrors();
+                $scope.warnings = whoisResources.getGlobalWarnings();
+                $scope.infos = whoisResources.getGlobalInfos();
             };
 
             var populateFieldSpecificErrors = function( resp ) {
@@ -176,6 +188,12 @@ angular.module('webUpdates')
                     }
                     return attr;
                 });
+            };
+
+            var clearErrors = function() {
+                $scope.errors = [];
+                $scope.warnings = [];
+                $scope.attributes.clearErrors();
             };
 
         }]);

@@ -247,15 +247,15 @@ angular.module('dbWebApp')
         };
 
         var canAttributeBeDuplicated = function( attr) {
-                return attr.$$meta.$$multiple == true;
+            return attr.$$meta.$$multiple == true;
         };
 
-        var canAttributeBeRemoved = function( attr, allAttrs) {
+        var canAttributeBeRemoved = function( attr) {
             var status = false;
 
             if( attr.$$meta.$$mandatory == false ) {
                 status = true;
-            } else if(attr.$$meta.$$multiple && allAttrs.getAllAttributesWithValueOnName(attr.name).length > 1 ) {
+            } else if(attr.$$meta.$$multiple && this.getAllAttributesWithValueOnName(attr.name).length > 1 ) {
                 status = true;
             }
 

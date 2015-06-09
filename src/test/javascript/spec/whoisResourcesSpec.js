@@ -403,20 +403,32 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('detact if an attribute can be removed', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'as-block',      value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}}, // 0
-            {name: 'mnt-by',        value: 'b', $$meta:{$$mandatory:true,  $$multiple:true}},  // 1
-            {name: 'changed',       value: 'd', $$meta:{$$mandatory:false, $$multiple:true}},  // 2
-            {name: 'changed',       value: 'e', $$meta:{$$mandatory:false, $$multiple:true}},  // 3
-            {name: 'last-modified', value: 'f', $$meta:{$$mandatory:false, $$multiple:false}}, // 4
-            {name: 'source',        value: 'g', $$meta:{$$mandatory:true,  $$multiple:false}}, // 5
+            {name: 'person',        value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},
+            {name: 'address',       value: 'a', $$meta:{$$mandatory:true,  $$multiple:true}},
+            {name: 'address',       value: 'a', $$meta:{$$mandatory:true,  $$multiple:true}},
+            {name: 'phone',         value: 'a', $$meta:{$$mandatory:true,  $$multiple:true}},
+            {name: 'nic-hdl',       value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},
+            {name: 'changed',       value: 'd', $$meta:{$$mandatory:false, $$multiple:true}},
+            {name: 'changed',       value: 'e', $$meta:{$$mandatory:false, $$multiple:true}},
+            {name: 'last-modified', value: 'f', $$meta:{$$mandatory:false, $$multiple:false}},
+            {name: 'source',        value: 'g', $$meta:{$$mandatory:true,  $$multiple:false}},
         ]);
 
+        expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName('person'))).toBe(false);
 
+        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName('address')[0])).toBe(true);
+        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName('address')[1])).toBe(true);
 
-       expect(attrs.canAttributeBeRemoved(attrs[0],attrs)).toBe(false);
-       expect(attrs.canAttributeBeRemoved(attrs[1],attrs)).toBe(false);
-       expect(attrs.canAttributeBeRemoved(attrs[2],attrs)).toBe(true);
-       expect(attrs.canAttributeBeRemoved(attrs[4],attrs)).toBe(true);
+        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName('phone')[0])).toBe(false);
+        expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName('nic-hdl'))).toBe(false);
+
+        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName('changed')[0])).toBe(true);
+        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName('changed')[1])).toBe(true);
+
+        expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName('last-modified'))).toBe(true);
+
+        expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName('source'))).toBe(false);
+
 
     });
 

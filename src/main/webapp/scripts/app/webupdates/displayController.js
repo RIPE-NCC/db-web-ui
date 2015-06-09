@@ -12,8 +12,9 @@ function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore)
     // Initalize the UI
     $scope.errors = [];
     $scope.warnings = [];
+    $scope.infos = [];
 
-    var fetchObject = function() {
+    var fetchObjectViaRest = function() {
         $resource('api/whois/:source/:objectType/:objectName', {source: $scope.objectSource, objectType: $scope.objectType, objectName:$scope.objectName})
             .get(function (resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
@@ -23,6 +24,8 @@ function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore)
                 if( ! _.isUndefined(whoisResources)) {
                     $scope.errors = whoisResources.getGlobalErrors();
                     $scope.warnings = whoisResources.getGlobalWarnings();
+                    $scope.infos = whoisResources.getGlobalInfos();
+
                 }
             });
     };
@@ -34,8 +37,9 @@ function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore)
         // Use version that we was just before created or modified
         $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
         $scope.warnings = whoisResources.getGlobalWarnings();
+        $scope.infos = whoisResources.getGlobalInfos();
     } else {
-        fetchObject();
+        fetchObjectViaRest();
     }
 
     $scope.navigateToSelect = function () {

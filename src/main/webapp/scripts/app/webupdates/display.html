@@ -10,6 +10,10 @@
     <p ng-repeat="warning in warnings">{{warning.plainText}}</p>
 </div>
 
+<div ng-if="hasInfos()" class="alert alert-warning">
+    <p ng-repeat="info in infos">{{info.plainText}}</p>
+</div>
+
 <section class="grey padding pull-left" style="width: 100%;">
     <ul class="form-fields">
         <li ng-repeat="attribute in attributes">

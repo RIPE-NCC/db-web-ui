@@ -11,7 +11,7 @@ angular.module('webUpdates')
                 controller: 'SelectController'
             })
             .state('create', {
-                url: '/webupdates/create/:objectType/:source',
+                url: '/webupdates/create/:source/:objectType',
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
             })
