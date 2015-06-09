@@ -17,6 +17,10 @@ angular.module('webUpdates')
             $scope.attributes.setSingleAttributeOnName('source', $scope.source);
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
+            $scope.addAttributes = _.filter(WhoisMetaService.getAllAttributesOnObjectType($scope.objectType), function(attr) {
+                return !attr.$$meta.$$mandatory || attr.$$meta.$$multiple;
+            });
+
             var mntnersForSsoAccount = function() {
                 $resource('api/user/maintainers').get(function (resp) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);

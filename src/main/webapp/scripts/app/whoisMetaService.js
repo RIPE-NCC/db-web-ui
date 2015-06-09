@@ -53,6 +53,7 @@ angular.module('dbWebApp')
                     value: attr.value,
                     $$meta: {
                         $$mandatory:attrMeta.mandatory,
+                        $$multiple:attrMeta.multiple,
                         $$description:self._getAttributeDocumentation(objectTypeName, attr.name)
                     }
                 };
@@ -74,6 +75,7 @@ angular.module('dbWebApp')
                     $$meta: {
                         $$idx:idx,
                         $$mandatory:am.mandatory,
+                        $$multiple:am.multiple,
                         $$description:self._getAttributeDocumentation(objectTypeName,am.name)
                     }
                 };
@@ -96,6 +98,7 @@ angular.module('dbWebApp')
                     $$meta: {
                         $$idx:idx,
                         $$mandatory:x.mandatory,
+                        $$multiple:x.multiple,
                         $$description:self._getAttributeDocumentation(objectTypeName,x.name)
                     }
                 };
