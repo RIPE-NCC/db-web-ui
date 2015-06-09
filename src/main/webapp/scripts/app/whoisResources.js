@@ -229,7 +229,7 @@ angular.module('dbWebApp')
         // TODO: every matching attribute will be removed (not just specified attribute)
         var removeAttribute = function(attr) {
             return _.filter(this, function(next) {
-                return !(attr.name === next.name && attr.value === next.value);
+                return !(attr === next);
             });
         };
 
