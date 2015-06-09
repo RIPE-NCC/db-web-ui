@@ -76,7 +76,6 @@
     </div>
 </form>
 
-<section>
 <div id="insertAttributeModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="commonModalLabel" aria-hidden="false">
     <div class="modal-dialog">
         <div class="modal-content no-rounded">
@@ -85,13 +84,11 @@
                 <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
             </div>
             <div class="modal-body margin-left">
-                <select id="selectAttribute" ng-options="item.name for item in addAttributes" ng-model="addAttributeSelected" class="form-control select-height"/>
+                <select id="selectAttribute" ng-options="item.name for item in addAttributes" ng-model="addAttributeSelected" class="form-control select-height"></select>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="blue-button" data-dismiss="modal" value="Close" />
                 <input type="submit" class="blue-button" data-dismiss="modal" ng-click="addAttributeAfterAttribute(addAttributeSelected)" value="Add" />
             </div>
         </div>
     </div>
 </div>
-</section>
