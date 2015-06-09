@@ -1,4 +1,3 @@
-<h1>Create &quot;{{objectType}}&quot; in source {{source}}</h1>
 
 <div ng-if="hasErrors()" class="alert-expired alert alert-danger">
     <p ng-repeat="error in errors">{{error.plainText}}</p>
@@ -8,21 +7,24 @@
     <p ng-repeat="warning in warnings">{{warning.plainText}}</p>
 </div>
 
-<form id="createForm" class="grey padding pull-left" style="width: 100%;">
-    <ul class="form-fields">
-        <strong>Mntnrs:</strong><br/>
+<form id="createForm">
+    <ul class="form-fields maintainer-fields">
+        <strong>Please select your maintainers before creating the object</strong>
         <li ng-repeat="attribute in (attributes | filter: {name: 'mnt-by'})">
 
-            <!-- <li ng-repeat="attribute in attributes"> -->
-            <label>{{attribute.name}}</label>
+            <!-- <li ng-repeat="attribute in attributes">
+            <label>{{attribute.name}}</label> -->
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
         </li>
     </ul>
-    <ul class="form-fields" ng-if="hasMntners()">
-    <strong>Other attributes:</strong><br/>
-
+    
+    <div ng-if="hasMntners()">
+    
+    <h1>Create &quot;{{objectType}}&quot; in source {{source}}</h1>
+    
+    <ul class="form-fields appeared-fields">
 
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
 
@@ -71,6 +73,7 @@
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
     <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
+    </div>
 </form>
 
 <section>

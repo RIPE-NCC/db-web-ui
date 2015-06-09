@@ -55,3 +55,29 @@ ul.form-fields {
 		}
 	}
 }
+
+
+.maintainer-fields {
+	@extend %float-l;
+	@extend %width-100;
+	padding: 15px !important;
+	background-color: #F9F6D9;
+	li {
+		margin: 5px 0;
+	}
+	li:last-child {
+		margin-bottom: 0 !important;
+	}
+	margin-bottom: 20px;
+}
+
+.appeared-fields {
+	@extend %grey;
+	@extend %float-l;
+	@extend %width-100;
+	padding: 15px !important;
+	margin-bottom: 20px;
+	li:last-child {
+		margin-bottom: 0 !important;
+	}
+}
