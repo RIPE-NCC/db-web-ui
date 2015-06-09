@@ -17,7 +17,7 @@ angular.module('webUpdates')
             $scope.attributes.setSingleAttributeOnName('source', $scope.source);
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
-            // which attributes can be added to the object?
+            // "select attribute to add"-fields popup
             $scope.addableAttributes = WhoisMetaService.getAddableAttributes($scope.objectType);
             $scope.selectedAttributeType = $scope.addableAttributes[0];
             $scope.addAfterAttribute = undefined;
