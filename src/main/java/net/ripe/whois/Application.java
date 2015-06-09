@@ -1,10 +1,8 @@
 package net.ripe.whois;
 
-import net.ripe.db.whois.common.sso.CrowdClient;
 import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
@@ -91,9 +89,8 @@ public class Application {
     }
 
     @Bean
-    @Autowired
-    public FilterRegistrationBean crowdFilter(CrowdClient crowdClient) {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new CrowdInterceptor(crowdClient));
+    public FilterRegistrationBean crowdFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new CrowdInterceptor());
         filterRegistrationBean.addUrlPatterns("/api/*");
         return filterRegistrationBean;
     }

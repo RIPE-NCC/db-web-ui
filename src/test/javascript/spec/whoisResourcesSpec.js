@@ -401,5 +401,58 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
+    it('remove an attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a'},
+            {name: 'mnt-by',   value: 'b'},
+            {name: 'source',   value: 'c'},
+        ]);
+
+        attrs = attrs.removeAttribute(attrs[1]);
+
+        expect(attrs.length).toEqual(2);
+        expect(attrs[0].value).toEqual('a');
+        expect(attrs[1].value).toEqual('c');
+    });
+
+    it('remove a null valued attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'mnt-by',   value: null},
+            {name: 'source',   value: 'c'},
+        ]);
+
+        attrs = attrs.removeAttribute(attrs[0]);
+
+        expect(attrs.length).toEqual(1);
+    });
+
+    it('remove an undefined valued attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'mnt-by'},
+            {name: 'source',   value: 'c'},
+        ]);
+
+        attrs = attrs.removeAttribute(attrs[0]);
+
+        expect(attrs.length).toEqual(1);
+    });
+
+    it('duplicate an attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a'},
+            {name: 'mnt-by',   value: 'b'},
+            {name: 'source',   value: 'c'},
+        ]);
+
+        attrs = attrs.duplicateAttribute(attrs[1]);
+
+        expect(attrs.length).toEqual(4);
+        expect(attrs[0].value).toEqual('a');
+        expect(attrs[1].value).toEqual('b');
+        expect(attrs[2].name).toEqual('mnt-by');
+        expect(attrs[2].value).toBeUndefined();
+        expect(attrs[3].value).toEqual('c');
+    });
+
 
 });

@@ -5,25 +5,42 @@ angular.module('webUpdates')
 function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore) {
 
     // extract parameters from the url
+    $scope.objectSource = $stateParams.source;
     $scope.objectType = $stateParams.objectType;
-    $scope.name = $stateParams.name;
+    $scope.objectName = $stateParams.name;
 
     // Initalize the UI
     $scope.errors = [];
     $scope.warnings = [];
 
+    var fetchObject = function() {
+        $resource('api/whois/:source/:objectType/:objectName', {source: $scope.objectSource, objectType: $scope.objectType, objectName:$scope.objectName})
+            .get(function (resp) {
+                var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+            }, function(resp) {
+                var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
+                if( ! _.isUndefined(whoisResources)) {
+                    $scope.errors = whoisResources.getGlobalErrors();
+                    $scope.warnings = whoisResources.getGlobalWarnings();
+                }
+            });
+    };
+
     // fetch just created object from temporary store
-    var whoisResources = WhoisResources.wrapWhoisResources(MessageStore.get($scope.name));
-    if (whoisResources) {
+    var cashed = MessageStore.get($scope.objectName);
+    if( cashed) {
+        var whoisResources = WhoisResources.wrapWhoisResources(cashed);
         // Use version that we was just before created or modified
-        $scope.attributes = whoisResources.getAttributes();
+        $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
         $scope.warnings = whoisResources.getGlobalWarnings();
     } else {
-        // TODO Fetch fresh value via HTTP-GET
+        fetchObject();
     }
 
     $scope.navigateToSelect = function () {
         $state.transitionTo('select');
     };
+
 
 }]);

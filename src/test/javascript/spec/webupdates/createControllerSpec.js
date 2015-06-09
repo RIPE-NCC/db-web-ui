@@ -131,6 +131,7 @@ describe('webUpdates: CreateController', function () {
         expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe('display');
+        // expect($stateParams.source).toBe('RIPE'); TODO fix
         expect($stateParams.objectType).toBe('as-block');
         expect($stateParams.name).toBe('MY-AS-BLOCK');
     });
@@ -173,6 +174,27 @@ describe('webUpdates: CreateController', function () {
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('\'XYZ\' is not valid for this object type');
 
         expect($state.current.name).toBe(stateBefore);
+
+    });
+
+    it('duplicate attribute', function() {
+        expect($scope.attributes.length).toEqual(4);
+
+        $scope.duplicateAttribute($scope.attributes[1]);
+
+        expect($scope.attributes.length).toEqual(5);
+        expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
+        expect($scope.attributes[2].value).toBeUndefined();
+    });
+
+    it('remove attribute', function() {
+        expect($scope.attributes.length).toEqual(4);
+
+        $scope.removeAttribute($scope.attributes[1]);
+
+        expect($scope.attributes.length).toEqual(3);
+        expect($scope.attributes[1].name).toEqual('mnt-by');
+        expect($scope.attributes[1].value).toEqual('TESTSSO-MNT');
 
     });
 

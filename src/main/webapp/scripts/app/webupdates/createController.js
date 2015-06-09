@@ -17,6 +17,10 @@ angular.module('webUpdates')
             $scope.attributes.setSingleAttributeOnName('source', $scope.source);
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
+            $scope.addAttributes = _.filter(WhoisMetaService.getAllAttributesOnObjectType($scope.objectType), function(attr) {
+                return !attr.$$meta.$$mandatory || attr.$$meta.$$multiple;
+            });
+
             var mntnersForSsoAccount = function() {
                 $resource('api/user/maintainers').get(function (resp) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
@@ -58,7 +62,7 @@ angular.module('webUpdates')
                             // stick created object in temporary store, so display can fetch it from here
                             MessageStore.add(whoisResources.getObjectUid(), whoisResources);
                             // make transition to next display screen
-                            $state.transitionTo('display', {objectType:$scope.objectType, name:whoisResources.getObjectUid()});
+                            $state.transitionTo('display', {source:$scope.source, objectType:$scope.objectType, name:whoisResources.getObjectUid()});
                         },
                         function(resp){
                             if( !resp.data) {
@@ -76,6 +80,26 @@ angular.module('webUpdates')
                 }
             };
 
+            $scope.canAttributeBeDuplicated = function(attr) {
+                return $scope.attributes.canAttributeBeDuplicated(attr);
+            };
+
+            $scope.duplicateAttribute = function(attr) {
+                console.log("duplicateAttribute:"+ JSON.stringify(attr));
+                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.duplicateAttribute(attr));
+                console.log("after duplicateAttribute:"+ JSON.stringify($scope.attributes));
+            };
+
+
+            $scope.canAttributeBeRemoved = function(attr) {
+                return $scope.attributes.canAttributeBeRemoved(attr);
+            };
+
+            $scope.removeAttribute = function(attr) {
+                console.log("removeAttribute:"+ JSON.stringify(attr));
+                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.removeAttribute(attr));
+                console.log("after removeAttribute:"+ JSON.stringify($scope.attributes));
+            };
 
             var validateForm = function () {
                 return $scope.attributes.validate();

@@ -14,6 +14,7 @@
 ul.form-fields {
 	> li {
 		@extend %width-100;
+		@extend %float-l;
 		position: relative;
 		input {
 			padding-right: 160px;
@@ -26,6 +27,7 @@ ul.form-fields {
 		width: auto;
 		right: 0;
 		top: 28px;
+		z-index: 2;
 		> li {
 			display: inline-block !important;
 			margin-bottom: 0 !important;
