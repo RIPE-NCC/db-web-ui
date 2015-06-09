@@ -16,7 +16,7 @@ angular.module('webUpdates')
                 controller: 'CreateController'
             })
             .state('display', {
-                url: '/webupdates/display/:objectType/:name',
+                url: '/webupdates/display/:source/:objectType/:name',
                 templateUrl: 'scripts/app/webupdates/display.html',
                 controller: 'DisplayController'
             });
