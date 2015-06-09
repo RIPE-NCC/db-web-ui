@@ -13,15 +13,13 @@ angular.module('webUpdates')
             $scope.warnings = [];
 
             // Populate the UI
-            $scope.attributes = WhoisResources.wrapAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
+            $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
             $scope.attributes.setSingleAttributeOnName('source', $scope.source);
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
             // which attributes can be added to the object?
-            $scope.addAttributes = _.filter(WhoisMetaService.getAllAttributesOnObjectType($scope.objectType), function(attr) {
-                return !attr.$$meta.$$mandatory || attr.$$meta.$$multiple;
-            });
-
+            $scope.addableAttributes = WhoisMetaService.getAddableAttributes($scope.objectType);
+            $scope.selectedAttributeType = $scope.addableAttributes[0];
             $scope.addAfterAttribute = undefined;
 
             // auth (password) modal popup
@@ -37,6 +35,7 @@ angular.module('webUpdates')
                     $scope.attributes = WhoisResources.wrapAttributes(
                         $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by'))
                     );
+
                 })
             };
 
@@ -63,12 +62,13 @@ angular.module('webUpdates')
             };
 
             $scope.submit = function () {
-                if (validateForm() === true) {
+                if (validateForm() === false ) {
+                } else {
                     clearErrors();
                     $resource('api/whois/:source/:objectType', {source: $scope.source, objectType: $scope.objectType})
                         .save(WhoisResources.embedAttributes($scope.attributes),
                         function(resp){
-                            var whoisResources  = WhoisResources.wrapWhoisResources(resp);
+                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
                             // stick created object in temporary store, so display can fetch it from here
                             MessageStore.add(whoisResources.getObjectUid(), whoisResources);
                             // make transition to next display screen
@@ -82,6 +82,10 @@ angular.module('webUpdates')
                                 if( ! _.isUndefined(whoisResources)) {
                                     $scope.errors = whoisResources.getGlobalErrors();
                                     $scope.warnings = whoisResources.getGlobalWarnings();
+                                    $scope.attributes = WhoisResources.wrapAttributes(
+                                        WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType,whoisResources.getAttributes())
+                                    );
+
                                     validateForm();
                                     populateFieldSpecificErrors(whoisResources);
                                 }
@@ -95,20 +99,15 @@ angular.module('webUpdates')
             };
 
             $scope.duplicateAttribute = function(attr) {
-                console.log("duplicateAttribute:"+ JSON.stringify(attr));
                 $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.duplicateAttribute(attr));
-                console.log("after duplicateAttribute:"+ JSON.stringify($scope.attributes));
             };
-
 
             $scope.canAttributeBeRemoved = function(attr) {
                 return $scope.attributes.canAttributeBeRemoved(attr);
             };
 
             $scope.removeAttribute = function(attr) {
-                console.log("removeAttribute:"+ JSON.stringify(attr));
                 $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.removeAttribute(attr));
-                console.log("after removeAttribute:"+ JSON.stringify($scope.attributes));
             };
 
             $scope.displayAddAttributeDialog = function(attr) {
@@ -116,8 +115,8 @@ angular.module('webUpdates')
                 $('#insertAttributeModal').modal('show');
             };
 
-            $scope.addAttributeAfterAttribute = function(attr) {
-                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.addAttributeAfter(attr, $scope.addAfterAttribute));
+            $scope.addAttributeAfterAttribute = function() {
+                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute));
             };
 
             // auth (password) modal popup
@@ -156,7 +155,8 @@ angular.module('webUpdates')
             //
 
             var validateForm = function () {
-                return $scope.attributes.validate();
+                var status = $scope.attributes.validate();
+                return status;
             };
 
             var clearErrors = function() {

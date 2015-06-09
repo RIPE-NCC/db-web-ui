@@ -33,21 +33,26 @@
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
-            <ul class="input-group-btn">
-	            <li>
-                <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type" ng-click="duplicateAttribute(attribute)">
+
+            <span class="input-group-btn">
+                <li>
+                    <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type"
+                                ng-disabled="!canAttributeBeDuplicated(attribute)" ng-click="duplicateAttribute(attribute)" >
                     <span class="fa fa-arrow-down degree-25"></span>
-                </a>
-	            </li>
+                    </a>
+                </li>
 	            <li>
-                <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)" ng-click="displayAddAttributeDialog(attribute)">
-                    <span class="fa fa-plus"></span>
-                </a>
-	            </li>
+                    <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)"
+                                    ng-click="displayAddAttributeDialog(attribute)">
+                        <span class="fa fa-plus"></span>
+                    </a>
+                </li>
 	            <li>
-                <a id="removeAttribute" class="btn btn-default" title="Remove current attribute" ng-click="removeAttribute(attribute)">
-                    <span class="fa fa-trash"></span>
-                </a>
+                    <a id="removeAttribute" class="btn btn-default" title="Remove current attribute"
+                       ng-disabled="!canAttributeBeRemoved(attribute)" ng-click="removeAttribute(attribute)"
+                               >
+                        <span class="fa fa-trash" ></span>
+                    </a>
 	            </li>
 	            <li>
                 <a id="changePassword" class="btn btn-default" title="Add/change Password (opens dialog)" ng-click="displayAuthDialog(attribute)" ng-show="(attribute.name == 'auth')">
@@ -84,10 +89,11 @@
                 <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
             </div>
             <div class="modal-body margin-left">
-                <select id="selectAttribute" ng-options="item.name for item in addAttributes" ng-model="addAttributeSelected" class="form-control select-height"></select>
+                <select id="selectAttribute" ng-options="item.name for item in addableAttributes" ng-model="selectedAttributeType" class="form-control select-height"/>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="addAttributeAfterAttribute(addAttributeSelected)" value="Add" />
+                <input type="submit" class="blue-button" data-dismiss="modal" value="Close" />
+                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="addAttributeAfterAttribute()" value="Add" />
             </div>
         </div>
     </div>

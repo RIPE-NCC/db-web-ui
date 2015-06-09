@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('WhoisMetaService', function () {
+    .service('WhoisMetaService', ['WhoisResources', function (WhoisResources) {
 
         this._getAttributeDocumentation = function( objectType, attrName ) {
             var description = null;
@@ -44,7 +44,7 @@ angular.module('dbWebApp')
 
             var self = this;
 
-            return _.map(attrs, function(attr) {
+            var adjusted = _.map(attrs, function(attr) {
                 var attrMeta = _.find(attrsMeta, function(am) {
                     return am.name === attr.name;
                 });
@@ -58,6 +58,13 @@ angular.module('dbWebApp')
                     }
                 };
             });
+            return WhoisResources.wrapAttributes(adjusted);
+        };
+
+       this.getAddableAttributes = function(objectType) {
+            return _.filter(this.getAllAttributesOnObjectType(objectType), function(attr) {
+                return attr.$$meta.$$multiple;
+            });
         };
 
         this.getAllAttributesOnObjectType = function (objectTypeName) {
@@ -69,7 +76,7 @@ angular.module('dbWebApp')
 
             // enrich with order info
             var idx = 0;
-            return _.map(this._getMetaAttributesOnObjectType(objectTypeName,false), function (am) {
+            var attrs =  _.map(this._getMetaAttributesOnObjectType(objectTypeName,false), function (am) {
                 var meta = {
                     name: am.name,
                     $$meta: {
@@ -82,6 +89,8 @@ angular.module('dbWebApp')
                 idx++;
                 return meta;
             });
+            return WhoisResources.wrapAttributes(attrs);
+
         };
 
         this.getMandatoryAttributesOnObjectType = function (objectTypeName) {
@@ -92,7 +101,7 @@ angular.module('dbWebApp')
 
             // enrich with order info
             var idx = 0;
-            return _.map(this._getMetaAttributesOnObjectType(objectTypeName,true), function (x) {
+            var attrs = _.map(this._getMetaAttributesOnObjectType(objectTypeName,true), function (x) {
                var meta = {
                     name: x.name,
                     $$meta: {
@@ -105,6 +114,7 @@ angular.module('dbWebApp')
                 idx++;
                 return meta;
             });
+            return WhoisResources.wrapAttributes(attrs);
         };
 
         this._objectTypesMap = {
@@ -738,4 +748,4 @@ angular.module('dbWebApp')
         };
 
 
-    });
+    }]);

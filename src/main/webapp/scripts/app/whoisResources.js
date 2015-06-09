@@ -208,6 +208,7 @@ angular.module('dbWebApp')
 
         var validate = function() {
             var errorFound = false;
+
             var self = this;
             _.map(this, function (attr) {
                 if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length == 0 ) {
@@ -226,14 +227,12 @@ angular.module('dbWebApp')
             });
         };
 
-        // TODO: every matching attribute will be removed (not just specified attribute)
         var removeAttribute = function(attr) {
             return _.filter(this, function(next) {
                 return !(attr === next);
             });
         };
 
-        // TODO: every matching attribute will be duplicated (not just specified attribute)
         var duplicateAttribute = function(attr) {
             var result = [];
 
@@ -248,11 +247,19 @@ angular.module('dbWebApp')
         };
 
         var canAttributeBeDuplicated = function( attr) {
-                return attr.$$meta.$$multiple;
+                return attr.$$meta.$$multiple == true;
         };
 
-        var canAttributeBeRemoved = function( attr) {
-                return attr.$$meta.$$mandatory == false;
+        var canAttributeBeRemoved = function( attr, allAttrs) {
+            var status = false;
+
+            if( attr.$$meta.$$mandatory == false ) {
+                status = true;
+            } else if(attr.$$meta.$$multiple && allAttrs.getAllAttributesWithValueOnName(attr.name).length > 1 ) {
+                status = true;
+            }
+
+            return status;
         };
 
         var addAttributeAfter = function(attr, after) {

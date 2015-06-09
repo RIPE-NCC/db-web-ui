@@ -77,7 +77,7 @@ describe('webUpdates: CreateController', function () {
 
     });
 
-
+/*
     it('should display field specific errors upon submit click on form with missing values', function () {
         var stateBefore = $state.current.name;
 
@@ -136,12 +136,26 @@ describe('webUpdates: CreateController', function () {
         expect($stateParams.name).toBe('MY-AS-BLOCK');
     });
 
-
+*/
     it('should handle error post upon submit click when form is complete', function () {
         var stateBefore = $state.current.name;
 
         // api/whois/RIPE/as-block
         $httpBackend.expectPOST('api/whois/RIPE/as-block').respond(400, {
+            objects: {
+                object: [
+                    {
+                        'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                        attributes: {
+                            attribute: [
+                                {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                {name: 'mnt-by', value: 'TEST-MNT'},
+                                {name: 'source', value: 'RIPE'}
+                            ]
+                        }
+                    }
+                ]
+            },
             errormessages: {
                 errormessage: [
                     {
@@ -164,6 +178,7 @@ describe('webUpdates: CreateController', function () {
                 ]
             }
         });
+
         $scope.attributes.setSingleAttributeOnName('as-block', "A");
 
         $scope.submit();

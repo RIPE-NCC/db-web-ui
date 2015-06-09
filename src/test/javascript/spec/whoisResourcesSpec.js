@@ -401,6 +401,25 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
+    it('detact if an attribute can be removed', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block',      value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}}, // 0
+            {name: 'mnt-by',        value: 'b', $$meta:{$$mandatory:true,  $$multiple:true}},  // 1
+            {name: 'changed',       value: 'd', $$meta:{$$mandatory:false, $$multiple:true}},  // 2
+            {name: 'changed',       value: 'e', $$meta:{$$mandatory:false, $$multiple:true}},  // 3
+            {name: 'last-modified', value: 'f', $$meta:{$$mandatory:false, $$multiple:false}}, // 4
+            {name: 'source',        value: 'g', $$meta:{$$mandatory:true,  $$multiple:false}}, // 5
+        ]);
+
+
+
+       expect(attrs.canAttributeBeRemoved(attrs[0],attrs)).toBe(false);
+       expect(attrs.canAttributeBeRemoved(attrs[1],attrs)).toBe(false);
+       expect(attrs.canAttributeBeRemoved(attrs[2],attrs)).toBe(true);
+       expect(attrs.canAttributeBeRemoved(attrs[4],attrs)).toBe(true);
+
+    });
+
     it('remove an attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a'},
