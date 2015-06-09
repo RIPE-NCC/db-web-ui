@@ -34,43 +34,41 @@
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
 
-            <span class="input-group-btn">
+            <ul class="input-group-btn">
                 <li>
                     <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type"
                                 ng-disabled="!canAttributeBeDuplicated(attribute)" ng-click="duplicateAttribute(attribute)" >
                     <span class="fa fa-arrow-down degree-25"></span>
                     </a>
                 </li>
-	            <li>
+                <li>
                     <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)"
                                     ng-click="displayAddAttributeDialog(attribute)">
                         <span class="fa fa-plus"></span>
                     </a>
                 </li>
-	            <li>
+                <li>
                     <a id="removeAttribute" class="btn btn-default" title="Remove current attribute"
-                       ng-disabled="!canAttributeBeRemoved(attribute)" ng-click="removeAttribute(attribute)"
-                               >
+                       ng-disabled="!canAttributeBeRemoved(attribute)" ng-click="removeAttribute(attribute)" >
                         <span class="fa fa-trash" ></span>
                     </a>
-	            </li>
-	            <li>
+                </li>
+                <li>
                 <a id="changePassword" class="btn btn-default" title="Add/change Password (opens dialog)" ng-click="displayAuthDialog(attribute)" ng-show="(attribute.name == 'auth')">
                     <span class="fa fa-lock fa-3"></span>
                 </a>
-	            </li>
-	            <li>
-                <a id="help" class="btn btn-default disabled">
+                </li>
+                <li>
+                <a id="help" class="btn btn-default disabled" >
                     <span class="fa fa-question"></span>
                 </a>
-	            </li>
-	            <li>
+                </li>
+                <li>
                 <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
                     <span class="fa fa-certificate"></span>
                 </a>
-	            </li>
+                </li>
             </ul>
-
         </li>
     </ul>
     <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
