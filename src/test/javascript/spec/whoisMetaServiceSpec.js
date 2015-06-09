@@ -14,11 +14,17 @@ describe('dbWebApp: WhoisMetaService', function () {
 
     });
 
+    it('should return correct documentation based on object- and attribute-name',function() {
+        expect($whoisMetaService._getAttributeDocumentation("mntner","admin-c")).toEqual("References an on-site administrative contact.")
+        expect($whoisMetaService._getAttributeDocumentation("inet-rtr","mp-peer")).toEqual("Details of any (interior or exterior) multiprotocol router peerings.")
+    });
+
+
     it('should return all objectTypes', function(){
         $whoisMetaService._objectTypesMap =
         {
-            'type1' : { name: 'type1', description:'Z'},
-            'type2' : { name: 'type2', description:'X'}
+            type1 : { name: 'type1'},
+            type2 : { name: 'type2'}
         };
 
         expect($whoisMetaService.getObjectTypes()).toEqual([
@@ -31,10 +37,14 @@ describe('dbWebApp: WhoisMetaService', function () {
         {
             'type1' : { name: 'type1', description:'Z',
                 'attributes':[
-                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A'},
-                    { name:'optional1', mandatory:false, 'multiple':true, description:'B'}
+                    { name:'mandatory1', mandatory:true, 'multiple':false},
+                    { name:'optional1', mandatory:false, 'multiple':true}
                 ]
             }
+        };
+        $whoisMetaService._attrDocumentation = {
+            mandatory1:'A',
+            optional1:'B'
         };
 
         var attrs = [
@@ -59,6 +69,10 @@ describe('dbWebApp: WhoisMetaService', function () {
                 ]
             }
         };
+        $whoisMetaService._attrDocumentation = {
+            mandatory1:'A',
+            optional1:'B'
+        };
 
         expect($whoisMetaService._getMetaAttributesOnObjectType('type1',true)).toEqual([
             { name:'mandatory1', mandatory:true, 'multiple':false, description:'A'}
@@ -75,6 +89,10 @@ describe('dbWebApp: WhoisMetaService', function () {
                     { name:'optional1', mandatory:false, 'multiple':true, description:'B'}
                 ]
             }
+        };
+        $whoisMetaService._attrDocumentation = {
+            mandatory1:'A',
+            optional1:'B'
         };
 
         expect($whoisMetaService._getMetaAttributesOnObjectType('type1',false)).toEqual([
@@ -94,6 +112,10 @@ describe('dbWebApp: WhoisMetaService', function () {
                 ]
             }
         };
+        $whoisMetaService._attrDocumentation = {
+            mandatory1:'A',
+            optional1:'B'
+        };
 
         expect($whoisMetaService.getAllAttributesOnObjectType('type1')).toEqual([
             { name:'mandatory1', $$meta: {$$idx:0, '$$mandatory':true, '$$description':'A'}},
@@ -111,6 +133,10 @@ describe('dbWebApp: WhoisMetaService', function () {
                     { name:'optional1', mandatory:false, 'multiple':true, description:'B'}
                 ]
             }
+        };
+        $whoisMetaService._attrDocumentation = {
+            mandatory1:'A',
+            optional1:'B'
         };
 
         expect($whoisMetaService.getMandatoryAttributesOnObjectType('type1')).toEqual([
