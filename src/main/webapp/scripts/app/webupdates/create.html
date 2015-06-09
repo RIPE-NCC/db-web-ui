@@ -36,7 +36,7 @@
                 <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type" ng-click="duplicateAttribute(attribute)">
                     <span class="fa fa-arrow-down degree-25"></span>
                 </a>
-                <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)" onclick="$('#insertAttributeModal').modal('show');">
+                <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)" ng-click="displayAddAttributeDialog(attribute)">
                     <span class="fa fa-plus"></span>
                 </a>
                 <a id="removeAttribute" class="btn btn-default" title="Remove current attribute" ng-click="removeAttribute(attribute)">
@@ -70,15 +70,11 @@
                 <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
             </div>
             <div class="modal-body margin-left">
-                <select id="selectAttribute" ng-options="item.name for item in addAttributes" ng-model="selected" class="form-control select-height"/>
+                <select id="selectAttribute" ng-options="item.name for item in addAttributes" ng-model="addAttributeSelected" class="form-control select-height"/>
             </div>
             <div class="modal-footer">
                 <input type="submit" class="blue-button" data-dismiss="modal" value="Close" />
-                <!--
-                <h:commandLink styleClass="blue-button"
-                               id="addFromMenu" value="Add"
-                               action="#{bean.addAttributeAfterIndex}" />
-               -->
+                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="addAttributeAfterAttribute(addAttributeSelected)" value="Add" />
             </div>
         </div>
     </div>
