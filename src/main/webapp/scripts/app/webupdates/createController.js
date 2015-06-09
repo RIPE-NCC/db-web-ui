@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisMetaService',  'WhoisResources', 'MessageStore',
-        function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisResources,  MessageStore ) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisMetaService',  'WhoisResources', 'MessageStore', 'md5',
+        function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisResources,  MessageStore, md5 ) {
 
             // extract parameters from the url
             $scope.objectType = $stateParams.objectType;
@@ -21,7 +21,15 @@ angular.module('webUpdates')
             $scope.addAttributes = _.filter(WhoisMetaService.getAllAttributesOnObjectType($scope.objectType), function(attr) {
                 return !attr.$$meta.$$mandatory || attr.$$meta.$$multiple;
             });
+
             $scope.addAfterAttribute = undefined;
+
+            // auth (password) modal popup
+            $scope.authAttribute;
+            $scope.password;
+            $scope.passwordAgain;
+            $scope.authPasswordMessage;
+            $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
             var mntnersForSsoAccount = function() {
                 $resource('api/user/maintainers').get(function (resp) {
@@ -112,6 +120,41 @@ angular.module('webUpdates')
                 $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.addAttributeAfter(attr, $scope.addAfterAttribute));
             };
 
+            // auth (password) modal popup
+
+            $scope.displayAuthDialog = function(attr) {
+                $scope.authAttribute = attr;
+                $scope.password = '';
+                $scope.passwordAgain = '';
+                $scope.authPasswordMessage = '';
+                $('#authModal').modal('show');
+            };
+
+            $scope.verifyAuthDialog = function() {
+                if ($scope.password == $scope.passwordAgain) {
+                    $scope.authPasswordMessage = "Password Match!";
+                    return true;
+                } else {
+                    $scope.authPasswordMessage = "Password Does Not Match!";
+                    return false;
+                }
+            };
+
+            $scope.populateAuthAttribute = function() {
+                $scope.authAttribute.value = 'MD5-PW $1$' + $scope.generateSalt(8) + '$' + md5.createHash($scope.password);
+            };
+
+            $scope.generateSalt = function(length) {
+                var result = '';
+                for (var index = 0; index < length; index++) {
+                    var offset = Math.floor((Math.random() * $scope.validBase64Characters.length));
+                    result = result.concat($scope.validBase64Characters.charAt(offset));
+                }
+                return result;
+            };
+
+            //
+
             var validateForm = function () {
                 return $scope.attributes.validate();
             };
@@ -120,7 +163,7 @@ angular.module('webUpdates')
                 $scope.errors = [];
                 $scope.warnings = [];
                 $scope.attributes.clearErrors();
-            }
+            };
 
             var populateFieldSpecificErrors = function( resp ) {
                 _.map($scope.attributes, function (attr) {

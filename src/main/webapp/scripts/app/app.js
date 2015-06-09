@@ -2,6 +2,7 @@
 
 angular.module('dbWebApp', [
     'ui.router',
+    'angular-md5',
     'ngResource',
     'webUpdates',
     'interceptors'])
