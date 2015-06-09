@@ -76,6 +76,26 @@ angular.module('webUpdates')
                 }
             };
 
+            $scope.canAttributeBeDuplicated = function(attr) {
+                return $scope.attributes.canAttributeBeDuplicated(attr);
+            };
+
+            $scope.duplicateAttribute = function(attr) {
+                console.log("duplicateAttribute:"+ JSON.stringify(attr));
+                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.duplicateAttribute(attr));
+                console.log("after duplicateAttribute:"+ JSON.stringify($scope.attributes));
+            };
+
+
+            $scope.canAttributeBeRemoved = function(attr) {
+                return $scope.attributes.canAttributeBeRemoved(attr);
+            };
+
+            $scope.removeAttribute = function(attr) {
+                console.log("removeAttribute:"+ JSON.stringify(attr));
+                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.removeAttribute(attr));
+                console.log("after removeAttribute:"+ JSON.stringify($scope.attributes));
+            };
 
             var validateForm = function () {
                 return $scope.attributes.validate();

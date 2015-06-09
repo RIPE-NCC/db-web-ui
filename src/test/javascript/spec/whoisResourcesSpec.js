@@ -426,7 +426,6 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs.length).toEqual(1);
     });
 
-
     it('remove an undefined valued attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'mnt-by'},

@@ -226,12 +226,14 @@ angular.module('dbWebApp')
             });
         };
 
+        // TODO: every matching attribute will be removed (not just specified attribute)
         var removeAttribute = function(attr) {
             return _.filter(this, function(next) {
                 return !(attr.name === next.name && attr.value === next.value);
             });
         };
 
+        // TODO: every matching attribute will be duplicated (not just specified attribute)
         var duplicateAttribute = function(attr) {
             var result = [];
 
@@ -245,6 +247,13 @@ angular.module('dbWebApp')
             return result;
         };
 
+        var canAttributeBeDuplicated = function( attr) {
+                return attr.$$meta.$$multiple;
+        };
+
+        var canAttributeBeRemoved = function( attr) {
+                return attr.$$meta.$$mandatory == false;
+        };
 
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {
@@ -262,6 +271,8 @@ angular.module('dbWebApp')
 
             attrs.removeAttribute = removeAttribute;
             attrs.duplicateAttribute = duplicateAttribute;
+            attrs.canAttributeBeDuplicated = canAttributeBeDuplicated;
+            attrs.canAttributeBeRemoved = canAttributeBeRemoved;
 
             return attrs;
         };
