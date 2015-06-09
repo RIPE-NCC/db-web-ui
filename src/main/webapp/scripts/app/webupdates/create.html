@@ -34,34 +34,34 @@
 
             <ul class="input-group-btn">
 	            <li>
-	                <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type" ng-click="duplicateAttribute(attribute)">
-	                    <span class="fa fa-arrow-down degree-25"></span>
-	                </a>
+                <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type" ng-click="duplicateAttribute(attribute)">
+                    <span class="fa fa-arrow-down degree-25"></span>
+                </a>
 	            </li>
 	            <li>
-	                <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)" onclick="$('#insertAttributeModal').modal('show');">
-	                    <span class="fa fa-plus"></span>
-	                </a>
+                <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)" ng-click="displayAddAttributeDialog(attribute)">
+                    <span class="fa fa-plus"></span>
+                </a>
 	            </li>
 	            <li>
-	                <a id="removeAttribute" class="btn btn-default" title="Remove current attribute" ng-click="removeAttribute(attribute)">
-	                    <span class="fa fa-trash"></span>
-	                </a>
+                <a id="removeAttribute" class="btn btn-default" title="Remove current attribute" ng-click="removeAttribute(attribute)">
+                    <span class="fa fa-trash"></span>
+                </a>
 	            </li>
 	            <li>
-	                <a id="help" class="btn btn-default disabled">
-	                    <span class="fa fa-question"></span>
-	                </a>
+                <a id="help" class="btn btn-default disabled">
+                    <span class="fa fa-question"></span>
+                </a>
 	            </li>
 	            <li>
-	                <a id="changePassword" class="btn btn-default hidden" title="Add/change Password (opens dialog)">
-	                    <span class="fa fa-lock fa-3"></span>
-	                </a>
+                <a id="changePassword" class="btn btn-default hidden" title="Add/change Password (opens dialog)">
+                    <span class="fa fa-lock fa-3"></span>
+                </a>
 	            </li>
 	            <li>
-	                <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
-	                    <span class="fa fa-certificate"></span>
-	                </a>
+                <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
+                    <span class="fa fa-certificate"></span>
+                </a>
 	            </li>
             </ul>
 
@@ -82,15 +82,11 @@
                 <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
             </div>
             <div class="modal-body margin-left">
-                <select id="selectAttribute" ng-options="item.name for item in addAttributes" ng-model="selected" class="form-control select-height"/>
+                <select id="selectAttribute" ng-options="item.name for item in addAttributes" ng-model="addAttributeSelected" class="form-control select-height"/>
             </div>
             <div class="modal-footer">
                 <input type="submit" class="blue-button" data-dismiss="modal" value="Close" />
-                <!--
-                <h:commandLink styleClass="blue-button"
-                               id="addFromMenu" value="Add"
-                               action="#{bean.addAttributeAfterIndex}" />
-               -->
+                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="addAttributeAfterAttribute(addAttributeSelected)" value="Add" />
             </div>
         </div>
     </div>

@@ -32,11 +32,19 @@ public class WhoisService extends RestClient {
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
         final URI uri = composeWhoisUrl(request);
-        return restTemplate.exchange(
-            uri,
-            HttpMethod.valueOf(request.getMethod().toUpperCase()),
-            new HttpEntity<>(body, headers),
-            String.class);
+        if( body == null ) {
+            return restTemplate.exchange(
+                uri,
+                HttpMethod.valueOf(request.getMethod().toUpperCase()),
+                new HttpEntity<>(headers),
+                String.class);
+        } else {
+            return restTemplate.exchange(
+                uri,
+                HttpMethod.valueOf(request.getMethod().toUpperCase()),
+                new HttpEntity<>(body, headers),
+                String.class);
+        }
     }
 
     private URI composeWhoisUrl(HttpServletRequest request) throws URISyntaxException {
@@ -50,4 +58,5 @@ public class WhoisService extends RestClient {
         LOGGER.info("uri = " + sb.toString());
         return new URI(sb.toString());
     }
+
 }

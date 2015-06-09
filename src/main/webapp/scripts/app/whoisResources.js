@@ -229,7 +229,7 @@ angular.module('dbWebApp')
         // TODO: every matching attribute will be removed (not just specified attribute)
         var removeAttribute = function(attr) {
             return _.filter(this, function(next) {
-                return !(attr.name === next.name && attr.value === next.value);
+                return !(attr === next);
             });
         };
 
@@ -255,6 +255,19 @@ angular.module('dbWebApp')
                 return attr.$$meta.$$mandatory == false;
         };
 
+        var addAttributeAfter = function(attr, after) {
+            var result = [];
+
+            _.each(this, function(next){
+                result.push(next);
+                if (next.name == after.name && next.value == after.value) {
+                    result.push({name:attr.name});
+                }
+            });
+
+            return result;
+        }
+
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {
                 return [];
@@ -273,6 +286,7 @@ angular.module('dbWebApp')
             attrs.duplicateAttribute = duplicateAttribute;
             attrs.canAttributeBeDuplicated = canAttributeBeDuplicated;
             attrs.canAttributeBeRemoved = canAttributeBeRemoved;
+            attrs.addAttributeAfter = addAttributeAfter;
 
             return attrs;
         };

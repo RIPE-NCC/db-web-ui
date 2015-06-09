@@ -131,7 +131,7 @@ describe('webUpdates: CreateController', function () {
         expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe('display');
-        // expect($stateParams.source).toBe('RIPE'); TODO fix
+        expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('as-block');
         expect($stateParams.name).toBe('MY-AS-BLOCK');
     });

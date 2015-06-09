@@ -155,5 +155,16 @@ describe('webUpdates: DisplayController', function () {
 
     });
 
+    it('should populate the ui from message-store', function () {
+        MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
+        createDisplayController();
+
+        $scope.navigateToSelect();
+
+        expect($state.current.name).toBe('select');
+
+    });
+
+
 });
 

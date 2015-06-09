@@ -17,9 +17,11 @@ angular.module('webUpdates')
             $scope.attributes.setSingleAttributeOnName('source', $scope.source);
             $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
+            // which attributes can be added to the object?
             $scope.addAttributes = _.filter(WhoisMetaService.getAllAttributesOnObjectType($scope.objectType), function(attr) {
                 return !attr.$$meta.$$mandatory || attr.$$meta.$$multiple;
             });
+            $scope.addAfterAttribute = undefined;
 
             var mntnersForSsoAccount = function() {
                 $resource('api/user/maintainers').get(function (resp) {
@@ -99,6 +101,15 @@ angular.module('webUpdates')
                 console.log("removeAttribute:"+ JSON.stringify(attr));
                 $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.removeAttribute(attr));
                 console.log("after removeAttribute:"+ JSON.stringify($scope.attributes));
+            };
+
+            $scope.displayAddAttributeDialog = function(attr) {
+                $scope.addAfterAttribute = attr;
+                $('#insertAttributeModal').modal('show');
+            };
+
+            $scope.addAttributeAfterAttribute = function(attr) {
+                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.addAttributeAfter(attr, $scope.addAfterAttribute));
             };
 
             var validateForm = function () {
