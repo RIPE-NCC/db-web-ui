@@ -1,26 +1,16 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisMetaService', 'WhoisResources', 'MessageStore', 'md5',
-        function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisResources, MessageStore, md5) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
             /*
-             * Start of initialisation phase
+             * Functions used during initialisation
              */
-
-            // extract parameters from the url
-            $scope.source = $stateParams.source;
-            $scope.objectType = $stateParams.objectType;
-            $scope.name = $stateParams.name;
-
-            // Initalize the errors and warnings
-            $scope.errors = [];
-            $scope.warnings = [];
-            $scope.infos = [];
 
             var wrapAndEnrichAttributes = function( attrs) {
                 $scope.attributes = WhoisResources.wrapAttributes(
-                    WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, attrs)
+                    WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs)
                 );
                 return $scope.attributes;
             };
@@ -33,62 +23,79 @@ angular.module('webUpdates')
                 return whoisResources;
             };
 
-            var fetchObjectViaRest = function () {
-                $resource('api/whois/:source/:objectType/:name', {
-                    source: $scope.source,
-                    objectType: $scope.objectType,
-                    name: $scope.name
-                }).get(function (resp) {
+            var onCreate = function() {
+                var fetchObjectViaRest = function () {
+                    $resource('api/whois/:source/:objectType/:name', {
+                        source: $scope.source,
+                        objectType: $scope.objectType,
+                        name: $scope.name
+                    }).get(function (resp) {
                         wrapAndEnrichResources(resp);
                     }, function (resp) {
                         var whoisResources = wrapAndEnrichResources(resp.data);
                         setErrors(whoisResources);
                     });
+                };
+
+                var fetchMntnersForSsoAccountViaRest = function () {
+                    $resource('api/user/maintainers').get(function (resp) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                        wrapAndEnrichAttributes(
+                            $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by'))
+                        );
+                    })
+                };
+
+                /*
+                 * Start of initialisation phase
+                 */
+
+                // extract parameters from the url
+                $scope.source = $stateParams.source;
+                $scope.objectType = $stateParams.objectType;
+                $scope.name = $stateParams.name;
+
+                // Initalize the errors and warnings
+                $scope.errors = [];
+                $scope.warnings = [];
+                $scope.infos = [];
+
+                // Populate attributes in the UI
+                if (!$scope.name) {
+                    $scope.operation = "Create";
+
+                    // Populate empty attributes based on meta-info
+                    $scope.attributes = wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
+                    $scope.attributes.setSingleAttributeOnName('source', $scope.source);
+                    $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+
+                    // start fetching maintainers for sso-login
+                    fetchMntnersForSsoAccountViaRest();
+                } else {
+                    $scope.operation = "Modify";
+
+                    // Start empty, and populate with rest-result
+                    $scope.attributes = wrapAndEnrichAttributes([]);
+                    fetchObjectViaRest();
+                }
+
+                // Populate "select attribute for add"-fields popup
+                $scope.addableAttributes = WhoisResources.getAddableAttributes($scope.objectType);
+                $scope.selectedAttributeType = $scope.addableAttributes[0];
+                $scope.addAfterAttribute = undefined;
+
+                // auth (password) modal popup
+                $scope.authAttribute;
+                $scope.password;
+                $scope.passwordAgain;
+                $scope.authPasswordMessage;
+                $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+                /*
+                 * End of initialisation phase
+                 */
             };
-
-            var fetchMntnersForSsoAccountViaRest = function () {
-                $resource('api/user/maintainers').get(function (resp) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                    wrapAndEnrichAttributes(
-                        $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by'))
-                    );
-                })
-            };
-
-            // Populate attributes in the UI
-            if (!$scope.name) {
-                $scope.operation = "Create";
-
-                // Populate empty attributes based on meta-info
-                $scope.attributes = wrapAndEnrichAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
-                $scope.attributes.setSingleAttributeOnName('source', $scope.source);
-                $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-
-                // start fetching maintainers for sso-login
-                fetchMntnersForSsoAccountViaRest();
-            } else {
-                $scope.operation = "Modify";
-
-                // Start empty, and populate with rest-result
-                $scope.attributes = wrapAndEnrichAttributes([]);
-                fetchObjectViaRest();
-            }
-
-            // Populate "select attribute for add"-fields popup
-            $scope.addableAttributes = WhoisMetaService.getAddableAttributes($scope.objectType);
-            $scope.selectedAttributeType = $scope.addableAttributes[0];
-            $scope.addAfterAttribute = undefined;
-
-            // auth (password) modal popup
-            $scope.authAttribute;
-            $scope.password;
-            $scope.passwordAgain;
-            $scope.authPasswordMessage;
-            $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-            /*
-             * End of initialisation phase
-             */
+            onCreate();
 
 
             /*

@@ -1,7 +1,39 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('WhoisResources', function () {
+    .service('WhoisResources', [ 'WhoisMetaService', function (WhoisMetaService) {
+
+        this._getAttributeDocumentation = function( objectType, attrName ) {
+            return WhoisMetaService._getAttributeDocumentation(objectType, attrName);
+        };
+
+        this._getMetaAttributesOnObjectType = function (objectTypeName, mandatoryOnly) {
+            return WhoisMetaService._getMetaAttributesOnObjectType(objectTypeName, mandatoryOnly);
+        };
+
+        this.getObjectTypes = function () {
+            return WhoisMetaService.getObjectTypes();
+        };
+
+        this.enrichAttributesWithMetaInfo = function( objectTypeName, attrs ) {
+            return WhoisMetaService.enrichAttributesWithMetaInfo(objectTypeName, attrs);
+        };
+
+        this.getAddableAttributes = function(objectType) {
+            return WhoisMetaService.getAddableAttributes(objectType);
+        };
+
+        this.getAllAttributesOnObjectType = function (objectTypeName) {
+            return WhoisMetaService.getAllAttributesOnObjectType(objectTypeName);
+        };
+
+        this.getMandatoryAttributesOnObjectType = function (objectTypeName) {
+            return WhoisMetaService.getMandatoryAttributesOnObjectType(objectTypeName);
+        };
+
+        var toString = function() {
+            return JSON.stringify(this);
+        };
 
         this.embedAttributes = function( attrs ) {
             return{
@@ -11,10 +43,6 @@ angular.module('dbWebApp')
                     ]
                 }
             };
-        };
-
-        var toString = function() {
-            return JSON.stringify(this);
         };
 
         var readableError = function( errorMessage ) {
@@ -115,7 +143,7 @@ angular.module('dbWebApp')
             });
         };
 
-        this.wrapWhoisResources  = function( whoisResources ) {
+        this.wrapWhoisResources = function( whoisResources ) {
             if ( !  isValidWhoisResources(whoisResources) ) {
                 return undefined;
             }
@@ -314,5 +342,5 @@ angular.module('dbWebApp')
         };
 
 
-    });
+    }]);
 
