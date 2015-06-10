@@ -155,7 +155,7 @@ describe('webUpdates: DisplayController', function () {
 
     });
 
-    it(' navigate to select screen', function () {
+    it('should navigate to select screen', function () {
         MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
         createDisplayController();
 
@@ -171,7 +171,7 @@ describe('webUpdates: DisplayController', function () {
 
         // TODO fix
         //$scope.navigateToModify();
-
+        //
         //expect($state.current.name).toBe('modify');
         //expect($stateParams.source).toBe(SOURCE);
         //expect($stateParams.objectType).toBe(OBJECT_TYPE);

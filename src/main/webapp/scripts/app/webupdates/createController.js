@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisMetaService',  'WhoisResources', 'MessageStore', 'md5',
-        function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisResources,  MessageStore, md5 ) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisMetaService', 'WhoisResources', 'MessageStore', 'md5',
+        function ($scope, $stateParams, $state, $resource, WhoisMetaService, WhoisResources, MessageStore, md5) {
 
-            // Start of initialisation phase
+            /*
+             * Start of initialisation phase
+             */
 
             // extract parameters from the url
             $scope.source = $stateParams.source;
@@ -16,8 +18,12 @@ angular.module('webUpdates')
             $scope.warnings = [];
             $scope.infos = [];
 
-            var fetchObjectViaRest = function() {
-                $resource('api/whois/:source/:objectType/:name', {source: $scope.source, objectType: $scope.objectType, name:$scope.name})
+            var fetchObjectViaRest = function () {
+                $resource('api/whois/:source/:objectType/:name', {
+                    source: $scope.source,
+                    objectType: $scope.objectType,
+                    name: $scope.name
+                })
                     .get(function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
@@ -25,9 +31,9 @@ angular.module('webUpdates')
                             WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, whoisResources.getAttributes())
                         );
 
-                    }, function(resp) {
+                    }, function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                        if( ! _.isUndefined(whoisResources)) {
+                        if (!_.isUndefined(whoisResources)) {
                             $scope.attributes = WhoisResources.wrapAttributes(
                                 WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, whoisResources.getAttributes())
                             );
@@ -36,7 +42,7 @@ angular.module('webUpdates')
                     });
             };
 
-            var mntnersForSsoAccount = function() {
+            var fetchMntnersForSsoAccountViaRest = function () {
                 $resource('api/user/maintainers').get(function (resp) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     $scope.attributes = WhoisResources.wrapAttributes(
@@ -47,22 +53,25 @@ angular.module('webUpdates')
             };
 
             // Populate attributes in the UI
-           if( ! $scope.name ) {
-               $scope.operation = "Create";
+            if (!$scope.name) {
+                $scope.operation = "Create";
 
-               $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
-               $scope.attributes.setSingleAttributeOnName('source', $scope.source);
-               $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+                // Populate empty attributes based on meta-info
+                $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
+                $scope.attributes.setSingleAttributeOnName('source', $scope.source);
+                $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
-               // start fetching maintainers for sso-login
-               mntnersForSsoAccount();
+                // start fetching maintainers for sso-login
+                fetchMntnersForSsoAccountViaRest();
             } else {
-               $scope.operation = "Modify";
-               $scope.attributes =  WhoisResources.wrapAttributes([]);
-               fetchObjectViaRest();
+                $scope.operation = "Modify";
+
+                // Start empty, and populate with rest-result
+                $scope.attributes = WhoisResources.wrapAttributes([]);
+                fetchObjectViaRest();
             }
 
-            // "select attribute to add"-fields popup
+            // Populate "select attribute for add"-fields popup
             $scope.addableAttributes = WhoisMetaService.getAddableAttributes($scope.objectType);
             $scope.selectedAttributeType = $scope.addableAttributes[0];
             $scope.addAfterAttribute = undefined;
@@ -74,10 +83,14 @@ angular.module('webUpdates')
             $scope.authPasswordMessage;
             $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-            // End of initialisation phase
+            /*
+             * End of initialisation phase
+             */
 
 
-            // Methods called from the html-teplate
+            /*
+             * Methods called from the html-teplate
+             */
 
             // Methods called from the template
             $scope.hasErrors = function () {
@@ -96,59 +109,59 @@ angular.module('webUpdates')
                 return attribute.$$error !== null;
             };
 
-            $scope.hasMntners = function() {
-                var attrs =  $scope.attributes.getAllAttributesWithValueOnName('mnt-by');
-                if( ! attrs || attrs.length ==0 ) {
+            $scope.hasMntners = function () {
+                var attrs = $scope.attributes.getAllAttributesWithValueOnName('mnt-by');
+                if (!attrs || attrs.length == 0) {
                     return false;
                 }
                 return true;
             };
 
             $scope.submit = function () {
-                if (validateForm() === false ) {
+                if (validateForm() === false) {
                 } else {
                     clearErrors();
-                    if (! $scope.name ) {
+                    if (!$scope.name) {
                         $resource('api/whois/:source/:objectType',
                             {source: $scope.source, objectType: $scope.objectType})
                             .save(WhoisResources.embedAttributes($scope.attributes),
-                                    onSubmitSuccess,
-                                    onSubmitError);
+                            onSubmitSuccess,
+                            onSubmitError);
                     } else {
                         $resource('api/whois/:source/:objectType/:name',
-                            { source: $scope.source, objectType: $scope.objectType, name:$scope.name},
-                            { 'update': { method:'PUT' } })
+                            {source: $scope.source, objectType: $scope.objectType, name: $scope.name},
+                            {'update': {method: 'PUT'}})
                             .update(WhoisResources.embedAttributes($scope.attributes),
-                                    onSubmitSuccess,
-                                    onSubmitError);
+                            onSubmitSuccess,
+                            onSubmitError);
                     }
                 }
             };
 
-            $scope.canAttributeBeDuplicated = function(attr) {
+            $scope.canAttributeBeDuplicated = function (attr) {
                 return $scope.attributes.canAttributeBeDuplicated(attr);
             };
 
-            $scope.duplicateAttribute = function(attr) {
+            $scope.duplicateAttribute = function (attr) {
                 $scope.attributes = WhoisResources.wrapAttributes(
                     WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes.duplicateAttribute(attr))
                 );
             };
 
-            $scope.canAttributeBeRemoved = function(attr) {
+            $scope.canAttributeBeRemoved = function (attr) {
                 return $scope.attributes.canAttributeBeRemoved(attr);
             };
 
-            $scope.removeAttribute = function(attr) {
+            $scope.removeAttribute = function (attr) {
                 $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.removeAttribute(attr));
             };
 
-            $scope.displayAddAttributeDialog = function(attr) {
+            $scope.displayAddAttributeDialog = function (attr) {
                 $scope.addAfterAttribute = attr;
                 $('#insertAttributeModal').modal('show');
             };
 
-            $scope.addAttributeAfterAttribute = function() {
+            $scope.addAttributeAfterAttribute = function () {
                 $scope.attributes = WhoisResources.wrapAttributes(
                     $scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute)
                 );
@@ -156,7 +169,7 @@ angular.module('webUpdates')
 
             // auth (password) modal popup
 
-            $scope.displayAuthDialog = function(attr) {
+            $scope.displayAuthDialog = function (attr) {
                 $scope.authAttribute = attr;
                 $scope.password = '';
                 $scope.passwordAgain = '';
@@ -164,7 +177,7 @@ angular.module('webUpdates')
                 $('#authModal').modal('show');
             };
 
-            $scope.verifyAuthDialog = function() {
+            $scope.verifyAuthDialog = function () {
                 if ($scope.password == $scope.passwordAgain) {
                     $scope.authPasswordMessage = "Password Match!";
                     return true;
@@ -174,11 +187,11 @@ angular.module('webUpdates')
                 }
             };
 
-            $scope.populateAuthAttribute = function() {
+            $scope.populateAuthAttribute = function () {
                 $scope.authAttribute.value = 'MD5-PW $1$' + $scope.generateSalt(8) + '$' + md5.createHash($scope.password);
             };
 
-            $scope.generateSalt = function(length) {
+            $scope.generateSalt = function (length) {
                 var result = '';
                 for (var index = 0; index < length; index++) {
                     var offset = Math.floor((Math.random() * $scope.validBase64Characters.length));
@@ -187,24 +200,26 @@ angular.module('webUpdates')
                 return result;
             };
 
-            // Private methods
+            /*
+             * Private methods
+             */
 
             var validateForm = function () {
                 var status = $scope.attributes.validate();
                 return status;
             };
 
-            var setErrors = function(whoisResources) {
+            var setErrors = function (whoisResources) {
                 populateFieldSpecificErrors(whoisResources);
                 $scope.errors = whoisResources.getGlobalErrors();
                 $scope.warnings = whoisResources.getGlobalWarnings();
                 $scope.infos = whoisResources.getGlobalInfos();
             };
 
-            var populateFieldSpecificErrors = function( resp ) {
+            var populateFieldSpecificErrors = function (resp) {
                 _.map($scope.attributes, function (attr) {
                     // keep existing error messages
-                    if(!attr.$$error) {
+                    if (!attr.$$error) {
                         var errors = resp.getErrorsOnAttribute(attr.name);
                         if (errors && errors.length > 0) {
                             attr.$$error = errors[0].plainText;
@@ -214,13 +229,13 @@ angular.module('webUpdates')
                 });
             };
 
-            var clearErrors = function() {
+            var clearErrors = function () {
                 $scope.errors = [];
                 $scope.warnings = [];
                 $scope.attributes.clearErrors();
             };
 
-            var onSubmitSuccess = function( resp ) {
+            var onSubmitSuccess = function (resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
                 // stick created object in temporary store, so display can fetch it from here
                 MessageStore.add(whoisResources.getObjectUid(), whoisResources);
@@ -232,7 +247,7 @@ angular.module('webUpdates')
                 });
             };
 
-            var onSubmitError = function( resp ) {
+            var onSubmitError = function (resp) {
                 if (!resp.data) {
                     // TIMEOUT: to be handled globally by response interceptor
                 } else {

@@ -47,7 +47,18 @@ function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore)
     };
 
     $scope.navigateToModify = function () {
-        $state.transitionTo('modify',  {source:$scope.objectSource, objectType:$scope.objectType, name: $scope.objectName});
-};
+        /*
+         $state.transitionTo('display', {
+         source: $scope.source,
+         objectType: $scope.objectType,
+         name: whoisResources.getObjectUid()
+         });
+         */
+        $state.transitionTo('modify',  {
+            source:$scope.objectSource,
+            objectType:$scope.objectType,
+            name: $scope.objectName
+        });
+    };
 
 }]);
