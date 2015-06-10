@@ -279,7 +279,13 @@ angular.module('dbWebApp')
             });
 
             return result;
-        }
+        };
+
+        var removeNullAttributes = function() {
+            return _.filter(this, function(attr) {
+                return attr.value;
+            });
+        };
 
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {
@@ -300,6 +306,7 @@ angular.module('dbWebApp')
             attrs.canAttributeBeDuplicated = canAttributeBeDuplicated;
             attrs.canAttributeBeRemoved = canAttributeBeRemoved;
             attrs.addAttributeAfter = addAttributeAfter;
+            attrs.removeNullAttributes = removeNullAttributes;
 
             return attrs;
         };

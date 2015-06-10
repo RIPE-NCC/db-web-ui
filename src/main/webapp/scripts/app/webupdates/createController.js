@@ -120,6 +120,7 @@ angular.module('webUpdates')
             $scope.submit = function () {
                 if (validateForm() === false) {
                 } else {
+                    stripNulls();
                     clearErrors();
                     if (!$scope.name) {
                         $resource('api/whois/:source/:objectType',
@@ -227,6 +228,10 @@ angular.module('webUpdates')
                     }
                     return attr;
                 });
+            };
+
+            var stripNulls = function () {
+                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.removeNullAttributes());
             };
 
             var clearErrors = function () {

@@ -456,6 +456,20 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs[1].value).toEqual('c');
     });
 
+    it('remove null attributes', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a'},
+            {name: 'mnt-by',   value: null},
+            {name: 'source',   value: 'c'},
+        ]);
+
+        var result = attrs.removeNullAttributes();
+
+        expect(result.length).toEqual(2);
+        expect(result[0].value).toEqual('a');
+        expect(result[1].value).toEqual('c');
+    });
+
     it('remove a null valued attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'mnt-by',   value: null},
