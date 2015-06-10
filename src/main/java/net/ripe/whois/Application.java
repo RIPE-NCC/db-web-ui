@@ -44,6 +44,8 @@ public class Application {
         } else {
             log.info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
             Collection activeProfiles = Arrays.asList(env.getActiveProfiles());
+
+            // TODO: refactor this (check for any single profile)
             if (activeProfiles.contains("dev") && activeProfiles.contains("prod")) {
                 log.error("You have misconfigured your application! " +
                     "It should not run with both the 'dev' and 'prod' profiles at the same time.");
@@ -80,6 +82,7 @@ public class Application {
     /**
      * If no profile has been configured, set by default the "dev" profile.
      */
+     // TODO: explicitly set a profile or fail (don't run as dev by default)
     private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active") &&
                 !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {

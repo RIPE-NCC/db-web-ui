@@ -1,0 +1,27 @@
+server:
+    port: 8443
+    ssl:
+        key-store: 'classpath:keystore'
+        key-store-password: OBF:1v2j1uum1xtv1zej1zer1xtn1uvk1v1v
+spring:
+    profiles:
+        active: prepdev
+
+rest:
+    api:
+        ripeUrl: http://db-pre-1.prepdev.ripe.net:1080/whois
+
+internal:
+    api:
+        url: http://int-prepdev.db.ripe.net
+        key: DB-WHOIS-d5395e7fbf8d
+
+# SSO translation properties
+crowd:
+    rest:
+        url: http://serval.prepdev.ripe.net:8095/crowd
+        user: db
+        password: evarylli
+
+logging.level.org.springframework.web: DEBUG
+logging.level.org.hibernate: ERROR
