@@ -18,37 +18,40 @@ angular.module('webUpdates')
             $scope.warnings = [];
             $scope.infos = [];
 
+            var wrapAndEnrichAttributes = function( attrs) {
+                $scope.attributes = WhoisResources.wrapAttributes(
+                    WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, attrs)
+                );
+                return $scope.attributes;
+            };
+
+            var wrapAndEnrichResources = function(resp) {
+                var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                if (whoisResources) {
+                    wrapAndEnrichAttributes(whoisResources.getAttributes());
+                }
+                return whoisResources;
+            };
+
             var fetchObjectViaRest = function () {
                 $resource('api/whois/:source/:objectType/:name', {
                     source: $scope.source,
                     objectType: $scope.objectType,
                     name: $scope.name
-                })
-                    .get(function (resp) {
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
-
-                        $scope.attributes = WhoisResources.wrapAttributes(
-                            WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, whoisResources.getAttributes())
-                        );
-
+                }).get(function (resp) {
+                        wrapAndEnrichResources(resp);
                     }, function (resp) {
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                        if (!_.isUndefined(whoisResources)) {
-                            $scope.attributes = WhoisResources.wrapAttributes(
-                                WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, whoisResources.getAttributes())
-                            );
-                            setErrors(whoisResources);
-                        }
+                        var whoisResources = wrapAndEnrichResources(resp.data);
+                        setErrors(whoisResources);
                     });
             };
 
             var fetchMntnersForSsoAccountViaRest = function () {
                 $resource('api/user/maintainers').get(function (resp) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                    $scope.attributes = WhoisResources.wrapAttributes(
+                    wrapAndEnrichAttributes(
                         $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by'))
                     );
-
                 })
             };
 
@@ -57,7 +60,7 @@ angular.module('webUpdates')
                 $scope.operation = "Create";
 
                 // Populate empty attributes based on meta-info
-                $scope.attributes = WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType);
+                $scope.attributes = wrapAndEnrichAttributes(WhoisMetaService.getMandatoryAttributesOnObjectType($scope.objectType));
                 $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                 $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
@@ -67,7 +70,7 @@ angular.module('webUpdates')
                 $scope.operation = "Modify";
 
                 // Start empty, and populate with rest-result
-                $scope.attributes = WhoisResources.wrapAttributes([]);
+                $scope.attributes = wrapAndEnrichAttributes([]);
                 fetchObjectViaRest();
             }
 
@@ -126,15 +129,15 @@ angular.module('webUpdates')
                         $resource('api/whois/:source/:objectType',
                             {source: $scope.source, objectType: $scope.objectType})
                             .save(WhoisResources.embedAttributes($scope.attributes),
-                            onSubmitSuccess,
-                            onSubmitError);
+                                onSubmitSuccess,
+                                onSubmitError);
                     } else {
                         $resource('api/whois/:source/:objectType/:name',
                             {source: $scope.source, objectType: $scope.objectType, name: $scope.name},
                             {'update': {method: 'PUT'}})
                             .update(WhoisResources.embedAttributes($scope.attributes),
-                            onSubmitSuccess,
-                            onSubmitError);
+                                onSubmitSuccess,
+                                onSubmitError);
                     }
                 }
             };
@@ -144,9 +147,7 @@ angular.module('webUpdates')
             };
 
             $scope.duplicateAttribute = function (attr) {
-                $scope.attributes = WhoisResources.wrapAttributes(
-                    WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes.duplicateAttribute(attr))
-                );
+                wrapAndEnrichAttributes($scope.attributes.duplicateAttribute(attr));
             };
 
             $scope.canAttributeBeRemoved = function (attr) {
@@ -154,7 +155,7 @@ angular.module('webUpdates')
             };
 
             $scope.removeAttribute = function (attr) {
-                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.removeAttribute(attr));
+                wrapAndEnrichAttributes($scope.attributes.removeAttribute(attr));
             };
 
             $scope.displayAddAttributeDialog = function (attr) {
@@ -163,9 +164,7 @@ angular.module('webUpdates')
             };
 
             $scope.addAttributeAfterAttribute = function () {
-                $scope.attributes = WhoisResources.wrapAttributes(
-                    WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute))
-                );
+                wrapAndEnrichAttributes($scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute));
             };
 
             // auth (password) modal popup
@@ -231,7 +230,7 @@ angular.module('webUpdates')
             };
 
             var stripNulls = function () {
-                $scope.attributes = WhoisResources.wrapAttributes($scope.attributes.removeNullAttributes());
+                $scope.attributes = wrapAndEnrichAttributes($scope.attributes.removeNullAttributes());
             };
 
             var clearErrors = function () {
@@ -256,16 +255,11 @@ angular.module('webUpdates')
                 if (!resp.data) {
                     // TIMEOUT: to be handled globally by response interceptor
                 } else {
-                    var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                    if (!_.isUndefined(whoisResources)) {
-                        $scope.attributes = WhoisResources.wrapAttributes(
-                            WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, whoisResources.getAttributes())
-                        );
-
-                        validateForm();
-                        setErrors(whoisResources);
-                    }
+                    var whoisResources = wrapAndEnrichResources(resp.data);
+                    validateForm();
+                    setErrors(whoisResources);
                 }
             };
+
 
         }]);
