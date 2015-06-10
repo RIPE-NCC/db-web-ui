@@ -47,6 +47,7 @@ angular.module('dbWebApp')
              if( ! this.errormessages ) {
                  return [];
              }
+
              var self = this;
             return this.errormessages.errormessage.filter(
                 function (errorMessage) {
@@ -59,8 +60,9 @@ angular.module('dbWebApp')
              if( ! this.errormessages ) {
                  return [];
              }
-            var self = this;
-            return this.errormessages.errormessage.filter(
+
+             var self = this;
+             return this.errormessages.errormessage.filter(
                 function (errorMessage) {
                     errorMessage.plainText = self.readableError(errorMessage);
                     return errorMessage.severity === 'Info' && !errorMessage.attribute;

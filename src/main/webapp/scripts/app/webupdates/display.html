@@ -21,6 +21,7 @@
         <li ng-repeat="attribute in attributes">
             <label>{{attribute.name}}</label>
             <input value="{{attribute.value}}" class="form-control" readonly/>
+            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
         </li>
     </ul>
 

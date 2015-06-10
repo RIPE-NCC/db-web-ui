@@ -4,6 +4,11 @@ angular.module('webUpdates')
     .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore',
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore) {
 
+
+            /*
+             * Start of initialisation phase
+             */
+
             // extract parameters from the url
             $scope.objectSource = $stateParams.source;
             $scope.objectType = $stateParams.objectType;
@@ -15,6 +20,26 @@ angular.module('webUpdates')
             $scope.warnings = [];
             $scope.infos = [];
 
+            var setErrors = function (whoisResources) {
+                populateFieldSpecificErrors(whoisResources);
+                $scope.errors = whoisResources.getGlobalErrors();
+                $scope.warnings = whoisResources.getGlobalWarnings();
+                $scope.infos = whoisResources.getGlobalInfos();
+            };
+
+            var populateFieldSpecificErrors = function (resp) {
+                _.map($scope.attributes, function (attr) {
+                    // keep existing error messages
+                    if (!attr.$$error) {
+                        var errors = resp.getErrorsOnAttribute(attr.name, attr.value);
+                        if (errors && errors.length > 0) {
+                            attr.$$error = errors[0].plainText;
+                        }
+                    }
+                    return attr;
+                });
+            };
+
             var fetchObjectViaRest = function () {
                 $resource('api/whois/:source/:objectType/:objectName', {
                     source: $scope.objectSource,
@@ -24,13 +49,11 @@ angular.module('webUpdates')
                     .get(function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
                         $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                        setErrors(whoisResources);
                     }, function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
                         if (!_.isUndefined(whoisResources)) {
-                            $scope.errors = whoisResources.getGlobalErrors();
-                            $scope.warnings = whoisResources.getGlobalWarnings();
-                            $scope.infos = whoisResources.getGlobalInfos();
-
+                            setErrors(whoisResources);
                         }
                     });
             };
@@ -41,11 +64,22 @@ angular.module('webUpdates')
                 var whoisResources = WhoisResources.wrapWhoisResources(cached);
                 // Use version that we was just before created or modified
                 $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                $scope.warnings = whoisResources.getGlobalWarnings();
-                $scope.infos = whoisResources.getGlobalInfos();
+                setErrors(whoisResources);
             } else {
                 fetchObjectViaRest();
             }
+
+            /*
+             * End of initialisation phase
+             */
+
+            /*
+             * Methods called from the html-teplate
+             */
+
+            $scope.attributeHasError = function (attribute) {
+                return attribute.$$error !== null;
+            };
 
             $scope.hasOperationName = function() {
                 if( ! $scope.method ) {
@@ -66,6 +100,18 @@ angular.module('webUpdates')
                 return name;
             };
 
+            $scope.hasErrors = function () {
+                return $scope.errors.length > 0;
+            };
+
+            $scope.hasWarnings = function () {
+                return $scope.warnings.length > 0;
+            };
+
+            $scope.hasInfos = function () {
+                return $scope.infos.length > 0;
+            };
+
             $scope.navigateToSelect = function () {
                 $state.transitionTo('select');
             };
@@ -77,5 +123,7 @@ angular.module('webUpdates')
                     name: $scope.objectName
                 });
             };
+
+
 
         }]);
