@@ -92,10 +92,10 @@
                 <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
             </div>
             <div class="modal-body margin-left">
-                <select id="selectAttribute" ng-options="item.name for item in addableAttributes" ng-model="selectedAttributeType" class="form-control select-height"/>
+                <select id="selectAttribute" ng-options="item.name for item in addableAttributes" ng-model="selectedAttributeType"
+                        class="form-control select-height"></select>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="blue-button" data-dismiss="modal" value="Close" />
                 <input type="submit" class="blue-button" data-dismiss="modal" ng-click="addAttributeAfterAttribute()" value="Add" />
             </div>
         </div>
