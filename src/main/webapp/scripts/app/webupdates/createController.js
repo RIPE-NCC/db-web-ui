@@ -124,32 +124,48 @@ angular.module('webUpdates')
                 return true;
             };
 
-            var onSubmitSuccess = function (resp) {
-                var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                // stick created object in temporary store, so display can fetch it from here
-                MessageStore.add(whoisResources.getObjectUid(), whoisResources);
-                // make transition to next display screen
-                $state.transitionTo('display', {
-                    source: $scope.source,
-                    objectType: $scope.objectType,
-                    name: whoisResources.getObjectUid(),
-                    method:$scope.operation
-                });
-            };
-
-            var onSubmitError = function (resp) {
-                if (!resp.data) {
-                    // TIMEOUT: to be handled globally by response interceptor
-                } else {
-                    var whoisResources = wrapAndEnrichResources(resp.data);
-                    validateForm();
-                    setErrors(whoisResources);
-                }
-            };
 
             $scope.submit = function () {
-                if (validateForm() === false) {
-                } else {
+
+                var onSubmitSuccess = function (resp) {
+                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                    // stick created object in temporary store, so display can fetch it from here
+                    MessageStore.add(whoisResources.getObjectUid(), whoisResources);
+                    // make transition to next display screen
+                    $state.transitionTo('display', {
+                        source: $scope.source,
+                        objectType: $scope.objectType,
+                        name: whoisResources.getObjectUid(),
+                        method:$scope.operation
+                    });
+                };
+
+                var onSubmitError = function (resp) {
+                    if (!resp.data) {
+                        // TIMEOUT: to be handled globally by response interceptor
+                    } else {
+                        var whoisResources = wrapAndEnrichResources(resp.data);
+                        validateForm();
+                        setErrors(whoisResources);
+                    }
+                };
+
+                var validateForm = function () {
+                    var status = $scope.attributes.validate();
+                    return status;
+                };
+
+                var stripNulls = function () {
+                    $scope.attributes = wrapAndEnrichAttributes($scope.attributes.removeNullAttributes());
+                };
+
+                var clearErrors = function () {
+                    $scope.errors = [];
+                    $scope.warnings = [];
+                    $scope.attributes.clearErrors();
+                };
+
+                if (validateForm() ) {
                     stripNulls();
                     clearErrors();
                     if (!$scope.name) {
@@ -233,18 +249,6 @@ angular.module('webUpdates')
              * Private methods
              */
 
-            var validateForm = function () {
-                var status = $scope.attributes.validate();
-                return status;
-            };
-
-            var setErrors = function (whoisResources) {
-                populateFieldSpecificErrors(whoisResources);
-                $scope.errors = whoisResources.getGlobalErrors();
-                $scope.warnings = whoisResources.getGlobalWarnings();
-                $scope.infos = whoisResources.getGlobalInfos();
-            };
-
             var populateFieldSpecificErrors = function (resp) {
                 _.map($scope.attributes, function (attr) {
                     // keep existing error messages
@@ -258,15 +262,13 @@ angular.module('webUpdates')
                 });
             };
 
-            var stripNulls = function () {
-                $scope.attributes = wrapAndEnrichAttributes($scope.attributes.removeNullAttributes());
+            var setErrors = function (whoisResources) {
+                populateFieldSpecificErrors(whoisResources);
+                $scope.errors = whoisResources.getGlobalErrors();
+                $scope.warnings = whoisResources.getGlobalWarnings();
+                $scope.infos = whoisResources.getGlobalInfos();
             };
 
-            var clearErrors = function () {
-                $scope.errors = [];
-                $scope.warnings = [];
-                $scope.attributes.clearErrors();
-            };
 
 
         }]);
