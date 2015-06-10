@@ -210,7 +210,7 @@ describe('webUpdates: CreateController', function () {
 
         expect($scope.attributes.length).toEqual(3);
         expect($scope.attributes[1].name).toEqual('mnt-by');
-        expect($scope.attributes[1].value).toEqual('TESTSSO-MNT');
+        expect($scope.attributes[1].value).toEqual('TEST-MNT');
 
     });
 
