@@ -247,7 +247,8 @@ angular.module('webUpdates')
                 $state.transitionTo('display', {
                     source: $scope.source,
                     objectType: $scope.objectType,
-                    name: whoisResources.getObjectUid()
+                    name: whoisResources.getObjectUid(),
+                    method:$scope.operation
                 });
             };
 

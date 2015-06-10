@@ -8,6 +8,7 @@ angular.module('webUpdates')
             $scope.objectSource = $stateParams.source;
             $scope.objectType = $stateParams.objectType;
             $scope.objectName = $stateParams.name;
+            $scope.method = $stateParams.method; // optional: added by create- and modify-controller
 
             // Initalize the UI
             $scope.errors = [];
@@ -45,6 +46,25 @@ angular.module('webUpdates')
             } else {
                 fetchObjectViaRest();
             }
+
+            $scope.hasOperationName = function() {
+                if( ! $scope.method ) {
+                    return false;
+                }
+                return true;
+            };
+
+            $scope.getOperationName = function() {
+                var name = "";
+                if( $scope.method ) {
+                    if ($scope.method === "Create") {
+                        name = "created";
+                    } else if ($scope.method === "Modify") {
+                        name = "modified";
+                    }
+                }
+                return name;
+            };
 
             $scope.navigateToSelect = function () {
                 $state.transitionTo('select');

@@ -1,5 +1,5 @@
-<div ng-if="!hasErrors()" class="alert alert-success">
-    <p>Your object has been successfully created</p>
+<div ng-if="hasOperationName()" class="alert alert-success">
+    <p>Your object has been successfully {{getOperationName()}}</p>
 </div>
 
 <div ng-if="hasErrors()" class="alert-expired alert alert-danger">
