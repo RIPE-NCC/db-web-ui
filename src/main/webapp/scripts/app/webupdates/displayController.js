@@ -20,13 +20,6 @@ angular.module('webUpdates')
             $scope.warnings = [];
             $scope.infos = [];
 
-            var setErrors = function (whoisResources) {
-                populateFieldSpecificErrors(whoisResources);
-                $scope.errors = whoisResources.getGlobalErrors();
-                $scope.warnings = whoisResources.getGlobalWarnings();
-                $scope.infos = whoisResources.getGlobalInfos();
-            };
-
             var populateFieldSpecificErrors = function (resp) {
                 _.map($scope.attributes, function (attr) {
                     // keep existing error messages
@@ -39,6 +32,14 @@ angular.module('webUpdates')
                     return attr;
                 });
             };
+
+            var setErrors = function (whoisResources) {
+                populateFieldSpecificErrors(whoisResources);
+                $scope.errors = whoisResources.getGlobalErrors();
+                $scope.warnings = whoisResources.getGlobalWarnings();
+                $scope.infos = whoisResources.getGlobalInfos();
+            };
+
 
             var fetchObjectViaRest = function () {
                 $resource('api/whois/:source/:objectType/:objectName', {
