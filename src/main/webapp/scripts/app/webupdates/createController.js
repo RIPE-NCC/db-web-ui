@@ -164,7 +164,7 @@ angular.module('webUpdates')
 
             $scope.addAttributeAfterAttribute = function () {
                 $scope.attributes = WhoisResources.wrapAttributes(
-                    WhoisMetaService.enrichAttributesWithMetaInfo($scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute))
+                    WhoisMetaService.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute))
                 );
             };
 
