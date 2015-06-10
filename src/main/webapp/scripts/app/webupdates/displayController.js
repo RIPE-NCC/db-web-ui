@@ -4,11 +4,11 @@ angular.module('webUpdates')
     .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore',
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore) {
 
-
-            /*
-             * Start of initialisation phase
-             */
             var onCreate = function() {
+
+                /*
+                 * Start of initialisation phase
+                 */
 
                 // extract parameters from the url
                 $scope.objectSource = $stateParams.source;
@@ -127,7 +127,6 @@ angular.module('webUpdates')
                     name: $scope.objectName
                 });
             };
-
-
+            
 
         }]);

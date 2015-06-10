@@ -5,9 +5,8 @@ angular.module('webUpdates')
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
             /*
-             * Functions used during initialisation
+             * Methods used to make sure that attributes have meta information and have utility functions
              */
-
             var wrapAndEnrichAttributes = function( attrs) {
                 $scope.attributes = WhoisResources.wrapAttributes(
                     WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs)
@@ -24,6 +23,9 @@ angular.module('webUpdates')
             };
 
             var onCreate = function() {
+                /*
+                 * Start of initialisation phase
+                 */
                 var fetchObjectViaRest = function () {
                     $resource('api/whois/:source/:objectType/:name', {
                         source: $scope.source,
@@ -45,10 +47,6 @@ angular.module('webUpdates')
                         );
                     })
                 };
-
-                /*
-                 * Start of initialisation phase
-                 */
 
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
@@ -102,7 +100,6 @@ angular.module('webUpdates')
              * Methods called from the html-teplate
              */
 
-            // Methods called from the template
             $scope.hasErrors = function () {
                 return $scope.errors.length > 0;
             };
@@ -127,18 +124,43 @@ angular.module('webUpdates')
                 return true;
             };
 
+            var onSubmitSuccess = function (resp) {
+                var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                // stick created object in temporary store, so display can fetch it from here
+                MessageStore.add(whoisResources.getObjectUid(), whoisResources);
+                // make transition to next display screen
+                $state.transitionTo('display', {
+                    source: $scope.source,
+                    objectType: $scope.objectType,
+                    name: whoisResources.getObjectUid(),
+                    method:$scope.operation
+                });
+            };
+
+            var onSubmitError = function (resp) {
+                if (!resp.data) {
+                    // TIMEOUT: to be handled globally by response interceptor
+                } else {
+                    var whoisResources = wrapAndEnrichResources(resp.data);
+                    validateForm();
+                    setErrors(whoisResources);
+                }
+            };
+
             $scope.submit = function () {
                 if (validateForm() === false) {
                 } else {
                     stripNulls();
                     clearErrors();
                     if (!$scope.name) {
+                        // perform POST to create
                         $resource('api/whois/:source/:objectType',
                             {source: $scope.source, objectType: $scope.objectType})
                             .save(WhoisResources.embedAttributes($scope.attributes),
                                 onSubmitSuccess,
                                 onSubmitError);
                     } else {
+                        // perform PUT to modify
                         $resource('api/whois/:source/:objectType/:name',
                             {source: $scope.source, objectType: $scope.objectType, name: $scope.name},
                             {'update': {method: 'PUT'}})
@@ -244,29 +266,6 @@ angular.module('webUpdates')
                 $scope.errors = [];
                 $scope.warnings = [];
                 $scope.attributes.clearErrors();
-            };
-
-            var onSubmitSuccess = function (resp) {
-                var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                // stick created object in temporary store, so display can fetch it from here
-                MessageStore.add(whoisResources.getObjectUid(), whoisResources);
-                // make transition to next display screen
-                $state.transitionTo('display', {
-                    source: $scope.source,
-                    objectType: $scope.objectType,
-                    name: whoisResources.getObjectUid(),
-                    method:$scope.operation
-                });
-            };
-
-            var onSubmitError = function (resp) {
-                if (!resp.data) {
-                    // TIMEOUT: to be handled globally by response interceptor
-                } else {
-                    var whoisResources = wrapAndEnrichResources(resp.data);
-                    validateForm();
-                    setErrors(whoisResources);
-                }
             };
 
 
