@@ -171,10 +171,10 @@ describe('webUpdates: CreateController', function () {
                         severity: 'Error',
                         attribute: {
                             name: 'as-block',
-                            value: 'INVALID'
+                            value: 'MY-AS-BLOCK'
                         },
                         text: '\'%s\' is not valid for this object type',
-                        args: [{value: 'XYZ'}]
+                        args: [{value: 'MY-AS-BLOCK'}]
                     }
                 ]
             }
@@ -187,7 +187,7 @@ describe('webUpdates: CreateController', function () {
 
         expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
         expect($scope.warnings[0].plainText).toEqual('Not authenticated');
-        expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('\'XYZ\' is not valid for this object type');
+        expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('\'MY-AS-BLOCK\' is not valid for this object type');
 
         expect($state.current.name).toBe(stateBefore);
 

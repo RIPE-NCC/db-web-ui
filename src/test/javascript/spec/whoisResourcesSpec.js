@@ -51,6 +51,17 @@ describe('dbWebApp: WhoisResources', function () {
 
         var errorResponse = $whoisResources.wrapWhoisResources({
             errormessages: {
+                objects: {
+                    object: [
+                        {
+                            attributes: {
+                                attribute: [
+                                    {name: 'admin-c', value: 'XYZ'}
+                                ]
+                            }
+                        }
+                    ]
+                },
                 errormessage: [
                     {
                         severity: 'Error',
@@ -64,10 +75,10 @@ describe('dbWebApp: WhoisResources', function () {
                         severity: 'Error',
                         attribute: {
                             name: 'admin-c',
-                            value: 'INVALID'
+                            value: 'XYZ'
                         },
                         text: '\'%s\' is not valid for this object type',
-                        args: [{value: 'admin-c'}]
+                        args: [{value: 'XYZ'}]
                     }
                 ]
             }
@@ -104,17 +115,16 @@ describe('dbWebApp: WhoisResources', function () {
             'Unrecognized source: INVALID_SOURCE %s'
         );
 
-
-        expect(errorResponse.getErrorsOnAttribute('admin-c')).toEqual([
+        expect(errorResponse.getErrorsOnAttribute('admin-c', 'XYZ')).toEqual([
             {
                 severity: 'Error',
                 attribute: {
                     name: 'admin-c',
-                    value: 'INVALID'
+                    value: 'XYZ'
                 },
                 text: '\'%s\' is not valid for this object type',
-                args: [{value: 'admin-c'}],
-                plainText: '\'admin-c\' is not valid for this object type'
+                args: [{value: 'XYZ'}],
+                plainText: '\'XYZ\' is not valid for this object type'
             }
         ]);
 

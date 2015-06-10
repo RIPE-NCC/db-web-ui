@@ -67,7 +67,7 @@ angular.module('dbWebApp')
                 });
         };
 
-        var getErrorsOnAttribute = function (attributeName) {
+        var getErrorsOnAttribute = function (attributeName, attributeValue) {
             if( ! this.errormessages ) {
                 return [];
             }
@@ -76,7 +76,7 @@ angular.module('dbWebApp')
                 function (errorMessage) {
                     if (errorMessage.attribute) {
                         errorMessage.plainText = self.readableError(errorMessage);
-                        return errorMessage.attribute.name === attributeName;
+                        return errorMessage.attribute.name === attributeName && errorMessage.attribute.value === attributeValue;
                     }
                     return false;
                 });

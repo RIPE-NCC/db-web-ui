@@ -220,7 +220,7 @@ angular.module('webUpdates')
                 _.map($scope.attributes, function (attr) {
                     // keep existing error messages
                     if (!attr.$$error) {
-                        var errors = resp.getErrorsOnAttribute(attr.name);
+                        var errors = resp.getErrorsOnAttribute(attr.name, attr.value);
                         if (errors && errors.length > 0) {
                             attr.$$error = errors[0].plainText;
                         }
