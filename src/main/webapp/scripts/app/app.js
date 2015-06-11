@@ -5,7 +5,9 @@ angular.module('dbWebApp', [
     'angular-md5',
     'ngResource',
     'webUpdates',
-    'interceptors'])
+    'interceptors',
+    'angulartics',
+    'angulartics.google.tagmanager'])
 .config(function ($stateProvider) {
     $stateProvider
         .state('error', {
