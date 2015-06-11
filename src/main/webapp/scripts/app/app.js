@@ -4,7 +4,9 @@ angular.module('dbWebApp', [
     'ui.router',
     'ngResource',
     'webUpdates',
-    'interceptors'])
+    'interceptors',
+    'angulartics',
+    'angulartics.google.tagmanager'])
 .config(function ($stateProvider, $locationProvider) {
 	//$locationProvider.html5Mode(true);
 	
