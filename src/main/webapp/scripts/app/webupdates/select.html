@@ -4,18 +4,26 @@
 <form id="selectForm" class="grey padding pull-left" style="width: 100%;">
     <div>
 	    <label>Select object-type</label>
-	    <select ng-model="selectedObjectType"
+	    <select ng-model="selected.objectType"
 	            ng-required="true"
 	            ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
 	</div>
     <br/>
 
     <div>
-		<label>Select source</label>
-    	<select ng-model="selectedSource"
-    	        ng-required="true"
-                ng-options="source for source in sources" class="form-control select-height"></select>
-	</div>
+        <label>Select source: </label>
+        <ul class="radio">
+            <li data-ng-repeat="src in sources" class="ga-ripedb-checkbox">
+                <input
+                    name="source-radio"
+                    type="radio"
+                    value="{{src}}"
+                    ng-model="selected.source" />
+                {{src}}
+            </li>
+        </ul>
+
+    </div>
     <br/>
 
     <button ng-click="navigateToCreate()" class="blue-button pull-right">Create</button>
