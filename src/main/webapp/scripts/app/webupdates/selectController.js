@@ -21,7 +21,6 @@ angular.module('webUpdates')
             /*
              * Methods called from the html-teplate
              */
-
             $scope.navigateToCreate = function () {
                 $state.transitionTo('create', {source:$scope.selected.source, objectType:$scope.selected.objectType});
             };
