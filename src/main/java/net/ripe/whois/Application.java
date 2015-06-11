@@ -4,9 +4,9 @@ import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
@@ -19,7 +19,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
-@ComponentScan
+@ComponentScan(basePackages = "net.ripe.db.whois.common.sso, net.ripe.whois")
 @EnableAutoConfiguration
 public class Application {
 
@@ -44,6 +44,8 @@ public class Application {
         } else {
             log.info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
             Collection activeProfiles = Arrays.asList(env.getActiveProfiles());
+
+            // TODO: refactor this (check for any single profile)
             if (activeProfiles.contains("dev") && activeProfiles.contains("prod")) {
                 log.error("You have misconfigured your application! " +
                     "It should not run with both the 'dev' and 'prod' profiles at the same time.");
@@ -80,6 +82,7 @@ public class Application {
     /**
      * If no profile has been configured, set by default the "dev" profile.
      */
+     // TODO: explicitly set a profile or fail (don't run as dev by default)
     private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active") &&
                 !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
@@ -88,5 +91,11 @@ public class Application {
         }
     }
 
+    @Bean
+    public FilterRegistrationBean crowdFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new CrowdInterceptor());
+        filterRegistrationBean.addUrlPatterns("/api/*");
+        return filterRegistrationBean;
+    }
 
 }

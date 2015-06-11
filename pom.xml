@@ -68,6 +68,7 @@
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
+        <whois.version>1.80</whois.version>
     </properties>
 
     <dependencies>
@@ -84,6 +85,57 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-json-org</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock</artifactId>
+            <version>1.56</version>
+            <!-- Include everything below here if you have dependency conflicts -->
+            <classifier>standalone</classifier>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jetty</artifactId>
+                    <groupId>org.mortbay.jetty</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jackson-core</artifactId>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jackson-annotations</artifactId>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jackson-databind</artifactId>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>httpclient</artifactId>
+                    <groupId>org.apache.httpcomponents</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jsonassert</artifactId>
+                    <groupId>org.skyscreamer</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>xmlunit</artifactId>
+                    <groupId>xmlunit</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>json-path</artifactId>
+                    <groupId>com.jayway.jsonpath</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jopt-simple</artifactId>
+                    <groupId>net.sf.jopt-simple</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -120,6 +172,29 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.ripe.db</groupId>
+            <artifactId>whois-client</artifactId>
+            <version>${whois.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jul-to-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
@@ -186,7 +261,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
     </dependencies>
 
     <repositories>
@@ -496,7 +570,7 @@
             </build>
             <properties>
                 <!-- log configuration -->
-                <logback.loglevel>INFO</logback.loglevel>
+                <logback.loglevel>DEBUG</logback.loglevel>
             </properties>
             <dependencies>
                 <dependency>

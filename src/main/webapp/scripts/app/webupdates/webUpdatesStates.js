@@ -11,12 +11,17 @@ angular.module('webUpdates')
                 controller: 'SelectController'
             })
             .state('create', {
-                url: '/webupdates/create/:objectType/:source',
+                url: '/webupdates/create/:source/:objectType',
+                templateUrl: 'scripts/app/webupdates/create.html',
+                controller: 'CreateController'
+            })
+            .state('modify', {
+                url: '/webupdates/modify/:source/:objectType/:name',
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
             })
             .state('display', {
-                url: '/webupdates/display/:objectType/:name',
+                url: '/webupdates/display/:source/:objectType/:name?method',
                 templateUrl: 'scripts/app/webupdates/display.html',
                 controller: 'DisplayController'
             });

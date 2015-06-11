@@ -6,10 +6,10 @@
     https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template
   -->
  <head>
-	 <base href="/db-web-ui/">
      <script src="bower_components/angular/angular.js"></script>
      <script src="bower_components/angular-resource/angular-resource.js"></script>
      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+     <script src="bower_components/angular-md5/angular-md5.min.js"></script>
      <script src="bower_components/lodash/lodash.js"></script>
      <script src="bower_components/lodash/lodash.js"></script>
 	 <script src="bower_components/angulartics/dist/angulartics.min.js"></script>
@@ -1041,22 +1041,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
          </div>
      </div>
 
-
-
-
  </footer>
 
  <!-- Footer JavaScript placeholder FOOTERMARKER -->
     <script src="scripts/app/app.js"></script>
+    <script src="scripts/app/app.constants.js"></script>
 
     <!-- Interceptors -->
     <script src="scripts/app/interceptors/interceptorsModule.js"></script>
     <script src="scripts/app/interceptors/errorInterceptors.js"></script>
+    <script src="scripts/app/interceptors/authenticationInterceptor.js"></script>
 
     <!-- App Modules -->
     <script src="scripts/app/whoisMetaService.js"></script>
-    <script src="scripts/app/whoisRestService.js"></script>
-     <script src="scripts/app/whoisResourcesUtil.js"></script>
+    <script src="scripts/app/whoisResources.js"></script>
     <script src="scripts/app/messageStore.js"></script>
 
     <!-- WebUpdates Module -->

@@ -2,14 +2,13 @@
 
 angular.module('dbWebApp', [
     'ui.router',
+    'angular-md5',
     'ngResource',
     'webUpdates',
     'interceptors',
     'angulartics',
     'angulartics.google.tagmanager'])
-.config(function ($stateProvider, $locationProvider) {
-	//$locationProvider.html5Mode(true);
-	
+.config(function ($stateProvider) {
     $stateProvider
         .state('error', {
             url: '/public/error',

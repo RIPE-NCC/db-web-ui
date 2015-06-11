@@ -1,4 +1,3 @@
-<h1>Create &quot;{{objectType}}&quot; in source {{source}}</h1>
 
 <div ng-if="hasErrors()" class="alert-expired alert alert-danger">
     <p ng-repeat="error in errors">{{error.plainText}}</p>
@@ -8,17 +7,117 @@
     <p ng-repeat="warning in warnings">{{warning.plainText}}</p>
 </div>
 
-<form id="createForm" class="grey padding pull-left" style="width: 100%;">
-    <ul class="form-fields">
-        <li ng-repeat="attribute in attributes">
+<div ng-if="hasInfos()" class="alert alert-warning">
+    <p ng-repeat="info in infos">{{info.plainText}}</p>
+</div>
+
+<form id="createForm">
+    <ul class="form-fields maintainer-fields">
+        <strong>Please select your maintainers before creating the object</strong>
+        <li ng-repeat="attribute in (attributes | filter: {name: 'mnt-by'})">
+
+            <!-- <li ng-repeat="attribute in attributes">
+            <label>{{attribute.name}}</label> -->
+            <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
+                   ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
+            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
+        </li>
+    </ul>
+
+    <div ng-if="hasMntners()">
+
+    <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
+
+    <ul class="form-fields appeared-fields">
+
+        <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
+
+                <!-- <li ng-repeat="attribute in attributes"> -->
             <label>{{attribute.name}}</label>
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
+
+            <ul class="input-group-btn">
+                <li>
+                    <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type"
+                                ng-disabled="!canAttributeBeDuplicated(attribute)" ng-click="duplicateAttribute(attribute)" >
+                    <span class="fa fa-arrow-down degree-25"></span>
+                    </a>
+                </li>
+                <li>
+                    <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)"
+                                    ng-click="displayAddAttributeDialog(attribute)">
+                        <span class="fa fa-plus"></span>
+                    </a>
+                </li>
+                <li>
+                    <a id="removeAttribute" class="btn btn-default" title="Remove current attribute"
+                       ng-disabled="!canAttributeBeRemoved(attribute)" ng-click="removeAttribute(attribute)" >
+                        <span class="fa fa-trash" ></span>
+                    </a>
+                </li>
+                <li>
+                <a id="changePassword" class="btn btn-default" title="Add/change Password (opens dialog)" ng-click="displayAuthDialog(attribute)" ng-show="(attribute.name == 'auth')">
+                    <span class="fa fa-lock fa-3"></span>
+                </a>
+                </li>
+                <li>
+                <a id="help" class="btn btn-default disabled" >
+                    <span class="fa fa-question"></span>
+                </a>
+                </li>
+                <li>
+                <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
+                    <span class="fa fa-certificate"></span>
+                </a>
+                </li>
+            </ul>
         </li>
     </ul>
     <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
     <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
+    </div>
 </form>
+
+<div id="insertAttributeModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="commonModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content no-rounded">
+            <div>
+                <i class="fa fa-close close" data-dismiss="modal" aria-label="Close"></i>
+                <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
+            </div>
+            <div class="modal-body margin-left">
+                <select id="selectAttribute" ng-options="item.name for item in addableAttributes" ng-model="selectedAttributeType"
+                        class="form-control select-height"></select>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="addAttributeAfterAttribute()" value="Add" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="authModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content no-rounded">
+            <div>
+                <i class="fa fa-close close" data-dismiss="modal" aria-label="Close"></i>
+                <h5 class="modal-title" id="passwordModalLabel">Enter Password For Maintainer</h5>
+            </div>
+            <div class="modal-body">
+                <div class="pass-strength-output"></div>
+                <input type="password" class="form-control margin-bottom" ng-model="password"/>
+                <input type="password" class="form-control" ng-model="passwordAgain" ng-keyup="verifyAuthDialog()"/>
+                <a title="Enter your password in plain text. Any characters outside the US ASCII range may cause problems with some RIPE Database update methods."></a>
+                <div class="passwords-matched-output">{{authPasswordMessage}}</div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="blue-button" data-dismiss="modal" value="Close"/>
+                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="verifyAuthDialog() && populateAuthAttribute()" value="Add"/>
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,15 +5,15 @@ server:
         key-store-password: OBF:1v2j1uum1xtv1zej1zer1xtn1uvk1v1v
 spring:
     profiles:
-        active: dev
+        active: prepdev
 
 rest:
     api:
-        ripeUrl: http://db-dev-1.dev.ripe.net:1080/whois
+        ripeUrl: http://db-pre-1.prepdev.ripe.net:1080/whois
 
 internal:
     api:
-        url: http://int-dev.db.ripe.net
+        url: http://int-prepdev.db.ripe.net
         key: DB-WHOIS-d5395e7fbf8d
 
 # SSO translation properties

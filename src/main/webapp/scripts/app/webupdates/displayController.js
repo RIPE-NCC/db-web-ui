@@ -1,29 +1,132 @@
 'use strict';
 
 angular.module('webUpdates')
-.controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResourcesUtil','MessageStore',
-function ($scope, $stateParams, $state, $resource, WhoisResourcesUtil, MessageStore) {
+    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore) {
 
-    // extract parameters from the url
-    $scope.objectType = $stateParams.objectType;
-    $scope.name = $stateParams.name;
+            var onCreate = function() {
 
-    // Initalize the UI
-    $scope.errors = [];
-    $scope.warnings = [];
+                /*
+                 * Start of initialisation phase
+                 */
 
-    // fetch just created object from temporary store
-    var whoisResources = WhoisResourcesUtil.wrapWhoisResources(MessageStore.get($scope.name));
-    if (whoisResources) {
-        // Use version that we was just before created or modified
-        $scope.attributes = whoisResources.getAttributes();
-        $scope.warnings = whoisResources.getGlobalWarnings();
-    } else {
-        // TODO Fetch fresh value via HTTP-GET
-    }
+                // extract parameters from the url
+                $scope.objectSource = $stateParams.source;
+                $scope.objectType = $stateParams.objectType;
+                $scope.objectName = $stateParams.name;
+                $scope.method = $stateParams.method; // optional: added by create- and modify-controller
 
-    $scope.navigateToSelect = function () {
-        $state.transitionTo('select');
-    };
+                // Initalize the UI
+                $scope.errors = [];
+                $scope.warnings = [];
+                $scope.infos = [];
 
-}]);
+                var populateFieldSpecificErrors = function (resp) {
+                    _.map($scope.attributes, function (attr) {
+                        // keep existing error messages
+                        if (!attr.$$error) {
+                            var errors = resp.getErrorsOnAttribute(attr.name, attr.value);
+                            if (errors && errors.length > 0) {
+                                attr.$$error = errors[0].plainText;
+                            }
+                        }
+                        return attr;
+                    });
+                };
+
+                var setErrors = function (whoisResources) {
+                    populateFieldSpecificErrors(whoisResources);
+                    $scope.errors = whoisResources.getGlobalErrors();
+                    $scope.warnings = whoisResources.getGlobalWarnings();
+                    $scope.infos = whoisResources.getGlobalInfos();
+                };
+
+
+                var fetchObjectViaRest = function () {
+                    $resource('api/whois/:source/:objectType/:objectName', {
+                        source: $scope.objectSource,
+                        objectType: $scope.objectType,
+                        objectName: $scope.objectName
+                    })
+                        .get(function (resp) {
+                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                            $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                            setErrors(whoisResources);
+                        }, function (resp) {
+                            var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
+                            if (!_.isUndefined(whoisResources)) {
+                                setErrors(whoisResources);
+                            }
+                        });
+                };
+
+                // fetch just created object from temporary store
+                var cached = MessageStore.get($scope.objectName);
+                if (cached) {
+                    var whoisResources = WhoisResources.wrapWhoisResources(cached);
+                    // Use version that we was just before created or modified
+                    $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                    setErrors(whoisResources);
+                } else {
+                    fetchObjectViaRest();
+                }
+
+                /*
+                 * End of initialisation phase
+                 */
+            };
+            onCreate();
+
+            /*
+             * Methods called from the html-teplate
+             */
+
+            $scope.attributeHasError = function (attribute) {
+                return attribute.$$error !== null;
+            };
+
+            $scope.hasOperationName = function() {
+                if( ! $scope.method ) {
+                    return false;
+                }
+                return true;
+            };
+
+            $scope.getOperationName = function() {
+                var name = "";
+                if( $scope.method ) {
+                    if ($scope.method === "Create") {
+                        name = "created";
+                    } else if ($scope.method === "Modify") {
+                        name = "modified";
+                    }
+                }
+                return name;
+            };
+
+            $scope.hasErrors = function () {
+                return $scope.errors.length > 0;
+            };
+
+            $scope.hasWarnings = function () {
+                return $scope.warnings.length > 0;
+            };
+
+            $scope.hasInfos = function () {
+                return $scope.infos.length > 0;
+            };
+
+            $scope.navigateToSelect = function () {
+                $state.transitionTo('select');
+            };
+
+            $scope.navigateToModify = function () {
+                $state.transitionTo('modify', {
+                    source: $scope.objectSource,
+                    objectType: $scope.objectType,
+                    name: $scope.objectName
+                });
+            };
+            
+
+        }]);

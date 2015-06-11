@@ -1,15 +1,28 @@
 'use strict';
 
 angular.module('webUpdates')
-.controller('SelectController', ['$scope', '$location', 'WhoisMetaService',
-	function ($scope, $location, WhoisMetaService) {
-        $scope.objectTypes   = WhoisMetaService.getObjectTypes();
-        $scope.selectedObjectType = $scope.objectTypes[0];
-        $scope.sources   = ['RIPE','TEST'];
-        $scope.selectedSource = $scope.sources[0];
+    .controller('SelectController', ['$scope', '$state', 'WhoisResources',
+        function ($scope, $state, WhoisResources) {
+            var onCreate = function() {
+                /*
+                 * UI initialisation
+                 */
+                $scope.objectTypes = WhoisResources.getObjectTypes();
+                $scope.sources = ['RIPE', 'TEST'];
 
-        $scope.navigateToCreate = function() {
-          $location.path( '/webupdates/create/' + $scope.selectedObjectType + '/' + $scope.selectedSource );
-          //NavigationService.navigateToCreate( $scope.selectedObjectType, $scope.selectedSource );
-        };
-}]);
+                $scope.selected = {
+                    source: $scope.sources[0],
+                    objectType: $scope.objectTypes[0]
+                };
+
+            };
+            onCreate();
+
+            /*
+             * Methods called from the html-teplate
+             */
+            $scope.navigateToCreate = function () {
+                $state.transitionTo('create', {source:$scope.selected.source, objectType:$scope.selected.objectType});
+            };
+
+        }]);
