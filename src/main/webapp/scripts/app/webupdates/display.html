@@ -20,8 +20,8 @@
     <ul class="success-fields grey">
         <li ng-repeat="attribute in attributes">
             <label>{{attribute.name}}</label>
-            <div ng-hide="attribute.$$error == null" class="text-error">
-	            <span>Icon</span>
+            <div ng-hide="attribute.$$error == null" class="modify-feedback">
+	            <i class="fa fa-info-circle"></i>
 	            <span>{{attribute.$$error}}</span>
 	        </div>
             <p>{{attribute.value}}</p>
