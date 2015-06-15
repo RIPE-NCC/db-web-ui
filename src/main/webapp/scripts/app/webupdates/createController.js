@@ -112,10 +112,6 @@ angular.module('webUpdates')
                 return $scope.infos.length > 0;
             };
 
-            $scope.attributeHasError = function (attribute) {
-                return attribute.$$error !== null;
-            };
-
             $scope.hasMntners = function () {
                 var attrs = $scope.attributes.getAllAttributesWithValueOnName('mnt-by');
                 if (!attrs || attrs.length == 0) {
