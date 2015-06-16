@@ -6,6 +6,7 @@ angular.module('dbWebApp', [
     'ngResource',
     'webUpdates',
     'interceptors',
+    'selectize',
     'angulartics',
     'angulartics.google.tagmanager'])
 .config(function ($stateProvider) {

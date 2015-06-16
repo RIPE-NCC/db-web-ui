@@ -22,24 +22,21 @@ describe('webUpdates: CreateController', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
 
+            var BackendService = {}
+            BackendService.getUserMaintainers = function (){return ['TEST-MNT', 'TESTSSO-MNT']};
+
+
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;
 
             _$controller_('CreateController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, BackendService: BackendService
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
-            $httpBackend.whenGET('api/user/maintainers').respond({
-                objects: {
-                    object: [
-                        {'primary-key': {attribute: [{name: 'mntner', value: 'TEST-MNT'}]}},
-                        {'primary-key': {attribute: [{name: 'mntner', value: 'TESTSSO-MNT'}]}}
-                    ]
-                }
-            });
+
 
             $httpBackend.flush();
 
@@ -65,13 +62,6 @@ describe('webUpdates: CreateController', function () {
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toBeUndefined();
         expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBeUndefined();
 
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].$$error).toBeUndefined();
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
-
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].$$error).toBeUndefined();
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('TESTSSO-MNT');
-
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].$$error).toBeUndefined();
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe(stateBefore);
@@ -86,13 +76,6 @@ describe('webUpdates: CreateController', function () {
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('Mandatory attribute not set');
         expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBeUndefined();
 
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].$$error).toBeUndefined();
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
-
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].$$error).toBeUndefined();
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('TESTSSO-MNT');
-
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[1].$$error).toBeUndefined();
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe(stateBefore);
@@ -194,24 +177,23 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('duplicate attribute', function() {
-        expect($scope.attributes.length).toEqual(4);
+        expect($scope.attributes.length).toEqual(3);
 
         $scope.duplicateAttribute($scope.attributes[1]);
 
-        expect($scope.attributes.length).toEqual(5);
+        expect($scope.attributes.length).toEqual(4);
         expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
         expect($scope.attributes[2].value).toBeUndefined();
     });
 
     it('remove attribute', function() {
-        expect($scope.attributes.length).toEqual(4);
+        expect($scope.attributes.length).toEqual(3);
 
         $scope.removeAttribute($scope.attributes[1]);
 
-        expect($scope.attributes.length).toEqual(3);
-        expect($scope.attributes[1].name).toEqual('mnt-by');
-        expect($scope.attributes[1].value).toEqual('TEST-MNT');
-
+        expect($scope.attributes.length).toEqual(2);
+        expect($scope.attributes[1].name).toEqual('source');
+        expect($scope.attributes[1].value).toEqual('RIPE');
     });
 
 });

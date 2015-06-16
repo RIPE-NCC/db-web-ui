@@ -6,14 +6,18 @@
     https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template
   -->
  <head>
+
+     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+
      <script src="bower_components/angular/angular.js"></script>
      <script src="bower_components/angular-resource/angular-resource.js"></script>
      <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
      <script src="bower_components/angular-md5/angular-md5.min.js"></script>
      <script src="bower_components/lodash/lodash.js"></script>
-     <script src="bower_components/lodash/lodash.js"></script>
 	 <script src="bower_components/angulartics/dist/angulartics.min.js"></script>
 	 <script src="bower_components/angulartics/dist/angulartics-gtm.min.js"></script>
+     <script src="bower_components/selectize/dist/js/standalone/selectize.min.js"></script>
+     <script src="bower_components/angular-selectize2/dist/selectize.js"></script>
      <script src="assets/js/script.js"></script>
      <meta charset="UTF-8">
 
@@ -33,7 +37,7 @@
 
      <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/ie-template.css" />
      <![endif]-->
-
+     <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css">
 
      <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
 
@@ -91,6 +95,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','GTM-WTWTB7');</script>
 <!-- End Google Tag Manager -->
+
+
+
 
 
 
@@ -1054,6 +1061,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
     <!-- App Modules -->
     <script src="scripts/app/whoisMetaService.js"></script>
+    <script src="scripts/app/backendService.js"></script>
+
     <script src="scripts/app/whoisResources.js"></script>
     <script src="scripts/app/messageStore.js"></script>
 

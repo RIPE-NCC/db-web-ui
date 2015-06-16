@@ -304,7 +304,7 @@ angular.module('dbWebApp')
             _.each(this, function(next){
                 result.push(next);
                 if (next.name == after.name && next.value == after.value) {
-                    result.push({name:attr.name});
+                    result.push({name:attr.name, value:attr.value});
                 }
             });
 

@@ -14,14 +14,13 @@
 <form id="createForm">
     <ul class="form-fields maintainer-fields">
         <strong>Please select your maintainers before creating the object</strong>
-        <li ng-repeat="attribute in (attributes | filter: {name: 'mnt-by'})">
+        <selectize config="{create: true, plugins: ['remove_button']}" options="maintainersOptions" ng-model="selectedMaintainers"></selectize>
 
-            <!-- <li ng-repeat="attribute in attributes">
-            <label>{{attribute.name}}</label> -->
-            <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
-                   ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
-            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
-        </li>
+        <p>selectedMaintainers - {{selectedMaintainers}} </p>
+        <p>maintainersOptions - {{maintainersOptions}}</p>
+        <p>attributes - {{attributes}}</p>
+
+
     </ul>
 
     <div ng-if="hasMntners()">

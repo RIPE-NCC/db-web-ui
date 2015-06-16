@@ -1,52 +1,16 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'BackendService', 'WhoisResources', 'MessageStore', 'md5',
+        function ($scope, $stateParams, $state, $resource, BackendService, WhoisResources, MessageStore, md5) {
 
-            /*
-             * Methods used to make sure that attributes have meta information and have utility functions
-             */
-            var wrapAndEnrichAttributes = function( attrs) {
-                $scope.attributes = WhoisResources.wrapAttributes(
-                    WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs)
-                );
-                return $scope.attributes;
-            };
-
-            var wrapAndEnrichResources = function(resp) {
-                var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                if (whoisResources) {
-                    wrapAndEnrichAttributes(whoisResources.getAttributes());
-                }
-                return whoisResources;
-            };
+            $scope.selectedMaintainers = BackendService.getUserMaintainers();
+            //$scope.maintainersOptions = ;
 
             var onCreate = function() {
                 /*
                  * Start of initialisation phase
                  */
-                var fetchObjectViaRest = function () {
-                    $resource('api/whois/:source/:objectType/:name', {
-                        source: $scope.source,
-                        objectType: $scope.objectType,
-                        name: $scope.name
-                    }).get(function (resp) {
-                        wrapAndEnrichResources(resp);
-                    }, function (resp) {
-                        var whoisResources = wrapAndEnrichResources(resp.data);
-                        setErrors(whoisResources);
-                    });
-                };
-
-                var fetchMntnersForSsoAccountViaRest = function () {
-                    $resource('api/user/maintainers').get(function (resp) {
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                        wrapAndEnrichAttributes(
-                            $scope.attributes.mergeSortAttributes('mnt-by', whoisResources.objectNamesAsAttributes('mnt-by'))
-                        );
-                    })
-                };
 
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
@@ -67,8 +31,6 @@ angular.module('webUpdates')
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
-                    // start fetching maintainers for sso-login
-                    fetchMntnersForSsoAccountViaRest();
                 } else {
                     $scope.operation = "Modify";
 
@@ -88,6 +50,20 @@ angular.module('webUpdates')
                 $scope.passwordAgain;
                 $scope.authPasswordMessage;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+
+
+                function fetchObjectViaRest () {
+                    $resource('api/whois/:source/:objectType/:name', {
+                        source: $scope.source,
+                        objectType: $scope.objectType,
+                        name: $scope.name
+                    }).get(function (resp) {
+                        wrapAndEnrichResources(resp);
+                    }, function (resp) {
+                        var whoisResources = wrapAndEnrichResources(resp.data);
+                        setErrors(whoisResources);
+                    });
+                };
 
                 /*
                  * End of initialisation phase
@@ -117,10 +93,10 @@ angular.module('webUpdates')
             };
 
             $scope.hasMntners = function () {
-                var attrs = $scope.attributes.getAllAttributesWithValueOnName('mnt-by');
-                if (!attrs || attrs.length == 0) {
-                    return false;
-                }
+                //var attrs = $scope.attributes.getAllAttributesWithValueOnName('mnt-by');
+                //if (!attrs || attrs.length == 0) {
+                //    return false;
+                //}
                 return true;
             };
 
@@ -164,6 +140,23 @@ angular.module('webUpdates')
                     $scope.warnings = [];
                     $scope.attributes.clearErrors();
                 };
+
+                //$scope.selectedMaintainers
+
+                //$scope.attributes
+
+
+
+
+
+
+                var allMnts = []
+                _.each($scope.selectedMaintainers, function(value) {
+                        allMnts.push({name:'mnt-by', value: value});
+                    }
+                );
+
+                wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', allMnts));
 
                 if (validateForm() ) {
                     stripNulls();
@@ -269,6 +262,24 @@ angular.module('webUpdates')
                 $scope.infos = whoisResources.getGlobalInfos();
             };
 
+
+            /*
+             * Methods used to make sure that attributes have meta information and have utility functions
+             */
+            function wrapAndEnrichAttributes (attrs) {
+                $scope.attributes = WhoisResources.wrapAttributes(
+                    WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs)
+                );
+                return $scope.attributes;
+            };
+
+            function wrapAndEnrichResources (resp) {
+                var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                if (whoisResources) {
+                    wrapAndEnrichAttributes(whoisResources.getAttributes());
+                }
+                return whoisResources;
+            };
 
 
         }]);

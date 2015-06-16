@@ -3,20 +3,16 @@
 angular.module('webUpdates')
     .controller('SelectController', ['$scope', '$state', 'WhoisResources',
         function ($scope, $state, WhoisResources) {
-            var onCreate = function() {
-                /*
-                 * UI initialisation
-                 */
-                $scope.objectTypes = WhoisResources.getObjectTypes();
-                $scope.sources = ['RIPE', 'TEST'];
+            /*
+             * UI initialisation
+             */
+            $scope.objectTypes = WhoisResources.getObjectTypes();
+            $scope.sources = ['RIPE', 'TEST'];
 
-                $scope.selected = {
-                    source: $scope.sources[0],
-                    objectType: $scope.objectTypes[0]
-                };
-
+            $scope.selected = {
+                source: $scope.sources[0],
+                objectType: $scope.objectTypes[0]
             };
-            onCreate();
 
             /*
              * Methods called from the html-teplate
