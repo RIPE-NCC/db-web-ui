@@ -23,7 +23,12 @@ describe('webUpdates: CreateController', function () {
             WhoisResources = _WhoisResources_;
 
             var BackendService = {}
-            BackendService.getUserMaintainers = function (){return ['TEST-MNT', 'TESTSSO-MNT']};
+            BackendService.getUserMaintainers = function (){
+                return [
+                    {'value':'TEST-MNT',   'extras':{'mine':true,'pgp':false,'sso':true,'md5':false}},
+                    {'value':'TESTSSO-MNT', 'extras':{'mine':true,'pgp':false,'sso':true,'md5':true }}
+                ];
+            };
 
 
             $stateParams.objectType = OBJECT_TYPE;
@@ -102,7 +107,7 @@ describe('webUpdates: CreateController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('as-block', "A");
+        $scope.attributes.setSingleAttributeOnName('as-block', 'A');
 
         $scope.submit();
         $httpBackend.flush();
@@ -163,7 +168,7 @@ describe('webUpdates: CreateController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('as-block', "A");
+        $scope.attributes.setSingleAttributeOnName('as-block', 'A');
 
         $scope.submit();
         $httpBackend.flush();
