@@ -54,7 +54,8 @@ angular.module('dbWebApp')
                     $$meta: {
                         $$mandatory:attrMeta.mandatory,
                         $$multiple:attrMeta.multiple,
-                        $$description:self._getAttributeDocumentation(objectTypeName, attr.name)
+                        $$description:self._getAttributeDocumentation(objectTypeName, attr.name),
+                        $$refs:attrMeta.refs
                     }
                 };
             });
@@ -82,7 +83,8 @@ angular.module('dbWebApp')
                         $$idx:idx,
                         $$mandatory:am.mandatory,
                         $$multiple:am.multiple,
-                        $$description:self._getAttributeDocumentation(objectTypeName,am.name)
+                        $$description:self._getAttributeDocumentation(objectTypeName,am.name),
+                        $$refs:am.refs
                     }
                 };
                 idx++;
@@ -105,7 +107,8 @@ angular.module('dbWebApp')
                         $$idx:idx,
                         $$mandatory:x.mandatory,
                         $$multiple:x.multiple,
-                        $$description:self._getAttributeDocumentation(objectTypeName,x.name)
+                        $$description:self._getAttributeDocumentation(objectTypeName,x.name),
+                        $$refs:x.refs
                     }
                 };
                 idx++;

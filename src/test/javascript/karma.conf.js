@@ -53,6 +53,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/microplugin/src/microplugin.js',
             'main/webapp/bower_components/selectize/dist/js/selectize.js',
             'main/webapp/bower_components/angular-selectize2/dist/selectize.js',
+            'main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

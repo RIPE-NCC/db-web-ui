@@ -37,8 +37,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         {
             'type1' : { name: 'type1', description:'Z',
                 'attributes':[
-                    { name:'mandatory1', mandatory:true, 'multiple':false},
-                    { name:'optional1', mandatory:false, 'multiple':true}
+                    { name:'mandatory1', mandatory:true, 'multiple':false,refs:[]},
+                    { name:'optional1', mandatory:false, 'multiple':true,refs:['b']}
                 ]
             }
         };
@@ -52,8 +52,8 @@ describe('dbWebApp: WhoisMetaService', function () {
             {name: 'optional1', value:'optional1value'}
         ];
         expect($whoisMetaService.enrichAttributesWithMetaInfo('type1', attrs)).toEqual([
-            {name: 'mandatory1', value:'mandatory1value', $$meta: {$$mandatory:true, $$multiple:false, $$description:'A'}},
-            {name: 'optional1', value:'optional1value', $$meta: {$$mandatory:false, $$multiple:true, $$description:'B'}}
+            {name: 'mandatory1', value:'mandatory1value', $$meta: {$$mandatory:true, $$multiple:false, $$description:'A',$$refs:[]}},
+            {name: 'optional1', value:'optional1value', $$meta: {$$mandatory:false, $$multiple:true, $$description:'B',$$refs:['b']}}
         ])
     });
 
@@ -64,8 +64,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         {
             'type1' : { name: 'type1', description:'Z',
                 'attributes':[
-                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A'},
-                    { name:'optional1', mandatory:false, 'multiple':true, description:'B'}
+                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A', refs:[]},
+                    { name:'optional1', mandatory:false, 'multiple':true, description:'B', refs:[]}
                 ]
             }
         };
@@ -75,7 +75,7 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService._getMetaAttributesOnObjectType('type1',true)).toEqual([
-            { name:'mandatory1', mandatory:true, 'multiple':false, description:'A'}
+            { name:'mandatory1', mandatory:true, 'multiple':false, description:'A', refs:[]}
         ])
     });
 
@@ -85,8 +85,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         {
             'type1' : { name: 'type1', description:'Z',
                 'attributes':[
-                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A'},
-                    { name:'optional1', mandatory:false, 'multiple':true, description:'B'}
+                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A', refs:[]},
+                    { name:'optional1', mandatory:false, 'multiple':true, description:'B', refs:[]}
                 ]
             }
         };
@@ -96,8 +96,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService._getMetaAttributesOnObjectType('type1',false)).toEqual([
-            { name:'mandatory1', mandatory:true, 'multiple':false, description:'A'},
-            { name:'optional1', mandatory:false, 'multiple':true, description:'B'}
+            { name:'mandatory1', mandatory:true, 'multiple':false, description:'A', refs:[]},
+            { name:'optional1', mandatory:false, 'multiple':true, description:'B', refs:[]}
         ])
     });
 
@@ -107,8 +107,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         {
             'type1' : { name: 'type1', description:'Z',
                 'attributes':[
-                    { name:'mandatory1', mandatory:true, multiple:false, description:'A'},
-                    { name:'optional1', mandatory:false, 'multiple':true, description:'B'}
+                    { name:'mandatory1', mandatory:true, multiple:false, description:'A', refs:[]},
+                    { name:'optional1', mandatory:false, 'multiple':true, description:'B', refs:[]}
                 ]
             }
         };
@@ -118,8 +118,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getAllAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1', $$meta: {$$idx:0, '$$mandatory':true, $$multiple:false, '$$description':'A'}},
-            { name:'optional1',  $$meta: {$$idx:1, '$$mandatory':false, $$multiple:true, '$$description':'B'}}
+            { name:'mandatory1', $$meta: {$$idx:0, '$$mandatory':true, $$multiple:false, '$$description':'A',$$refs:[]}},
+            { name:'optional1',  $$meta: {$$idx:1, '$$mandatory':false, $$multiple:true, '$$description':'B',$$refs:[]}}
         ])
     });
 
@@ -129,8 +129,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         {
             'type1' : { name: 'type1', description:'Z',
                 'attributes':[
-                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A'},
-                    { name:'optional1', mandatory:false, 'multiple':true, description:'B'}
+                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A', refs:[]},
+                    { name:'optional1', mandatory:false, 'multiple':true, description:'B', refs:[]}
                 ]
             }
         };
@@ -140,7 +140,7 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getMandatoryAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1',  $$meta: {$$idx:0,'$$mandatory':true, $$multiple:false, '$$description':'A'}}
+            { name:'mandatory1',  $$meta: {$$idx:0,'$$mandatory':true, $$multiple:false, $$description: 'A', $$refs:[]}}
         ])
     });
 

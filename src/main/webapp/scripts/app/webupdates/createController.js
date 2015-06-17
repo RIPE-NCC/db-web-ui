@@ -15,6 +15,8 @@ angular.module('webUpdates')
                 $scope.objectType = $stateParams.objectType;
                 $scope.name = $stateParams.name;
 
+                $scope.isHelpHidden = true;
+
                 // Initalize the errors and warnings
                 $scope.errors = [];
                 $scope.warnings = [];
