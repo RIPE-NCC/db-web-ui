@@ -32,7 +32,7 @@ public class WhoisService extends RestClient {
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
         final URI uri = composeWhoisUrl(request);
-        if( body == null ) {
+        if (body == null) {
             return restTemplate.exchange(
                 uri,
                 HttpMethod.valueOf(request.getMethod().toUpperCase()),
