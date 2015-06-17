@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'BackendService', 'WhoisResources', 'MessageStore', 'md5',
-        function ($scope, $stateParams, $state, $resource, BackendService, WhoisResources, MessageStore, md5) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
-            $scope.selectedMaintainers = BackendService.getUserMaintainers();
-            //$scope.maintainersOptions = ;
 
             var onCreate = function() {
                 /*
@@ -22,6 +20,10 @@ angular.module('webUpdates')
                 $scope.warnings = [];
                 $scope.infos = [];
 
+                $resource('api/user/mntners').query(function(data) {
+                    $scope.maintainersOptions = data;
+                });
+
                 // Populate attributes in the UI
                 if (!$scope.name) {
                     $scope.operation = "Create";
@@ -30,6 +32,8 @@ angular.module('webUpdates')
                     $scope.attributes = wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+
+
 
                 } else {
                     $scope.operation = "Modify";
@@ -144,11 +148,6 @@ angular.module('webUpdates')
                 //$scope.selectedMaintainers
 
                 //$scope.attributes
-
-
-
-
-
 
                 var allMnts = []
                 _.each($scope.selectedMaintainers, function(value) {
