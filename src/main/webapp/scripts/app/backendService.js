@@ -16,7 +16,11 @@ angular.module('dbWebApp')
             //})
 
 
-            return [{name:'AAAA-MNT', extras:{'md5':true}}, {name:'BBBB-MNT', extras:{'pgp':true}}];
+            return [
+                {"value":"GROL2-MNT",   "extras":{"mine":true,"pgp":false,"sso":true,"md5":false}},
+                {"value":"GROLSSO-MNT", "extras":{"mine":true,"pgp":false,"sso":true,"md5":true }},
+                {"value":"GROLLO-MNT",  "extras":{"mine":true,"pgp":false,"sso":true,"md5":false}}
+            ];
         }
 
 }]);

@@ -14,7 +14,7 @@
 <form id="createForm">
     <ul class="form-fields maintainer-fields">
         <strong>Please select your maintainers before creating the object</strong>
-        <selectize config="{create: true, plugins: ['remove_button']}" options="maintainersOptions" ng-model="selectedMaintainers"></selectize>
+        <selectize config="{create: true, labelField: 'value',  plugins: ['remove_button']}" options="maintainersOptions" ng-model="selectedMaintainers"></selectize>
 
         <p>selectedMaintainers - {{selectedMaintainers}} </p>
         <p>maintainersOptions - {{maintainersOptions}}</p>
