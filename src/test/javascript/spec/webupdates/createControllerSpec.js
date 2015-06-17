@@ -205,9 +205,7 @@ describe('webUpdates: CreateController', function () {
         expect($scope.maintainersOptions[0].extras).toEqual(userMaintainers[0].extras);
     });
 
-
-    it('should add the selected mnts to the object before post it.', function() {
-        $scope.selectedMaintainers = ['TEST-MNT-0'];
+    it('should add the selected maintainers to the object before post it.', function() {
 
         $httpBackend.expectPOST('api/whois/RIPE/as-block', {
             objects: {
@@ -217,7 +215,8 @@ describe('webUpdates: CreateController', function () {
                             attribute: [
                                 {name: 'as-block', value: 'MY-AS-BLOCK'},
                                 {name: 'source', value: 'RIPE'},
-                                {name: 'mnt-by', value: 'TEST-MNT-0'}
+                                {name: 'mnt-by', value: 'TEST-MNT-0'},
+                                {name: 'mnt-by', value: 'TEST-MNT-1'}
                             ]
                         }
                     }
@@ -226,6 +225,7 @@ describe('webUpdates: CreateController', function () {
         }).respond(500);
 
         $scope.attributes.setSingleAttributeOnName('as-block', 'MY-AS-BLOCK');
+        $scope.selectedMaintainers = ['TEST-MNT-0', 'TEST-MNT-1'];
 
         $scope.submit();
         $httpBackend.flush();

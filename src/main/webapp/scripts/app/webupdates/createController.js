@@ -33,8 +33,6 @@ angular.module('webUpdates')
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
 
-
-
                 } else {
                     $scope.operation = "Modify";
 
