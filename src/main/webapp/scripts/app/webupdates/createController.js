@@ -54,6 +54,19 @@ angular.module('webUpdates')
                  * Start of initialisation phase
                  */
 
+                function fetchObjectViaRest() {
+                    $resource('api/whois/:source/:objectType/:name', {
+                        source: $scope.source,
+                        objectType: $scope.objectType,
+                        name: $scope.name
+                    }).get(function (resp) {
+                        wrapAndEnrichResources(resp);
+                    }, function (resp) {
+                        var whoisResources = wrapAndEnrichResources(resp.data);
+                        setErrors(whoisResources);
+                    });
+                };
+
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
                 $scope.objectType = $stateParams.objectType;
@@ -68,7 +81,7 @@ angular.module('webUpdates')
 
                 // Populate attributes in the UI
                 if (!$scope.name) {
-                    $scope.operation = "Create";
+                    $scope.operation = 'Create';
 
                     // Populate empty attributes based on meta-info
                     $scope.attributes = wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
@@ -77,7 +90,7 @@ angular.module('webUpdates')
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
 
                 } else {
-                    $scope.operation = "Modify";
+                    $scope.operation = 'Modify';
 
                     // Start empty, and populate with rest-result
                     $scope.attributes = wrapAndEnrichAttributes([]);
@@ -90,28 +103,15 @@ angular.module('webUpdates')
                 $scope.addAfterAttribute = undefined;
 
                 // auth (password) modal popup
-                $scope.authAttribute;
-                $scope.password;
-                $scope.passwordAgain;
-                $scope.authPasswordMessage;
+                $scope.authAttribute = undefined;
+                $scope.password = undefined;
+                $scope.passwordAgain = undefined;
+                $scope.authPasswordMessage = undefined;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
                 $resource('api/user/mntners').query(function(data) {
                     $scope.userMaintainers = data;
                 });
-
-                function fetchObjectViaRest () {
-                    $resource('api/whois/:source/:objectType/:name', {
-                        source: $scope.source,
-                        objectType: $scope.objectType,
-                        name: $scope.name
-                    }).get(function (resp) {
-                        wrapAndEnrichResources(resp);
-                    }, function (resp) {
-                        var whoisResources = wrapAndEnrichResources(resp.data);
-                        setErrors(whoisResources);
-                    });
-                };
 
                 /*
                  * End of initialisation phase
@@ -125,7 +125,7 @@ angular.module('webUpdates')
              */
 
             $scope.suggestAutocomplete = function( val, name, refs) {
-                if( !refs || refs.length == 0 ) {
+                if( !refs || refs.length === 0 ) {
                     // No suggestions since not a reference
                     return [];
                 } else {
@@ -202,7 +202,7 @@ angular.module('webUpdates')
                     $scope.attributes.clearErrors();
                 };
 
-                var allMnts = []
+                var allMnts = [];
                 _.each($scope.selectedMaintainers, function(value) {
                         allMnts.push({name:'mnt-by', value: value});
                     }
@@ -268,11 +268,11 @@ angular.module('webUpdates')
             };
 
             $scope.verifyAuthDialog = function () {
-                if ($scope.password == $scope.passwordAgain) {
-                    $scope.authPasswordMessage = "Password Match!";
+                if ($scope.password === $scope.passwordAgain) {
+                    $scope.authPasswordMessage = 'Password Match!';
                     return true;
                 } else {
-                    $scope.authPasswordMessage = "Password Does Not Match!";
+                    $scope.authPasswordMessage = 'Password Does Not Match!';
                     return false;
                 }
             };
@@ -323,7 +323,7 @@ angular.module('webUpdates')
                     WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs)
                 );
                 return $scope.attributes;
-            };
+            }
 
             function wrapAndEnrichResources (resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
@@ -331,7 +331,7 @@ angular.module('webUpdates')
                     wrapAndEnrichAttributes(whoisResources.getAttributes());
                 }
                 return whoisResources;
-            };
+            }
 
 
         }]);
