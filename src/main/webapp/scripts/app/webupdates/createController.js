@@ -5,8 +5,10 @@ angular.module('webUpdates')
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
 
-            $resource('api/user/mntners').query(function(data) {
-                $scope.maintainersOptions = data;
+$scope.selectedMaintainers = [];
+
+//             $resource('api/user/mntners').query(function(data) {
+                $scope.maintainersOptions = [{'mine':true,'type':'mntner','auth':['SSO'],'key':'rehan-mnt2'}, {'mine':true,'type':'mntner','auth':['SSO'],'key':'rehan-mnt1'}, {'mine':true,'type':'mntner','auth':['SSO'],'key':'rehan-mnt0'}];
 
             
             
@@ -41,7 +43,7 @@ angular.module('webUpdates')
 				options: $scope.maintainersOptions
 			};
 			
-			            });
+// 			            });
 
             var onCreate = function() {
                 /*
