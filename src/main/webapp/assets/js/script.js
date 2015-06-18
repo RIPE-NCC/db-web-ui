@@ -1,1 +1,1 @@
-/* Add any js scripting here */
+/* Configuring Selectize */

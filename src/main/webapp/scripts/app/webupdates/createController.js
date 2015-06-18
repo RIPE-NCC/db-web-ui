@@ -6,7 +6,38 @@ angular.module('webUpdates')
 
             $scope.selectedMaintainers = BackendService.getUserMaintainers();
             //$scope.maintainersOptions = ;
-
+            
+            
+            Selectize.define('dropdown_header', function(options) {
+				var self = this;
+			
+				options = $.extend({
+					title         : 'Dont have the maintainer? Create one',
+					headerClass   : 'selectize-custom-dropdown-header',
+			
+					html: function(data) {
+						return (
+							'<a href="http://ripe.net" class="' + data.headerClass + '">' + data.title + '</a>'
+						);
+					}
+				}, options);
+			
+				self.setup = (function() {
+					var original = self.setup;
+					return function() {
+						original.apply(self, arguments);
+						self.$dropdown_header = $(options.html(options));
+						self.$dropdown.prepend(self.$dropdown_header);
+					};
+				})();
+			
+			});
+            
+			$scope.myConfig = {
+				labelField: 'value',
+				options: $scope.maintainersOptions
+			};
+			
             var onCreate = function() {
                 /*
                  * Start of initialisation phase
