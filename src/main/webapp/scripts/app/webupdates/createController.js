@@ -137,7 +137,7 @@ angular.module('webUpdates')
                     // No suggestions since not a reference
                     return [];
                 } else {
-                    return $resource('https://rest-dev.db.ripe.net/autocomplete/details',
+                    return $resource('api/whois/autocomplete/details',
                         { q:val, f:  name}).query()
                         .$promise.then(
                         function(resp) {

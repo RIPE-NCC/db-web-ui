@@ -41,7 +41,7 @@ public class UserController {
 
             List<Map<String,Object>> response = whoisInternalService.getMaintainers(uuid);
 
-            // make sure essentials content-type is set
+            // Make sure essentials content-type is set
             final MultiValueMap<String, String> headers = new HttpHeaders();
             headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
             return new ResponseEntity<List<Map<String,Object>>>(response, headers, HttpStatus.OK);
@@ -49,8 +49,8 @@ public class UserController {
         } catch (CrowdClientException e) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }  catch (RestClientException e) {
-            // TODO: is this the right resp-code
-            return new ResponseEntity(e.getErrorMessages(),HttpStatus.INTERNAL_SERVER_ERROR);
+            // No error message in response
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
