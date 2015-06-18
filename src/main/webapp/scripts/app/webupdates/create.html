@@ -35,7 +35,7 @@
             <label>{{attribute.name}}</label>
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
-                   typeahead="value for value in suggestAutocomplete($viewValue, attribute.$$meta.$$refs)"
+                   typeahead="value for value in suggestAutocomplete($viewValue, attribute.name, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
             <div class="text" collapse="isHelpHidden">

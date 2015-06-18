@@ -123,23 +123,18 @@ $scope.selectedMaintainers = [];
              * Methods called from the html-teplate
              */
 
-            $scope.suggestAutocomplete = function( val, types) {
-                // TODO: adjust to new service when ready
-                console.log("typed:"+ val + ", refs:"+types);
-                if( !types || types.length == 0 ) {
+            $scope.suggestAutocomplete = function( val, name, refs) {
+                if( !refs || refs.length == 0 ) {
+                    // No suggestions since not a reference
                     return [];
                 } else {
-                    // hacky, but server is still limited
-                    var attributeType = types[0];
-                    if(types[0] === 'ROLE' || types[0] === 'PERSON' ){
-                        attributeType = 'nic-hdl';
-                    }
-                    return $resource('https://rest-dev.db.ripe.net/autocomplete',
-                        { q:val, ot:  types, at:  attributeType }).query()
+                    return $resource('https://rest-dev.db.ripe.net/autocomplete/details',
+                        { q:val, f:  name}).query()
                         .$promise.then(
                         function(resp) {
-                            console.log(" result resp:"+JSON.stringify(resp));
-                            return resp;
+                            return _.map(resp, function( item) {
+                                return item.key;
+                            });
                         }, function() {
                             return [];
                         });
