@@ -130,7 +130,7 @@ angular.module('dbWebApp')
             if( _.isUndefined(whoisResources) || _.isNull(whoisResources) ) {
                 return false;
             }
-            if( _.has(whoisResources,'objects' ) == false && _.has(whoisResources,'errormessages' ) == false ) {
+            if( _.has(whoisResources,'objects' ) === false && _.has(whoisResources,'errormessages' ) === false ) {
                 return false;
             }
 
@@ -220,7 +220,7 @@ angular.module('dbWebApp')
 
             var sorted = _.sortBy(stripped, function (attr) {
                 return attr.$$meta.$$idx;
-            })
+            });
             //console.log("sorted:" + JSON.stringify(sorted));
             return sorted;
         };
@@ -228,9 +228,9 @@ angular.module('dbWebApp')
         var setSingleAttributeOnName = function( name, value) {
             var found = false;
              return _.map(this, function(attr) {
-                if( attr.name === name && found == false) {
+                if( attr.name === name && found === false) {
                     attr.value = value;
-                    found = true
+                    found = true;
                 }
                 return attr;
             });
@@ -241,7 +241,7 @@ angular.module('dbWebApp')
 
             var self = this;
             _.map(this, function (attr) {
-                if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length == 0 ) {
+                if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0 ) {
                     attr.$$error = 'Mandatory attribute not set';
                     errorFound = true;
                 } else {
@@ -259,7 +259,7 @@ angular.module('dbWebApp')
 
         var removeAttribute = function(attr) {
             return _.filter(this, function(next) {
-                return !(attr === next);
+                return attr !== next;
             });
         };
 
@@ -268,7 +268,7 @@ angular.module('dbWebApp')
 
             _.each(this, function(next){
                 result.push(next);
-                if (next.name == attr.name && next.value == attr.value) {
+                if (next.name === attr.name && next.value === attr.value) {
                     result.push(
                         {
                             name:attr.name, $$meta:{
@@ -283,13 +283,13 @@ angular.module('dbWebApp')
         };
 
         var canAttributeBeDuplicated = function( attr) {
-            return attr.$$meta.$$multiple == true;
+            return attr.$$meta.$$multiple === true;
         };
 
         var canAttributeBeRemoved = function( attr) {
             var status = false;
 
-            if( attr.$$meta.$$mandatory == false ) {
+            if( attr.$$meta.$$mandatory === false ) {
                 status = true;
             } else if(attr.$$meta.$$multiple && this.getAllAttributesWithValueOnName(attr.name).length > 1 ) {
                 status = true;
@@ -303,7 +303,7 @@ angular.module('dbWebApp')
 
             _.each(this, function(next){
                 result.push(next);
-                if (next.name == after.name && next.value == after.value) {
+                if (next.name === after.name && next.value === after.value) {
                     result.push({name:attr.name, value:attr.value});
                 }
             });
