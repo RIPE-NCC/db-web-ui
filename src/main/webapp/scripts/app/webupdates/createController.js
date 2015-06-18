@@ -76,6 +76,7 @@ $scope.selectedMaintainers = [];
                     $scope.attributes = wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+                    $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
 
                 } else {
                     $scope.operation = "Modify";
@@ -121,6 +122,29 @@ $scope.selectedMaintainers = [];
             /*
              * Methods called from the html-teplate
              */
+
+            $scope.suggestAutocomplete = function( val, types) {
+                // TODO: adjust to new service when ready
+                console.log("typed:"+ val + ", refs:"+types);
+                if( !types || types.length == 0 ) {
+                    return [];
+                } else {
+                    // hacky, but server is still limited
+                    var attributeType = types[0];
+                    if(types[0] === 'ROLE' || types[0] === 'PERSON' ){
+                        attributeType = 'nic-hdl';
+                    }
+                    return $resource('https://rest-dev.db.ripe.net/autocomplete',
+                        { q:val, ot:  types, at:  attributeType }).query()
+                        .$promise.then(
+                        function(resp) {
+                            console.log(" result resp:"+JSON.stringify(resp));
+                            return resp;
+                        }, function() {
+                            return [];
+                        });
+                }
+            };
 
             $scope.hasErrors = function () {
                 return $scope.errors.length > 0;
