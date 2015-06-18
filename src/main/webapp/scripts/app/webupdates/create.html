@@ -15,12 +15,6 @@
     <ul class="form-fields maintainer-fields">
         <strong>Please select your maintainers before creating the {{objectType}} object</strong>
         <selectize config="myConfig" ng-model="selectedMaintainers"></selectize>
-
-        <p>selectedMaintainers - {{selectedMaintainers}} </p>
-        <p>maintainersOptions - {{maintainersOptions}}</p>
-        <p>attributes - {{attributes}}</p>
-
-
     </ul>
 
     <div ng-if="hasMntners()">
@@ -71,6 +65,7 @@
                         <span class="fa fa-question" ></span>
                     </a>
                 </li>
+                <li>
                 <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
                     <span class="fa fa-certificate"></span>
                 </a>

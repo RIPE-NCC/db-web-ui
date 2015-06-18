@@ -4,13 +4,8 @@ angular.module('webUpdates')
     .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5',
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
-
-
             $scope.selectedMaintainers = [];
-            $scope.maintainersOptions = [];
-            $resource('api/user/mntners').query(function(data) {
-                $scope.maintainersOptions = data;
-            });
+            $scope.userMaintainers = [];
 
             Selectize.define('dropdown_header', function(options) {
 				var self = this;
@@ -39,20 +34,20 @@ angular.module('webUpdates')
 
 			$scope.myConfig = {
                 plugins: ['dropdown_header'],
-				labelField: 'key',
+                create: true,
+                labelField: 'key',
 				valueField: 'key',
 				searchField: 'key',
                 load: function(query, callback) {
-                    $resource('https://rest-dev.db.ripe.net/autocomplete/details',
+                    $resource('api/whois/autocomplete/details',
                         { q:query, f:  'mnt-by', a:'auth'}).query(function(data) {
-                        callback(data);
+                        callback(_.extend(data, $scope.userMaintainers));
                     }, function(){
                         callback();
                     });
                 }
 			};
 
-// 			            });
 
             var onCreate = function() {
                 /*
@@ -70,12 +65,6 @@ angular.module('webUpdates')
                 $scope.errors = [];
                 $scope.warnings = [];
                 $scope.infos = [];
-
-/*
-                $resource('api/user/mntners').query(function(data) {
-                    $scope.maintainersOptions = data;
-                });
-*/
 
                 // Populate attributes in the UI
                 if (!$scope.name) {
@@ -107,6 +96,9 @@ angular.module('webUpdates')
                 $scope.authPasswordMessage;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
+                $resource('api/user/mntners').query(function(data) {
+                    $scope.userMaintainers = data;
+                });
 
                 function fetchObjectViaRest () {
                     $resource('api/whois/:source/:objectType/:name', {
@@ -167,13 +159,8 @@ angular.module('webUpdates')
             };
 
             $scope.hasMntners = function () {
-                //var attrs = $scope.attributes.getAllAttributesWithValueOnName('mnt-by');
-                //if (!attrs || attrs.length == 0) {
-                //    return false;
-                //}
-                return true;
+                return $scope.selectedMaintainers.length > 0;
             };
-
 
             $scope.submit = function () {
 

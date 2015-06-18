@@ -23,9 +23,7 @@ describe('webUpdates: CreateController', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
 
-            userMaintainers = [
-                {'value':'TEST-MNT',   'extras':{'mine':true,'pgp':false,'sso':true,'md5':false}}
-            ];
+            userMaintainers = [{ key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}];
 
             $httpBackend.whenGET('api/user/mntners').respond(userMaintainers);
 
@@ -201,8 +199,9 @@ describe('webUpdates: CreateController', function () {
 
 
     it('should fetch maintainers already associated to the user in the session', function() {
-        expect($scope.maintainersOptions[0].name).toEqual(userMaintainers[0].name);
-        expect($scope.maintainersOptions[0].extras).toEqual(userMaintainers[0].extras);
+        expect($scope.userMaintainers[0].key).toEqual(userMaintainers[0].key);
+        expect($scope.userMaintainers[0].type).toEqual(userMaintainers[0].type);
+        expect($scope.userMaintainers[0].auth).toEqual(userMaintainers[0].auth);
     });
 
     it('should add the selected maintainers to the object before post it.', function() {
