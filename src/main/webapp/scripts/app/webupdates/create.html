@@ -36,7 +36,9 @@
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
-
+            <div class="text" collapse="isHelpHidden">
+                {{attribute.$$meta.$$description}}
+            </div>
             <ul class="input-group-btn">
                 <li>
                     <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type"
@@ -56,17 +58,17 @@
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>
+
                 <li>
                 <a id="changePassword" class="btn btn-default" title="Add/change Password (opens dialog)" ng-click="displayAuthDialog(attribute)" ng-show="(attribute.name == 'auth')">
                     <span class="fa fa-lock fa-3"></span>
                 </a>
                 </li>
                 <li>
-                <a id="help" class="btn btn-default disabled" >
-                    <span class="fa fa-question"></span>
-                </a>
+                    <a id="help" class="btn btn-default" ng-click="isHelpHidden = !isHelpHidden">
+                        <span class="fa fa-question" ></span>
+                    </a>
                 </li>
-                <li>
                 <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
                     <span class="fa fa-certificate"></span>
                 </a>

@@ -8,7 +8,8 @@ angular.module('dbWebApp', [
     'interceptors',
     'selectize',
     'angulartics',
-    'angulartics.google.tagmanager'])
+    'angulartics.google.tagmanager',
+    'ui.bootstrap'])
 .config(function ($stateProvider) {
     $stateProvider
         .state('error', {

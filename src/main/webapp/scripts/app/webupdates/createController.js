@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'BackendService', 'WhoisResources', 'MessageStore', 'md5',
-        function ($scope, $stateParams, $state, $resource, BackendService, WhoisResources, MessageStore, md5) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
-            $scope.selectedMaintainers = BackendService.getUserMaintainers();
-            //$scope.maintainersOptions = ;
+
+            $resource('api/user/mntners').query(function(data) {
+                $scope.maintainersOptions = data;
+
             
             
             Selectize.define('dropdown_header', function(options) {
@@ -34,10 +36,13 @@ angular.module('webUpdates')
 			});
             
 			$scope.myConfig = {
-				labelField: 'value',
+				labelField: 'key',
+				valueField: 'key', 
 				options: $scope.maintainersOptions
 			};
 			
+			            });
+
             var onCreate = function() {
                 /*
                  * Start of initialisation phase
@@ -48,10 +53,18 @@ angular.module('webUpdates')
                 $scope.objectType = $stateParams.objectType;
                 $scope.name = $stateParams.name;
 
+                $scope.isHelpHidden = true;
+
                 // Initalize the errors and warnings
                 $scope.errors = [];
                 $scope.warnings = [];
                 $scope.infos = [];
+
+/*
+                $resource('api/user/mntners').query(function(data) {
+                    $scope.maintainersOptions = data;
+                });
+*/
 
                 // Populate attributes in the UI
                 if (!$scope.name) {
@@ -175,11 +188,6 @@ angular.module('webUpdates')
                 //$scope.selectedMaintainers
 
                 //$scope.attributes
-
-
-
-
-
 
                 var allMnts = []
                 _.each($scope.selectedMaintainers, function(value) {

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 
+import javax.ws.rs.core.MultivaluedHashMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,8 @@ public class WhoisInternalService extends RestClient {
     private MultiValueMap<String, String> createAcceptHeaders(String accept) {
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set("Accept", accept);
+        headers.set("Content-type", accept);
+
         return headers;
     }
 
@@ -67,43 +70,54 @@ public class WhoisInternalService extends RestClient {
             WhoisResources.class,
             createParams(uuid));
 
-        // extract essental info from the response
-        List<ObjectSummary> summaries = Lists.newArrayList();
+        List<Map<String,Object>> summaries = Lists.newArrayList();
         if (resp.getStatusCode() == HttpStatus.OK && resp.hasBody()) {
             for (WhoisObject obj : resp.getBody().getWhoisObjects()) {
-                Map<String, Object> extras = Maps.newHashMap();
-                extras.put("md5", hasAttributeWithValue(obj, AttributeType.AUTH, "MD5"));
-                extras.put("pgp", hasAttributeWithValue(obj, AttributeType.AUTH, "PGP"));
-                extras.put("sso", hasAttributeWithValue(obj, AttributeType.AUTH, "SSO"));
-                extras.put("mine", true);
-                summaries.add(new ObjectSummary(getFirstAttributeOfType(obj, AttributeType.MNTNER), extras));
+                Map<String, Object> objectSummary = Maps.newHashMap();
+                objectSummary.put("key", getObjectKey(obj));
+                objectSummary.put("type", getObjectType(obj));
+                objectSummary.put(AttributeType.AUTH.getName(), getValuesForAttribute(obj, AttributeType.AUTH));
+                objectSummary.put("mine", true);
+                summaries.add( objectSummary );
             }
         }
+        String jsonString = new Gson().toJson(summaries);
 
-        // replace accept from xml to json
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.setAccept(Lists.newArrayList(MediaType.APPLICATION_JSON));
+        // make sure essentials headers are set
+        final MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        headers.set(HttpHeaders.CONTENT_LENGTH, String.valueOf(jsonString.length()));
 
-        return new ResponseEntity<String>(new Gson().toJson(summaries),
-            responseHeaders,
-            resp.getStatusCode());
+        // Use gson to make java-map look like object
+        return new ResponseEntity<String>(jsonString, headers, resp.getStatusCode());
     }
 
-    private boolean hasAttributeWithValue(WhoisObject obj, AttributeType type, String valueToMatch) {
-        for (Attribute attr : obj.getAttributes()) {
-            if (attr.getName().equals(type.getName()) && attr.getValue().contains(valueToMatch)) {
-                return true;
-            }
+    private String getObjectKey(final WhoisObject obj) {
+        List<Attribute> keyAttrs =  obj.getPrimaryKey();
+        if( ! keyAttrs.isEmpty() ) {
+            return keyAttrs.get(0).getValue();
         }
-        return false;
-    }
 
-    private String getFirstAttributeOfType(WhoisObject obj, AttributeType type) {
-        for (Attribute attr : obj.getAttributes()) {
-            if (attr.getName().equals(type.getName())) {
-                return attr.getValue();
-            }
-        }
         return null;
     }
+
+    private String getObjectType(final WhoisObject obj) {
+        List<Attribute> keyAttrs =  obj.getPrimaryKey();
+        if( ! keyAttrs.isEmpty() ) {
+            return keyAttrs.get(0).getName();
+        }
+
+        return null;
+    }
+
+    private List<String> getValuesForAttribute(final WhoisObject obj, final AttributeType type) {
+        List<String> values = Lists.newArrayList();
+        for (Attribute attr : obj.getAttributes()) {
+            if (attr.getName().equals(type.getName() )) {
+                values.add(attr.getValue());
+            }
+        }
+        return values;
+    }
+
 }

@@ -7,6 +7,7 @@ describe('webUpdates: CreateController', function () {
     var WhoisResources;
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
+    var userMaintainers;
 
     beforeEach(function () {
         module('webUpdates');
@@ -22,21 +23,23 @@ describe('webUpdates: CreateController', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
 
-            var BackendService = {}
-            BackendService.getUserMaintainers = function (){return ['TEST-MNT', 'TESTSSO-MNT']};
+            userMaintainers = [
+                {'value':'TEST-MNT',   'extras':{'mine':true,'pgp':false,'sso':true,'md5':false}}
+            ];
 
+            $httpBackend.whenGET('api/user/mntners').respond(userMaintainers);
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;
 
             _$controller_('CreateController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, BackendService: BackendService
+                $scope: $scope, $state: $state, $stateParams: $stateParams
             });
 
+
+
             $httpBackend.whenGET(/.*.html/).respond(200);
-
-
 
             $httpBackend.flush();
 
@@ -102,7 +105,7 @@ describe('webUpdates: CreateController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('as-block', "A");
+        $scope.attributes.setSingleAttributeOnName('as-block', 'A');
 
         $scope.submit();
         $httpBackend.flush();
@@ -163,7 +166,7 @@ describe('webUpdates: CreateController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('as-block', "A");
+        $scope.attributes.setSingleAttributeOnName('as-block', 'A');
 
         $scope.submit();
         $httpBackend.flush();
@@ -176,7 +179,7 @@ describe('webUpdates: CreateController', function () {
 
     });
 
-    it('duplicate attribute', function() {
+    it('should duplicate attribute', function() {
         expect($scope.attributes.length).toEqual(3);
 
         $scope.duplicateAttribute($scope.attributes[1]);
@@ -186,7 +189,7 @@ describe('webUpdates: CreateController', function () {
         expect($scope.attributes[2].value).toBeUndefined();
     });
 
-    it('remove attribute', function() {
+    it('should remove attribute', function() {
         expect($scope.attributes.length).toEqual(3);
 
         $scope.removeAttribute($scope.attributes[1]);
@@ -194,6 +197,39 @@ describe('webUpdates: CreateController', function () {
         expect($scope.attributes.length).toEqual(2);
         expect($scope.attributes[1].name).toEqual('source');
         expect($scope.attributes[1].value).toEqual('RIPE');
+    });
+
+
+    it('should fetch maintainers already associated to the user in the session', function() {
+        expect($scope.maintainersOptions[0].name).toEqual(userMaintainers[0].name);
+        expect($scope.maintainersOptions[0].extras).toEqual(userMaintainers[0].extras);
+    });
+
+    it('should add the selected maintainers to the object before post it.', function() {
+
+        $httpBackend.expectPOST('api/whois/RIPE/as-block', {
+            objects: {
+                object: [
+                    {
+                        attributes: {
+                            attribute: [
+                                {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                {name: 'source', value: 'RIPE'},
+                                {name: 'mnt-by', value: 'TEST-MNT-0'},
+                                {name: 'mnt-by', value: 'TEST-MNT-1'}
+                            ]
+                        }
+                    }
+                ]
+            }
+        }).respond(500);
+
+        $scope.attributes.setSingleAttributeOnName('as-block', 'MY-AS-BLOCK');
+        $scope.selectedMaintainers = ['TEST-MNT-0', 'TEST-MNT-1'];
+
+        $scope.submit();
+        $httpBackend.flush();
+
     });
 
 });
