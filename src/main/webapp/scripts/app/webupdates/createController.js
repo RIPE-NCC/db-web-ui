@@ -5,27 +5,27 @@ angular.module('webUpdates')
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
 
-$scope.selectedMaintainers = [];
 
-//             $resource('api/user/mntners').query(function(data) {
-                $scope.maintainersOptions = [{'mine':true,'type':'mntner','auth':['SSO'],'key':'rehan-mnt2'}, {'mine':true,'type':'mntner','auth':['SSO'],'key':'rehan-mnt1'}, {'mine':true,'type':'mntner','auth':['SSO'],'key':'rehan-mnt0'}];
+            $scope.selectedMaintainers = [];
+            $scope.maintainersOptions = [];
+            $resource('api/user/mntners').query(function(data) {
+                $scope.maintainersOptions = data;
+            });
 
-            
-            
             Selectize.define('dropdown_header', function(options) {
 				var self = this;
-			
-				options = $.extend({
+
+				options = _.extend({
 					title         : 'Dont have the maintainer? Create one',
 					headerClass   : 'selectize-custom-dropdown-header',
-			
+
 					html: function(data) {
 						return (
 							'<a href="http://ripe.net" class="' + data.headerClass + '">' + data.title + '</a>'
 						);
 					}
 				}, options);
-			
+
 				self.setup = (function() {
 					var original = self.setup;
 					return function() {
@@ -34,15 +34,24 @@ $scope.selectedMaintainers = [];
 						self.$dropdown.prepend(self.$dropdown_header);
 					};
 				})();
-			
+
 			});
-            
+
 			$scope.myConfig = {
+                plugins: ['dropdown_header'],
 				labelField: 'key',
-				valueField: 'key', 
-				options: $scope.maintainersOptions
+				valueField: 'key',
+				searchField: 'key',
+                load: function(query, callback) {
+                    $resource('https://rest-dev.db.ripe.net/autocomplete/details',
+                        { q:query, f:  'mnt-by', a:'auth'}).query(function(data) {
+                        callback(data);
+                    }, function(){
+                        callback();
+                    });
+                }
 			};
-			
+
 // 			            });
 
             var onCreate = function() {
@@ -205,10 +214,6 @@ $scope.selectedMaintainers = [];
                     $scope.warnings = [];
                     $scope.attributes.clearErrors();
                 };
-
-                //$scope.selectedMaintainers
-
-                //$scope.attributes
 
                 var allMnts = []
                 _.each($scope.selectedMaintainers, function(value) {
