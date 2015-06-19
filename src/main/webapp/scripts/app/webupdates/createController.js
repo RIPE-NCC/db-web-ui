@@ -31,20 +31,51 @@ angular.module('webUpdates')
 				})();
 
 			});
+			
+		var renderOptions = {
+	        option: function(data, escape) {
+		        var star = data.mine ? '<span class="star fa fa-star"></span>' : '' ;
+		        var auths = [];
+		        _.forEach(data.auth, function(auth) {
+			        if(_.startsWith(auth, 'SSO'))
+						auths.push('<span class="auth sso"> SSO </span>');		
+					if(_.startsWith(auth, 'PGP'))
+						auths.push('<span class="auth pgp"> PGP </span>');		
+					if(_.startsWith(auth, 'MD5'))
+						auths.push('<span class="auth md5"> MD5 </span>');			        
+		        });
+		        
+				var authsSpans = _.reduce(_.uniq(auths), function(spans, item) {
+					return spans + item;
+				});
+		        
+	            return '<div class="option">' +
+	                    	'<span class="title">' + escape(data.key) + '</span>' +
+	                    	star + authsSpans +
+						'</div>';
+        	},
+			item: function(data, escape) {
+		        var star = data.mine ? '<span class="star fa fa-star"></span>' : '' ;	            return '<div class="item">' + escape(data.key) + star + '</div>';
+	        }
+        };
 
 			$scope.myConfig = {
                 plugins: ['dropdown_header'],
-                create: true,
                 labelField: 'key',
 				valueField: 'key',
 				searchField: 'key',
+			    openOnFocus: false,
+			    closeAfterSelect: true,
+			    selectOnTab: true,
+			    loadingClass: 'loading',
+				render: renderOptions,
                 load: function(query, callback) {
-                    $resource('api/whois/autocomplete',
-                        { query:query, field:  'mnt-by', attribute:'auth'}).query(function(data) {
-                        callback(_.extend(data, $scope.userMaintainers));
-                    }, function(){
-                        callback();
-                    });
+	                $resource('api/whois/autocomplete',
+				        { query:query, field:  'mnt-by', attribute:'auth'}).query(function(data) {
+				        callback(_.extend(data, $scope.userMaintainers));
+				    }, function(){
+				        callback();
+				    });
                 }
 			};
 
