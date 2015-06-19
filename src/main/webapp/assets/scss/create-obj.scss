@@ -118,14 +118,22 @@ ul.form-fields {
 .selectize-dropdown .active {
 	background-color: #F5FFFF !important;
 }
-.selectize-control .items > .item {
-	background-color: #3BBFC0 !important;
-	color: #fff !important;
-	border-radius: 3px;
-}
-.selectize-control .items > .item > .remove {
-	border-left-color: #31A8A9 !important;
-	color: #fff !important;
+.selectize-control {
+	.items {
+		.item {
+			background: #3BBFC0 !important;
+			color: #fff !important;
+			border-radius: 3px;
+			background-image: none !important;
+			box-shadow: none !important;
+			text-shadow: none !important;
+			border: 1px solid #26A6A7 !important;
+			.remove {
+				border-left-color: #31A8A9 !important;
+				color: #fff !important;
+			}
+		}
+	}
 }
 .selectize-custom-dropdown-header {
     position: relative;

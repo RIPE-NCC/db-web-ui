@@ -60,7 +60,7 @@ angular.module('webUpdates')
         };
 
 			$scope.myConfig = {
-                plugins: ['dropdown_header'],
+                plugins: ['remove_button', 'dropdown_header'],
                 labelField: 'key',
 				valueField: 'key',
 				searchField: 'key',
