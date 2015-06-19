@@ -23,7 +23,9 @@ describe('webUpdates: CreateController', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
 
-            userMaintainers = [{ key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}];
+            userMaintainers = [	            
+	            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}
+            ];
 
             $httpBackend.whenGET('api/user/mntners').respond(userMaintainers);
 
