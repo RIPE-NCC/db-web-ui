@@ -39,8 +39,8 @@ angular.module('webUpdates')
 				valueField: 'key',
 				searchField: 'key',
                 load: function(query, callback) {
-                    $resource('api/whois/autocomplete/details',
-                        { q:query, f:  'mnt-by', a:'auth'}).query(function(data) {
+                    $resource('api/whois/autocomplete',
+                        { query:query, field:  'mnt-by', attribute:'auth'}).query(function(data) {
                         callback(_.extend(data, $scope.userMaintainers));
                     }, function(){
                         callback();
