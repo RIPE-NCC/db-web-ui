@@ -65,7 +65,7 @@ angular.module('webUpdates')
                         var whoisResources = wrapAndEnrichResources(resp.data);
                         setErrors(whoisResources);
                     });
-                };
+                }
 
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
