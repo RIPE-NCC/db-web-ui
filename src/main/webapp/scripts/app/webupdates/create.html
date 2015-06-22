@@ -17,7 +17,7 @@
         <selectize config="myConfig" ng-model="selectedMaintainers"></selectize>
     </ul>
 
-    <div ng-if="hasMntners()">
+    <section class="visible-field-form" ng-if="hasMntners()">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
 
@@ -27,11 +27,11 @@
 
                 <!-- <li ng-repeat="attribute in attributes"> -->
             <label>{{attribute.name}}</label>
+            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
                    typeahead="value for value in suggestAutocomplete($viewValue, attribute.name, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"/>
-            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
             <div class="text" collapse="isHelpHidden">
                 {{attribute.$$meta.$$description}}
             </div>
@@ -77,7 +77,7 @@
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
     <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
-    </div>
+    </section>
 </form>
 
 <div id="insertAttributeModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="commonModalLabel" aria-hidden="false">

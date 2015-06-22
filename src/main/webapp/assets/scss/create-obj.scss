@@ -70,18 +70,29 @@ ul.form-fields {
 	}
 	margin-bottom: 20px;
 }
-
-.appeared-fields {
-	@extend %grey;
+.visible-field-form {
 	@extend %float-l;
 	@extend %width-100;
-	padding: 15px !important;
-	margin-bottom: 20px;
-	li:last-child {
-		margin-bottom: 0 !important;
+	margin: 20px 0;
+	ul.appeared-fields {
+		@extend %grey;
+		@extend %float-l;
+		@extend %width-100;
+		padding: 15px !important;
+		margin-bottom: 20px !important;
+		li {
+			label {
+				@extend %float-l;
+			}
+			span.text-error {
+				@extend %float-r;
+			}
+		}
+		li:last-child {
+			margin-bottom: 0 !important;
+		}
 	}
 }
-
 .selectize-input {
 	padding: 7px !important;	
 }
