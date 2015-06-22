@@ -5,7 +5,6 @@ angular.module('webUpdates')
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
             $scope.selectedMaintainers = [];
-            $scope.userMaintainers = [];
 
             Selectize.define('dropdown_header', function(options) {
 				var self = this;
@@ -31,56 +30,73 @@ angular.module('webUpdates')
 				})();
 
 			});
-			
-		var renderOptions = {
-	        option: function(data, escape) {
-		        var star = data.mine ? '<span class="star fa fa-star"></span>' : '' ;
-		        var auths = [];
-		        _.forEach(data.auth, function(auth) {
-			        if(_.startsWith(auth, 'SSO'))
-						auths.push('<span class="auth sso"> SSO </span>');		
-					if(_.startsWith(auth, 'PGP'))
-						auths.push('<span class="auth pgp"> PGP </span>');		
-					if(_.startsWith(auth, 'MD5'))
-						auths.push('<span class="auth md5"> MD5 </span>');			        
-		        });
-		        
-				var authsSpans = _.reduce(_.uniq(auths), function(spans, item) {
-					return spans + item;
-				});
-		        
-	            return '<div class="option">' +
-	                    	'<span class="title">' + escape(data.key) + '</span>' +
-	                    	star + authsSpans +
-						'</div>';
-        	},
-			item: function(data, escape) {
-		        var star = data.mine ? '<span class="star fa fa-star"></span>' : '' ;	            return '<div class="item">' + escape(data.key) + star + '</div>';
-	        }
-        };
 
-			$scope.myConfig = {
+            var renderOptions = {
+                option: function(data, escape) {
+                    var star = data.mine ? '<span class="star fa fa-star"></span>' : '' ;
+                    var auths = [];
+                    _.forEach(data.auth, function(auth) {
+                        if(_.startsWith(auth, 'SSO'))
+                            auths.push('<span class="auth sso"> SSO </span>');
+                        if(_.startsWith(auth, 'PGP'))
+                            auths.push('<span class="auth pgp"> PGP </span>');
+                        if(_.startsWith(auth, 'MD5'))
+                            auths.push('<span class="auth md5"> MD5 </span>');
+                    });
+
+                    var authsSpans = _.reduce(_.uniq(auths), function(spans, item) {
+                        return spans + item;
+                    });
+
+                    return '<div class="option">' +
+                                '<span class="title">' + escape(data.key) + '</span>' +
+                                star + authsSpans +
+                            '</div>';
+                },
+                item: function(data, escape) {
+                    var star = data.mine ? '<span class="star fa fa-star"></span>' : '' ;
+                    return '<div class="item">' + escape(data.key) + star + '</div>';
+                }
+            };
+
+            var initSelectize = function(selectizeObject) {
+                $resource('api/user/mntners').query(function(data) {
+                    $scope.selectedMaintainers = data;
+                    selectizeObject.addOption(data);
+                    _.forEach($scope.selectedMaintainers, function(item) {
+                        selectizeObject.addItem(item.key);
+                    });
+                    selectizeObject.refreshOptions(false);
+                });
+            };
+
+            var loadSelectizeOnKeyPress = function(query, callback) {
+                $resource('api/whois/autocomplete',
+                    { query:query, field:  'mnt-by', attribute:'auth'}).query(
+                    function(data) {
+                        callback(data);
+                    }, function(){
+                        callback();
+                    });
+            };
+
+            $scope.myConfig = {
                 plugins: ['remove_button', 'dropdown_header'],
                 labelField: 'key',
-				valueField: 'key',
-				searchField: 'key',
-			    openOnFocus: false,
-			    closeAfterSelect: true,
-			    selectOnTab: true,
-			    loadingClass: 'loading',
-				render: renderOptions,
-                load: function(query, callback) {
-	                $resource('api/whois/autocomplete',
-				        { query:query, field:  'mnt-by', attribute:'auth'}).query(function(data) {
-				        callback(_.extend(data, $scope.userMaintainers));
-				    }, function(){
-				        callback();
-				    });
-                }
-			};
+                valueField: 'key',
+                searchField: 'key',
+                openOnFocus: false,
+                closeAfterSelect: true,
+                selectOnTab: true,
+                loadingClass: 'loading',
+                render: renderOptions,
+                onInitialize: initSelectize,
+                load: loadSelectizeOnKeyPress
+            };
 
 
-            var onCreate = function() {
+
+            var onPageLoad = function() {
                 /*
                  * Start of initialisation phase
                  */
@@ -140,15 +156,11 @@ angular.module('webUpdates')
                 $scope.authPasswordMessage = undefined;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-                $resource('api/user/mntners').query(function(data) {
-                    $scope.userMaintainers = data;
-                });
-
                 /*
                  * End of initialisation phase
                  */
             };
-            onCreate();
+            onPageLoad();
 
 
             /*
