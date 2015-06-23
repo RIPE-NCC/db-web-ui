@@ -70,19 +70,13 @@ angular.module('webUpdates')
         };
 
         var enrichAlternativesWithMine = function(mntners) {
-            console.log("mine:" + JSON.stringify($scope.maintainers.mine));
-
+            // search
             return _.map(mntners, function(mntner) {
                 if(_.any($scope.maintainers.mine, function(m) {
-                        console.log("mine:" + m.key);
                         return m.key === mntner.key;
                     })) {
-                    console.log(mntner.key + "is mine");
 
                     mntner.mine = true;
-                } else {
-                    console.log(mntner.key + "is NOT mine");
-
                 }
                 return mntner;
             });
@@ -199,8 +193,8 @@ angular.module('webUpdates')
                     // No suggestions since not a reference
                     return [];
                 } else {
-                    return $resource('api/whois/autocomplete/details',
-                        { q:val, f:  name}).query()
+                    return $resource('api/whois/autocomplete',
+                        { query:val, field: name, extended:true}).query()
                         .$promise.then(
                         function(resp) {
                             return _.map(resp, function( item) {
