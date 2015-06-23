@@ -12,7 +12,7 @@
 </div>
 <form id="createForm">
 
-    <!--                tagging="tagTransform" -->
+    <!--                tagging="tagTransform" placeholder="Search for your maintainer" -->
 	<section class="form-fields maintainer-fields">
     <strong>Please select your maintainers before creating the {{objectType}} object</strong>
     <span class="fa fa-search maintainer-search-icon"></span>
@@ -22,7 +22,7 @@
                close-on-select="true"
                on-select="onMntnerSelect($item, $model)"
                on-remove="onMntnerRemove($item, $model)" >
-        <ui-select-match placeholder="Search for your maintainer">{{$item.key}} <span class="fa fa-star" ng-if="isMine($item)"></span></ui-select-match>
+        <ui-select-match >{{$item.key}} <span class="fa fa-star" ng-if="isMine($item)"></span></ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="refreshMntners($select.search)"
                            refresh-delay="100">
