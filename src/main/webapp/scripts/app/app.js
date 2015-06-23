@@ -9,7 +9,9 @@ angular.module('dbWebApp', [
     'selectize',
     'angulartics',
     'angulartics.google.tagmanager',
-    'ui.bootstrap'])
+    'ui.bootstrap',
+    'ngSanitize',
+    'ui.select'])
 .config(function ($stateProvider) {
     $stateProvider
         .state('error', {

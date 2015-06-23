@@ -481,7 +481,7 @@
                                     <goal>build</goal>
                                 </goals>
                                 <configuration>
-                                    <skipTests>false</skipTests>
+                                    <skipTests>true</skipTests>
                                     <buildTool>grunt</buildTool>
                                     <buildArgs>compass:server --force</buildArgs>
                                 </configuration>

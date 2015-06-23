@@ -11,11 +11,43 @@
     <p ng-repeat="info in infos">{{info.plainText}}</p>
 </div>
 
+<style>
+    body {
+        padding: 15px;
+    }
+
+    .select2 > .select2-choice.ui-select-match {
+        /* Because of the inclusion of Bootstrap */
+        height: 29px;
+    }
+
+    .selectize-control > .selectize-dropdown {
+        top: 36px;
+    }
+</style>
 <form id="createForm">
-    <ul class="form-fields maintainer-fields">
-        <strong>Please select your maintainers before creating the {{objectType}} object</strong>
-        <selectize config="myConfig" ng-model="selectedMaintainers"></selectize>
-    </ul>
+
+    <h3>Alternative mntners</h3>
+    <ui-select multiple="true"
+               theme="select2"
+               tagging="tagTransform"
+               ng-model="maintainers.selected"
+               on-select="onMntnerSelect($item, $model)"
+               on-remove="onMntnerRemove($item, $model)"
+               style="width: 800px;" >
+        <ui-select-match placeholder="Select mntner...">{{$item.key}}</ui-select-match>
+        <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
+                           refresh="refreshMntners($select.search)">
+            <div class="option">
+                <span class="title">{{mntner.key}}</span>
+                <span class="star fa fa-star" ng-if="hasStar(mntner)"></span>
+                <span class="auth sso" ng-if="hasSSo(mntner)"> SSO </span>
+                <span class="auth pgp" ng-if="hasPgp(mntner)"> PGP </span>
+                <span class="auth md5" ng-if="hasMd5(mntner)"> MD5 </span>
+            </div>
+        </ui-select-choices>
+    </ui-select>
+    {{maintainers.selected}}
 
     <div ng-if="hasMntners()">
 

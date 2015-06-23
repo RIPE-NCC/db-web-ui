@@ -4,83 +4,65 @@ angular.module('webUpdates')
     .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5',
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
-            $scope.selectedMaintainers = [];
-            $scope.userMaintainers = [];
-
-            Selectize.define('dropdown_header', function(options) {
-				var self = this;
-
-				options = _.extend({
-					title         : 'Dont have the maintainer? Create one',
-					headerClass   : 'selectize-custom-dropdown-header',
-
-					html: function(data) {
-						return (
-							'<a href="http://ripe.net" class="' + data.headerClass + '">' + data.title + '</a>'
-						);
-					}
-				}, options);
-
-				self.setup = (function() {
-					var original = self.setup;
-					return function() {
-						original.apply(self, arguments);
-						self.$dropdown_header = $(options.html(options));
-						self.$dropdown.prepend(self.$dropdown_header);
-					};
-				})();
-
-			});
-			
-		var renderOptions = {
-	        option: function(data, escape) {
-		        var star = data.mine ? '<span class="star fa fa-star"></span>' : '' ;
-		        var auths = [];
-		        _.forEach(data.auth, function(auth) {
-			        if(_.startsWith(auth, 'SSO'))
-						auths.push('<span class="auth sso"> SSO </span>');		
-					if(_.startsWith(auth, 'PGP'))
-						auths.push('<span class="auth pgp"> PGP </span>');		
-					if(_.startsWith(auth, 'MD5'))
-						auths.push('<span class="auth md5"> MD5 </span>');			        
-		        });
-		        
-				var authsSpans = _.reduce(_.uniq(auths), function(spans, item) {
-					return spans + item;
-				});
-		        
-	            return '<div class="option">' +
-	                    	'<span class="title">' + escape(data.key) + '</span>' +
-	                    	star + authsSpans +
-						'</div>';
-        	},
-			item: function(data, escape) {
-		        var star = data.mine ? '<span class="star fa fa-star"></span>' : '' ;	            return '<div class="item">' + escape(data.key) + star + '</div>';
-	        }
+        $scope.maintainers = {
+            selected:[],
+            alternatives:[]
         };
 
-			$scope.myConfig = {
-                plugins: ['remove_button', 'dropdown_header'],
-                labelField: 'key',
-				valueField: 'key',
-				searchField: 'key',
-			    openOnFocus: false,
-			    closeAfterSelect: true,
-			    selectOnTab: true,
-			    loadingClass: 'loading',
-				render: renderOptions,
-                load: function(query, callback) {
-	                $resource('api/whois/autocomplete',
-				        { query:query, field:  'mnt-by', attribute:'auth'}).query(function(data) {
-				        callback(_.extend(data, $scope.userMaintainers));
-				    }, function(){
-				        callback();
-				    });
-                }
-			};
+        $scope.onMntnerSelect = function( item, all ) {
+            if( ! item.isTag  ) {
+                $scope.maintainers.selected.push(item);
+            }
+        };
 
+        $scope.onMntnerRemove = function( item, all ) {
+            $scope.maintainers.selected = _.filter($scope.maintainers.selected, function(i) {
+                return item.key != i.key;
+            });
+        };
 
-            var onCreate = function() {
+        $scope.tagTransform = function (newTag) {
+            return  {
+                key: newTag,
+                type: 'mntner',
+                mine: false,
+                auth:[]
+            };
+        };
+
+        $scope.hasStar = function( mntner ) {
+            return mntner.mine;
+        };
+
+        $scope.hasSSo = function( mntner ) {
+            return _.any(mntner.auth, function(i) {
+                return  _.startsWith(i,"SSO");
+            });
+        };
+
+        $scope.hasPgp = function( mntner ) {
+            return  _.any(mntner.auth, function(i) {
+                return _.startsWith(i, "PGP");
+            });
+        };
+        $scope.hasMd5 = function( mntner ) {
+            return  _.any(mntner.auth, function(i) {
+                return  _.startsWith(i,"MD5");
+            });
+        };
+
+        $scope.refreshMntners = function( query) {
+            if( query.length > 2 ) {
+                $resource('api/whois/autocomplete',
+                    {query: query, field: 'mnt-by', attribute: 'auth'}).query(
+                    function (data) {
+                        $scope.maintainers.alternatives = data;
+                    }
+                );
+            }
+        };
+
+        var onCreate = function() {
                 /*
                  * Start of initialisation phase
                  */
@@ -120,6 +102,11 @@ angular.module('webUpdates')
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
 
+                    $resource('api/user/mntners').query(function(data) {
+                        console.log("recvd mntners success:" + JSON.stringify(data));
+                        $scope.maintainers.selected = data;
+                    });
+
                 } else {
                     $scope.operation = 'Modify';
 
@@ -140,9 +127,7 @@ angular.module('webUpdates')
                 $scope.authPasswordMessage = undefined;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
-                $resource('api/user/mntners').query(function(data) {
-                    $scope.userMaintainers = data;
-                });
+
 
                 /*
                  * End of initialisation phase
@@ -190,7 +175,7 @@ angular.module('webUpdates')
             };
 
             $scope.hasMntners = function () {
-                return $scope.selectedMaintainers.length > 0;
+                return $scope.maintainers.selected.length > 0;
             };
 
             $scope.submit = function () {
@@ -234,12 +219,10 @@ angular.module('webUpdates')
                 };
 
                 var allMnts = [];
-                _.each($scope.selectedMaintainers, function(value) {
-                        allMnts.push({name:'mnt-by', value: value});
+                _.each($scope.maintainers.selected, function(value) {
+                        allMnts.push({name:'mnt-by', value: value.key});
                     }
                 );
-
-                wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', allMnts));
 
                 if (validateForm() ) {
                     stripNulls();
@@ -344,7 +327,6 @@ angular.module('webUpdates')
                 $scope.warnings = whoisResources.getGlobalWarnings();
                 $scope.infos = whoisResources.getGlobalInfos();
             };
-
 
             /*
              * Methods used to make sure that attributes have meta information and have utility functions
