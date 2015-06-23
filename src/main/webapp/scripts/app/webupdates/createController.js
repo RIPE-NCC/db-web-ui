@@ -69,25 +69,37 @@ angular.module('webUpdates')
             });
         };
 
-        var enrichAlternativesWithMine = function(mntners) {
-            // search
-            return _.map(mntners, function(mntner) {
-                if(_.any($scope.maintainers.mine, function(m) {
-                        return m.key === mntner.key;
-                    })) {
+        var isMntnerOnlist = function( selectedMntners, mntner ) {
+            var status = _.any(selectedMntners, function(m) {
+                return m.key === mntner.key;
+            });
+            return status;
+        };
 
+        var enrichAlternativesWithMine = function(mntners) {
+            return  _.map(mntners, function(mntner) {
+                // search in selected list
+                if(isMntnerOnlist($scope.maintainers.mine, mntner)) {
                     mntner.mine = true;
                 }
                 return mntner;
             });
         };
 
+        var stripAlreadySelected = function(mntners) {
+            return _.filter(mntners, function(mntner) {
+                return !isMntnerOnlist($scope.maintainers.selected, mntner);
+            });
+        };
+
         $scope.refreshMntners = function( query) {
+            // need to typed characters
             if( query.length > 2 ) {
                 $resource('api/whois/autocomplete',
                     {query: query, field: 'mnt-by', attribute: 'auth'}).query(
                     function (data) {
-                        $scope.maintainers.alternatives = enrichAlternativesWithMine(data);
+                        // prevent mntners on selected list to appear
+                        $scope.maintainers.alternatives = stripAlreadySelected(enrichAlternativesWithMine(data));
                     }
                 );
             }
