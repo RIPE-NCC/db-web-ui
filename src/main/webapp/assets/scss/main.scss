@@ -1,28 +1,11 @@
+/* Extended CSS */
+@import '_extend.scss';
+
+/* Generic CSS */
+@import 'general.scss';
+
+/* View based CSS */
 @import 'create-obj.scss';
-.inner-container {
-	float: left;
-	width: 100%;
-}
-.form-fields {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	li {
-		margin-bottom: 15px !important;
-	}
-}
-.blue-button {
-	border:0;
-}
-ul.success-fields {
-	list-style: none;
-	padding: 20px !important;
-	border: 1px #ccc dashed;
-	font {
-		family: menlo !important;
-	}
-	li {
-		display: inline-block !important;
-	    width: 50%;
-	}
-}
+
+/* Module based CSS */
+@import 'selectize-custom.scss';

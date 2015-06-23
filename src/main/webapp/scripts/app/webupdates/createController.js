@@ -75,6 +75,7 @@ angular.module('webUpdates')
         };
 
         var onLoad = function() {
+
                 /*
                  * Start of initialisation phase
                  */
@@ -145,13 +146,12 @@ angular.module('webUpdates')
                 $scope.passwordAgain = undefined;
                 $scope.authPasswordMessage = undefined;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    
+
                 /*
                  * End of initialisation phase
                  */
             };
             onLoad();
-
 
             /*
              * Methods called from the html-teplate
