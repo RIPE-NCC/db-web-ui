@@ -113,7 +113,7 @@
     <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
-    <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
+    <button ng-click="submitOrProvidePasswordModal()" class="blue-button pull-right" style="border:0;">Submit</button>
     </section>
 </form>
 
@@ -156,3 +156,30 @@
         </div>
     </div>
 </div>
+
+<div id="providePasswordModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content no-rounded">
+            <div>
+                <i class="fa fa-close close" data-dismiss="modal" aria-label="Close"></i>
+                <h5 class="modal-title" id="providePasswordModalLabel">Password authentication</h5>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Select a maintainer to authenticate the update operation.</label>
+                    <select ng-model="providePasswordModal.selectedMntner"
+                            ng-required="true"
+                            ng-options="mntner.key for mntner in providePasswordModal.mntnersForPasswordAuth" class="form-control select-height"></select>
+                </div>
+                <div>
+                    <label>Provide the password for the selected maintainer</label>
+                    <input type="password" class="form-control margin-bottom" ng-model="providePasswordModal.password" ng-required="true"/>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="blue-button" data-dismiss="modal" value="Close"/>
+                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="submit()" value="Authenticate"/>
+            </div>
+        </div>
+    </div>
+</div

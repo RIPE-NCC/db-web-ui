@@ -43,7 +43,11 @@ angular.module('webUpdates')
         };
 
         $scope.hasStar = function( mntner ) {
-            return mntner.mine;
+            if(!mntner.mine) {
+                return false;
+            } else {
+                return mntner.mine;
+            }
         };
 
         $scope.hasSSo = function( mntner ) {
@@ -129,6 +133,7 @@ angular.module('webUpdates')
 
                     $resource('api/user/mntners').query(function(data) {
                         $scope.maintainers.selected = data;
+
                         // rework data in attrinutes
                         var mntnerAttrs = _.map(data, function(i) {
                             return {name: 'mnt-by', value:i.key};
@@ -368,6 +373,47 @@ angular.module('webUpdates')
                 }
                 return whoisResources;
             }
+
+
+            //authentication modal
+
+            $scope.getMntnersForPasswordAuth = function (selectedMaintainers) {
+                return _.filter(selectedMaintainers, function (mntner) {
+                    return $scope.hasStar(mntner) === false && $scope.hasMd5(mntner) === true;
+                });
+            };
+
+            var needsPasswordAuthentication = function (selectedMaintainers) {
+                return ($scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
+            };
+
+
+            $scope.submitOrProvidePasswordModal = function () {
+                if (needsPasswordAuthentication($scope.maintainers.selected)) {
+                    $scope.displayProvidePasswordModal($scope.getMntnersForPasswordAuth($scope.maintainers.selected));
+                } else {
+                    $scope.submit();
+                }
+            };
+
+
+            //$scope.mntnerCredentials = {
+            //    selectedMntner: selectedMaintainers[0],
+            //    password : ''
+            //};
+
+            $scope.providePasswordModal = {
+                mntnersForPasswordAuth: [],
+                selectedMntner: undefined,
+                password : '',
+                passwordAuthResult: false
+            };
+
+            $scope.displayProvidePasswordModal = function (mntnersForPasswordAuth) {
+                $scope.providePasswordModal.mntnersForPasswordAuth = mntnersForPasswordAuth;
+                $scope.providePasswordModal.selectedMntner = mntnersForPasswordAuth[0];
+                $('#providePasswordModal').modal('show');
+            };
 
 
         }]);
