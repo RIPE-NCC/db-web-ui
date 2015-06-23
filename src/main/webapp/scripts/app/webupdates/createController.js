@@ -258,6 +258,7 @@ angular.module('webUpdates')
                 if (validateForm() ) {
                     stripNulls();
                     clearErrors();
+                    //TODO check if needs password authentication and use password paramater.
                     if (!$scope.name) {
                         // perform POST to create
                         $resource('api/whois/:source/:objectType',
