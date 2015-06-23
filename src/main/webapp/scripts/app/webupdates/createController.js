@@ -6,8 +6,10 @@ angular.module('webUpdates')
 
         $scope.maintainers = {
             selected:[],
-            alternatives:[]
+            alternatives:[],
+            mine:[]
         };
+        $scope.attributes = [];
 
         $scope.onMntnerSelect = function( item, all ) {
             // add the mntner on the right spot
@@ -42,14 +44,13 @@ angular.module('webUpdates')
             };
         };
 
-        $scope.hasStar = function( mntner ) {
+        $scope.isMine = function( mntner ) {
             if( !mntner.mine ) {
                 return false;
             } else {
                 return mntner.mine;
             }
         };
-
 
         $scope.hasSSo = function( mntner ) {
             return _.any(mntner.auth, function(i) {
@@ -68,12 +69,31 @@ angular.module('webUpdates')
             });
         };
 
+        var enrichAlternativesWithMine = function(mntners) {
+            console.log("mine:" + JSON.stringify($scope.maintainers.mine));
+
+            return _.map(mntners, function(mntner) {
+                if(_.any($scope.maintainers.mine, function(m) {
+                        console.log("mine:" + m.key);
+                        return m.key === mntner.key;
+                    })) {
+                    console.log(mntner.key + "is mine");
+
+                    mntner.mine = true;
+                } else {
+                    console.log(mntner.key + "is NOT mine");
+
+                }
+                return mntner;
+            });
+        };
+
         $scope.refreshMntners = function( query) {
             if( query.length > 2 ) {
                 $resource('api/whois/autocomplete',
                     {query: query, field: 'mnt-by', attribute: 'auth'}).query(
                     function (data) {
-                        $scope.maintainers.alternatives = data;
+                        $scope.maintainers.alternatives = enrichAlternativesWithMine(data);
                     }
                 );
             }
@@ -138,6 +158,7 @@ angular.module('webUpdates')
                         var mntnerAttrs = _.map(data, function(i) {
                             return {name: 'mnt-by', value:i.key};
                         });
+                        $scope.maintainers.mine = data;
                         wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',
                             mntnerAttrs));
                     });

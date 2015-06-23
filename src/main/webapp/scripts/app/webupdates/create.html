@@ -35,14 +35,14 @@
                ng-model="maintainers.selected"
                close-on-select="true"
                on-select="onMntnerSelect($item, $model)"
-               on-remove="onMntnerRemove($item, $model)">
-        <ui-select-match placeholder="Search for your maintainer">{{$item.key}} <i class="fa fa-star" ng-if="hasStar($item)"></i></ui-select-match>
+               on-remove="onMntnerRemove($item, $model)" >
+        <ui-select-match placeholder="Search for your maintainer">{{$item.key}} <span class="fa fa-star" ng-if="isMine($item)"></span></ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="refreshMntners($select.search)"
                            refresh-delay="100">
             <div class="option">
                 <span class="title">{{mntner.key}}</span>
-                <span class="star fa fa-star" ng-if="hasStar(mntner)"></span>
+                <span class="star fa fa-star" ng-if="isMine(mntner)"></span>
                 <span class="auth sso" ng-if="hasSSo(mntner)"> SSO </span>
                 <span class="auth pgp" ng-if="hasPgp(mntner)"> PGP </span>
                 <span class="auth md5" ng-if="hasMd5(mntner)"> MD5 </span>
@@ -62,7 +62,6 @@
 
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
 
-                <!-- <li ng-repeat="attribute in attributes"> -->
             <label>{{attribute.name}}</label>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
