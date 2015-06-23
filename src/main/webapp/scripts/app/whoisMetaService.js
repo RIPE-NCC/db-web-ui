@@ -43,7 +43,6 @@ angular.module('dbWebApp')
 
             var self = this;
 
-            console.log("enrichAttributesWithMetaInfo before:" +JSON.stringify(attrs));
             var after = _.map(attrs, function (attr) {
 
                 var attrMeta = _.find(attrsMeta, function (am) {
@@ -61,7 +60,6 @@ angular.module('dbWebApp')
                     }
                 };
             });
-            console.log("enrichAttributesWithMetaInfo after:" +JSON.stringify(after));
 
             return after;
         };

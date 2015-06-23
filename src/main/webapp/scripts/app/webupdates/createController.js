@@ -10,14 +10,27 @@ angular.module('webUpdates')
         };
 
         $scope.onMntnerSelect = function( item, all ) {
+            // add the mntner on the right spot
             wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',[{name:'mnt-by', value:item.key}]));
         };
-            
+
         $scope.onMntnerRemove = function( item, all ) {
-            // remove it from the attributes right away
-            return _.remove($scope.attributes, function(i) {
-                return i.name === 'mnt-by' && i.value === item.key;
-            });
+            if( $scope.maintainers.selected.length == 0) {
+                // make sure we do not remove the last mntner which act as anchor
+                 _.map($scope.attributes, function (i) {
+                    if(i.name === 'mnt-by' ) {
+                        i.value = null;
+                        return i;
+                    } else {
+                        return i;
+                    }
+                });
+            } else {
+                // remove it from the attributes right away
+                _.remove($scope.attributes, function (i) {
+                    return i.name === 'mnt-by' && i.value === item.key;
+                });
+            }
         };
 
         $scope.tagTransform = function (newTag) {
@@ -97,22 +110,18 @@ angular.module('webUpdates')
 
                     // Populate empty attributes based on meta-info
                     $scope.attributes = wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
-                    console.log("after wrap:" + JSON.stringify($scope.attributes ));
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
 
-                    console.log("after first:" + JSON.stringify($scope.attributes ));
 
                     $resource('api/user/mntners').query(function(data) {
-                        console.log("recvd mntners success:" + JSON.stringify(data));
                         $scope.maintainers.selected = data;
                         // rework data in attrinutes
                         var mntnerAttrs = _.map(data, function(i) {
                             return {name: 'mnt-by', value:i.key};
                         });
-                        console.log("mntners:"+ JSON.stringify(mntnerAttrs));
                         wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',
                             mntnerAttrs));
                     });
@@ -136,9 +145,7 @@ angular.module('webUpdates')
                 $scope.passwordAgain = undefined;
                 $scope.authPasswordMessage = undefined;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-
-
+    
                 /*
                  * End of initialisation phase
                  */
@@ -189,8 +196,6 @@ angular.module('webUpdates')
             };
 
             $scope.submit = function () {
-
-                console.log("submit:" + JSON.stringify($scope.attributes));
 
                 var onSubmitSuccess = function (resp) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
@@ -338,13 +343,9 @@ angular.module('webUpdates')
              * Methods used to make sure that attributes have meta information and have utility functions
              */
             function wrapAndEnrichAttributes (attrs) {
-                console.log("wrapAndEnrichResources 1:" + JSON.stringify(attrs));
-                var attrs = WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs);
-                console.log("wrapAndEnrichResources 2:" + JSON.stringify(attrs));
-
-                $scope.attributes = WhoisResources.wrapAttributes(attrs);
-
-                console.log("wrapAndEnrichResources 3:" + JSON.stringify($scope.attributes));
+                $scope.attributes = WhoisResources.wrapAttributes(
+                    WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs)
+                );
 
                 return $scope.attributes;
             }
