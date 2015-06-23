@@ -165,6 +165,9 @@
                 <h5 class="modal-title" id="providePasswordModalLabel">Password authentication</h5>
             </div>
             <div class="modal-body">
+                <div ng-if="providePasswordModal.hasMessage()" class="alert-expired alert alert-danger">
+                    <p>{{providePasswordModal.message}}</p>
+                </div>
                 <div>
                     <label>Select a maintainer to authenticate the update operation.</label>
                     <select ng-model="providePasswordModal.selectedMntner"
@@ -177,9 +180,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="blue-button" data-dismiss="modal" value="Close"/>
-                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="submit()" value="Authenticate"/>
+                <input type="submit" class="blue-button" ng-click="attemptAutentication()" value="Authenticate"/>
             </div>
         </div>
     </div>
-</div
+</div>

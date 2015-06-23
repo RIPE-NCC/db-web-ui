@@ -4,6 +4,9 @@ angular.module('webUpdates')
     .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5',
         function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
 
+        $scope.objectSource = $stateParams.source;
+        $scope.objectType = $stateParams.objectType;
+
         $scope.maintainers = {
             selected:[],
             alternatives:[]
@@ -211,6 +214,21 @@ angular.module('webUpdates')
                 return $scope.maintainers.selected.length > 0;
             };
 
+            var validateForm = function () {
+                var status = $scope.attributes.validate();
+                return status;
+            };
+
+            var stripNulls = function () {
+                $scope.attributes = wrapAndEnrichAttributes($scope.attributes.removeNullAttributes());
+            };
+
+            var clearErrors = function () {
+                $scope.errors = [];
+                $scope.warnings = [];
+                $scope.attributes.clearErrors();
+            };
+
             $scope.submit = function () {
 
                 var onSubmitSuccess = function (resp) {
@@ -236,20 +254,6 @@ angular.module('webUpdates')
                     }
                 };
 
-                var validateForm = function () {
-                    var status = $scope.attributes.validate();
-                    return status;
-                };
-
-                var stripNulls = function () {
-                    $scope.attributes = wrapAndEnrichAttributes($scope.attributes.removeNullAttributes());
-                };
-
-                var clearErrors = function () {
-                    $scope.errors = [];
-                    $scope.warnings = [];
-                    $scope.attributes.clearErrors();
-                };
 
                 if (validateForm() ) {
                     stripNulls();
@@ -390,30 +394,79 @@ angular.module('webUpdates')
 
             $scope.submitOrProvidePasswordModal = function () {
                 if (needsPasswordAuthentication($scope.maintainers.selected)) {
-                    $scope.displayProvidePasswordModal($scope.getMntnersForPasswordAuth($scope.maintainers.selected));
+                    if (validateForm() ) {
+                        stripNulls();
+                        clearErrors();
+
+                        $scope.displayProvidePasswordModal($scope.getMntnersForPasswordAuth($scope.maintainers.selected));
+                    }
                 } else {
                     $scope.submit();
                 }
             };
 
+            var initialiseModal = function () {
+                $scope.providePasswordModal = {
+                    mntnersForPasswordAuth: [],
+                    selectedMntner: undefined,
+                    password: '',
+                    authResult: false,
+                    message: "",
+                    hasMessage: function () {
+                        console.log("_.isUndefined(providePasswordModal.message) : " + _.isUndefined($scope.providePasswordModal.message));
+                        console.log("providePasswordModal.message !== \"\" : " + ($scope.providePasswordModal.message !== ""));
 
-            //$scope.mntnerCredentials = {
-            //    selectedMntner: selectedMaintainers[0],
-            //    password : ''
-            //};
-
-            $scope.providePasswordModal = {
-                mntnersForPasswordAuth: [],
-                selectedMntner: undefined,
-                password : '',
-                passwordAuthResult: false
+                        return !_.isUndefined($scope.providePasswordModal.message) && $scope.providePasswordModal.message !== "";
+                    }
+                };
             };
 
             $scope.displayProvidePasswordModal = function (mntnersForPasswordAuth) {
+                initialiseModal();
                 $scope.providePasswordModal.mntnersForPasswordAuth = mntnersForPasswordAuth;
                 $scope.providePasswordModal.selectedMntner = mntnersForPasswordAuth[0];
                 $('#providePasswordModal').modal('show');
             };
 
+            $scope.attemptAutentication = function (){
+                $resource('api/whois/:source/:objectType/:objectName', {
+                    source: $scope.objectSource,
+                    objectType: 'mntner',
+                    objectName: $scope.providePasswordModal.selectedMntner.key,
+                    unfiltered: true,
+                    password: $scope.providePasswordModal.password
+                }).get(function (resp) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                        var mntnerAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                        var sourceAttr = mntnerAttributes.getSingleAttributeOnName("source");
+                        console.log(JSON.stringify(sourceAttr));
+
+                        if (sourceAttr.value.toLowerCase() === $scope.objectSource.toLowerCase()
+                                && _.isUndefined(sourceAttr.comment)){
+
+                            $scope.providePasswordModal.authResult = true;
+                            $('#providePasswordModal').modal('hide');
+                            $scope.submit();
+                        } else {
+                            $scope.providePasswordModal.authResult = false;
+                            console.log("not authenticated");
+                            $scope.providePasswordModal.message =
+                                "You have not supplied the correct password for mntner: '" + $scope.providePasswordModal.selectedMntner.key + "'";
+                        }
+
+                    }, function (resp) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
+                        if (!_.isUndefined(whoisResources)) {
+                            console.log("whois error response in modal");
+                            $scope.providePasswordModal.message = _.reduce(whoisResources.getGlobalErrors(), function(total, n) {
+                                return total + '\n' +n;
+                            });
+                        } else {
+                            console.log("server error in modal");
+                            $scope.providePasswordModal.message = "server error : " + JSON.stringify(resp);
+                        }
+                        $scope.providePasswordModal.authResult = true;
+                    });
+            };
 
         }]);
