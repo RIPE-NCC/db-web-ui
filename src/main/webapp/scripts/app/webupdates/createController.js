@@ -230,10 +230,6 @@ angular.module('webUpdates')
                 return $scope.infos.length > 0;
             };
 
-            $scope.attributeHasError = function (attribute) {
-                return attribute.$$error !== null;
-            };
-
             $scope.hasMntners = function () {
                 return $scope.maintainers.selected.length > 0;
             };

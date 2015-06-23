@@ -55,6 +55,32 @@ ul.form-fields {
 }
 
 
+ul.success-fields {
+	list-style: none;
+	padding: 20px !important;
+	border: 1px #ccc dashed;
+	font {
+		family: menlo !important;
+	}
+	li {
+		display: inline-block !important;
+	    width: 50%;
+	}
+}
+
+@media (max-width: 768px) { 
+	ul.success-fields {
+		li {
+		    width: 100%;
+		}
+	}
+}
+
+.inner-container {
+	@extend %float-l;
+	@extend %width-100;
+}
+
 .maintainer-fields {
 	@extend %float-l;
 	@extend %width-100;
@@ -66,7 +92,7 @@ ul.form-fields {
 	li:last-child {
 		margin-bottom: 0 !important;
 	}
-	margin-bottom: 20px;
+	margin-bottom: 20px !important;
 }
 .visible-field-form {
 	@extend %float-l;
@@ -88,6 +114,33 @@ ul.form-fields {
 		}
 		li:last-child {
 			margin-bottom: 0 !important;
+		}
+	}
+}
+
+.modify-feedback {
+	display: inline;
+	position: relative;
+	i {
+		color: #ff9600;
+	}
+	span {
+	    background-color: #ff9600;
+	    border-radius: 5px;
+	    color: #fff;
+	    cursor: pointer;
+	    display: none;
+	    font-size: 12px;
+	    left: -110px;
+	    padding: 0 6px;
+	    position: absolute;
+	    text-align: center;
+	    top: -44px;
+	    width: 230px;
+	}
+	&:hover {
+		span {
+			display: inline;
 		}
 	}
 }
