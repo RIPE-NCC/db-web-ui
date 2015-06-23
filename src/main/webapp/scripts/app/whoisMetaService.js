@@ -48,11 +48,15 @@ angular.module('dbWebApp')
                 var attrMeta = _.find(attrsMeta, function (am) {
                     return am.name === attr.name;
                 });
+                var idx = undefined;
+                if( attr.$$meta != null) {
+                    idx = attr.$$meta.$$idx;
+                }
                 return {
                     name: attr.name,
                     value: attr.value,
                     $$meta: {
-                        $$idx: attr.$$meta.$$idx,
+                        $$idx: idx,
                         $$mandatory: attrMeta.mandatory,
                         $$multiple: attrMeta.multiple,
                         $$description: self._getAttributeDocumentation(objectTypeName, attr.name),

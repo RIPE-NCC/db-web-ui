@@ -87,6 +87,16 @@ angular.module('webUpdates')
                         name: $scope.name
                     }).get(function (resp) {
                         wrapAndEnrichResources(resp);
+
+                        // get mntbers from response
+                        var mntners = _.filter($scope.attributes, function(i) {
+                            return i.name === 'mnt-by';
+                        });
+                        //  copy mntbers to mantainers.selected
+                        $scope.maintainers.selected = _.map(mntners, function(i) {
+                            return {type:'mntner', key: i.value, mine:true};
+                        });
+
                     }, function (resp) {
                         var whoisResources = wrapAndEnrichResources(resp.data);
                         setErrors(whoisResources);
@@ -133,6 +143,7 @@ angular.module('webUpdates')
                     // Start empty, and populate with rest-result
                     $scope.attributes = wrapAndEnrichAttributes([]);
                     fetchObjectViaRest();
+
                 }
 
                 // Populate "select attribute for add"-fields popup
