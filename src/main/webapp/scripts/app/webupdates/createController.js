@@ -10,14 +10,12 @@ angular.module('webUpdates')
         };
 
         $scope.onMntnerSelect = function( item, all ) {
-            if( ! item.isTag  ) {
-                $scope.maintainers.selected.push(item);
-            }
         };
 
         $scope.onMntnerRemove = function( item, all ) {
-            $scope.maintainers.selected = _.filter($scope.maintainers.selected, function(i) {
-                return item.key != i.key;
+            // remove it from the attributes ass well
+            return _.remove($scope.attributes, function(i) {
+                return i.name === 'mnt-by' && i.value === item.key;
             });
         };
 
@@ -62,7 +60,7 @@ angular.module('webUpdates')
             }
         };
 
-        var onCreate = function() {
+        var onLoad = function() {
                 /*
                  * Start of initialisation phase
                  */
@@ -133,7 +131,7 @@ angular.module('webUpdates')
                  * End of initialisation phase
                  */
             };
-            onCreate();
+            onLoad();
 
 
             /*
@@ -180,6 +178,8 @@ angular.module('webUpdates')
 
             $scope.submit = function () {
 
+                console.log("submit:" + JSON.stringify($scope.attributes));
+
                 var onSubmitSuccess = function (resp) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display can fetch it from here
@@ -218,11 +218,15 @@ angular.module('webUpdates')
                     $scope.attributes.clearErrors();
                 };
 
+                
+
                 var allMnts = [];
                 _.each($scope.maintainers.selected, function(value) {
                         allMnts.push({name:'mnt-by', value: value.key});
                     }
                 );
+
+                wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', allMnts));
 
                 if (validateForm() ) {
                     stripNulls();
