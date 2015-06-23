@@ -28,16 +28,15 @@
 <form id="createForm">
 
     <!--                tagging="tagTransform" -->
-
-    <h3>Alternative mntners</h3>
+	<section class="form-fields maintainer-fields">
+    <strong>Please select your maintainers before creating the {{objectType}} object</strong>
     <ui-select multiple="true"
                theme="selectize"
                ng-model="maintainers.selected"
                close-on-select="true"
                on-select="onMntnerSelect($item, $model)"
-               on-remove="onMntnerRemove($item, $model)"
-               style="width: 800px;" >
-        <ui-select-match placeholder="Select mntner...">{{$item.key}}</ui-select-match>
+               on-remove="onMntnerRemove($item, $model)">
+        <ui-select-match placeholder="Search for your maintainer">{{$item.key}}</ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="refreshMntners($select.search)"
                            refresh-delay="100">
@@ -52,6 +51,7 @@
     </ui-select>
     <br/>
     Mntners:{{maintainers.selected}}
+	</section>
 
     <section class="visible-field-form" ng-if="hasMntners()">
 
