@@ -4,13 +4,12 @@ angular.module('dbWebApp', [
     'ui.router',
     'angular-md5',
     'ngResource',
+    'ngSanitize',
     'webUpdates',
     'interceptors',
-    'selectize',
     'angulartics',
     'angulartics.google.tagmanager',
     'ui.bootstrap',
-    'ngSanitize',
     'ui.select'])
 .config(function ($stateProvider) {
     $stateProvider
