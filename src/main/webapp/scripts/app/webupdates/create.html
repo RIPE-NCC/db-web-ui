@@ -35,7 +35,6 @@
         </ui-select-choices>
     </ui-select>
     <br/>
-    Mntners:{{maintainers.selected}}
 	</section>
 
     <section class="visible-field-form" ng-if="hasMntners()">
@@ -43,7 +42,6 @@
     <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
 
     <ul class="form-fields appeared-fields">
-        Attributes:{{attributes}}
 
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
 
