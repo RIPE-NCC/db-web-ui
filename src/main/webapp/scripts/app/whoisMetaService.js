@@ -53,7 +53,7 @@ angular.module('dbWebApp')
                     name: attr.name,
                     value: attr.value,
                     $$meta: {
-                        $$idx: attrMeta.$$idx,
+                        $$idx: attr.$$meta.$$idx,
                         $$mandatory: attrMeta.mandatory,
                         $$multiple: attrMeta.multiple,
                         $$description: self._getAttributeDocumentation(objectTypeName, attr.name),
@@ -61,7 +61,7 @@ angular.module('dbWebApp')
                     }
                 };
             });
-            console.log("enrichAttributesWithMetaInfo after:" +JSON.stringify(attrs));
+            console.log("enrichAttributesWithMetaInfo after:" +JSON.stringify(after));
 
             return after;
         };

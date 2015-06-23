@@ -10,44 +10,9 @@ angular.module('webUpdates')
         };
 
         $scope.onMntnerSelect = function( item, all ) {
-            // add it to the attributes on the right spot right away
-            if( hasNullMntner() ) {
-                console.log("Has null mntner");
-                $scope.replaceNullMntner(item.key);
-            } else {
-                console.log("Append mntner");
-                $scope.appendMntner(item.key);
-            }
+            wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',[{name:'mnt-by', value:item.key}]));
         };
-
-        $scope.hasNullMntner = function() {
-            return _.any($scope.attributes, function(i) {
-                return i.name === 'mnt-by' && ! i.value;
-            });
-        };
-
-        $scope.replaceNullMntner = function( name ) {
-            $scope.attributes = _.map( $scope.attributes, function(i) {
-                if(i.name === 'mnt-by' && ! i.value) {
-                    i.value = name;
-                    return i;
-                } else {
-                    return i;
-                }
-            });
-        };
-
-        $scope.appendMntner = function( name ) {
-            $scope.attributes = _.map( $scope.attributes, function(i) {
-                if(i.name === 'mnt-by' && ! i.value) {
-                    i.value = name;
-                    return i;
-                } else {
-                    return i;
-                }
-            });
-        };
-
+            
         $scope.onMntnerRemove = function( item, all ) {
             // remove it from the attributes right away
             return _.remove($scope.attributes, function(i) {
