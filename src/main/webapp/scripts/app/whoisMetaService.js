@@ -51,6 +51,7 @@ angular.module('dbWebApp')
                     name: attr.name,
                     value: attr.value,
                     $$meta: {
+                        $$idx: attrMeta.$$idx,
                         $$mandatory: attrMeta.mandatory,
                         $$multiple: attrMeta.multiple,
                         $$description: self._getAttributeDocumentation(objectTypeName, attr.name),

@@ -27,17 +27,20 @@
 </style>
 <form id="createForm">
 
+    <!--                tagging="tagTransform" -->
+
     <h3>Alternative mntners</h3>
     <ui-select multiple="true"
                theme="select2"
-               tagging="tagTransform"
                ng-model="maintainers.selected"
+               close-on-select="true"
                on-select="onMntnerSelect($item, $model)"
                on-remove="onMntnerRemove($item, $model)"
                style="width: 800px;" >
         <ui-select-match placeholder="Select mntner...">{{$item.key}}</ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
-                           refresh="refreshMntners($select.search)">
+                           refresh="refreshMntners($select.search)"
+                           refresh-delay="100">
             <div class="option">
                 <span class="title">{{mntner.key}}</span>
                 <span class="star fa fa-star" ng-if="hasStar(mntner)"></span>
@@ -47,6 +50,7 @@
             </div>
         </ui-select-choices>
     </ui-select>
+    <br/>
     Mntners:{{maintainers.selected}}
 
     <div ng-if="hasMntners()">

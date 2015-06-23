@@ -10,10 +10,13 @@ angular.module('webUpdates')
         };
 
         $scope.onMntnerSelect = function( item, all ) {
+            
+            // add it to the attributes on the right spot
+           wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', [{name:'mnt-by', value: item.key}]));
         };
 
         $scope.onMntnerRemove = function( item, all ) {
-            // remove it from the attributes ass well
+            // remove it from the attributes as well
             return _.remove($scope.attributes, function(i) {
                 return i.name === 'mnt-by' && i.value === item.key;
             });
@@ -103,6 +106,13 @@ angular.module('webUpdates')
                     $resource('api/user/mntners').query(function(data) {
                         console.log("recvd mntners success:" + JSON.stringify(data));
                         $scope.maintainers.selected = data;
+                        // rework data in attrinutes
+                        var mntnerAttrs = _.map(data, function(i) {
+                            return {name: 'mnt-by', value:i.key};
+                        });
+                        console.log("mntners:"+ JSON.stringify(mntnerAttrs));
+                        wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',
+                            mntnerAttrs));
                     });
 
                 } else {
@@ -217,16 +227,6 @@ angular.module('webUpdates')
                     $scope.warnings = [];
                     $scope.attributes.clearErrors();
                 };
-
-                
-
-                var allMnts = [];
-                _.each($scope.maintainers.selected, function(value) {
-                        allMnts.push({name:'mnt-by', value: value.key});
-                    }
-                );
-
-                wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', allMnts));
 
                 if (validateForm() ) {
                     stripNulls();

@@ -194,11 +194,11 @@ angular.module('dbWebApp')
             _.map(this, function(attr) {
                 objecTypeIndex[attr.name] = attr.$$meta;
             });
-            //console.log("field-index:" + JSON.stringify(objecTypeIndex));
+            console.log("field-index:" + JSON.stringify(objecTypeIndex));
 
             // apppend the two arrays
             var combined = this.concat(attrs);
-            //console.log("combined:" + JSON.stringify(combined));
+            console.log("combined:" + JSON.stringify(combined));
 
             // add meta to items without meta
             var enriched = _.map(combined, function(attr) {
@@ -207,7 +207,7 @@ angular.module('dbWebApp')
                }
                 return attr;
             });
-            //console.log("enriched:" + JSON.stringify(enriched));
+            console.log("enriched:" + JSON.stringify(enriched));
 
             // add meta to items without meta
             var stripped = _.filter(enriched, function(attr) {
@@ -216,12 +216,12 @@ angular.module('dbWebApp')
                 }
                 return true;
             });
-            //console.log("stripped:" + JSON.stringify(stripped));
+            console.log("stripped:" + JSON.stringify(stripped));
 
             var sorted = _.sortBy(stripped, function (attr) {
                 return attr.$$meta.$$idx;
             });
-            //console.log("sorted:" + JSON.stringify(sorted));
+            console.log("sorted:" + JSON.stringify(sorted));
             return sorted;
         };
 
