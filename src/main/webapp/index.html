@@ -6,94 +6,50 @@
     https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template
   -->
  <head>
-     <script src="bower_components/angular/angular.js"></script>
-     <script src="bower_components/angular-resource/angular-resource.js"></script>
-     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-     <script src="bower_components/angular-md5/angular-md5.min.js"></script>
-     <script src="bower_components/lodash/lodash.js"></script>
-     <script src="bower_components/lodash/lodash.js"></script>
-	 <script src="bower_components/angulartics/dist/angulartics.min.js"></script>
-	 <script src="bower_components/angulartics/dist/angulartics-gtm.min.js"></script>
-     <script src="assets/js/script.js"></script>
-     <meta charset="UTF-8">
 
-     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	 <meta charset="UTF-8">
+	 <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	 <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" name="description" />
+	 <meta name="generator" content="Plone - http://plone.org" />
+	 <meta name="viewport" content="width=device-width, initial-scale=1">
 
+	 <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
 
-     <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" name="description" />
+	 <link rel="shortcut icon" type="image/x-icon" href="https://www.ripe.net/favicon.ico" />
+	 <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png" />
+	 <link rel="search" href="https://www.ripe.net/search" title="Search this site" />
+	<!-- your custom styles here CSSMARKER -->
+	<link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen" type="text/css" rel="stylesheet" />
+	<link rel="stylesheet" type="text/css" media="print" href="https://www.ripe.net/portal_css/Ripe/print.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/open-sans.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/template.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="assets/css/main.css" />
+	<!--[if lte IE 8]>
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/ie-template.css" />
+	<![endif]-->
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css"/>
+    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css"/>
+    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.css"/>
 
-     <link rel="stylesheet" type="text/css" media="print" href="https://www.ripe.net/portal_css/Ripe/print.css" />
-     <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/bootstrap.min.css" />
-     <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/bootstrap-theme.min.css" />
-     <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/open-sans.css" />
-     <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/template.css" />
-     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/main.css" />
-     <!--[if lte IE 8]>
-
-     <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/ie-template.css" />
-     <![endif]-->
-
-
-     <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
-
-
-     <link rel="shortcut icon" type="image/x-icon" href="https://www.ripe.net/favicon.ico" />
-     <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png" />
-
-     <link rel="search" href="https://www.ripe.net/search" title="Search this site" />
-
-
-     <!-- your custom styles here CSSMARKER -->
-
-
-     <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen" type="text/css" rel="stylesheet" />
-
-
-     <!-- JQuery JavaScript placeholder here -->
-     <script type="text/javascript" src="https://www.ripe.net/jquery.js"></script>
-     <!-- END JQuery JavaScript placeholder here -->
-     <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/bootstrap.min.js"></script>
-     <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/template.js"></script>
-
-     <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/browser-update.js"></script>
-
-     <script type="text/javascript" src="https://www.ripe.net/modernizr.js"></script>
-
-     <!--[if lte IE 8]>
-
-     <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/html5.js"></script>
-
-     <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/respond.js"></script>
-
-     <![endif]-->
-
-
-     <!-- your custom javascripts here JSMARKER -->
-
-
-     <meta name="generator" content="Plone - http://plone.org" />
-
-
-     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"/>
 
  </head>
 
-
  <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr">
 
-<!-- Google Tag Manager, replace GTM-XXXXX with your container ID -->
-<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WTWTB7"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-WTWTB7');</script>
-<!-- End Google Tag Manager -->
-
-
-
+	<!-- Google Tag Manager, replace GTM-XXXXX with your container ID -->
+	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WTWTB7"
+	height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+	<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+	new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+	j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+	'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+	})(window,document,'script','dataLayer','GTM-WTWTB7');</script>
+	<!-- End Google Tag Manager -->
 
  <header class="header-gradient container-fluid">
      <div id="site-header" class="container">
@@ -1043,26 +999,55 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
  </footer>
 
- <!-- Footer JavaScript placeholder FOOTERMARKER -->
-    <script src="scripts/app/app.js"></script>
-    <script src="scripts/app/app.constants.js"></script>
+	<!-- Footer JavaScript placeholder FOOTERMARKER -->
+	<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script async type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/bootstrap.min.js"></script>
+	<script async type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/template.js"></script>
+	<script async type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/browser-update.js"></script>
+	<script async type="text/javascript" src="https://www.ripe.net/modernizr.js"></script>
+	<!--[if lte IE 8]>
+	<script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/html5.js"></script>
+	<script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/respond.js"></script>
+	<![endif]-->
 
-    <!-- Interceptors -->
-    <script src="scripts/app/interceptors/interceptorsModule.js"></script>
-    <script src="scripts/app/interceptors/errorInterceptors.js"></script>
-    <script src="scripts/app/interceptors/authenticationInterceptor.js"></script>
+	<script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+	<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/lodash/lodash.js"></script>
 
-    <!-- App Modules -->
-    <script src="scripts/app/whoisMetaService.js"></script>
-    <script src="scripts/app/whoisResources.js"></script>
-    <script src="scripts/app/messageStore.js"></script>
+	<script src="bower_components/angular-md5/angular-md5.min.js"></script>
+	<script src="bower_components/angulartics/dist/angulartics.min.js"></script>
+	<script src="bower_components/angulartics/dist/angulartics-gtm.min.js"></script>
 
-    <!-- WebUpdates Module -->
-    <script src="scripts/app/webupdates/webUpdatesModule.js"></script>
-    <script src="scripts/app/webupdates/webUpdatesStates.js"></script>
-    <script src="scripts/app/webupdates/selectController.js"></script>
-    <script src="scripts/app/webupdates/createController.js"></script>
-    <script src="scripts/app/webupdates/displayController.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
+	<script src="bower_components/selectize/dist/js/standalone/selectize.js"></script>
+    <script src="bower_components/angular-ui-select/dist/select.js"></script>
+
+	<script src="assets/js/script.js"></script>
+
+	<script src="scripts/app/app.js"></script>
+	<script src="scripts/app/app.constants.js"></script>
+
+	<!-- Interceptors -->
+	<script src="scripts/app/interceptors/interceptorsModule.js"></script>
+	<script src="scripts/app/interceptors/errorInterceptors.js"></script>
+	<script src="scripts/app/interceptors/authenticationInterceptor.js"></script>
+
+	<!-- App Modules -->
+	<script src="scripts/app/whoisMetaService.js"></script>
+
+	<script src="scripts/app/whoisResources.js"></script>
+	<script src="scripts/app/messageStore.js"></script>
+
+	<!-- WebUpdates Module -->
+	<script src="scripts/app/webupdates/webUpdatesModule.js"></script>
+	<script src="scripts/app/webupdates/webUpdatesStates.js"></script>
+	<script src="scripts/app/webupdates/selectController.js"></script>
+	<script src="scripts/app/webupdates/createController.js"></script>
+	<script src="scripts/app/webupdates/displayController.js"></script>
 
  </body>
 

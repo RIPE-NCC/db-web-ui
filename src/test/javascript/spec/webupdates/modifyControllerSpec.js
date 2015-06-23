@@ -33,14 +33,10 @@ describe('webUpdates: ModifyController', function () {
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
-            $httpBackend.whenGET('api/user/maintainers').respond({
-                objects: {
-                    object: [
-                        {'primary-key': {attribute: [{name: 'mntner', value: 'TEST-MNT'}]}},
-                        {'primary-key': {attribute: [{name: 'mntner', value: 'TESTSSO-MNT'}]}}
-                    ]
-                }
-            });
+            $httpBackend.whenGET('api/user/mntners').respond([
+                {'value':'TEST-MNT',   'extras':{'mine':true,'pgp':false,'sso':true,'md5':false}},
+                {'value':'TESTSSO-MNT', 'extras':{'mine':true,'pgp':false,'sso':true,'md5':true }}
+            ]);
 
             $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK').respond(
                 function(method,url) {

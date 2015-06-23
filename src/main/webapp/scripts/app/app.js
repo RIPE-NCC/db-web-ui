@@ -4,10 +4,13 @@ angular.module('dbWebApp', [
     'ui.router',
     'angular-md5',
     'ngResource',
+    'ngSanitize',
     'webUpdates',
     'interceptors',
     'angulartics',
-    'angulartics.google.tagmanager'])
+    'angulartics.google.tagmanager',
+    'ui.bootstrap',
+    'ui.select'])
 .config(function ($stateProvider) {
     $stateProvider
         .state('error', {

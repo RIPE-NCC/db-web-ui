@@ -93,12 +93,12 @@ angular.module('webUpdates')
             };
 
             $scope.getOperationName = function() {
-                var name = "";
+                var name = ''   ;
                 if( $scope.method ) {
-                    if ($scope.method === "Create") {
-                        name = "created";
-                    } else if ($scope.method === "Modify") {
-                        name = "modified";
+                    if ($scope.method === 'Create') {
+                        name = 'created';
+                    } else if ($scope.method === 'Modify') {
+                        name = 'modified';
                     }
                 }
                 return name;
@@ -127,6 +127,6 @@ angular.module('webUpdates')
                     name: $scope.objectName
                 });
             };
-            
+
 
         }]);

@@ -10,21 +10,35 @@
 <div ng-if="hasInfos()" class="alert alert-warning">
     <p ng-repeat="info in infos">{{info.plainText}}</p>
 </div>
-
 <form id="createForm">
-    <ul class="form-fields maintainer-fields">
-        <strong>Please select your maintainers before creating the object</strong>
-        <li ng-repeat="attribute in (attributes | filter: {name: 'mnt-by'})">
 
-            <!-- <li ng-repeat="attribute in attributes">
-            <label>{{attribute.name}}</label> -->
-            <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
-                   ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
-            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
-        </li>
-    </ul>
+    <!--                tagging="tagTransform" placeholder="Search for your maintainer" -->
+	<section class="form-fields maintainer-fields">
+    <strong>Please select your maintainers before creating the {{objectType}} object</strong>
+    <span class="fa fa-search maintainer-search-icon"></span>
+    <ui-select multiple="true"
+               theme="selectize"
+               ng-model="maintainers.selected"
+               close-on-select="true"
+               on-select="onMntnerSelect($item, $model)"
+               on-remove="onMntnerRemove($item, $model)" >
+        <ui-select-match >{{$item.key}} <span class="fa fa-star" ng-if="isMine($item)"></span></ui-select-match>
+        <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
+                           refresh="refreshMntners($select.search)"
+                           refresh-delay="100">
+            <div class="option">
+                <span class="title">{{mntner.key}}</span>
+                <span class="star fa fa-star" ng-if="isMine(mntner)"></span>
+                <span class="auth sso" ng-if="hasSSo(mntner)"> SSO </span>
+                <span class="auth pgp" ng-if="hasPgp(mntner)"> PGP </span>
+                <span class="auth md5" ng-if="hasMd5(mntner)"> MD5 </span>
+            </div>
+        </ui-select-choices>
+    </ui-select>
+    <br/>
+	</section>
 
-    <div ng-if="hasMntners()" class="inner-container">
+    <section class="visible-field-form" ng-if="hasMntners()">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
 
@@ -32,12 +46,15 @@
 
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
 
-                <!-- <li ng-repeat="attribute in attributes"> -->
             <label>{{attribute.name}}</label>
-            <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
-                   ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"/>
             <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
-
+            <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
+                   ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
+                   typeahead="value for value in suggestAutocomplete($viewValue, attribute.name, attribute.$$meta.$$refs)"
+                   typeahead-min-length="2"/>
+            <div class="text field-description" collapse="isHelpHidden">
+                {{attribute.$$meta.$$description}}
+            </div>
             <ul class="input-group-btn">
                 <li>
                     <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type"
@@ -57,15 +74,16 @@
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>
+
                 <li>
                 <a id="changePassword" class="btn btn-default" title="Add/change Password (opens dialog)" ng-click="displayAuthDialog(attribute)" ng-show="(attribute.name == 'auth')">
                     <span class="fa fa-lock fa-3"></span>
                 </a>
                 </li>
                 <li>
-                <a id="help" class="btn btn-default disabled" >
-                    <span class="fa fa-question"></span>
-                </a>
+                    <a id="help" class="btn btn-default" ng-click="isHelpHidden = !isHelpHidden">
+                        <span class="fa fa-question" ></span>
+                    </a>
                 </li>
                 <li>
                 <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
@@ -79,7 +97,7 @@
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
     <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
-    </div>
+    </section>
 </form>
 
 <div id="insertAttributeModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="commonModalLabel" aria-hidden="false">

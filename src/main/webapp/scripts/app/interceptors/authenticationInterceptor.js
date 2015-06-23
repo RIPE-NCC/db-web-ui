@@ -16,7 +16,8 @@ angular.module('interceptors')
             return $q.reject(response);
         }
 
-    }})
+    };
+    })
   .config(function ($httpProvider) {
     $httpProvider.interceptors.push('AuthenticationInterceptor');
   });
