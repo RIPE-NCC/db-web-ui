@@ -15,6 +15,7 @@
     <!--                tagging="tagTransform" -->
 	<section class="form-fields maintainer-fields">
     <strong>Please select your maintainers before creating the {{objectType}} object</strong>
+    <span class="fa fa-search maintainer-search-icon"></span>
     <ui-select multiple="true"
                theme="selectize"
                ng-model="maintainers.selected"
@@ -51,7 +52,7 @@
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
                    typeahead="value for value in suggestAutocomplete($viewValue, attribute.name, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"/>
-            <div class="text" collapse="isHelpHidden">
+            <div class="text field-description" collapse="isHelpHidden">
                 {{attribute.$$meta.$$description}}
             </div>
             <ul class="input-group-btn">
