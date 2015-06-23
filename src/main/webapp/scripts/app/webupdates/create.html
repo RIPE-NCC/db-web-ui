@@ -36,7 +36,7 @@
                close-on-select="true"
                on-select="onMntnerSelect($item, $model)"
                on-remove="onMntnerRemove($item, $model)">
-        <ui-select-match placeholder="Search for your maintainer">{{$item.key}}</ui-select-match>
+        <ui-select-match placeholder="Search for your maintainer">{{$item.key}} <i class="fa fa-star" ng-if="hasStar($item)"></i></ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="refreshMntners($select.search)"
                            refresh-delay="100">

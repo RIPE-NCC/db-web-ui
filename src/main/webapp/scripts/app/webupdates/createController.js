@@ -43,8 +43,13 @@ angular.module('webUpdates')
         };
 
         $scope.hasStar = function( mntner ) {
-            return mntner.mine;
+            if( !mntner.mine ) {
+                return false;
+            } else {
+                return mntner.mine;
+            }
         };
+
 
         $scope.hasSSo = function( mntner ) {
             return _.any(mntner.auth, function(i) {
@@ -249,7 +254,7 @@ angular.module('webUpdates')
                 if (validateForm() ) {
                     stripNulls();
                     clearErrors();
-                    if (!$scope.name) {
+                        if (!$scope.name) {
                         // perform POST to create
                         $resource('api/whois/:source/:objectType',
                             {source: $scope.source, objectType: $scope.objectType})
