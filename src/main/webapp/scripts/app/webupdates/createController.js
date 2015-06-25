@@ -14,10 +14,10 @@ angular.module('webUpdates')
 
         $scope.user = {
             selectedMntner: undefined,
-            successFullPassword: ''
+            successfullPassword: ''
         };
 
-            $scope.onMntnerSelect = function( item, all ) {
+        $scope.onMntnerSelect = function( item, all ) {
             // add the mntner on the right spot
             wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',[{name:'mnt-by', value:item.key}]));
         };
@@ -267,9 +267,9 @@ angular.module('webUpdates')
                     if (!$scope.name) {
                         // perform POST to create
 
-                        if ($scope.user.successFullPassword) {
+                        if ($scope.user.successfullPassword) {
                             $resource('api/whois/:source/:objectType',
-                                {source: $scope.source, objectType: $scope.objectType, password: $scope.user.successFullPassword})
+                                {source: $scope.source, objectType: $scope.objectType, password: $scope.user.successfullPassword})
                                 .save(WhoisResources.embedAttributes($scope.attributes),
                                 onSubmitSuccess,
                                 onSubmitError);
@@ -394,16 +394,23 @@ angular.module('webUpdates')
             }
 
 
-            //authentication modal
+            //password authentication modal
 
             $scope.getMntnersForPasswordAuth = function (selectedMaintainers) {
+
+                if (_.any(selectedMaintainers, function (mntner) {
+                        return $scope.hasStar(mntner) === true;
+                    })) {
+                    return [];
+                }
+
                 return _.filter(selectedMaintainers, function (mntner) {
-                    return $scope.hasStar(mntner) === false && $scope.hasMd5(mntner) === true;
+                    return $scope.hasMd5(mntner) === true;
                 });
             };
 
             var needsPasswordAuthentication = function (selectedMaintainers) {
-                return (!$scope.user.successFullPassword
+                return (!$scope.user.successfullPassword
                     && $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
             };
 
@@ -465,7 +472,7 @@ angular.module('webUpdates')
                             $('#providePasswordModal').modal('hide');
 
                             $scope.user.selectedMntner = $scope.providePasswordModal.selectedMntner;
-                            $scope.user.successFullPassword = $scope.providePasswordModal.password;
+                            $scope.user.successfullPassword = $scope.providePasswordModal.password;
 
                             $scope.submit();
                         } else {
