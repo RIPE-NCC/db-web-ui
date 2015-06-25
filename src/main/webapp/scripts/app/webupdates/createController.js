@@ -12,7 +12,12 @@ angular.module('webUpdates')
             alternatives:[]
         };
 
-        $scope.onMntnerSelect = function( item, all ) {
+        $scope.user = {
+            selectedMntner: undefined,
+            successFullPassword: ''
+        };
+
+            $scope.onMntnerSelect = function( item, all ) {
             // add the mntner on the right spot
             wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',[{name:'mnt-by', value:item.key}]));
         };
@@ -261,11 +266,20 @@ angular.module('webUpdates')
                     //TODO check if needs password authentication and use password paramater.
                     if (!$scope.name) {
                         // perform POST to create
-                        $resource('api/whois/:source/:objectType',
-                            {source: $scope.source, objectType: $scope.objectType})
-                            .save(WhoisResources.embedAttributes($scope.attributes),
+
+                        if ($scope.user.successFullPassword) {
+                            $resource('api/whois/:source/:objectType',
+                                {source: $scope.source, objectType: $scope.objectType, password: $scope.user.successFullPassword})
+                                .save(WhoisResources.embedAttributes($scope.attributes),
                                 onSubmitSuccess,
                                 onSubmitError);
+                        } else {
+                            $resource('api/whois/:source/:objectType',
+                                {source: $scope.source, objectType: $scope.objectType})
+                                .save(WhoisResources.embedAttributes($scope.attributes),
+                                    onSubmitSuccess,
+                                    onSubmitError);
+                        }
                     } else {
                         // perform PUT to modify
                         $resource('api/whois/:source/:objectType/:name',
@@ -389,7 +403,8 @@ angular.module('webUpdates')
             };
 
             var needsPasswordAuthentication = function (selectedMaintainers) {
-                return ($scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
+                return (!$scope.user.successFullPassword
+                    && $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
             };
 
 
@@ -429,6 +444,7 @@ angular.module('webUpdates')
                 $('#providePasswordModal').modal('show');
             };
 
+
             $scope.attemptAutentication = function (){
                 $resource('api/whois/:source/:objectType/:objectName', {
                     source: $scope.objectSource,
@@ -447,6 +463,10 @@ angular.module('webUpdates')
 
                             $scope.providePasswordModal.authResult = true;
                             $('#providePasswordModal').modal('hide');
+
+                            $scope.user.selectedMntner = $scope.providePasswordModal.selectedMntner;
+                            $scope.user.successFullPassword = $scope.providePasswordModal.password;
+
                             $scope.submit();
                         } else {
                             $scope.providePasswordModal.authResult = false;
