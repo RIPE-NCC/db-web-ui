@@ -9,8 +9,10 @@ angular.module('webUpdates')
 
         $scope.maintainers = {
             selected:[],
-            alternatives:[]
+            alternatives:[],
+            mine:[]
         };
+        $scope.attributes = [];
 
         $scope.user = {
             selectedMntner: undefined,
@@ -50,8 +52,8 @@ angular.module('webUpdates')
             };
         };
 
-        $scope.hasStar = function( mntner ) {
-            if(!mntner.mine) {
+        $scope.isMine = function( mntner ) {
+            if( !mntner.mine ) {
                 return false;
             } else {
                 return mntner.mine;
@@ -75,12 +77,37 @@ angular.module('webUpdates')
             });
         };
 
+        var isMntnerOnlist = function( selectedMntners, mntner ) {
+            var status = _.any(selectedMntners, function(m) {
+                return m.key === mntner.key;
+            });
+            return status;
+        };
+
+        var enrichAlternativesWithMine = function(mntners) {
+            return  _.map(mntners, function(mntner) {
+                // search in selected list
+                if(isMntnerOnlist($scope.maintainers.mine, mntner)) {
+                    mntner.mine = true;
+                }
+                return mntner;
+            });
+        };
+
+        var stripAlreadySelected = function(mntners) {
+            return _.filter(mntners, function(mntner) {
+                return !isMntnerOnlist($scope.maintainers.selected, mntner);
+            });
+        };
+
         $scope.refreshMntners = function( query) {
+            // need to typed characters
             if( query.length > 2 ) {
                 $resource('api/whois/autocomplete',
                     {query: query, field: 'mnt-by', attribute: 'auth'}).query(
                     function (data) {
-                        $scope.maintainers.alternatives = data;
+                        // prevent mntners on selected list to appear
+                        $scope.maintainers.alternatives = stripAlreadySelected(enrichAlternativesWithMine(data));
                     }
                 );
             }
@@ -146,6 +173,7 @@ angular.module('webUpdates')
                         var mntnerAttrs = _.map(data, function(i) {
                             return {name: 'mnt-by', value:i.key};
                         });
+                        $scope.maintainers.mine = data;
                         wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',
                             mntnerAttrs));
                     });
@@ -186,8 +214,8 @@ angular.module('webUpdates')
                     // No suggestions since not a reference
                     return [];
                 } else {
-                    return $resource('api/whois/autocomplete/details',
-                        { q:val, f:  name}).query()
+                    return $resource('api/whois/autocomplete',
+                        { query:val, field: name, extended:true}).query()
                         .$promise.then(
                         function(resp) {
                             return _.map(resp, function( item) {
@@ -209,10 +237,6 @@ angular.module('webUpdates')
 
             $scope.hasInfos = function () {
                 return $scope.infos.length > 0;
-            };
-
-            $scope.attributeHasError = function (attribute) {
-                return attribute.$$error !== null;
             };
 
             $scope.hasMntners = function () {
@@ -420,7 +444,7 @@ angular.module('webUpdates')
             $scope.getMntnersForPasswordAuth = function (selectedMaintainers) {
 
                 if (_.any(selectedMaintainers, function (mntner) {
-                        return $scope.hasStar(mntner) === true;
+                        return $scope.isMine(mntner) === true;
                     })) {
                     return [];
                 }
