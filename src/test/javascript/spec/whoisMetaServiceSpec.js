@@ -52,8 +52,8 @@ describe('dbWebApp: WhoisMetaService', function () {
             {name: 'optional1', value:'optional1value'}
         ];
         expect($whoisMetaService.enrichAttributesWithMetaInfo('type1', attrs)).toEqual([
-            {name: 'mandatory1', value:'mandatory1value', $$meta: {$$mandatory:true, $$multiple:false, $$description:'A',$$refs:[]}},
-            {name: 'optional1', value:'optional1value', $$meta: {$$mandatory:false, $$multiple:true, $$description:'B',$$refs:['b']}}
+            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true, $$multiple:false, $$description:'A',$$refs:[]}},
+            { name: 'optional1', value:'optional1value', $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true, $$description:'B',$$refs:['b']}}
         ])
     });
 
