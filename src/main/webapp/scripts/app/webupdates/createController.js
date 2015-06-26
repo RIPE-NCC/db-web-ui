@@ -259,14 +259,19 @@ angular.module('webUpdates')
                     }
                 };
 
-
                 if (validateForm() ) {
                     stripNulls();
                     clearErrors();
-                    //TODO check if needs password authentication and use password paramater.
+
+                    if (needsPasswordAuthentication($scope.maintainers.selected)) {
+                        $scope.displayProvidePasswordModal($scope.getMntnersForPasswordAuth($scope.maintainers.selected));
+                        return;
+                    }
+
                     if (!$scope.name) {
                         // perform POST to create
-
+                        // [TP] we could pass always the password, even if empty and let SSO authenticate,
+                        // it is better if both methods are present to give priority to SSO.
                         if ($scope.user.successfullPassword) {
                             $resource('api/whois/:source/:objectType',
                                 {source: $scope.source, objectType: $scope.objectType, password: $scope.user.successfullPassword})
@@ -282,12 +287,28 @@ angular.module('webUpdates')
                         }
                     } else {
                         // perform PUT to modify
-                        $resource('api/whois/:source/:objectType/:name',
-                            {source: $scope.source, objectType: $scope.objectType, name: $scope.name},
-                            {'update': {method: 'PUT'}})
-                            .update(WhoisResources.embedAttributes($scope.attributes),
+                        if ($scope.user.successfullPassword) {
+                            $resource('api/whois/:source/:objectType/:name',
+                                {
+                                    source: $scope.source,
+                                    objectType: $scope.objectType,
+                                    name: $scope.name,
+                                    password: $scope.user.successfullPassword},
+                                    {'update': {method: 'PUT'}})
+                                .update(WhoisResources.embedAttributes($scope.attributes),
                                 onSubmitSuccess,
                                 onSubmitError);
+                        } else {
+                            $resource('api/whois/:source/:objectType/:name',
+                                {
+                                    source: $scope.source,
+                                    objectType: $scope.objectType,
+                                    name: $scope.name},
+                                    {'update': {method: 'PUT'}})
+                                .update(WhoisResources.embedAttributes($scope.attributes),
+                                onSubmitSuccess,
+                                onSubmitError);
+                        }
                     }
                 }
             };
@@ -412,20 +433,6 @@ angular.module('webUpdates')
             var needsPasswordAuthentication = function (selectedMaintainers) {
                 return (!$scope.user.successfullPassword
                     && $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
-            };
-
-
-            $scope.submitOrProvidePasswordModal = function () {
-                if (needsPasswordAuthentication($scope.maintainers.selected)) {
-                    if (validateForm() ) {
-                        stripNulls();
-                        clearErrors();
-
-                        $scope.displayProvidePasswordModal($scope.getMntnersForPasswordAuth($scope.maintainers.selected));
-                    }
-                } else {
-                    $scope.submit();
-                }
             };
 
             var initialiseModal = function () {
