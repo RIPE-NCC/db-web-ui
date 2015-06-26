@@ -47,7 +47,8 @@
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
 
             <label>{{attribute.name}}</label>
-            <span ng-if="attributeHasError(attribute)" class="text-error">{{attribute.$$error}}</span>
+            <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
+
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
                    typeahead="value for value in suggestAutocomplete($viewValue, attribute.name, attribute.$$meta.$$refs)"

@@ -81,10 +81,6 @@ angular.module('webUpdates')
              * Methods called from the html-teplate
              */
 
-            $scope.attributeHasError = function (attribute) {
-                return attribute.$$error !== null;
-            };
-
             $scope.hasOperationName = function() {
                 if( ! $scope.method ) {
                     return false;
