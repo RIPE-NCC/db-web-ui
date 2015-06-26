@@ -152,16 +152,18 @@
                 <div ng-if="providePasswordModal.hasMessage()" class="alert-expired alert alert-danger">
                     <p>{{providePasswordModal.message}}</p>
                 </div>
-                <div>
-                    <label>Select a maintainer to authenticate the update operation.</label>
-                    <select ng-model="providePasswordModal.selectedMntner"
-                            ng-required="true"
-                            ng-options="mntner.key for mntner in providePasswordModal.mntnersForPasswordAuth" class="form-control select-height"></select>
-                </div>
-                <div>
-                    <label>Provide the password for the selected maintainer</label>
-                    <input type="password" class="form-control margin-bottom" ng-model="providePasswordModal.password" ng-required="true"/>
-                </div>
+                <ul>
+	                <li>
+	                    <label>Select a maintainer to authenticate the update operation.</label>
+	                    <select ng-model="providePasswordModal.selectedMntner"
+	                            ng-required="true"
+	                            ng-options="mntner.key for mntner in providePasswordModal.mntnersForPasswordAuth" class="form-control select-height"></select>
+	                </li>
+	                <li>
+	                    <label>Provide the password for the selected maintainer</label>
+	                    <input type="password" class="form-control margin-bottom" ng-model="providePasswordModal.password" ng-required="true"/>
+	                </li>
+                </ul>
             </div>
             <div class="modal-footer">
                 <input type="submit" class="blue-button" ng-click="attemptAutentication()" value="Authenticate"/>
