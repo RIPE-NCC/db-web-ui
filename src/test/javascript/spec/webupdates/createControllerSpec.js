@@ -23,7 +23,7 @@ describe('webUpdates: CreateController', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
 
-            userMaintainers = [	            
+            userMaintainers = [
 	            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}
             ];
 
@@ -201,9 +201,9 @@ describe('webUpdates: CreateController', function () {
 
 
     it('should fetch maintainers already associated to the user in the session', function() {
-        expect($scope.userMaintainers[0].key).toEqual(userMaintainers[0].key);
-        expect($scope.userMaintainers[0].type).toEqual(userMaintainers[0].type);
-        expect($scope.userMaintainers[0].auth).toEqual(userMaintainers[0].auth);
+        expect($scope.maintainers.mine[0].key).toEqual(userMaintainers[0].key);
+        expect($scope.maintainers.mine[0].type).toEqual(userMaintainers[0].type);
+        expect($scope.maintainers.mine[0].auth).toEqual(userMaintainers[0].auth);
     });
 
     it('should add the selected maintainers to the object before post it.', function() {
@@ -215,9 +215,10 @@ describe('webUpdates: CreateController', function () {
                         attributes: {
                             attribute: [
                                 {name: 'as-block', value: 'MY-AS-BLOCK'},
-                                {name: 'source', value: 'RIPE'},
+                                {name: 'mnt-by', value: 'TEST-MNT'},
                                 {name: 'mnt-by', value: 'TEST-MNT-0'},
-                                {name: 'mnt-by', value: 'TEST-MNT-1'}
+                                {name: 'mnt-by', value: 'TEST-MNT-1'},
+                                {name: 'source', value: 'RIPE'}
                             ]
                         }
                     }
@@ -226,7 +227,14 @@ describe('webUpdates: CreateController', function () {
         }).respond(500);
 
         $scope.attributes.setSingleAttributeOnName('as-block', 'MY-AS-BLOCK');
-        $scope.selectedMaintainers = ['TEST-MNT-0', 'TEST-MNT-1'];
+
+        $scope.maintainers.selected = [
+            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-0'},
+            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-1'}
+        ];
+
+        $scope.onMntnerSelect($scope.maintainers.selected[0]);
+        $scope.onMntnerSelect($scope.maintainers.selected[1]);
 
         $scope.submit();
         $httpBackend.flush();
