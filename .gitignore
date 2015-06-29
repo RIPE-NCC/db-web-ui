@@ -109,6 +109,7 @@ build/**
 bin/**
 spring_loaded/**
 deploy/**
+/src/main/webapp/assets/css/**
 
 ######################
 # Logs
