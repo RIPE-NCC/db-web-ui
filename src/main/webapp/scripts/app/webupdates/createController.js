@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5, CredentialsService) {
 
             //exposed methods
             $scope.onMntnerSelect = onMntnerSelect;
@@ -51,11 +51,6 @@ angular.module('webUpdates')
                     selected:[],
                     alternatives:[],
                     mine:[]
-                };
-
-                $scope.user = {
-                    selectedMntner: undefined,
-                    successfullPassword: ''
                 };
 
                 $scope.attributes = [];
@@ -302,10 +297,10 @@ angular.module('webUpdates')
                     if (!$scope.name) {
                         // perform POST to create
                         // [TP] we could pass always the password, even if empty and let SSO authenticate,
-                        // it is better if both methods are present to give priority to SSO.
-                        if ($scope.user.successfullPassword) {
+                        // but it is better if both methods are present to give priority to SSO.
+                        if (CredentialsService.hasCredentials()) {
                             $resource('api/whois/:source/:objectType',
-                                {source: $scope.source, objectType: $scope.objectType, password: $scope.user.successfullPassword})
+                                {source: $scope.source, objectType: $scope.objectType, password: CredentialsService.getCredentials().successfulPassword})
                                 .save(WhoisResources.embedAttributes($scope.attributes),
                                 _onSubmitSuccess,
                                 _onSubmitError);
@@ -318,14 +313,14 @@ angular.module('webUpdates')
                         }
                     } else {
                         // perform PUT to modify
-                        if ($scope.user.successfullPassword) {
+                        if (CredentialsService.hasCredentials()) {
                             console.log('modify success');
                             $resource('api/whois/:source/:objectType/:name',
                                 {
                                     source: $scope.source,
                                     objectType: $scope.objectType,
                                     name: $scope.name,
-                                    password: $scope.user.successfullPassword},
+                                    password: CredentialsService.getCredentials().successfulPassword},
                                 {'update': {method: 'PUT'}})
                                 .update(WhoisResources.embedAttributes($scope.attributes),
                                 _onSubmitSuccess,
@@ -483,7 +478,7 @@ angular.module('webUpdates')
             };
 
             function _needsPasswordAuthentication(selectedMaintainers) {
-                return (!$scope.user.successfullPassword
+                return (!CredentialsService.hasCredentials()
                     && $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
             };
 
@@ -524,8 +519,7 @@ angular.module('webUpdates')
                             $scope.providePasswordModal.authResult = true;
                             $('#providePasswordModal').modal('hide');
 
-                            $scope.user.selectedMntner = $scope.providePasswordModal.selectedMntner;
-                            $scope.user.successfullPassword = $scope.providePasswordModal.password;
+                            CredentialsService.setCredentials($scope.providePasswordModal.selectedMntner, $scope.providePasswordModal.password);
 
                             $scope.submit();
                         } else {
