@@ -38,8 +38,8 @@ angular.module('webUpdates')
             //password popup
             $scope.attemptAutentication = attemptAutentication;
 
-            //private functions
 
+            //private functions
             function _initialisePage() {
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
@@ -67,6 +67,8 @@ angular.module('webUpdates')
                 if (!$scope.name) {
                     $scope.operation = 'Create';
 
+                    _fetchMyMaintainers(_setMyMntnersToSelected);
+
                     // Populate empty attributes based on meta-info
                     $scope.attributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
@@ -74,14 +76,12 @@ angular.module('webUpdates')
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
 
-                    _fetchMyMaintainers();
-
                 } else {
                     $scope.operation = 'Modify';
 
                     // Start empty, and populate with rest-result
                     $scope.attributes = _wrapAndEnrichAttributes([]);
-                    _fetchObjectViaRest();
+                    _fetchMyMaintainers(_fetchObjectViaRest());
                 }
 
                 // Populate "select attribute for add"-fields popup
@@ -110,9 +110,14 @@ angular.module('webUpdates')
                     var mntners = _.filter($scope.attributes, function(i) {
                         return i.name === 'mnt-by';
                     });
-                    //  copy mntbers to mantainers.selected
-                    $scope.maintainers.selected = _.map(mntners, function(i) {
-                        return {type:'mntner', key: i.value, mine:true};
+
+                    //  copy mntners to mantainers.selected
+                    $scope.maintainers.selected = _.map(mntners, function(mntnerAttr) {
+                        return {
+                            type:'mntner',
+                            key: mntnerAttr.value,
+                            mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
+                        }
                     });
 
                 }, function (resp) {
@@ -121,17 +126,24 @@ angular.module('webUpdates')
                 });
             }
 
-            function _fetchMyMaintainers(){
-                $resource('api/user/mntners').query(function(data) {
-                    $scope.maintainers.selected = data;
+            function _setMyMntnersToSelected(){
 
-                    // rework data in attrinutes
-                    var mntnerAttrs = _.map(data, function(i) {
-                        return {name: 'mnt-by', value:i.key};
-                    });
+                $scope.maintainers.selected = $scope.maintainers.mine;
+                // rework data in attributes
+                var mntnerAttrs = _.map($scope.maintainers.mine, function(i) {
+                    return {name: 'mnt-by', value:i.key};
+                });
+
+                _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
+            }
+
+            function _fetchMyMaintainers(callback){
+                $resource('api/user/mntners').query(function(data) {
                     $scope.maintainers.mine = data;
-                    _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',
-                        mntnerAttrs));
+
+                    if (typeof callback == "function"){
+                        callback();
+                    }
                 });
             }
 
