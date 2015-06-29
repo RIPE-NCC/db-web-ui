@@ -1,5 +1,5 @@
 .inner-container {
-	float: left;
+	@extend %float-l;
 	width: 100%;
 } 
 .form-fields {
@@ -27,4 +27,14 @@ ul.success-fields {
 }
 .modal.portlet .modal-content i.fa-close {
 	padding: 6px 17px;
+}
+.modal-content {
+	div.modal-body {
+		ul {
+			li {
+				@extend %width-100;
+				margin-bottom: 15px;
+			}
+		}
+	}
 }

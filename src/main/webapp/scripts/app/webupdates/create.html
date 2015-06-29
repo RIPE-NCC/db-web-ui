@@ -12,7 +12,6 @@
 </div>
 <form id="createForm">
 
-    <!--                tagging="tagTransform" placeholder="Search for your maintainer" -->
 	<section class="form-fields maintainer-fields">
     <strong>Please select your maintainers before creating the {{objectType}} object</strong>
     <span class="fa fa-search maintainer-search-icon"></span>
@@ -136,6 +135,37 @@
             <div class="modal-footer">
                 <input type="submit" class="blue-button" data-dismiss="modal" value="Close"/>
                 <input type="submit" class="blue-button" data-dismiss="modal" ng-click="verifyAuthDialog() && populateAuthAttribute()" value="Add"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="providePasswordModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+        <div class="modal-content no-rounded">
+            <div>
+                <i class="fa fa-close close" data-dismiss="modal" aria-label="Close"></i>
+                <h5 class="modal-title" id="providePasswordModalLabel">Password authentication</h5>
+            </div>
+            <div class="modal-body">
+                <div ng-if="providePasswordModal.hasMessage()" class="alert-expired alert alert-danger">
+                    <p>{{providePasswordModal.message}}</p>
+                </div>
+                <ul>
+	                <li>
+	                    <label>Select a maintainer to authenticate the update operation.</label>
+	                    <select ng-model="providePasswordModal.selectedMntner"
+	                            ng-required="true"
+	                            ng-options="mntner.key for mntner in providePasswordModal.mntnersForPasswordAuth" class="form-control select-height"></select>
+	                </li>
+	                <li>
+	                    <label>Provide the password for the selected maintainer</label>
+	                    <input type="password" class="form-control margin-bottom" ng-model="providePasswordModal.password" ng-required="true"/>
+	                </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="blue-button" ng-click="attemptAutentication()" value="Authenticate"/>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 .selectize-input {
-	padding: 7px !important;	
+	padding: 7px !important;
 }
 .maintainer-search-icon {
 	float: right;
@@ -16,10 +16,12 @@
 	margin: -1px -3px 0 !important;
 	.active {
 		background-color: #F5FFFF !important;
-	}	
+	}
 }
 .selectize-dropdown-content {
-	div.ui-select-choices-row {
+    max-height: none !important;
+    overflow-x: auto !important;
+    div.ui-select-choices-row {
 		border-bottom: 1px solid #EAEAEA !important;
 		div.ui-select-choices-row-inner {
 			padding: 10px 8px !important;
@@ -28,7 +30,7 @@
 					float: right;
 					color: #fff;
 					padding: 3px 6px;
-					margin-left: 5px;    
+					margin-left: 5px;
 					min-width: 35px;
 				    padding: 0 4px;
 				    text-align: center;
