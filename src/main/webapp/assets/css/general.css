@@ -1,11 +1,11 @@
 /*
-Sass::SyntaxError: ".modal-content div.modal-body ul li" failed to @extend ".width-100".
-The selector ".width-100" was not found.
-Use "@extend .width-100 !optional" if the extend should be able to fail.
+Sass::SyntaxError: ".inner-container" failed to @extend "%float-l".
+The selector "%float-l" was not found.
+Use "@extend %float-l !optional" if the extend should be able to fail.
 
 
 Backtrace:
-/Users/rmuhammad/Sites/db-web-ui/src/main/webapp/assets/scss/general.scss:35
+/Users/rmuhammad/Sites/db-web-ui/src/main/webapp/assets/scss/general.scss:2
 /Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/tree/visitors/extend.rb:61:in `block in check_extends_fired!'
 /Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/util/subset_map.rb:106:in `block in each_value'
 /Library/Ruby/Gems/2.0.0/gems/sass-3.4.13/lib/sass/util/subset_map.rb:106:in `each'
@@ -34,4 +34,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Sass::SyntaxError: \".modal-content div.modal-body ul li\" failed to @extend \".width-100\".\A The selector \".width-100\" was not found.\A Use \"@extend .width-100 !optional\" if the extend should be able to fail.\A "; }
+  content: "Sass::SyntaxError: \".inner-container\" failed to @extend \"%float-l\".\A The selector \"%float-l\" was not found.\A Use \"@extend %float-l !optional\" if the extend should be able to fail.\A "; }

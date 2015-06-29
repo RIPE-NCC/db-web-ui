@@ -11,8 +11,8 @@
 }
 ul.form-fields {
 	> li {
-		@extend .float-l;
-		@extend .width-100;
+		@extend %width-100;
+		@extend %float-l;
 		position: relative;
 		input {
 			padding-right: 160px;
@@ -77,13 +77,13 @@ ul.success-fields {
 }
 
 .inner-container {
-	@extend .float-l;
-	@extend .width-100;
+	@extend %float-l;
+	@extend %width-100;
 }
 
 .maintainer-fields {
-	@extend .float-l;
-	@extend .width-100;
+	@extend %float-l;
+	@extend %width-100;
 	padding: 15px !important;
 	background-color: #F9F6D9;
 	li {
@@ -95,21 +95,21 @@ ul.success-fields {
 	margin-bottom: 20px !important;
 }
 .visible-field-form {
-	@extend .float-l;
-	@extend .width-100;
+	@extend %float-l;
+	@extend %width-100;
 	margin: 20px 0;
 	ul.appeared-fields {
-		@extend .grey;
-		@extend .float-l;
-		@extend .width-100;
+		@extend %grey;
+		@extend %float-l;
+		@extend %width-100;
 		padding: 15px !important;
 		margin-bottom: 20px !important;
 		li {
 			label {
-				@extend .float-l;
+				@extend %float-l;
 			}
 			span.text-error {
-				@extend .float-r;
+				@extend %float-r;
 			}
 		}
 		li:last-child {
@@ -173,16 +173,12 @@ ul.success-fields {
 	padding: 1px 0 0;
 }
 .field-description {
-	@extend .clear-b;
-	@extend .width-100;
-	@extend .float-l;
-	@extend .brd;
-	display: none;
+	@extend %clear-b;
+	@extend %width-100;
+	@extend %float-l;
+	@extend %brd;
 	background-color: #f5f5f5;
 	padding: 10px;
 	margin-top: 10px;
 	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-}
-.field-description.in {
-	display: inline !important;
 }
