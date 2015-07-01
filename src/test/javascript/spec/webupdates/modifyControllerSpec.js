@@ -38,6 +38,10 @@ describe('webUpdates: ModifyController', function () {
                 {'value':'TESTSSO-MNT', 'extras':{'mine':true,'pgp':false,'sso':true,'md5':true }}
             ]);
 
+            $httpBackend.whenGET('api/user/info').respond(
+                {"username":"noreply@ripe.net", "expiryDate":[2100,7,1,15,12,0,0], "displayName":"Test User", "uuid":"ed7cd420-6402-11e3-949a-0800200c9a66", "active":true}
+            );
+
             $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK').respond(
                 function(method,url) {
                     //console.log("Got " + method + "  on " + url);

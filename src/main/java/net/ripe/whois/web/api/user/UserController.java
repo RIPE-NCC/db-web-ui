@@ -53,5 +53,26 @@ public class UserController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getUserInfo(@CookieValue(value = "crowd.token_key", required = true) final String crowdToken) {
+        try {
+            final UserSession userSession = crowdClient.getUserSession(crowdToken);
+            final String uuid = crowdClient.getUuid(userSession.getUsername());
+            userSession.setUuid(uuid);
+
+            // Make sure essentials content-type is set
+            final MultiValueMap<String, String> headers = new HttpHeaders();
+            headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+
+            return new ResponseEntity<>(userSession, headers, HttpStatus.OK);
+
+        } catch (CrowdClientException e) {
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }  catch (RestClientException e) {
+            // No error message in response
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
 

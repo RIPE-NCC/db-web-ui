@@ -29,6 +29,10 @@ describe('webUpdates: CreateController', function () {
 
             $httpBackend.whenGET('api/user/mntners').respond(userMaintainers);
 
+            $httpBackend.whenGET('api/user/info').respond(
+                {"username":"noreply@ripe.net", "expiryDate":[2100,7,1,15,12,0,0], "displayName":"Test User", "uuid":"ed7cd420-6402-11e3-949a-0800200c9a66", "active":true}
+            );
+
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;

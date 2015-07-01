@@ -53,8 +53,9 @@ angular.module('webUpdates')
                     mine:[]
                 };
 
-                $scope.attributes = [];
+                $scope.userInfo = undefined;
 
+                $scope.attributes = [];
 
                 $scope.isHelpHidden = true;
 
@@ -64,6 +65,9 @@ angular.module('webUpdates')
                 $scope.infos = [];
 
                 // Populate attributes in the UI
+
+                _fetchUserInfo(_initUserMenu)
+
                 if (!$scope.name) {
                     $scope.operation = 'Create';
 
@@ -145,6 +149,20 @@ angular.module('webUpdates')
                         callback();
                     }
                 });
+            }
+
+            function _fetchUserInfo(callback) {
+                $resource('api/user/info').get(function(data) {
+                    $scope.userInfo = data;
+
+                    if (typeof callback == "function"){
+                        callback();
+                    }
+                });
+            }
+
+            function _initUserMenu() {
+                console.log('initUserMenu');
             }
 
             function _isMntnerOnlist( selectedMntners, mntner ) {
