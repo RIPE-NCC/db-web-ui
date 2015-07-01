@@ -1,10 +1,10 @@
 package net.ripe.whois.web.api.user;
 
 import net.ripe.db.whois.api.rest.client.RestClientException;
-import net.ripe.db.whois.common.sso.CrowdClient;
-import net.ripe.db.whois.common.sso.CrowdClientException;
-import net.ripe.db.whois.common.sso.UserSession;
 import net.ripe.whois.services.WhoisInternalService;
+import net.ripe.whois.services.crowd.CrowdClient;
+import net.ripe.whois.services.crowd.CrowdClientException;
+import net.ripe.whois.services.crowd.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
