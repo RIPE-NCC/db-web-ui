@@ -110,7 +110,7 @@ describe('webUpdates: DisplayController', function () {
         // no objects in message store
         createDisplayController();
 
-        $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function(method,url) {
             return [200, objectToDisplay, {}];
         });
         $httpBackend.flush();
@@ -129,7 +129,7 @@ describe('webUpdates: DisplayController', function () {
         // no objects in message store
         createDisplayController();
 
-        $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function(method,url) {
             return [404, {
                 errormessages: {
                     errormessage: [
