@@ -8,12 +8,18 @@ angular.module('dbWebApp')
 
         return {
             init: function(callback) {
-                $resource('api/user/info').get(function(data) {
-                    _userInfo = data;
+                if (typeof _userInfo != 'undefined') {
                     if (typeof callback == "function"){
                         callback();
                     }
-                });
+                } else {
+                    $resource('api/user/info').get(function(data) {
+                        _userInfo = data;
+                        if (typeof callback == "function"){
+                            callback();
+                        }
+                    });
+                }
             },
             getUsername: function() { return _userInfo.username; },
             getDisplayName: function() { return _userInfo.displayName; },

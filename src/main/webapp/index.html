@@ -39,7 +39,7 @@
 
  </head>
 
- <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr">
+ <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr" ng-app="dbWebApp">
 
 	<!-- Google Tag Manager, replace GTM-XXXXX with your container ID -->
 	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WTWTB7"
@@ -60,7 +60,7 @@
                  <a accesskey="6" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template#portal-globalnav">Skip to navigation</a>
              </p>
 
-             <div id="login">
+             <div id="login" ng-controller="UserInfoController">
                  <a class="anon" href="https://access.ripe.net/?originalUrl=https%3A%2F%2Fwww.ripe.net%2Fmanage-ips-and-asns%2Fdb%2Fwebupdates">Login</a>
                  <div id="loggedin">
                      <a class="active" href="#">
@@ -928,7 +928,7 @@
 
 
                      <div>
-                         <div id="external" ng-app="dbWebApp">
+                         <div id="external">
                              <!-- End of header ENDHEADERMARKER -->
                              <div ui-view></div>
                              <!-- Insert your content here CONTENTMARKER -->
@@ -1049,7 +1049,7 @@
 	<script src="scripts/app/webupdates/selectController.js"></script>
 	<script src="scripts/app/webupdates/createController.js"></script>
 	<script src="scripts/app/webupdates/displayController.js"></script>
-	<script src="scripts/app/webupdates/userInfoController.js"></script>
+	<script src="scripts/app/userInfoController.js"></script>
 
  </body>
 
