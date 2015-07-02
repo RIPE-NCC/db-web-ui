@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5, CredentialsService) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService', 'UserInfoService',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5, CredentialsService, UserInfoService) {
 
             //exposed methods
             $scope.onMntnerSelect = onMntnerSelect;
@@ -504,7 +504,8 @@ angular.module('webUpdates')
                     message: "",
                     hasMessage: function () {
                         return !_.isUndefined($scope.providePasswordModal.message) && $scope.providePasswordModal.message !== "";
-                    }
+                    },
+                    associateMntnerWithSSOAccount: true
                 };
 
                 $scope.providePasswordModal.mntnersForPasswordAuth = mntnersForPasswordAuth;
@@ -513,6 +514,9 @@ angular.module('webUpdates')
             };
 
             function attemptAutentication(){
+                if ($scope.providePasswordModal.associateMntnerWithSSOAccount) {
+                    console.log('associate mntner with sso account');
+                }
                 $resource('api/whois/:source/:objectType/:objectName', {
                     source: $scope.source,
                     objectType: 'mntner',

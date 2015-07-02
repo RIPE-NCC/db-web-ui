@@ -160,8 +160,12 @@
 	                </li>
 	                <li>
 	                    <label>Provide the password for the selected maintainer</label>
-	                    <input type="password" class="form-control margin-bottom" ng-model="providePasswordModal.password" ng-required="true"/>
+	                    <input type="password" class="form-control" ng-model="providePasswordModal.password" ng-required="true"/>
 	                </li>
+                    <li>
+                        <input type="checkbox" ng-model="providePasswordModal.associateMntnerWithSSOAccount"/>
+                        <label>associate your SSO account with this maintainer</label>
+                    </li>
                 </ul>
             </div>
             <div class="modal-footer">
