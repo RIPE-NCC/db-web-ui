@@ -38,7 +38,7 @@ describe('webUpdates: ModifyController', function () {
                 {'value':'TESTSSO-MNT', 'extras':{'mine':true,'pgp':false,'sso':true,'md5':true }}
             ]);
 
-            $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK').respond(
+            $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
                 function(method,url) {
                     //console.log("Got " + method + "  on " + url);
                     return [200,
