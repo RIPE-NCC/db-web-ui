@@ -500,9 +500,9 @@ angular.module('webUpdates')
                     selectedMntner: undefined,
                     password: '',
                     authResult: false,
-                    message: "",
+                    message: '',
                     hasMessage: function () {
-                        return !_.isUndefined($scope.providePasswordModal.message) && $scope.providePasswordModal.message !== "";
+                        return !_.isUndefined($scope.providePasswordModal.message) && $scope.providePasswordModal.message !== '';
                     }
                 };
 
@@ -521,7 +521,7 @@ angular.module('webUpdates')
                 }).get(function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
                         var mntnerAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                        var sourceAttr = mntnerAttributes.getSingleAttributeOnName("source");
+                        var sourceAttr = mntnerAttributes.getSingleAttributeOnName('source');
                         console.log(JSON.stringify(sourceAttr));
 
                         if ((sourceAttr.value.toLowerCase() === $scope.source.toLowerCase()) && _.isUndefined(sourceAttr.comment)) {
@@ -534,21 +534,21 @@ angular.module('webUpdates')
                             $scope.submit();
                         } else {
                             $scope.providePasswordModal.authResult = false;
-                            console.log("not authenticated");
+                            console.log('not authenticated');
                             $scope.providePasswordModal.message =
-                                "You have not supplied the correct password for mntner: '" + $scope.providePasswordModal.selectedMntner.key + "'";
+                                'You have not supplied the correct password for mntner: \'' + $scope.providePasswordModal.selectedMntner.key + '\'';
                         }
 
                     }, function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
                         if (!_.isUndefined(whoisResources)) {
-                            console.log("whois error response in modal");
+                            console.log('whois error response in modal');
                             $scope.providePasswordModal.message = _.reduce(whoisResources.getGlobalErrors(), function(total, n) {
                                 return total + '\n' +n;
                             });
                         } else {
-                            console.log("server error in modal");
-                            $scope.providePasswordModal.message = "server error : " + JSON.stringify(resp);
+                            console.log('server error in modal');
+                            $scope.providePasswordModal.message = 'server error : ' + JSON.stringify(resp);
                         }
                         $scope.providePasswordModal.authResult = true;
                     });
