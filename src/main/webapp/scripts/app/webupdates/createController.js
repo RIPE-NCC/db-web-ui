@@ -505,7 +505,7 @@ angular.module('webUpdates')
                     hasMessage: function () {
                         return !_.isUndefined($scope.providePasswordModal.message) && $scope.providePasswordModal.message !== "";
                     },
-                    associateMntnerWithSSOAccount: true
+                    associateSSOAccountWithMntner: true
                 };
 
                 $scope.providePasswordModal.mntnersForPasswordAuth = mntnersForPasswordAuth;
@@ -514,9 +514,6 @@ angular.module('webUpdates')
             };
 
             function attemptAutentication(){
-                if ($scope.providePasswordModal.associateMntnerWithSSOAccount) {
-                    console.log('associate mntner with sso account');
-                }
                 $resource('api/whois/:source/:objectType/:objectName', {
                     source: $scope.source,
                     objectType: 'mntner',
@@ -525,22 +522,22 @@ angular.module('webUpdates')
                     password: $scope.providePasswordModal.password
                 }).get(function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                        var mntnerAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                        var sourceAttr = mntnerAttributes.getSingleAttributeOnName("source");
-                        console.log(JSON.stringify(sourceAttr));
 
-                        if (sourceAttr.value.toLowerCase() === $scope.source.toLowerCase()
-                                && _.isUndefined(sourceAttr.comment)){
+                        if (!whoisResources.isFiltered()){
+                            console.log("authenticated ok");
 
                             $scope.providePasswordModal.authResult = true;
                             $('#providePasswordModal').modal('hide');
-
                             CredentialsService.setCredentials($scope.providePasswordModal.selectedMntner, $scope.providePasswordModal.password);
-
                             $scope.submit();
+
+                            if ($scope.providePasswordModal.associateSSOAccountWithMntner) {
+                                associate(whoisResources, UserInfoService.getUsername(), $scope.providePasswordModal.password);
+                            }
+
                         } else {
-                            $scope.providePasswordModal.authResult = false;
                             console.log("not authenticated");
+                            $scope.providePasswordModal.authResult = false;
                             $scope.providePasswordModal.message =
                                 "You have not supplied the correct password for mntner: '" + $scope.providePasswordModal.selectedMntner.key + "'";
                         }
@@ -560,4 +557,27 @@ angular.module('webUpdates')
                     });
             };
 
-        }]);
+            function associate(whoisResources, ssoUsername, mntnerPassword) {
+                if (_.isUndefined(ssoUsername)) {
+                    return;
+                }
+
+                const attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({name: 'auth', value: 'SSO ' + ssoUsername}, {name: 'auth'});
+
+                $resource('api/whois/:source/:objectType/:name',
+                    {
+                        source: whoisResources.getSource(),
+                        objectType: whoisResources.getObjectType(),
+                        name: whoisResources.getObjectUid(),
+                        password: mntnerPassword},
+                    {'update': {method: 'PUT'}})
+                    .update(WhoisResources.embedAttributes(attributes),
+                        function (resp) {
+                            // success response
+                        },
+                        function (resp) {
+                            // error response
+                        });
+            };
+
+}]);
