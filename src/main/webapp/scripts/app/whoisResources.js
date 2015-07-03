@@ -119,6 +119,25 @@ angular.module('dbWebApp')
             return this.objects.object[0]['primary-key'].attribute[0].value;
         };
 
+        var getSource = function () {
+            if( ! this.objects ) {
+                return undefined;
+            }
+            return this.objects.object[0]['source'].id;
+        };
+
+        var getObjectType = function () {
+            if( ! this.objects ) {
+                return undefined;
+            }
+            return this.objects.object[0].type;
+        };
+
+        var isFiltered = function () {
+            var sourceAttribute = getSingleAttributeOnName.call(this.getAttributes(), 'source');
+            return (sourceAttribute && sourceAttribute.comment === 'Filtered');
+        };
+
         var getAttributes = function () {
             if( ! this.objects ) {
                 return [];
@@ -156,6 +175,9 @@ angular.module('dbWebApp')
             whoisResources.getErrorsOnAttribute = getErrorsOnAttribute;
             whoisResources.getAttributes = getAttributes;
             whoisResources.getObjectUid = getObjectUid;
+            whoisResources.getSource = getSource;
+            whoisResources.getObjectType = getObjectType;
+            whoisResources.isFiltered = isFiltered;
             whoisResources.objectNamesAsAttributes = objectNamesAsAttributes;
 
             return whoisResources;
@@ -311,6 +333,21 @@ angular.module('dbWebApp')
             return result;
         };
 
+        var addAttributeAfterType = function(attr, after) {
+            var result = [];
+            var found = false;
+
+            _.each(this, function(next){
+                result.push(next);
+                if (found === false && next.name === after.name) {
+                    result.push({name:attr.name, value:attr.value});
+                    found = true;
+                }
+            });
+
+            return result;
+        };
+
         var removeNullAttributes = function() {
             return _.filter(this, function(attr) {
                 return attr.value;
@@ -336,6 +373,7 @@ angular.module('dbWebApp')
             attrs.canAttributeBeDuplicated = canAttributeBeDuplicated;
             attrs.canAttributeBeRemoved = canAttributeBeRemoved;
             attrs.addAttributeAfter = addAttributeAfter;
+            attrs.addAttributeAfterType = addAttributeAfterType;
             attrs.removeNullAttributes = removeNullAttributes;
 
             return attrs;
