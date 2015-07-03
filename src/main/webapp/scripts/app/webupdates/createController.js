@@ -118,7 +118,7 @@ angular.module('webUpdates')
                             type:'mntner',
                             key: mntnerAttr.value,
                             mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
-                        }
+                        };
                     });
 
                 }, function (resp) {

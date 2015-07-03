@@ -10,7 +10,7 @@ angular.module('dbWebApp')
                 _credentials = {
                     mntner: mntner,
                     successfulPassword: successfulPassword
-                }
+                };
             },
             removeCredentials: function() {
                 _credentials = undefined;
