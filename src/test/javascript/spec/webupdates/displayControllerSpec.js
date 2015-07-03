@@ -70,21 +70,21 @@ describe('webUpdates: DisplayController', function () {
     });
 
     it('should get source from url', function () {
-        MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
+        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
         expect($scope.objectSource).toBe(SOURCE);
     });
 
     it('should get objectType from url', function () {
-        MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
+        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
         expect($scope.objectType).toBe(OBJECT_TYPE);
     });
 
     it('should get objectName from url', function () {
-        MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
+        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
         expect($scope.objectName).toBe(OBJECT_NAME);
@@ -93,7 +93,7 @@ describe('webUpdates: DisplayController', function () {
     it('should populate the ui from message-store', function () {
         var stateBefore = $state.current.name;
 
-        MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
+        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
@@ -156,7 +156,7 @@ describe('webUpdates: DisplayController', function () {
     });
 
     it('should navigate to select screen', function () {
-        MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
+        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
         $scope.navigateToSelect();
@@ -166,7 +166,7 @@ describe('webUpdates: DisplayController', function () {
     });
 
     it('should navigate to modify screen', function () {
-        MessageStore.add(objectToDisplay.getObjectUid(), objectToDisplay);
+        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
         // TODO fix

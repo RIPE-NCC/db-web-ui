@@ -130,7 +130,7 @@ describe('dbWebApp: WhoisResources', function () {
 
         expect(errorResponse.getAttributes()).toEqual([])
 
-        expect(errorResponse.getObjectUid()).toEqual(undefined);
+        expect(errorResponse.getPrimaryKey()).toEqual(undefined);
 
     });
 
@@ -198,7 +198,7 @@ describe('dbWebApp: WhoisResources', function () {
             { name: 'source', value: 'c' }
         ]);
 
-        expect(successResponse.getObjectUid()).toEqual('MG20276-RIPE');
+        expect(successResponse.getPrimaryKey()).toEqual('MG20276-RIPE');
 
     });
 

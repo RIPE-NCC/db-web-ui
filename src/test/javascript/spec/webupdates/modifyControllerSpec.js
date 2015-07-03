@@ -146,7 +146,7 @@ describe('webUpdates: ModifyController', function () {
         $httpBackend.flush();
 
         var resp = MessageStore.get('MY-AS-BLOCK');
-        expect(resp.getObjectUid()).toEqual('MY-AS-BLOCK');
+        expect(resp.getPrimaryKey()).toEqual('MY-AS-BLOCK');
         var attrs = WhoisResources.wrapAttributes(resp.getAttributes());
         expect(attrs.getSingleAttributeOnName('as-block').value).toEqual('MY-AS-BLOCK');
         expect(attrs.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');

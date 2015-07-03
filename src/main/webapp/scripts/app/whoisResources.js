@@ -112,7 +112,7 @@ angular.module('dbWebApp')
                 });
         };
 
-        var getObjectUid = function () {
+        var getPrimaryKey = function () {
             if( ! this.objects ) {
                 return undefined;
             }
@@ -155,7 +155,7 @@ angular.module('dbWebApp')
             whoisResources.getGlobalInfos = getGlobalInfos;
             whoisResources.getErrorsOnAttribute = getErrorsOnAttribute;
             whoisResources.getAttributes = getAttributes;
-            whoisResources.getObjectUid = getObjectUid;
+            whoisResources.getPrimaryKey = getPrimaryKey;
             whoisResources.objectNamesAsAttributes = objectNamesAsAttributes;
 
             return whoisResources;
