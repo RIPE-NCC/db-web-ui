@@ -142,7 +142,7 @@ angular.module('webUpdates')
                 $resource('api/user/mntners').query(function(data) {
                     $scope.maintainers.mine = data;
 
-                    if (typeof callback == "function"){
+                    if (typeof callback == 'function'){
                         callback();
                     }
                 });
@@ -210,18 +210,18 @@ angular.module('webUpdates')
 
             function hasSSo( mntner ) {
                 return _.any(mntner.auth, function(i) {
-                    return  _.startsWith(i,"SSO");
+                    return  _.startsWith(i, 'SSO');
                 });
             };
 
             function hasPgp( mntner ) {
                 return  _.any(mntner.auth, function(i) {
-                    return _.startsWith(i, "PGP");
+                    return _.startsWith(i, 'PGP');
                 });
             };
             function hasMd5( mntner ) {
                 return  _.any(mntner.auth, function(i) {
-                    return  _.startsWith(i,"MD5");
+                    return  _.startsWith(i, 'MD5');
                 });
             };
 
