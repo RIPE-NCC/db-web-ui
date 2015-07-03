@@ -489,8 +489,8 @@ angular.module('webUpdates')
             };
 
             function _needsPasswordAuthentication(selectedMaintainers) {
-                return (!CredentialsService.hasCredentials()
-                    && $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
+                return (!CredentialsService.hasCredentials() &&
+                        $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
             }
 
             function _displayProvidePasswordModal(mntnersForPasswordAuth) {
@@ -524,8 +524,7 @@ angular.module('webUpdates')
                         var sourceAttr = mntnerAttributes.getSingleAttributeOnName("source");
                         console.log(JSON.stringify(sourceAttr));
 
-                        if (sourceAttr.value.toLowerCase() === $scope.source.toLowerCase()
-                                && _.isUndefined(sourceAttr.comment)){
+                        if ((sourceAttr.value.toLowerCase() === $scope.source.toLowerCase()) && _.isUndefined(sourceAttr.comment)) {
 
                             $scope.providePasswordModal.authResult = true;
                             $('#providePasswordModal').modal('hide');
