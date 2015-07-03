@@ -142,7 +142,7 @@ angular.module('webUpdates')
                 $resource('api/user/mntners').query(function(data) {
                     $scope.maintainers.mine = data;
 
-                    if (typeof callback == 'function'){
+                    if (typeof callback === 'function'){
                         callback();
                     }
                 });
@@ -182,7 +182,7 @@ angular.module('webUpdates')
             };
 
             function onMntnerRemove( item, all ) {
-                if( $scope.maintainers.selected.length == 0) {
+                if( $scope.maintainers.selected.length === 0) {
                     // make sure we do not remove the last mntner which act as anchor
                     _.map($scope.attributes, function (i) {
                         if(i.name === 'mnt-by' ) {
