@@ -563,7 +563,7 @@ angular.module('webUpdates')
                     return;
                 }
 
-                const attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({name: 'auth', value: 'SSO ' + ssoUsername}, {name: 'auth'});
+                var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({name: 'auth', value: 'SSO ' + ssoUsername}, {name: 'auth'});
 
                 $resource('api/whois/:source/:objectType/:name',
                     {
