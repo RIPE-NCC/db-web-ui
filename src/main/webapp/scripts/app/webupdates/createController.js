@@ -278,12 +278,12 @@ angular.module('webUpdates')
                 function _onSubmitSuccess(resp) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display can fetch it from here
-                    MessageStore.add(whoisResources.getObjectUid(), whoisResources);
+                    MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
                     // make transition to next display screen
                     $state.transitionTo('display', {
                         source: $scope.source,
                         objectType: $scope.objectType,
-                        name: whoisResources.getObjectUid(),
+                        name: whoisResources.getPrimaryKey(),
                         method:$scope.operation
                     });
                 };
