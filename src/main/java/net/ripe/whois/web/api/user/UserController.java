@@ -61,11 +61,7 @@ public class UserController {
             final String uuid = crowdClient.getUuid(userSession.getUsername());
             userSession.setUuid(uuid);
 
-            // Make sure essentials content-type is set
-            final MultiValueMap<String, String> headers = new HttpHeaders();
-            headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-
-            return new ResponseEntity<>(userSession, headers, HttpStatus.OK);
+            return new ResponseEntity<>(userSession, HttpStatus.OK);
 
         } catch (CrowdClientException e) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
