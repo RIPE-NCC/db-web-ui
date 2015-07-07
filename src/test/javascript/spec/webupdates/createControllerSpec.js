@@ -5,6 +5,7 @@ describe('webUpdates: CreateController', function () {
     var $scope, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
+    var CredentialsService;
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
     var userMaintainers;
@@ -12,7 +13,7 @@ describe('webUpdates: CreateController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _CredentialsService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -22,6 +23,7 @@ describe('webUpdates: CreateController', function () {
             $httpBackend = _$httpBackend_;
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
+            CredentialsService = _CredentialsService_;
 
             userMaintainers = [
 	            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}

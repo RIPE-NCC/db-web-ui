@@ -175,7 +175,22 @@ angular.module('webUpdates')
 
             function onMntnerSelect( item, all ) {
                 // add the mntner on the right spot
-                _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',[{name:'mnt-by', value:item.key}]));
+
+                console.log('on select: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
+
+                if (_needsPasswordAuthentication($scope.maintainers.selected)) {
+                    _displayProvidePasswordModal($scope.getMntnersForPasswordAuth($scope.maintainers.selected));
+                    $scope.maintainers.selected.pop();
+                } else {
+                    _addMntnerToSelected(item.key);
+                }
+            }
+
+            function _addMntnerToSelected (mntnerName){
+                _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', [{
+                    name: 'mnt-by',
+                    value: mntnerName
+                }]));
             }
 
             function onMntnerRemove( item, all ) {
@@ -488,8 +503,11 @@ angular.module('webUpdates')
             };
 
             function _needsPasswordAuthentication(selectedMaintainers) {
-                return (!CredentialsService.hasCredentials() &&
-                        $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
+                var md5Mntners = $scope.getMntnersForPasswordAuth(selectedMaintainers);
+
+                return md5Mntners.length > 0
+                    && (!CredentialsService.hasCredentials()
+                        || ! _.contains(_.map(md5Mntners, 'key'), CredentialsService.getCredentials().mntner.key));
             }
 
             function _displayProvidePasswordModal(mntnersForPasswordAuth) {
@@ -527,11 +545,17 @@ angular.module('webUpdates')
                             $scope.providePasswordModal.authResult = true;
                             $('#providePasswordModal').modal('hide');
                             CredentialsService.setCredentials($scope.providePasswordModal.selectedMntner, $scope.providePasswordModal.password);
-                            $scope.submit();
 
                             if ($scope.providePasswordModal.associateSSOAccountWithMntner) {
                                 associate(whoisResources, UserInfoService.getUsername(), $scope.providePasswordModal.password);
+
+                                $scope.providePasswordModal.selectedMntner.mine = true;
+                                $scope.maintainers.mine.push($scope.providePasswordModal.selectedMntner);
                             }
+
+                            $scope.maintainers.selected.push($scope.providePasswordModal.selectedMntner);
+                            _addMntnerToSelected($scope.providePasswordModal.selectedMntner.key);
+
                         } else {
                             console.log("not authenticated");
                             $scope.providePasswordModal.authResult = false;
@@ -565,7 +589,7 @@ angular.module('webUpdates')
                     {
                         source: whoisResources.getSource(),
                         objectType: whoisResources.getObjectType(),
-                        name: whoisResources.getObjectUid(),
+                        name: whoisResources.getPrimaryKey(),
                         password: mntnerPassword},
                     {'update': {method: 'PUT'}})
                     .update(WhoisResources.embedAttributes(attributes),
