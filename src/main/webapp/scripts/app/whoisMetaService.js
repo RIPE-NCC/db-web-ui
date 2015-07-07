@@ -48,7 +48,7 @@ angular.module('dbWebApp')
                 var attrMeta = _.find(attrsMeta, function (am) {
                     return am.name === attr.name;
                 });
-                var idx = undefined;
+                var idx;
                 if( attr.$$meta != null) {
                     idx = attr.$$meta.$$idx;
                 }

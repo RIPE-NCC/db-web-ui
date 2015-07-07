@@ -29,7 +29,6 @@ angular.module('webUpdates')
 
             _initialisePage();
 
-
             // auth (password) modal popup for attribute
             $scope.displayAuthDialog = displayAuthDialog;
             $scope.verifyAuthDialog = verifyAuthDialog;
@@ -95,8 +94,7 @@ angular.module('webUpdates')
                 $scope.passwordAgain = undefined;
                 $scope.authPasswordMessage = undefined;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            };
-
+            }
 
             function _fetchObjectViaRest() {
                 $resource('api/whois/:source/:objectType/:name', {
@@ -118,7 +116,7 @@ angular.module('webUpdates')
                             type:'mntner',
                             key: mntnerAttr.value,
                             mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
-                        }
+                        };
                     });
 
                 }, function (resp) {
@@ -142,7 +140,7 @@ angular.module('webUpdates')
                 $resource('api/user/mntners').query(function(data) {
                     $scope.maintainers.mine = data;
 
-                    if (typeof callback == "function"){
+                    if (typeof callback === 'function'){
                         callback();
                     }
                 });
@@ -153,7 +151,7 @@ angular.module('webUpdates')
                     return m.key === mntner.key;
                 });
                 return status;
-            };
+            }
 
             function _enrichAlternativesWithMine(mntners) {
                 return  _.map(mntners, function(mntner) {
@@ -163,14 +161,13 @@ angular.module('webUpdates')
                     }
                     return mntner;
                 });
-            };
+            }
 
             function _stripAlreadySelected(mntners) {
                 return _.filter(mntners, function(mntner) {
                     return !_isMntnerOnlist($scope.maintainers.selected, mntner);
                 });
-            };
-
+            }
 
             /*
              * Methods called from the html-teplate
@@ -179,10 +176,10 @@ angular.module('webUpdates')
             function onMntnerSelect( item, all ) {
                 // add the mntner on the right spot
                 _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by',[{name:'mnt-by', value:item.key}]));
-            };
+            }
 
             function onMntnerRemove( item, all ) {
-                if( $scope.maintainers.selected.length == 0) {
+                if( $scope.maintainers.selected.length === 0) {
                     // make sure we do not remove the last mntner which act as anchor
                     _.map($scope.attributes, function (i) {
                         if(i.name === 'mnt-by' ) {
@@ -198,7 +195,7 @@ angular.module('webUpdates')
                         return i.name === 'mnt-by' && i.value === item.key;
                     });
                 }
-            };
+            }
 
             function isMine( mntner ) {
                 if( !mntner.mine ) {
@@ -206,24 +203,25 @@ angular.module('webUpdates')
                 } else {
                     return mntner.mine;
                 }
-            };
+            }
 
             function hasSSo( mntner ) {
                 return _.any(mntner.auth, function(i) {
-                    return  _.startsWith(i,"SSO");
+                    return  _.startsWith(i, 'SSO');
                 });
-            };
+            }
 
             function hasPgp( mntner ) {
                 return  _.any(mntner.auth, function(i) {
-                    return _.startsWith(i, "PGP");
+                    return _.startsWith(i, 'PGP');
                 });
-            };
+            }
+
             function hasMd5( mntner ) {
                 return  _.any(mntner.auth, function(i) {
-                    return  _.startsWith(i,"MD5");
+                    return  _.startsWith(i, 'MD5');
                 });
-            };
+            }
 
             function refreshMntners( query) {
                 // need to typed characters
@@ -236,7 +234,7 @@ angular.module('webUpdates')
                         }
                     );
                 }
-            };
+            }
 
             function suggestAutocomplete( val, name, refs) {
                 if( !refs || refs.length === 0 ) {
@@ -254,24 +252,23 @@ angular.module('webUpdates')
                             return [];
                         });
                 }
-            };
+            }
 
             function hasErrors() {
                 return $scope.errors.length > 0;
-            };
+            }
 
             function hasWarnings() {
                 return $scope.warnings.length > 0;
-            };
+            }
 
             function hasInfos() {
                 return $scope.infos.length > 0;
-            };
+            }
 
             function hasMntners() {
                 return $scope.maintainers.selected.length > 0;
-            };
-
+            }
 
             function submit() {
 
@@ -286,7 +283,7 @@ angular.module('webUpdates')
                         name: whoisResources.getPrimaryKey(),
                         method:$scope.operation
                     });
-                };
+                }
 
                 function _onSubmitError(resp) {
                     if (!resp.data) {
@@ -296,7 +293,7 @@ angular.module('webUpdates')
                         _validateForm();
                         setErrors(whoisResources);
                     }
-                };
+                }
 
                 if (_validateForm() ) {
                     _stripNulls();
@@ -351,32 +348,32 @@ angular.module('webUpdates')
                         }
                     }
                 }
-            };
+            }
 
             function canAttributeBeDuplicated(attr) {
                 return $scope.attributes.canAttributeBeDuplicated(attr);
-            };
+            }
 
             function duplicateAttribute(attr) {
                 _wrapAndEnrichAttributes($scope.attributes.duplicateAttribute(attr));
-            };
+            }
 
             function canAttributeBeRemoved(attr) {
                 return $scope.attributes.canAttributeBeRemoved(attr);
-            };
+            }
 
             function removeAttribute(attr) {
                 _wrapAndEnrichAttributes($scope.attributes.removeAttribute(attr));
-            };
+            }
 
             function displayAddAttributeDialog(attr) {
                 $scope.addAfterAttribute = attr;
                 $('#insertAttributeModal').modal('show');
-            };
+            }
 
             function addAttributeAfterAttribute() {
                 _wrapAndEnrichAttributes($scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute));
-            };
+            }
 
             /*
                 private methods
@@ -385,17 +382,17 @@ angular.module('webUpdates')
             function _validateForm() {
                 var status = $scope.attributes.validate();
                 return status;
-            };
+            }
 
             function _stripNulls() {
                 $scope.attributes = _wrapAndEnrichAttributes($scope.attributes.removeNullAttributes());
-            };
+            }
 
             function _clearErrors() {
                 $scope.errors = [];
                 $scope.warnings = [];
                 $scope.attributes.clearErrors();
-            };
+            }
 
             // auth (password) modal popup
             function displayAuthDialog(attr) {
@@ -404,7 +401,7 @@ angular.module('webUpdates')
                 $scope.passwordAgain = '';
                 $scope.authPasswordMessage = '';
                 $('#authModal').modal('show');
-            };
+            }
 
             function verifyAuthDialog() {
                 if ($scope.password === $scope.passwordAgain) {
@@ -414,11 +411,11 @@ angular.module('webUpdates')
                     $scope.authPasswordMessage = 'Password Does Not Match!';
                     return false;
                 }
-            };
+            }
 
             function populateAuthAttribute() {
                 $scope.authAttribute.value = 'MD5-PW $1$' + $scope.generateSalt(8) + '$' + md5.createHash($scope.password);
-            };
+            }
 
             function generateSalt(length) {
                 var result = '';
@@ -427,7 +424,7 @@ angular.module('webUpdates')
                     result = result.concat($scope.validBase64Characters.charAt(offset));
                 }
                 return result;
-            };
+            }
 
             /*
              * Private methods
@@ -444,14 +441,14 @@ angular.module('webUpdates')
                     }
                     return attr;
                 });
-            };
+            }
 
             function setErrors(whoisResources) {
                 _populateFieldSpecificErrors(whoisResources);
                 $scope.errors = whoisResources.getGlobalErrors();
                 $scope.warnings = whoisResources.getGlobalWarnings();
                 $scope.infos = whoisResources.getGlobalInfos();
-            };
+            }
 
             /*
              * Methods used to make sure that attributes have meta information and have utility functions
@@ -491,9 +488,9 @@ angular.module('webUpdates')
             };
 
             function _needsPasswordAuthentication(selectedMaintainers) {
-                return (!CredentialsService.hasCredentials()
-                    && $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
-            };
+                return (!CredentialsService.hasCredentials() &&
+                        $scope.getMntnersForPasswordAuth(selectedMaintainers).length > 0);
+            }
 
             function _displayProvidePasswordModal(mntnersForPasswordAuth) {
 
@@ -502,9 +499,9 @@ angular.module('webUpdates')
                     selectedMntner: undefined,
                     password: '',
                     authResult: false,
-                    message: "",
+                    message: '',
                     hasMessage: function () {
-                        return !_.isUndefined($scope.providePasswordModal.message) && $scope.providePasswordModal.message !== "";
+                        return !_.isUndefined($scope.providePasswordModal.message) && $scope.providePasswordModal.message !== '';
                     },
                     associateSSOAccountWithMntner: true
                 };
@@ -512,7 +509,7 @@ angular.module('webUpdates')
                 $scope.providePasswordModal.mntnersForPasswordAuth = mntnersForPasswordAuth;
                 $scope.providePasswordModal.selectedMntner = mntnersForPasswordAuth[0];
                 $('#providePasswordModal').modal('show');
-            };
+            }
 
             function attemptAutentication(){
                 $resource('api/whois/:source/:objectType/:objectName', {
@@ -535,28 +532,27 @@ angular.module('webUpdates')
                             if ($scope.providePasswordModal.associateSSOAccountWithMntner) {
                                 associate(whoisResources, UserInfoService.getUsername(), $scope.providePasswordModal.password);
                             }
-
                         } else {
                             console.log("not authenticated");
                             $scope.providePasswordModal.authResult = false;
                             $scope.providePasswordModal.message =
-                                "You have not supplied the correct password for mntner: '" + $scope.providePasswordModal.selectedMntner.key + "'";
+                                'You have not supplied the correct password for mntner: \'' + $scope.providePasswordModal.selectedMntner.key + '\'';
                         }
 
                     }, function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
                         if (!_.isUndefined(whoisResources)) {
-                            console.log("whois error response in modal");
+                            console.log('whois error response in modal');
                             $scope.providePasswordModal.message = _.reduce(whoisResources.getGlobalErrors(), function(total, n) {
                                 return total + '\n' +n;
                             });
                         } else {
-                            console.log("server error in modal");
-                            $scope.providePasswordModal.message = "server error : " + JSON.stringify(resp);
+                            console.log('server error in modal');
+                            $scope.providePasswordModal.message = 'server error : ' + JSON.stringify(resp);
                         }
                         $scope.providePasswordModal.authResult = true;
                     });
-            };
+            }
 
             function associate(whoisResources, ssoUsername, mntnerPassword) {
                 if (_.isUndefined(ssoUsername)) {
