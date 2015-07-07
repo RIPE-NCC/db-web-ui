@@ -19,7 +19,7 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
 
-@ComponentScan(basePackages = "net.ripe.db.whois.common.sso, net.ripe.whois")
+@ComponentScan(basePackages = "net.ripe.whois")
 @EnableAutoConfiguration
 public class Application {
 

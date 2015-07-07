@@ -1,20 +1,13 @@
 <!DOCTYPE html>
-
  <html>
- <!--
-    template copied from:
-    https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template
-  -->
+ <!-- template copied from https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template -->
  <head>
-
 	 <meta charset="UTF-8">
 	 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	 <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" name="description" />
 	 <meta name="generator" content="Plone - http://plone.org" />
 	 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 	 <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
-
 	 <link rel="shortcut icon" type="image/x-icon" href="https://www.ripe.net/favicon.ico" />
 	 <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png" />
 	 <link rel="search" href="https://www.ripe.net/search" title="Search this site" />
@@ -30,16 +23,12 @@
 	<!--[if lte IE 8]>
 	<link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/ie-template.css" />
 	<![endif]-->
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css"/>
     <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css"/>
     <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.css"/>
-
      <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"/>
-
  </head>
-
- <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr">
+ <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr" ng-app="dbWebApp">
 
 	<!-- Google Tag Manager, replace GTM-XXXXX with your container ID -->
 	<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-WTWTB7"
@@ -56,11 +45,9 @@
          <div id="portal-header">
              <p class="hiddenStructure">
                  <a accesskey="2" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template#content">Skip to content.</a> |
-
                  <a accesskey="6" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template#portal-globalnav">Skip to navigation</a>
              </p>
-
-             <div id="login">
+             <div id="login" ng-controller="UserInfoController">
                  <a class="anon" href="https://access.ripe.net/?originalUrl=https%3A%2F%2Fwww.ripe.net%2Fmanage-ips-and-asns%2Fdb%2Fwebupdates">Login</a>
                  <div id="loggedin">
                      <a class="active" href="#">
@@ -68,26 +55,16 @@
                          <i class="fa fa-angle-down"></i>
                      </a>
                      <a class="profile" style="background-image(https://access.ripe.net/)"></a>
-                     <div id="loggedin-box" class="portlet box-shadow">
-
-                     </div>
+                     <div id="loggedin-box" class="portlet box-shadow"></div>
                      <a href="notification" id="notifications"></a>
                  </div>
              </div>
-
-
              <div class="header-item">
-                 <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
-                     <img id="logo" alt="RIPE NCC Network Coordination" src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png" /></a>
-
-
+                <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
+                <img id="logo" alt="RIPE NCC Network Coordination" src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png" /></a>
              </div>
-
-
-
              <div class="header-item">
                  <div id="tabs">
-
                      <ul class="nav nav-tabs">
                          <li class="active"><a data-toggle="tab" data-target="#whois-search">RIPE Database (Whois)</a></li>
                          <li><a data-toggle="tab" data-target="#website-search">Website</a></li>
@@ -102,32 +79,20 @@
                              </form>
                          </div>
                          <div class="tab-pane" id="website-search">
-
                              <form id="searchGadget_form" action="https://www.ripe.net/@@search">
-
                                  <div class="LSBox">
                                      <label class="hiddenStructure" for="searchGadget">Search Site</label>
-
                                      <input name="SearchableText" type="text" title="Search the content of this website" accesskey="4" class="searchField" id="searchGadget" placeholder="Search the content of this website" />
-
                                      <div class="input-group-btn">
                                          <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                                      </div>
-
-
-
                                      <div class="LSResult" id="LSResult" style="">
                                          <div class="LSShadow" id="LSShadow"></div>
                                      </div>
-
                                  </div>
-
                              </form>
                          </div>
-
                          <div id="search-info" class="clearfix">
-
-
                              <div id="termandconditions">
                                  By searching you explicitly express your agreement with the RIPE Database terms and conditions
                              </div>
@@ -138,20 +103,14 @@
                      <i class="fa fa-bars btn btn-default"></i>
                  </div>
              </div>
-
          </div>
-
      </div>
  </header>
-
-
  <nav class="container-fluid">
      <div id="nav" class="container clearfix">
          <ul class="nav navbar-nav">
              <li class="manage-ips-and-asns">
-                 <a class="megatitle" href="https://www.ripe.net/manage-ips-and-asns">
-                     Manage IPs and ASNs
-                     <i class="fa fa-angle-right"></i>
+                 <a class="megatitle" href="https://www.ripe.net/manage-ips-and-asns">Manage IPs and ASNs<i class="fa fa-angle-right"></i>
                  </a>
                  <div class="megamenu subnav container clearfix box-shadow">
                      <div class="row">
@@ -790,55 +749,27 @@
      </div>
  </nav>
 
-
- <main class="container-fluid">
-
-
-
-     <div id="portal-columns" class="container box-shadow clearfix">
-
+<main class="container-fluid">
+    <div id="portal-columns" class="container box-shadow clearfix">
          <div id="portal-breadcrumbs">
-
-        <span id="breadcrumbs-you-are-here">You
-    are here:</span>
+        <span id="breadcrumbs-you-are-here">You are here:</span>
         <span id="breadcrumbs-home">
             <a href="https://www.ripe.net">Home</a>
-            <span class="breadcrumbSeparator">
-                >
-
-            </span>
+            <span class="breadcrumbSeparator">&gt;</span>
         </span>
         <span id="breadcrumbs-1" dir="ltr">
-
-                <a href="https://www.ripe.net/manage-ips-and-asns">Manage IPs and ASNs</a>
-
-                <span class="breadcrumbSeparator">
-                    >
-
-                </span>
-
+            <a href="https://www.ripe.net/manage-ips-and-asns">Manage IPs and ASNs</a>
+            <span class="breadcrumbSeparator">&gt;</span>
         </span>
         <span id="breadcrumbs-2" dir="ltr">
-
-                <a href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
-
-                <span class="breadcrumbSeparator">
-                    >
-
-                </span>
-
+            <a href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
+            <span class="breadcrumbSeparator">&gt;</span>
         </span>
         <span id="breadcrumbs-3" dir="ltr">
-
-
-                <span id="pathbar_here">Webupdates</span>
-
-
+            <span id="pathbar_here">Webupdates</span>
         </span>
-
-         </div>
-
-         <div class="col-md-3" id="portal-column-one">
+        </div>
+        <div class="col-md-3" id="portal-column-one">
              <div>
                  <div class="portlet navigation margin-bottom">
                      <div class="Title">
@@ -899,36 +830,17 @@
                  <div class="portlet margin-bottom grey grey-border">
                  </div>
              </div>
-
          </div>
-
-
-
          <div id="portal-column-content" class="col-md-12">
-
              <div id="viewlet-above-content"></div>
-
-
              <div class=" ">
-
-
-
-
-
                  <dl class="portalMessage info" id="kssPortalMessage" style="display:none">
                      <dt>Info</dt>
                      <dd></dd>
                  </dl>
-
-
-
-
                  <div id="content" >
-
-
-
                      <div>
-                         <div id="external" ng-app="dbWebApp">
+                         <div id="external">
                              <!-- End of header ENDHEADERMARKER -->
                              <div ui-view></div>
                              <!-- Insert your content here CONTENTMARKER -->
@@ -936,46 +848,26 @@
                          </div>
                      </div>
                  </div>
-
-
-
              </div>
-
-
-             <div id="viewlet-below-content">
-             </div>
+             <div id="viewlet-below-content"></div>
          </div>
-
-
-
-
-
      </div>
-
  </main>
-
-
  <footer class="container-fluid">
      <a href="#" id="scrollToTop"></a>
-
-
-
      <div class="container box-shadow">
          <div class="col-lg-2">
-                <span id="social-icons" title="RIPE NCC - Social Media">
-                    <a href="https://www.ripe.net/lir-services/ncc/contact/social-networking">
-                        <i class="fa fa-sl-f"></i>
-                        <i class="fa fa-sl-t"></i>
-                        <i class="fa fa-sl-l"></i>
-                        <i class="fa fa-sl-y"></i>
-                        <i class="fa fa-sl-g"></i>
-                    </a>
-                </span>
+            <span id="social-icons" title="RIPE NCC - Social Media">
+                <a href="https://www.ripe.net/lir-services/ncc/contact/social-networking">
+                    <i class="fa fa-sl-f"></i>
+                    <i class="fa fa-sl-t"></i>
+                    <i class="fa fa-sl-l"></i>
+                    <i class="fa fa-sl-y"></i>
+                    <i class="fa fa-sl-g"></i>
+                </a>
+            </span>
          </div>
-
-
          <div class="col-lg-10" id="footer-links">
-
              <a href="https://www.ripe.net/footer-links/home">Home</a>
              <a href="https://www.ripe.net/footer-links/sitemap">Sitemap</a>
              <a href="https://www.ripe.net/footer-links/contact-us">Contact Us</a>
@@ -985,18 +877,13 @@
              <a href="https://www.ripe.net/footer-links/cookies">Cookies</a>
              <a href="https://www.ripe.net/footer-links/copyright-statement">Copyright Statement</a>
          </div>
-
-
      </div>
-
-
      <div id="cookiepopup">
          <div id="cookie-close"><i class="fa fa-close"></i></div>
          <div class="cookie-content">
              <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies" class="external-link" target="_self">privacy policy</a><span>. You can accept our cookies either by </span><span id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
          </div>
      </div>
-
  </footer>
 
 	<!-- Footer JavaScript placeholder FOOTERMARKER -->
@@ -1041,6 +928,7 @@
     <script src="scripts/app/credentialsService.js"></script>
 	<script src="scripts/app/whoisResources.js"></script>
 	<script src="scripts/app/messageStore.js"></script>
+	<script src="scripts/app/userInfoService.js"></script>
 
 	<!-- WebUpdates Module -->
 	<script src="scripts/app/webupdates/webUpdatesModule.js"></script>
@@ -1048,6 +936,7 @@
 	<script src="scripts/app/webupdates/selectController.js"></script>
 	<script src="scripts/app/webupdates/createController.js"></script>
 	<script src="scripts/app/webupdates/displayController.js"></script>
+	<script src="scripts/app/userInfoController.js"></script>
 
  </body>
 
