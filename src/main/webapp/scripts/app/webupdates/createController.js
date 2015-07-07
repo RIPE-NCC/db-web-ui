@@ -547,10 +547,11 @@ angular.module('webUpdates')
                             CredentialsService.setCredentials($scope.providePasswordModal.selectedMntner, $scope.providePasswordModal.password);
 
                             if ($scope.providePasswordModal.associateSSOAccountWithMntner) {
-                                associate(whoisResources, UserInfoService.getUsername(), $scope.providePasswordModal.password);
-
-                                $scope.providePasswordModal.selectedMntner.mine = true;
-                                $scope.maintainers.mine.push($scope.providePasswordModal.selectedMntner);
+                                associate(whoisResources, UserInfoService.getUsername(), $scope.providePasswordModal.password, new function (){
+                                    $scope.providePasswordModal.selectedMntner.mine = true;
+                                    $scope.maintainers.mine.push($scope.providePasswordModal.selectedMntner);
+                                    CredentialsService.removeCredentials();
+                                });
                             }
 
                             $scope.maintainers.selected.push($scope.providePasswordModal.selectedMntner);
@@ -578,7 +579,7 @@ angular.module('webUpdates')
                     });
             }
 
-            function associate(whoisResources, ssoUsername, mntnerPassword) {
+            function associate(whoisResources, ssoUsername, mntnerPassword, callback) {
                 if (_.isUndefined(ssoUsername)) {
                     return;
                 }
@@ -595,6 +596,7 @@ angular.module('webUpdates')
                     .update(WhoisResources.embedAttributes(attributes),
                         function (resp) {
                             // success response
+                            callback();
                         },
                         function (resp) {
                             // error response
