@@ -21,9 +21,15 @@ angular.module('dbWebApp')
                     });
                 }
             },
-            getUsername: function() { return _userInfo.username; },
-            getDisplayName: function() { return _userInfo.displayName; },
-            getUuid: function() { return _userInfo.uuid; }
+            getUsername: function() {
+                return _userInfo ? _userInfo.username : undefined;
+            },
+            getDisplayName: function() {
+                return _userInfo ? _userInfo.displayName : undefined;
+            },
+            getUuid: function() {
+                return _userInfo ? _userInfo.uuid : undefined;
+            }
         };
     }
 ]);
