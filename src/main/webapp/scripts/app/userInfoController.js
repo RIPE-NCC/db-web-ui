@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .controller('UserInfoController', ['$scope', '$stateParams', '$state', 'UserInfoService', '$resource',
-        function ($scope, $stateParams, $state, UserInfoService, $resource) {
+    .controller('UserInfoController', ['$scope', '$stateParams', '$state', 'UserInfoService',
+        function ($scope, $stateParams, $state, UserInfoService) {
 
             _init();
 
