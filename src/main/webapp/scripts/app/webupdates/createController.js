@@ -127,13 +127,16 @@ angular.module('webUpdates')
 
             function _setMyMntnersToSelected(){
 
-                $scope.maintainers.selected = $scope.maintainers.mine;
-                // rework data in attributes
-                var mntnerAttrs = _.map($scope.maintainers.mine, function(i) {
-                    return {name: 'mnt-by', value:i.key};
-                });
+                if ($scope.maintainers.mine.length>0) {
 
-                _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
+                    $scope.maintainers.selected = $scope.maintainers.mine;
+                    // rework data in attributes
+                    var mntnerAttrs = _.map($scope.maintainers.mine, function(i) {
+                        return {name: 'mnt-by', value:i.key};
+                    });
+
+                    _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
+                }
             }
 
             function _fetchMyMaintainers(callback){
@@ -596,7 +599,9 @@ angular.module('webUpdates')
                     .update(WhoisResources.embedAttributes(attributes),
                         function (resp) {
                             // success response
-                            callback();
+                            if (typeof callback === 'function'){
+                                callback();
+                            }
                         },
                         function (resp) {
                             // error response
