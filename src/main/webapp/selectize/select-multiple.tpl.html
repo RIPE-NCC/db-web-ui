@@ -2,13 +2,13 @@
      ng-class="{open: $select.open}">
     <div>
         <div class="ui-select-match"></div>
+<!--                placeholder="{{$selectMultiple.getPlaceholder()}}" -->
         <input type="text"
                autocomplete="off"
                autocorrect="off"
                autocapitalize="off"
                spellcheck="false"
                class="ui-select-search input-xs"
-               placeholder="{{$selectMultiple.getPlaceholder()}}"
                ng-disabled="$select.disabled"
                ng-hide="$select.disabled"
                ng-click="$select.activate()"
