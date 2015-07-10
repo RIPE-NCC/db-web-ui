@@ -354,11 +354,24 @@ angular.module('dbWebApp')
             });
         };
 
+        var toPlaintext = function() {
+            var result = '';
+            _.each(this, function (attr) {
+                result += attr.name + ':' + _repeat(' ', Math.max(0, (20 - attr.name.length))) + attr.value + '\n';
+            });
+            return result;
+        };
+
+        var _repeat = function(string, n) {
+            return new Array(n + 1).join(string);
+        };
+
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {
                 return [];
             }
             attrs.toString = toString;
+            attrs.toPlaintext = toPlaintext;
             attrs.getAllAttributesOnName = getAllAttributesOnName;
             attrs.getAllAttributesNotOnName = getAllAttributesNotOnName;
             attrs.getAllAttributesWithValueOnName = getAllAttributesWithValueOnName;
