@@ -9,6 +9,7 @@ angular.module('dbWebApp', [
     'interceptors',
     'angulartics',
     'angulartics.google.tagmanager',
+    'diff-match-patch',
     'ui.bootstrap',
     'ui.select'])
 .config(function ($stateProvider) {
