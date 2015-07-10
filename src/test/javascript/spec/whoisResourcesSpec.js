@@ -509,5 +509,65 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs[3].value).toEqual('c');
     });
 
+    it('plaintext version of attributes', function() {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a', $$meta:{$$mandatory:true, $$multiple:false}},
+            {name: 'mnt-by',   value: 'b', $$meta:{$$mandatory:true, $$multiple:true}},
+            {name: 'source',   value: 'c', $$meta:{$$mandatory:true, $$multiple:false}}
+        ]);
+
+        expect(attrs.toPlaintext()).toEqual(
+            'as-block:            a\n' +
+            'mnt-by:              b\n' +
+            'source:              c\n');
+    });
+
+    it('plaintext version of object', function() {
+        var resources = $whoisResources.wrapWhoisResources({
+            objects: {
+                object: [
+                    {
+                        type: 'person',
+                        link: {
+                            type: 'locator',
+                            href: 'http://rest-dev.db.ripe.net/ripe/person/MG20276-RIPE'
+                        },
+                        source: {
+                            id: 'ripe'
+                        },
+                        'primary-key': {
+                            attribute: [
+                                {
+                                    name: 'nic-hdl',
+                                    value: 'MG20276-RIPE'
+                                }
+                            ]
+                        },
+                        attributes: {
+                            attribute: [
+                                {
+                                    name: 'person',
+                                    value: 'Test Person'
+                                },
+                                {
+                                    name: 'nic-hdl',
+                                    value: 'MG20276-RIPE'
+                                },
+                                {
+                                    name: 'source',
+                                    value: 'RIPE'
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        });
+
+        expect($whoisResources.wrapAttributes(resources.getAttributes()).toPlaintext()).toEqual(
+            'person:              Test Person\n' +
+            'nic-hdl:             MG20276-RIPE\n' +
+            'source:              RIPE\n');
+    });
 
 });
