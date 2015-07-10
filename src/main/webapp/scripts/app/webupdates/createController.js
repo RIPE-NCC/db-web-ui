@@ -110,6 +110,8 @@ angular.module('webUpdates')
                         return i.name === 'mnt-by';
                     });
 
+                    //TODO [TP]: we have to enrich here the selected (existing) maintainers with the type of auth that...
+                    //TODO... they support. Currently we have a bug in modify page when only password maintainers are present.
                     //  copy mntners to mantainers.selected
                     $scope.maintainers.selected = _.map(mntners, function(mntnerAttr) {
                         return {
@@ -501,7 +503,7 @@ angular.module('webUpdates')
                 }
 
                 return _.filter(selectedMaintainers, function (mntner) {
-                    return $scope.hasMd5(mntner) === true;
+                    return !_.isUndefined(mntner.auth) && $scope.hasMd5(mntner) === true;
                 });
             };
 
