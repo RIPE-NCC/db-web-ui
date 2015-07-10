@@ -110,6 +110,8 @@ angular.module('webUpdates')
                         return i.name === 'mnt-by';
                     });
 
+                    //TODO [TP]: we have to enrich here the selected (existing) maintainers with the type of auth that...
+                    //TODO... they support. Currently we have a bug in modify page when only password maintainers are present.
                     //  copy mntners to mantainers.selected
                     $scope.maintainers.selected = _.map(mntners, function(mntnerAttr) {
                         return {
@@ -127,13 +129,16 @@ angular.module('webUpdates')
 
             function _setMyMntnersToSelected(){
 
-                $scope.maintainers.selected = $scope.maintainers.mine;
-                // rework data in attributes
-                var mntnerAttrs = _.map($scope.maintainers.mine, function(i) {
-                    return {name: 'mnt-by', value:i.key};
-                });
+                if ($scope.maintainers.mine.length>0) {
 
-                _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
+                    $scope.maintainers.selected = $scope.maintainers.mine;
+                    // rework data in attributes
+                    var mntnerAttrs = _.map($scope.maintainers.mine, function(i) {
+                        return {name: 'mnt-by', value:i.key};
+                    });
+
+                    _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
+                }
             }
 
             function _fetchMyMaintainers(callback){
@@ -498,7 +503,7 @@ angular.module('webUpdates')
                 }
 
                 return _.filter(selectedMaintainers, function (mntner) {
-                    return $scope.hasMd5(mntner) === true;
+                    return !_.isUndefined(mntner.auth) && $scope.hasMd5(mntner) === true;
                 });
             };
 
@@ -596,7 +601,9 @@ angular.module('webUpdates')
                     .update(WhoisResources.embedAttributes(attributes),
                         function (resp) {
                             // success response
-                            callback();
+                            if (typeof callback === 'function'){
+                                callback();
+                            }
                         },
                         function (resp) {
                             // error response
