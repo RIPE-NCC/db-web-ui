@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService', 'UserInfoService',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5, CredentialsService, UserInfoService) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService', 'UserInfoService', '$http', '$q', '$templateCache',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5, CredentialsService, UserInfoService, $http, $q, $templateCache) {
+
+            $scope.uiSelectTemplateReady = false;
 
             //exposed methods
             $scope.onMntnerSelect = onMntnerSelect;
@@ -61,6 +63,8 @@ angular.module('webUpdates')
                 $scope.warnings = [];
                 $scope.infos = [];
 
+                _waitforUiSelectIniComplete();
+
                 // Populate attributes in the UI
 
                 if (!$scope.name) {
@@ -72,7 +76,6 @@ angular.module('webUpdates')
                     $scope.attributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                    $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
 
                 } else {
@@ -80,7 +83,7 @@ angular.module('webUpdates')
 
                     // Start empty, and populate with rest-result
                     $scope.attributes = _wrapAndEnrichAttributes([]);
-                    _fetchMyMaintainers(_fetchObjectViaRest());
+                    _fetchMyMaintainers(_fetchObjectViaRest);
                 }
 
                 // Populate "select attribute for add"-fields popup
@@ -96,7 +99,22 @@ angular.module('webUpdates')
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
             }
 
+            function _waitforUiSelectIniComplete() {
+                var base = 'selectize';
+                $q.all([
+                    // workaround
+                    $http.get(base + '/match-multiple.tpl.html', {cache: $templateCache}),
+                    $http.get(base + '/select-multiple.tpl.html', {cache: $templateCache})
+                ]).then(function (res) {
+                        console.log("All sources were loaded");
+                        $scope.uiSelectTemplateReady = true;
+                        return res;
+                    });
+            }
+
             function _fetchObjectViaRest() {
+                console.log("_fetchObjectViaRest start");
+
                 $resource('api/whois/:source/:objectType/:name', {
                     source: $scope.source,
                     objectType: $scope.objectType,
@@ -105,10 +123,14 @@ angular.module('webUpdates')
                 }).get(function (resp) {
                     wrapAndEnrichResources(resp);
 
-                    // get mntbers from response
+                    console.log("repeat: my maintainers:" + JSON.stringify($scope.maintainers.mine));
+
+                    // get mntners from response
+                    console.log("object to modify:" + JSON.stringify($scope.attributes));
                     var mntners = _.filter($scope.attributes, function(i) {
                         return i.name === 'mnt-by';
                     });
+                    console.log("object mntners:" + JSON.stringify(mntners));
 
                     //  copy mntners to mantainers.selected
                     $scope.maintainers.selected = _.map(mntners, function(mntnerAttr) {
@@ -118,11 +140,38 @@ angular.module('webUpdates')
                             mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
                         };
                     });
+                    console.log("selected mntners:" + JSON.stringify($scope.maintainers.selected));
+
+                    _.each($scope.maintainers.selected,function(item) {
+                        fetchMntner(item.key);
+                    } );
 
                 }, function (resp) {
                     var whoisResources = wrapAndEnrichResources(resp.data);
                     setErrors(whoisResources);
                 });
+                console.log("_fetchObjectViaRest done");
+
+            }
+
+            function fetchMntner( name) {
+                $resource('api/whois/autocomplete',
+                    {query: name, field: 'mnt-by', attribute: 'auth'}).query(
+                    function (data) {
+                        console.log("mntner selected:" + JSON.stringify($scope.maintainers.selected));
+                        console.log("mntner mine:" + JSON.stringify($scope.maintainers.mine));
+
+                        console.log("mntner details:" + JSON.stringify(data));
+
+                        // popup to ask for password
+                        if( _needsPasswordAuthentication(data)) {
+                            console.log("needs password popup");
+                        } else {
+                            console.log("Does not need password popup");
+                        }
+
+                    }
+                );
             }
 
             function _setMyMntnersToSelected(){
@@ -140,13 +189,22 @@ angular.module('webUpdates')
             }
 
             function _fetchMyMaintainers(callback){
+                console.log("_fetchMyMaintainers start");
+
                 $resource('api/user/mntners').query(function(data) {
                     $scope.maintainers.mine = data;
+
+                    console.log("my maintainers OK:" + JSON.stringify($scope.maintainers.mine));
 
                     if (typeof callback === 'function'){
                         callback();
                     }
+                }, function(errorResp) {
+                    console.log("Error fetching my maintainers:" + JSON.stringify(errorResp));
                 });
+
+                console.log("_fetchMyMaintainers done");
+
             }
 
             function _isMntnerOnlist( selectedMntners, mntner ) {
@@ -292,7 +350,7 @@ angular.module('webUpdates')
 
                 function _onSubmitSuccess(resp) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                    // stick created object in temporary store, so display can fetch it from here
+                    // stick created object in temporary store, so display-screen can fetch it from here
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
                     // make transition to next display screen
                     $state.transitionTo('display', {
@@ -328,13 +386,16 @@ angular.module('webUpdates')
                         // but it is better if both methods are present to give priority to SSO.
                         if (CredentialsService.hasCredentials()) {
                             $resource('api/whois/:source/:objectType',
-                                {source: $scope.source, objectType: $scope.objectType, password: CredentialsService.getCredentials().successfulPassword})
+                                {source: $scope.source,
+                                 objectType: $scope.objectType,
+                                 password: CredentialsService.getCredentials().successfulPassword})
                                 .save(WhoisResources.embedAttributes($scope.attributes),
                                 _onSubmitSuccess,
                                 _onSubmitError);
                         } else {
                             $resource('api/whois/:source/:objectType',
-                                {source: $scope.source, objectType: $scope.objectType})
+                                {source: $scope.source,
+                                    objectType: $scope.objectType})
                                 .save(WhoisResources.embedAttributes($scope.attributes),
                                 _onSubmitSuccess,
                                 _onSubmitError);
@@ -342,7 +403,6 @@ angular.module('webUpdates')
                     } else {
                         // perform PUT to modify
                         if (CredentialsService.hasCredentials()) {
-                            console.log('modify success');
                             $resource('api/whois/:source/:objectType/:name',
                                 {
                                     source: $scope.source,
@@ -506,7 +566,11 @@ angular.module('webUpdates')
             };
 
             function _needsPasswordAuthentication(selectedMaintainers) {
+                console.log("_needsPasswordAuthentication 1:"+ JSON.stringify(selectedMaintainers));
+
                 var md5Mntners = $scope.getMntnersForPasswordAuth(selectedMaintainers);
+
+                console.log("_needsPasswordAuthentication 2:"+ JSON.stringify(md5Mntners));
 
                 return md5Mntners.length > 0
                     && (!CredentialsService.hasCredentials()
@@ -607,5 +671,7 @@ angular.module('webUpdates')
                             // error response
                         });
             };
+
+
 
 }]);

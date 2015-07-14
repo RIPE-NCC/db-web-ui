@@ -4,7 +4,9 @@ import net.ripe.whois.services.WhoisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/whois")
@@ -21,17 +24,19 @@ public class WhoisProxyController {
 
     @Autowired
     private WhoisService whoisService;
-//
-//    @RequestMapping(value = "/**", method = "GET")
-//    public ResponseEntity<String> proxyRestGetCalls(final HttpServletRequest request, @RequestHeader(re) HttpHeaders headers) throws Exception {
-//        LOGGER.info("request:" + request.toString());
-//
-//        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
-//
-//        return whoisService.bypassNoBody(request, headers);
-//    }
 
-    @RequestMapping(value = "/**")
+    @RequestMapping(value = "/{objectType}/{objectName}/mntners", produces={"application/json"})
+    public ResponseEntity<String> mntnersForObject(final HttpServletRequest request, @RequestHeader HttpHeaders headers,
+                                                   @PathVariable("id") int objectType, ) throws Exception {
+        LOGGER.info("request:" + request.toString());
+
+        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
+
+        return whoisService.getObjectMntners(request, headers, objectType, objectName);
+    }
+
+
+    @RequestMapping(value = "*")
     public ResponseEntity<String> proxyRestCalls(final HttpServletRequest request, @Nullable @RequestBody(required = false) final String body, @RequestHeader HttpHeaders headers) throws Exception {
         LOGGER.info("request:" + request.toString());
 

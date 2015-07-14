@@ -30,6 +30,17 @@ public class WhoisService extends RestClient {
         this.contextPath = contextPath;
     }
 
+    public ResponseEntity<String> getObjectMntners(final HttpServletRequest request, , final HttpHeaders headers,
+                                                   final String objectType, final String objectName) throws URISyntaxException {
+        final URI uri = composeWhoisUrl(request);
+
+        return restTemplate.exchange(
+                uri,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                String.class);
+    }
+
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
         final URI uri = composeWhoisUrl(request);
 
