@@ -96,7 +96,7 @@
     <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
-    <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
+    <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Submit</button>
     </section>
 </form>
 
@@ -153,23 +153,23 @@
                 </div>
                 <ul>
 	                <li>
-	                    <label>Select a maintainer to authenticate the update operation.</label>
+	                    <label>Select a maintainer</label>
 	                    <select ng-model="providePasswordModal.selectedMntner"
 	                            ng-required="true"
 	                            ng-options="mntner.key for mntner in providePasswordModal.mntnersForPasswordAuth" class="form-control select-height"></select>
 	                </li>
 	                <li>
-	                    <label>Provide the password for the selected maintainer</label>
+	                    <label>Password</label>
 	                    <input type="password" class="form-control" ng-model="providePasswordModal.password" ng-required="true"/>
 	                </li>
                     <li>
-                        <input type="checkbox" ng-model="providePasswordModal.associateSSOAccountWithMntner"/>
-                        <label>associate my SSO account with this maintainer</label>
+                        <input type="checkbox" ng-model="providePasswordModal.associateSSOAccountWithMntner" id="assosiate-maintainer-check" />
+                        <label for="assosiate-maintainer-check">Associate my SSO account with this maintainer</label>
                     </li>
                 </ul>
             </div>
             <div class="modal-footer">
-                <input type="submit" class="blue-button" ng-click="attemptAutentication()" value="Authenticate"/>
+                <input type="submit" class="blue-button ga-createobj-authenticate" ng-click="attemptAutentication()" value="Authenticate"/>
             </div>
         </div>
     </div>
