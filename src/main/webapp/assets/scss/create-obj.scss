@@ -55,22 +55,25 @@ ul.form-fields {
 }
 
 
-ul.success-fields {
-	list-style: none;
-	padding: 20px !important;
+table.success-fields {
+	@extend %width-100;
 	border: 1px #ccc dashed;
+	margin-bottom: 20px;
 	font {
 		family: menlo !important;
 	}
-	li {
-		display: inline-block !important;
-	    width: 50%;
+	td {
+    	padding: 5px 10px;
+    	p {
+        	margin: 0 !important;
+    	}
 	}
 }
 
 @media (max-width: 768px) { 
-	ul.success-fields {
-		li {
+	table.success-fields {
+		td {
+    		float: left;
 		    width: 100%;
 		}
 	}
