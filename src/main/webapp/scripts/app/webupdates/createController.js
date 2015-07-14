@@ -80,6 +80,7 @@ angular.module('webUpdates')
 
                     // Start empty, and populate with rest-result
                     $scope.attributes = _wrapAndEnrichAttributes([]);
+
                     _fetchMyMaintainers(_fetchObjectViaRest());
                 }
 
@@ -101,11 +102,14 @@ angular.module('webUpdates')
                     source: $scope.source,
                     objectType: $scope.objectType,
                     name: $scope.name,
-                    unfiltered: true,
+                    unfiltered: true
                 }).get(function (resp) {
                     wrapAndEnrichResources(resp);
 
-                    // get mntbers from response
+                    // save object for later diff
+                    MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
+
+                    // get mntners from response
                     var mntners = _.filter($scope.attributes, function(i) {
                         return i.name === 'mnt-by';
                     });

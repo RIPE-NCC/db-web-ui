@@ -16,6 +16,9 @@ angular.module('webUpdates')
                 $scope.objectName = $stateParams.name;
                 $scope.method = $stateParams.method; // optional: added by create- and modify-controller
 
+                $scope.diffBefore = undefined;
+                $scope.diffAfter = undefined;
+
                 // Initalize the UI
                 $scope.errors = [];
                 $scope.warnings = [];
@@ -43,6 +46,7 @@ angular.module('webUpdates')
 
 
                 var fetchObjectViaRest = function () {
+                    console.log('fetch object via REST');
                     $resource('api/whois/:source/:objectType/:objectName', {
                         source: $scope.objectSource,
                         objectType: $scope.objectType,
@@ -65,9 +69,21 @@ angular.module('webUpdates')
                 var cached = MessageStore.get($scope.objectName);
                 if (cached) {
                     var whoisResources = WhoisResources.wrapWhoisResources(cached);
-                    // Use version that we was just before created or modified
                     $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
                     setErrors(whoisResources);
+
+                    if ($scope.method === 'Modify') {
+                        // display diff
+
+                        var diff = WhoisResources.wrapAttributes(MessageStore.get('DIFF'));
+
+                        if (!_.isUndefined(diff)) {
+                            console.log('populate diff');
+                            $scope.diffBefore = diff.toPlaintext();
+                            $scope.diffAfter = $scope.attributes.toPlaintext();
+                        }
+                    }
+
                 } else {
                     fetchObjectViaRest();
                 }
