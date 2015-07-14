@@ -12,17 +12,17 @@ angular.module('dbWebApp')
                 ]);
             };
 
-            this.getMntner = function () {
+            this.fetchMntnersForSSOAccount = function () {
                 var deferredObject = $q.defer();
 
                 $resource('api/user/mntners')
                     .query()
                     .$promise
                     .then(function (result) {
-                        console.log("getMntner success:" + JSON.stringify(result));
+                        console.log("fetchMntnersForSSOAccount success:" + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("getMntner error:" + JSON.stringify(error));
+                        console.log("fetchMntnersForSSOAccount error:" + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
@@ -38,14 +38,26 @@ angular.module('dbWebApp')
                     .query()
                     .$promise
                     .then(function (result) {
-                        console.log("autocomplete success:" + JSON.stringify(result));
+                        console.log("mntnerDetails success:" + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("autocomplete error:" + JSON.stringify(error));
+                        console.log("mntnerDetails error:" + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
                 return deferredObject.promise;
+            };
+
+            this.detailsForMultipleMntners = function (mntners) {
+                var deferredObject = $q.defer();
+
+                var self = this;
+                var promises = _.map( mntners, function(item) {
+                    console.log("Fetching for mntner " + item.key);
+                    return self.mntnerDetails(item.key);
+                })
+
+                return $q.all(promises);
             };
 
             this.autocomplete = function (objectType, objectName, attrs) {

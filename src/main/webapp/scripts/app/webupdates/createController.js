@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService', 'UserInfoService', 'RestService',
-        function ($scope, $stateParams, $state, WhoisResources, MessageStore, md5, CredentialsService, UserInfoService, RestService) {
-
-            $scope.uiSelectTemplateReady = false;
+    .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService', 'UserInfoService', 'RestService', '$q',
+        function ($scope, $stateParams, $state, WhoisResources, MessageStore, md5, CredentialsService, UserInfoService, RestService, $q) {
 
             //exposed methods
             $scope.onMntnerSelect = onMntnerSelect;
@@ -29,6 +27,9 @@ angular.module('webUpdates')
             $scope.displayAddAttributeDialog = displayAddAttributeDialog;
             $scope.addAttributeAfterAttribute = addAttributeAfterAttribute;
 
+            // work around bug in ui-select
+            $scope.uiSelectTemplateReady = false;
+
             _initialisePage();
 
             // auth (password) modal popup for attribute
@@ -39,7 +40,6 @@ angular.module('webUpdates')
             //password popup
             $scope.attemptAutentication = attemptAutentication;
 
-
             //private functions
             function _initialisePage() {
                 // extract parameters from the url
@@ -49,9 +49,9 @@ angular.module('webUpdates')
 
                 // fields
                 $scope.maintainers = {
-                    selected:[],
-                    alternatives:[],
-                    mine:[]
+                    selected: [],
+                    alternatives: [],
+                    mine: []
                 };
 
                 $scope.attributes = [];
@@ -63,30 +63,9 @@ angular.module('webUpdates')
                 $scope.warnings = [];
                 $scope.infos = [];
 
-                RestService.fetchUiSelectResources().then( function() {
+                RestService.fetchUiSelectResources().then(function () {
                     $scope.uiSelectTemplateReady = true;
                 });
-
-                // Populate attributes in the UI
-
-                if (!$scope.name) {
-                    $scope.operation = 'Create';
-
-                    _fetchMyMaintainers(_setMyMntnersToSelected);
-
-                    // Populate empty attributes based on meta-info
-                    $scope.attributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
-                    $scope.attributes.setSingleAttributeOnName('source', $scope.source);
-                    $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                    $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
-
-                } else {
-                    $scope.operation = 'Modify';
-
-                    // Start empty, and populate with rest-result
-                    $scope.attributes = _wrapAndEnrichAttributes([]);
-                    _fetchMyMaintainers(_fetchObjectViaRest);
-                }
 
                 // Populate "select attribute for add"-fields popup
                 $scope.addableAttributes = WhoisResources.getAddableAttributes($scope.objectType);
@@ -99,121 +78,113 @@ angular.module('webUpdates')
                 $scope.passwordAgain = undefined;
                 $scope.authPasswordMessage = undefined;
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-            }
 
-            function _fetchObjectViaRest() {
-                console.log("_fetchObjectViaRest start");
+                // Determine if this is a create or a modify
+                if (!$scope.name) {
+                    $scope.operation = 'Create';
 
-                RestService.fetchObject($scope.source, $scope.objectType, $scope.name)
-                .then( function(resp) {
+                    // Populate empty attributes based on meta-info
+                    $scope.attributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
+                    $scope.attributes.setSingleAttributeOnName('source', $scope.source);
+                    $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+                    $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
 
-                    wrapAndEnrichResources(resp);
+                    fetchDataForCreate();
 
-                    $scope.maintainers.selected = enrichObjectMntners($scope.attributes);
-                    console.log("selected mntners:" + JSON.stringify($scope.maintainers.selected));
+                } else {
+                    $scope.operation = 'Modify';
 
-                }, function (error) {
-                    var whoisResources = wrapAndEnrichResources(error.data);
-                    setErrors(whoisResources);
-                });
-                console.log("_fetchObjectViaRest done");
+                    // Start empty, and populate with rest-result
+                    $scope.attributes = _wrapAndEnrichAttributes([]);
 
-            }
+                    fetchDataForModify();
+                }
+            };
 
-            function enrichObjectMntners( attributes ) {
+            function fetchDataForCreate() {
+                RestService.fetchMntnersForSSOAccount().then(
+                    function(results) {
+                        $scope.maintainers.mine = results;
+                        if ($scope.maintainers.mine.length > 0) {
+                            $scope.maintainers.selected = $scope.maintainers.mine;
+                            // copy mntners to attributes
+                            var mntnerAttrs = _.map($scope.maintainers.mine, function (i) {
+                                return {name: 'mnt-by', value: i.key};
+                            });
+                            _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
+                        }
+                    }, function(error) {
+                        console.log("Error fetching mnters for SSO:" + JSON.stringify(error));
+                    }
+                );
+            };
+
+            function fetchDataForModify() {
+
+                // wait untill both have completed
+                $q.all( { mntners: RestService.fetchMntnersForSSOAccount(),
+                          objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name)})
+                    .then(
+                    function (results) {
+                        $scope.maintainers.mine = results.mntners;
+
+                        wrapAndEnrichResources(results.objectToModify);
+                        $scope.maintainers.selected = extractMntnersFromObject($scope.attributes);
+
+                        // fetch details of all selected maintainers concurrently
+                        RestService.detailsForMultipleMntners($scope.maintainers.selected).then(
+                            function( result ) {
+                                // returns an array for each mntner
+                                $scope.maintainers.selected = _.flatten(result);
+
+                                if (_needsPasswordAuthentication($scope.maintainers.selected )) {
+                                    // TODO open pooupup with mntners in select list
+                                    console.log("needs password popup");
+                                } else {
+                                    console.log("Does not need password popup");
+                                }
+                        });
+                    })
+                    .catch(
+                    function (error) {
+                        console.log("Error fetching sso-mntnets and object:" + JSON.stringify(error));
+                        // TODO: figure out how a q.all failure looks like
+                        //var whoisResources = wrapAndEnrichResources(error.data);
+                        //setErrors(whoisResources);
+                    }
+                );
+             }
+
+             function extractMntnersFromObject(attributes) {
                 // get mntners from response
-                var mntners = _.filter(attributes, function(i) {
+                var mntnersInObject = _.filter(attributes, function (i) {
                     return i.name === 'mnt-by';
                 });
-                console.log("object mntners:" + JSON.stringify(mntners));
 
-                //  copy mntners to mantainers.selected
-                var selected = _.map(mntners, function(mntnerAttr) {
-                    return {
-                        type:'mntner',
-                        key: mntnerAttr.value,
-                        mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
-                    };
-                });
+                // determine if mntner is mine
+                var selected = _.map(mntnersInObject, function(mntnerAttr) {
+                     return {
+                         type:'mntner',
+                         key: mntnerAttr.value,
+                         mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
+                     };
+                 });
                 console.log("selected mntners:" + JSON.stringify(selected));
-
-                _.each(selected,function(item) {
-                    fetchMntner(item.key);
-                } );
 
                 return selected;
             }
 
-            function fetchMntner( mntnerName ) {
-                RestService.mntnerDetails(mntnerName)
-                    .then(function (data) {
-                        $scope.maintainers.selected = _refineSelected($scope.maintainers.selected, mntnerName, data);
-                        // popup to ask for password
-                        if( _needsPasswordAuthentication(data)) {
-                            console.log("needs password popup");
-                        } else {
-                            console.log("Does not need password popup");
-                        }
-
-                    }
-                );
-            }
-
-            function _refineSelected( selected, mntnerName, refinedMntners ) {
-                var mntnerEnriched = _.find(refinedMntners, function( item) {
-                    return item.type.toLowerCase() === 'mntner' && item.key.toUpperCase() === mntnerName.toUpperCase();
-                });
-                console.log("My mntner:" + JSON.stringify(mntnerEnriched));
-                return _.map(selected, function(item) {
-                    if( item.type.toLowerCase() === 'mntner' && item.key.toUpperCase() === mntnerName.toUpperCase() ) {
-                        item.mine = mntnerEnriched.mine;
-                        item.auth = mntnerEnriched.auth;
-                    }
-                    return item;
-                });
-            }
-
-            function _setMyMntnersToSelected(){
-
-                if ($scope.maintainers.mine.length>0) {
-
-                    $scope.maintainers.selected = $scope.maintainers.mine;
-                    // rework data in attributes
-                    var mntnerAttrs = _.map($scope.maintainers.mine, function(i) {
-                        return {name: 'mnt-by', value:i.key};
-                    });
-
-                    _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
-                }
-            }
-
-            function _fetchMyMaintainers(callback){
-                console.log("_fetchMyMaintainers start");
-
-                RestService.getMntner().then(
-                function(data) {
-                    $scope.maintainers.mine = data;
-
-                    callback();
-                }, function(errorResp) {
-                    console.log("Error fetching my maintainers:" + JSON.stringify(errorResp));
-                });
-
-                console.log("_fetchMyMaintainers done");
-
-            }
-
-            function _isMntnerOnlist( selectedMntners, mntner ) {
-                var status = _.any(selectedMntners, function(m) {
+            function _isMntnerOnlist(selectedMntners, mntner) {
+                var status = _.any(selectedMntners, function (m) {
                     return m.key === mntner.key;
                 });
                 return status;
             }
 
             function _enrichAlternativesWithMine(mntners) {
-                return  _.map(mntners, function(mntner) {
+                return _.map(mntners, function (mntner) {
                     // search in selected list
-                    if(_isMntnerOnlist($scope.maintainers.mine, mntner)) {
+                    if (_isMntnerOnlist($scope.maintainers.mine, mntner)) {
                         mntner.mine = true;
                     }
                     return mntner;
@@ -221,7 +192,7 @@ angular.module('webUpdates')
             }
 
             function _stripAlreadySelected(mntners) {
-                return _.filter(mntners, function(mntner) {
+                return _.filter(mntners, function (mntner) {
                     return !_isMntnerOnlist($scope.maintainers.selected, mntner);
                 });
             }
@@ -230,7 +201,7 @@ angular.module('webUpdates')
              * Methods called from the html-teplate
              */
 
-            function onMntnerSelect( item, all ) {
+            function onMntnerSelect(item, all) {
                 // add the mntner on the right spot
 
                 console.log('on select: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
@@ -243,18 +214,18 @@ angular.module('webUpdates')
                 }
             }
 
-            function _addMntnerToSelected (mntnerName){
+            function _addMntnerToSelected(mntnerName) {
                 _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', [{
                     name: 'mnt-by',
                     value: mntnerName
                 }]));
             }
 
-            function onMntnerRemove( item, all ) {
-                if( $scope.maintainers.selected.length === 0) {
+            function onMntnerRemove(item, all) {
+                if ($scope.maintainers.selected.length === 0) {
                     // make sure we do not remove the last mntner which act as anchor
                     _.map($scope.attributes, function (i) {
-                        if(i.name === 'mnt-by' ) {
+                        if (i.name === 'mnt-by') {
                             i.value = null;
                             return i;
                         } else {
@@ -269,36 +240,36 @@ angular.module('webUpdates')
                 }
             }
 
-            function isMine( mntner ) {
-                if( !mntner.mine ) {
+            function isMine(mntner) {
+                if (!mntner.mine) {
                     return false;
                 } else {
                     return mntner.mine;
                 }
             }
 
-            function hasSSo( mntner ) {
-                return _.any(mntner.auth, function(i) {
-                    return  _.startsWith(i, 'SSO');
+            function hasSSo(mntner) {
+                return _.any(mntner.auth, function (i) {
+                    return _.startsWith(i, 'SSO');
                 });
             }
 
-            function hasPgp( mntner ) {
-                return  _.any(mntner.auth, function(i) {
+            function hasPgp(mntner) {
+                return _.any(mntner.auth, function (i) {
                     return _.startsWith(i, 'PGP');
                 });
             }
 
-            function hasMd5( mntner ) {
-                return  _.any(mntner.auth, function(i) {
-                    return  _.startsWith(i, 'MD5');
+            function hasMd5(mntner) {
+                return _.any(mntner.auth, function (i) {
+                    return _.startsWith(i, 'MD5');
                 });
             }
 
-            function refreshMntners( query) {
+            function refreshMntners(query) {
                 // need to typed characters
-                if( query.length > 2 ) {
-                    RestService.autocomplete( query, 'mnt-by', ['auth']).then(
+                if (query.length > 2) {
+                    RestService.autocomplete(query, 'mnt-by', ['auth']).then(
                         function (data) {
                             // prevent mntners on selected list to appear
                             $scope.maintainers.alternatives = _stripAlreadySelected(_enrichAlternativesWithMine(data));
@@ -307,19 +278,19 @@ angular.module('webUpdates')
                 }
             }
 
-            function suggestAutocomplete( val, name, refs) {
-                if( !refs || refs.length === 0 ) {
+            function suggestAutocomplete(val, name, refs) {
+                if (!refs || refs.length === 0) {
                     // No suggestions since not a reference
                     return [];
                 } else {
-                    RestService.autocomplete( val, name, []).then(
-                        function(resp) {
-                            return _.map(resp, function( item) {
+                    RestService.autocomplete(val, name, []).then(
+                        function (resp) {
+                            return _.map(resp, function (item) {
                                 return item.key;
                             });
-                        }, function() {
+                        }, function () {
                             return [];
-                     });
+                        });
                 }
             }
 
@@ -350,7 +321,7 @@ angular.module('webUpdates')
                         source: $scope.source,
                         objectType: $scope.objectType,
                         name: whoisResources.getPrimaryKey(),
-                        method:$scope.operation
+                        method: $scope.operation
                     });
                 }
 
@@ -364,7 +335,7 @@ angular.module('webUpdates')
                     }
                 }
 
-                if (_validateForm() ) {
+                if (_validateForm()) {
                     _stripNulls();
                     _clearErrors();
 
@@ -375,20 +346,20 @@ angular.module('webUpdates')
 
                     if (!$scope.name) {
 
-                            RestService.createObject($scope.source, $scope.objectType,
-                                WhoisResources.embedAttributes($scope.attributes),
-                                CredentialsService.getCredentials().successfulPassword)
-                                .then(
-                                _onSubmitSuccess,
-                                _onSubmitError);
+                        RestService.createObject($scope.source, $scope.objectType,
+                            WhoisResources.embedAttributes($scope.attributes),
+                            CredentialsService.getCredentials().successfulPassword)
+                            .then(
+                            _onSubmitSuccess,
+                            _onSubmitError);
 
                     } else {
                         RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
                             WhoisResources.embedAttributes($scope.attributes),
-                                    CredentialsService.getCredentials().successfulPassword)
+                            CredentialsService.getCredentials().successfulPassword)
                             .then(
-                                _onSubmitSuccess,
-                                _onSubmitError);
+                            _onSubmitSuccess,
+                            _onSubmitError);
                     }
                 }
             }
@@ -419,7 +390,7 @@ angular.module('webUpdates')
             }
 
             /*
-                private methods
+             private methods
              */
 
             function _validateForm() {
@@ -496,7 +467,7 @@ angular.module('webUpdates')
             /*
              * Methods used to make sure that attributes have meta information and have utility functions
              */
-            function _wrapAndEnrichAttributes (attrs) {
+            function _wrapAndEnrichAttributes(attrs) {
                 $scope.attributes = WhoisResources.wrapAttributes(
                     WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs)
                 );
@@ -504,7 +475,7 @@ angular.module('webUpdates')
                 return $scope.attributes;
             }
 
-            function wrapAndEnrichResources (resp) {
+            function wrapAndEnrichResources(resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
                 if (whoisResources) {
                     _wrapAndEnrichAttributes(whoisResources.getAttributes());
@@ -514,10 +485,10 @@ angular.module('webUpdates')
 
 
             /*
-                password authentication modal
+             password authentication modal
              */
 
-            $scope.getMntnersForPasswordAuth = function (selectedMaintainers){
+            $scope.getMntnersForPasswordAuth = function (selectedMaintainers) {
 
                 if (_.any(selectedMaintainers, function (mntner) {
                         return $scope.isMine(mntner) === true;
@@ -531,15 +502,11 @@ angular.module('webUpdates')
             };
 
             function _needsPasswordAuthentication(selectedMaintainers) {
-                console.log("_needsPasswordAuthentication 1:"+ JSON.stringify(selectedMaintainers));
-
                 var md5Mntners = $scope.getMntnersForPasswordAuth(selectedMaintainers);
-
-                console.log("_needsPasswordAuthentication 2:"+ JSON.stringify(md5Mntners));
 
                 return md5Mntners.length > 0
                     && (!CredentialsService.hasCredentials()
-                        || ! _.contains(_.map(md5Mntners, 'key'), CredentialsService.getCredentials().mntner.key));
+                    || !_.contains(_.map(md5Mntners, 'key'), CredentialsService.getCredentials().mntner.key));
             }
 
             function _displayProvidePasswordModal(mntnersForPasswordAuth) {
@@ -561,14 +528,14 @@ angular.module('webUpdates')
                 $('#providePasswordModal').modal('show');
             }
 
-            function attemptAutentication(){
-                RestService.authenticate($scope.source, 'mntner',$scope.providePasswordModal.selectedMntner.key,
-                    $scope.providePasswordModal.password )
-                .then(
+            function attemptAutentication() {
+                RestService.authenticate($scope.source, 'mntner', $scope.providePasswordModal.selectedMntner.key,
+                    $scope.providePasswordModal.password)
+                    .then(
                     function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
-                        if (!whoisResources.isFiltered()){
+                        if (!whoisResources.isFiltered()) {
                             console.log("authenticated ok");
 
                             $scope.providePasswordModal.authResult = true;
@@ -576,7 +543,7 @@ angular.module('webUpdates')
                             CredentialsService.setCredentials($scope.providePasswordModal.selectedMntner, $scope.providePasswordModal.password);
 
                             if ($scope.providePasswordModal.associateSSOAccountWithMntner) {
-                                associate(whoisResources, UserInfoService.getUsername(), $scope.providePasswordModal.password, new function (){
+                                associate(whoisResources, UserInfoService.getUsername(), $scope.providePasswordModal.password, new function () {
                                     $scope.providePasswordModal.selectedMntner.mine = true;
                                     $scope.maintainers.mine.push($scope.providePasswordModal.selectedMntner);
                                     CredentialsService.removeCredentials();
@@ -597,8 +564,8 @@ angular.module('webUpdates')
                         var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
                         if (!_.isUndefined(whoisResources)) {
                             console.log('whois error response in modal');
-                            $scope.providePasswordModal.message = _.reduce(whoisResources.getGlobalErrors(), function(total, n) {
-                                return total + '\n' +n;
+                            $scope.providePasswordModal.message = _.reduce(whoisResources.getGlobalErrors(), function (total, n) {
+                                return total + '\n' + n;
                             });
                         } else {
                             console.log('server error in modal');
@@ -630,4 +597,4 @@ angular.module('webUpdates')
                     });
             }
 
-}]);
+        }]);
