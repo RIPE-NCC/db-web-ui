@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService', 'UserInfoService', '$http', '$q', '$templateCache',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, md5, CredentialsService, UserInfoService, $http, $q, $templateCache) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService', 'UserInfoService', 'RestService',
+        function ($scope, $stateParams, $state, WhoisResources, MessageStore, md5, CredentialsService, UserInfoService, RestService) {
 
             $scope.uiSelectTemplateReady = false;
 
@@ -63,7 +63,9 @@ angular.module('webUpdates')
                 $scope.warnings = [];
                 $scope.infos = [];
 
-                _waitforUiSelectIniComplete();
+                RestService.fetchUiSelectResources().then( function() {
+                    $scope.uiSelectTemplateReady = true;
+                });
 
                 // Populate attributes in the UI
 
@@ -99,70 +101,53 @@ angular.module('webUpdates')
                 $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
             }
 
-            function _waitforUiSelectIniComplete() {
-                var base = 'selectize';
-                $q.all([
-                    // workaround
-                    $http.get(base + '/match-multiple.tpl.html', {cache: $templateCache}),
-                    $http.get(base + '/select-multiple.tpl.html', {cache: $templateCache})
-                ]).then(function (res) {
-                        console.log("All sources were loaded");
-                        $scope.uiSelectTemplateReady = true;
-                        return res;
-                    });
-            }
-
             function _fetchObjectViaRest() {
                 console.log("_fetchObjectViaRest start");
 
-                $resource('api/whois/:source/:objectType/:name', {
-                    source: $scope.source,
-                    objectType: $scope.objectType,
-                    name: $scope.name,
-                    unfiltered: true,
-                }).get(function (resp) {
+                RestService.fetchObject($scope.source, $scope.objectType, $scope.name)
+                .then( function(resp) {
+
                     wrapAndEnrichResources(resp);
 
-                    console.log("repeat: my maintainers:" + JSON.stringify($scope.maintainers.mine));
-
-                    // get mntners from response
-                    console.log("object to modify:" + JSON.stringify($scope.attributes));
-                    var mntners = _.filter($scope.attributes, function(i) {
-                        return i.name === 'mnt-by';
-                    });
-                    console.log("object mntners:" + JSON.stringify(mntners));
-
-                    //  copy mntners to mantainers.selected
-                    $scope.maintainers.selected = _.map(mntners, function(mntnerAttr) {
-                        return {
-                            type:'mntner',
-                            key: mntnerAttr.value,
-                            mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
-                        };
-                    });
+                    $scope.maintainers.selected = enrichObjectMntners($scope.attributes);
                     console.log("selected mntners:" + JSON.stringify($scope.maintainers.selected));
 
-                    _.each($scope.maintainers.selected,function(item) {
-                        fetchMntner(item.key);
-                    } );
-
-                }, function (resp) {
-                    var whoisResources = wrapAndEnrichResources(resp.data);
+                }, function (error) {
+                    var whoisResources = wrapAndEnrichResources(error.data);
                     setErrors(whoisResources);
                 });
                 console.log("_fetchObjectViaRest done");
 
             }
 
-            function fetchMntner( name) {
-                $resource('api/whois/autocomplete',
-                    {query: name, field: 'mnt-by', attribute: 'auth'}).query(
-                    function (data) {
-                        console.log("mntner selected:" + JSON.stringify($scope.maintainers.selected));
-                        console.log("mntner mine:" + JSON.stringify($scope.maintainers.mine));
+            function enrichObjectMntners( attributes ) {
+                // get mntners from response
+                var mntners = _.filter(attributes, function(i) {
+                    return i.name === 'mnt-by';
+                });
+                console.log("object mntners:" + JSON.stringify(mntners));
 
-                        console.log("mntner details:" + JSON.stringify(data));
+                //  copy mntners to mantainers.selected
+                var selected = _.map(mntners, function(mntnerAttr) {
+                    return {
+                        type:'mntner',
+                        key: mntnerAttr.value,
+                        mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
+                    };
+                });
+                console.log("selected mntners:" + JSON.stringify(selected));
 
+                _.each(selected,function(item) {
+                    fetchMntner(item.key);
+                } );
+
+                return selected;
+            }
+
+            function fetchMntner( mntnerName ) {
+                RestService.mntnerDetails(mntnerName)
+                    .then(function (data) {
+                        $scope.maintainers.selected = _refineSelected($scope.maintainers.selected, mntnerName, data);
                         // popup to ask for password
                         if( _needsPasswordAuthentication(data)) {
                             console.log("needs password popup");
@@ -172,6 +157,20 @@ angular.module('webUpdates')
 
                     }
                 );
+            }
+
+            function _refineSelected( selected, mntnerName, refinedMntners ) {
+                var mntnerEnriched = _.find(refinedMntners, function( item) {
+                    return item.type.toLowerCase() === 'mntner' && item.key.toUpperCase() === mntnerName.toUpperCase();
+                });
+                console.log("My mntner:" + JSON.stringify(mntnerEnriched));
+                return _.map(selected, function(item) {
+                    if( item.type.toLowerCase() === 'mntner' && item.key.toUpperCase() === mntnerName.toUpperCase() ) {
+                        item.mine = mntnerEnriched.mine;
+                        item.auth = mntnerEnriched.auth;
+                    }
+                    return item;
+                });
             }
 
             function _setMyMntnersToSelected(){
@@ -191,14 +190,11 @@ angular.module('webUpdates')
             function _fetchMyMaintainers(callback){
                 console.log("_fetchMyMaintainers start");
 
-                $resource('api/user/mntners').query(function(data) {
+                RestService.getMntner().then(
+                function(data) {
                     $scope.maintainers.mine = data;
 
-                    console.log("my maintainers OK:" + JSON.stringify($scope.maintainers.mine));
-
-                    if (typeof callback === 'function'){
-                        callback();
-                    }
+                    callback();
                 }, function(errorResp) {
                     console.log("Error fetching my maintainers:" + JSON.stringify(errorResp));
                 });
@@ -302,8 +298,7 @@ angular.module('webUpdates')
             function refreshMntners( query) {
                 // need to typed characters
                 if( query.length > 2 ) {
-                    $resource('api/whois/autocomplete',
-                        {query: query, field: 'mnt-by', attribute: 'auth'}).query(
+                    RestService.autocomplete( query, 'mnt-by', ['auth']).then(
                         function (data) {
                             // prevent mntners on selected list to appear
                             $scope.maintainers.alternatives = _stripAlreadySelected(_enrichAlternativesWithMine(data));
@@ -317,16 +312,14 @@ angular.module('webUpdates')
                     // No suggestions since not a reference
                     return [];
                 } else {
-                    return $resource('api/whois/autocomplete',
-                        { query:val, field: name, extended:true}).query()
-                        .$promise.then(
+                    RestService.autocomplete( val, name, []).then(
                         function(resp) {
                             return _.map(resp, function( item) {
                                 return item.key;
                             });
                         }, function() {
                             return [];
-                        });
+                     });
                 }
             }
 
@@ -381,49 +374,21 @@ angular.module('webUpdates')
                     }
 
                     if (!$scope.name) {
-                        // perform POST to create
-                        // [TP] we could pass always the password, even if empty and let SSO authenticate,
-                        // but it is better if both methods are present to give priority to SSO.
-                        if (CredentialsService.hasCredentials()) {
-                            $resource('api/whois/:source/:objectType',
-                                {source: $scope.source,
-                                 objectType: $scope.objectType,
-                                 password: CredentialsService.getCredentials().successfulPassword})
-                                .save(WhoisResources.embedAttributes($scope.attributes),
+
+                            RestService.createObject($scope.source, $scope.objectType,
+                                WhoisResources.embedAttributes($scope.attributes),
+                                CredentialsService.getCredentials().successfulPassword)
+                                .then(
                                 _onSubmitSuccess,
                                 _onSubmitError);
-                        } else {
-                            $resource('api/whois/:source/:objectType',
-                                {source: $scope.source,
-                                    objectType: $scope.objectType})
-                                .save(WhoisResources.embedAttributes($scope.attributes),
-                                _onSubmitSuccess,
-                                _onSubmitError);
-                        }
+
                     } else {
-                        // perform PUT to modify
-                        if (CredentialsService.hasCredentials()) {
-                            $resource('api/whois/:source/:objectType/:name',
-                                {
-                                    source: $scope.source,
-                                    objectType: $scope.objectType,
-                                    name: $scope.name,
-                                    password: CredentialsService.getCredentials().successfulPassword},
-                                {'update': {method: 'PUT'}})
-                                .update(WhoisResources.embedAttributes($scope.attributes),
+                        RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
+                            WhoisResources.embedAttributes($scope.attributes),
+                                    CredentialsService.getCredentials().successfulPassword)
+                            .then(
                                 _onSubmitSuccess,
                                 _onSubmitError);
-                        } else {
-                            $resource('api/whois/:source/:objectType/:name',
-                                {
-                                    source: $scope.source,
-                                    objectType: $scope.objectType,
-                                    name: $scope.name},
-                                {'update': {method: 'PUT'}})
-                                .update(WhoisResources.embedAttributes($scope.attributes),
-                                _onSubmitSuccess,
-                                _onSubmitError);
-                        }
                     }
                 }
             }
@@ -597,13 +562,10 @@ angular.module('webUpdates')
             }
 
             function attemptAutentication(){
-                $resource('api/whois/:source/:objectType/:objectName', {
-                    source: $scope.source,
-                    objectType: 'mntner',
-                    objectName: $scope.providePasswordModal.selectedMntner.key,
-                    unfiltered: true,
-                    password: $scope.providePasswordModal.password
-                }).get(function (resp) {
+                RestService.authenticate($scope.source, 'mntner',$scope.providePasswordModal.selectedMntner.key,
+                    $scope.providePasswordModal.password )
+                .then(
+                    function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
                         if (!whoisResources.isFiltered()){
@@ -651,27 +613,21 @@ angular.module('webUpdates')
                     return;
                 }
 
-                var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({name: 'auth', value: 'SSO ' + ssoUsername}, {name: 'auth'});
+                var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({
+                    name: 'auth',
+                    value: 'SSO ' + ssoUsername
+                }, {name: 'auth'});
 
-                $resource('api/whois/:source/:objectType/:name',
-                    {
-                        source: whoisResources.getSource(),
-                        objectType: whoisResources.getObjectType(),
-                        name: whoisResources.getPrimaryKey(),
-                        password: mntnerPassword},
-                    {'update': {method: 'PUT'}})
-                    .update(WhoisResources.embedAttributes(attributes),
-                        function (resp) {
-                            // success response
-                            if (typeof callback === 'function'){
-                                callback();
-                            }
-                        },
-                        function (resp) {
-                            // error response
-                        });
-            };
-
-
+                RestService.associateSSOMntner(whoisResources.getSource(), whoisResources.getObjectType(), whoisResources.getPrimaryKey(),
+                    WhoisResources.embedAttributes(attributes), mntnerPassword)
+                    .then(
+                    function (resp) {
+                        // success response
+                        callback();
+                    },
+                    function (resp) {
+                        // error response
+                    });
+            }
 
 }]);
