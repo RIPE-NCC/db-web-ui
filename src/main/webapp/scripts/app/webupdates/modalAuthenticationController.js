@@ -16,7 +16,6 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         $scope.ok = function () {
 
             if( $scope.selected.password.length == 0 ) {
-
                 $scope.selected.message = 'Password for mntner: \'' + $scope.selected.item.key + '\'' + ' too short';
                 return;
             }
@@ -34,27 +33,24 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                     CredentialsService.setCredentials($scope.selected.item.key, $scope.selected.password);
 
                     var ssoUserName = UserInfoService.getUsername();
-                    console.log("ssoUserName:" + ssoUserName);
                     if( $scope.selected.associate && ssoUserName ) {
+
+                        // append auth-md5 attribute
                         var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({
                             name: 'auth',
                             value: 'SSO ' + ssoUserName
                         }, {name: 'auth'});
 
-                        RestService.associateSSOMntner(whoisResources.getSource(),
-                            whoisResources.getObjectType(),
-                            whoisResources.getPrimaryKey(),
-                            WhoisResources.embedAttributes(attributes), $scope.selected.password)
-                            .then(
+                        // do adjust the maintainer
+                        RestService.associateSSOMntner(whoisResources.getSource(), whoisResources.getObjectType(),
+                            whoisResources.getPrimaryKey(),WhoisResources.embedAttributes(attributes), $scope.selected.password) .then(
                             function (resp) {
                                 $scope.selected.item.mine = true;
                                 CredentialsService.removeCredentials();
                             });
-                        _associate(whoisResources, attributes, ssoUserName, $scope.selected.password, new function () {
-
-                        });
                     }
 
+                    // report success back
                     $modalInstance.close($scope.selected.item);
 
                 }, function( error ) {
@@ -62,9 +58,8 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
                     var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                     if (!_.isUndefined(whoisResources)) {
-                        console.log('whois error response in modal');
-                        $scope.selected.message = _.reduce(whoisResources.getGlobalErrors(), function (total, n) {
-                            return total + '\n' + n;
+                        $scope.selected.message = _.reduce(whoisResources.getGlobalErrors(), function (total, msg) {
+                            return total + '\n' + msg;
                         });
                     } else {
                         $scope.selected.message =
@@ -74,14 +69,5 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
             );
         };
 
-        function _associate(whoisResources, attributes, ssoUsername, mntnerPassword, callback) {
 
-            var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({
-                name: 'auth',
-                value: 'SSO ' + ssoUsername
-            }, {name: 'auth'});
-
-            RestService.associateSSOMntner(whoisResources.getSource(), whoisResources.getObjectType(), whoisResources.getPrimaryKey(),
-                WhoisResources.embedAttributes(attributes), mntnerPassword).then();
-        }
     }]);

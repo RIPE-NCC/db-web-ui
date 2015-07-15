@@ -4,7 +4,7 @@ angular.module('webUpdates')
     .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisResources', 'MessageStore', 'CredentialsService','RestService', '$q', 'ModalService',
         function ($scope, $stateParams, $state, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService) {
 
-            //exposed methods
+            // exposed methods used by the view
             $scope.onMntnerSelect = onMntnerSelect;
             $scope.onMntnerRemove = onMntnerRemove;
             $scope.isMine = isMine;
@@ -58,9 +58,6 @@ angular.module('webUpdates')
                 $scope.warnings = [];
                 $scope.infos = [];
 
-                // Populate "select attribute for add"-fields popup
-                $scope.addAfterAttribute = undefined;
-
                 // Determine if this is a create or a modify
                 if (!$scope.name) {
                     $scope.operation = 'Create';
@@ -71,7 +68,7 @@ angular.module('webUpdates')
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
 
-                    fetchDataForCreate();
+                    _fetchDataForCreate();
 
                 } else {
                     $scope.operation = 'Modify';
@@ -79,11 +76,11 @@ angular.module('webUpdates')
                     // Start empty, and populate with rest-result
                     $scope.attributes = _wrapAndEnrichAttributes([]);
 
-                    fetchDataForModify();
+                    _fetchDataForModify();
                 }
             };
 
-            function fetchDataForCreate() {
+            function _fetchDataForCreate() {
                 RestService.fetchMntnersForSSOAccount().then(
                     function(results) {
                         $scope.maintainers.mine = results;
@@ -104,12 +101,11 @@ angular.module('webUpdates')
                 );
             };
 
-            function fetchDataForModify() {
+            function _fetchDataForModify() {
 
                 // wait untill both have completed
                 $q.all( { mntners:        RestService.fetchMntnersForSSOAccount(),
-                          objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name)})
-                    .then(
+                          objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name)}).then(
                     function (results) {
                         // store mntners for SSO account
                         $scope.maintainers.mine = results.mntners;
@@ -124,7 +120,8 @@ angular.module('webUpdates')
                                 // returns an array for each mntner
                                 $scope.maintainers.selected = _.flatten(result);
 
-                                // kickoff popup that performs authentication
+                                console.log('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
+
                                 if (_needsPasswordAuthentication($scope.maintainers.selected )) {
                                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                                         function(selectedMntner) {
@@ -134,8 +131,8 @@ angular.module('webUpdates')
                                     )
                                 }
                         });
-                    })
-                    .catch(
+                    }
+                ).catch(
                     function (error) {
                         console.log("Error fetching sso-mntnets and object:" + JSON.stringify(error));
                         // TODO: figure out how a q.all failure looks like
@@ -152,16 +149,15 @@ angular.module('webUpdates')
             function onMntnerSelect(item, all) {
                 // add the mntner on the right spot
 
-                console.log('on select: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
+                console.log('onMntnerSelect: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
 
                 if (_needsPasswordAuthentication($scope.maintainers.selected )) {
-                    ModalService.openAuthenticationModal($scope.source,$scope.maintainers.selected).then(
+                    ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                         function(selectedMntner) {
-                            console.log('*** Modal completed with: ' + JSON.stringify(selectedMntner));
                             $scope.maintainers.selected.pop();
 
                             $scope.maintainers.selected.push(selectedMntner);
-                            _addMntnerToSelected($scope.providePasswordModal.selectedMntner.key);
+                            _addMntnerToSelected(selectedMntner.key);
 
                         }
                     )
@@ -178,6 +174,9 @@ angular.module('webUpdates')
             }
 
             function onMntnerRemove(item, all) {
+
+                console.log('onMntnerRemove: selected mntners: ' + JSON.stringify(item));
+
                 if ($scope.maintainers.selected.length === 0) {
                     // make sure we do not remove the last mntner which act as anchor
                     _.map($scope.attributes, function (i) {
@@ -225,7 +224,7 @@ angular.module('webUpdates')
             function refreshMntners(query) {
                 // need to typed characters
                 if (query.length > 2) {
-                    RestService.autocomplete(query, 'mnt-by', ['auth']).then(
+                    RestService.autocomplete( 'mnt-by', query,['auth']).then(
                         function (data) {
                             // prevent mntners on selected list to appear
                             $scope.maintainers.alternatives = _stripAlreadySelected(_enrichAlternativesWithMine(data));
@@ -234,16 +233,14 @@ angular.module('webUpdates')
                 }
             }
 
-            function suggestAutocomplete(val, name, refs) {
+            function suggestAutocomplete(name, val, refs) {
                 if (!refs || refs.length === 0) {
                     // No suggestions since not a reference
                     return [];
                 } else {
-                    RestService.autocomplete(val, name, []).then(
+                    return RestService.autocomplete(name, val, false, []).then(
                         function (resp) {
-                            return _.map(resp, function (item) {
-                                return item.key;
-                            });
+                            return resp;
                         }, function () {
                             return [];
                         });
@@ -301,8 +298,6 @@ angular.module('webUpdates')
 
                                 $scope.maintainers.selected.push(selectedMntner);
                                 _addMntnerToSelected($scope.providePasswordModal.selectedMntner.key);
-
-                                console.log('*** openAuthenticationModal completed with: ' + JSON.stringify(selectedMntner));
                                 submit();
                             }
                         );
@@ -310,22 +305,20 @@ angular.module('webUpdates')
                     }
 
                     var password = undefined;
-                    if( CredentialsService.getCredentials() ) {
+                    if( CredentialsService.hasCredentials() ) {
                         password = CredentialsService.getCredentials().successfulPassword;
                     }
 
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
-                            WhoisResources.embedAttributes($scope.attributes), password)
-                            .then(
+                            WhoisResources.embedAttributes($scope.attributes), password).then(
                             _onSubmitSuccess,
                             _onSubmitError);
 
                     } else {
                         RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
-                            WhoisResources.embedAttributes($scope.attributes), password)
-                            .then(
+                            WhoisResources.embedAttributes($scope.attributes), password).then(
                             _onSubmitSuccess,
                             _onSubmitError);
                     }
@@ -349,16 +342,14 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                $scope.addAfterAttribute = attr;
                 ModalService.openAddAttributeModal( WhoisResources.getAddableAttributes($scope.objectType)).then(
                     function(selectedAttributeType) {
-                        _wrapAndEnrichAttributes($scope.attributes.addAttributeAfter(selectedAttributeType, $scope.addAfterAttribute));
+                        _wrapAndEnrichAttributes($scope.attributes.addAttributeAfter(selectedAttributeType, attr));
                     }
                 );
             }
 
             function displayMd5DialogDialog(attr) {
-                $scope.addAfterAttribute = attr;
                 ModalService.openMd5Modal( ).then(
                     function(authLine) {
                         attr.value = authLine;
@@ -477,7 +468,6 @@ angular.module('webUpdates')
                     && (!CredentialsService.hasCredentials()
                     || !_.contains(_.map(md5Mntners, 'key'), CredentialsService.getCredentials().mntner.key));
             }
-
 
             function _getMntnersForPasswordAuth(selectedMaintainers) {
 

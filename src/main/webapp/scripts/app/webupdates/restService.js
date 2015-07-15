@@ -6,199 +6,205 @@ angular.module('dbWebApp')
 
             function RestService() {
 
-            this.fetchUiSelectResources = function () {
-                return $q.all([
-                    // workaround to cope with order of loading problem
-                    $http.get('selectize/match-multiple.tpl.html', {cache: $templateCache}),
-                    $http.get('selectize/select-multiple.tpl.html', {cache: $templateCache})
-                ]);
-            };
+                this.fetchUiSelectResources = function () {
+                    return $q.all([
+                        // workaround to cope with order of loading problem
+                        $http.get('selectize/match-multiple.tpl.html', {cache: $templateCache}),
+                        $http.get('selectize/select-multiple.tpl.html', {cache: $templateCache})
+                    ]);
+                };
 
-            this.fetchMntnersForSSOAccount = function () {
-                var deferredObject = $q.defer();
+                this.fetchMntnersForSSOAccount = function () {
+                    var deferredObject = $q.defer();
 
-                $log.info('fetchMntnersForSSOAccount start');
+                    $log.info('fetchMntnersForSSOAccount start');
 
-                $resource('api/user/mntners')
-                    .query()
-                    .$promise
-                    .then(function (result) {
-                        $log.info('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.info('fetchMntnersForSSOAccount error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
+                    $resource('api/user/mntners')
+                        .query()
+                        .$promise
+                        .then(function (result) {
+                            $log.info('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.info('fetchMntnersForSSOAccount error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
 
-                return deferredObject.promise;
-            };
+                    return deferredObject.promise;
+                };
 
-            this.mntnerDetails = function (mntnerName) {
-                var deferredObject = $q.defer();
+                this.detailsForMultipleMntners = function (mntners) {
+                    var deferredObject = $q.defer();
 
-                $log.info('mntnerDetails start for ' + mntnerName);
+                    $log.info('detailsForMultipleMntners start for ' + JSON.stringify(mntners));
 
-                $resource('api/whois/autocomplete',
-                    {query: mntnerName, field: 'mntner', attribute: 'auth'})
-                    .query()
-                    .$promise
-                    .then(function (result) {
-                        $log.info('mntnerDetails success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.info('mntnerDetails error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
-                return deferredObject.promise;
-            };
+                    var self = this;
+                    var promises = _.map(mntners, function (item) {
+                        return _myMntnerDetails(item.key);
+                    })
 
-            this.detailsForMultipleMntners = function (mntners) {
-                var deferredObject = $q.defer();
+                    return $q.all(promises);
+                };
 
-                $log.info('detailsForMultipleMntners start for ' + JSON.stringify(mntners));
+                function _myMntnerDetails(mntnerName) {
+                    var deferredObject = $q.defer();
 
-                var self = this;
-                var promises = _.map( mntners, function(item) {
-                    $log.info("Fetching for mntner " + item.key);
-                    return self.mntnerDetails(item.key);
-                })
+                    $log.info('_myMntnerDetails start for ' + mntnerName);
 
-                return $q.all(promises);
-            };
+                    $resource('api/whois/autocomplete',
+                        {query: mntnerName, field: 'mntner', attribute: 'auth', extended:true})
+                        .query()
+                        .$promise
+                        .then(function (result) {
+                            // mark as mine
+                            result = _.map(result, function(item) {
+                                item.mine = true;
+                                return item;
+                            });
 
-            this.autocomplete = function (objectType, objectName, attrs) {
-                var deferredObject = $q.defer();
+                            $log.info('_myMntnerDetails success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.info('_myMntnerDetails error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
+                    return deferredObject.promise;
+                };
 
-                $log.info('autocomplete start for objectType' + objectType + ' and objectName ' + objectName);
 
-                $resource('api/whois/autocomplete',
-                    {query: objectName, field: objectType, attribute: attrs, extended: true})
-                    .query()
-                    .$promise
-                    .then(function (result) {
-                        $log.info('autocomplete success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.info('autocomplete error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
-                return deferredObject.promise;
-            };
+                this.autocomplete = function (objectType, objectName, extended, attrs) {
+                    var deferredObject = $q.defer();
 
-            this.authenticate = function (source, objectType, objectName, password) {
-                var deferredObject = $q.defer();
+                    $log.info('autocomplete start for objectType' + objectType + ' and objectName ' + objectName);
 
-                $log.info('authenticate start for objectType' + objectType + ' and objectName ' + objectName);
+                    $resource('api/whois/autocomplete',
+                        {query: objectName, field: objectType, attribute: attrs, extended: extended})
+                        .query()
+                        .$promise
+                        .then(function (result) {
+                            $log.info('autocomplete success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.info('autocomplete error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
+                    return deferredObject.promise;
+                };
 
-                $resource('api/whois/:source/:objectType/:objectName',
-                    {
-                        source: source,
-                        objectType: objectType,
-                        objectName: objectName,
-                        unfiltered: true,
-                        password: password
-                    }).get()
-                    .$promise
-                    .then(function (result) {
-                        $log.info('authenticate success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.info('authenticate error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
+                this.authenticate = function (source, objectType, objectName, password) {
+                    var deferredObject = $q.defer();
 
-                return deferredObject.promise;
-            };
+                    $log.info('authenticate start for objectType' + objectType + ' and objectName ' + objectName);
 
-            this.fetchObject = function (source, objectType, objectName) {
-                var deferredObject = $q.defer();
+                    $resource('api/whois/:source/:objectType/:objectName',
+                        {
+                            source: source,
+                            objectType: objectType,
+                            objectName: objectName,
+                            unfiltered: true,
+                            password: password
+                        }).get()
+                        .$promise
+                        .then(function (result) {
+                            $log.info('authenticate success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.info('authenticate error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
 
-                $log.info('fetchObject start for objectType' + objectType + ' and objectName ' + objectName);
+                    return deferredObject.promise;
+                };
 
-                $resource('api/whois/:source/:objectType/:name',
-                    {source: source, objectType: objectType, name: objectName, unfiltered: true})
-                    .get()
-                    .$promise
-                    .then(function (result) {
-                        $log.info('createObject success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.info('createObject error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
+                this.fetchObject = function (source, objectType, objectName) {
+                    var deferredObject = $q.defer();
 
-                return deferredObject.promise;
-            };
+                    $log.info('fetchObject start for objectType' + objectType + ' and objectName ' + objectName);
 
-            this.createObject = function (source, objectType, attributes, password) {
-                var deferredObject = $q.defer();
+                    $resource('api/whois/:source/:objectType/:name',
+                        {source: source, objectType: objectType, name: objectName, unfiltered: true})
+                        .get()
+                        .$promise
+                        .then(function (result) {
+                            $log.info('createObject success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.info('createObject error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
 
-                $log.info('createObject start for objectType' + objectType );
+                    return deferredObject.promise;
+                };
 
-                $resource('api/whois/:source/:objectType',
-                    {source: source, objectType: objectType, password: password})
-                    .save(attributes)
-                    .$promise
-                    .then(function (result) {
-                        $log.info('createObject success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.info('createObject error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
+                this.createObject = function (source, objectType, attributes, password) {
+                    var deferredObject = $q.defer();
 
-                return deferredObject.promise;
-            };
+                    $log.info('createObject start for objectType' + objectType);
 
-            this.modifyObject = function (source, objectType, objectName, attributes, password) {
-                var deferredObject = $q.defer();
+                    $resource('api/whois/:source/:objectType',
+                        {source: source, objectType: objectType, password: password})
+                        .save(attributes)
+                        .$promise
+                        .then(function (result) {
+                            $log.info('createObject success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.info('createObject error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
 
-                $log.info('modifyObject start for objectType' + objectType + ' and objectName ' + objectName);
+                    return deferredObject.promise;
+                };
 
-                $resource('api/whois/:source/:objectType/:name',
-                    {source: source, objectType: objectType, name: objectName, password: password},
-                    {'update': {method: 'PUT'}})
-                    .update(attributes)
-                    .$promise
-                    .then(function (result) {
-                        $log.info('modifyObject success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.info('modifyObject error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
+                this.modifyObject = function (source, objectType, objectName, attributes, password) {
+                    var deferredObject = $q.defer();
 
-                return deferredObject.promise;
-            };
+                    $log.info('modifyObject start for objectType' + objectType + ' and objectName ' + objectName);
 
-            this.associateSSOMntner = function (source, objectType, objectName, whoisResources, password) {
-                var deferredObject = $q.defer();
+                    $resource('api/whois/:source/:objectType/:name',
+                        {source: source, objectType: objectType, name: objectName, password: password},
+                        {'update': {method: 'PUT'}})
+                        .update(attributes)
+                        .$promise
+                        .then(function (result) {
+                            $log.info('modifyObject success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.info('modifyObject error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
 
-                $log.info('associateSSOMntner start for objectType' + objectType + ' and objectName ' + objectName);
+                    return deferredObject.promise;
+                };
 
-                $resource('api/whois/:source/:objectType/:name',
-                    {source: source, objectType: objectType, name: objectName, password: password},
-                    {'update': {method: 'PUT'}})
-                    .update(whoisResources)
-                    .$promise
-                    .then(function (result) {
-                        $log.info('associateSSOMntner success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.info('associateSSOMntner error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
-                return deferredObject.promise;
-            };
-        }
+                this.associateSSOMntner = function (source, objectType, objectName, whoisResources, password) {
+                    var deferredObject = $q.defer();
 
-        return new RestService();
-}]);
+                    $log.info('associateSSOMntner start for objectType' + objectType + ' and objectName ' + objectName);
+
+                    $resource('api/whois/:source/:objectType/:name',
+                        {source: source, objectType: objectType, name: objectName, password: password},
+                        {'update': {method: 'PUT'}})
+                        .update(whoisResources)
+                        .$promise
+                        .then(function (result) {
+                            $log.info('associateSSOMntner success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.info('associateSSOMntner error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
+                    return deferredObject.promise;
+                };
+            }
+
+            return new RestService();
+        }]);

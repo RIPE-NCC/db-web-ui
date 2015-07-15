@@ -51,7 +51,7 @@
 
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
-                   typeahead="value for value in suggestAutocomplete($viewValue, attribute.name, attribute.$$meta.$$refs)"
+                   typeahead="value for value in suggestAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"/>
             <div class="text field-description" collapse="isHelpHidden">
                 {{attribute.$$meta.$$description}}
