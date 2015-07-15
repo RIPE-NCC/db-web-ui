@@ -46,7 +46,6 @@ angular.module('webUpdates')
 
 
                 var fetchObjectViaRest = function () {
-                    console.log('fetch object via REST');
                     $resource('api/whois/:source/:objectType/:objectName', {
                         source: $scope.objectSource,
                         objectType: $scope.objectType,
