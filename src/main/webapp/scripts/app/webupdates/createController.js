@@ -119,7 +119,6 @@ angular.module('webUpdates')
                             function( result ) {
                                 // returns an array for each mntner
                                 $scope.maintainers.selected = _.flatten(result);
-
                                 $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
 
                                 console.log('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
@@ -127,9 +126,11 @@ angular.module('webUpdates')
                                 if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
                                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                                         function(selectedMntner) {
+
                                             if( $scope.isMine(selectedMntner)) {
-                                                // has been associated
+                                                // has been successfully associated
                                                 $scope.maintainers.mine.push(selectedMntner);
+                                                // mark starred in selected
                                                 $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
 
                                                 console.log('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
@@ -155,19 +156,26 @@ angular.module('webUpdates')
              */
 
             function onMntnerAdded(item, all) {
-                // add the mntner on the right spot
-
-                console.log('onMntnerAdded: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
 
                 if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                         function(selectedMntner) {
                             _addMntnerToSelected(selectedMntner.key);
+
+                            if( $scope.isMine(selectedMntner)) {
+                                // has been successfully associated
+                                $scope.maintainers.mine.push(selectedMntner);
+                                // mark starred in selected
+                                $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
+                            }
                         }
                     )
                 } else {
                     _addMntnerToSelected(item.key);
                 }
+
+                console.log('onMntnerAdded:'  + JSON.stringify(item) + ' selected mntners now:' + JSON.stringify($scope.maintainers.selected));
+
             }
 
             function _addMntnerToSelected(mntnerName) {
@@ -301,8 +309,14 @@ angular.module('webUpdates')
                         ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                             function(selectedMntner) {
 
-                                $scope.maintainers.selected.push(selectedMntner);
-                                _addMntnerToSelected($scope.providePasswordModal.selectedMntner.key);
+                                if( $scope.isMine(selectedMntner)) {
+                                    // has been successfully associated
+                                    $scope.maintainers.mine.push(selectedMntner);
+                                    // mark starred in selected
+                                    $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
+                                }
+
+                                // try again
                                 submit();
                             }
                         );
