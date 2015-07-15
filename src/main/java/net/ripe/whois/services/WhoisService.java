@@ -48,18 +48,21 @@ public class WhoisService extends RestClient {
         }
     }
 
-    private URI composeWhoisUrl(HttpServletRequest request) throws URISyntaxException {
-        final StringBuilder sb = new StringBuilder(apiUrl)
+    private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
+        final StringBuilder builder = new StringBuilder(apiUrl)
             .append(request.getRequestURI()
                 .replace("/api/whois", "")
                 .replace(contextPath, ""));
 
         if (StringUtils.isNotBlank(request.getQueryString())) {
-            sb.append("?" + request.getQueryString());
+            builder
+                .append('?')
+                .append(request.getQueryString());
         }
 
-        LOGGER.debug("uri = " + sb.toString());
-        return new URI(sb.toString());
+        LOGGER.debug("uri = {}", builder.toString());
+
+        return new URI(builder.toString());
     }
 
 }

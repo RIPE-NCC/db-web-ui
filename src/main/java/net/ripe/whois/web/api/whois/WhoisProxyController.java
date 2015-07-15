@@ -21,10 +21,11 @@ public class WhoisProxyController {
 
     @Autowired
     private WhoisService whoisService;
+
 //
 //    @RequestMapping(value = "/**", method = "GET")
 //    public ResponseEntity<String> proxyRestGetCalls(final HttpServletRequest request, @RequestHeader(re) HttpHeaders headers) throws Exception {
-//        LOGGER.info("request:" + request.toString());
+//        LOGGER.info("request: {}", request.toString());
 //
 //        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
 //
@@ -32,8 +33,12 @@ public class WhoisProxyController {
 //    }
 
     @RequestMapping(value = "/**")
-    public ResponseEntity<String> proxyRestCalls(final HttpServletRequest request, @Nullable @RequestBody(required = false) final String body, @RequestHeader HttpHeaders headers) throws Exception {
-        LOGGER.info("request:" + request.toString());
+    public ResponseEntity<String> proxyRestCalls(
+            final HttpServletRequest request,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) throws Exception {
+
+        LOGGER.info("request: {}", request.toString());
 
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
 

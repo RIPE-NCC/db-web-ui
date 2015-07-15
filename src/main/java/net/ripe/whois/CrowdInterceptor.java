@@ -1,35 +1,87 @@
 package net.ripe.whois;
 
-import javax.servlet.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriUtils;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
+@Component
 public class CrowdInterceptor implements Filter {
+
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
 
-    public void doFilter(ServletRequest req, ServletResponse res,
-                         FilterChain chain) throws IOException, ServletException {
+    private final String crowdLoginUrl;
 
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
+    @Autowired
+    public CrowdInterceptor(@Value("${crowd.login.url}") final String crowdLoginUrl) {
+        this.crowdLoginUrl = crowdLoginUrl;
+    }
+
+    @Override
+    public void doFilter(
+        final ServletRequest servletRequest,
+        final ServletResponse servletResponse,
+        final FilterChain filterChain)
+            throws IOException, ServletException {
+
+        final HttpServletRequest request = (HttpServletRequest) servletRequest;
+        final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         if (request.getCookies() != null) {
             for (Cookie c : request.getCookies()) {
                 if (CROWD_TOKEN_KEY.equals(c.getName())) {
-                    chain.doFilter(req, res);
+                    filterChain.doFilter(request, response);
                     return;
                 }
             }
         }
 
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
+        response.sendError(HttpServletResponse.SC_FOUND);
     }
 
-    public void init(FilterConfig filterConfig) {
+    private String generateLocationHeader(final HttpServletRequest request) {
+        return String.format("%s?originalUrl=%s", crowdLoginUrl, encodeQueryParam(getOriginalUrl(request)));
     }
 
+    private String getOriginalUrl(final HttpServletRequest request) {
+        final String queryString = request.getQueryString();
+        if (queryString != null) {
+            return request.getRequestURL()
+                .append('?')
+                .append(queryString)
+                .toString();
+        } else {
+            return request.getRequestURL().toString();
+        }
+    }
+
+    private String encodeQueryParam(final String param) {
+        try {
+            return UriUtils.encodeQueryParam(param, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @Override
+    public void init(final FilterConfig filterConfig) {
+    }
+
+    @Override
     public void destroy() {
     }
 }
