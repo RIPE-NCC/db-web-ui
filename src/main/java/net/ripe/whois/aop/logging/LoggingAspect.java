@@ -9,28 +9,34 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import java.util.Arrays;
 
 /**
  * Aspect for logging execution of service and repository Spring components.
  */
 @Aspect
+@Component
 public class LoggingAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAspect.class);
 
-    @Inject
-    private Environment env;
+    private final Environment environment;
+
+    @Autowired
+    public LoggingAspect(final Environment environment) {
+        this.environment = environment;
+    }
 
     @Pointcut("within(net.ripe.whois.repository..*) || within(net.ripe.whois.service..*) || within(net.ripe.whois.web.rest..*)")
     public void loggingPointcut() {}
 
     @AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")
     public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
-        if (env.acceptsProfiles(Constants.SPRING_PROFILE_DEVELOPMENT)) {
+        if (environment.acceptsProfiles(Constants.SPRING_PROFILE_DEVELOPMENT)) {
             LOGGER.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), e.getCause(), e);
         } else {
             LOGGER.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), e.getCause());
