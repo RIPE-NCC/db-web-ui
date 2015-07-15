@@ -48,23 +48,11 @@ public class CrowdInterceptorTest {
     }
 
     @Test
-    public void response_302_found_if_no_crowd_cookie_present() throws Exception {
+    public void response_401_found_if_no_crowd_cookie_present() throws Exception {
         request.setCookies();
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
-        assertThat(response.getStatus(), is(302));
-        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost"));
-    }
-
-    @Test
-    public void original_url_query_param_is_encoded_properly() throws Exception {
-        request.setCookies();
-        request.setQueryString("param=test");
-
-        crowdInterceptor.doFilter(request, response, filterChain);
-
-        assertThat(response.getStatus(), is(302));
-        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost?param%3Dtest"));
+        assertThat(response.getStatus(), is(401));
     }
 }

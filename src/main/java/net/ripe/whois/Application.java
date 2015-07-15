@@ -99,7 +99,7 @@ public class Application {
     @Bean
     public FilterRegistrationBean crowdFilter() {
         final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(crowdInterceptor);
-        filterRegistrationBean.addUrlPatterns("*");
+        filterRegistrationBean.addUrlPatterns("/api/*");
         return filterRegistrationBean;
     }
 
