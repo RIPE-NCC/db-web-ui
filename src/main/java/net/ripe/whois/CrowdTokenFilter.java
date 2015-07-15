@@ -50,7 +50,7 @@ public class CrowdTokenFilter implements Filter {
         }
 
         response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
-        response.sendError(HttpServletResponse.SC_FOUND);
+        response.setStatus(HttpServletResponse.SC_FOUND);
     }
 
     private String generateLocationHeader(final HttpServletRequest request) {
