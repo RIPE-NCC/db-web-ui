@@ -115,7 +115,7 @@ angular.module('webUpdates')
                         $scope.maintainers.selected = _extractMntnersFromObject($scope.attributes);
 
                         // fetch details of all selected maintainers concurrently
-                        RestService.detailsForMultipleMntners($scope.maintainers.selected).then(
+                        RestService.detailsForAllMyMntners($scope.maintainers.selected).then(
                             function( result ) {
                                 // returns an array for each mntner
                                 $scope.maintainers.selected = _.flatten(result);
@@ -462,14 +462,14 @@ angular.module('webUpdates')
             }
 
             function _needsPasswordAuthentication(selectedMaintainers) {
-                var md5Mntners =  _getMntnersForPasswordAuth(selectedMaintainers);
+                var md5Mntners =  $scope.getMntnersForPasswordAuth(selectedMaintainers);
 
                 return md5Mntners.length > 0
                     && (!CredentialsService.hasCredentials()
                     || !_.contains(_.map(md5Mntners, 'key'), CredentialsService.getCredentials().mntner.key));
             }
 
-            function _getMntnersForPasswordAuth(selectedMaintainers) {
+            $scope.getMntnersForPasswordAuth = function(selectedMaintainers) {
 
                 if (_.any(selectedMaintainers, function (mntner) {
                         return $scope.isMine(mntner) === true;

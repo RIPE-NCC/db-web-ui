@@ -61,6 +61,12 @@ describe('webUpdates: ModifyController', function () {
                         } , {}];
                 });
 
+            $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
+                function(method,url) {
+                    //console.log("Got " + method + "  on " + url);
+                    return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW', 'PGPKEY-1290F9D2']} ], {}];
+                });
+
             $httpBackend.flush();
 
         });

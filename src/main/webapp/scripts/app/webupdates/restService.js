@@ -34,7 +34,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.detailsForMultipleMntners = function (mntners) {
+                this.detailsForAllMyMntners = function (mntners) {
                     var deferredObject = $q.defer();
 
                     $log.info('detailsForMultipleMntners start for ' + JSON.stringify(mntners));
