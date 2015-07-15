@@ -214,3 +214,6 @@ pre.textdiff {
 	margin-top: 10px;
 	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
 }
+#selectForm {
+	@extend %width-100;
+}
