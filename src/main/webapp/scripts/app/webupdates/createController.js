@@ -96,7 +96,7 @@ angular.module('webUpdates')
                             _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
                         }
                     }, function(error) {
-                        console.log("Error fetching mnters for SSO:" + JSON.stringify(error));
+                        console.log('Error fetching mnters for SSO:' + JSON.stringify(error));
                     }
                 );
             };
@@ -122,7 +122,7 @@ angular.module('webUpdates')
 
                                 console.log('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
 
-                                if (_needsPasswordAuthentication($scope.maintainers.selected )) {
+                                if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
                                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                                         function(selectedMntner) {
                                             console.log('*** Modal completed with: ' + JSON.stringify(selectedMntner));
@@ -134,7 +134,7 @@ angular.module('webUpdates')
                     }
                 ).catch(
                     function (error) {
-                        console.log("Error fetching sso-mntnets and object:" + JSON.stringify(error));
+                        console.log('Error fetching sso-mntnets and object:' + JSON.stringify(error));
                         // TODO: figure out how a q.all failure looks like
                         //var whoisResources = _wrapAndEnrichResources(error.data);
                         //_setErrors(whoisResources);
@@ -151,7 +151,7 @@ angular.module('webUpdates')
 
                 console.log('onMntnerSelect: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
 
-                if (_needsPasswordAuthentication($scope.maintainers.selected )) {
+                if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                         function(selectedMntner) {
                             $scope.maintainers.selected.pop();
@@ -224,7 +224,7 @@ angular.module('webUpdates')
             function refreshMntners(query) {
                 // need to typed characters
                 if (query.length > 2) {
-                    RestService.autocomplete( 'mnt-by', query,['auth']).then(
+                    RestService.autocomplete( 'mnt-by', query, true, ['auth']).then(
                         function (data) {
                             // prevent mntners on selected list to appear
                             $scope.maintainers.alternatives = _stripAlreadySelected(_enrichAlternativesWithMine(data));
@@ -292,7 +292,7 @@ angular.module('webUpdates')
                     _stripNulls();
                     _clearErrors();
 
-                    if (_needsPasswordAuthentication($scope.maintainers.selected)) {
+                    if ($scope.needsPasswordAuthentication($scope.maintainers.selected)) {
                         ModalService.openAuthenticationModal($scope.maintainers.selected).then(
                             function(selectedMntner) {
 
@@ -375,7 +375,7 @@ angular.module('webUpdates')
                         mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
                     };
                 });
-                console.log("selected mntners:" + JSON.stringify(selected));
+                console.log('selected mntners:' + JSON.stringify(selected));
 
                 return selected;
             }
@@ -461,7 +461,7 @@ angular.module('webUpdates')
                 return whoisResources;
             }
 
-            function _needsPasswordAuthentication(selectedMaintainers) {
+            $scope.needsPasswordAuthentication = function(selectedMaintainers) {
                 var md5Mntners =  $scope.getMntnersForPasswordAuth(selectedMaintainers);
 
                 return md5Mntners.length > 0
