@@ -34,30 +34,42 @@ public class LoggingAspect {
     @Pointcut("within(net.ripe.whois.repository..*) || within(net.ripe.whois.service..*) || within(net.ripe.whois.web.rest..*)")
     public void loggingPointcut() {}
 
-    @AfterThrowing(pointcut = "loggingPointcut()", throwing = "e")
-    public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
+    @AfterThrowing(pointcut = "loggingPointcut()", throwing = "t")
+    public void logAfterThrowing(final JoinPoint joinPoint, final Throwable t) {
         if (environment.acceptsProfiles(Constants.SPRING_PROFILE_DEVELOPMENT)) {
-            LOGGER.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), e.getCause(), e);
+            LOGGER.error("Exception in {}.{}() with cause = {}",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(),
+                    t.getCause(), t);
         } else {
-            LOGGER.error("Exception in {}.{}() with cause = {}", joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName(), e.getCause());
+            LOGGER.error("Exception in {}.{}() with cause = {}",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(),
+                    t.getCause());
         }
     }
 
     @Around("loggingPointcut()")
-    public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object logAround(final ProceedingJoinPoint joinPoint) throws Throwable {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Enter: {}.{}() with argument[s] = {}", joinPoint.getSignature().getDeclaringTypeName(),
-                    joinPoint.getSignature().getName(), Arrays.toString(joinPoint.getArgs()));
+            LOGGER.debug("Enter: {}.{}() with argument[s] = {}",
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName(),
+                    Arrays.toString(joinPoint.getArgs()));
         }
         try {
             Object result = joinPoint.proceed();
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Exit: {}.{}() with result = {}", joinPoint.getSignature().getDeclaringTypeName(),
+                LOGGER.debug("Exit: {}.{}() with result = {}",
+                        joinPoint.getSignature().getDeclaringTypeName(),
                         joinPoint.getSignature().getName(), result);
             }
             return result;
         } catch (IllegalArgumentException e) {
-            LOGGER.error("Illegal argument: {} in {}.{}()", Arrays.toString(joinPoint.getArgs()), joinPoint.getSignature().getDeclaringTypeName(), joinPoint.getSignature().getName());
+            LOGGER.error("Illegal argument: {} in {}.{}()",
+                    Arrays.toString(joinPoint.getArgs()),
+                    joinPoint.getSignature().getDeclaringTypeName(),
+                    joinPoint.getSignature().getName());
 
             throw e;
         }
