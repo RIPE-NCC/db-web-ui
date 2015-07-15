@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', function ($resource, $q, $http, $templateCache) {
-        function RestService() {
+    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log',
+        function ($resource, $q, $http, $templateCache, $log) {
+
+            function RestService() {
 
             this.fetchUiSelectResources = function () {
                 return $q.all([
@@ -15,14 +17,16 @@ angular.module('dbWebApp')
             this.fetchMntnersForSSOAccount = function () {
                 var deferredObject = $q.defer();
 
+                $log.info('fetchMntnersForSSOAccount start');
+
                 $resource('api/user/mntners')
                     .query()
                     .$promise
                     .then(function (result) {
-                        console.log("fetchMntnersForSSOAccount success:" + JSON.stringify(result));
+                        $log.info('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("fetchMntnersForSSOAccount error:" + JSON.stringify(error));
+                        $log.info('fetchMntnersForSSOAccount error:' + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
@@ -33,15 +37,17 @@ angular.module('dbWebApp')
             this.mntnerDetails = function (mntnerName) {
                 var deferredObject = $q.defer();
 
+                $log.info('mntnerDetails start for ' + mntnerName);
+
                 $resource('api/whois/autocomplete',
                     {query: mntnerName, field: 'mntner', attribute: 'auth'})
                     .query()
                     .$promise
                     .then(function (result) {
-                        console.log("mntnerDetails success:" + JSON.stringify(result));
+                        $log.info('mntnerDetails success:' + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("mntnerDetails error:" + JSON.stringify(error));
+                        $log.info('mntnerDetails error:' + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
@@ -51,9 +57,11 @@ angular.module('dbWebApp')
             this.detailsForMultipleMntners = function (mntners) {
                 var deferredObject = $q.defer();
 
+                $log.info('detailsForMultipleMntners start for ' + JSON.stringify(mntners));
+
                 var self = this;
                 var promises = _.map( mntners, function(item) {
-                    console.log("Fetching for mntner " + item.key);
+                    $log.info("Fetching for mntner " + item.key);
                     return self.mntnerDetails(item.key);
                 })
 
@@ -63,15 +71,17 @@ angular.module('dbWebApp')
             this.autocomplete = function (objectType, objectName, attrs) {
                 var deferredObject = $q.defer();
 
+                $log.info('autocomplete start for objectType' + objectType + ' and objectName ' + objectName);
+
                 $resource('api/whois/autocomplete',
                     {query: objectName, field: objectType, attribute: attrs, extended: true})
                     .query()
                     .$promise
                     .then(function (result) {
-                        console.log("autocomplete success:" + JSON.stringify(result));
+                        $log.info('autocomplete success:' + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("autocomplete error:" + JSON.stringify(error));
+                        $log.info('autocomplete error:' + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
@@ -80,6 +90,8 @@ angular.module('dbWebApp')
 
             this.authenticate = function (source, objectType, objectName, password) {
                 var deferredObject = $q.defer();
+
+                $log.info('authenticate start for objectType' + objectType + ' and objectName ' + objectName);
 
                 $resource('api/whois/:source/:objectType/:objectName',
                     {
@@ -91,10 +103,10 @@ angular.module('dbWebApp')
                     }).get()
                     .$promise
                     .then(function (result) {
-                        console.log("authenticate success:" + JSON.stringify(result));
+                        $log.info('authenticate success:' + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("authenticate error:" + JSON.stringify(error));
+                        $log.info('authenticate error:' + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
@@ -105,15 +117,17 @@ angular.module('dbWebApp')
             this.fetchObject = function (source, objectType, objectName) {
                 var deferredObject = $q.defer();
 
+                $log.info('fetchObject start for objectType' + objectType + ' and objectName ' + objectName);
+
                 $resource('api/whois/:source/:objectType/:name',
                     {source: source, objectType: objectType, name: objectName, unfiltered: true})
                     .get()
                     .$promise
                     .then(function (result) {
-                        console.log("createObject success:" + JSON.stringify(result));
+                        $log.info('createObject success:' + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("createObject error:" + JSON.stringify(error));
+                        $log.info('createObject error:' + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
@@ -121,18 +135,20 @@ angular.module('dbWebApp')
                 return deferredObject.promise;
             };
 
-            this.createObject = function (source, objectType, attributes) {
+            this.createObject = function (source, objectType, attributes, password) {
                 var deferredObject = $q.defer();
+
+                $log.info('createObject start for objectType' + objectType );
 
                 $resource('api/whois/:source/:objectType',
                     {source: source, objectType: objectType, password: password})
                     .save(attributes)
                     .$promise
                     .then(function (result) {
-                        console.log("createObject success:" + JSON.stringify(result));
+                        $log.info('createObject success:' + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("createObject error:" + JSON.stringify(error));
+                        $log.info('createObject error:' + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
@@ -143,16 +159,18 @@ angular.module('dbWebApp')
             this.modifyObject = function (source, objectType, objectName, attributes, password) {
                 var deferredObject = $q.defer();
 
+                $log.info('modifyObject start for objectType' + objectType + ' and objectName ' + objectName);
+
                 $resource('api/whois/:source/:objectType/:name',
                     {source: source, objectType: objectType, name: objectName, password: password},
                     {'update': {method: 'PUT'}})
                     .update(attributes)
                     .$promise
                     .then(function (result) {
-                        console.log("modifyObject success:" + JSON.stringify(result));
+                        $log.info('modifyObject success:' + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("modifyObject error:" + JSON.stringify(error));
+                        $log.info('modifyObject error:' + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
@@ -160,24 +178,25 @@ angular.module('dbWebApp')
                 return deferredObject.promise;
             };
 
-            this.associateSSOMntner = function (source, objectType, objectName, password) {
+            this.associateSSOMntner = function (source, objectType, objectName, whoisResources, password) {
                 var deferredObject = $q.defer();
+
+                $log.info('associateSSOMntner start for objectType' + objectType + ' and objectName ' + objectName);
 
                 $resource('api/whois/:source/:objectType/:name',
                     {source: source, objectType: objectType, name: objectName, password: password},
                     {'update': {method: 'PUT'}})
-                    .update()
+                    .update(whoisResources)
                     .$promise
                     .then(function (result) {
-                        console.log("Autocomplete success:" + JSON.stringify(result));
+                        $log.info('associateSSOMntner success:' + JSON.stringify(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        console.log("Autocomplete error:" + JSON.stringify(error));
+                        $log.info('associateSSOMntner error:' + JSON.stringify(error));
                         deferredObject.reject(error);
                     }
                 );
                 return deferredObject.promise;
-
             };
         }
 

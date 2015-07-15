@@ -25,18 +25,7 @@ public class WhoisProxyController {
     @Autowired
     private WhoisService whoisService;
 
-    @RequestMapping(value = "/{objectType}/{objectName}/mntners", produces={"application/json"})
-    public ResponseEntity<String> mntnersForObject(final HttpServletRequest request, @RequestHeader HttpHeaders headers,
-                                                   @PathVariable("id") int objectType, ) throws Exception {
-        LOGGER.info("request:" + request.toString());
-
-        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
-
-        return whoisService.getObjectMntners(request, headers, objectType, objectName);
-    }
-
-
-    @RequestMapping(value = "*")
+    @RequestMapping(value = "/**")
     public ResponseEntity<String> proxyRestCalls(final HttpServletRequest request, @Nullable @RequestBody(required = false) final String body, @RequestHeader HttpHeaders headers) throws Exception {
         LOGGER.info("request:" + request.toString());
 

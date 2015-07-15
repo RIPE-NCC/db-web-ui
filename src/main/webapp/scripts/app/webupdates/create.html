@@ -77,7 +77,8 @@
                 </li>
 
                 <li>
-                <a id="changePassword" class="btn btn-default" title="Add/change Password (opens dialog)" ng-click="displayAuthDialog(attribute)" ng-show="(attribute.name == 'auth')">
+                <a id="changePassword" class="btn btn-default" title="Add/change Password (opens dialog)"
+                   ng-click="displayMd5DialogDialog(attribute)" ng-show="(attribute.name == 'auth')">
                     <span class="fa fa-lock fa-3"></span>
                 </a>
                 </li>
@@ -101,77 +102,4 @@
     </section>
 </form>
 
-<div id="insertAttributeModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="commonModalLabel" aria-hidden="false">
-    <div class="modal-dialog">
-        <div class="modal-content no-rounded">
-            <div>
-                <i class="fa fa-close close" data-dismiss="modal" aria-label="Close"></i>
-                <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
-            </div>
-            <div class="modal-body margin-left">
-                <select id="selectAttribute" ng-options="item.name for item in addableAttributes" ng-model="selectedAttributeType"
-                        class="form-control select-height"></select>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="addAttributeAfterAttribute()" value="Add" />
-            </div>
-        </div>
-    </div>
-</div>
 
-<div id="authModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="false">
-    <div class="modal-dialog">
-        <div class="modal-content no-rounded">
-            <div>
-                <i class="fa fa-close close" data-dismiss="modal" aria-label="Close"></i>
-                <h5 class="modal-title" id="passwordModalLabel">Enter Password For Maintainer</h5>
-            </div>
-            <div class="modal-body">
-                <div class="pass-strength-output"></div>
-                <input type="password" class="form-control margin-bottom" ng-model="password"/>
-                <input type="password" class="form-control" ng-model="passwordAgain" ng-keyup="verifyAuthDialog()"/>
-                <a title="Enter your password in plain text. Any characters outside the US ASCII range may cause problems with some RIPE Database update methods."></a>
-                <div class="passwords-matched-output">{{authPasswordMessage}}</div>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" class="blue-button" data-dismiss="modal" value="Close"/>
-                <input type="submit" class="blue-button" data-dismiss="modal" ng-click="verifyAuthDialog() && populateAuthAttribute()" value="Add"/>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="providePasswordModal" class="modal fade portlet in" tabindex="-1" role="dialog" aria-labelledby="passwordModalLabel" aria-hidden="false">
-    <div class="modal-dialog">
-        <div class="modal-content no-rounded">
-            <div>
-                <i class="fa fa-close close" data-dismiss="modal" aria-label="Close"></i>
-                <h5 class="modal-title" id="providePasswordModalLabel">Password authentication</h5>
-            </div>
-            <div class="modal-body">
-                <div ng-if="providePasswordModal.hasMessage()" class="alert-expired alert alert-danger">
-                    <p>{{providePasswordModal.message}}</p>
-                </div>
-                <ul>
-	                <li>
-	                    <label>Select a maintainer to authenticate the update operation.</label>
-	                    <select ng-model="providePasswordModal.selectedMntner"
-	                            ng-required="true"
-	                            ng-options="mntner.key for mntner in providePasswordModal.mntnersForPasswordAuth" class="form-control select-height"></select>
-	                </li>
-	                <li>
-	                    <label>Provide the password for the selected maintainer</label>
-	                    <input type="password" class="form-control" ng-model="providePasswordModal.password" ng-required="true"/>
-	                </li>
-                    <li>
-                        <input type="checkbox" ng-model="providePasswordModal.associateSSOAccountWithMntner"/>
-                        <label>associate my SSO account with this maintainer</label>
-                    </li>
-                </ul>
-            </div>
-            <div class="modal-footer">
-                <input type="submit" class="blue-button" ng-click="attemptAutentication()" value="Authenticate"/>
-            </div>
-        </div>
-    </div>
-</div>

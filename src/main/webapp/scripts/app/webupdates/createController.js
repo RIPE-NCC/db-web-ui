@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisResources', 'MessageStore', 'md5', 'CredentialsService', 'UserInfoService', 'RestService', '$q',
-        function ($scope, $stateParams, $state, WhoisResources, MessageStore, md5, CredentialsService, UserInfoService, RestService, $q) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisResources', 'MessageStore', 'CredentialsService','RestService', '$q', 'ModalService',
+        function ($scope, $stateParams, $state, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService) {
 
             //exposed methods
             $scope.onMntnerSelect = onMntnerSelect;
@@ -25,23 +25,18 @@ angular.module('webUpdates')
             $scope.canAttributeBeRemoved = canAttributeBeRemoved;
             $scope.removeAttribute = removeAttribute;
             $scope.displayAddAttributeDialog = displayAddAttributeDialog;
-            $scope.addAttributeAfterAttribute = addAttributeAfterAttribute;
-
-            // work around bug in ui-select
-            $scope.uiSelectTemplateReady = false;
+            $scope.displayMd5DialogDialog = displayMd5DialogDialog;
 
             _initialisePage();
 
-            // auth (password) modal popup for attribute
-            $scope.displayAuthDialog = displayAuthDialog;
-            $scope.verifyAuthDialog = verifyAuthDialog;
-            $scope.populateAuthAttribute = populateAuthAttribute;
-
-            //password popup
-            $scope.attemptAutentication = attemptAutentication;
-
-            //private functions
             function _initialisePage() {
+
+                // workaround for problem with order of loading ui-select fragments
+                $scope.uiSelectTemplateReady = false;
+                RestService.fetchUiSelectResources().then(function () {
+                    $scope.uiSelectTemplateReady = true;
+                });
+
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
                 $scope.objectType = $stateParams.objectType;
@@ -63,21 +58,8 @@ angular.module('webUpdates')
                 $scope.warnings = [];
                 $scope.infos = [];
 
-                RestService.fetchUiSelectResources().then(function () {
-                    $scope.uiSelectTemplateReady = true;
-                });
-
                 // Populate "select attribute for add"-fields popup
-                $scope.addableAttributes = WhoisResources.getAddableAttributes($scope.objectType);
-                $scope.selectedAttributeType = $scope.addableAttributes[0];
                 $scope.addAfterAttribute = undefined;
-
-                // auth (password) modal popup
-                $scope.authAttribute = undefined;
-                $scope.password = undefined;
-                $scope.passwordAgain = undefined;
-                $scope.authPasswordMessage = undefined;
-                $scope.validBase64Characters = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
                 // Determine if this is a create or a modify
                 if (!$scope.name) {
@@ -106,8 +88,11 @@ angular.module('webUpdates')
                     function(results) {
                         $scope.maintainers.mine = results;
                         if ($scope.maintainers.mine.length > 0) {
+
+                            // pupulate ui-select box with sso-mntners
                             $scope.maintainers.selected = $scope.maintainers.mine;
-                            // copy mntners to attributes
+
+                            // copy mntners to attributes (for later submit)
                             var mntnerAttrs = _.map($scope.maintainers.mine, function (i) {
                                 return {name: 'mnt-by', value: i.key};
                             });
@@ -122,14 +107,16 @@ angular.module('webUpdates')
             function fetchDataForModify() {
 
                 // wait untill both have completed
-                $q.all( { mntners: RestService.fetchMntnersForSSOAccount(),
+                $q.all( { mntners:        RestService.fetchMntnersForSSOAccount(),
                           objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name)})
                     .then(
                     function (results) {
+                        // store mntners for SSO account
                         $scope.maintainers.mine = results.mntners;
 
-                        wrapAndEnrichResources(results.objectToModify);
-                        $scope.maintainers.selected = extractMntnersFromObject($scope.attributes);
+                        // store object to modify
+                        _wrapAndEnrichResources(results.objectToModify);
+                        $scope.maintainers.selected = _extractMntnersFromObject($scope.attributes);
 
                         // fetch details of all selected maintainers concurrently
                         RestService.detailsForMultipleMntners($scope.maintainers.selected).then(
@@ -137,11 +124,14 @@ angular.module('webUpdates')
                                 // returns an array for each mntner
                                 $scope.maintainers.selected = _.flatten(result);
 
+                                // kickoff popup that performs authentication
                                 if (_needsPasswordAuthentication($scope.maintainers.selected )) {
-                                    // TODO open pooupup with mntners in select list
-                                    console.log("needs password popup");
-                                } else {
-                                    console.log("Does not need password popup");
+                                    ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
+                                        function(selectedMntner) {
+                                            console.log('*** Modal completed with: ' + JSON.stringify(selectedMntner));
+                                            // TODO act on result
+                                        }
+                                    )
                                 }
                         });
                     })
@@ -149,53 +139,11 @@ angular.module('webUpdates')
                     function (error) {
                         console.log("Error fetching sso-mntnets and object:" + JSON.stringify(error));
                         // TODO: figure out how a q.all failure looks like
-                        //var whoisResources = wrapAndEnrichResources(error.data);
-                        //setErrors(whoisResources);
+                        //var whoisResources = _wrapAndEnrichResources(error.data);
+                        //_setErrors(whoisResources);
                     }
                 );
              }
-
-             function extractMntnersFromObject(attributes) {
-                // get mntners from response
-                var mntnersInObject = _.filter(attributes, function (i) {
-                    return i.name === 'mnt-by';
-                });
-
-                // determine if mntner is mine
-                var selected = _.map(mntnersInObject, function(mntnerAttr) {
-                     return {
-                         type:'mntner',
-                         key: mntnerAttr.value,
-                         mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
-                     };
-                 });
-                console.log("selected mntners:" + JSON.stringify(selected));
-
-                return selected;
-            }
-
-            function _isMntnerOnlist(selectedMntners, mntner) {
-                var status = _.any(selectedMntners, function (m) {
-                    return m.key === mntner.key;
-                });
-                return status;
-            }
-
-            function _enrichAlternativesWithMine(mntners) {
-                return _.map(mntners, function (mntner) {
-                    // search in selected list
-                    if (_isMntnerOnlist($scope.maintainers.mine, mntner)) {
-                        mntner.mine = true;
-                    }
-                    return mntner;
-                });
-            }
-
-            function _stripAlreadySelected(mntners) {
-                return _.filter(mntners, function (mntner) {
-                    return !_isMntnerOnlist($scope.maintainers.selected, mntner);
-                });
-            }
 
             /*
              * Methods called from the html-teplate
@@ -206,9 +154,17 @@ angular.module('webUpdates')
 
                 console.log('on select: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
 
-                if (_needsPasswordAuthentication($scope.maintainers.selected)) {
-                    _displayProvidePasswordModal($scope.getMntnersForPasswordAuth($scope.maintainers.selected));
-                    $scope.maintainers.selected.pop();
+                if (_needsPasswordAuthentication($scope.maintainers.selected )) {
+                    ModalService.openAuthenticationModal($scope.source,$scope.maintainers.selected).then(
+                        function(selectedMntner) {
+                            console.log('*** Modal completed with: ' + JSON.stringify(selectedMntner));
+                            $scope.maintainers.selected.pop();
+
+                            $scope.maintainers.selected.push(selectedMntner);
+                            _addMntnerToSelected($scope.providePasswordModal.selectedMntner.key);
+
+                        }
+                    )
                 } else {
                     _addMntnerToSelected(item.key);
                 }
@@ -329,9 +285,9 @@ angular.module('webUpdates')
                     if (!resp.data) {
                         // TIMEOUT: to be handled globally by response interceptor
                     } else {
-                        var whoisResources = wrapAndEnrichResources(resp.data);
+                        var whoisResources = _wrapAndEnrichResources(resp.data);
                         _validateForm();
-                        setErrors(whoisResources);
+                        _setErrors(whoisResources);
                     }
                 }
 
@@ -340,23 +296,35 @@ angular.module('webUpdates')
                     _clearErrors();
 
                     if (_needsPasswordAuthentication($scope.maintainers.selected)) {
-                        _displayProvidePasswordModal($scope.getMntnersForPasswordAuth($scope.maintainers.selected));
+                        ModalService.openAuthenticationModal($scope.maintainers.selected).then(
+                            function(selectedMntner) {
+
+                                $scope.maintainers.selected.push(selectedMntner);
+                                _addMntnerToSelected($scope.providePasswordModal.selectedMntner.key);
+
+                                console.log('*** openAuthenticationModal completed with: ' + JSON.stringify(selectedMntner));
+                                submit();
+                            }
+                        );
                         return;
+                    }
+
+                    var password = undefined;
+                    if( CredentialsService.getCredentials() ) {
+                        password = CredentialsService.getCredentials().successfulPassword;
                     }
 
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
-                            WhoisResources.embedAttributes($scope.attributes),
-                            CredentialsService.getCredentials().successfulPassword)
+                            WhoisResources.embedAttributes($scope.attributes), password)
                             .then(
                             _onSubmitSuccess,
                             _onSubmitError);
 
                     } else {
                         RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
-                            WhoisResources.embedAttributes($scope.attributes),
-                            CredentialsService.getCredentials().successfulPassword)
+                            WhoisResources.embedAttributes($scope.attributes), password)
                             .then(
                             _onSubmitSuccess,
                             _onSubmitError);
@@ -382,16 +350,67 @@ angular.module('webUpdates')
 
             function displayAddAttributeDialog(attr) {
                 $scope.addAfterAttribute = attr;
-                $('#insertAttributeModal').modal('show');
+                ModalService.openAddAttributeModal( WhoisResources.getAddableAttributes($scope.objectType)).then(
+                    function(selectedAttributeType) {
+                        _wrapAndEnrichAttributes($scope.attributes.addAttributeAfter(selectedAttributeType, $scope.addAfterAttribute));
+                    }
+                );
             }
 
-            function addAttributeAfterAttribute() {
-                _wrapAndEnrichAttributes($scope.attributes.addAttributeAfter($scope.selectedAttributeType, $scope.addAfterAttribute));
+            function displayMd5DialogDialog(attr) {
+                $scope.addAfterAttribute = attr;
+                ModalService.openMd5Modal( ).then(
+                    function(authLine) {
+                        attr.value = authLine;
+                    }
+                );
             }
 
             /*
-             private methods
+             * private methods
              */
+
+            function _extractMntnersFromObject(attributes) {
+                // get mntners from response
+                var mntnersInObject = _.filter(attributes, function (i) {
+                    return i.name === 'mnt-by';
+                });
+
+                // determine if mntner is mine
+                var selected = _.map(mntnersInObject, function(mntnerAttr) {
+                    return {
+                        type:'mntner',
+                        key: mntnerAttr.value,
+                        mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
+                    };
+                });
+                console.log("selected mntners:" + JSON.stringify(selected));
+
+                return selected;
+            }
+
+            function _isMntnerOnlist(selectedMntners, mntner) {
+                var status = _.any(selectedMntners, function (m) {
+                    return m.key === mntner.key;
+                });
+                return status;
+            }
+
+            function _enrichAlternativesWithMine(mntners) {
+                return _.map(mntners, function (mntner) {
+                    // search in selected list
+                    if (_isMntnerOnlist($scope.maintainers.mine, mntner)) {
+                        mntner.mine = true;
+                    }
+                    return mntner;
+                });
+            }
+
+            function _stripAlreadySelected(mntners) {
+                return _.filter(mntners, function (mntner) {
+                    return !_isMntnerOnlist($scope.maintainers.selected, mntner);
+                });
+            }
 
             function _validateForm() {
                 var status = $scope.attributes.validate();
@@ -406,38 +425,6 @@ angular.module('webUpdates')
                 $scope.errors = [];
                 $scope.warnings = [];
                 $scope.attributes.clearErrors();
-            }
-
-            // auth (password) modal popup
-            function displayAuthDialog(attr) {
-                $scope.authAttribute = attr;
-                $scope.password = '';
-                $scope.passwordAgain = '';
-                $scope.authPasswordMessage = '';
-                $('#authModal').modal('show');
-            }
-
-            function verifyAuthDialog() {
-                if ($scope.password === $scope.passwordAgain) {
-                    $scope.authPasswordMessage = 'Password Match!';
-                    return true;
-                } else {
-                    $scope.authPasswordMessage = 'Password Does Not Match!';
-                    return false;
-                }
-            }
-
-            function populateAuthAttribute() {
-                $scope.authAttribute.value = 'MD5-PW $1$' + $scope.generateSalt(8) + '$' + md5.createHash($scope.password);
-            }
-
-            function generateSalt(length) {
-                var result = '';
-                for (var index = 0; index < length; index++) {
-                    var offset = Math.floor((Math.random() * $scope.validBase64Characters.length));
-                    result = result.concat($scope.validBase64Characters.charAt(offset));
-                }
-                return result;
             }
 
             /*
@@ -457,7 +444,7 @@ angular.module('webUpdates')
                 });
             }
 
-            function setErrors(whoisResources) {
+            function _setErrors(whoisResources) {
                 _populateFieldSpecificErrors(whoisResources);
                 $scope.errors = whoisResources.getGlobalErrors();
                 $scope.warnings = whoisResources.getGlobalWarnings();
@@ -475,7 +462,7 @@ angular.module('webUpdates')
                 return $scope.attributes;
             }
 
-            function wrapAndEnrichResources(resp) {
+            function _wrapAndEnrichResources(resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
                 if (whoisResources) {
                     _wrapAndEnrichAttributes(whoisResources.getAttributes());
@@ -483,12 +470,16 @@ angular.module('webUpdates')
                 return whoisResources;
             }
 
+            function _needsPasswordAuthentication(selectedMaintainers) {
+                var md5Mntners =  _getMntnersForPasswordAuth(selectedMaintainers);
 
-            /*
-             password authentication modal
-             */
+                return md5Mntners.length > 0
+                    && (!CredentialsService.hasCredentials()
+                    || !_.contains(_.map(md5Mntners, 'key'), CredentialsService.getCredentials().mntner.key));
+            }
 
-            $scope.getMntnersForPasswordAuth = function (selectedMaintainers) {
+
+            function _getMntnersForPasswordAuth(selectedMaintainers) {
 
                 if (_.any(selectedMaintainers, function (mntner) {
                         return $scope.isMine(mntner) === true;
@@ -501,100 +492,5 @@ angular.module('webUpdates')
                 });
             };
 
-            function _needsPasswordAuthentication(selectedMaintainers) {
-                var md5Mntners = $scope.getMntnersForPasswordAuth(selectedMaintainers);
-
-                return md5Mntners.length > 0
-                    && (!CredentialsService.hasCredentials()
-                    || !_.contains(_.map(md5Mntners, 'key'), CredentialsService.getCredentials().mntner.key));
-            }
-
-            function _displayProvidePasswordModal(mntnersForPasswordAuth) {
-
-                $scope.providePasswordModal = {
-                    mntnersForPasswordAuth: [],
-                    selectedMntner: undefined,
-                    password: '',
-                    authResult: false,
-                    message: '',
-                    hasMessage: function () {
-                        return !_.isUndefined($scope.providePasswordModal.message) && $scope.providePasswordModal.message !== '';
-                    },
-                    associateSSOAccountWithMntner: true
-                };
-
-                $scope.providePasswordModal.mntnersForPasswordAuth = mntnersForPasswordAuth;
-                $scope.providePasswordModal.selectedMntner = mntnersForPasswordAuth[0];
-                $('#providePasswordModal').modal('show');
-            }
-
-            function attemptAutentication() {
-                RestService.authenticate($scope.source, 'mntner', $scope.providePasswordModal.selectedMntner.key,
-                    $scope.providePasswordModal.password)
-                    .then(
-                    function (resp) {
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
-
-                        if (!whoisResources.isFiltered()) {
-                            console.log("authenticated ok");
-
-                            $scope.providePasswordModal.authResult = true;
-                            $('#providePasswordModal').modal('hide');
-                            CredentialsService.setCredentials($scope.providePasswordModal.selectedMntner, $scope.providePasswordModal.password);
-
-                            if ($scope.providePasswordModal.associateSSOAccountWithMntner) {
-                                associate(whoisResources, UserInfoService.getUsername(), $scope.providePasswordModal.password, new function () {
-                                    $scope.providePasswordModal.selectedMntner.mine = true;
-                                    $scope.maintainers.mine.push($scope.providePasswordModal.selectedMntner);
-                                    CredentialsService.removeCredentials();
-                                });
-                            }
-
-                            $scope.maintainers.selected.push($scope.providePasswordModal.selectedMntner);
-                            _addMntnerToSelected($scope.providePasswordModal.selectedMntner.key);
-
-                        } else {
-                            console.log("not authenticated");
-                            $scope.providePasswordModal.authResult = false;
-                            $scope.providePasswordModal.message =
-                                'You have not supplied the correct password for mntner: \'' + $scope.providePasswordModal.selectedMntner.key + '\'';
-                        }
-
-                    }, function (resp) {
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                        if (!_.isUndefined(whoisResources)) {
-                            console.log('whois error response in modal');
-                            $scope.providePasswordModal.message = _.reduce(whoisResources.getGlobalErrors(), function (total, n) {
-                                return total + '\n' + n;
-                            });
-                        } else {
-                            console.log('server error in modal');
-                            $scope.providePasswordModal.message = 'server error : ' + JSON.stringify(resp);
-                        }
-                        $scope.providePasswordModal.authResult = true;
-                    });
-            }
-
-            function associate(whoisResources, ssoUsername, mntnerPassword, callback) {
-                if (_.isUndefined(ssoUsername)) {
-                    return;
-                }
-
-                var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({
-                    name: 'auth',
-                    value: 'SSO ' + ssoUsername
-                }, {name: 'auth'});
-
-                RestService.associateSSOMntner(whoisResources.getSource(), whoisResources.getObjectType(), whoisResources.getPrimaryKey(),
-                    WhoisResources.embedAttributes(attributes), mntnerPassword)
-                    .then(
-                    function (resp) {
-                        // success response
-                        callback();
-                    },
-                    function (resp) {
-                        // error response
-                    });
-            }
 
         }]);
