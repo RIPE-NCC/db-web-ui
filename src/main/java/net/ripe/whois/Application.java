@@ -26,12 +26,12 @@ public class Application {
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     private final Environment environment;
-    private final CrowdInterceptor crowdInterceptor;
+    private final CrowdTokenFilter crowdTokenFilter;
 
     @Autowired
-    public Application(final Environment environment, final CrowdInterceptor crowdInterceptor) {
+    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter) {
         this.environment = environment;
-        this.crowdInterceptor = crowdInterceptor;
+        this.crowdTokenFilter = crowdTokenFilter;
     }
 
     /**
@@ -98,8 +98,8 @@ public class Application {
 
     @Bean
     public FilterRegistrationBean crowdFilter() {
-        final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(crowdInterceptor);
-        filterRegistrationBean.addUrlPatterns("/api/*");
+        final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(crowdTokenFilter);
+        filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
 
