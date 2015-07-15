@@ -54,60 +54,6 @@ ul.form-fields {
 	}
 }
 
-
-table.success-fields {
-	@extend %width-100;
-	border: 1px #ccc dashed;
-	margin-bottom: 20px;
-	font {
-		family: menlo !important;
-	}
-	td {
-    	padding: 5px 10px;
-    	p {
-        	margin: 0 !important;
-    	}
-	}
-}
-
-pre.textdiff {
-    @extend table.success-fields;
-    padding: 0;
-    font: {
-        size: 14px;
-    }
-    > div {
-        padding: 5px 10px;
-        &.ins {
-            background-color: #E2F3E3;
-            span {
-                color: #437446;
-            }
-        }
-        &.del {
-            background-color: #F3E2E2;
-            span {
-                color: #AF3F3F;
-            }
-        }
-        &:first-child {
-            padding-top: 10px;
-        }
-        &:last-child {
-            padding-bottom: 10px;
-        }
-    }
-}
-
-@media (max-width: 768px) { 
-	table.success-fields {
-		td {
-    		float: left;
-		    width: 100%;
-		}
-	}
-}
-
 .inner-container {
 	@extend %float-l;
 	@extend %width-100;

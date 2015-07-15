@@ -20,14 +20,14 @@
     <table class="success-fields grey" ng-if="!isDiff()">
         <tr ng-repeat="attribute in attributes">
             <td width="20%">
-                <label>{{attribute.name}}</label>
+                <label>{{attribute.name}}:</label>
             </td>
             <td>
-                <div ng-show="attribute.$$error" class="modify-feedback">
-    	            <i class="fa fa-info-circle"></i>
-    	            <span>{{attribute.$$error}}</span>
-    	        </div>
                 <p>{{attribute.value}}</p>
+                <div ng-show="attribute.$$error" class="modify-feedback">
+    	            <span>{{attribute.$$error}}</span>
+    	            <i class="fa fa-info-circle"></i>
+    	        </div>
             </td>
         </tr>
     </table>
