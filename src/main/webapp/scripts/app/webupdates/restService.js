@@ -130,10 +130,10 @@ angular.module('dbWebApp')
                         .get()
                         .$promise
                         .then(function (result) {
-                            $log.info('createObject success:' + JSON.stringify(result));
+                            $log.info('fetchObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('createObject error:' + JSON.stringify(error));
+                            $log.info('fetchObject error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
