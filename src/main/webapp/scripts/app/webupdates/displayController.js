@@ -16,8 +16,8 @@ angular.module('webUpdates')
                 $scope.objectName = $stateParams.name;
                 $scope.method = $stateParams.method; // optional: added by create- and modify-controller
 
-                $scope.diffBefore = undefined;
-                $scope.diffAfter = undefined;
+                $scope.before = undefined;
+                $scope.after = undefined;
 
                 // Initalize the UI
                 $scope.errors = [];
@@ -73,14 +73,11 @@ angular.module('webUpdates')
                     setErrors(whoisResources);
 
                     if ($scope.method === 'Modify') {
-                        // display diff
 
                         var diff = WhoisResources.wrapAttributes(MessageStore.get('DIFF'));
-
                         if (!_.isUndefined(diff)) {
-                            console.log('populate diff');
-                            $scope.diffBefore = diff.toPlaintext();
-                            $scope.diffAfter = $scope.attributes.toPlaintext();
+                            $scope.before = diff.toPlaintext();
+                            $scope.after = $scope.attributes.toPlaintext();
                         }
                     }
 
@@ -141,5 +138,8 @@ angular.module('webUpdates')
                 });
             };
 
+            $scope.isDiff = function() {
+                return !_.isUndefined($scope.before) && !_.isUndefined($scope.after);
+            };
 
         }]);
