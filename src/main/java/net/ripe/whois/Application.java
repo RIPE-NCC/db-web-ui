@@ -23,7 +23,7 @@ import java.util.Collection;
 @EnableAutoConfiguration
 public class Application {
 
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
     @Inject
     private Environment env;
@@ -40,22 +40,22 @@ public class Application {
     @PostConstruct
     public void initApplication() throws IOException {
         if (env.getActiveProfiles().length == 0) {
-            log.warn("No Spring profile configured, running with default configuration");
+            LOGGER.warn("No Spring profile configured, running with default configuration");
         } else {
-            log.info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
             Collection activeProfiles = Arrays.asList(env.getActiveProfiles());
+            LOGGER.info("Running with Spring profile(s) : {}", Arrays.toString(environment.getActiveProfiles()));
 
             // TODO: refactor this (check for any single profile)
             if (activeProfiles.contains("dev") && activeProfiles.contains("prod")) {
-                log.error("You have misconfigured your application! " +
+                LOGGER.error("You have misconfigured your application! " +
                     "It should not run with both the 'dev' and 'prod' profiles at the same time.");
             }
             if (activeProfiles.contains("prod") && activeProfiles.contains("fast")) {
-                log.error("You have misconfigured your application! " +
+                LOGGER.error("You have misconfigured your application! " +
                     "It should not run with both the 'prod' and 'fast' profiles at the same time.");
             }
             if (activeProfiles.contains("dev") && activeProfiles.contains("cloud")) {
-                log.error("You have misconfigured your application! " +
+                LOGGER.error("You have misconfigured your application! " +
                     "It should not run with both the 'dev' and 'cloud' profiles at the same time.");
             }
         }
@@ -70,7 +70,7 @@ public class Application {
         SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
         addDefaultProfile(app, source);
         Environment env = app.run(args).getEnvironment();
-        log.info("Access URLs:\n----------------------------------------------------------\n\t" +
+        LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
             "Local: \t\thttps://127.0.0.1:{}\n\t" +
             "External: \thttps://{}:{}\n----------------------------------------------------------",
             env.getProperty("server.port"),
