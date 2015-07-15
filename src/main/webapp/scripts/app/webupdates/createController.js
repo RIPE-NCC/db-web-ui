@@ -5,8 +5,8 @@ angular.module('webUpdates')
         function ($scope, $stateParams, $state, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService) {
 
             // exposed methods used by the view
-            $scope.onMntnerSelect = onMntnerSelect;
-            $scope.onMntnerRemove = onMntnerRemove;
+            $scope.onMntnerAdded = onMntnerAdded;
+            $scope.onMntnerRemoved = onMntnerRemoved;
             $scope.isMine = isMine;
             $scope.hasSSo = hasSSo;
             $scope.hasPgp = hasPgp;
@@ -127,8 +127,14 @@ angular.module('webUpdates')
                                 if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
                                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                                         function(selectedMntner) {
-                                            console.log('*** Modal completed with: ' + JSON.stringify(selectedMntner));
-                                            // TODO act on result
+                                            if( $scope.isMine(selectedMntner)) {
+                                                // has been associated
+                                                $scope.maintainers.mine.push(selectedMntner);
+                                                $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
+
+                                                console.log('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
+
+                                            }
                                         }
                                     )
                                 }
@@ -148,19 +154,15 @@ angular.module('webUpdates')
              * Methods called from the html-teplate
              */
 
-            function onMntnerSelect(item, all) {
+            function onMntnerAdded(item, all) {
                 // add the mntner on the right spot
 
-                console.log('onMntnerSelect: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
+                console.log('onMntnerAdded: selected mntners: ' + JSON.stringify($scope.maintainers.selected));
 
                 if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                         function(selectedMntner) {
-                            $scope.maintainers.selected.pop();
-
-                            $scope.maintainers.selected.push(selectedMntner);
                             _addMntnerToSelected(selectedMntner.key);
-
                         }
                     )
                 } else {
@@ -175,9 +177,7 @@ angular.module('webUpdates')
                 }]));
             }
 
-            function onMntnerRemove(item, all) {
-
-                console.log('onMntnerRemove: selected mntners: ' + JSON.stringify(item));
+            function onMntnerRemoved(item, all) {
 
                 if ($scope.maintainers.selected.length === 0) {
                     // make sure we do not remove the last mntner which act as anchor
@@ -195,6 +195,9 @@ angular.module('webUpdates')
                         return i.name === 'mnt-by' && i.value === item.key;
                     });
                 }
+
+                console.log('onMntnerRemove: ' + JSON.stringify(item) + ' selected mntners now:' +  JSON.stringify($scope.maintainers.selected));
+
             }
 
             function isMine(mntner) {
@@ -464,6 +467,10 @@ angular.module('webUpdates')
             }
 
             $scope.needsPasswordAuthentication = function(selectedMaintainers) {
+                if( _selectedMntnersAreMine(selectedMaintainers) ) {
+                    return false;
+                }
+
                 var md5Mntners =  $scope.getMntnersForPasswordAuth(selectedMaintainers);
                 var mntnerNames = _.map(md5Mntners, 'key');
                 if( md5Mntners.length > 0 && CredentialsService.hasCredentials() && _.contains(mntnerNames,  CredentialsService.getCredentials().mntner)) {
@@ -472,11 +479,15 @@ angular.module('webUpdates')
                 return true;
             }
 
+            function _selectedMntnersAreMine(selectedMaintainers) {
+                return _.any(selectedMaintainers, function (mntner) {
+                    return $scope.isMine(mntner) === true;
+                });
+            }
+
             $scope.getMntnersForPasswordAuth = function(selectedMaintainers) {
 
-                if (_.any(selectedMaintainers, function (mntner) {
-                        return $scope.isMine(mntner) === true;
-                    })) {
+                if (_selectedMntnersAreMine(selectedMaintainers)) {
                     return [];
                 }
 
