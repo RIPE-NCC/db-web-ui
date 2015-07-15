@@ -115,10 +115,12 @@ angular.module('webUpdates')
                         $scope.maintainers.selected = _extractMntnersFromObject($scope.attributes);
 
                         // fetch details of all selected maintainers concurrently
-                        RestService.detailsForAllMyMntners($scope.maintainers.selected).then(
+                        RestService.detailsForMntners($scope.maintainers.selected).then(
                             function( result ) {
                                 // returns an array for each mntner
                                 $scope.maintainers.selected = _.flatten(result);
+
+                                $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
 
                                 console.log('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
 
@@ -293,7 +295,7 @@ angular.module('webUpdates')
                     _clearErrors();
 
                     if ($scope.needsPasswordAuthentication($scope.maintainers.selected)) {
-                        ModalService.openAuthenticationModal($scope.maintainers.selected).then(
+                        ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                             function(selectedMntner) {
 
                                 $scope.maintainers.selected.push(selectedMntner);
@@ -463,10 +465,11 @@ angular.module('webUpdates')
 
             $scope.needsPasswordAuthentication = function(selectedMaintainers) {
                 var md5Mntners =  $scope.getMntnersForPasswordAuth(selectedMaintainers);
-
-                return md5Mntners.length > 0
-                    && (!CredentialsService.hasCredentials()
-                    || !_.contains(_.map(md5Mntners, 'key'), CredentialsService.getCredentials().mntner.key));
+                var mntnerNames = _.map(md5Mntners, 'key');
+                if( md5Mntners.length > 0 && CredentialsService.hasCredentials() && _.contains(mntnerNames,  CredentialsService.getCredentials().mntner)) {
+                    return false;
+                }
+                return true;
             }
 
             $scope.getMntnersForPasswordAuth = function(selectedMaintainers) {

@@ -34,34 +34,29 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.detailsForAllMyMntners = function (mntners) {
+                this.detailsForMntners = function (mntners) {
                     var deferredObject = $q.defer();
 
-                    $log.info('detailsForMultipleMntners start for ' + JSON.stringify(mntners));
+                    $log.info('detailsForMultipleMntners start for: ' + JSON.stringify(mntners));
 
                     var self = this;
                     var promises = _.map(mntners, function (item) {
-                        return _myMntnerDetails(item.key);
+                        return _mntnerDetails(item.key);
                     })
 
                     return $q.all(promises);
                 };
 
-                function _myMntnerDetails(mntnerName) {
+                function _mntnerDetails(mntnerName) {
                     var deferredObject = $q.defer();
 
-                    $log.info('_myMntnerDetails start for ' + mntnerName);
+                    $log.info('_myMntnerDetails start for: ' + mntnerName);
 
                     $resource('api/whois/autocomplete',
                         {query: mntnerName, field: 'mntner', attribute: 'auth', extended:true})
                         .query()
                         .$promise
                         .then(function (result) {
-                            // mark as mine
-                            result = _.map(result, function(item) {
-                                item.mine = true;
-                                return item;
-                            });
 
                             $log.info('_myMntnerDetails success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
@@ -77,7 +72,7 @@ angular.module('dbWebApp')
                 this.autocomplete = function (objectType, objectName, extended, attrs) {
                     var deferredObject = $q.defer();
 
-                    $log.info('autocomplete start for objectType' + objectType + ' and objectName ' + objectName);
+                    $log.info('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/autocomplete',
                         {query: objectName, field: objectType, attribute: attrs, extended: extended})
@@ -97,7 +92,7 @@ angular.module('dbWebApp')
                 this.authenticate = function (source, objectType, objectName, password) {
                     var deferredObject = $q.defer();
 
-                    $log.info('authenticate start for objectType' + objectType + ' and objectName ' + objectName);
+                    $log.info('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:objectName',
                         {
@@ -123,7 +118,7 @@ angular.module('dbWebApp')
                 this.fetchObject = function (source, objectType, objectName) {
                     var deferredObject = $q.defer();
 
-                    $log.info('fetchObject start for objectType' + objectType + ' and objectName ' + objectName);
+                    $log.info('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
                         {source: source, objectType: objectType, name: objectName, unfiltered: true})
@@ -144,7 +139,7 @@ angular.module('dbWebApp')
                 this.createObject = function (source, objectType, attributes, password) {
                     var deferredObject = $q.defer();
 
-                    $log.info('createObject start for objectType' + objectType);
+                    $log.info('createObject start for objectType: ' + objectType);
 
                     $resource('api/whois/:source/:objectType',
                         {source: source, objectType: objectType, password: password})
@@ -165,7 +160,7 @@ angular.module('dbWebApp')
                 this.modifyObject = function (source, objectType, objectName, attributes, password) {
                     var deferredObject = $q.defer();
 
-                    $log.info('modifyObject start for objectType' + objectType + ' and objectName ' + objectName);
+                    $log.info('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
                         {source: source, objectType: objectType, name: objectName, password: password},
@@ -187,7 +182,7 @@ angular.module('dbWebApp')
                 this.associateSSOMntner = function (source, objectType, objectName, whoisResources, password) {
                     var deferredObject = $q.defer();
 
-                    $log.info('associateSSOMntner start for objectType' + objectType + ' and objectName ' + objectName);
+                    $log.info('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
                         {source: source, objectType: objectType, name: objectName, password: password},
