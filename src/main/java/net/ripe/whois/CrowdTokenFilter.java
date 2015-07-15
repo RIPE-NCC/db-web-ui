@@ -19,14 +19,14 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
 @Component
-public class CrowdInterceptor implements Filter {
+public class CrowdTokenFilter implements Filter {
 
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
 
     private final String crowdLoginUrl;
 
     @Autowired
-    public CrowdInterceptor(@Value("${crowd.login.url}") final String crowdLoginUrl) {
+    public CrowdTokenFilter(@Value("${crowd.login.url}") final String crowdLoginUrl) {
         this.crowdLoginUrl = crowdLoginUrl;
     }
 

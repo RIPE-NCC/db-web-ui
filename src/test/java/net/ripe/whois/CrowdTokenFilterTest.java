@@ -17,8 +17,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CrowdInterceptorTest {
-    public static final String CROWD_TOKEN = "SOME_CROWD_TOKEN";
+public class CrowdTokenFilterTest {
 
     @Mock
     private FilterChain filterChain;
@@ -26,7 +25,7 @@ public class CrowdInterceptorTest {
     private MockHttpServletResponse response;
     private MockHttpServletRequest request;
 
-    private CrowdInterceptor crowdInterceptor;
+    private CrowdTokenFilter crowdInterceptor;
 
     @Before
     public void setup() {
@@ -35,12 +34,12 @@ public class CrowdInterceptorTest {
         response = new MockHttpServletResponse();
         request = new MockHttpServletRequest();
 
-        crowdInterceptor = new CrowdInterceptor("https://access.url");
+        crowdInterceptor = new CrowdTokenFilter("https://access.url");
     }
 
     @Test
     public void proceed_if_crowd_cookie_present() throws Exception {
-        request.setCookies(new Cookie(CrowdInterceptor.CROWD_TOKEN_KEY, CROWD_TOKEN));
+        request.setCookies(new Cookie(CrowdTokenFilter.CROWD_TOKEN_KEY, "value"));
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
