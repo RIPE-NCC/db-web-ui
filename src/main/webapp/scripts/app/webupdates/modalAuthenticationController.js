@@ -1,5 +1,5 @@
-angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'mntners',
-    function ($scope, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, mntners) {
+angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'mntners',
+    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, mntners) {
 
         $scope.mntners = mntners;
         $scope.selected = {
@@ -42,19 +42,24 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                         }, {name: 'auth'});
 
                         // do adjust the maintainer
-                        RestService.associateSSOMntner(whoisResources.getSource(), whoisResources.getObjectType(),
-                            whoisResources.getPrimaryKey(),WhoisResources.embedAttributes(attributes), $scope.selected.password) .then(
+                        RestService.associateSSOMntner(whoisResources.getSource(),'mntner', $scope.selected.item.key,
+                            WhoisResources.embedAttributes(attributes), $scope.selected.password) .then(
                             function (resp) {
                                 $scope.selected.item.mine = true;
-                                CredentialsService.removeCredentials();
+                                CredentialsService.removeCredentials(); //i because ts now an sso mntner
+                            }, function(errpr) {
+                                $log.error('Association error:' + JSON.stringify(error));
+
                             });
+                    } else {
+                        $log.debug('No need to authenticate');
                     }
 
                     // report success back
                     $modalInstance.close($scope.selected.item);
 
                 }, function( error ) {
-                    console.log('server error in modal:' + JSON.stringify(error) );
+                    $log.error('Authentication error:' + JSON.stringify(error) );
 
                     var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                     if (!_.isUndefined(whoisResources)) {

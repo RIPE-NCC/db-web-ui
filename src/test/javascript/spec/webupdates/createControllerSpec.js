@@ -235,8 +235,8 @@ describe('webUpdates: CreateController', function () {
             {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-1'}
         ];
 
-        $scope.onMntnerSelect($scope.maintainers.selected[0]);
-        $scope.onMntnerSelect($scope.maintainers.selected[1]);
+        $scope.onMntnerAdded($scope.maintainers.selected[0]);
+        $scope.onMntnerAdded($scope.maintainers.selected[1]);
 
         $scope.submit();
         $httpBackend.flush();

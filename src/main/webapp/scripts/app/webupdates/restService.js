@@ -26,7 +26,7 @@ angular.module('dbWebApp')
                             $log.info('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('fetchMntnersForSSOAccount error:' + JSON.stringify(error));
+                            $log.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -41,27 +41,28 @@ angular.module('dbWebApp')
 
                     var self = this;
                     var promises = _.map(mntners, function (item) {
-                        return _mntnerDetails(item.key);
+                        return _mntnerDetails(item);
                     })
 
                     return $q.all(promises);
                 };
 
-                function _mntnerDetails(mntnerName) {
+                function _mntnerDetails(mntner) {
                     var deferredObject = $q.defer();
 
-                    $log.info('_myMntnerDetails start for: ' + mntnerName);
+                    $log.info('_myMntnerDetails start for: ' + mntner.key);
 
                     $resource('api/whois/autocomplete',
-                        {query: mntnerName, field: 'mntner', attribute: 'auth', extended:true})
+                        {query: mntner.key, field: 'mntner', attribute: 'auth', extended:true})
                         .query()
                         .$promise
                         .then(function (result) {
-
+                            // enrich with mine
+                            result.mine = mntner.mine
                             $log.info('_myMntnerDetails success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('_myMntnerDetails error:' + JSON.stringify(error));
+                            $log.error('_myMntnerDetails error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -82,7 +83,7 @@ angular.module('dbWebApp')
                             $log.info('autocomplete success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('autocomplete error:' + JSON.stringify(error));
+                            $log.error('autocomplete error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -107,7 +108,7 @@ angular.module('dbWebApp')
                             $log.info('authenticate success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('authenticate error:' + JSON.stringify(error));
+                            $log.error('authenticate error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -128,7 +129,7 @@ angular.module('dbWebApp')
                             $log.info('fetchObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('fetchObject error:' + JSON.stringify(error));
+                            $log.error('fetchObject error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -149,7 +150,7 @@ angular.module('dbWebApp')
                             $log.info('createObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('createObject error:' + JSON.stringify(error));
+                            $log.error('createObject error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -171,7 +172,7 @@ angular.module('dbWebApp')
                             $log.info('modifyObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('modifyObject error:' + JSON.stringify(error));
+                            $log.error('modifyObject error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -193,7 +194,7 @@ angular.module('dbWebApp')
                             $log.info('associateSSOMntner success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.info('associateSSOMntner error:' + JSON.stringify(error));
+                            $log.error('associateSSOMntner error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', 'WhoisResources', 'MessageStore', 'CredentialsService','RestService', '$q', 'ModalService',
-        function ($scope, $stateParams, $state, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', 'WhoisResources', 'MessageStore', 'CredentialsService','RestService', '$q', 'ModalService',
+        function ($scope, $stateParams, $state, $log, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService) {
 
             // exposed methods used by the view
             $scope.onMntnerAdded = onMntnerAdded;
@@ -96,7 +96,7 @@ angular.module('webUpdates')
                             _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
                         }
                     }, function(error) {
-                        console.log('Error fetching mnters for SSO:' + JSON.stringify(error));
+                        $log.error('Error fetching mnters for SSO:' + JSON.stringify(error));
                     }
                 );
             };
@@ -119,9 +119,8 @@ angular.module('webUpdates')
                             function( result ) {
                                 // returns an array for each mntner
                                 $scope.maintainers.selected = _.flatten(result);
-                                $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
 
-                                console.log('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
+                                $log.info('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
 
                                 if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
                                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
@@ -131,9 +130,9 @@ angular.module('webUpdates')
                                                 // has been successfully associated
                                                 $scope.maintainers.mine.push(selectedMntner);
                                                 // mark starred in selected
-                                                $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
+                                                $scope.maintainers.selected = _enrichWithMine($scope.maintainers.selected);
 
-                                                console.log('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
+                                                $log.info('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
 
                                             }
                                         }
@@ -143,7 +142,7 @@ angular.module('webUpdates')
                     }
                 ).catch(
                     function (error) {
-                        console.log('Error fetching sso-mntnets and object:' + JSON.stringify(error));
+                        $log.error('Error fetching sso-mntnets and object:' + JSON.stringify(error));
                         // TODO: figure out how a q.all failure looks like
                         //var whoisResources = _wrapAndEnrichResources(error.data);
                         //_setErrors(whoisResources);
@@ -166,7 +165,7 @@ angular.module('webUpdates')
                                 // has been successfully associated
                                 $scope.maintainers.mine.push(selectedMntner);
                                 // mark starred in selected
-                                $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
+                                $scope.maintainers.selected = _enrichWithMine($scope.maintainers.selected);
                             }
                         }
                     )
@@ -174,7 +173,7 @@ angular.module('webUpdates')
                     _addMntnerToSelected(item.key);
                 }
 
-                console.log('onMntnerAdded:'  + JSON.stringify(item) + ' selected mntners now:' + JSON.stringify($scope.maintainers.selected));
+                $log.debug('onMntnerAdded:'  + JSON.stringify(item) + ' selected mntners now:' + JSON.stringify($scope.maintainers.selected));
 
             }
 
@@ -204,7 +203,7 @@ angular.module('webUpdates')
                     });
                 }
 
-                console.log('onMntnerRemove: ' + JSON.stringify(item) + ' selected mntners now:' +  JSON.stringify($scope.maintainers.selected));
+                $log.debug('onMntnerRemoved: ' + JSON.stringify(item) + ' selected mntners now:' +  JSON.stringify($scope.maintainers.selected));
 
             }
 
@@ -240,7 +239,7 @@ angular.module('webUpdates')
                     RestService.autocomplete( 'mnt-by', query, true, ['auth']).then(
                         function (data) {
                             // prevent mntners on selected list to appear
-                            $scope.maintainers.alternatives = _stripAlreadySelected(_enrichAlternativesWithMine(data));
+                            $scope.maintainers.alternatives = _stripAlreadySelected(_enrichWithMine(data));
                         }
                     );
                 }
@@ -313,7 +312,7 @@ angular.module('webUpdates')
                                     // has been successfully associated
                                     $scope.maintainers.mine.push(selectedMntner);
                                     // mark starred in selected
-                                    $scope.maintainers.selected = _enrichAlternativesWithMine($scope.maintainers.selected);
+                                    $scope.maintainers.selected = _enrichWithMine($scope.maintainers.selected);
                                 }
 
                                 // try again
@@ -394,7 +393,6 @@ angular.module('webUpdates')
                         mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
                     };
                 });
-                console.log('selected mntners:' + JSON.stringify(selected));
 
                 return selected;
             }
@@ -406,7 +404,7 @@ angular.module('webUpdates')
                 return status;
             }
 
-            function _enrichAlternativesWithMine(mntners) {
+            function _enricWithMine(mntners) {
                 return _.map(mntners, function (mntner) {
                     // search in selected list
                     if (_isMntnerOnlist($scope.maintainers.mine, mntner)) {
@@ -481,7 +479,7 @@ angular.module('webUpdates')
             }
 
             $scope.needsPasswordAuthentication = function(selectedMaintainers) {
-                if( _selectedMntnersAreMine(selectedMaintainers) ) {
+                if( _oneOfSelectedMntnersIsMine(selectedMaintainers) ) {
                     return false;
                 }
 
@@ -493,15 +491,9 @@ angular.module('webUpdates')
                 return true;
             }
 
-            function _selectedMntnersAreMine(selectedMaintainers) {
-                return _.any(selectedMaintainers, function (mntner) {
-                    return $scope.isMine(mntner) === true;
-                });
-            }
-
             $scope.getMntnersForPasswordAuth = function(selectedMaintainers) {
 
-                if (_selectedMntnersAreMine(selectedMaintainers)) {
+                if (_oneOfSelectedMntnersIsMine(selectedMaintainers)) {
                     return [];
                 }
 
@@ -510,5 +502,10 @@ angular.module('webUpdates')
                 });
             };
 
+            function _oneOfSelectedMntnersIsMine(selectedMaintainers) {
+                return _.any(selectedMaintainers, function (mntner) {
+                    return $scope.isMine(mntner) === true;
+                });
+            }
 
         }]);
