@@ -5,7 +5,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         $scope.selected = {
             item: $scope.mntners[0],
             password: '',
-            associate: false,
+            associate: true,
             message: undefined
         };
 
