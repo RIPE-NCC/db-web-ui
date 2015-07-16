@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore) {
+    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'RestService',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, RestService) {
 
             var onCreate = function() {
 
@@ -45,24 +45,7 @@ angular.module('webUpdates')
                 };
 
 
-                var fetchObjectViaRest = function () {
-                    $resource('api/whois/:source/:objectType/:objectName', {
-                        source: $scope.objectSource,
-                        objectType: $scope.objectType,
-                        objectName: $scope.objectName,
-                        unfiltered: true
-                    })
-                        .get(function (resp) {
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                            $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                            setErrors(whoisResources);
-                        }, function (resp) {
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                            if (!_.isUndefined(whoisResources)) {
-                                setErrors(whoisResources);
-                            }
-                        });
-                };
+
 
                 // fetch just created object from temporary store
                 var cached = MessageStore.get($scope.objectName);
@@ -81,7 +64,18 @@ angular.module('webUpdates')
                     }
 
                 } else {
-                    fetchObjectViaRest();
+                    RestService.fetchObject($scope.objectSource, $scope.objectType, $scope.objectName, null).then(
+                        function (resp) {
+                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                            $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                            setErrors(whoisResources);
+                        }, function (resp) {
+                            var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
+                            if (!_.isUndefined(whoisResources)) {
+                                setErrors(whoisResources);
+                            }
+                        }
+                    );
                 }
 
                 /*

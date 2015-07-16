@@ -6,6 +6,7 @@ package net.ripe.whois.config;
 public final class Constants {
 
     private Constants() {
+        // do not instantiate
     }
 
     // TODO: use enum for profile

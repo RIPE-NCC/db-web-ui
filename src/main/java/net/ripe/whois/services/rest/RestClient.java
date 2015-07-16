@@ -11,9 +11,9 @@ public abstract class RestClient {
     protected final RestTemplate restTemplate = createRestTemplate();
 
     private RestTemplate createRestTemplate() {
-        CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
+        final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+        final ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
+        final RestTemplate restTemplate = new RestTemplate(requestFactory);
         restTemplate.setErrorHandler(new RestResponseErrorHandler());
         return restTemplate;
     }

@@ -3,6 +3,7 @@ package net.ripe.whois;
 import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
@@ -12,7 +13,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 
 import javax.annotation.PostConstruct;
-import javax.inject.Inject;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -23,10 +23,16 @@ import java.util.Collection;
 @EnableAutoConfiguration
 public class Application {
 
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
-    @Inject
-    private Environment env;
+    private final Environment environment;
+    private final CrowdTokenFilter crowdTokenFilter;
+
+    @Autowired
+    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter) {
+        this.environment = environment;
+        this.crowdTokenFilter = crowdTokenFilter;
+    }
 
     /**
      * Initializes whois_webui.
@@ -39,23 +45,23 @@ public class Application {
      */
     @PostConstruct
     public void initApplication() throws IOException {
-        if (env.getActiveProfiles().length == 0) {
-            log.warn("No Spring profile configured, running with default configuration");
+        if (environment.getActiveProfiles().length == 0) {
+            LOGGER.warn("No Spring profile configured, running with default configuration");
         } else {
-            log.info("Running with Spring profile(s) : {}", Arrays.toString(env.getActiveProfiles()));
-            Collection activeProfiles = Arrays.asList(env.getActiveProfiles());
+            LOGGER.info("Running with Spring profile(s) : {}", Arrays.toString(environment.getActiveProfiles()));
+            final Collection activeProfiles = Arrays.asList(environment.getActiveProfiles());
 
             // TODO: refactor this (check for any single profile)
             if (activeProfiles.contains("dev") && activeProfiles.contains("prod")) {
-                log.error("You have misconfigured your application! " +
+                LOGGER.error("You have misconfigured your application! " +
                     "It should not run with both the 'dev' and 'prod' profiles at the same time.");
             }
             if (activeProfiles.contains("prod") && activeProfiles.contains("fast")) {
-                log.error("You have misconfigured your application! " +
+                LOGGER.error("You have misconfigured your application! " +
                     "It should not run with both the 'prod' and 'fast' profiles at the same time.");
             }
             if (activeProfiles.contains("dev") && activeProfiles.contains("cloud")) {
-                log.error("You have misconfigured your application! " +
+                LOGGER.error("You have misconfigured your application! " +
                     "It should not run with both the 'dev' and 'cloud' profiles at the same time.");
             }
         }
@@ -65,36 +71,35 @@ public class Application {
      * Main method, used to run the application.
      */
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplication(Application.class);
+        final SpringApplication app = new SpringApplication(Application.class);
         app.setShowBanner(false);
-        SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
+        final SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
         addDefaultProfile(app, source);
-        Environment env = app.run(args).getEnvironment();
-        log.info("Access URLs:\n----------------------------------------------------------\n\t" +
+        final Environment environment = app.run(args).getEnvironment();
+        LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
             "Local: \t\thttps://127.0.0.1:{}\n\t" +
             "External: \thttps://{}:{}\n----------------------------------------------------------",
-            env.getProperty("server.port"),
+            environment.getProperty("server.port"),
             InetAddress.getLocalHost().getHostAddress(),
-            env.getProperty("server.port"));
-
+            environment.getProperty("server.port"));
     }
 
     /**
      * If no profile has been configured, set by default the "dev" profile.
      */
      // TODO: explicitly set a profile or fail (don't run as dev by default)
-    private static void addDefaultProfile(SpringApplication app, SimpleCommandLinePropertySource source) {
+    private static void addDefaultProfile(final SpringApplication application, final SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active") &&
                 !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
 
-            app.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
+            application.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
         }
     }
 
     @Bean
     public FilterRegistrationBean crowdFilter() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new CrowdInterceptor());
-        filterRegistrationBean.addUrlPatterns("/api/*");
+        final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(crowdTokenFilter);
+        filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }
 

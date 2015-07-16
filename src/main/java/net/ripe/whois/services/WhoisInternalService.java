@@ -39,19 +39,20 @@ public class WhoisInternalService extends RestClient {
     public List<Map<String,Object>> getMaintainers(final UUID uuid) {
 
         // fetch as xml
-        ResponseEntity<WhoisResources> resp = restTemplate.exchange("{apiUrl}/api/user/{uuid}/maintainers?apiKey={apiKey}",
+        final ResponseEntity<WhoisResources> response = restTemplate.exchange("{apiUrl}/api/user/{uuid}/maintainers?apiKey={apiKey}",
             HttpMethod.GET,
             new HttpEntity<String>(withHeaders(MediaType.APPLICATION_XML_VALUE)),
             WhoisResources.class,
             withParams(uuid));
-        if (resp.getStatusCode() != HttpStatus.OK) {
-            throw new RestClientException(resp.getBody().getErrorMessages());
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new RestClientException(response.getBody().getErrorMessages());
         }
 
         // use big whois-resources-resp to compose small compact response that looks like autocomplete-service
-        List<Map<String, Object>> summaries = Lists.newArrayList();
-        if (resp.getStatusCode() == HttpStatus.OK && resp.hasBody()) {
-            for (WhoisObject obj : resp.getBody().getWhoisObjects()) {
+        final List<Map<String, Object>> summaries = Lists.newArrayList();
+        if (response.getStatusCode() == HttpStatus.OK && response.hasBody()) {
+            for (WhoisObject obj : response.getBody().getWhoisObjects()) {
                 Map<String, Object> objectSummary = Maps.newHashMap();
                 objectSummary.put("key", getObjectKey(obj));
                 objectSummary.put("type", getObjectType(obj));
@@ -60,9 +61,9 @@ public class WhoisInternalService extends RestClient {
                 summaries.add(objectSummary);
             }
         }
+
         return summaries;
     }
-
 
     private HashMap<String, Object> withParams(final UUID uuid) {
         final HashMap<String, Object> variables = Maps.newHashMap();

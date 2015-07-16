@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .factory( 'CredentialsService', function() {
+    .service( 'CredentialsService', function() {
 
         var _credentials;
 
