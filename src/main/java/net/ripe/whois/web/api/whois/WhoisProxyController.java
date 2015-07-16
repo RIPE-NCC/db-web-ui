@@ -26,8 +26,12 @@ public class WhoisProxyController {
     private WhoisService whoisService;
 
     @RequestMapping(value = "/**")
-    public ResponseEntity<String> proxyRestCalls(final HttpServletRequest request, @Nullable @RequestBody(required = false) final String body, @RequestHeader HttpHeaders headers) throws Exception {
-        LOGGER.info("request:" + request.toString());
+    public ResponseEntity<String> proxyRestCalls(
+            final HttpServletRequest request,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) throws Exception {
+
+        LOGGER.info("request: {}", request.toString());
 
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
 

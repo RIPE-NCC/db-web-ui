@@ -22,7 +22,7 @@
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
                ng-if="uiSelectTemplateReady">
-        <ui-select-match >{{$item.key}} <span class="fa fa-star" ng-if="isMine($item)"></span></ui-select-match>
+        <ui-select-match ui-lock-choice="needToLockLastMntner()">{{$item.key}} <span class="fa fa-star" ng-if="isMine($item)"></span></ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="refreshMntners($select.search)"
                            refresh-delay="100">
@@ -98,8 +98,6 @@
     <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
-    <button ng-click="submit()" class="blue-button pull-right" style="border:0;">Submit</button>
+    <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Submit</button>
     </section>
 </form>
-
-

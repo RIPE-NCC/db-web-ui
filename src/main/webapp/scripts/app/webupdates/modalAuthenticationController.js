@@ -52,7 +52,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
                             });
                     } else {
-                        $log.debug('No need to authenticate');
+                        $log.debug('No need to associate');
                     }
 
                     // report success back

@@ -16,12 +16,13 @@ internal:
         url: http://int-dev.db.ripe.net
         key: DB-WHOIS-d5395e7fbf8d
 
-# SSO translation properties
 crowd:
     rest:
         url: http://serval.prepdev.ripe.net:8095/crowd
         user: db
         password: evarylli
+    login:
+        url: http://access.prepdev.ripe.net/
 
 logging.level.org.springframework.web: DEBUG
 logging.level.org.hibernate: ERROR

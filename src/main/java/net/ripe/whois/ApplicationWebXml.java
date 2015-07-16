@@ -11,10 +11,10 @@ import org.springframework.boot.context.web.SpringBootServletInitializer;
  */
 public class ApplicationWebXml extends SpringBootServletInitializer {
 
-    private final Logger log = LoggerFactory.getLogger(ApplicationWebXml.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationWebXml.class);
 
     @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
         return application.profiles(addDefaultProfile())
                 .showBanner(false)
                 .sources(Application.class);
@@ -28,13 +28,13 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
      * </p>
      */
     private String addDefaultProfile() {
-        String profile = System.getProperty("spring.profiles.active");
+        final String profile = System.getProperty("spring.profiles.active");
         if (profile != null) {
-            log.info("Running with Spring profile(s) : {}", profile);
+            LOGGER.info("Running with Spring profile(s) : {}", profile);
             return profile;
         }
 
-        log.warn("No Spring profile configured, running with default configuration");
+        LOGGER.warn("No Spring profile configured, running with default configuration");
         return Constants.SPRING_PROFILE_DEVELOPMENT;
     }
 }

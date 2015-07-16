@@ -26,6 +26,7 @@ angular.module('webUpdates')
             $scope.removeAttribute = removeAttribute;
             $scope.displayAddAttributeDialog = displayAddAttributeDialog;
             $scope.displayMd5DialogDialog = displayMd5DialogDialog;
+            $scope.needToLockLastMntner = needToLockLastMntner;
 
             _initialisePage();
 
@@ -105,7 +106,7 @@ angular.module('webUpdates')
 
                 // wait untill both have completed
                 $q.all( { mntners:        RestService.fetchMntnersForSSOAccount(),
-                          objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name)}).then(
+                          objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name, null)}).then(
                     function (results) {
                         // store mntners for SSO account
                         $scope.maintainers.mine = results.mntners;
@@ -139,6 +140,8 @@ angular.module('webUpdates')
                                                 $log.info('maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
 
                                             }
+                                            _refreshObject();
+
                                         }
                                     )
                                 }
@@ -163,6 +166,7 @@ angular.module('webUpdates')
                 if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
                     ModalService.openAuthenticationModal($scope.source, $scope.maintainers.selected).then(
                         function(selectedMntner) {
+
                             _addMntnerToSelected(selectedMntner.key);
 
                             if( $scope.isMine(selectedMntner)) {
@@ -171,6 +175,8 @@ angular.module('webUpdates')
                                 // mark starred in selected
                                 $scope.maintainers.selected = _enrichWithMine($scope.maintainers.selected);
                             }
+                            _refreshObject();
+
                         }
                     )
                 } else {
@@ -318,9 +324,7 @@ angular.module('webUpdates')
                                     // mark starred in selected
                                     $scope.maintainers.selected = _enrichWithMine($scope.maintainers.selected);
                                 }
-
-                                // try again
-                                submit();
+                                _refreshObject();
                             }
                         );
                         return;
@@ -482,13 +486,24 @@ angular.module('webUpdates')
                 return whoisResources;
             }
 
+            function needToLockLastMntner() {
+                if( $scope.name && $scope.maintainers.selected.length == 1 ) {
+                    return true;
+                }
+                return false;
+            }
+
             $scope.needsPasswordAuthentication = function(selectedMaintainers) {
+                $log.info('mine:' + JSON.stringify($scope.maintainers.mine));
+                $log.info('selectedMaintainers:' + JSON.stringify(selectedMaintainers));
                 if( _oneOfSelectedMntnersIsMine(selectedMaintainers) ) {
                     return false;
                 }
 
                 var md5Mntners =  $scope.getMntnersForPasswordAuth(selectedMaintainers);
                 var mntnerNames = _.map(md5Mntners, 'key');
+                $log.info('md5Mntners:' + JSON.stringify(md5Mntners));
+                $log.info('mntnerNames:' + JSON.stringify(mntnerNames));
 
                 if( md5Mntners.length > 0 && CredentialsService.hasCredentials() && _.contains(mntnerNames,  CredentialsService.getCredentials().mntner)) {
                     return false;
@@ -503,7 +518,7 @@ angular.module('webUpdates')
                 }
 
                 return _.filter(selectedMaintainers, function (mntner) {
-                    return $scope.hasMd5(mntner) === true;
+                    return !_.isUndefined(mntner.auth) && $scope.hasMd5(mntner) === true;
                 });
             };
 
@@ -511,6 +526,19 @@ angular.module('webUpdates')
                 return _.any(selectedMaintainers, function (mntner) {
                     return $scope.isMine(mntner) === true;
                 });
+            }
+
+            function _refreshObject() {
+                var password = null;
+                if( CredentialsService.hasCredentials()) {
+                    password = CredentialsService.getCredentials().successfulPassword;
+                }
+                $log.info("refresh using password:" + password);
+                RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password ).then(
+                    function(result) {
+                        _wrapAndEnrichResources(result);
+                    }
+                );
             }
 
         }]);

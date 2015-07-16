@@ -120,13 +120,13 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.fetchObject = function (source, objectType, objectName) {
+                this.fetchObject = function (source, objectType, objectName, password) {
                     var deferredObject = $q.defer();
 
                     $log.info('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
-                        {source: source, objectType: objectType, name: objectName, unfiltered: true})
+                        {source: source, objectType: objectType, name: objectName, password: password, unfiltered: true})
                         .get()
                         .$promise
                         .then(function (result) {
