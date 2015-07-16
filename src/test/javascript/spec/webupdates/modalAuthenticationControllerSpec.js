@@ -2,21 +2,20 @@
 
 describe('webUpdates: ModalAuthenticationController', function () {
 
-    var $scope, $log, modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, $httpBackend ;
+    var $scope, $log, modalInstance, WhoisResources, RestService, userInfoService, credentialsService, $httpBackend ;
     var source = 'RIPE'
     var mntners;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$log_,_WhoisResources_,_RestService_, _CredentialsService_, _$httpBackend_) {
+        inject(function (_$controller_, _$rootScope_, _$log_,_WhoisResources_,_RestService_, _$httpBackend_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
             $log = _$log_;
             WhoisResources = _WhoisResources_;
             RestService = _RestService_;
-            CredentialsService = _CredentialsService_;
             $httpBackend = _$httpBackend_;
 
             modalInstance = {
@@ -26,19 +25,25 @@ describe('webUpdates: ModalAuthenticationController', function () {
                     then: jasmine.createSpy('modalInstance.result.then')
                 }
             };
-            UserInfoService = {
+            userInfoService = {
                 getUsername: function() {
                     return 'dummy@ripe.net';
                 }
             };
+            credentialsService = {
+                setCredentials: jasmine.createSpy('credentialsService.setCredentials'),
+                removeCredentials: jasmine.createSpy('credentialsService.removeCredentials'),
+                hasCredentials: jasmine.createSpy('credentialsService.hasCredentials'),
+                getCredentials: jasmine.createSpy('credentialsService.getCredentials')
+            };
+
             mntners = [ {type:'mntner', key:'a-mnt', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
 
             _$controller_('ModalAuthenticationController', {
                 $scope: $scope, $log: $log, $modalInstance: modalInstance, WhoisResources:WhoisResources,
-                RestService:RestService, UserInfoService:UserInfoService, CredentialsService:CredentialsService,
+                RestService:RestService, UserInfoService:userInfoService, CredentialsService:credentialsService,
                 source: source, mntners: function() { return mntners; }
             });
-
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
@@ -115,6 +120,8 @@ describe('webUpdates: ModalAuthenticationController', function () {
         $scope.ok();
         $httpBackend.flush();
 
+        expect(credentialsService.setCredentials).toHaveBeenCalledWith( 'b-mnt', 'secret');
+
         expect(modalInstance.close).toHaveBeenCalledWith( { type:'mntner', key:'b-mnt'} );
     });
 
@@ -161,6 +168,9 @@ describe('webUpdates: ModalAuthenticationController', function () {
 
         $scope.ok();
         $httpBackend.flush();
+
+        expect(credentialsService.setCredentials).toHaveBeenCalledWith( 'b-mnt', 'secret');
+        expect(credentialsService.removeCredentials).toHaveBeenCalled( );
 
         expect(modalInstance.close).toHaveBeenCalledWith( { type:'mntner', key:'b-mnt', mine:true} );
     });

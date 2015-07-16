@@ -39,7 +39,6 @@ angular.module('dbWebApp')
 
                     $log.info('detailsForMultipleMntners start for: ' + JSON.stringify(mntners));
 
-                    var self = this;
                     var promises = _.map(mntners, function (item) {
                         return _mntnerDetails(item);
                     })
@@ -50,7 +49,7 @@ angular.module('dbWebApp')
                 function _mntnerDetails(mntner) {
                     var deferredObject = $q.defer();
 
-                    $log.info('_myMntnerDetails start for: ' + mntner.key);
+                    $log.info('_myMntnerDetails start for: ' +  JSON.stringify(mntner));
 
                     $resource('api/whois/autocomplete',
                         {query: mntner.key, field: 'mntner', attribute: 'auth', extended:true})
@@ -58,7 +57,12 @@ angular.module('dbWebApp')
                         .$promise
                         .then(function (result) {
                             // enrich with mine
-                            result.mine = mntner.mine
+                            result = _.map(result, function( item ) {
+                                if( item.key === mntner.key && mntner.mine === true ) {
+                                    item.mine = true;
+                                }
+                                return item;
+                            });
                             $log.info('_myMntnerDetails success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {

@@ -110,9 +110,13 @@ angular.module('webUpdates')
                         // store mntners for SSO account
                         $scope.maintainers.mine = results.mntners;
 
+                        $log.info('maintainers.mine:'+ JSON.stringify($scope.maintainers.mine));
+
                         // store object to modify
                         _wrapAndEnrichResources(results.objectToModify);
                         $scope.maintainers.selected = _extractMntnersFromObject($scope.attributes);
+
+                        $log.info('maintainers.from.object:'+ JSON.stringify($scope.maintainers.selected));
 
                         // fetch details of all selected maintainers concurrently
                         RestService.detailsForMntners($scope.maintainers.selected).then(
@@ -485,6 +489,7 @@ angular.module('webUpdates')
 
                 var md5Mntners =  $scope.getMntnersForPasswordAuth(selectedMaintainers);
                 var mntnerNames = _.map(md5Mntners, 'key');
+
                 if( md5Mntners.length > 0 && CredentialsService.hasCredentials() && _.contains(mntnerNames,  CredentialsService.getCredentials().mntner)) {
                     return false;
                 }

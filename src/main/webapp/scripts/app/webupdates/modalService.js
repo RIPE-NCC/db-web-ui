@@ -54,6 +54,8 @@ angular.module('dbWebApp')
             this.openAuthenticationModal = function (source, mntners) {
                 var deferredObject = $q.defer();
 
+                console.log('openAuthenticationModal start with: ' + source + '  mntners:' +  JSON.stringify(mntners));
+
                 var modalInstance = $modal.open({
                         animation:true,
                         templateUrl: 'scripts/app/webupdates/modalAuthentication.html',
