@@ -210,42 +210,33 @@ angular.module('dbWebApp')
                 });
         };
 
-        var mergeSortAttributes = function (attrType, attrs) {
-            // know the idnex of each kind of attributes in an object
-            var objecTypeIndex = {};
-            _.map(this, function(attr) {
-                objecTypeIndex[attr.name] = attr.$$meta;
+        var addAttrsSorted = function (attrType, attrs) {
+            var lastIdxOfType = _.findLastIndex( this, function(item) {
+                return item.name === attrType;
             });
-            console.log("field-index:" + JSON.stringify(objecTypeIndex));
+            if( lastIdxOfType > -1 ) {
+                var lastItemDetail = this[lastIdxOfType];
 
-            // apppend the two arrays
-            var combined = this.concat(attrs);
-            console.log("combined:" + JSON.stringify(combined));
+                var result = [];
+                var idx = 0;
+                _.each(this, function (attr) {
+                    result.push(attr);
+                    if (idx === lastIdxOfType) {
+                        _.each(attrs, function (item) {
+                            var newItem = _.cloneDeep(lastItemDetail);
+                            newItem.value = item.value;
+                            result.push(newItem);
+                        });
+                    }
+                    idx++;
+                });
 
-            // add meta to items without meta
-            var enriched = _.map(combined, function(attr) {
-                if( ! attr.$$meta ) {
-                   attr.$$meta = objecTypeIndex[attr.name];
-               }
-                return attr;
-            });
-            console.log("enriched:" + JSON.stringify(enriched));
-
-            // add meta to items without meta
-            var stripped = _.filter(enriched, function(attr) {
-                if( attr.name === attrType && ! attr.value ) {
-                    return false;
-                }
-                return true;
-            });
-            console.log("stripped:" + JSON.stringify(stripped));
-
-            var sorted = _.sortBy(stripped, function (attr) {
-                return attr.$$meta.$$idx;
-            });
-            console.log("sorted:" + JSON.stringify(sorted));
-            return sorted;
-        };
+                return result;
+            } else {
+                // TODO smarter merge
+                return this.concat(attrs);
+            }
+        }
 
         var setSingleAttributeOnName = function( name, value) {
             var found = false;
@@ -377,7 +368,7 @@ angular.module('dbWebApp')
             attrs.getAllAttributesWithValueOnName = getAllAttributesWithValueOnName;
             attrs.getSingleAttributeOnName = getSingleAttributeOnName;
             attrs.setSingleAttributeOnName = setSingleAttributeOnName;
-            attrs.mergeSortAttributes = mergeSortAttributes;
+            attrs.addAttrsSorted = addAttrsSorted;
             attrs.validate = validate;
             attrs.clearErrors = clearErrors;
 

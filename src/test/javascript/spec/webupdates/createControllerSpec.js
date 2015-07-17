@@ -182,23 +182,26 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('should duplicate attribute', function() {
-        expect($scope.attributes.length).toEqual(3);
+        console.log("before:" + JSON.stringify($scope.attributes));
+        var lengthBefore = $scope.attributes.length;
 
         $scope.duplicateAttribute($scope.attributes[1]);
 
-        expect($scope.attributes.length).toEqual(4);
+        expect($scope.attributes.length).toEqual(lengthBefore+1);
         expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
         expect($scope.attributes[2].value).toBeUndefined();
     });
 
     it('should remove attribute', function() {
-        expect($scope.attributes.length).toEqual(3);
+        console.log("before:" + JSON.stringify($scope.attributes));
+        var lengthBefore = $scope.attributes.length;
+        var currentThird = $scope.attributes[2]
 
         $scope.removeAttribute($scope.attributes[1]);
 
-        expect($scope.attributes.length).toEqual(2);
-        expect($scope.attributes[1].name).toEqual('source');
-        expect($scope.attributes[1].value).toEqual('RIPE');
+        expect($scope.attributes.length).toEqual(lengthBefore-1);
+        expect($scope.attributes[1].name).toEqual(currentThird.name);
+        expect($scope.attributes[1].value).toEqual(currentThird.value);
     });
 
 

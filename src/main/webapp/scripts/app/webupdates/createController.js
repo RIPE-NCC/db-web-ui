@@ -99,7 +99,7 @@ angular.module('webUpdates')
                             var mntnerAttrs = _.map($scope.maintainers.mine, function (i) {
                                 return {name: 'mnt-by', value: i.key};
                             });
-                            _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', mntnerAttrs));
+                            _wrapAndEnrichAttributes($scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
                         }
                     }, function(error) {
                         $log.error('Error fetching mnters for SSO:' + JSON.stringify(error));
@@ -158,6 +158,7 @@ angular.module('webUpdates')
              */
 
             function onMntnerAdded(item, all)   {
+                // TODO is seems that ui-select removes auth line from existing selected mntners
                 $log.debug('onMntnerAdded before: new item'  + JSON.stringify(item) );
                 $log.debug('onMntnerAdded all:' + JSON.stringify(all));
                 $log.debug('onMntnerAdded before: selected mntners now:' + JSON.stringify($scope.maintainers.selected));
@@ -173,10 +174,9 @@ angular.module('webUpdates')
             }
 
             function _copyAddedMntnerToAttributes(mntnerName) {
-                _wrapAndEnrichAttributes($scope.attributes.mergeSortAttributes('mnt-by', [{
-                    name: 'mnt-by',
-                    value: mntnerName
-                }]));
+                _wrapAndEnrichAttributes($scope.attributes.addAttrsSorted('mnt-by', [
+                    { name: 'mnt-by', value: mntnerName}
+                ]));
             }
 
             function onMntnerRemoved(item, all) {
