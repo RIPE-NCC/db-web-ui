@@ -216,11 +216,11 @@ angular.module('dbWebApp')
             _.map(this, function(attr) {
                 objecTypeIndex[attr.name] = attr.$$meta;
             });
-            //console.log("field-index:" + JSON.stringify(objecTypeIndex));
+            console.log("field-index:" + JSON.stringify(objecTypeIndex));
 
             // apppend the two arrays
             var combined = this.concat(attrs);
-            //console.log("combined:" + JSON.stringify(combined));
+            console.log("combined:" + JSON.stringify(combined));
 
             // add meta to items without meta
             var enriched = _.map(combined, function(attr) {
@@ -229,7 +229,7 @@ angular.module('dbWebApp')
                }
                 return attr;
             });
-            //console.log("enriched:" + JSON.stringify(enriched));
+            console.log("enriched:" + JSON.stringify(enriched));
 
             // add meta to items without meta
             var stripped = _.filter(enriched, function(attr) {
@@ -238,12 +238,12 @@ angular.module('dbWebApp')
                 }
                 return true;
             });
-            //console.log("stripped:" + JSON.stringify(stripped));
+            console.log("stripped:" + JSON.stringify(stripped));
 
             var sorted = _.sortBy(stripped, function (attr) {
                 return attr.$$meta.$$idx;
             });
-            //console.log("sorted:" + JSON.stringify(sorted));
+            console.log("sorted:" + JSON.stringify(sorted));
             return sorted;
         };
 
@@ -354,11 +354,24 @@ angular.module('dbWebApp')
             });
         };
 
+        var toPlaintext = function() {
+            var result = '';
+            _.each(this, function (attr) {
+                result += attr.name + ':' + _repeat(' ', Math.max(0, (20 - attr.name.length))) + attr.value + '\n';
+            });
+            return result;
+        };
+
+        var _repeat = function(string, n) {
+            return new Array(n + 1).join(string);
+        };
+
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {
                 return [];
             }
             attrs.toString = toString;
+            attrs.toPlaintext = toPlaintext;
             attrs.getAllAttributesOnName = getAllAttributesOnName;
             attrs.getAllAttributesNotOnName = getAllAttributesNotOnName;
             attrs.getAllAttributesWithValueOnName = getAllAttributesWithValueOnName;

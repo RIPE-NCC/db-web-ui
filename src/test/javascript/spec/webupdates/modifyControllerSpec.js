@@ -34,8 +34,8 @@ describe('webUpdates: ModifyController', function () {
             $httpBackend.whenGET(/.*.html/).respond(200);
 
             $httpBackend.whenGET('api/user/mntners').respond([
-                {'value':'TEST-MNT',   'extras':{'mine':true,'pgp':false,'sso':true,'md5':false}},
-                {'value':'TESTSSO-MNT', 'extras':{'mine':true,'pgp':false,'sso':true,'md5':true }}
+                {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true},
+                {key:'TESTSSO-MNT', type: 'mntner', auth:['MD5-PW'], mine:true}
             ]);
 
             $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
@@ -59,6 +59,12 @@ describe('webUpdates: ModifyController', function () {
                             }
 
                         } , {}];
+                });
+
+            $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
+                function(method,url) {
+                    //console.log("Got " + method + "  on " + url);
+                    return [200, [ {key:'TEST-MNT', type:'mntner', auth:['SSO']} ], {}];
                 });
 
             $httpBackend.flush();
@@ -121,7 +127,6 @@ describe('webUpdates: ModifyController', function () {
 
     it('should handle success put upon submit click when form is complete', function () {
 
-        // api/whois/RIPE/as-block
         $httpBackend.expectPUT('api/whois/RIPE/as-block/MY-AS-BLOCK').respond({
             objects: {
                 object: [
@@ -140,7 +145,7 @@ describe('webUpdates: ModifyController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('as-block', "A");
+        $scope.attributes.setSingleAttributeOnName('changed', "dummy@ripe.net");
 
         $scope.submit();
         $httpBackend.flush();

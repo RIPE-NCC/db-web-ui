@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore) {
+    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'RestService',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, RestService) {
 
             var onCreate = function() {
 
@@ -15,6 +15,9 @@ angular.module('webUpdates')
                 $scope.objectType = $stateParams.objectType;
                 $scope.objectName = $stateParams.name;
                 $scope.method = $stateParams.method; // optional: added by create- and modify-controller
+
+                $scope.before = undefined;
+                $scope.after = undefined;
 
                 // Initalize the UI
                 $scope.errors = [];
@@ -42,14 +45,27 @@ angular.module('webUpdates')
                 };
 
 
-                var fetchObjectViaRest = function () {
-                    $resource('api/whois/:source/:objectType/:objectName', {
-                        source: $scope.objectSource,
-                        objectType: $scope.objectType,
-                        objectName: $scope.objectName,
-                        unfiltered: true
-                    })
-                        .get(function (resp) {
+
+
+                // fetch just created object from temporary store
+                var cached = MessageStore.get($scope.objectName);
+                if (cached) {
+                    var whoisResources = WhoisResources.wrapWhoisResources(cached);
+                    $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                    setErrors(whoisResources);
+
+                    if ($scope.method === 'Modify') {
+
+                        var diff = WhoisResources.wrapAttributes(MessageStore.get('DIFF'));
+                        if (!_.isUndefined(diff)) {
+                            $scope.before = diff.toPlaintext();
+                            $scope.after = $scope.attributes.toPlaintext();
+                        }
+                    }
+
+                } else {
+                    RestService.fetchObject($scope.objectSource, $scope.objectType, $scope.objectName, null).then(
+                        function (resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
                             $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
                             setErrors(whoisResources);
@@ -58,18 +74,8 @@ angular.module('webUpdates')
                             if (!_.isUndefined(whoisResources)) {
                                 setErrors(whoisResources);
                             }
-                        });
-                };
-
-                // fetch just created object from temporary store
-                var cached = MessageStore.get($scope.objectName);
-                if (cached) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(cached);
-                    // Use version that we was just before created or modified
-                    $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                    setErrors(whoisResources);
-                } else {
-                    fetchObjectViaRest();
+                        }
+                    );
                 }
 
                 /*
@@ -125,5 +131,8 @@ angular.module('webUpdates')
                 });
             };
 
+            $scope.isDiff = function() {
+                return !_.isUndefined($scope.before) && !_.isUndefined($scope.after);
+            };
 
         }]);

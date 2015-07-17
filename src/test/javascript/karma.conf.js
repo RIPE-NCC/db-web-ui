@@ -55,6 +55,8 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-selectize2/dist/selectize.js',
             'main/webapp/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'main/webapp/bower_components/angular-ui-select/dist/select.js',
+            'main/webapp/bower_components/google-diff-match-patch/diff_match_patch.js',
+            'main/webapp/bower_components/angular-diff-match-patch/angular-diff-match-patch.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',

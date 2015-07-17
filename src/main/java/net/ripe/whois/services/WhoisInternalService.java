@@ -65,7 +65,6 @@ public class WhoisInternalService extends RestClient {
         return summaries;
     }
 
-
     private HashMap<String, Object> withParams(final UUID uuid) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("apiUrl", apiUrl);

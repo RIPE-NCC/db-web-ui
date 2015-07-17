@@ -54,28 +54,6 @@ ul.form-fields {
 	}
 }
 
-
-ul.success-fields {
-	list-style: none;
-	padding: 20px !important;
-	border: 1px #ccc dashed;
-	font {
-		family: menlo !important;
-	}
-	li {
-		display: inline-block !important;
-	    width: 50%;
-	}
-}
-
-@media (max-width: 768px) { 
-	ul.success-fields {
-		li {
-		    width: 100%;
-		}
-	}
-}
-
 .inner-container {
 	@extend %float-l;
 	@extend %width-100;

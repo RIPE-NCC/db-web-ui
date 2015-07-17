@@ -17,16 +17,22 @@
 <h1>{{objectType}} with primary key &quot;{{objectName}}&quot;</h1>
 
 <section class="inner-container">
-    <ul class="success-fields grey">
-        <li ng-repeat="attribute in attributes">
-            <label>{{attribute.name}}</label>
-            <div ng-show="attribute.$$error" class="modify-feedback">
-	            <i class="fa fa-info-circle"></i>
-	            <span>{{attribute.$$error}}</span>
-	        </div>
-            <p>{{attribute.value}}</p>
-        </li>
-    </ul>
+    <table class="success-fields grey" ng-if="!isDiff()">
+        <tr ng-repeat="attribute in attributes">
+            <td width="20%">
+                <label>{{attribute.name}}:</label>
+            </td>
+            <td>
+                <p>{{attribute.value}}</p>
+                <div ng-show="attribute.$$error" class="modify-feedback">
+    	            <span>{{attribute.$$error}}</span>
+    	            <i class="fa fa-info-circle"></i>
+    	        </div>
+            </td>
+        </tr>
+    </table>
+
+    <pre class="textdiff" line-diff left-obj="before" right-obj="after" ng-if="isDiff()"></pre>
 
     <button ng-click="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
     <button ng-click="navigateToModify()" class="blue-button pull-right ga-createobj-modifyobj">Modify object</button>
