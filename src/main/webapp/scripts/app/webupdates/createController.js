@@ -173,7 +173,7 @@ angular.module('webUpdates')
                 $log.debug('onMntnerAdded before: selected mntners now:' + JSON.stringify($scope.maintainers.object));
 
                 _copyAddedMntnerToAttributes(item.key);
-                if ($scope.needsPasswordAuthentication) {
+                if ($scope.needsPasswordAuthentication()) {
                     _performAuthentication();
                 }
 
@@ -535,24 +535,31 @@ angular.module('webUpdates')
                 });
             };
 
-            function _refreshObjectIfNeeded() {
+            function _refreshObjectIfNeeded(associationResp) {
                 if( $scope.operation === 'Modify' && $scope.objectType === 'mntner') {
-                    var password = null;
-                    if (CredentialsService.hasCredentials()) {
-                        password = CredentialsService.getCredentials().successfulPassword;
-                    }
-                    RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password).then(
-                        function (result) {
-                            _wrapAndEnrichResources(result);
-
-                            // save object for later diff in display-screen
-                            MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
-
-                            $log.info('sso-mntners:' + JSON.stringify($scope.maintainers.sso));
-                            $log.info('objectMaintainers:' + JSON.stringify($scope.maintainers.object));
-
+                    if( associationResp ) {
+                        _wrapAndEnrichResources(associationResp);
+                    } else {
+                        var password = null;
+                        if (CredentialsService.hasCredentials()) {
+                            password = CredentialsService.getCredentials().successfulPassword;
                         }
-                    );
+                        RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password).then(
+                            function (result) {
+                                _wrapAndEnrichResources(result);
+
+                                // save object for later diff in display-screen
+                                MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
+
+                                $log.info('sso-mntners:' + JSON.stringify($scope.maintainers.sso));
+                                $log.info('objectMaintainers:' + JSON.stringify($scope.maintainers.object));
+
+                            }
+                        );
+                    }
+                    $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
+                    $scope.maintainers.object = _extractEnrichMntnersFromObject($scope.attributes);
+
                 }
             }
 
@@ -581,7 +588,7 @@ angular.module('webUpdates')
                     $scope.errors.push({plainText:'You cannot modify this object through web updates because your SSO account is not associated any of the maintainers on this object, and none of the maintainers have password'});
                 } else {
                     ModalService.openAuthenticationModal($scope.source, mntnerWithPasswords).then(
-                        function (selectedMntner) {
+                        function (selectedMntner,associationResp) {
                             $log.info('selected mntner:' + JSON.stringify(selectedMntner));
 
                             if ($scope.isMine(selectedMntner)) {
@@ -595,7 +602,11 @@ angular.module('webUpdates')
                             $log.info('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
                             $log.info('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
 
-                            _refreshObjectIfNeeded();
+                            if( associationResp ) {
+                                _wrapAndEnrichResources(associationResp);
+
+                            }
+                            _refreshObjectIfNeeded(associationResp);
 
                         }, function (error) {
                             _navigateAway();
