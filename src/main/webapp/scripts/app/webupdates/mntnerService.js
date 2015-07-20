@@ -46,5 +46,15 @@ angular.module('dbWebApp').service('MntnerService', 'CredentialsService',[ funct
         });
     };
 
+    this.enrichSelectedWithMine = function(mine, selected) {
+        return _.map(selected, function (mntner) {
+            // search in selected list
+            if (_isMntnerOnlist(mine, mntner)) {
+                mntner.mine = true;
+            }
+            return mntner;
+        });
+    }
+
 
 }]);

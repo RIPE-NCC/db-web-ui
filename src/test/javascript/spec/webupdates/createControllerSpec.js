@@ -182,7 +182,6 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('should duplicate attribute', function() {
-        console.log("before:" + JSON.stringify($scope.attributes));
         var lengthBefore = $scope.attributes.length;
 
         $scope.duplicateAttribute($scope.attributes[1]);
@@ -193,7 +192,6 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('should remove attribute', function() {
-        console.log("before:" + JSON.stringify($scope.attributes));
         var lengthBefore = $scope.attributes.length;
         var currentThird = $scope.attributes[2]
 
@@ -206,9 +204,16 @@ describe('webUpdates: CreateController', function () {
 
 
     it('should fetch maintainers already associated to the user in the session', function() {
-        expect($scope.maintainers.mine[0].key).toEqual(userMaintainers[0].key);
-        expect($scope.maintainers.mine[0].type).toEqual(userMaintainers[0].type);
-        expect($scope.maintainers.mine[0].auth).toEqual(userMaintainers[0].auth);
+        expect($scope.maintainers.sso[0].key).toEqual(userMaintainers[0].key);
+        expect($scope.maintainers.sso[0].type).toEqual(userMaintainers[0].type);
+        expect($scope.maintainers.sso[0].auth).toEqual(userMaintainers[0].auth);
+        expect($scope.maintainers.sso[0].mine).toEqual(true);
+
+        expect($scope.maintainers.object[0].key).toEqual(userMaintainers[0].key);
+        expect($scope.maintainers.object[0].type).toEqual(userMaintainers[0].type);
+        expect($scope.maintainers.object[0].auth).toEqual(userMaintainers[0].auth);
+        expect($scope.maintainers.object[0].mine).toEqual(true);
+
     });
 
     it('should add the selected maintainers to the object before post it.', function() {
@@ -233,13 +238,13 @@ describe('webUpdates: CreateController', function () {
 
         $scope.attributes.setSingleAttributeOnName('as-block', 'MY-AS-BLOCK');
 
-        $scope.maintainers.selected = [
+        $scope.maintainers.object = [
             {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-0'},
             {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-1'}
         ];
 
-        $scope.onMntnerAdded($scope.maintainers.selected[0]);
-        $scope.onMntnerAdded($scope.maintainers.selected[1]);
+        $scope.onMntnerAdded($scope.maintainers.object[0]);
+        $scope.onMntnerAdded($scope.maintainers.object[1]);
 
         $scope.submit();
         $httpBackend.flush();

@@ -30,8 +30,6 @@ angular.module('webUpdates')
             $scope.displayMd5DialogDialog = displayMd5DialogDialog;
             $scope.needToLockLastMntner = needToLockLastMntner;
 
-
-
             _initialisePage();
 
             function _initialisePage() {
@@ -49,9 +47,10 @@ angular.module('webUpdates')
 
                 // fields
                 $scope.maintainers = {
-                    selected: [],
+                    sso: [],
+                    objectOriginal:[],
+                    object: [],
                     alternatives: [],
-                    mine: []
                 };
 
                 $scope.attributes = [];
@@ -85,21 +84,26 @@ angular.module('webUpdates')
                 }
             };
 
-
             function _fetchDataForCreate() {
                 RestService.fetchMntnersForSSOAccount().then(
                     function(results) {
-                        $scope.maintainers.mine = results;
-                        if ($scope.maintainers.mine.length > 0) {
+                        $scope.maintainers.sso = results;
+                        if ($scope.maintainers.sso.length > 0) {
 
+                            $scope.maintainers.objectOriginal = _.cloneDeep($scope.maintainers.sso);
                             // pupulate ui-select box with sso-mntners
-                            $scope.maintainers.selected = _.cloneDeep($scope.maintainers.mine);
+                            $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
 
                             // copy mntners to attributes (for later submit)
-                            var mntnerAttrs = _.map($scope.maintainers.mine, function (i) {
+                            var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
                                 return {name: 'mnt-by', value: i.key};
                             });
                             _wrapAndEnrichAttributes($scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
+
+                            $log.info("mntners-sso:"+ JSON.stringify($scope.maintainers.sso));
+                            $log.info("mntners-object-original:"+ JSON.stringify($scope.maintainers.objectOriginal));
+                            $log.info("mntners-object:"+ JSON.stringify($scope.maintainers.object));
+
                         }
                     }, function(error) {
                         $log.error('Error fetching mnters for SSO:' + JSON.stringify(error));
@@ -118,27 +122,32 @@ angular.module('webUpdates')
                           objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password)}).then(
                     function (results) {
                         // store mntners for SSO account
-                        $scope.maintainers.mine = results.mntners;
+                        $scope.maintainers.sso = results.mntners;
 
-                        $log.info('maintainers.mine:'+ JSON.stringify($scope.maintainers.mine));
+                        $log.info('maintainers.sso:'+ JSON.stringify($scope.maintainers.sso));
 
                         // store object to modify
                         _wrapAndEnrichResources(results.objectToModify);
-                        $scope.maintainers.selected = _extractMntnersFromObject($scope.attributes);
-                        $log.info('maintainers.from.object:'+ JSON.stringify($scope.maintainers.selected));
+
+                        // this is where we must authenticate against
+                        $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
+                        $scope.maintainers.object = _extractEnrichMntnersFromObject($scope.attributes);
 
                         // save object for later diff in display-screen
                         MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
                         // fetch details of all selected maintainers concurrently
-                        RestService.detailsForMntners($scope.maintainers.selected).then(
+                        RestService.detailsForMntners($scope.maintainers.object).then(
                             function( result ) {
-                                // returns an array for each mntner
-                                $scope.maintainers.selected = _.flatten(result);
+                                // result returns an array for each mntner
 
-                                $log.info('enriched maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
+                                $scope.maintainers.objectOriginal = _.flatten(result);
+                                $log.info("mntners-object-original:"+ JSON.stringify($scope.maintainers.objectOriginal));
 
-                                if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
+                                $scope.maintainers.object = _.flatten(result);
+                                $log.info("mntners-object:"+ JSON.stringify($scope.maintainers.object));
+
+                                if ($scope.needsPasswordAuthentication()) {
                                     _performAuthentication();
                                 }
                         });
@@ -158,17 +167,17 @@ angular.module('webUpdates')
              */
 
             function onMntnerAdded(item, all)   {
-                // TODO is seems that ui-select removes auth line from existing selected mntners
+                // TODO is seems that ui-select removes auth-field  from existing selected mntners
                 $log.debug('onMntnerAdded before: new item'  + JSON.stringify(item) );
                 $log.debug('onMntnerAdded all:' + JSON.stringify(all));
-                $log.debug('onMntnerAdded before: selected mntners now:' + JSON.stringify($scope.maintainers.selected));
+                $log.debug('onMntnerAdded before: selected mntners now:' + JSON.stringify($scope.maintainers.object));
 
                 _copyAddedMntnerToAttributes(item.key);
-                if ($scope.needsPasswordAuthentication($scope.maintainers.selected )) {
+                if ($scope.needsPasswordAuthentication) {
                     _performAuthentication();
                 }
 
-                $log.debug('onMntnerAdded:'  + JSON.stringify(item) + ' selected mntners now:' + JSON.stringify($scope.maintainers.selected));
+                $log.debug('onMntnerAdded:'  + JSON.stringify(item) + ' selected mntners now:' + JSON.stringify($scope.maintainers.object));
                 $log.debug('onMntnerAdded: attributes' + JSON.stringify($scope.attributes));
 
             }
@@ -181,7 +190,7 @@ angular.module('webUpdates')
 
             function onMntnerRemoved(item, all) {
 
-                if ($scope.maintainers.selected.length === 0) {
+                if ($scope.maintainers.object.length === 0) {
                     // make sure we do not remove the last mntner which act as anchor
                     _.map($scope.attributes, function (i) {
                         if (i.name === 'mnt-by') {
@@ -198,7 +207,7 @@ angular.module('webUpdates')
                     });
                 }
 
-                $log.debug('onMntnerRemoved: ' + JSON.stringify(item) + ' selected mntners now:' +  JSON.stringify($scope.maintainers.selected));
+                $log.debug('onMntnerRemoved: ' + JSON.stringify(item) + ' selected mntners now:' +  JSON.stringify($scope.maintainers.object));
 
             }
 
@@ -235,10 +244,6 @@ angular.module('webUpdates')
                         function (data) {
                             // prevent mntners on selected list to appear
                             $scope.maintainers.alternatives = _stripAlreadySelected(_enrichWithMine(data));
-
-                            $log.info('refreshMntners:mine:' + JSON.stringify($scope.maintainers.mine));
-                            $log.info('refreshMntners: selectedMaintainers:' + JSON.stringify($scope.maintainers.selected));
-
                         }
                     );
                 }
@@ -271,7 +276,7 @@ angular.module('webUpdates')
             }
 
             function hasMntners() {
-                return $scope.maintainers.selected.length > 0;
+                return $scope.maintainers.object.length > 0;
             }
 
             function submit() {
@@ -298,7 +303,7 @@ angular.module('webUpdates')
                     _stripNulls();
                     _clearErrors();
 
-                    if ($scope.needsPasswordAuthentication($scope.maintainers.selected)) {
+                    if ($scope.needsPasswordAuthentication()) {
                         _performAuthentication();
                         return;
                     }
@@ -360,7 +365,7 @@ angular.module('webUpdates')
              * private methods
              */
 
-            function _extractMntnersFromObject(attributes) {
+            function _extractEnrichMntnersFromObject(attributes) {
                 // get mntners from response
                 var mntnersInObject = _.filter(attributes, function (i) {
                     return i.name === 'mnt-by';
@@ -371,7 +376,7 @@ angular.module('webUpdates')
                     return {
                         type:'mntner',
                         key: mntnerAttr.value,
-                        mine: _.contains(_.map($scope.maintainers.mine, 'key'), mntnerAttr.value)
+                        mine: _.contains(_.map($scope.maintainers.sso, 'key'), mntnerAttr.value)
                     };
                 });
 
@@ -387,13 +392,17 @@ angular.module('webUpdates')
 
             function _stripAlreadySelected(mntners) {
                 return _.filter(mntners, function (mntner) {
-                    return !_isMntnerOnlist($scope.maintainers.selected, mntner);
+                    return !_isMntnerOnlist($scope.maintainers.object, mntner);
                 });
             }
 
             function _validateForm() {
-                var status = $scope.attributes.validate();
-                return status;
+                return $scope.attributes.validate();
+            }
+
+            function _isModifyableObject() {
+                // TODO add logic
+                return true;
             }
 
             function _stripNulls() {
@@ -450,7 +459,7 @@ angular.module('webUpdates')
             }
 
             function needToLockLastMntner() {
-                if( $scope.name && $scope.maintainers.selected.length == 1 ) {
+                if( $scope.name && $scope.maintainers.object.length == 1 ) {
                     return true;
                 }
                 return false;
@@ -459,23 +468,26 @@ angular.module('webUpdates')
             function _enrichWithMine(mntners) {
                 return  _.map(mntners, function(mntner) {
                     // search in selected list
-                    if(_isMntnerOnlist($scope.maintainers.mine, mntner)) {
+                    if(_isMntnerOnlist($scope.maintainers.sso, mntner)) {
                         mntner.mine = true;
+                    } else {
+                        mntner.mine = false;
+
                     }
                     return mntner;
                 });
             }
 
-            $scope.needsPasswordAuthentication = function(selectedMaintainers) {
-                $log.info('mine:' + JSON.stringify($scope.maintainers.mine));
-                $log.info('selectedMaintainers:' + JSON.stringify(selectedMaintainers));
+            $scope.needsPasswordAuthentication = function() {
+                $log.info('sso-mntners:' + JSON.stringify($scope.maintainers.sso));
+                $log.info('original-object-maintainers:' + JSON.stringify($scope.maintainers.objectOriginal));
 
-                if( _oneOfSelectedMntnersIsMine(selectedMaintainers) ) {
+                if( _oneOfOriginalMntnersIsMine($scope.maintainers.objectOriginal) ) {
                     $log.info("One of selected mntners is mine");
                     return false;
                 }
 
-                if( _oneOfSelectedMntnersHasCredential(selectedMaintainers) ) {
+                if( _oneOfOriginalMntnersHasCredential($scope.maintainers.objectOriginal) ) {
                     $log.info("One of selected mntners has credentials");
                     return false;
                 }
@@ -483,44 +495,52 @@ angular.module('webUpdates')
                 return true;
             }
 
-            function _oneOfSelectedMntnersIsMine(selectedMaintainers) {
-                return _.any(selectedMaintainers, function (mntner) {
+            function _oneOfOriginalMntnersIsMine(originalMaintainers) {
+                return _.any(originalMaintainers, function (mntner) {
                     return $scope.isMine(mntner) === true;
                 });
             }
 
-            function _oneOfSelectedMntnersHasCredential(selectedMaintainers) {
+            function _oneOfOriginalMntnersHasCredential(originalMaintainers) {
                 if( CredentialsService.hasCredentials() ) {
                     var trustedMtnerName = CredentialsService.getCredentials().mntner;
-                    return _.any(selectedMaintainers, function (mntner) {
+                    return _.any(originalMaintainers, function (mntner) {
                         return mntner.key === trustedMtnerName;
                     });
                 }
                 return false;
             }
 
-            $scope.getMntnersForPasswordAuth = function(selectedMaintainers) {
+            $scope.getMntnersForPasswordAuth = function(originalMaintainers) {
 
-                if (_oneOfSelectedMntnersIsMine(selectedMaintainers)) {
+                if (_oneOfOriginalMntnersIsMine(originalMaintainers)) {
                     return [];
                 }
 
-                if (_oneOfSelectedMntnersHasCredential(selectedMaintainers)) {
+                if (_oneOfOriginalMntnersHasCredential(originalMaintainers)) {
                     return [];
                 }
 
-                return _.filter(selectedMaintainers, function (mntner) {
-                    return !_.isUndefined(mntner.auth) && $scope.hasMd5(mntner) === true;
+                return _.filter(originalMaintainers, function (mntner) {
+                    if( mntner.mine === true ) {
+                        return false;
+                    }
+                    if( _.isUndefined(mntner.auth)) {
+                        return false;
+                    }
+                    if(  ! $scope.hasMd5(mntner) ) {
+                        return false;
+                    }
+                    return true;
                 });
             };
 
-            function _refreshObject() {
+            function _refreshObjectIfNeeded() {
                 if( $scope.operation === 'Modify' && $scope.objectType === 'mntner') {
                     var password = null;
                     if (CredentialsService.hasCredentials()) {
                         password = CredentialsService.getCredentials().successfulPassword;
                     }
-                    $log.info("refresh using password:" + password);
                     RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password).then(
                         function (result) {
                             _wrapAndEnrichResources(result);
@@ -528,8 +548,8 @@ angular.module('webUpdates')
                             // save object for later diff in display-screen
                             MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
-                            $log.info('mine:' + JSON.stringify($scope.maintainers.mine));
-                            $log.info('selectedMaintainers:' + JSON.stringify($scope.maintainers.selected));
+                            $log.info('sso-mntners:' + JSON.stringify($scope.maintainers.sso));
+                            $log.info('objectMaintainers:' + JSON.stringify($scope.maintainers.object));
 
                         }
                     );
@@ -555,27 +575,33 @@ angular.module('webUpdates')
 
 
             function _performAuthentication() {
+                var mntnerWithPasswords = $scope.getMntnersForPasswordAuth($scope.maintainers.objectOriginal);
+                if( mntnerWithPasswords.length == 0 ) {
+                    _clearErrors();
+                    $scope.errors.push({plainText:'You cannot modify this object through web updates because your SSO account is not associated any of the maintainers on this object, and none of the maintainers have password'});
+                } else {
+                    ModalService.openAuthenticationModal($scope.source, mntnerWithPasswords).then(
+                        function (selectedMntner) {
+                            $log.info('selected mntner:' + JSON.stringify(selectedMntner));
 
-                ModalService.openAuthenticationModal($scope.source, $scope.getMntnersForPasswordAuth($scope.maintainers.selected)).then(
-                    function(selectedMntner) {
-                        $log.info('selected mntner:'+ JSON.stringify(selectedMntner));
+                            if ($scope.isMine(selectedMntner)) {
+                                // has been successfully associated in authentication modal
 
-                        if( $scope.isMine(selectedMntner)) {
-                            // has been successfully associated
-                            $scope.maintainers.mine.push(selectedMntner);
-                            // mark starred in selected
-                            $scope.maintainers.selected = _enrichWithMine($scope.maintainers.selected);
+                                $scope.maintainers.sso.push(selectedMntner);
+                                // mark starred in selected
+                                $scope.maintainers.object = _enrichWithMine($scope.maintainers.object);
 
+                            }
+                            $log.info('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
+                            $log.info('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
+
+                            _refreshObjectIfNeeded();
+
+                        }, function (error) {
+                            _navigateAway();
                         }
-                        $log.info('After auth: maintainers.mine:'+ JSON.stringify($scope.maintainers.mine));
-                        $log.info('After auth: maintainers.selected:'+ JSON.stringify($scope.maintainers.selected));
-
-                        _refreshObject();
-
-                    }, function( error) {
-                        _navigateAway();
-                    }
-                )
+                    )
+                }
             }
 
         }]);
