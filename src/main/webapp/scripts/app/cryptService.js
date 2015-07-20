@@ -80,7 +80,7 @@ angular.module('dbWebApp')
         };
 
         function _getHex(wordArray, offset) {
-            return _getByte(wordArray, offset).toString(16);
+            return _.padLeft(_getByte(wordArray, offset).toString(16), 2, '0');
         }
 
         function _getByte(wordArray, offset) {
