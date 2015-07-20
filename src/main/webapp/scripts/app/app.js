@@ -2,7 +2,6 @@
 
 angular.module('dbWebApp', [
     'ui.router',
-    'angular-md5',
     'ngResource',
     'ngSanitize',
     'webUpdates',

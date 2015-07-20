@@ -48,7 +48,6 @@ module.exports = function (config) {
             'main/webapp/bower_components/angulartics/src/angulartics-woopra.js',
             'main/webapp/bower_components/angulartics/src/angulartics-marketo.js',
             'main/webapp/bower_components/angulartics/src/angulartics-intercom.js',
-            'main/webapp/bower_components/angular-md5/angular-md5.js',
             'main/webapp/bower_components/sifter/sifter.js',
             'main/webapp/bower_components/microplugin/src/microplugin.js',
             'main/webapp/bower_components/selectize/dist/js/selectize.js',
