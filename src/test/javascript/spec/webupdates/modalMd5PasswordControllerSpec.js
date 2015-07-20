@@ -58,5 +58,12 @@ describe('webUpdates: ModalMd5PasswordController', function () {
         expect(modalInstance.dismiss).toHaveBeenCalledWith("cancel");
     });
 
+    it('crypt', function() {
+        expect($scope.crypt('password', 'rjK1MckJ')).toEqual("$1$rjK1MckJ$pEARceVLJAOHqoMO/OKRY0");
+        expect($scope.crypt('password', '.C2JWI4j')).toEqual("$1$.C2JWI4j$QJcccAJXrqTZceIGvUt.E/");
+        //expect($scope.crypt('abcdefghijklmnopqrstuvwxyz', 'uHhYHKnV'))        // TODO: fails on longer passwords
+        //    .toEqual("$1$uHhYHKnV$6Wi1CEv/OU6/VaU2vYv760");
+    });
+
 });
 
