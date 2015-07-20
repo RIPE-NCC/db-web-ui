@@ -47,16 +47,19 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                             function (resp) {
                                 $scope.selected.item.mine = true;
                                 CredentialsService.removeCredentials(); //i because ts now an sso mntner
+                                // report success back
+                                $modalInstance.close($scope.selected.item, resp);
+
                             }, function(errpr) {
                                 $log.error('Association error:' + JSON.stringify(error));
 
                             });
                     } else {
                         $log.debug('No need to associate');
+                        // report success back
+                        $modalInstance.close($scope.selected.item);
                     }
 
-                    // report success back
-                    $modalInstance.close($scope.selected.item);
 
                 }, function( error ) {
                     $log.error('Authentication error:' + JSON.stringify(error) );

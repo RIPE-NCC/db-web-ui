@@ -303,19 +303,36 @@ describe('dbWebApp: WhoisResources', function () {
 
         var whoisAttributesWithMeta = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0}},
-            {name: 'mnt-by', value: null, $$meta: {$$idx: 1}},
-            {name: 'mnt-by', value: 'c', $$meta: {$$idx: 1}},
-            {name: 'source', value: 'd', $$meta: {$$idx: 2}},
+            {name: 'mnt-by',   value: 'b', $$meta: {$$idx: 1}},
+            {name: 'source',   value: 'd', $$meta: {$$idx: 2}},
         ]);
 
         // has side effectts
-        expect(whoisAttributesWithMeta.mergeSortAttributes('mnt-by',
-            [{name: 'mnt-by', value: 'e'}]
+        expect(whoisAttributesWithMeta.addAttrsSorted('mnt-by',
+            [{name: 'mnt-by', value: 'c'}]
         )).toEqual([
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0}},
-            {name: 'mnt-by', value: 'c', $$meta: {$$idx: 1}},
-            {name: 'mnt-by', value: 'e', $$meta: {$$idx: 1}},
-            {name: 'source', value: 'd', $$meta: {$$idx: 2}}
+            {name: 'mnt-by',   value: 'b', $$meta: {$$idx: 1}},
+            {name: 'mnt-by',   value: 'c', $$meta: {$$idx: 1}},
+            {name: 'source',   value: 'd', $$meta: {$$idx: 2}}
+        ]);
+    });
+
+
+    it('should merge two attribute lists: no existing field', function () {
+
+        var whoisAttributesWithMeta = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a', $$meta: {$$idx: 0}},
+            {name: 'source',   value: 'd', $$meta: {$$idx: 2}},
+        ]);
+
+        // has side effectts
+        expect(whoisAttributesWithMeta.addAttrsSorted('mnt-by',
+            [{name: 'mnt-by', value: 'c'}]
+        )).toEqual([
+            {name: 'as-block', value: 'a', $$meta: {$$idx: 0}},
+            {name: 'source',   value: 'd', $$meta: {$$idx: 2}},
+            {name: 'mnt-by',   value: 'c'}
         ]);
     });
 

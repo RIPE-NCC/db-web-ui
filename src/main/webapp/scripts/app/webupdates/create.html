@@ -17,7 +17,7 @@
     <span class="fa fa-search maintainer-search-icon"></span>
     <ui-select multiple="true"
                theme="selectize"
-               ng-model="maintainers.selected"
+               ng-model="maintainers.object"
                close-on-select="true"
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
@@ -36,12 +36,14 @@
         </ui-select-choices>
     </ui-select>
     <br/>
+        <!--  object-mntners:{{maintainers.object}} -->
 	</section>
 
     <section class="visible-field-form" ng-if="hasMntners()">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
 
+        <!-- attributes:{{attributes}} -->
     <ul class="form-fields appeared-fields">
 
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
