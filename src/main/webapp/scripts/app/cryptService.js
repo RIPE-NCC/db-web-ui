@@ -22,9 +22,7 @@ angular.module('dbWebApp')
 
             var ii = keyLen;
             while (ii > 0) {
-                for (var nn = 0; nn < (ii > 16 ? 16 : ii); nn++) {
-                    ctx.concat(CryptoJS.enc.Hex.parse(_getHex(finalb, nn)));
-                }
+                ctx.concat(_copyBytes(finalb, 0, (ii > 16 ? 16 : ii)));
                 ii -= 16;
             }
 
@@ -79,21 +77,30 @@ angular.module('dbWebApp')
             return passwd;
         };
 
-        function _getHex(wordArray, offset) {
-            return _.padLeft(_getByte(wordArray, offset).toString(16), 2, '0');
-        }
-
         function _getByte(wordArray, offset) {
             return (wordArray.words[offset >>> 2] >>> (24 - (offset % 4) * 8)) & 0xff;
         }
 
+        function _setByte(wordArray, offset, value) {
+            wordArray.words[(wordArray.sigBytes + offset) >>> 2] |= value << (24 - ((wordArray.sigBytes + offset) % 4) * 8);
+        }
+
+        function _copyBytes(wordArray, offset, length) {
+            var result = CryptoJS.lib.WordArray.create();
+
+            for (var i = offset; i < offset + length; i++) {
+                _setByte(result, i, _getByte(wordArray, i));
+            }
+
+            result.sigBytes = length;
+            return result;
+        }
+
         function _log(wordArray) {
-            var words = wordArray.words;
             var sigBytes = wordArray.sigBytes;
 
             for (var i = 0; i < sigBytes; i++) {
-                var bite = (words[i >>> 2] >>> (24 - (i % 4) * 8)) & 0xff;
-                console.log(bite.toString(16));
+                console.log(_getByte(wordArray, i).toString(16));
             }
         }
 
