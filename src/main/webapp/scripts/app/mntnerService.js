@@ -4,7 +4,7 @@ angular.module('dbWebApp')
     .service('MntnerService', ['$log','CredentialsService', function ($log, CredentialsService) {
 
         this.enrichWithSsoStatus = function (ssoMntners, mntners) {
-            console.log("enrichWithSsoStatus.mntners:" + JSON.stringify(mntners));
+            $log.info("enrichWithSsoStatus.mntners:" + JSON.stringify(mntners));
             var result =  _.map(mntners, function (mntner) {
                 if (_isMntnerOnlist(ssoMntners, mntner)) {
                     mntner.mine = true;
@@ -13,7 +13,7 @@ angular.module('dbWebApp')
                 }
                 return mntner;
             });
-            console.log("enrichWithSsoStatus.result:" + JSON.stringify(result));
+            $log.info("enrichWithSsoStatus.result:" + JSON.stringify(result));
 
             return result;
         };
@@ -32,18 +32,18 @@ angular.module('dbWebApp')
                 input = objectMntners;
             }
             var mntners = this.enrichWithSsoStatus(ssoMntners, input);
-            console.log("needsPasswordAuthentication.mntners:" + JSON.stringify(mntners));
+            $log.info("needsPasswordAuthentication.mntners:" + JSON.stringify(mntners));
 
             if (_oneOfOriginalMntnersIsMine(mntners)) {
-                console.log("needsPasswordAuthentication: One of selected mntners is mine");
+                $log.info("needsPasswordAuthentication: One of selected mntners is mine");
                 return false;
             }
 
             if (_oneOfOriginalMntnersHasCredential(mntners)) {
-                console.log("needsPasswordAuthentication: One of selected mntners has credentials");
+                $log.info("needsPasswordAuthentication: One of selected mntners has credentials");
                 return false;
             }
-            console.log("needsPasswordAuthentication.no:");
+            $log.info("needsPasswordAuthentication.yes:");
 
             return true;
         };
@@ -65,14 +65,19 @@ angular.module('dbWebApp')
         }
 
         this.getMntnersForPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
+            $log.info("getMntnersForPasswordAuthentication.originalObjectMntners:" + JSON.stringify(originalObjectMntners));
+            $log.info("getMntnersForPasswordAuthentication.objectMntners:" + JSON.stringify(objectMntners));
+
             var input = originalObjectMntners;
             if( originalObjectMntners.length == 0 ) {
                 // it is a create
                 input = objectMntners;
             }
-            var objectMntners = this.enrichWithSsoStatus(ssoMntners, input);
+            var mntners = this.enrichWithSsoStatus(ssoMntners, input);
 
-            return _.filter(input   , function(mntner) {
+            $log.info("getMntnersForPasswordAuthentication.objectMntners:" + JSON.stringify(mntners));
+
+            var result =  _.filter(mntners, function(mntner) {
                 if( mntner.mine === true) {
                     return false;
                 } else if( CredentialsService.hasCredentials() && CredentialsService.getCredentials().mntner === mntner.key ) {
@@ -83,6 +88,10 @@ angular.module('dbWebApp')
                     return false;
                 }
             });
+
+            $log.info("getMntnersForPasswordAuthentication.result:" + JSON.stringify(result));
+
+            return result;
         };
 
         function hasMd5(mntner) {

@@ -529,7 +529,8 @@ angular.module('webUpdates')
             }
 
             function _performAuthentication() {
-                var mntnerWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal,$scope.maintainers.objectOriginal);
+                $log.info('Perform authentication');
+                var mntnerWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal,$scope.maintainers.object);
                 if( mntnerWithPasswords.length == 0 ) {
                     _clearErrors();
                     $scope.errors.push({plainText:'You cannot modify this object through web updates because your SSO account is not associated any of the maintainers on this object, and none of the maintainers have password'});
