@@ -48,7 +48,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                                 $scope.selected.item.mine = true;
                                 CredentialsService.removeCredentials(); //i because ts now an sso mntner
                                 // report success back
-                                $modalInstance.close($scope.selected.item, resp);
+                                $modalInstance.close({selectedItem:$scope.selected.item, response: resp});
 
                             }, function(errpr) {
                                 $log.error('Association error:' + JSON.stringify(error));
@@ -57,7 +57,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                     } else {
                         $log.debug('No need to associate');
                         // report success back
-                        $modalInstance.close($scope.selected.item);
+                        $modalInstance.close({selectedItem:$scope.selected.item});
                     }
 
 
