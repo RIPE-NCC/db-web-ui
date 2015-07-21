@@ -75,9 +75,9 @@ angular.module('dbWebApp')
                         }
                 });
 
-                modalInstance.result.then(function (selectedItem) {
-                    $log.info('openAuthenticationModal completed with: ' + JSON.stringify(selectedItem));
-                    deferredObject.resolve(selectedItem);
+                modalInstance.result.then(function (result) {
+                    $log.info('openAuthenticationModal completed with: ' + JSON.stringify(result));
+                    deferredObject.resolve(result);
                 }, function (reason) {
                     $log.info('openAuthenticationModal cancelled because: ' + reason);
                     deferredObject.reject(reason);

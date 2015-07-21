@@ -5,6 +5,7 @@ describe('webUpdates: ModifyController', function () {
     var $scope, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
+    var MntnerService;
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
     var NAME = 'MY-AS-BLOCK';
@@ -12,7 +13,7 @@ describe('webUpdates: ModifyController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -22,6 +23,7 @@ describe('webUpdates: ModifyController', function () {
             $httpBackend = _$httpBackend_;
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
+            MntnerService = _MntnerService_;
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;

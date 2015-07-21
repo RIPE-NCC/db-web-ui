@@ -122,7 +122,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
 
         expect(credentialsService.setCredentials).toHaveBeenCalledWith( 'b-mnt', 'secret');
 
-        expect(modalInstance.close).toHaveBeenCalledWith( { type:'mntner', key:'b-mnt'} );
+        expect(modalInstance.close).toHaveBeenCalledWith( {selectedItem:{ type:'mntner', key:'b-mnt'}} );
     });
 
     it('should associate and close the modal and return selected item when ok', function () {
@@ -148,7 +148,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
             }
         });
 
-        $httpBackend.expectPUT('api/whois/RIPE/mntner/b-mnt?password=secret').respond({
+        var resp = {
             objects: {
                 object: [
                     {
@@ -164,7 +164,8 @@ describe('webUpdates: ModalAuthenticationController', function () {
                     }
                 ]
             }
-        });
+        };
+        $httpBackend.expectPUT('api/whois/RIPE/mntner/b-mnt?password=secret').respond(resp);
 
         $scope.ok();
         $httpBackend.flush();
@@ -172,7 +173,8 @@ describe('webUpdates: ModalAuthenticationController', function () {
         expect(credentialsService.setCredentials).toHaveBeenCalledWith( 'b-mnt', 'secret');
         expect(credentialsService.removeCredentials).toHaveBeenCalled( );
 
-        expect(modalInstance.close).toHaveBeenCalledWith( { type:'mntner', key:'b-mnt', mine:true} );
+        expect(modalInstance.close).toHaveBeenCalledWith( { selectedItem:{type:'mntner', key:'b-mnt', mine:true},
+                                    response: jasmine.any(Object)} );
     });
 
 

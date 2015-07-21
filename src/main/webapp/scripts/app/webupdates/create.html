@@ -36,14 +36,14 @@
         </ui-select-choices>
     </ui-select>
     <br/>
-        <!--  object-mntners:{{maintainers.object}} -->
+        object-mntners:{{maintainers.object}}
 	</section>
 
     <section class="visible-field-form" ng-if="hasMntners()">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
 
-        <!-- attributes:{{attributes}} -->
+        attributes:{{attributes}}
     <ul class="form-fields appeared-fields">
 
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">

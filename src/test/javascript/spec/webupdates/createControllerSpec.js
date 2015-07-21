@@ -6,6 +6,7 @@ describe('webUpdates: CreateController', function () {
     var MessageStore;
     var WhoisResources;
     var CredentialsService;
+    var MntnerService;
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
     var userMaintainers;
@@ -13,7 +14,7 @@ describe('webUpdates: CreateController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _CredentialsService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -24,6 +25,7 @@ describe('webUpdates: CreateController', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             CredentialsService = _CredentialsService_;
+            MntnerService = _MntnerService_;
 
             userMaintainers = [
 	            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}
@@ -209,6 +211,8 @@ describe('webUpdates: CreateController', function () {
         expect($scope.maintainers.sso[0].auth).toEqual(userMaintainers[0].auth);
         expect($scope.maintainers.sso[0].mine).toEqual(true);
 
+        expect($scope.maintainers.objectOriginal.length).toBe(0);
+
         expect($scope.maintainers.object[0].key).toEqual(userMaintainers[0].key);
         expect($scope.maintainers.object[0].type).toEqual(userMaintainers[0].type);
         expect($scope.maintainers.object[0].auth).toEqual(userMaintainers[0].auth);
@@ -239,12 +243,13 @@ describe('webUpdates: CreateController', function () {
         $scope.attributes.setSingleAttributeOnName('as-block', 'MY-AS-BLOCK');
 
         $scope.maintainers.object = [
-            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-0'},
-            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-1'}
+            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'},
+            {'mine':false,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-0'},
+            {'mine':false,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-1'}
         ];
 
-        $scope.onMntnerAdded($scope.maintainers.object[0]);
         $scope.onMntnerAdded($scope.maintainers.object[1]);
+        $scope.onMntnerAdded($scope.maintainers.object[2]);
 
         $scope.submit();
         $httpBackend.flush();

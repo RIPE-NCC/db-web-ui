@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', 'WhoisResources', 'MessageStore', 'CredentialsService','RestService', '$q', 'ModalService',
-        function ($scope, $stateParams, $state, $log, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', 'WhoisResources', 'MessageStore', 'CredentialsService','RestService', '$q', 'ModalService', 'MntnerService',
+        function ($scope, $stateParams, $state, $log, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService, MntnerService) {
 
             // exposed methods called from html fragment
             $scope.onMntnerAdded = onMntnerAdded;
@@ -90,7 +90,7 @@ angular.module('webUpdates')
                         $scope.maintainers.sso = results;
                         if ($scope.maintainers.sso.length > 0) {
 
-                            $scope.maintainers.objectOriginal = _.cloneDeep($scope.maintainers.sso);
+                            $scope.maintainers.objectOriginal = [];
                             // pupulate ui-select box with sso-mntners
                             $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
 
@@ -147,7 +147,7 @@ angular.module('webUpdates')
                                 $scope.maintainers.object = _.flatten(result);
                                 $log.info("mntners-object:"+ JSON.stringify($scope.maintainers.object));
 
-                                if ($scope.needsPasswordAuthentication()) {
+                                if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                                     _performAuthentication();
                                 }
                         });
@@ -173,7 +173,7 @@ angular.module('webUpdates')
                 $log.debug('onMntnerAdded before: selected mntners now:' + JSON.stringify($scope.maintainers.object));
 
                 _copyAddedMntnerToAttributes(item.key);
-                if ($scope.needsPasswordAuthentication()) {
+                if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                     _performAuthentication();
                 }
 
@@ -220,18 +220,28 @@ angular.module('webUpdates')
             }
 
             function hasSSo(mntner) {
+                if(_.isUndefined(mntner.auth)) {
+                    return false;
+                }
                 return _.any(mntner.auth, function (i) {
                     return _.startsWith(i, 'SSO');
                 });
             }
 
             function hasPgp(mntner) {
+                if(_.isUndefined(mntner.auth)) {
+                    return false;
+                }
                 return _.any(mntner.auth, function (i) {
                     return _.startsWith(i, 'PGP');
                 });
             }
 
             function hasMd5(mntner) {
+                if(_.isUndefined(mntner.auth)) {
+                    return false;
+                }
+
                 return _.any(mntner.auth, function (i) {
                     return _.startsWith(i, 'MD5');
                 });
@@ -303,7 +313,7 @@ angular.module('webUpdates')
                     _stripNulls();
                     _clearErrors();
 
-                    if ($scope.needsPasswordAuthentication()) {
+                    if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                         _performAuthentication();
                         return;
                     }
@@ -400,11 +410,6 @@ angular.module('webUpdates')
                 return $scope.attributes.validate();
             }
 
-            function _isModifyableObject() {
-                // TODO add logic
-                return true;
-            }
-
             function _stripNulls() {
                 $scope.attributes = _wrapAndEnrichAttributes($scope.attributes.removeNullAttributes());
             }
@@ -478,63 +483,6 @@ angular.module('webUpdates')
                 });
             }
 
-            $scope.needsPasswordAuthentication = function() {
-                $log.info('sso-mntners:' + JSON.stringify($scope.maintainers.sso));
-                $log.info('original-object-maintainers:' + JSON.stringify($scope.maintainers.objectOriginal));
-
-                if( _oneOfOriginalMntnersIsMine($scope.maintainers.objectOriginal) ) {
-                    $log.info("One of selected mntners is mine");
-                    return false;
-                }
-
-                if( _oneOfOriginalMntnersHasCredential($scope.maintainers.objectOriginal) ) {
-                    $log.info("One of selected mntners has credentials");
-                    return false;
-                }
-
-                return true;
-            }
-
-            function _oneOfOriginalMntnersIsMine(originalMaintainers) {
-                return _.any(originalMaintainers, function (mntner) {
-                    return $scope.isMine(mntner) === true;
-                });
-            }
-
-            function _oneOfOriginalMntnersHasCredential(originalMaintainers) {
-                if( CredentialsService.hasCredentials() ) {
-                    var trustedMtnerName = CredentialsService.getCredentials().mntner;
-                    return _.any(originalMaintainers, function (mntner) {
-                        return mntner.key === trustedMtnerName;
-                    });
-                }
-                return false;
-            }
-
-            $scope.getMntnersForPasswordAuth = function(originalMaintainers) {
-
-                if (_oneOfOriginalMntnersIsMine(originalMaintainers)) {
-                    return [];
-                }
-
-                if (_oneOfOriginalMntnersHasCredential(originalMaintainers)) {
-                    return [];
-                }
-
-                return _.filter(originalMaintainers, function (mntner) {
-                    if( mntner.mine === true ) {
-                        return false;
-                    }
-                    if( _.isUndefined(mntner.auth)) {
-                        return false;
-                    }
-                    if(  ! $scope.hasMd5(mntner) ) {
-                        return false;
-                    }
-                    return true;
-                });
-            };
-
             function _refreshObjectIfNeeded(associationResp) {
                 if( $scope.operation === 'Modify' && $scope.objectType === 'mntner') {
                     if( associationResp ) {
@@ -580,15 +528,16 @@ angular.module('webUpdates')
                 });
             }
 
-
             function _performAuthentication() {
-                var mntnerWithPasswords = $scope.getMntnersForPasswordAuth($scope.maintainers.objectOriginal);
+                var mntnerWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal,$scope.maintainers.objectOriginal);
                 if( mntnerWithPasswords.length == 0 ) {
                     _clearErrors();
                     $scope.errors.push({plainText:'You cannot modify this object through web updates because your SSO account is not associated any of the maintainers on this object, and none of the maintainers have password'});
                 } else {
                     ModalService.openAuthenticationModal($scope.source, mntnerWithPasswords).then(
-                        function (selectedMntner,associationResp) {
+                        function (result) {
+                            var selectedMntner = result.selectedItem;
+                            var associationResp = result.response;
                             $log.info('selected mntner:' + JSON.stringify(selectedMntner));
 
                             if ($scope.isMine(selectedMntner)) {
