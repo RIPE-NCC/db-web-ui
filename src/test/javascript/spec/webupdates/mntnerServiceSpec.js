@@ -43,29 +43,19 @@ describe('dbWebApp: MntnerService', function () {
             { type:'mntner', key:'C-MNT'}
         ];
 
-        var enrichedCreate = subject.enrichWithSsoStatus(ssoMntners, [], objectMntners);
+        var enriched = subject.enrichWithSsoStatus(ssoMntners, objectMntners);
 
-        expect(enrichedCreate.length).toBe(2);
+        expect(enriched.length).toBe(2);
 
-        expect(enrichedCreate[0].type).toBe('mntner');
-        expect(enrichedCreate[0].key).toBe('A-MNT');
-        expect(enrichedCreate[0].mine).toBe(true);
+        expect(enriched[0].type).toBe('mntner');
+        expect(enriched[0].key).toBe('A-MNT');
+        expect(enriched[0].mine).toBe(true);
 
-        expect(enrichedCreate[1].type).toBe('mntner');
-        expect(enrichedCreate[1].key).toBe('C-MNT');
-        expect(enrichedCreate[1].mine).toBe(false);
+        expect(enriched[1].type).toBe('mntner');
+        expect(enriched[1].key).toBe('C-MNT');
+        expect(enriched[1].mine).toBe(false);
 
-        var enrichedModify = subject.enrichWithSsoStatus(ssoMntners, [], objectMntners);
 
-        expect(enrichedModify.length).toBe(2);
-
-        expect(enrichedModify[0].type).toBe('mntner');
-        expect(enrichedModify[0].key).toBe('A-MNT');
-        expect(enrichedModify[0].mine).toBe(true);
-
-        expect(enrichedModify[1].type).toBe('mntner');
-        expect(enrichedModify[1].key).toBe('C-MNT');
-        expect(enrichedModify[1].mine).toBe(false);
     });
 
     it('no authentication needed for SSO mntner',function() {
