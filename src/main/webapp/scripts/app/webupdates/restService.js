@@ -35,13 +35,11 @@ angular.module('dbWebApp')
                 };
 
                 this.detailsForMntners = function (mntners) {
-                    var deferredObject = $q.defer();
-
                     $log.info('detailsForMultipleMntners start for: ' + JSON.stringify(mntners));
 
                     var promises = _.map(mntners, function (item) {
                         return _mntnerDetails(item);
-                    })
+                    });
 
                     return $q.all(promises);
                 };
@@ -71,8 +69,7 @@ angular.module('dbWebApp')
                         }
                     );
                     return deferredObject.promise;
-                };
-
+                }
 
                 this.autocomplete = function (objectType, objectName, extended, attrs) {
                     var deferredObject = $q.defer();

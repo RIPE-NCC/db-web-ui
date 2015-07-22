@@ -123,7 +123,7 @@ angular.module('dbWebApp')
             if( ! this.objects ) {
                 return undefined;
             }
-            return this.objects.object[0]['source'].id;
+            return this.objects.object[0].source.id;
         };
 
         var getObjectType = function () {
@@ -236,7 +236,8 @@ angular.module('dbWebApp')
                 // TODO smarter merge
                 return this.concat(attrs);
             }
-        }
+
+        };
 
         var setSingleAttributeOnName = function( name, value) {
             var found = false;

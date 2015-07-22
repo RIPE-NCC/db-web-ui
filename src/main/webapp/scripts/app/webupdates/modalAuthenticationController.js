@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'mntners',
     function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, mntners) {
 
@@ -15,7 +17,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
         $scope.ok = function () {
 
-            if( $scope.selected.password.length == 0 ) {
+            if( $scope.selected.password.length === 0 ) {
                 $scope.selected.message = 'Password for mntner: \'' + $scope.selected.item.key + '\'' + ' too short';
                 return;
             }
@@ -50,7 +52,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                                 // report success back
                                 $modalInstance.close({selectedItem:$scope.selected.item, response: resp});
 
-                            }, function(errpr) {
+                            }, function(error) {
                                 $log.error('Association error:' + JSON.stringify(error));
 
                             });

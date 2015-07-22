@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('webUpdates').controller('ModalMd5PasswordController', [ '$scope', '$modalInstance', 'CryptService',
     function ($scope, $modalInstance, CryptService) {
 
@@ -16,7 +18,7 @@ angular.module('webUpdates').controller('ModalMd5PasswordController', [ '$scope'
         };
 
         $scope.verifyAuthDialog = function() {
-            if( $scope.password.length == 0 ) {
+            if( $scope.password.length ===   0 ) {
                 $scope.authPasswordMessage = 'Password too short!';
                 return false;
             } else if ($scope.password !== $scope.passwordAgain) {

@@ -67,7 +67,7 @@ angular.module('dbWebApp')
                         size: 'lg',
                         resolve: {
                             source: function() {
-                                return source
+                                return source;
                             },
                             mntners: function () {
                                 return mntners;

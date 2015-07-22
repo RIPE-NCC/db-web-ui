@@ -82,7 +82,7 @@ angular.module('webUpdates')
 
                     _fetchDataForModify();
                 }
-            };
+            }
 
             function _fetchDataForCreate() {
                 RestService.fetchMntnersForSSOAccount().then(
@@ -100,16 +100,16 @@ angular.module('webUpdates')
                             });
                             _wrapAndEnrichAttributes($scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
 
-                            $log.info("mntners-sso:"+ JSON.stringify($scope.maintainers.sso));
-                            $log.info("mntners-object-original:"+ JSON.stringify($scope.maintainers.objectOriginal));
-                            $log.info("mntners-object:"+ JSON.stringify($scope.maintainers.object));
+                            $log.info('mntners-sso:'+ JSON.stringify($scope.maintainers.sso));
+                            $log.info('mntners-object-original:'+ JSON.stringify($scope.maintainers.objectOriginal));
+                            $log.info('mntners-object:'+ JSON.stringify($scope.maintainers.object));
 
                         }
                     }, function(error) {
                         $log.error('Error fetching mnters for SSO:' + JSON.stringify(error));
                     }
                 );
-            };
+            }
 
             function _fetchDataForModify() {
 
@@ -142,10 +142,10 @@ angular.module('webUpdates')
                                 // result returns an array for each mntner
 
                                 $scope.maintainers.objectOriginal = _.flatten(result);
-                                $log.info("mntners-object-original:"+ JSON.stringify($scope.maintainers.objectOriginal));
+                                $log.info('mntners-object-original:'+ JSON.stringify($scope.maintainers.objectOriginal));
 
                                 $scope.maintainers.object = _.flatten(result);
-                                $log.info("mntners-object:"+ JSON.stringify($scope.maintainers.object));
+                                $log.info('mntners-object:'+ JSON.stringify($scope.maintainers.object));
 
                                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                                     _performAuthentication();
@@ -166,11 +166,13 @@ angular.module('webUpdates')
              * Methods called from the html-teplate
              */
 
-            function onMntnerAdded(item, all)   {
+            function onMntnerAdded(item)   {
                 // TODO is seems that ui-select removes auth-field  from existing selected mntners
                 $log.debug('onMntnerAdded before: new item'  + JSON.stringify(item) );
-                $log.debug('onMntnerAdded all:' + JSON.stringify(all));
                 $log.debug('onMntnerAdded before: selected mntners now:' + JSON.stringify($scope.maintainers.object));
+
+                // enrich with new-flag
+                $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, $scope.maintainers.object);
 
                 _copyAddedMntnerToAttributes(item.key);
                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
@@ -188,7 +190,7 @@ angular.module('webUpdates')
                 ]));
             }
 
-            function onMntnerRemoved(item, all) {
+            function onMntnerRemoved(item) {
 
                 if ($scope.maintainers.object.length === 0) {
                     // make sure we do not remove the last mntner which act as anchor
@@ -249,7 +251,7 @@ angular.module('webUpdates')
 
             function refreshMntners(query) {
                 // need to typed characters
-                if (query.length > 2) {
+                if (query.length >= 2) {
                     RestService.autocomplete( 'mnt-by', query, true, ['auth']).then(
                         function (data) {
                             // prevent mntners on selected list to appear
@@ -318,7 +320,7 @@ angular.module('webUpdates')
                         return;
                     }
 
-                    var password = undefined;
+                    var password;
                     if( CredentialsService.hasCredentials() ) {
                         password = CredentialsService.getCredentials().successfulPassword;
                     }
@@ -371,6 +373,14 @@ angular.module('webUpdates')
                 );
             }
 
+            function needToLockLastMntner() {
+                if( $scope.name && $scope.maintainers.object.length === 1 ) {
+                    // only lock last for modify
+                    return true;
+                }
+                return false;
+            }
+
             /*
              * private methods
              */
@@ -420,10 +430,6 @@ angular.module('webUpdates')
                 $scope.attributes.clearErrors();
             }
 
-            /*
-             * Private methods
-             */
-
             function _populateFieldSpecificErrors(resp) {
                 _.map($scope.attributes, function (attr) {
                     // keep existing error messages
@@ -461,13 +467,6 @@ angular.module('webUpdates')
                     _wrapAndEnrichAttributes(whoisResources.getAttributes());
                 }
                 return whoisResources;
-            }
-
-            function needToLockLastMntner() {
-                if( $scope.name && $scope.maintainers.object.length == 1 ) {
-                    return true;
-                }
-                return false;
             }
 
             function _enrichWithMine(mntners) {
@@ -530,16 +529,16 @@ angular.module('webUpdates')
 
             function _performAuthentication() {
                 $log.info('Perform authentication');
-                var mntnerWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal,$scope.maintainers.object);
-                if( mntnerWithPasswords.length == 0 ) {
+                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal,$scope.maintainers.object);
+                if( mntnersWithPasswords.length === 0 ) {
                     _clearErrors();
                     $scope.errors.push({plainText:'You cannot modify this object through web updates because your SSO account is not associated any of the maintainers on this object, and none of the maintainers have password'});
                 } else {
-                    ModalService.openAuthenticationModal($scope.source, mntnerWithPasswords).then(
+                    ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
                         function (result) {
                             var selectedMntner = result.selectedItem;
-                            var associationResp = result.response;
                             $log.info('selected mntner:' + JSON.stringify(selectedMntner));
+                            var associationResp = result.response;
 
                             if ($scope.isMine(selectedMntner)) {
                                 // has been successfully associated in authentication modal
@@ -547,21 +546,20 @@ angular.module('webUpdates')
                                 $scope.maintainers.sso.push(selectedMntner);
                                 // mark starred in selected
                                 $scope.maintainers.object = _enrichWithMine($scope.maintainers.object);
-
                             }
                             $log.info('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
                             $log.info('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
 
                             if( associationResp ) {
+                                // use resp from association request
                                 _wrapAndEnrichResources(associationResp);
-
                             }
                             _refreshObjectIfNeeded(associationResp);
 
-                        }, function (error) {
+                        }, function () {
                             _navigateAway();
                         }
-                    )
+                    );
                 }
             }
 

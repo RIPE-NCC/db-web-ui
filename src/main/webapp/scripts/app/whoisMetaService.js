@@ -49,7 +49,7 @@ angular.module('dbWebApp')
                     return am.name === attr.name;
                 });
                 var idx;
-                if( attr.$$meta != null) {
+                if( attr.$$meta ) {
                     idx = attr.$$meta.$$idx;
                 }
                 return {

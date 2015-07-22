@@ -54,8 +54,31 @@ describe('dbWebApp: MntnerService', function () {
         expect(enriched[1].type).toBe('mntner');
         expect(enriched[1].key).toBe('C-MNT');
         expect(enriched[1].mine).toBe(false);
+    });
 
 
+    it('enrich mntners with new status', function() {
+
+        var originalMntners = [
+            { type:'mntner', key:'A-MNT', mine:true, auth:['SSO']},
+            { type:'mntner', key:'B-MNT', mine:true, auth:['MD5-PW']}
+        ];
+        var currentMntners = [
+            { type:'mntner', key:'A-MNT', },
+            { type:'mntner', key:'C-MNT'}
+        ];
+
+        var enriched = subject.enrichWithNewStatus(originalMntners, currentMntners);
+
+        expect(enriched.length).toBe(2);
+
+        expect(enriched[0].type).toBe('mntner');
+        expect(enriched[0].key).toBe('A-MNT');
+        expect(enriched[0].isNew).toBe(false);
+
+        expect(enriched[1].type).toBe('mntner');
+        expect(enriched[1].key).toBe('C-MNT');
+        expect(enriched[1].isNew).toBe(true);
     });
 
     it('no authentication needed for SSO mntner',function() {
