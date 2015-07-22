@@ -145,6 +145,7 @@ angular.module('webUpdates')
                                 $scope.maintainers.objectOriginal = _.flatten(result);
                                 $log.info('mntners-object-original:'+ JSON.stringify($scope.maintainers.objectOriginal));
 
+                                // of course none of the initial ones are new
                                 $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, _.flatten(result));
                                 $log.info('mntners-object:'+ JSON.stringify($scope.maintainers.object));
 
@@ -168,14 +169,13 @@ angular.module('webUpdates')
              */
 
             function onMntnerAdded(item)   {
-                // TODO is seems that ui-select removes auth-field  from existing selected mntners
-                $log.debug('onMntnerAdded before: new item'  + JSON.stringify(item) );
-                $log.debug('onMntnerAdded before: selected mntners now:' + JSON.stringify($scope.maintainers.object));
 
                 // enrich with new-flag
                 $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, $scope.maintainers.object);
 
+                // adjust attributes
                 _copyAddedMntnerToAttributes(item.key);
+
                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                     _performAuthentication();
                 }
@@ -195,23 +195,31 @@ angular.module('webUpdates')
 
                 if ($scope.maintainers.object.length === 0) {
                     // make sure we do not remove the last mntner which act as anchor
-                    _.map($scope.attributes, function (i) {
-                        if (i.name === 'mnt-by') {
-                            i.value = null;
-                            return i;
-                        } else {
-                            return i;
-                        }
-                    });
+                    _keepSingleMntnerInAttrsWithoutValue();
                 } else {
                     // remove it from the attributes right away
-                    _.remove($scope.attributes, function (i) {
-                        return i.name === 'mnt-by' && i.value === item.key;
-                    });
+                    _removeMntnerFromAttrs();
                 }
 
                 $log.debug('onMntnerRemoved: ' + JSON.stringify(item) + ' selected mntners now:' +  JSON.stringify($scope.maintainers.object));
 
+            }
+
+            function _keepSingleMntnerInAttrsWithoutValue() {
+                // make sure we do not remove the last mntner which act as anchor
+                _.map($scope.attributes, function (attr) {
+                    if (attr.name === 'mnt-by') {
+                        attr.value = null;
+                        return attr;
+                    }
+                    return attr;
+                });
+            }
+
+            function _removeMntnerFromAttrs() {
+                _.remove($scope.attributes, function (i) {
+                    return i.name === 'mnt-by' && i.value === item.key;
+                });
             }
 
             function isMine(mntner) {
@@ -262,8 +270,9 @@ angular.module('webUpdates')
                 if (query.length >= 2) {
                     RestService.autocomplete( 'mnt-by', query, true, ['auth']).then(
                         function (data) {
-                            // prevent mntners on selected list to appear
+                            // mark new
                             $scope.maintainers.alternatives = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
+                                // prevent mntners on selected list to appear
                                     _stripAlreadySelected(_enrichWithMine(data)));
                         }
                     );
@@ -306,6 +315,7 @@ angular.module('webUpdates')
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display-screen can fetch it from here
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
+
                     // make transition to next display screen
                     _navigateToDisplayPage($scope.source, $scope.objectType,  whoisResources.getPrimaryKey(),  $scope.operation);
                 }
@@ -560,7 +570,7 @@ angular.module('webUpdates')
                             $log.info('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
 
                             if( associationResp ) {
-                                // use resp from association request
+                                // use response from successfull association
                                 _wrapAndEnrichResources(associationResp);
                             }
                             _refreshObjectIfNeeded(associationResp);

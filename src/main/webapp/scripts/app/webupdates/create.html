@@ -24,7 +24,6 @@
                ng-if="uiSelectTemplateReady">
         <ui-select-match ui-lock-choice="needToLockLastMntner()">{{$item.key}}
             <span class="fa fa-star" ng-if="isMine($item)"></span>
-            <span class="new" ng-if="isNew($item)">*</span>
         </ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="refreshMntners($select.search)"
@@ -35,7 +34,6 @@
                 <span class="auth sso" ng-if="hasSSo(mntner)"> SSO </span>
                 <span class="auth pgp" ng-if="hasPgp(mntner)"> PGP </span>
                 <span class="auth md5" ng-if="hasMd5(mntner)"> MD5 </span>
-                <span class="new" ng-if="isNew(mntner)"> New </span>
             </div>
         </ui-select-choices>
     </ui-select>
