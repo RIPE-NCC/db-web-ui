@@ -11,6 +11,7 @@ angular.module('webUpdates')
             $scope.hasSSo = hasSSo;
             $scope.hasPgp = hasPgp;
             $scope.hasMd5 = hasMd5;
+            $scope.isNew = isNew;
 
             $scope.refreshMntners = refreshMntners;
             $scope.suggestAutocomplete = suggestAutocomplete;
@@ -144,7 +145,7 @@ angular.module('webUpdates')
                                 $scope.maintainers.objectOriginal = _.flatten(result);
                                 $log.info('mntners-object-original:'+ JSON.stringify($scope.maintainers.objectOriginal));
 
-                                $scope.maintainers.object = _.flatten(result);
+                                $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, _.flatten(result));
                                 $log.info('mntners-object:'+ JSON.stringify($scope.maintainers.object));
 
                                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
@@ -249,13 +250,21 @@ angular.module('webUpdates')
                 });
             }
 
+            function isNew(mntner) {
+                if(_.isUndefined(mntner.isNew)) {
+                    return false;
+                }
+                return mntner.isNew;
+            }
+
             function refreshMntners(query) {
                 // need to typed characters
                 if (query.length >= 2) {
                     RestService.autocomplete( 'mnt-by', query, true, ['auth']).then(
                         function (data) {
                             // prevent mntners on selected list to appear
-                            $scope.maintainers.alternatives = _stripAlreadySelected(_enrichWithMine(data));
+                            $scope.maintainers.alternatives = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
+                                    _stripAlreadySelected(_enrichWithMine(data)));
                         }
                     );
                 }
