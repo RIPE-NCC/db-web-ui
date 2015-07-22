@@ -60,37 +60,37 @@
             </div>
             <ul class="input-group-btn">
                 <li>
-                    <a id="duplicateAttribute" class="btn btn-default" title="Add another attribute of this type"
+                    <a id="duplicateAttribute" class="btn btn-default ga-add-dup" title="Add another attribute of this type"
                                 ng-disabled="!canAttributeBeDuplicated(attribute)" ng-click="duplicateAttribute(attribute)" >
                     <span class="fa fa-arrow-down degree-25"></span>
                     </a>
                 </li>
                 <li>
-                    <a id="addAnyAttribute" class="btn btn-default" title="Add any attribute (opens dialog)"
+                    <a id="addAnyAttribute" class="btn btn-default ga-add-attr" title="Add any attribute (opens dialog)"
                                     ng-click="displayAddAttributeDialog(attribute)">
                         <span class="fa fa-plus"></span>
                     </a>
                 </li>
                 <li>
-                    <a id="removeAttribute" class="btn btn-default" title="Remove current attribute"
+                    <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
                        ng-disabled="!canAttributeBeRemoved(attribute)" ng-click="removeAttribute(attribute)" >
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>
 
                 <li>
-                <a id="changePassword" class="btn btn-default" title="Add/change Password (opens dialog)"
+                <a id="changePassword" class="btn btn-default ga-pass-attr" title="Add/change Password (opens dialog)"
                    ng-click="displayMd5DialogDialog(attribute)" ng-show="(attribute.name == 'auth')">
                     <span class="fa fa-lock fa-3"></span>
                 </a>
                 </li>
                 <li>
-                    <a id="help" class="btn btn-default" ng-click="isHelpHidden = !isHelpHidden">
+                    <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpHidden = !isHelpHidden">
                         <span class="fa fa-question" ></span>
                     </a>
                 </li>
                 <li>
-                <a id="addCertificate" class="btn btn-default hidden" title="Add PGP key (opens dialog)">
+                <a id="addCertificate" class="btn btn-default hidden ga-pgp-attr" title="Add PGP key (opens dialog)">
                     <span class="fa fa-certificate"></span>
                 </a>
                 </li>
