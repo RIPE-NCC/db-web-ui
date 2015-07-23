@@ -63,6 +63,12 @@ describe('webUpdates: CreateController', function () {
         expect($scope.source).toBe(SOURCE);
     });
 
+    it('should populate mntner data', function () {
+        expect($scope.maintainers.sso.length).toBe(1);
+        expect($scope.maintainers.object.length).toBe(1);
+
+    });
+
     it('should populate the ui based on object-type meta model and source', function () {
         var stateBefore = $state.current.name;
 
