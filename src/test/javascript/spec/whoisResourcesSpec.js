@@ -318,6 +318,15 @@ describe('dbWebApp: WhoisResources', function () {
         ]);
     });
 
+    it('should add an attribute after', function() {
+        var whoisAttributes = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a'},
+            {name: 'mnt-by', value: 'c'},
+            {name: 'source', value: 'd'}
+        ]);
+        var after = whoisAttributes.addAttributeAfter({name:'remarks'}, whoisAttributes[0]);
+        expect(after[1].name).toEqual('remarks');
+    });
 
     it('should merge two attribute lists: no existing field', function () {
 

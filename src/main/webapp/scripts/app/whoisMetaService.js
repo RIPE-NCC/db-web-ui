@@ -52,6 +52,7 @@ angular.module('dbWebApp')
                 if( attr.$$meta ) {
                     idx = attr.$$meta.$$idx;
                 }
+
                 return {
                     name: attr.name,
                     value: attr.value,

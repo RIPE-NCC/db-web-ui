@@ -64,16 +64,18 @@
 		background-image: none;
 		box-shadow: none;
 		text-shadow: none;
-		border: 1px solid #26A6A7;
+		border: 1px solid #1E8D8D;
 		margin: 0 0 3px !important;
 		.close {
-			border-left-color: #31A8A9;
 			color: #fff;
 			opacity: 1;
 			text-shadow: none;
 			padding: 2px;
-			border-left: 1px solid #26A6A7;
+			border-left: 1px solid #1E8D8D;
 			margin-left: 5px;
+		}
+		&.existing {
+    		background-color: #26A6A7;
 		}
 	}
 	.btn-primary {

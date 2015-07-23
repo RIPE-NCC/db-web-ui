@@ -22,9 +22,11 @@
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
                ng-if="uiSelectTemplateReady">
-        <ui-select-match ui-lock-choice="needToLockLastMntner()">{{$item.key}} <span class="fa fa-star" ng-if="isMine($item)"></span></ui-select-match>
+        <ui-select-match ui-lock-choice="needToLockLastMntner()">{{$item.key}}
+            <span class="fa fa-star" ng-if="isMine($item)"></span>
+        </ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
-                           refresh="refreshMntners($select.search)"
+                           refresh="mntnerAutocomplete($select.search)"
                            refresh-delay="100">
             <div class="option">
                 <span class="title">{{mntner.key}}</span>
@@ -53,7 +55,7 @@
 
             <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
-                   typeahead="value for value in suggestAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
+                   typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"/>
             <div class="text field-description" collapse="isHelpHidden">
                 {{attribute.$$meta.$$description}}
