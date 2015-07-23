@@ -41,8 +41,6 @@ describe('webUpdates: CreateController', function () {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
             });
 
-
-
             $httpBackend.whenGET(/.*.html/).respond(200);
 
             $httpBackend.flush();
@@ -252,7 +250,6 @@ describe('webUpdates: CreateController', function () {
                             attribute: [
                                 {name: 'as-block', value: 'MY-AS-BLOCK'},
                                 {name: 'mnt-by', value: 'TEST-MNT'},
-                                {name: 'mnt-by', value: 'TEST-MNT-0'},
                                 {name: 'mnt-by', value: 'TEST-MNT-1'},
                                 {name: 'source', value: 'RIPE'}
                             ]
@@ -266,19 +263,69 @@ describe('webUpdates: CreateController', function () {
 
         $scope.maintainers.object = [
             {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'},
-            {'mine':false,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-0'},
             {'mine':false,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-1'}
         ];
 
         $scope.onMntnerAdded($scope.maintainers.object[1]);
-        $scope.onMntnerAdded($scope.maintainers.object[2]);
 
         $scope.submit();
         $httpBackend.flush();
 
     });
 
+    it('should remove the selected maintainers to the object before post it.', function() {
 
+        $httpBackend.expectPOST('api/whois/RIPE/as-block', {
+            objects: {
+                object: [
+                    {
+                        attributes: {
+                            attribute: [
+                                {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                {name: 'mnt-by', value: 'TEST-MNT'},
+                                {name: 'source', value: 'RIPE'}
+                            ]
+                        }
+                    }
+                ]
+            }
+        }).respond(500);
+
+        $scope.attributes.setSingleAttributeOnName('as-block', 'MY-AS-BLOCK');
+        $scope.attributes.addAttrsSorted('mnt-by', ['TEST-MNT-1']);
+
+        $scope.maintainers.object = [
+            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'},
+            {'mine':false,'type':'mntner','auth':['SSO'],'key':'TEST-MNT-1'}
+        ];
+
+        $scope.onMntnerRemoved($scope.maintainers.object[1]);
+
+        $scope.submit();
+        $httpBackend.flush();
+
+    });
+
+    it('should add a null when removing the last maintainer.', function() {
+
+        $scope.maintainers.object = [
+            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}
+        ];
+
+        $scope.onMntnerRemoved($scope.maintainers.object[0]);
+
+
+        expect($scope.attributes.getSingleAttributeOnName('mnt-by').value).toBeUndefined();
+
+    });
+
+
+    it('should add a new user defined attribute', function() {
+        $scope.addSelectedAttribute({name:'remarks', value: null}, $scope.attributes[0]);
+
+        expect($scope.attributes[1].name).toEqual('remarks');
+        expect($scope.attributes[1].value).toBeNull();
+    });
 
 });
 

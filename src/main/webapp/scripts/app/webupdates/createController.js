@@ -29,6 +29,8 @@ angular.module('webUpdates')
             $scope.removeAttribute = removeAttribute;
 
             $scope.displayAddAttributeDialog = displayAddAttributeDialog;
+            $scope.addSelectedAttribute = addSelectedAttribute;
+
             $scope.displayMd5DialogDialog = displayMd5DialogDialog;
 
             $scope.submit = submit;
@@ -114,7 +116,7 @@ angular.module('webUpdates')
                     _keepSingleMntnerInAttrsWithoutValue();
                 } else {
                     // remove it from the attributes right away
-                    _removeMntnerFromAttrs();
+                    _removeMntnerFromAttrs(item);
                 }
 
                 $log.debug('onMntnerRemoved: ' + JSON.stringify(item) + ' object mntners now:' +  JSON.stringify($scope.maintainers.object));
@@ -235,11 +237,12 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal( WhoisResources.getAddableAttributes($scope.objectType)).then(
-                    function(selectedAttributeType) {
-                        _wrapAndEnrichAttributes($scope.attributes.addAttributeAfter(selectedAttributeType, attr));
-                    }
-                );
+                ModalService.openAddAttributeModal( WhoisResources.getAddableAttributes($scope.objectType)).then(function (selectedItem) { addSelectedAttribute(selectedItem, attr)});
+            }
+
+            function addSelectedAttribute(selectedAttributeType, attr) {
+                var attrs = $scope.attributes.addAttributeAfter(selectedAttributeType, attr);
+                _wrapAndEnrichAttributes(attrs);
             }
 
             function displayMd5DialogDialog(attr) {
@@ -414,7 +417,7 @@ angular.module('webUpdates')
                 });
             }
 
-            function _removeMntnerFromAttrs() {
+            function _removeMntnerFromAttrs(item) {
                 _.remove($scope.attributes, function (i) {
                     return i.name === 'mnt-by' && i.value === item.key;
                 });
