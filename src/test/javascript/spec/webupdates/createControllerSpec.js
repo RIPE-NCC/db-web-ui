@@ -7,14 +7,16 @@ describe('webUpdates: CreateController', function () {
     var WhoisResources;
     var CredentialsService;
     var MntnerService;
+    var ModalService;
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
     var userMaintainers;
+    var $q;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_, _ModalService_, _$q_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -26,6 +28,8 @@ describe('webUpdates: CreateController', function () {
             WhoisResources = _WhoisResources_;
             CredentialsService = _CredentialsService_;
             MntnerService = _MntnerService_;
+            ModalService = _ModalService_;
+            $q = _$q_;
 
             userMaintainers = [
 	            {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}
@@ -270,6 +274,39 @@ describe('webUpdates: CreateController', function () {
 
         $scope.submit();
         $httpBackend.flush();
+
+    });
+
+    it('should ask for password after add non-sso maintainer with password.', function() {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+
+        // simulate manual removal of the last and only mntner
+        $scope.maintainers.object = [];
+        $scope.onMntnerRemoved({'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'});
+
+        // simulate manual addition of a new mntner with only md5
+        $scope.maintainers.object = [{'mine':false,'type':'mntner','auth':['MD5'],'key':'TEST-MNT-1'}];
+        $scope.onMntnerAdded({'mine':false,'type':'mntner','auth':['MD5'],'key':'TEST-MNT-1'});
+
+        expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
+
+    });
+
+    it('should ask for password after upon submit.', function() {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+        // simulate manual addition of a new mntner with only md5
+        $scope.maintainers.object = [{'mine':false,'type':'mntner','auth':['MD5'],'key':'TEST-MNT-1'}];
+        $scope.onMntnerAdded({'mine':false,'type':'mntner','auth':['MD5'],'key':'TEST-MNT-1'});
+
+        // simulate manual removal of the last and only mntner
+        $scope.maintainers.object = [];
+        $scope.onMntnerRemoved({'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'});
+
+        $scope.submit();
+
+        expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
 
     });
 

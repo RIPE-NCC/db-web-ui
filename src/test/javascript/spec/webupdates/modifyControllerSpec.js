@@ -427,3 +427,94 @@ describe('webUpdates: ModifyController init with failures', function () {
 
 });
 
+describe('webUpdates: ModifyController ask for password before modify object with non-sso maintainer with password', function () {
+
+    var $scope, $state, $stateParams, $httpBackend;
+    var MessageStore;
+    var WhoisResources;
+    var MntnerService;
+    var ModalService;
+    var OBJECT_TYPE = 'as-block';
+    var SOURCE = 'RIPE';
+    var NAME = 'MY-AS-BLOCK';
+    var $q;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _ModalService_, _$q_) {
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            $state = _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            MessageStore = _MessageStore_;
+            WhoisResources = _WhoisResources_;
+            MntnerService = _MntnerService_;
+            ModalService = _ModalService_;
+            $q = _$q_;
+
+            $stateParams.objectType = OBJECT_TYPE;
+            $stateParams.source = SOURCE;
+            $stateParams.name = NAME;
+
+            $httpBackend.whenGET('api/user/mntners').respond([
+                {key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true}
+            ]);
+
+
+            $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
+                function (method, url) {
+                    return [200,
+                        {
+                            objects: {
+                                object: [
+                                    {
+                                        'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                                        attributes: {
+                                            attribute: [
+                                                {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                                {name: 'mnt-by', value: 'TEST3-MNT'},
+                                                {name: 'source', value: 'RIPE'}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+
+                        }, {}];
+                });
+
+            $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT').respond(
+                function (method, url) {
+                    return [200, [{key: 'TEST3-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
+                });
+
+            _$controller_('CreateController', {
+                $scope: $scope, $state: $state, $stateParams: $stateParams
+            });
+
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+        });
+    });
+
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+
+    it('should ask for password before modify object with non-sso maintainer with password.', function() {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+        $httpBackend.flush();
+
+        expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
+
+    });
+
+});
+

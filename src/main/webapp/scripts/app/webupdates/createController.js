@@ -576,6 +576,7 @@ angular.module('webUpdates')
                 if( mntnersWithPasswords.length === 0 ) {
                     _setGlobalError('You cannot modify this object through web updates because your SSO account is not associated any of the maintainers on this object, and none of the maintainers have password');
                 } else {
+
                     ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
                         function (result) {
                             _clearErrors();
