@@ -37,12 +37,11 @@ describe('webUpdates: ModifyController', function () {
 
             $httpBackend.whenGET('api/user/mntners').respond([
                 {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true},
-                {key:'TESTSSO-MNT', type: 'mntner', auth:['MD5-PW'], mine:true}
+                {key:'TESTSSO-MNT', type: 'mntner', auth:['MD5-PW','SSO'], mine:true}
             ]);
 
             $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
                 function(method,url) {
-                    //console.log("Got " + method + "  on " + url);
                     return [200,
                         {
                             objects: {
@@ -65,8 +64,7 @@ describe('webUpdates: ModifyController', function () {
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
                 function(method,url) {
-                    //console.log("Got " + method + "  on " + url);
-                    return [200, [ {key:'TEST-MNT', type:'mntner', auth:['SSO']} ], {}];
+                    return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW','SSO']} ], {}];
                 });
 
             $httpBackend.flush();
@@ -89,6 +87,26 @@ describe('webUpdates: ModifyController', function () {
 
     it('should get name from url', function () {
         expect($scope.name).toBe(NAME);
+    });
+
+    it('should populate mntner data', function () {
+        expect($scope.maintainers.sso.length).toBe(2);
+        expect($scope.maintainers.objectOriginal.length).toBe(1);
+        expect($scope.maintainers.object.length).toBe(1);
+
+        expect($scope.maintainers.sso[0].key).toEqual('TEST-MNT');
+        expect($scope.maintainers.sso[0].type).toEqual('mntner');
+        expect($scope.maintainers.object[0].auth).toEqual(['MD5-PW','SSO']);
+        expect($scope.maintainers.object[0].mine).toEqual(true);
+
+        expect($scope.maintainers.objectOriginal[0].key).toEqual('TEST-MNT');
+
+        expect($scope.maintainers.object[0].key).toEqual('TEST-MNT');
+        expect($scope.maintainers.object[0].type).toEqual('mntner');
+        expect($scope.maintainers.object[0].mine).toEqual(true);
+        expect($scope.maintainers.object[0].isNew).toEqual(false);
+        expect($scope.maintainers.object[0].auth).toEqual(['MD5-PW','SSO']);
+
     });
 
     it('should populate the ui based on object-tyoem meta model and source', function () {

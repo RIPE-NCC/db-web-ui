@@ -65,7 +65,23 @@ describe('webUpdates: CreateController', function () {
 
     it('should populate mntner data', function () {
         expect($scope.maintainers.sso.length).toBe(1);
+        expect($scope.maintainers.objectOriginal.length).toBe(0);
         expect($scope.maintainers.object.length).toBe(1);
+
+        expect($scope.maintainers.sso[0].key).toEqual('TEST-MNT');
+        expect($scope.maintainers.sso[0].type).toEqual('mntner');
+        expect($scope.maintainers.sso[0].auth).toEqual(['SSO']);
+        expect($scope.maintainers.sso[0].mine).toEqual(true);
+
+        expect($scope.maintainers.object[0].key).toEqual('TEST-MNT');
+        expect($scope.maintainers.object[0].type).toEqual('mntner');
+        expect($scope.maintainers.object[0].auth).toEqual(['SSO']);
+        expect($scope.maintainers.object[0].mine).toEqual(true);
+
+        expect($scope.attributes.length).toBe(4);
+        // there is is an attribute with a null value in the set
+        expect($scope.attributes[2].name).toEqual('mnt-by');
+        expect($scope.attributes[2].value).toEqual('TEST-MNT');
 
     });
 
@@ -73,12 +89,10 @@ describe('webUpdates: CreateController', function () {
         var stateBefore = $state.current.name;
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toBeUndefined();
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBeUndefined();
-
+        expect($scope.attributes.getAllAttributesWithValueOnName('mnt-by')[0].value).toEqual('TEST-MNT');
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe(stateBefore);
-
     });
 
 

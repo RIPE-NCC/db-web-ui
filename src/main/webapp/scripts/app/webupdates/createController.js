@@ -378,7 +378,8 @@ angular.module('webUpdates')
                                     _performAuthentication();
                                     return;
                                 }
-                            }, function( ) {
+                            }, function(error) {
+                                $log.error('Error fetching sso-mntners details' + JSON.stringify(error));
                                 _setGlobalError('Error fetching maintainer details');
                             });
                     }
