@@ -378,6 +378,8 @@ angular.module('webUpdates')
                                     _performAuthentication();
                                     return;
                                 }
+                            }, function( ) {
+                                _setGlobalError('Error fetching maintainer details');
                             });
                     }
                 ).catch(
@@ -573,7 +575,7 @@ angular.module('webUpdates')
                     ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
                         function (result) {
                             _clearErrors();
-                            
+
                             var selectedMntner = result.selectedItem;
                             $log.info('selected mntner:' + JSON.stringify(selectedMntner));
                             var associationResp = result.response;

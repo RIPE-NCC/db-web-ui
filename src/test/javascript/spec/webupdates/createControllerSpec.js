@@ -63,7 +63,7 @@ describe('webUpdates: CreateController', function () {
         expect($scope.source).toBe(SOURCE);
     });
 
-    it('should populate the ui based on object-tyoem meta model and source', function () {
+    it('should populate the ui based on object-type meta model and source', function () {
         var stateBefore = $state.current.name;
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toBeUndefined();
@@ -211,6 +211,8 @@ describe('webUpdates: CreateController', function () {
         expect($scope.maintainers.sso[0].auth).toEqual(userMaintainers[0].auth);
         expect($scope.maintainers.sso[0].mine).toEqual(true);
 
+        expect($scope.maintainers.sso.length).toBe(1);
+
         expect($scope.maintainers.objectOriginal.length).toBe(0);
 
         expect($scope.maintainers.object[0].key).toEqual(userMaintainers[0].key);
@@ -260,3 +262,59 @@ describe('webUpdates: CreateController', function () {
 
 });
 
+
+describe('webUpdates: CreateController init with failures', function () {
+
+    var $scope, $state, $stateParams, $httpBackend;
+    var MessageStore;
+    var WhoisResources;
+    var CredentialsService;
+    var MntnerService;
+    var OBJECT_TYPE = 'as-block';
+    var SOURCE = 'RIPE';
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_) {
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            $state =  _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            MessageStore = _MessageStore_;
+            WhoisResources = _WhoisResources_;
+            CredentialsService = _CredentialsService_;
+            MntnerService = _MntnerService_;
+
+            $httpBackend.whenGET('api/user/mntners').respond(404);
+
+            $stateParams.objectType = OBJECT_TYPE;
+            $stateParams.source = SOURCE;
+            $stateParams.name = undefined;
+
+            _$controller_('CreateController', {
+                $scope: $scope, $state: $state, $stateParams: $stateParams
+            });
+
+
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+            $httpBackend.flush();
+
+        });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should report error when fetching sso maintainers fails', function() {
+        expect($scope.hasErrors()).toBe(true);
+        expect($scope.errors[0].plainText).toEqual('Error fetching maintainers associated with this SSO account');
+    });
+
+});

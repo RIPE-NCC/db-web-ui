@@ -244,3 +244,148 @@ describe('webUpdates: ModifyController', function () {
 
 });
 
+
+describe('webUpdates: ModifyController init with failures', function () {
+
+    var $scope, $state, $stateParams, $httpBackend;
+    var MessageStore;
+    var WhoisResources;
+    var MntnerService;
+    var OBJECT_TYPE = 'as-block';
+    var SOURCE = 'RIPE';
+    var NAME = 'MY-AS-BLOCK';
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_) {
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            $state =  _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            MessageStore = _MessageStore_;
+            WhoisResources = _WhoisResources_;
+            MntnerService = _MntnerService_;
+
+            $stateParams.objectType = OBJECT_TYPE;
+            $stateParams.source = SOURCE;
+            $stateParams.name = NAME;
+
+            _$controller_('CreateController', {
+                $scope: $scope, $state: $state, $stateParams: $stateParams
+            });
+
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+        });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should report error when fetching sso maintainers fails', function() {
+
+        failToGetSsoMaintainers();
+        getObject();
+
+        $httpBackend.flush();
+
+        expect($scope.hasErrors()).toBe(true);
+        expect($scope.errors[0].plainText).toEqual('Error fetching maintainers associated with this SSO account');
+    });
+
+    it('should report error when fetching object fails', function() {
+
+        getSsoMaintainers();
+        getObjectWithError();
+
+        $httpBackend.flush();
+
+        expect($scope.hasWarnings()).toBe(true);
+        expect($scope.warnings[0].plainText).toEqual('Not authenticated');
+    });
+
+    it('should report error when fetching maintainer details fails', function() {
+
+        getSsoMaintainers();
+        getObject();
+
+        failToGetMaintainerDetails();
+
+        $httpBackend.flush();
+
+        expect($scope.hasErrors()).toBe(true);
+        expect($scope.errors[0].plainText).toEqual('Error fetching maintainer details');
+
+    });
+
+    function getSsoMaintainers() {
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true},
+            {key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW'], mine: true}
+        ]);
+    }
+
+
+    function failToGetSsoMaintainers() {
+        $httpBackend.whenGET('api/user/mntners').respond(404);
+    }
+
+
+    function getObject() {
+        $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
+            function (method, url) {
+                //console.log("Got " + method + "  on " + url);
+                return [200,
+                    {
+                        objects: {
+                            object: [
+                                {
+                                    'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                                    attributes: {
+                                        attribute: [
+                                            {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                            {name: 'mnt-by', value: 'TEST-MNT'},
+                                            {name: 'source', value: 'RIPE'}
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+
+                    }, {}];
+            });
+    }
+
+    function getObjectWithError() {
+
+        $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
+            function (method, url) {
+                //console.log("Got " + method + "  on " + url);
+                return [404,
+                    {
+                        errormessages: {
+                            errormessage: [
+                                {
+                                    severity: 'Warning',
+                                    text: 'Not authenticated'
+                                }
+                            ]
+                        }
+                    }, {}];
+            });
+
+    }
+
+    function failToGetMaintainerDetails() {
+        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(404);
+
+    }
+
+});
+
