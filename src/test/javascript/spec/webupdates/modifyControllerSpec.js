@@ -263,7 +263,7 @@ describe('webUpdates: ModifyController init with failures', function () {
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
 
-            $state =  _$state_;
+            $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             MessageStore = _MessageStore_;
@@ -283,12 +283,12 @@ describe('webUpdates: ModifyController init with failures', function () {
         });
     });
 
-    afterEach(function() {
+    afterEach(function () {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should report error when fetching sso maintainers fails', function() {
+    it('should report error when fetching sso maintainers fails', function () {
 
         failToGetSsoMaintainers();
         getObject();
@@ -299,7 +299,7 @@ describe('webUpdates: ModifyController init with failures', function () {
         expect($scope.errors[0].plainText).toEqual('Error fetching maintainers associated with this SSO account');
     });
 
-    it('should report error when fetching object fails', function() {
+    it('should report error when fetching object fails', function () {
 
         getSsoMaintainers();
         getObjectWithError();
@@ -310,7 +310,7 @@ describe('webUpdates: ModifyController init with failures', function () {
         expect($scope.warnings[0].plainText).toEqual('Not authenticated');
     });
 
-    it('should report error when fetching maintainer details fails', function() {
+    it('should report error when fetching maintainer details fails', function () {
 
         getSsoMaintainers();
         getObject();
@@ -323,6 +323,21 @@ describe('webUpdates: ModifyController init with failures', function () {
         expect($scope.errors[0].plainText).toEqual('Error fetching maintainer details');
 
     });
+
+    it('should report unmodifiable object error', function () {
+
+        getSsoMaintainers();
+        getObject();
+
+        getPgpMaintainerDetails();
+
+        $httpBackend.flush();
+
+        expect($scope.hasErrors()).toBe(true);
+        expect($scope.errors[0].plainText).toEqual('You cannot modify this object through web updates because your SSO account is not associated any of the maintainers on this object, and none of the maintainers have password');
+
+    });
+
 
     function getSsoMaintainers() {
         $httpBackend.whenGET('api/user/mntners').respond([
@@ -340,7 +355,6 @@ describe('webUpdates: ModifyController init with failures', function () {
     function getObject() {
         $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
             function (method, url) {
-                //console.log("Got " + method + "  on " + url);
                 return [200,
                     {
                         objects: {
@@ -350,7 +364,7 @@ describe('webUpdates: ModifyController init with failures', function () {
                                     attributes: {
                                         attribute: [
                                             {name: 'as-block', value: 'MY-AS-BLOCK'},
-                                            {name: 'mnt-by', value: 'TEST-MNT'},
+                                            {name: 'mnt-by', value: 'TEST3-MNT'},
                                             {name: 'source', value: 'RIPE'}
                                         ]
                                     }
@@ -366,7 +380,6 @@ describe('webUpdates: ModifyController init with failures', function () {
 
         $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
             function (method, url) {
-                //console.log("Got " + method + "  on " + url);
                 return [404,
                     {
                         errormessages: {
@@ -382,9 +395,16 @@ describe('webUpdates: ModifyController init with failures', function () {
 
     }
 
-    function failToGetMaintainerDetails() {
-        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(404);
+    function getPgpMaintainerDetails() {
+        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT').respond(
+            function (method, url) {
+                return [200, [{key: 'TEST3-MNT', type: 'mntner', auth: ['PGP']}], {}];
+            });
 
+    }
+
+    function failToGetMaintainerDetails() {
+        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT').respond(404);
     }
 
 });
