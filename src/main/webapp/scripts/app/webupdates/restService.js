@@ -7,7 +7,8 @@ angular.module('dbWebApp')
             function RestService() {
 
                 this.deleteObject = function(source, objectType, name, reason) {
-                    return { then: function(f) { f();} }; // pretend to be a promise
+                    return $resource('api/whois/:source/:objectType/:name',
+                        {source: source, objectType: objectType, name: name}).delete({reason: reason}).$promise;
                 };
 
                 this.fetchUiSelectResources = function () {
