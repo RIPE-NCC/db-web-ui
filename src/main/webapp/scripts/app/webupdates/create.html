@@ -103,6 +103,6 @@
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
     <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Submit</button>
-    <button ng-click="deleteObject()" class="red-button pull-right ga-createobj-create" style="border:0;">Delete</button>
+    <button ng-click="deleteObject()" ng-show="operation == MODIFY_OPERATION" class="red-button pull-right ga-createobj-create" style="border:0;">Delete</button>
     </section>
 </form>

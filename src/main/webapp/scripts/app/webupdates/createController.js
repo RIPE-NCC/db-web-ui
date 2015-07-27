@@ -68,9 +68,12 @@ angular.module('webUpdates')
                 $scope.warnings = [];
                 $scope.infos = [];
 
+                $scope.CREATE_OPERATION = 'Create';
+                $scope.MODIFY_OPERATION = 'Modify';
+
                 // Determine if this is a create or a modify
                 if (!$scope.name) {
-                    $scope.operation = 'Create';
+                    $scope.operation = $scope.CREATE_OPERATION;
 
                     // Populate empty attributes based on meta-info
                     $scope.attributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
@@ -81,7 +84,7 @@ angular.module('webUpdates')
                     _fetchDataForCreate();
 
                 } else {
-                    $scope.operation = 'Modify';
+                    $scope.operation = $scope.MODIFY_OPERATION;
 
                     // Start empty, and populate with rest-result
                     $scope.attributes = _wrapAndEnrichAttributes([]);
