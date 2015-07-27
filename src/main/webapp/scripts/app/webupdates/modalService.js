@@ -10,7 +10,6 @@ angular.module('dbWebApp')
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalDeleteObject.html',
                     controller: 'ModalDeleteObjectController',
-                    size: 'lg',
                     resolve: {
                         source: function () {
                             return source;
