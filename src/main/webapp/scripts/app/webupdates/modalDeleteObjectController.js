@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$modalInstance', 'RestService', 'source', 'objectType', 'name',
-    function ($scope, $modalInstance, RestService, source, objectType, name) {
+angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$modalInstance', 'RestService', 'source', 'objectType', 'name',
+    function ($scope, $state, $modalInstance, RestService, source, objectType, name) {
 
         $scope.reason = 'Some default reason';
 
@@ -9,6 +9,13 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             RestService.deleteObject(source, objectType, name, $scope.reason).then(
                 function () {
                     $modalInstance.close();
+
+                    $state.transitionTo('deleted', {
+                        source: source,
+                        objectType: objectType,
+                        name: name
+                    });
+
                 }
             );
         };

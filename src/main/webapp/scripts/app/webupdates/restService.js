@@ -6,6 +6,10 @@ angular.module('dbWebApp')
 
             function RestService() {
 
+                this.deleteObject = function(source, objectType, name, reason) {
+                    return { then: function(f) { f();} }; // pretend to be a promise
+                };
+
                 this.fetchUiSelectResources = function () {
                     return $q.all([
                         // workaround to cope with order of loading problem

@@ -2,13 +2,14 @@
 
 describe('webUpdates: ModalDeleteObjectController', function () {
 
-    var $scope, modalInstance, RestService;
+    var $scope, $state, modalInstance, RestService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_) {
+        inject(function (_$controller_, _$rootScope_, _$state_) {
 
+            $state = _$state_;
             RestService =  { deleteObject: function() {
                 return { then: function(f) { f();} }; // pretend to be a promise
             }};
@@ -26,7 +27,7 @@ describe('webUpdates: ModalDeleteObjectController', function () {
             $scope.source = 'RIPE';
 
             _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $modalInstance: modalInstance, RestService:RestService, source:$scope.source, objectType:$scope.objectType, name:$scope.name
+                $scope: $scope, $state:$state, $modalInstance: modalInstance, RestService:RestService, source:$scope.source, objectType:$scope.objectType, name:$scope.name
             });
 
         });
@@ -50,6 +51,13 @@ describe('webUpdates: ModalDeleteObjectController', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
+    it('should redirect to succes delete page after delete object', function() {
+        spyOn($state, 'transitionTo');
+
+        $scope.delete();
+
+        expect($state.transitionTo).toHaveBeenCalledWith('deleted', {source:$scope.source, objectType:$scope.objectType, name:$scope.name});
+    });
 
     it('should close the modal and return error when canceled', function () {
         $scope.cancel();
