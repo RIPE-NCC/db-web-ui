@@ -33,6 +33,8 @@ angular.module('webUpdates')
 
             $scope.displayMd5DialogDialog = displayMd5DialogDialog;
 
+            $scope.deleteObject = deleteObject;
+
             $scope.submit = submit;
 
             _initialisePage();
@@ -251,6 +253,10 @@ angular.module('webUpdates')
                         attr.value = authLine;
                     }
                 );
+            }
+
+            function deleteObject() {
+                console.log('some deletion is about to happen');
             }
 
             function submit() {
