@@ -256,7 +256,7 @@ angular.module('webUpdates')
             }
 
             function deleteObject() {
-                console.log('some deletion is about to happen');
+                ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name);
             }
 
             function submit() {

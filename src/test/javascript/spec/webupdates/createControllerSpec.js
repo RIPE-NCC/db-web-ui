@@ -364,6 +364,18 @@ describe('webUpdates: CreateController', function () {
         expect($scope.attributes[1].value).toBeNull();
     });
 
+    it('should display delete object modal', function() {
+        spyOn(ModalService, 'openDeleteObjectModal');
+
+        $scope.source = 'RIPE';
+        $scope.objectType = 'MNT';
+        $scope.name = 'TEST-MNT';
+
+        $scope.deleteObject();
+
+        expect(ModalService.openDeleteObjectModal).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name);
+    });
+
 });
 
 
