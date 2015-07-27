@@ -99,10 +99,11 @@
             </ul>
         </li>
     </ul>
+    <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Submit</button>
+    <button ng-click="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
+    <button ng-click="deleteObject()" ng-show="operation == MODIFY_OPERATION" class="red-button pull-left ga-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
     <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
         href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and
         Conditions</a></p>
-    <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Submit</button>
-    <button ng-click="deleteObject()" ng-show="operation == MODIFY_OPERATION" class="red-button pull-right ga-createobj-create" style="border:0;">Delete</button>
     </section>
 </form>

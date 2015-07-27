@@ -36,6 +36,9 @@ angular.module('webUpdates')
             $scope.deleteObject = deleteObject;
 
             $scope.submit = submit;
+            $scope.cancel = cancel;
+            
+            
 
             _initialisePage();
 
@@ -310,6 +313,12 @@ angular.module('webUpdates')
                             _onSubmitSuccess,
                             _onSubmitError);
                     }
+                }
+            }
+
+            function cancel() {
+                if ( window.confirm('Are you sure?') ) {
+                    window.history.back();   
                 }
             }
 
