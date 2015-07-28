@@ -60,7 +60,7 @@ describe('webUpdates: ModalDeleteObjectController', function () {
         expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
     });
 
-    
+
     it('should redirect to succes delete page after delete object', function() {
         spyOn($state, 'transitionTo');
 
