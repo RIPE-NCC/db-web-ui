@@ -6,6 +6,15 @@ angular.module('dbWebApp')
 
             function RestService() {
 
+                this.getVersions = function(source, objectType, name) {
+
+                };
+
+                this.getReferences = function(source, objectType, name, version) {
+
+
+                };
+
                 this.deleteObject = function(source, objectType, name, reason) {
                     return $resource('api/whois/:source/:objectType/:name',
                         {source: source, objectType: objectType, name: name}).delete({reason: reason}).$promise;
