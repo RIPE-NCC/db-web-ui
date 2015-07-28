@@ -16,11 +16,13 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
                         name: name
                     });
 
+                }, function (resp) {
+                    $modalInstance.dismiss(resp.data);
                 }
             );
         };
 
         $scope.cancel = function () {
-            $modalInstance.dismiss();
+            $modalInstance.close();
         };
     }]);

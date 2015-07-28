@@ -6,7 +6,7 @@ angular.module('dbWebApp')
 
 
             this.openDeleteObjectModal = function(source, objectType, name) {
-                $modal.open({
+                var modalInstance = $modal.open({
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalDeleteObject.html',
                     controller: 'ModalDeleteObjectController',
@@ -22,6 +22,8 @@ angular.module('dbWebApp')
                         }
                     }
                 });
+
+                return modalInstance.result;
             };
 
             this.openAddAttributeModal = function ( items ) {

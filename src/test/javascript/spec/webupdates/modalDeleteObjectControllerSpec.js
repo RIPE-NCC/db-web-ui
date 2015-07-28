@@ -2,14 +2,15 @@
 
 describe('webUpdates: ModalDeleteObjectController', function () {
 
-    var $scope, $state, modalInstance, RestService;
+    var $scope, $state, modalInstance, RestService, WhoisResources;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _WhoisResources_) {
 
             $state = _$state_;
+            WhoisResources = _WhoisResources_;
             RestService =  { deleteObject: function() {
                 return { then: function(f) { f();} }; // pretend to be a promise
             }};
@@ -51,6 +52,15 @@ describe('webUpdates: ModalDeleteObjectController', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
+    it('should dismiss modal after error deleting object', function() {
+        spyOn(RestService, 'deleteObject').and.returnValue({then: function(a, b) { b({data:'error'}); }});
+
+        $scope.delete();
+
+        expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
+    });
+
+    
     it('should redirect to succes delete page after delete object', function() {
         spyOn($state, 'transitionTo');
 
@@ -61,7 +71,7 @@ describe('webUpdates: ModalDeleteObjectController', function () {
 
     it('should close the modal and return error when canceled', function () {
         $scope.cancel();
-        expect(modalInstance.dismiss).toHaveBeenCalled();
+        expect(modalInstance.close).toHaveBeenCalled();
     });
 
 });

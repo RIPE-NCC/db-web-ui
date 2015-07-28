@@ -37,8 +37,6 @@ angular.module('webUpdates')
 
             $scope.submit = submit;
             $scope.cancel = cancel;
-            
-            
 
             _initialisePage();
 
@@ -262,7 +260,18 @@ angular.module('webUpdates')
             }
 
             function deleteObject() {
-                ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name);
+                ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
+                    function() {},
+                    function(errorResp) {
+                        try {
+                            var whoisResources = _wrapAndEnrichResources(errorResp);
+                            _setErrors(whoisResources);
+                        }
+                        catch(err) {
+                            _setGlobalError('Error deleting object. Please reload and try again.');
+                        }
+                    }
+                );
             }
 
             function submit() {
@@ -318,7 +327,7 @@ angular.module('webUpdates')
 
             function cancel() {
                 if ( window.confirm('Are you sure?') ) {
-                    window.history.back();   
+                    window.history.back();
                 }
             }
 

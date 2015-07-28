@@ -154,43 +154,7 @@ describe('webUpdates: CreateController', function () {
         var stateBefore = $state.current.name;
 
         // api/whois/RIPE/as-block
-        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond(400, {
-            objects: {
-                object: [
-                    {
-                        'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
-                        attributes: {
-                            attribute: [
-                                {name: 'as-block', value: 'MY-AS-BLOCK'},
-                                {name: 'mnt-by', value: 'TEST-MNT'},
-                                {name: 'source', value: 'RIPE'}
-                            ]
-                        }
-                    }
-                ]
-            },
-            errormessages: {
-                errormessage: [
-                    {
-                        severity: 'Error',
-                        text: 'Unrecognized source: %s',
-                        'args': [{value: 'INVALID_SOURCE'}]
-                    },
-                    {
-                        severity: 'Warning',
-                        text: 'Not authenticated'
-                    }, {
-                        severity: 'Error',
-                        attribute: {
-                            name: 'as-block',
-                            value: 'MY-AS-BLOCK'
-                        },
-                        text: '\'%s\' is not valid for this object type',
-                        args: [{value: 'MY-AS-BLOCK'}]
-                    }
-                ]
-            }
-        });
+        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond(400, whoisObjectWithErrors);
 
         $scope.attributes.setSingleAttributeOnName('as-block', 'A');
 
@@ -365,7 +329,7 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('should display delete object modal', function() {
-        spyOn(ModalService, 'openDeleteObjectModal');
+        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then:function(a,b){}});
 
         $scope.source = 'RIPE';
         $scope.objectType = 'MNT';
@@ -376,6 +340,22 @@ describe('webUpdates: CreateController', function () {
         expect(ModalService.openDeleteObjectModal).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name);
     });
 
+    it('should display errors if delete object fail', function() {
+        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { b(whoisObjectWithErrors); }});
+
+        $scope.deleteObject();
+
+        expect($scope.errors).toEqual( [ { severity: 'Error', text: 'Unrecognized source: %s', args: [ { value: 'INVALID_SOURCE' } ], plainText: 'Unrecognized source: INVALID_SOURCE' } ]);
+    });
+
+
+    it('should display generic errors if delete object fail without returning a whois object', function() {
+        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { b('just text'); }});
+
+        $scope.deleteObject();
+
+        expect($scope.errors).toEqual([{ plainText:'Error deleting object. Please reload and try again.'}]);
+    });
 });
 
 
@@ -434,3 +414,42 @@ describe('webUpdates: CreateController init with failures', function () {
     });
 
 });
+
+
+var whoisObjectWithErrors = {
+    objects: {
+        object: [
+            {
+                'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                attributes: {
+                    attribute: [
+                        {name: 'as-block', value: 'MY-AS-BLOCK'},
+                        {name: 'mnt-by', value: 'TEST-MNT'},
+                        {name: 'source', value: 'RIPE'}
+                    ]
+                }
+            }
+        ]
+    },
+    errormessages: {
+        errormessage: [
+            {
+                severity: 'Error',
+                text: 'Unrecognized source: %s',
+                'args': [{value: 'INVALID_SOURCE'}]
+            },
+            {
+                severity: 'Warning',
+                text: 'Not authenticated'
+            }, {
+                severity: 'Error',
+                attribute: {
+                    name: 'as-block',
+                    value: 'MY-AS-BLOCK'
+                },
+                text: '\'%s\' is not valid for this object type',
+                args: [{value: 'MY-AS-BLOCK'}]
+            }
+        ]
+    }
+};
