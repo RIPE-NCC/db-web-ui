@@ -130,7 +130,7 @@ describe('webUpdates: DisplayController', function () {
         createDisplayController();
 
         $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function(method,url) {
-            return [404, {
+            return [403, {
                 errormessages: {
                     errormessage: [
                         {
