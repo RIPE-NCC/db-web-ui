@@ -24,6 +24,15 @@ angular.module('webUpdates')
                 url: '/webupdates/display/:source/:objectType/:name?method',
                 templateUrl: 'scripts/app/webupdates/display.html',
                 controller: 'DisplayController'
+            })
+            .state('deleted', {
+                url: '/webupdates/deleted/:source/:objectType/:name',
+                templateUrl: 'scripts/app/webupdates/deleted.html',
+                controller: function($scope, $stateParams){
+                   $scope.source = $stateParams.source;
+                   $scope.objectType = $stateParams.objectType;
+                   $scope.name = $stateParams.name;
+                }
             });
 
     });

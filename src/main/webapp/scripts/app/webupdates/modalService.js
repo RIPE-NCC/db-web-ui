@@ -4,6 +4,28 @@ angular.module('dbWebApp')
     .factory('ModalService', ['$q', '$modal', '$log', function ( $q, $modal, $log ) {
         function ModalService() {
 
+
+            this.openDeleteObjectModal = function(source, objectType, name) {
+                var modalInstance = $modal.open({
+                    animation:true,
+                    templateUrl: 'scripts/app/webupdates/modalDeleteObject.html',
+                    controller: 'ModalDeleteObjectController',
+                    resolve: {
+                        source: function () {
+                            return source;
+                        },
+                        objectType: function () {
+                            return objectType;
+                        },
+                        name: function () {
+                            return name;
+                        }
+                    }
+                });
+
+                return modalInstance.result;
+            };
+
             this.openAddAttributeModal = function ( items ) {
                 var deferredObject = $q.defer();
 

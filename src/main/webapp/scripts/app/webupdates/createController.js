@@ -33,7 +33,10 @@ angular.module('webUpdates')
 
             $scope.displayMd5DialogDialog = displayMd5DialogDialog;
 
+            $scope.deleteObject = deleteObject;
+
             $scope.submit = submit;
+            $scope.cancel = cancel;
 
             _initialisePage();
 
@@ -66,9 +69,12 @@ angular.module('webUpdates')
                 $scope.warnings = [];
                 $scope.infos = [];
 
+                $scope.CREATE_OPERATION = 'Create';
+                $scope.MODIFY_OPERATION = 'Modify';
+
                 // Determine if this is a create or a modify
                 if (!$scope.name) {
-                    $scope.operation = 'Create';
+                    $scope.operation = $scope.CREATE_OPERATION;
 
                     // Populate empty attributes based on meta-info
                     $scope.attributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
@@ -79,7 +85,7 @@ angular.module('webUpdates')
                     _fetchDataForCreate();
 
                 } else {
-                    $scope.operation = 'Modify';
+                    $scope.operation = $scope.MODIFY_OPERATION;
 
                     // Start empty, and populate with rest-result
                     $scope.attributes = _wrapAndEnrichAttributes([]);
@@ -253,6 +259,21 @@ angular.module('webUpdates')
                 );
             }
 
+            function deleteObject() {
+                ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
+                    function() {},
+                    function(errorResp) {
+                        try {
+                            var whoisResources = _wrapAndEnrichResources(errorResp);
+                            _setErrors(whoisResources);
+                        }
+                        catch(err) {
+                            _setGlobalError('Error deleting object. Please reload and try again.');
+                        }
+                    }
+                );
+            }
+
             function submit() {
 
                 function _onSubmitSuccess(resp) {
@@ -301,6 +322,12 @@ angular.module('webUpdates')
                             _onSubmitSuccess,
                             _onSubmitError);
                     }
+                }
+            }
+
+            function cancel() {
+                if ( window.confirm('Are you sure?') ) {
+                    window.history.back();
                 }
             }
 
