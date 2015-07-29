@@ -47,7 +47,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         function getReferences(source, objectType, name, revision) {
             RestService.getReferences(source, objectType, name, revision)
                 .then(function (resp) {
-                    $scope.references = resp.data.incoming;
+                    if(!_.isEmpty(resp.data.incoming)) $scope.references = resp.data.incoming;
                 },
                 dismissWithFailResponse
             );

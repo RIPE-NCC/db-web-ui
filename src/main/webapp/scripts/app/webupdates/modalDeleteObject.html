@@ -7,7 +7,7 @@
         </h5>
     </div>
 
-    <span ng-hide="_.isEmpty(references)">
+    <span ng-hide="references">
         <div class="modal-body margin-left">
             <label for="reason">Reason</label><br/>
             <input type="text" name="reason" id = "reason" ng-model="reason">
@@ -17,7 +17,7 @@
         </div>
     </span>
 
-    <span ng-show="_.isEmpty(references)">
+    <span ng-show="references">
         <ul>
             <li ng-repeat="ref in references | limitTo:5">
                 <a ng-click="display(ref)">{{ref.pkey}}</a>
