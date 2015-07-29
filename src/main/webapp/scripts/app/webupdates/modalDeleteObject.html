@@ -1,4 +1,4 @@
-<div class="modal-content no-rounded">
+<div class="modal-content no-rounded" ng-hide="references">
     <div class="modal-header">
         <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"></i>
         <h5 class="modal-title" id="commonModalLabel">Please provide the reason for delete</h5>
@@ -11,3 +11,22 @@
         <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="delete()" value="Confirm delete"/>
     </div>
 </div>
+
+<div class="modal-content no-rounded" ng-show="references">
+    <div class="modal-header">
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"></i>
+        <h5 class="modal-title" id="commonModalLabel">The object cannot be deletes, as it is referenced in the following objects:</h5>
+    </div>
+
+    <ul>
+        <li ng-repeat="ref in references | limitTo:5">
+            <a ng-click="display(ref)">{{ref.pkey}}</a>
+        </li>
+    </ul>
+    <p ng-show="references.length > 5"> +{{references.length - 5}}</p>
+
+    <div class="modal-footer">
+        <input type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" ng-click="cancel()" value="Return to object"/>
+    </div>
+</div>
+

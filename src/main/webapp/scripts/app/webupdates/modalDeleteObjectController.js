@@ -5,18 +5,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
         $scope.reason = 'Some default reason';
 
-        RestService.getVersions(source, objectType, name).then(function(resp) {
-                var revision = _.last(resp.data.versions).revision;
-                RestService.getReferences(source, objectType, name, revision).then(function (resp) {
-                    $scope.references = resp.data.object.incoming;
-                });
-            }
-
-
-            //, function (resp) {
-            //    $modalInstance.dismiss(resp.data);
-            //}
-        );
+        getVersions(source, objectType, name);
 
         $scope.delete = function () {
             RestService.deleteObject(source, objectType, name, $scope.reason).then(
@@ -29,13 +18,42 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
                         name: name
                     });
 
-                }, function (resp) {
-                    $modalInstance.dismiss(resp.data);
-                }
+                }, dismissWithFailResponse
             );
         };
 
         $scope.cancel = function () {
             $modalInstance.close();
         };
+
+        $scope.display = function(ref) {
+            $state.transitionTo('display', {
+                source: source,
+                objectType: ref.type,
+                name: ref.pkey
+            });
+        };
+
+        function getVersions(source, objectType, name) {
+            RestService.getVersions(source, objectType, name)
+                .then(function (resp) {
+                    var revision = _.last(resp.data.versions).revision;
+                    getReferences(source, objectType, name, revision);
+                },
+                dismissWithFailResponse
+            );
+        }
+
+        function getReferences(source, objectType, name, revision) {
+            RestService.getReferences(source, objectType, name, revision)
+                .then(function (resp) {
+                    $scope.references = resp.data.incoming;
+                },
+                dismissWithFailResponse
+            );
+        }
+
+        function dismissWithFailResponse(resp) {
+            $modalInstance.dismiss(resp.data);
+        }
     }]);

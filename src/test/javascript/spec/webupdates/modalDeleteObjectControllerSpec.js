@@ -1,6 +1,10 @@
 'use strict';
 
-describe('webUpdates: ModalDeleteObjectController', function () {
+var objectType = 'MNT';
+var name = 'TEST-MNT';
+var source = 'RIPE';
+
+describe('webUpdates: ModalDeleteObjectController loading success', function () {
 
     var $scope, $state, modalInstance, RestService, WhoisResources;
 
@@ -13,13 +17,13 @@ describe('webUpdates: ModalDeleteObjectController', function () {
             WhoisResources = _WhoisResources_;
             RestService =  {
                 deleteObject: function() {
-                    return { then: function(f) { f();} }; // pretend to be a promise
-                },
-                getReferences: function() {
-                    return { then: function(f) { f({data:OBJECT_REFERENCES_RESPONSE});} }; // pretend to be a promise
+                    return { then: function(s) { s();} }; // pretend to be a promise
                 },
                 getVersions: function () {
-                    return { then: function(f) { f({data:OBJECT_VERSIONS_RESPONSE});} }; // pretend to be a promise
+                return { then: function(s) { s({data:OBJECT_VERSIONS_RESPONSE});} }; // pretend to be a promise
+                },
+                getReferences: function() {
+                    return { then: function(s) { s({data:OBJECT_REFERENCES_RESPONSE});} }; // pretend to be a promise
                 }
             };
 
@@ -34,12 +38,8 @@ describe('webUpdates: ModalDeleteObjectController', function () {
                 dismiss: jasmine.createSpy('modalInstance.dismiss')
             };
 
-            $scope.objectType = 'MNT';
-            $scope.name = 'TEST-MNT';
-            $scope.source = 'RIPE';
-
             _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state:$state, $modalInstance: modalInstance, RestService:RestService, source:$scope.source, objectType:$scope.objectType, name:$scope.name
+                $scope: $scope, $state:$state, $modalInstance: modalInstance, RestService:RestService, source:source, objectType:objectType, name:name
             });
 
         });
@@ -47,18 +47,18 @@ describe('webUpdates: ModalDeleteObjectController', function () {
 
     it('should query for object versions', function() {
 
-        expect(RestService.getVersions).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name);
+        expect(RestService.getVersions).toHaveBeenCalledWith(source, objectType, name);
     });
 
     it('should query for last object revision references', function() {
 
         var revision = _.last(OBJECT_VERSIONS_RESPONSE.versions).revision;
-        expect(RestService.getReferences).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name, revision);
+        expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name, revision);
     });
 
     it('should select references if any', function() {
 
-        expect($scope.references).toEqual(OBJECT_REFERENCES_RESPONSE.object.incoming);
+        expect($scope.references).toEqual(OBJECT_REFERENCES_RESPONSE.incoming);
     });
 
     it('should call delete endpoint', function() {
@@ -68,7 +68,7 @@ describe('webUpdates: ModalDeleteObjectController', function () {
 
         $scope.delete();
 
-        expect(RestService.deleteObject).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name, $scope.reason);
+        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason);
     });
 
     it('should close modal after delete object', function() {
@@ -80,7 +80,7 @@ describe('webUpdates: ModalDeleteObjectController', function () {
     });
 
     it('should dismiss modal after error deleting object', function() {
-        spyOn(RestService, 'deleteObject').and.returnValue({then: function(a, b) { b({data:'error'}); }});
+        spyOn(RestService, 'deleteObject').and.returnValue({then: function(s, f) { f({data:'error'}); }});
 
         $scope.delete();
 
@@ -92,7 +92,7 @@ describe('webUpdates: ModalDeleteObjectController', function () {
 
         $scope.delete();
 
-        expect($state.transitionTo).toHaveBeenCalledWith('deleted', {source:$scope.source, objectType:$scope.objectType, name:$scope.name});
+        expect($state.transitionTo).toHaveBeenCalledWith('deleted', {source:source, objectType:objectType, name:name});
     });
 
     it('should close the modal and return error when canceled', function () {
@@ -100,7 +100,125 @@ describe('webUpdates: ModalDeleteObjectController', function () {
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
+    it('should make the transition to display a given object reference', function() {
+        var ref = {
+            "type": "ROUTE",
+            "pkey": "193.0.0.0/21AS3333",
+            "revision": 1,
+            "from": "2001-09-22T11:33:24+02:00",
+            "to": "2008-09-10T13:31:33+02:00",
+            "link": {
+                "type": "locator",
+                "href": "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+            }
+        };
+        spyOn($state, 'transitionTo');
+
+        $scope.display(ref);
+
+        expect($state.transitionTo).toHaveBeenCalledWith('display', {
+            source: source,
+            objectType: ref.type,
+            name: ref.pkey
+        });
+
+
+    });
+
 });
+
+describe('webUpdates: ModalDeleteObjectController loading versions failures ', function () {
+
+    var $scope, $state, modalInstance, RestService, WhoisResources;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _WhoisResources_) {
+
+            $state = _$state_;
+            WhoisResources = _WhoisResources_;
+            RestService =  {
+                getVersions: function () {
+                    return { then: function(s, f) { f({data:'error'});} }; // pretend to be a promise
+                }
+            };
+
+            spyOn(RestService, 'getVersions').and.callThrough();
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            modalInstance = {
+                dismiss: jasmine.createSpy('modalInstance.dismiss')
+            };
+
+            $scope.objectType = 'MNT';
+            $scope.name = 'TEST-MNT';
+            $scope.source = 'RIPE';
+
+            _$controller_('ModalDeleteObjectController', {
+                $scope: $scope, $state:$state, $modalInstance: modalInstance, RestService:RestService, source:source, objectType:objectType, name:name
+            });
+
+        });
+    });
+
+    it('should dismiss modal after error getting object versions', function() {
+
+        expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
+    });
+
+});
+
+describe('webUpdates: ModalDeleteObjectController loading references failures ', function () {
+
+    var $scope, $state, modalInstance, RestService, WhoisResources;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _WhoisResources_) {
+
+            $state = _$state_;
+            WhoisResources = _WhoisResources_;
+            RestService =  {
+                getVersions: function() {
+                    return { then: function(s) { s({data:OBJECT_VERSIONS_RESPONSE});} }; // pretend to be a promise
+                },
+                getReferences: function () {
+                    return { then: function(s, f) { f({data:'error'});} }; // pretend to be a promise
+                }
+            };
+
+            spyOn(RestService, 'getVersions').and.callThrough();
+            spyOn(RestService, 'getReferences').and.callThrough();
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            modalInstance = {
+                dismiss: jasmine.createSpy('modalInstance.dismiss')
+            };
+
+            $scope.objectType = 'MNT';
+            $scope.name = 'TEST-MNT';
+            $scope.source = 'RIPE';
+
+            _$controller_('ModalDeleteObjectController', {
+                $scope: $scope, $state:$state, $modalInstance: modalInstance, RestService:RestService, source:source, objectType:objectType, name:name
+            });
+
+        });
+    });
+
+    it('should dismiss modal after error getting object references', function() {
+
+        expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
+    });
+
+});
+
 
 
 var OBJECT_VERSIONS_RESPONSE = {'versions':[ {

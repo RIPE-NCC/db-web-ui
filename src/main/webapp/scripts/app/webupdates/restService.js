@@ -7,11 +7,11 @@ angular.module('dbWebApp')
             function RestService() {
 
                 this.getVersions = function(source, objectType, name) {
-
+                    return {then: function(f) {f({data:OBJECT_VERSIONS_RESPONSE})}};
                 };
 
                 this.getReferences = function(source, objectType, name, version) {
-
+                    return {then: function(f) {f({data:OBJECT_REFERENCES_RESPONSE})}};
 
                 };
 
@@ -219,3 +219,282 @@ angular.module('dbWebApp')
 
             return new RestService();
         }]);
+
+
+var OBJECT_VERSIONS_RESPONSE = {'versions':[ {
+    'type' : 'AUT-NUM',
+    'pkey' : 'AS3333',
+    'revision' : 1,
+    'from' : '2002-08-13T14:58:13+02:00',
+    'to' : '2003-01-20T14:08:30+01:00',
+    'link' : {
+        'type' : 'locator',
+        'href' : 'https://int.db.ripe.net/rnd/ripe/AUT-NUM/AS3333/versions/1'
+    }
+}, {
+    'type': 'AUT-NUM',
+    'pkey': 'AS3333',
+    'revision': 2,
+    'from': '2003-01-20T14:08:30+01:00',
+    'to': '2003-01-20T14:43:13+01:00',
+    'link': {
+        'type': 'locator',
+        'href': 'https://int.db.ripe.net/rnd/ripe/AUT-NUM/AS3333/versions/2'
+    }
+}],
+    'terms-and-conditions' : {
+        'type' : 'locator',
+        'href' : 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+    }
+};
+
+var OBJECT_REFERENCES_RESPONSE = {"object" : {
+    "attributes" : {
+        "attribute" : [ {
+            "name" : "aut-num",
+            "value" : "AS3333"
+        }, {
+            "name" : "source",
+            "value" : "RIPE",
+            "comment" : "Filtered"
+        }]
+    }
+},
+    "version" : {
+        "type" : "AUT-NUM",
+        "pkey" : "AS3333",
+        "revision" : 1,
+        "from" : "2003-03-17T11:34:38+01:00",
+        "to" : "2003-04-25T17:39:17+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/AUT-NUM/AS3333/versions/5"
+        }
+    },
+    "incoming" : [ {
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    },{
+        "type" : "ROUTE",
+        "pkey" : "192.16.202.0/24AS3333",
+        "revision" : 1,
+        "from" : "2002-06-06T17:01:52+02:00",
+        "to" : "2003-12-01T16:17:24+01:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
+        }
+    }, {
+        "type" : "ROUTE",
+        "pkey" : "193.0.0.0/21AS3333",
+        "revision" : 1,
+        "from" : "2001-09-22T11:33:24+02:00",
+        "to" : "2008-09-10T13:31:33+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
+        }
+    } ],
+    "outgoing" : [ {
+        "type" : "ROLE",
+        "pkey" : "OPS4-RIPE",
+        "revision" : 2,
+        "from" : "2003-04-12T08:25:25+02:00",
+        "to" : "2003-05-22T13:20:02+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROLE/OPS4-RIPE/versions/2"
+        }
+    }, {
+        "type" : "ROLE",
+        "pkey" : "OPS4-RIPE",
+        "revision" : 1,
+        "from" : "2002-09-16T12:35:19+02:00",
+        "to" : "2003-04-12T08:25:25+02:00",
+        "link" : {
+            "type" : "locator",
+            "href" : "https://int.db.ripe.net/rnd/ripe/ROLE/OPS4-RIPE/versions/1"
+        }
+    } ],
+    "terms-and-conditions" : {
+        "type" : "locator",
+        "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+};
