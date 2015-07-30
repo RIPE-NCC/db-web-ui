@@ -5,7 +5,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
         $scope.reason = 'Some default reason';
 
-        getVersions(source, objectType, name);
+        getReferences(source, objectType, name);
 
         $scope.delete = function () {
             RestService.deleteObject(source, objectType, name, $scope.reason).then(
@@ -34,20 +34,10 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             });
         };
 
-        function getVersions(source, objectType, name) {
-            RestService.getVersions(source, objectType, name)
+        function getReferences(source, objectType, name) {
+            RestService.getReferences(source, objectType, name)
                 .then(function (resp) {
-                    var revision = _.last(resp.data.versions).revision;
-                    getReferences(source, objectType, name, revision);
-                },
-                dismissWithFailResponse
-            );
-        }
-
-        function getReferences(source, objectType, name, revision) {
-            RestService.getReferences(source, objectType, name, revision)
-                .then(function (resp) {
-                    if(!_.isEmpty(resp.data.incoming)) $scope.references = resp.data.incoming;
+                    if(!_.isEmpty(resp.data.references)) $scope.references = resp.data.references;
                 },
                 dismissWithFailResponse
             );

@@ -6,11 +6,7 @@ angular.module('dbWebApp')
 
             function RestService() {
 
-                this.getVersions = function(source, objectType, name) {
-                    return {then: function(f) {f({data:OBJECT_VERSIONS_RESPONSE})}};
-                };
-
-                this.getReferences = function(source, objectType, name, version) {
+                this.getReferences = function(source, objectType, name) {
                     return {then: function(f) {f({data:OBJECT_REFERENCES_RESPONSE})}};
 
                 };
@@ -221,280 +217,378 @@ angular.module('dbWebApp')
         }]);
 
 
-var OBJECT_VERSIONS_RESPONSE = {'versions':[ {
-    'type' : 'AUT-NUM',
-    'pkey' : 'AS3333',
-    'revision' : 1,
-    'from' : '2002-08-13T14:58:13+02:00',
-    'to' : '2003-01-20T14:08:30+01:00',
-    'link' : {
-        'type' : 'locator',
-        'href' : 'https://int.db.ripe.net/rnd/ripe/AUT-NUM/AS3333/versions/1'
-    }
-}, {
-    'type': 'AUT-NUM',
-    'pkey': 'AS3333',
-    'revision': 2,
-    'from': '2003-01-20T14:08:30+01:00',
-    'to': '2003-01-20T14:43:13+01:00',
-    'link': {
-        'type': 'locator',
-        'href': 'https://int.db.ripe.net/rnd/ripe/AUT-NUM/AS3333/versions/2'
-    }
-}],
-    'terms-and-conditions' : {
-        'type' : 'locator',
-        'href' : 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
-    }
-};
-
-var OBJECT_REFERENCES_RESPONSE = {"object" : {
-    "attributes" : {
-        "attribute" : [ {
-            "name" : "aut-num",
-            "value" : "AS3333"
-        }, {
-            "name" : "source",
-            "value" : "RIPE",
-            "comment" : "Filtered"
-        }]
-    }
-},
-    "version" : {
-        "type" : "AUT-NUM",
-        "pkey" : "AS3333",
-        "revision" : 1,
-        "from" : "2003-03-17T11:34:38+01:00",
-        "to" : "2003-04-25T17:39:17+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/AUT-NUM/AS3333/versions/5"
+var OBJECT_REFERENCES_RESPONSE = {
+    'subset':5,
+    'total':11,
+    'references':[
+        {
+            'link':{
+                'type':'locator',
+                'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO2-MNT'
+            },
+            'source':{
+                'id':'ripe'
+            },
+            'primaryKey':[
+                {
+                    'value':'THIAGO2-MNT',
+                    'name':'mntner'
+                }
+            ],
+            'attributes':[
+                {
+                    'value':'THIAGO2-MNT',
+                    'name':'mntner'
+                },
+                {
+                    'value':'test',
+                    'name':'descr'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/person/DW-RIPE'
+                    },
+                    'value':'DW-RIPE',
+                    'referencedType':'person',
+                    'name':'admin-c'
+                },
+                {
+                    'value':'MD5-PW',
+                    'name':'auth',
+                    'comment':'Filtered'
+                },
+                {
+                    'value':'SSO',
+                    'name':'auth',
+                    'comment':'Filtered'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO1-MNT'
+                    },
+                    'value':'THIAGO1-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/WHOISTEST-MNT'
+                    },
+                    'value':'WHOISTEST-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO-MNT'
+                    },
+                    'value':'THIAGO-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'value':'2015-07-28T11:21:29Z',
+                    'name':'created'
+                },
+                {
+                    'value':'2015-07-29T13:03:12Z',
+                    'name':'last-modified'
+                },
+                {
+                    'value':'RIPE',
+                    'name':'source',
+                    'comment':'Filtered'
+                }
+            ],
+            'type':'mntner'
+        },
+        {
+            'link':{
+                'type':'locator',
+                'href':'http://rest-dev.db.ripe.net/ripe/person/AA28627-RIPE'
+            },
+            'source':{
+                'id':'ripe'
+            },
+            'primaryKey':[
+                {
+                    'value':'AA28627-RIPE',
+                    'name':'nic-hdl'
+                }
+            ],
+            'attributes':[
+                {
+                    'value':'asd asd',
+                    'name':'person'
+                },
+                {
+                    'value':'Singel 258',
+                    'name':'address'
+                },
+                {
+                    'value':'+31681054583',
+                    'name':'phone'
+                },
+                {
+                    'value':'AA28627-RIPE',
+                    'name':'nic-hdl'
+                },
+                {
+                    'value':'2015-06-17T10:11:41Z',
+                    'name':'created'
+                },
+                {
+                    'value':'2015-06-17T10:11:41Z',
+                    'name':'last-modified'
+                },
+                {
+                    'value':'RIPE',
+                    'name':'source'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO-MNT'
+                    },
+                    'value':'THIAGO-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                }
+            ],
+            'type':'person'
+        },
+        {
+            'link':{
+                'type':'locator',
+                'href':'http://rest-dev.db.ripe.net/ripe/person/AA28629-RIPE'
+            },
+            'source':{
+                'id':'ripe'
+            },
+            'primaryKey':[
+                {
+                    'value':'AA28629-RIPE',
+                    'name':'nic-hdl'
+                }
+            ],
+            'attributes':[
+                {
+                    'value':'asdf asdf',
+                    'name':'person'
+                },
+                {
+                    'value':'asdf',
+                    'name':'address'
+                },
+                {
+                    'value':'+31',
+                    'name':'phone'
+                },
+                {
+                    'value':'AA28629-RIPE',
+                    'name':'nic-hdl'
+                },
+                {
+                    'value':'2015-06-22T16:16:31Z',
+                    'name':'created'
+                },
+                {
+                    'value':'2015-06-22T16:16:31Z',
+                    'name':'last-modified'
+                },
+                {
+                    'value':'RIPE',
+                    'name':'source'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/TPOLYCHNIA2-MNT'
+                    },
+                    'value':'TPOLYCHNIA2-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/TPOLYCHNIA-MNT'
+                    },
+                    'value':'TPOLYCHNIA-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO-MNT'
+                    },
+                    'value':'THIAGO-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                }
+            ],
+            'type':'person'
+        },
+        {
+            'link':{
+                'type':'locator',
+                'href':'http://rest-dev.db.ripe.net/ripe/person/AA28650-RIPE'
+            },
+            'source':{
+                'id':'ripe'
+            },
+            'primaryKey':[
+                {
+                    'value':'AA28650-RIPE',
+                    'name':'nic-hdl'
+                }
+            ],
+            'attributes':[
+                {
+                    'value':'a a',
+                    'name':'person'
+                },
+                {
+                    'value':'193.0.10.*',
+                    'name':'address'
+                },
+                {
+                    'value':'+31681054583',
+                    'name':'phone'
+                },
+                {
+                    'value':'AA28650-RIPE',
+                    'name':'nic-hdl'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO1-MNT'
+                    },
+                    'value':'THIAGO1-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/WHOISTEST-MNT'
+                    },
+                    'value':'WHOISTEST-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO-MNT'
+                    },
+                    'value':'THIAGO-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'value':'2015-07-29T12:00:37Z',
+                    'name':'created'
+                },
+                {
+                    'value':'2015-07-29T12:00:37Z',
+                    'name':'last-modified'
+                },
+                {
+                    'value':'RIPE',
+                    'name':'source'
+                }
+            ],
+            'type':'person'
+        },
+        {
+            'link':{
+                'type':'locator',
+                'href':'http://rest-dev.db.ripe.net/ripe/person/AA28652-RIPE'
+            },
+            'source':{
+                'id':'ripe'
+            },
+            'primaryKey':[
+                {
+                    'value':'AA28652-RIPE',
+                    'name':'nic-hdl'
+                }
+            ],
+            'attributes':[
+                {
+                    'value':'a a',
+                    'name':'person'
+                },
+                {
+                    'value':'Singel 258',
+                    'name':'address'
+                },
+                {
+                    'value':'+31681054583',
+                    'name':'phone'
+                },
+                {
+                    'value':'AA28652-RIPE',
+                    'name':'nic-hdl'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO2-MNT'
+                    },
+                    'value':'THIAGO2-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO1-MNT'
+                    },
+                    'value':'THIAGO1-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/WHOISTEST-MNT'
+                    },
+                    'value':'WHOISTEST-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/THIAGO-MNT'
+                    },
+                    'value':'THIAGO-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                },
+                {
+                    'value':'2015-07-29T14:01:22Z',
+                    'name':'created'
+                },
+                {
+                    'value':'2015-07-29T14:01:22Z',
+                    'name':'last-modified'
+                },
+                {
+                    'value':'RIPE',
+                    'name':'source'
+                }
+            ],
+            'type':'person'
         }
-    },
-    "incoming" : [ {
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    },{
-        "type" : "ROUTE",
-        "pkey" : "192.16.202.0/24AS3333",
-        "revision" : 1,
-        "from" : "2002-06-06T17:01:52+02:00",
-        "to" : "2003-12-01T16:17:24+01:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/192.16.202.0/24AS3333/versions/1"
-        }
-    }, {
-        "type" : "ROUTE",
-        "pkey" : "193.0.0.0/21AS3333",
-        "revision" : 1,
-        "from" : "2001-09-22T11:33:24+02:00",
-        "to" : "2008-09-10T13:31:33+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-        }
-    } ],
-    "outgoing" : [ {
-        "type" : "ROLE",
-        "pkey" : "OPS4-RIPE",
-        "revision" : 2,
-        "from" : "2003-04-12T08:25:25+02:00",
-        "to" : "2003-05-22T13:20:02+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROLE/OPS4-RIPE/versions/2"
-        }
-    }, {
-        "type" : "ROLE",
-        "pkey" : "OPS4-RIPE",
-        "revision" : 1,
-        "from" : "2002-09-16T12:35:19+02:00",
-        "to" : "2003-04-12T08:25:25+02:00",
-        "link" : {
-            "type" : "locator",
-            "href" : "https://int.db.ripe.net/rnd/ripe/ROLE/OPS4-RIPE/versions/1"
-        }
-    } ],
-    "terms-and-conditions" : {
-        "type" : "locator",
-        "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
-    }
+    ],
+    'query':'http://db-dev-1.dev.ripe.net:1080/whois/search?inverse-attribute=mr&inverse-attribute=mb&inverse-attribute=md&inverse-attribute=ml&inverse-attribute=mu&inverse-attribute=mz&flags=r&source=RIPE&query-string=thiago-mnt'
 };
