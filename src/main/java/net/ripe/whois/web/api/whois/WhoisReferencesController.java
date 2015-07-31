@@ -3,6 +3,7 @@ package net.ripe.whois.web.api.whois;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.whois.services.WhoisSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,6 +20,9 @@ public class WhoisReferencesController {
 
     @Autowired
     private WhoisSearchService whoisSearchService;
+
+    @Value("${ripe.search.queryUrl}")
+    private String queryUrl;
 
     private int MAX_RESULT_NUMBER = 5;
 
@@ -40,7 +44,7 @@ public class WhoisReferencesController {
         response.put("total", references.size());
         response.put("subset", selectedReferences.size());
         response.put("references", selectedReferences);
-        response.put("query", whoisSearchService.getReferencesUrlFor(query, source, name));
+        response.put("query", whoisSearchService.getReferencesUrlFor(queryUrl, query, source, name));
 
         return response;
     }

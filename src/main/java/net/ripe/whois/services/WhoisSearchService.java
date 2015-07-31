@@ -31,7 +31,9 @@ public class WhoisSearchService extends RestClient {
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_XML_VALUE);
 
-        final ResponseEntity<WhoisResources> response = restTemplate.exchange(getReferencesUrlFor(query, source, queryString),
+        URI uri = new UriTemplate("{url}" + query.getApiQueryParams()).expand(getParamsMap(apiUrl, source, queryString));
+
+        final ResponseEntity<WhoisResources> response = restTemplate.exchange(uri,
             HttpMethod.GET,
             new HttpEntity<String>(headers),
             WhoisResources.class);
@@ -43,43 +45,80 @@ public class WhoisSearchService extends RestClient {
         return response.getBody().getWhoisObjects();
     }
 
-    public URI getReferencesUrlFor(InverseQuery query, String source, String queryString) {
+    public URI getReferencesUrlFor(String url, InverseQuery query, String source, String queryString) {
+        return new UriTemplate("{url}"+query.getWebQueryParams()).expand(getParamsMap(url, source, queryString));
+    }
 
+    private HashMap<String, Object> getParamsMap(String apiUrl, String source, String queryString) {
         final HashMap<String, Object> variables = Maps.newHashMap();
-        variables.put("apiUrl", apiUrl);
+        variables.put("url", apiUrl);
         variables.put("source", source);
         variables.put("query-string", queryString);
-
-        return new UriTemplate("{apiUrl}"+query.getQueryParams()).expand(variables);
-
+        return variables;
     }
 
     public enum InverseQuery {
 
-        AS_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}"),
-        AUT_NUM("?inverse-attribute=la&inverse-attribute=or&flags=r&source={source}&query-string={query-string}"),
-        INET6NUM("?type-filter=route6&flags=r&source={source}&query-string={query-string}"),
-        INETNUM("?type-filter=route&flags=r&source={source}&query-string={query-string}"),
-        IRT("?inverse-attribute=mi&flags=r&source={source}&query-string={query-string}"),
-        KEY_CERT("?inverse-attribute=at&flags=r&source={source}&query-string={query-string}"),
-        MNTNER("?inverse-attribute=mr&inverse-attribute=mb&inverse-attribute=md&inverse-attribute=ml&inverse-attribute=mu&inverse-attribute=mz&flags=r&source={source}&query-string={query-string}"),
-        ORGANISATION("?inverse-attribute=org&flags=r&source={source}&query-string={query-string}"),
-        PERSON("?inverse-attribute=pn&inverse-attribute=ac&inverse-attribute=tc&inverse-attribute=zc&flags=r&source={source}&query-string={query-string}"),
-        ROLE("?inverse-attribute=pn&inverse-attribute=ac&inverse-attribute=tc&inverse-attribute=zc&flags=r&source={source}&query-string={query-string}"),
-        ROUTE("?type-filter=inetnum&flags=r&source={source}&query-string={query-string}"),
-        ROUTE6("?type-filter=inet6num&flags=r&source={source}&query-string={query-string}"),
-        ROUTE_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}"),
-        RTR_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}");
+        AS_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}",
+            "?inverse=mo&rflag=true&source={source}&searchtext={query-string}"),
 
-        private final String queryParams;
+        AUT_NUM("?inverse-attribute=la&inverse-attribute=or&flags=r&source={source}&query-string={query-string}",
+            "?inverse=la;or&rflag=true&source={source}&searchtext={query-string}"),
 
-        private InverseQuery(String queryParams) {
-            this.queryParams = queryParams;
+        INET6NUM("?type-filter=route6&flags=r&source={source}&query-string={query-string}",
+            "?types=route6&rflag=true&source={source}&searchtext={query-string}"),
+
+        INETNUM("?type-filter=route&flags=r&source={source}&query-string={query-string}",
+            "?types=route&rflag=true&source={source}&searchtext={query-string}"),
+
+        IRT("?inverse-attribute=mi&flags=r&source={source}&query-string={query-string}",
+            "?inverse=mi&rflag=true&source={source}&searchtext={query-string}"),
+
+        KEY_CERT("?inverse-attribute=at&flags=r&source={source}&query-string={query-string}",
+            "?inverse=at&rflag=true&source={source}&searchtext={query-string}"),
+
+
+        MNTNER("?inverse-attribute=mr&inverse-attribute=mb&inverse-attribute=md&inverse-attribute=ml&inverse-attribute=mu&inverse-attribute=mz&flags=r&source={source}&query-string={query-string}",
+            "?inverse=mr;mb;md;ml;mu;mz&rflag=true&source={source}&searchtext={query-string}"),
+
+
+        ORGANISATION("?inverse-attribute=org&flags=r&source={source}&query-string={query-string}",
+            "?inverse=org&rflag=true&source={source}&searchtext={query-string}"),
+
+        PERSON("?inverse-attribute=pn&inverse-attribute=ac&inverse-attribute=tc&inverse-attribute=zc&flags=r&source={source}&query-string={query-string}",
+            "?inverse=pn;ac;tc;zc&rflag=true&source={source}&searchtext={query-string}"),
+
+        ROLE("?inverse-attribute=pn&inverse-attribute=ac&inverse-attribute=tc&inverse-attribute=zc&flags=r&source={source}&query-string={query-string}",
+            "?inverse=pn;ac;tc;zc&rflag=true&source={source}&searchtext={query-string}"),
+
+        ROUTE("?type-filter=inetnum&flags=r&source={source}&query-string={query-string}",
+            "?types=inetnum&rflag=true&source={source}&searchtext={query-string}"),
+        ROUTE6("?type-filter=inet6num&flags=r&source={source}&query-string={query-string}",
+            "?types=inet6num&rflag=true&source={source}&searchtext={query-string}"),
+
+        ROUTE_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}",
+            "?inverse=mo&rflag=true&source={source}&searchtext={query-string}"),
+
+        RTR_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}",
+            "?inverse=mo&rflag=true&source={source}&searchtext={query-string}");
+
+        private final String apiQueryParams;
+        private final String webQueryParams;
+
+        private InverseQuery(String apiQueryParams, String webQueryParams) {
+
+            this.apiQueryParams = apiQueryParams;
+            this.webQueryParams = webQueryParams;
         }
 
-        public String getQueryParams() {
-            return queryParams;
+        public String getApiQueryParams() {
+            return apiQueryParams;
         }
+
+        public String getWebQueryParams() {
+            return webQueryParams;
+        }
+
     }
 }
 

@@ -11,6 +11,10 @@ rest:
     api:
         ripeUrl: http://db-pre-1.prepdev.ripe.net:1080/whois
 
+ripe:
+    search:
+           queryUrl: https://prepdev.db.ripe.net/search/query.html
+
 internal:
     api:
         url: http://int-prepdev.db.ripe.net
