@@ -17,7 +17,7 @@ angular.module('dbWebApp')
         };
 
         this._getMetaAttributesOnObjectType = function (objectTypeName, mandatoryOnly) {
-            if (!objectTypeName) {
+            if (!objectTypeName || !this._objectTypesMap[objectTypeName]) {
                 return [];
             }
             if (mandatoryOnly === false) {

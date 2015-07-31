@@ -144,4 +144,10 @@ describe('dbWebApp: WhoisMetaService', function () {
         ])
     });
 
+
+    it('should return empty array for non existing object type', function(){
+      var mandatoryAttributesOnObjectType = $whoisMetaService.getMandatoryAttributesOnObjectType('blablabla');
+        expect(mandatoryAttributesOnObjectType).toEqual([]);
+    });
+
 });
