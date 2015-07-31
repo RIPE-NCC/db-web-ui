@@ -60,10 +60,10 @@ public class WhoisSearchService extends RestClient {
     public enum InverseQuery {
 
         AS_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}",
-            "?inverse=mo&rflag=true&source={source}&searchtext={query-string}"),
+            "?inverse=member-of&rflag=true&source={source}&searchtext={query-string}"),
 
         AUT_NUM("?inverse-attribute=la&inverse-attribute=or&flags=r&source={source}&query-string={query-string}",
-            "?inverse=la;or&rflag=true&source={source}&searchtext={query-string}"),
+            "?inverse=local-as;origin&rflag=true&source={source}&searchtext={query-string}"),
 
         INET6NUM("?type-filter=route6&flags=r&source={source}&query-string={query-string}",
             "?types=route6&rflag=true&source={source}&searchtext={query-string}"),
@@ -72,24 +72,22 @@ public class WhoisSearchService extends RestClient {
             "?types=route&rflag=true&source={source}&searchtext={query-string}"),
 
         IRT("?inverse-attribute=mi&flags=r&source={source}&query-string={query-string}",
-            "?inverse=mi&rflag=true&source={source}&searchtext={query-string}"),
+            "?inverse=mnt-irt&rflag=true&source={source}&searchtext={query-string}"),
 
         KEY_CERT("?inverse-attribute=at&flags=r&source={source}&query-string={query-string}",
-            "?inverse=at&rflag=true&source={source}&searchtext={query-string}"),
-
+            "?inverse=auth&rflag=true&source={source}&searchtext={query-string}"),
 
         MNTNER("?inverse-attribute=mr&inverse-attribute=mb&inverse-attribute=md&inverse-attribute=ml&inverse-attribute=mu&inverse-attribute=mz&flags=r&source={source}&query-string={query-string}",
-            "?inverse=mr;mb;md;ml;mu;mz&rflag=true&source={source}&searchtext={query-string}"),
-
+            "?inverse=mbrs-by-ref;mnt-by;mnt-domains;mnt-lower;mnt-routes;mnt-routes&rflag=true&source={source}&searchtext={query-string}"),
 
         ORGANISATION("?inverse-attribute=org&flags=r&source={source}&query-string={query-string}",
             "?inverse=org&rflag=true&source={source}&searchtext={query-string}"),
 
         PERSON("?inverse-attribute=pn&inverse-attribute=ac&inverse-attribute=tc&inverse-attribute=zc&flags=r&source={source}&query-string={query-string}",
-            "?inverse=pn;ac;tc;zc&rflag=true&source={source}&searchtext={query-string}"),
+            "?inverse=person;admin-c;tech-c;zone-c&rflag=true&source={source}&searchtext={query-string}"),
 
         ROLE("?inverse-attribute=pn&inverse-attribute=ac&inverse-attribute=tc&inverse-attribute=zc&flags=r&source={source}&query-string={query-string}",
-            "?inverse=pn;ac;tc;zc&rflag=true&source={source}&searchtext={query-string}"),
+            "?inverse=person;admin-c;tech-c;zone-c&rflag=true&source={source}&searchtext={query-string}"),
 
         ROUTE("?type-filter=inetnum&flags=r&source={source}&query-string={query-string}",
             "?types=inetnum&rflag=true&source={source}&searchtext={query-string}"),
@@ -97,10 +95,10 @@ public class WhoisSearchService extends RestClient {
             "?types=inet6num&rflag=true&source={source}&searchtext={query-string}"),
 
         ROUTE_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}",
-            "?inverse=mo&rflag=true&source={source}&searchtext={query-string}"),
+            "?inverse=member-of&rflag=true&source={source}&searchtext={query-string}"),
 
         RTR_SET("?inverse-attribute=mo&flags=r&source={source}&query-string={query-string}",
-            "?inverse=mo&rflag=true&source={source}&searchtext={query-string}");
+            "?inverse=member-of&rflag=true&source={source}&searchtext={query-string}");
 
         private final String apiQueryParams;
         private final String webQueryParams;
