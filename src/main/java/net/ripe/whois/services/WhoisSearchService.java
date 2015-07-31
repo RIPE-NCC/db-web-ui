@@ -36,7 +36,7 @@ public class WhoisSearchService extends RestClient {
             new HttpEntity<String>(headers),
             WhoisResources.class);
 
-        if (response.getStatusCode() != HttpStatus.OK) {
+        if (response.getStatusCode() != HttpStatus.OK && response.getStatusCode() != HttpStatus.NOT_FOUND) {
             throw new RestClientException(response.getBody().getErrorMessages());
         }
 

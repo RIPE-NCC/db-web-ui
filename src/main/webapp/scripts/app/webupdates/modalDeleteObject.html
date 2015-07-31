@@ -2,35 +2,35 @@
     <div class="modal-header">
         <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"></i>
         <h5 class="modal-title" id="commonModalLabel">
-            <span ng-hide="references">Please provide the reason for delete</span>
-            <span ng-show="references">This object can not be deleted</span>
+            <span ng-show="referencesInfo.total == 0">Please provide the reason for delete</span>
+            <span ng-show="referencesInfo.total > 0">This object can not be deleted</span>
         </h5>
     </div>
 
     <div class="modal-body margin-left">
-        <div ng-hide="references">
+        <div ng-show="referencesInfo.total == 0">
             <label for="reason">Reason</label><br/>
             <input type="text" name="reason" id = "reason" ng-model="reason">
         </div>
-        <div ng-show="references">
+        <div ng-show="referencesInfo.total > 0">
             <p>This object has been referenced in the following objects, you may need to delete these references first.</p>
             <ul class="bullets">
-                <li ng-repeat="ref in references | limitTo:5">
-                    {{ref.type}} - <a ng-click="display(ref)">{{ref.pkey}}</a>
+                <li ng-repeat="ref in referencesInfo.references | limitTo:5">
+                    {{ref.type}} - <a target="_blank" href="{{displayUrl(ref)}}">{{primaryKey(ref)}}</a>
                 </li>
             </ul>
-            <a href="#" class="blue-button more-reference" ng-show="references.length > 5"> +{{references.length - 5}} more objects</a>
+            <a href="{{referencesInfo.query}}" target="_blank" class="blue-button more-reference" ng-show="referencesInfo.total > referencesInfo.subset"> +{{referencesInfo.total - referencesInfo.subset}} more objects</a>
         </div>
     </div>
 
     <div class="modal-footer">
-        <div ng-hide="references">
+        <div ng-show="referencesInfo.total == 0">
             <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="delete()" value="Confirm delete"/>
         </div>
-        <div ng-show="references">
+        <div ng-show="referencesInfo.total > 0">
             <input type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" ng-click="cancel()" value="Return to object"/>
         </div>
     </div>
-    
+
 </div>
 

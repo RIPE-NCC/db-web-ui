@@ -7,7 +7,8 @@ angular.module('dbWebApp')
             function RestService() {
 
                 this.getReferences = function(source, objectType, name) {
-                    return {then: function(f) {f({data:OBJECT_REFERENCES_RESPONSE})}};
+                    return $resource('api/references/:source/:objectType/:name',
+                        {source: source, objectType: objectType, name: name}).get().$promise;
 
                 };
 

@@ -20,7 +20,7 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
                     return { then: function(s) { s();} }; // pretend to be a promise
                 },
                 getReferences: function() {
-                    return { then: function(s) { s({data:OBJECT_REFERENCES_RESPONSE});} }; // pretend to be a promise
+                    return { then: function(s) { s(OBJECT_REFERENCES_RESPONSE);} }; // pretend to be a promise
                 }
             };
 
@@ -46,9 +46,9 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
         expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name);
     });
 
-    it('should select references if any', function() {
+    it('should select referencesInfo if any', function() {
 
-        expect($scope.references).toEqual(OBJECT_REFERENCES_RESPONSE.references);
+        expect($scope.referencesInfo).toEqual(OBJECT_REFERENCES_RESPONSE);
     });
 
     it('should call delete endpoint', function() {
@@ -90,28 +90,30 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
         expect(modalInstance.close).toHaveBeenCalled();
     });
 
-    it('should make the transition to display a given object reference', function() {
-        var ref = {
-            "type": "ROUTE",
-            "pkey": "193.0.0.0/21AS3333",
-            "revision": 1,
-            "from": "2001-09-22T11:33:24+02:00",
-            "to": "2008-09-10T13:31:33+02:00",
-            "link": {
-                "type": "locator",
-                "href": "https://int.db.ripe.net/rnd/ripe/ROUTE/193.0.0.0/21AS3333/versions/1"
-            }
-        };
-        spyOn($state, 'transitionTo');
+    it('should build url to display a given object reference', function() {
+        var ref = OBJECT_REFERENCES_RESPONSE.references[0];
+        expect($scope.displayUrl(ref)).toEqual('#/webupdates/display'+'/'+source+'/'+ref.type+'/'+ref.primaryKey[0].value);
+    });
 
-        $scope.display(ref);
+    it('should build primary key', function() {
+        var ref = OBJECT_REFERENCES_RESPONSE.references[0];
 
-        expect($state.transitionTo).toHaveBeenCalledWith('display', {
-            source: source,
-            objectType: ref.type,
-            name: ref.pkey
-        });
+        expect($scope.primaryKey(ref)).toEqual(ref.primaryKey[0].value);
 
+    });
+
+    it('should build composite primary keys', function() {
+        var ref = OBJECT_REFERENCES_RESPONSE.references[0];
+        ref.primaryKey = [{
+                'name' : 'route',
+                'value' : '193.0.0.0/21'
+            },
+            {
+                'name' : 'origin',
+                'value' : 'AS3333'
+            }];
+
+        expect($scope.primaryKey(ref)).toEqual('193.0.0.0/21'+'/'+'AS3333');
 
     });
 
@@ -160,35 +162,6 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
     });
 
 });
-
-
-
-var OBJECT_VERSIONS_RESPONSE = {'versions':[ {
-    'type' : 'AUT-NUM',
-    'pkey' : 'AS3333',
-    'revision' : 1,
-    'from' : '2002-08-13T14:58:13+02:00',
-    'to' : '2003-01-20T14:08:30+01:00',
-    'link' : {
-        'type' : 'locator',
-        'href' : 'https://int.db.ripe.net/rnd/ripe/AUT-NUM/AS3333/versions/1'
-    }
-}, {
-    'type': 'AUT-NUM',
-    'pkey': 'AS3333',
-    'revision': 2,
-    'from': '2003-01-20T14:08:30+01:00',
-    'to': '2003-01-20T14:43:13+01:00',
-    'link': {
-        'type': 'locator',
-        'href': 'https://int.db.ripe.net/rnd/ripe/AUT-NUM/AS3333/versions/2'
-    }
-}],
-    'terms-and-conditions' : {
-        'type' : 'locator',
-        'href' : 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
-    }
-};
 
 var OBJECT_REFERENCES_RESPONSE = {
     'subset':5,

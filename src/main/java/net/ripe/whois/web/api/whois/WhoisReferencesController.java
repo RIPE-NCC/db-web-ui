@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/references")
-public class WhoisSearchController {
+public class WhoisReferencesController {
 
     @Autowired
     private WhoisSearchService whoisSearchService;

@@ -26,18 +26,28 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             $modalInstance.close();
         };
 
-        $scope.display = function(ref) {
-            $state.transitionTo('display', {
+        $scope.displayUrl = function(ref) {
+            return $state.href('display', {
                 source: source,
                 objectType: ref.type,
-                name: ref.pkey
+                name: $scope.primaryKey(ref)
             });
+        };
+
+        $scope.primaryKey = function(ref) {
+            var pkey = ref.primaryKey[0].value;
+
+            for (var i = 1; i < ref.primaryKey.length; i++) {
+                pkey = pkey + '/' + ref.primaryKey[i].value;
+            }
+
+            return pkey;
         };
 
         function getReferences(source, objectType, name) {
             RestService.getReferences(source, objectType, name)
                 .then(function (resp) {
-                    if(!_.isEmpty(resp.data.references)) $scope.references = resp.data.references;
+                    if(!_.isEmpty(resp.references)) $scope.referencesInfo = resp;
                 },
                 dismissWithFailResponse
             );
