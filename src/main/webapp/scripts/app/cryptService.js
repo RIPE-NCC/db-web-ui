@@ -1,3 +1,4 @@
+// jshint ignore: start
 'use strict';
 
 // libc crypt implementation, based on Apache commons-codec Md5Crypt

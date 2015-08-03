@@ -1,3 +1,5 @@
+/*global window: false */
+
 'use strict';
 
 angular.module('webUpdates')
@@ -249,7 +251,8 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal( WhoisResources.getAddableAttributes($scope.objectType)).then(function (selectedItem) { addSelectedAttribute(selectedItem, attr)});
+                ModalService.openAddAttributeModal(WhoisResources.getAddableAttributes($scope.objectType))
+                    .then(function (selectedItem) { addSelectedAttribute(selectedItem, attr); });
             }
 
             function addSelectedAttribute(selectedAttributeType, attr) {

@@ -4,18 +4,18 @@ angular.module('dbWebApp')
     .factory( 'UserInfoService', ['$resource',
         function($resource) {
 
-        var _userInfo = undefined;
+        var _userInfo;
 
         return {
             init: function(callback) {
-                if (typeof _userInfo != 'undefined') {
-                    if (typeof callback == "function"){
+                if (typeof _userInfo !== 'undefined') {
+                    if (typeof callback === 'function'){
                         callback();
                     }
                 } else {
                     $resource('api/user/info').get(function(data) {
                         _userInfo = data;
-                        if (typeof callback == "function"){
+                        if (typeof callback === 'function'){
                             callback();
                         }
                     });
