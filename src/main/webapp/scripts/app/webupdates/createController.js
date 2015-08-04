@@ -64,6 +64,7 @@ angular.module('webUpdates')
                 $scope.attributes = [];
 
                 $scope.isHelpHidden = true;
+                $scope.isHelpMaintainer = true;
 
                 $scope.errors = [];
                 $scope.warnings = [];
