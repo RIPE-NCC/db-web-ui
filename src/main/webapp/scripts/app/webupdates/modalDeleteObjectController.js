@@ -4,17 +4,18 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
     function ($scope, $state, $modalInstance, RestService, source, objectType, name) {
 
         $scope.reason = 'Some default reason';
+        $scope.objectType = objectType;
 
-        getReferences(source, objectType, name);
+        getReferences(source, $scope.objectType, name);
 
         $scope.delete = function () {
-            RestService.deleteObject(source, objectType, name, $scope.reason).then(
+            RestService.deleteObject(source, $scope.objectType, name, $scope.reason).then(
                 function () {
                     $modalInstance.close();
 
                     $state.transitionTo('deleted', {
                         source: source,
-                        objectType: objectType,
+                        objectType: $scope.objectType,
                         name: name
                     });
 
@@ -42,6 +43,20 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             }
 
             return pkey;
+        };
+
+        $scope.isMntPersonReference = function(references) {
+            return _.every(references, function(ref) {
+                    return ref.type.toUpperCase() === 'PERSON' || ref.type.toUpperCase() === 'ROLE' || $scope.isItself(ref, $scope.objectType);
+                });
+        };
+
+        $scope.isItself = function(ref, type) {
+            return (ref.type.toUpperCase() === type.toUpperCase() && $scope.primaryKey(ref).toUpperCase() === name.toUpperCase());
+        };
+
+        $scope.canBeDeleted = function(referencesInfo) {
+            return referencesInfo.total == 0 || $scope.isMntPersonReference(referencesInfo.references);
         };
 
         function getReferences(source, objectType, name) {
