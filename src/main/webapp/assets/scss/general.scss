@@ -38,3 +38,31 @@ ul.success-fields {
 		}
 	}
 }
+
+.not-found {
+    text-align: center;
+    i.fa {
+        font: {
+            size: 150px;
+        }
+        color: #00abab;
+    }
+    h1 {
+        margin-top: 30px;
+    }
+}
+
+.modal-body {
+    ul {
+        list-style: none;
+        &.bullets {
+            list-style: disc;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    }
+    a.more-reference {
+        padding: inherit 30px;
+    }
+}

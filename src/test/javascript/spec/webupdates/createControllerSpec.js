@@ -416,6 +416,60 @@ describe('webUpdates: CreateController init with failures', function () {
 });
 
 
+describe('webUpdates: CreateController init with nonexistent obj type', function () {
+
+    var $scope, $state, $httpBackend;
+    var OBJECT_TYPE = 'blablabla';
+    var SOURCE = 'RIPE';
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_) {
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            $state =  _$state_;
+
+            $httpBackend = _$httpBackend_;
+
+            var userMaintainers = [
+                {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}
+            ];
+
+            $httpBackend.whenGET('api/user/mntners').respond(userMaintainers);
+
+            var $stateParams = {};
+            $stateParams.objectType = OBJECT_TYPE;
+            $stateParams.source = SOURCE;
+            $stateParams.name = undefined;
+
+            spyOn($state, 'transitionTo');
+
+            _$controller_('CreateController', {
+                $scope: $scope, $state: $state, $stateParams: $stateParams
+            });
+
+
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+            $httpBackend.flush();
+
+        });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should redirect to 404 page', function() {
+        expect($state.transitionTo).toHaveBeenCalledWith('notFound');
+    });
+
+});
+
 var whoisObjectWithErrors = {
     objects: {
         object: [

@@ -11,6 +11,10 @@ rest:
     api:
         ripeUrl: http://db-dev-1.dev.ripe.net:1080/whois
 
+ripe:
+    search:
+           queryUrl: https://dev.db.ripe.net/search/query.html
+
 internal:
     api:
         url: http://int-dev.db.ripe.net

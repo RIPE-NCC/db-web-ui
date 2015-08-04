@@ -6,6 +6,12 @@ angular.module('dbWebApp')
 
             function RestService() {
 
+                this.getReferences = function(source, objectType, name) {
+                    return $resource('api/references/:source/:objectType/:name',
+                        {source: source, objectType: objectType, name: name}).get().$promise;
+
+                };
+
                 this.deleteObject = function(source, objectType, name, reason) {
                     return $resource('api/whois/:source/:objectType/:name',
                         {source: source, objectType: objectType, name: name}).delete({reason: reason}).$promise;
@@ -210,3 +216,4 @@ angular.module('dbWebApp')
 
             return new RestService();
         }]);
+

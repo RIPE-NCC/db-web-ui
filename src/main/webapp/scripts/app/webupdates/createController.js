@@ -1,3 +1,5 @@
+/*global window: false */
+
 'use strict';
 
 angular.module('webUpdates')
@@ -78,7 +80,13 @@ angular.module('webUpdates')
                     $scope.operation = $scope.CREATE_OPERATION;
 
                     // Populate empty attributes based on meta-info
-                    $scope.attributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType));
+                    var mandatoryAttributesOnObjectType = WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType);
+                    if(_.isEmpty(mandatoryAttributesOnObjectType)) {
+                        $state.transitionTo('notFound');
+                        return;
+                    }
+
+                    $scope.attributes = _wrapAndEnrichAttributes(mandatoryAttributesOnObjectType);
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
@@ -244,7 +252,8 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal( WhoisResources.getAddableAttributes($scope.objectType)).then(function (selectedItem) { addSelectedAttribute(selectedItem, attr)});
+                ModalService.openAddAttributeModal(WhoisResources.getAddableAttributes($scope.objectType))
+                    .then(function (selectedItem) { addSelectedAttribute(selectedItem, attr); });
             }
 
             function addSelectedAttribute(selectedAttributeType, attr) {

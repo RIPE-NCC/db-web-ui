@@ -31,4 +31,15 @@ describe('dbWebApp: RestService', function () {
         $httpBackend.flush();
     });
 
+    it('should send a http get when requesting references', function() {
+        var source = 'RIPE';
+        var objectType = 'MNT';
+        var name = 'TEST-MNT';
+
+        $httpBackend.expectGET('api/references/'+source+'/'+objectType+'/'+name).respond(200);
+
+        restService.getReferences(source, objectType, name);
+        $httpBackend.flush();
+    });
+
 });
