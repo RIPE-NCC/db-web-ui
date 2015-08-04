@@ -27,7 +27,19 @@ describe('dbWebApp: RestService', function () {
 
         $httpBackend.expectDELETE('api/whois/'+source+'/'+objectType+'/'+name+'?reason='+reason).respond(200);
 
-        restService.deleteObject(source, objectType, name, reason);
+        restService.deleteObject(source, objectType, name, reason, false);
+        $httpBackend.flush();
+    });
+
+    it('should send a http delete when deleting an object with references', function() {
+        var source = 'RIPE';
+        var objectType = 'MNT';
+        var name = 'TEST-MNT';
+        var reason = 'testing';
+
+        $httpBackend.expectDELETE('api/references/'+source+'/'+objectType+'/'+name+'?reason='+reason).respond(200);
+
+        restService.deleteObject(source, objectType, name, reason, true);
         $httpBackend.flush();
     });
 

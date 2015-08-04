@@ -10,7 +10,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         getReferences(source, $scope.objectType, $scope.name);
 
         $scope.delete = function () {
-            RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason).then(
+            RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, $scope.isMntPersonReference($scope.referencesInfo.references)).then(
                 function () {
                     $modalInstance.close();
 

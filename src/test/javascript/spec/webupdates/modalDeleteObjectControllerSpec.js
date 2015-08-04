@@ -58,7 +58,7 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
 
         $scope.delete();
 
-        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason);
+        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, false);
     });
 
     it('should close modal after delete object', function() {
