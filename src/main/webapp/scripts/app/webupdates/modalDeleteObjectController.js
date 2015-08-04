@@ -3,7 +3,7 @@
 angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$modalInstance', 'RestService', 'source', 'objectType', 'name',
     function ($scope, $state, $modalInstance, RestService, source, objectType, name) {
 
-        $scope.reason = 'Some default reason';
+        $scope.reason = 'I don\'t need this object';
         $scope.objectType = objectType;
         $scope.name = name;
 
