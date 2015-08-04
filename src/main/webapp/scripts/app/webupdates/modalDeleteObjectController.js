@@ -5,18 +5,19 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
         $scope.reason = 'Some default reason';
         $scope.objectType = objectType;
+        $scope.name = name;
 
-        getReferences(source, $scope.objectType, name);
+        getReferences(source, $scope.objectType, $scope.name);
 
         $scope.delete = function () {
-            RestService.deleteObject(source, $scope.objectType, name, $scope.reason).then(
+            RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason).then(
                 function () {
                     $modalInstance.close();
 
                     $state.transitionTo('deleted', {
                         source: source,
                         objectType: $scope.objectType,
-                        name: name
+                        name: $scope.name
                     });
 
                 }, dismissWithFailResponse
@@ -47,16 +48,18 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
         $scope.isMntPersonReference = function(references) {
             return _.every(references, function(ref) {
-                    return ref.type.toUpperCase() === 'PERSON' || ref.type.toUpperCase() === 'ROLE' || $scope.isItself(ref, $scope.objectType);
+                    return ref.type.toUpperCase() === 'ROLE' ||
+                           ref.type.toUpperCase() === 'PERSON' ||
+                           $scope.isItself(ref, $scope.objectType);
                 });
         };
 
         $scope.isItself = function(ref, type) {
-            return (ref.type.toUpperCase() === type.toUpperCase() && $scope.primaryKey(ref).toUpperCase() === name.toUpperCase());
+            return (ref.type.toUpperCase() === type.toUpperCase() && $scope.primaryKey(ref).toUpperCase() === $scope.name.toUpperCase());
         };
 
         $scope.canBeDeleted = function(referencesInfo) {
-            return referencesInfo.total == 0 || $scope.isMntPersonReference(referencesInfo.references);
+            return referencesInfo.total === 0 || $scope.isMntPersonReference(referencesInfo.references);
         };
 
         function getReferences(source, objectType, name) {
