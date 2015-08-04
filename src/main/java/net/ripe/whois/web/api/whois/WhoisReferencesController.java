@@ -1,9 +1,11 @@
 package net.ripe.whois.web.api.whois;
 
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
-import net.ripe.whois.services.WhoisSearchService;
+import net.ripe.db.whois.api.rest.domain.WhoisResources;
+import net.ripe.whois.services.WhoisReferencesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,7 +21,7 @@ import java.util.Map;
 public class WhoisReferencesController {
 
     @Autowired
-    private WhoisSearchService whoisSearchService;
+    private WhoisReferencesService whoisReferencesService;
 
     @Value("${ripe.search.queryUrl}")
     private String queryUrl;
@@ -31,8 +33,8 @@ public class WhoisReferencesController {
                                       @PathVariable String name) throws URISyntaxException {
         final List<WhoisObject> selectedReferences;
 
-        final WhoisSearchService.InverseQuery query = WhoisSearchService.InverseQuery.valueOf(objectType.toUpperCase());
-        final List<WhoisObject> references = whoisSearchService.getReferences(query, source, name);
+        final WhoisReferencesService.InverseQuery query = WhoisReferencesService.InverseQuery.valueOf(objectType.toUpperCase());
+        final List<WhoisObject> references = whoisReferencesService.getReferences(query, source, name);
 
         if(references.size() < MAX_RESULT_NUMBER) {
             selectedReferences = references;
@@ -44,9 +46,20 @@ public class WhoisReferencesController {
         response.put("total", references.size());
         response.put("subset", selectedReferences.size());
         response.put("references", selectedReferences);
-        response.put("query", whoisSearchService.getReferencesUrlFor(queryUrl, query, source, name));
+        response.put("query", whoisReferencesService.getReferencesUrlFor(queryUrl, query, source, name));
 
         return response;
+    }
+
+//    @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
+//    public ResponseEntity<WhoisResources> delete(@PathVariable String source, @PathVariable String objectType,
+//                                      @PathVariable String name) throws URISyntaxException {
+
+    @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable String source, @PathVariable String objectType,
+        @PathVariable String name) throws URISyntaxException {
+
+//        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name);
     }
 
 }

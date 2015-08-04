@@ -17,12 +17,12 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
-public class WhoisSearchService extends RestClient {
+public class WhoisReferencesService extends RestClient {
 
     private final String apiUrl;
 
     @Autowired
-    public WhoisSearchService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
+    public WhoisReferencesService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
         this.apiUrl = ripeUrl+"/search";
     }
 
@@ -55,6 +55,10 @@ public class WhoisSearchService extends RestClient {
         variables.put("source", source);
         variables.put("query-string", queryString);
         return variables;
+    }
+
+    public ResponseEntity<WhoisResources> deleteObjectAndReferences(String objectType, String source, String name) {
+        return null;
     }
 
     public enum InverseQuery {

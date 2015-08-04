@@ -15,7 +15,7 @@
 
         <div ng-if="referencesInfo.total > 0">
             <p ng-if="!isMntPersonReference(referencesInfo.references)">This object has been referenced in the following objects, you may need to delete these references first.</p>
-            <p ng-if="(referencesInfo.total > 0) && isMntPersonReference(referencesInfo.references)">Please note that this will aso delete the following object(s):</p>
+            <p ng-if="isMntPersonReference(referencesInfo.references) && !((referencesInfo.total === 1) && isItself(referencesInfo.references[0], objectType))">Please note that this will aso delete the following objects:</p>
 
             <ul class="bullets">
                 <li ng-repeat="ref in referencesInfo.references" ng-if="!isItself(ref, objectType)">
