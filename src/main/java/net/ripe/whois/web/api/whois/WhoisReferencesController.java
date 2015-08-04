@@ -46,7 +46,7 @@ public class WhoisReferencesController {
         response.put("total", references.size());
         response.put("subset", selectedReferences.size());
         response.put("references", selectedReferences);
-        response.put("query", whoisReferencesService.getReferencesUrlFor(queryUrl, query, source, name));
+        response.put("query", query.getReferencesUrlFor(queryUrl, source, name));
 
         return response;
     }
@@ -56,10 +56,10 @@ public class WhoisReferencesController {
 //                                      @PathVariable String name) throws URISyntaxException {
 
     @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable String source, @PathVariable String objectType,
+    public ResponseEntity<WhoisResources>  delete(@PathVariable String source, @PathVariable String objectType,
         @PathVariable String name) throws URISyntaxException {
 
-//        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name);
+        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name);
     }
 
 }

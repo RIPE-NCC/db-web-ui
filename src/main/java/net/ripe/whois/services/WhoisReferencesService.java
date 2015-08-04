@@ -19,19 +19,21 @@ import java.util.List;
 @Service
 public class WhoisReferencesService extends RestClient {
 
-    private final String apiUrl;
+    private final String searchApiUrl;
+    private final String referencesApiUrl;
+    private final MultiValueMap<String, String> headers = new HttpHeaders();
 
     @Autowired
     public WhoisReferencesService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
-        this.apiUrl = ripeUrl+"/search";
+        this.searchApiUrl = ripeUrl+"/whois/search";
+        this.referencesApiUrl = ripeUrl+"/references";
+
+        headers.set("Accept", MediaType.APPLICATION_XML_VALUE);
     }
 
     public List<WhoisObject> getReferences(InverseQuery query, String source, String queryString) {
 
-        final MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.set("Accept", MediaType.APPLICATION_XML_VALUE);
-
-        URI uri = new UriTemplate("{url}" + query.getApiQueryParams()).expand(getParamsMap(apiUrl, source, queryString));
+        URI uri = new UriTemplate("{url}" + query.getApiQueryParams()).expand(InverseQuery.getSearchParamsMap(searchApiUrl, source, queryString));
 
         final ResponseEntity<WhoisResources> response = restTemplate.exchange(uri,
             HttpMethod.GET,
@@ -45,20 +47,20 @@ public class WhoisReferencesService extends RestClient {
         return response.getBody().getWhoisObjects();
     }
 
-    public URI getReferencesUrlFor(String url, InverseQuery query, String source, String queryString) {
-        return new UriTemplate("{url}"+query.getWebQueryParams()).expand(getParamsMap(url, source, queryString));
-    }
-
-    private HashMap<String, Object> getParamsMap(String apiUrl, String source, String queryString) {
-        final HashMap<String, Object> variables = Maps.newHashMap();
-        variables.put("url", apiUrl);
-        variables.put("source", source);
-        variables.put("query-string", queryString);
-        return variables;
-    }
-
     public ResponseEntity<WhoisResources> deleteObjectAndReferences(String objectType, String source, String name) {
-        return null;
+
+        final HashMap<String, Object> variables = Maps.newHashMap();
+        variables.put("url", referencesApiUrl);
+        variables.put("source", source);
+        variables.put("object-type", objectType);
+        variables.put("name", name);
+
+        URI uri = new UriTemplate("{url}/{source}/{object-type}/{name}").expand(variables);
+
+        return restTemplate.exchange(uri,
+            HttpMethod.DELETE,
+            new HttpEntity<String>(headers),
+            WhoisResources.class);
     }
 
     public enum InverseQuery {
@@ -119,6 +121,18 @@ public class WhoisReferencesService extends RestClient {
 
         public String getWebQueryParams() {
             return webQueryParams;
+        }
+
+        public URI getReferencesUrlFor(String url, String source, String queryString) {
+            return new UriTemplate("{url}"+this.getWebQueryParams()).expand(getSearchParamsMap(url, source, queryString));
+        }
+
+        static private HashMap<String, Object> getSearchParamsMap(String apiUrl, String source, String queryString) {
+            final HashMap<String, Object> variables = Maps.newHashMap();
+            variables.put("url", apiUrl);
+            variables.put("source", source);
+            variables.put("query-string", queryString);
+            return variables;
         }
 
     }
