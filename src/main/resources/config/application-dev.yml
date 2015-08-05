@@ -9,7 +9,7 @@ spring:
 
 rest:
     api:
-        ripeUrl: http://db-dev-1.dev.ripe.net:1080/whois
+        ripeUrl: http://db-dev-1.dev.ripe.net:1080
 
 ripe:
     search:
