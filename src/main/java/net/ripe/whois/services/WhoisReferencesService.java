@@ -21,19 +21,22 @@ public class WhoisReferencesService extends RestClient {
 
     private final String searchApiUrl;
     private final String referencesApiUrl;
-    private final MultiValueMap<String, String> headers = new HttpHeaders();
+
 
     @Autowired
     public WhoisReferencesService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
         this.searchApiUrl = ripeUrl+"/whois/search";
-        this.referencesApiUrl = ripeUrl+"/references";
+        this.referencesApiUrl = ripeUrl+"/whois/references";
 
-        headers.set("Accept", MediaType.APPLICATION_XML_VALUE);
+
     }
 
     public List<WhoisObject> getReferences(InverseQuery query, String source, String queryString) {
 
         URI uri = new UriTemplate("{url}" + query.getApiQueryParams()).expand(InverseQuery.getSearchParamsMap(searchApiUrl, source, queryString));
+
+        final MultiValueMap<String, String> headers = new HttpHeaders();
+        headers.set("Accept", MediaType.APPLICATION_XML_VALUE);
 
         final ResponseEntity<WhoisResources> response = restTemplate.exchange(uri,
             HttpMethod.GET,
@@ -47,7 +50,7 @@ public class WhoisReferencesService extends RestClient {
         return response.getBody().getWhoisObjects();
     }
 
-    public ResponseEntity<WhoisResources> deleteObjectAndReferences(String objectType, String source, String name) {
+    public ResponseEntity<WhoisResources> deleteObjectAndReferences(String objectType, String source, String name, HttpHeaders headers) {
 
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", referencesApiUrl);

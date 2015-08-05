@@ -5,11 +5,9 @@ import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.WhoisReferencesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -57,9 +55,9 @@ public class WhoisReferencesController {
 
     @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
     public ResponseEntity<WhoisResources>  delete(@PathVariable String source, @PathVariable String objectType,
-        @PathVariable String name) throws URISyntaxException {
+        @PathVariable String name, @RequestHeader final HttpHeaders headers) throws URISyntaxException {
 
-        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name);
+        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name, headers);
     }
 
 }
