@@ -26,7 +26,7 @@ public class WhoisService extends RestClient {
 
     @Autowired
     public WhoisService(@Value("${rest.api.ripeUrl}") final String apiUrl, @Value("${server.contextPath}") final String contextPath) {
-        this.apiUrl = apiUrl+"/whois";
+        this.apiUrl = apiUrl;
         this.contextPath = contextPath;
     }
 

@@ -25,10 +25,8 @@ public class WhoisReferencesService extends RestClient {
 
     @Autowired
     public WhoisReferencesService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
-        this.searchApiUrl = ripeUrl+"/whois/search";
-        this.referencesApiUrl = ripeUrl+"/whois/references";
-
-
+        this.searchApiUrl = ripeUrl+"/search";
+        this.referencesApiUrl = ripeUrl+"/references";
     }
 
     public List<WhoisObject> getReferences(InverseQuery query, String source, String queryString) {
