@@ -9,7 +9,7 @@ spring:
 
 rest:
     api:
-        ripeUrl: http://db-pre-1.prepdev.ripe.net:1080
+        ripeUrl: https://rest-prepdev.db.ripe.net
 
 ripe:
     search:
@@ -26,7 +26,7 @@ crowd:
         user: db
         password: evarylli
     login:
-        url: http://access.prepdev.ripe.net/
+        url: https://access.prepdev.ripe.net/
 
 logging.level.org.springframework.web: DEBUG
 logging.level.org.hibernate: ERROR

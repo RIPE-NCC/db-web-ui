@@ -14,10 +14,12 @@
 
 	<section class="form-fields maintainer-fields">
     <strong>Please select your maintainers before creating the {{objectType}} object</strong>
-    <span class="fa fa-search maintainer-search-icon"></span>
-    <a ng-click="isHelpMaintainer = !isHelpMaintainer" class="btn btn-default ga-help-attr maintainer-help" id="help">
-          <span class="fa fa-question"></span>
-    </a>
+    <article class="maintainer-icons">
+        <span class="fa fa-search maintainer-search-icon"></span>
+        <a ng-click="isHelpMaintainer = !isHelpMaintainer" class="btn btn-default ga-help-attr maintainer-help" id="help">
+              <span class="fa fa-question"></span>
+        </a>
+    </article>
     <ui-select multiple="true"
                theme="selectize"
                ng-model="maintainers.object"
