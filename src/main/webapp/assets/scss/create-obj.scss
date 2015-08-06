@@ -64,6 +64,32 @@ ul.form-fields {
 	@extend %width-100;
 	padding: 15px !important;
 	background-color: #F9F6D9;
+	position: relative;
+	article.maintainer-icons {
+        z-index: 2;
+        position: absolute;
+        right: 15px;
+        top: 38px;
+    	a.maintainer-help {  
+    	    padding: 4px 11px;
+            color: #00abab;
+            border-radius: 0px 3px 3px 0px;
+            display: inline-block;
+    	}
+        span.maintainer-search-icon {
+        	color: #ccc;
+            font-size: 17px;
+            display: inline-block;    
+            position: relative;
+            right: 5px;
+            top: 2px;
+        }
+	}
+    @media (max-width: 768px) { 
+    	article.maintainer-icons {
+        	display: none;
+    	}
+    }
 	li {
 		margin: 5px 0;
 	}
@@ -71,25 +97,6 @@ ul.form-fields {
 		margin-bottom: 0 !important;
 	}
 	margin-bottom: 20px !important;
-	a.maintainer-help {
-	    @extend %float-r;    
-	    padding: 4px 11px;
-        position: absolute;
-        right: 41px;
-        top: 38px;
-        z-index: 2;
-        color: #00abab;
-        border-radius: 0px 3px 3px 0px;
-	}
-    span.maintainer-search-icon {
-	    @extend %float-r;
-    	position: relative;
-    	color: #ccc;
-        font-size: 17px;
-        right: 45px;
-        top: 28px;
-        z-index: 2;
-    }
 }
 .visible-field-form {
 	@extend %float-l;
