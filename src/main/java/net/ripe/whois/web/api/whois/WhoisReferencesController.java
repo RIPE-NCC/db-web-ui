@@ -49,13 +49,11 @@ public class WhoisReferencesController {
         return response;
     }
 
-//    @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
-//    public ResponseEntity<WhoisResources> delete(@PathVariable String source, @PathVariable String objectType,
-//                                      @PathVariable String name) throws URISyntaxException {
-
     @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
     public ResponseEntity<WhoisResources>  delete(@PathVariable String source, @PathVariable String objectType,
         @PathVariable String name, @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+
+        headers.remove(com.google.common.net.HttpHeaders.HOST);
 
         return whoisReferencesService.deleteObjectAndReferences(objectType, source, name, headers);
     }

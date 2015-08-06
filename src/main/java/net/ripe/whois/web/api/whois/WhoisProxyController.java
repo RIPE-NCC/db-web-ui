@@ -31,6 +31,7 @@ public class WhoisProxyController {
         LOGGER.info("request: {}", request.toString());
 
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
+        headers.remove(com.google.common.net.HttpHeaders.HOST);
 
         return whoisService.bypass(request, body, headers);
     }
