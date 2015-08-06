@@ -10,16 +10,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         getReferences(source, $scope.objectType, $scope.name);
 
         $scope.delete = function () {
-            var deleteWithRefs = false;
-            if($scope.referencesInfo.total === 0) {
-                deleteWithRefs = false;
-            } else {
-                if (($scope.referencesInfo.references.length === 1) && $scope.isItself($scope.referencesInfo.references[0], $scope.objectType)) {
-                    deleteWithRefs = false;
-                } else {
-                    deleteWithRefs = $scope.isMntPersonReference($scope.referencesInfo.references);
-                }
-            }
+            var deleteWithRefs = $scope.isMntPersonReference($scope.referencesInfo.references);
 
             RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs).then(
                 function () {
@@ -58,20 +49,38 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         };
 
         $scope.isMntPersonReference = function(references) {
+            if(references.length === 0) {
+                return false;
+            }
 
-            return _.every(references, function(ref) {
+            if ((references.length === 1) && $scope.isItself(references[0], $scope.objectType)) {
+                return false;
+            }
+
+            if($scope.objectType.toUpperCase() === 'MNTNER') {
+                return _.every(references, function(ref) {
                     return ref.type.toUpperCase() === 'ROLE' ||
-                           ref.type.toUpperCase() === 'PERSON' ||
-                           $scope.isItself(ref, $scope.objectType);
+                        ref.type.toUpperCase() === 'PERSON' ||
+                        $scope.isItself(ref, objectType);
                 });
+            }
+
+            if($scope.objectType.toUpperCase() === 'ROLE' || $scope.objectType.toUpperCase() === 'PERSON') {
+                return _.every(references, function(ref) {
+                    return ref.type.toUpperCase() === 'MNTNER' ||
+                        $scope.isItself(ref, $scope.objectType);
+                });
+            }
+
+            return false;
         };
 
-        $scope.isItself = function(ref, type) {
-            return (ref.type.toUpperCase() === type.toUpperCase() && $scope.primaryKey(ref).toUpperCase() === $scope.name.toUpperCase());
+        $scope.isItself = function(ref) {
+            return (ref.type.toUpperCase() === $scope.objectType.toUpperCase() && $scope.primaryKey(ref).toUpperCase() === $scope.name.toUpperCase());
         };
 
         $scope.canBeDeleted = function(referencesInfo) {
-            return referencesInfo.total === 0 || $scope.isMntPersonReference(referencesInfo.references);
+            return referencesInfo.total === 0 || $scope.isMntPersonReference(referencesInfo.references, $scope.objectType);
         };
 
         function getReferences(source, objectType, name) {

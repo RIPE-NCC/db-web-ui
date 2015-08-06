@@ -124,7 +124,19 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
                 'name':'mntner'
             }]
         };
-        expect($scope.isItself(reference, objectType)).toBe(true);
+        expect($scope.isItself(reference)).toBe(true);
+    });
+
+    it('should handle as role/mnt reference if all references are mntner', function () {
+        var references = [{'type':'mntner'}];
+        $scope.objectType = 'ROLE';
+        expect($scope.isMntPersonReference(references)).toBe(true);
+    });
+
+    it('should handle as person/mnt reference if all references are mntner', function () {
+        var references = [{'type':'mntner'}];
+        $scope.objectType = 'PERSON';
+        expect($scope.isMntPersonReference(references)).toBe(true);
     });
 
     it('should handle as person/mnt reference if all references are persons', function () {
@@ -144,7 +156,12 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
                 'name':'mntner'
             }]
         }];
-        expect($scope.isMntPersonReference(references)).toBe(true);
+        expect($scope.isMntPersonReference(references)).toBe(false);
+    });
+
+    it('should not handle as person/mnt reference if no references', function () {
+        var references = [];
+        expect($scope.isMntPersonReference(references)).toBe(false);
     });
 
     it('should handle as deletable if number of references is zero', function () {
