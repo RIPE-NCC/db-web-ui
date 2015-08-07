@@ -3,6 +3,7 @@ package net.ripe.whois.web.api.whois;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.WhoisReferencesService;
+import net.ripe.whois.web.api.ApiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/references")
-public class WhoisReferencesController {
+public class WhoisReferencesController extends ApiController {
 
     @Autowired
     private WhoisReferencesService whoisReferencesService;
@@ -53,7 +54,7 @@ public class WhoisReferencesController {
     public ResponseEntity<WhoisResources>  delete(@PathVariable String source, @PathVariable String objectType,
         @PathVariable String name, @RequestHeader final HttpHeaders headers) throws URISyntaxException {
 
-        headers.remove(com.google.common.net.HttpHeaders.HOST);
+        removeUnnecessaryHeaders(headers);
 
         return whoisReferencesService.deleteObjectAndReferences(objectType, source, name, headers);
     }
