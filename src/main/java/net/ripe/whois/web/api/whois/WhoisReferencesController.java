@@ -7,6 +7,7 @@ import net.ripe.whois.web.api.ApiController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -59,4 +60,9 @@ public class WhoisReferencesController extends ApiController {
         return whoisReferencesService.deleteObjectAndReferences(objectType, source, name, headers);
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void handleAllExceptions() {
+        // Nothing to do
+    }
 }
