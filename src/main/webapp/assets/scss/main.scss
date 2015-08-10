@@ -2,11 +2,11 @@
 @import '_extend.scss';
 
 /* Generic CSS */
-@import 'general.scss';
+@import '_general.scss';
 
 /* View based CSS */
-@import 'create-obj.scss';
-@import 'display.scss';
+@import '_create-obj.scss';
+@import '_display.scss';
 
 /* Module based CSS **/
-@import 'selectize-custom.scss';
+@import '_selectize-custom.scss';
