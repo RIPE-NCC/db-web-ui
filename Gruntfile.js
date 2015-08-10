@@ -180,6 +180,16 @@ module.exports = function (grunt) {
                     LOGIN_URL: 'https://access.prepdev.ripe.net/'
                 }
             },
+            rc: {
+                options: {
+                    dest: 'src/main/webapp/scripts/app/app.constants.js'
+                },
+                constants: {
+                    ENV: 'rc',
+                    VERSION: parseVersionFromPomXml(),
+                    LOGIN_URL: 'https://access.ripe.net/'
+                }
+            },
             prod: {
                 options: {
                     dest: '.tmp/scripts/app/app.constants.js'

@@ -15,4 +15,6 @@ public final class Constants {
 
     public static final String SPRING_PROFILE_PREPDEV = "prepdev";
 
+    public static final String SPRING_PROFILE_RC = "rc";
+
 }

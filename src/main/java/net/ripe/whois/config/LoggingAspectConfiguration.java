@@ -18,7 +18,7 @@ public class LoggingAspectConfiguration {
     private LoggingAspect loggingAspect;
 
     @Bean
-    @Profile({Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_PREPDEV})
+    @Profile({Constants.SPRING_PROFILE_DEVELOPMENT, Constants.SPRING_PROFILE_PREPDEV, Constants.SPRING_PROFILE_RC})
     public LoggingAspect loggingAspect() {
         return loggingAspect;
     }
