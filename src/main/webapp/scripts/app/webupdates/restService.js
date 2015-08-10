@@ -12,9 +12,10 @@ angular.module('dbWebApp')
 
                 };
 
-                this.deleteObject = function(source, objectType, name, reason) {
-                    return $resource('api/whois/:source/:objectType/:name',
-                        {source: source, objectType: objectType, name: name}).delete({reason: reason}).$promise;
+                this.deleteObject = function(source, objectType, name, reason, withReferences) {
+                    var service = withReferences ? 'references' : 'whois';
+
+                    return $resource('api/'+service+'/:source/:objectType/:name', {source: source, objectType: objectType, name: name}).delete({reason: reason}).$promise;
                 };
 
                 this.fetchUiSelectResources = function () {

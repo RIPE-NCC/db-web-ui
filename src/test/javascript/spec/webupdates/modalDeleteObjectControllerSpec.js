@@ -1,6 +1,6 @@
 'use strict';
 
-var objectType = 'MNT';
+var objectType = 'mntner';
 var name = 'TEST-MNT';
 var source = 'RIPE';
 
@@ -58,7 +58,7 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
 
         $scope.delete();
 
-        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason);
+        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, false);
     });
 
     it('should close modal after delete object', function() {
@@ -117,6 +117,72 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
 
     });
 
+    it('should check if reference is itself if type and pkey are the same', function () {
+        var reference = {'type':'mntner',  'primaryKey':[
+            {
+                'value':'TEST-MNT',
+                'name':'mntner'
+            }]
+        };
+        expect($scope.isItself(reference)).toBe(true);
+    });
+
+    it('should handle as role/mnt reference if all references are mntner', function () {
+        var references = [{'type':'mntner'}];
+        $scope.objectType = 'ROLE';
+        expect($scope.isMntPersonReference(references)).toBe(true);
+    });
+
+    it('should handle as person/mnt reference if all references are mntner', function () {
+        var references = [{'type':'mntner'}];
+        $scope.objectType = 'PERSON';
+        expect($scope.isMntPersonReference(references)).toBe(true);
+    });
+
+    it('should handle as person/mnt reference if all references are persons', function () {
+        var references = [{'type':'person'}];
+        expect($scope.isMntPersonReference(references)).toBe(true);
+    });
+
+    it('should handle as person/mnt reference if all references are role', function () {
+        var references = [{'type':'role'}];
+        expect($scope.isMntPersonReference(references)).toBe(true);
+    });
+
+    it('should handle as person/mnt reference if all references are itself', function () {
+        var references = [{'type':'mntner',  'primaryKey':[
+            {
+                'value':'TEST-MNT',
+                'name':'mntner'
+            }]
+        }];
+        expect($scope.isMntPersonReference(references)).toBe(false);
+    });
+
+    it('should not handle as person/mnt reference if no references', function () {
+        var references = [];
+        expect($scope.isMntPersonReference(references)).toBe(false);
+    });
+
+    it('should handle as deletable if number of references is zero', function () {
+        var referencesInfo = {
+            'subset':0,
+            'total':0,
+            'references':[],
+            'query':'http://uhuuuu.nl'
+        };
+        expect($scope.canBeDeleted(referencesInfo)).toBe(true);
+    });
+
+    it('should handle as deletable if reference is a isMntPersonReference', function () {
+        var referencesInfo = {
+            'subset':1,
+            'total':1,
+            'references':[{'type':'role'}],
+            'query':'http://uhuuuu.nl'
+        };
+        expect($scope.canBeDeleted(referencesInfo)).toBe(true);
+    });
 });
 
 describe('webUpdates: ModalDeleteObjectController loading references failures ', function () {

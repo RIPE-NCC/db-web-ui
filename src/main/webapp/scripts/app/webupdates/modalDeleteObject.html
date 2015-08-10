@@ -1,33 +1,38 @@
-<div class="modal-content no-rounded">
+<div class="modal-content no-rounded" ng-if="referencesInfo">
     <div class="modal-header">
         <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"></i>
         <h5 class="modal-title" id="commonModalLabel">
-            <span ng-show="referencesInfo.total == 0">Please provide the reason for delete</span>
-            <span ng-show="referencesInfo.total > 0">This object can not be deleted</span>
+            <span ng-if="canBeDeleted(referencesInfo)">Please provide the reason for delete</span>
+            <span ng-if="!canBeDeleted(referencesInfo)">This object can not be deleted</span>
         </h5>
     </div>
 
     <div class="modal-body margin-left">
-        <div ng-show="referencesInfo.total == 0">
+        <div ng-if="canBeDeleted(referencesInfo)">
             <label for="reason">Reason</label><br/>
             <input type="text" name="reason" id = "reason" ng-model="reason">
         </div>
-        <div ng-show="referencesInfo.total > 0">
-            <p>This object has been referenced in the following objects, you may need to delete these references first.</p>
+
+        <div ng-if="referencesInfo.total > 0">
+            <p ng-if="!isMntPersonReference(referencesInfo.references) && !canBeDeleted(referencesInfo)">This object has been referenced in the following objects, you may need to delete these references first.</p>
+            <p ng-if="isMntPersonReference(referencesInfo.references) && canBeDeleted(referencesInfo)">Please note that this will aso delete the following objects:</p>
+
             <ul class="bullets">
-                <li ng-repeat="ref in referencesInfo.references | limitTo:5">
-                    {{ref.type}} - <a target="_blank" href="{{displayUrl(ref)}}">{{primaryKey(ref)}}</a>
+                <li ng-repeat="ref in referencesInfo.references" ng-if="!isItself(ref, objectType)">
+                    <div>
+                        {{ref.type}} - <a target="_blank" href="{{displayUrl(ref)}}">{{primaryKey(ref)}}</a>
+                    </div>
                 </li>
             </ul>
-            <a href="{{referencesInfo.query}}" target="_blank" class="blue-button more-reference" ng-show="referencesInfo.total > referencesInfo.subset"> +{{referencesInfo.total - referencesInfo.subset}} more objects</a>
+            <a href="{{referencesInfo.query}}" target="_blank" class="blue-button more-reference" ng-if="referencesInfo.total > referencesInfo.subset"> +{{referencesInfo.total - referencesInfo.subset}} more objects</a>
         </div>
     </div>
 
     <div class="modal-footer">
-        <div ng-show="referencesInfo.total == 0">
+        <div ng-if="canBeDeleted(referencesInfo)">
             <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="delete()" value="Confirm delete"/>
         </div>
-        <div ng-show="referencesInfo.total > 0">
+        <div ng-if="!canBeDeleted(referencesInfo)">
             <input type="submit" class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="cancel()" value="Return to object"/>
         </div>
     </div>

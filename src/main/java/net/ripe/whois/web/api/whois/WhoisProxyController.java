@@ -1,12 +1,11 @@
 package net.ripe.whois.web.api.whois;
 
 import net.ripe.whois.services.WhoisService;
+import net.ripe.whois.web.api.ApiController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/whois")
-public class WhoisProxyController {
+public class WhoisProxyController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
 
     @Autowired
@@ -33,6 +32,7 @@ public class WhoisProxyController {
         LOGGER.info("request: {}", request.toString());
 
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
+        removeUnnecessaryHeaders(headers);
 
         return whoisService.bypass(request, body, headers);
     }

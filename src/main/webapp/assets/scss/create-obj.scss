@@ -70,7 +70,7 @@ ul.form-fields {
         position: absolute;
         right: 15px;
         top: 38px;
-    	a.maintainer-help {  
+    	a.maintainer-help {
     	    padding: 4px 11px;
             color: #00abab;
             border-radius: 0px 3px 3px 0px;
@@ -79,13 +79,13 @@ ul.form-fields {
         span.maintainer-search-icon {
         	color: #ccc;
             font-size: 17px;
-            display: inline-block;    
+            display: inline-block;
             position: relative;
             right: 5px;
             top: 2px;
         }
 	}
-    @media (max-width: 768px) { 
+    @media (max-width: 768px) {
     	article.maintainer-icons {
         	display: none;
     	}
