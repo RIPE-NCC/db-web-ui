@@ -34,7 +34,7 @@
     </prerequisites>
 
     <scm>
-        <developerConnection>scm:git:http://stash.ripe.net/scm/swe/db-web-ui.git</developerConnection>
+        <developerConnection>scm:git:ssh://git@stash.ripe.net:7999/swe/db-web-ui.git</developerConnection>
     </scm>
 
     <distributionManagement>
