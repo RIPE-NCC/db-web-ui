@@ -1,0 +1,12 @@
+
+<div ng-if="hasErrors()" class="alert-expired alert alert-danger">
+    <p ng-repeat="error in errors">{{error.plainText}}</p>
+</div>
+
+<div ng-if="hasWarnings()" class="alert alert-warning">
+    <p ng-repeat="warning in warnings">{{warning.plainText}}</p>
+</div>
+
+<div ng-if="hasInfos()" class="alert alert-warning">
+    <p ng-repeat="info in infos">{{info.plainText}}</p>
+</div>
