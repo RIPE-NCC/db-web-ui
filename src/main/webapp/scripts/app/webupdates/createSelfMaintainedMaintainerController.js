@@ -21,14 +21,18 @@ angular.module('webUpdates')
 
                 var embedAttributes = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
 
-                RestService.createObject($scope.source, MNT_TYPE, embedAttributes).then(function(resp) {
+                $scope.maintainerAttributes.clearErrors();
+                if($scope.maintainerAttributes.validate()) {
+                    RestService.createObject($scope.source, MNT_TYPE, embedAttributes).then(function(resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
-                  var primaryKey = whoisResources.getPrimaryKey();
-                    MessageStore.add(primaryKey, whoisResources);
+                        var primaryKey = whoisResources.getPrimaryKey();
+                        MessageStore.add(primaryKey, whoisResources);
 
-                    $state.transitionTo('display', { source: $scope.source, objectType: 'mntner', name: primaryKey});
-                  });
+                        $state.transitionTo('display', { source: $scope.source, objectType: 'mntner', name: primaryKey});
+                    });
+                }
+
             };
 
 

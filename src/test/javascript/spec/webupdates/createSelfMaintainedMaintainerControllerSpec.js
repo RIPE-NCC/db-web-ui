@@ -73,6 +73,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     });
 
     it('should set default upd-to info for the self maintained maintainer when submitting', function () {
+        fillForm();
+
         var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('upd-to');
 
         $scope.submit();
@@ -82,6 +84,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     });
 
     it('should set default auth info for the self maintained maintainer when submitting', function () {
+        fillForm();
+
         var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('auth');
 
         $scope.submit();
@@ -91,6 +95,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     });
 
     it('should set mntner value to mnt-by for the self maintained maintainer when submitting', function () {
+        fillForm();
+
         WhoisResources.wrapAttributes($scope.maintainerAttributes).setSingleAttributeOnName('mntner', 'SOME-MNT');
         var mntBy = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('mnt-by');
 
@@ -101,6 +107,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     });
 
     it('should set source from the params when submitting', function () {
+        fillForm();
+
         var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('source');
 
         $scope.submit();
@@ -110,6 +118,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     });
 
     it('should create the maintainer', function () {
+        fillForm();
+
         spyOn(RestService, 'createObject').and.callThrough();
 
         $scope.submit();
@@ -121,6 +131,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     });
 
     it('should redirect to display page after creating a maintainer', function () {
+        fillForm();
+
         spyOn(MessageStore, 'add');
         spyOn($state, 'transitionTo');
 
@@ -130,6 +142,26 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         expect(MessageStore.add).toHaveBeenCalledWith('test-mnt', whoisResources);
         expect($state.transitionTo).toHaveBeenCalledWith('display', { source: SOURCE, objectType: 'mntner', name: 'test-mnt'});
     });
+
+    it('should not post if invalid attributes', function () {
+
+        $scope.maintainerAttributes = WhoisResources.wrapAttributes(
+            WhoisResources.enrichAttributesWithMetaInfo('mntner',
+                WhoisResources.getMandatoryAttributesOnObjectType('mntner')
+            )
+        );
+        $scope.submit();
+
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    function fillForm() {
+        var wrapAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+        wrapAttributes.setSingleAttributeOnName('mntner', 'SOME-MNT');
+        wrapAttributes.setSingleAttributeOnName('descr', 'uhuuuuuu');
+        wrapAttributes.setSingleAttributeOnName('admin-c', 'SOME-ADM');
+    }
 
 });
 
