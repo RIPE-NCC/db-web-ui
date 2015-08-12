@@ -4,16 +4,31 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService',
-        function ($scope, $stateParams, WhoisResources, AlertService, UserInfoService) {
+    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
+        function ($scope, $state, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
 
+            var MNT_TYPE = 'mntner';
             $scope.source = $stateParams.source;
-            $scope.maintainerAttributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType('mntner'));
+            $scope.maintainerAttributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType(MNT_TYPE));
 
             $scope.submit = function () {
                 $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', UserInfoService.getUserInfo().username);
                 $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + UserInfoService.getUserInfo().username);
                 $scope.maintainerAttributes.setSingleAttributeOnName('source', $scope.source);
+
+                var mntner = $scope.maintainerAttributes.getSingleAttributeOnName('mntner');
+                $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+
+                var embedAttributes = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
+
+                RestService.createObject($scope.source, MNT_TYPE, embedAttributes).then(function(resp) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
+
+                  var primaryKey = whoisResources.getPrimaryKey();
+                    MessageStore.add(primaryKey, whoisResources);
+
+                    $state.transitionTo('display', { source: $scope.source, objectType: 'mntner', name: primaryKey});
+                  });
             };
 
 

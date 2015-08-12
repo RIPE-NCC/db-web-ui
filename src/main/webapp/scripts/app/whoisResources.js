@@ -45,6 +45,8 @@ angular.module('dbWebApp')
             };
         };
 
+        this.turnAttrsIntoWhoisObject = this.embedAttributes;
+
         var readableError = function( errorMessage ) {
             var idx=0;
             var readableErrorText = errorMessage.text.replace(/%s/g, function(match) {
