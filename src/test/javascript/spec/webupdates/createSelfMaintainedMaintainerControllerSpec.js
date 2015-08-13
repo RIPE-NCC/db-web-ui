@@ -2,7 +2,7 @@
 
 describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
-    var $scope, $state, $stateParams, $httpBackend, WhoisResources, MessageStore;
+    var $scope, $state, $stateParams, $httpBackend, WhoisResources, MessageStore, AlertService;
     var SOURCE = 'TEST';
 
     var RestService = {
@@ -26,11 +26,12 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_, _MessageStore_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_, _MessageStore_, _AlertService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
 
+            AlertService = _AlertService_;
             MessageStore = _MessageStore_;
             $httpBackend = _$httpBackend_;
             WhoisResources = _WhoisResources_;
@@ -156,6 +157,23 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
+    it('should display error if create the maintainer fails', function () {
+        fillForm();
+        spyOn(RestService, 'createObject').and.returnValue(
+            {
+                then: function(s, f) {
+                    f(ERROR_RESPONSE);
+            }
+         });
+
+        spyOn(AlertService, 'populateFieldSpecificErrors');
+        spyOn(AlertService, 'showWhoisResourceErrors');
+        $scope.submit();
+
+        expect(AlertService.populateFieldSpecificErrors).toHaveBeenCalledWith('mntner', $scope.maintainerAttributes, ERROR_RESPONSE.data);
+        expect(AlertService.showWhoisResourceErrors).toHaveBeenCalledWith('mntner', ERROR_RESPONSE.data);
+    });
+
     function fillForm() {
         var wrapAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
         wrapAttributes.setSingleAttributeOnName('mntner', 'SOME-MNT');
@@ -230,8 +248,81 @@ var CREATE_RESPONSE = {
         }
     } ]
 },
-    'terms-and-conditions' : {
+ 'terms-and-conditions' : {
     'type' : 'locator',
         'href' : 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
-}
-}
+    }
+};
+
+var ERROR_RESPONSE = {
+    data: {
+        'link': {
+            'type': 'locator',
+            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner'
+        },
+        'objects': {
+            'object': [{
+                'type': 'mntner',
+                'link': {
+                    'type': 'locator',
+                    'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/sdfsdf'
+                },
+                'source': {
+                    'id': 'ripe'
+                },
+                'primary-key': {
+                    'attribute': [{
+                        'name': 'mntner',
+                        'value': 'sdfsdf'
+                    }]
+                },
+                'attributes': {
+                    'attribute': [{
+                        'name': 'mntner',
+                        'value': 'sdfsdf'
+                    }, {
+                        'name': 'descr',
+                        'value': 'sdfsdf'
+                    }, {
+                        'name': 'admin-c',
+                        'value': 'sdfds-ripe'
+                    }, {
+                        'name': 'upd-to',
+                        'value': 'tdacruzper@ripe.net'
+                    }, {
+                        'name': 'auth',
+                        'value': 'SSO tdacruzper@ripe.net'
+                    }, {
+                        'link': {
+                            'type': 'locator',
+                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/sdfsdf'
+                        },
+                        'name': 'mnt-by',
+                        'value': 'sdfsdf',
+                        'referenced-type': 'mntner'
+                    }, {
+                        'name': 'source',
+                        'value': 'RIPE'
+                    }]
+                }
+            }]
+        },
+        'errormessages': {
+            'errormessage': [{
+                'severity': 'Error',
+                'attribute': {
+                    'name': 'admin-c',
+                    'value': 'sdfds-ripe'
+                },
+                'text': 'Syntax error in %s',
+                'args': [{
+                    'value': 'sdfds-ripe'
+                }]
+            }]
+        },
+        'terms-and-conditions': {
+            'type': 'locator',
+            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+        }
+    }
+};

@@ -19,22 +19,30 @@ angular.module('webUpdates')
                 var mntner = $scope.maintainerAttributes.getSingleAttributeOnName('mntner');
                 $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
 
-                var embedAttributes = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
-
                 $scope.maintainerAttributes.clearErrors();
                 if($scope.maintainerAttributes.validate()) {
-                    RestService.createObject($scope.source, MNT_TYPE, embedAttributes).then(function(resp) {
+                   createObject();
+                }
+
+            };
+
+            function createObject() {
+                var embedAttributes = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
+
+                RestService.createObject($scope.source, MNT_TYPE, embedAttributes)
+                    .then(function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
                         var primaryKey = whoisResources.getPrimaryKey();
                         MessageStore.add(primaryKey, whoisResources);
 
-                        $state.transitionTo('display', { source: $scope.source, objectType: 'mntner', name: primaryKey});
-                    });
-                }
-
-            };
-
+                        $state.transitionTo('display', {source: $scope.source, objectType: 'mntner', name: primaryKey});
+                    }, function(error) {
+                        AlertService.populateFieldSpecificErrors('mntner', $scope.maintainerAttributes, error.data);
+                        AlertService.showWhoisResourceErrors('mntner', error.data);
+                    }
+                );
+            }
 
             //TODO (TCP) - this is the same code found on createController. Think in a way to remove it from here.
             /*
