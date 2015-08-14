@@ -37,6 +37,36 @@ angular.module('webUpdates')
 
             };
 
+            function createObject() {
+                $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
+
+                var embedAttributes = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
+
+                RestService.createObject($scope.source, MNT_TYPE, embedAttributes)
+                    .then(function (resp) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
+
+                        var primaryKey = whoisResources.getPrimaryKey();
+                        MessageStore.add(primaryKey, whoisResources);
+
+                        $state.transitionTo('display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
+                    }, function(error) {
+                        AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
+                        AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
+                    }
+                );
+            }
+
+            //TODO (TCP) - this is the same code found on createController. Think in a way to remove it from here.
+            /*
+             * Methods used to make sure that attributes have meta information and have utility functions
+             */
+            function _wrapAndEnrichAttributes(attrs) {
+                return WhoisResources.wrapAttributes(
+                    WhoisResources.enrichAttributesWithMetaInfo(MNT_TYPE, attrs)
+                );
+            }
+
             $scope.adminC = {
                 object: [],
                 alternatives: []
@@ -75,37 +105,6 @@ angular.module('webUpdates')
                     return i.name === 'admin-c' && i.value === item.key;
                 });
             };
-
-            function createObject() {
-                $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
-
-                var embedAttributes = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
-
-                RestService.createObject($scope.source, MNT_TYPE, embedAttributes)
-                    .then(function (resp) {
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
-
-                        var primaryKey = whoisResources.getPrimaryKey();
-                        MessageStore.add(primaryKey, whoisResources);
-
-                        $state.transitionTo('display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
-                    }, function(error) {
-                        AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
-                        AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
-                    }
-                );
-            }
-
-            //TODO (TCP) - this is the same code found on createController. Think in a way to remove it from here.
-            /*
-             * Methods used to make sure that attributes have meta information and have utility functions
-             */
-            function _wrapAndEnrichAttributes(attrs) {
-                return WhoisResources.wrapAttributes(
-                    WhoisResources.enrichAttributesWithMetaInfo(MNT_TYPE, attrs)
-                );
-            }
-
 
         }]);
 

@@ -80,6 +80,26 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         expect($scope.maintainerAttributes).toEqual(attributes);
     });
 
+    it('should add admin-c to the maintainer attributes', function () {
+        $scope.onAdminCAdded({key: 'some-admin-c'});
+
+        $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
+        $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+
+        expect($scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('some-admin-c');
+    });
+
+    it('should remove admin-c to the maintainer attributes', function () {
+
+        $scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value = 'admin-c';
+        $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c', value: 'some-admin-c'}, {name: 'admin-c'});
+
+        $scope.onAdminCRemoved({key: 'admin-c'});
+        $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+
+        expect($scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('some-admin-c');
+    });
+
     it('should set default upd-to info for the self maintained maintainer when submitting', function () {
         fillForm();
 
