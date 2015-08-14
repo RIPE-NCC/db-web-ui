@@ -7,6 +7,10 @@ angular.module('webUpdates')
     .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
         function ($scope, $state, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
 
+            $scope.hasErrors = AlertService.hasErrors;
+            $scope.hasWarnings = AlertService.hasWarnings;
+            $scope.hasInfos = AlertService.hasInfos;
+
             // workaround for problem with order of loading ui-select fragments
             $scope.uiSelectTemplateReady = false;
             RestService.fetchUiSelectResources().then(function () {
@@ -74,7 +78,6 @@ angular.module('webUpdates')
 
             function createObject() {
                 $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
-
 
                 var embedAttributes = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
 
