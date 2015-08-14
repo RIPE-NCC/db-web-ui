@@ -12,6 +12,13 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
                     s(CREATE_RESPONSE);
                 }
             }
+        },
+        fetchUiSelectResources: function(){
+            return {
+                then:function(s) {
+                    s();
+                }
+            }
         }
     };
 
@@ -127,6 +134,25 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
         $httpBackend.flush();
 
+        var attr = WhoisResources.embedAttributes($scope.maintainerAttributes);
+        expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', attr);
+    });
+
+    it('should remove null attributes before create the maintainer', function () {
+        fillForm();
+
+        $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c'}, {name: 'admin-c'});
+        $scope.maintainerAttributes = WhoisResources.enrichAttributesWithMetaInfo('mntner', $scope.maintainerAttributes);
+        $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+
+        spyOn(RestService, 'createObject').and.callThrough();
+
+        $scope.submit();
+
+        $httpBackend.flush();
+
+        $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+        $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
         var attr = WhoisResources.embedAttributes($scope.maintainerAttributes);
         expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', attr);
     });
