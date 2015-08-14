@@ -20,10 +20,6 @@ angular.module('webUpdates')
             $scope.mntnerAutocomplete = mntnerAutocomplete;
             $scope.referenceAutocomplete = referenceAutocomplete;
 
-            $scope.hasErrors = AlertService.hasErrors;
-            $scope.hasWarnings = AlertService.hasWarnings;
-            $scope.hasInfos = AlertService.hasInfos;
-
             $scope.hasMntners = hasMntners;
             $scope.canAttributeBeDuplicated = canAttributeBeDuplicated;
             $scope.duplicateAttribute = duplicateAttribute;

@@ -7,10 +7,6 @@ angular.module('webUpdates')
     .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
         function ($scope, $state, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
 
-            $scope.hasErrors = AlertService.hasErrors;
-            $scope.hasWarnings = AlertService.hasWarnings;
-            $scope.hasInfos = AlertService.hasInfos;
-
             // workaround for problem with order of loading ui-select fragments
             $scope.uiSelectTemplateReady = false;
             RestService.fetchUiSelectResources().then(function () {
@@ -22,6 +18,7 @@ angular.module('webUpdates')
             $scope.maintainerAttributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType(MNT_TYPE));
 
             $scope.submit = function () {
+                $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
 
                 $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', UserInfoService.getUserInfo().username);
                 $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + UserInfoService.getUserInfo().username);

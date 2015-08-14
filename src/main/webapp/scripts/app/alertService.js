@@ -7,15 +7,15 @@ angular.module('dbWebApp')
         $rootScope.infos = [];
 
 
-        alertService.hasErrors = function () {
+        $rootScope.hasErrors = function () {
             return $rootScope.errors.length > 0;
         };
 
-        alertService.hasWarnings = function () {
+        $rootScope.hasWarnings = function () {
             return $rootScope.warnings.length > 0;
         };
 
-        alertService.hasInfos = function () {
+        $rootScope.hasInfos = function () {
             return $rootScope.infos.length > 0;
         };
 
