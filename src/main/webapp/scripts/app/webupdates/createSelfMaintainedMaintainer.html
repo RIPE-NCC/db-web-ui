@@ -58,7 +58,7 @@
         </div>
     </section>
 
-    <section class="visible-field-form" ng-if="hasAdminC()">
+    <section class="visible-field-form" ng-show="hasAdminC()">
         <h1>Create a new self-maintained maintainer object</h1>
         <ul class="form-fields appeared-fields">
 
@@ -70,7 +70,7 @@
                        ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control"
                        typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                        typeahead-min-length="2"/>
-                <div class="text field-description" collapse="!isHelpShown">
+                <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
                     {{attribute.$$meta.$$description}}
                 </div>
                 <ul class="input-group-btn">
