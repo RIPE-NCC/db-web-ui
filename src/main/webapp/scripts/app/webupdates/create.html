@@ -16,7 +16,7 @@
     <strong>Please select your maintainers before creating the {{objectType}} object</strong>
     <article class="maintainer-icons">
         <span class="fa fa-search maintainer-search-icon"></span>
-        <a ng-click="isHelpMaintainer = !isHelpMaintainer" class="btn btn-default ga-help-attr maintainer-help" id="help">
+        <a ng-click="isHelpShown= !isHelpShown" class="btn btn-default ga-help-attr maintainer-help" id="help">
               <span class="fa fa-question"></span>
         </a>
     </article>
@@ -42,7 +42,7 @@
             </div>
         </ui-select-choices>
     </ui-select>
-    <div collapse="isHelpMaintainer" class="text field-description">
+    <div collapse="!isHelpShown" class="text field-description">
         Specifies the identifier of a registered mntner object used for authorisation of operations performed with the object that contains this attribute.
 Made up of letters, digits, the character underscore "_",
 and the character hyphen "-"; the first character of a name
@@ -81,7 +81,7 @@ starting with "irt-" are reserved for irt names.
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
                    typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"/>
-            <div class="text field-description" collapse="isHelpHidden">
+            <div class="text field-description" collapse="!isHelpShown">
                 {{attribute.$$meta.$$description}}
             </div>
             <ul class="input-group-btn">
@@ -111,7 +111,7 @@ starting with "irt-" are reserved for irt names.
                 </a>
                 </li>
                 <li>
-                    <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpHidden = !isHelpHidden">
+                    <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
                         <span class="fa fa-question" ></span>
                     </a>
                 </li>

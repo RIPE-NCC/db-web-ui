@@ -6,10 +6,6 @@ angular.module('dbWebApp')
         $rootScope.warnings = [];
         $rootScope.infos = [];
 
-        $rootScope.hasErrors = alertService.hasErrors;
-        $rootScope.hasWarnings = alertService.hasWarnings;
-        $rootScope.hasInfos = alertService.hasInfos;
-
 
         alertService.hasErrors = function () {
             return $rootScope.errors.length > 0;
@@ -26,6 +22,7 @@ angular.module('dbWebApp')
         alertService.clearErrors = function () {
             $rootScope.errors = [];
             $rootScope.warnings = [];
+            $rootScope.infos = [];
         };
 
         alertService.setErrors = function (whoisResources) {
