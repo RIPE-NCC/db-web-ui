@@ -89,12 +89,12 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         expect($scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('some-admin-c');
     });
 
-    it('should remove admin-c to the maintainer attributes', function () {
+    it('should remove admin-c from the maintainer attributes', function () {
 
-        $scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value = 'admin-c';
+        $scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value = 'first-admin';
         $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c', value: 'some-admin-c'}, {name: 'admin-c'});
 
-        $scope.onAdminCRemoved({key: 'admin-c'});
+        $scope.onAdminCRemoved({key: 'first-admin'});
         $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
 
         expect($scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('some-admin-c');
@@ -171,9 +171,9 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
         $httpBackend.flush();
 
-        $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
-        $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
-        var attr = WhoisResources.embedAttributes($scope.maintainerAttributes);
+        var expectedAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+        expectedAttributes = expectedAttributes.removeNullAttributes();
+        var attr = WhoisResources.embedAttributes(expectedAttributes);
         expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', attr);
     });
 
