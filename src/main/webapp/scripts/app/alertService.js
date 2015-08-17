@@ -40,7 +40,7 @@ angular.module('dbWebApp')
         alertService.populateFieldSpecificErrors = function(objectType, attrs, error) {
             var whoisResources = WhoisResources.wrapWhoisResources(error);
             if (whoisResources) {
-                _wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
+                WhoisResources.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
             }
 
             _.map(attrs, function (attr) {
@@ -58,19 +58,13 @@ angular.module('dbWebApp')
         alertService.showWhoisResourceErrors = function( objectType, error ) {
             var whoisResources = WhoisResources.wrapWhoisResources(error);
             if (whoisResources) {
-                _wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
+                WhoisResources.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
             }
 
             $rootScope.errors = whoisResources.getGlobalErrors();
             $rootScope.warnings = whoisResources.getGlobalWarnings();
             $rootScope.infos = whoisResources.getGlobalInfos();
         };
-
-        function _wrapAndEnrichAttributes(objectType, attrs) {
-            return WhoisResources.wrapAttributes(
-                WhoisResources.enrichAttributesWithMetaInfo(objectType, attrs)
-            );
-        }
 
         return alertService;
 });

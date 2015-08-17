@@ -3,7 +3,7 @@
 angular.module('dbWebApp')
     .service('WhoisMetaService', function () {
 
-        this._getAttributeDocumentation = function (objectType, attrName) {
+        this.getAttributeDocumentation = function (objectType, attrName) {
             var description = null;
             if (attrName === 'mp-peer') {
                 description = this._mpPeerDoc[objectType];
@@ -14,6 +14,10 @@ angular.module('dbWebApp')
                 description = this._attrDocumentation[attrName];
             }
             return description;
+        };
+
+        this.getAttributeSyntax = function (objectType, attrName) {
+            return '';
         };
 
         this._getMetaAttributesOnObjectType = function (objectTypeName, mandatoryOnly) {
@@ -60,7 +64,8 @@ angular.module('dbWebApp')
                         $$idx: idx,
                         $$mandatory: attrMeta.mandatory,
                         $$multiple: attrMeta.multiple,
-                        $$description: self._getAttributeDocumentation(objectTypeName, attr.name),
+                        $$description: self.getAttributeDocumentation(objectTypeName, attr.name),
+                        $$syntax: self.getAttributeSyntax(objectTypeName, attr.name),
                         $$refs: attrMeta.refs
                     }
                 };
@@ -91,7 +96,8 @@ angular.module('dbWebApp')
                         $$idx: idx,
                         $$mandatory: am.mandatory,
                         $$multiple: am.multiple,
-                        $$description: self._getAttributeDocumentation(objectTypeName, am.name),
+                        $$description: self.getAttributeDocumentation(objectTypeName, am.name),
+                        $$syntax: self.getAttributeSyntax(objectTypeName, am.name),
                         $$refs: am.refs
                     }
                 };
@@ -115,7 +121,8 @@ angular.module('dbWebApp')
                         $$idx: idx,
                         $$mandatory: x.mandatory,
                         $$multiple: x.multiple,
-                        $$description: self._getAttributeDocumentation(objectTypeName, x.name),
+                        $$description: self.getAttributeDocumentation(objectTypeName, x.name),
+                        $$syntax: self.getAttributeSyntax(objectTypeName, x.name),
                         $$refs: x.refs
                     }
                 };

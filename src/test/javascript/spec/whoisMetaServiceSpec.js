@@ -15,8 +15,8 @@ describe('dbWebApp: WhoisMetaService', function () {
     });
 
     it('should return correct documentation based on object- and attribute-name',function() {
-        expect($whoisMetaService._getAttributeDocumentation("mntner","admin-c")).toEqual("References an on-site administrative contact.")
-        expect($whoisMetaService._getAttributeDocumentation("inet-rtr","mp-peer")).toEqual("Details of any (interior or exterior) multiprotocol router peerings.")
+        expect($whoisMetaService.getAttributeDocumentation("mntner","admin-c")).toEqual("References an on-site administrative contact.")
+        expect($whoisMetaService.getAttributeDocumentation("inet-rtr","mp-peer")).toEqual("Details of any (interior or exterior) multiprotocol router peerings.")
     });
 
 
@@ -52,8 +52,8 @@ describe('dbWebApp: WhoisMetaService', function () {
             {name: 'optional1', value:'optional1value'}
         ];
         expect($whoisMetaService.enrichAttributesWithMetaInfo('type1', attrs)).toEqual([
-            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true, $$multiple:false, $$description:'A',$$refs:[]}},
-            { name: 'optional1', value:'optional1value', $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true, $$description:'B',$$refs:['b']}}
+            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true, $$multiple:false, $$description:'A', $$syntax:'', $$refs:[]}},
+            { name: 'optional1', value:'optional1value', $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true, $$description:'B', $$syntax:'', $$refs:['b']}}
         ])
     });
 
@@ -118,8 +118,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getAllAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1', $$meta: {$$idx:0, '$$mandatory':true, $$multiple:false, '$$description':'A',$$refs:[]}},
-            { name:'optional1',  $$meta: {$$idx:1, '$$mandatory':false, $$multiple:true, '$$description':'B',$$refs:[]}}
+            { name:'mandatory1', $$meta: {$$idx:0, '$$mandatory':true, $$multiple:false, '$$description':'A', $$syntax:'', $$refs:[]}},
+            { name:'optional1',  $$meta: {$$idx:1, '$$mandatory':false, $$multiple:true, '$$description':'B', $$syntax:'', $$refs:[]}}
         ])
     });
 
@@ -140,7 +140,7 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getMandatoryAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1',  $$meta: {$$idx:0,'$$mandatory':true, $$multiple:false, $$description: 'A', $$refs:[]}}
+            { name:'mandatory1',  $$meta: {$$idx:0,'$$mandatory':true, $$multiple:false, $$description: 'A',  $$syntax:'', $$refs:[]}}
         ])
     });
 

@@ -15,7 +15,10 @@ angular.module('webUpdates')
 
             var MNT_TYPE = 'mntner';
             $scope.source = $stateParams.source;
-            $scope.maintainerAttributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType(MNT_TYPE));
+            $scope.maintainerAttributes = WhoisResources.wrapAndEnrichAttributes(MNT_TYPE, WhoisResources.getMandatoryAttributesOnObjectType(MNT_TYPE));
+
+            $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
+            $scope.admincSyntax =      WhoisResources.getAttributeSyntax($scope.objectType, 'admin-c');
 
             $scope.submit = function () {
                 $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
@@ -37,9 +40,9 @@ angular.module('webUpdates')
             function createObject() {
                 $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
 
-                var embedAttributes = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
+                var obj = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
 
-                RestService.createObject($scope.source, MNT_TYPE, embedAttributes)
+                RestService.createObject($scope.source, MNT_TYPE, obj)
                     .then(function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
@@ -51,16 +54,6 @@ angular.module('webUpdates')
                         AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
                         AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
                     }
-                );
-            }
-
-            //TODO (TCP) - this is the same code found on createController. Think in a way to remove it from here.
-            /*
-             * Methods used to make sure that attributes have meta information and have utility functions
-             */
-            function _wrapAndEnrichAttributes(attrs) {
-                return WhoisResources.wrapAttributes(
-                    WhoisResources.enrichAttributesWithMetaInfo(MNT_TYPE, attrs)
                 );
             }
 

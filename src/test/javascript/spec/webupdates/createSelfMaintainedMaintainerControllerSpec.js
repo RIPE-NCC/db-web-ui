@@ -154,8 +154,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
         $httpBackend.flush();
 
-        var attr = WhoisResources.embedAttributes($scope.maintainerAttributes);
-        expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', attr);
+        var obj = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
+        expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', obj);
     });
 
     it('should remove null attributes before create the maintainer', function () {
@@ -173,8 +173,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
         var expectedAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
         expectedAttributes = expectedAttributes.removeNullAttributes();
-        var attr = WhoisResources.embedAttributes(expectedAttributes);
-        expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', attr);
+        var obj = WhoisResources.turnAttrsIntoWhoisObject(expectedAttributes);
+        expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', obj);
     });
 
     it('should redirect to display page after creating a maintainer', function () {
