@@ -1,0 +1,66 @@
+<alerts></alerts>
+
+<form id="createForm">
+    <section class="form-fields maintainer-fields">
+        <strong>Please select your administrative contact before creating the shared maintainer object</strong>
+        <article class="maintainer-icons">
+            <span class="fa fa-search maintainer-search-icon"></span>
+            <a ng-click="isAdminCHelpShown = !isAdminCHelpShown" class="btn btn-default ga-help-attr maintainer-help" id="help">
+                <span class="fa fa-question"></span>
+            </a>
+        </article>
+        <ui-select multiple="true"
+                   theme="selectize"
+                   ng-model="adminC.object"
+                   close-on-select="true"
+                   on-select="onAdminCAdded($item, $model)"
+                   on-remove="onAdminCRemoved($item, $model)"
+                   ng-if="uiSelectTemplateReady">
+            <ui-select-match>{{$item.key}}</ui-select-match>
+            <ui-select-choices repeat="adminC in adminC.alternatives track by adminC.key"
+                               refresh="adminCAutocomplete($select.search)"
+                               refresh-delay="100">
+                <div class="option">
+                    <span class="title">{{adminC.key}}</span>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+        <div collapse="!isAdminCHelpShown" class="text field-description">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec blandit lectus. Etiam tortor dui, tempus ac leo imperdiet, viverra posuere lacus. Sed tempus nisl fermentum orci iaculis commodo. Sed eu neque vitae leo condimentum vehicula at eu eros. Quisque accumsan nisl quis elit semper hendrerit. Vestibulum eu finibus sem. Donec hendrerit elit ut sapien feugiat malesuada. Suspendisse quis lacinia leo, at iaculis felis. Curabitur varius ante ante, nec sollicitudin ipsum bibendum vitae. In pellentesque turpis sit amet sem faucibus imperdiet.
+            <br><br>
+            Nam vel massa imperdiet, tempor lorem commodo, eleifend magna. Quisque orci eros, varius non convallis malesuada, ultrices non ligula. Nunc a sollicitudin nibh. Morbi magna diam, pellentesque in tortor eget, maximus porttitor orci. Curabitur mollis gravida commodo. Vivamus consectetur vitae arcu sit amet feugiat. Vestibulum tincidunt velit mi, non pellentesque arcu rutrum in. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla imperdiet porta dui sit amet rhoncus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer mollis, eros at tempus congue, augue dui consectetur risus, quis commodo felis purus eget sem. Fusce non eros ac quam fringilla aliquet sit amet in ipsum. Aenean sit amet congue orci. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+        </div>
+    </section>
+
+    <section class="visible-field-form" ng-show="hasAdminC()">
+        <h1>Create a new self-maintained maintainer object</h1>
+        <ul class="form-fields appeared-fields">
+
+            <li ng-repeat="attribute in (maintainerAttributes | filter: {name: '!mnt-by'} | filter: {name: '!source'} | filter: {name: '!upd-to'} | filter: {name:'!auth'} | filter: {name:'!admin-c'})" class="form-group input-group">
+                <label>{{attribute.name}}</label>
+                <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
+
+                <input type="text" name="mntner" ng-model="attribute.value"
+                       ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control"
+                       typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
+                       typeahead-min-length="2"/>
+                <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
+                    {{attribute.$$meta.$$description}}
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Create</button>
+
+        <button ng-click="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
+
+        <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
+            href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+    </section>
+</form>

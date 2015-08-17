@@ -21,6 +21,9 @@ angular.module('dbWebApp')
                     });
                 }
             },
+            getUserInfo: function() {
+              return _userInfo;
+            },
             getUsername: function() {
                 return _userInfo ? _userInfo.username : undefined;
             },

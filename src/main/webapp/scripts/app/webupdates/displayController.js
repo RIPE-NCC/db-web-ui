@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'RestService',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, RestService) {
+    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService',
+        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, RestService, AlertService) {
 
             var onCreate = function() {
 
@@ -19,40 +19,13 @@ angular.module('webUpdates')
                 $scope.before = undefined;
                 $scope.after = undefined;
 
-                // Initalize the UI
-                $scope.errors = [];
-                $scope.warnings = [];
-                $scope.infos = [];
-
-                var populateFieldSpecificErrors = function (resp) {
-                    _.map($scope.attributes, function (attr) {
-                        // keep existing error messages
-                        if (!attr.$$error) {
-                            var errors = resp.getErrorsOnAttribute(attr.name, attr.value);
-                            if (errors && errors.length > 0) {
-                                attr.$$error = errors[0].plainText;
-                            }
-                        }
-                        return attr;
-                    });
-                };
-
-                var setErrors = function (whoisResources) {
-                    populateFieldSpecificErrors(whoisResources);
-                    $scope.errors = whoisResources.getGlobalErrors();
-                    $scope.warnings = whoisResources.getGlobalWarnings();
-                    $scope.infos = whoisResources.getGlobalInfos();
-                };
-
-
-
-
                 // fetch just created object from temporary store
                 var cached = MessageStore.get($scope.objectName);
                 if (cached) {
                     var whoisResources = WhoisResources.wrapWhoisResources(cached);
                     $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                    setErrors(whoisResources);
+                    AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, cached);
+                    AlertService.setErrors(whoisResources);
 
                     if ($scope.method === 'Modify') {
 
@@ -68,11 +41,14 @@ angular.module('webUpdates')
                         function (resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
                             $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                            setErrors(whoisResources);
+                            AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp);
+                            AlertService.setErrors(whoisResources);
+
                         }, function (resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
                             if (!_.isUndefined(whoisResources)) {
-                                setErrors(whoisResources);
+                                AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
+                                AlertService.setErrors(whoisResources);
                             }
                         }
                     );
@@ -105,18 +81,6 @@ angular.module('webUpdates')
                     }
                 }
                 return name;
-            };
-
-            $scope.hasErrors = function () {
-                return $scope.errors.length > 0;
-            };
-
-            $scope.hasWarnings = function () {
-                return $scope.warnings.length > 0;
-            };
-
-            $scope.hasInfos = function () {
-                return $scope.infos.length > 0;
             };
 
             $scope.navigateToSelect = function () {

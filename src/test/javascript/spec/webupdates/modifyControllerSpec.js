@@ -352,7 +352,7 @@ describe('webUpdates: ModifyController init with failures', function () {
         $httpBackend.flush();
 
         expect($scope.hasErrors()).toBe(true);
-        expect($scope.errors[0].plainText).toEqual('You cannot modify this object through web updates because your SSO account is not associated any of the maintainers on this object, and none of the maintainers have password');
+        expect($scope.errors[0].plainText).toEqual('You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have password');
 
     });
 
