@@ -29,7 +29,7 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('should embed attributes within a whoisressources-request', function () {
 
-        expect($whoisResources.embedAttributes([
+        expect($whoisResources.turnAttrsIntoWhoisObject([
             {name: 'mnt-by', value: 'b'},
             {name: 'source'}
         ])).toEqual({

@@ -45,7 +45,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
                         // do adjust the maintainer
                         RestService.associateSSOMntner(whoisResources.getSource(),'mntner', $scope.selected.item.key,
-                            WhoisResources.embedAttributes(attributes), $scope.selected.password) .then(
+                            WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.selected.password) .then(
                             function (resp) {
                                 $scope.selected.item.mine = true;
                                 CredentialsService.removeCredentials(); //i because ts now an sso mntner

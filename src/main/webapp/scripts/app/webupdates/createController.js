@@ -78,7 +78,7 @@ angular.module('webUpdates')
                         return;
                     }
 
-                    $scope.attributes = _wrapAndEnrichAttributes(mandatoryAttributesOnObjectType);
+                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, mandatoryAttributesOnObjectType);
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
@@ -89,7 +89,7 @@ angular.module('webUpdates')
                     $scope.operation = $scope.MODIFY_OPERATION;
 
                     // Start empty, and populate with rest-result
-                    $scope.attributes = _wrapAndEnrichAttributes([]);
+                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,[]);
 
                     _fetchDataForModify();
                 }
@@ -218,7 +218,7 @@ angular.module('webUpdates')
             }
 
             function duplicateAttribute(attr) {
-                _wrapAndEnrichAttributes($scope.attributes.duplicateAttribute(attr));
+                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.duplicateAttribute(attr));
                 $log.debug('duplicateAttribute: attributes' + JSON.stringify($scope.attributes));
             }
 
@@ -227,7 +227,7 @@ angular.module('webUpdates')
             }
 
             function removeAttribute(attr) {
-                _wrapAndEnrichAttributes($scope.attributes.removeAttribute(attr));
+                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeAttribute(attr));
                 $log.debug('removeAttribute: attributes' + JSON.stringify($scope.attributes));
             }
 
@@ -238,7 +238,7 @@ angular.module('webUpdates')
 
             function addSelectedAttribute(selectedAttributeType, attr) {
                 var attrs = $scope.attributes.addAttributeAfter(selectedAttributeType, attr);
-                _wrapAndEnrichAttributes(attrs);
+                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, attrs);
             }
 
             function displayMd5DialogDialog(attr) {
@@ -304,13 +304,13 @@ angular.module('webUpdates')
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
-                            WhoisResources.embedAttributes($scope.attributes), password).then(
+                            WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), password).then(
                             _onSubmitSuccess,
                             _onSubmitError);
 
                     } else {
                         RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
-                            WhoisResources.embedAttributes($scope.attributes), password).then(
+                            WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), password).then(
                             _onSubmitSuccess,
                             _onSubmitError);
                     }
@@ -341,7 +341,7 @@ angular.module('webUpdates')
                             var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
                                 return {name: 'mnt-by', value: i.key};
                             });
-                            _wrapAndEnrichAttributes($scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
+                            $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
 
                             $log.info('mntners-sso:'+ JSON.stringify($scope.maintainers.sso));
                             $log.info('mntners-object-original:'+ JSON.stringify($scope.maintainers.objectOriginal));
@@ -420,7 +420,7 @@ angular.module('webUpdates')
             }
 
             function _copyAddedMntnerToAttributes(mntnerName) {
-                _wrapAndEnrichAttributes($scope.attributes.addAttrsSorted('mnt-by', [
+                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.addAttrsSorted('mnt-by', [
                     { name: 'mnt-by', value: mntnerName}
                 ]));
             }
@@ -478,24 +478,13 @@ angular.module('webUpdates')
             }
 
             function _stripNulls() {
-                $scope.attributes = _wrapAndEnrichAttributes($scope.attributes.removeNullAttributes());
-            }
-
-            /*
-             * Methods used to make sure that attributes have meta information and have utility functions
-             */
-            function _wrapAndEnrichAttributes(attrs) {
-                $scope.attributes = WhoisResources.wrapAttributes(
-                    WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, attrs)
-                );
-
-                return $scope.attributes;
+                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeNullAttributes());
             }
 
             function _wrapAndEnrichResources(resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
                 if (whoisResources) {
-                    _wrapAndEnrichAttributes(whoisResources.getAttributes());
+                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, whoisResources.getAttributes());
                 }
                 return whoisResources;
             }
@@ -556,11 +545,6 @@ angular.module('webUpdates')
                     name: objectName,
                     method: operation
                 });
-            }
-
-            function _setGlobalError( errorMsg ) {
-                AlertService.clearErrors();
-                $scope.errors.push({plainText:errorMsg});
             }
 
             function _performAuthentication() {

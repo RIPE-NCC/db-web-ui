@@ -39,7 +39,13 @@ angular.module('dbWebApp')
             return JSON.stringify(this);
         };
 
-        this.embedAttributes = function( attrs ) {
+        this.wrapAndEnrichAttributes = function (objectType, attrs) {
+            return this.wrapAttributes(
+                this.enrichAttributesWithMetaInfo(objectType, attrs)
+            );
+        };
+
+        this.turnAttrsIntoWhoisObject = function( attrs ) {
             return{
                 objects:{
                     object: [
@@ -48,8 +54,6 @@ angular.module('dbWebApp')
                 }
             };
         };
-
-        this.turnAttrsIntoWhoisObject = this.embedAttributes;
 
         var readableError = function( errorMessage ) {
             var idx=0;
