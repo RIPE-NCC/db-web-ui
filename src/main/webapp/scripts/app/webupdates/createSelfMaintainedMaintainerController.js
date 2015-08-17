@@ -17,6 +17,9 @@ angular.module('webUpdates')
             $scope.source = $stateParams.source;
             $scope.maintainerAttributes = _wrapAndEnrichAttributes(WhoisResources.getMandatoryAttributesOnObjectType(MNT_TYPE));
 
+            $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
+            $scope.admincSyntax =      WhoisResources.getAttributeSyntax($scope.objectType, 'admin-c');
+
             $scope.submit = function () {
                 $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
 

@@ -32,33 +32,13 @@
         </ui-select-choices>
     </ui-select>
     <div collapse="!isMntHelpShown" class="text field-description">
-        Specifies the identifier of a registered mntner object used for authorisation of operations performed with the object that contains this attribute.
-Made up of letters, digits, the character underscore "_",
-and the character hyphen "-"; the first character of a name
-must be a letter, and the last character of a name must be a
-letter or a digit.  The following words are reserved by
-RPSL, and they can not be used as names:
-<br/><br/>
- any as-any rs-any peeras and or not atomic from to at
- action accept announce except refine networks into inbound
- outbound
-<br/><br/>
-Names starting with certain prefixes are reserved for
-certain object types.  Names starting with "as-" are
-reserved for as set names.  Names starting with "rs-" are
-reserved for route set names.  Names starting with "rtrs-"
-are reserved for router set names. Names starting with
-"fltr-" are reserved for filter set names. Names starting
-with "prng-" are reserved for peering set names. Names
-starting with "irt-" are reserved for irt names.
-    </div>
+        {{mntbyDescription}}</br>{{mntbySyntax}}</div>
 	</section>
 
     <section class="visible-field-form" ng-if="hasMntners()">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
 
-        <!-- attributes:{{attributes}}  -->
     <ul class="form-fields appeared-fields">
 
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
@@ -71,7 +51,7 @@ starting with "irt-" are reserved for irt names.
                    typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"/>
             <div class="text field-description" collapse="!isHelpShown">
-                {{attribute.$$meta.$$description}}
+                {{attribute.$$meta.$$description}}</br>{{attribute.$$meta.$$syntax}}
             </div>
             <ul class="input-group-btn">
                 <li>

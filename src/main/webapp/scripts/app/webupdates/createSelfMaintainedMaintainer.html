@@ -26,10 +26,8 @@
             </ui-select-choices>
         </ui-select>
         <div collapse="!isAdminCHelpShown" class="text field-description">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque nec blandit lectus. Etiam tortor dui, tempus ac leo imperdiet, viverra posuere lacus. Sed tempus nisl fermentum orci iaculis commodo. Sed eu neque vitae leo condimentum vehicula at eu eros. Quisque accumsan nisl quis elit semper hendrerit. Vestibulum eu finibus sem. Donec hendrerit elit ut sapien feugiat malesuada. Suspendisse quis lacinia leo, at iaculis felis. Curabitur varius ante ante, nec sollicitudin ipsum bibendum vitae. In pellentesque turpis sit amet sem faucibus imperdiet.
-            <br><br>
-            Nam vel massa imperdiet, tempor lorem commodo, eleifend magna. Quisque orci eros, varius non convallis malesuada, ultrices non ligula. Nunc a sollicitudin nibh. Morbi magna diam, pellentesque in tortor eget, maximus porttitor orci. Curabitur mollis gravida commodo. Vivamus consectetur vitae arcu sit amet feugiat. Vestibulum tincidunt velit mi, non pellentesque arcu rutrum in. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla imperdiet porta dui sit amet rhoncus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer mollis, eros at tempus congue, augue dui consectetur risus, quis commodo felis purus eget sem. Fusce non eros ac quam fringilla aliquet sit amet in ipsum. Aenean sit amet congue orci. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-        </div>
+            {{admincDescription}}<br>{{admincSyntax}}
+            </div>
     </section>
 
     <section class="visible-field-form" ng-show="hasAdminC()">
@@ -45,7 +43,7 @@
                        typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                        typeahead-min-length="2"/>
                 <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
-                    {{attribute.$$meta.$$description}}
+                    {{attribute.$$meta.$$description}}</br>{{attribute.$$meta.$$syntax}}
                 </div>
                 <ul class="input-group-btn">
                     <li>

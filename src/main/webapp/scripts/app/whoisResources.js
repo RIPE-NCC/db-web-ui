@@ -3,8 +3,12 @@
 angular.module('dbWebApp')
     .service('WhoisResources', [ 'WhoisMetaService', function (WhoisMetaService) {
 
-        this._getAttributeDocumentation = function( objectType, attrName ) {
-            return WhoisMetaService._getAttributeDocumentation(objectType, attrName);
+        this.getAttributeDocumentation = function( objectType, attrName ) {
+            return WhoisMetaService.getAttributeDocumentation(objectType, attrName);
+        };
+
+        this.getAttributeSyntax = function (objectType, attrName) {
+            return WhoisMetaService.getAttributeSyntax(objectType, attrName);
         };
 
         this._getMetaAttributesOnObjectType = function (objectTypeName, mandatoryOnly) {
@@ -290,7 +294,8 @@ angular.module('dbWebApp')
                             name:attr.name, $$meta:{
                             $$mandatory:next.$$mandatory,
                             $$multiple:next.$$meta.multiple,
-                            $$description:next.$$description
+                            $$description:next.$$description,
+                            $$syntax:next.$$syntax,
                         }});
                 }
             });
