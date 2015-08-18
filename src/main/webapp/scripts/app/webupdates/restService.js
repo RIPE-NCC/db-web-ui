@@ -73,6 +73,11 @@ angular.module('dbWebApp')
                                 }
                                 return item;
                             });
+                            if(_.isEmpty(result)) {
+                                // better something than nothing:
+                                // in case search-index does not yet know this newly created mntner
+                                result = [mntner];
+                            }
                             $log.info('_myMntnerDetails success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
