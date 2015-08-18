@@ -6,6 +6,8 @@ angular.module('webUpdates')
 
             var onCreate = function() {
 
+                AlertService.clearErrors();
+
                 /*
                  * Start of initialisation phase
                  */

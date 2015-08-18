@@ -7,6 +7,8 @@ angular.module('webUpdates')
     .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
         function ($scope, $state, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
 
+            AlertService.clearErrors();
+
             // workaround for problem with order of loading ui-select fragments
             $scope.uiSelectTemplateReady = false;
             RestService.fetchUiSelectResources().then(function () {

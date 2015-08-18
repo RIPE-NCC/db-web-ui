@@ -1,5 +1,5 @@
 angular.module('dbWebApp')
-    .factory('AlertService', function ($rootScope, WhoisResources) {
+    .service('AlertService', function ($rootScope, WhoisResources) {
         var alertService = {};
 
         $rootScope.errors = [];

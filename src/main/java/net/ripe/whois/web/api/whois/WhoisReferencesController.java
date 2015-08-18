@@ -53,11 +53,11 @@ public class WhoisReferencesController extends ApiController {
 
     @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
     public ResponseEntity<WhoisResources>  delete(@PathVariable String source, @PathVariable String objectType,
-        @PathVariable String name, @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+        @PathVariable String name, @RequestParam("reason") String reason, @RequestHeader final HttpHeaders headers) throws URISyntaxException {
 
         removeUnnecessaryHeaders(headers);
 
-        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name, headers);
+        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name, reason, headers);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

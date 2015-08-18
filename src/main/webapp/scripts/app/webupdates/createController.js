@@ -40,6 +40,8 @@ angular.module('webUpdates')
 
             function _initialisePage() {
 
+                AlertService.clearErrors();
+
                 // workaround for problem with order of loading ui-select fragments
                 $scope.uiSelectTemplateReady = false;
                 RestService.fetchUiSelectResources().then(function () {
