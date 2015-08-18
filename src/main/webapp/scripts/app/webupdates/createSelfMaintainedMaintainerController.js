@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
-        function ($scope, $state, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
+    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
+        function ($scope, $state, $log, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
 
             // workaround for problem with order of loading ui-select fragments
             $scope.uiSelectTemplateReady = false;
@@ -44,6 +44,7 @@ angular.module('webUpdates')
 
                 RestService.createObject($scope.source, MNT_TYPE, obj)
                     .then(function (resp) {
+                        $log.info('autocomplete success:' + JSON.stringify(resp));
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
                         var primaryKey = whoisResources.getPrimaryKey();
@@ -51,6 +52,7 @@ angular.module('webUpdates')
 
                         $state.transitionTo('display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
                     }, function(error) {
+                        $log.error('create error:' +  JSON.stringify(error));
                         AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
                         AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
                     }
@@ -65,10 +67,14 @@ angular.module('webUpdates')
             $scope.adminCAutocomplete = function (query) {
                 // need to typed characters
                 if (query.length >= 2) {
-                    RestService.autocomplete( 'admin-c', query, true).then(
+                        RestService.autocomplete( 'admin-c', query, true,['person','role']).then(
                         function (data) {
+                            $log.info('autocomplete success:' + JSON.stringify(data));
                             // mark new
                             $scope.adminC.alternatives = _stripAlreadySelected(data);
+                        },
+                        function(error) {
+                            $log.error('autocomplete error:' +  JSON.stringify(error));
                         }
                     );
                 }
