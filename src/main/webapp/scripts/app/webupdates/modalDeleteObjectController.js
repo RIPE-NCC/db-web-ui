@@ -60,7 +60,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
             if ((references.length === 1) && $scope.isItself(references[0], $scope.objectType)) {
                 $log.info('References itself')
-                return false; // wrong?
+                return false; // wrong? 
             }
 
             if($scope.objectType.toUpperCase() === 'MNTNER') {
