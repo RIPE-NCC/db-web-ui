@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$modalInstance', 'RestService', 'source', 'objectType', 'name',
-    function ($scope, $state, $modalInstance, RestService, source, objectType, name) {
+angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'source', 'objectType', 'name',
+    function ($scope, $state, $log, $modalInstance, RestService, source, objectType, name) {
 
         $scope.reason = 'I don\'t need this object';
         $scope.objectType = objectType;
@@ -13,7 +13,8 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             var deleteWithRefs = $scope.isMntPersonReference($scope.referencesInfo.references);
 
             RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs).then(
-                function () {
+                function (resp ) {
+                    $log.info('Successfully deleted object:' + JSON.stringify(resp) );
                     $modalInstance.close();
 
                     $state.transitionTo('deleted', {
@@ -22,7 +23,11 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
                         name: $scope.name
                     });
 
-                }, dismissWithFailResponse
+                },
+                function (error) {
+                    $log.error('Error deleting object:' + JSON.stringify(error) );
+                    $modalInstance.dismiss(error.data);
+                }
             );
         };
 
@@ -54,7 +59,8 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             }
 
             if ((references.length === 1) && $scope.isItself(references[0], $scope.objectType)) {
-                return false;
+                $log.info('References itself')
+                return false; // wrong? 
             }
 
             if($scope.objectType.toUpperCase() === 'MNTNER') {
@@ -84,15 +90,16 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         };
 
         function getReferences(source, objectType, name) {
-            RestService.getReferences(source, objectType, name)
-                .then(function (resp) {
+            RestService.getReferences(source, objectType, name) .then(
+                function (resp) {
+                    $log.info('Successfully fetched object references:' + JSON.stringify(resp) );
                     $scope.referencesInfo = resp;
                 },
-                dismissWithFailResponse
+                function (error) {
+                    $log.error('Error getting object references:' + JSON.stringify(error) );
+                    $modalInstance.dismiss(error.data);
+                }
             );
         }
 
-        function dismissWithFailResponse(resp) {
-            $modalInstance.dismiss(resp.data);
-        }
     }]);
