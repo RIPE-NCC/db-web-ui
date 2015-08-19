@@ -525,6 +525,7 @@
 
             </dependencies>
         </profile>
+        <!-- profile prod is the default deployment/production profile from jhipster. -->
         <profile>
             <id>prod</id>
             <build>
@@ -574,6 +575,74 @@
                             <arguments>
                                 <argument>--spring.profiles.active=prod</argument>
                             </arguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+            <properties>
+                <!-- log configuration -->
+                <logback.loglevel>DEBUG</logback.loglevel>
+            </properties>
+            <dependencies>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-jetty</artifactId>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>deploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.trecloux</groupId>
+                        <artifactId>yeoman-maven-plugin</artifactId>
+                        <version>0.4</version>
+                        <executions>
+                            <execution>
+                                <id>run-frontend-build</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                                <configuration>
+                                    <buildTool>grunt</buildTool>
+                                    <buildArgs>build-${spring.profiles.active} --force --no-color</buildArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <yeomanProjectDirectory>${project.basedir}</yeomanProjectDirectory>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>2.5</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>src/main/webapp/dist</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>.tmp</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>node_modules</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <arguments>
+                                <argument>--spring.profiles.active=${spring.profiles.active}</argument>
+                            </arguments>
+                            <!-- we can change the artifact name by adding the environment suffix as below:
+                             <finalName>${project.build.finalName}-${spring.profiles.active}</finalName>
+                             but currently spring boot has a bug which is solved in v1.3
+                             (now it is solved only in milestone version) -->
                         </configuration>
                     </plugin>
                 </plugins>

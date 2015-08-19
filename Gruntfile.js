@@ -192,7 +192,7 @@ module.exports = function (grunt) {
             },
             prod: {
                 options: {
-                    dest: '.tmp/scripts/app/app.constants.js'
+                    dest: 'src/main/webapp/scripts/app/app.constants.js'
                 },
                 constants: {
                     ENV: 'prod',
@@ -244,6 +244,46 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build', [
+        'clean:dist',
+        'wiredep:app',
+        'ngconstant:prod',
+        'ngtemplates',
+        'concurrent:dist',
+        'ngAnnotate',
+        'compass:server'
+    ]);
+
+    grunt.registerTask('build-dev', [
+        'clean:dist',
+        'wiredep:app',
+        'ngconstant:dev',
+        'ngtemplates',
+        'concurrent:dist',
+        'ngAnnotate',
+        'compass:server'
+    ]);
+
+    grunt.registerTask('build-prepdev', [
+        'clean:dist',
+        'wiredep:app',
+        'ngconstant:prepdev',
+        'ngtemplates',
+        'concurrent:dist',
+        'ngAnnotate',
+        'compass:server'
+    ]);
+
+    grunt.registerTask('build-rc', [
+        'clean:dist',
+        'wiredep:app',
+        'ngconstant:rc',
+        'ngtemplates',
+        'concurrent:dist',
+        'ngAnnotate',
+        'compass:server'
+    ]);
+
+    grunt.registerTask('build-prod', [
         'clean:dist',
         'wiredep:app',
         'ngconstant:prod',

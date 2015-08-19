@@ -19,6 +19,19 @@ The server can be started from the command-line:
 
     % mvn spring-boot:run
 
+Deployment
+-------------------
+To deploy to any environment (dev/prepdev/rc/prod) use:
+
+    % mvn -Pdeploy package -Dspring.profiles.active=<ENV> 
+
+e.g. to deploy to RC: 
+
+    % mvn -Pdeploy package -Dspring.profiles.active=rc
+    
+this will create a war for the specific environment by calling 
+the appropriate grunt task for that environment. The grunt task will
+generate the appropriate scripts/app/app.constants.js file.
 
 IntelliJ Preferences
 --------------------
