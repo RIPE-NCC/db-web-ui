@@ -1,6 +1,8 @@
 <alerts></alerts>
 <form id="createForm">
 
+    <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
+    
 	<section class="form-fields maintainer-fields">
     <strong>Please select your maintainers before creating the {{objectType}} object</strong>
     <article class="maintainer-icons">
@@ -36,8 +38,6 @@
 	</section>
 
     <section class="visible-field-form" ng-if="hasMntners()">
-
-    <h1>{{operation}} &quot;{{objectType}}&quot; in source {{source}}</h1>
 
     <ul class="form-fields appeared-fields">
 
