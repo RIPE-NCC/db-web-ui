@@ -76,3 +76,11 @@ ul.success-fields {
         color: #00abab;
     }
 }
+ul.radio {
+    list-style: none;
+    li {
+        label {
+            padding-left: 0;
+        }
+    }
+}
