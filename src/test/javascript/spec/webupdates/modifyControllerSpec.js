@@ -518,3 +518,86 @@ describe('webUpdates: ModifyController ask for password before modify object wit
 
 });
 
+describe('webUpdates: ModifyController should be able to handle escape objected with slash', function () {
+
+    var $scope, $state, $stateParams, $httpBackend;
+    var MessageStore;
+    var WhoisResources;
+    var MntnerService;
+    var ModalService;
+    var SOURCE = 'RIPE';
+    var OBJECT_TYPE = 'route';
+    var NAME = '12.235.32.0%2f19AS1680';
+    var $q;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _$q_) {
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            $state = _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            MessageStore = _MessageStore_;
+            WhoisResources = _WhoisResources_;
+            MntnerService = _MntnerService_;
+            $q = _$q_;
+
+            $stateParams.objectType = OBJECT_TYPE;
+            $stateParams.source = SOURCE;
+            $stateParams.name = NAME;
+
+            $httpBackend.whenGET('api/user/mntners').respond([
+                {key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true}
+            ]);
+
+            $httpBackend.whenGET('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true').respond(
+                function (method, url) {
+                    return [200,
+                        {
+                            objects: {
+                                object: [
+                                    {
+                                        'primary-key': {attribute: [{name: 'route', value: '12.235.32.0/19AS1680'}]},
+                                        attributes: {
+                                            attribute: [
+                                                {name: 'route', value: '12.235.32.0/19AS1680'},
+                                                {name: 'mnt-by', value: 'TEST-MNT'},
+                                                {name: 'source', value: 'RIPE'}
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+
+                        }, {}];
+                });
+
+            $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
+                function (method, url) {
+                    return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
+                });
+
+            _$controller_('CreateController', {
+                $scope: $scope, $state: $state, $stateParams: $stateParams
+            });
+
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+        });
+    });
+
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+
+    it('Call rest backend with slash-escaped url', function() {
+        $httpBackend.flush();
+    });
+
+});

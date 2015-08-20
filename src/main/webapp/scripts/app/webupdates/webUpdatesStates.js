@@ -31,17 +31,17 @@ angular.module('webUpdates')
                 controller: 'CreateController'
             })
             .state('modify', {
-                url: '/webupdates/modify/:source/:objectType/:name',
+                url: '/webupdates/modify/:source/:objectType/*name',
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
             })
             .state('display', {
-                url: '/webupdates/display/:source/:objectType/:name?method',
+                url: '/webupdates/display/:source/:objectType/*name?method',
                 templateUrl: 'scripts/app/webupdates/display.html',
                 controller: 'DisplayController'
             })
             .state('deleted', {
-                url: '/webupdates/deleted/:source/:objectType/:name',
+                url: '/webupdates/deleted/:source/:objectType/*name',
                 templateUrl: 'scripts/app/webupdates/deleted.html',
                 controller: function($scope, $stateParams){
                    $scope.source = $stateParams.source;
