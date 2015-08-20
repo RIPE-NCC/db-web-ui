@@ -181,3 +181,93 @@ describe('webUpdates: DisplayController', function () {
 
 });
 
+
+describe('webUpdates: DisplayController with object containing slash', function () {
+
+    var $scope, $state, $stateParams, $httpBackend;
+    var MessageStore;
+    var WhoisResources;
+    var SOURCE = 'RIPE';
+    var OBJECT_TYPE = 'route';
+    var OBJECT_NAME = '212.235.32.0/19AS1680';
+    var MNTNER = 'TEST-MNT';
+    var objectToDisplay;
+    var createDisplayController;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            $state = _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            MessageStore = _MessageStore_;
+            WhoisResources = _WhoisResources_;
+
+            objectToDisplay = WhoisResources.wrapWhoisResources({
+                objects: {
+                    object: [
+                        {
+                            'primary-key': {attribute: [{name: 'as-block', value: OBJECT_NAME}]},
+                            attributes: {
+                                attribute: [
+                                    {name: 'route', value: OBJECT_NAME},
+                                    {name: 'mnt-by', value: MNTNER},
+                                    {name: 'source', value: SOURCE}
+                                ]
+                            }
+                        }
+                    ]
+                }
+            });
+
+
+            createDisplayController = function () {
+
+                $stateParams.source = SOURCE;
+                $stateParams.objectType = OBJECT_TYPE;
+                $stateParams.name = OBJECT_NAME;
+
+
+                _$controller_('DisplayController', {
+                    $scope: $scope, $state: $state, $stateParams: $stateParams
+                });
+            };
+
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+            $httpBackend.flush();
+
+
+        });
+    });
+
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should populate the ui from rest ok', function () {
+        var stateBefore = $state.current.name;
+
+        // no objects in message store
+        createDisplayController();
+
+        $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function(method,url) {
+            return [200, objectToDisplay, {}];
+        });
+        $httpBackend.flush();
+
+        expect($scope.attributes.getSingleAttributeOnName('route').value).toBe(OBJECT_NAME);
+        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
+        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+
+        expect($state.current.name).toBe(stateBefore);
+
+    });
+
+});

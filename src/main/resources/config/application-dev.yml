@@ -9,15 +9,15 @@ spring:
 
 rest:
     api:
-        ripeUrl:  https://rest-prepdev.db.ripe.net
+        ripeUrl:  https://rest-dev.db.ripe.net
 
 ripe:
     search:
-           queryUrl: https://prepdev.db.ripe.net/search/query.html
+           queryUrl: https://dev.db.ripe.net/search/query.html
 
 internal:
     api:
-        url: http://int-prepdev.db.ripe.net
+        url: http://int-dev.db.ripe.net
         key: DB-WHOIS-d5395e7fbf8d
 
 crowd:

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService',
-        function ($scope, $stateParams, $state, $resource, WhoisResources, MessageStore, RestService, AlertService) {
+    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', '$log', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService',
+        function ($scope, $stateParams, $state, $resource, $log, WhoisResources, MessageStore, RestService, AlertService) {
 
             var onCreate = function() {
 
@@ -17,6 +17,8 @@ angular.module('webUpdates')
                 $scope.objectType = $stateParams.objectType;
                 $scope.objectName = $stateParams.name;
                 $scope.method = $stateParams.method; // optional: added by create- and modify-controller
+
+                $log.info('Url params: source:'+ $scope.objectSource +'. type:' + $scope.objectType + ', uid:' + $scope.objectName );
 
                 $scope.before = undefined;
                 $scope.after = undefined;
