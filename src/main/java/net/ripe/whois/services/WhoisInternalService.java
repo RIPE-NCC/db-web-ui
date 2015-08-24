@@ -8,6 +8,8 @@ import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.rpsl.AttributeType;
 import net.ripe.whois.services.rest.RestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -27,6 +29,8 @@ import java.util.UUID;
 @Service
 public class WhoisInternalService extends RestClient {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalService.class);
+
     private final String apiUrl;
     private final String apiKey;
 
@@ -39,14 +43,26 @@ public class WhoisInternalService extends RestClient {
     public List<Map<String,Object>> getMaintainers(final UUID uuid) {
 
         // fetch as xml
-        final ResponseEntity<WhoisResources> response = restTemplate.exchange("{apiUrl}/api/user/{uuid}/maintainers?apiKey={apiKey}",
-            HttpMethod.GET,
-            new HttpEntity<String>(withHeaders(MediaType.APPLICATION_XML_VALUE)),
-            WhoisResources.class,
-            withParams(uuid));
+        final ResponseEntity<WhoisResources> response;
+        try {
+            response = restTemplate.exchange("{apiUrl}/api/user/{uuid}/maintainers?apiKey={apiKey}",
+                HttpMethod.GET,
+                new HttpEntity<String>(withHeaders(MediaType.APPLICATION_XML_VALUE)),
+                WhoisResources.class,
+                withParams(uuid));
 
-        if (response.getStatusCode() != HttpStatus.OK) {
-            throw new RestClientException(response.getBody().getErrorMessages());
+            if (response.getStatusCode() != HttpStatus.OK) {
+                // Do not return internal-only error message to the user, just log it.
+
+                LOGGER.warn("Failed to retrieve mntners for UUID {} due to {}",
+                        uuid,
+                        (response.getBody() != null ? response.getBody().getErrorMessages() : "(no response body)"));
+
+                throw new RestClientException("Unable to get maintainers");
+            }
+        } catch (org.springframework.web.client.RestClientException e) {
+            LOGGER.warn("Failed to retrieve mntners for UUID {} due to {}", uuid, e.getMessage());
+            throw new RestClientException("Unable to get maintainers");
         }
 
         // use big whois-resources-resp to compose small compact response that looks like autocomplete-service
