@@ -15,6 +15,11 @@ angular.module('webUpdates')
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
             })
+            .state('createPersonMntnerPair', {
+                url: '/webupdates/create/:source/person/self',
+                templateUrl: 'scripts/app/webupdates/createPersonMntnerPair.html',
+                controller: 'CreatePersonMntnerPairController'
+            })
             .state('createSelfMnt', {
                 url: '/webupdates/create/:source/mntner/self',
                 templateUrl: 'scripts/app/webupdates/createSelfMaintainedMaintainer.html',

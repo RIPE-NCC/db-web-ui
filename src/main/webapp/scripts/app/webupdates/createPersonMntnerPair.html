@@ -1,0 +1,73 @@
+<alerts></alerts>
+
+<form id="createForm">
+    <section class="visible-field-form">
+        <h1>Create a new person and mntner object</h1>
+        <ul class="form-fields appeared-fields">
+            <li class="form-group input-group">
+                <label>Your name</label>
+                <!--<span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>-->
+                <input type="text" name="name" ng-model="name" class="form-control" readonly/>
+                <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
+                    Your name</br>
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="form-group input-group">
+                <label>address</label>
+                <!--<span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>-->
+                <input type="text" name="address" ng-model="address" class="form-control"/>
+                <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
+                    Your address</br>
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="form-group input-group">
+                <label>phone</label>
+                <!--<span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>-->
+                <input type="text" name="phone" ng-model="phone" class="form-control"/>
+                <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
+                    Your phone number</br>
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="form-group input-group">
+                <label>New maintainer for your person object</label>
+                <!--<span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>-->
+                <input type="text" name="mntner" ng-model="mntner" class="form-control"/>
+                <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
+                    Your maintainer</br>
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <button ng-click="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
+        <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Submit</button>
+        <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
+            href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+    </section>
+</form>
