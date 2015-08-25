@@ -7,15 +7,27 @@ angular.module('dbWebApp')
             function RestService() {
 
                 this.getReferences = function(source, objectType, name) {
-                    return $resource('api/references/:source/:objectType/:name',
-                        {source: source, objectType: objectType, name: name}).get().$promise;
 
+                    $log.info('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
+
+                    return $resource('api/references/:source/:objectType/:name',
+                        {   source: source,
+                            objectType: objectType,
+                            name: decodeURIComponent(name) // prevent double encoding of forward slash (%2f ->%252F)
+                        }).get()
+                        .$promise;
                 };
 
                 this.deleteObject = function(source, objectType, name, reason, withReferences) {
                     var service = withReferences ? 'references' : 'whois';
 
-                    return $resource('api/'+service+'/:source/:objectType/:name', {source: source, objectType: objectType, name: name}).delete({reason: reason}).$promise;
+                    $log.info('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name);
+
+                    return $resource('api/'+service+'/:source/:objectType/:name',
+                        {   source: source,
+                            objectType: objectType,
+                            name: decodeURIComponent(name) // prevent double encoding of forward slash (%2f ->%252F)
+                        }).delete({reason: reason}).$promise;
                 };
 
                 this.fetchUiSelectResources = function () {
@@ -47,7 +59,7 @@ angular.module('dbWebApp')
                 };
 
                 this.detailsForMntners = function (mntners) {
-                    $log.info('detailsForMultipleMntners start for: ' + JSON.stringify(mntners));
+                    $log.info('detailsForMntners start for: ' + JSON.stringify(mntners));
 
                     var promises = _.map(mntners, function (item) {
                         return _mntnerDetails(item);
@@ -59,10 +71,13 @@ angular.module('dbWebApp')
                 function _mntnerDetails(mntner) {
                     var deferredObject = $q.defer();
 
-                    $log.info('_myMntnerDetails start for: ' +  JSON.stringify(mntner));
+                    $log.info('_mntnerDetails start for: ' +  JSON.stringify(mntner));
 
                     $resource('api/whois/autocomplete',
-                        {query: mntner.key, field: 'mntner', attribute: 'auth', extended:true})
+                        {   query: mntner.key,
+                            field: 'mntner',
+                            attribute: 'auth',
+                            extended:true})
                         .query()
                         .$promise
                         .then(function (result) {
@@ -78,10 +93,10 @@ angular.module('dbWebApp')
                                 // in case search-index does not yet know this newly created mntner
                                 result = [mntner];
                             }
-                            $log.info('_myMntnerDetails success:' + JSON.stringify(result));
+                            $log.info('_mntnerDetails success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.error('_myMntnerDetails error:' + JSON.stringify(error));
+                            $log.error('_mntnerDetails error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -94,7 +109,10 @@ angular.module('dbWebApp')
                     $log.info('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/autocomplete',
-                        {query: objectName, field: objectType, attribute: attrs, extended: extended})
+                        {   query: objectName,
+                            field: objectType,
+                            attribute: attrs,
+                            extended: extended})
                         .query()
                         .$promise
                         .then(function (result) {
@@ -117,7 +135,7 @@ angular.module('dbWebApp')
                         {
                             source: source,
                             objectType: objectType,
-                            objectName: objectName,
+                            objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
                             password: password
                         }).get()
@@ -140,7 +158,11 @@ angular.module('dbWebApp')
                     $log.info('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
-                        {source: source, objectType: objectType, name: objectName, password: password, unfiltered: true})
+                        {   source: source,
+                            objectType: objectType,
+                            name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            password: password,
+                            unfiltered: true})
                         .get()
                         .$promise
                         .then(function (result) {
@@ -161,7 +183,9 @@ angular.module('dbWebApp')
                     $log.info('createObject start for objectType: ' + objectType);
 
                     $resource('api/whois/:source/:objectType',
-                        {source: source, objectType: objectType, password: password})
+                        {   source: source,
+                            objectType: objectType,
+                            password: password})
                         .save(attributes)
                         .$promise
                         .then(function (result) {
@@ -182,7 +206,10 @@ angular.module('dbWebApp')
                     $log.info('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
-                        {source: source, objectType: objectType, name: objectName, password: password},
+                        {   source: source,
+                            objectType: objectType,
+                            name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            password: password},
                         {'update': {method: 'PUT'}})
                         .update(attributes)
                         .$promise
@@ -204,7 +231,10 @@ angular.module('dbWebApp')
                     $log.info('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
-                        {source: source, objectType: objectType, name: objectName, password: password},
+                        {   source: source,
+                            objectType: objectType,
+                            name: objectName,  // only for mntners so no url-decosong applied
+                            password: password},
                         {'update': {method: 'PUT'}})
                         .update(whoisResources)
                         .$promise
