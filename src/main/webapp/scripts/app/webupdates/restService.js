@@ -33,7 +33,8 @@ angular.module('dbWebApp')
 
                     var service = withReferences ? 'references' : 'whois';
 
-                    $log.info('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name);
+                    $log.info('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
+                        ' reason:' + reason + ' with-refs:' + withReferences);
 
                     $resource('api/'+service+'/:source/:objectType/:name',
                         {   source: source,
