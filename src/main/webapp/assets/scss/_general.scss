@@ -85,3 +85,16 @@ ul.radio {
         }
     }
 }
+.modal-content {
+    border: none !important;
+    div.modal-header {
+        background-color: #080037;
+        color: #fff;
+        h5, i {
+            color: #fff;
+        }
+        .close {
+            margin-top: 2px;
+        }
+    }
+}

@@ -17,13 +17,13 @@
                     ng-options="item.key for item in mntners" class="form-control select-height"></select>
         </li>
 
-        <li>
+        <li>ng-isolate-scope
             <label>Provide the password for the selected maintainer</label>
             <input type="password" class="form-control" ng-model="selected.password" ng-required="true" />
         </li>
         <li>
             <input type="checkbox" ng-model="selected.associate" id="associate" />
-            <label for="associate">associate my SSO account with this maintainer</label>
+            <label for="associate">Associate my SSO account with this maintainer</label>
         </li>
     </ul>
     </div>
