@@ -5,6 +5,8 @@ import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.rest.RestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -18,6 +20,7 @@ import java.util.List;
 
 @Service
 public class WhoisReferencesService extends RestClient {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisReferencesService.class);
 
     private final String searchApiUrl;
     private final String referencesApiUrl;
@@ -33,6 +36,7 @@ public class WhoisReferencesService extends RestClient {
 
         URI uri = new UriTemplate("{url}" + query.getApiQueryParams()).expand(InverseQuery.getSearchParamsMap(searchApiUrl, source, queryString));
 
+        LOGGER.info("getReferences:" + uri);
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_XML_VALUE);
 

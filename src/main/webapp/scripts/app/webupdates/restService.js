@@ -7,27 +7,51 @@ angular.module('dbWebApp')
             function RestService() {
 
                 this.getReferences = function(source, objectType, name) {
+                    var deferredObject = $q.defer();
 
                     $log.info('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
 
-                    return $resource('api/references/:source/:objectType/:name',
+                    $resource('api/references/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
                             name: decodeURIComponent(name) // prevent double encoding of forward slash (%2f ->%252F)
                         }).get()
-                        .$promise;
+                        .$promise.then(
+                        function(result) {
+                            $log.info('getReferences success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function(error) {
+                            $log.info('getReferences error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
+                    return deferredObject.promise;
                 };
 
                 this.deleteObject = function(source, objectType, name, reason, withReferences) {
+                    var deferredObject = $q.defer();
+
                     var service = withReferences ? 'references' : 'whois';
 
                     $log.info('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name);
 
-                    return $resource('api/'+service+'/:source/:objectType/:name',
+                    $resource('api/'+service+'/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
                             name: decodeURIComponent(name) // prevent double encoding of forward slash (%2f ->%252F)
-                        }).delete({reason: reason}).$promise;
+                        }).delete({reason: reason})
+                        .$promise.then(
+                        function (result) {
+                            $log.info('deleteObject success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.error('deleteObject error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
+
+                    return deferredObject.promise;
+
                 };
 
                 this.fetchUiSelectResources = function () {

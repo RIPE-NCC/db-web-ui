@@ -4,7 +4,7 @@ var objectType = 'mntner';
 var name = 'TEST-MNT';
 var source = 'RIPE';
 
-describe('webUpdates: ModalDeleteObjectController loading success', function () {
+describe('webUpdates: Test if object can be deleted', function () {
 
     var $scope, $state, modalInstance, RestService, WhoisResources;
 
@@ -20,7 +20,134 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
                     return { then: function(s) { s();} }; // pretend to be a promise
                 },
                 getReferences: function() {
-                    return { then: function(s) { s(OBJECT_REFERENCES_RESPONSE);} }; // pretend to be a promise
+                    return { then: function(s) { s(UNDELETABLE_OBJECT_REFS);} }; // pretend to be a promise
+                }
+            };
+
+            spyOn(RestService, 'getReferences').and.callThrough();
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            modalInstance = {
+                close: jasmine.createSpy('modalInstance.close'),
+                dismiss: jasmine.createSpy('modalInstance.dismiss')
+            };
+
+            _$controller_('ModalDeleteObjectController', {
+                $scope: $scope, $state:$state, $modalInstance: modalInstance, RestService:RestService, source:source, objectType:objectType, name:name
+            });
+
+        });
+    });
+
+    it('should compare objects', function() {
+        var ref = { type:'mntner', primaryKey: [{'name' : 'mntner','value' : 'TEST-MNT' }]};
+        expect($scope.isEqualTo('mntner', 'TEST-MNT', ref)).toEqual(true);
+        expect($scope.isEqualTo( 'person', 'TEST-MNT', ref)).toEqual(false);
+        expect($scope.isEqualTo( 'mntner', 'TEST2-MNT', ref)).toEqual(false);
+    });
+
+    it('should compare objects with composite primary keys', function() {
+        var ref = { type:'route', primaryKey: [{'name' : 'route','value' : '193.0.0.0/21' },{ 'name' : 'origin', 'value' : 'AS3333' }]};
+        expect($scope.isEqualTo('route', '193.0.0.0/21AS3333', ref)).toEqual(true);
+        expect($scope.isEqualTo( 'person', '193.0.0.0/21AS3333', ref)).toEqual(false);
+        expect($scope.isEqualTo( 'route', 'xyz', ref)).toEqual(false);
+    });
+
+    it('should be able to handle composite primary keys', function() {
+        $scope.referencesInfo = {'subset':0, 'total':0, 'references':[
+            {type:'route', primaryKey: [{'name' : 'route','value' : '193.0.0.0/21' },{ 'name' : 'origin', 'value' : 'AS3333' }]}
+        ]};
+        expect($scope.primaryKey($scope.referencesInfo.references[0])).toEqual('193.0.0.0/21AS3333');
+        expect($scope.displayUrl($scope.referencesInfo.references[0])).toEqual('#/webupdates/display/RIPE/route/193.0.0.0%252F21AS3333');
+    });
+
+    it('should allow deletion of unreferenced object', function() {
+        $scope.referencesInfo = {'subset':0, 'total':0, 'references':[]};
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+    });
+
+    it('should allow deletion of self-referenced object', function() {
+        $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
+            { 'type':'mntner','primaryKey':[{ 'value':'TEST-MNT', 'name':'mntner' }]}
+        ]};
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+    });
+
+    it('should allow deletion of simple mntner-person pair', function() {
+        $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
+            { type:'mntner',primaryKey:[{ value:'ME-RIPE', name:'person' }],attributes:[{name:'mnt-by',value:'TEST-MNT'}]}
+        ]};
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+    });
+
+    it('should allow deletion of simple mntner-role pair', function() {
+        $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
+            { type:'mntner',primaryKey:[{ value:'ME-RIPE', name:'role' }],attributes:[{name:'mnt-by',value:'TEST-MNT'}]}
+        ]};
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+    });
+
+    it('should allow deletion of simple person-mntner pair', function() {
+        $scope.objectType = 'person';
+        $scope.name = 'ME-RIPE';
+        $scope.isPartOfSimplePair = true;
+
+        $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
+            { type:'mntner',primaryKey:[{ value:'TEST-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]}
+        ]};
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+    });
+
+    it('should allow deletion of simple role-mntner pair', function() {
+        $scope.objectType = 'role';
+        $scope.name = 'ME-RIPE';
+        $scope.isPartOfSimplePair = true;
+        $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
+            { type:'mntner',primaryKey:[{ value:'TEST-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]}
+        ]};
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+    });
+
+    it('should not allow deletion of pair if peer cannot be deleted ', function() {
+        $scope.objectType = 'role';
+        $scope.name = 'ME-RIPE';
+        $scope.isPartOfSimplePair = false;
+        $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
+            { type:'mntner',primaryKey:[{ value:'TEST-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]}
+        ]};
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(false);
+    });
+
+    it('should not allow deletion if object has multiple incoming refs ', function() {
+        $scope.objectType = 'role';
+        $scope.name = 'ME-RIPE';
+        $scope.referencesInfo = {'subset':2, 'total':2, 'references':[
+            { type:'mntner',primaryKey:[{ value:'TEST-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]},
+            { type:'mntner',primaryKey:[{ value:'TEST2-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]}
+        ]};
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(false);
+    });
+});
+
+describe('webUpdates: ModalDeleteObjectController undeletable object', function () {
+
+    var $scope, $state, modalInstance, RestService, WhoisResources;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _WhoisResources_) {
+
+            $state = _$state_;
+            WhoisResources = _WhoisResources_;
+            RestService =  {
+                deleteObject: function() {
+                    return { then: function(s) { s();} }; // pretend to be a promise
+                },
+                getReferences: function() {
+                    return { then: function(s) { s(UNDELETABLE_OBJECT_REFS);} }; // pretend to be a promise
                 }
             };
 
@@ -42,13 +169,99 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
     });
 
     it('should query for last object revision references', function() {
-
         expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name);
     });
 
     it('should select referencesInfo if any', function() {
+        expect($scope.referencesInfo).toEqual(UNDELETABLE_OBJECT_REFS);
+    });
 
-        expect($scope.referencesInfo).toEqual(OBJECT_REFERENCES_RESPONSE);
+    it('should not allow deletion of simple cross-referenced pair', function() {
+        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(false);
+    });
+
+    it('should not call delete endpoint', function() {
+        $scope.reason = 'some reason';
+
+        spyOn(RestService, 'deleteObject').and.callThrough();
+
+        $scope.doDelete();
+
+        expect(RestService.deleteObject).not.toHaveBeenCalled();
+    });
+
+    it('should close the modal and return error when canceled', function () {
+        $scope.doCancel();
+        expect(modalInstance.close).toHaveBeenCalled();
+    });
+
+});
+
+describe('webUpdates: ModalDeleteObjectController deleteable object ', function () {
+
+    var $scope, $state, modalInstance, RestService, WhoisResources;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$log_, _WhoisResources_) {
+
+            $state = _$state_;
+            WhoisResources = _WhoisResources_;
+            RestService =  {
+                deleteObject: function() {
+                    return { then: function(s) { s();} }; // pretend to be a promise
+                },
+                getReferences: function(source, type, name) {
+                    if( name === 'TEST-MNT') {
+                        return {
+                            then: function (s) {
+                                s(REFS_FOR_TEST_MNT);
+                            }
+                        }; // pretend to be a promise
+                    } else if( name === 'ME-RIPE') {
+                        return {
+                            then: function (s) {
+                                s(REFS_FOR_ME_RIPE);
+                            }
+                        }; // pretend to be a promise
+                    }
+                }
+            };
+
+            spyOn(RestService, 'getReferences').and.callThrough();
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            modalInstance = {
+                close: jasmine.createSpy('modalInstance.close'),
+                dismiss: jasmine.createSpy('modalInstance.dismiss')
+            };
+            var logger = {
+                info: function(msg) {
+                    //console.log(msg);
+                }
+            };
+
+            _$controller_('ModalDeleteObjectController', {
+                $scope: $scope, $state:$state, $log:logger, $modalInstance: modalInstance, RestService:RestService, source:source, objectType:objectType, name:name
+            });
+
+        });
+    });
+
+    it('should query for last object revision references', function() {
+        expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name);
+        expect(RestService.getReferences).toHaveBeenCalledWith(source, 'person', 'ME-RIPE');
+    });
+
+    it('should select referencesInfo if any', function() {
+        expect($scope.referencesInfo).toEqual(REFS_FOR_TEST_MNT);
+    });
+
+    it('should allow deletion of simple cross-referenced pair', function() {
+         expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
     });
 
     it('should call delete endpoint', function() {
@@ -56,15 +269,15 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
 
         spyOn(RestService, 'deleteObject').and.callThrough();
 
-        $scope.delete();
+        $scope.doDelete();
 
-        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, false);
+        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, true);
     });
 
     it('should close modal after delete object', function() {
         spyOn(RestService, 'deleteObject').and.callThrough();
 
-        $scope.delete();
+        $scope.doDelete();
 
         expect(modalInstance.close).toHaveBeenCalled();
     });
@@ -72,7 +285,7 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
     it('should dismiss modal after error deleting object', function() {
         spyOn(RestService, 'deleteObject').and.returnValue({then: function(s, f) { f({data:'error'}); }});
 
-        $scope.delete();
+        $scope.doDelete();
 
         expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
     });
@@ -80,109 +293,11 @@ describe('webUpdates: ModalDeleteObjectController loading success', function () 
     it('should redirect to succes delete page after delete object', function() {
         spyOn($state, 'transitionTo');
 
-        $scope.delete();
+        $scope.doDelete();
 
         expect($state.transitionTo).toHaveBeenCalledWith('deleted', {source:source, objectType:objectType, name:name});
     });
 
-    it('should close the modal and return error when canceled', function () {
-        $scope.cancel();
-        expect(modalInstance.close).toHaveBeenCalled();
-    });
-
-    it('should build url to display a given object reference', function() {
-        var ref = OBJECT_REFERENCES_RESPONSE.references[0];
-        expect($scope.displayUrl(ref)).toEqual('#/webupdates/display'+'/'+source+'/'+ref.type+'/'+ref.primaryKey[0].value);
-    });
-
-    it('should build primary key', function() {
-        var ref = OBJECT_REFERENCES_RESPONSE.references[0];
-
-        expect($scope.primaryKey(ref)).toEqual(ref.primaryKey[0].value);
-
-    });
-
-    it('should build composite primary keys', function() {
-        var ref = OBJECT_REFERENCES_RESPONSE.references[0];
-        ref.primaryKey = [{
-                'name' : 'route',
-                'value' : '193.0.0.0/21'
-            },
-            {
-                'name' : 'origin',
-                'value' : 'AS3333'
-            }];
-
-        expect($scope.primaryKey(ref)).toEqual('193.0.0.0/21'+'/'+'AS3333');
-
-    });
-
-    it('should check if reference is itself if type and pkey are the same', function () {
-        var reference = {'type':'mntner',  'primaryKey':[
-            {
-                'value':'TEST-MNT',
-                'name':'mntner'
-            }]
-        };
-        expect($scope.isItself(reference)).toBe(true);
-    });
-
-    it('should handle as role/mnt reference if all references are mntner', function () {
-        var references = [{'type':'mntner'}];
-        $scope.objectType = 'ROLE';
-        expect($scope.isMntPersonReference(references)).toBe(true);
-    });
-
-    it('should handle as person/mnt reference if all references are mntner', function () {
-        var references = [{'type':'mntner'}];
-        $scope.objectType = 'PERSON';
-        expect($scope.isMntPersonReference(references)).toBe(true);
-    });
-
-    it('should handle as person/mnt reference if all references are persons', function () {
-        var references = [{'type':'person'}];
-        expect($scope.isMntPersonReference(references)).toBe(true);
-    });
-
-    it('should handle as person/mnt reference if all references are role', function () {
-        var references = [{'type':'role'}];
-        expect($scope.isMntPersonReference(references)).toBe(true);
-    });
-
-    it('should handle as person/mnt reference if all references are itself', function () {
-        var references = [{'type':'mntner',  'primaryKey':[
-            {
-                'value':'TEST-MNT',
-                'name':'mntner'
-            }]
-        }];
-        expect($scope.isMntPersonReference(references)).toBe(false);
-    });
-
-    it('should not handle as person/mnt reference if no references', function () {
-        var references = [];
-        expect($scope.isMntPersonReference(references)).toBe(false);
-    });
-
-    it('should handle as deletable if number of references is zero', function () {
-        var referencesInfo = {
-            'subset':0,
-            'total':0,
-            'references':[],
-            'query':'http://uhuuuu.nl'
-        };
-        expect($scope.canBeDeleted(referencesInfo)).toBe(true);
-    });
-
-    it('should handle as deletable if reference is a isMntPersonReference', function () {
-        var referencesInfo = {
-            'subset':1,
-            'total':1,
-            'references':[{'type':'role'}],
-            'query':'http://uhuuuu.nl'
-        };
-        expect($scope.canBeDeleted(referencesInfo)).toBe(true);
-    });
 });
 
 describe('webUpdates: ModalDeleteObjectController loading references failures ', function () {
@@ -197,7 +312,7 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
             $state = _$state_;
             WhoisResources = _WhoisResources_;
             RestService =  {
-                getReferences: function () {
+                getReferences: function (source, type, name) {
                     return { then: function(s, f) { f({data:'error'});} }; // pretend to be a promise
                 }
             };
@@ -223,13 +338,12 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
     });
 
     it('should dismiss modal after error getting object references', function() {
-
         expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
     });
 
 });
 
-var OBJECT_REFERENCES_RESPONSE = {
+var UNDELETABLE_OBJECT_REFS = {
     'subset':5,
     'total':11,
     'references':[
@@ -603,5 +717,113 @@ var OBJECT_REFERENCES_RESPONSE = {
         }
     ],
     'query':'http://db-dev-1.dev.ripe.net:1080/whois/search?inverse-attribute=mr&inverse-attribute=mb&inverse-attribute=md&inverse-attribute=ml&inverse-attribute=mu&inverse-attribute=mz&flags=r&source=RIPE&query-string=thiago-mnt'
+};
+
+
+
+var REFS_FOR_TEST_MNT = {
+    'subset':1,
+    'total':1,
+    'references':[
+       {
+            'link':{
+                'type':'locator',
+                'href':'http://rest-dev.db.ripe.net/ripe/person/ME-RIPE'
+            },
+            'source':{
+                'id':'ripe'
+            },
+            'primaryKey':[
+                {
+                    'value':'ME-RIPE',
+                    'name':'nic-hdl'
+                }
+            ],
+            'attributes':[
+                {
+                    'value':'me engineer',
+                    'name':'person'
+                },
+                {
+                    'value':'Singel 258',
+                    'name':'address'
+                },
+                {
+                    'value':'+31681054583',
+                    'name':'phone'
+                },
+                {
+                    'value':'ME-RIPE',
+                    'name':'nic-hdl'
+                },
+                {
+                    'value':'2015-06-17T10:11:41Z',
+                    'name':'created'
+                },
+                {
+                    'value':'2015-06-17T10:11:41Z',
+                    'name':'last-modified'
+                },
+                {
+                    'value':'RIPE',
+                    'name':'source'
+                },
+                {
+                    'link':{
+                        'type':'locator',
+                        'href':'http://rest-dev.db.ripe.net/ripe/mntner/TEST-MNT'
+                    },
+                    'value':'TEST-MNT',
+                    'referencedType':'mntner',
+                    'name':'mnt-by'
+                }
+            ],
+            'type':'person'
+        }
+    ],
+    'query':'http://db-dev-1.dev.ripe.net:1080/whois/search?inverse-attribute=mr&inverse-attribute=mb&inverse-attribute=md&inverse-attribute=ml&inverse-attribute=mu&inverse-attribute=mz&flags=r&source=RIPE&query-string=test-mnt'
+};
+
+
+var REFS_FOR_ME_RIPE = {
+    'subset':1,
+    'total':1,
+    'references':[
+        {
+            'link':{
+                'type':'locator',
+                'href':'http://rest-dev.db.ripe.net/ripe/mntner/TEST-MNT'
+            },
+            'source':{
+                'id':'ripe'
+            },
+            'primaryKey':[
+                {
+                    'value':'TEST-MNT',
+                    'name':'mntner'
+                }
+            ],
+            'attributes':[
+                {
+                    'value':'TEST-MNT',
+                    'name':'mntner'
+                },
+                {
+                    'value':'TEST-MNT',
+                    'name':'mnt-by'
+                },
+                {
+                    'value':'ME-RIPE',
+                    'name':'admin-c'
+                },
+                {
+                    'value':'RIPE',
+                    'name':'source'
+                }
+            ],
+            'type':'mntner'
+        }
+    ],
+    'query':'http://db-dev-1.dev.ripe.net:1080/whois/search?inverse-attribute=mr&inverse-attribute=mb&inverse-attribute=md&inverse-attribute=ml&inverse-attribute=mu&inverse-attribute=mz&flags=r&source=RIPE&query-string=test-mnt'
 };
 

@@ -1,6 +1,6 @@
 <div class="modal-content no-rounded" ng-show="referencesInfo">
     <div class="modal-header">
-        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"></i>
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="doCancel()"></i>
         <h5 class="modal-title" id="commonModalLabel">
             <span ng-if="canBeDeleted(referencesInfo)">Please provide the reason for delete</span>
             <span ng-if="!canBeDeleted(referencesInfo)">This object can not be deleted</span>
@@ -14,11 +14,11 @@
         </div>
 
         <div ng-if="referencesInfo.total > 0">
-            <p ng-if="!isMntPersonReference(referencesInfo.references) && !canBeDeleted(referencesInfo)">This object has been referenced in the following objects, you may need to delete these references first.</p>
-            <p ng-if="isMntPersonReference(referencesInfo.references) && canBeDeleted(referencesInfo)">Please note that this will aso delete the following objects:</p>
+            <p ng-if="!canBeDeleted(referencesInfo)">This object has been referenced in the following objects, you may need to delete these references first.</p>
+            <p ng-if="canBeDeleted(referencesInfo)">Please note that this will aso delete the following objects:</p>
 
             <ul class="bullets">
-                <li ng-repeat="ref in referencesInfo.references" ng-if="!isItself(ref, objectType)">
+                <li ng-repeat="ref in referencesInfo.references" ng-if="!isEqualTo(objectType, name, ref )">
                     <div>
                         {{ref.type}} - <a target="_blank" href="{{displayUrl(ref)}}">{{primaryKey(ref)}}</a>
                     </div>
@@ -30,10 +30,10 @@
 
     <div class="modal-footer">
         <div ng-if="canBeDeleted(referencesInfo)">
-            <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="delete()" value="Confirm delete"/>
+            <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="doDelete()" value="Confirm delete"/>
         </div>
         <div ng-if="!canBeDeleted(referencesInfo)">
-            <input type="submit" class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="cancel()" value="Return to object"/>
+            <input type="submit" class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="doCancel()" value="Return to object"/>
         </div>
     </div>
 
