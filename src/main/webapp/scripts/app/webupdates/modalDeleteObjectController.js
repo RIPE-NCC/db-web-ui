@@ -23,7 +23,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         }
 
         function doDelete() {
-            if( !canBeDeleted($scope.referencesInfo)) {
+            if( !canBeDeleted($scope.objectType, $scope.name,$scope.referencesInfo)) {
                 return;
             }
 
@@ -49,11 +49,15 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             $modalInstance.close();
         };
 
+        function isEqualTo(selfType, selfName, ref) {
+            return ref.type.toUpperCase() === selfType.toUpperCase() && primaryKey(ref) === selfName.toUpperCase();
+        }
+
         function displayUrl(ref) {
             return $state.href('display', {
                 source: source,
                 objectType: ref.type,
-                name: $scope.primaryKey(ref)
+                name: primaryKey(ref)
             });
         };
 
@@ -82,7 +86,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         function isReferencedOnlyBySelf(selfType, selfName, references) {
             // typical case: self referenced mntner
             var selfOnly =  _.every( references, function(ref) {
-                return $scope.isEqualTo(selfType, selfName, ref);
+                return isEqualTo(selfType, selfName, ref);
             });
             //$log.info(selfName + ' isReferencedOnlyBySelf:' + selfOnly );
             return selfOnly;
@@ -147,20 +151,16 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             return false;
         }
 
-        function isEqualTo(selfType, selfName, ref) {
-            return ref.type.toUpperCase() === selfType.toUpperCase() && $scope.primaryKey(ref) === selfName.toUpperCase();
-        }
-
-        function canBeDeleted(referencesInfo) {
+        function canBeDeleted(objectType, objectName, referencesInfo) {
             if( hasReferences(referencesInfo) == false) {
                 return true;
             }
 
-            if( isReferencedOnlyBySelf($scope.objectType, $scope.name, $scope.referencesInfo.references)) {
+            if( isReferencedOnlyBySelf(objectType, objectName, referencesInfo.references)) {
                 return true;
             }
 
-            if( isSimpleCrossReference($scope.objectType, $scope.name, $scope.referencesInfo.references) ) {
+            if( isSimpleCrossReference(objectType, objectName, referencesInfo.references) ) {
                 return true;
             }
 
@@ -170,7 +170,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         function getReferences(source, objectType, name) {
             RestService.getReferences(source, objectType, name) .then(
                 function (resp) {
-                    if( isSimpleCrossReference( $scope.objectType, $scope.name, resp.references)) {
+                    if( isSimpleCrossReference( objectType, name, resp.references)) {
                         // fetch its pair object as well
                         var otherType = resp.references[0].type;
                         var otherName = primaryKey(resp.references[0]);

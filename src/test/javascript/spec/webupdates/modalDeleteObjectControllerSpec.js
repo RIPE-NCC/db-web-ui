@@ -6,38 +6,23 @@ var source = 'RIPE';
 
 describe('webUpdates: Test if object can be deleted', function () {
 
-    var $scope, $state, modalInstance, RestService, WhoisResources;
+    var $scope, $state;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _WhoisResources_) {
-
+        inject(function (_$controller_, _$rootScope_, _$state_) {
             $state = _$state_;
-            WhoisResources = _WhoisResources_;
-            RestService =  {
-                deleteObject: function() {
-                    return { then: function(s) { s();} }; // pretend to be a promise
-                },
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+            var restService =  {
                 getReferences: function() {
                     return { then: function(s) { s(UNDELETABLE_OBJECT_REFS);} }; // pretend to be a promise
                 }
             };
-
-            spyOn(RestService, 'getReferences').and.callThrough();
-
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
-
-            modalInstance = {
-                close: jasmine.createSpy('modalInstance.close'),
-                dismiss: jasmine.createSpy('modalInstance.dismiss')
-            };
-
             _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state:$state, $modalInstance: modalInstance, RestService:RestService, source:source, objectType:objectType, name:name
+                $scope: $scope, $state:$state, $modalInstance: {}, RestService:restService, source:source, objectType:objectType, name:name
             });
-
         });
     });
 
@@ -65,39 +50,37 @@ describe('webUpdates: Test if object can be deleted', function () {
 
     it('should allow deletion of unreferenced object', function() {
         $scope.referencesInfo = {'subset':0, 'total':0, 'references':[]};
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+        expect($scope.canBeDeleted('mntner', 'TEST-MNT', $scope.referencesInfo)).toBe(true);
     });
 
     it('should allow deletion of self-referenced object', function() {
         $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
             { 'type':'mntner','primaryKey':[{ 'value':'TEST-MNT', 'name':'mntner' }]}
         ]};
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+        expect($scope.canBeDeleted('mntner', 'TEST-MNT', $scope.referencesInfo)).toBe(true);
     });
 
     it('should allow deletion of simple mntner-person pair', function() {
         $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
             { type:'mntner',primaryKey:[{ value:'ME-RIPE', name:'person' }],attributes:[{name:'mnt-by',value:'TEST-MNT'}]}
         ]};
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+        expect($scope.canBeDeleted('mntner', 'TEST-MNT', $scope.referencesInfo)).toBe(true);
     });
 
     it('should allow deletion of simple mntner-role pair', function() {
         $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
             { type:'mntner',primaryKey:[{ value:'ME-RIPE', name:'role' }],attributes:[{name:'mnt-by',value:'TEST-MNT'}]}
         ]};
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+        expect($scope.canBeDeleted('mntner', 'TEST-MNT', $scope.referencesInfo)).toBe(true);
     });
 
     it('should allow deletion of simple person-mntner pair', function() {
-        $scope.objectType = 'person';
-        $scope.name = 'ME-RIPE';
         $scope.isPartOfSimplePair = true;
 
         $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
             { type:'mntner',primaryKey:[{ value:'TEST-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]}
         ]};
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+        expect($scope.canBeDeleted('person', 'ME-RIPE', $scope.referencesInfo)).toBe(true);
     });
 
     it('should allow deletion of simple role-mntner pair', function() {
@@ -107,27 +90,23 @@ describe('webUpdates: Test if object can be deleted', function () {
         $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
             { type:'mntner',primaryKey:[{ value:'TEST-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]}
         ]};
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+        expect($scope.canBeDeleted('mntner', 'TEST-MNT',$scope.referencesInfo)).toBe(true);
     });
 
     it('should not allow deletion of pair if peer cannot be deleted ', function() {
-        $scope.objectType = 'role';
-        $scope.name = 'ME-RIPE';
         $scope.isPartOfSimplePair = false;
         $scope.referencesInfo = {'subset':1, 'total':1, 'references':[
             { type:'mntner',primaryKey:[{ value:'TEST-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]}
         ]};
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(false);
+        expect($scope.canBeDeleted('rolw', 'ME-RIPE',$scope.referencesInfo)).toBe(false);
     });
 
     it('should not allow deletion if object has multiple incoming refs ', function() {
-        $scope.objectType = 'role';
-        $scope.name = 'ME-RIPE';
         $scope.referencesInfo = {'subset':2, 'total':2, 'references':[
             { type:'mntner',primaryKey:[{ value:'TEST-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]},
             { type:'mntner',primaryKey:[{ value:'TEST2-MNT', name:'mntner' }],attributes:[{name:'admin-c',value:'ME-RIPE'}]}
         ]};
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(false);
+        expect($scope.canBeDeleted('role', 'ME-RIPE',$scope.referencesInfo)).toBe(false);
     });
 });
 
@@ -176,8 +155,8 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
         expect($scope.referencesInfo).toEqual(UNDELETABLE_OBJECT_REFS);
     });
 
-    it('should not allow deletion of simple cross-referenced pair', function() {
-        expect($scope.canBeDeleted($scope.referencesInfo)).toBe(false);
+    it('should not allow deletion of complex referenced object', function() {
+        expect($scope.canBeDeleted($scope.objectType, $scope.name, $scope.referencesInfo)).toBe(false);
     });
 
     it('should not call delete endpoint', function() {
@@ -254,6 +233,7 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
     it('should query for last object revision references', function() {
         expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name);
         expect(RestService.getReferences).toHaveBeenCalledWith(source, 'person', 'ME-RIPE');
+        expect($scope.isPartOfSimplePair).toEqual(true);
     });
 
     it('should select referencesInfo if any', function() {
@@ -261,7 +241,7 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
     });
 
     it('should allow deletion of simple cross-referenced pair', function() {
-         expect($scope.canBeDeleted($scope.referencesInfo)).toBe(true);
+         expect($scope.canBeDeleted($scope.objectType, $scope.name, $scope.referencesInfo)).toBe(true);
     });
 
     it('should call delete endpoint', function() {
