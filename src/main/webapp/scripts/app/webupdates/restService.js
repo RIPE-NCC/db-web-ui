@@ -28,7 +28,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.deleteObject = function(source, objectType, name, reason, withReferences) {
+                this.deleteObject = function(source, objectType, name, reason, withReferences,password) {
                     var deferredObject = $q.defer();
 
                     var service = withReferences ? 'references' : 'whois';
@@ -39,7 +39,8 @@ angular.module('dbWebApp')
                     $resource('api/'+service+'/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
-                            name: decodeURIComponent(name) // prevent double encoding of forward slash (%2f ->%252F)
+                            name: decodeURIComponent(name), // prevent double encoding of forward slash (%2f ->%252F)
+                            password: password
                         }).delete({reason: reason})
                         .$promise.then(
                         function (result) {

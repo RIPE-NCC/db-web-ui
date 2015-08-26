@@ -52,7 +52,8 @@ public class WhoisReferencesService extends RestClient {
         return response.getBody().getWhoisObjects();
     }
 
-    public ResponseEntity<WhoisResources> deleteObjectAndReferences(String objectType, String source, String name, String reason, HttpHeaders headers) {
+    public ResponseEntity<WhoisResources> deleteObjectAndReferences(String objectType, String source, String name, String reason, String password, HttpHeaders headers) {
+        final StringBuffer urlBuffer = new StringBuffer("{url}/{source}/{object-type}/{name}?reason={reason}");
 
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", referencesApiUrl);
@@ -60,8 +61,12 @@ public class WhoisReferencesService extends RestClient {
         variables.put("object-type", objectType);
         variables.put("name", name);
         variables.put("reason", reason);
+        if(password != null) {
+            variables.put("password", password);
+            urlBuffer.append("&password={password}");
+        }
 
-        URI uri = new UriTemplate("{url}/{source}/{object-type}/{name}?reason={reason}").expand(variables);
+        URI uri = new UriTemplate(urlBuffer.toString()).expand(variables);
 
         return restTemplate.exchange(uri,
             HttpMethod.DELETE,
