@@ -602,9 +602,20 @@ angular.module('dbWebApp')
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
                 ]
+            },
+            'personMntner': {
+                name: 'personMntner', 'description': null,
+                'attributes': [
+                    {name: 'person',  mandatory: true, multiple: false, refs: []},
+                    {name: 'address', mandatory: true, multiple: true, refs: []},
+                    {name: 'phone',   mandatory: true, multiple: true, refs: []},
+                    {name: 'nic-hdl', mandatory: true, multiple: false, refs: []},
+                    {name: 'auth',    mandatory: true, multiple: false , refs: []},
+                    {name: 'mnt-by',  mandatory: true, multiple: false, refs: ['MNTNER']},
+                    {name: 'source',  mandatory: true, multiple: false, refs: []}
+                ]
             }
-
-        };
+    };
 
         this._attrDocumentation = {
             'abuse-mailbox': 'Specifies the e-mail address to which abuse complaints should be sent.  This attribute should only be used in the ROLE object. It will be deprecated from any other object.  Adding this attribute to a ROLE object will remove any query limits for the ROLE object. These ROLE objects are considered to include only commercial data.',

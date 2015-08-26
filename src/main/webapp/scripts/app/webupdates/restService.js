@@ -18,6 +18,28 @@ angular.module('dbWebApp')
                     return $resource('api/'+service+'/:source/:objectType/:name', {source: source, objectType: objectType, name: name}).delete({reason: reason}).$promise;
                 };
 
+                this.createPersonMntner = function(source, attributes) {
+
+                    var deferredObject = $q.defer();
+
+                    $log.info('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(attributes));
+
+                    $resource('api/references/:source',
+                        {source: source})
+                        .save(attributes)
+                        .$promise
+                        .then(function (result) {
+                            $log.info('createPersonMntner success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.error('createPersonMntner error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
+
+                    return deferredObject.promise;
+                };
+
                 this.fetchUiSelectResources = function () {
                     return $q.all([
                         // workaround to cope with order of loading problem
