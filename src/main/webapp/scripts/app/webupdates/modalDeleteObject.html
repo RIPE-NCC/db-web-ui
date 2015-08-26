@@ -1,4 +1,4 @@
-<div class="modal-content no-rounded" ng-show="referencesInfo">
+<div class="modal-content no-rounded">
     <div class="modal-header">
         <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="doCancel()"></i>
         <h5 class="modal-title" id="commonModalLabel">
@@ -13,12 +13,12 @@
             <input type="text" name="reason" id="reason" ng-model="$parent.reason">
         </div>
 
-        <div ng-if="incomingReferences.length > 0">
+        <div ng-if="hasNonSelfIncomingRefs( objectType, name, incomingReferences)">
             <p ng-if="!canBeDeleted">This object has been referenced in the following objects, you may need to delete these references first.</p>
             <p ng-if="canBeDeleted">Please note that this will aso delete the following objects:</p>
 
             <ul class="bullets">
-                <li ng-repeat="ref in incomingReferences" ng-if="!isEqualTo(objectType, name, ref )>
+                <li ng-repeat="ref in incomingReferences" ng-if="!isEqualTo( objectType, name, ref )">
                     <div>
                         {{ref.objectType}} - <a target="_blank" href="{{displayUrl(ref)}}">{{ref.primaryKey}}</a>
                     </div>

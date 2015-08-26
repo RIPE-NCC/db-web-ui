@@ -86,6 +86,9 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         }
 
         function isDeletable(parent) {
+            if(_.isUndefined(parent) || _.isUndefined(parent.objectType)) {
+                return false;
+            }
             // parent is the object we asked references for
             var objectDeletable = _.every(parent.incoming, function( first ) {
                 // direct incoming references
