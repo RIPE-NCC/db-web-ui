@@ -151,7 +151,7 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
     });
 
     it('should query for last object revision references', function() {
-        expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name);
+        expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name, $scope.MAX_REFS_TO_SHOW);
     });
 
     it('should select referencesInfo if any', function() {
@@ -232,7 +232,7 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
     });
 
     it('should query for last object revision references', function() {
-        expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name);
+        expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name, $scope.MAX_REFS_TO_SHOW);
     });
 
     it('should select referencesInfo if any', function() {

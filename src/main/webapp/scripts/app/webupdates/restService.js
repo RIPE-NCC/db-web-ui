@@ -6,7 +6,7 @@ angular.module('dbWebApp')
 
             function RestService() {
 
-                this.getReferences = function(source, objectType, name) {
+                this.getReferences = function(source, objectType, name, limit) {
                     var deferredObject = $q.defer();
 
                     $log.info('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
@@ -14,7 +14,8 @@ angular.module('dbWebApp')
                     $resource('api/references/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
-                            name: decodeURIComponent(name) // prevent double encoding of forward slash (%2f ->%252F)
+                            name: decodeURIComponent(name), // prevent double encoding of forward slash (%2f ->%252F)
+                            limit:limit
                         }).get()
                         .$promise.then(
                         function(result) {

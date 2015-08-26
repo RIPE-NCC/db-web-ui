@@ -3,6 +3,8 @@
 angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'source', 'objectType', 'name',
     function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, source, objectType, name) {
 
+        $scope.MAX_REFS_TO_SHOW = 5;
+
         $scope.objectType = objectType;
         $scope.name = name;
         $scope.reason = 'I don\'t need this object';
@@ -74,7 +76,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         };
 
         function getReferences(source, objectType, name) {
-            RestService.getReferences(source, objectType, name) .then(
+            RestService.getReferences(source, objectType, name, $scope.MAX_REFS_TO_SHOW) .then(
                 function (resp) {
                     $scope.canBeDeleted = isDeletable(resp);
                     $scope.incomingReferences = resp.incoming;
