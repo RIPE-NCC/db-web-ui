@@ -71,7 +71,7 @@ ul.form-fields {
         right: 15px;
         top: 38px;
     	a.maintainer-help {
-    	    padding: 4px 11px;
+    	    padding: 5px 11px;
             color: #00abab;
             border-radius: 0px 3px 3px 0px;
             display: inline-block;
@@ -96,12 +96,11 @@ ul.form-fields {
 	li:last-child {
 		margin-bottom: 0 !important;
 	}
-	margin-bottom: 20px !important;
 }
 .visible-field-form {
 	@extend %float-l;
 	@extend %width-100;
-	margin: 20px 0;
+	margin-bottom: 20px;
 	ul.appeared-fields {
 		@extend %grey;
 		@extend %float-l;

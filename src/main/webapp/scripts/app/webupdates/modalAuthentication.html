@@ -6,10 +6,10 @@
     </div>
 
     <div class="modal-body">
-        <div ng-if="selected.message.length > 0" class="alert-expired alert alert-danger">
-            <p>{{selected.message}}</p>
-        </div>
-
+    <div ng-if="selected.message.length > 0" class="alert-expired alert alert-danger">
+        <p>{{selected.message}}</p>
+    </div>
+    <ul>
         <li>
             <label>Select a maintainer to authenticate the update operation.</label>
             <select ng-model="selected.item"
@@ -17,14 +17,15 @@
                     ng-options="item.key for item in mntners" class="form-control select-height"></select>
         </li>
 
-        <li>
+        <li>ng-isolate-scope
             <label>Provide the password for the selected maintainer</label>
-            <input type="password" class="form-control" ng-model="selected.password" ng-required="true"/>
+            <input type="password" class="form-control" ng-model="selected.password" ng-required="true" />
         </li>
+        <li>
+            <input type="checkbox" ng-model="selected.associate" id="associate" />
+            <label for="associate">Associate my SSO account with this maintainer</label>
         </li>
-        <input type="checkbox" ng-model="selected.associate"/>
-        <label>associate my SSO account with this maintainer</label>
-        </li>
+    </ul>
     </div>
 
     <div class="modal-footer">

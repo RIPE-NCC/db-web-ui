@@ -55,6 +55,7 @@ ul.success-fields {
 .modal-body {
     ul {
         list-style: none;
+        padding-left: 0;
         &.bullets {
             list-style: disc;
         }
@@ -74,5 +75,26 @@ ul.success-fields {
             size: 6em;
         }
         color: #00abab;
+    }
+}
+ul.radio {
+    list-style: none;
+    li {
+        label {
+            padding-left: 0;
+        }
+    }
+}
+.modal-content {
+    border: none !important;
+    div.modal-header {
+        background-color: #080037;
+        color: #fff;
+        h5, i {
+            color: #fff;
+        }
+        .close {
+            margin-top: 2px;
+        }
     }
 }
