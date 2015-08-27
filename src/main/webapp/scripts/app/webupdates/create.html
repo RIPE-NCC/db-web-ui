@@ -92,10 +92,14 @@
             </ul>
         </li>
     </ul>
-    <button ng-show="operation == MODIFY_OPERATION" ng-click="submit()" class="blue-button pull-right ga-modifyobj-modify" style="border:0;">Submit</button>
-    <button ng-show="operation == CREATE_OPERATION" ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Create</button>
-
-    <button ng-click="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
+    <span ng-show="operation == MODIFY_OPERATION">
+        <button ng-click="submit()" class="blue-button pull-right ga-modifyobj-modify" style="border:0;">Submit</button>
+        <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
+    </span>
+    <span ng-show="operation == CREATE_OPERATION">
+        <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Create</button>
+        <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
+    </span>
 
     <button ng-click="deleteObject()" ng-show="operation == MODIFY_OPERATION" class="red-button pull-left ga-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
 
