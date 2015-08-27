@@ -6,12 +6,11 @@
 
         <ul class="form-fields appeared-fields">
 
-            <li ng-repeat="attribute in (attributes | filter: {name: '!source'} | filter: {name:'!nic-hdl'} | filter:  {name:'!auth'})"
+<!--            <li ng-repeat="attribute in (personAttributes  | filter: {name:'!nic-hdl'}  | filter: {name:'!mnt-by'} | filter: {name: '!source'})" -->
+            <li ng-repeat="attribute in personAttributes"
                 class="form-group input-group">
-
                 <label>{{attribute.name}}</label>
                 <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
-
                 <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                        ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control" />
                 <div class="text field-description" collapse="!isHelpShown">
@@ -26,7 +25,26 @@
                 </ul>
             </li>
 
+ <!--           <li ng-repeat="attribute in (mntnerAttributes| filter: {name:'!descr'}  | filter: {name:'!admin-c'}  | filter: {name:'!upd-to'} | filter:  {name:'!auth'} | filter: {name:'!mnt-by'} | filter: {name: '!source'} )" -->
+            <li ng-repeat="attribute in mntnerAttributes"
+                class="form-group input-group">
+                <label>{{attribute.name}}</label>
+                <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
+                <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
+                       ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control" />
+                <div class="text field-description" collapse="!isHelpShown">
+                    {{attribute.$$meta.$$description}}</br>{{attribute.$$meta.$$syntax}}
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
         </ul>
+
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
         <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Submit</button>
         <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a

@@ -55,6 +55,19 @@ angular.module('dbWebApp')
             };
         };
 
+        this.turnAttrsIntoWhoisObjects = function( attrsList ) {
+            // list of attribute-arrays ia passed along
+            var wrapped = _.map(attrsList, function(attrs) {
+                var packed = {attributes: { attribute: attrs }};
+                return packed;
+            });
+            return{
+                objects:{
+                    object: wrapped
+                }
+            };
+        };
+
         var readableError = function( errorMessage ) {
             var idx=0;
             var readableErrorText = errorMessage.text.replace(/%s/g, function(match) {
@@ -155,6 +168,13 @@ angular.module('dbWebApp')
             return this.objects.object[0].attributes.attribute;
         };
 
+        var getAttributesForObjectWithIndex = function (idx) {
+            if( ! this.objects ) {
+                return [];
+            }
+            return this.objects.object[idx].attributes.attribute;
+        };
+
         var isValidWhoisResources = function( whoisResources) {
             if( _.isUndefined(whoisResources) || _.isNull(whoisResources) ) {
                 return false;
@@ -184,6 +204,7 @@ angular.module('dbWebApp')
             whoisResources.getGlobalInfos = getGlobalInfos;
             whoisResources.getErrorsOnAttribute = getErrorsOnAttribute;
             whoisResources.getAttributes = getAttributes;
+            whoisResources.getAttributesForObjectWithIndex = getAttributesForObjectWithIndex;
             whoisResources.getPrimaryKey = getPrimaryKey;
             whoisResources.getSource = getSource;
             whoisResources.getObjectType = getObjectType;

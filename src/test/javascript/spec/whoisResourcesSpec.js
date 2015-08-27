@@ -47,6 +47,27 @@ describe('dbWebApp: WhoisResources', function () {
         });
     });
 
+    it('should embed multiple objects within a whoisressources-request', function () {
+
+        expect($whoisResources.turnAttrsIntoWhoisObjects(
+            [
+                [  {name: 'person', value: 'p'}, {name: 'source', value:'ripe'} ],
+                [  {name: 'mntner', value: 'm'}, {name: 'auth', value:'SSO a@b'} ]
+            ]
+        )).toEqual({
+            objects: {
+                object: [
+                    {
+                        attributes: { attribute: [ {name: 'person', value: 'p'}, {name: 'source', value:'ripe'} ] }
+                    },
+                    {
+                        attributes: { attribute: [ {name: 'mntner', value: 'm'}, {name: 'auth', value:'SSO a@b'} ]}
+                    }
+                ]
+            }
+        });
+    });
+
     it('should peel errors out of a whoisresources error response', function () {
 
         var errorResponse = $whoisResources.wrapWhoisResources({

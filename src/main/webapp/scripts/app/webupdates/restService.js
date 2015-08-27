@@ -18,15 +18,15 @@ angular.module('dbWebApp')
                     return $resource('api/'+service+'/:source/:objectType/:name', {source: source, objectType: objectType, name: name}).delete({reason: reason}).$promise;
                 };
 
-                this.createPersonMntner = function(source, attributes) {
+                this.createPersonMntner = function(source, multipleWhoisObjects ) {
 
                     var deferredObject = $q.defer();
 
-                    $log.info('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(attributes));
+                    $log.info('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
 
                     $resource('api/references/:source',
                         {source: source})
-                        .save(attributes)
+                        .save(multipleWhoisObjects)
                         .$promise
                         .then(function (result) {
                             $log.info('createPersonMntner success:' + JSON.stringify(result));

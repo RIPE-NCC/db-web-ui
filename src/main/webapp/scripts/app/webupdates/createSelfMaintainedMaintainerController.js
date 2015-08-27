@@ -7,6 +7,11 @@ angular.module('webUpdates')
     .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
         function ($scope, $state, $log, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
 
+            $scope.adminC = {
+                object: [],
+                alternatives: []
+            };
+
             AlertService.clearErrors();
 
             // workaround for problem with order of loading ui-select fragments
@@ -17,6 +22,10 @@ angular.module('webUpdates')
 
             var MNT_TYPE = 'mntner';
             $scope.source = $stateParams.source;
+            if( !_.isUndefined($stateParams.admin)) {
+                var item = {type:'person', key:$stateParams.admin};
+                $scope.adminC.object.push(item);
+            }
             $scope.maintainerAttributes = WhoisResources.wrapAndEnrichAttributes(MNT_TYPE, WhoisResources.getMandatoryAttributesOnObjectType(MNT_TYPE));
 
             $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
@@ -60,11 +69,6 @@ angular.module('webUpdates')
                     }
                 );
             }
-
-            $scope.adminC = {
-                object: [],
-                alternatives: []
-            };
 
             $scope.adminCAutocomplete = function (query) {
                 // need to typed characters

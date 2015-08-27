@@ -5,6 +5,21 @@ angular.module('webUpdates')
         $urlRouterProvider.otherwise('webupdates/select');
 
         $stateProvider
+            .state('createPersonMntnerPair', {
+                url: '/webupdates/create/:source/person/self',
+                templateUrl: 'scripts/app/webupdates/createPersonMntnerPair.html',
+                controller: 'CreatePersonMntnerPairController'
+            })
+            .state('displayPersonMntnerPair', {
+                url: '/webupdates/display/:source/person/:person/mntner/:mntner',
+                templateUrl: 'scripts/app/webupdates/displayPersonMntnerPair.html',
+                controller: 'DisplayPersonMntnerPairController'
+            })
+            .state('createSelfMnt', {
+                url: '/webupdates/create/:source/mntner/self?admin',
+                templateUrl: 'scripts/app/webupdates/createSelfMaintainedMaintainer.html',
+                controller: 'CreateSelfMaintainedMaintainerController'
+            })
             .state('select', {
                 url: '/webupdates/select',
                 templateUrl: 'scripts/app/webupdates/select.html',
@@ -14,16 +29,6 @@ angular.module('webUpdates')
                 url: '/webupdates/create/:source/:objectType',
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
-            })
-            .state('createPersonMntnerPair', {
-                url: '/webupdates/create/:source/person/self',
-                templateUrl: 'scripts/app/webupdates/createPersonMntnerPair.html',
-                controller: 'CreatePersonMntnerPairController'
-            })
-            .state('createSelfMnt', {
-                url: '/webupdates/create/:source/mntner/self',
-                templateUrl: 'scripts/app/webupdates/createSelfMaintainedMaintainer.html',
-                controller: 'CreateSelfMaintainedMaintainerController'
             })
             .state('modify', {
                 url: '/webupdates/modify/:source/:objectType/:name',

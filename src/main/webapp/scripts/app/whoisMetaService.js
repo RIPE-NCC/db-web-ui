@@ -602,19 +602,20 @@ angular.module('dbWebApp')
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
                 ]
-            },
-            'personMntner': {
-                name: 'personMntner', 'description': null,
-                'attributes': [
-                    {name: 'person',  mandatory: true, multiple: false, refs: []},
-                    {name: 'address', mandatory: true, multiple: true, refs: []},
-                    {name: 'phone',   mandatory: true, multiple: true, refs: []},
-                    {name: 'nic-hdl', mandatory: true, multiple: false, refs: []},
-                    {name: 'auth',    mandatory: true, multiple: false , refs: []},
-                    {name: 'mnt-by',  mandatory: true, multiple: false, refs: ['MNTNER']},
-                    {name: 'source',  mandatory: true, multiple: false, refs: []}
-                ]
             }
+            //, 'personMntner': {
+            //    name: 'personMntner', 'description': null,
+            //    'attributes': [
+            //        {name: 'person',  mandatory: true, multiple: false, refs: []},
+            //        {name: 'address', mandatory: true, multiple: true, refs: []},
+            //        {name: 'phone',   mandatory: true, multiple: true, refs: []},
+            //        {name: 'nic-hdl', mandatory: true, multiple: false, refs: []},
+            //        {name: 'upd-to',  mandatory: true, multiple: true, refs: []},
+            //        {name: 'auth',    mandatory: true, multiple: false , refs: []},
+            //        {name: 'mntner',  mandatory: true, multiple: false, refs: []},
+            //        {name: 'source',  mandatory: true, multiple: false, refs: []}
+            //    ]
+            //}
     };
 
         this._attrDocumentation = {
