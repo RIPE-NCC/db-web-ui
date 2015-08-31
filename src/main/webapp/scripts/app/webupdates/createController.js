@@ -258,6 +258,10 @@ angular.module('webUpdates')
                 return attribute.name === 'source';
             }
 
+            function isSourceAttribute(attribute) {
+                return attribute.name === 'source';
+            }
+            
             function deleteObject() {
                 ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
                     function() {},
