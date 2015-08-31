@@ -17,6 +17,9 @@ angular.module('webUpdates')
             /*
              * Methods called from the html-teplate
              */
+             $scope.labelForSource = function(src) {
+                return src === 'RIPE' ? 'Production database' : 'Test environment (for experimental use)';
+            }
             $scope.navigateToCreate = function () {
                 $state.transitionTo('create', {source:$scope.selected.source, objectType:$scope.selected.objectType});
             };

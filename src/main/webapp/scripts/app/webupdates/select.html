@@ -1,9 +1,9 @@
-<h1>Select object type to create</h1>
+<h1>Select object type you would like to create</h1>
 
 <section>
 <form id="selectForm" class="grey padding pull-left">
     <div>
-	    <label>Select object-type</label>
+	    <label>Object type</label>
 	    <select ng-model="selected.objectType"
 	            ng-required="true"
 	            ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
@@ -11,18 +11,18 @@
     <br/>
 
     <div>
-        <label>Select source: </label>
+        <label>Source</label>
         <ul class="radio">
             <li data-ng-repeat="src in sources" class="ga-ripedb-checkbox">
                 <input
                     name="source-radio"
                     type="radio"
                     value="{{src}}"
-                    ng-model="selected.source" id="{{src}}" />
-                <label for="{{src}}">{{src}}</label>
+                    ng-model="selected.source" id="{{src}}"
+                    ng-disabled="isSourceAttribute(attribute)" />
+                <label for="{{src}}">{{labelForSource(src)}}</label>
             </li>
         </ul>
-
     </div>
     <br/>
 
