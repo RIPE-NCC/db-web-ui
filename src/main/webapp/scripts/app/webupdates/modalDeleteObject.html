@@ -10,12 +10,12 @@
     <div class="modal-body margin-left  ">
         <div ng-if="canBeDeleted">
             <label for="reason">Reason</label><br/>
-            <input type="text" name="reason" id="reason" ng-model="$parent.reason">
+            <input class="form-control" type="text" name="reason" id="reason" ng-model="$parent.reason">
         </div>
 
         <div ng-if="hasNonSelfIncomingRefs( objectType, name, incomingReferences)">
             <p ng-if="!canBeDeleted">This object has been referenced in the following objects, you may need to delete these references first.</p>
-            <p ng-if="canBeDeleted">Please note that this will aso delete the following objects:</p>
+            <p ng-if="canBeDeleted">Please note that this will also delete the following objects:</p>
 
             <ul class="bullets">
                 <li ng-repeat="ref in incomingReferences|limitTo:MAX_REFS_TO_SHOW" ng-if="!isEqualTo( objectType, name, ref )">
