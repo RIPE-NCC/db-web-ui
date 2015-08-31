@@ -6,32 +6,55 @@ angular.module('dbWebApp')
 
             function RestService() {
 
-                this.getReferences = function(source, objectType, name) {
+                this.getReferences = function(source, objectType, name, limit) {
+                    var deferredObject = $q.defer();
 
                     $log.info('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
 
-                    return $resource('api/references/:source/:objectType/:name',
+                    $resource('api/references/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
-                            name: decodeURIComponent(name) // prevent double encoding of forward slash (%2f ->%252F)
+                            name: decodeURIComponent(name), // prevent double encoding of forward slash (%2f ->%252F)
+                            limit:limit
                         }).get()
-                        .$promise;
+                        .$promise.then(
+                        function(result) {
+                            $log.info('getReferences success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function(error) {
+                            $log.info('getReferences error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
+                    return deferredObject.promise;
                 };
 
-                this.deleteObject = function(source, objectType, name, reason, withReferences) {
+                this.deleteObject = function(source, objectType, name, reason, withReferences, password) {
+                    var deferredObject = $q.defer();
+
                     var service = withReferences ? 'references' : 'whois';
 
-                    $log.info('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name);
+                    $log.info('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
+                        ' reason:' + reason + ' with-refs:' + withReferences);
 
-                    return $resource('api/'+service+'/:source/:objectType/:name',
+                    $resource('api/'+service+'/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
-                            name: decodeURIComponent(name) // prevent double encoding of forward slash (%2f ->%252F)
-                        }).delete({reason: reason}).$promise;
+                            name: decodeURIComponent(name), // prevent double encoding of forward slash (%2f ->%252F)
+                            password: password
+                        }).delete({reason: reason})
+                        .$promise.then(
+                        function (result) {
+                            $log.info('deleteObject success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.error('deleteObject error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
                 };
 
                 this.createPersonMntner = function(source, multipleWhoisObjects ) {
-
                     var deferredObject = $q.defer();
 
                     $log.info('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));

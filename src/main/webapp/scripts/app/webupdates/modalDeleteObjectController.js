@@ -1,20 +1,43 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'source', 'objectType', 'name',
-    function ($scope, $state, $log, $modalInstance, RestService, source, objectType, name) {
+angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'source', 'objectType', 'name',
+    function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, source, objectType, name) {
 
-        $scope.reason = 'I don\'t need this object';
+        $scope.MAX_REFS_TO_SHOW = 5;
+
         $scope.objectType = objectType;
         $scope.name = name;
+        $scope.reason = 'I don\'t need this object';
+        $scope.incomingReferences = undefined;
+        $scope.canBeDeleted = undefined;
 
-        getReferences(source, $scope.objectType, $scope.name);
+        $scope.doDelete = doDelete;
+        $scope.doCancel = doCancel;
+        $scope.displayUrl = displayUrl;
+        $scope.isEqualTo = isEqualTo;
+        $scope.isDeletable = isDeletable;
+        $scope.hasNonSelfIncomingRefs = hasNonSelfIncomingRefs;
 
-        $scope.delete = function () {
-            var deleteWithRefs = $scope.isMntPersonReference($scope.referencesInfo.references);
+        _initialisePage();
 
-            RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs).then(
+        function _initialisePage() {
+            getReferences(source, $scope.objectType, $scope.name);
+        }
+
+        function doDelete() {
+            if( !$scope.canBeDeleted) {
+                return;
+            }
+
+            var deleteWithRefs = hasNonSelfIncomingRefs($scope.objectType, $scope.name, $scope.incomingReferences);
+
+            var password;
+            if( CredentialsService.hasCredentials() ) {
+                password = CredentialsService.getCredentials().successfulPassword;
+            }
+
+            RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs, password).then(
                 function (resp ) {
-                    $log.info('Successfully deleted object:' + JSON.stringify(resp) );
                     $modalInstance.close();
 
                     $state.transitionTo('deleted', {
@@ -22,84 +45,80 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
                         objectType: $scope.objectType,
                         name: $scope.name
                     });
-
                 },
                 function (error) {
-                    $log.error('Error deleting object:' + JSON.stringify(error) );
                     $modalInstance.dismiss(error.data);
                 }
             );
         };
 
-        $scope.cancel = function () {
+
+        function hasNonSelfIncomingRefs(objectType, objectName, incomingRefs) {
+            return _.some(incomingRefs, function(ref) {
+                return !isEqualTo(objectType, objectName, ref);
+            });
+        }
+
+        function doCancel() {
             $modalInstance.close();
         };
 
-        $scope.displayUrl = function(ref) {
+        function isEqualTo(selfType, selfName, ref) {
+            return ref.objectType.toUpperCase() === selfType.toUpperCase() && ref.primaryKey.toUpperCase() === selfName.toUpperCase();
+        }
+
+        function displayUrl(ref) {
             return $state.href('display', {
                 source: source,
-                objectType: ref.type,
-                name: $scope.primaryKey(ref)
+                objectType: ref.objectType,
+                name: ref.primaryKey
             });
         };
 
-        $scope.primaryKey = function(ref) {
-            var pkey = ref.primaryKey[0].value;
-
-            for (var i = 1; i < ref.primaryKey.length; i++) {
-                pkey = pkey + '/' + ref.primaryKey[i].value;
-            }
-
-            return pkey;
-        };
-
-        $scope.isMntPersonReference = function(references) {
-            if(references.length === 0) {
-                return false;
-            }
-
-            if ((references.length === 1) && $scope.isItself(references[0], $scope.objectType)) {
-                $log.info('References itself')
-                return false; // wrong? 
-            }
-
-            if($scope.objectType.toUpperCase() === 'MNTNER') {
-                return _.every(references, function(ref) {
-                    return ref.type.toUpperCase() === 'ROLE' ||
-                        ref.type.toUpperCase() === 'PERSON' ||
-                        $scope.isItself(ref, objectType);
-                });
-            }
-
-            if($scope.objectType.toUpperCase() === 'ROLE' || $scope.objectType.toUpperCase() === 'PERSON') {
-                return _.every(references, function(ref) {
-                    return ref.type.toUpperCase() === 'MNTNER' ||
-                        $scope.isItself(ref, $scope.objectType);
-                });
-            }
-
-            return false;
-        };
-
-        $scope.isItself = function(ref) {
-            return (ref.type.toUpperCase() === $scope.objectType.toUpperCase() && $scope.primaryKey(ref).toUpperCase() === $scope.name.toUpperCase());
-        };
-
-        $scope.canBeDeleted = function(referencesInfo) {
-            return referencesInfo.total === 0 || $scope.isMntPersonReference(referencesInfo.references, $scope.objectType);
-        };
-
         function getReferences(source, objectType, name) {
-            RestService.getReferences(source, objectType, name) .then(
+            RestService.getReferences(source, objectType, name, $scope.MAX_REFS_TO_SHOW) .then(
                 function (resp) {
-                    $log.info('Successfully fetched object references:' + JSON.stringify(resp) );
-                    $scope.referencesInfo = resp;
+                    $scope.canBeDeleted = isDeletable(resp);
+                    $scope.incomingReferences = resp.incoming;
                 },
                 function (error) {
-                    $log.error('Error getting object references:' + JSON.stringify(error) );
                     $modalInstance.dismiss(error.data);
                 }
             );
+        }
+
+        function isDeletable(parent) {
+            if(_.isUndefined(parent) || _.isUndefined(parent.objectType)) {
+                return false;
+            }
+            // parent is the object we asked references for
+            var objectDeletable = _.every(parent.incoming, function( first ) {
+                // direct incoming references
+                if(isEqualTo(parent.objectType,parent.primaryKey, first) ) {
+                    // self ref
+                    $log.info(first.primaryKey + ' is first level self-ref');
+                    return true;
+                } else {
+                    return _.every(first.incoming, function(second) {
+                        // secondary incoming references
+                        if(isEqualTo(first.objectType, first.primaryKey, second) ) {
+                            // self ref
+                            $log.info(second.primaryKey + ' is second level self-ref');
+                            return true;
+                        } else if(isEqualTo(parent.objectType, parent.primaryKey, second) ) {
+                            // cross reference with parent
+                            $log.info(second.primaryKey + ' is second level cross-ref');
+                            return true;
+                        } else {
+                            $log.info(second.primaryKey + ' is an external ref');
+                            return false;
+                        }
+                    });
+                }
+            });
+            $log.info('objectDeletable:' + objectDeletable);
+
+            return objectDeletable;
         }
 
     }]);

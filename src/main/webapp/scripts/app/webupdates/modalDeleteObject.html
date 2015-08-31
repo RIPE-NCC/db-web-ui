@@ -1,39 +1,39 @@
-<div class="modal-content no-rounded" ng-show="referencesInfo">
+<div class="modal-content no-rounded">
     <div class="modal-header">
-        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"></i>
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="doCancel()"></i>
         <h5 class="modal-title" id="commonModalLabel">
-            <span ng-if="canBeDeleted(referencesInfo)">Please provide the reason for delete</span>
-            <span ng-if="!canBeDeleted(referencesInfo)">This object can not be deleted</span>
+            <span ng-if="canBeDeleted">Please provide the reason for delete</span>
+            <span ng-if="!canBeDeleted">This object can not be deleted</span>
         </h5>
     </div>
 
-    <div class="modal-body margin-left">
-        <div ng-if="canBeDeleted(referencesInfo)">
+    <div class="modal-body margin-left  ">
+        <div ng-if="canBeDeleted">
             <label for="reason">Reason</label><br/>
             <input type="text" name="reason" id="reason" ng-model="$parent.reason">
         </div>
 
-        <div ng-if="referencesInfo.total > 0">
-            <p ng-if="!isMntPersonReference(referencesInfo.references) && !canBeDeleted(referencesInfo)">This object has been referenced in the following objects, you may need to delete these references first.</p>
-            <p ng-if="isMntPersonReference(referencesInfo.references) && canBeDeleted(referencesInfo)">Please note that this will aso delete the following objects:</p>
+        <div ng-if="hasNonSelfIncomingRefs( objectType, name, incomingReferences)">
+            <p ng-if="!canBeDeleted">This object has been referenced in the following objects, you may need to delete these references first.</p>
+            <p ng-if="canBeDeleted">Please note that this will aso delete the following objects:</p>
 
             <ul class="bullets">
-                <li ng-repeat="ref in referencesInfo.references" ng-if="!isItself(ref, objectType)">
+                <li ng-repeat="ref in incomingReferences|limitTo:MAX_REFS_TO_SHOW" ng-if="!isEqualTo( objectType, name, ref )">
                     <div>
-                        {{ref.type}} - <a target="_blank" href="{{displayUrl(ref)}}">{{primaryKey(ref)}}</a>
+                        {{ref.objectType}} - <a target="_blank" href="{{displayUrl(ref)}}">{{ref.primaryKey}}</a>
                     </div>
                 </li>
             </ul>
-            <a href="{{referencesInfo.query}}" target="_blank" class="blue-button more-reference" ng-if="referencesInfo.total > referencesInfo.subset"> +{{referencesInfo.total - referencesInfo.subset}} more objects</a>
+            <p ng-if="incomingReferences.length > MAX_REFS_TO_SHOW">There are {{incomingReferences.length-MAX_REFS_TO_SHOW}} more objects referring to {{objectType}} {{name}}</p>
         </div>
     </div>
 
     <div class="modal-footer">
-        <div ng-if="canBeDeleted(referencesInfo)">
-            <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="delete()" value="Confirm delete"/>
+        <div ng-if="canBeDeleted">
+            <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="doDelete()" value="Confirm delete"/>
         </div>
-        <div ng-if="!canBeDeleted(referencesInfo)">
-            <input type="submit" class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="cancel()" value="Return to object"/>
+        <div ng-if="!canBeDeleted">
+            <input type="submit" class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="doCancel()" value="Return to object"/>
         </div>
     </div>
 
