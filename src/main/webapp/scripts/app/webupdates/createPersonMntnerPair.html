@@ -6,8 +6,7 @@
 
         <ul class="form-fields appeared-fields">
 
-<!--            <li ng-repeat="attribute in (personAttributes  | filter: {name:'!nic-hdl'}  | filter: {name:'!mnt-by'} | filter: {name: '!source'})" -->
-            <li ng-repeat="attribute in personAttributes"
+           <li ng-repeat="attribute in (personAttributes  | filter: {name:'!nic-hdl'}  | filter: {name:'!mnt-by'} | filter: {name: '!source'})"
                 class="form-group input-group">
                 <label>{{attribute.name}}</label>
                 <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
@@ -25,8 +24,7 @@
                 </ul>
             </li>
 
- <!--           <li ng-repeat="attribute in (mntnerAttributes| filter: {name:'!descr'}  | filter: {name:'!admin-c'}  | filter: {name:'!upd-to'} | filter:  {name:'!auth'} | filter: {name:'!mnt-by'} | filter: {name: '!source'} )" -->
-            <li ng-repeat="attribute in mntnerAttributes"
+           <li ng-repeat="attribute in (mntnerAttributes| filter: {name:'!descr'}  | filter: {name:'!admin-c'}  | filter: {name:'!upd-to'} | filter:  {name:'!auth'} | filter: {name:'!mnt-by'} | filter: {name: '!source'} )"
                 class="form-group input-group">
                 <label>{{attribute.name}}</label>
                 <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
