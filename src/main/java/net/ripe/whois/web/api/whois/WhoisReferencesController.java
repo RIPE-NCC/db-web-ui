@@ -1,6 +1,5 @@
 package net.ripe.whois.web.api.whois;
 
-import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.WhoisReferencesService;
 import net.ripe.whois.web.api.ApiController;
@@ -9,12 +8,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/references")
@@ -29,35 +32,21 @@ public class WhoisReferencesController extends ApiController {
     private int MAX_RESULT_NUMBER = 5;
 
     @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.GET)
-    public Map<String, Object> search(@PathVariable String source, @PathVariable String objectType,
-                                      @PathVariable String name) throws URISyntaxException {
-        final List<WhoisObject> selectedReferences;
+    public ResponseEntity<String> search(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
+                                         @RequestParam(value = "limit", required = false) Integer limit,
+                                         @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+        removeUnnecessaryHeaders(headers);
 
-        final WhoisReferencesService.InverseQuery query = WhoisReferencesService.InverseQuery.valueOf(objectType.toUpperCase());
-        final List<WhoisObject> references = whoisReferencesService.getReferences(query, source, name);
-
-        if(references.size() < MAX_RESULT_NUMBER) {
-            selectedReferences = references;
-        } else {
-            selectedReferences = references.subList(0, MAX_RESULT_NUMBER);
-        }
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("total", references.size());
-        response.put("subset", selectedReferences.size());
-        response.put("references", selectedReferences);
-        response.put("query", query.getReferencesUrlFor(queryUrl, source, name));
-
-        return response;
+        return whoisReferencesService.getReferences(source, objectType, name, limit, headers);
     }
 
     @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
-    public ResponseEntity<WhoisResources>  delete(@PathVariable String source, @PathVariable String objectType,
-        @PathVariable String name, @RequestParam("reason") String reason, @RequestHeader final HttpHeaders headers) throws URISyntaxException {
-
+    public ResponseEntity<WhoisResources> delete(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
+                                                 @RequestParam("reason") String reason, @RequestParam(value = "password", required = false) String password,
+                                                 @RequestHeader final HttpHeaders headers) throws URISyntaxException {
         removeUnnecessaryHeaders(headers);
 
-        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name, reason, headers);
+        return whoisReferencesService.deleteObjectAndReferences(objectType, source, name, reason, password, headers);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
