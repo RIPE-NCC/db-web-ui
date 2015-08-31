@@ -1,5 +1,5 @@
 angular.module('dbWebApp')
-    .service('AlertService', function ($rootScope, WhoisResources) {
+    .service('AlertService', ['$log', '$rootScope', 'WhoisResources', function ($log, $rootScope, WhoisResources) {
         var alertService = {};
 
         $rootScope.errors = [];
@@ -66,4 +66,4 @@ angular.module('dbWebApp')
         };
 
         return alertService;
-});
+}]);

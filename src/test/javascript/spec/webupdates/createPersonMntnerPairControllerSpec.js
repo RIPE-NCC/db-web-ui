@@ -15,7 +15,6 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
     var MNTNER_NAME = 'aardvark-mnt';
     var SSO_EMAIL = 'tester@ripe.net';
     var personMntnerPair;
-    var mntnerToDisplay;
     var userInfoData;
     var createController;
 
@@ -188,7 +187,18 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         });
         $httpBackend.flush();
 
+        var cachedPerson = WhoisResources.wrapWhoisResources(MessageStore.get(PERSON_UID));
+        var personAttrs = WhoisResources.wrapAttributes(cachedPerson.getAttributes());
+        expect(personAttrs.getSingleAttributeOnName('person').value).toEqual(PERSON_NAME);
+        expect(personAttrs.getSingleAttributeOnName('nic-hdl').value).toEqual(PERSON_UID);
+
+        var cachedMntner =  WhoisResources.wrapWhoisResources(MessageStore.get(MNTNER_NAME));
+        var mntnerAttrs = WhoisResources.wrapAttributes(cachedMntner.getAttributes());
+        expect(mntnerAttrs.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
+
         expect($state.current.name).toBe('displayPersonMntnerPair');
+        expect($stateParams.person).toBe(PERSON_UID);
+        expect($stateParams.mntner).toBe(MNTNER_NAME);
 
     });
 
@@ -209,7 +219,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         $scope.submit();
 
-        expect($scope.personAttributes.getSingleAttributeOnName('person').value).toBe('Titus Tester');
+        expect($scope.personAttributes.getSingleAttributeOnName('person').value).toBe(PERSON_NAME);
         expect($scope.personAttributes.getSingleAttributeOnName('nic-hdl').value).toEqual('AUTO-1');
         expect($scope.personAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
         expect($scope.personAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
@@ -227,10 +237,9 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         });
         $httpBackend.flush();
 
-        // TODO
-        //expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
-        //expect($scope.warnings[0].plainText).toEqual('Not authenticated');
-        //expect($scope.attributes.getSingleAttributeOnName('mntner').$$error).toEqual("\'" + MNTNER_NAME + "\' is not valid for this object type");
+        expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
+        expect($scope.warnings[0].plainText).toEqual('Not authenticated');
+        expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual("\'" + MNTNER_NAME + "\' is not valid for this object type");
 
         expect($state.current.name).toBe(stateBefore);
 

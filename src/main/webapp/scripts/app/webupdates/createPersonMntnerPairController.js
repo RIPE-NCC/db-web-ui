@@ -53,26 +53,33 @@ angular.module('webUpdates')
                         WhoisResources.turnAttrsIntoWhoisObjects([$scope.personAttributes, $scope.mntnerAttributes])).then(
                         function(resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                            // TODO extract both person and maintainer from response
-                            var personUid = 'DW-RIPE';
-                            var mntName = 'AARDVARK-MNT';
 
-                            MessageStore.add(personUid, {});
-                            MessageStore.add(mntName, {});
+                            var personUid = undefined;
+                            var personAttrs = whoisResources.getAttributesForObjectWithIndex(0);
+                            if(!_.isUndefined(personAttrs) ) {
+                                personUid = WhoisResources.wrapAttributes(personAttrs).getSingleAttributeOnName('nic-hdl').value;
+                                MessageStore.add(personUid, WhoisResources.turnAttrsIntoWhoisObject(personAttrs));
+                            }
+                            var mntnerName = undefined;
+                            var mntnerAttrs = whoisResources.getAttributesForObjectWithIndex(1);
+                            if( ! _.isUndefined(mntnerAttrs)) {
+                                mntnerName = WhoisResources.wrapAttributes(mntnerAttrs).getSingleAttributeOnName('mntner').value;
+                                MessageStore.add(mntnerName, WhoisResources.turnAttrsIntoWhoisObject(mntnerAttrs));
+                            }
 
-                            _navigateToDisplayPage($scope.source, personUid, mntName);
+                            _navigateToDisplayPage($scope.source, personUid, mntnerName);
 
                         },
                         function(error) {
                             if (!error.data) {
                                 // TIMEOUT: to be handled globally by response interceptor
                             } else {
-                                var whoisResources = _wrapAndEnrichResources(error.config.data);
+                                var whoisResources = _wrapAndEnrichResources(error.data);
                                 // TODO extract both person and maintainer errors from response
                                 _validateForm();
-                                AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, error.config.data);
-                                AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, error.config.data);
                                 AlertService.setErrors(whoisResources);
+                                AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, error.data);
+                                AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, error.data);
                             }
                         });
 
