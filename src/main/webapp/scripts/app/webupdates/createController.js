@@ -35,6 +35,7 @@ angular.module('webUpdates')
 
             $scope.submit = submit;
             $scope.cancel = cancel;
+            $scope.isSourceAttribute = isSourceAttribute;
 
             _initialisePage();
 
@@ -253,6 +254,10 @@ angular.module('webUpdates')
                 );
             }
 
+            function isSourceAttribute(attribute) {
+                return attribute.name === 'source';
+            }
+            
             function deleteObject() {
                 ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
                     function() {},
