@@ -49,10 +49,14 @@ angular.module('webUpdates')
                             AlertService.addErrors(whoisResources);
                         },
                         function (error) {
-                            var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                            if (!_.isUndefined(whoisResources)) {
-                                AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, error.data);
-                                AlertService.addErrors(whoisResources);
+                            if(_.isUndefined(error.data)) {
+                                $log.error('Got unexpected error response:' + error );
+                            } else {
+                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                if (!_.isUndefined(whoisResources)) {
+                                    AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, error.data);
+                                    AlertService.addErrors(whoisResources);
+                                }
                             }
                         });
                 }
