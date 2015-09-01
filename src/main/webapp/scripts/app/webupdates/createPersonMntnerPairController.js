@@ -71,15 +71,15 @@ angular.module('webUpdates')
 
                         },
                         function(error) {
-                            if(_.isUndefined(error.data.objects)) {
-                                $log.error('Got unexpected error response:' + JSON.stringify(error) );
-                            } else {
+                            //if(_.isUndefined(error.data.objects) || _.isUndefined(error.data.errormessages) ) {
+                            //    $log.error('Got unexpected error response:' + JSON.stringify(error) );
+                            //} else {
                                 var whoisResources = _wrapAndEnrichResources(error.data);
                                 _validateForm();
                                 AlertService.setErrors(whoisResources);
                                 AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, error.data);
                                 AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, error.data);
-                            }
+                            //  }
                         });
 
                 }

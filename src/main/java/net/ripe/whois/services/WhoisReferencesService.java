@@ -48,7 +48,7 @@ public class WhoisReferencesService extends RestClient {
 
 
     public ResponseEntity<String> createReferencedObjects( final String source, final String body, final HttpHeaders headers) {
-        final String url = "{url}/{source}  ";
+        final String url = "{url}/{source}";
 
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", referencesApiUrl);

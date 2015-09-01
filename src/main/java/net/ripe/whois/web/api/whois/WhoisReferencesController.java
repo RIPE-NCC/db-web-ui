@@ -41,7 +41,7 @@ public class WhoisReferencesController extends ApiController {
         return whoisReferencesService.getReferences(source, objectType, name, limit, headers);
     }
 
-    @RequestMapping(value = "/{source}/{objectType}", method = RequestMethod.POST)
+    @RequestMapping(value = "/{source}", method = RequestMethod.POST)
     public ResponseEntity<String> create(@PathVariable String source,
                                          @RequestBody(required = true) final String body,
                                          @RequestHeader final HttpHeaders headers) throws URISyntaxException {

@@ -58,7 +58,8 @@ angular.module('dbWebApp')
         this.turnAttrsIntoWhoisObjects = function( attrsList ) {
             // list of attribute-arrays ia passed along
             var wrapped = _.map(attrsList, function(attrs) {
-                var packed = {attributes: { attribute: attrs }};
+                var first = attrs[0];
+                var packed = {type: first.name, attributes: { attribute: attrs }};
                 return packed;
             });
             return{
