@@ -60,7 +60,7 @@ angular.module('dbWebApp')
                     $log.info('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
 
                     $resource('api/references/:source',
-                        {source: source})   
+                        {source: source})
                         .save(multipleWhoisObjects)
                         .$promise
                         .then(function (result) {
