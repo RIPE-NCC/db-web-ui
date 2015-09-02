@@ -2,7 +2,7 @@
 <form id="createForm">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; in {{source}}</h1>
-    
+
 	<section class="form-fields maintainer-fields">
     <strong>Please enter the maintainers you would like to use</strong>
     <article class="maintainer-icons">
@@ -50,7 +50,7 @@
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
                    typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"
-                   ng-disabled="isSourceAttribute(attribute)"
+                   ng-disabled="isToBeDisabled(attribute)"
                    />
             <div class="text field-description" collapse="!isHelpShown">
                 {{attribute.$$meta.$$description}}</br>{{attribute.$$meta.$$syntax}}

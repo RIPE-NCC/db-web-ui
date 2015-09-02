@@ -320,6 +320,7 @@ angular.module('dbWebApp')
                             name:attr.name, $$meta:{
                             $$mandatory:next.$$mandatory,
                             $$multiple:next.$$meta.multiple,
+                            $$primaryKey:next.$$meta.primaryKey,
                             $$description:next.$$description,
                             $$syntax:next.$$syntax,
                         }});

@@ -24,7 +24,7 @@ angular.module('webUpdates')
 
                 $scope.mntnerAttributes = WhoisResources.wrapAndEnrichAttributes('mntner',
                     WhoisResources.getMandatoryAttributesOnObjectType('mntner'));
-                $scope.mntnerAttributes.setSingleAttributeOnName('descr', ' Startup maintainer');
+                $scope.mntnerAttributes.setSingleAttributeOnName('descr', 'Startup maintainer');
                 $scope.mntnerAttributes.setSingleAttributeOnName('admin-c', 'AUTO-1');
                 $scope.mntnerAttributes.setSingleAttributeOnName('source', $scope.source);
 

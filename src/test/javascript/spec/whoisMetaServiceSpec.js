@@ -52,8 +52,8 @@ describe('dbWebApp: WhoisMetaService', function () {
             {name: 'optional1', value:'optional1value'}
         ];
         expect($whoisMetaService.enrichAttributesWithMetaInfo('type1', attrs)).toEqual([
-            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true, $$multiple:false, $$description:'A', $$syntax:'', $$refs:[]}},
-            { name: 'optional1', value:'optional1value', $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true, $$description:'B', $$syntax:'', $$refs:['b']}}
+            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true, $$multiple:false,  $$primaryKey: undefined, $$description:'A', $$syntax:'', $$refs:[]}},
+            { name: 'optional1', value:'optional1value', $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$description:'B', $$syntax:'', $$refs:['b']}}
         ])
     });
 
@@ -118,8 +118,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getAllAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1', $$meta: {$$idx:0, '$$mandatory':true, $$multiple:false, '$$description':'A', $$syntax:'', $$refs:[]}},
-            { name:'optional1',  $$meta: {$$idx:1, '$$mandatory':false, $$multiple:true, '$$description':'B', $$syntax:'', $$refs:[]}}
+            { name:'mandatory1', $$meta: {$$idx:0, '$$mandatory':true, $$multiple:false,  $$primaryKey: undefined, $$description:'A', $$syntax:'', $$refs:[]}},
+            { name:'optional1',  $$meta: {$$idx:1, '$$mandatory':false, $$multiple:true,  $$primaryKey: undefined, $$description:'B', $$syntax:'', $$refs:[]}}
         ])
     });
 
@@ -140,7 +140,7 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getMandatoryAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1',  $$meta: {$$idx:0,'$$mandatory':true, $$multiple:false, $$description: 'A',  $$syntax:'', $$refs:[]}}
+            { name:'mandatory1',  $$meta: {$$idx:0,'$$mandatory':true, $$multiple:false,  $$primaryKey: undefined, $$description: 'A',  $$syntax:'', $$refs:[]}}
         ])
     });
 

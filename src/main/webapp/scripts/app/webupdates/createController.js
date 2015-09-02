@@ -35,7 +35,7 @@ angular.module('webUpdates')
 
             $scope.submit = submit;
             $scope.cancel = cancel;
-            $scope.isSourceAttribute = isSourceAttribute;
+            $scope.isToBeDisabled = isToBeDisabled;
 
             _initialisePage();
 
@@ -253,15 +253,16 @@ angular.module('webUpdates')
                     }
                 );
             }
-            
-            function isSourceAttribute(attribute) {
-                return attribute.name === 'source';
+
+            function isToBeDisabled(attribute) {
+                if( attribute.name === 'source' ) {
+                    return true;
+                } else if( $scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
+                    return true;
+                }
+                return false;
             }
 
-            function isSourceAttribute(attribute) {
-                return attribute.name === 'source';
-            }
-            
             function deleteObject() {
                 ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
                     function() {},

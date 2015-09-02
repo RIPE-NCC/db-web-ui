@@ -175,7 +175,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         expect($scope.personAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
         expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('descr').value).toEqual('Startup mntner');
+        expect($scope.mntnerAttributes.getSingleAttributeOnName('descr').value).toEqual('Startup maintainer');
         expect($scope.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('AUTO-1');
         expect($scope.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO '+ SSO_EMAIL);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('upd-to').value).toEqual(SSO_EMAIL);
@@ -225,7 +225,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         expect($scope.personAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
         expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('descr').value).toEqual('Startup mntner');
+        expect($scope.mntnerAttributes.getSingleAttributeOnName('descr').value).toEqual('Startup maintainer');
         expect($scope.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO '+ SSO_EMAIL);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('AUTO-1');
         expect($scope.mntnerAttributes.getSingleAttributeOnName('upd-to').value).toEqual(SSO_EMAIL);
