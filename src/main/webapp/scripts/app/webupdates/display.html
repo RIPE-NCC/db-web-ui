@@ -13,7 +13,12 @@
                 <label>{{attribute.name}}:</label>
             </td>
             <td>
-                <p>{{attribute.value}}</p>
+                    <p ng-show="!attribute.link">
+                        {{attribute.value}}
+                    </p>
+                    <p ng-show="attribute.link">
+                        <a ng-href="{{attribute.link.uiHref}}">{{attribute.value}}</a>
+                    </p>
                 <div ng-show="attribute.$$error" class="modify-feedback">
     	            <span>{{attribute.$$error}}</span>
     	            <i class="fa fa-info-circle"></i>

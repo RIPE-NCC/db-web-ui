@@ -39,12 +39,13 @@ angular.module('webUpdates')
                             $scope.after = $scope.attributes.toPlaintext();
                         }
                     }
-
+                    addLinkToReferenceAttributes($scope.attributes);
                 } else {
                     RestService.fetchObject($scope.objectSource, $scope.objectType, $scope.objectName, null).then(
                         function (resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
                             $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                            addLinkToReferenceAttributes($scope.attributes);
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp);
                             AlertService.setErrors(whoisResources);
 
@@ -101,6 +102,27 @@ angular.module('webUpdates')
 
             $scope.isDiff = function() {
                 return !_.isUndefined($scope.before) && !_.isUndefined($scope.after);
+            };
+
+            function addLinkToReferenceAttributes(attributes) {
+                var parser = document.createElement('a');
+                return _.map(attributes, function(attribute) {
+                    if (!_.isUndefined(attribute.link)) {
+                        attribute.link.uiHref = displayUrl(parser, attribute);
+                    }
+                    return attribute;
+                } );
+            }
+
+            function displayUrl(parser, attribute) {
+                parser.href = attribute.link.href;
+                var parts = parser.pathname.split('/');
+
+                return $state.href('display', {
+                    source: $scope.objectSource,
+                    objectType: attribute['referenced-type'],
+                    name: _.last(parts)
+                });
             };
 
         }]);
