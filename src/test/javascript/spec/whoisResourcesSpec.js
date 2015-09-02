@@ -58,9 +58,11 @@ describe('dbWebApp: WhoisResources', function () {
             objects: {
                 object: [
                     {
+                        type:'person',
                         attributes: { attribute: [ {name: 'person', value: 'p'}, {name: 'source', value:'ripe'} ] }
                     },
                     {
+                        type:'mntner',
                         attributes: { attribute: [ {name: 'mntner', value: 'm'}, {name: 'auth', value:'SSO a@b'} ]}
                     }
                 ]
