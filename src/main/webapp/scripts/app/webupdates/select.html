@@ -13,11 +13,12 @@
     <div>
         <label>Source</label>
         <ul class="radio">
-            <li data-ng-repeat="src in sources" class="ga-ripedb-checkbox">
+            <li data-ng-repeat="src in sources" class="ga-ripedb-checkbox" >
                 <input
                     name="source-radio"
                     type="radio"
                     value="{{src}}"
+                    ng-disabled="src.value === TEST"
                     ng-model="selected.source" id="{{src}}"
                     ng-disabled="isSourceAttribute(attribute)" />
                 <label for="{{src}}">{{labelForSource(src)}}</label>
