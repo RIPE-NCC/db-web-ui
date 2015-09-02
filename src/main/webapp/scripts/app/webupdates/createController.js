@@ -35,7 +35,11 @@ angular.module('webUpdates')
 
             $scope.submit = submit;
             $scope.cancel = cancel;
+<<<<<<< HEAD
             $scope.isToBeDisabled = isToBeDisabled;
+=======
+            $scope.isSourceAttribute = isSourceAttribute;
+>>>>>>> master
 
             _initialisePage();
 
