@@ -59,7 +59,7 @@ angular.module('dbWebApp')
             // list of attribute-arrays ia passed along
             var wrapped = _.map(attrsList, function(attrs) {
                 var first = attrs[0];
-                if( !_.isUndefined(firstset)) {
+                if( !_.isUndefined(first)) {
                     var packed = {type: first.name, attributes: {attribute: attrs}};
                 }
                 return packed;

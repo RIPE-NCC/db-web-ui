@@ -54,18 +54,8 @@ angular.module('webUpdates')
                         function(resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
-                            var personUid = undefined;
-                            var personAttrs = WhoisResources.getAttributesForObjectOfType( whoisResources, 'person');
-                            if(!_.isUndefined(personAttrs) ) {
-                                personUid = WhoisResources.wrapAttributes(personAttrs).getSingleAttributeOnName('nic-hdl').value;
-                                MessageStore.add(personUid, WhoisResources.turnAttrsIntoWhoisObject(personAttrs));
-                            }
-                            var mntnerName = undefined;
-                            var mntnerAttrs =  WhoisResources.getAttributesForObjectOfType(whoisResources, 'mntner');
-                            if( ! _.isUndefined(mntnerAttrs)) {
-                                mntnerName = WhoisResources.wrapAttributes(mntnerAttrs).getSingleAttributeOnName('mntner').value;
-                                MessageStore.add(mntnerName, WhoisResources.turnAttrsIntoWhoisObject(mntnerAttrs));
-                            }
+                            var personUid = _addObjectOfTypeToCache(whoisResources, 'person', 'nic-hdl');
+                            var mntnerName = _addObjectOfTypeToCache(whoisResources, 'mntner', 'mntner');
 
                             _navigateToDisplayPage($scope.source, personUid, mntnerName);
 
@@ -111,6 +101,16 @@ angular.module('webUpdates')
                     person: personName,
                     mntner: mntnerName
                 });
+            }
+
+            function _addObjectOfTypeToCache( whoisResources, objectType, keyFieldName ) {
+                var uid = undefined;
+                var attrs = WhoisResources.getAttributesForObjectOfType( whoisResources, objectType);
+                if( attrs.length > 0 ) {
+                    uid = WhoisResources.wrapAttributes(attrs).getSingleAttributeOnName(keyFieldName).value;
+                    MessageStore.add(uid, WhoisResources.turnAttrsIntoWhoisObject(attrs));
+                }
+                return uid;
             }
 
         }]);
