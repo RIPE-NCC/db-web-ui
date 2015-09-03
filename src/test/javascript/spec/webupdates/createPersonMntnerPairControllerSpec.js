@@ -249,7 +249,6 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         objects: {
             object: [
                 {
-                    'primary-key': {attribute: [{name: 'person', value: PERSON_NAME}]},
                     attributes: {
                         attribute: [
                             {name: 'person', value: PERSON_NAME},
@@ -259,7 +258,6 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
                     }
                 },
                 {
-                    'primary-key': {attribute: [{name: 'mntner', value: MNTNER_NAME}]},
                     attributes: {
                         attribute: [
                             {name: 'mntner', value: MNTNER_NAME},
@@ -293,5 +291,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
             ]
         }
     };
+
+
 
 });

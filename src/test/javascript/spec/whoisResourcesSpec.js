@@ -619,4 +619,36 @@ describe('dbWebApp: WhoisResources', function () {
             'source:              RIPE\n');
     });
 
-});
+    it('extract object from a response', function() {
+        var personAttrs =  [
+            { name: 'person', value: 'Test Person' },
+            { name: 'nic-hdl', value: 'MG20276-RIPE' },
+            { name: 'mnt-by',value: 'TEST-MNT' },
+            { name: 'source',  value: 'RIPE' }
+        ];
+        var mntnerAttrs =  [
+            { name: 'mntner', value: 'TEST-MNT' },
+            { name: 'admin-c', value: 'MG20276-RIPE' },
+            { name: 'mnt-by', value: 'TEST-MNT' },
+            { name: 'source', value: 'RIPE' }
+        ];
+        var resources = $whoisResources.wrapWhoisResources({
+            objects: {
+                object: [
+                    { attributes: { attribute: personAttrs } },
+                    { attributes: {  attribute: mntnerAttrs } }
+                ]
+            }});
+
+        expect(resources.getAttributesForObjectWithIndex(0)).toEqual( personAttrs);
+        expect(resources.getAttributesForObjectWithIndex(1)).toEqual( mntnerAttrs);
+        expect(resources.getAttributesForObjectWithIndex(2)).toEqual( []);
+
+        expect($whoisResources.getAttributesForObjectOfType(resources, 'person')).toEqual( personAttrs);
+        expect($whoisResources.getAttributesForObjectOfType(resources,'mntner')).toEqual( mntnerAttrs);
+        expect($whoisResources.getAttributesForObjectOfType(resources,'inetnum')).toEqual( []);
+
+    });
+
+
+    });

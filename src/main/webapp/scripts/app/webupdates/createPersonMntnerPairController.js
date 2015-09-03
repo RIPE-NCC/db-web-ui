@@ -55,13 +55,13 @@ angular.module('webUpdates')
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
                             var personUid = undefined;
-                            var personAttrs = whoisResources.getAttributesForObjectWithIndex(0);
+                            var personAttrs = WhoisResources.getAttributesForObjectOfType( whoisResources, 'person');
                             if(!_.isUndefined(personAttrs) ) {
                                 personUid = WhoisResources.wrapAttributes(personAttrs).getSingleAttributeOnName('nic-hdl').value;
                                 MessageStore.add(personUid, WhoisResources.turnAttrsIntoWhoisObject(personAttrs));
                             }
                             var mntnerName = undefined;
-                            var mntnerAttrs = whoisResources.getAttributesForObjectWithIndex(1);
+                            var mntnerAttrs =  WhoisResources.getAttributesForObjectOfType(whoisResources, 'mntner');
                             if( ! _.isUndefined(mntnerAttrs)) {
                                 mntnerName = WhoisResources.wrapAttributes(mntnerAttrs).getSingleAttributeOnName('mntner').value;
                                 MessageStore.add(mntnerName, WhoisResources.turnAttrsIntoWhoisObject(mntnerAttrs));
@@ -71,15 +71,15 @@ angular.module('webUpdates')
 
                         },
                         function(error) {
-                            //if(_.isUndefined(error.data.objects) || _.isUndefined(error.data.errormessages) ) {
-                            //    $log.error('Got unexpected error response:' + JSON.stringify(error) );
-                            //} else {
-                                var whoisResources = _wrapAndEnrichResources(error.data);
-                                _validateForm();
-                                AlertService.setErrors(whoisResources);
-                                AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, error.data);
-                                AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, error.data);
-                            //  }
+                            if(_.isUndefined(error.data.objects) || _.isUndefined(error.data.errormessages) ) {
+                                $log.error('Got unexpected error response:' + JSON.stringify(error) );
+                                AlertService.setGlobalError('Recieved unexpected response');
+                            } else {
+                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                AlertService.addErrors(whoisResources);
+                                AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
+                                AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
+                            }
                         });
 
                 }
@@ -91,19 +91,10 @@ angular.module('webUpdates')
                 }
             }
 
-            function _validateForm() {
+            function _validateForm(perso) {
                 var personValid =  $scope.personAttributes.validate();
                 var mntnerValid = $scope.mntnerAttributes.validate();
                 return personValid && mntnerValid;
-            }
-
-            function _wrapAndEnrichResources(resp) {
-                var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                if (whoisResources) {
-                    $scope.personAttributes = WhoisResources.wrapAndEnrichAttributes('person', whoisResources.getAttributesForObjectWithIndex(0));
-                    $scope.mntnerAttributes = WhoisResources.wrapAndEnrichAttributes('mntner', whoisResources.getAttributesForObjectWithIndex(1));
-                }
-                return whoisResources;
             }
 
             function _onSsoInfoAvailable() {

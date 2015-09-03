@@ -59,7 +59,9 @@ angular.module('dbWebApp')
             // list of attribute-arrays ia passed along
             var wrapped = _.map(attrsList, function(attrs) {
                 var first = attrs[0];
-                var packed = {type: first.name, attributes: { attribute: attrs }};
+                if( !_.isUndefined(firstset)) {
+                    var packed = {type: first.name, attributes: {attribute: attrs}};
+                }
                 return packed;
             });
             return{
@@ -169,8 +171,25 @@ angular.module('dbWebApp')
             return this.objects.object[0].attributes.attribute;
         };
 
+        this.getAttributesForObjectOfType = function (whoisresources, typename) {
+            if(_.isUndefined(whoisresources.objects) ) {
+                return [];
+            }
+            var object = _.find(whoisresources.objects.object, function(item) {
+                return item.attributes.attribute[0].name === typename;
+            });
+            if( _.isUndefined(object) ) {
+                return [];
+            }
+
+            return object.attributes.attribute;
+        };
+
         var getAttributesForObjectWithIndex = function (idx) {
-            if( ! this.objects ) {
+            if(_.isUndefined(this.objects) ) {
+                return [];
+            }
+            if( idx >= this.objects.object.length ) {
                 return [];
             }
             return this.objects.object[idx].attributes.attribute;
