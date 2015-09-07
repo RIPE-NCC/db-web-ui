@@ -154,6 +154,24 @@ module.exports = function (grunt) {
                 }
             }
         },
+        env : {
+            dev: {
+                NODE_ENV:'dev',
+                GTM_ID: 'GTM-WTWTB7'
+            },
+            prepdev: {
+                NODE_ENV:'prepdev',
+                GTM_ID: 'GTM-WTWTB7'
+            },
+            rc: {
+                NODE_ENV:'rc',
+                GTM_ID:'GTM-T5J6RH'
+            },
+            prod: {
+                NODE_ENV:'prod',
+                GTM_ID:'GTM-TP3SK6'
+            },
+        },
         ngconstant: {
             options: {
                 name: 'dbWebApp',
@@ -201,6 +219,12 @@ module.exports = function (grunt) {
                 }
             }
         },
+        preprocess : {
+            html : {
+                src : 'src/main/webapp/index_tmpl.html',
+                dest : 'src/main/webapp/index.html'
+            }
+        },
         connect: {
 	      server: {
 	        options: {
@@ -228,9 +252,14 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
+    grunt.loadNpmTasks('grunt-env');
+
+    grunt.loadNpmTasks('grunt-preprocess');
+
     grunt.registerTask('default', [
         'clean:server',
         'wiredep',
+        'preprocess',
         'ngconstant:dev',
         'watch',
         'connect'
@@ -239,6 +268,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', [
         'clean:server',
         'wiredep:test',
+        'preprocess',
         'ngconstant:dev',
         'karma'
     ]);
@@ -246,6 +276,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean:dist',
         'wiredep:app',
+        'preprocess',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',
@@ -254,8 +285,10 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build-dev', [
+        'env:dev',
         'clean:dist',
         'wiredep:app',
+        'preprocess',
         'ngconstant:dev',
         'ngtemplates',
         'concurrent:dist',
@@ -264,8 +297,10 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build-prepdev', [
+        'env:prepdev',
         'clean:dist',
         'wiredep:app',
+        'preprocess',
         'ngconstant:prepdev',
         'ngtemplates',
         'concurrent:dist',
@@ -274,8 +309,10 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build-rc', [
+        'env:rc',
         'clean:dist',
         'wiredep:app',
+        'preprocess',
         'ngconstant:rc',
         'ngtemplates',
         'concurrent:dist',
@@ -284,12 +321,15 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build-prod', [
+        'env:prod',
         'clean:dist',
         'wiredep:app',
+        'preprocess',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
         'compass:server'
     ]);
+
 };
