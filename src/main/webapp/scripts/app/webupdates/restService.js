@@ -26,6 +26,7 @@ angular.module('dbWebApp')
                             deferredObject.reject(error);
                         }
                     );
+
                     return deferredObject.promise;
                 };
 
@@ -52,6 +53,8 @@ angular.module('dbWebApp')
                             deferredObject.reject(error);
                         }
                     );
+
+                    return deferredObject.promise;
                 };
 
                 this.createPersonMntner = function(source, multipleWhoisObjects ) {
@@ -145,6 +148,7 @@ angular.module('dbWebApp')
                             deferredObject.reject(error);
                         }
                     );
+
                     return deferredObject.promise;
                 }
 
@@ -168,6 +172,7 @@ angular.module('dbWebApp')
                             deferredObject.reject(error);
                         }
                     );
+
                     return deferredObject.promise;
                 };
 
