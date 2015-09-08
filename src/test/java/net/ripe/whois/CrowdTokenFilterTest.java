@@ -32,7 +32,7 @@ public class CrowdTokenFilterTest {
         filterChain = mock(FilterChain.class);
 
         response = new MockHttpServletResponse();
-        request = new MockHttpServletRequest();
+        request = new MockHttpServletRequest("GET", "/doit");
 
         crowdInterceptor = new CrowdTokenFilter("https://access.url");
     }
@@ -53,7 +53,41 @@ public class CrowdTokenFilterTest {
         crowdInterceptor.doFilter(request, response, filterChain);
 
         assertThat(response.getStatus(), is(302));
-        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost"));
+        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit"));
+    }
+
+    @Test
+    public void proceed_for_css_resources() throws Exception {
+        request = new MockHttpServletRequest("GET", "/static.css");
+
+        request.setCookies();
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    public void proceed_for_javascript_resources() throws Exception {
+        request = new MockHttpServletRequest("GET", "/static.js");
+
+        request.setCookies();
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+
+
+    @Test
+    public void proceed_for_image_resources() throws Exception {
+        request = new MockHttpServletRequest("GET", "/static.png");
+
+        request.setCookies();
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
     }
 
     @Test
@@ -64,6 +98,6 @@ public class CrowdTokenFilterTest {
         crowdInterceptor.doFilter(request, response, filterChain);
 
         assertThat(response.getStatus(), is(302));
-        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost?param%3Dtest"));
+        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit?param%3Dtest"));
     }
 }

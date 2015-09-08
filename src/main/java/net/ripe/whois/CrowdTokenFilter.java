@@ -1,5 +1,7 @@
 package net.ripe.whois;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 
 @Component
 public class CrowdTokenFilter implements Filter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CrowdTokenFilter.class);
 
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
 
@@ -35,22 +38,40 @@ public class CrowdTokenFilter implements Filter {
         final ServletRequest servletRequest,
         final ServletResponse servletResponse,
         final FilterChain filterChain)
-            throws IOException, ServletException {
+        throws IOException, ServletException {
 
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (request.getCookies() != null) {
-            for (Cookie c : request.getCookies()) {
-                if (CROWD_TOKEN_KEY.equals(c.getName())) {
-                    filterChain.doFilter(request, response);
-                    return;
-                }
-            }
+        if (isStaticResource(request) || hasCrowdCookie(request)) {
+            LOGGER.debug("Allow {}", request.getRequestURI());
+            filterChain.doFilter(request, response);
+            return;
         }
+        LOGGER.debug("Block {}", request.getRequestURI());
 
         response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
         response.setStatus(HttpServletResponse.SC_FOUND);
+    }
+
+    private boolean isStaticResource(HttpServletRequest request) {
+        if (request.getRequestURI().endsWith(".css") ||
+            request.getRequestURI().endsWith(".js") ||
+            request.getRequestURI().endsWith(".png")) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean hasCrowdCookie(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie c : request.getCookies()) {
+                if (CROWD_TOKEN_KEY.equals(c.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private String generateLocationHeader(final HttpServletRequest request) {
