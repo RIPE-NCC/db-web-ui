@@ -5,37 +5,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" name="description" />
-    <meta name="generator" content="Plone - http://plone.org" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www-static.ripe.net/static/common/fonts/open-sans.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="https://www.ripe.net/portal_css/Ripe/print.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/template.css" />
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/ie-template.css" />
+    <![endif]-->
     <link rel="shortcut icon" type="image/x-icon" href="https://www.ripe.net/favicon.ico" />
     <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png" />
     <link rel="search" href="https://www.ripe.net/search" title="Search this site" />
     <!-- your custom styles here CSSMARKER -->
-    <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen" type="text/css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" media="print" href="https://www.ripe.net/portal_css/Ripe/print.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/bootstrap-theme.min.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/open-sans.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/template.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/main.css" />
-    <!--[if lte IE 8]>
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/ie-template.css" />
-    <![endif]-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css"/>
     <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css"/>
     <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.css"/>
     <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/main.css" />
+    <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen" type="text/css" rel="stylesheet" />
+
+    <!-- JQuery JavaScript placeholder here -->
+    <script type="text/javascript" src="https://www.ripe.net/jquery.js"></script>
+    <!-- END JQuery JavaScript placeholder here -->
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/template.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/browser-update.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/modernizr.js"></script>
+    <!--[if lte IE 8]>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/html5.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/respond.js"></script>
+    <![endif]-->
+    <!-- your custom javascripts here JSMARKER -->
+
+    <meta name="generator" content="Plone - http://plone.org" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr" ng-app="dbWebApp">
-
 
 <!-- @ifdef GTM_ID -->
 
 <!-- Google Tag Manager, Use env <!-- @echo NODE_ENV --> with id: <!-- @echo GTM_ID --> -->
 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=<!-- @echo GTM_ID -->"
-            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+                  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
@@ -158,7 +170,7 @@
                                     <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/request-an-as-number">Request an AS Number</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/reassigning-as-numbers">Reassigning AS Numbers</a>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/reassigning-as-numbers">Reassigning Referenced AS Numbers</a>
                                 </li>
                             </ul>
                         </div>
@@ -205,9 +217,6 @@
                                     <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/certification">Resource Certification (RPKI)</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/legacy-resources">Legacy Internet Resources</a>
-                                </li>
-                                <li>
                                     <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/policy-implementation-status">Policy Implementation Status</a>
                                 </li>
                                 <li>
@@ -219,10 +228,24 @@
                             <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers">Resource Transfers and Mergers</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/ipv4-transfers">IPv4 Transfers</a>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/transfers">Transfers</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/listing">IPv4 Transfer Listing Service</a>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/mergers-and-acquisitions">Mergers and Acquisitions</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/legacy-resources">Legacy Internet Resources</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-internet-resources-faqs">FAQ: Legacy Internet Resources</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-space-in-the-ripe-registry">Legacy space in the RIPE Registry </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-internet-resources-documentation">Documentation</a>
                                 </li>
                             </ul>
                         </div>
@@ -592,6 +615,9 @@
                                     <a href="https://www.ripe.net/publications/ipv6-info-centre/statistics-and-tools">Statistics and Tools</a>
                                 </li>
                                 <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/training-and-materials">Training and Materials</a>
+                                </li>
+                                <li>
                                     <a href="https://www.ripe.net/publications/ipv6-info-centre/news-and-events">News and Events</a>
                                 </li>
                                 <li>
@@ -605,6 +631,9 @@
                         <div class="col-md-2">
                             <a class="h6" href="https://www.ripe.net/publications/ripe-labs">RIPE Labs</a>
                             <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ripe-labs/contributing-to-ripe-labs"> Contributing to RIPE Labs</a>
+                                </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
@@ -718,7 +747,7 @@
                                     <a href="https://www.ripe.net/about-us/legal/internet-number-resources">Internet Number Resources</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/legal/arbitration-1">Arbitration</a>
+                                    <a href="https://www.ripe.net/about-us/legal/arbitration-documents">Arbitration</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/about-us/legal/other-ripe-ncc-services-documents">Other RIPE NCC Services</a>
@@ -850,7 +879,7 @@
                     <dt>Info</dt>
                     <dd></dd>
                 </dl>
-                <div id="content" >
+                <div id="content">
                     <div>
                         <div id="external">
                             <!-- End of header ENDHEADERMARKER -->
@@ -893,21 +922,13 @@
     <div id="cookiepopup">
         <div id="cookie-close"><i class="fa fa-close"></i></div>
         <div class="cookie-content">
-            <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies" class="external-link" target="_self">privacy policy</a><span>. You can accept our cookies either by </span><span id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
+            <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies" class="external-link" target="_self">privacy policy</a><span>. You can accept our cookies either by </span><span id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
         </div>
     </div>
 </footer>
 
 <!-- Footer JavaScript placeholder FOOTERMARKER -->
-<script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
-<script async type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/bootstrap.min.js"></script>
-<script async type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/template.js"></script>
-<script async type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/browser-update.js"></script>
-<script async type="text/javascript" src="https://www.ripe.net/modernizr.js"></script>
-<!--[if lte IE 8]>
-<script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/html5.js"></script>
-<script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/respond.js"></script>
-<![endif]-->
+
 
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
@@ -988,5 +1009,3 @@
 </body>
 
 </html>
-
-
