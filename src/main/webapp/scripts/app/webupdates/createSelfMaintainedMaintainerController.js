@@ -7,36 +7,59 @@ angular.module('webUpdates')
     .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
         function ($scope, $state, $log, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
 
-            $scope.adminC = {
-                object: [],
-                alternatives: []
-            };
-
-            AlertService.clearErrors();
-
-            // workaround for problem with order of loading ui-select fragments
-            $scope.uiSelectTemplateReady = false;
-            RestService.fetchUiSelectResources().then(function () {
-                $scope.uiSelectTemplateReady = true;
-            });
-
             var MNT_TYPE = 'mntner';
-            $scope.source = $stateParams.source;
-            if( !_.isUndefined($stateParams.admin)) {
-                var item = {type:'person', key:$stateParams.admin};
-                $scope.adminC.object.push(item);
-            }
-            $scope.maintainerAttributes = WhoisResources.wrapAndEnrichAttributes(MNT_TYPE, WhoisResources.getMandatoryAttributesOnObjectType(MNT_TYPE));
 
-            $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
-            $scope.admincSyntax =      WhoisResources.getAttributeSyntax($scope.objectType, 'admin-c');
+            $scope.submit = submit;
+            $scope.cancel = cancel;
+            $scope.adminCAutocomplete = adminCAutocomplete;
+            $scope.hasAdminC = hasAdminC;
+            $scope.onAdminCAdded = onAdminCAdded;
+            $scope.onAdminCRemoved = onAdminCRemoved;
 
-            $scope.submit = function () {
-                $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+            function _initialise() {
+                AlertService.clearErrors();
 
-                $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', UserInfoService.getUserInfo().username);
-                $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + UserInfoService.getUserInfo().username);
+                $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
+                $scope.admincSyntax = WhoisResources.getAttributeSyntax($scope.objectType, 'admin-c');
+
+                $scope.ssoUserName = undefined;
+
+                $scope.adminC = {
+                    object: [],
+                    alternatives: []
+                };
+
+                // workaround for problem with order of loading ui-select fragments
+                $scope.uiSelectTemplateReady = false;
+                RestService.fetchUiSelectResources().then(function () {
+                    $scope.uiSelectTemplateReady = true;
+                });
+
+                $scope.maintainerAttributes = WhoisResources.wrapAndEnrichAttributes(MNT_TYPE, WhoisResources.getMandatoryAttributesOnObjectType(MNT_TYPE));
+
+                $scope.source = $stateParams.source;
                 $scope.maintainerAttributes.setSingleAttributeOnName('source', $scope.source);
+
+                if (!_.isUndefined($stateParams.admin)) {
+                    var item = {type: 'person', key: $stateParams.admin};
+                    $scope.adminC.object.push(item);
+                    $scope.onAdminCAdded(item);
+                }
+
+
+                if( _.isUndefined(UserInfoService.getUsername()) ) {
+                    // kick off ajax-call to fetch email address of logged-in user
+                    UserInfoService.init(_onSsoInfoAvailable);
+                } else {
+                    $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', UserInfoService.getUserInfo().username);
+                    $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + UserInfoService.getUserInfo().username);
+                }
+                $log.info('attrs-initial:' + JSON.stringify($scope.maintainerAttributes));
+            }
+            _initialise();
+
+            function submit() {
+                $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
 
                 var mntner = $scope.maintainerAttributes.getSingleAttributeOnName(MNT_TYPE);
                 $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
@@ -46,12 +69,17 @@ angular.module('webUpdates')
                 if(!$scope.maintainerAttributes.validate()) {
                     $log.error('Error validating attributes');
                 } else {
-                   createObject();
+                   _createObject();
                 }
-
             };
 
-            function createObject() {
+            function cancel() {
+                if ( window.confirm('Are you sure?') ) {
+                    window.history.back();
+                }
+            }
+
+            function _createObject() {
                 $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
 
                 var obj = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
@@ -73,7 +101,7 @@ angular.module('webUpdates')
                 );
             }
 
-            $scope.adminCAutocomplete = function (query) {
+            function adminCAutocomplete(query) {
                 // need to typed characters
                 if (query.length >= 2) {
                         RestService.autocomplete( 'admin-c', query, true,['person','role']).then(
@@ -95,23 +123,32 @@ angular.module('webUpdates')
                 });
             };
 
-            $scope.hasAdminC = function() {
+            function hasAdminC() {
                 return $scope.adminC.object.length > 0;
             };
 
-            $scope.onAdminCAdded = function (item) {
+            function onAdminCAdded(item) {
                 $log.info('onAdminCAdded:' + JSON.stringify(item));
                 $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c', value: item.key}, {name: 'admin-c'});
                 $scope.maintainerAttributes = WhoisResources.enrichAttributesWithMetaInfo(MNT_TYPE, $scope.maintainerAttributes);
                 $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
             };
 
-            $scope.onAdminCRemoved = function (item) {
+            function onAdminCRemoved(item) {
                 $log.info('onAdminCRemoved:' + JSON.stringify(item));
                 _.remove($scope.maintainerAttributes, function (i) {
                     return i.name === 'admin-c' && i.value === item.key;
                 });
             };
+
+            function _onSsoInfoAvailable() {
+                $log.info('_onSsoInfoAvailable:' + UserInfoService.getUsername());
+                $scope.ssoUserName = UserInfoService.getUsername();
+                if( $scope.ssoUserName ) {
+                    $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', UserInfoService.getUserInfo().username);
+                    $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + UserInfoService.getUserInfo().username);
+                }
+            }
 
         }]);
 

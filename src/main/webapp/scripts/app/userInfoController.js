@@ -3,8 +3,9 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .controller('UserInfoController', ['$scope', '$stateParams', '$state', 'UserInfoService',
-        function ($scope, $stateParams, $state, UserInfoService) {
+    .controller('UserInfoController', ['$scope', '$stateParams', '$state', '$log','UserInfoService',
+        function ($scope, $stateParams, $state, $log, UserInfoService) {
+
 
             _init();
 
@@ -13,6 +14,7 @@ angular.module('dbWebApp')
             }
 
             function _displayUserMenu() {
+                $log.info('user-info:' + UserInfoService.getDisplayName())
                 RIPE.username = UserInfoService.getDisplayName();
                 RIPE.usermenu = {
                     'User details': [['Profile', 'https://access.ripe.net/profile'], ['Logout', 'https://access.ripe.net/logout']]
