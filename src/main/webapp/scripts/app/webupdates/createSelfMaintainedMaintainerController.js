@@ -40,9 +40,12 @@ angular.module('webUpdates')
 
                 var mntner = $scope.maintainerAttributes.getSingleAttributeOnName(MNT_TYPE);
                 $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+                $log.info('submit attrs:' + JSON.stringify($scope.maintainerAttributes));
 
                 $scope.maintainerAttributes.clearErrors();
-                if($scope.maintainerAttributes.validate()) {
+                if(!$scope.maintainerAttributes.validate()) {
+                    $log.error('Error validating attributes');
+                } else {
                    createObject();
                 }
 
@@ -97,12 +100,14 @@ angular.module('webUpdates')
             };
 
             $scope.onAdminCAdded = function (item) {
+                $log.info('onAdminCAdded:' + JSON.stringify(item));
                 $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c', value: item.key}, {name: 'admin-c'});
                 $scope.maintainerAttributes = WhoisResources.enrichAttributesWithMetaInfo(MNT_TYPE, $scope.maintainerAttributes);
                 $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
             };
 
             $scope.onAdminCRemoved = function (item) {
+                $log.info('onAdminCRemoved:' + JSON.stringify(item));
                 _.remove($scope.maintainerAttributes, function (i) {
                     return i.name === 'admin-c' && i.value === item.key;
                 });
