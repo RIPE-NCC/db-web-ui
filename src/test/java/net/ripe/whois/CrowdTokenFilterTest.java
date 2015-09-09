@@ -91,6 +91,40 @@ public class CrowdTokenFilterTest {
     }
 
     @Test
+    public void proceed_for_unprotected_select_url() throws Exception {
+        request = new MockHttpServletRequest("GET", "/db-web-ui/#/webupdates/select");
+
+        request.setCookies();
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    public void proceed_for_unprotected_display_url() throws Exception {
+        request = new MockHttpServletRequest("GET", "/db-web-ui/#/webupdates/display/RIPE/mntner/test-mnt");
+
+        request.setCookies();
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    public void response_302_found_if_modify_url() throws Exception {
+        request = new MockHttpServletRequest("GET", "/db-web-ui/#/webupdates/modify/RIPE/mntner/test-mnt");
+
+        request.setCookies();
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        assertThat(response.getStatus(), is(302));
+        assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/db-web-ui/%23/webupdates/modify/RIPE/mntner/test-mnt"));
+    }
+
+    @Test
     public void original_url_query_param_is_encoded_properly() throws Exception {
         request.setCookies();
         request.setQueryString("param=test");

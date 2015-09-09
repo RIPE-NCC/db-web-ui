@@ -25,6 +25,10 @@ public class CrowdTokenFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CrowdTokenFilter.class);
 
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
+    private static final String[] UNPROTECTED_URLS = {
+        ".*/#/webupdates/display/.*",
+        ".*/#/webupdates/select"
+    };
 
     private final String crowdLoginUrl;
 
@@ -43,7 +47,7 @@ public class CrowdTokenFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (isStaticResource(request) || hasCrowdCookie(request)) {
+        if (isStaticResource(request) || hasCrowdCookie(request) || isUnprotectedUrl(request)) {
             LOGGER.debug("Allow {}", request.getRequestURI());
             filterChain.doFilter(request, response);
             return;
@@ -69,6 +73,15 @@ public class CrowdTokenFilter implements Filter {
                 if (CROWD_TOKEN_KEY.equals(c.getName())) {
                     return true;
                 }
+            }
+        }
+        return false;
+    }
+
+    private boolean isUnprotectedUrl(HttpServletRequest request) {
+        for (final String urlPattern : UNPROTECTED_URLS) {
+            if (request.getRequestURI().matches(urlPattern)){
+                return true;
             }
         }
         return false;
