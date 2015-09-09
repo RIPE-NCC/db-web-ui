@@ -47,7 +47,7 @@ public class CrowdTokenFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (isStaticResource(request) || hasCrowdCookie(request) || isUnprotectedUrl(request)) {
+        if (isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request) ) {
             LOGGER.debug("Allow {}", request.getRequestURI());
             filterChain.doFilter(request, response);
             return;
