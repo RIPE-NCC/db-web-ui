@@ -72,6 +72,8 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
                 "active":true
             };
 
+            UserInfoService.clear();
+
             createController = function() {
 
                 $stateParams.source = SOURCE;

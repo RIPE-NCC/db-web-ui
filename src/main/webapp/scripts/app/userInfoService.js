@@ -1,38 +1,53 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .factory( 'UserInfoService', ['$resource',
-        function($resource) {
+    .service('UserInfoService', ['$resource', '$q', '$http', '$log',
+        function ($resource, $q, $http, $log) {
 
-        var _userInfo;
+            var _userInfo = undefined;
 
-        return {
-            init: function(callback) {
-                if (typeof _userInfo !== 'undefined') {
-                    if (typeof callback === 'function'){
-                        callback();
-                    }
+            this.getUserInfo = function () {
+                var deferredObject = $q.defer();
+
+                if(!_.isUndefined(_userInfo)) {
+                    $log.info('getUserInfo cached:' + JSON.stringify(_userInfo));
+                    deferredObject.resolve(_userInfo);
                 } else {
-                    $resource('api/user/info').get(function(data) {
-                        _userInfo = data;
-                        if (typeof callback === 'function'){
-                            callback();
+                    $log.info('getUserInfo start');
+
+                    $resource('api/user/info').get().$promise.then(
+                        function (result) {
+                            _userInfo = result;
+                            $log.info('getUserInfo success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.error('getUserInfo error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
                         }
-                    });
+                    );
                 }
-            },
-            getUserInfo: function() {
-              return _userInfo;
-            },
-            getUsername: function() {
+
+                return deferredObject.promise;
+            };
+
+            this.getUsername = function () {
+                //$log.info('getUsername:' + _userInfo);
                 return _userInfo ? _userInfo.username : undefined;
-            },
-            getDisplayName: function() {
+            }
+
+            this.getDisplayName = function () {
+               //$log.info('getDisplayName:' + _userInfo);
                 return _userInfo ? _userInfo.displayName : undefined;
-            },
-            getUuid: function() {
+            }
+
+            this.getUuid = function () {
+                //$log.info('getUuid:' + _userInfo);
                 return _userInfo ? _userInfo.uuid : undefined;
             }
-        };
-    }
-]);
+
+            this.clear = function() {
+                _userInfo = undefined;
+            }
+
+        }]);
+

@@ -2,7 +2,7 @@
 
 describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
-    var $scope, $state, $stateParams, $httpBackend, WhoisResources, MessageStore, AlertService, UserInfoService;
+    var $scope, $state, $stateParams, $httpBackend, $log, WhoisResources, MessageStore, AlertService, UserInfoService;
     var SOURCE = 'TEST';
 
     var RestService = {
@@ -47,8 +47,18 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
             $stateParams = _$stateParams_;
             $stateParams.source = SOURCE;
 
+            UserInfoService.clear();
+
+            $log = {
+                info: function(msg) {
+                    //console.log('info:'+msg);
+                },
+                error: function(msg) {
+                    //console.log('error:'+msg);
+                }
+            }
             _$controller_('CreateSelfMaintainedMaintainerController', {
-                $scope: $scope, $stateParams: $stateParams, UserInfoService: UserInfoService, RestService: RestService, MessageStore: MessageStore
+                $scope: $scope, $stateParams: $stateParams, $log:$log, UserInfoService: UserInfoService, RestService: RestService, MessageStore: MessageStore
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -66,6 +76,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
+
     //
     //it('should load the maintainer attributes', function () {
     //

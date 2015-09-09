@@ -29,16 +29,18 @@ angular.module('webUpdates')
                 $scope.mntnerAttributes.setSingleAttributeOnName('source', $scope.source);
 
                 // kick off ajax-call to fetch email address of logged-in user
-                UserInfoService.init(_onSsoInfoAvailable);
+                UserInfoService.getUserInfo().then(
+                    function(result) {
+                        $scope.mntnerAttributes.setSingleAttributeOnName('auth','SSO ' + result.username);
+                        $scope.mntnerAttributes.setSingleAttributeOnName('upd-to',result.username);
+                    }, function(errpr) {
+                        AlertService.setGlobalError('Error fetching SSO information');
+                    }
+                );
 
             }
 
             function submit() {
-
-                if(_.isUndefined($scope.ssoUserName)) {
-                    AlertService.setGlobalError('Error fetching SSO information');
-                    return;
-                }
 
                 var mntner = $scope.mntnerAttributes.getSingleAttributeOnName('mntner');
                 if( !_.isUndefined(mntner.value)) {
@@ -87,7 +89,7 @@ angular.module('webUpdates')
                 return personValid && mntnerValid;
             }
 
-            function _onSsoInfoAvailable() {
+            function _onSsoInfoAvailable(result) {
                 $scope.ssoUserName = UserInfoService.getUsername();
                 if( $scope.ssoUserName ) {
                     $scope.mntnerAttributes.setSingleAttributeOnName('auth','SSO ' + $scope.ssoUserName);

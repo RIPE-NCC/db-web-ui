@@ -8,7 +8,13 @@ describe('dbWebApp: UserInfoService', function () {
 
     var $httpBackend;
     var userInfoService;
-    var userInfo;
+    var userInfo = {
+            'username':'test@ripe.net',
+            'displayName':'Test User',
+            'expiryDate':'[2015,7,7,14,58,3,244]',
+            'uuid':'aaaa-bbbb-cccc-dddd',
+            'active':'true'
+        };;
 
     beforeEach(module('dbWebApp'));
 
@@ -16,34 +22,46 @@ describe('dbWebApp: UserInfoService', function () {
         $httpBackend = _$httpBackend_;
         userInfoService = _UserInfoService_;
 
-        userInfo = {
-            'username':'test@ripe.net',
-            'displayName':'Test User',
-            'expiryDate':'[2015,7,7,14,58,3,244]',
-            'uuid':'aaaa-bbbb-cccc-dddd',
-            'active':'true'
-        };
-
-        $httpBackend.whenGET('api/user/info').respond(userInfo);
-
     }));
 
-    afterEach(function() {});
-
-    it('initial state is undefined',function() {
-        expect(userInfoService.getUsername()).toBeUndefined();
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        //$httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('init',function() {
-        userInfoService.init(function() {
-            expect(userInfoService.getUsername()).toEqual('Test User');
-        });
+    it('should provide user info on success',function() {
+        $httpBackend.whenGET(/.*.html/).respond(200);
+        $httpBackend.whenGET('api/user/info').respond(userInfo);
+        $httpBackend.flush();
+
+        userInfoService.getUserInfo().then(
+            function(result) {
+            expect(userInfoService.getUsername()).toEqual(userInfo.username);
+            expect(userInfoService.getDisplayName()).toEqual(userInfo.displayName);
+            }, function(error) {
+                // NOT to be called
+                expect(true).toBe(false);
+            });
     });
 
-    it('should provide user info',function() {
-        userInfoService.init(function() {
-            expect(userInfoService.getUserInfo()).toEqual(userInfo);
+    it('should not provide user-info on failure',function() {
+        $httpBackend.whenGET(/.*.html/).respond(200);
+        $httpBackend.whenGET('api/user/info').respond(function(method,url) {
+            return [401, "", {}];
         });
+
+        $httpBackend.flush();
+
+        userInfoService.getUserInfo().then(
+            function(result) {
+                // NOT to be called
+                expect(true).toBe(false);
+            }, function( error) {
+                expect(error.status).toBe(401);
+                expect(userInfoService.getUsername()).toEqual(undefined);
+                expect(userInfoService.getDisplayName()).toEqual(undefined);
+            } );
+
     });
 
 });

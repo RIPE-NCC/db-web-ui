@@ -1,27 +1,39 @@
 // jshint ignore: start
+/*global window: false */
 
 'use strict';
 
 angular.module('dbWebApp')
-    .controller('UserInfoController', ['$scope', '$stateParams', '$state', '$log','UserInfoService',
-        function ($scope, $stateParams, $state, $log, UserInfoService) {
+    .controller('UserInfoController', ['$scope', '$location', '$window','$log','UserInfoService', 'LOGIN_URL',
+        function ($scope, $location, $window, $log, UserInfoService, loginUrl) {
 
-
-            _init();
-
-            function _init() {
-                UserInfoService.init(_displayUserMenu);
+            function _initialize() {
+                $log.info('Using login-url:' +  loginUrl);
+                UserInfoService.getUserInfo().then(
+                    function(result) {
+                        _onSuccess(result);
+                    }, function(error) {
+                        _onFailure(error)
+                    }
+                );
             }
+            _initialize();
 
-            function _displayUserMenu() {
-                $log.info('user-info:' + UserInfoService.getDisplayName())
-                RIPE.username = UserInfoService.getDisplayName();
+            function _onSuccess(result) {
+                $log.info('Ppupulate upper right with: ' + JSON.stringify(result));
+                RIPE.username = result.displayName;
                 RIPE.usermenu = {
-                    'User details': [['Profile', 'https://access.ripe.net/profile'], ['Logout', 'https://access.ripe.net/logout']]
+                    'User details': [['Profile', loginUrl + '/profile'], ['Logout', loginUrl + '/logout']]
                 };
-                RIPE.userimg =  'https://access.ripe.net/picture/' + UserInfoService.getUuid();
+                RIPE.userimg =  loginUrl + '/picture/' + result.uuid;
                 init_user_menu();
                 display_user_menu();
+            }
+
+            function _onFailure(error) {
+                var redirectUrl =  loginUrl + '?originalUrl=' + $location.absUrl();
+                $log.info('Redirecting to ' + redirectUrl)
+                $window.location.href = redirectUrl;
             }
         }
 ]);

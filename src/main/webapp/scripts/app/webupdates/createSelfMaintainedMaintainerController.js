@@ -22,8 +22,6 @@ angular.module('webUpdates')
                 $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
                 $scope.admincSyntax = WhoisResources.getAttributeSyntax($scope.objectType, 'admin-c');
 
-                $scope.ssoUserName = undefined;
-
                 $scope.adminC = {
                     object: [],
                     alternatives: []
@@ -46,15 +44,15 @@ angular.module('webUpdates')
                     $scope.onAdminCAdded(item);
                 }
 
-
-                if( _.isUndefined(UserInfoService.getUsername()) ) {
-                    // kick off ajax-call to fetch email address of logged-in user
-                    UserInfoService.init(_onSsoInfoAvailable);
-                } else {
-                    $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', UserInfoService.getUserInfo().username);
-                    $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + UserInfoService.getUserInfo().username);
-                }
-                $log.info('attrs-initial:' + JSON.stringify($scope.maintainerAttributes));
+                // kick off ajax-call to fetch email address of logged-in user
+                UserInfoService.getUserInfo().then(
+                    function (result) {
+                        $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', result.username);
+                        $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + result.username);
+                    }, function (errpr) {
+                        AlertService.setGlobalError('Error fetching SSO information');
+                    }
+                );
             }
             _initialise();
 
@@ -140,15 +138,6 @@ angular.module('webUpdates')
                     return i.name === 'admin-c' && i.value === item.key;
                 });
             };
-
-            function _onSsoInfoAvailable() {
-                $log.info('_onSsoInfoAvailable:' + UserInfoService.getUsername());
-                $scope.ssoUserName = UserInfoService.getUsername();
-                if( $scope.ssoUserName ) {
-                    $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', UserInfoService.getUserInfo().username);
-                    $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + UserInfoService.getUserInfo().username);
-                }
-            }
 
         }]);
 
