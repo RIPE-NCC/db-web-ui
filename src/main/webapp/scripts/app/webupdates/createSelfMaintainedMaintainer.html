@@ -38,7 +38,7 @@
                 <label>{{attribute.name}}</label>
                 <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
 
-                <input type="text" name="mntner" ng-model="attribute.value"
+                <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
                        ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control"
                        typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                        typeahead-min-length="2"/>

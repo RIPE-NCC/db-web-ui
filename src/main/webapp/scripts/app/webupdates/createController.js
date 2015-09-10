@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', 'WhoisResources', 'MessageStore', 'CredentialsService','RestService', '$q', 'ModalService', 'MntnerService', 'AlertService',
-        function ($scope, $stateParams, $state, $log, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService, MntnerService, AlertService) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window', 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService', 'MntnerService', 'AlertService', 'ErrorReporterService',
+        function ($scope, $stateParams, $state, $log, $window, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService, MntnerService, AlertService, ErrorReporterService) {
 
             // exposed methods called from html fragment
             $scope.onMntnerAdded = onMntnerAdded;
@@ -54,12 +54,12 @@ angular.module('webUpdates')
                 $scope.objectType = $stateParams.objectType;
                 $scope.name = $stateParams.name;
 
-                $log.info('Url params: source:'+ $scope.source +'. type:' + $scope.objectType + ', uid' + $scope.name );
+                $log.info('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid' + $scope.name);
 
                 // initialize data
                 $scope.maintainers = {
                     sso: [],
-                    objectOriginal:[],
+                    objectOriginal: [],
                     object: [],
                     alternatives: [],
                 };
@@ -67,7 +67,7 @@ angular.module('webUpdates')
                 $scope.attributes = [];
 
                 $scope.mntbyDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'mnt-by');
-                $scope.mntbySyntax =      WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
+                $scope.mntbySyntax = WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
 
                 $scope.CREATE_OPERATION = 'Create';
                 $scope.MODIFY_OPERATION = 'Modify';
@@ -78,7 +78,7 @@ angular.module('webUpdates')
 
                     // Populate empty attributes based on meta-info
                     var mandatoryAttributesOnObjectType = WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType);
-                    if(_.isEmpty(mandatoryAttributesOnObjectType)) {
+                    if (_.isEmpty(mandatoryAttributesOnObjectType)) {
                         $state.transitionTo('notFound');
                         return;
                     }
@@ -94,7 +94,7 @@ angular.module('webUpdates')
                     $scope.operation = $scope.MODIFY_OPERATION;
 
                     // Start empty, and populate with rest-result
-                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,[]);
+                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, []);
 
                     _fetchDataForModify();
                 }
@@ -104,7 +104,7 @@ angular.module('webUpdates')
              * Methods called from the html-teplate
              */
 
-            function onMntnerAdded(item)   {
+            function onMntnerAdded(item) {
 
                 // enrich with new-flag
                 $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, $scope.maintainers.object);
@@ -117,7 +117,7 @@ angular.module('webUpdates')
                     return;
                 }
 
-                $log.debug('onMntnerAdded:'  + JSON.stringify(item) + ' object mntners now:' + JSON.stringify($scope.maintainers.object));
+                $log.debug('onMntnerAdded:' + JSON.stringify(item) + ' object mntners now:' + JSON.stringify($scope.maintainers.object));
                 $log.debug('onMntnerAdded: attributes' + JSON.stringify($scope.attributes));
             }
 
@@ -131,7 +131,7 @@ angular.module('webUpdates')
                     _removeMntnerFromAttrs(item);
                 }
 
-                $log.debug('onMntnerRemoved: ' + JSON.stringify(item) + ' object mntners now:' +  JSON.stringify($scope.maintainers.object));
+                $log.debug('onMntnerRemoved: ' + JSON.stringify(item) + ' object mntners now:' + JSON.stringify($scope.maintainers.object));
                 $log.debug('onMntnerRemoved: attributes' + JSON.stringify($scope.attributes));
             }
 
@@ -144,7 +144,7 @@ angular.module('webUpdates')
             }
 
             function hasSSo(mntner) {
-                if(_.isUndefined(mntner.auth)) {
+                if (_.isUndefined(mntner.auth)) {
                     return false;
                 }
                 return _.any(mntner.auth, function (i) {
@@ -153,7 +153,7 @@ angular.module('webUpdates')
             }
 
             function hasPgp(mntner) {
-                if(_.isUndefined(mntner.auth)) {
+                if (_.isUndefined(mntner.auth)) {
                     return false;
                 }
                 return _.any(mntner.auth, function (i) {
@@ -162,7 +162,7 @@ angular.module('webUpdates')
             }
 
             function hasMd5(mntner) {
-                if(_.isUndefined(mntner.auth)) {
+                if (_.isUndefined(mntner.auth)) {
                     return false;
                 }
 
@@ -172,14 +172,14 @@ angular.module('webUpdates')
             }
 
             function isNew(mntner) {
-                if(_.isUndefined(mntner.isNew)) {
+                if (_.isUndefined(mntner.isNew)) {
                     return false;
                 }
                 return mntner.isNew;
             }
 
             function needToLockLastMntner() {
-                if( $scope.name && $scope.maintainers.object.length === 1 ) {
+                if ($scope.name && $scope.maintainers.object.length === 1) {
                     // only lock last for modify
                     return true;
                 }
@@ -189,12 +189,12 @@ angular.module('webUpdates')
             function mntnerAutocomplete(query) {
                 // need to typed characters
                 if (query.length >= 2) {
-                    RestService.autocomplete( 'mnt-by', query, true, ['auth']).then(
+                    RestService.autocomplete('mnt-by', query, true, ['auth']).then(
                         function (data) {
                             // mark new
                             $scope.maintainers.alternatives = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
                                 // prevent mntners on selected list to appear
-                                    _stripAlreadySelected(_enrichWithMine(data)));
+                                _stripAlreadySelected(_enrichWithMine(data)));
                         }
                     );
                 }
@@ -238,7 +238,9 @@ angular.module('webUpdates')
 
             function displayAddAttributeDialog(attr) {
                 ModalService.openAddAttributeModal(WhoisResources.getAddableAttributes($scope.objectType))
-                    .then(function (selectedItem) { addSelectedAttribute(selectedItem, attr); });
+                    .then(function (selectedItem) {
+                        addSelectedAttribute(selectedItem, attr);
+                    });
             }
 
             function addSelectedAttribute(selectedAttributeType, attr) {
@@ -247,17 +249,17 @@ angular.module('webUpdates')
             }
 
             function displayMd5DialogDialog(attr) {
-                ModalService.openMd5Modal( ).then(
-                    function(authLine) {
+                ModalService.openMd5Modal().then(
+                    function (authLine) {
                         attr.value = authLine;
                     }
                 );
             }
 
             function isToBeDisabled(attribute) {
-                if( attribute.name === 'source' ) {
+                if (attribute.name === 'source') {
                     return true;
-                } else if( $scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
+                } else if ($scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
                     return true;
                 }
                 return false;
@@ -265,14 +267,15 @@ angular.module('webUpdates')
 
             function deleteObject() {
                 ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
-                    function() {},
-                    function(errorResp) {
+                    function () {
+                    },
+                    function (errorResp) {
                         try {
                             var whoisResources = _wrapAndEnrichResources(errorResp);
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, errorResp);
                             AlertService.setErrors(whoisResources);
                         }
-                        catch(err) {
+                        catch (err) {
                             AlertService.setGlobalError('Error deleting object. Please reload and try again.');
                         }
                     }
@@ -287,21 +290,25 @@ angular.module('webUpdates')
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
 
                     // make transition to next display screen
-                    _navigateToDisplayPage($scope.source, $scope.objectType,  whoisResources.getPrimaryKey(),  $scope.operation);
+                    _navigateToDisplayPage($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
                 }
 
                 function _onSubmitError(resp) {
-                    if (!resp.data) {
+                    if (_.isUndefined(resp.data)) {
                         // TIMEOUT: to be handled globally by response interceptor
+                        $log.error('Response not understood');
                     } else {
                         var whoisResources = _wrapAndEnrichResources(resp.data);
                         _validateForm();
                         AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
                         AlertService.setErrors(whoisResources);
+                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
                     }
                 }
 
-                if (_validateForm()) {
+                if (!_validateForm()) {
+                    ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes);
+                } else {
                     _stripNulls();
                     AlertService.clearErrors();
 
@@ -311,7 +318,7 @@ angular.module('webUpdates')
                     }
 
                     var password;
-                    if( CredentialsService.hasCredentials() ) {
+                    if (CredentialsService.hasCredentials()) {
                         password = CredentialsService.getCredentials().successfulPassword;
                     }
 
@@ -332,7 +339,7 @@ angular.module('webUpdates')
             }
 
             function cancel() {
-                if ( window.confirm('Are you sure?') ) {
+                if (window.confirm('Are you sure?')) {
                     window.history.back();
                 }
             }
@@ -343,7 +350,7 @@ angular.module('webUpdates')
 
             function _fetchDataForCreate() {
                 RestService.fetchMntnersForSSOAccount().then(
-                    function(results) {
+                    function (results) {
                         $scope.maintainers.sso = results;
                         if ($scope.maintainers.sso.length > 0) {
 
@@ -357,12 +364,12 @@ angular.module('webUpdates')
                             });
                             $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
 
-                            $log.info('mntners-sso:'+ JSON.stringify($scope.maintainers.sso));
-                            $log.info('mntners-object-original:'+ JSON.stringify($scope.maintainers.objectOriginal));
-                            $log.info('mntners-object:'+ JSON.stringify($scope.maintainers.object));
+                            $log.info('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
+                            $log.info('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
+                            $log.info('mntners-object:' + JSON.stringify($scope.maintainers.object));
 
                         }
-                    }, function(error) {
+                    }, function (error) {
                         $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                     }
@@ -372,19 +379,21 @@ angular.module('webUpdates')
             function _fetchDataForModify() {
 
                 var password = null;
-                if( CredentialsService.hasCredentials()) {
+                if (CredentialsService.hasCredentials()) {
                     password = CredentialsService.getCredentials().successfulPassword;
                 }
                 // wait untill both have completed
-                $q.all( { mntners:        RestService.fetchMntnersForSSOAccount(),
-                          objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password)}).then(
+                $q.all({
+                    mntners: RestService.fetchMntnersForSSOAccount(),
+                    objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password)
+                }).then(
                     function (results) {
 
-                        $log.info('object to modify:'+ JSON.stringify(results.objectToModify));
+                        $log.info('object to modify:' + JSON.stringify(results.objectToModify));
 
                         // store mntners for SSO account
                         $scope.maintainers.sso = results.mntners;
-                        $log.info('maintainers.sso:'+ JSON.stringify($scope.maintainers.sso));
+                        $log.info('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
                         // store object to modify
                         _wrapAndEnrichResources(results.objectToModify);
@@ -400,28 +409,28 @@ angular.module('webUpdates')
 
                         // fetch details of all selected maintainers concurrently
                         RestService.detailsForMntners($scope.maintainers.object).then(
-                            function( result ) {
+                            function (result) {
                                 // result returns an array for each mntner
 
                                 $scope.maintainers.objectOriginal = _.flatten(result);
-                                $log.info('mntners-object-original:'+ JSON.stringify($scope.maintainers.objectOriginal));
+                                $log.info('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
 
                                 // of course none of the initial ones are new
                                 $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, _.flatten(result));
-                                $log.info('mntners-object:'+ JSON.stringify($scope.maintainers.object));
+                                $log.info('mntners-object:' + JSON.stringify($scope.maintainers.object));
 
                                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                                     _performAuthentication();
                                     return;
                                 }
-                            }, function(error) {
+                            }, function (error) {
                                 $log.error('Error fetching sso-mntners details' + JSON.stringify(error));
                                 AlertService.setGlobalError('Error fetching maintainer details');
                             });
                     }
                 ).catch(
                     function (error) {
-                        if( error && error.data) {
+                        if (error && error.data) {
                             $log.error('Error fetching object:' + JSON.stringify(error));
                             var whoisResources = _wrapAndEnrichResources(error.data);
                             AlertService.setErrors(whoisResources);
@@ -435,7 +444,7 @@ angular.module('webUpdates')
 
             function _copyAddedMntnerToAttributes(mntnerName) {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.addAttrsSorted('mnt-by', [
-                    { name: 'mnt-by', value: mntnerName}
+                    {name: 'mnt-by', value: mntnerName}
                 ]));
             }
 
@@ -463,9 +472,9 @@ angular.module('webUpdates')
                 });
 
                 // determine if mntner is mine
-                var selected = _.map(mntnersInObject, function(mntnerAttr) {
+                var selected = _.map(mntnersInObject, function (mntnerAttr) {
                     return {
-                        type:'mntner',
+                        type: 'mntner',
                         key: mntnerAttr.value,
                         mine: _.contains(_.map($scope.maintainers.sso, 'key'), mntnerAttr.value)
                     };
@@ -491,6 +500,20 @@ angular.module('webUpdates')
                 return $scope.attributes.validate();
             }
 
+            function reportValidationErrors(type, objectType, globalErrors, attributes) {
+                _.each(globalErrors, function(item) {
+                    $log.error('*** Global validation error: type: ' + type + ', objectType: ' + objectType + ', description:' + item.plainText);
+                });
+                _.each(attributes, function(item) {
+                    if( !_.isUndefined(item.$$error)) {
+                        $log.error('*** Field specfic validation error: type: ' + type + ', objectType: ' + objectType + ', attributeType: ' + item.name +  ', description:' + item.$$error);
+                        //try {
+                        //    $window.dataLayer.push({obhje});
+                        //} catch (e) {}
+                    }
+                });
+            }
+
             function _stripNulls() {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeNullAttributes());
             }
@@ -504,9 +527,9 @@ angular.module('webUpdates')
             }
 
             function _enrichWithMine(mntners) {
-                return  _.map(mntners, function(mntner) {
+                return _.map(mntners, function (mntner) {
                     // search in selected list
-                    if(_isMntnerOnlist($scope.maintainers.sso, mntner)) {
+                    if (_isMntnerOnlist($scope.maintainers.sso, mntner)) {
                         mntner.mine = true;
                     } else {
                         mntner.mine = false;
@@ -517,8 +540,8 @@ angular.module('webUpdates')
             }
 
             function _refreshObjectIfNeeded(associationResp) {
-                if( $scope.operation === 'Modify' && $scope.objectType === 'mntner') {
-                    if( associationResp ) {
+                if ($scope.operation === 'Modify' && $scope.objectType === 'mntner') {
+                    if (associationResp) {
                         _wrapAndEnrichResources(associationResp);
                     } else {
                         var password = null;
@@ -545,7 +568,7 @@ angular.module('webUpdates')
             }
 
             function _navigateAway() {
-                if( $scope.operation === 'Modify') {
+                if ($scope.operation === 'Modify') {
                     _navigateToDisplayPage($scope.source, $scope.objectType, $scope.name, undefined);
                 } else {
                     $state.transitionTo('select');
@@ -563,8 +586,8 @@ angular.module('webUpdates')
 
             function _performAuthentication() {
                 $log.info('Perform authentication');
-                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal,$scope.maintainers.object);
-                if( mntnersWithPasswords.length === 0 ) {
+                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
+                if (mntnersWithPasswords.length === 0) {
                     AlertService.setGlobalError('You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have password');
                 } else {
 
@@ -586,7 +609,7 @@ angular.module('webUpdates')
                             $log.info('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
                             $log.info('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
 
-                            if( associationResp ) {
+                            if (associationResp) {
                                 // use response from successfull association
                                 _wrapAndEnrichResources(associationResp);
                             }
@@ -598,5 +621,6 @@ angular.module('webUpdates')
                     );
                 }
             }
+
 
         }]);

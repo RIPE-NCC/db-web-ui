@@ -25,6 +25,10 @@ angular.module('dbWebApp')
             $rootScope.infos = [];
         };
 
+        alertService.getErrors = function () {
+            return $rootScope.errors;
+        };
+
         alertService.setErrors = function (whoisResources) {
             $rootScope.errors = whoisResources.getGlobalErrors();
             $rootScope.warnings = whoisResources.getGlobalWarnings();

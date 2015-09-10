@@ -2,8 +2,8 @@
 
 angular.module('webUpdates')
     .controller('CreatePersonMntnerPairController', [
-        '$scope', '$state', '$log', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
-        function ($scope, $state, $log, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
+        '$scope', '$state', '$log', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore','ErrorReporterService',
+        function ($scope, $state, $log, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService) {
 
             $scope.cancel = cancel;
             $scope.submit = submit;
@@ -48,7 +48,11 @@ angular.module('webUpdates')
                     $scope.mntnerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
                 }
 
-                if (_validateForm()) {
+                if (!_validateForm()) {
+                    ErrorReporterService.log('Create', 'person', AlertService.getErrors(), $scope.personAttributes);
+                    ErrorReporterService.log('Create', 'mntner', AlertService.getErrors(), $scope.mntnerAttributes);
+
+                } else {
                     AlertService.clearErrors();
 
                     RestService.createPersonMntner($scope.source,
@@ -68,9 +72,14 @@ angular.module('webUpdates')
                                 AlertService.setGlobalError('Recieved unexpected response');
                             } else {
                                 var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                _validateForm();
                                 AlertService.addErrors(whoisResources);
                                 AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
                                 AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
+
+                                ErrorReporterService.log('Create','post-submit', 'person', AlertService.getErrors(), $scope.personAttributes);
+                                ErrorReporterService.log('Create','post-submit', 'mntner', AlertService.getErrors(), $scope.mntnerAttributes);
+
                             }
                         });
 

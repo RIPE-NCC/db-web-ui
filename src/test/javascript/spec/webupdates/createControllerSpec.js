@@ -2,7 +2,7 @@
 
 describe('webUpdates: CreateController', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $scope, $state, $stateParams, $httpBackend, $window;
     var MessageStore;
     var WhoisResources;
     var CredentialsService;
@@ -16,7 +16,7 @@ describe('webUpdates: CreateController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_, _ModalService_, _$q_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,_MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_, _ModalService_, _$q_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -24,6 +24,7 @@ describe('webUpdates: CreateController', function () {
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
+            $window =_$window_;
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             CredentialsService = _CredentialsService_;
@@ -42,7 +43,7 @@ describe('webUpdates: CreateController', function () {
             $stateParams.name = undefined;
 
             _$controller_('CreateController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -361,7 +362,7 @@ describe('webUpdates: CreateController', function () {
 
 describe('webUpdates: CreateController init with failures', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $scope, $state, $stateParams, $httpBackend, $window;
     var MessageStore;
     var WhoisResources;
     var CredentialsService;
@@ -372,7 +373,7 @@ describe('webUpdates: CreateController init with failures', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -384,6 +385,7 @@ describe('webUpdates: CreateController init with failures', function () {
             WhoisResources = _WhoisResources_;
             CredentialsService = _CredentialsService_;
             MntnerService = _MntnerService_;
+            $window = _$window_;
 
             $httpBackend.whenGET('api/user/mntners').respond(404);
 
@@ -392,7 +394,7 @@ describe('webUpdates: CreateController init with failures', function () {
             $stateParams.name = undefined;
 
             _$controller_('CreateController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 
 
@@ -418,21 +420,20 @@ describe('webUpdates: CreateController init with failures', function () {
 
 describe('webUpdates: CreateController init with nonexistent obj type', function () {
 
-    var $scope, $state, $httpBackend;
+    var $scope, $state, $httpBackend, $window;
     var OBJECT_TYPE = 'blablabla';
     var SOURCE = 'RIPE';
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _$window_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
-
             $state =  _$state_;
-
             $httpBackend = _$httpBackend_;
+            $window = _$window_;
 
             var userMaintainers = [
                 {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}
@@ -448,7 +449,7 @@ describe('webUpdates: CreateController init with nonexistent obj type', function
             spyOn($state, 'transitionTo');
 
             _$controller_('CreateController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 
 

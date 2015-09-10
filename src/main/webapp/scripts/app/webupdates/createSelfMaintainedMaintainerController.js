@@ -4,8 +4,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore',
-        function ($scope, $state, $log, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore) {
+    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore', 'ErrorReporterService',
+        function ($scope, $state, $log, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore,ErrorReporterService) {
 
             var MNT_TYPE = 'mntner';
 
@@ -65,7 +65,7 @@ angular.module('webUpdates')
 
                 $scope.maintainerAttributes.clearErrors();
                 if(!$scope.maintainerAttributes.validate()) {
-                    $log.error('Error validating attributes');
+                    ErrorReporterService.log('Create', MNT_TYPE, AlertService.getErrors(), $scope.maintainerAttributes);
                 } else {
                    _createObject();
                 }
@@ -95,6 +95,7 @@ angular.module('webUpdates')
                         $log.error('create error:' +  JSON.stringify(error));
                         AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
                         AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
+                        ErrorReporterService.log('Create', MNT_TYPE, AlertService.getErrors(), $scope.maintainerAttributes);
                     }
                 );
             }
