@@ -53,8 +53,10 @@ describe('webUpdates: SelectController', function () {
 
         $httpBackend.flush();
 
-        // TODO: error-interceptor is responsible for flagging redirect
-        //expect($window.location.path).toBe('http://www,google.com');
+        expect($state.current.name).toBe('create');
+        expect($stateParams.source).toBe(SOURCE);
+        expect($stateParams.objectType).toBe(OBJECT_TYPE);
+        // Note that the  error-interceptor is responsible for flagging redirect to crowd
     });
 
     it('should navigate to create screen when logged in', function () {
@@ -77,7 +79,6 @@ describe('webUpdates: SelectController', function () {
 
         $httpBackend.flush();
 
-        // TODO
         expect($state.current.name).toBe('create');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe(OBJECT_TYPE);

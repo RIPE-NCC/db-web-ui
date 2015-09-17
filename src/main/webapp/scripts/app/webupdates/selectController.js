@@ -25,7 +25,7 @@ angular.module('webUpdates')
              * Methods called from the html-teplate
              */
             $scope.labelForSource = function (src) {
-                return src === 'RIPE' ? 'Production database' : 'Test database (currently not available)';
+                return src === 'RIPE' ? 'RIPE    production database' : 'Test database (currently not available)';
             }
 
             $scope.navigateToCreate = function () {

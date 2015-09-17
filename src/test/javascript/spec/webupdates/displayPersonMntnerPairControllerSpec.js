@@ -193,7 +193,6 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         $scope.navigateToSelect();
 
         expect($state.current.name).toBe('select');
-
     });
 
     it('should navigate to modify person screen', function () {
@@ -202,13 +201,15 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
 
         createController();
 
-        // TODO fix
-        //$scope.navigateToModifyPerson();
-        //
-        //expect($state.current.name).toBe('modify');
-        //expect($stateParams.source).toBe(SOURCE);
-        //expect($stateParams.objectType).toBe('person');
-        //expect($stateParams.name).toBe(PERSON_NAME);
+        $scope.navigateToModifyPerson();
+
+        // fragment of new target view will be fetched
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('modify');
+        expect($stateParams.source).toBe(SOURCE);
+        expect($stateParams.objectType).toBe('person');
+        expect($stateParams.name).toBe(PERSON_NAME);
     });
 
 
@@ -218,13 +219,15 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
 
         createController();
 
-        // TODO fix
-        //$scope.navigateToModifyMntner();
-        //
-        //expect($state.current.name).toBe('modify');
-        //expect($stateParams.source).toBe(SOURCE);
-        //expect($stateParams.objectType).toBe('mntner');
-        //expect($stateParams.name).toBe(MNTNER_NAME);
+        $scope.navigateToModifyMntner();
+
+        // fragment of new target view will be fetched
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('modify');
+        expect($stateParams.source).toBe(SOURCE);
+        expect($stateParams.objectType).toBe('mntner');
+        expect($stateParams.name).toBe(MNTNER_NAME);
     });
 
 });
