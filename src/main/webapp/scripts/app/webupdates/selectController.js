@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('SelectController', ['$scope', '$state', 'WhoisResources',
-        function ($scope, $state, WhoisResources) {
+    .controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService',
+        function ($scope, $state, WhoisResources, UserInfoService) {
             /*
              * UI initialisation
              */
@@ -14,14 +14,25 @@ angular.module('webUpdates')
                 objectType: $scope.objectTypes[0]
             };
 
+            $scope.loggedIn = false;
+            UserInfoService.getUserInfo().then(
+                function (userData) {
+                    $scope.loggedIn = true;
+                }
+            );
+
             /*
              * Methods called from the html-teplate
              */
-             $scope.labelForSource = function(src) {
+            $scope.labelForSource = function (src) {
                 return src === 'RIPE' ? 'Production database' : 'Test database (currently not available)';
             }
+
             $scope.navigateToCreate = function () {
-                $state.transitionTo('create', {source:$scope.selected.source, objectType:$scope.selected.objectType});
+                $state.transitionTo('create', {
+                    source: $scope.selected.source,
+                    objectType: $scope.selected.objectType
+                });
             };
 
         }]);

@@ -54,7 +54,7 @@ angular.module('webUpdates')
                 $scope.objectType = $stateParams.objectType;
                 $scope.name = $stateParams.name;
 
-                $log.info('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid' + $scope.name);
+                $log.info('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
 
                 // initialize data
                 $scope.maintainers = {
