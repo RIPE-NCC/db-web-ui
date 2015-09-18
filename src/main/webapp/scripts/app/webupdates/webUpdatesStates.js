@@ -6,7 +6,7 @@ angular.module('webUpdates')
 
         $stateProvider
             .state('createPersonMntnerPair', {
-                url: '/webupdates/create/:source/person/self',
+                url: '/webupdates/create/person/self',
                 templateUrl: 'scripts/app/webupdates/createPersonMntnerPair.html',
                 controller: 'CreatePersonMntnerPairController'
             })
