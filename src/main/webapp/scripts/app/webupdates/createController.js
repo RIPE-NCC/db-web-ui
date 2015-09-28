@@ -224,7 +224,6 @@ angular.module('webUpdates')
 
             function duplicateAttribute(attr) {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.duplicateAttribute(attr));
-                $log.debug('duplicateAttribute: attributes' + JSON.stringify($scope.attributes));
             }
 
             function canAttributeBeRemoved(attr) {
@@ -233,7 +232,6 @@ angular.module('webUpdates')
 
             function removeAttribute(attr) {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeAttribute(attr));
-                $log.debug('removeAttribute: attributes' + JSON.stringify($scope.attributes));
             }
 
             function displayAddAttributeDialog(attr) {

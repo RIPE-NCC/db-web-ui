@@ -334,10 +334,11 @@ angular.module('dbWebApp')
             _.each(this, function(next){
                 result.push(next);
                 if (next.name === attr.name && next.value === attr.value) {
+                    console.log( "next:" + JSON.stringify(next));
                     result.push(
                         {
                             name:attr.name, $$meta:{
-                            $$mandatory:next.$$mandatory,
+                            $$mandatory:next.$$meta.mandatory,
                             $$multiple:next.$$meta.multiple,
                             $$primaryKey:next.$$meta.primaryKey,
                             $$description:next.$$description,
@@ -358,7 +359,7 @@ angular.module('dbWebApp')
 
             if( attr.$$meta.$$mandatory === false ) {
                 status = true;
-            } else if(attr.$$meta.$$multiple && this.getAllAttributesWithValueOnName(attr.name).length > 1 ) {
+            } else if(attr.$$meta.$$multiple && this.getAllAttributesOnName(attr.name).length > 1 ) {
                 status = true;
             }
 
