@@ -12,7 +12,6 @@ angular.module('interceptors')
 
             if( httpStatus === 401 || httpStatus === 403 ) {
                 var unProtectedPages = [
-                    '/',
                     '/webupdates/display/.*',
                     '/webupdates/select'
                 ];
