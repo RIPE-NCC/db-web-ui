@@ -23,11 +23,7 @@ angular.module('dbWebApp')
             return WhoisMetaService.enrichAttributesWithMetaInfo(objectTypeName, attrs);
         };
 
-        this.getAddableAttributes = function(objectType) {
-            return WhoisMetaService.getAddableAttributes(objectType);
-        };
-
-        this.getAllAttributesOnObjectType = function (objectTypeName) {
+         this.getAllAttributesOnObjectType = function (objectTypeName) {
             return WhoisMetaService.getAllAttributesOnObjectType(objectTypeName);
         };
 
@@ -334,7 +330,6 @@ angular.module('dbWebApp')
             _.each(this, function(next){
                 result.push(next);
                 if (next.name === attr.name && next.value === attr.value) {
-                    console.log( "next:" + JSON.stringify(next));
                     result.push(
                         {
                             name:attr.name, $$meta:{
@@ -377,6 +372,23 @@ angular.module('dbWebApp')
             });
 
             return result;
+        };
+
+        var getAddableAttributes = function(objectType,attributes) {
+
+            return _.filter(WhoisMetaService.getAllAttributesOnObjectType(objectType), function (attr) {
+                if( attr.$$meta.$$multiple === true ) {
+                    return true;
+                } else if( attr.$$meta.$$mandatory === false ) {
+                    if( !_.any(attributes,
+                        function (a) {
+                            return a.name === attr.name;
+                        })) {
+                        return true;
+                    }
+                }
+                return false;
+            });
         };
 
         var addAttributeAfterType = function(attr, after) {
@@ -426,6 +438,7 @@ angular.module('dbWebApp')
             attrs.addAttrsSorted = addAttrsSorted;
             attrs.validate = validate;
             attrs.clearErrors = clearErrors;
+            attrs.getAddableAttributes = getAddableAttributes;
 
             attrs.removeAttribute = removeAttribute;
             attrs.duplicateAttribute = duplicateAttribute;

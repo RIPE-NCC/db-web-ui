@@ -460,6 +460,32 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
+    it('detact if an attribute can be added', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'person',        value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},
+            {name: 'address',       value: 'b', $$meta:{$$mandatory:true,  $$multiple:true}},
+            {name: 'address',       value: 'c', $$meta:{$$mandatory:true,  $$multiple:true}},
+            {name: 'phone',         value: 'd', $$meta:{$$mandatory:true,  $$multiple:true}},
+            {name: 'nic-hdl',       value: 'e', $$meta:{$$mandatory:true,  $$multiple:false}},
+            {name: 'last-modified', value: 'f', $$meta:{$$mandatory:false, $$multiple:false}},
+            {name: 'source',        value: 'g', $$meta:{$$mandatory:true,  $$multiple:false}},
+        ]);
+
+        var addableAttrs = attrs.getAddableAttributes('person', attrs );
+        expect(addableAttrs[0].name).toBe('address');
+        expect(addableAttrs[1].name).toBe('phone');
+        expect(addableAttrs[2].name).toBe('fax-no');
+        expect(addableAttrs[3].name).toBe('e-mail');
+        expect(addableAttrs[4].name).toBe('org');
+        expect(addableAttrs[5].name).toBe('remarks');
+        expect(addableAttrs[6].name).toBe('notify');
+        expect(addableAttrs[7].name).toBe('abuse-mailbox');
+        expect(addableAttrs[8].name).toBe('mnt-by');
+        expect(addableAttrs[9].name).toBe('changed');
+        expect(addableAttrs[10].name).toBe('created');
+        expect(addableAttrs.length).toBe(11);
+    });
+
     it('detact if an attribute can be removed', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'person',        value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},

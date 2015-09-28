@@ -235,7 +235,7 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal(WhoisResources.getAddableAttributes($scope.objectType))
+                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType,$scope.attributes ))
                     .then(function (selectedItem) {
                         addSelectedAttribute(selectedItem, attr);
                     });
