@@ -84,5 +84,34 @@ describe('webUpdates: SelectController', function () {
         expect($stateParams.objectType).toBe(OBJECT_TYPE);
     });
 
+    it('should navigate to create self maintained mntner screen when logged in', function () {
+        selectController();
+
+        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+            return [200, {
+                username:"test@ripe.net",
+                displayName:"Test User",
+                expiryDate:[2015,9,9,14,9,27,863],
+                uuid:"aaaa-bbbb-cccc-dddd",
+                active:true
+            }, {}];
+        });
+        $httpBackend.flush();
+
+        expect($scope.loggedIn).toBe(true);
+
+        $scope.selected = {
+            source: SOURCE,
+            objectType: "mntner"
+        };
+
+        $scope.navigateToCreate();
+
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('createSelfMnt');
+        expect($stateParams.source).toBe(SOURCE);
+    });
+
 });
 

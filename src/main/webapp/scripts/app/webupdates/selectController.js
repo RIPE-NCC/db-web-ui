@@ -29,10 +29,16 @@ angular.module('webUpdates')
             }
 
             $scope.navigateToCreate = function () {
-                $state.transitionTo('create', {
-                    source: $scope.selected.source,
-                    objectType: $scope.selected.objectType
-                });
+                if ($scope.selected.objectType === 'mntner'){
+                    $state.transitionTo('createSelfMnt', {
+                        source: $scope.selected.source,
+                    });
+                } else {
+                    $state.transitionTo('create', {
+                        source: $scope.selected.source,
+                        objectType: $scope.selected.objectType
+                    });
+                }
             };
 
         }]);
