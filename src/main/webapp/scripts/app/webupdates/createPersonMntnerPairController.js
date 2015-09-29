@@ -8,6 +8,8 @@ angular.module('webUpdates')
             $scope.cancel = cancel;
             $scope.submit = submit;
             $scope.isFormValid = isFormValid;
+            $scope.fieldVisited = fieldVisited;
+
             _initialisePage();
 
             function _initialisePage() {
@@ -104,6 +106,22 @@ angular.module('webUpdates')
             function cancel() {
                 if ( window.confirm('Are you sure?') ) {
                     window.history.back();
+                }
+            }
+
+            function fieldVisited( objectName, attr ) {
+                if (attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                        function (data) {
+                            if(_.any(data, function(item) {
+                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                })) {
+                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
+                            } else {
+                                attr.$$error = '';
+                            }
+                        }
+                    );
                 }
             }
 

@@ -16,6 +16,7 @@ angular.module('webUpdates')
             $scope.onAdminCAdded = onAdminCAdded;
             $scope.onAdminCRemoved = onAdminCRemoved;
             $scope.isFormValid = isFormValid;
+            $scope.fieldVisited = fieldVisited;
 
             function _initialise() {
 
@@ -88,6 +89,22 @@ angular.module('webUpdates')
            function cancel() {
                 if ( window.confirm('Are you sure?') ) {
                     window.history.back();
+                }
+            }
+
+            function fieldVisited( attr ) {
+                if (attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                        function (data) {
+                            if(_.any(data, function(item) {
+                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                })) {
+                                attr.$$error = attr.name + ' ' + attr.value + ' already exists';
+                            } else {
+                                attr.$$error = '';
+                            }
+                        }
+                    );
                 }
             }
 

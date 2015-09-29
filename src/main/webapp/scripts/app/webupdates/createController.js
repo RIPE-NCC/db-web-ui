@@ -30,7 +30,7 @@ angular.module('webUpdates')
             $scope.addSelectedAttribute = addSelectedAttribute;
 
             $scope.displayMd5DialogDialog = displayMd5DialogDialog;
-
+            $scope.fieldVisited = fieldVisited;
             $scope.deleteObject = deleteObject;
 
             $scope.submit = submit;
@@ -214,6 +214,22 @@ angular.module('webUpdates')
                         }, function () {
                             return [];
                         });
+                }
+            }
+
+            function fieldVisited( attr ) {
+                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                        function (data) {
+                            if(_.any(data, function(item) {
+                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                })) {
+                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
+                            } else {
+                                attr.$$error = '';
+                            }
+                        }
+                    );
                 }
             }
 
