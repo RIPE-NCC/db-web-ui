@@ -94,7 +94,7 @@
         </li>
     </ul>
     <span ng-show="operation == MODIFY_OPERATION">
-        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || submitInProgress" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
         <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
     </span>
     <span ng-show="operation == CREATE_OPERATION">

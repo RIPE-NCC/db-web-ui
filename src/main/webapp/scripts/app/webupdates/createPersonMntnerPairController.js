@@ -11,6 +11,8 @@ angular.module('webUpdates')
             _initialisePage();
 
             function _initialisePage() {
+                $scope.submitInProgress = false;
+
                 AlertService.clearErrors();
 
                 $scope.ssoUserName = undefined;
@@ -57,9 +59,11 @@ angular.module('webUpdates')
                 } else {
                     AlertService.clearErrors();
 
+                    $scope.submitInProgress = true;
                     RestService.createPersonMntner($scope.source,
                         WhoisResources.turnAttrsIntoWhoisObjects([$scope.personAttributes, $scope.mntnerAttributes])).then(
                         function(resp) {
+                            $scope.submitInProgress = false;
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
                             var personUid = _addObjectOfTypeToCache(whoisResources, 'person', 'nic-hdl');
@@ -69,6 +73,7 @@ angular.module('webUpdates')
 
                         },
                         function(error) {
+                            $scope.submitInProgress = false;
                             if(_.isUndefined(error.data.objects) || _.isUndefined(error.data.errormessages) ) {
                                 $log.error('Got unexpected error response:' + JSON.stringify(error) );
                                 AlertService.setGlobalError('Recieved unexpected response');

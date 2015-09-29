@@ -42,6 +42,8 @@ angular.module('webUpdates')
 
             function _initialisePage() {
 
+                $scope.submitInProgress = false;
+
                 AlertService.clearErrors();
 
                 // workaround for problem with order of loading ui-select fragments
@@ -284,6 +286,7 @@ angular.module('webUpdates')
             function submit() {
 
                 function _onSubmitSuccess(resp) {
+                    $scope.submitInProgress = false;
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display-screen can fetch it from here
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
@@ -293,6 +296,7 @@ angular.module('webUpdates')
                 }
 
                 function _onSubmitError(resp) {
+                    $scope.submitInProgress = false;
                     if (_.isUndefined(resp.data)) {
                         // TIMEOUT: to be handled globally by response interceptor
                         $log.error('Response not understood');
@@ -321,6 +325,7 @@ angular.module('webUpdates')
                         password = CredentialsService.getCredentials().successfulPassword;
                     }
 
+                    $scope.submitInProgress = true;
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,

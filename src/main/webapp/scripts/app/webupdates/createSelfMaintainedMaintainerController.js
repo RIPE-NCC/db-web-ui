@@ -18,6 +18,9 @@ angular.module('webUpdates')
             $scope.isFormValid = isFormValid;
 
             function _initialise() {
+
+                $scope.submitInProgress = false;
+
                 AlertService.clearErrors();
 
                 $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
@@ -93,8 +96,10 @@ angular.module('webUpdates')
 
                 var obj = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
 
+                $scope.submitInProgress = true;
                 RestService.createObject($scope.source, MNT_TYPE, obj)
                     .then(function (resp) {
+                        $scope.submitInProgress = false;
                         $log.info('autocomplete success:' + JSON.stringify(resp));
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
@@ -103,6 +108,7 @@ angular.module('webUpdates')
 
                         $state.transitionTo('display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
                     }, function(error) {
+                        $scope.submitInProgress = false;
                         $log.error('create error:' +  JSON.stringify(error));
                         AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
                         AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
