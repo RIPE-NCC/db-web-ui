@@ -94,11 +94,11 @@
         </li>
     </ul>
     <span ng-show="operation == MODIFY_OPERATION">
-        <button ng-click="submit()" class="blue-button pull-right ga-modifyobj-modify" style="border:0;">Submit</button>
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
         <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
     </span>
     <span ng-show="operation == CREATE_OPERATION">
-        <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Create</button>
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-createobj-create" value="Create" />
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 

@@ -312,6 +312,18 @@ angular.module('dbWebApp')
             return errorFound === false;
         };
 
+        var validateWithoutSettingErrors = function() {
+            var errorFound = false;
+
+            var self = this;
+            _.map(this, function (attr) {
+                if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0 ) {
+                    errorFound = true;
+                }
+            });
+            return errorFound === false;
+        };
+
         var clearErrors = function() {
             _.map(this, function (attr) {
                 attr.$$error = undefined;
@@ -437,6 +449,7 @@ angular.module('dbWebApp')
             attrs.setSingleAttributeOnName = setSingleAttributeOnName;
             attrs.addAttrsSorted = addAttrsSorted;
             attrs.validate = validate;
+            attrs.validateWithoutSettingErrors = validateWithoutSettingErrors;
             attrs.clearErrors = clearErrors;
             attrs.getAddableAttributes = getAddableAttributes;
 

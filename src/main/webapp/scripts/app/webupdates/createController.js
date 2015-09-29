@@ -35,6 +35,7 @@ angular.module('webUpdates')
 
             $scope.submit = submit;
             $scope.cancel = cancel;
+            $scope.isFormValid = isFormValid;
             $scope.isToBeDisabled = isToBeDisabled;
 
             _initialisePage();
@@ -496,6 +497,10 @@ angular.module('webUpdates')
 
             function _validateForm() {
                 return $scope.attributes.validate();
+            }
+
+            function isFormValid() {
+                return $scope.attributes.validateWithoutSettingErrors();
             }
 
             function reportValidationErrors(type, objectType, globalErrors, attributes) {

@@ -15,6 +15,7 @@ angular.module('webUpdates')
             $scope.hasAdminC = hasAdminC;
             $scope.onAdminCAdded = onAdminCAdded;
             $scope.onAdminCRemoved = onAdminCRemoved;
+            $scope.isFormValid = isFormValid;
 
             function _initialise() {
                 AlertService.clearErrors();
@@ -57,10 +58,8 @@ angular.module('webUpdates')
             _initialise();
 
             function submit() {
-                $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+               _populateMissingAttributes();
 
-                var mntner = $scope.maintainerAttributes.getSingleAttributeOnName(MNT_TYPE);
-                $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
                 $log.info('submit attrs:' + JSON.stringify($scope.maintainerAttributes));
 
                 $scope.maintainerAttributes.clearErrors();
@@ -71,7 +70,19 @@ angular.module('webUpdates')
                 }
             };
 
-            function cancel() {
+            function isFormValid() {
+                _populateMissingAttributes();
+                return $scope.maintainerAttributes.validateWithoutSettingErrors();
+            }
+
+           function _populateMissingAttributes() {
+               $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+
+               var mntner = $scope.maintainerAttributes.getSingleAttributeOnName(MNT_TYPE);
+               $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+           }
+
+           function cancel() {
                 if ( window.confirm('Are you sure?') ) {
                     window.history.back();
                 }

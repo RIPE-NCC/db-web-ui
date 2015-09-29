@@ -7,7 +7,7 @@ angular.module('webUpdates')
 
             $scope.cancel = cancel;
             $scope.submit = submit;
-
+            $scope.isFormValid = isFormValid;
             _initialisePage();
 
             function _initialisePage() {
@@ -41,6 +41,8 @@ angular.module('webUpdates')
             }
 
             function submit() {
+
+                _populateMissingAttributes();
 
                 var mntner = $scope.mntnerAttributes.getSingleAttributeOnName('mntner');
                 if( !_.isUndefined(mntner.value)) {
@@ -86,6 +88,14 @@ angular.module('webUpdates')
                 }
             }
 
+            function _populateMissingAttributes() {
+                var mntner = $scope.mntnerAttributes.getSingleAttributeOnName('mntner');
+                if( !_.isUndefined(mntner.value)) {
+                    $scope.personAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+                    $scope.mntnerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+                }
+            }
+
             function cancel() {
                 if ( window.confirm('Are you sure?') ) {
                     window.history.back();
@@ -95,6 +105,13 @@ angular.module('webUpdates')
             function _validateForm(perso) {
                 var personValid =  $scope.personAttributes.validate();
                 var mntnerValid = $scope.mntnerAttributes.validate();
+                return personValid && mntnerValid;
+            }
+
+            function isFormValid() {
+                _populateMissingAttributes();
+                var personValid =  $scope.personAttributes.validateWithoutSettingErrors();
+                var mntnerValid = $scope.mntnerAttributes.validateWithoutSettingErrors();
                 return personValid && mntnerValid;
             }
 

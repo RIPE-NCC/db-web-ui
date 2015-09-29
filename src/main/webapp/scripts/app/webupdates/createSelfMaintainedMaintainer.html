@@ -55,8 +55,7 @@
                 </ul>
             </li>
         </ul>
-        <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Create</button>
-
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-createobj-create" value="Create" />
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
 
         <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a

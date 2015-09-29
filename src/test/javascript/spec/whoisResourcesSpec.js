@@ -376,6 +376,8 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'source',   value: 'd', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
+        expect(attrs.validateWithoutSettingErrors()).toEqual(true);
+
         expect(attrs.validate()).toEqual(true);
         expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
         expect(attrs.getAllAttributesOnName('mnt-by')[0].$$error).toEqual(undefined);
@@ -390,6 +392,8 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'mnt-by',   value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
+
+        expect(attrs.validateWithoutSettingErrors()).toEqual(true);
 
         expect(attrs.validate()).toEqual(true);
         expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
@@ -406,6 +410,8 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
+        expect(attrs.validateWithoutSettingErrors()).toEqual(false);
+
         expect(attrs.validate()).toEqual(false);
         expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual('Mandatory attribute not set');
         expect(attrs.getSingleAttributeOnName('mnt-by').$$error).toEqual(undefined);
@@ -418,6 +424,8 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'mnt-by',   value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
+
+        expect(attrs.validateWithoutSettingErrors()).toEqual(false);
 
         expect(attrs.validate()).toEqual(false);
         expect(attrs.getSingleAttributeOnName('as-block').$$error).toEqual(undefined);
