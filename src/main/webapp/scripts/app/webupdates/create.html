@@ -1,7 +1,7 @@
 <alerts></alerts>
 <form id="createForm">
 
-    <h1>{{operation}} &quot;{{objectType}}&quot; in {{source}}</h1>
+    <h1>{{operation}} &quot;{{objectType}}&quot; object</h1>
 	<section class="form-fields maintainer-fields">
     <strong>Please enter the maintainers you would like to use</strong>
     <article class="maintainer-icons">
@@ -45,7 +45,7 @@
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
 
-            <input type="text" name="{{attribute.name}}" ng-model="attribute.value"
+            <input type="text" name="{{attribute.name}}" ng-model="attribute.value" ng-blur="fieldVisited(attribute)"
                    ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
                    typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"
@@ -57,7 +57,7 @@
             <ul class="input-group-btn">
                 <li>
                     <a id="duplicateAttribute" class="btn btn-default ga-add-dup" title="Add another attribute of this type"
-                                ng-disabled="!canAttributeBeDuplicated(attribute)" ng-click="duplicateAttribute(attribute)" >
+                               ng-click="duplicateAttribute(attribute)"  ng-disabled="!canAttributeBeDuplicated(attribute)" >
                     <span class="fa fa-arrow-down degree-25"></span>
                     </a>
                 </li>
@@ -69,7 +69,7 @@
                 </li>
                 <li>
                     <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
-                       ng-disabled="!canAttributeBeRemoved(attribute)" ng-click="removeAttribute(attribute)" >
+                      ng-click="removeAttribute(attribute)"  ng-disabled="!canAttributeBeRemoved(attribute)" >
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>
@@ -94,11 +94,11 @@
         </li>
     </ul>
     <span ng-show="operation == MODIFY_OPERATION">
-        <button ng-click="submit()" class="blue-button pull-right ga-modifyobj-modify" style="border:0;">Submit</button>
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || submitInProgress" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
         <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
     </span>
     <span ng-show="operation == CREATE_OPERATION">
-        <button ng-click="submit()" class="blue-button pull-right ga-createobj-create" style="border:0;">Create</button>
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-createobj-create" value="Create" />
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 

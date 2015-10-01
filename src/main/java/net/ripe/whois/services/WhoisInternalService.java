@@ -58,11 +58,11 @@ public class WhoisInternalService extends RestClient {
                         uuid,
                         (response.getBody() != null ? response.getBody().getErrorMessages() : "(no response body)"));
 
-                throw new RestClientException("Unable to get maintainers");
+                throw new RestClientException(response.getStatusCode().value(), "Unable to get maintainers");
             }
         } catch (org.springframework.web.client.RestClientException e) {
             LOGGER.warn("Failed to retrieve mntners for UUID {} due to {}", uuid, e.getMessage());
-            throw new RestClientException("Unable to get maintainers");
+            throw new RestClientException(e);
         }
 
         // use big whois-resources-resp to compose small compact response that looks like autocomplete-service

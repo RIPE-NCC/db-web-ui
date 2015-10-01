@@ -7,10 +7,14 @@ angular.module('webUpdates')
 
             $scope.cancel = cancel;
             $scope.submit = submit;
+            $scope.isFormValid = isFormValid;
+            $scope.fieldVisited = fieldVisited;
 
             _initialisePage();
 
             function _initialisePage() {
+                $scope.submitInProgress = false;
+
                 AlertService.clearErrors();
 
                 $scope.ssoUserName = undefined;
@@ -42,6 +46,8 @@ angular.module('webUpdates')
 
             function submit() {
 
+                _populateMissingAttributes();
+
                 var mntner = $scope.mntnerAttributes.getSingleAttributeOnName('mntner');
                 if( !_.isUndefined(mntner.value)) {
                     $scope.personAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
@@ -55,9 +61,11 @@ angular.module('webUpdates')
                 } else {
                     AlertService.clearErrors();
 
+                    $scope.submitInProgress = true;
                     RestService.createPersonMntner($scope.source,
                         WhoisResources.turnAttrsIntoWhoisObjects([$scope.personAttributes, $scope.mntnerAttributes])).then(
                         function(resp) {
+                            $scope.submitInProgress = false;
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
                             var personUid = _addObjectOfTypeToCache(whoisResources, 'person', 'nic-hdl');
@@ -67,6 +75,7 @@ angular.module('webUpdates')
 
                         },
                         function(error) {
+                            $scope.submitInProgress = false;
                             if(_.isUndefined(error.data.objects) || _.isUndefined(error.data.errormessages) ) {
                                 $log.error('Got unexpected error response:' + JSON.stringify(error) );
                                 AlertService.setGlobalError('Recieved unexpected response');
@@ -86,15 +95,46 @@ angular.module('webUpdates')
                 }
             }
 
+            function _populateMissingAttributes() {
+                var mntner = $scope.mntnerAttributes.getSingleAttributeOnName('mntner');
+                if( !_.isUndefined(mntner.value)) {
+                    $scope.personAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+                    $scope.mntnerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+                }
+            }
+
             function cancel() {
                 if ( window.confirm('Are you sure?') ) {
                     window.history.back();
                 }
             }
 
+            function fieldVisited( objectName, attr ) {
+                if (attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                        function (data) {
+                            if(_.any(data, function(item) {
+                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                })) {
+                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
+                            } else {
+                                attr.$$error = '';
+                            }
+                        }
+                    );
+                }
+            }
+
             function _validateForm(perso) {
                 var personValid =  $scope.personAttributes.validate();
                 var mntnerValid = $scope.mntnerAttributes.validate();
+                return personValid && mntnerValid;
+            }
+
+            function isFormValid() {
+                _populateMissingAttributes();
+                var personValid =  $scope.personAttributes.validateWithoutSettingErrors();
+                var mntnerValid = $scope.mntnerAttributes.validateWithoutSettingErrors();
                 return personValid && mntnerValid;
             }
 

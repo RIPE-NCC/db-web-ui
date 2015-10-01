@@ -128,7 +128,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
     });
 
 
-    it('should validate before submittinging', function () {
+    it('should validate before submitting', function () {
         var stateBefore = $state.current.name;
 
         createController();
@@ -147,9 +147,6 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         expect($state.current.name).toBe(stateBefore);
         expect($stateParams.source).toBe(SOURCE);
-        // TODO
-        //expect($stateParams.person).toBe(PERSON_UID);
-        //expect($stateParams.mntner).toBe(MNTNER_NAME);
     });
 
     it('should pre-populate and submit ok', function () {

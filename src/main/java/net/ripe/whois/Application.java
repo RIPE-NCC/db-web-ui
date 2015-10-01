@@ -98,6 +98,7 @@ public class Application {
 
     @Bean
     public FilterRegistrationBean crowdFilter() {
+        LOGGER.info("********* Configure crowd-filter");
         final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(crowdTokenFilter);
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;

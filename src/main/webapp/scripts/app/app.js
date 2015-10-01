@@ -26,7 +26,8 @@ angular.module('dbWebApp', [
         //$analyticsProvider.firstPageview(true);
 
     })
-.run(function ($rootScope, $state, ERROR_EVENTS) {
+.run(function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL) {
+
     $rootScope.$on(ERROR_EVENTS.serverError, function () {
         $state.go('error');
     });
@@ -35,4 +36,7 @@ angular.module('dbWebApp', [
         $state.go('notFound');
     });
 
+    $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
+        $window.location.href = LOGIN_URL + '?originalUrl=' + $location.absUrl();
+    });
 });

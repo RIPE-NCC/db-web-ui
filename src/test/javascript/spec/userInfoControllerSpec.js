@@ -7,19 +7,17 @@ var display_user_menu = function() {};
 describe('dbWebApp: UserInfoController', function () {
     var createController;
 
-    var $scope, $stateParams, $state, $httpBackend, UserInfoService, $location, $window, $log, fakeWindow;
+    var $scope, $stateParams, $state, $httpBackend, UserInfoService, $log;
 
     beforeEach(function () {
         module('dbWebApp');
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$location_, _$window_, _UserInfoService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            $location = _$location_;
-            $window = _$window_;
             UserInfoService = _UserInfoService_;
             $log = {
                 info: function(msg) {
@@ -29,16 +27,11 @@ describe('dbWebApp: UserInfoController', function () {
                     //console.log('error:'+msg);
                 }
             }
-            fakeWindow = {
-                location: {
-                    href: ''
-                }
-            }
             UserInfoService.clear();
 
             createController = function() {
                 _$controller_('UserInfoController', {
-                    $scope: $scope, $location: $location, $window:fakeWindow, $log:$log, UserInfoService: UserInfoService, 'LOGIN_URL': 'http://access.ripe.net'
+                    $scope: $scope, $log:$log, UserInfoService: UserInfoService
                 });
             };
 
@@ -52,6 +45,17 @@ describe('dbWebApp: UserInfoController', function () {
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('Do not populate upper-right upon authentication error',function() {
+
+        createController();
+        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+            return [401, "", {}];
+        });
+        $httpBackend.flush();
+
+        expect(RIPE.username).toBeUndefined();
     });
 
     it('Successful population of upper right corner',function() {
@@ -71,18 +75,5 @@ describe('dbWebApp: UserInfoController', function () {
 
     });
 
-    it('Redirect to crowd upon authentication error',function() {
 
-        createController();
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
-            return [401, "", {}];
-        });
-        $httpBackend.flush();
-
-        var redirectUrl =  'http://access.ripe.net?originalUrl=' + $location.absUrl();
-
-        expect(fakeWindow.location.href).toBe(redirectUrl);
-
-
-    });
 });

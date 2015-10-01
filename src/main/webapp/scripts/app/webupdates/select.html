@@ -9,7 +9,9 @@
 	            ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
 	</div>
     <br/>
-    <button ng-click="navigateToCreate()" class="blue-button pull-right ga-createobj-select">Create</button>
+
+    <button ng-click="navigateToCreate()" class="blue-button pull-right ga-createobj-select">{{loggedIn ? 'Create' : 'Login to create'}}</button>
+
 </form>
 </section>
 

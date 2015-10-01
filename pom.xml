@@ -11,7 +11,7 @@
 
     <groupId>net.ripe.whois</groupId>
     <artifactId>whois-webui</artifactId>
-    <version>0.0.4-SNAPSHOT</version>
+    <version>0.1.1-SNAPSHOT</version>
     <packaging>war</packaging>
 
     <name>whois_webui</name>
@@ -69,7 +69,7 @@
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
-        <whois.version>1.80</whois.version>
+        <whois.version>1.82</whois.version>
     </properties>
 
     <dependencies>

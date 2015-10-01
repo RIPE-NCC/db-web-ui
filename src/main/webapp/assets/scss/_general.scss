@@ -13,6 +13,12 @@
 .blue-button {
 	border:0;
 }
+input[disabled="disabled"].blue-button {
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+    pointer-events: none;
+}
 ul.success-fields {
 	list-style: none;
 	padding: 20px !important;

@@ -75,12 +75,6 @@ angular.module('dbWebApp')
             return after;
         };
 
-        this.getAddableAttributes = function (objectType) {
-            return _.filter(this.getAllAttributesOnObjectType(objectType), function (attr) {
-                return attr.$$meta.$$multiple;
-            });
-        };
-
         this.getAllAttributesOnObjectType = function (objectTypeName) {
             if (objectTypeName === null) {
                 return [];

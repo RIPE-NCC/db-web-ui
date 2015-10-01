@@ -15,8 +15,13 @@ angular.module('webUpdates')
             $scope.hasAdminC = hasAdminC;
             $scope.onAdminCAdded = onAdminCAdded;
             $scope.onAdminCRemoved = onAdminCRemoved;
+            $scope.isFormValid = isFormValid;
+            $scope.fieldVisited = fieldVisited;
 
             function _initialise() {
+
+                $scope.submitInProgress = false;
+
                 AlertService.clearErrors();
 
                 $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
@@ -57,10 +62,8 @@ angular.module('webUpdates')
             _initialise();
 
             function submit() {
-                $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+               _populateMissingAttributes();
 
-                var mntner = $scope.maintainerAttributes.getSingleAttributeOnName(MNT_TYPE);
-                $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
                 $log.info('submit attrs:' + JSON.stringify($scope.maintainerAttributes));
 
                 $scope.maintainerAttributes.clearErrors();
@@ -71,9 +74,37 @@ angular.module('webUpdates')
                 }
             };
 
-            function cancel() {
+            function isFormValid() {
+                _populateMissingAttributes();
+                return $scope.maintainerAttributes.validateWithoutSettingErrors();
+            }
+
+           function _populateMissingAttributes() {
+               $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+
+               var mntner = $scope.maintainerAttributes.getSingleAttributeOnName(MNT_TYPE);
+               $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+           }
+
+           function cancel() {
                 if ( window.confirm('Are you sure?') ) {
                     window.history.back();
+                }
+            }
+
+            function fieldVisited( attr ) {
+                if (attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                        function (data) {
+                            if(_.any(data, function(item) {
+                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                })) {
+                                attr.$$error = attr.name + ' ' + attr.value + ' already exists';
+                            } else {
+                                attr.$$error = '';
+                            }
+                        }
+                    );
                 }
             }
 
@@ -82,8 +113,10 @@ angular.module('webUpdates')
 
                 var obj = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
 
+                $scope.submitInProgress = true;
                 RestService.createObject($scope.source, MNT_TYPE, obj)
                     .then(function (resp) {
+                        $scope.submitInProgress = false;
                         $log.info('autocomplete success:' + JSON.stringify(resp));
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
@@ -92,6 +125,7 @@ angular.module('webUpdates')
 
                         $state.transitionTo('display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
                     }, function(error) {
+                        $scope.submitInProgress = false;
                         $log.error('create error:' +  JSON.stringify(error));
                         AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
                         AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);

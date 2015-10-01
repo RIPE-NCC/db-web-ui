@@ -30,16 +30,19 @@ angular.module('webUpdates')
             $scope.addSelectedAttribute = addSelectedAttribute;
 
             $scope.displayMd5DialogDialog = displayMd5DialogDialog;
-
+            $scope.fieldVisited = fieldVisited;
             $scope.deleteObject = deleteObject;
 
             $scope.submit = submit;
             $scope.cancel = cancel;
+            $scope.isFormValid = isFormValid;
             $scope.isToBeDisabled = isToBeDisabled;
 
             _initialisePage();
 
             function _initialisePage() {
+
+                $scope.submitInProgress = false;
 
                 AlertService.clearErrors();
 
@@ -54,7 +57,7 @@ angular.module('webUpdates')
                 $scope.objectType = $stateParams.objectType;
                 $scope.name = $stateParams.name;
 
-                $log.info('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid' + $scope.name);
+                $log.info('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
 
                 // initialize data
                 $scope.maintainers = {
@@ -214,6 +217,22 @@ angular.module('webUpdates')
                 }
             }
 
+            function fieldVisited( attr ) {
+                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                        function (data) {
+                            if(_.any(data, function(item) {
+                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                })) {
+                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
+                            } else {
+                                attr.$$error = '';
+                            }
+                        }
+                    );
+                }
+            }
+
             function hasMntners() {
                 return $scope.maintainers.object.length > 0;
             }
@@ -224,7 +243,6 @@ angular.module('webUpdates')
 
             function duplicateAttribute(attr) {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.duplicateAttribute(attr));
-                $log.debug('duplicateAttribute: attributes' + JSON.stringify($scope.attributes));
             }
 
             function canAttributeBeRemoved(attr) {
@@ -233,11 +251,10 @@ angular.module('webUpdates')
 
             function removeAttribute(attr) {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeAttribute(attr));
-                $log.debug('removeAttribute: attributes' + JSON.stringify($scope.attributes));
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal(WhoisResources.getAddableAttributes($scope.objectType))
+                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType,$scope.attributes ))
                     .then(function (selectedItem) {
                         addSelectedAttribute(selectedItem, attr);
                     });
@@ -285,6 +302,7 @@ angular.module('webUpdates')
             function submit() {
 
                 function _onSubmitSuccess(resp) {
+                    $scope.submitInProgress = false;
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display-screen can fetch it from here
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
@@ -294,6 +312,7 @@ angular.module('webUpdates')
                 }
 
                 function _onSubmitError(resp) {
+                    $scope.submitInProgress = false;
                     if (_.isUndefined(resp.data)) {
                         // TIMEOUT: to be handled globally by response interceptor
                         $log.error('Response not understood');
@@ -322,6 +341,7 @@ angular.module('webUpdates')
                         password = CredentialsService.getCredentials().successfulPassword;
                     }
 
+                    $scope.submitInProgress = true;
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
@@ -498,6 +518,10 @@ angular.module('webUpdates')
 
             function _validateForm() {
                 return $scope.attributes.validate();
+            }
+
+            function isFormValid() {
+                return $scope.attributes.validateWithoutSettingErrors();
             }
 
             function reportValidationErrors(type, objectType, globalErrors, attributes) {

@@ -23,11 +23,7 @@ angular.module('dbWebApp')
             return WhoisMetaService.enrichAttributesWithMetaInfo(objectTypeName, attrs);
         };
 
-        this.getAddableAttributes = function(objectType) {
-            return WhoisMetaService.getAddableAttributes(objectType);
-        };
-
-        this.getAllAttributesOnObjectType = function (objectTypeName) {
+         this.getAllAttributesOnObjectType = function (objectTypeName) {
             return WhoisMetaService.getAllAttributesOnObjectType(objectTypeName);
         };
 
@@ -316,6 +312,18 @@ angular.module('dbWebApp')
             return errorFound === false;
         };
 
+        var validateWithoutSettingErrors = function() {
+            var errorFound = false;
+
+            var self = this;
+            _.map(this, function (attr) {
+                if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0 ) {
+                    errorFound = true;
+                }
+            });
+            return errorFound === false;
+        };
+
         var clearErrors = function() {
             _.map(this, function (attr) {
                 attr.$$error = undefined;
@@ -337,7 +345,7 @@ angular.module('dbWebApp')
                     result.push(
                         {
                             name:attr.name, $$meta:{
-                            $$mandatory:next.$$mandatory,
+                            $$mandatory:next.$$meta.mandatory,
                             $$multiple:next.$$meta.multiple,
                             $$primaryKey:next.$$meta.primaryKey,
                             $$description:next.$$description,
@@ -358,7 +366,7 @@ angular.module('dbWebApp')
 
             if( attr.$$meta.$$mandatory === false ) {
                 status = true;
-            } else if(attr.$$meta.$$multiple && this.getAllAttributesWithValueOnName(attr.name).length > 1 ) {
+            } else if(attr.$$meta.$$multiple && this.getAllAttributesOnName(attr.name).length > 1 ) {
                 status = true;
             }
 
@@ -376,6 +384,23 @@ angular.module('dbWebApp')
             });
 
             return result;
+        };
+
+        var getAddableAttributes = function(objectType,attributes) {
+
+            return _.filter(WhoisMetaService.getAllAttributesOnObjectType(objectType), function (attr) {
+                if( attr.$$meta.$$multiple === true ) {
+                    return true;
+                } else if( attr.$$meta.$$mandatory === false ) {
+                    if( !_.any(attributes,
+                        function (a) {
+                            return a.name === attr.name;
+                        })) {
+                        return true;
+                    }
+                }
+                return false;
+            });
         };
 
         var addAttributeAfterType = function(attr, after) {
@@ -424,7 +449,9 @@ angular.module('dbWebApp')
             attrs.setSingleAttributeOnName = setSingleAttributeOnName;
             attrs.addAttrsSorted = addAttrsSorted;
             attrs.validate = validate;
+            attrs.validateWithoutSettingErrors = validateWithoutSettingErrors;
             attrs.clearErrors = clearErrors;
+            attrs.getAddableAttributes = getAddableAttributes;
 
             attrs.removeAttribute = removeAttribute;
             attrs.duplicateAttribute = duplicateAttribute;
