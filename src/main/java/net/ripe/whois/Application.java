@@ -64,6 +64,17 @@ public class Application {
                 LOGGER.error("You have misconfigured your application! " +
                     "It should not run with both the 'dev' and 'cloud' profiles at the same time.");
             }
+
+
+            LOGGER.info("rest.api.ripeUrl:     {}", environment.getProperty("rest.api.ripeUrl"));
+            LOGGER.info("ripe.search.queryUrl: {}", environment.getProperty("ripe.search.queryUrl"));
+            LOGGER.info("internal.api.url:     {}", environment.getProperty("internal.api.url"));
+            LOGGER.info("internal.api.key:     {}", environment.getProperty("internal.api.key"));
+            LOGGER.info("crowd.rest.url:       {}", environment.getProperty("crowd.rest.url"));
+            LOGGER.info("crowd.rest.user:      {}", environment.getProperty("crowd.rest.user"));
+            LOGGER.info("crowd.rest.password:  {}", String.format("%sxxxxx", environment.getProperty("crowd.rest.password").substring(0,2)));
+            LOGGER.info("crowd.login.url:      {}", environment.getProperty("crowd.login.url"));
+            LOGGER.info("rest.api.ripeUrl:     {}", environment.getProperty("rest.api.ripeUrl"));
         }
     }
 
