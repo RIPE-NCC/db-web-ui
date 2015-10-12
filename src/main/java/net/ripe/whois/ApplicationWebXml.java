@@ -45,7 +45,7 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
             return profile;
         }
 
-        LOGGER.warn("No Spring profile configured, exiting");
+        LOGGER.error("No Spring profile configured, exiting");
         throw new IllegalStateException("No Spring profile configured");
     }
 }
