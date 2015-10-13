@@ -169,7 +169,7 @@ module.exports = function (grunt) {
             },
             test: {
                 NODE_ENV:'test',
-                GTM_ID:'GTM-XXXXXX'
+                GTM_ID:'GTM-W4MMHJ'
             },
             prod: {
                 NODE_ENV:'prod',
