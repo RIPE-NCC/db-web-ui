@@ -17,4 +17,8 @@ public final class Constants {
 
     public static final String SPRING_PROFILE_RC = "rc";
 
+    public static final String SPRING_PROFILE_TEST = "test";
+
+    public static final String SPRING_PROFILE_PRD = "prd";
+
 }

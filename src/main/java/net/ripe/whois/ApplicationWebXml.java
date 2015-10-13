@@ -15,7 +15,7 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
-        return application.profiles(addDefaultProfile())
+        return application.profiles(addProfileOrExit())
                 .showBanner(false)
                 .sources(Application.class);
     }
@@ -36,5 +36,16 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
 
         LOGGER.warn("No Spring profile configured, running with default configuration");
         return Constants.SPRING_PROFILE_DEVELOPMENT;
+    }
+
+    private String addProfileOrExit() {
+        final String profile = System.getProperty("spring.profiles.active");
+        if (profile != null) {
+            LOGGER.info("Running with Spring profile(s) : {}", profile);
+            return profile;
+        }
+
+        LOGGER.error("No Spring profile configured, exiting");
+        throw new IllegalStateException("No Spring profile configured");
     }
 }

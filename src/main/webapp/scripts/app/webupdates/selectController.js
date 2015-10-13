@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService',
-        function ($scope, $state, WhoisResources, UserInfoService) {
+    .controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService', 'SOURCE',
+        function ($scope, $state, WhoisResources, UserInfoService, source) {
             /*
              * UI initialisation
              */
             $scope.objectTypes = WhoisResources.getObjectTypes();
-            $scope.sources = ['RIPE', 'TEST'];
 
             $scope.selected = {
-                source: $scope.sources[0],
+                //source: $scope.sources[0],
+                source: source,
                 objectType: $scope.objectTypes[0]
             };
 

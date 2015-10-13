@@ -167,6 +167,10 @@ module.exports = function (grunt) {
                 NODE_ENV:'rc',
                 GTM_ID:'GTM-T5J6RH'
             },
+            test: {
+                NODE_ENV:'test',
+                GTM_ID:'GTM-W4MMHJ'
+            },
             prod: {
                 NODE_ENV:'prod',
                 GTM_ID:'GTM-TP3SK6'
@@ -184,6 +188,7 @@ module.exports = function (grunt) {
                 },
                 constants: {
                     ENV: 'dev',
+                    SOURCE: 'RIPE',
                     VERSION: parseVersionFromPomXml(),
                     LOGIN_URL: 'https://access.prepdev.ripe.net/'
                 }
@@ -194,6 +199,7 @@ module.exports = function (grunt) {
                 },
                 constants: {
                     ENV: 'prepdev',
+                    SOURCE: 'RIPE',
                     VERSION: parseVersionFromPomXml(),
                     LOGIN_URL: 'https://access.prepdev.ripe.net/'
                 }
@@ -204,6 +210,18 @@ module.exports = function (grunt) {
                 },
                 constants: {
                     ENV: 'rc',
+                    SOURCE: 'RIPE',
+                    VERSION: parseVersionFromPomXml(),
+                    LOGIN_URL: 'https://access.ripe.net/'
+                }
+            },
+            test: {
+                options: {
+                    dest: 'src/main/webapp/scripts/app/app.constants.js'
+                },
+                constants: {
+                    ENV: 'test',
+                    SOURCE: 'TEST',
                     VERSION: parseVersionFromPomXml(),
                     LOGIN_URL: 'https://access.ripe.net/'
                 }
@@ -214,6 +232,7 @@ module.exports = function (grunt) {
                 },
                 constants: {
                     ENV: 'prod',
+                    SOURCE: 'RIPE',
                     VERSION: parseVersionFromPomXml(),
                     LOGIN_URL: 'https://access.ripe.net/'
                 }
@@ -314,6 +333,18 @@ module.exports = function (grunt) {
         'wiredep:app',
         'preprocess',
         'ngconstant:rc',
+        'ngtemplates',
+        'concurrent:dist',
+        'ngAnnotate',
+        'compass:server'
+    ]);
+
+    grunt.registerTask('build-test', [
+        'env:rc',
+        'clean:dist',
+        'wiredep:app',
+        'preprocess',
+        'ngconstant:test',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',

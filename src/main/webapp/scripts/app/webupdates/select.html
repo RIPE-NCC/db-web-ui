@@ -10,24 +10,8 @@
 	</div>
     <br/>
 
-    <div>
-        <label>Source</label>
-        <ul class="radio">
-            <li data-ng-repeat="src in sources" class="ga-ripedb-checkbox" >
-                <input
-                    name="source-radio"
-                    type="radio"
-                    value="{{src}}"
-                    ng-disabled="src.value === TEST"
-                    ng-model="selected.source" id="{{src}}"
-                    ng-disabled="isSourceAttribute(attribute)" />
-                <label for="{{src}}">{{labelForSource(src)}}</label>
-            </li>
-        </ul>
-    </div>
-    <br/>
-
     <button ng-click="navigateToCreate()" class="blue-button pull-right ga-createobj-select">{{loggedIn ? 'Create' : 'Login to create'}}</button>
+
 </form>
 </section>
 
