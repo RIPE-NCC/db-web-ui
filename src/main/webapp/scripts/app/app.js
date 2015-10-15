@@ -11,7 +11,7 @@ angular.module('dbWebApp', [
     'diff-match-patch',
     'ui.bootstrap',
     'ui.select'])
-.config(function ($stateProvider, $analyticsProvider) {
+.config(['$stateProvider', '$analyticsProvider', function ($stateProvider, $analyticsProvider) {
         $stateProvider
         .state('error', {
             url: '/public/error',
@@ -25,8 +25,10 @@ angular.module('dbWebApp', [
         //$analyticsProvider.developerMode(true);
         //$analyticsProvider.firstPageview(true);
 
-    })
-.run(function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL) {
+
+    }])
+.run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'LOGIN_URL',
+        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL) {
 
     $rootScope.$on(ERROR_EVENTS.serverError, function () {
         $state.go('error');
@@ -39,4 +41,4 @@ angular.module('dbWebApp', [
     $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
         $window.location.href = LOGIN_URL + '?originalUrl=' + $location.absUrl();
     });
-});
+}]);

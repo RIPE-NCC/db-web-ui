@@ -74,6 +74,7 @@ angular.module('webUpdates')
 
                 $scope.CREATE_OPERATION = 'Create';
                 $scope.MODIFY_OPERATION = 'Modify';
+                $scope.PENDING_OPERATION = 'Pending';
 
                 // Determine if this is a create or a modify
                 if (!$scope.name) {
@@ -218,7 +219,11 @@ angular.module('webUpdates')
             }
 
             function fieldVisited( attr ) {
-                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                /*
+                 * TODO prevent llokup for object with slash in object-name: the autocomplete service cannot handle this
+                 */
+                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true
+                    && !_.isUndefined(attr.value) && attr.value.length >= 2 && attr.value.indexOf("/") < 0) {
                     RestService.autocomplete(attr.name, attr.value, true, []).then(
                         function (data) {
                             if(_.any(data, function(item) {
@@ -311,6 +316,57 @@ angular.module('webUpdates')
                     _navigateToDisplayPage($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
                 }
 
+                function _isPendingAuthenticationError( resp ) {
+                    var status = false;
+                    if( resp.status === 400) {
+                        status = _.any(resp.data.errormessages.errormessage,
+                                function(item) {
+                                    return  item.severity === 'Warning' && item.text === 'This update has only passed one of the two required hierarchical authorisations';
+                                }
+                        );
+                    }
+                    $log.info('_isPendingAuthenticationError:' + status);
+                    return status;
+                }
+
+                function _filterMntners( mntners ) {
+                    var chopped = _.words(mntners, /[^, ]+/g);
+                    if(_.isUndefined(chopped) || chopped.length === 1 ) {
+                        return mntners;
+                    }
+
+                    /*
+                     * If there are multiple mntners to authenticate against, we remove the ripe mntners
+                     * because regular users are confused by the presence of RIPE mntners
+                     */
+                    var withoutRipeMntners = _.filter(chopped, function(item) {
+                        return ! _.startsWith(item, 'RIPE-NCC');
+                    });
+
+                    return withoutRipeMntners.join(' or ');
+                }
+
+                function _composePendingResponse( resp ) {
+                    var found = _.find(resp.errormessages.errormessage, function(item) {
+                        return item.severity === 'Error' && item.text === 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s';
+                    });
+
+                    if(!_.isUndefined(found) && found.args.length >= 4 ) {
+                        var obstructingType = found.args[0].value;
+                        var obstructingName = found.args[1].value;
+                        var mntnersToConfirm = _filterMntners(found.args[3].value);
+                        var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
+                        var pendngMsg = 'Your object is still pending authorisation by the ' + obstructingType + ' holder. ' +
+                            'Please ask the holder of ' + obstructingName + ' to confirm, by submitting the same object as outlined below using syncupdates or mail updates, and authenticate it using the maintainer(s) ' + mntnersToConfirm + '. ' + '' +
+                            'See here for more details on this: <a href="' + moreInfoUrl + '">' + moreInfoUrl + '</a>';
+                        // Keep existing message and overwrite existing errors
+                        resp.errormessages.errormessage = [ { 'severity': 'Info',  'text': pendngMsg } ];
+                    }
+                    // otherwise keep existing response
+
+                    return resp;
+                }
+
                 function _onSubmitError(resp) {
                     $scope.submitInProgress = false;
                     if (_.isUndefined(resp.data)) {
@@ -318,10 +374,16 @@ angular.module('webUpdates')
                         $log.error('Response not understood');
                     } else {
                         var whoisResources = _wrapAndEnrichResources(resp.data);
-                        _validateForm();
-                        AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
-                        AlertService.setErrors(whoisResources);
-                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
+                        if (_isPendingAuthenticationError(resp)) {
+                            MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
+                            /* Instruct downstream screen (typically display screen) that object is in pending state */
+                            _navigateToDisplayPage($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
+                        } else {
+                            _validateForm();
+                            AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
+                            AlertService.setErrors(whoisResources);
+                            ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
+                        }
                     }
                 }
 

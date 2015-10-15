@@ -359,6 +359,141 @@ describe('webUpdates: CreateController', function () {
     });
 });
 
+describe('webUpdates: CreateController', function () {
+
+    var $scope, $rootScope, $state, $stateParams, $httpBackend, $window;
+    var MessageStore;
+    var WhoisResources;
+    var CredentialsService;
+    var MntnerService;
+    var ModalService;
+    var OBJECT_TYPE = 'route';
+    var SOURCE = 'RIPE';
+    var userMaintainers;
+    var $q;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_) {
+
+            $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            $state = _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            $window = _$window_;
+            MessageStore = _MessageStore_;
+            WhoisResources = _WhoisResources_;
+            CredentialsService = _CredentialsService_;
+            MntnerService = _MntnerService_;
+            ModalService = _ModalService_;
+            $q = _$q_;
+
+            userMaintainers = [
+                {'mine': true, 'type': 'mntner', 'auth': ['SSO'], 'key': 'RIPE-NCC-MNT'}
+            ];
+
+            $httpBackend.whenGET('api/user/mntners').respond(userMaintainers);
+
+            $stateParams.objectType = OBJECT_TYPE;
+            $stateParams.source = SOURCE;
+            $stateParams.name = undefined;
+
+            _$controller_('CreateController', {
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window
+            });
+
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+            $httpBackend.flush();
+
+        });
+    });
+
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should be posible to create route objects', function() {
+        // api/whois/RIPE/as-block
+        $scope.objectType = 'route';
+        $httpBackend.expectPOST('api/whois/RIPE/route').respond(400, {
+            objects: {
+                object: [
+                    {
+                        'primary-key': {
+                            'attribute': [
+                                {name: 'route', value: '193.0.7.231/32'},
+                                {name: 'origin', value: 'AS1299'}
+                            ]
+                        },
+                        attributes: {
+                            attribute: [
+                                {name: 'route', value: '193.0.7.231/32'},
+                                {name: 'descr', value: 'My descr'},
+                                {name: 'origin', value: 'AS1299'},
+                                {name: 'mnt-by', value: 'RIPE-NCC-MNT'},
+                                {name: 'source', value: 'RIPE'}
+                            ]
+                        }
+                    }
+                ]
+            },
+            errormessages: {
+                errormessage: [
+                    {
+                        severity: "Error",
+                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                        args: [
+                            {value: 'aut-num'}, {value: 'AS1299'}, {value: 'mnt-by'}, {value: 'TELIANET-RR, RIPE-NCC-END-MNT'}
+                        ]
+                    },
+                    {
+                        severity: "Warning",
+                        text: "This update has only passed one of the two required hierarchical authorisations"
+                    },
+                    {
+                        severity: "Info",
+                        text: "The %s object %s will be saved for one week pending the second authorisation",
+                        args: [
+                            {value: "route"},
+                            {value: "193.0.7.231/32AS1299"}
+                        ]
+                    }
+                ]
+            },
+        });
+
+        $scope.attributes.setSingleAttributeOnName('route', '193.0.7.231/32');
+        $scope.attributes.setSingleAttributeOnName('descr', 'My descr');
+        $scope.attributes.setSingleAttributeOnName('origin', 'AS1299');
+        $scope.attributes.setSingleAttributeOnName('mnt-by', 'RIPE-NCC-MNT');
+        $scope.attributes.setSingleAttributeOnName('source', 'RIPE');
+
+        $scope.submit();
+        $httpBackend.flush();
+
+        var resp = MessageStore.get('193.0.7.231/32AS1299');
+        expect(resp.getPrimaryKey()).toEqual('193.0.7.231/32AS1299');
+        var attrs = WhoisResources.wrapAttributes(resp.getAttributes());
+        expect(attrs.getSingleAttributeOnName('route').value).toEqual('193.0.7.231/32');
+        expect(attrs.getSingleAttributeOnName('origin').value).toEqual('AS1299');
+        expect(attrs.getSingleAttributeOnName('descr').value).toEqual('My descr');
+        expect(attrs.getAllAttributesOnName('mnt-by')[0].value).toEqual('RIPE-NCC-MNT');
+        expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
+        expect(resp.errormessages.errormessage[0].severity).toEqual('Info');
+        expect(resp.errormessages.errormessage[0].text).toEqual('Your object is still pending authorisation by the aut-num holder. Please ask the holder of AS1299 to confirm, by submitting the same object as outlined below using syncupdates or mail updates, and authenticate it using the maintainer(s) TELIANET-RR. See here for more details on this: <a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage\">https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage</a>');
+
+        expect($state.current.name).toBe('display');
+        expect($stateParams.source).toBe('RIPE');
+        expect($stateParams.objectType).toBe('route');
+        expect($stateParams.name).toBe('193.0.7.231%2F32AS1299');
+    });
+
+});
 
 describe('webUpdates: CreateController init with failures', function () {
 
@@ -416,7 +551,6 @@ describe('webUpdates: CreateController init with failures', function () {
     });
 
 });
-
 
 describe('webUpdates: CreateController init with nonexistent obj type', function () {
 

@@ -4,7 +4,16 @@ angular.module('webUpdates')
     .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', '$log', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService',
         function ($scope, $stateParams, $state, $resource, $log, WhoisResources, MessageStore, RestService, AlertService) {
 
-            var onCreate = function() {
+            $scope.isPending = isPending;
+            $scope.isCreateOrModify = isCreateOrModify;
+            $scope.getOperationName = getOperationName;
+            $scope.navigateToSelect = navigateToSelect;
+            $scope.navigateToModify = navigateToModify;
+            $scope.isDiff = isDiff;
+
+            _initialisePage();
+
+            function _initialisePage() {
 
                 AlertService.clearErrors();
 
@@ -18,14 +27,15 @@ angular.module('webUpdates')
                 $scope.objectName = $stateParams.name;
                 $scope.method = $stateParams.method; // optional: added by create- and modify-controller
 
-                $log.info('Url params: source:'+ $scope.objectSource +'. type:' + $scope.objectType + ', uid:' + $scope.objectName );
+                $log.info('DisplayController: Url params: source:'+ $scope.objectSource + '. objectType:' + $scope.objectType +
+                    ', objectName:' + $scope.objectName + ', method:' + $scope.method );
 
                 $scope.before = undefined;
                 $scope.after = undefined;
 
                 // fetch just created object from temporary store
                 var cached = MessageStore.get($scope.objectName);
-                if (cached) {
+                if (!_.isUndefined(cached)) {
                     var whoisResources = WhoisResources.wrapWhoisResources(cached);
                     $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
                     AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, cached);
@@ -39,13 +49,13 @@ angular.module('webUpdates')
                             $scope.after = $scope.attributes.toPlaintext();
                         }
                     }
-                    addLinkToReferenceAttributes($scope.attributes);
+                    _addLinkToReferenceAttributes($scope.attributes);
                 } else {
                     RestService.fetchObject($scope.objectSource, $scope.objectType, $scope.objectName, null).then(
                         function (resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
                             $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                            addLinkToReferenceAttributes($scope.attributes);
+                            _addLinkToReferenceAttributes($scope.attributes);
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp);
                             AlertService.setErrors(whoisResources);
 
@@ -58,25 +68,27 @@ angular.module('webUpdates')
                         }
                     );
                 }
-
-                /*
-                 * End of initialisation phase
-                 */
             };
-            onCreate();
 
             /*
              * Methods called from the html-teplate
              */
 
-            $scope.hasOperationName = function() {
-                if( ! $scope.method ) {
+            function isPending() {
+                if(!_.isUndefined($scope.method) && $scope.method === "Pending") {
+                    return true;
+                }
+                return true;
+            };
+
+             function isCreateOrModify() {
+                if( _.isUndefined($scope.method) || $scope.isPending() ) {
                     return false;
                 }
                 return true;
             };
 
-            $scope.getOperationName = function() {
+           function getOperationName() {
                 var name = ''   ;
                 if( $scope.method ) {
                     if ($scope.method === 'Create') {
@@ -88,11 +100,11 @@ angular.module('webUpdates')
                 return name;
             };
 
-            $scope.navigateToSelect = function () {
+            function navigateToSelect() {
                 $state.transitionTo('select');
             };
 
-            $scope.navigateToModify = function () {
+            function navigateToModify() {
                 $state.transitionTo('modify', {
                     source: $scope.objectSource,
                     objectType: $scope.objectType,
@@ -100,21 +112,21 @@ angular.module('webUpdates')
                 });
             };
 
-            $scope.isDiff = function() {
+            function isDiff() {
                 return !_.isUndefined($scope.before) && !_.isUndefined($scope.after);
             };
 
-            function addLinkToReferenceAttributes(attributes) {
+            function _addLinkToReferenceAttributes(attributes) {
                 var parser = document.createElement('a');
                 return _.map(attributes, function(attribute) {
                     if (!_.isUndefined(attribute.link)) {
-                        attribute.link.uiHref = displayUrl(parser, attribute);
+                        attribute.link.uiHref = _displayUrl(parser, attribute);
                     }
                     return attribute;
                 } );
             }
 
-            function displayUrl(parser, attribute) {
+            function _displayUrl(parser, attribute) {
                 parser.href = attribute.link.href;
                 var parts = parser.pathname.split('/');
 

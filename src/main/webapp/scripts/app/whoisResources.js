@@ -135,10 +135,15 @@ angular.module('dbWebApp')
         };
 
         var getPrimaryKey = function () {
-            if( ! this.objects ) {
+            if(_.isUndefined(this.objects) ) {
                 return undefined;
             }
-            return this.objects.object[0]['primary-key'].attribute[0].value;
+            var keys =_.map(this.objects.object[0]['primary-key'].attribute, function( item) {
+                return item.value;
+            });
+
+            /* just append without any separators */
+            return keys.join( '');
         };
 
         var getSource = function () {

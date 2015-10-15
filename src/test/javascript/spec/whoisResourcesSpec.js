@@ -159,7 +159,6 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('should interact with whoisresources success-response', function () {
 
-
         var successResponse = $whoisResources.wrapWhoisResources({
             link: {
                 type: 'locator',
@@ -181,6 +180,10 @@ describe('dbWebApp: WhoisResources', function () {
                                 {
                                     name: 'nic-hdl',
                                     value: 'MG20276-RIPE'
+                                },
+                                {
+                                    name: 'imaginary',
+                                    value: 'XYZ'
                                 }
                             ]
                         },
@@ -221,7 +224,7 @@ describe('dbWebApp: WhoisResources', function () {
             { name: 'source', value: 'c' }
         ]);
 
-        expect(successResponse.getPrimaryKey()).toEqual('MG20276-RIPE');
+        expect(successResponse.getPrimaryKey()).toEqual('MG20276-RIPEXYZ');
 
     });
 

@@ -1,7 +1,37 @@
     'use strict';
 
 angular.module('webUpdates')
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
+        function ($stateProvider, $urlRouterProvider, $urlMatcherFactory) {
+
+        /*
+         * A dedicated data-type 'WhoisObjectName' is created for passing whois-object-names within urls.
+         * This is to prevent that display and modify controller were started twice for objects with slash (route, inet6num).
+         * This object-type is used within the configuration of the state-provider.
+         */
+        $urlMatcherFactory.type('WhoisObjectName',
+            {
+                name : 'WhoisObjectName',
+                decode: function(val, key) {
+                    return decodeURIComponent(val);
+                },
+                encode: function(val, key) {
+                    return encodeURIComponent(val);
+                },
+                equals: function(decodedA, decodedB) {
+                    if( decodedA.indexOf('/') > -1 ) {
+                        decodedA = encodeURIComponent(decodedA);
+                    }
+                    if( decodedB.indexOf('/') > -1 ) {
+                        decodedB = encodeURIComponent(decodedB);
+                    }
+                    return decodedA === decodedB;
+                },
+                is: function(decodedVal, key) {
+                    return true;
+                }
+            });
+
         $urlRouterProvider.otherwise('webupdates/select');
 
         $stateProvider
@@ -30,17 +60,17 @@ angular.module('webUpdates')
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
             }).state('modify', {
-                url: '/webupdates/modify/:source/:objectType/*name',
+                url: '/webupdates/modify/:source/:objectType/{name:WhoisObjectName}',
                 templateUrl: 'scripts/app/webupdates/create.html',
                 controller: 'CreateController'
             })
             .state('display', {
-                url: '/webupdates/display/:source/:objectType/*name?method',
+                url: '/webupdates/display/:source/:objectType/{name:WhoisObjectName}?method',
                 templateUrl: 'scripts/app/webupdates/display.html',
                 controller: 'DisplayController'
             })
             .state('deleted', {
-                url: '/webupdates/deleted/:source/:objectType/*name',
+                url: '/webupdates/deleted/:source/:objectType/{name:WhoisObjectName}',
                 templateUrl: 'scripts/app/webupdates/deleted.html',
                 controller: function($scope, $stateParams){
                    $scope.source = $stateParams.source;
@@ -49,4 +79,4 @@ angular.module('webUpdates')
                 }
             });
 
-    });
+    }]);

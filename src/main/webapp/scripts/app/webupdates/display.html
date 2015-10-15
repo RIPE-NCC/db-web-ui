@@ -1,4 +1,4 @@
-<div ng-if="hasOperationName()" class="alert alert-success">
+<div ng-if="isCreateOrModify()" class="alert alert-success">
     <p>Your object has been successfully {{getOperationName()}}</p>
 </div>
 
@@ -29,7 +29,9 @@
 
     <pre class="textdiff" line-diff left-obj="before" right-obj="after" ng-if="isDiff()"></pre>
 
-    <button ng-click="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
-    <button ng-click="navigateToModify()" class="blue-button pull-right ga-createobj-modifyobj">Modify object</button>
+    <span ng-show="!isPending()">
+        <button ng-click="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
+        <button ng-click="navigateToModify()" class="blue-button pull-right ga-createobj-modifyobj">Modify object</button>
+    </span>
 
 </section>
