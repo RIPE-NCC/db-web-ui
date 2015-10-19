@@ -78,7 +78,7 @@ angular.module('webUpdates')
                 if(!_.isUndefined($scope.method) && $scope.method === "Pending") {
                     return true;
                 }
-                return true;
+                return false;
             };
 
              function isCreateOrModify() {
