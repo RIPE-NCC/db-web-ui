@@ -33,7 +33,9 @@
         </ui-select-choices>
     </ui-select>
     <div collapse="!isMntHelpShown" class="text field-description">
-        {{mntbyDescription}}</br>{{mntbySyntax}}</div>
+        {{mntbyDescription}}</br>
+        <span ng-bind-html="mntbySyntax"></span>
+    </div>
 	</section>
 
     <section class="visible-field-form" ng-if="hasMntners()">
@@ -52,7 +54,8 @@
                    ng-disabled="isToBeDisabled(attribute)"
                    />
             <div class="text field-description" collapse="!isHelpShown">
-                {{attribute.$$meta.$$description}}</br>{{attribute.$$meta.$$syntax}}
+                {{attribute.$$meta.$$description}}</br>
+                <span ng-bind-html="attribute.$$meta.$$syntax"></span>
             </div>
             <ul class="input-group-btn">
                 <li>
