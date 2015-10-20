@@ -418,9 +418,10 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('should be posible to create route objects', function() {
-        // api/whois/RIPE/as-block
         $scope.objectType = 'route';
-        $httpBackend.expectPOST('api/whois/RIPE/route').respond(400, {
+        // for creation and modiication of route, route6 and aut-num, password for RIPE-NCC-RPSL-MNT is added to
+        // the rest-call to allow creation of 'out-of-region'-objects without knowing the details of RPSL-mntner
+        $httpBackend.expectPOST('api/whois/RIPE/route?password=RPSL').respond(400, {
             objects: {
                 object: [
                     {
