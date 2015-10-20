@@ -90,7 +90,6 @@ describe('dbWebApp: MntnerService', function () {
         var objectMntners = [
             { type:'mntner', key:'A-MNT', },
             { type:'mntner', key:'D-MNT'}
-
         ];
         expect(subject.needsPasswordAuthentication( ssoMntners, [], objectMntners)).toBe(false);
         expect(subject.needsPasswordAuthentication( ssoMntners, objectMntners, [])).toBe(false);
@@ -110,6 +109,28 @@ describe('dbWebApp: MntnerService', function () {
         expect(subject.needsPasswordAuthentication( ssoMntners, objectMntners, [])).toBe(false);
     });
 
+    it('RIPE-NCC-RPSL-MNT is ignored while determining if authorisation is needed',function() {
+        var ssoMntners = [ ];
+        var objectMntners = [
+            { type:'mntner', key:'RIPE-NCC-RPSL-MNT'},
+            { type:'mntner', key:'B-MNT'},
+
+        ];
+
+        expect(subject.needsPasswordAuthentication( ssoMntners, [], objectMntners)).toBe(false);
+        expect(subject.needsPasswordAuthentication( ssoMntners, objectMntners, [])).toBe(false);
+    });
+
+    it('no authentication needed for single RIPE-NCC-RPSL-MNT',function() {
+        var ssoMntners = [];
+        var objectMntners = [
+            { type:'mntner', key:'RIPE-NCC-RPSL-MNT'}
+        ];
+
+        expect(subject.needsPasswordAuthentication( ssoMntners, [], objectMntners)).toBe(false);
+        expect(subject.needsPasswordAuthentication( ssoMntners, objectMntners, [])).toBe(false);
+    });
+
     it('authentication needed when no sso or password',function() {
         var ssoMntners = [
                 { type:'mntner', key:'A-MNT', mine:true, auth:['SSO']},
@@ -123,7 +144,7 @@ describe('dbWebApp: MntnerService', function () {
         expect(subject.needsPasswordAuthentication( ssoMntners, objectMntners, [])).toBe(true);
     });
 
-    it('get mntners that suport password auth', function() {
+    it('get mntners that support password auth', function() {
         var ssoMntners = [
             { type:'mntner', key:'A-MNT', mine:true, auth:['SSO','MD5-PW']},
             { type:'mntner', key:'Z-MNT', mine:true, auth:['SSO','PGP']}
@@ -145,5 +166,22 @@ describe('dbWebApp: MntnerService', function () {
         expect(mntnersWithPasswordModify.length).toBe(2);
         expect(mntnersWithPasswordModify[0].key).toBe('C-MNT');
         expect(mntnersWithPasswordModify[1].key).toBe('D-MNT');
+    });
+
+    it('should not not return RIPE-NCC-RPSL-MNT as candidate for authentication', function() {
+        var ssoMntners = [];
+        var objectMntners = [
+            { type:'mntner', key:'RIPE-NCC-RPSL-MNT', auth:['MD5-PW']},
+            { type:'mntner', key:'A-MNT',             auth:['MD5-PW']}
+        ];
+
+        var mntnersWithPasswordCreate = subject.getMntnersForPasswordAuthentication(ssoMntners,[], objectMntners);
+        expect(mntnersWithPasswordCreate.length).toBe(1);
+        expect(mntnersWithPasswordCreate[0].key).toBe('A-MNT');
+
+        var mntnersWithPasswordModify = subject.getMntnersForPasswordAuthentication(ssoMntners, objectMntners,[]);
+        expect(mntnersWithPasswordModify.length).toBe(1);
+        expect(mntnersWithPasswordModify[0].key).toBe('A-MNT');
+
     });
 });
