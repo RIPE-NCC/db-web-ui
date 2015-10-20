@@ -7,10 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
+import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
@@ -20,6 +25,7 @@ import java.util.Arrays;
 
 @ComponentScan(basePackages = "net.ripe.whois")
 @EnableAutoConfiguration
+@EnableCaching
 public class Application {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
@@ -31,6 +37,37 @@ public class Application {
     public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter) {
         this.environment = environment;
         this.crowdTokenFilter = crowdTokenFilter;
+    }
+
+    /**
+     * Main method, used to run the application.
+     * Also used by spring-boot:run phase
+     */
+    public static void main(String[] args) throws UnknownHostException {
+        final SpringApplication app = new SpringApplication(Application.class);
+        app.setShowBanner(false);
+        final SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
+
+        addDefaultProfile(app, source);
+
+        final Environment environment = app.run(args).getEnvironment();
+        LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
+                "Local: \t\thttps://127.0.0.1:{}\n\t" +
+                "External: \thttps://{}:{}\n----------------------------------------------------------",
+            environment.getProperty("server.port"),
+            InetAddress.getLocalHost().getHostAddress(),
+            environment.getProperty("server.port"));
+    }
+
+    /**
+     * If no profile has been configured, set by default the "dev" profile.
+     */
+    private static void addDefaultProfile(final SpringApplication application, final SimpleCommandLinePropertySource source) {
+        if (!source.containsProperty("spring.profiles.active") &&
+            !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
+
+            application.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
+        }
     }
 
     /**
@@ -49,7 +86,7 @@ public class Application {
             throw new IllegalStateException("No Spring profile configured");
         }
 
-        if (environment.getActiveProfiles().length > 1){
+        if (environment.getActiveProfiles().length > 1) {
             LOGGER.error("Multiple Spring profiles detected, exiting: {}", Arrays.toString(environment.getActiveProfiles()));
             throw new IllegalStateException("Multiple Spring profiles are not supported");
         }
@@ -66,41 +103,24 @@ public class Application {
         LOGGER.info("rest.api.ripeUrl:     {}", environment.getProperty("rest.api.ripeUrl"));
     }
 
-    /**
-     * Main method, used to run the application.
-     * Also used by spring-boot:run phase
-     */
-    public static void main(String[] args) throws UnknownHostException {
-        final SpringApplication app = new SpringApplication(Application.class);
-        app.setShowBanner(false);
-        final SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
-        addDefaultProfile(app, source);
-        final Environment environment = app.run(args).getEnvironment();
-        LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
-            "Local: \t\thttps://127.0.0.1:{}\n\t" +
-            "External: \thttps://{}:{}\n----------------------------------------------------------",
-            environment.getProperty("server.port"),
-            InetAddress.getLocalHost().getHostAddress(),
-            environment.getProperty("server.port"));
-    }
-
-    /**
-     * If no profile has been configured, set by default the "dev" profile.
-     */
-    private static void addDefaultProfile(final SpringApplication application, final SimpleCommandLinePropertySource source) {
-        if (!source.containsProperty("spring.profiles.active") &&
-                !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
-
-            application.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
-        }
-    }
-
     @Bean
     public FilterRegistrationBean crowdFilter() {
-        LOGGER.info("********* Configure crowd-filter");
         final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(crowdTokenFilter);
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
+    }
+
+    @Bean
+    public CacheManager cacheManager() {
+        return new EhCacheCacheManager(ehCacheCacheManager().getObject());
+    }
+
+    @Bean
+    public EhCacheManagerFactoryBean ehCacheCacheManager() {
+        EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
+        cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+        cmfb.setShared(true);
+        return cmfb;
     }
 
 }

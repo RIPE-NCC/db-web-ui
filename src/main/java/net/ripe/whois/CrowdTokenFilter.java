@@ -1,5 +1,6 @@
 package net.ripe.whois;
 
+import net.ripe.whois.services.crowd.CachingCrowdSessionChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,16 @@ public class CrowdTokenFilter implements Filter {
 
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
     private static final String[] UNPROTECTED_URLS = {
-        ".*/#/webupdates/display/.*",
-        ".*/#/webupdates/select"
+        "/db-web-ui/"
     };
 
     private final String crowdLoginUrl;
+    private final CachingCrowdSessionChecker sessionChecker;
 
     @Autowired
-    public CrowdTokenFilter(@Value("${crowd.login.url}") final String crowdLoginUrl) {
-        LOGGER.info("******* Creating crowd filter with config:{}", crowdLoginUrl);
+    public CrowdTokenFilter(@Value("${crowd.login.url}") final String crowdLoginUrl, final CachingCrowdSessionChecker sessionChecker) {
         this.crowdLoginUrl = crowdLoginUrl;
+        this.sessionChecker = sessionChecker;
     }
 
     @Override
@@ -48,12 +49,12 @@ public class CrowdTokenFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request) ) {
-            LOGGER.debug("******* Allow {}", request.getRequestURI());
+        if (isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request)) {
+            LOGGER.info("Allow {}", request.getRequestURI());
             filterChain.doFilter(request, response);
             return;
         }
-        LOGGER.debug("******* Block {}", request.getRequestURI());
+        LOGGER.info("Block {}", request.getRequestURI());
 
         response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
         response.setStatus(HttpServletResponse.SC_FOUND);
@@ -63,9 +64,18 @@ public class CrowdTokenFilter implements Filter {
         if (request.getRequestURI().endsWith(".css") ||
             request.getRequestURI().endsWith(".js") ||
             request.getRequestURI().endsWith(".png")) {
-            LOGGER.debug("******* 'static resource:{}", request.getRequestURI());
             return true;
         }
+        return false;
+    }
+
+    private boolean isUnprotectedUrl(HttpServletRequest request) {
+        for (final String urlPattern : UNPROTECTED_URLS) {
+            if (request.getRequestURI().matches(urlPattern)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -73,19 +83,8 @@ public class CrowdTokenFilter implements Filter {
         if (request.getCookies() != null) {
             for (Cookie c : request.getCookies()) {
                 if (CROWD_TOKEN_KEY.equals(c.getName())) {
-                    LOGGER.debug("******* 'has crowd cookie:{}", request.getRequestURI());
-                    return true;
+                    return sessionChecker.isAuthenticated(c.getValue());
                 }
-            }
-        }
-        return false;
-    }
-
-    private boolean isUnprotectedUrl(HttpServletRequest request) {
-        for (final String urlPattern : UNPROTECTED_URLS) {
-            if (request.getRequestURI().matches(urlPattern)){
-                LOGGER.debug("******* 'unprotected resource:{}", request.getRequestURI());
-                return true;
             }
         }
         return false;
@@ -117,11 +116,9 @@ public class CrowdTokenFilter implements Filter {
 
     @Override
     public void init(final FilterConfig filterConfig) {
-        LOGGER.info("******* Init crowd filter with config");
     }
 
     @Override
     public void destroy() {
-        LOGGER.info("******* Destroy crowd filter with config");
     }
 }
