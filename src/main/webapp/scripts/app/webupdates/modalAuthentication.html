@@ -14,7 +14,7 @@
             <label>Select a maintainer to authenticate the update operation.</label>
             <select ng-model="selected.item"
                     ng-required="true"
-                    ng-options="item.key for item in mntners" class="form-control select-height"></select>
+                    ng-options="item.key for item in mntners | orderBy:key" class="form-control select-height"></select>
         </li>
 
         <li>
