@@ -486,7 +486,7 @@ describe('webUpdates: CreateController', function () {
         expect(attrs.getAllAttributesOnName('mnt-by')[0].value).toEqual('RIPE-NCC-MNT');
         expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
         expect(resp.errormessages.errormessage[0].severity).toEqual('Info');
-        expect(resp.errormessages.errormessage[0].text).toEqual('Your object is still pending authorisation by the aut-num holder. Please ask the holder of AS1299 to confirm, by submitting the same object as outlined below using syncupdates or mail updates, and authenticate it using the maintainer(s) TELIANET-RR. See here for more details on this: <a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage\">https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage</a>');
+        expect(resp.errormessages.errormessage[0].text).toEqual('Your object is still pending authorisation by the aut-num holder. Please ask the holder of AS1299 to confirm, by submitting the same object as outlined below using syncupdates or mail updates, and authenticate it using the maintainer(s) TELIANET-RR. See here for more details on this: <a target="_blank" href=\"https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage\">https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage</a>');
 
         expect($state.current.name).toBe('display');
         expect($stateParams.source).toBe('RIPE');
