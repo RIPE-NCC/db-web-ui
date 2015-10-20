@@ -204,7 +204,7 @@ angular.module('webUpdates')
             }
 
             function referenceAutocomplete(attrType, query, refs) {
-                if (!refs || refs.length === 0) {
+                if (_.isUndefined(refs) || refs.length === 0) {
                     // No suggestions since not a reference
                     return [];
                 } else {
@@ -399,22 +399,19 @@ angular.module('webUpdates')
                         return;
                     }
 
-                    var password;
-                    if (CredentialsService.hasCredentials()) {
-                        password = CredentialsService.getCredentials().successfulPassword;
-                    }
+                    var passwords = _getPasswordsForRestCall();
 
                     $scope.submitInProgress = true;
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
-                            WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), password).then(
+                            WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
                             _onSubmitSuccess,
                             _onSubmitError);
 
                     } else {
                         RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
-                            WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), password).then(
+                            WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
                             _onSubmitSuccess,
                             _onSubmitError);
                     }
@@ -430,6 +427,23 @@ angular.module('webUpdates')
             /*
              * private methods
              */
+
+            function _getPasswordsForRestCall() {
+                var passwords = [];
+
+                if (CredentialsService.hasCredentials()) {
+                    passwords.push( CredentialsService.getCredentials().successfulPassword );
+                }
+
+                /*
+                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
+                 */
+                if( $scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
+                    passwords.push( 'RPSL' );
+                }
+                return passwords;
+            }
 
             function _fetchDataForCreate() {
                 RestService.fetchMntnersForSSOAccount().then(

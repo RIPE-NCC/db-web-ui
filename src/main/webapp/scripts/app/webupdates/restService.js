@@ -30,7 +30,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.deleteObject = function(source, objectType, name, reason, withReferences, password) {
+                this.deleteObject = function(source, objectType, name, reason, withReferences, passwords) {
                     var deferredObject = $q.defer();
 
                     var service = withReferences ? 'references' : 'whois';
@@ -42,7 +42,7 @@ angular.module('dbWebApp')
                         {   source: source,
                             objectType: objectType,
                             name: decodeURIComponent(name), // prevent double encoding of forward slash (%2f ->%252F)
-                            password: password
+                            password: passwords
                         }).delete({reason: reason})
                         .$promise.then(
                         function (result) {
@@ -176,7 +176,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.authenticate = function (source, objectType, objectName, password) {
+                this.authenticate = function (source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.info('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -187,7 +187,7 @@ angular.module('dbWebApp')
                             objectType: objectType,
                             objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
-                            password: password
+                            password: passwords
                         }).get()
                         .$promise
                         .then(function (result) {
@@ -202,7 +202,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.fetchObject = function (source, objectType, objectName, password) {
+                this.fetchObject = function (source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.info('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -211,7 +211,7 @@ angular.module('dbWebApp')
                         {   source: source,
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            password: password,
+                            password: passwords,
                             unfiltered: true})
                         .get()
                         .$promise
@@ -227,7 +227,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.createObject = function (source, objectType, attributes, password) {
+                this.createObject = function (source, objectType, attributes, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.info('createObject start for objectType: ' + objectType);
@@ -235,7 +235,7 @@ angular.module('dbWebApp')
                     $resource('api/whois/:source/:objectType',
                         {   source: source,
                             objectType: objectType,
-                            password: password})
+                            password: passwords})
                         .save(attributes)
                         .$promise
                         .then(function (result) {
@@ -250,7 +250,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.modifyObject = function (source, objectType, objectName, attributes, password) {
+                this.modifyObject = function (source, objectType, objectName, attributes, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.info('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -259,7 +259,7 @@ angular.module('dbWebApp')
                         {   source: source,
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            password: password},
+                            password: passwords},
                         {'update': {method: 'PUT'}})
                         .update(attributes)
                         .$promise
@@ -275,7 +275,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.associateSSOMntner = function (source, objectType, objectName, whoisResources, password) {
+                this.associateSSOMntner = function (source, objectType, objectName, whoisResources, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.info('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -284,7 +284,7 @@ angular.module('dbWebApp')
                         {   source: source,
                             objectType: objectType,
                             name: objectName,  // only for mntners so no url-decosong applied
-                            password: password},
+                            password: passwords},
                         {'update': {method: 'PUT'}})
                         .update(whoisResources)
                         .$promise
