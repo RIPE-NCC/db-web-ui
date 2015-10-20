@@ -358,7 +358,7 @@ angular.module('webUpdates')
                         var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
                         var pendngMsg = 'Your object is still pending authorisation by the ' + obstructingType + ' holder. ' +
                             'Please ask the holder of ' + obstructingName + ' to confirm, by submitting the same object as outlined below using syncupdates or mail updates, and authenticate it using the maintainer(s) ' + mntnersToConfirm + '. ' + '' +
-                            'See here for more details on this: <a href="' + moreInfoUrl + '">' + moreInfoUrl + '</a>';
+                            'See here for more details on this: <a target="_blank" href="' + moreInfoUrl + '">' + moreInfoUrl + '</a>';
                         // Keep existing message and overwrite existing errors
                         resp.errormessages.errormessage = [ { 'severity': 'Info',  'text': pendngMsg } ];
                     }
