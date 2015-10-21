@@ -339,7 +339,7 @@ angular.module('webUpdates')
                      * because regular users are confused by the presence of RIPE mntners
                      */
                     var withoutRipeMntners = _.filter(chopped, function(item) {
-                        return ! _.startsWith(item, 'RIPE-NCC');
+                        return ! _.startsWith(item, $scope.source.toUpperCase() + '-NCC');
                     });
 
                     return withoutRipeMntners.join(' or ');
