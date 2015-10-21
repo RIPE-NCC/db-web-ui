@@ -49,11 +49,11 @@ public class CrowdTokenFilter implements Filter {
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         if (isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request) ) {
-            LOGGER.debug("******* Allow {}", request.getRequestURI());
+            LOGGER.debug("******* Allow {} {}", request.getMethod(), request.getRequestURI());
             filterChain.doFilter(request, response);
             return;
         }
-        LOGGER.debug("******* Block {}", request.getRequestURI());
+        LOGGER.debug("******* Block {} {}", request.getMethod(), request.getRequestURI());
 
         response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
         response.setStatus(HttpServletResponse.SC_FOUND);

@@ -40,6 +40,8 @@ public class WhoisReferencesService extends RestClient {
 
         URI uri = new UriTemplate("{url}/{source}/{object-type}/{name}?limit={limit}").expand(variables);
 
+        LOGGER.info("Performing fetch {}", uri.toString() );
+
         return restTemplate.exchange(uri,
             HttpMethod.GET,
             new HttpEntity<String>(headers),
@@ -55,6 +57,8 @@ public class WhoisReferencesService extends RestClient {
         variables.put("source", source);
 
         URI uri = new UriTemplate(url).expand(variables);
+
+        LOGGER.info("Performing create {}", uri.toString() );
 
         return restTemplate.exchange(uri,
             HttpMethod.POST,
@@ -77,6 +81,8 @@ public class WhoisReferencesService extends RestClient {
         }
 
         URI uri = new UriTemplate(urlBuffer.toString()).expand(variables);
+
+        LOGGER.info("Performing delete {}", uri.toString() );
 
         return restTemplate.exchange(uri,
             HttpMethod.DELETE,

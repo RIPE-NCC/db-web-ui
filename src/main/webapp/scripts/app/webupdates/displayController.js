@@ -24,7 +24,8 @@ angular.module('webUpdates')
                 // extract parameters from the url
                 $scope.objectSource = $stateParams.source;
                 $scope.objectType = $stateParams.objectType;
-                $scope.objectName = $stateParams.name;
+                // url-decode otherwise newly-created resource is MessageStore wiill not be found
+                $scope.objectName = decodeURIComponent($stateParams.name);
                 $scope.method = $stateParams.method; // optional: added by create- and modify-controller
 
                 $log.info('DisplayController: Url params: source:'+ $scope.objectSource + '. objectType:' + $scope.objectType +

@@ -55,7 +55,10 @@ angular.module('webUpdates')
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
                 $scope.objectType = $stateParams.objectType;
-                $scope.name = $stateParams.name;
+
+                if( !_.isUndefined($stateParams.name)) {
+                    $scope.name = decodeURIComponent($stateParams.name);
+                }
 
                 $log.info('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
 

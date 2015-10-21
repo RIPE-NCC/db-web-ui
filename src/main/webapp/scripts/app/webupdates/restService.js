@@ -14,7 +14,7 @@ angular.module('dbWebApp')
                     $resource('api/references/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
-                            name: decodeURIComponent(name), // prevent double encoding of forward slash (%2f ->%252F)
+                            name: encodeURIComponent(name), // TODO perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
                             limit:limit
                         }).get()
                         .$promise.then(
@@ -41,7 +41,7 @@ angular.module('dbWebApp')
                     $resource('api/'+service+'/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
-                            name: decodeURIComponent(name), // prevent double encoding of forward slash (%2f ->%252F)
+                            name: name, // Note: double encoding not needed for delete
                             password: passwords
                         }).delete({reason: reason})
                         .$promise.then(
