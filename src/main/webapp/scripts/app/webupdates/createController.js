@@ -55,6 +55,7 @@ angular.module('webUpdates')
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
                 $scope.objectType = $stateParams.objectType;
+                // TODO url-decode?
                 $scope.name = $stateParams.name;
 
                 $log.info('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);

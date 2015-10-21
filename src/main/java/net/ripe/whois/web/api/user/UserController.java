@@ -55,8 +55,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getUserInfo(@CookieValue(value = "crowd.token_key", required = true) final String crowdToken) {
+    public ResponseEntity getUserInfo(@CookieValue(value = "crowd.token_key", required = false) final String crowdToken) {
         try {
+            if( crowdToken == null) {
+                // force authentication error instead of bad request
+                throw new CrowdClientException("Missing crowd cookie");
+            }
             final UserSession userSession = crowdClient.getUserSession(crowdToken);
             final String uuid = crowdClient.getUuid(userSession.getUsername());
             userSession.setUuid(uuid);

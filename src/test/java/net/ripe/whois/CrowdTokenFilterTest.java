@@ -128,9 +128,8 @@ public class CrowdTokenFilterTest {
 
     @Test
     public void proceed_for_css_resources() throws Exception {
-        request.setCookies();
-
         request = new MockHttpServletRequest("GET", "/static.css");
+        request.setCookies();
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
@@ -140,9 +139,8 @@ public class CrowdTokenFilterTest {
 
     @Test
     public void proceed_for_javascript_resources() throws Exception {
-        request.setCookies();
-
         request = new MockHttpServletRequest("GET", "/static.js");
+        request.setCookies();
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
@@ -151,9 +149,8 @@ public class CrowdTokenFilterTest {
 
     @Test
     public void proceed_for_image_resources() throws Exception {
-        request.setCookies();
-
         request = new MockHttpServletRequest("GET", "/static.png");
+        request.setCookies();
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
@@ -164,45 +161,44 @@ public class CrowdTokenFilterTest {
     public void proceed_for_unprotected_base_url() throws Exception {
         request.setCookies();
 
-        request = new MockHttpServletRequest("GET", "/db-web-ui/initial");
+        request = new MockHttpServletRequest("GET", "/db-web-ui/index.html");
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
     }
 
-//    @Test
-//    public void proceed_for_unprotected_select_url() throws Exception {
-//        request.setCookies();
-//
-//        request = new MockHttpServletRequest("GET", "/db-web-ui/scripts/app/webupdates/select.html");
-//
-//        crowdInterceptor.doFilter(request, response, filterChain);
-//
-//        verify(filterChain).doFilter(request, response);
-//    }
-//
-//    @Test
-//    public void proceed_for_unprotected_display_url() throws Exception {
-//        request.setCookies();
-//
-//        request = new MockHttpServletRequest("GET", "/db-web-ui/scripts/app/webupdates/display.html");
-//
-//        crowdInterceptor.doFilter(request, response, filterChain);
-//
-//        verify(filterChain).doFilter(request, response);
-//    }
-
     @Test
-    public void response_302_found_if_modify_url() throws Exception {
+    public void proceed_for_unprotected_select_url() throws Exception {
+        request = new MockHttpServletRequest("GET", "/db-web-ui/scripts/app/webupdates/select.html");
         request.setCookies();
 
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    public void respond_with_302_for_protected_resource() throws Exception {
         request = new MockHttpServletRequest("GET", "/db-web-ui/#/webupdates/modify/RIPE/mntner/test-mnt");
+        request.setCookies();
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
         assertThat(response.getStatus(), is(302));
         assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/db-web-ui/%23/webupdates/modify/RIPE/mntner/test-mnt"));
+    }
+
+    @Test
+    public void respond_with_403_found_for_protected_resource_with_ajax() throws Exception {
+
+        request = new MockHttpServletRequest("GET", "/db-web-ui/#/webupdates/modify/RIPE/mntner/test-mnt");
+        request.setCookies();
+        request.addHeader("X-Requested-With", "XMLHttpRequest");
+
+        crowdInterceptor.doFilter(request, response, filterChain);
+
+        assertThat(response.getStatus(), is(403));
     }
 
     @Test

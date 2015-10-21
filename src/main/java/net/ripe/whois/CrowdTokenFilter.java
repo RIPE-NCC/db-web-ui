@@ -27,7 +27,14 @@ public class CrowdTokenFilter implements Filter {
 
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
     private static final String[] UNPROTECTED_URLS = {
-        "/db-web-ui/"
+        ".*/api/.*", /* let rest-operation itself decide about authentication */
+        ".*/db-web-ui/",
+        ".*/index.html",
+        ".*/webupdates/select.html",
+        ".*/webupdates/display.html",
+        ".*/alertsDirective.html",
+        ".*/match-multiple.tpl.html",
+        ".*/select-multiple.tpl.html"
     };
 
     private final String crowdLoginUrl;
@@ -50,14 +57,13 @@ public class CrowdTokenFilter implements Filter {
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
         if (isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request)) {
-            LOGGER.info("Allow {}", request.getRequestURI());
+            LOGGER.debug("Allow {}", request.getRequestURI());
             filterChain.doFilter(request, response);
             return;
         }
         LOGGER.info("Block {}", request.getRequestURI());
 
-        response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
-        response.setStatus(HttpServletResponse.SC_FOUND);
+        reportAuthorisationError(request, response);
     }
 
     private boolean isStaticResource(HttpServletRequest request) {
@@ -88,6 +94,16 @@ public class CrowdTokenFilter implements Filter {
             }
         }
         return false;
+    }
+
+    private void reportAuthorisationError( final HttpServletRequest request, final HttpServletResponse response ) {
+        boolean isAjax = "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With")) ? true : false;
+        if( isAjax ) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        } else {
+            response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
+            response.setStatus(HttpServletResponse.SC_FOUND);
+        }
     }
 
     private String generateLocationHeader(final HttpServletRequest request) {

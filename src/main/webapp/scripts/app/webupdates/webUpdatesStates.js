@@ -1,8 +1,8 @@
     'use strict';
 
 angular.module('webUpdates')
-    .config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider',
-        function ($stateProvider, $urlRouterProvider, $urlMatcherFactory) {
+    .config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider', '$locationProvider',
+        function ($stateProvider, $urlRouterProvider, $urlMatcherFactory, $locationProvider) {
 
         /*
          * A dedicated data-type 'WhoisObjectName' is created for passing whois-object-names within urls.
@@ -78,5 +78,7 @@ angular.module('webUpdates')
                    $scope.name = $stateParams.name;
                 }
             });
+
+            //$locationProvider.html5Mode(true);
 
     }]);

@@ -11,7 +11,7 @@ angular.module('dbWebApp', [
     'diff-match-patch',
     'ui.bootstrap',
     'ui.select'])
-.config(['$stateProvider', '$analyticsProvider', function ($stateProvider, $analyticsProvider) {
+.config(['$stateProvider', '$analyticsProvider', '$httpProvider', function ($stateProvider, $analyticsProvider, $httpProvider) {
         $stateProvider
         .state('error', {
             url: '/public/error',
@@ -25,10 +25,24 @@ angular.module('dbWebApp', [
         //$analyticsProvider.developerMode(true);
         //$analyticsProvider.firstPageview(true);
 
+        // Always tell server if request was made using ajax
+        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 
     }])
 .run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'LOGIN_URL',
         function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL) {
+
+    $rootScope.$on(ERROR_EVENTS.stateTransitionError, function (event, toState, toParams, fromState, fromParams, err) {
+        $log.error('Error transitioning to state:' + JSON.stringify(toState) + ' due to error ' + JSON.stringify(err) );
+
+        if( err.status === 403 ) {
+            // redirect to crowd login screen
+            var returnUrl = $location.absUrl().split('#')[0] + $state.href(toState, toParams);
+            var crowdUrl = LOGIN_URL + '?originalUrl=' + encodeURI(returnUrl);
+            $log.info('Force crowd login:' + crowdUrl );
+            $window.location.href = crowdUrl;
+        }
+    });
 
     $rootScope.$on(ERROR_EVENTS.serverError, function () {
         $state.go('error');
@@ -39,6 +53,7 @@ angular.module('dbWebApp', [
     });
 
     $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
-        $window.location.href = LOGIN_URL + '?originalUrl=' + $location.absUrl();
+        $log.error('Authentication error' );
     });
+
 }]);
