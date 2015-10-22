@@ -69,11 +69,7 @@
             </p>
 
             <div id="login" ng-controller="UserInfoController">
-                <!-- @ifdef ACCESS_URL -->
                 <a class="anon" href="<!-- @echo ACCESS_URL -->">Login</a>
-                <!-- @else -->
-                <a class="anon" href="https://access.ripe.net/?originalUrl=https://www.ripe.net/manage-ips-and-asns/db/webupdates">Login</a>
-                <!-- @endif -->
                 <div id="loggedin">
                     <a class="active" href="#">
                         <span id="loggedin-username"></span>
