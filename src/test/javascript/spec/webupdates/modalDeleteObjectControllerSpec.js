@@ -6,15 +6,17 @@ var source = 'RIPE';
 
 describe('webUpdates: primitives of ModalDeleteObjectController', function () {
 
-    var $scope, $state, logger;
+    var $scope, $state, logger, $httpBackend;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_,_$state_) {
+        inject(function (_$controller_, _$rootScope_,_$state_, _$httpBackend_) {
             var $rootScope = _$rootScope_;
             $state = _$state_;
             $scope = $rootScope.$new();
+            $httpBackend = _$httpBackend_;
+
             var restService =  {
                 getReferences: function() {
                     return { then: function(s) { s( {objectType:'mntner', primaryKey: 'TEST-MNT' });} }; // pretend to be a promise
@@ -31,11 +33,21 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
                     //console.log('test:'+ msg);
                 },
             };
-            logger.notice('webUpdates: primitives of ModalDeleteObjectController');
+
             _$controller_('ModalDeleteObjectController', {
                 $scope: $scope, $state:$state, $log:logger, $modalInstance: {}, RestService:restService, source:source, objectType:objectType, name:name
             });
+            
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+            $httpBackend.flush();
+
         });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
     });
 
     it('should compare objects', function() {
