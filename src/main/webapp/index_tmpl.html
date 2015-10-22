@@ -828,10 +828,10 @@
                             <a href="/db-web-ui/#/">Create</a>
                             <ul class="level2" style="display: block;">
                                 <li>
-                                    <a class="current" href="/db-web-ui/#/">Create an object</a>
+                                    <a class="menuItem current" href="/db-web-ui/#/">Create an object</a>
                                 </li>
                                 <li>
-                                    <a href="/db-web-ui/#/webupdates/create/person/self">Create maintainer and person pair</a>
+                                    <a class="menuItem" href="/db-web-ui/#/webupdates/create/person/self">Create maintainer and person pair</a>
                                 </li>
                             </ul>
                         </li>
@@ -1006,6 +1006,17 @@
     })();
 </script>
 <! @endif -->
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.menuItem').on('click', function(){
+            $('.menuItem').removeClass('current');
+            $(this).addClass(function(n){
+                return 'current';
+            });
+        });
+    });
+</script>
 
 </body>
 
