@@ -54,7 +54,8 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
                             }, function(error) {
                                 $log.error('Association error:' + JSON.stringify(error));
-
+                                // remove modal anyway
+                                $modalInstance.close({selectedItem:$scope.selected.item});
                             });
                     } else {
                         $log.debug('No need to associate');
