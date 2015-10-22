@@ -117,7 +117,7 @@ angular.module('webUpdates')
                 RestService.createObject($scope.source, MNT_TYPE, obj)
                     .then(function (resp) {
                         $scope.submitInProgress = false;
-                        $log.info('autocomplete success:' + JSON.stringify(resp));
+                        $log.debug('createObject success:' + JSON.stringify(resp));
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
                         var primaryKey = whoisResources.getPrimaryKey();
@@ -139,7 +139,7 @@ angular.module('webUpdates')
                 if (query.length >= 2) {
                         RestService.autocomplete( 'admin-c', query, true,['person','role']).then(
                         function (data) {
-                            $log.info('autocomplete success:' + JSON.stringify(data));
+                            $log.debug('autocomplete success:' + JSON.stringify(data));
                             // mark new
                             $scope.adminC.alternatives = _stripAlreadySelected(data);
                         },
@@ -161,14 +161,14 @@ angular.module('webUpdates')
             };
 
             function onAdminCAdded(item) {
-                $log.info('onAdminCAdded:' + JSON.stringify(item));
+                $log.debug('onAdminCAdded:' + JSON.stringify(item));
                 $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c', value: item.key}, {name: 'admin-c'});
                 $scope.maintainerAttributes = WhoisResources.enrichAttributesWithMetaInfo(MNT_TYPE, $scope.maintainerAttributes);
                 $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
             };
 
             function onAdminCRemoved(item) {
-                $log.info('onAdminCRemoved:' + JSON.stringify(item));
+                $log.debug('onAdminCRemoved:' + JSON.stringify(item));
                 _.remove($scope.maintainerAttributes, function (i) {
                     return i.name === 'admin-c' && i.value === item.key;
                 });

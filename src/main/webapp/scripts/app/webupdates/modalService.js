@@ -4,7 +4,6 @@ angular.module('dbWebApp')
     .factory('ModalService', ['$q', '$modal', '$log', function ( $q, $modal, $log ) {
         function ModalService() {
 
-
             this.openDeleteObjectModal = function(source, objectType, name) {
                 var modalInstance = $modal.open({
                     animation:true,
@@ -29,7 +28,7 @@ angular.module('dbWebApp')
             this.openAddAttributeModal = function ( items ) {
                 var deferredObject = $q.defer();
 
-                $log.info('openAddAttributeModal for items ' + JSON.stringify(items));
+                $log.debug('openAddAttributeModal for items ' + JSON.stringify(items));
 
                 var modalInstance = $modal.open({
                     animation:true,
@@ -44,10 +43,10 @@ angular.module('dbWebApp')
                 });
 
                 modalInstance.result.then(function (selectedItem) {
-                    $log.info('openAddAttributeModal completed with: ' + JSON.stringify(selectedItem));
+                    $log.debug('openAddAttributeModal completed with: ' + JSON.stringify(selectedItem));
                     deferredObject.resolve(selectedItem);
                 }, function (reason) {
-                    $log.info('openAddAttributeModal cancelled because: ' + reason);
+                    $log.debug('openAddAttributeModal cancelled because: ' + reason);
                     deferredObject.reject(reason);
                 });
 
@@ -57,7 +56,7 @@ angular.module('dbWebApp')
             this.openMd5Modal = function () {
                 var deferredObject = $q.defer();
 
-                $log.info('openMd5Modal');
+                $log.debug('openMd5Modal');
 
                 var modalInstance = $modal.open({
                     animation:true,
@@ -67,10 +66,10 @@ angular.module('dbWebApp')
                 });
 
                 modalInstance.result.then(function (md5Value) {
-                    $log.info('openMd5Modal completed with: ' + JSON.stringify(md5Value));
+                    $log.debug('openMd5Modal completed with: ' + JSON.stringify(md5Value));
                     deferredObject.resolve(md5Value);
                 }, function (reason) {
-                    $log.info('openMd5Modal cancelled because: ' + reason);
+                    $log.debug('openMd5Modal cancelled because: ' + reason);
                     deferredObject.reject(reason);
                 });
 
@@ -80,7 +79,7 @@ angular.module('dbWebApp')
             this.openAuthenticationModal = function (source, mntners) {
                 var deferredObject = $q.defer();
 
-                $log.info('openAuthenticationModal start with: ' + source + '  mntners:' +  JSON.stringify(mntners));
+                $log.debug('openAuthenticationModal start with: ' + source + '  mntners:' +  JSON.stringify(mntners));
 
                 var modalInstance = $modal.open({
                         animation:true,
@@ -98,10 +97,10 @@ angular.module('dbWebApp')
                 });
 
                 modalInstance.result.then(function (result) {
-                    $log.info('openAuthenticationModal completed with: ' + JSON.stringify(result));
+                    $log.debug('openAuthenticationModal completed with: ' + JSON.stringify(result));
                     deferredObject.resolve(result);
                 }, function (reason) {
-                    $log.info('openAuthenticationModal cancelled because: ' + reason);
+                    $log.debug('openAuthenticationModal cancelled because: ' + reason);
                     deferredObject.reject(reason);
                 });
 

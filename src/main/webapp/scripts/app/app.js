@@ -11,7 +11,8 @@ angular.module('dbWebApp', [
     'diff-match-patch',
     'ui.bootstrap',
     'ui.select'])
-.config(['$stateProvider', '$analyticsProvider', '$httpProvider', function ($stateProvider, $analyticsProvider, $httpProvider) {
+
+.config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV', function ($stateProvider, $logProvider, $httpProvider, ENV) {
         $stateProvider
         .state('error', {
             url: '/public/error',
@@ -22,15 +23,22 @@ angular.module('dbWebApp', [
             templateUrl: 'scripts/app/views/notFound.html'
         });
 
-        //$analyticsProvider.developerMode(true);
-        //$analyticsProvider.firstPageview(true);
-
         // Always tell server if request was made using ajax
         $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
 
+        // conditional log-level
+        if( ENV === "dev" || ENV == 'prepdev') {
+            $logProvider.debugEnabled(true);
+        } else {
+            // disable debug logging for production
+            $logProvider.debugEnabled(false);
+        }
+
     }])
-.run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'LOGIN_URL',
-        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL) {
+.run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'LOGIN_URL', 'ENV',
+        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL, ENV) {
+
+    $log.info('Starting up for env ' + ENV);
 
     $rootScope.$on(ERROR_EVENTS.stateTransitionError, function (event, toState, toParams, fromState, fromParams, err) {
         $log.error('Error transitioning to state:' + JSON.stringify(toState) + ' due to error ' + JSON.stringify(err) );
@@ -53,6 +61,7 @@ angular.module('dbWebApp', [
     });
 
     $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
+        // do not act; authorisation errors during transition are handled by stateTransitionError-handler above
         $log.error('Authentication error' );
     });
 

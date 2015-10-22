@@ -17,7 +17,7 @@ angular.module('webUpdates')
                 if (cachedPersonObject) {
                     var whoisResources = WhoisResources.wrapWhoisResources(cachedPersonObject);
                     $scope.personAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                    $log.info('Got person from cache:' + JSON.stringify($scope.personAttributes ));
+                    $log.debug('Got person from cache:' + JSON.stringify($scope.personAttributes ));
                 } else {
                     RestService.fetchObject($scope.objectSource, 'person', $scope.personName, null).then(
                         function (resp) {
@@ -39,7 +39,7 @@ angular.module('webUpdates')
                 if (cachedMntnerObject) {
                     var whoisResources = WhoisResources.wrapWhoisResources(cachedMntnerObject);
                     $scope.mntnerAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                    $log.info('Got mntner from cache:' + JSON.stringify($scope.mntnerAttributes ));
+                    $log.debug('Got mntner from cache:' + JSON.stringify($scope.mntnerAttributes ));
                 } else {
                     RestService.fetchObject($scope.objectSource, 'mntner', $scope.mntnerName, null).then(
                         function (resp) {

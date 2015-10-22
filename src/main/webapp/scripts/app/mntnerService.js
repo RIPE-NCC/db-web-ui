@@ -33,16 +33,23 @@ angular.module('dbWebApp')
             }
             var mntners = this.enrichWithSsoStatus(ssoMntners, input);
 
+            // ignore rpsl mntner while deciding if password authent. is needed
+            mntners = _stripRpslMntner(mntners);
+            if( mntners.length === 0 ) {
+                $log.debug('needsPasswordAuthentication: no: No mntners left to authenticate against');
+                return false;
+            }
+
             if (_oneOfOriginalMntnersIsMine(mntners)) {
-                $log.info('needsPasswordAuthentication: no: One of selected mntners is mine');
+                $log.debug('needsPasswordAuthentication: no: One of selected mntners is mine');
                 return false;
             }
 
             if (_oneOfOriginalMntnersHasCredential(mntners)) {
-                $log.info('needsPasswordAuthentication: no: One of selected mntners has credentials');
+                $log.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
                 return false;
             }
-            $log.info('needsPasswordAuthentication.yes:');
+            $log.debug('needsPasswordAuthentication.yes:');
 
             return true;
         };
@@ -58,6 +65,9 @@ angular.module('dbWebApp')
             return  _.filter(mntners, function(mntner) {
                 if( mntner.mine === true) {
                     return false;
+                } else if( _isRpslMntner(mntner)) {
+                    // prevent authenticating against RPSL mntner (and later associating everybodies SSO with it)
+                    return false;
                 } else if( CredentialsService.hasCredentials() && CredentialsService.getCredentials().mntner === mntner.key ) {
                     return false;
                 } else if( _hasMd5(mntner)) {
@@ -67,6 +77,16 @@ angular.module('dbWebApp')
                 }
             });
         };
+
+        function _stripRpslMntner(mntners) {
+            return _.filter(mntners, function(mntner) {
+                return !_isRpslMntner(mntner);
+            });
+        }
+
+        function _isRpslMntner(mntner) {
+            return mntner.key === 'RIPE-NCC-RPSL-MNT';
+        }
 
         function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
             return _.any(originalObjectMntners, function (mntner) {

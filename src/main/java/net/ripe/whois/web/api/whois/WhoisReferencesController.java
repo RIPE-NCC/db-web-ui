@@ -3,6 +3,8 @@ package net.ripe.whois.web.api.whois;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.WhoisReferencesService;
 import net.ripe.whois.web.api.ApiController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -18,11 +20,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 
 @RestController
 @RequestMapping("/api/references")
 public class WhoisReferencesController extends ApiController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisReferencesController.class);
 
     @Autowired
     private WhoisReferencesService whoisReferencesService;
@@ -32,28 +37,41 @@ public class WhoisReferencesController extends ApiController {
 
     private int MAX_RESULT_NUMBER = 5;
 
-    @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{source}/{objectType}/{name:.*}", method = RequestMethod.GET)
     public ResponseEntity<String> search(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
                                          @RequestParam(value = "limit", required = false) Integer limit,
-                                         @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+                                         @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
+
+        /*
+         * TODO [MG]:
+         * Looks like RequestMapping cannot handle path parameters that contain a single-escaped forward-slash (so containing '%2F').
+         * Using double url-encoding (into %252F) the RequestMapping-pattern is being matched and this method is being called
+         * As a consequence we have to decode the parameter before passing it on to whois
+         */
+        final String decodedName = URLDecoder.decode(name, "UTF-8");
+        LOGGER.info("search {} {} {}->{}", source, objectType, name, decodedName);
+
         removeUnnecessaryHeaders(headers);
 
-        return whoisReferencesService.getReferences(source, objectType, name, limit, headers);
+        return whoisReferencesService.getReferences(source, objectType, decodedName, limit, headers);
     }
 
     @RequestMapping(value = "/{source}", method = RequestMethod.POST)
     public ResponseEntity<String> create(@PathVariable String source,
                                          @RequestBody(required = true) final String body,
                                          @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+        LOGGER.info("create {}", source);
         removeUnnecessaryHeaders(headers);
 
         return whoisReferencesService.createReferencedObjects(source, body, headers);
     }
 
-    @RequestMapping(value = "/{source}/{objectType}/{name}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/{source}/{objectType}/{name:.*}", params = {"reason", "password"}, method = RequestMethod.DELETE)
     public ResponseEntity<WhoisResources> delete(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
-                                                 @RequestParam("reason") String reason, @RequestParam(value = "password", required = false) String password,
-                                                 @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+                                                 @PathVariable("reason") String reason, @RequestParam(value = "password", required = false) String password,
+                                                 @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
+        LOGGER.info("delete {} {} {}", source, objectType, name);
+
         removeUnnecessaryHeaders(headers);
 
         return whoisReferencesService.deleteObjectAndReferences(source, objectType, name, reason, password, headers);
