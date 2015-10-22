@@ -50,6 +50,7 @@ angular.module('dbWebApp', [
     }
 
     var progressBar = ngProgressFactory.createInstance();
+    progressBar.setColor('blue');
 
     $rootScope.$on('$stateChangeStart', function(ev,data) {
         _startProgress(progressBar);

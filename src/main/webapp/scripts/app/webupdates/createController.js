@@ -622,8 +622,6 @@ angular.module('webUpdates')
             }
 
             function hasErrors() {
-                $log.info("in progr:" + $scope.restCalInProgress);
-                $log.info("errors:" + AlertService.hasErrors());
                 return AlertService.hasErrors();
             }
 
