@@ -56,6 +56,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/angular-ui-select/dist/select.js',
             'main/webapp/bower_components/google-diff-match-patch/diff_match_patch.js',
             'main/webapp/bower_components/angular-diff-match-patch/angular-diff-match-patch.js',
+            'main/webapp/bower_components/ngprogress/build/ngProgress.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
