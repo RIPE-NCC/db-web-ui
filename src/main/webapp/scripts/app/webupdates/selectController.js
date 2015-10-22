@@ -14,7 +14,7 @@ angular.module('webUpdates')
                 objectType: $scope.objectTypes[0]
             };
 
-            $scope.loggedIn = false;
+            $scope.loggedIn = undefined;
             UserInfoService.getUserInfo().then(
                 function (userData) {
                     $scope.loggedIn = true;

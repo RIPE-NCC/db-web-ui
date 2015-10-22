@@ -4,7 +4,7 @@ angular.module('webUpdates')
     .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', '$log', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService', 'UserInfoService',
         function ($scope, $stateParams, $state, $resource, $log, WhoisResources, MessageStore, RestService, AlertService, UserInfoService) {
 
-            $scope.isPending = isPending;
+            $scope.modifyButtonToBeShown = modifyButtonToBeShown;
             $scope.isCreateOrModify = isCreateOrModify;
             $scope.getOperationName = getOperationName;
             $scope.navigateToSelect = navigateToSelect;
@@ -35,7 +35,7 @@ angular.module('webUpdates')
                 $scope.after = undefined;
 
                 // needed to determine name of modify button
-                $scope.loggedIn = false;
+                $scope.loggedIn = undefined;
                 UserInfoService.getUserInfo().then(
                     function (userData) {
                         $scope.loggedIn = true;
@@ -77,13 +77,15 @@ angular.module('webUpdates')
                         }
                     );
                 }
-
-
             };
 
             /*
              * Methods called from the html-teplate
              */
+
+            function modifyButtonToBeShown() {
+                return !AlertService.hasErrors() && !isPending();
+            }
 
             function isPending() {
                 if(!_.isUndefined($scope.method) && $scope.method === "Pending") {
@@ -92,7 +94,7 @@ angular.module('webUpdates')
                 return false;
             };
 
-             function isCreateOrModify() {
+            function isCreateOrModify() {
                 if( _.isUndefined($scope.method) || $scope.isPending() ) {
                     return false;
                 }

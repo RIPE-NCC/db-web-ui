@@ -25,6 +25,10 @@ angular.module('dbWebApp')
             $rootScope.infos = [];
         };
 
+        alertService.hasErrors = function () {
+            return $rootScope.errors.length > 0;
+        };
+
         alertService.getErrors = function () {
             return $rootScope.errors;
         };

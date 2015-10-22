@@ -33,6 +33,7 @@ angular.module('webUpdates')
             $scope.fieldVisited = fieldVisited;
             $scope.deleteObject = deleteObject;
 
+            $scope.hasErrors = hasErrors;
             $scope.submit = submit;
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
@@ -42,13 +43,14 @@ angular.module('webUpdates')
 
             function _initialisePage() {
 
-                $scope.submitInProgress = false;
+                $scope.restCalInProgress = false;
 
                 AlertService.clearErrors();
 
                 // workaround for problem with order of loading ui-select fragments
                 $scope.uiSelectTemplateReady = false;
-                RestService.fetchUiSelectResources().then(function () {
+                RestService.fetchUiSelectResources().then(
+                    function () {
                     $scope.uiSelectTemplateReady = true;
                 });
 
@@ -308,7 +310,7 @@ angular.module('webUpdates')
             function submit() {
 
                 function _onSubmitSuccess(resp) {
-                    $scope.submitInProgress = false;
+                    $scope.restCalInProgress = false;
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display-screen can fetch it from here
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
@@ -369,7 +371,7 @@ angular.module('webUpdates')
                 }
 
                 function _onSubmitError(resp) {
-                    $scope.submitInProgress = false;
+                    $scope.restCalInProgress = false;
                     if (_.isUndefined(resp.data)) {
                         // TIMEOUT: to be handled globally by response interceptor
                         $log.error('Response not understood');
@@ -403,7 +405,7 @@ angular.module('webUpdates')
 
                     var passwords = _getPasswordsForRestCall();
 
-                    $scope.submitInProgress = true;
+                    $scope.restCalInProgress = true;
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
@@ -448,8 +450,10 @@ angular.module('webUpdates')
             }
 
             function _fetchDataForCreate() {
+                $scope.restCalInProgress = true;
                 RestService.fetchMntnersForSSOAccount().then(
                     function (results) {
+                        $scope.restCalInProgress = false;
                         $scope.maintainers.sso = results;
                         if ($scope.maintainers.sso.length > 0) {
 
@@ -469,6 +473,7 @@ angular.module('webUpdates')
 
                         }
                     }, function (error) {
+                        $scope.restCalInProgress = false;
                         $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                     }
@@ -482,11 +487,13 @@ angular.module('webUpdates')
                     password = CredentialsService.getCredentials().successfulPassword;
                 }
                 // wait untill both have completed
+                $scope.restCalInProgress = true;
                 $q.all({
                     mntners: RestService.fetchMntnersForSSOAccount(),
                     objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password)
                 }).then(
-                    function (results) {
+                function (results) {
+                        $scope.restCalInProgress = false;
 
                         $log.debug('object to modify:' + JSON.stringify(results.objectToModify));
 
@@ -507,8 +514,11 @@ angular.module('webUpdates')
                         MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
                         // fetch details of all selected maintainers concurrently
+                        $scope.restCalInProgress = true;
                         RestService.detailsForMntners($scope.maintainers.object).then(
                             function (result) {
+                                $scope.restCalInProgress = false;
+
                                 // result returns an array for each mntner
 
                                 $scope.maintainers.objectOriginal = _.flatten(result);
@@ -523,12 +533,14 @@ angular.module('webUpdates')
                                     return;
                                 }
                             }, function (error) {
+                                $scope.restCalInProgress = false;
                                 $log.error('Error fetching sso-mntners details' + JSON.stringify(error));
                                 AlertService.setGlobalError('Error fetching maintainer details');
                             });
                     }
                 ).catch(
                     function (error) {
+                        $scope.restCalInProgress = false;
                         if (error && error.data) {
                             $log.error('Error fetching object:' + JSON.stringify(error));
                             var whoisResources = _wrapAndEnrichResources(error.data);
@@ -609,6 +621,12 @@ angular.module('webUpdates')
                 return $scope.attributes.validateWithoutSettingErrors();
             }
 
+            function hasErrors() {
+                $log.info("in progr:" + $scope.restCalInProgress);
+                $log.info("errors:" + AlertService.hasErrors());
+                return AlertService.hasErrors();
+            }
+
             function reportValidationErrors(type, objectType, globalErrors, attributes) {
                 _.each(globalErrors, function(item) {
                     $log.error('*** Global validation error: type: ' + type + ', objectType: ' + objectType + ', description:' + item.plainText);
@@ -657,8 +675,10 @@ angular.module('webUpdates')
                         if (CredentialsService.hasCredentials()) {
                             password = CredentialsService.getCredentials().successfulPassword;
                         }
+                        $scope.restCalInProgress = true;
                         RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password).then(
                             function (result) {
+                                $scope.restCalInProgress = false;
                                 _wrapAndEnrichResources(result);
 
                                 // save object for later diff in display-screen
@@ -667,6 +687,10 @@ angular.module('webUpdates')
                                 $log.debug('sso-mntners:' + JSON.stringify($scope.maintainers.sso));
                                 $log.debug('objectMaintainers:' + JSON.stringify($scope.maintainers.object));
 
+                            },
+                            function(error) {
+                                $scope.restCalInProgress = false;
+                                // ignore
                             }
                         );
                     }
