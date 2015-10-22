@@ -43,8 +43,11 @@
 </head>
 <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr" ng-app="dbWebApp">
 
-<!-- @ifdef GTM_ID -->
+<!-- Using the following environment     specific values for env <!-- @echo NODE_ENV -->
+<!-- GTM_ID: <!-- @echo GTM_ID --> -->
+<!-- ACCESS_URL: <!-- @echo ACCESS_URL --> -->
 
+<!-- @ifdef GTM_ID -->
 <!-- Google Tag Manager, Use env <!-- @echo NODE_ENV --> with id: <!-- @echo GTM_ID --> -->
 <noscript><iframe src="//www.googletagmanager.com/ns.html?id=<!-- @echo GTM_ID -->"
                   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -54,7 +57,6 @@
     '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','<!-- @echo GTM_ID -->');</script>
 <!-- End Google Tag Manager -->
-
 <!-- @endif -->
 
 <header class="header-gradient container-fluid">
@@ -64,8 +66,13 @@
                 <a accesskey="2" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template#content">Skip to content.</a> |
                 <a accesskey="6" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template#portal-globalnav">Skip to navigation</a>
             </p>
+
             <div id="login" ng-controller="UserInfoController">
-                <a class="anon" href="https://access.ripe.net/?originalUrl=https%3A%2F%2Fwww.ripe.net%2Fmanage-ips-and-asns%2Fdb%2Fwebupdates">Login</a>
+                <!-- @ifdef ACCESS_URL -->
+                <a class="anon" href="<!-- @echo ACCESS_URL -->">Login</a>
+                <!-- @else -->
+                <a class="anon" href="https://access.ripe.net/?originalUrl=https://www.ripe.net/manage-ips-and-asns/db/webupdates">Login</a>
+                <!-- @endif -->
                 <div id="loggedin">
                     <a class="active" href="#">
                         <span id="loggedin-username"></span>
@@ -76,6 +83,7 @@
                     <a href="notification" id="notifications"></a>
                 </div>
             </div>
+
             <div class="header-item">
                 <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
                     <img id="logo" alt="RIPE NCC Network Coordination" src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png" /></a>

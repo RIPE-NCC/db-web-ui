@@ -157,23 +157,28 @@ module.exports = function (grunt) {
         env : {
             dev: {
                 NODE_ENV:'dev',
-                GTM_ID: 'GTM-WTWTB7'
+                GTM_ID: 'GTM-WTWTB7',
+                ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/'
             },
             prepdev: {
                 NODE_ENV:'prepdev',
-                GTM_ID: 'GTM-WTWTB7'
+                GTM_ID: 'GTM-WTWTB7',
+                ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/'
             },
             rc: {
                 NODE_ENV:'rc',
-                GTM_ID:'GTM-T5J6RH'
+                GTM_ID:'GTM-T5J6RH',
+                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/'
             },
             test: {
                 NODE_ENV:'test',
-                GTM_ID:'GTM-W4MMHJ'
+                GTM_ID:'GTM-W4MMHJ',
+                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/'
             },
             prod: {
                 NODE_ENV:'prod',
-                GTM_ID:'GTM-TP3SK6'
+                GTM_ID:'GTM-TP3SK6',
+                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/'
             },
         },
         ngconstant: {
@@ -293,6 +298,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build', [
+        'env:prod',
         'clean:dist',
         'wiredep:app',
         'preprocess',
@@ -340,7 +346,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build-test', [
-        'env:rc',
+        'env:test',
         'clean:dist',
         'wiredep:app',
         'preprocess',
