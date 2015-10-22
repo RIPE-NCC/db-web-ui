@@ -37,9 +37,8 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
             _$controller_('ModalDeleteObjectController', {
                 $scope: $scope, $state:$state, $log:logger, $modalInstance: {}, RestService:restService, source:source, objectType:objectType, name:name
             });
-            
-            $httpBackend.whenGET(/.*.html/).respond(200);
 
+            $httpBackend.whenGET(/.*.html/).respond(200);
             $httpBackend.flush();
 
         });
@@ -125,15 +124,17 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
 
 describe('webUpdates: ModalDeleteObjectController undeletable object', function () {
 
-    var $scope, $state, modalInstance, RestService, CredentialsService, logger;
+    var $scope, $state, $httpBackend, modalInstance, RestService, CredentialsService, logger;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _CredentialsService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _CredentialsService_) {
 
             $state = _$state_;
             CredentialsService = _CredentialsService_;
+            $httpBackend= _$httpBackend_;
+
             RestService =  {
                 deleteObject: function() {
                     return { then: function(s) { s();} }; // pretend to be a promise
@@ -165,7 +166,15 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
                         source:source, objectType:objectType, name:name
             });
 
+            $httpBackend.whenGET(/.*.html/).respond(200);
+            $httpBackend.flush();
+
         });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
     });
 
     it('should query for last object revision references', function() {
@@ -202,15 +211,16 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
 
 describe('webUpdates: ModalDeleteObjectController deleteable object ', function () {
 
-    var $scope, $state, modalInstance, RestService, CredentialsService;
+    var $scope, $state, $httpBackend, modalInstance, RestService, CredentialsService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$log_, _CredentialsService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _$log_, _CredentialsService_) {
 
             $state = _$state_;
             CredentialsService = _CredentialsService_;
+            $httpBackend = _$httpBackend_;
             RestService =  {
                 deleteObject: function() {
                     return { then: function(s) { s();} }; // pretend to be a promise
@@ -235,6 +245,7 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
                 close: jasmine.createSpy('modalInstance.close'),
                 dismiss: jasmine.createSpy('modalInstance.dismiss')
             };
+
             var logger = {
                 debug: function(msg) {
                     //console.log('debug:'+msg);
@@ -252,7 +263,15 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
                     source:source, objectType:objectType, name:name
             });
 
+            $httpBackend.whenGET(/.*.html/).respond(200);
+            $httpBackend.flush();
+
         });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
     });
 
     it('should query for last object revision references', function() {
@@ -267,11 +286,11 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
         expect($scope.incomingReferences[1].primaryKey).toEqual('ME-RIPE');
     });
 
-    it('should decide that object cannot be deleted ', function() {
+    it('should decide that object can be deleted ', function() {
         expect($scope.canBeDeleted).toBe(true);
     });
 
-    it('should call delete endpoint', function() {
+    it('should call delete endpoint without passeord  and close modal', function() {
         $scope.reason = 'some reason';
 
         spyOn(RestService, 'deleteObject').and.callThrough();
@@ -279,9 +298,12 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
         $scope.doDelete();
 
         expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, true, undefined);
+        expect(modalInstance.close).toHaveBeenCalled();
+
+        $httpBackend.flush();  // deleted.html
     });
 
-    it('should call delete endpoint with password', function() {
+    it('should call delete endpoint with password and close modal', function() {
         $scope.reason = 'some reason';
 
         spyOn(RestService, 'deleteObject').and.callThrough();
@@ -290,14 +312,10 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
         $scope.doDelete();
 
         expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, true, 'secret');
-    });
-
-    it('should close modal after delete object', function() {
-        spyOn(RestService, 'deleteObject').and.callThrough();
-
-        $scope.doDelete();
-
         expect(modalInstance.close).toHaveBeenCalled();
+
+        $httpBackend.flush(); // deleted.html
+
     });
 
     it('should dismiss modal after error deleting object', function() {
@@ -322,15 +340,16 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
 
 describe('webUpdates: ModalDeleteObjectController loading references failures ', function () {
 
-    var $scope, $state, modalInstance, RestService, CredentialsService;
+    var $scope, $state, $httpBackend, modalInstance, RestService, CredentialsService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _CredentialsService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _CredentialsService_) {
 
             $state = _$state_;
             CredentialsService = _CredentialsService_;
+            $httpBackend = _$httpBackend_;
             RestService =  {
                 getReferences: function (source, type, name) {
                     return { then: function(s, f) { f({data:'error'});} }; // pretend to be a promise
@@ -355,7 +374,15 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
                 source:source, objectType:objectType, name:name
             });
 
+            $httpBackend.whenGET(/.*.html/).respond(200);
+            $httpBackend.flush();
+
         });
+    });
+
+    afterEach(function() {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
     });
 
     it('should dismiss modal after error getting object references', function() {
