@@ -50,6 +50,9 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
             UserInfoService.clear();
 
             $log = {
+                debug: function(msg) {
+                    //console.log('info:'+msg);
+                },
                 info: function(msg) {
                     //console.log('info:'+msg);
                 },

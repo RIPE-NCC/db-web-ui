@@ -11,7 +11,7 @@ angular.module('dbWebApp', [
     'diff-match-patch',
     'ui.bootstrap',
     'ui.select'])
-.config(['$stateProvider', '$analyticsProvider', function ($stateProvider, $analyticsProvider) {
+.config(['$stateProvider', '$logProvider', 'ENV', function ($stateProvider, $logProvider, ENV) {
         $stateProvider
         .state('error', {
             url: '/public/error',
@@ -25,12 +25,19 @@ angular.module('dbWebApp', [
         //$analyticsProvider.developerMode(true);
         //$analyticsProvider.firstPageview(true);
 
+        if( ENV === "dev" || ENV == 'prepdev') {
+            $logProvider.debugEnabled(true);
+        } else {
+            $logProvider.debugEnabled(false);
+        }
 
     }])
-.run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'LOGIN_URL',
-        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL) {
+.run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'LOGIN_URL', 'ENV',
+        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL, ENV) {
 
-    $rootScope.$on(ERROR_EVENTS.serverError, function () {
+       $log.info('Starting up for env ' + ENV);
+
+        $rootScope.$on(ERROR_EVENTS.serverError, function () {
         $state.go('error');
     });
 

@@ -20,6 +20,9 @@ describe('dbWebApp: UserInfoController', function () {
             $httpBackend = _$httpBackend_;
             UserInfoService = _UserInfoService_;
             $log = {
+                debug: function(msg) {
+                    //console.log('info:'+msg);
+                },
                 info: function(msg) {
                     //console.log('info:'+msg);
                 },

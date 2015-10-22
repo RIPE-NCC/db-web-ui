@@ -96,27 +96,27 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
                 // direct incoming references
                 if(isEqualTo(parent.objectType,parent.primaryKey, first) ) {
                     // self ref
-                    $log.info(first.primaryKey + ' is first level self-ref');
+                    $log.debug(first.primaryKey + ' is first level self-ref');
                     return true;
                 } else {
                     return _.every(first.incoming, function(second) {
                         // secondary incoming references
                         if(isEqualTo(first.objectType, first.primaryKey, second) ) {
                             // self ref
-                            $log.info(second.primaryKey + ' is second level self-ref');
+                            $log.debug(second.primaryKey + ' is second level self-ref');
                             return true;
                         } else if(isEqualTo(parent.objectType, parent.primaryKey, second) ) {
                             // cross reference with parent
-                            $log.info(second.primaryKey + ' is second level cross-ref');
+                            $log.debug(second.primaryKey + ' is second level cross-ref');
                             return true;
                         } else {
-                            $log.info(second.primaryKey + ' is an external ref');
+                            $log.debug(second.primaryKey + ' is an external ref');
                             return false;
                         }
                     });
                 }
             });
-            $log.info('objectDeletable:' + objectDeletable);
+            $log.debug('objectDeletable:' + objectDeletable);
 
             return objectDeletable;
         }

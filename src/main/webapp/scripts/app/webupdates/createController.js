@@ -60,7 +60,7 @@ angular.module('webUpdates')
                     $scope.name = decodeURIComponent($stateParams.name);
                 }
 
-                $log.info('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
+                $log.debug('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
 
                 // initialize data
                 $scope.maintainers = {
@@ -464,9 +464,9 @@ angular.module('webUpdates')
                             });
                             $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
 
-                            $log.info('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
-                            $log.info('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
-                            $log.info('mntners-object:' + JSON.stringify($scope.maintainers.object));
+                            $log.debug('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
+                            $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
+                            $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
 
                         }
                     }, function (error) {
@@ -489,11 +489,11 @@ angular.module('webUpdates')
                 }).then(
                     function (results) {
 
-                        $log.info('object to modify:' + JSON.stringify(results.objectToModify));
+                        $log.debug('object to modify:' + JSON.stringify(results.objectToModify));
 
                         // store mntners for SSO account
                         $scope.maintainers.sso = results.mntners;
-                        $log.info('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
+                        $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
                         // store object to modify
                         _wrapAndEnrichResources(results.objectToModify);
@@ -513,11 +513,11 @@ angular.module('webUpdates')
                                 // result returns an array for each mntner
 
                                 $scope.maintainers.objectOriginal = _.flatten(result);
-                                $log.info('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
+                                $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
 
                                 // of course none of the initial ones are new
                                 $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, _.flatten(result));
-                                $log.info('mntners-object:' + JSON.stringify($scope.maintainers.object));
+                                $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
 
                                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                                     _performAuthentication();
@@ -665,8 +665,8 @@ angular.module('webUpdates')
                                 // save object for later diff in display-screen
                                 MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
-                                $log.info('sso-mntners:' + JSON.stringify($scope.maintainers.sso));
-                                $log.info('objectMaintainers:' + JSON.stringify($scope.maintainers.object));
+                                $log.debug('sso-mntners:' + JSON.stringify($scope.maintainers.sso));
+                                $log.debug('objectMaintainers:' + JSON.stringify($scope.maintainers.object));
 
                             }
                         );
@@ -695,7 +695,7 @@ angular.module('webUpdates')
             }
 
             function _performAuthentication() {
-                $log.info('Perform authentication');
+                $log.debug('Perform authentication');
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
                 if (mntnersWithPasswords.length === 0) {
                     AlertService.setGlobalError('You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have password');
@@ -706,7 +706,7 @@ angular.module('webUpdates')
                             AlertService.clearErrors();
 
                             var selectedMntner = result.selectedItem;
-                            $log.info('selected mntner:' + JSON.stringify(selectedMntner));
+                            $log.debug('selected mntner:' + JSON.stringify(selectedMntner));
                             var associationResp = result.response;
 
                             if ($scope.isMine(selectedMntner)) {
@@ -716,8 +716,8 @@ angular.module('webUpdates')
                                 // mark starred in selected
                                 $scope.maintainers.object = _enrichWithMine($scope.maintainers.object);
                             }
-                            $log.info('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
-                            $log.info('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
+                            $log.debug('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
+                            $log.debug('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
 
                             if (associationResp) {
                                 // use response from successfull association

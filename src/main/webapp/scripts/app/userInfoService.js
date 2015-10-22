@@ -10,15 +10,15 @@ angular.module('dbWebApp')
                 var deferredObject = $q.defer();
 
                 if(!_.isUndefined(_userInfo)) {
-                    $log.info('getUserInfo cached:' + JSON.stringify(_userInfo));
+                    $log.debug('getUserInfo cached:' + JSON.stringify(_userInfo));
                     deferredObject.resolve(_userInfo);
                 } else {
-                    $log.info('getUserInfo start');
+                    $log.debug('getUserInfo start');
 
                     $resource('api/user/info').get().$promise.then(
                         function (result) {
                             _userInfo = result;
-                            $log.info('getUserInfo success:' + JSON.stringify(result));
+                            $log.debug('getUserInfo success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('getUserInfo error:' + JSON.stringify(error));

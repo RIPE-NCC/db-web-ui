@@ -9,7 +9,7 @@ angular.module('dbWebApp')
                 this.getReferences = function(source, objectType, name, limit) {
                     var deferredObject = $q.defer();
 
-                    $log.info('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
+                    $log.debug('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
 
                     $resource('api/references/:source/:objectType/:name',
                         {   source: source,
@@ -19,10 +19,10 @@ angular.module('dbWebApp')
                         }).get()
                         .$promise.then(
                         function(result) {
-                            $log.info('getReferences success:' + JSON.stringify(result));
+                            $log.debug('getReferences success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function(error) {
-                            $log.info('getReferences error:' + JSON.stringify(error));
+                            $log.debug('getReferences error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -35,7 +35,7 @@ angular.module('dbWebApp')
 
                     var service = withReferences ? 'references' : 'whois';
 
-                    $log.info('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
+                    $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
                         ' reason:' + reason + ' with-refs:' + withReferences);
 
                     $resource('api/'+service+'/:source/:objectType/:name',
@@ -46,7 +46,7 @@ angular.module('dbWebApp')
                         }).delete({reason: reason})
                         .$promise.then(
                         function (result) {
-                            $log.info('deleteObject success:' + JSON.stringify(result));
+                            $log.debug('deleteObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('deleteObject error:' + JSON.stringify(error));
@@ -60,14 +60,14 @@ angular.module('dbWebApp')
                 this.createPersonMntner = function(source, multipleWhoisObjects ) {
                     var deferredObject = $q.defer();
 
-                    $log.info('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
+                    $log.debug('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
 
                     $resource('api/references/:source',
                         {source: source})
                         .save(multipleWhoisObjects)
                         .$promise
                         .then(function (result) {
-                            $log.info('createPersonMntner success:' + JSON.stringify(result));
+                            $log.debug('createPersonMntner success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('createPersonMntner error:' + JSON.stringify(error));
@@ -89,13 +89,13 @@ angular.module('dbWebApp')
                 this.fetchMntnersForSSOAccount = function () {
                     var deferredObject = $q.defer();
 
-                    $log.info('fetchMntnersForSSOAccount start');
+                    $log.debug('fetchMntnersForSSOAccount start');
 
                     $resource('api/user/mntners')
                         .query()
                         .$promise
                         .then(function (result) {
-                            $log.info('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
+                            $log.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error));
@@ -107,7 +107,7 @@ angular.module('dbWebApp')
                 };
 
                 this.detailsForMntners = function (mntners) {
-                    $log.info('detailsForMntners start for: ' + JSON.stringify(mntners));
+                    $log.debug('detailsForMntners start for: ' + JSON.stringify(mntners));
 
                     var promises = _.map(mntners, function (item) {
                         return _mntnerDetails(item);
@@ -119,7 +119,7 @@ angular.module('dbWebApp')
                 function _mntnerDetails(mntner) {
                     var deferredObject = $q.defer();
 
-                    $log.info('_mntnerDetails start for: ' +  JSON.stringify(mntner));
+                    $log.debug('_mntnerDetails start for: ' +  JSON.stringify(mntner));
 
                     $resource('api/whois/autocomplete',
                         {   query: mntner.key,
@@ -141,7 +141,7 @@ angular.module('dbWebApp')
                                 // in case search-index does not yet know this newly created mntner
                                 result = [mntner];
                             }
-                            $log.info('_mntnerDetails success:' + JSON.stringify(result));
+                            $log.debug('_mntnerDetails success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('_mntnerDetails error:' + JSON.stringify(error));
@@ -155,7 +155,7 @@ angular.module('dbWebApp')
                 this.autocomplete = function (objectType, objectName, extended, attrs) {
                     var deferredObject = $q.defer();
 
-                    $log.info('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/autocomplete',
                         {   query: objectName,
@@ -165,7 +165,7 @@ angular.module('dbWebApp')
                         .query()
                         .$promise
                         .then(function (result) {
-                            $log.info('autocomplete success:' + JSON.stringify(result));
+                            $log.debug('autocomplete success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('autocomplete error:' + JSON.stringify(error));
@@ -179,7 +179,7 @@ angular.module('dbWebApp')
                 this.authenticate = function (source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
 
-                    $log.info('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:objectName',
                         {
@@ -191,7 +191,7 @@ angular.module('dbWebApp')
                         }).get()
                         .$promise
                         .then(function (result) {
-                            $log.info('authenticate success:' + JSON.stringify(result));
+                            $log.debug('authenticate success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('authenticate error:' + JSON.stringify(error));
@@ -205,7 +205,7 @@ angular.module('dbWebApp')
                 this.fetchObject = function (source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
 
-                    $log.info('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
                         {   source: source,
@@ -216,7 +216,7 @@ angular.module('dbWebApp')
                         .get()
                         .$promise
                         .then(function (result) {
-                            $log.info('fetchObject success:' + JSON.stringify(result));
+                            $log.debug('fetchObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('fetchObject error:' + JSON.stringify(error));
@@ -230,7 +230,7 @@ angular.module('dbWebApp')
                 this.createObject = function (source, objectType, attributes, passwords) {
                     var deferredObject = $q.defer();
 
-                    $log.info('createObject start for objectType: ' + objectType);
+                    $log.debug('createObject start for objectType: ' + objectType);
 
                     $resource('api/whois/:source/:objectType',
                         {   source: source,
@@ -239,7 +239,7 @@ angular.module('dbWebApp')
                         .save(attributes)
                         .$promise
                         .then(function (result) {
-                            $log.info('createObject success:' + JSON.stringify(result));
+                            $log.debug('createObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('createObject error:' + JSON.stringify(error));
@@ -253,7 +253,7 @@ angular.module('dbWebApp')
                 this.modifyObject = function (source, objectType, objectName, attributes, passwords) {
                     var deferredObject = $q.defer();
 
-                    $log.info('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
                         {   source: source,
@@ -264,7 +264,7 @@ angular.module('dbWebApp')
                         .update(attributes)
                         .$promise
                         .then(function (result) {
-                            $log.info('modifyObject success:' + JSON.stringify(result));
+                            $log.debug('modifyObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('modifyObject error:' + JSON.stringify(error));
@@ -278,7 +278,7 @@ angular.module('dbWebApp')
                 this.associateSSOMntner = function (source, objectType, objectName, whoisResources, passwords) {
                     var deferredObject = $q.defer();
 
-                    $log.info('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
                         {   source: source,
@@ -289,7 +289,7 @@ angular.module('dbWebApp')
                         .update(whoisResources)
                         .$promise
                         .then(function (result) {
-                            $log.info('associateSSOMntner success:' + JSON.stringify(result));
+                            $log.debug('associateSSOMntner success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
                             $log.error('associateSSOMntner error:' + JSON.stringify(error));

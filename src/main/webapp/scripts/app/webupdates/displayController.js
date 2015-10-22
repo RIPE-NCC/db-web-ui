@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', '$log', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService',
-        function ($scope, $stateParams, $state, $resource, $log, WhoisResources, MessageStore, RestService, AlertService) {
+    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', '$log', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService', 'UserInfoService',
+        function ($scope, $stateParams, $state, $resource, $log, WhoisResources, MessageStore, RestService, AlertService, UserInfoService) {
 
             $scope.isPending = isPending;
             $scope.isCreateOrModify = isCreateOrModify;
@@ -28,11 +28,19 @@ angular.module('webUpdates')
                 $scope.objectName = decodeURIComponent($stateParams.name);
                 $scope.method = $stateParams.method; // optional: added by create- and modify-controller
 
-                $log.info('DisplayController: Url params: source:'+ $scope.objectSource + '. objectType:' + $scope.objectType +
+                $log.debug('DisplayController: Url params: source:'+ $scope.objectSource + '. objectType:' + $scope.objectType +
                     ', objectName:' + $scope.objectName + ', method:' + $scope.method );
 
                 $scope.before = undefined;
                 $scope.after = undefined;
+
+                // needed to determine name of modify button
+                $scope.loggedIn = false;
+                UserInfoService.getUserInfo().then(
+                    function (userData) {
+                        $scope.loggedIn = true;
+                    }
+                );
 
                 // fetch just created object from temporary store
                 var cached = MessageStore.get($scope.objectName);
@@ -69,6 +77,8 @@ angular.module('webUpdates')
                         }
                     );
                 }
+
+
             };
 
             /*

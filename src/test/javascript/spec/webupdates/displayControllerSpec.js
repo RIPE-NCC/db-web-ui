@@ -60,7 +60,6 @@ describe('webUpdates: DisplayController', function () {
 
             $httpBackend.flush();
 
-
         });
     });
 
@@ -69,9 +68,26 @@ describe('webUpdates: DisplayController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
+    function expectUserInfo(withFlush) {
+        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+            return [200, {
+                username:"test@ripe.net",
+                displayName:"Test User",
+                expiryDate:[2015,9,9,14,9,27,863],
+                uuid:"aaaa-bbbb-cccc-dddd",
+                active:true
+            }, {}];
+        });
+        if(withFlush) {
+            $httpBackend.flush();
+        }
+    }
+
     it('should get source from url', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
+
+        expectUserInfo(true);
 
         expect($scope.objectSource).toBe(SOURCE);
     });
@@ -80,6 +96,8 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
+        expectUserInfo(true);
+
         expect($scope.objectType).toBe(OBJECT_TYPE);
     });
 
@@ -87,7 +105,31 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
+        expectUserInfo(true);
+
         expect($scope.objectName).toBe(OBJECT_NAME);
+    });
+
+    if('should detect logged in', function() {
+        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
+        createDisplayController();
+
+        expectUserInfo(true);
+
+        expect($scope.loggedIn).toBe(true);
+    });
+
+    it('should detect logged out', function() {
+        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
+        createDisplayController();
+
+        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+            return [401, "", {}];
+        });
+        $httpBackend.flush();
+
+        expect($scope.loggedIn).toBe(false);
+
     });
 
     it('should populate the ui from message-store', function () {
@@ -95,6 +137,8 @@ describe('webUpdates: DisplayController', function () {
 
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
+
+        expectUserInfo(true);
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
@@ -109,6 +153,8 @@ describe('webUpdates: DisplayController', function () {
 
         // no objects in message store
         createDisplayController();
+
+        expectUserInfo(false);
 
         $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function(method,url) {
             return [200, objectToDisplay, {}];
@@ -128,6 +174,8 @@ describe('webUpdates: DisplayController', function () {
 
         // no objects in message store
         createDisplayController();
+
+        expectUserInfo(false);
 
         $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function(method,url) {
             return [403, {
@@ -159,6 +207,8 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
+        expectUserInfo(true);
+
         $scope.navigateToSelect();
 
         expect($state.current.name).toBe('select');
@@ -168,6 +218,8 @@ describe('webUpdates: DisplayController', function () {
     it('should navigate to modify screen', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
+
+        expectUserInfo(true);
 
         $scope.navigateToModify();
         $httpBackend.flush();
@@ -236,12 +288,11 @@ describe('webUpdates: DisplayController with object containing slash', function 
                 _$controller_('DisplayController', {
                     $scope: $scope, $state: $state, $stateParams: $stateParams
                 });
+
+                $httpBackend.whenGET(/.*.html/).respond(200);
+                //$httpBackend.flush();
+
             };
-
-            $httpBackend.whenGET(/.*.html/).respond(200);
-
-            $httpBackend.flush();
-
 
         });
     });
@@ -251,11 +302,28 @@ describe('webUpdates: DisplayController with object containing slash', function 
         $httpBackend.verifyNoOutstandingRequest();
     });
 
+    function expectUserInfo(withFlush) {
+        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+            return [200, {
+                username:"test@ripe.net",
+                displayName:"Test User",
+                expiryDate:[2015,9,9,14,9,27,863],
+                uuid:"aaaa-bbbb-cccc-dddd",
+                active:true
+            }, {}];
+        });
+        if(withFlush) {
+            $httpBackend.flush();
+        }
+    }
+
     it('should populate the ui from rest ok', function () {
         var stateBefore = $state.current.name;
 
         // no objects in message store
         createDisplayController();
+
+        expectUserInfo(false);
 
         $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function(method,url) {
             return [200, objectToDisplay, {}];
@@ -266,13 +334,13 @@ describe('webUpdates: DisplayController with object containing slash', function 
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        expect($state.current.name).toBe(stateBefore);
-
     });
 
     it('should navigate to modify', function () {
         // no objects in message store
         createDisplayController();
+
+        expectUserInfo(false);
 
         $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function(method,url) {
             return [200, objectToDisplay, {}];
@@ -294,6 +362,8 @@ describe('webUpdates: DisplayController with object containing slash', function 
         // no objects in message store
         createDisplayController();
 
+        expectUserInfo(false);
+
         $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function(method,url) {
             return [200, objectToDisplay, {}];
         });
@@ -308,3 +378,5 @@ describe('webUpdates: DisplayController with object containing slash', function 
     });
 
 });
+
+

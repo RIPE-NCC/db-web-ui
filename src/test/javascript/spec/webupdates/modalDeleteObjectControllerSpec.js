@@ -21,12 +21,15 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
                 }
             };
             logger = {
-                notice: function(msg) {
-                    //console.log('test:'+ msg);
+                debug: function(msg) {
+                    //console.log('debug:'+msg);
                 },
                 info: function(msg) {
                     //console.log('\tinfo:'+ msg);
-                }
+                },
+                notice: function(msg) {
+                    //console.log('test:'+ msg);
+                },
             };
             logger.notice('webUpdates: primitives of ModalDeleteObjectController');
             _$controller_('ModalDeleteObjectController', {
@@ -138,6 +141,9 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
                 dismiss: jasmine.createSpy('modalInstance.dismiss')
             };
             logger = {
+                debug: function(msg) {
+                    //console.log(msg);
+                },
                 info: function(msg) {
                     //console.log(msg);
                 }
@@ -218,8 +224,14 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
                 dismiss: jasmine.createSpy('modalInstance.dismiss')
             };
             var logger = {
+                debug: function(msg) {
+                    //console.log('debug:'+msg);
+                },
                 info: function(msg) {
-                    //console.log(msg);
+                    //console.log('info:'+msg);
+                },
+                error: function(msg ) {
+                    //console.log('error:'+ msg);
                 }
             };
 

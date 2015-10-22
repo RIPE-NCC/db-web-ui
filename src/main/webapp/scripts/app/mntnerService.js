@@ -36,20 +36,20 @@ angular.module('dbWebApp')
             // ignore rpsl mntner while deciding if password authent. is needed
             mntners = _stripRpslMntner(mntners);
             if( mntners.length === 0 ) {
-                $log.info('needsPasswordAuthentication: no: No mntners left to authenticate against');
+                $log.debug('needsPasswordAuthentication: no: No mntners left to authenticate against');
                 return false;
             }
 
             if (_oneOfOriginalMntnersIsMine(mntners)) {
-                $log.info('needsPasswordAuthentication: no: One of selected mntners is mine');
+                $log.debug('needsPasswordAuthentication: no: One of selected mntners is mine');
                 return false;
             }
 
             if (_oneOfOriginalMntnersHasCredential(mntners)) {
-                $log.info('needsPasswordAuthentication: no: One of selected mntners has credentials');
+                $log.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
                 return false;
             }
-            $log.info('needsPasswordAuthentication.yes:');
+            $log.debug('needsPasswordAuthentication.yes:');
 
             return true;
         };

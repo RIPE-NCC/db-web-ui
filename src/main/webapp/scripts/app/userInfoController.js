@@ -8,10 +8,10 @@ angular.module('dbWebApp')
         function ($scope, $log, UserInfoService, loginUrl) {
 
             function _initialize() {
-                $log.info('Using login-url:' +  loginUrl);
+                $log.debug('Using login-url:' +  loginUrl);
                 UserInfoService.getUserInfo().then(
                     function(result) {
-                        $log.info('Ppupulate upper right with: ' + JSON.stringify(result));
+                        $log.debug('Ppupulate upper right with: ' + JSON.stringify(result));
                         RIPE.username = result.displayName;
                         RIPE.usermenu = {
                             'User details': [['Profile', loginUrl + '/profile'], ['Logout', loginUrl + '/logout']]
