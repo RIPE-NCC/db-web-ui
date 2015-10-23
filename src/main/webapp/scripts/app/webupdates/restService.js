@@ -5,7 +5,6 @@ angular.module('dbWebApp')
         function ($resource, $q, $http, $templateCache, $log, ngProgressFactory) {
 
             var progressBar = ngProgressFactory.createInstance();
-            progressBar.setColor('blue');
             function _startProgress() {
                 progressBar.start();
             }
