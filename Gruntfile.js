@@ -301,7 +301,6 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep',
         'preprocess',
-        'cacheBust',
         'ngconstant:dev',
         'watch',
         'connect'
@@ -311,9 +310,9 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep:test',
         'preprocess',
-        'cacheBust',
         'ngconstant:dev',
-        'karma'
+        'karma',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build', [
@@ -321,12 +320,12 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
-        'cacheBust',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-dev', [
@@ -334,12 +333,12 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
-        'cacheBust',
         'ngconstant:dev',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-prepdev', [
@@ -347,12 +346,12 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
-        'cacheBust',
         'ngconstant:prepdev',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-rc', [
@@ -360,12 +359,12 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
-        'cacheBust',
         'ngconstant:rc',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-test', [
@@ -373,12 +372,12 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
-        'cacheBust',
         'ngconstant:test',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-prod', [
@@ -386,12 +385,12 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
-        'cacheBust',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
 };
