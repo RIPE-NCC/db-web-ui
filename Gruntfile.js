@@ -249,6 +249,23 @@ module.exports = function (grunt) {
                 dest : 'src/main/webapp/index.html'
             }
         },
+        cacheBust: {
+            options: {
+                baseDir: './src/main/webapp/',
+                encoding: 'utf8',
+                algorithm: 'md5',
+                length: 16
+            },
+            assets: {
+                files: [{
+                    expand: true,
+                    cwd: './src/main/webapp/',
+                    src: ['**/*.html'],
+                    dest: './dest/',
+                    ignorePatterns: ['src/main/webapp/index_tmpl.html']
+                }]
+            }
+        },
         connect: {
 	      server: {
 	        options: {
@@ -284,6 +301,7 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep',
         'preprocess',
+        'cacheBust',
         'ngconstant:dev',
         'watch',
         'connect'
@@ -293,6 +311,7 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep:test',
         'preprocess',
+        'cacheBust',
         'ngconstant:dev',
         'karma'
     ]);
@@ -302,6 +321,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
+        'cacheBust',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',
@@ -314,6 +334,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
+        'cacheBust',
         'ngconstant:dev',
         'ngtemplates',
         'concurrent:dist',
@@ -326,6 +347,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
+        'cacheBust',
         'ngconstant:prepdev',
         'ngtemplates',
         'concurrent:dist',
@@ -338,6 +360,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
+        'cacheBust',
         'ngconstant:rc',
         'ngtemplates',
         'concurrent:dist',
@@ -350,6 +373,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
+        'cacheBust',
         'ngconstant:test',
         'ngtemplates',
         'concurrent:dist',
@@ -362,6 +386,7 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep:app',
         'preprocess',
+        'cacheBust',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',
