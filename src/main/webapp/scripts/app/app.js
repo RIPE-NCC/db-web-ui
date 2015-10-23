@@ -10,8 +10,7 @@ angular.module('dbWebApp', [
     'angulartics.google.tagmanager',
     'diff-match-patch',
     'ui.bootstrap',
-    'ui.select',
-    'ngProgress'])
+    'ui.select'])
 
 .config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV', function ($stateProvider, $logProvider, $httpProvider, ENV) {
         $stateProvider
@@ -36,36 +35,12 @@ angular.module('dbWebApp', [
         }
 
     }])
-.run(['$rootScope', '$state', '$window', '$location', '$log', 'ngProgressFactory', 'ERROR_EVENTS', 'LOGIN_URL', 'ENV',
-        function ($rootScope, $state, $window, $location, $log, ngProgressFactory, ERROR_EVENTS, LOGIN_URL, ENV) {
+.run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'LOGIN_URL', 'ENV',
+        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL, ENV) {
 
     $log.info('Starting up for env ' + ENV);
 
-    function _startProgress(bar) {
-        bar.start();
-    }
-
-    function _stopProgress(bar) {
-        bar.complete();
-    }
-
-    var progressBar = ngProgressFactory.createInstance();
-
-    $rootScope.$on('$stateChangeStart', function(ev,data) {
-        _startProgress(progressBar);
-    });
-
-    $rootScope.$on('$stateChangeSuccess', function(ev,data) {
-       _stopProgress(progressBar);
-    });
-
-    $rootScope.$on('$stateChangeCancel', function(ev,data) {
-        _stopProgress(progressBar);
-    });
-
     $rootScope.$on(ERROR_EVENTS.stateTransitionError, function (event, toState, toParams, fromState, fromParams, err) {
-        _stopProgress(progressBar);
-
         $log.error('Error transitioning to state:' + JSON.stringify(toState) + ' due to error ' + JSON.stringify(err) );
 
         if( err.status === 403 ) {

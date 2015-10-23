@@ -1,17 +1,8 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', 'ngProgressFactory',
-        function ($resource, $q, $http, $templateCache, $log, ngProgressFactory) {
-
-            var progressBar = ngProgressFactory.createInstance();
-            function _startProgress() {
-                progressBar.start();
-            }
-
-            function _stopProgress() {
-                progressBar.complete();
-            }
+    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log',
+        function ($resource, $q, $http, $templateCache, $log) {
 
             function RestService() {
 
@@ -20,7 +11,6 @@ angular.module('dbWebApp')
 
                     $log.debug('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
 
-                    _startProgress();
                     $resource('api/references/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
@@ -29,11 +19,9 @@ angular.module('dbWebApp')
                         }).get()
                         .$promise.then(
                         function(result) {
-                            _stopProgress();
                             $log.debug('getReferences success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function(error) {
-                            _stopProgress();
                             $log.debug('getReferences error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -50,7 +38,6 @@ angular.module('dbWebApp')
                     $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
                         ' reason:' + reason + ' with-refs:' + withReferences);
 
-                    _startProgress();
                     $resource('api/'+service+'/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
@@ -59,11 +46,9 @@ angular.module('dbWebApp')
                         }).delete({reason: reason})
                         .$promise.then(
                         function (result) {
-                            _stopProgress();
                             $log.debug('deleteObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            _stopProgress();
                             $log.error('deleteObject error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -77,17 +62,14 @@ angular.module('dbWebApp')
 
                     $log.debug('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
 
-                    _startProgress();
                     $resource('api/references/:source',
                         {source: source})
                         .save(multipleWhoisObjects)
                         .$promise
                         .then(function (result) {
-                            _stopProgress();
                             $log.debug('createPersonMntner success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            _stopProgress();
                             $log.error('createPersonMntner error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -109,16 +91,13 @@ angular.module('dbWebApp')
 
                     $log.debug('fetchMntnersForSSOAccount start');
 
-                    _startProgress();
                     $resource('api/user/mntners')
                         .query()
                         .$promise
                         .then(function (result) {
-                            _stopProgress();
                             $log.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            _stopProgress();
                             $log.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -134,10 +113,7 @@ angular.module('dbWebApp')
                         return _mntnerDetails(item);
                     });
 
-                    _startProgress();
-                    var q = $q.all(promises);
-                    _stopProgress();
-                    return q;
+                    return $q.all(promises);
                 };
 
                 function _mntnerDetails(mntner) {
@@ -205,7 +181,6 @@ angular.module('dbWebApp')
 
                     $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    _startProgress();
                     $resource('api/whois/:source/:objectType/:objectName',
                         {
                             source: source,
@@ -216,11 +191,9 @@ angular.module('dbWebApp')
                         }).get()
                         .$promise
                         .then(function (result) {
-                            _stopProgress();
                             $log.debug('authenticate success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            _stopProgress();
                             $log.error('authenticate error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -234,7 +207,6 @@ angular.module('dbWebApp')
 
                     $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    _startProgress();
                     $resource('api/whois/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
@@ -244,11 +216,9 @@ angular.module('dbWebApp')
                         .get()
                         .$promise
                         .then(function (result) {
-                            _stopProgress();
                             $log.debug('fetchObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            _stopProgress();
                             $log.error('fetchObject error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -262,7 +232,6 @@ angular.module('dbWebApp')
 
                     $log.debug('createObject start for objectType: ' + objectType);
 
-                    _startProgress();
                     $resource('api/whois/:source/:objectType',
                         {   source: source,
                             objectType: objectType,
@@ -270,11 +239,9 @@ angular.module('dbWebApp')
                         .save(attributes)
                         .$promise
                         .then(function (result) {
-                            _stopProgress();
                             $log.debug('createObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            _stopProgress();
                             $log.error('createObject error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -288,7 +255,6 @@ angular.module('dbWebApp')
 
                     $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    _startProgress();
                     $resource('api/whois/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
@@ -298,11 +264,9 @@ angular.module('dbWebApp')
                         .update(attributes)
                         .$promise
                         .then(function (result) {
-                            _stopProgress();
                             $log.debug('modifyObject success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            _stopProgress();
                             $log.error('modifyObject error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -316,7 +280,6 @@ angular.module('dbWebApp')
 
                     $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    _startProgress();
                     $resource('api/whois/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
@@ -326,11 +289,9 @@ angular.module('dbWebApp')
                         .update(whoisResources)
                         .$promise
                         .then(function (result) {
-                            _stopProgress();
                             $log.debug('associateSSOMntner success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            _stopProgress();
                             $log.error('associateSSOMntner error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
