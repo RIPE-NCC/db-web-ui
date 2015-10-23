@@ -252,6 +252,7 @@ module.exports = function (grunt) {
         cacheBust: {
             options: {
                 baseDir: './src/main/webapp/',
+                ignorePatterns: ['index_tmpl.html'],
                 encoding: 'utf8',
                 algorithm: 'md5',
                 length: 16
@@ -260,9 +261,8 @@ module.exports = function (grunt) {
                 files: [{
                     expand: true,
                     cwd: './src/main/webapp/',
-                    src: ['**/*.html'],
-                    dest: './dest/',
-                    ignorePatterns: ['src/main/webapp/index_tmpl.html']
+                    src: ['index.html'],
+                    dest: './dest/'
                 }]
             }
         },
