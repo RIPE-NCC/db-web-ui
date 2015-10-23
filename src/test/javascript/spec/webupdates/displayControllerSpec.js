@@ -119,19 +119,6 @@ describe('webUpdates: DisplayController', function () {
         expect($scope.loggedIn).toBe(true);
     });
 
-    it('should detect logged out', function() {
-        MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
-        createDisplayController();
-
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
-            return [401, "", {}];
-        });
-        $httpBackend.flush();
-
-        expect($scope.loggedIn).toBe(false);
-
-    });
-
     it('should populate the ui from message-store', function () {
         var stateBefore = $state.current.name;
 

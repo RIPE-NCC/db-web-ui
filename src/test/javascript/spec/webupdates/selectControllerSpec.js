@@ -47,7 +47,7 @@ describe('webUpdates: SelectController', function () {
             return [401, "", {}];
         });
         $httpBackend.flush();
-        expect($scope.loggedIn).toBe(false);
+        expect($scope.loggedIn).toBeUndefined();
 
         $scope.navigateToCreate();
 
