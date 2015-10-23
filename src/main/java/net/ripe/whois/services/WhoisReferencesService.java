@@ -1,7 +1,6 @@
 package net.ripe.whois.services;
 
 import com.google.common.collect.Maps;
-import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.rest.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +65,7 @@ public class WhoisReferencesService extends RestClient {
             String.class);
     }
 
-    public ResponseEntity<WhoisResources> deleteObjectAndReferences(final String source, final String objectType, final String name, final String reason, final String password, final HttpHeaders headers) {
+    public ResponseEntity<String> deleteObjectAndReferences(final String source, final String objectType, final String name, final String reason, final String password, final HttpHeaders headers) {
         final StringBuffer urlBuffer = new StringBuffer("{url}/{source}/{object-type}/{name}?reason={reason}");
 
         final HashMap<String, Object> variables = Maps.newHashMap();
@@ -82,12 +81,12 @@ public class WhoisReferencesService extends RestClient {
 
         URI uri = new UriTemplate(urlBuffer.toString()).expand(variables);
 
-        LOGGER.info("Performing delete {}", uri.toString() );
+        LOGGER.info("Performing delete {}", uri.toString());
 
         return restTemplate.exchange(uri,
             HttpMethod.DELETE,
             new HttpEntity<String>(headers),
-            WhoisResources.class);
+            String.class);
     }
 }
 

@@ -1,6 +1,5 @@
 package net.ripe.whois.web.api.whois;
 
-import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.WhoisReferencesService;
 import net.ripe.whois.web.api.ApiController;
 import org.slf4j.Logger;
@@ -67,7 +66,7 @@ public class WhoisReferencesController extends ApiController {
     }
 
     @RequestMapping(value = "/{source}/{objectType}/{name:.*}", method = RequestMethod.DELETE)
-    public ResponseEntity<WhoisResources> delete(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
+    public ResponseEntity<String> delete(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
                                                  @RequestParam("reason") String reason, @RequestParam(value = "password", required = false) String password,
                                                  @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
         LOGGER.info("delete {} {} {}", source, objectType, name);
