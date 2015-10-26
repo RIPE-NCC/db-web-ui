@@ -311,8 +311,7 @@ module.exports = function (grunt) {
         'wiredep:test',
         'preprocess',
         'ngconstant:dev',
-        'karma',
-        'cacheBust'
+        'karma'
     ]);
 
     grunt.registerTask('build', [
@@ -324,8 +323,7 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server',
-        'cacheBust'
+        'compass:server'
     ]);
 
     grunt.registerTask('build-dev', [
