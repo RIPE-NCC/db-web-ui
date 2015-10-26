@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'source', 'objectType', 'name',
-    function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, source, objectType, name) {
+angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'WhoisResources', 'MessageStore', 'source', 'objectType', 'name',
+    function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, WhoisResources, MessageStore, source, objectType, name) {
 
         $scope.MAX_REFS_TO_SHOW = 5;
 
@@ -39,6 +39,10 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs, password).then(
                 function (resp ) {
                     $modalInstance.close();
+
+                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
+
+                    MessageStore.add('DELETE_RESULT', whoisResources);
 
                     $state.transitionTo('deleted', {
                         source: source,
