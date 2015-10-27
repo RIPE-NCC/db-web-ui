@@ -111,7 +111,7 @@ public class Application {
     }
 
     @Bean
-    public CacheManager cacheManager() {
+    public CacheManager cacheEhCachManager() {
         return new EhCacheCacheManager(ehCacheCacheManager().getObject());
     }
 
@@ -119,6 +119,7 @@ public class Application {
     public EhCacheManagerFactoryBean ehCacheCacheManager() {
         EhCacheManagerFactoryBean cmfb = new EhCacheManagerFactoryBean();
         cmfb.setConfigLocation(new ClassPathResource("ehcache.xml"));
+        cmfb.setCacheManagerName("net.ripe.whois.crowdSessions");
         cmfb.setShared(true);
         return cmfb;
     }

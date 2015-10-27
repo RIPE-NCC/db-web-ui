@@ -207,14 +207,33 @@ angular.module('webUpdates')
                 }
             }
 
+            function _addNiceAutocompleteName(items ) {
+                return _.map(items, function(item) {
+                    var name = '';
+                    var separator = ' / ';
+                    if( item.person != null) {
+                        name = item.person;
+                    } else if( item.role != null) {
+                        name = item.role;
+                    } else if(item['org-name'] != null) {
+                        name = item['org-name'];
+                    } else {
+                        separator = '';
+                    }
+
+                    item.readableName = item.key + separator + name;
+                    return item;
+                });
+            }
+
             function referenceAutocomplete(attrType, query, refs) {
                 if (_.isUndefined(refs) || refs.length === 0) {
                     // No suggestions since not a reference
                     return [];
                 } else {
-                    return RestService.autocomplete(attrType, query, false, []).then(
+                    return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
                         function (resp) {
-                            return resp;
+                            return _addNiceAutocompleteName(resp)
                         }, function () {
                             return [];
                         });
@@ -236,6 +255,9 @@ angular.module('webUpdates')
                             } else {
                                 attr.$$error = '';
                             }
+                        },
+                        function( error ) {
+                            $log.error('Autocomplete error ' + JSON.stringify(error));
                         }
                     );
                 }
@@ -323,7 +345,16 @@ angular.module('webUpdates')
                     return status;
                 }
 
-                function _filterOutRipeMntners( mntners ) {
+
+                function _getDisplayUrl( source, type, name ) {
+                    return '/db-web-ui/#/webupdates/display/'+ source + '/' + type + '/' + name;
+                }
+
+                function _getLink( source, type, name ) {
+                    return '<a target="_blank" href="' + _getDisplayUrl(source, type, name) + '">' + name + '</a>';
+                }
+
+                function _filterOutRipeMntners( source, mntners ) {
                     var chopped = _.words(mntners, /[^, ]+/g);
                     if(_.isUndefined(chopped) || chopped.length === 1 ) {
                         return mntners;
@@ -333,11 +364,15 @@ angular.module('webUpdates')
                      * If there are multiple mntners to authenticate against, we remove the ripe mntners
                      * because regular users are confused by the presence of RIPE mntners
                      */
-                    var withoutRipeMntners = _.filter(chopped, function(item) {
-                        return ! _.startsWith(item, $scope.source.toUpperCase() + '-NCC');
+                    var withoutRipeMntners = _.filter(chopped, function(name) {
+                        return ! _.startsWith(name, $scope.source.toUpperCase() + '-NCC');
                     });
 
-                    return withoutRipeMntners.join(' or ');
+                    var asLinks = _.map(withoutRipeMntners, function(name) {
+                        return _getLink( source, 'mntner', name )
+                    });
+
+                    return asLinks.join(' or ');
                 }
 
                 function _composePendingResponse( resp ) {
@@ -348,11 +383,18 @@ angular.module('webUpdates')
                     if(!_.isUndefined(found) && found.args.length >= 4 ) {
                         var obstructingType = found.args[0].value;
                         var obstructingName = found.args[1].value;
-                        var mntnersToConfirm = _filterOutRipeMntners(found.args[3].value);
+                        var mntnersToConfirm = found.args[3].value;
+
+                        var obstructingObjectLink = _getLink($scope.source, obstructingType,  obstructingName);
+                        var mntnersToConfirmLinks = _filterOutRipeMntners($scope.source, mntnersToConfirm);
+
                         var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
-                        var pendngMsg = 'Your object is still pending authorisation by the ' + obstructingType + ' holder. ' +
-                            'Please ask the holder of ' + obstructingName + ' to confirm, by submitting the same object as outlined below using syncupdates or mail updates, and authenticate it using the maintainer(s) ' + mntnersToConfirm + '. ' + '' +
-                            'See here for more details on this: <a target="_blank" href="' + moreInfoUrl + '">' + moreInfoUrl + '</a>';
+                        var moreInfoLink = '<a target="_blank" href="' + moreInfoUrl + '">Click here for more details on this</a>';
+
+                        var pendngMsg = 'Your object is still pending authorisation by the <strong>' + obstructingType + '</strong> holder. ' +
+                            'Please ask the holder of ' + obstructingObjectLink + ' to confirm, ' +
+                            'by submitting the same object as outlined below ' +
+                            'using syncupdates or mail updates, and authenticate it using the maintainer(s) ' + mntnersToConfirmLinks + '. ' +  moreInfoLink;
                         // Keep existing message and overwrite existing errors
                         resp.errormessages.errormessage = [ { 'severity': 'Info',  'text': pendngMsg } ];
                     }
@@ -613,8 +655,6 @@ angular.module('webUpdates')
             }
 
             function hasErrors() {
-                $log.info("in progr:" + $scope.restCalInProgress);
-                $log.info("errors:" + AlertService.hasErrors());
                 return AlertService.hasErrors();
             }
 

@@ -6,10 +6,9 @@ angular.module('webUpdates')
             /*
              * UI initialisation
              */
-            $scope.objectTypes = WhoisResources.getObjectTypes();
+            $scope.objectTypes = _filterObjectTypes(WhoisResources.getObjectTypes());
 
             $scope.selected = {
-                //source: $scope.sources[0],
                 source: source,
                 objectType: $scope.objectTypes[0]
             };
@@ -21,6 +20,11 @@ angular.module('webUpdates')
                 }
             );
 
+            function _filterObjectTypes( unfiltered) {
+                return _.filter(unfiltered, function(item) {
+                    return item !== 'as-block' && item !== 'poem' && item !== 'poetic-form';
+                });
+            }
             /*
              * Methods called from the html-teplate
              */

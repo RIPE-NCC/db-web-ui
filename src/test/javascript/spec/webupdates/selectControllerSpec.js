@@ -4,7 +4,7 @@ describe('webUpdates: SelectController', function () {
     var selectController;
 
     var $scope, $rootScope, $state, $stateParams, $window, $httpBackend, UserInfoService;
-    var OBJECT_TYPE = 'as-block';
+    var OBJECT_TYPE = 'as-set';
     var SOURCE = 'RIPE';
 
     beforeEach(function () {
