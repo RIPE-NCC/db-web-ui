@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'source', 'objectType', 'name',
-    function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, source, objectType, name) {
+angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'WhoisResources', 'MessageStore', 'source', 'objectType', 'name',
+    function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, WhoisResources, MessageStore, source, objectType, name) {
 
         $scope.MAX_REFS_TO_SHOW = 5;
 
@@ -38,13 +38,8 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
             RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs, password).then(
                 function (resp ) {
-                    $modalInstance.close();
-
-                    $state.transitionTo('deleted', {
-                        source: source,
-                        objectType: $scope.objectType,
-                        name: $scope.name
-                    });
+                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                    $modalInstance.close(whoisResources)
                 },
                 function (error) {
                     $modalInstance.dismiss(error.data);
@@ -61,6 +56,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
         function doCancel() {
             $modalInstance.close();
+            _transitionToModifyObject(source, $scope.objectType, $scope.name);
         };
 
         function isEqualTo(selfType, selfName, ref) {
@@ -121,4 +117,11 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             return objectDeletable;
         }
 
+        function _transitionToModifyObject(source, objectType, pkey) {
+            $state.transitionTo('modify', {
+                source: source,
+                objectType: objectType,
+                name: pkey
+            });
+        }
     }]);

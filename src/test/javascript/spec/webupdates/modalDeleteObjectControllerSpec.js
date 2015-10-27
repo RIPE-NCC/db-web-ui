@@ -202,8 +202,13 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
     });
 
     it('should close the modal and return error when canceled', function () {
+
         $scope.doCancel();
         expect(modalInstance.close).toHaveBeenCalled();
+
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('modify');
     });
 
 });
@@ -290,7 +295,7 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
         expect($scope.canBeDeleted).toBe(true);
     });
 
-    it('should call delete endpoint without passeord  and close modal', function() {
+    it('should call delete endpoint without password and close modal', function() {
         $scope.reason = 'some reason';
 
         spyOn(RestService, 'deleteObject').and.callThrough();
@@ -300,7 +305,6 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
         expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, true, undefined);
         expect(modalInstance.close).toHaveBeenCalled();
 
-        $httpBackend.flush();  // deleted.html
     });
 
     it('should call delete endpoint with password and close modal', function() {
@@ -313,9 +317,6 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
 
         expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, true, 'secret');
         expect(modalInstance.close).toHaveBeenCalled();
-
-        $httpBackend.flush(); // deleted.html
-
     });
 
     it('should dismiss modal after error deleting object', function() {
@@ -326,12 +327,12 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
         expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
     });
 
-    it('should redirect to succes delete page after delete object', function() {
-        spyOn($state, 'transitionTo');
+    it('should redirect to success delete page after delete object', function() {
+        spyOn(RestService, 'deleteObject').and.returnValue({then: function(s, f) { s({data:'error'}); }});
 
         $scope.doDelete();
 
-        expect($state.transitionTo).toHaveBeenCalledWith('deleted', {source:source, objectType:objectType, name:name});
+        expect(modalInstance.close).toHaveBeenCalled();
     });
 
 

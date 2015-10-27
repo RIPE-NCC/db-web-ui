@@ -313,20 +313,11 @@ angular.module('webUpdates')
             }
 
             function deleteObject() {
-                ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
-                    function () {
-                    },
-                    function (errorResp) {
-                        try {
-                            var whoisResources = _wrapAndEnrichResources(errorResp);
-                            AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, errorResp);
-                            AlertService.setErrors(whoisResources);
-                        }
-                        catch (err) {
-                            AlertService.setGlobalError('Error deleting object. Please reload and try again.');
-                        }
-                    }
-                );
+                $state.transitionTo('delete', {
+                    source: $scope.source,
+                    objectType: $scope.objectType,
+                    name: $scope.name
+                });
             }
 
             function submit() {

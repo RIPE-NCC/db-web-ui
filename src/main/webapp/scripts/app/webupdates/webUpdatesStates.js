@@ -69,14 +69,10 @@ angular.module('webUpdates')
                 templateUrl: 'scripts/app/webupdates/display.html',
                 controller: 'DisplayController'
             })
-            .state('deleted', {
-                url: '/webupdates/deleted/:source/:objectType/{name:WhoisObjectName}',
-                templateUrl: 'scripts/app/webupdates/deleted.html',
-                controller: function($scope, $stateParams){
-                   $scope.source = $stateParams.source;
-                   $scope.objectType = $stateParams.objectType;
-                   $scope.name = $stateParams.name;
-                }
+            .state('delete', {
+                url: '/webupdates/delete/:source/:objectType/{name:WhoisObjectName}',
+                templateUrl: 'scripts/app/webupdates/delete.html',
+                controller: 'DeleteController'
             });
 
             //$locationProvider.html5Mode(true);
