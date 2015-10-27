@@ -59,7 +59,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
                 error: function(msg) {
                     //console.log('error:'+msg);
                 }
-            }
+            };
+
             _$controller_('CreateSelfMaintainedMaintainerController', {
                 $scope: $scope, $stateParams: $stateParams, $log:$log, UserInfoService: UserInfoService, RestService: RestService, MessageStore: MessageStore
             });
