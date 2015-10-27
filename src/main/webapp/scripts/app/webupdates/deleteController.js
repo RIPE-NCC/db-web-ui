@@ -33,22 +33,26 @@ angular.module('webUpdates')
             function _deleteObject() {
                 ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
                     function (whoisResources) {
+                        $scope.modalInProgress = false;
                         $scope.deletedObjects = whoisResources.objects.object;
                         if (whoisResources) {
-                            $log.debug(JSON.stringify(whoisResources));
+                            $log.debug('SUCCESS delete object'+JSON.stringify(whoisResources));
                             $scope.deletedObjects = whoisResources.objects.object;
                         }
-                        $scope.modalInProgress = false;
                     },
                     function (errorResp) {
+                        $scope.modalInProgress = false;
+
+                        $log.debug('ERROR delete object'+JSON.stringify(errorResp));
+
                         try {
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                            var whoisResources = WhoisResources.wrapWhoisResources(errorResp);
                             AlertService.setErrors(whoisResources);
                         }
                         catch (err) {
                             AlertService.setGlobalError('Error deleting object. Please reload and try again.');
                         }
-                        $scope.modalInProgress = false;
+
                     }
                 );
             }
