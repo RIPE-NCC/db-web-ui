@@ -317,8 +317,6 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
 
         expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, true, 'secret');
         expect(modalInstance.close).toHaveBeenCalled();
-
-        //$httpBackend.flush(); // deleted.html
     });
 
     it('should dismiss modal after error deleting object', function() {
