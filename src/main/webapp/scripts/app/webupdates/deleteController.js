@@ -6,6 +6,10 @@ angular.module('webUpdates')
     .controller('DeleteController', ['$scope', '$stateParams', '$state', '$log', 'WhoisResources', 'ModalService', 'AlertService',
         function ($scope, $stateParams, $state, $log, WhoisResources, ModalService, AlertService) {
 
+            //this page does not raise a modal for authentication. It can be user directly either
+            // if you are logged in and the object has your maintainers or if you have provided password
+            // in the modify screen
+            //TODO [TP]: modularise the authentication logic from createController and use it both in create/modify and in delete
 
             _initialisePage();
 
