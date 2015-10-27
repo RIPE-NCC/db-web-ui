@@ -39,18 +39,22 @@
 	</section>
 
     <section class="visible-field-form" ng-if="hasMntners()">
-
-    <ul class="form-fields appeared-fields">
+        <ul class="form-fields appeared-fields">
 
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
 
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
 
-            <input type="text" name="{{attribute.name}}" ng-model="attribute.value" ng-blur="fieldVisited(attribute)"
-                   ng-required="{{attribute.$$mata.$$mandatory}}" class="form-control"
-                   typeahead="value for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
+            <input type="text"
+                   name="{{attribute.name}}"
+                   ng-model="attribute.value"
+                   ng-blur="fieldVisited(attribute)"
+                   ng-required="{{attribute.$$meta.$$mandatory}}"
+                   class="form-control"
+                   typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"
+                   typeahead-select-on-exact="true"
                    ng-disabled="isToBeDisabled(attribute)"
                    />
             <div class="text field-description" collapse="!isHelpShown">

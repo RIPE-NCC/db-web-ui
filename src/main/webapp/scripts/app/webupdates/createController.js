@@ -207,20 +207,22 @@ angular.module('webUpdates')
                 }
             }
 
-            function makeNiceAutocompleteName(items ) {
+            function _addNiceAutocompleteName(items ) {
                 return _.map(items, function(item) {
-                    var descr = '';
-                    var sep = ' - ';
+                    var name = '';
+                    var separator = ' / ';
                     if( item.person != null) {
-                        descr = item.person;
+                        name = item.person;
                     } else if( item.role != null) {
-                        descr = item.role;
+                        name = item.role;
                     } else if(item['org-name'] != null) {
-                        descr = item['org-name'];
+                        name = item['org-name'];
                     } else {
-                        sep = '';
+                        separator = '';
                     }
-                    return item.key + sep + descr;
+
+                    item.readableName = item.key + separator + name;
+                    return item;
                 });
             }
 
@@ -231,7 +233,7 @@ angular.module('webUpdates')
                 } else {
                     return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
                         function (resp) {
-                            return makeNiceAutocompleteName(resp);
+                            return _addNiceAutocompleteName(resp)
                         }, function () {
                             return [];
                         });
