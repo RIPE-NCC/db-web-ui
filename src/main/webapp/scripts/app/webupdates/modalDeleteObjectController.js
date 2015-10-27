@@ -38,17 +38,8 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
             RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs, password).then(
                 function (resp ) {
-                    $modalInstance.close();
-
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
-
-                    MessageStore.add('DELETE_RESULT', whoisResources);
-
-                    $state.transitionTo('deleted', {
-                        source: source,
-                        objectType: $scope.objectType,
-                        name: $scope.name
-                    });
+                    $modalInstance.close(whoisResources)
                 },
                 function (error) {
                     $modalInstance.dismiss(error.data);
@@ -65,6 +56,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
         function doCancel() {
             $modalInstance.close();
+            _transitionToModifyObject(source, $scope.objectType, $scope.name);
         };
 
         function isEqualTo(selfType, selfName, ref) {
@@ -125,4 +117,11 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             return objectDeletable;
         }
 
+        function _transitionToModifyObject(source, objectType, pkey) {
+            $state.transitionTo('modify', {
+                source: source,
+                objectType: objectType,
+                name: pkey
+            });
+        }
     }]);

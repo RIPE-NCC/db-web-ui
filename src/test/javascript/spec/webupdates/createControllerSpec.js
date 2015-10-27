@@ -329,33 +329,15 @@ describe('webUpdates: CreateController', function () {
         expect($scope.attributes[1].value).toBeNull();
     });
 
-    it('should display delete object modal', function() {
-        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then:function(a,b){}});
-
+    it('should go to delete controler on delete', function() {
         $scope.source = 'RIPE';
         $scope.objectType = 'MNT';
         $scope.name = 'TEST-MNT';
 
         $scope.deleteObject();
+        $httpBackend.flush();
 
-        expect(ModalService.openDeleteObjectModal).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name);
-    });
-
-    it('should display errors if delete object fail', function() {
-        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { b(whoisObjectWithErrors); }});
-
-        $scope.deleteObject();
-
-        expect($scope.errors).toEqual( [ { severity: 'Error', text: 'Unrecognized source: %s', args: [ { value: 'INVALID_SOURCE' } ], plainText: 'Unrecognized source: INVALID_SOURCE' } ]);
-    });
-
-
-    it('should display generic errors if delete object fail without returning a whois object', function() {
-        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { b('just text'); }});
-
-        $scope.deleteObject();
-
-        expect($scope.errors).toEqual([{ plainText:'Error deleting object. Please reload and try again.'}]);
+        expect($state.current.name).toBe('delete');
     });
 });
 
