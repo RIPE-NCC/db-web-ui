@@ -23,11 +23,11 @@ public class CachingCrowdSessionChecker {
     public boolean isAuthenticated(final String crowdToken) {
         try {
             UserSession userSession = crowdClient.getUserSession(crowdToken);
-            LOGGER.info("Found user session for token {}: {}", crowdToken, userSession);
+            LOGGER.debug("Found user session for token {}: {}", crowdToken, userSession);
             //return new LocalDate().isBefore(userSession.getExpiryDate());
             return true;
         } catch (CrowdClientException exc) {
-            LOGGER.info("Error getting user session for token {}: {}", crowdToken, exc.getMessage());
+            LOGGER.debug("Error getting user session for token {}: {}", crowdToken, exc.getMessage());
         }
 
         return false;
@@ -35,11 +35,11 @@ public class CachingCrowdSessionChecker {
 
     @CacheEvict("net.ripe.whois.crowdSessions")
     private void markNotAuthenticated(final String crowdToken) {
-        LOGGER.info("markNotAuthenticated:{}", crowdToken);
+        LOGGER.debug("markNotAuthenticated:{}", crowdToken);
     }
 
     @CacheEvict(value = "net.ripe.whois.crowdSessions", allEntries = true)
     private void markAllNotAuthenticated() {
-        LOGGER.info("markAllAuthenticated:{}");
+        LOGGER.debug("markAllAuthenticated:{}");
     }
 }

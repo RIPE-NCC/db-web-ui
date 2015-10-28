@@ -48,7 +48,7 @@ public class WhoisReferencesController extends ApiController {
          * As a consequence we have to decode the parameter before passing it on to whois
          */
         final String decodedName = URLDecoder.decode(name, "UTF-8");
-        LOGGER.info("search {} {} {}->{}", source, objectType, name, decodedName);
+        LOGGER.debug("search {} {} {}->{}", source, objectType, name, decodedName);
 
         removeUnnecessaryHeaders(headers);
 
@@ -59,7 +59,7 @@ public class WhoisReferencesController extends ApiController {
     public ResponseEntity<String> create(@PathVariable String source,
                                          @RequestBody(required = true) final String body,
                                          @RequestHeader final HttpHeaders headers) throws URISyntaxException {
-        LOGGER.info("create {}", source);
+        LOGGER.debug("create {}", source);
         removeUnnecessaryHeaders(headers);
 
         return whoisReferencesService.createReferencedObjects(source, body, headers);
@@ -69,7 +69,7 @@ public class WhoisReferencesController extends ApiController {
     public ResponseEntity<String> delete(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
                                                  @RequestParam("reason") String reason, @RequestParam(value = "password", required = false) String password,
                                                  @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
-        LOGGER.info("delete {} {} {}", source, objectType, name);
+        LOGGER.debug("delete {} {} {}", source, objectType, name);
 
         removeUnnecessaryHeaders(headers);
 

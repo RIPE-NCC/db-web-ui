@@ -23,7 +23,7 @@ public class CrowdClientException extends RuntimeException {
         if (e instanceof ClientErrorException) {
             try {
                 final CrowdClient.CrowdError crowdError = ((ClientErrorException)e).getResponse().readEntity(CrowdClient.CrowdError.class);
-                LOGGER.info("{}: {} ({})", e.getClass().getName(), crowdError.getMessage(), crowdError.getReason());
+                LOGGER.debug("{}: {} ({})", e.getClass().getName(), crowdError.getMessage(), crowdError.getReason());
                 return crowdError.getMessage();
             } catch (ProcessingException pe) {
                 // crowd returned content-type: text/plain
@@ -34,11 +34,11 @@ public class CrowdClientException extends RuntimeException {
         } else {
             if (e instanceof WebApplicationException) {
                 final String cause = String.format("%s (%s)", e.getClass().getName(), ((WebApplicationException)e).getResponse().readEntity(String.class));
-                LOGGER.info(cause);
+                LOGGER.debug(cause);
                 return cause;
             } else {
                 final String cause = String.format("%s (%s)", e.getClass().getName(), e.getMessage());
-                LOGGER.info(cause);
+                LOGGER.debug(cause);
                 return cause;
             }
         }
