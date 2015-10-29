@@ -2,15 +2,17 @@
 
 angular.module('dbWebApp', [
     'ui.router',
+    'angular-loading-bar',
     'ngResource',
     'ngSanitize',
-    'webUpdates',
     'interceptors',
     'angulartics',
     'angulartics.google.tagmanager',
     'diff-match-patch',
     'ui.bootstrap',
-    'ui.select'])
+    'ui.select',
+    'webUpdates'
+])
 
 .config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV', function ($stateProvider, $logProvider, $httpProvider, ENV) {
         $stateProvider
