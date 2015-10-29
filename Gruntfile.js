@@ -245,8 +245,8 @@ module.exports = function (grunt) {
         },
         preprocess : {
             html : {
-                src : 'src/main/webapp/index_tmpl.html',
-                dest : 'src/main/webapp/index.html'
+                src:'src/main/webapp/_index.html',
+                dest: 'src/main/webapp/index.html'
             }
         },
         connect: {
@@ -325,8 +325,8 @@ module.exports = function (grunt) {
         'env:prepdev',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
         'ngconstant:prepdev',
+        'preprocess',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',

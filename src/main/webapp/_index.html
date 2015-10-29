@@ -5,6 +5,12 @@
 <!-- this is template 3.23 fetched using the following url:
 https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&db=true -->
 
+<!-- Settings:
+NODE_ENV:   <!-- @echo NODE_ENV -->
+GTM_ID:     <!-- @echo GTM_ID -->
+ACCESS_URL: <!-- @echo ACCESS_URL -->
+-->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -26,7 +32,7 @@ https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&
     <link rel="search" href="https://www.ripe.net/search" title="Search this site"/>
 
     <!-- your custom styles here CSSMARKER -->
-    <!-- @include index_app_css.html -->
+    <!-- @include _index_app_css.html -->
 
     <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen"
           type="text/css" rel="stylesheet"/>
@@ -52,7 +58,7 @@ https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&
 <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color"
       dir="ltr" >
 
-<!-- @include index_app_body_start.html -->
+<!-- @include _index_app_body_start.html -->
 
 <header class="header-gradient container-fluid">
     <div id="site-header" class="container">
@@ -67,7 +73,7 @@ https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&
                     to navigation</a>
             </p>
 
-            <!-- @include index_app_login.html -->
+            <!-- @include _index_app_login.html -->
 
             <div class="header-item">
                 <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
@@ -961,7 +967,7 @@ https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&
         <div id="portal-column-one" class="col-md-3">
 
             <!-- Insert your navigation here NAVIGATIONMARKER -->
-            <!-- @include index_app_menu.html -->
+            <!-- @include _index_app_menu.html -->
 
         </div>
 
@@ -981,7 +987,7 @@ https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&
                             <!-- End of header ENDHEADERMARKER -->
 
                             <!-- Insert your content here CONTENTMARKER -->
-                            <!-- @include index_app_content.html -->
+                            <!-- @include _index_app_content.html -->
 
                             <!-- Start of footer STARTFOOTERMARKER -->
                         </div>
@@ -1050,9 +1056,9 @@ https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&
 <!-- Footer JavaScript placeholder FOOTERMARKER -->
 
 <!-- your custom javascripts here JSMARKER -->
-<!-- @include index_app_javascript.html -->
+<!-- @include _index_app_javascript.html -->
 
-<!-- @include index_app_body_end.html -->
+<!-- @include _index_app_body_end.html -->
 
 </body>
 
