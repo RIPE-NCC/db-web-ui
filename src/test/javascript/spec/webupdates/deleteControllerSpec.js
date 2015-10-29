@@ -165,9 +165,6 @@ describe('webUpdates: DeleteController', function () {
 
         createDeleteController();
 
-        console.log("AlertService.getErrors()=" + JSON.stringify(AlertService.getErrors()));
-        console.log('$rootScope.errors'+JSON.stringify($rootScope.errors));
-
         expect(AlertService.getErrors()).toEqual( [ { severity: 'Error', text: 'Unrecognized source: %s', args: [ { value: 'INVALID_SOURCE' } ], plainText: 'Unrecognized source: INVALID_SOURCE' } ]);
 
         expect($state.current.name).toBe('delete');
