@@ -281,6 +281,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-preprocess');
 
     grunt.registerTask('default', [
+        'env:dev',
         'clean:server',
         'wiredep',
         'preprocess',
@@ -290,6 +291,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('test', [
+        'env:dev',
         'clean:server',
         'wiredep:test',
         'preprocess',
@@ -325,8 +327,8 @@ module.exports = function (grunt) {
         'env:prepdev',
         'clean:dist',
         'wiredep:app',
-        'ngconstant:prepdev',
         'preprocess',
+        'ngconstant:prepdev',
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
