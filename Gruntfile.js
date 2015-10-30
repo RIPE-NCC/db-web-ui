@@ -314,7 +314,8 @@ module.exports = function (grunt) {
         'wiredep:test',
         'preprocess',
         'ngconstant:dev',
-        'karma'
+        'karma',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build', [
