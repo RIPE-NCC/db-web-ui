@@ -245,7 +245,9 @@ module.exports = function (grunt) {
         },
         preprocess : {
             html : {
-                src:'src/main/webapp/_index.html',
+//                src:'src/main/webapp/_index.html',
+                src : 'src/main/webapp/index_tmpl.html',
+
                 dest: 'src/main/webapp/index.html'
             }
         },
