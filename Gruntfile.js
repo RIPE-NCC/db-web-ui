@@ -245,8 +245,8 @@ module.exports = function (grunt) {
         },
         preprocess : {
             html : {
-                src : 'src/main/webapp/index_tmpl.html',
-                dest : 'src/main/webapp/index.html'
+                src:'src/main/webapp/_index.html',
+                dest: 'src/main/webapp/index.html'
             }
         },
         cacheBust: {
@@ -299,6 +299,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-preprocess');
 
     grunt.registerTask('default', [
+        'env:dev',
         'clean:server',
         'wiredep',
         'preprocess',
@@ -308,6 +309,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('test', [
+        'env:dev',
         'clean:server',
         'wiredep:test',
         'preprocess',

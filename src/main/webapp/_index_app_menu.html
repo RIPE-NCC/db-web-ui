@@ -1,0 +1,82 @@
+<!--  Webupdates specific menu start -->
+<div>
+    <div class="portlet navigation margin-bottom">
+        <div class="Title">
+            <i title="Show/Hide navigation" class="fa fa-angle-double-left"></i>
+            <a href="/search/query.html" class="h5">RIPE Database</a>
+        </div>
+        <ul class="toplevel">
+            <li class="child ">
+                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                <a href="/search/query.html">Query and Update</a>
+                <ul class="level2" style="display: none;">
+                    <li><a href="/search/query.html">Query the RIPE Database</a>
+                    </li>
+                    <li><a href="/search/full-text.html">Full Text Search</a>
+                    </li>
+                    <li><a href="/search/geolocation-finder.html">Geolocation Finder</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child active">
+                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                <a href="/db-web-ui/#/">Create</a>
+                <ul class="level2" style="display: block;">
+                    <li>
+                        <a class="menuItem current" href="/db-web-ui/#/">Create an object</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="/db-web-ui/#/webupdates/create/person/self">Create maintainer and
+                            person pair</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child">
+                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                <a href="/syncupdates/simple-rpsl.html">Syncupdates</a>
+                <ul class="level2" style="display: none;">
+                    <li>
+                        <a href="/syncupdates/simple-rpsl.html">Syncupdates</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child ">
+                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                <a href="/search/abuse-finder.html">Abuse Contact</a>
+                <ul class="level2" style="display: none;">
+                    <li><a href="/search/abuse-finder.html">Abuse Finder</a>
+                    </li>
+                    <li><a href="/abuse-c/create.html">Create Abuse Contact</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child ">
+                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                <a href="/change-auth/">Passwords</a>
+                <ul class="level2" style="display: none;">
+                    <li><a href="/change-auth/">Forgotten MNTNER password?</a>
+                    </li>
+                    <li><a href="/crypt/crypt.html">Password Generator</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div>
+    <div class="portlet margin-bottom grey grey-border">
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.menuItem').on('click', function(){
+            $('.menuItem').removeClass('current');
+            $(this).addClass(function(n){
+                return 'current';
+            });
+        });
+    });
+</script>
+
+<!--  Webupdates specific menu end -->
