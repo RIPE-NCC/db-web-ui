@@ -18,6 +18,7 @@ import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.Filter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -32,11 +33,13 @@ public class Application {
 
     private final Environment environment;
     private final CrowdTokenFilter crowdTokenFilter;
+    private final CacheFilter cacheFilter;
 
     @Autowired
-    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter) {
+    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CacheFilter cacheFilter) {
         this.environment = environment;
         this.crowdTokenFilter = crowdTokenFilter;
+        this.cacheFilter = cacheFilter;
     }
 
     /**
@@ -105,7 +108,16 @@ public class Application {
 
     @Bean
     public FilterRegistrationBean crowdFilter() {
-        final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(crowdTokenFilter);
+        return getFilterRegistrationBeanFor(crowdTokenFilter);
+    }
+
+    @Bean
+    public FilterRegistrationBean cacheFilter() {
+        return getFilterRegistrationBeanFor(cacheFilter);
+    }
+
+    private FilterRegistrationBean getFilterRegistrationBeanFor(final Filter filter) {
+        final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(filter);
         filterRegistrationBean.addUrlPatterns("/*");
         return filterRegistrationBean;
     }

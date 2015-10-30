@@ -255,7 +255,8 @@ module.exports = function (grunt) {
                 ignorePatterns: ['index_tmpl.html'],
                 encoding: 'utf8',
                 algorithm: 'md5',
-                length: 16
+                length: 16,
+                rename: false // Append a query string instead of renaming files
             },
             assets: {
                 files: [{
@@ -323,7 +324,8 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-dev', [
