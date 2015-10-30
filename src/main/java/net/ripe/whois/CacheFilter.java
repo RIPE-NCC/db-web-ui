@@ -19,7 +19,7 @@ import java.io.IOException;
 public class CacheFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheFilter.class);
 
-    private final int MAX_AGE_IN_SECONDS = Period.months(1).getSeconds();
+    private final int MAX_AGE_IN_SECONDS = Period.years(1).getSeconds();
 
     private static final String[] CACHEABLE = {
         ".js",
