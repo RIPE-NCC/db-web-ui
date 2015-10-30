@@ -249,6 +249,24 @@ module.exports = function (grunt) {
                 dest : 'src/main/webapp/index.html'
             }
         },
+        cacheBust: {
+            options: {
+                baseDir: './src/main/webapp/',
+                ignorePatterns: ['index_tmpl.html'],
+                encoding: 'utf8',
+                algorithm: 'md5',
+                length: 16,
+                rename: false // Append a query string instead of renaming files
+            },
+            assets: {
+                files: [{
+                    expand: true,
+                    cwd: './src/main/webapp/',
+                    src: ['index.html'],
+                    dest: './dest/'
+                }]
+            }
+        },
         connect: {
 	      server: {
 	        options: {
@@ -306,7 +324,8 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-dev', [
@@ -318,7 +337,8 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-prepdev', [
@@ -330,7 +350,8 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-rc', [
@@ -342,7 +363,8 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-test', [
@@ -354,7 +376,8 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
     grunt.registerTask('build-prod', [
@@ -366,7 +389,8 @@ module.exports = function (grunt) {
         'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
-        'compass:server'
+        'compass:server',
+        'cacheBust'
     ]);
 
 };
