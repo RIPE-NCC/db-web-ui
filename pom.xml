@@ -284,7 +284,7 @@
     <repositories>
         <repository>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
             <snapshots>
                 <enabled>false</enabled>
@@ -297,7 +297,7 @@
                 <enabled>false</enabled>
             </releases>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
             <id>ripe-snapshots</id>
             <url>http://nexus.ripe.net/nexus/content/repositories/snapshots</url>
