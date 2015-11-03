@@ -3,8 +3,12 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window', 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService', 'MntnerService', 'AlertService', 'ErrorReporterService',
-        function ($scope, $stateParams, $state, $log, $window, WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService, MntnerService, AlertService, ErrorReporterService) {
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window',
+        'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
+        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
+        function ($scope, $stateParams, $state, $log, $window,
+                  WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService,
+                  MntnerService, AlertService, ErrorReporterService, LinkService) {
 
             // exposed methods called from html fragment
             $scope.onMntnerAdded = onMntnerAdded;
@@ -345,36 +349,6 @@ angular.module('webUpdates')
                     return status;
                 }
 
-
-                function _getDisplayUrl( source, type, name ) {
-                    return '/db-web-ui/#/webupdates/display/'+ source + '/' + type + '/' + name;
-                }
-
-                function _getLink( source, type, name ) {
-                    return '<a target="_blank" href="' + _getDisplayUrl(source, type, name) + '">' + name + '</a>';
-                }
-
-                function _filterOutRipeMntners( source, mntners ) {
-                    var chopped = _.words(mntners, /[^, ]+/g);
-                    if(_.isUndefined(chopped) || chopped.length === 1 ) {
-                        return mntners;
-                    }
-
-                    /*
-                     * If there are multiple mntners to authenticate against, we remove the ripe mntners
-                     * because regular users are confused by the presence of RIPE mntners
-                     */
-                    var withoutRipeMntners = _.filter(chopped, function(name) {
-                        return ! _.startsWith(name, $scope.source.toUpperCase() + '-NCC');
-                    });
-
-                    var asLinks = _.map(withoutRipeMntners, function(name) {
-                        return _getLink( source, 'mntner', name )
-                    });
-
-                    return asLinks.join(' or ');
-                }
-
                 function _composePendingResponse( resp ) {
                     var found = _.find(resp.errormessages.errormessage, function(item) {
                         return item.severity === 'Error' && item.text === 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s';
@@ -385,16 +359,18 @@ angular.module('webUpdates')
                         var obstructingName = found.args[1].value;
                         var mntnersToConfirm = found.args[3].value;
 
-                        var obstructingObjectLink = _getLink($scope.source, obstructingType,  obstructingName);
-                        var mntnersToConfirmLinks = _filterOutRipeMntners($scope.source, mntnersToConfirm);
+                        var obstructingObjectLink = LinkService.getLink($scope.source, obstructingType,  obstructingName);
+                        var mntnersToConfirmLinks = LinkService.filterAndCreateTextWithLinksForMntners($scope.source, mntnersToConfirm);
 
                         var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
-                        var moreInfoLink = '<a target="_blank" href="' + moreInfoUrl + '">Click here for more details on this</a>';
+                        var moreInfoLink = '<a target="_blank" href="' + moreInfoUrl + '">Click here for more information</a>';
 
-                        var pendngMsg = 'Your object is still pending authorisation by the <strong>' + obstructingType + '</strong> holder. ' +
-                            'Please ask the holder of ' + obstructingObjectLink + ' to confirm, ' +
-                            'by submitting the same object as outlined below ' +
-                            'using syncupdates or mail updates, and authenticate it using the maintainer(s) ' + mntnersToConfirmLinks + '. ' +  moreInfoLink;
+                        var pendngMsg = 'Your object is still pending authorisation by a maintainer of the ' +
+                            '<strong>' + obstructingType + '</strong> object ' + obstructingObjectLink + '. ' +
+                            'Please ask them to confirm, by submitting the same object as outlined below ' +
+                            'using syncupdates or mail updates, and authenticate it using the maintainer ' +
+                            mntnersToConfirmLinks + '. ' +  moreInfoLink;
+
                         // Keep existing message and overwrite existing errors
                         resp.errormessages.errormessage = [ { 'severity': 'Info',  'text': pendngMsg } ];
                     }

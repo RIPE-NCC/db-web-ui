@@ -468,14 +468,20 @@ describe('webUpdates: CreateController', function () {
         expect(attrs.getAllAttributesOnName('mnt-by')[0].value).toEqual('RIPE-NCC-MNT');
         expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
         expect(resp.errormessages.errormessage[0].severity).toEqual('Info');
-        expect(resp.errormessages.errormessage[0].text).toEqual('Your object is still pending authorisation by the <strong>aut-num</strong> holder. Please ask the holder of <a target="_blank" href="/db-web-ui/#/webupdates/display/RIPE/aut-num/AS1299">AS1299</a> to confirm, by submitting the same object as outlined below using syncupdates or mail updates, and authenticate it using the maintainer(s) <a target="_blank" href="/db-web-ui/#/webupdates/display/RIPE/mntner/TELIANET-RR">TELIANET-RR</a>. <a target="_blank" href="https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage">Click here for more details on this</a>');
+        expect(resp.errormessages.errormessage[0].text).toEqual(
+            'Your object is still pending authorisation by a maintainer of the <strong>aut-num</strong> object ' +
+            '<a target="_blank" href="/db-web-ui/#/webupdates/display/RIPE/aut-num/AS1299">AS1299</a>. ' +
+            'Please ask them to confirm, by submitting the same object as outlined below using syncupdates or mail updates, ' +
+            'and authenticate it using the maintainer ' +
+            '<a target="_blank" href="/db-web-ui/#/webupdates/display/RIPE/mntner/TELIANET-RR">TELIANET-RR</a>. ' +
+            '<a target="_blank" href="https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage">' +
+            'Click here for more information</a>');
 
         expect($state.current.name).toBe('display');
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('route');
         expect($stateParams.name).toBe('193.0.7.231%2F32AS1299');
     });
-
 });
 
 describe('webUpdates: CreateController init with failures', function () {
