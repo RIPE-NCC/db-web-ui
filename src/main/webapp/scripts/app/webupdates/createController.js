@@ -42,6 +42,7 @@ angular.module('webUpdates')
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
             $scope.isToBeDisabled = isToBeDisabled;
+            $scope.isBrowserAutoComplete = isBrowserAutoComplete;
 
             _initialisePage();
 
@@ -230,8 +231,13 @@ angular.module('webUpdates')
                 });
             }
 
+
+            function _isServerLookupKey(refs){
+                return ! (_.isUndefined(refs) || refs.length === 0 );
+            }
+
             function referenceAutocomplete(attrType, query, refs) {
-                if (_.isUndefined(refs) || refs.length === 0) {
+                if ( ! _isServerLookupKey(refs)) {
                     // No suggestions since not a reference
                     return [];
                 } else {
@@ -241,6 +247,14 @@ angular.module('webUpdates')
                         }, function () {
                             return [];
                         });
+                }
+            }
+
+            function isBrowserAutoComplete(refs){
+                if (_isServerLookupKey(refs)) {
+                    return "off";
+                } else {
+                    return "on";
                 }
             }
 

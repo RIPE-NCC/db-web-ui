@@ -56,6 +56,7 @@
                    typeahead-min-length="2"
                    typeahead-select-on-exact="true"
                    ng-disabled="isToBeDisabled(attribute)"
+                   autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs)}}"
                    />
             <div class="text field-description" collapse="!isHelpShown">
                 {{attribute.$$meta.$$description}}</br>
