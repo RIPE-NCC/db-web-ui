@@ -475,7 +475,7 @@ describe('webUpdates: CreateController', function () {
             'and authenticate it using the maintainer ' +
             '<a target="_blank" href="/db-web-ui/#/webupdates/display/RIPE/mntner/TELIANET-RR">TELIANET-RR</a>. ' +
             '<a target="_blank" href="https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage">' +
-            'Click here for more information</a>');
+            'Click here for more information</a>.');
 
         expect($state.current.name).toBe('display');
         expect($stateParams.source).toBe('RIPE');

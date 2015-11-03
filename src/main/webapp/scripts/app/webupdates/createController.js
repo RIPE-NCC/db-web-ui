@@ -363,7 +363,7 @@ angular.module('webUpdates')
                         var mntnersToConfirmLinks = LinkService.filterAndCreateTextWithLinksForMntners($scope.source, mntnersToConfirm);
 
                         var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
-                        var moreInfoLink = '<a target="_blank" href="' + moreInfoUrl + '">Click here for more information</a>';
+                        var moreInfoLink = '<a target="_blank" href="' + moreInfoUrl + '">Click here for more information</a>.';
 
                         var pendngMsg = 'Your object is still pending authorisation by a maintainer of the ' +
                             '<strong>' + obstructingType + '</strong> object ' + obstructingObjectLink + '. ' +
