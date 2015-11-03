@@ -2,11 +2,6 @@
 
     <alerts></alerts>
 
-    <div class="alert alert-success">
-        <p ng-show="deletedObjects.length > 1"> The following objects have been successfully deleted</p>
-        <p ng-show="deletedObjects.length == 1"> The following object has been successfully deleted</p>
-    </div>
-
     <section ng-repeat="object in deletedObjects" class="inner-container">
         <table class="success-fields grey">
             <tr ng-repeat="attribute in object.attributes.attribute">

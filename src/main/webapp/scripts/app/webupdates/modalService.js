@@ -9,6 +9,7 @@ angular.module('dbWebApp')
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalDeleteObject.html',
                     controller: 'ModalDeleteObjectController',
+                    keyboard:false,
                     resolve: {
                         source: function () {
                             return source;
@@ -35,6 +36,7 @@ angular.module('dbWebApp')
                     templateUrl: 'scripts/app/webupdates/modalAddAttribute.html',
                     controller: 'ModalAddAttributeController',
                     size: 'lg',
+                    keyboard:false,
                     resolve: {
                         items: function () {
                             return items;
@@ -62,7 +64,8 @@ angular.module('dbWebApp')
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalMd5Password.html',
                     controller: 'ModalMd5PasswordController',
-                    size: 'lg'
+                    size: 'lg',
+                    keyboard:false,
                 });
 
                 modalInstance.result.then(function (md5Value) {
@@ -82,11 +85,12 @@ angular.module('dbWebApp')
                 $log.debug('openAuthenticationModal start with: ' + source + '  mntners:' +  JSON.stringify(mntners));
 
                 var modalInstance = $modal.open({
-                        animation:true,
-                        templateUrl: 'scripts/app/webupdates/modalAuthentication.html',
-                        controller: 'ModalAuthenticationController',
-                        size: 'lg',
-                        resolve: {
+                    animation:true,
+                    templateUrl: 'scripts/app/webupdates/modalAuthentication.html',
+                    controller: 'ModalAuthenticationController',
+                    size: 'lg',
+                    keyboard:false,
+                    resolve: {
                             source: function() {
                                 return source;
                             },

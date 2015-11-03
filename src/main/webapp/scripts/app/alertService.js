@@ -50,6 +50,11 @@ angular.module('dbWebApp')
             $rootScope.errors.push({plainText:errorMsg});
         };
 
+        alertService.setGlobalInfo = function( errorMsg ) {
+            alertService.clearErrors();
+            $rootScope.infos.push({plainText:errorMsg});
+        };
+
         alertService.populateFieldSpecificErrors = function(objectType, attrs, error) {
             var whoisResources = WhoisResources.wrapWhoisResources(error);
 
