@@ -3,7 +3,7 @@
         <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="doCancel()"></i>
         <h5 class="modal-title" id="commonModalLabel">
             <span ng-if="canBeDeleted">Please provide the reason for delete</span>
-            <span ng-if="!canBeDeleted">This object can not be deleted</span>
+            <span ng-if="!canBeDeleted">This object cannot be deleted</span>
         </h5>
     </div>
 
@@ -14,7 +14,7 @@
         </div>
 
         <div ng-if="hasNonSelfIncomingRefs( objectType, name, incomingReferences)">
-            <p ng-if="!canBeDeleted">This object has been referenced in the following objects, you may need to delete these references first.</p>
+            <p ng-if="!canBeDeleted">You can only delete unreferenced objects. Please remove the references from these objects first:</p>
             <p ng-if="canBeDeleted">Please note that this will also delete the following objects:</p>
 
             <ul class="bullets">
