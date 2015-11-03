@@ -102,16 +102,16 @@
         </li>
     </ul>
     <span ng-show="operation == MODIFY_OPERATION">
-        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress || hasErrors()" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
         <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
     </span>
     <span ng-show="operation == CREATE_OPERATION">
-        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress || hasErrors()" class="blue-button pull-right ga-createobj-create" value="Create" />
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress" class="blue-button pull-right ga-createobj-create" value="Create" />
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 
     <span ng-show="operation == MODIFY_OPERATION">
-        <button ng-click="deleteObject()" ng-disabled="restCalInProgress || hasErrors()" class="red-button pull-left ga-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
+        <button ng-click="deleteObject()" ng-disabled="restCalInProgress" class="red-button pull-left ga-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
     </span>
 
     <p class="help-block terms-txt pull-left">By submitting this form you explicitly express your agreement with the <a
