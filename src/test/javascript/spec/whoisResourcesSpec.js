@@ -492,9 +492,8 @@ describe('dbWebApp: WhoisResources', function () {
         expect(addableAttrs[6].name).toBe('notify');
         expect(addableAttrs[7].name).toBe('abuse-mailbox');
         expect(addableAttrs[8].name).toBe('mnt-by');
-        expect(addableAttrs[9].name).toBe('changed');
-        expect(addableAttrs[10].name).toBe('created');
-        expect(addableAttrs.length).toBe(11);
+        expect(addableAttrs[9].name).toBe('created');
+        expect(addableAttrs.length).toBe(10);
     });
 
     it('detact if an attribute can be removed', function () {
@@ -504,8 +503,6 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'address',       value: 'a', $$meta:{$$mandatory:true,  $$multiple:true}},
             {name: 'phone',         value: 'a', $$meta:{$$mandatory:true,  $$multiple:true}},
             {name: 'nic-hdl',       value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},
-            {name: 'changed',       value: 'd', $$meta:{$$mandatory:false, $$multiple:true}},
-            {name: 'changed',       value: 'e', $$meta:{$$mandatory:false, $$multiple:true}},
             {name: 'last-modified', value: 'f', $$meta:{$$mandatory:false, $$multiple:false}},
             {name: 'source',        value: 'g', $$meta:{$$mandatory:true,  $$multiple:false}},
         ]);
@@ -517,9 +514,6 @@ describe('dbWebApp: WhoisResources', function () {
 
         expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName('phone')[0])).toBe(false);
         expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName('nic-hdl'))).toBe(false);
-
-        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName('changed')[0])).toBe(true);
-        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName('changed')[1])).toBe(true);
 
         expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName('last-modified'))).toBe(true);
 

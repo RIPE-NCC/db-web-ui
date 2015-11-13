@@ -156,7 +156,6 @@ describe('webUpdates: ModifyController', function () {
                             attribute: [
                                 {name: 'as-block', value: 'MY-AS-BLOCK'},
                                 {name: 'mnt-by', value: 'TEST-MNT'},
-                                {name: 'changed', value: 'test@ripe.net'},
                                 {name: 'source', value: 'RIPE'}
                             ]
                         }
@@ -164,8 +163,6 @@ describe('webUpdates: ModifyController', function () {
                 ]
             }
         });
-
-        $scope.attributes.setSingleAttributeOnName('changed', "dummy@ripe.net");
 
         $scope.submit();
         $httpBackend.flush();
