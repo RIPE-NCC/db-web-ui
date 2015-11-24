@@ -48,7 +48,7 @@ angular.module('dbWebApp', [
         if( err.status === 403 ) {
             // redirect to crowd login screen
             var returnUrl = $location.absUrl().split('#')[0] + $state.href(toState, toParams);
-            var crowdUrl = LOGIN_URL + '?originalUrl=' + encodeURI(returnUrl);
+            var crowdUrl = LOGIN_URL + '?originalUrl=' + encodeURIComponent(returnUrl);
             $log.info('Force crowd login:' + crowdUrl );
             $window.location.href = crowdUrl;
         }

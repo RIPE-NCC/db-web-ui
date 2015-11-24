@@ -158,7 +158,7 @@ angular.module('dbWebApp')
                     $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/autocomplete',
-                        {   query: objectName,
+                        {   query: encodeURIComponent(objectName),
                             field: objectType,
                             attribute: attrs,
                             extended: extended})

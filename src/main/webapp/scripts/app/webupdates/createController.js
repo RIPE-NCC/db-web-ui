@@ -259,11 +259,8 @@ angular.module('webUpdates')
             }
 
             function fieldVisited( attr ) {
-                /*
-                 * TODO prevent lookup for object with slash in object-name: the autocomplete service cannot handle this
-                 */
                 if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true
-                    && !_.isUndefined(attr.value) && attr.value.length >= 2 && attr.value.indexOf("/") < 0) {
+                    && !_.isUndefined(attr.value) && attr.value.length >= 2 ) {
                     RestService.autocomplete(attr.name, attr.value, true, []).then(
                         function (data) {
                             if(_.any(data, function(item) {

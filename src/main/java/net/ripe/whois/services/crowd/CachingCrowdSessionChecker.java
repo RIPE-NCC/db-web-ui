@@ -24,7 +24,6 @@ public class CachingCrowdSessionChecker {
         try {
             UserSession userSession = crowdClient.getUserSession(crowdToken);
             LOGGER.debug("Found user session for token {}: {}", crowdToken, userSession);
-            //return new LocalDate().isBefore(userSession.getExpiryDate());
             return true;
         } catch (CrowdClientException exc) {
             LOGGER.debug("Error getting user session for token {}: {}", crowdToken, exc.getMessage());
