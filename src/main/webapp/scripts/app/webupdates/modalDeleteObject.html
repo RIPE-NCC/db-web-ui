@@ -7,7 +7,12 @@
         </h5>
     </div>
 
-    <div class="modal-body margin-left  ">
+    <div class="modal-body margin-left">
+
+        <div ng-if="restCallInProgress">
+            <p>Retrieving information. Please wait.</p>
+        </div>
+
         <div ng-if="canBeDeleted">
             <label for="reason">Reason</label><br/>
             <input class="form-control" type="text" name="reason" id="reason" ng-model="$parent.reason">
