@@ -17,6 +17,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         $scope.isEqualTo = isEqualTo;
         $scope.isDeletable = isDeletable;
         $scope.hasNonSelfIncomingRefs = hasNonSelfIncomingRefs;
+        $scope.restCallInProgress = false;
 
         _initialisePage();
 
@@ -72,12 +73,15 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         };
 
         function getReferences(source, objectType, name) {
+            $scope.restCallInProgress = true;
             RestService.getReferences(source, objectType, name, $scope.MAX_REFS_TO_SHOW) .then(
                 function (resp) {
+                    $scope.restCallInProgress = false;
                     $scope.canBeDeleted = isDeletable(resp);
                     $scope.incomingReferences = resp.incoming;
                 },
                 function (error) {
+                    $scope.restCallInProgress = false;
                     $modalInstance.dismiss(error.data);
                 }
             );
