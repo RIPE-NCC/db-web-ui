@@ -93,19 +93,17 @@ angular.module('webUpdates')
             }
 
             function fieldVisited( attr ) {
-                if (attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
-                    RestService.autocomplete(attr.name, attr.value, true, []).then(
-                        function (data) {
-                            if(_.any(data, function(item) {
-                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
-                                })) {
-                                attr.$$error = attr.name + ' ' + attr.value + ' already exists';
-                            } else {
-                                attr.$$error = '';
-                            }
+                RestService.autocomplete(attr.name, attr.value, true, []).then(
+                    function (data) {
+                        if(_.any(data, function(item) {
+                                return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                            })) {
+                            attr.$$error = attr.name + ' ' + attr.value + ' already exists';
+                        } else {
+                            attr.$$error = '';
                         }
-                    );
-                }
+                    }
+                );
             }
 
             function _createObject() {
@@ -135,19 +133,16 @@ angular.module('webUpdates')
             }
 
             function adminCAutocomplete(query) {
-                // need to typed characters
-                if (query.length >= 2) {
-                        RestService.autocomplete( 'admin-c', query, true,['person','role']).then(
-                        function (data) {
-                            $log.debug('autocomplete success:' + JSON.stringify(data));
-                            // mark new
-                            $scope.adminC.alternatives = _stripAlreadySelected(data);
-                        },
-                        function(error) {
-                            $log.error('autocomplete error:' +  JSON.stringify(error));
-                        }
-                    );
-                }
+                RestService.autocomplete( 'admin-c', query, true,['person','role']).then(
+                    function (data) {
+                        $log.debug('autocomplete success:' + JSON.stringify(data));
+                        // mark new
+                        $scope.adminC.alternatives = _stripAlreadySelected(data);
+                    },
+                    function(error) {
+                        $log.error('autocomplete error:' +  JSON.stringify(error));
+                    }
+                );
             }
 
             function _stripAlreadySelected(adminC) {

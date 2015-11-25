@@ -201,15 +201,13 @@ angular.module('webUpdates')
 
             function mntnerAutocomplete(query) {
                 // need to typed characters
-                if (query.length >= 2) {
-                    RestService.autocomplete('mnt-by', query, true, ['auth']).then(
-                        function (data) {
-                            // mark new
-                            $scope.maintainers.alternatives = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
-                                _filterMntners(_enrichWithMine(data)));
-                        }
-                    );
-                }
+                RestService.autocomplete('mnt-by', query, true, ['auth']).then(
+                    function (data) {
+                        // mark new
+                        $scope.maintainers.alternatives = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
+                            _filterMntners(_enrichWithMine(data)));
+                    }
+                );
             }
 
             function _addNiceAutocompleteName(items ) {
@@ -259,8 +257,7 @@ angular.module('webUpdates')
             }
 
             function fieldVisited( attr ) {
-                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true
-                    && !_.isUndefined(attr.value) && attr.value.length >= 2 ) {
+                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true ) {
                     RestService.autocomplete(attr.name, attr.value, true, []).then(
                         function (data) {
                             if(_.any(data, function(item) {

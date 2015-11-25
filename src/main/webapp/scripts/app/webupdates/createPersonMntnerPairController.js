@@ -110,15 +110,17 @@ angular.module('webUpdates')
             }
 
             function fieldVisited( objectName, attr ) {
-                if (attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                if (attr.$$meta.$$primaryKey === true ) {
+                    attr.$$error = '';
                     RestService.autocomplete(attr.name, attr.value, true, []).then(
                         function (data) {
-                            if(_.any(data, function(item) {
-                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
-                                })) {
-                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
-                            } else {
-                                attr.$$error = '';
+                            var found = _.find(data, function(item) {
+                                    if( item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase() ) {
+                                        return item;
+                                    }
+                                });
+                            if(!_.isUndefined(found)) {
+                                attr.$$error = attr.name + ' ' + found.key + ' already exists';
                             }
                         }
                     );

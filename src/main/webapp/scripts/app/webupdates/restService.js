@@ -155,23 +155,29 @@ angular.module('dbWebApp')
                 this.autocomplete = function (objectType, objectName, extended, attrs) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    if( _.isUndefined(objectName) || objectName.length < 2 ) {
+                        deferredObject.resolve([]);
+                    } else {
+                        $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    $resource('api/whois/autocomplete',
-                        {   query: encodeURIComponent(objectName),
-                            field: objectType,
-                            attribute: attrs,
-                            extended: extended})
-                        .query()
-                        .$promise
-                        .then(function (result) {
-                            $log.debug('autocomplete success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function (error) {
-                            $log.error('autocomplete error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        }
-                    );
+                        $resource('api/whois/autocomplete',
+                            {
+                                query: encodeURIComponent(objectName),
+                                field: objectType,
+                                attribute: attrs,
+                                extended: extended
+                            })
+                            .query()
+                            .$promise
+                            .then(function (result) {
+                                $log.debug('autocomplete success:' + JSON.stringify(result));
+                                deferredObject.resolve(result);
+                            }, function (error) {
+                                $log.error('autocomplete error:' + JSON.stringify(error));
+                                deferredObject.reject(error);
+                            }
+                        );
+                    }
 
                     return deferredObject.promise;
                 };
