@@ -371,6 +371,37 @@ describe('dbWebApp: WhoisResources', function () {
         ]);
     });
 
+    it('should detect missing mandatory attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+        ]);
+
+        var missingMandatories = attrs.getMissingMandatoryAttributes('as-block');
+        expect(missingMandatories.length).toEqual(2);
+        expect(missingMandatories[0].name).toEqual('mnt-by');
+        expect(missingMandatories[1].name).toEqual('source');
+    });
+
+    it('should add missing mandatory attribute', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+        ]);
+
+        _.each( attrs.getMissingMandatoryAttributes('as-block'), function(item) {
+            attrs = $whoisResources.wrapAttributes(attrs.addMissingMandatoryAttribute('as-block', item));
+        });
+
+        expect(attrs.length).toEqual(3);
+        expect(attrs[0].name).toEqual('as-block');
+        expect(attrs[0].value).toEqual('a');
+
+        expect(attrs[1].name).toEqual('mnt-by');
+        expect(attrs[1].value).toBeUndefined();
+
+        expect(attrs[2].name).toEqual('source');
+        expect(attrs[2].value).toBeUndefined();
+    });
+
     it('should accept a correct object', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},

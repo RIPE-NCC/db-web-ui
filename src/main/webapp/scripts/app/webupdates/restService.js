@@ -134,7 +134,7 @@ angular.module('dbWebApp')
                             });
                             if( _.isUndefined(found)) {
                                 // TODO: the  autocomplete service just returns 10 matching records. The exact match could not be part of this set.
-                                // So if this happens, perform best guess and just enrich with md5.
+                                // So if this happens, perform best guess and just enrich the xisting mntner with md5.
                                 mntner.auth = ['MD5-PW'];
                                 found = mntner;
                             } else {

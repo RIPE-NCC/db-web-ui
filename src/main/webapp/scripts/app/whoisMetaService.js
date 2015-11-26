@@ -4,7 +4,7 @@ angular.module('dbWebApp')
     .service('WhoisMetaService', function () {
 
         this.getAttributeDocumentation = function (objectType, attrName) {
-            var description = null;
+            var description = undefined;
             if (attrName === 'mp-peer') {
                 description = this._mpPeerDoc[objectType].description;
             } else if (attrName === 'mnt-routes') {
@@ -12,7 +12,7 @@ angular.module('dbWebApp')
             } else if (attrName === 'status') {
                 description = this._statusDoc[objectType].description;
             }
-            if (!description) {
+            if (_.isUndefined(description) && !_.isUndefined(this._attrDocumentation[attrName])) {
                 description = this._attrDocumentation[attrName].description;
             }
             return description;
@@ -27,7 +27,7 @@ angular.module('dbWebApp')
             } else if (attrName === 'status') {
                 syntax = this._statusDoc[objectType].syntax;
             }
-            if (_.isUndefined(syntax)) {
+            if (_.isUndefined(syntax) &&  !_.isUndefined(this._attrDocumentation[attrName])) {
                 syntax = this._attrDocumentation[attrName].syntax;
             }
             return syntax;

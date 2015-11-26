@@ -521,6 +521,16 @@ angular.module('webUpdates')
                         // store object to modify
                         _wrapAndEnrichResources(results.objectToModify);
 
+                        // Create empty attribute with warning for missing mandatory attributes
+                        var missingMandatories =  $scope.attributes.getMissingMandatoryAttributes($scope.objectType);
+                        if( missingMandatories.length > 0 ) {
+                            _.each(missingMandatories, function (item) {
+                                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                                    $scope.attributes.addMissingMandatoryAttribute($scope.objectType, item));
+                            });
+                            _validateForm();
+                        }
+
                         // this is where we must authenticate against
                         $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
 
@@ -746,6 +756,8 @@ angular.module('webUpdates')
                             var selectedMntner = result.selectedItem;
                             $log.debug('selected mntner:' + JSON.stringify(selectedMntner));
                             var associationResp = result.response;
+                            $log.debug('associationResp:' + JSON.stringify(associationResp));
+
 
                             if ($scope.isMine(selectedMntner)) {
                                 // has been successfully associated in authentication modal
