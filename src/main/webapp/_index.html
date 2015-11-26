@@ -919,8 +919,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
 
 <main class="container-fluid">
 
-
-    <div id="portal-columns" class="container box-shadow clearfix">
+    <div id="portal-columns" class="container box-shadow clearfix no-pad-top">
+        <p id="envbanner" class="envbanner alert orangebackground" style="text-align: center; display: none">
+            <span id="envBannerId">TEST<br>Welcome to the TEST Environment of the RIPE Database. You can use this environment to learn and experiment with RIPE Database. It uses a TEST 'source' and all changes are reverted in the night.</span>
+        </p>
 
         <div id="portal-breadcrumbs">
 
@@ -1059,6 +1061,12 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
 
 
 </footer>
+
+<script>
+    if(window.location.hostname.split('.').shift() === 'git status-test') {
+        $('#envbanner').show();
+    }
+</script>
 
 <!-- Footer JavaScript placeholder FOOTERMARKER -->
 
