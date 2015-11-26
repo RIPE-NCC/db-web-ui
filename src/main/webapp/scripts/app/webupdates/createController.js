@@ -441,7 +441,7 @@ angular.module('webUpdates')
 
             function cancel() {
                 if (window.confirm('Are you sure?')) {
-                    window.history.back();
+                    _navigateToDisplayPage($scope.source, $scope.objectType, $scope.name, undefined);
                 }
             }
 
