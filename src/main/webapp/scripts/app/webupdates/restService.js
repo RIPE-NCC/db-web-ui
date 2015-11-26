@@ -110,16 +110,16 @@ angular.module('dbWebApp')
                     $log.debug('detailsForMntners start for: ' + JSON.stringify(mntners));
 
                     var promises = _.map(mntners, function (item) {
-                        return _mntnerDetails(item);
+                        return _singleMntnerDetails(item);
                     });
 
                     return $q.all(promises);
                 };
 
-                function _mntnerDetails(mntner) {
+                function _singleMntnerDetails(mntner) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('_mntnerDetails start for: ' +  JSON.stringify(mntner));
+                    $log.debug('_singleMntnerDetails start for: ' +  JSON.stringify(mntner));
 
                     $resource('api/whois/autocomplete',
                         {   query: mntner.key,
@@ -129,22 +129,22 @@ angular.module('dbWebApp')
                         .query()
                         .$promise
                         .then(function (result) {
-                            // enrich with mine
-                            result = _.map(result, function( item ) {
-                                if( item.key === mntner.key && mntner.mine === true ) {
-                                    item.mine = true;
-                                }
-                                return item;
+                            var found = _.find(result, function( item ) {
+                                return item.key === mntner.key;
                             });
-                            if(_.isEmpty(result)) {
-                                // better something than nothing:
-                                // in case search-index does not yet know this newly created mntner
-                                result = [mntner];
+                            if( _.isUndefined(found)) {
+                                // TODO: the  autocomplete service just returns 10 matching records. The exact match could not be part of this set.
+                                // So if this happens, perform best guess and just enrich with md5.
+                                mntner.auth = ['MD5-PW'];
+                                found = mntner;
+                            } else {
+                                found.mine = mntner.mine;
                             }
-                            $log.debug('_mntnerDetails success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
+
+                            $log.debug('_singleMntnerDetails success:' + JSON.stringify(found));
+                            deferredObject.resolve(found);
                         }, function (error) {
-                            $log.error('_mntnerDetails error:' + JSON.stringify(error));
+                            $log.error('_singleMntnerDetails error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
