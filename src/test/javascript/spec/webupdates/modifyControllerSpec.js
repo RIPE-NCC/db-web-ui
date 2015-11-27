@@ -4,6 +4,7 @@ describe('webUpdates: ModifyController', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
     var MessageStore;
+    var CredentialsService;
     var WhoisResources;
     var MntnerService;
     var OBJECT_TYPE = 'as-block';
@@ -13,7 +14,7 @@ describe('webUpdates: ModifyController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -24,10 +25,13 @@ describe('webUpdates: ModifyController', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
+            CredentialsService = _CredentialsService_;
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
+
+            CredentialsService.setCredentials('TEST-MNT', '@123');
 
             _$controller_('CreateController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
@@ -40,7 +44,7 @@ describe('webUpdates: ModifyController', function () {
                 {key:'TESTSSO-MNT', type: 'mntner', auth:['MD5-PW','SSO'], mine:true}
             ]);
 
-            $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
+            $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123&unfiltered=true').respond(
                 function(method,url) {
                     return [200,
                         {
@@ -147,7 +151,7 @@ describe('webUpdates: ModifyController', function () {
 
     it('should handle success put upon submit click when form is complete', function () {
 
-        $httpBackend.expectPUT('api/whois/RIPE/as-block/MY-AS-BLOCK').respond({
+        $httpBackend.expectPUT('api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123').respond({
             objects: {
                 object: [
                     {
@@ -188,7 +192,7 @@ describe('webUpdates: ModifyController', function () {
         var stateBefore = $state.current.name;
 
         // api/whois/RIPE/as-block
-        $httpBackend.expectPUT('api/whois/RIPE/as-block/MY-AS-BLOCK').respond(400, {
+        $httpBackend.expectPUT('api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123').respond(400, {
             objects: {
                 object: [
                     {

@@ -14,7 +14,7 @@ angular.module('dbWebApp')
                     $resource('api/references/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
-                            name: encodeURIComponent(name), // TODO perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
+                            name: encodeURIComponent(name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
                             limit:limit
                         }).get()
                         .$promise.then(
@@ -182,7 +182,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.authenticate = function (source, objectType, objectName, singlePassword) {
+                this.authenticate = function (source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -194,7 +194,7 @@ angular.module('dbWebApp')
                             objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
                             password: '@password'
-                        }).get({password:singlePassword})
+                        }).get({password:passwords})
                         .$promise
                         .then(function (result) {
                             $log.debug('authenticate success:' + JSON.stringify(result));
@@ -208,7 +208,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.fetchObject = function (source, objectType, objectName, singlePassword) {
+                this.fetchObject = function (source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -220,7 +220,7 @@ angular.module('dbWebApp')
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
                             password: '@password'
-                        }).get({password:singlePassword})
+                        }).get({password:passwords})
                         .$promise
                         .then(function (result) {
                             $log.debug('fetchObject success:' + JSON.stringify(result));
@@ -288,7 +288,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.associateSSOMntner = function (source, objectType, objectName, whoisResources, singlePassword) {
+                this.associateSSOMntner = function (source, objectType, objectName, whoisResources, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -299,7 +299,7 @@ angular.module('dbWebApp')
                             name: objectName,  // only for mntners so no url-decosong applied
                             password: '@password'},
                         {update: {method: 'PUT'}})
-                        .update({password:singlePassword}, whoisResources)
+                        .update({password:passwords}, whoisResources)
                         .$promise
                         .then(function (result) {
                             $log.debug('associateSSOMntner success:' + JSON.stringify(result));
