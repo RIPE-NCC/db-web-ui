@@ -36,7 +36,6 @@ public class CacheFilter implements Filter {
         final HttpServletRequest request = (HttpServletRequest) req;
 
         if (isCacheable(request)) {
-            System.out.println("Adding cache control to file " +request.getRequestURL());
             LOGGER.debug("Adding cache control to file '{}'", request.getRequestURL());
             response.setHeader("Cache-Control", "public,max-age="+MAX_AGE_IN_SECONDS+",s-maxage="+MAX_AGE_IN_SECONDS);
         } else {
