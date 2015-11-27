@@ -440,8 +440,8 @@ angular.module('webUpdates')
             }
 
             function cancel() {
-                if (window.confirm('Are you sure?')) {
-                    _navigateToDisplayPage($scope.source, $scope.objectType, $scope.name, undefined);
+                if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+                    $state.transitionTo('select');
                 }
             }
 
