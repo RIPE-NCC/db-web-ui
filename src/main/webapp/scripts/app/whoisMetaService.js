@@ -641,7 +641,7 @@ angular.module('dbWebApp')
 
         this._attrDocumentation = {
             'abuse-mailbox': {
-                'description': 'Specifies the e-mail address to which abuse complaints should be sent. This attribute should only be used in the ROLE object. It will be deprecated from any other object.  Adding this attribute to a ROLE object, then referencing it in an "abuse-c:" attribute of anORGANISATION object,  will remove any query limits for the ROLE object. These ROLE objects are considered to include only commercial data.',
+                'description': 'Specifies the e-mail address to which abuse complaints should be sent. This attribute should only be used in the ROLE object. It will be deprecated from any other object.  Adding this attribute to a ROLE object, then referencing it in an "abuse-c:" attribute of an ORGANISATION object,  will remove any query limits for the ROLE object. These ROLE objects are considered to include only commercial data.',
                 'syntax': _syntax.email
             },
             'abuse-c': {
@@ -1052,7 +1052,7 @@ angular.module('dbWebApp')
                 'At least one component of such a name must be an actual set name (i.e. start with \'prng-\').  All the set name components of a hierarchical peering-set name have to be peering-set names.'
             },
             'person': {
-                'description': 'Specifies the full name of an administrative , technical or zone contact person for other objects in the database.',
+                'description': 'Specifies the full name of an administrative, technical or zone contact person for other objects in the database.',
                 'syntax': 'It should contain 2 to 10 words. Each word consists of letters, digits or the following symbols:.`\'_-' + '<br/>' +
                 'The first word should begin with a letter. Max 64 characters can be used in each word.'
             },
