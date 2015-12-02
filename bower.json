@@ -12,7 +12,7 @@
     "angular-ui-router": "0.2.15",
     "angular-resource": "1.4.0",
     "angular-cookies": "1.4.0",
-    "angular-sanitize": "~1.4.1",
+    "angular-sanitize": "~1.4.8",
     "angular-i18n": "1.4.0",
     "angular-translate": "2.7.0",
     "angular-translate-storage-cookie": "2.7.0",
