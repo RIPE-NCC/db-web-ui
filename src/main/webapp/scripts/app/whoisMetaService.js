@@ -411,7 +411,7 @@ angular.module('dbWebApp')
                     {name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'abuse-c', mandatory: false, multiple: false, refs: ['ROLE']},
+                    {name: 'abuse-c', mandatory: true, multiple: false, refs: ['ROLE']},
                     {name: 'ref-nfy', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-ref', mandatory: true, multiple: true, refs: ['MNTNER']},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
