@@ -56,13 +56,13 @@ angular.module('webUpdates')
                 $scope.uiSelectTemplateReady = false;
                 RestService.fetchUiSelectResources().then(
                     function () {
-                    $scope.uiSelectTemplateReady = true;
-                });
+                        $scope.uiSelectTemplateReady = true;
+                    });
 
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
                 $scope.objectType = $stateParams.objectType;
-                if( !_.isUndefined($stateParams.name)) {
+                if (!_.isUndefined($stateParams.name)) {
                     $scope.name = decodeURIComponent($stateParams.name);
                 }
 
@@ -210,15 +210,15 @@ angular.module('webUpdates')
                 );
             }
 
-            function _addNiceAutocompleteName(items ) {
-                return _.map(items, function(item) {
+            function _addNiceAutocompleteName(items) {
+                return _.map(items, function (item) {
                     var name = '';
                     var separator = ' / ';
-                    if( item.person != null) {
+                    if (item.person != null) {
                         name = item.person;
-                    } else if( item.role != null) {
+                    } else if (item.role != null) {
                         name = item.role;
-                    } else if(item['org-name'] != null) {
+                    } else if (item['org-name'] != null) {
                         name = item['org-name'];
                     } else {
                         separator = '';
@@ -230,12 +230,12 @@ angular.module('webUpdates')
             }
 
 
-            function _isServerLookupKey(refs){
-                return ! (_.isUndefined(refs) || refs.length === 0 );
+            function _isServerLookupKey(refs) {
+                return !(_.isUndefined(refs) || refs.length === 0 );
             }
 
             function referenceAutocomplete(attrType, query, refs) {
-                if ( ! _isServerLookupKey(refs)) {
+                if (!_isServerLookupKey(refs)) {
                     // No suggestions since not a reference
                     return [];
                 } else {
@@ -248,7 +248,7 @@ angular.module('webUpdates')
                 }
             }
 
-            function isBrowserAutoComplete(refs){
+            function isBrowserAutoComplete(refs) {
                 if (_isServerLookupKey(refs)) {
                     return "off";
                 } else {
@@ -256,11 +256,11 @@ angular.module('webUpdates')
                 }
             }
 
-            function fieldVisited( attr ) {
-                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true ) {
+            function fieldVisited(attr) {
+                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
                     RestService.autocomplete(attr.name, attr.value, true, []).then(
                         function (data) {
-                            if(_.any(data, function(item) {
+                            if (_.any(data, function (item) {
                                     return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
                                 })) {
                                 attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
@@ -268,7 +268,7 @@ angular.module('webUpdates')
                                 attr.$$error = '';
                             }
                         },
-                        function( error ) {
+                        function (error) {
                             $log.error('Autocomplete error ' + JSON.stringify(error));
                         }
                     );
@@ -296,7 +296,7 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType,$scope.attributes ))
+                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes))
                     .then(function (selectedItem) {
                         addSelectedAttribute(selectedItem, attr);
                     });
@@ -344,30 +344,30 @@ angular.module('webUpdates')
                     _navigateToDisplayPage($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
                 }
 
-                function _isPendingAuthenticationError( resp ) {
+                function _isPendingAuthenticationError(resp) {
                     var status = false;
-                    if( resp.status === 400) {
+                    if (resp.status === 400) {
                         status = _.any(resp.data.errormessages.errormessage,
-                                function(item) {
-                                    return  item.severity === 'Warning' && item.text === 'This update has only passed one of the two required hierarchical authorisations';
-                                }
+                            function (item) {
+                                return item.severity === 'Warning' && item.text === 'This update has only passed one of the two required hierarchical authorisations';
+                            }
                         );
                     }
                     $log.info('_isPendingAuthenticationError:' + status);
                     return status;
                 }
 
-                function _composePendingResponse( resp ) {
-                    var found = _.find(resp.errormessages.errormessage, function(item) {
+                function _composePendingResponse(resp) {
+                    var found = _.find(resp.errormessages.errormessage, function (item) {
                         return item.severity === 'Error' && item.text === 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s';
                     });
 
-                    if(!_.isUndefined(found) && found.args.length >= 4 ) {
+                    if (!_.isUndefined(found) && found.args.length >= 4) {
                         var obstructingType = found.args[0].value;
                         var obstructingName = found.args[1].value;
                         var mntnersToConfirm = found.args[3].value;
 
-                        var obstructingObjectLink = LinkService.getLink($scope.source, obstructingType,  obstructingName);
+                        var obstructingObjectLink = LinkService.getLink($scope.source, obstructingType, obstructingName);
                         var mntnersToConfirmLinks = LinkService.filterAndCreateTextWithLinksForMntners($scope.source, mntnersToConfirm);
 
                         var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
@@ -377,10 +377,10 @@ angular.module('webUpdates')
                             '<strong>' + obstructingType + '</strong> object ' + obstructingObjectLink + '. ' +
                             'Please ask them to confirm, by submitting the same object as outlined below ' +
                             'using syncupdates or mail updates, and authenticate it using the maintainer ' +
-                            mntnersToConfirmLinks + '. ' +  moreInfoLink;
+                            mntnersToConfirmLinks + '. ' + moreInfoLink;
 
                         // Keep existing message and overwrite existing errors
-                        resp.errormessages.errormessage = [ { 'severity': 'Info',  'text': pendngMsg } ];
+                        resp.errormessages.errormessage = [{'severity': 'Info', 'text': pendngMsg}];
                     }
                     // otherwise keep existing response
 
@@ -453,15 +453,15 @@ angular.module('webUpdates')
                 var passwords = [];
 
                 if (CredentialsService.hasCredentials()) {
-                    passwords.push( CredentialsService.getCredentials().successfulPassword );
+                    passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
 
                 /*
                  * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
                  * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
                  */
-                if( $scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
-                    passwords.push( 'RPSL' );
+                if ($scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
+                    passwords.push('RPSL');
                 }
                 return passwords;
             }
@@ -509,7 +509,7 @@ angular.module('webUpdates')
                     mntners: RestService.fetchMntnersForSSOAccount(),
                     objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password)
                 }).then(
-                function (results) {
+                    function (results) {
                         $scope.restCalInProgress = false;
 
                         $log.debug('object to modify:' + JSON.stringify(results.objectToModify));
@@ -521,15 +521,8 @@ angular.module('webUpdates')
                         // store object to modify
                         _wrapAndEnrichResources(results.objectToModify);
 
-                        // Create empty attribute with warning for missing mandatory attributes
-                        var missingMandatories =  $scope.attributes.getMissingMandatoryAttributes($scope.objectType);
-                        if( missingMandatories.length > 0 ) {
-                            _.each(missingMandatories, function (item) {
-                                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
-                                    $scope.attributes.addMissingMandatoryAttribute($scope.objectType, item));
-                            });
-                            _validateForm();
-                        }
+                        // Create empty attribute with warning for each missing mandatory attribute
+                        _insertMissingMandatoryAttributes();
 
                         // this is where we must authenticate against
                         $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
@@ -578,6 +571,17 @@ angular.module('webUpdates')
                         }
                     }
                 );
+            }
+
+            function _insertMissingMandatoryAttributes() {
+                var missingMandatories = $scope.attributes.getMissingMandatoryAttributes($scope.objectType);
+                if (missingMandatories.length > 0) {
+                    _.each(missingMandatories, function (item) {
+                        $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                            $scope.attributes.addMissingMandatoryAttribute($scope.objectType, item));
+                    });
+                    _validateForm();
+                }
             }
 
             function _copyAddedMntnerToAttributes(mntnerName) {
