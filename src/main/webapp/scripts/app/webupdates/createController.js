@@ -43,6 +43,7 @@ angular.module('webUpdates')
             $scope.isFormValid = isFormValid;
             $scope.isToBeDisabled = isToBeDisabled;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
+            $scope.containsAbuseC = containsAbuseC;
 
             _initialisePage();
 
@@ -116,6 +117,18 @@ angular.module('webUpdates')
             /*
              * Methods called from the html-teplate
              */
+
+            function containsAbuseC() {
+                var abuseC = _.find($scope.attributes, function(attr) {
+                    return attr.name === 'abuse-c';
+                });
+
+                if(abuseC) {
+                    return !_.isEmpty(_.trim(abuseC.value));
+                } else {
+                    return false;
+                };
+            }
 
             function onMntnerAdded(item) {
 
