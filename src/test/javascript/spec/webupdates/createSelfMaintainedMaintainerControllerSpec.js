@@ -6,8 +6,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     var SOURCE = 'TEST';
 
     var RestService = {
-        createObject: function(){
-            return {
+        createObject: function(source, objectType, attributes, passwords){
+           return {
                 then:function(s) {
                     s(CREATE_RESPONSE);
                 }
@@ -81,18 +81,14 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    //
-    //it('should load the maintainer attributes', function () {
-    //
-    //    //I want this to look ugly.
-    //    var attributes = WhoisResources.wrapAttributes(
-    //        WhoisResources.enrichAttributesWithMetaInfo('mntner',
-    //            WhoisResources.getMandatoryAttributesOnObjectType('mntner')
-    //        )
-    //    );
-    //
-    //    expect($scope.maintainerAttributes).toEqual(attributes);
-    //});
+
+    it('should load the maintainer attributes', function () {
+
+        expect($scope.maintainerAttributes.getSingleAttributeOnName('upd-to').value).toEqual('tdacruzper@ripe.net');
+        expect($scope.maintainerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO tdacruzper@ripe.net');
+        expect($scope.maintainerAttributes.getSingleAttributeOnName('source').value).toEqual('TEST');
+
+    });
 
     it('should add admin-c to the maintainer attributes', function () {
         $scope.onAdminCAdded({key: 'some-admin-c'});
@@ -169,25 +165,6 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         $httpBackend.flush();
 
         var obj = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
-        expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', obj);
-    });
-
-    it('should remove null attributes before create the maintainer', function () {
-        fillForm();
-
-        $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c'}, {name: 'admin-c'});
-        $scope.maintainerAttributes = WhoisResources.enrichAttributesWithMetaInfo('mntner', $scope.maintainerAttributes);
-        $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
-
-        spyOn(RestService, 'createObject').and.callThrough();
-
-        $scope.submit();
-
-        $httpBackend.flush();
-
-        var expectedAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
-        expectedAttributes = expectedAttributes.removeNullAttributes();
-        var obj = WhoisResources.turnAttrsIntoWhoisObject(expectedAttributes);
         expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', obj);
     });
 

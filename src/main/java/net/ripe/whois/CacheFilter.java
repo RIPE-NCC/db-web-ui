@@ -1,6 +1,5 @@
 package net.ripe.whois;
 
-import org.joda.time.Period;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,12 +13,13 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 @Component
 public class CacheFilter implements Filter {
     private static final Logger LOGGER = LoggerFactory.getLogger(CacheFilter.class);
 
-    private final int MAX_AGE_IN_SECONDS = Period.years(1).getSeconds();
+    private final long MAX_AGE_IN_SECONDS = TimeUnit.SECONDS.convert(365, TimeUnit.DAYS);
 
     private static final String[] CACHEABLE = {
         ".js",

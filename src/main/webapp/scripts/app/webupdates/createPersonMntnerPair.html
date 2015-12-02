@@ -13,7 +13,8 @@
                 <input type="text" name="{{attribute.name}}" ng-model="attribute.value" ng-blur="fieldVisited('mntner', attribute)"
                        ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control" />
                 <div class="text field-description" collapse="!isHelpShown">
-                    {{attribute.$$meta.$$description}}</br>{{attribute.$$meta.$$syntax}}
+                    {{attribute.$$meta.$$description}}</br>
+                    <span ng-bind-html="attribute.$$meta.$$syntax"></span>
                 </div>
                 <ul class="input-group-btn">
                     <li>
@@ -31,7 +32,8 @@
                 <input type="text" name="{{attribute.name}}" ng-model="attribute.value" ng-blur="fieldVisited('person', attribute)"
                        ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control" />
                 <div class="text field-description" collapse="!isHelpShown">
-                    {{attribute.$$meta.$$description}}</br>{{attribute.$$meta.$$syntax}}
+                    {{attribute.$$meta.$$description}}</br>
+                    <span ng-bind-html="attribute.$$meta.$$syntax"></span>
                 </div>
                 <ul class="input-group-btn">
                     <li>

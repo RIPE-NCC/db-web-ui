@@ -115,7 +115,7 @@ describe('webUpdates: CreateController', function () {
     it('should handle success post upon submit click when form is complete', function () {
 
         // api/whois/RIPE/as-block
-        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond({
+        $httpBackend.expectPOST('api/whois/RIPE/as-block?password=@123').respond({
             objects: {
                 object: [
                     {
@@ -131,6 +131,8 @@ describe('webUpdates: CreateController', function () {
                 ]
             }
         });
+
+        CredentialsService.setCredentials('TEST-MNT', '@123');
 
         $scope.attributes.setSingleAttributeOnName('as-block', 'A');
 

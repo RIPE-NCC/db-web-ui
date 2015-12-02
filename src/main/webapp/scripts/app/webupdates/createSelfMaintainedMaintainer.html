@@ -27,8 +27,12 @@
             </ui-select-choices>
         </ui-select>
         <div collapse="!isAdminCHelpShown" class="text field-description">
-            {{admincDescription}}<br>{{admincSyntax}}
+            {{admincDescription}}<br>
+            <span ng-bind-html="admincSyntax"></span>
             </div>
+        <div ng-show="!hasAdminC()">
+            <strong>Don't have an administrative contact? <a href="/db-web-ui/#/webupdates/create/person/self">Create maintainer and person pair</a></strong>
+        </div>
     </section>
 
     <section class="visible-field-form" ng-show="hasAdminC()">
@@ -42,7 +46,8 @@
                 <input type="text" name="{{attribute.name}}" ng-model="attribute.value" ng-blur="fieldVisited(attribute)"
                        ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control" />
                 <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
-                    {{attribute.$$meta.$$description}}</br>{{attribute.$$meta.$$syntax}}
+                    {{attribute.$$meta.$$description}}</br>
+                    <span ng-bind-html="attribute.$$meta.$$syntax"></span>
                 </div>
                 <ul class="input-group-btn">
                     <li>
