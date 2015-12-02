@@ -1,4 +1,12 @@
 <alerts></alerts>
+<div ng-show="operation == MODIFY_OPERATION && objectType == 'organisation' && !containsAbuseC()" class="alert alert-warning">
+        <p>
+            We see that there is no abuse contact set up for your organisation. Please create one now. Note that abuse contacts are required for organisations that have resources allocated or assigned by the RIPE NCC under policy 2011-06.
+        </p>
+        <p>
+            To set this up you can either enter an existing role object with an abuse-mailbox, or you can simply enter an email address and we will create a role object for you using the maintainers on your organisation (mnt-ref in case of an LIR org).
+        </p>
+</div>
 <form id="createForm">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; object</h1>
