@@ -5,10 +5,10 @@
 angular.module('webUpdates')
     .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
-        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
+        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper',
         function ($scope, $stateParams, $state, $log, $window,
                   WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService,
-                  MntnerService, AlertService, ErrorReporterService, LinkService) {
+                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper) {
 
             // exposed methods called from html fragment
             $scope.onMntnerAdded = onMntnerAdded;
@@ -43,7 +43,7 @@ angular.module('webUpdates')
             $scope.isFormValid = isFormValid;
             $scope.isToBeDisabled = isToBeDisabled;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
-            $scope.containsAbuseC = containsAbuseC;
+            $scope.displayAbuseCBanner = displayAbuseCBanner;
 
             _initialisePage();
 
@@ -118,16 +118,8 @@ angular.module('webUpdates')
              * Methods called from the html-teplate
              */
 
-            function containsAbuseC() {
-                var abuseC = _.find($scope.attributes, function(attr) {
-                    return attr.name === 'abuse-c';
-                });
-
-                if(abuseC) {
-                    return !_.isEmpty(_.trim(abuseC.value));
-                } else {
-                    return false;
-                };
+            function displayAbuseCBanner() {
+                return $scope.operation == $scope.MODIFY_OPERATION && $scope.objectType == 'organisation' && !OrganisationHelper.containsAbuseC($scope.attributes);
             }
 
             function onMntnerAdded(item) {
