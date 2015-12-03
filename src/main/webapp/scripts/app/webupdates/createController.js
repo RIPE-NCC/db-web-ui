@@ -122,7 +122,7 @@ angular.module('webUpdates')
             function missingAbuseC() {
                 if(_.isEmpty($scope.attributes)) {
                     return false;
-                }
+                };
 
                 return $scope.operation == $scope.MODIFY_OPERATION && $scope.objectType == 'organisation' && !OrganisationHelper.containsAbuseC($scope.attributes);
             }

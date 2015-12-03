@@ -3,6 +3,7 @@
 'use strict';
 
 angular.module('dbWebApp')
+
     .service('OrganisationHelper', ['WhoisResources', function (WhoisResources) {
 
         this.containsAbuseC = function (attributes) {
@@ -28,5 +29,4 @@ angular.module('dbWebApp')
                 return attributes;
             }
         }
-
     }]);

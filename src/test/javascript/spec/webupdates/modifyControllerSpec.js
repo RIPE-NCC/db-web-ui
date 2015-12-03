@@ -736,7 +736,7 @@ describe('webUpdates: ModifyController for organisation', function () {
             return attr.name === 'abuse-c';
         });
 
-        expect(abuseC.value).toBeUndefined();
+        expect(abuseC.value).toBe('');
     });
 
     it('should not display abuse-c banner if no sttribute is loaded', function () {
@@ -766,7 +766,7 @@ describe('webUpdates: ModifyController for organisation', function () {
         $scope.operation == $scope.MODIFY_OPERATION;
         $scope.objectType == 'blabla';
         $scope.attributes = $scope.attributes.addAttributeAfterType({name: 'abuse-c', value: 'some abuse-c'}, {name: 'e-mail'});
-        expect($scope.missingAbuseC()).toBe(false);
+
         expect($scope.missingAbuseC()).toBe(false);
     });
 
