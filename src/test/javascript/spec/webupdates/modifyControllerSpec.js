@@ -730,6 +730,15 @@ describe('webUpdates: ModifyController for organisation', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
+    it('should add abuse-c with no value by default', function () {
+        $scope.operation == $scope.MODIFY_OPERATION;
+        var abuseC = _.find($scope.attributes, function(attr) {
+            return attr.name === 'abuse-c';
+        });
+
+        expect(abuseC.value).toBeUndefined();
+    });
+
     it('should not display abuse-c banner if no sttribute is loaded', function () {
         $scope.attributes = [];
         expect($scope.missingAbuseC()).toBe(false);
@@ -741,9 +750,9 @@ describe('webUpdates: ModifyController for organisation', function () {
         expect($scope.missingAbuseC()).toBe(false);
     });
 
-
     it('should display abuse-c banner if abuse-c is not available', function () {
         $scope.operation == $scope.MODIFY_OPERATION;
+        $scope.attributes.removeNullAttributes();
         expect($scope.missingAbuseC()).toBe(true);
     });
 
