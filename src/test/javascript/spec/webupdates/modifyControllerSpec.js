@@ -169,7 +169,7 @@ describe('webUpdates: ModifyController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('changed', "dummy@ripe.net");
+        $scope.attributes.setSingleAttributeOnName('changed', 'dummy@ripe.net');
 
         $scope.submit();
         $httpBackend.flush();
@@ -230,7 +230,7 @@ describe('webUpdates: ModifyController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('as-block', "A");
+        $scope.attributes.setSingleAttributeOnName('as-block', 'A');
 
         $scope.submit();
         $httpBackend.flush();
@@ -612,6 +612,7 @@ describe('webUpdates: ModifyController for organisation', function () {
     var MessageStore;
     var WhoisResources;
     var MntnerService;
+    var ModalService;
     var OBJECT_TYPE = 'organisation';
     var SOURCE = 'RIPE';
     var NAME = 'ORG-UA300-RIPE';
@@ -630,13 +631,22 @@ describe('webUpdates: ModifyController for organisation', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
+            ModalService = {
+                openCreateRoleForAbuseCAttribute: function(){
+                    return {
+                        then:function(s) {
+                            s(ROLE_OBJ);
+                        }
+                    }
+                }
+            };
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
             _$controller_('CreateController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -648,69 +658,69 @@ describe('webUpdates: ModifyController for organisation', function () {
 
             $httpBackend.whenGET('api/whois/RIPE/'+OBJECT_TYPE+'/'+NAME+'?unfiltered=true').respond(
                 function(method,url) {
-                    return [200,{"objects":{"object":[ {
-                        "type" : "organisation",
-                        "link" : {
-                            "type" : "locator",
-                            "href" : "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE"
+                    return [200,{'objects':{'object':[ {
+                        'type' : 'organisation',
+                        'link' : {
+                            'type' : 'locator',
+                            'href' : 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE'
                         },
-                        "source" : {
-                            "id" : "ripe"
+                        'source' : {
+                            'id' : 'ripe'
                         },
-                        "primary-key" : {
-                            "attribute" : [ {
-                                "name" : "organisation",
-                                "value" : "ORG-UA300-RIPE"
+                        'primary-key' : {
+                            'attribute' : [ {
+                                'name' : 'organisation',
+                                'value' : 'ORG-UA300-RIPE'
                             } ]
                         },
-                        "attributes" : {
-                            "attribute" : [ {
-                                "name" : "organisation",
-                                "value" : "ORG-UA300-RIPE"
+                        'attributes' : {
+                            'attribute' : [ {
+                                'name' : 'organisation',
+                                'value' : 'ORG-UA300-RIPE'
                             }, {
-                                "name" : "org-name",
-                                "value" : "uhuuu"
+                                'name' : 'org-name',
+                                'value' : 'uhuuu'
                             }, {
-                                "name" : "org-type",
-                                "value" : "OTHER"
+                                'name' : 'org-type',
+                                'value' : 'OTHER'
                             }, {
-                                "name" : "address",
-                                "value" : "Singel 258"
+                                'name' : 'address',
+                                'value' : 'Singel 258'
                             }, {
-                                "name" : "e-mail",
-                                "value" : "tdacruzper@ripe.net"
+                                'name' : 'e-mail',
+                                'value' : 'tdacruzper@ripe.net'
                             }, {
-                                "link" : {
-                                    "type" : "locator",
-                                    "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT"
+                                'link' : {
+                                    'type' : 'locator',
+                                    'href' : 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT'
                                 },
-                                "name" : "mnt-ref",
-                                "value" : "IS-NET-MNT",
-                                "referenced-type" : "mntner"
+                                'name' : 'mnt-ref',
+                                'value' : 'IS-NET-MNT',
+                                'referenced-type' : 'mntner'
                             }, {
-                                "link" : {
-                                    "type" : "locator",
-                                    "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT"
+                                'link' : {
+                                    'type' : 'locator',
+                                    'href' : 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT'
                                 },
-                                "name" : "mnt-by",
-                                "value" : "TEST-MNT",
-                                "referenced-type" : "mntner"
+                                'name' : 'mnt-by',
+                                'value' : 'TEST-MNT',
+                                'referenced-type' : 'mntner'
                             }, {
-                                "name" : "created",
-                                "value" : "2015-12-02T14:01:06Z"
+                                'name' : 'created',
+                                'value' : '2015-12-02T14:01:06Z'
                             }, {
-                                "name" : "last-modified",
-                                "value" : "2015-12-02T14:01:06Z"
+                                'name' : 'last-modified',
+                                'value' : '2015-12-02T14:01:06Z'
                             }, {
-                                "name" : "source",
-                                "value" : "RIPE"
+                                'name' : 'source',
+                                'value' : 'RIPE'
                             } ]
                         }
                     } ]
                     },
-                        "terms-and-conditions" : {
-                            "type" : "locator",
-                            "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+                        'terms-and-conditions' : {
+                            'type' : 'locator',
+                            'href' : 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
                         }
                     }, {}];
                 });
@@ -769,6 +779,52 @@ describe('webUpdates: ModifyController for organisation', function () {
 
         expect($scope.missingAbuseC()).toBe(false);
     });
+
+    it('should populate abuse-c with new role\'s nic-hdl', function () {
+        $scope.createRoleForAbuseCAttribute();
+
+        expect($scope.attributes.getSingleAttributeOnName('abuse-c').value).toBe('SR11027-RIPE');
+    });
+
+    it('should populate $scope.roleForAbuseC', function () {
+        $scope.createRoleForAbuseCAttribute();
+
+        expect($scope.roleForAbuseC).toBeDefined();
+    });
+
+    var ROLE_OBJ = [ {
+                        'name' : 'role',
+                        'value' : 'some role'
+                    }, {
+                        'name' : 'address',
+                        'value' : 'Singel 258'
+                    }, {
+                        'name' : 'e-mail',
+                        'value' : 'fdsd@sdfsd.com'
+                    }, {
+                        'name' : 'abuse-mailbox',
+                        'value' : 'fdsd@sdfsd.com'
+                    }, {
+                        'name' : 'nic-hdl',
+                        'value' : 'SR11027-RIPE'
+                    }, {
+                        'link' : {
+                            'type' : 'locator',
+                            'href' : 'http://rest-dev.db.ripe.net/ripe/mntner/MNT-THINK'
+                        },
+                        'name' : 'mnt-by',
+                        'value' : 'MNT-THINK',
+                        'referenced-type' : 'mntner'
+                    }, {
+                        'name' : 'created',
+                        'value' : '2015-12-04T15:12:10Z'
+                    }, {
+                        'name' : 'last-modified',
+                        'value' : '2015-12-04T15:12:10Z'
+                    }, {
+                        'name' : 'source',
+                        'value' : 'RIPE'
+                    } ];
 
 });
 
