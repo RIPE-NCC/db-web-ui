@@ -121,9 +121,10 @@ angular.module('webUpdates')
              */
 
             function createRoleForAbuseCAttribute() {
-                ModalService.openCreateRoleForAbuseCAttribute().then(
-                    function (authLine) {
-                        attr.value = authLine;
+                ModalService.openCreateRoleForAbuseCAttribute($scope.source).then(
+                    function (role) {
+                        $scope.roleForAbuseC = role;
+                        $scope.attributes.setSingleAttributeOnName('abuse-c', $scope.roleForAbuseC['nic-hdl']);
                     }
                 );
             }
