@@ -102,6 +102,7 @@ angular.module('webUpdates')
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
+                    $scope.attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                     $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
 
                     _fetchDataForCreate();
