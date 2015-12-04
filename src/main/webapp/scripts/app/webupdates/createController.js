@@ -44,6 +44,7 @@ angular.module('webUpdates')
             $scope.isToBeDisabled = isToBeDisabled;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.missingAbuseC = missingAbuseC;
+            $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
             _initialisePage();
 
@@ -118,6 +119,14 @@ angular.module('webUpdates')
             /*
              * Methods called from the html-teplate
              */
+
+            function createRoleForAbuseCAttribute() {
+                ModalService.openCreateRoleForAbuseCAttribute().then(
+                    function (authLine) {
+                        attr.value = authLine;
+                    }
+                );
+            }
 
             function missingAbuseC() {
                 if(_.isEmpty($scope.attributes)) {

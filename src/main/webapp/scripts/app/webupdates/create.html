@@ -98,6 +98,14 @@
                 </a>
                 </li>
                 <li>
+                    <a id="createRoleForAbuseCAttribute" class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c"
+                       ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="(attribute.name == 'abuse-c') && missingAbuseC()">
+
+
+                        <span class="fa fa-birthday-cake degree-25"></span>
+                    </a>
+                </li>
+                <li>
                     <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
                         <span class="fa fa-question" ></span>
                     </a>
