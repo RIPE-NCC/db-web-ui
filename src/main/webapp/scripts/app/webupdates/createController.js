@@ -122,7 +122,9 @@ angular.module('webUpdates')
              */
 
             function createRoleForAbuseCAttribute() {
-                ModalService.openCreateRoleForAbuseCAttribute($scope.source).then(
+                var maintainer = $scope.attributes.getSingleAttributeOnName('mnt-by');
+
+                ModalService.openCreateRoleForAbuseCAttribute($scope.source, maintainer).then(
                     function (roleAttrs) {
                         $scope.roleForAbuseC = WhoisResources.wrapAndEnrichAttributes('role', roleAttrs);
                         $scope.attributes.setSingleAttributeOnName('abuse-c', $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);

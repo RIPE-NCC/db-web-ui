@@ -1,32 +1,33 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'source',
-    function ($scope, $modalInstance, WhoisResources, RestService, source) {
+angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'source', 'maintainer',
+    function ($scope, $modalInstance, WhoisResources, RestService, source, maintainer) {
         $scope.create = create;
         $scope.cancel = cancel;
 
         function create() {
-            var attributes = WhoisResources.wrapAndEnrichAttributes('role', newRoleTemplate);
+            if(!(angular.isUndefined($scope.email) || $scope.email == '')) {
+                var attributes = WhoisResources.wrapAndEnrichAttributes('role', newRoleTemplate);
 
-            //replace emails
+                attributes.setSingleAttributeOnName('abuse-mailbox', $scope.email);
+                attributes.setSingleAttributeOnName('e-mail', $scope.email);
+                attributes.setSingleAttributeOnName('mnt-by', maintainer.value);
 
-            RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), [])
-                .then(function(response) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(response);
-                    $modalInstance.close(whoisResources.getAttributes());
-                },
-                function () {
-                    alert('uhuuuuu error');
-                });
-
-            console.log(JSON.stringify($scope.attributes));
-
+                RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), [])
+                    .then(function(response) {
+                        var whoisResources = WhoisResources.wrapWhoisResources(response);
+                        $modalInstance.close(whoisResources.getAttributes());
+                    },
+                    function () {
+                        alert('uhuuuuu error');
+                    });
+                console.log(JSON.stringify($scope.attributes));
+            }
         };
 
         function cancel() {
             $modalInstance.dismiss('cancel');
         };
-
 
         var newRoleTemplate = [ {
             'name' : 'role',
@@ -49,7 +50,7 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
                 'href' : 'http://rest-dev.db.ripe.net/ripe/mntner/MNT-THINK'
             },
             'name' : 'mnt-by',
-            'value' : 'MNT-THINK',
+            'value' : 'NINJA-SSO-MNT',
             'referenced-type' : 'mntner'
         }, {
             'name' : 'created',
