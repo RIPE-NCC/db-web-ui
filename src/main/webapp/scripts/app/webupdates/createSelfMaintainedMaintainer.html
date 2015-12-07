@@ -27,7 +27,9 @@
             </ui-select-choices>
         </ui-select>
         <div collapse="!isAdminCHelpShown" class="text field-description">
+            <strong>Description</strong></br>
             {{admincDescription}}<br>
+            <strong>Syntax</strong></br>
             <span ng-bind-html="admincSyntax"></span>
             </div>
         <div ng-show="!hasAdminC()">
@@ -46,7 +48,9 @@
                 <input type="text" name="{{attribute.name}}" ng-model="attribute.value" ng-blur="fieldVisited(attribute)"
                        ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control" />
                 <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
+                    <strong>Description</strong></br>
                     {{attribute.$$meta.$$description}}</br>
+                    <strong>Syntax</strong></br>
                     <span ng-bind-html="attribute.$$meta.$$syntax"></span>
                 </div>
                 <ul class="input-group-btn">
