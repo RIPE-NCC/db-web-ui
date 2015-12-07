@@ -122,8 +122,8 @@ angular.module('webUpdates')
              */
 
             function createRoleForAbuseCAttribute() {
-                var maintainer = $scope.attributes.getSingleAttributeOnName('mnt-by');
-
+                //for now just grab first valid mntner
+                var maintainer = $scope.maintainers.object[0].key;
                 ModalService.openCreateRoleForAbuseCAttribute($scope.source, maintainer, _getPasswordsForRestCall()).then(
                     function (roleAttrs) {
                         $scope.roleForAbuseC = WhoisResources.wrapAndEnrichAttributes('role', roleAttrs);
