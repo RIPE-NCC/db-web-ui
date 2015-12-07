@@ -9,7 +9,7 @@ describe('webUpdates: ModifyController for organisation', function () {
     var OrganisationHelper;
     var ModalService;
     var OBJECT_TYPE = 'organisation';
-    var SOURCE = 'RIPE';
+    var SOURCE = 'TEST';
     var NAME = 'ORG-UA300-RIPE';
 
     beforeEach(function () {
@@ -55,42 +55,39 @@ describe('webUpdates: ModifyController for organisation', function () {
                 {key:'TESTSSO-MNT', type: 'mntner', auth:['MD5-PW','SSO'], mine:true}
             ]);
 
-            $httpBackend.whenGET('api/whois/RIPE/'+OBJECT_TYPE+'/'+NAME+'?unfiltered=true').respond(
+            $httpBackend.whenGET('api/whois/'+SOURCE+'/'+OBJECT_TYPE+'/'+NAME+'?unfiltered=true').respond(
                 function(method,url) {
                     return [200,
                         {
                             objects: {
                                 object: [
                                     {
-                                        'primary-key' : {'attribute' : [{'name' : 'organisation','value' : 'ORG-UA300-RIPE'}]},
+                                        'primary-key' : {attribute : [{name : 'organisation',value : 'ORG-UA300-RIPE'}]},
                                         attributes: {
                                             attribute: [ {
-                                                'name' : 'organisation',
-                                                'value' : 'ORG-UA300-RIPE'
+                                                name : 'organisation',
+                                                value : 'ORG-UA300-RIPE'
                                                 }, {
-                                                    'name' : 'org-name',
-                                                    'value' : 'uhuuu'
+                                                    name : 'org-name',
+                                                    value : 'uhuuu'
                                                 }, {
-                                                    'name' : 'org-type',
-                                                    'value' : 'OTHER'
+                                                    name : 'org-type',
+                                                    value : 'OTHER'
                                                 }, {
-                                                    'name' : 'address',
-                                                    'value' : 'Singel 258'
+                                                    name : 'address',
+                                                    value : 'Singel 258'
                                                 }, {
-                                                    'name' : 'e-mail',
-                                                    'value' : 'tdacruzper@ripe.net'
+                                                    name : 'e-mail',
+                                                    value : 'uhuuuu@ripe.net'
                                                 }, {
-                                                    'name' : 'mnt-ref',
-                                                    'value' : 'IS-NET-MNT',
+                                                    name : 'mnt-ref',
+                                                    value : 'TEST-MNT'
                                                 }, {
-                                                    'name' : 'mnt-by',
-                                                    'value' : 'TEST-MNT',
+                                                    name : 'mnt-by',
+                                                    value : 'TEST-MNT'
                                                 }, {
-                                                    'name' : 'created',
-                                                    'value' : '2015-12-02T14:01:06Z'
-                                                }, {
-                                                    'name' : 'last-modified',
-                                                    'value' : '2015-12-02T14:01:06Z'
+                                                    name : 'source',
+                                                    value: 'TEST'
                                                 }
                                             ]
                                         }
@@ -167,58 +164,39 @@ describe('webUpdates: ModifyController for organisation', function () {
         expect($scope.roleForAbuseC).toBeDefined();
     });
 
-    //it('should use the helper to update role for abuse-c', function () {
-    //    spyOn(OrganisationHelper, 'updateAbuseC');
-    //
-    //    $scope.submit();
-    //
-    //    expect(OrganisationHelper.updateAbuseC).toHaveBeenCalled();
-    //});
-    //
-    //it('should not update role for abuse-c if it is not a organisation', function () {
-    //    $scope.objectType = 'otherType';
-    //    spyOn(OrganisationHelper, 'updateAbuseC');
-    //
-    //    $scope.submit();
-    //
-    //    expect(OrganisationHelper.updateAbuseC).toHaveBeenCalled();
-    //});
+    it('should use the helper to update role for abuse-c', function () {
+        $httpBackend.whenPUT('api/whois/TEST/organisation/ORG-UA300-RIPE').respond(500); // I don' care about this call
 
+        spyOn(OrganisationHelper, 'updateAbuseC');
+        $scope.submit();
+        expect(OrganisationHelper.updateAbuseC).toHaveBeenCalled();
+
+        $httpBackend.flush();
+    });
 
 
     var ROLE_OBJ = [ {
-                        'name' : 'role',
-                        'value' : 'some role'
+                        name : 'role',
+                        value : 'some role'
                     }, {
-                        'name' : 'address',
-                        'value' : 'Singel 258'
+                        name : 'address',
+                        value : 'Singel 258'
                     }, {
-                        'name' : 'e-mail',
-                        'value' : 'fdsd@sdfsd.com'
+                        name : 'e-mail',
+                        value : 'fdsd@sdfsd.com'
                     }, {
-                        'name' : 'abuse-mailbox',
-                        'value' : 'fdsd@sdfsd.com'
+                        name : 'abuse-mailbox',
+                        value : 'fdsd@sdfsd.com'
                     }, {
-                        'name' : 'nic-hdl',
-                        'value' : 'SR11027-RIPE'
+                        name : 'nic-hdl',
+                        value : 'SR11027-RIPE'
                     }, {
-                        'link' : {
-                            'type' : 'locator',
-                            'href' : 'http://rest-dev.db.ripe.net/ripe/mntner/MNT-THINK'
-                        },
-                        'name' : 'mnt-by',
-                        'value' : 'MNT-THINK',
-                        'referenced-type' : 'mntner'
+                        name : 'mnt-by',
+                        value : 'MNT-THINK'
                     }, {
-                        'name' : 'created',
-                        'value' : '2015-12-04T15:12:10Z'
-                    }, {
-                        'name' : 'last-modified',
-                        'value' : '2015-12-04T15:12:10Z'
-                    }, {
-                        'name' : 'source',
-                        'value' : 'RIPE'
-                    } ];
+                        name : 'source',
+                        value : 'TEST'
+                    }];
 
 });
 
