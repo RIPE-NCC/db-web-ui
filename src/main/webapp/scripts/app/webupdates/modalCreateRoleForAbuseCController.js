@@ -17,12 +17,13 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
             RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords)
                 .then(function(response) {
                     var whoisResources = WhoisResources.wrapWhoisResources(response);
+
+
                     $modalInstance.close(whoisResources.getAttributes());
                 },
                 function () {
                     $modalInstance.dismiss('cancel');
                     AlertService.setGlobalError("There was a problem creating the abuse-c attribute");
-
                 });
         };
 
@@ -45,7 +46,7 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
 
         var newRoleTemplate = [ {
             'name' : 'role',
-            'value' : '----'
+            'value' : 'Abuse contact role object'
         }, {
             'name' : 'address',
             'value' : '----'
