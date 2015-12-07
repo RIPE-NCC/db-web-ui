@@ -24,7 +24,7 @@ angular.module('webUpdates')
 
                 AlertService.clearErrors();
 
-                $scope.admincDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'admin-c');
+                $scope.admincDescription = WhoisResources.getAttributeDescription($scope.objectType, 'admin-c');
                 $scope.admincSyntax = WhoisResources.getAttributeSyntax($scope.objectType, 'admin-c');
 
                 $scope.adminC = {

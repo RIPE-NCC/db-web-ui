@@ -78,7 +78,7 @@ angular.module('webUpdates')
 
                 $scope.attributes = [];
 
-                $scope.mntbyDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'mnt-by');
+                $scope.mntbyDescription = WhoisResources.getAttributeDescription($scope.objectType, 'mnt-by');
                 $scope.mntbySyntax = WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
 
                 $scope.CREATE_OPERATION = 'Create';

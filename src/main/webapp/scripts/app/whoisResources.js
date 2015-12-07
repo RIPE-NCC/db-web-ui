@@ -3,8 +3,12 @@
 angular.module('dbWebApp')
     .service('WhoisResources', [ '$log', 'WhoisMetaService', function ($log,    WhoisMetaService) {
 
-        this.getAttributeDocumentation = function( objectType, attrName ) {
-            return WhoisMetaService.getAttributeDocumentation(objectType, attrName);
+        this.getAttributeShortDescription = function( objectType, attrName ) {
+            return WhoisMetaService.getAttributeShortDescription(objectType, attrName);
+        };
+
+        this.getAttributeDescription = function( objectType, attrName ) {
+            return WhoisMetaService.getAttributeDescription(objectType, attrName);
         };
 
         this.getAttributeSyntax = function (objectType, attrName) {
