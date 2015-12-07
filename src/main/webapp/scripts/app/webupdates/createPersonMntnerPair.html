@@ -10,8 +10,13 @@
                 class="form-group input-group">
                 <label>{{attribute.name}}</label>
                 <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
-                <input type="text" name="{{attribute.name}}" ng-model="attribute.value" ng-blur="fieldVisited('mntner', attribute)"
-                       ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control" />
+                <input type="text"
+                       name="{{attribute.name}}"
+                       ng-model="attribute.value"
+                       placeholder="{{attribute.$$meta.$$short}}"
+                       ng-blur="fieldVisited('mntner', attribute)"
+                       ng-required="{{attribute.$$meta.$$mandatory}}"
+                       class="form-control" />
                 <div class="text field-description" collapse="!isHelpShown">
                     <strong>Description</strong></br>
                     {{attribute.$$meta.$$description}}</br>
@@ -31,8 +36,13 @@
                 class="form-group input-group">
                 <label>{{attribute.name}}</label>
                 <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
-                <input type="text" name="{{attribute.name}}" ng-model="attribute.value" ng-blur="fieldVisited('person', attribute)"
-                       ng-required="{{attribute.$$meta.$$mandatory}}" class="form-control" />
+                <input type="text"
+                       name="{{attribute.name}}"
+                       ng-model="attribute.value"
+                       placeholder="{{attribute.$$meta.$$short}}"
+                       ng-blur="fieldVisited('person', attribute)"
+                       ng-required="{{attribute.$$meta.$$mandatory}}"
+                       class="form-control" />
                 <div class="text field-description" collapse="!isHelpShown">
                     <strong>Description</strong></br>
                     {{attribute.$$meta.$$description}}</br>
