@@ -32,7 +32,14 @@ angular.module('dbWebApp')
 
         this.updateAbuseC = function (source, objectType, roleForAbuseC, organisationAttributes, passwords) {
             if(objectType == 'organisation' && roleForAbuseC) {
-                roleForAbuseC.setSingleAttributeOnName('mnt-by', organisationAttributes.getSingleAttributeOnName('mnt-by').value);
+
+                roleForAbuseC = WhoisResources.wrapAttributes(roleForAbuseC);
+
+                _.forEach(organisationAttributes.getAllAttributesOnName('mnt-by'), function(mnt) {
+                    roleForAbuseC = roleForAbuseC.addAttributeAfterType({name: 'mnt-by', value: mnt.value}, {name: 'mnt-by'});
+                    roleForAbuseC = WhoisResources.wrapAttributes(roleForAbuseC);
+                });
+                
                 roleForAbuseC.setSingleAttributeOnName('address', organisationAttributes.getSingleAttributeOnName('address').value);
 
                 RestService.modifyObject(source, 'role', roleForAbuseC.getSingleAttributeOnName('nic-hdl').value,
