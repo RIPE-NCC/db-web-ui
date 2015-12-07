@@ -16,7 +16,7 @@ angular.module('dbWebApp')
             } else {
                 return false;
             };
-        }
+        };
 
 
         this.addAbuseC = function (objectType, attributes) {
@@ -28,5 +28,12 @@ angular.module('dbWebApp')
             } else {
                 return attributes;
             }
-        }
+        };
+
+        this.updateAbuseC = function (objectType, roleForAbuseC, organisationAttributes) {
+            if(objectType == 'organisation') {
+
+            }
+        };
+
     }]);

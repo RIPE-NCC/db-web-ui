@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'source', 'maintainer',
-    function ($scope, $modalInstance, WhoisResources, RestService, source, maintainer) {
+    function ($scope, $modalInstance, WhoisResources, RestService, source, maintainer, passwords) {
         $scope.create = create;
         $scope.cancel = cancel;
 
@@ -13,7 +13,7 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
                 attributes.setSingleAttributeOnName('e-mail', $scope.email);
                 attributes.setSingleAttributeOnName('mnt-by', maintainer.value);
 
-                RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), [])
+                RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords)
                     .then(function(response) {
                         var whoisResources = WhoisResources.wrapWhoisResources(response);
                         $modalInstance.close(whoisResources.getAttributes());

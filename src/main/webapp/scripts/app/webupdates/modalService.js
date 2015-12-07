@@ -4,7 +4,7 @@ angular.module('dbWebApp')
     .factory('ModalService', ['$q', '$modal', '$log', function ( $q, $modal, $log ) {
         function ModalService() {
 
-            this.openCreateRoleForAbuseCAttribute = function(source, maintainer) {
+            this.openCreateRoleForAbuseCAttribute = function(source, maintainer, passwords) {
                 var modalInstance = $modal.open({
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalCreateRoleForAbuseC.html',
@@ -16,6 +16,9 @@ angular.module('dbWebApp')
                         },
                         maintainers: function () {
                             return maintainer;
+                        },
+                        passwords: function () {
+                            return passwords;
                         }
                     }
                 });

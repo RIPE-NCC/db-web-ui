@@ -319,7 +319,7 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes))
+                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes), _getPasswordsForRestCall())
                     .then(function (selectedItem) {
                         addSelectedAttribute(selectedItem, attr);
                     });
@@ -446,6 +446,9 @@ angular.module('webUpdates')
                     var passwords = _getPasswordsForRestCall();
 
                     $scope.restCalInProgress = true;
+
+                    OrganisationHelper.updateAbuseC($scope.objectType, $scope.roleForAbuseC, $scope.attributes);
+
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
