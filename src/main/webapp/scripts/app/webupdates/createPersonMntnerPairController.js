@@ -104,8 +104,8 @@ angular.module('webUpdates')
             }
 
             function cancel() {
-                if ( window.confirm('Are you sure?') ) {
-                    window.history.back();
+                if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+                    $state.transitionTo('select');
                 }
             }
 
