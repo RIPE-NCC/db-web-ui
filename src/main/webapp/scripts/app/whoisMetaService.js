@@ -3,6 +3,21 @@
 angular.module('dbWebApp')
     .service('WhoisMetaService', function () {
 
+        this.getAttributePlaceholder = function (objectType, attrName) {
+            var description = undefined;
+            if (attrName === 'mp-peer') {
+                description = this._mpPeerDoc[objectType].placeholder;
+            } else if (attrName === 'mnt-routes') {
+                description = this._mntRoutesDoc[objectType].placeholder;
+            } else if (attrName === 'status') {
+                description = this._statusDoc[objectType].placeholder;
+            }
+            if (_.isUndefined(description) && !_.isUndefined(this._attrDocumentation[attrName])) {
+                description = this._attrDocumentation[attrName].placeholder;
+            }
+            return description;
+        };
+
         this.getAttributeDocumentation = function (objectType, attrName) {
             var description = undefined;
             if (attrName === 'mp-peer') {
@@ -78,6 +93,7 @@ angular.module('dbWebApp')
                         $$mandatory: attrMeta.mandatory,
                         $$multiple: attrMeta.multiple,
                         $$primaryKey: attrMeta.primaryKey,
+                        $$placeholder: self.getAttributePlaceholder(objectTypeName, attr.name),
                         $$description: self.getAttributeDocumentation(objectTypeName, attr.name),
                         $$syntax: self.getAttributeSyntax(objectTypeName, attr.name),
                         $$refs: attrMeta.refs
@@ -105,6 +121,7 @@ angular.module('dbWebApp')
                         $$mandatory: am.mandatory,
                         $$multiple: am.multiple,
                         $$primaryKey: am.primaryKey,
+                        $$placeholder: self.getAttributePlaceholder(objectTypeName, am.name),
                         $$description: self.getAttributeDocumentation(objectTypeName, am.name),
                         $$syntax: self.getAttributeSyntax(objectTypeName, am.name),
                         $$refs: am.refs
@@ -131,6 +148,7 @@ angular.module('dbWebApp')
                         $$mandatory: x.mandatory,
                         $$multiple: x.multiple,
                         $$primaryKey: x.primaryKey,
+                        $$placeholder: self.getAttributePlaceholder(objectTypeName, x.name),
                         $$description: self.getAttributeDocumentation(objectTypeName, x.name),
                         $$syntax: self.getAttributeSyntax(objectTypeName, x.name),
                         $$refs: x.refs

@@ -47,8 +47,8 @@ describe('dbWebApp: WhoisMetaService', function () {
             }
         };
         $whoisMetaService._attrDocumentation = {
-            mandatory1: { description: 'A', syntax:'S A' },
-            optional1:  { description: 'B', syntax:'S B' }
+            mandatory1: { placeholder:'p A', description: 'A', syntax:'S A' },
+            optional1:  { placeholder:'p B', description: 'B', syntax:'S B' }
         };
 
         var attrs = [
@@ -56,8 +56,8 @@ describe('dbWebApp: WhoisMetaService', function () {
             {name: 'optional1', value:'optional1value'}
         ];
         expect($whoisMetaService.enrichAttributesWithMetaInfo('type1', attrs)).toEqual([
-            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true,  $$multiple:false, $$primaryKey: undefined, $$description:'A', $$syntax:'S A', $$refs:[]}},
-            { name: 'optional1',  value:'optional1value',  $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$description:'B', $$syntax:'S B', $$refs:['b']}}
+            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true,  $$multiple:false, $$primaryKey: undefined, $$placeholder:'p A', $$description:'A', $$syntax:'S A', $$refs:[]}},
+            { name: 'optional1',  value:'optional1value',  $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$placeholder:'p B', $$description:'B', $$syntax:'S B', $$refs:['b']}}
         ])
     });
 
@@ -118,13 +118,13 @@ describe('dbWebApp: WhoisMetaService', function () {
             }
         };
         $whoisMetaService._attrDocumentation = {
-            mandatory1: { description: 'A', syntax:'S A' },
-            optional1:{ description: 'B', syntax:'S B' }
+            mandatory1: { placeholder:'p A', description: 'A', syntax:'S A' },
+            optional1:{ placeholder:'p B', description: 'B', syntax:'S B' }
         };
 
         expect($whoisMetaService.getAllAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1', $$meta: {$$idx:0, $$mandatory:true, $$multiple:false,  $$primaryKey: undefined, $$description:'A', $$syntax:'S A', $$refs:[]}},
-            { name:'optional1',  $$meta: {$$idx:1, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$description:'B', $$syntax:'S B', $$refs:[]}}
+            { name:'mandatory1', $$meta: {$$idx:0, $$mandatory:true, $$multiple:false,  $$primaryKey: undefined, $$placeholder:'p A', $$description:'A', $$syntax:'S A', $$refs:[]}},
+            { name:'optional1',  $$meta: {$$idx:1, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$placeholder:'p B', $$description:'B', $$syntax:'S B', $$refs:[]}}
         ])
     });
 
@@ -140,15 +140,15 @@ describe('dbWebApp: WhoisMetaService', function () {
             }
         };
         $whoisMetaService._attrDocumentation = {
-            mandatory1: { description: 'A', syntax:'S A' },
-            optional1:{ description: 'B', syntax:'S B' }
+            mandatory1: { placeholder:'p A', description: 'A', syntax:'S A' },
+            optional1:{  placeholder:'p B', description: 'B', syntax:'S B' }
         };
 
         expect($whoisMetaService.getMandatoryAttributesOnObjectType('type1')).toEqual([
             {
                 name:'mandatory1',
                 $$meta: {
-                    $$idx:0,$$mandatory:true, $$multiple:false, $$primaryKey: undefined, $$description: 'A', $$syntax:'S A', $$refs:[]
+                    $$idx:0,$$mandatory:true, $$multiple:false, $$primaryKey: undefined, $$placeholder:'p A', $$description: 'A', $$syntax:'S A', $$refs:[]
                 }
             }
         ])

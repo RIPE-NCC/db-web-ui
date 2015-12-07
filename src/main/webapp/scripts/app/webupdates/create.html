@@ -51,6 +51,7 @@
                    ng-model="attribute.value"
                    ng-blur="fieldVisited(attribute)"
                    ng-required="{{attribute.$$meta.$$mandatory}}"
+                   placeholder="{{attribute.$$meta.$$placeholder}}"
                    class="form-control"
                    typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
                    typeahead-min-length="2"
