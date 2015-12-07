@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'source', 'maintainer',
+angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'source', 'maintainer', 'passwords',
     function ($scope, $modalInstance, WhoisResources, RestService, source, maintainer, passwords) {
         $scope.create = create;
         $scope.cancel = cancel;

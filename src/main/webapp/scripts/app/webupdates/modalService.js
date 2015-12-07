@@ -14,7 +14,7 @@ angular.module('dbWebApp')
                         source: function () {
                             return source;
                         },
-                        maintainers: function () {
+                        maintainer: function () {
                             return maintainer;
                         },
                         passwords: function () {
