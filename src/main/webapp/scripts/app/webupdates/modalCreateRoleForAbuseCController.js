@@ -6,6 +6,8 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
         $scope.cancel = cancel;
         $scope.isEmailValid = isEmailValid;
 
+        var emailRegex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+
         function create() {
             var attributes = WhoisResources.wrapAndEnrichAttributes('role', newRoleTemplate);
 
@@ -26,17 +28,18 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
 
         function isEmailValid() {
             console.log($scope.email);
-            if(!(_.isUndefined($scope.email) || _.isEmpty($scope.email))) {
-                // built in validation passes for 'a@a', also check for at least 1 '.' after @. Built in validation then correctly fails for a@a. since we need a char after
-                if(_.includes($scope.email, '.')) {
-                    return true;
-                }
+            if (!(_.isUndefined($scope.email) || _.isEmpty($scope.email))) {
+                return(validateEmail($scope.email));
             }
             else {
                 return false;
             }
-
         }
+
+        function validateEmail(email) {
+            return emailRegex.test(email);
+        }
+
         function cancel() {
             $modalInstance.dismiss('cancel');
         };
