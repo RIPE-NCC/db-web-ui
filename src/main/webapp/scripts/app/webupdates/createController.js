@@ -358,6 +358,9 @@ angular.module('webUpdates')
             function submit() {
 
                 function _onSubmitSuccess(resp) {
+                    //It' ok to just let it happen or fail.
+                    OrganisationHelper.updateAbuseC($scope.source, $scope.objectType, $scope.roleForAbuseC, $scope.attributes, passwords);
+
                     $scope.restCalInProgress = false;
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display-screen can fetch it from here
@@ -446,8 +449,6 @@ angular.module('webUpdates')
                     var passwords = _getPasswordsForRestCall();
 
                     $scope.restCalInProgress = true;
-
-                    OrganisationHelper.updateAbuseC($scope.objectType, $scope.roleForAbuseC, $scope.attributes);
 
                     if (!$scope.name) {
 

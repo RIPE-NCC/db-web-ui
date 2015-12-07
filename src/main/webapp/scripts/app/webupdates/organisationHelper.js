@@ -4,7 +4,7 @@
 
 angular.module('dbWebApp')
 
-    .service('OrganisationHelper', ['WhoisResources', function (WhoisResources) {
+    .service('OrganisationHelper', ['WhoisResources', 'RestService', function (WhoisResources, RestService) {
 
         this.containsAbuseC = function (attributes) {
             var abuseC = _.find(attributes, function(attr) {
@@ -30,9 +30,15 @@ angular.module('dbWebApp')
             }
         };
 
-        this.updateAbuseC = function (objectType, roleForAbuseC, organisationAttributes) {
-            if(objectType == 'organisation') {
+        this.updateAbuseC = function (source, objectType, roleForAbuseC, organisationAttributes, passwords) {
+            if(objectType == 'organisation' && roleForAbuseC) {
+                roleForAbuseC.setSingleAttributeOnName('mnt-by', organisationAttributes.getSingleAttributeOnName('mnt-by').value);
+                roleForAbuseC.setSingleAttributeOnName('address', organisationAttributes.getSingleAttributeOnName('address').value);
 
+                RestService.modifyObject(source, 'role', roleForAbuseC.getSingleAttributeOnName('nic-hdl').value,
+                    WhoisResources.turnAttrsIntoWhoisObject(roleForAbuseC), passwords).then(
+                    function() {},
+                    function() {});
             }
         };
 

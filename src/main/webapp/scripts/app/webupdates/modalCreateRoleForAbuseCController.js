@@ -12,6 +12,7 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
                 attributes.setSingleAttributeOnName('abuse-mailbox', $scope.email);
                 attributes.setSingleAttributeOnName('e-mail', $scope.email);
                 attributes.setSingleAttributeOnName('mnt-by', maintainer.value);
+                attributes.setSingleAttributeOnName('source', source);
 
                 RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords)
                     .then(function(response) {
@@ -31,36 +32,21 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
 
         var newRoleTemplate = [ {
             'name' : 'role',
-            'value' : 'some role'
+            'value' : '----'
         }, {
             'name' : 'address',
-            'value' : 'Singel 258'
+            'value' : '----'
         }, {
-            'name' : 'e-mail',
-            'value' : 'fdsd@sdfsd.com'
+            'name' : 'e-mail'
         }, {
-            'name' : 'abuse-mailbox',
-            'value' : 'fdsd@sdfsd.com'
+            'name' : 'abuse-mailbox'
         }, {
             'name' : 'nic-hdl',
             'value' : 'AUTO-1'
         }, {
-            'link' : {
-                'type' : 'locator',
-                'href' : 'http://rest-dev.db.ripe.net/ripe/mntner/MNT-THINK'
-            },
-            'name' : 'mnt-by',
-            'value' : 'NINJA-SSO-MNT',
-            'referenced-type' : 'mntner'
+            'name' : 'mnt-by'
         }, {
-            'name' : 'created',
-            'value' : '2015-12-04T14:07:25Z'
-        }, {
-            'name' : 'last-modified',
-            'value' : '2015-12-04T14:07:25Z'
-        }, {
-            'name' : 'source',
-            'value' : 'RIPE'
-        } ];
+            'name' : 'source'
+        }];
 
     }]);

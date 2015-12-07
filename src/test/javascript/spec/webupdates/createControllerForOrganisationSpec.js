@@ -1,6 +1,6 @@
 'use strict';
 
-describe('webUpdates: ModifyController for organisation', function () {
+describe('webUpdates: CreateController for organisation', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
     var MessageStore;
@@ -55,47 +55,7 @@ describe('webUpdates: ModifyController for organisation', function () {
                 {key:'TESTSSO-MNT', type: 'mntner', auth:['MD5-PW','SSO'], mine:true}
             ]);
 
-            $httpBackend.whenGET('api/whois/'+SOURCE+'/'+OBJECT_TYPE+'/'+NAME+'?unfiltered=true').respond(
-                function(method,url) {
-                    return [200,
-                        {
-                            objects: {
-                                object: [
-                                    {
-                                        'primary-key' : {attribute : [{name : 'organisation',value : 'ORG-UA300-RIPE'}]},
-                                        attributes: {
-                                            attribute: [ {
-                                                name : 'organisation',
-                                                value : 'ORG-UA300-RIPE'
-                                                }, {
-                                                    name : 'org-name',
-                                                    value : 'uhuuu'
-                                                }, {
-                                                    name : 'org-type',
-                                                    value : 'OTHER'
-                                                }, {
-                                                    name : 'address',
-                                                    value : 'Singel 258'
-                                                }, {
-                                                    name : 'e-mail',
-                                                    value : 'uhuuuu@ripe.net'
-                                                }, {
-                                                    name : 'mnt-ref',
-                                                    value : 'TEST-MNT'
-                                                }, {
-                                                    name : 'mnt-by',
-                                                    value : 'TEST-MNT'
-                                                }, {
-                                                    name : 'source',
-                                                    value: 'TEST'
-                                                }
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-                        }, {}];
-                });
+            $httpBackend.whenGET('api/whois/'+SOURCE+'/'+OBJECT_TYPE+'/'+NAME+'?unfiltered=true').respond(DEFAULT_RESPONSE);
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
                 function(method,url) {
@@ -165,13 +125,14 @@ describe('webUpdates: ModifyController for organisation', function () {
     });
 
     it('should use the helper to update role for abuse-c', function () {
-        $httpBackend.whenPUT('api/whois/TEST/organisation/ORG-UA300-RIPE').respond(500); // I don' care about this call
-
+        $httpBackend.whenPUT('api/whois/TEST/organisation/ORG-UA300-RIPE').respond(DEFAULT_RESPONSE); // I don' care about this call
         spyOn(OrganisationHelper, 'updateAbuseC');
+
         $scope.submit();
+        $httpBackend.flush();
+
         expect(OrganisationHelper.updateAbuseC).toHaveBeenCalled();
 
-        $httpBackend.flush();
     });
 
 
@@ -197,6 +158,48 @@ describe('webUpdates: ModifyController for organisation', function () {
                         name : 'source',
                         value : 'TEST'
                     }];
+
+    var DEFAULT_RESPONSE =
+        function(method,url) {
+            return [200,
+                {
+                    objects: {
+                        object: [
+                            {
+                                'primary-key' : {attribute : [{name : 'organisation',value : 'ORG-UA300-RIPE'}]},
+                                attributes: {
+                                    attribute: [ {
+                                        name : 'organisation',
+                                        value : 'ORG-UA300-RIPE'
+                                    }, {
+                                        name : 'org-name',
+                                        value : 'uhuuu'
+                                    }, {
+                                        name : 'org-type',
+                                        value : 'OTHER'
+                                    }, {
+                                        name : 'address',
+                                        value : 'Singel 258'
+                                    }, {
+                                        name : 'e-mail',
+                                        value : 'uhuuuu@ripe.net'
+                                    }, {
+                                        name : 'mnt-ref',
+                                        value : 'TEST-MNT'
+                                    }, {
+                                        name : 'mnt-by',
+                                        value : 'TEST-MNT'
+                                    }, {
+                                        name : 'source',
+                                        value: 'TEST'
+                                    }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }, {}];
+        };
 
 });
 
