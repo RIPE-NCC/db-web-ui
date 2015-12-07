@@ -15,6 +15,10 @@ angular.module('dbWebApp')
 
             if (_.isUndefined(placeholder) && !_.isUndefined(this._attrDocumentation[attrName])) {
                 placeholder = this._attrDocumentation[attrName].short;
+                if(_.isUndefined(placeholder)) {
+                    // use description if short is missing
+                    placeholder = this._attrDocumentation[attrName].description;
+                }
             }
             return placeholder;
         };
