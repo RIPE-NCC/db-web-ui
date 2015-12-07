@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'AlertService', 'source', 'maintainer', 'passwords',
-    function ($scope, $modalInstance, WhoisResources, RestService, AlertService, source, maintainer, passwords) {
+angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'source', 'maintainer', 'passwords',
+    function ($scope, $modalInstance, WhoisResources, RestService, source, maintainer, passwords) {
         $scope.create = create;
         $scope.cancel = cancel;
         $scope.isEmailValid = isEmailValid;
@@ -14,16 +14,13 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
             attributes.setSingleAttributeOnName('mnt-by', maintainer);
             attributes.setSingleAttributeOnName('source', source);
 
-            RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords)
-                .then(function(response) {
+            RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords).then(
+                function(response) {
                     var whoisResources = WhoisResources.wrapWhoisResources(response);
-
-
                     $modalInstance.close(whoisResources.getAttributes());
                 },
                 function () {
-                    $modalInstance.dismiss('cancel');
-                    AlertService.setGlobalError("There was a problem creating the abuse-c attribute");
+                    return $modalInstance.dismiss('cancel');
                 });
         };
 

@@ -55,18 +55,37 @@
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
 
-            <input type="text"
-                   name="{{attribute.name}}"
-                   ng-model="attribute.value"
-                   ng-blur="fieldVisited(attribute)"
-                   ng-required="{{attribute.$$meta.$$mandatory}}"
-                   class="form-control"
-                   typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
-                   typeahead-min-length="2"
-                   typeahead-select-on-exact="true"
-                   ng-disabled="isToBeDisabled(attribute)"
-                   autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs)}}"
-                   />
+            <span ng-if="!(attribute.name == 'abuse-c') || !(objectType == 'organisation')">
+                <input type="text"
+                       name="{{attribute.name}}"
+                       ng-model="attribute.value"
+                       ng-blur="fieldVisited(attribute)"
+                       ng-required="{{attribute.$$meta.$$mandatory}}"
+                       class="form-control"
+                       typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
+                       typeahead-min-length="2"
+                       typeahead-select-on-exact="true"
+                       ng-disabled="isToBeDisabled(attribute)"
+                       autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs)}}"
+                />
+            </span>
+
+            <span ng-if="(attribute.name == 'abuse-c') && (objectType == 'organisation')">
+                <input type="text"
+                       name="{{attribute.name}}"
+                       ng-model="attribute.value"
+                       ng-blur="fieldVisited(attribute)"
+                       ng-required="{{attribute.$$meta.$$mandatory}}"
+                       class="form-control"
+                       typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
+                       typeahead-min-length="2"
+                       typeahead-select-on-exact="true"
+                       ng-disabled="isToBeDisabled(attribute)"
+                       autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs)}}"
+                       placeholder="Enter nic-handle of abuse-c role object or click the 'bell' icon to create one."
+                />
+            </span>
+
             <div class="text field-description" collapse="!isHelpShown">
                 {{attribute.$$meta.$$description}}</br>
                 <span ng-bind-html="attribute.$$meta.$$syntax"></span>
@@ -102,7 +121,7 @@
                        ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="(attribute.name == 'abuse-c') && (objectType == 'organisation')">
 
 
-                        <span class="fa fa-birthday-cake degree-25"></span>
+                        <span class="fa fa-bell-o degree-25"></span>
                     </a>
                 </li>
                 <li>
