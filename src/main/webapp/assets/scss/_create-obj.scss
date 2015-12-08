@@ -24,7 +24,13 @@ ul.form-fields {
 		position: absolute;
 		width: auto;
 		right: 0;
-		top: 28px;
+        top: 27px;
+        @media (min-width:1001px) and (max-width:1278px) {
+            top: 23px;
+        }
+        @media (min-width:1157px) and (max-width:1263px){
+            top: 27px;
+        }
 		z-index: 2;
 		> li {
 			display: inline-block !important;
@@ -68,8 +74,8 @@ ul.form-fields {
 	article.maintainer-icons {
         z-index: 2;
         position: absolute;
-        right: 15px;
-        top: 38px;
+        right: 14px;
+        top: 37px;
     	a.maintainer-help {
     	    padding: 5px 11px;
             color: #00abab;
