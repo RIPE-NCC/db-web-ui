@@ -56,11 +56,10 @@ describe('dbWebApp: WhoisMetaService', function () {
             {name: 'optional1', value:'optional1value'}
         ];
         expect($whoisMetaService.enrichAttributesWithMetaInfo('type1', attrs)).toEqual([
-            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true,  $$multiple:false, $$primaryKey: undefined, $$short:'p A', $$description:'A', $$syntax:'S A', $$refs:[]}},
-            { name: 'optional1',  value:'optional1value',  $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$short:'p B', $$description:'B', $$syntax:'S B', $$refs:['b']}}
+            { name: 'mandatory1', value:'mandatory1value', $$meta: {$$idx: undefined, $$mandatory:true,  $$multiple:false, $$primaryKey: undefined, $$short:'p A', $$description:'A', $$syntax:'S A', $$refs:[], $$allowedValues: undefined}},
+            { name: 'optional1',  value:'optional1value',  $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$short:'p B', $$description:'B', $$syntax:'S B', $$refs:['b'], $$allowedValues: undefined}}
         ])
     });
-
 
     it('should return exactly the mandatory meta attributes for a given type', function(){
 
@@ -112,8 +111,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         {
             'type1' : { name: 'type1', description:'Z',
                 'attributes':[
-                    { name:'mandatory1', mandatory:true, multiple:false, description:'A', refs:[]},
-                    { name:'optional1',  mandatory:false, 'multiple':true, description:'B', refs:[]}
+                    { name:'mandatory1', mandatory:true, multiple:false, description:'A', refs:[], allowedValues: undefined},
+                    { name:'optional1',  mandatory:false, 'multiple':true, description:'B', refs:[], allowedValues: undefined}
                 ]
             }
         };
@@ -123,8 +122,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getAllAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1', $$meta: {$$idx:0, $$mandatory:true, $$multiple:false,  $$primaryKey: undefined, $$short:'p A', $$description:'A', $$syntax:'S A', $$refs:[]}},
-            { name:'optional1',  $$meta: {$$idx:1, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$short:'p B', $$description:'B', $$syntax:'S B', $$refs:[]}}
+            { name:'mandatory1', value: undefined, $$meta: {$$idx:0, $$mandatory:true, $$multiple:false,  $$primaryKey: undefined, $$short:'p A', $$description:'A', $$syntax:'S A', $$refs:[], $$allowedValues: undefined}},
+            { name:'optional1',  value: undefined, $$meta: {$$idx:1, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$short:'p B', $$description:'B', $$syntax:'S B', $$refs:[], $$allowedValues: undefined}}
         ])
     });
 
@@ -134,8 +133,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         {
             'type1' : { name: 'type1', description:'Z',
                 'attributes':[
-                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A', syntax: 'A S', refs:[]},
-                    { name:'optional1', mandatory:false, 'multiple':true,  description:'B', syntax: 'B S', refs:[]}
+                    { name:'mandatory1', mandatory:true, 'multiple':false, description:'A', syntax: 'A S', refs:[], allowedValues: undefined},
+                    { name:'optional1', mandatory:false, 'multiple':true,  description:'B', syntax: 'B S', refs:[], allowedValues: undefined}
                 ]
             }
         };
@@ -147,13 +146,13 @@ describe('dbWebApp: WhoisMetaService', function () {
         expect($whoisMetaService.getMandatoryAttributesOnObjectType('type1')).toEqual([
             {
                 name:'mandatory1',
+                value: undefined,
                 $$meta: {
-                    $$idx:0,$$mandatory:true, $$multiple:false, $$primaryKey: undefined, $$short:'p A', $$description: 'A', $$syntax:'S A', $$refs:[]
+                    $$idx:0,$$mandatory:true, $$multiple:false, $$primaryKey: undefined, $$short:'p A',$$description: 'A', $$syntax:'S A', $$refs:[], $$allowedValues: undefined
                 }
             }
         ])
     });
-
 
     it('should return empty array for non existing object type', function(){
       var mandatoryAttributesOnObjectType = $whoisMetaService.getMandatoryAttributesOnObjectType('blablabla');

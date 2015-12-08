@@ -3,54 +3,35 @@
 angular.module('dbWebApp')
     .service('WhoisMetaService', function () {
 
-        this.getAttributeShortDescription = function (objectType, attrName) {
-            var placeholder = undefined;
+        this._getDocumentationForAttribute = function(objectType, attrName, docKind) {
+            var doc = undefined;
             if (attrName === 'mp-peer') {
-                placeholder = this._mpPeerDoc[objectType].short;
+                doc = this._mpPeerDoc[objectType];
             } else if (attrName === 'mnt-routes') {
-                placeholder = this._mntRoutesDoc[objectType].short;
+                doc = this._mntRoutesDoc[objectType];
             } else if (attrName === 'status') {
-                placeholder = this._statusDoc[objectType].short;
+                doc = this._statusDoc[objectType];
+            }
+            if (_.isUndefined(doc)) {
+                doc = this._attrDocumentation[attrName];
             }
 
-            if (_.isUndefined(placeholder) && !_.isUndefined(this._attrDocumentation[attrName])) {
-                placeholder = this._attrDocumentation[attrName].short;
-                if(_.isUndefined(placeholder)) {
-                    // use description if short is missing
-                    placeholder = this._attrDocumentation[attrName].description;
-                }
+            if (!_.isUndefined(doc)) {
+                return doc[docKind]
             }
-            return placeholder;
+            return doc;
+        }
+
+        this.getAttributeShortDescription = function (objectType, attrName) {
+            return this._getDocumentationForAttribute(objectType, attrName, 'short' );
         };
 
         this.getAttributeDescription = function (objectType, attrName) {
-            var description = undefined;
-            if (attrName === 'mp-peer') {
-                description = this._mpPeerDoc[objectType].description;
-            } else if (attrName === 'mnt-routes') {
-                description = this._mntRoutesDoc[objectType].description;
-            } else if (attrName === 'status') {
-                description = this._statusDoc[objectType].description;
-            }
-            if (_.isUndefined(description) && !_.isUndefined(this._attrDocumentation[attrName])) {
-                description = this._attrDocumentation[attrName].description;
-            }
-            return description;
+            return this._getDocumentationForAttribute(objectType, attrName, 'description' );
         };
 
         this.getAttributeSyntax = function (objectType, attrName) {
-            var syntax = undefined;
-            if (attrName === 'mp-peer') {
-                syntax = this._mpPeerDoc[objectType].syntax;
-            } else if (attrName === 'mnt-routes') {
-                syntax = this._mntRoutesDoc[objectType].syntax;
-            } else if (attrName === 'status') {
-                syntax = this._statusDoc[objectType].syntax;
-            }
-            if (_.isUndefined(syntax) && !_.isUndefined(this._attrDocumentation[attrName])) {
-                syntax = this._attrDocumentation[attrName].syntax;
-            }
-            return syntax;
+            return this._getDocumentationForAttribute(objectType, attrName, 'syntax');
         };
 
         this._getMetaAttributesOnObjectType = function (objectTypeName, mandatoryOnly) {
@@ -75,12 +56,29 @@ angular.module('dbWebApp')
             return keys;
         };
 
+        function _wrapMetaInAttribute( self, objectTypeName, attrName, attrValue, metaAttribute, idx ) {
+            return {
+                name: attrName,
+                value: attrValue,
+                $$meta: {
+                    $$idx: idx,
+                    $$mandatory: metaAttribute.mandatory,
+                    $$multiple: metaAttribute.multiple,
+                    $$primaryKey: metaAttribute.primaryKey,
+                    $$short: self.getAttributeShortDescription(objectTypeName, metaAttribute.name),
+                    $$description: self.getAttributeDescription(objectTypeName, metaAttribute.name),
+                    $$syntax: self.getAttributeSyntax(objectTypeName, metaAttribute.name),
+                    $$refs: metaAttribute.refs,
+                    $$allowedValues: metaAttribute.allowedValues
+                }
+            }
+        }
+
         this.enrichAttributesWithMetaInfo = function (objectTypeName, attrs) {
             var attrsMeta = this._getMetaAttributesOnObjectType(objectTypeName, false);
 
             var self = this;
-
-            var after = _.map(attrs, function (attr) {
+            return _.map(attrs, function (attr) {
 
                 var attrMeta = _.find(attrsMeta, function (am) {
                     return am.name === attr.name;
@@ -89,24 +87,8 @@ angular.module('dbWebApp')
                 if (attr.$$meta) {
                     idx = attr.$$meta.$$idx;
                 }
-
-                return {
-                    name: attr.name,
-                    value: attr.value,
-                    $$meta: {
-                        $$idx: idx,
-                        $$mandatory: attrMeta.mandatory,
-                        $$multiple: attrMeta.multiple,
-                        $$primaryKey: attrMeta.primaryKey,
-                        $$short: self.getAttributeShortDescription(objectTypeName, attr.name),
-                        $$description: self.getAttributeDescription(objectTypeName, attr.name),
-                        $$syntax: self.getAttributeSyntax(objectTypeName, attr.name),
-                        $$refs: attrMeta.refs
-                    }
-                };
+                return  _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attrMeta, idx)
             });
-
-            return after;
         };
 
         this.getAllAttributesOnObjectType = function (objectTypeName) {
@@ -118,22 +100,10 @@ angular.module('dbWebApp')
 
             // enrich with order info
             var idx = 0;
-            return _.map(this._getMetaAttributesOnObjectType(objectTypeName, false), function (am) {
-                var meta = {
-                    name: am.name,
-                    $$meta: {
-                        $$idx: idx,
-                        $$mandatory: am.mandatory,
-                        $$multiple: am.multiple,
-                        $$primaryKey: am.primaryKey,
-                        $$short: self.getAttributeShortDescription(objectTypeName, am.name),
-                        $$description: self.getAttributeDescription(objectTypeName, am.name),
-                        $$syntax: self.getAttributeSyntax(objectTypeName, am.name),
-                        $$refs: am.refs
-                    }
-                };
+            return _.map(this._getMetaAttributesOnObjectType(objectTypeName, false), function (meta) {
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, meta, idx);
                 idx++;
-                return meta;
+                return wrapped;
             });
         };
 
@@ -145,22 +115,10 @@ angular.module('dbWebApp')
 
             // enrich with order info
             var idx = 0;
-            return _.map(this._getMetaAttributesOnObjectType(objectTypeName, true), function (x) {
-                var meta = {
-                    name: x.name,
-                    $$meta: {
-                        $$idx: idx,
-                        $$mandatory: x.mandatory,
-                        $$multiple: x.multiple,
-                        $$primaryKey: x.primaryKey,
-                        $$short: self.getAttributeShortDescription(objectTypeName, x.name),
-                        $$description: self.getAttributeDescription(objectTypeName, x.name),
-                        $$syntax: self.getAttributeSyntax(objectTypeName, x.name),
-                        $$refs: x.refs
-                    }
-                };
+            return _.map(this._getMetaAttributesOnObjectType(objectTypeName, true), function (meta) {
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, meta, idx);
                 idx++;
-                return meta;
+                return wrapped;
             });
         };
 
@@ -221,7 +179,7 @@ angular.module('dbWebApp')
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: false, multiple: false, refs: []},
+                    {name: 'status', mandatory: false, multiple: false, refs: [], allowedValues:['ASSIGNED','LEGACY','OTHER']},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
@@ -285,7 +243,7 @@ angular.module('dbWebApp')
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: true, multiple: false, refs: []},
+                    {name: 'status', mandatory: true, multiple: false, refs: [], allowedValues:['ALLOCATED-BY-RIR','ALLOCATED-BY-LIR','AGGREGATED-BY-LIR','ASSIGNED','ASSIGNED ANYCAST','ASSIGNED PI']},
                     {name: 'assignment-size', mandatory: false, multiple: false, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
@@ -313,7 +271,7 @@ angular.module('dbWebApp')
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: true, multiple: false, refs: []},
+                    {name: 'status', mandatory: true, multiple: false, refs: [], allowedValues: ['ALLOCATED PA','ALLOCATED PI','ALLOCATED UNSPECIFIED','LIR-PARTITIONED PA','LIR-PARTITIONED PI', 'SUB-ALLOCATED PA','ASSIGNED PA','ASSIGNED PI','ASSIGNED ANYCAST','EARLY-REGISTRATION','NOT-SET','LEGACY']},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},

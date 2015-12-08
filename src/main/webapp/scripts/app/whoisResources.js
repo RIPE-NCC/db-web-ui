@@ -340,6 +340,12 @@ angular.module('dbWebApp')
             });
         };
 
+        var removeAttributeWithType = function(attrName) {
+            return _.filter(this, function(next) {
+                return next.name !== attrName;
+            });
+        };
+
         var duplicateAttribute = function(attr) {
             var result = [];
 
@@ -392,7 +398,9 @@ angular.module('dbWebApp')
 
         var getAddableAttributes = function(objectType,attributes) {
             return _.filter(WhoisMetaService.getAllAttributesOnObjectType(objectType), function (attr) {
-                if( attr.$$meta.$$multiple === true ) {
+                if( attr.name === 'last-modified' ) {
+                    return false;
+                } else if( attr.$$meta.$$multiple === true ) {
                     return true;
                 } else if( attr.$$meta.$$mandatory === false ) {
                     if( !_.any(attributes,
@@ -505,6 +513,7 @@ angular.module('dbWebApp')
             attrs.clearErrors = clearErrors;
             attrs.getAddableAttributes = getAddableAttributes;
 
+            attrs.removeAttributeWithType = removeAttributeWithType;
             attrs.removeAttribute = removeAttribute;
             attrs.duplicateAttribute = duplicateAttribute;
             attrs.canAttributeBeDuplicated = canAttributeBeDuplicated;
