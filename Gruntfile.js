@@ -19,12 +19,32 @@ module.exports = function (grunt) {
     var urlRewrite = require('grunt-connect-rewrite');
 
     grunt.initConfig({
+         protractor: {
+            options: {
+              configFile: "src/test/javascript/e2e/conf.js", // Default config file
+              noColor: false, // If true, protractor will not use colors in its output.
+              args: {}
+            },
+            e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
+              options: {
+                  keepAlive: false, // If false, the grunt process stops when the test fails.
+              }
+            },
+            continuous: {
+                 options: {
+                     keepAlive: true
+                 }
+            }
+        },
         yeoman: {
             // configurable paths
             app: require('./bower.json').appPath || 'app',
             dist: 'src/main/webapp/dist'
         },
         watch: {
+            options: {
+                livereload: true
+            },
             bower: {
                 files: ['bower.json'],
                 tasks: ['wiredep']
@@ -36,6 +56,14 @@ module.exports = function (grunt) {
             css: {
                 files: ['**/*.{scss,sass}'],
                 tasks: ['compass']
+            },
+            karma: {
+                files: ['src/test/javascript/spec/*.js'],
+                tasks: ['karma:continuous:run']
+            },
+            protractor: {
+                files: ['src/test/javascript/e2e/*.js'],
+                tasks: ['protractor:continuous']
             }
         },
         wiredep: {
@@ -268,35 +296,41 @@ module.exports = function (grunt) {
             }
         },
         connect: {
-	      server: {
-	        options: {
-	          port: 9001,
-	          base: 'build',
-	          middleware: function(connect, options) {
-	            // Return array of whatever middlewares you want
-	            return [
-	              // redirect all urls to index.html in build folder
-	              urlRewrite('build', 'index.html'),
-
-	              // Serve static files.
-	              connect.static(options.base),
-
-	              // Make empty directories browsable.
-	              connect.directory(options.base)
-	            ];
-	          }
-	        }
-	      }
+            options: {
+                protocol:'http',
+                hostname: 'localhost',
+                port: 9000,
+                base:'src/main/webapp'
+            },
+            test: {
+                options: {
+                    // set the location of the application files
+                    base: ['src/main/webapp']
+                }
+            }
 	    }
     });
 
     grunt.loadNpmTasks('grunt-contrib-connect');
+
+    grunt.loadNpmTasks('grunt-protractor-runner');
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
 
     grunt.loadNpmTasks('grunt-env');
 
     grunt.loadNpmTasks('grunt-preprocess');
+
+    grunt.registerTask('e2e-test', [
+        'connect:test',
+        'protractor:continuous',
+        'watch:protractor'
+    ]);
+
+    grunt.registerTask('e2e-test', [
+        'connect:test',
+        'protractor:e2e'
+    ]);
 
     grunt.registerTask('default', [
         'env:dev',

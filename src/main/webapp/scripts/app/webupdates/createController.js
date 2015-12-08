@@ -80,7 +80,7 @@ angular.module('webUpdates')
 
                 $scope.attributes = [];
 
-                $scope.mntbyDescription = WhoisResources.getAttributeDocumentation($scope.objectType, 'mnt-by');
+                $scope.mntbyDescription = WhoisResources.getAttributeDescription($scope.objectType, 'mnt-by');
                 $scope.mntbySyntax = WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
 
                 $scope.CREATE_OPERATION = 'Create';
@@ -101,8 +101,9 @@ angular.module('webUpdates')
                     $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, mandatoryAttributesOnObjectType);
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                    $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
                     $scope.attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
+                    // other types only settable with override
+                    $scope.attributes.setSingleAttributeOnName('org-type', 'OTHER');
                     $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
 
                     _fetchDataForCreate();
@@ -263,22 +264,32 @@ angular.module('webUpdates')
                 return !(_.isUndefined(refs) || refs.length === 0 );
             }
 
-            function referenceAutocomplete(attrType, query, refs) {
-                if (!_isServerLookupKey(refs)) {
-                    // No suggestions since not a reference
-                    return [];
-                } else {
+            function _isEnum(allowedValues) {
+                return ! (_.isUndefined(allowedValues) || allowedValues.length === 0 );
+            }
+            function referenceAutocomplete(attrType, query, refs, allowedValues) {
+                if( _isEnum(allowedValues)) {
+                    var filtered =  _.filter(allowedValues, function(val) {
+                        return (val.indexOf(query.toUpperCase()) > -1);
+                    });
+                    return _.map(filtered, function(val) {
+                        return {key:val, readableName:val}
+                    });
+                } else if (_isServerLookupKey(refs)) {
                     return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
                         function (resp) {
                             return _addNiceAutocompleteName(resp)
                         }, function () {
                             return [];
                         });
+                } else {
+                    // No suggestions since not a reference or enumeration
+                    return [];
                 }
             }
 
-            function isBrowserAutoComplete(refs) {
-                if (_isServerLookupKey(refs)) {
+            function isBrowserAutoComplete(refs,allowedValues){
+                if (_isServerLookupKey(refs) || _isEnum(allowedValues)) {
                     return "off";
                 } else {
                     return "on";
@@ -345,7 +356,12 @@ angular.module('webUpdates')
             }
 
             function isToBeDisabled(attribute) {
-                if (attribute.name === 'source') {
+
+                if (attribute.name === 'created') {
+                    return true;
+                } else if (attribute.name === 'org-type') {
+                    return true;
+                } else if (attribute.name === 'source') {
                     return true;
                 } else if ($scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
                     return true;
@@ -425,7 +441,7 @@ angular.module('webUpdates')
                         // TIMEOUT: to be handled globally by response interceptor
                         $log.error('Response not understood');
                     } else {
-                        var whoisResources = _wrapAndEnrichResources(resp.data);
+                        var whoisResources = _wrapAndEnrichResources($scope.objectType, resp.data);
                         // TODO: fix whois to return a 200 series response in case of pending object [MG]
                         if (_isPendingAuthenticationError(resp)) {
                             // TODO: let whois come with a single information errormessage [MG]
@@ -474,7 +490,11 @@ angular.module('webUpdates')
 
             function cancel() {
                 if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
-                    $state.transitionTo('select');
+                    $state.transitionTo('display', {
+                        source: $scope.source,
+                        objectType: $scope.objectType,
+                        name: $scope.name
+                   });
                 }
             }
 
@@ -552,10 +572,15 @@ angular.module('webUpdates')
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
                         // store object to modify
-                        _wrapAndEnrichResources(results.objectToModify);
+                        _wrapAndEnrichResources($scope.objectType,results.objectToModify);
 
                         // Create empty attribute with warning for each missing mandatory attribute
                         _insertMissingMandatoryAttributes();
+
+                        // prevent warning upon modify with last-modified
+                        $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                            $scope.attributes.removeAttributeWithType('last-modified')
+                        );
 
                         // this is where we must authenticate against
                         $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
@@ -596,7 +621,7 @@ angular.module('webUpdates')
                         $scope.restCalInProgress = false;
                         if (error && error.data) {
                             $log.error('Error fetching object:' + JSON.stringify(error));
-                            var whoisResources = _wrapAndEnrichResources(error.data);
+                            var whoisResources = _wrapAndEnrichResources($scope.objectType, error.data);
                             AlertService.setErrors(whoisResources);
                         } else {
                             $log.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
@@ -693,28 +718,14 @@ angular.module('webUpdates')
                 return AlertService.hasErrors();
             }
 
-            function reportValidationErrors(type, objectType, globalErrors, attributes) {
-                _.each(globalErrors, function(item) {
-                    $log.error('*** Global validation error: type: ' + type + ', objectType: ' + objectType + ', description:' + item.plainText);
-                });
-                _.each(attributes, function(item) {
-                    if( !_.isUndefined(item.$$error)) {
-                        $log.error('*** Field specfic validation error: type: ' + type + ', objectType: ' + objectType + ', attributeType: ' + item.name +  ', description:' + item.$$error);
-                        //try {
-                        //    $window.dataLayer.push({obhje});
-                        //} catch (e) {}
-                    }
-                });
-            }
-
             function _stripNulls() {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeNullAttributes());
             }
 
-            function _wrapAndEnrichResources(resp) {
+            function _wrapAndEnrichResources(objectType, resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
                 if (whoisResources) {
-                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, whoisResources.getAttributes());
+                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
                 }
                 return whoisResources;
             }
@@ -735,7 +746,7 @@ angular.module('webUpdates')
             function _refreshObjectIfNeeded(associationResp) {
                 if ($scope.operation === 'Modify' && $scope.objectType === 'mntner') {
                     if (associationResp) {
-                        _wrapAndEnrichResources(associationResp);
+                        _wrapAndEnrichResources($scope.objectType, associationResp);
                     } else {
                         var password = null;
                         if (CredentialsService.hasCredentials()) {
@@ -745,7 +756,7 @@ angular.module('webUpdates')
                         RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password).then(
                             function (result) {
                                 $scope.restCalInProgress = false;
-                                _wrapAndEnrichResources(result);
+                                _wrapAndEnrichResources($scope.objectType, result);
 
                                 // save object for later diff in display-screen
                                 MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
@@ -799,7 +810,6 @@ angular.module('webUpdates')
                             var associationResp = result.response;
                             $log.debug('associationResp:' + JSON.stringify(associationResp));
 
-
                             if ($scope.isMine(selectedMntner)) {
                                 // has been successfully associated in authentication modal
 
@@ -810,10 +820,6 @@ angular.module('webUpdates')
                             $log.debug('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
                             $log.debug('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
 
-                            if (associationResp) {
-                                // use response from successfull association
-                                _wrapAndEnrichResources(associationResp);
-                            }
                             _refreshObjectIfNeeded(associationResp);
 
                         }, function () {
