@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'source', 'maintainer', 'passwords',
-    function ($scope, $modalInstance, WhoisResources, RestService, source, maintainer, passwords) {
+angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ '$scope', '$modalInstance', 'WhoisResources', 'RestService', 'source', 'maintainers', 'passwords',
+    function ($scope, $modalInstance, WhoisResources, RestService, source, maintainers, passwords) {
         $scope.create = create;
         $scope.cancel = cancel;
         $scope.isEmailValid = isEmailValid;
@@ -13,9 +13,15 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
 
             attributes.setSingleAttributeOnName('abuse-mailbox', $scope.email);
             attributes.setSingleAttributeOnName('e-mail', $scope.email);
-            attributes.setSingleAttributeOnName('mnt-by', maintainer);
             attributes.setSingleAttributeOnName('source', source);
 
+            attributes = WhoisResources.wrapAttributes(attributes);
+            _.forEach(maintainers, function(mnt) {
+                attributes = attributes.addAttributeAfterType({name: 'mnt-by', value: mnt.value}, {name: 'mnt-by'});
+                attributes = WhoisResources.wrapAttributes(attributes);
+            });
+
+            attributes = WhoisResources.wrapAndEnrichAttributes('role', attributes.removeNullAttributes());
             RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords).then(
                 function(response) {
                     var whoisResources = WhoisResources.wrapWhoisResources(response);
