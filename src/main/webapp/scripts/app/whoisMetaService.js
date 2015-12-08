@@ -23,7 +23,11 @@ angular.module('dbWebApp')
         }
 
         this.getAttributeShortDescription = function (objectType, attrName) {
-            return this._getDocumentationForAttribute(objectType, attrName, 'short' );
+            var short = this._getDocumentationForAttribute(objectType, attrName, 'short');
+            if (_.isUndefined(short)) {
+                short = this._getDocumentationForAttribute(objectType, attrName, 'description');
+            }
+            return short;
         };
 
         this.getAttributeDescription = function (objectType, attrName) {
@@ -79,12 +83,11 @@ angular.module('dbWebApp')
 
             var self = this;
             return _.map(attrs, function (attr) {
-
                 var attrMeta = _.find(attrsMeta, function (am) {
                     return am.name === attr.name;
                 });
                 var idx;
-                if (attr.$$meta) {
+                if (!_.isUndefined(attr.$$meta)) {
                     idx = attr.$$meta.$$idx;
                 }
                 return  _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attrMeta, idx)
