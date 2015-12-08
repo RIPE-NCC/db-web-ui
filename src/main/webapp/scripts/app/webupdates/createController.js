@@ -99,7 +99,9 @@ angular.module('webUpdates')
                     $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, mandatoryAttributesOnObjectType);
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                    $scope.attributes.setSingleAttributeOnName('key-cert', 'AUTO-1');
+                    $scope.attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
+                    // other types only settable with override
+                    $scope.attributes.setSingleAttributeOnName('org-type', 'OTHER');
 
                     _fetchDataForCreate();
 
@@ -240,7 +242,10 @@ angular.module('webUpdates')
 
             function referenceAutocomplete(attrType, query, refs, allowedValues) {
                 if( _isEnum(allowedValues)) {
-                    return _.map(allowedValues, function(val) {
+                    var filtered =  _.filter(allowedValues, function(val) {
+                        return (val.indexOf(query.toUpperCase()) > -1);
+                    });
+                    return _.map(filtered, function(val) {
                         return {key:val, readableName:val}
                     });
                 } else if (_isServerLookupKey(refs)) {
@@ -324,7 +329,12 @@ angular.module('webUpdates')
             }
 
             function isToBeDisabled(attribute) {
-                if (attribute.name === 'source') {
+
+                if (attribute.name === 'created') {
+                    return true;
+                } else if (attribute.name === 'org-type') {
+                    return true;
+                } else if (attribute.name === 'source') {
                     return true;
                 } else if ($scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
                     return true;
@@ -528,6 +538,11 @@ angular.module('webUpdates')
 
                         // store object to modify
                         _wrapAndEnrichResources(results.objectToModify);
+
+                        // prevent warning for upon modify
+                        WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                            $scope.attributes.removeAttributeWithType('last-modified')
+                        );
 
                         // this is where we must authenticate against
                         $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);

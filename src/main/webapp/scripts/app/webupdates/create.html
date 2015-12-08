@@ -53,7 +53,7 @@
                    ng-required="{{attribute.$$meta.$$mandatory}}"
                    class="form-control"
                    typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs, attribute.$$meta.$$allowedValues)"
-                   typeahead-min-length="2"
+                   typeahead-min-length="1"
                    typeahead-select-on-exact="true"
                    ng-disabled="isToBeDisabled(attribute)"
                    autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs,attribute.$$meta.allowedValues)}}"
