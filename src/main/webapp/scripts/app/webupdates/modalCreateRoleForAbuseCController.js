@@ -33,7 +33,6 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
         }
 
         function isEmailValid() {
-            console.log($scope.email);
             if (!(_.isUndefined($scope.email) || _.isEmpty($scope.email))) {
                 return(validateEmail($scope.email));
             }
