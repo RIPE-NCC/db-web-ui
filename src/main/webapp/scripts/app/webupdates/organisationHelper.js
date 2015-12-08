@@ -36,8 +36,20 @@ angular.module('dbWebApp')
                 roleForAbuseC = WhoisResources.wrapAttributes(roleForAbuseC);
 
                 _.forEach(organisationAttributes.getAllAttributesOnName('mnt-by'), function(mnt) {
-                    roleForAbuseC = roleForAbuseC.addAttributeAfterType({name: 'mnt-by', value: mnt.value}, {name: 'mnt-by'});
-                    roleForAbuseC = WhoisResources.wrapAttributes(roleForAbuseC);
+
+                    if(_.result(
+                            _.find(roleForAbuseC.getAllAttributesOnName('mnt-by'),
+                                function(m) {
+                                    return m.value === mnt.value;
+                                })
+                            , 'value')) {
+                        //it' already there! Nothing to be done here.
+
+                    } else {
+                        roleForAbuseC = roleForAbuseC.addAttributeAfterType({name: 'mnt-by', value: mnt.value}, {name: 'mnt-by'});
+                        roleForAbuseC = WhoisResources.wrapAttributes(roleForAbuseC);
+                    }
+
                 });
 
                 roleForAbuseC.setSingleAttributeOnName('address', organisationAttributes.getSingleAttributeOnName('address').value);
