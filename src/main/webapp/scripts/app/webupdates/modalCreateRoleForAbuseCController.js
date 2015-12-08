@@ -24,7 +24,7 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
                 function () {
                     return $modalInstance.dismiss('cancel');
                 });
-        };
+        }
 
         function isEmailValid() {
             console.log($scope.email);
@@ -42,7 +42,7 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
 
         function cancel() {
             $modalInstance.dismiss('cancel');
-        };
+        }
 
         var newRoleTemplate = [ {
             'name' : 'role',

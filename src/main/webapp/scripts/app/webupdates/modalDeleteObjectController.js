@@ -40,13 +40,13 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs, password).then(
                 function (resp ) {
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                    $modalInstance.close(whoisResources)
+                    $modalInstance.close(whoisResources);
                 },
                 function (error) {
                     $modalInstance.dismiss(error.data);
                 }
             );
-        };
+        }
 
 
         function hasNonSelfIncomingRefs(objectType, objectName, incomingRefs) {
@@ -58,7 +58,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
         function doCancel() {
             $modalInstance.close();
             _transitionToModifyObject(source, $scope.objectType, $scope.name);
-        };
+        }
 
         function isEqualTo(selfType, selfName, ref) {
             return ref.objectType.toUpperCase() === selfType.toUpperCase() && ref.primaryKey.toUpperCase() === selfName.toUpperCase();
@@ -70,7 +70,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
                 objectType: ref.objectType,
                 name: ref.primaryKey
             });
-        };
+        }
 
         function getReferences(source, objectType, name) {
             $scope.restCallInProgress = true;

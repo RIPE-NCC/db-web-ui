@@ -15,12 +15,12 @@ angular.module('dbWebApp')
                 return !_.isEmpty(_.trim(abuseC.value));
             } else {
                 return false;
-            };
+            }
         };
 
 
         this.addAbuseC = function (objectType, attributes) {
-            if(objectType == 'organisation') {
+            if(objectType === 'organisation') {
                 attributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
 
                 var attrs = attributes.addAttributeAfter({name:'abuse-c', value:''}, attributes.getSingleAttributeOnName('e-mail'));
@@ -31,7 +31,7 @@ angular.module('dbWebApp')
         };
 
         this.updateAbuseC = function (source, objectType, roleForAbuseC, organisationAttributes, passwords) {
-            if(objectType == 'organisation' && roleForAbuseC) {
+            if(objectType === 'organisation' && roleForAbuseC) {
 
                 roleForAbuseC = WhoisResources.wrapAttributes(roleForAbuseC);
 
@@ -39,7 +39,7 @@ angular.module('dbWebApp')
                     roleForAbuseC = roleForAbuseC.addAttributeAfterType({name: 'mnt-by', value: mnt.value}, {name: 'mnt-by'});
                     roleForAbuseC = WhoisResources.wrapAttributes(roleForAbuseC);
                 });
-                
+
                 roleForAbuseC.setSingleAttributeOnName('address', organisationAttributes.getSingleAttributeOnName('address').value);
 
                 RestService.modifyObject(source, 'role', roleForAbuseC.getSingleAttributeOnName('nic-hdl').value,
