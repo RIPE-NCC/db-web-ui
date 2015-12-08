@@ -234,22 +234,30 @@ angular.module('webUpdates')
                 return ! (_.isUndefined(refs) || refs.length === 0 );
             }
 
-            function referenceAutocomplete(attrType, query, refs) {
-                if ( ! _isServerLookupKey(refs)) {
-                    // No suggestions since not a reference
-                    return [];
-                } else {
+            function _isEnum(allowedValues) {
+                return ! (_.isUndefined(allowedValues) || allowedValues.length === 0 );
+            }
+
+            function referenceAutocomplete(attrType, query, refs, allowedValues) {
+                if( _isEnum(allowedValues)) {
+                    return _.map(allowedValues, function(val) {
+                        return {key:val, readableName:val}
+                    });
+                } else if (_isServerLookupKey(refs)) {
                     return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
                         function (resp) {
                             return _addNiceAutocompleteName(resp)
                         }, function () {
                             return [];
                         });
+                } else {
+                    // No suggestions since not a reference or enumeration
+                    return [];
                 }
             }
 
-            function isBrowserAutoComplete(refs){
-                if (_isServerLookupKey(refs)) {
+            function isBrowserAutoComplete(refs,allowedValues){
+                if (_isServerLookupKey(refs) || _isEnum(allowedValues)) {
                     return "off";
                 } else {
                     return "on";

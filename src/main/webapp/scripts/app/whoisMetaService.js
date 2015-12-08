@@ -3,34 +3,31 @@
 angular.module('dbWebApp')
     .service('WhoisMetaService', function () {
 
-        this.getAttributeDocumentation = function (objectType, attrName) {
-            var description = null;
+        this._getDocumentationForAttribute = function(objectType, attrName, docKind) {
+            var doc = undefined;
             if (attrName === 'mp-peer') {
-                description = this._mpPeerDoc[objectType].description;
+                doc = this._mpPeerDoc[objectType];
             } else if (attrName === 'mnt-routes') {
-                description = this._mntRoutesDoc[objectType].description;
+                doc = this._mntRoutesDoc[objectType];
             } else if (attrName === 'status') {
-                description = this._statusDoc[objectType].description;
+                doc = this._statusDoc[objectType];
             }
-            if (!description) {
-                description = this._attrDocumentation[attrName].description;
+            if (_.isUndefined(doc)) {
+                doc = this._attrDocumentation[attrName];
             }
-            return description;
+
+            if (!_.isUndefined(doc)) {
+                return doc[docKind]
+            }
+            return doc;
+        }
+
+        this.getAttributeDocumentation = function (objectType, attrName) {
+            return this._getDocumentationForAttribute(objectType, attrName, 'description' );
         };
 
         this.getAttributeSyntax = function (objectType, attrName) {
-            var syntax = undefined;
-            if (attrName === 'mp-peer') {
-                syntax = this._mpPeerDoc[objectType].syntax;
-            } else if (attrName === 'mnt-routes') {
-                syntax = this._mntRoutesDoc[objectType].syntax;
-            } else if (attrName === 'status') {
-                syntax = this._statusDoc[objectType].syntax;
-            }
-            if (_.isUndefined(syntax)) {
-                syntax = this._attrDocumentation[attrName].syntax;
-            }
-            return syntax;
+            return this._getDocumentationForAttribute(objectType, attrName, 'syntax');
         };
 
         this._getMetaAttributesOnObjectType = function (objectTypeName, mandatoryOnly) {
@@ -55,11 +52,28 @@ angular.module('dbWebApp')
             return keys;
         };
 
+
+        function _wrapMetaInAttribute( self, objectTypeName, attrName, attrValue, metaAttribute, idx ) {
+            return {
+                name: attrName,
+                value: attrValue,
+                $$meta: {
+                    $$idx: idx,
+                    $$mandatory: metaAttribute.mandatory,
+                    $$multiple: metaAttribute.multiple,
+                    $$primaryKey: metaAttribute.primaryKey,
+                    $$description: self.getAttributeDocumentation(objectTypeName, metaAttribute.name),
+                    $$syntax: self.getAttributeSyntax(objectTypeName, metaAttribute.name),
+                    $$refs: metaAttribute.refs,
+                    $$allowedValues: metaAttribute.allowedValues
+                }
+            }
+        }
+
         this.enrichAttributesWithMetaInfo = function (objectTypeName, attrs) {
             var attrsMeta = this._getMetaAttributesOnObjectType(objectTypeName, false);
 
             var self = this;
-
             var after = _.map(attrs, function (attr) {
 
                 var attrMeta = _.find(attrsMeta, function (am) {
@@ -70,19 +84,7 @@ angular.module('dbWebApp')
                     idx = attr.$$meta.$$idx;
                 }
 
-                return {
-                    name: attr.name,
-                    value: attr.value,
-                    $$meta: {
-                        $$idx: idx,
-                        $$mandatory: attrMeta.mandatory,
-                        $$multiple: attrMeta.multiple,
-                        $$primaryKey: attrMeta.primaryKey,
-                        $$description: self.getAttributeDocumentation(objectTypeName, attr.name),
-                        $$syntax: self.getAttributeSyntax(objectTypeName, attr.name),
-                        $$refs: attrMeta.refs
-                    }
-                };
+                return  _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attrMeta, idx)
             });
 
             return after;
@@ -97,21 +99,10 @@ angular.module('dbWebApp')
 
             // enrich with order info
             var idx = 0;
-            return _.map(this._getMetaAttributesOnObjectType(objectTypeName, false), function (am) {
-                var meta = {
-                    name: am.name,
-                    $$meta: {
-                        $$idx: idx,
-                        $$mandatory: am.mandatory,
-                        $$multiple: am.multiple,
-                        $$primaryKey: am.primaryKey,
-                        $$description: self.getAttributeDocumentation(objectTypeName, am.name),
-                        $$syntax: self.getAttributeSyntax(objectTypeName, am.name),
-                        $$refs: am.refs
-                    }
-                };
+            return _.map(this._getMetaAttributesOnObjectType(objectTypeName, false), function (meta) {
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, meta, idx);
                 idx++;
-                return meta;
+                return wrapped;
             });
         };
 
@@ -123,21 +114,10 @@ angular.module('dbWebApp')
 
             // enrich with order info
             var idx = 0;
-            return _.map(this._getMetaAttributesOnObjectType(objectTypeName, true), function (x) {
-                var meta = {
-                    name: x.name,
-                    $$meta: {
-                        $$idx: idx,
-                        $$mandatory: x.mandatory,
-                        $$multiple: x.multiple,
-                        $$primaryKey: x.primaryKey,
-                        $$description: self.getAttributeDocumentation(objectTypeName, x.name),
-                        $$syntax: self.getAttributeSyntax(objectTypeName, x.name),
-                        $$refs: x.refs
-                    }
-                };
+            return _.map(this._getMetaAttributesOnObjectType(objectTypeName, true), function (meta) {
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, meta, idx);
                 idx++;
-                return meta;
+                return wrapped;
             });
         };
 
@@ -198,7 +178,7 @@ angular.module('dbWebApp')
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: false, multiple: false, refs: []},
+                    {name: 'status', mandatory: false, multiple: false, refs: [], allowedValues:['ASSIGNED','LEGACY','OTHER']},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
@@ -262,7 +242,7 @@ angular.module('dbWebApp')
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: true, multiple: false, refs: []},
+                    {name: 'status', mandatory: true, multiple: false, refs: [], allowedValues:['ALLOCATED-BY-RIR','ALLOCATED-BY-LIR','AGGREGATED-BY-LIR','ASSIGNED','ASSIGNED ANYCAST','ASSIGNED PI']},
                     {name: 'assignment-size', mandatory: false, multiple: false, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
@@ -290,7 +270,7 @@ angular.module('dbWebApp')
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: true, multiple: false, refs: []},
+                    {name: 'status', mandatory: true, multiple: false, refs: [], allowedValues: ['ALLOCATED PA','ALLOCATED PI','ALLOCATED UNSPECIFIED','LIR-PARTITIONED PA','LIR-PARTITIONED PI', 'SUB-ALLOCATED PA','ASSIGNED PA','ASSIGNED PI','ASSIGNED ANYCAST','EARLY-REGISTRATION','NOT-SET','LEGACY']},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},

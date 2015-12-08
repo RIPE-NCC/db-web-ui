@@ -52,11 +52,11 @@
                    ng-blur="fieldVisited(attribute)"
                    ng-required="{{attribute.$$meta.$$mandatory}}"
                    class="form-control"
-                   typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs)"
+                   typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs, attribute.$$meta.$$allowedValues)"
                    typeahead-min-length="2"
                    typeahead-select-on-exact="true"
                    ng-disabled="isToBeDisabled(attribute)"
-                   autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs)}}"
+                   autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs,attribute.$$meta.allowedValues)}}"
                    />
             <div class="text field-description" collapse="!isHelpShown">
                 {{attribute.$$meta.$$description}}</br>
