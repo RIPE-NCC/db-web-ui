@@ -410,7 +410,7 @@ angular.module('webUpdates')
                         // TIMEOUT: to be handled globally by response interceptor
                         $log.error('Response not understood');
                     } else {
-                        var whoisResources = _wrapAndEnrichResources(resp.data);
+                        var whoisResources = _wrapAndEnrichResources($scope.objectType, resp.data);
                         // TODO: fix whois to return a 200 series response in case of pending object [MG]
                         if (_isPendingAuthenticationError(resp)) {
                             // TODO: let whois come with a single information errormessage [MG]
@@ -536,7 +536,7 @@ angular.module('webUpdates')
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
                         // store object to modify
-                        _wrapAndEnrichResources(results.objectToModify);
+                        _wrapAndEnrichResources($scope.objectType,results.objectToModify);
 
                         // Create empty attribute with warning for each missing mandatory attribute
                         _insertMissingMandatoryAttributes();
@@ -585,7 +585,7 @@ angular.module('webUpdates')
                         $scope.restCalInProgress = false;
                         if (error && error.data) {
                             $log.error('Error fetching object:' + JSON.stringify(error));
-                            var whoisResources = _wrapAndEnrichResources(error.data);
+                            var whoisResources = _wrapAndEnrichResources($scope.objectType, error.data);
                             AlertService.setErrors(whoisResources);
                         } else {
                             $log.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
@@ -696,10 +696,11 @@ angular.module('webUpdates')
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeNullAttributes());
             }
 
-            function _wrapAndEnrichResources(resp) {
+
+            function _wrapAndEnrichResources(objectType, resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
                 if (whoisResources) {
-                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, whoisResources.getAttributes());
+                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
                 }
                 return whoisResources;
             }
@@ -720,7 +721,7 @@ angular.module('webUpdates')
             function _refreshObjectIfNeeded(associationResp) {
                 if ($scope.operation === 'Modify' && $scope.objectType === 'mntner') {
                     if (associationResp) {
-                        _wrapAndEnrichResources(associationResp);
+                        _wrapAndEnrichResources($scope.objectType, associationResp);
                     } else {
                         var password = null;
                         if (CredentialsService.hasCredentials()) {
@@ -730,7 +731,7 @@ angular.module('webUpdates')
                         RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password).then(
                             function (result) {
                                 $scope.restCalInProgress = false;
-                                _wrapAndEnrichResources(result);
+                                _wrapAndEnrichResources($scope.objectType, result);
 
                                 // save object for later diff in display-screen
                                 MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
@@ -784,7 +785,6 @@ angular.module('webUpdates')
                             var associationResp = result.response;
                             $log.debug('associationResp:' + JSON.stringify(associationResp));
 
-
                             if ($scope.isMine(selectedMntner)) {
                                 // has been successfully associated in authentication modal
 
@@ -795,10 +795,8 @@ angular.module('webUpdates')
                             $log.debug('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
                             $log.debug('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
 
-                            if (associationResp) {
-                                // use response from successfull association
-                                _wrapAndEnrichResources(associationResp);
-                            }
+
+
                             _refreshObjectIfNeeded(associationResp);
 
                         }, function () {
