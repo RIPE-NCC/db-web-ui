@@ -478,7 +478,6 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'address',       value: 'c', $$meta:{$$mandatory:true,  $$multiple:true}},
             {name: 'phone',         value: 'd', $$meta:{$$mandatory:true,  $$multiple:true}},
             {name: 'nic-hdl',       value: 'e', $$meta:{$$mandatory:true,  $$multiple:false}},
-            {name: 'last-modified', value: 'f', $$meta:{$$mandatory:false, $$multiple:false}},
             {name: 'source',        value: 'g', $$meta:{$$mandatory:true,  $$multiple:false}},
         ]);
 

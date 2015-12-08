@@ -540,7 +540,7 @@ angular.module('webUpdates')
                         _wrapAndEnrichResources(results.objectToModify);
 
                         // prevent warning for upon modify
-                        WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                        $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
                             $scope.attributes.removeAttributeWithType('last-modified')
                         );
 
