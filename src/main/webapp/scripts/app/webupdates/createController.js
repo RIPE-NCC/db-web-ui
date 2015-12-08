@@ -541,7 +541,7 @@ angular.module('webUpdates')
                         // Create empty attribute with warning for each missing mandatory attribute
                         _insertMissingMandatoryAttributes();
 
-                        // prevent warning for upon modify
+                        // prevent warning upon modify with last-modified
                         $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
                             $scope.attributes.removeAttributeWithType('last-modified')
                         );
@@ -678,24 +678,9 @@ angular.module('webUpdates')
                 return AlertService.hasErrors();
             }
 
-            function reportValidationErrors(type, objectType, globalErrors, attributes) {
-                _.each(globalErrors, function(item) {
-                    $log.error('*** Global validation error: type: ' + type + ', objectType: ' + objectType + ', description:' + item.plainText);
-                });
-                _.each(attributes, function(item) {
-                    if( !_.isUndefined(item.$$error)) {
-                        $log.error('*** Field specfic validation error: type: ' + type + ', objectType: ' + objectType + ', attributeType: ' + item.name +  ', description:' + item.$$error);
-                        //try {
-                        //    $window.dataLayer.push({obhje});
-                        //} catch (e) {}
-                    }
-                });
-            }
-
             function _stripNulls() {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeNullAttributes());
             }
-
 
             function _wrapAndEnrichResources(objectType, resp) {
                 var whoisResources = WhoisResources.wrapWhoisResources(resp);
@@ -794,8 +779,6 @@ angular.module('webUpdates')
                             }
                             $log.debug('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
                             $log.debug('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
-
-
 
                             _refreshObjectIfNeeded(associationResp);
 
