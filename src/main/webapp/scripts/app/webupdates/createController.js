@@ -489,8 +489,8 @@ angular.module('webUpdates')
             }
 
             function cancel() {
-                if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
-                    $state.transitionTo('select');
+                if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current pages.')) {
+                    _navigateAway();
                 }
             }
 
