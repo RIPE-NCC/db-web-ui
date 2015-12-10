@@ -602,7 +602,7 @@ angular.module('dbWebApp')
         // Structure below holds syntax that occur more than once
         var _shared = {
             email: {
-                syntax: 'An e-mail address as defined in RFC 2822.'
+                syntax: 'An email address as defined in RFC 2822.'
             },
             nicHandle: {
                 syntax: 'From 2 to 4 characters optionally followed by up to 6 digits optionally followed by a source specification. The first digit must not be \"0\".  Source specification starts with \"-\" followed by source name up to 9-character length.'
