@@ -95,6 +95,37 @@ describe('webUpdates: OrganisationHelper', function () {
         expect(abuseC).toBeUndefined();
     });
 
+    it('should be valid if it is not an organisation object', function () {
+        expect(OrganisationHelper.validateAbuseC('mntner', [])).toBe(true);
+    });
+
+    it('should be invalid if abuse-c is not present', function () {
+        var attributes = [ {
+            'name' : 'organisation',
+            'value' : 'ORG-UA300-RIPE'
+        }, {
+            'name': 'e-mail',
+            'value': 'a@b.c'
+        }];
+
+        expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(false);
+    });
+
+    it('should be valid if abuse-c is present', function () {
+        var attributes = [ {
+            'name' : 'organisation',
+            'value' : 'ORG-UA300-RIPE'
+        }, {
+            'name': 'e-mail',
+            'value': 'a@b.c'
+        }, {
+            'name' : 'abuse-c',
+            'value' : 'some abuse-c'
+        }];
+
+        expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(true);
+    });
+
 });
 
 

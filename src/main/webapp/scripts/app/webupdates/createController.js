@@ -703,7 +703,7 @@ angular.module('webUpdates')
             }
 
             function _validateForm() {
-                return $scope.attributes.validate();
+                return $scope.attributes.validate() && OrganisationHelper.validateAbuseC();
             }
 
             function isFormValid() {

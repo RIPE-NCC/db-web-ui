@@ -6,6 +6,15 @@ angular.module('dbWebApp')
 
     .service('OrganisationHelper', ['WhoisResources', 'RestService', function (WhoisResources, RestService) {
 
+
+        this.validateAbuseC = function(objectType, attributes) {
+            if(objectType === 'organisation') {
+                return this.containsAbuseC(attributes);
+            } else {
+                return true;
+            }
+        };
+
         this.containsAbuseC = function (attributes) {
             var abuseC = _.find(attributes, function(attr) {
                 return attr.name === 'abuse-c';
