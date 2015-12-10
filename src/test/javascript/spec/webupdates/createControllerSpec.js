@@ -24,7 +24,7 @@ describe('webUpdates: CreateController', function () {
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            $window =_$window_;
+            $window = { confirm: function() { return true; } };
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             CredentialsService = _CredentialsService_;
@@ -340,6 +340,12 @@ describe('webUpdates: CreateController', function () {
         $httpBackend.flush();
 
         expect($state.current.name).toBe('delete');
+    });
+
+    it('should transition to select state if cancel is pressed during create', function() {
+        spyOn($state, 'transitionTo');
+        $scope.cancel();
+        expect($state.transitionTo).toHaveBeenCalledWith('select');
     });
 });
 

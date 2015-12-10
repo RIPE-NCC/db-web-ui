@@ -14,7 +14,7 @@ describe('webUpdates: ModifyController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, $window, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -22,6 +22,7 @@ describe('webUpdates: ModifyController', function () {
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
+            $window = { confirm: function() { return true; } };
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
@@ -34,7 +35,7 @@ describe('webUpdates: ModifyController', function () {
             CredentialsService.setCredentials('TEST-MNT', '@123');
 
             _$controller_('CreateController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -264,6 +265,11 @@ describe('webUpdates: ModifyController', function () {
 
     });
 
+    it('should transition to display state if cancel is pressed', function() {
+        spyOn($state, 'transitionTo');
+        $scope.cancel();
+        expect($state.transitionTo).toHaveBeenCalledWith('display', { source: SOURCE, objectType: 'as-block', name: 'MY-AS-BLOCK', method: undefined});
+    });
 });
 
 
