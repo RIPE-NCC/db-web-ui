@@ -611,7 +611,7 @@ angular.module('dbWebApp')
                 syntax: 'A sequence of ASCII characters.'
             },
             objectName: {
-                syntax: '"Made up of letters, digits, the character underscore \"_\", and the character hyphen \"-\"; the first character of a name must be a letter, and the last character of a name must be a letter or a digit.  The following words are reserved by RPSL, and they can not be used as names: any as-any rs-any peeras and or not atomic from to at action accept announce except refine networks into inbound outbound. Names starting with certain prefixes are reserved for certain object types.  Names starting with \"as-\" are reserved for as set names.  Names starting with \"rs-\" are reserved for route set names.  Names starting with \"rtrs-\" are reserved for router set names. Names starting with \"fltr-\" are reserved for filter set names. Names starting with \"prng-\" are reserved for peering set names. Names starting with "irt-" are reserved for irt names.'
+                syntax: 'Made up of letters, digits, the character underscore \"_\", and the character hyphen \"-\"; the first character of a name must be a letter, and the last character of a name must be a letter or a digit.  The following words are reserved by RPSL, and they can not be used as names: any as-any rs-any peeras and or not atomic from to at action accept announce except refine networks into inbound outbound. Names starting with certain prefixes are reserved for certain object types.  Names starting with \"as-\" are reserved for as set names.  Names starting with \"rs-\" are reserved for route set names.  Names starting with \"rtrs-\" are reserved for router set names. Names starting with \"fltr-\" are reserved for filter set names. Names starting with \"prng-\" are reserved for peering set names. Names starting with "irt-" are reserved for irt names.'
             },
             asNumber: {
                 syntax: 'An \"AS\" string followed by an integer in the range from 0 to 4294967295'
@@ -636,7 +636,7 @@ angular.module('dbWebApp')
                 syntax: 'An irt name is made up of letters, digits, the character underscore \"_\", and the character hyphen \"-\"; it must start with \"irt-\", and the last character of a name must be a letter or a digit.'
             },
             organisation: {
-                syntax: '"The \'ORG-\' string followed by 2 to 4 characters, followed by up to 5 digits followed by a source specification. The first digit must not be \"0\". Source specification starts with \"-\" followed by source name up to 9-character length.'
+                syntax: 'The \'ORG-\' string followed by 2 to 4 characters, followed by up to 5 digits followed by a source specification. The first digit must not be \"0\". Source specification starts with \"-\" followed by source name up to 9-character length.'
             },
             organisationName: {
                 syntax: 'A word may have up to 64 characters and is not case sensitive. Each word can have any combination of the above characters with no restriction on the start or end of a word.'
@@ -651,7 +651,7 @@ angular.module('dbWebApp')
 
         this._attrDocumentation = {
             'abuse-mailbox': {
-                short: 'Email address for abuse complaints.',
+                short: 'Specifies the e-mail address for abuse complaints.',
                 description: 'Specifies the e-mail address to which abuse complaints should be sent. This attribute should only be used in the ROLE object. It will be deprecated from any other object.  Adding this attribute to a ROLE object will remove any query limits for the ROLE object. These ROLE objects are considered to include only commercial data.',
                 syntax: _shared.email.syntax
             },
@@ -666,7 +666,7 @@ angular.module('dbWebApp')
                 syntax: _shared.freeForm.syntax
             },
             'admin-c': {
-                short: 'Nic-handle for an administrative contact.',
+                short: 'Nic-handle of an administrative contact.',
                 description: 'References an on-site administrative contact.',
                 syntax: _shared.nicHandle.syntax
             },
@@ -697,7 +697,7 @@ angular.module('dbWebApp')
             },
             'as-name': {
                 short: undefined,
-                description: 'A descriptive name associated with an AS.',
+                description: 'A descriptive name associated with the AS.',
                 syntax: _shared.objectName.syntax
             },
             'as-set': {
@@ -706,7 +706,7 @@ angular.module('dbWebApp')
                 syntax: 'An as-set name is made up of letters, digits, the character underscore \"_\", and the character hyphen \"-\"; it must start with \"as-\", and the last character of a name must be a letter or a digit. An as-set name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".  At least one component of such a name must be an actual set name (i.e. start with \"as-\").  All the set name components of a hierarchical as-name have to be as-setnames.'
             },
             'auth': {
-                short: 'Defines an authentication scheme, e.g. SSO &lt;user@example.com&gt;',
+                short: 'Defines an authentication scheme, e.g. SSO user@example.com',
                 description: 'Defines an authentication scheme to be used.',
                 syntax: '<table>' +
                 '<tr>' +
@@ -715,24 +715,19 @@ angular.module('dbWebApp')
                 '<th>Description</th>' +
                 '</tr>' +
                 '<tr>' +
+                '<td>SSO</td>' +
+                '<td>user@example.com</td>' +
+                '<td>The username is the same as one used for a RIPE NCC Access account. This must be a valid e-mail address and is checked  against the RIPE NCC Access user list.</td>' +
+                '</tr>' +
+                '<tr>' +
                 '<td>MD5-PW</td>' +
-                '<td>encrypted password, produced using the FreeBSD  crypt_md5 algorithm</td>' +
-                '<td>We strongly advise phrases longerthan 8 characters to be used, avoiding the use of words or combinations of words found in any dictionary of any language.</td>' +
+                '<td>encrypted password, produced using the FreeBSD crypt_md5 algorithm</td>' +
+                '<td>We strongly advise phrases longer than 8 characters to be used, avoiding the use of words or combinations of words found in any dictionary of any language.</td>' +
                 '</tr>' +
                 '<tr>' +
                 '<td>PGPKEY&#8209;&lt;id&gt;</td>' +
                 '<td></td>' +
                 '<td>Strong scheme of authentication. <id> is the PGP key ID to be used for authentication. This string is the same one that is used in the corresponding key-cert object\'s \"key-cert:\" attribute.</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td>X509&#8209;&lt;nnn&gt;</td>' +
-                '<td></td>' +
-                '<td>Strong scheme of authentication. <nnn> is the index number of the corresponding key-cert object\'s \"key-cert:\" attribute (X509-nnn).</td>' +
-                '</tr>' +
-                '<tr>' +
-                '<td>SSO</td>' +
-                '<td>username</td>' +
-                '<td>The username is the same as one used  for a RIPE NCC Access account. This must be a valid username and is checked  against the RIPE NCC Access user list.</td>' +
                 '</tr>' +
                 '</table>'
             },
@@ -743,7 +738,7 @@ angular.module('dbWebApp')
             },
             'aut-num': {
                 short: undefined,
-                description: 'The autonomous system number.',
+                description: 'The Autonomous System Number.',
                 syntax: _shared.asNumber.syntax
             },
             'certif': {
@@ -757,12 +752,12 @@ angular.module('dbWebApp')
                 syntax: 'An e-mail address as defined in RFC 2822, followed by a date in the format YYYYMMDD.'
             },
             'components': {
-                short: '',
+                short: 'Defines what component routes are used to form the aggregate.',
                 description: 'The \'components:\' attribute defines what component routes are used to form the aggregate.',
                 syntax: ''
             }, // no documentation available
             'country': {
-                short: 'A two-letter country code, e.g. NL',
+                short: 'Identifies the country as a two-letter ISO 3166 code, e.g. NL',
                 description: 'Identifies the country.',
                 syntax: 'Valid two-letter ISO 3166 country code.'
             },
@@ -782,7 +777,7 @@ angular.module('dbWebApp')
                 syntax: _shared.freeForm.syntax
             },
             'domain': {
-                short: 'The reverse domain name, e.g. 5.2.0.192.in-addr.arpa.',
+                short: 'The reverse domain name, e.g. 5.2.0.192.in-addr.arpa',
                 description: 'Domain name.',
                 syntax: 'Domain name as specified in RFC 1034 (point 5.2.1.2) with or without trailing dot (\".\").  The total length should not exceed 254 characters (octets).'
             },
@@ -827,7 +822,7 @@ angular.module('dbWebApp')
                 syntax: _shared.phone.syntax
             },
             'filter': {
-                short: '',
+                short: undefined,
                 description: 'Defines the set\'s policy filter.',
                 syntax: 'Logical expression which when applied to a set of routes returns a subset of these routes. Please refer to RFC 2622 for more information.'
             },
@@ -854,7 +849,7 @@ angular.module('dbWebApp')
                 syntax: ''
             }, // no syntax available
             'holes': {
-                short: '',
+                short: 'Lists the component address prefixes that are not reachable through the aggregate route.',
                 description: 'Lists the component address prefixes that are not reachable through the aggregate route (perhaps that part of the address space is unallocated).',
                 syntax: ''
             }, // no syntax available
@@ -882,7 +877,7 @@ angular.module('dbWebApp')
             'inetnum': {
                 short: 'A range of IPv4 addresses in dash or CIDR notation.',
                 description: 'Specifies a range of IPv4 that inetnum object presents.  The ending address should be greater than the starting one.',
-                syntax: '&lt;ipv4-address&gt; - &lt;ipv4-address&gt;'
+                syntax: '&lt;ipv4-address&gt; - &lt;ipv4-address&gt; or &lt;ipv4-address&gt;/&lt;prefix&gt;'
             },
             'inet-rtr': {
                 short: undefined,
@@ -911,12 +906,12 @@ angular.module('dbWebApp')
                 syntax: _shared.email.syntax
             },
             'key-cert': {
-                short: 'Defines the public key, e.g. PGPKEY-&lt;key-id&gt;',
+                short: 'Defines the public key, e.g. PGPKEY-<id>',
                 description: 'Defines the public key stored in the database.',
                 syntax: _shared.keyCert.syntax
             },
             'language': {
-                short: 'Identifies the language as a two-letter ISO 639-1 code.',
+                short: 'Identifies the language as a two-letter ISO 639-1 code, e.g. NL.',
                 description: 'Identifies the language.',
                 syntax: 'Valid two-letter ISO 639-1 language code.'
             },
@@ -966,9 +961,9 @@ angular.module('dbWebApp')
                 syntax: _shared.objectName.syntax
             },
             'mnt-irt': {
-                short: '',
-                description: 'May appear in an inetnum or inet6num object. It points to an irt object representing a Computer Security Incident Response Team (CSIRT that handles security incidents for  the address space specified by the inetnum or inet6num object.',
-                syntax: _shared.irt
+                short: 'Specifies the IRT object used for CSIRT security incidents.',
+                description: 'May appear in an inetnum or inet6num object. It points to an irt object representing a Computer Security Incident Response Team (CSIRT that handles security incidents for the address space specified by the inetnum or inet6num object.',
+                syntax: _shared.irt.syntax
             },
             'mnt-lower': {
                 short: 'Specifies the mntner object used for hierarchical authorisation.',
@@ -1061,12 +1056,12 @@ angular.module('dbWebApp')
             },
             'netname': {
                 short: undefined,
-                description: 'The name of a range of IP address space.',
+                description: 'The name of the range of IP address space.',
                 syntax: 'Made up of letters, digits, the character underscore \"_\", and the character hyphen \"-\"; the first character of a name must be a letter, and the last character of a name must be a letter or a digit.'
             },
             'nic-hdl': {
                 short: 'Leave value at \'AUTO-1\' to generate a unique NIC handle',
-                description: 'Specifies the NIC handle of a role or person object. When creating an object specify an \'AUTO\' NIC handle by setting the value of the attribute to \'AUTO-1\'  or AUTO-1. In such case the database will assign the NIC handle automatically.',
+                description: 'Specifies the NIC handle of a role or person object. When creating an object specify an \'AUTO\' NIC handle by setting the value of the attribute to \'AUTO-1\'.',
                 syntax: _shared.nicHandle.syntax
             },
             'notify': {
@@ -1105,7 +1100,7 @@ angular.module('dbWebApp')
             },
             'organisation': {
                 short: 'Leave value at \'AUTO-1\' to generate a unique org-id.',
-                description: 'Specifies the ID of an organisation object. When creating an object an \'AUTO\' ID by setting the value of the attribute to \'AUTO-1\' or \'AUTO-1\' so the database will assign the ID automatically.',
+                description: 'Specifies the ID of an organisation object. When creating an object an \'AUTO\' ID by setting the value of the attribute to \'AUTO-1\' so the database will assign the ID automatically.',
                 syntax: _shared.organisation.syntax
             },
             'origin': {
@@ -1199,15 +1194,12 @@ angular.module('dbWebApp')
             'route-set': {
                 short: 'Specifies the name of the route set, must start with \'rs-\'',
                 description: 'Specifies the name of the route set. It is a primary key for the route-set object.',
-                syntax: 'An route-set name is made up of letters, digits, the character underscore \'_\', and the character hyphen \'-\'; it must start with \'rs-\', and the last character of a name must be a letter or a digit.' +
-                '<br/>' +
-                'A route-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.  At least one component of such a name must be an actual set name (i.e. start with \'rs-\'). All the set name components of a hierarchical route-name have to be route-set names.'
+                syntax: 'An route-set name is made up of letters, digits, the character underscore \'_\', and the character hyphen \'-\'; it must start with \'rs-\', and the last character of a name must be a letter or a digit. A route-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.  At least one component of such a name must be an actual set name (i.e. start with \'rs-\'). All the set name components of a hierarchical route-name have to be route-set names.'
             },
             'rtr-set': {
                 short: 'Specifies the name of the rtr-set, must start with \'rtrs-\'',
                 description: 'Defines the name of the rtr-set.',
-                syntax: 'A router-set name is made up of letters, digits, the character underscore \'_\', and the character hyphen \'-\'; it must start with \'rtrs-\', and the last character of a name must be a letter or a digit.' + '<br/>' +
-                'A router-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.  At least one component of such a name must be an actual set name (i.e. start with \'rtrs-\').  All the set name components of a hierarchical router-set name have to be router-set names.'
+                syntax: 'A router-set name is made up of letters, digits, the character underscore \'_\', and the character hyphen \'-\'; it must start with \'rtrs-\', and the last character of a name must be a letter or a digit. A router-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.  At least one component of such a name must be an actual set name (i.e. start with \'rtrs-\').  All the set name components of a hierarchical router-set name have to be router-set names.'
             },
             'signature': {
                 short: 'References a CSIRT key-cert object.',
@@ -1226,7 +1218,7 @@ angular.module('dbWebApp')
             },
             'status': undefined,
             'tech-c': {
-                short: undefined,
+                short: 'Nic-handle of a technical contact.',
                 description: 'References a technical contact.',
                 syntax: _shared.nicHandle.syntax
             },
@@ -1241,7 +1233,7 @@ angular.module('dbWebApp')
                 syntax: _shared.email.syntax
             },
             'zone-c': {
-                short: undefined,
+                short: 'Nic-handle of a zone contact.',
                 description: 'References a zone contact.',
                 syntax: _shared.nicHandle.syntax
             }
@@ -1249,7 +1241,7 @@ angular.module('dbWebApp')
 
         this._statusDoc = {
             'aut-num': {
-                short: undefined,
+                short: 'Value will be generated by the server',
                 description: 'Specifies the kind of resource.',
                 syntax: 'Status can have one of these values:' + '<br/>' +
                 '<ul>' +
@@ -1294,7 +1286,7 @@ angular.module('dbWebApp')
 
         this._mntRoutesDoc = {
             'aut-num': {
-                short: 'References a mntner used in determining authorisation for the creation of route6 objects.',
+                short: 'References a mntner used in determining authorisation for the creation of route(6) objects.',
                 description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects.  This entry is for the mnt-routes attribute of aut-num class.  After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics.',
                 syntax: '&lt;mnt-name&gt; [ { list of (&lt;ipv4-address&gt;/&lt;prefix&gt; or &lt;ipv6-address&gt;/&lt;prefix&gt;) } | ANY ]'
             },
