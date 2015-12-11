@@ -703,7 +703,8 @@ angular.module('webUpdates')
             }
 
             function _validateForm() {
-                return $scope.attributes.validate() && OrganisationHelper.validateAbuseC();
+                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
+                return $scope.attributes.validate() && OrganisationHelper.validateAbuseC($scope.objectType, $scope.attributes);
             }
 
             function isFormValid() {

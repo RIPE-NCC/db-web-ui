@@ -125,6 +125,8 @@ describe('webUpdates: CreateController for organisation', function () {
     });
 
     it('should use the helper to update role for abuse-c', function () {
+        $scope.attributes = $scope.attributes.addAttributeAfterType({name: 'abuse-c', value: 'some abuse-c'}, {name: 'e-mail'});
+
         $httpBackend.whenPUT('api/whois/TEST/organisation/ORG-UA300-RIPE').respond(DEFAULT_RESPONSE); // I don' care about this call
         spyOn(OrganisationHelper, 'updateAbuseC');
 

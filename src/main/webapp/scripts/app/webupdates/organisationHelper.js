@@ -8,8 +8,26 @@ angular.module('dbWebApp')
 
 
         this.validateAbuseC = function(objectType, attributes) {
+            //attributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
+
             if(objectType === 'organisation') {
-                return this.containsAbuseC(attributes);
+
+                if(this.containsAbuseC(attributes)) {
+                    return true;
+                } else {
+                    var abuseC = _.find(attributes, function(attr) {
+                        return attr.name === 'abuse-c';
+                    });
+
+                    if(abuseC) {
+                        abuseC.$$error = 'Please provide an Abuse-c';
+                        return false;
+                    } else {
+                        return true;
+                    }
+
+                }
+
             } else {
                 return true;
             }

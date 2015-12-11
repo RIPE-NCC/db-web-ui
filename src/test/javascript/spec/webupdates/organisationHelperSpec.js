@@ -99,7 +99,7 @@ describe('webUpdates: OrganisationHelper', function () {
         expect(OrganisationHelper.validateAbuseC('mntner', [])).toBe(true);
     });
 
-    it('should be invalid if abuse-c is not present', function () {
+    it('should be valid if abuse-c is not present', function () {
         var attributes = [ {
             'name' : 'organisation',
             'value' : 'ORG-UA300-RIPE'
@@ -108,7 +108,53 @@ describe('webUpdates: OrganisationHelper', function () {
             'value': 'a@b.c'
         }];
 
+        expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(true);
+    });
+
+    it('should be invalid if abuse-c is empty', function () {
+        var attributes = [ {
+            'name' : 'organisation',
+            'value' : 'ORG-UA300-RIPE'
+        }, {
+            'name': 'e-mail',
+            'value': 'a@b.c'
+        }, {
+            'name': 'abuse-c'
+        }];
+
         expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(false);
+    });
+
+    it('should be set message if abuse-c is empty', function () {
+        var attributes = [ {
+            'name' : 'organisation',
+            'value' : 'ORG-UA300-RIPE'
+        }, {
+            'name': 'e-mail',
+            'value': 'a@b.c'
+        }, {
+            'name': 'abuse-c'
+        }];
+
+        OrganisationHelper.validateAbuseC('organisation', attributes);
+        var abuseC = _.find(attributes, function(attr) {
+            return attr.name === 'abuse-c';
+        });
+
+        expect(abuseC.$$error).toBe('Please provide an Abuse-c');
+    });
+
+
+    it('should be valid if abuse-c is not present', function () {
+        var attributes = [ {
+            'name' : 'organisation',
+            'value' : 'ORG-UA300-RIPE'
+        }, {
+            'name': 'e-mail',
+            'value': 'a@b.c'
+        }];
+
+        expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(true);
     });
 
     it('should be valid if abuse-c is present', function () {
