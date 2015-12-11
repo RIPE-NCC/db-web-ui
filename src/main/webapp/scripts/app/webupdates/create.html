@@ -1,4 +1,14 @@
 <alerts></alerts>
+
+<div ng-if="missingAbuseC()" class="alert alert-warning">
+        <p>
+            There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.
+        </p>
+        <p>
+            Please specify the abuse-c attribute below.
+        </p>
+
+</div>
 <form id="createForm">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; object</h1>
@@ -47,7 +57,6 @@
 
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
-
             <input type="text"
                    name="{{attribute.name}}"
                    ng-model="attribute.value"
@@ -61,6 +70,7 @@
                    ng-disabled="isToBeDisabled(attribute)"
                    autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs,attribute.$$meta.allowedValues)}}"
                    />
+
             <div class="text field-description" collapse="!isHelpShown">
                 <strong>Description</strong></br>
                 {{attribute.$$meta.$$description}}</br>
@@ -92,6 +102,14 @@
                    ng-click="displayMd5DialogDialog(attribute)" ng-show="(attribute.name == 'auth')">
                     <span class="fa fa-lock fa-3"></span>
                 </a>
+                </li>
+                <li>
+                    <a id="createRoleForAbuseCAttribute" class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c"
+                       ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="(attribute.name == 'abuse-c') && (objectType == 'organisation') && (!attribute.value)">
+
+
+                        <span class="fa fa-bell-o degree-25"></span>
+                    </a>
                 </li>
                 <li>
                     <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
