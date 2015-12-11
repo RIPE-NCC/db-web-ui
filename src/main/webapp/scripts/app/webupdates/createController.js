@@ -587,6 +587,10 @@ angular.module('webUpdates')
                         // save object for later diff in display-screen
                         MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
+                        if(missingAbuseC()) {
+                            $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
+                        }
+
                         // fetch details of all selected maintainers concurrently
                         $scope.restCalInProgress = true;
                         RestService.detailsForMntners($scope.maintainers.object).then(
@@ -637,9 +641,6 @@ angular.module('webUpdates')
                     _validateForm();
                 }
 
-                if(missingAbuseC()) {
-                    $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-                }
             }
 
             function _copyAddedMntnerToAttributes(mntnerName) {
