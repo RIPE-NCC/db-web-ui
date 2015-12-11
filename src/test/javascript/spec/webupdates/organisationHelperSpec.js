@@ -141,7 +141,7 @@ describe('webUpdates: OrganisationHelper', function () {
             return attr.name === 'abuse-c';
         });
 
-        expect(abuseC.$$error).toBe('Please provide an Abuse-c');
+        expect(abuseC.$$error).toBe('Please provide an Abuse-c or remove the attribute if you would like to do it later');
     });
 
 
