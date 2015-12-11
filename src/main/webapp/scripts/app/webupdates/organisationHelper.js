@@ -20,7 +20,7 @@ angular.module('dbWebApp')
                     });
 
                     if(abuseC) {
-                        abuseC.$$error = 'Please provide an Abuse-c';
+                        abuseC.$$error = 'Please provide an Abuse-c or remove the attribute if you would like to do it later';
                         return false;
                     } else {
                         return true;
