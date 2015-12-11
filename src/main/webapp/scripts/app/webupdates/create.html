@@ -2,11 +2,12 @@
 
 <div ng-if="missingAbuseC()" class="alert alert-warning">
         <p>
-            We see that there is no abuse contact set up for your organisation. Please create one now. Note that abuse contacts are required for organisations that have resources allocated or assigned by the RIPE NCC under policy 2011-06.
+            There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.
         </p>
         <p>
-            To set this up you can either enter an existing role object with an abuse-mailbox, or you can simply enter an email address and we will create a role object for you using the maintainers on your organisation (mnt-ref in case of an LIR org).
+            Please specify the abuse-c attribute below.
         </p>
+
 </div>
 <form id="createForm">
 
