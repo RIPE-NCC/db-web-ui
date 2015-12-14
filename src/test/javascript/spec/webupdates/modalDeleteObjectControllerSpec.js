@@ -208,7 +208,7 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
 
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('modify');
+        expect($state.current.name).toBe('webupdates.modify');
     });
 
 });

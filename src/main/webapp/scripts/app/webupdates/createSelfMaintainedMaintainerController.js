@@ -88,7 +88,7 @@ angular.module('webUpdates')
 
            function cancel() {
                 if ( window.confirm('Are you sure?') ) {
-                    $state.transitionTo('select');
+                    $state.transitionTo('webupdates.select');
                 }
             }
 
@@ -121,7 +121,7 @@ angular.module('webUpdates')
                         var primaryKey = whoisResources.getPrimaryKey();
                         MessageStore.add(primaryKey, whoisResources);
 
-                        $state.transitionTo('display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
+                        $state.transitionTo('webupdates.display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
                     }, function(error) {
                         $scope.submitInProgress = false;
                         $log.error('create error:' +  JSON.stringify(error));

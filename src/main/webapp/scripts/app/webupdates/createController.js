@@ -369,7 +369,7 @@ angular.module('webUpdates')
             }
 
             function deleteObject() {
-                $state.transitionTo('delete', {
+                $state.transitionTo('webupdates.delete', {
                     source: $scope.source,
                     objectType: $scope.objectType,
                     name: $scope.name
@@ -778,12 +778,12 @@ angular.module('webUpdates')
                 if ($scope.operation === 'Modify') {
                     _navigateToDisplayPage($scope.source, $scope.objectType, $scope.name, undefined);
                 } else {
-                    $state.transitionTo('select');
+                    $state.transitionTo('webupdates.select');
                 }
             }
 
             function _navigateToDisplayPage(source, objectType, objectName, operation) {
-                $state.transitionTo('display', {
+                $state.transitionTo('webupdates.display', {
                     source: source,
                     objectType: objectType,
                     name: objectName,

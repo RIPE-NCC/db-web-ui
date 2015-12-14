@@ -114,11 +114,11 @@ angular.module('webUpdates')
             };
 
             function navigateToSelect() {
-                $state.transitionTo('select');
+                $state.transitionTo('webupdates.select');
             };
 
             function navigateToModify() {
-                $state.transitionTo('modify', {
+                $state.transitionTo('webupdates.modify', {
                     source: $scope.objectSource,
                     objectType: $scope.objectType,
                     name: $scope.objectName
@@ -143,7 +143,7 @@ angular.module('webUpdates')
                 parser.href = attribute.link.href;
                 var parts = parser.pathname.split('/');
 
-                return $state.href('display', {
+                return $state.href('webupdates.display', {
                     source: $scope.objectSource,
                     objectType: attribute['referenced-type'],
                     name: _.last(parts)

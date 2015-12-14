@@ -34,11 +34,11 @@ angular.module('webUpdates')
 
             $scope.navigateToCreate = function () {
                 if ($scope.selected.objectType === 'mntner'){
-                    $state.transitionTo('createSelfMnt', {
+                    $state.transitionTo('webupdates.createSelfMnt', {
                         source: $scope.selected.source,
                     });
                 } else {
-                    $state.transitionTo('create', {
+                    $state.transitionTo('webupdates.create', {
                         source: $scope.selected.source,
                         objectType: $scope.selected.objectType
                     });

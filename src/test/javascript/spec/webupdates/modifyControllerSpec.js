@@ -182,7 +182,7 @@ describe('webUpdates: ModifyController', function () {
         expect(attrs.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
         expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
-        expect($state.current.name).toBe('display');
+        expect($state.current.name).toBe('webupdates.display');
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('as-block');
         expect($stateParams.name).toBe('MY-AS-BLOCK');
@@ -268,7 +268,7 @@ describe('webUpdates: ModifyController', function () {
     it('should transition to display state if cancel is pressed', function() {
         spyOn($state, 'transitionTo');
         $scope.cancel();
-        expect($state.transitionTo).toHaveBeenCalledWith('display', { source: SOURCE, objectType: 'as-block', name: 'MY-AS-BLOCK', method: undefined});
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', { source: SOURCE, objectType: 'as-block', name: 'MY-AS-BLOCK', method: undefined});
     });
 });
 

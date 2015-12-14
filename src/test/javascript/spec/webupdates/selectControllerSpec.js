@@ -53,7 +53,7 @@ describe('webUpdates: SelectController', function () {
 
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('create');
+        expect($state.current.name).toBe('webupdates.create');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe(OBJECT_TYPE);
         // Note that the  error-interceptor is responsible for flagging redirect to crowd
@@ -79,7 +79,7 @@ describe('webUpdates: SelectController', function () {
 
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('create');
+        expect($state.current.name).toBe('webupdates.create');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe(OBJECT_TYPE);
     });
@@ -109,7 +109,7 @@ describe('webUpdates: SelectController', function () {
 
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('createSelfMnt');
+        expect($state.current.name).toBe('webupdates.createSelfMnt');
         expect($stateParams.source).toBe(SOURCE);
     });
 
