@@ -74,6 +74,11 @@ angular.module('webUpdates')
                 templateUrl: 'scripts/app/webupdates/delete.html',
                 controller: 'DeleteController'
             })
+            .state('reclaimSelect', {
+                url: '/webupdates/reclaimSelect',
+                templateUrl: 'scripts/app/webupdates/reclaimSelect.html',
+                controller: 'ReclaimSelectController'
+            })
             .state('reclaim', {
                 url: '/webupdates/reclaim/:source/:objectType/{name:WhoisObjectName}',
                 templateUrl: 'scripts/app/webupdates/reclaim.html',

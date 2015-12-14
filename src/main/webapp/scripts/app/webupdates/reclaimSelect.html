@@ -1,0 +1,24 @@
+<div>
+
+    <alerts></alerts>
+    <section>
+        <div>
+            <label>Object type</label>
+            <select ng-model="selected.objectType"
+                    ng-required="true"
+                    ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
+            <br/>
+            <label>Object key to reclaim</label>
+            <input type="text"
+                   name="key"
+                   ng-model="selected.name"
+                   ng-required="true"
+                   class="form-control" />
+        </div>
+    </section>
+
+    <section>
+        <br/>
+        <button ng-click="navigateToReclaim()" class="blue-button pull-right ga-createobj-select">{{loggedIn ? 'Reclaim' : 'Login to reclaim'}}</button>
+    </section>
+</div>

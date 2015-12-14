@@ -2,11 +2,11 @@
 
     <alerts></alerts>
     <section>
-        You are in reclaim:
-        {{source}} - {{objectType}} - {{name}}
+        Reclaiming {{objectType}} object with key: {{name}}
     </section>
+
     <section>
         <br/>
-        <a href="/db-web-ui/#/" class="blue-button">Reclaim</a>
+        <button ng-click="reclaim()" class="blue-button pull-right ga-createobj-select">Reclaim</button>
     </section>
 </div>

@@ -6,6 +6,8 @@ angular.module('webUpdates')
     .controller('ReclaimController', ['$scope', '$stateParams', '$state', '$log', 'WhoisResources', 'ModalService', 'AlertService',
         function ($scope, $stateParams, $state, $log, WhoisResources, ModalService, AlertService) {
 
+            $scope.reclaim = reclaim;
+
             _initialisePage();
 
             function _initialisePage() {
@@ -21,6 +23,9 @@ angular.module('webUpdates')
 
                 $log.debug('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
 
+            }
+
+            function reclaim () {
 
             }
 
