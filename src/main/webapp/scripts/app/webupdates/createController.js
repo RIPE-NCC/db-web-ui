@@ -131,10 +131,12 @@ angular.module('webUpdates')
                     function (roleAttrs) {
                         $scope.roleForAbuseC = WhoisResources.wrapAndEnrichAttributes('role', roleAttrs);
                         $scope.attributes.setSingleAttributeOnName('abuse-c', $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);
-
-                        AlertService.setGlobalInfo("Successfully created abuse-c role object with nic-hdl " + $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);
-                    }, function () {
-                        AlertService.setGlobalError("There was a problem creating the abuse-c attribute");
+                        $scope.attributes.getSingleAttributeOnName('abuse-c').$$success = 'Role object for Abuse Contact successfully created';
+                    }, function (error) {
+                        if(error != "cancel") { //dismissing modal will hit this function with the string "cancel" in error arg
+                            //TODO RM: pass more specific errors from REST?
+                            $scope.attributes.getSingleAttributeOnName('abuse-c').$$error = "There was a problem creating the abuse-c attribute";
+                        }
                     }
                 );
             }
