@@ -1103,7 +1103,7 @@ angular.module('dbWebApp')
             },
             'origin': {
                 short: 'Specifies the AS that originates the route.',
-                description: 'Specifies the AS that originates the route. The corresponding aut-num object should be registered in the database.',
+                description: 'Specifies the AS that originates the route. The corresponding aut-num object should be registered in the database. Together with the \'route:\' attribute constitutes a primary key of the object, which is why the value cannot be modified after creation.',
                 syntax: _shared.asNumber.syntax
             },
             'owner': {
@@ -1150,7 +1150,7 @@ angular.module('dbWebApp')
             'pingable': {
                 short: 'Specifies an IP address that should be reachable from outside networks.',
                 description: 'Allows a network operator to advertise an IP address of a node that should be reachable from outside networks. This node can be used as a destination address for diagnostic tests. The IP address must be within the address range of the prefix containing this attribute.',
-                syntax: ''
+                syntax: 'A single IP address'
             }, // no syntax available
             'poem': {
                 short: undefined,
@@ -1181,7 +1181,7 @@ angular.module('dbWebApp')
             'route': {
                 short: 'Specifies the prefix of the interAS route.',
                 description: 'Specifies the prefix of the interAS route. Together with the \'origin:\' attribute constitutes a primary key of the route object, which is why the value cannot be modified after creation.',
-                syntax: 'A prefix in Classless Inter-Domain Routing (CIDR) notation using all four octets of an IP address, e.g. 192.168.2.0/24.'
+                syntax: 'A prefix in Classless Inter-Domain Routing (CIDR) notation using all four octets of an IPv4 address, e.g. 192.168.2.0/24.'
             },
             'route6': {
                 short: 'Specifies the IPv6 prefix of the interAS route.',
