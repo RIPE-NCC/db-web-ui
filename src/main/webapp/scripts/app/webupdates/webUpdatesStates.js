@@ -1,4 +1,4 @@
-    'use strict';
+'use strict';
 
 angular.module('webUpdates')
     .config(['$stateProvider', '$urlRouterProvider', '$urlMatcherFactoryProvider', '$locationProvider',
@@ -73,6 +73,11 @@ angular.module('webUpdates')
                 url: '/webupdates/delete/:source/:objectType/{name:WhoisObjectName}',
                 templateUrl: 'scripts/app/webupdates/delete.html',
                 controller: 'DeleteController'
+            })
+            .state('reclaim', {
+                url: '/webupdates/reclaim/:source/:objectType/{name:WhoisObjectName}',
+                templateUrl: 'scripts/app/webupdates/reclaim.html',
+                controller: 'ReclaimController'
             });
 
             //$locationProvider.html5Mode(true);
