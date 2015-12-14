@@ -4,9 +4,6 @@ describe('webUpdates: ReclaimSelectController', function () {
     var reclaimSelectController;
 
     var $scope, $rootScope, $state, $stateParams, $window, $httpBackend;
-    var OBJECT_TYPE = 'inetnum';
-    var OBJECT_NAME = '127.0.0.1 - 127.0.0.10';
-    var SOURCE = 'RIPE';
 
     beforeEach(function () {
         module('webUpdates');
@@ -42,9 +39,9 @@ describe('webUpdates: ReclaimSelectController', function () {
         reclaimSelectController();
 
         $scope.selected = {
-            source: SOURCE,
-            objectType: OBJECT_TYPE,
-            name: OBJECT_NAME
+            source: 'RIPE',
+            objectType: 'inetnum',
+            name: '127.0.0.1 - 127.0.0.10'
         };
 
         $scope.navigateToReclaim();
@@ -52,9 +49,9 @@ describe('webUpdates: ReclaimSelectController', function () {
         $httpBackend.flush();
 
         expect($state.current.name).toBe('reclaim');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe(OBJECT_TYPE);
-        expect($stateParams.name).toBe(OBJECT_NAME);
+        expect($stateParams.source).toBe('RIPE');
+        expect($stateParams.objectType).toBe('inetnum');
+        expect($stateParams.name).toBe('127.0.0.1%20-%20127.0.0.10');
     });
 
 });
