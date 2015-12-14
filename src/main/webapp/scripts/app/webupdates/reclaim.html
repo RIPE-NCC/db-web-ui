@@ -1,9 +1,31 @@
 <div>
 
+
+    <h1>Reclaim {{objectType}} {{objectName}}</h1>
+
     <alerts></alerts>
-    <section>
-        Reclaiming {{objectType}} object with key: {{name}}
-    </section>
+
+    <section class="inner-container">
+        <table class="success-fields grey">
+            <tr ng-repeat="attribute in attributes">
+                <td width="20%">
+                    <label>{{attribute.name}}:</label>
+                </td>
+                <td>
+                    <p ng-show="!attribute.link">
+                        {{attribute.value}}
+                    </p>
+                    <p ng-show="attribute.link">
+                        <a ng-href="{{attribute.link.uiHref}}">{{attribute.value}}</a>
+                    </p>
+                    <div ng-show="attribute.$$error" class="modify-feedback">
+                        <span>{{attribute.$$error}}</span>
+                        <i class="fa fa-info-circle"></i>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
 
     <section>
         <br/>
