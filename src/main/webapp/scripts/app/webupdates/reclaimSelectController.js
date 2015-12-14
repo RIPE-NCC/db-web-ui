@@ -3,27 +3,20 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('ReclaimSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', 'WhoisResources', 'UserInfoService', '$log',
-        function ($scope, $stateParams, $state, source, WhoisResources, UserInfoService, $log) {
+    .controller('ReclaimSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log',
+        function ($scope, $stateParams, $state, source, $log) {
 
             _initialisePage();
 
             function _initialisePage() {
 
-                $scope.objectTypes = _filterObjectTypes(WhoisResources.getObjectTypes());
+                $scope.objectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
                 $scope.selected = {
                     source: source,
                     objectType: $scope.objectTypes[0],
                     name: ''
                 };
-
-                $scope.loggedIn = undefined;
-                UserInfoService.getUserInfo().then(
-                    function (userData) {
-                        $scope.loggedIn = true;
-                    }
-                );
             }
 
             $scope.navigateToReclaim = function () {
@@ -34,13 +27,4 @@ angular.module('webUpdates')
                 });
 
             };
-
-            function _filterObjectTypes( unfiltered) {
-                return _.filter(unfiltered, function(item) {
-                    var reclaimableTypes= ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
-
-                    return _.contains(reclaimableTypes, item);
-                });
-            }
-
         }]);
