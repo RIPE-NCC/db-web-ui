@@ -5,10 +5,10 @@
 angular.module('webUpdates')
     .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
-        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
+        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper',
         function ($scope, $stateParams, $state, $log, $window,
                   WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService,
-                  MntnerService, AlertService, ErrorReporterService, LinkService) {
+                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper) {
 
             // exposed methods called from html fragment
             $scope.onMntnerAdded = onMntnerAdded;
@@ -43,6 +43,8 @@ angular.module('webUpdates')
             $scope.isFormValid = isFormValid;
             $scope.isToBeDisabled = isToBeDisabled;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
+            $scope.missingAbuseC = missingAbuseC;
+            $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
             _initialisePage();
 
@@ -102,6 +104,7 @@ angular.module('webUpdates')
                     $scope.attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                     // other types only settable with override
                     $scope.attributes.setSingleAttributeOnName('org-type', 'OTHER');
+                    $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
 
                     _fetchDataForCreate();
 
@@ -118,6 +121,31 @@ angular.module('webUpdates')
             /*
              * Methods called from the html-teplate
              */
+
+            function createRoleForAbuseCAttribute() {
+                //for now just grab first valid mntner
+                var maintainers = _.map($scope.maintainers.object, function(o) {
+                    return {name: 'mnt-by', value: o.key};
+                });
+                ModalService.openCreateRoleForAbuseCAttribute($scope.source, maintainers, _getPasswordsForRestCall()).then(
+                    function (roleAttrs) {
+                        $scope.roleForAbuseC = WhoisResources.wrapAndEnrichAttributes('role', roleAttrs);
+                        $scope.attributes.setSingleAttributeOnName('abuse-c', $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);
+
+                        AlertService.setGlobalInfo("Successfully created abuse-c role object with nic-hdl " + $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);
+                    }, function () {
+                        AlertService.setGlobalError("There was a problem creating the abuse-c attribute");
+                    }
+                );
+            }
+
+            function missingAbuseC() {
+                if(_.isEmpty($scope.attributes)) {
+                    return false;
+                };
+
+                return $scope.operation == $scope.MODIFY_OPERATION && $scope.objectType == 'organisation' && !OrganisationHelper.containsAbuseC($scope.attributes);
+            }
 
             function onMntnerAdded(item) {
 
@@ -308,7 +336,7 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes))
+                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes), _getPasswordsForRestCall())
                     .then(function (selectedItem) {
                         addSelectedAttribute(selectedItem, attr);
                     });
@@ -352,6 +380,9 @@ angular.module('webUpdates')
             function submit() {
 
                 function _onSubmitSuccess(resp) {
+                    //It' ok to just let it happen or fail.
+                    OrganisationHelper.updateAbuseC($scope.source, $scope.objectType, $scope.roleForAbuseC, $scope.attributes, passwords);
+
                     $scope.restCalInProgress = false;
                     var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display-screen can fetch it from here
@@ -440,6 +471,7 @@ angular.module('webUpdates')
                     var passwords = _getPasswordsForRestCall();
 
                     $scope.restCalInProgress = true;
+
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
@@ -457,12 +489,8 @@ angular.module('webUpdates')
             }
 
             function cancel() {
-                if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
-                    $state.transitionTo('display', {
-                        source: $scope.source,
-                        objectType: $scope.objectType,
-                        name: $scope.name
-                   });
+                if ($window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+                    _navigateAway();
                 }
             }
 
@@ -559,6 +587,10 @@ angular.module('webUpdates')
                         // save object for later diff in display-screen
                         MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
+                        if(missingAbuseC()) {
+                            $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
+                        }
+
                         // fetch details of all selected maintainers concurrently
                         $scope.restCalInProgress = true;
                         RestService.detailsForMntners($scope.maintainers.object).then(
@@ -608,6 +640,7 @@ angular.module('webUpdates')
                     });
                     _validateForm();
                 }
+
             }
 
             function _copyAddedMntnerToAttributes(mntnerName) {
@@ -671,7 +704,8 @@ angular.module('webUpdates')
             }
 
             function _validateForm() {
-                return $scope.attributes.validate();
+                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
+                return $scope.attributes.validate() && OrganisationHelper.validateAbuseC($scope.objectType, $scope.attributes);
             }
 
             function isFormValid() {

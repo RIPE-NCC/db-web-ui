@@ -4,6 +4,28 @@ angular.module('dbWebApp')
     .factory('ModalService', ['$q', '$modal', '$log', function ( $q, $modal, $log ) {
         function ModalService() {
 
+            this.openCreateRoleForAbuseCAttribute = function(source, maintainers, passwords) {
+                var modalInstance = $modal.open({
+                    animation:true,
+                    templateUrl: 'scripts/app/webupdates/modalCreateRoleForAbuseC.html',
+                    controller: 'ModalCreateRoleForAbuseCController',
+                    keyboard:false,
+                    resolve: {
+                        source: function () {
+                            return source;
+                        },
+                        maintainers: function () {
+                            return maintainers;
+                        },
+                        passwords: function () {
+                            return passwords;
+                        }
+                    }
+                });
+
+                return modalInstance.result;
+            };
+
             this.openDeleteObjectModal = function(source, objectType, name) {
                 var modalInstance = $modal.open({
                     animation:true,
