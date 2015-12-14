@@ -88,7 +88,7 @@ angular.module('webUpdates')
 
            function cancel() {
                 if ( window.confirm('Are you sure?') ) {
-                    window.history.back();
+                    $state.transitionTo('select');
                 }
             }
 

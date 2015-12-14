@@ -123,7 +123,6 @@ angular.module('webUpdates')
              */
 
             function createRoleForAbuseCAttribute() {
-                //for now just grab first valid mntner
                 var maintainers = _.map($scope.maintainers.object, function(o) {
                     return {name: 'mnt-by', value: o.key};
                 });
