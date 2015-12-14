@@ -21,12 +21,6 @@ describe('webUpdates: ReclaimSelectController', function () {
             $httpBackend = _$httpBackend_;
             $window = _$window_;
 
-            $scope.selected = {
-                source: SOURCE,
-                objectType: OBJECT_TYPE,
-                name: OBJECT_NAME
-            };
-
             reclaimSelectController = function() {
                 _$controller_('ReclaimSelectController', {
                     $scope: $scope, $state: $state, $stateParams: $stateParams
@@ -47,6 +41,12 @@ describe('webUpdates: ReclaimSelectController', function () {
     it('should navigate to reclaim screen', function () {
         reclaimSelectController();
 
+        $scope.selected = {
+            source: SOURCE,
+            objectType: OBJECT_TYPE,
+            name: OBJECT_NAME
+        };
+
         $scope.navigateToReclaim();
 
         $httpBackend.flush();
@@ -54,7 +54,7 @@ describe('webUpdates: ReclaimSelectController', function () {
         expect($state.current.name).toBe('reclaim');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe(OBJECT_TYPE);
-        //expect($stateParams.name).toBe(OBJECT_NAME);
+        expect($stateParams.name).toBe(OBJECT_NAME);
     });
 
 });

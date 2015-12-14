@@ -4,7 +4,7 @@
 
 angular.module('webUpdates')
     .controller('ReclaimSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log',
-        function ($scope, $stateParams, $state, source, $log) {
+        function ($scope, $stateParams, $state, SOURCE, $log) {
 
             _initialisePage();
 
@@ -13,9 +13,9 @@ angular.module('webUpdates')
                 $scope.objectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
                 $scope.selected = {
-                    source: source,
+                    source: SOURCE,
                     objectType: $scope.objectTypes[0],
-                    name: ''
+                    name: undefined
                 };
             }
 
