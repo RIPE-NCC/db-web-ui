@@ -950,12 +950,12 @@ angular.module('dbWebApp')
             },
             'mnt-by': {
                 short: 'Specifies a mntner object used for authorisation.',
-                description: 'Specifies the identifier of a registered mntner object used for authorisation of operations performed with the object that contains this attribute.',
+                description: 'Specifies the identifier of a registered mntner object used for authorisation of operations performed with the object that contains this attribute. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
                 syntax: _shared.objectName.syntax
             },
             'mnt-domains': {
                 short: 'Specifies the mntner object used for reverse domain authorisation.',
-                description: 'Specifies the identifier of a registered mntner object used for reverse domain authorisation. Protects domain objects. The authentication method of this maintainer object will be used for any encompassing reverse domain object.',
+                description: 'Specifies the identifier of a registered mntner object used for reverse domain authorisation. Protects domain objects. The authentication method of this maintainer object will be used for any encompassing reverse domain object.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
                 syntax: _shared.objectName.syntax
             },
             'mnt-irt': {
@@ -965,7 +965,7 @@ angular.module('dbWebApp')
             },
             'mnt-lower': {
                 short: 'Specifies the mntner object used for hierarchical authorisation.',
-                description: 'Specifies the identifier of a registered mntner object used for hierarchical authorisation. Protects creation of objects directly (one level below) in the hierarchy of an object type. The authentication method of this maintainer object will then be used upon creation of any object directly below the object that contains the \'mnt-lower:\' attribute.',
+                description: 'Specifies the identifier of a registered mntner object used for hierarchical authorisation. Protects creation of objects directly (one level below) in the hierarchy of an object type. The authentication method of this maintainer object will then be used upon creation of any object directly below the object that contains the \'mnt-lower:\' attribute.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
                 syntax: _shared.objectName.syntax
             },
             'mnt-nfy': {
@@ -1284,27 +1284,27 @@ angular.module('dbWebApp')
         this._mntRoutesDoc = {
             'aut-num': {
                 short: 'References a mntner used in determining authorisation for the creation of route(6) objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects.  This entry is for the mnt-routes attribute of aut-num class.  After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics.',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects.  This entry is for the mnt-routes attribute of aut-num class.  After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of (&lt;ipv4-address&gt;/&lt;prefix&gt; or &lt;ipv6-address&gt;/&lt;prefix&gt;) } | ANY ]'
             },
             'inet6num': {
                 short: 'References a mntner used in determining authorisation for the creation of route6 objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects. This entry is for the mnt-routes attribute of route6 and inet6num classes. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics.',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects. This entry is for the mnt-routes attribute of route6 and inet6num classes. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of &lt;ipv6-address&gt;/&lt;prefix&gt; } | ANY ]'
             },
             'inetnum': {
                 short: 'References a mntner used in determining authorisation for the creation of route objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route objects. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. Please refer to RFC-2622 for more information.',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route objects. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of &lt;address-prefix-range&gt; } | ANY ]'
             },
             'route': {
                 short: 'References a mntner used in determining authorisation for the creation of route objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route objects. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. Please refer to RFC-2622 for more information.',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route objects. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of &lt;address-prefix-range&gt; } | ANY ]'
             },
             'route6': {
                 short: 'References a mntner used in determining authorisation for the creation of route6 objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects. This entry is for the mnt-routes attribute of route6 and inet6num classes. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics.',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects. This entry is for the mnt-routes attribute of route6 and inet6num classes. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of &lt;ipv6-address&gt;/&lt;prefix&gt; } | ANY ]'
             }
         };
