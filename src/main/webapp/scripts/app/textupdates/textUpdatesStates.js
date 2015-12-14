@@ -8,7 +8,7 @@ angular.module('textUpdates')
                 .state('textupdates', {
                     abstract: true,
                     url: '/textupdates',
-                    template: '<h1>Webupdates</h1><div ui-view></div>'
+                    template: '<div ui-view></div>'
                 })
                 .state('textupdates.select', {
                     url: '/select',
@@ -22,7 +22,7 @@ angular.module('textUpdates')
                 })
                 .state('textupdates.modify', {
                     url: '/modify/:source/:objectType/:name',
-                    templateUrl: 'scripts/app/textupdates/create.html',
+                    templateUrl: 'scripts/app/textupdates/modify.html',
                     controller: 'TextUpdatesController'
                 })
                 .state('textupdates.display', {

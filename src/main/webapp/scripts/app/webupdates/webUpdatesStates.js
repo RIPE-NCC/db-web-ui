@@ -38,7 +38,7 @@ angular.module('webUpdates')
                 .state('webupdates', {
                     abstract: true,
                     url: '/webupdates',
-                    template: '<h1>Webupdates</h1><div ui-view></div>'
+                    template: '<div ui-view></div>'
                 })
                 .state('webupdates.select', {
                     url: '/select',

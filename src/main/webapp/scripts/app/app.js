@@ -12,34 +12,37 @@ angular.module('dbWebApp', [
     'ui.bootstrap',
     'ui.select',
     'webUpdates',
-    'textUpdates'
+    'textUpdates',
+    'ngCookies',
 ])
 
-    .config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV', function ($stateProvider, $logProvider, $httpProvider, ENV) {
-        $stateProvider
-            .state('error', {
-                url: '/public/error',
-                templateUrl: 'scripts/app/views/error.html'
-            })
-            .state('notFound', {
-                url: '/public/not-found',
-                templateUrl: 'scripts/app/views/notFound.html'
-            });
+    .config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV',
+        function ($stateProvider, $logProvider, $httpProvider, ENV) {
 
-        // Always tell server if request was made using ajax
-        $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+            // conditional log-level
+            if (ENV === "dev" || ENV == 'prepdev') {
+                $logProvider.debugEnabled(true);
+            } else {
+                // disable debug logging for production
+                $logProvider.debugEnabled(false);
+            }
 
-        // conditional log-level
-        if (ENV === "dev" || ENV == 'prepdev') {
-            $logProvider.debugEnabled(true);
-        } else {
-            // disable debug logging for production
-            $logProvider.debugEnabled(false);
-        }
+            $stateProvider
+                .state('error', {
+                    url: '/public/error',
+                    templateUrl: 'scripts/app/views/error.html'
+                })
+                .state('notFound', {
+                    url: '/public/not-found',
+                    templateUrl: 'scripts/app/views/notFound.html'
+                });
 
-    }])
-    .run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'LOGIN_URL', 'ENV',
-        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, LOGIN_URL, ENV) {
+            // Always tell server if request was made using ajax
+            $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+
+        }])
+    .run(['$rootScope', '$state', '$window', '$location', '$log', '$cookies', 'ERROR_EVENTS', 'LOGIN_URL', 'ENV',
+        function ($rootScope, $state, $window, $location, $log, $cookies, ERROR_EVENTS, LOGIN_URL, ENV) {
 
             $log.info('Starting up for env ' + ENV);
 
@@ -67,5 +70,34 @@ angular.module('dbWebApp', [
                 // do not act; authorisation errors during transition are handled by stateTransitionError-handler above
                 $log.error('Authentication error');
             });
+
+            $rootScope.$on('$stateChangeStart',
+                function (event, toState, toParams, fromState, fromParams) {
+                    var requiredMode = 'webupdates';
+                    var otherMode = 'textupdates';
+
+                    var uiModeCookie = $cookies.get('ui-mode');
+                    if (!_.isUndefined(uiModeCookie) && uiModeCookie === 'textupdates') {
+                        requiredMode = 'textupdates';
+                        otherMode = 'webupdates';
+                    }
+                    $log.error('requested mode:' + requiredMode);
+                    $log.error('$stateChangeStart:' + JSON.stringify(toState));
+                    if (toState.name === otherMode + '.display') {
+                        event.preventDefault();
+                        $state.transitionTo(requiredMode + '..display', toParams);
+                    } else if (toState.name === otherMode + '.modify') {
+                        event.preventDefault();
+                        $state.transitionTo(requiredMode + '.modify', toParams);
+                    } else if (toState.name === otherMode + '.delete') {
+                        event.preventDefault();
+                        $state.transitionTo(requiredMode + '.delete', toParams);
+                    } else if (toState.name === otherMode + '.select') {
+                        event.preventDefault();
+                        $state.transitionTo(requiredMode + '.select', toParams);
+                    }
+                }
+            );
+
 
         }]);

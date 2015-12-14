@@ -1,12 +1,14 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextUpdatesController', ['$scope', '$stateParams', '$state', '$resource', '$log', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService', 'UserInfoService',
-        function ($scope, $stateParams, $state, $resource, $log, WhoisResources, MessageStore, RestService, AlertService, UserInfoService) {
+    .controller('TextUpdatesController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService', 'UserInfoService',
+        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, MessageStore, RestService, AlertService, UserInfoService) {
 
              _initialisePage();
 
             function _initialisePage() {
+
+                $cookies.put('ui-mode','webupdates');
 
                 AlertService.clearErrors();
 
