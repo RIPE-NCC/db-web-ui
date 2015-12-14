@@ -22,11 +22,14 @@ angular.module('webUpdates')
                 }
 
                 $log.debug('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
-
             }
 
             function reclaim () {
-
+                $state.transitionTo('delete', {
+                    source: $scope.source,
+                    objectType: $scope.objectType,
+                    name: $scope.name
+                });
             }
 
         }]);
