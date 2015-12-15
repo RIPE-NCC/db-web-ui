@@ -13,7 +13,6 @@ angular.module('webUpdates')
             _initialisePage();
 
             function _initialisePage() {
-                $scope.restCallInProgress = true;
 
                 AlertService.clearErrors();
 
@@ -28,22 +27,21 @@ angular.module('webUpdates')
 
                 if (_validateParams($scope.objectSource, $scope.objectType, $scope.objectName)){
                     _fetchObject();
-                } else {
-                    $scope.isFormValid == false;
                 }
             }
 
             function _fetchObject() {
                 RestService.fetchObject($scope.objectSource, $scope.objectType, $scope.objectName, null).then(
                     function (resp) {
+                        $scope.restCallInProgress = false;
                         var whoisResources = WhoisResources.wrapWhoisResources(resp);
                         $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
                         _addLinkToReferenceAttributes($scope.attributes);
                         AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp);
                         AlertService.setErrors(whoisResources);
-                        $scope.restCallInProgress = false;
 
                     }, function (resp) {
+                        $scope.restCallInProgress = false;
                         var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
                         if (!_.isUndefined(whoisResources)) {
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
@@ -54,6 +52,8 @@ angular.module('webUpdates')
             }
 
             function _validateParams(objectSource, objectType, objectName){
+                $scope.isFormValid = false;
+
                 if (! _.contains(reclaimableObjectTypes, objectType)){
 
                     var typesString = _.reduce(reclaimableObjectTypes, function(str, n) {
@@ -74,6 +74,7 @@ angular.module('webUpdates')
                     return false;
                 }
 
+                $scope.isFormValid = true;
                 return true;
             }
 

@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('ReclaimSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log',
-        function ($scope, $stateParams, $state, SOURCE, $log) {
+    .controller('ReclaimSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log', 'AlertService',
+        function ($scope, $stateParams, $state, SOURCE, $log, AlertService) {
 
             $scope.isFormValid = _isFormValid;
             $scope.navigateToReclaim = _navigateToReclaim;
@@ -12,6 +12,8 @@ angular.module('webUpdates')
             _initialisePage();
 
             function _initialisePage() {
+
+                AlertService.clearErrors();
 
                 $scope.objectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
