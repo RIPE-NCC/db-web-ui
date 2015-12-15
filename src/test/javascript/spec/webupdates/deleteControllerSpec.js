@@ -8,6 +8,7 @@ describe('webUpdates: DeleteController', function () {
     var AlertService;
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
+    var ON_CANCEL = 'modify';
     var createDeleteController;
     var $rootScope;
     var objectToDisplay;
@@ -129,6 +130,7 @@ describe('webUpdates: DeleteController', function () {
                 $stateParams.source = SOURCE;
                 $stateParams.objectType = OBJECT_TYPE;
                 $stateParams.name = 'AS1 - AS2';
+                $stateParams.onCancel = ON_CANCEL;
 
                 $state.current.name = 'delete';
 
@@ -156,7 +158,7 @@ describe('webUpdates: DeleteController', function () {
 
         createDeleteController();
 
-        expect(ModalService.openDeleteObjectModal).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name);
+        expect(ModalService.openDeleteObjectModal).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name, $scope.onCancel);
     });
 
     it('should display errors if delete object fail', function() {

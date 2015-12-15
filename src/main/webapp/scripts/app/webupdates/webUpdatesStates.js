@@ -70,7 +70,7 @@ angular.module('webUpdates')
                 controller: 'DisplayController'
             })
             .state('delete', {
-                url: '/webupdates/delete/:source/:objectType/{name:WhoisObjectName}',
+                url: '/webupdates/delete/:source/:objectType/{name:WhoisObjectName}?onCancel',
                 templateUrl: 'scripts/app/webupdates/delete.html',
                 controller: 'DeleteController'
             })

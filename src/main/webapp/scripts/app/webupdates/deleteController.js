@@ -25,6 +25,7 @@ angular.module('webUpdates')
                 if( !_.isUndefined($stateParams.name)) {
                     $scope.name = decodeURIComponent($stateParams.name);
                 }
+                $scope.onCancel = $stateParams.onCancel;
 
                 $log.debug('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
 
@@ -34,7 +35,7 @@ angular.module('webUpdates')
             }
 
             function _deleteObject() {
-                ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name).then(
+                ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name, $scope.onCancel).then(
                     function (whoisResources) {
                         $scope.modalInProgress = false;
                         try {

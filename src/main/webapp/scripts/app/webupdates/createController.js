@@ -5,10 +5,10 @@
 angular.module('webUpdates')
     .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
-        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper',
+        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper', 'STATE',
         function ($scope, $stateParams, $state, $log, $window,
                   WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService,
-                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper) {
+                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper, STATE) {
 
             // exposed methods called from html fragment
             $scope.onMntnerAdded = onMntnerAdded;
@@ -372,7 +372,8 @@ angular.module('webUpdates')
                 $state.transitionTo('delete', {
                     source: $scope.source,
                     objectType: $scope.objectType,
-                    name: $scope.name
+                    name: $scope.name,
+                    onCancel: STATE.MODIFY
                 });
             }
 

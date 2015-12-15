@@ -26,7 +26,7 @@ angular.module('dbWebApp')
                 return modalInstance.result;
             };
 
-            this.openDeleteObjectModal = function(source, objectType, name) {
+            this.openDeleteObjectModal = function(source, objectType, name, onCancel) {
                 var modalInstance = $modal.open({
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalDeleteObject.html',
@@ -41,6 +41,9 @@ angular.module('dbWebApp')
                         },
                         name: function () {
                             return name;
+                        },
+                        onCancel: function () {
+                            return onCancel;
                         }
                     }
                 });

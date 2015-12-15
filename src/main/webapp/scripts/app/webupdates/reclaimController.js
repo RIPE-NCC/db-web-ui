@@ -3,10 +3,11 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('ReclaimController', ['$scope', '$stateParams', '$state', '$log', 'WhoisResources', 'ModalService', 'AlertService', 'RestService',
-        function ($scope, $stateParams, $state, $log, WhoisResources, ModalService, AlertService, RestService) {
+    .controller('ReclaimController', ['$scope', '$stateParams', '$state', '$log', 'WhoisResources', 'ModalService', 'AlertService', 'RestService', 'STATE',
+        function ($scope, $stateParams, $state, $log, WhoisResources, ModalService, AlertService, RestService, STATE) {
 
             $scope.reclaim = reclaim;
+
 
             _initialisePage();
 
@@ -70,7 +71,8 @@ angular.module('webUpdates')
                 $state.transitionTo('delete', {
                     source: $scope.objectSource,
                     objectType: $scope.objectType,
-                    name: $scope.objectName
+                    name: $scope.objectName,
+                    onCancel: STATE.RECLAIM
                 });
             }
 
