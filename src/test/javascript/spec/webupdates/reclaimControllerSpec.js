@@ -8,6 +8,7 @@ describe('webUpdates: ReclaimController', function () {
     var AlertService;
     var $rootScope;
     var $log;
+    var $controller;
 
     var INETNUM='111 - 255';
     var SOURCE='RIPE';
@@ -27,6 +28,7 @@ describe('webUpdates: ReclaimController', function () {
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
+            $controller = _$controller_;
             ModalService = _ModalService_;
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
@@ -82,7 +84,6 @@ describe('webUpdates: ReclaimController', function () {
                 $httpBackend.flush();
             };
 
-
         });
     });
 
@@ -119,4 +120,58 @@ describe('webUpdates: ReclaimController', function () {
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
     });
 
+    it('should have errors on wrong type', function () {
+
+        $httpBackend.whenGET(/.*.html/).respond(200);
+
+        $stateParams.source = SOURCE;
+        $stateParams.objectType = 'mntner';
+        $stateParams.name = 'TPOLYCHNIA-MNT';
+
+        $controller('ReclaimController', {
+            $scope: $scope, $state: $state, $stateParams: $stateParams
+        });
+
+        $httpBackend.flush();
+
+        expect($scope.attributes).toBe(undefined);
+        expect($rootScope.errors[0].plainText)
+            .toBe('Only inetnum, inet6num, route, route6, domain object types are reclaimable');
+    });
+
+    it('should show error on missing object key', function () {
+
+        $httpBackend.whenGET(/.*.html/).respond(200);
+
+        $stateParams.source = SOURCE;
+        $stateParams.objectType = 'inetnum';
+        $stateParams.name = undefined;
+
+        $controller('ReclaimController', {
+            $scope: $scope, $state: $state, $stateParams: $stateParams
+        });
+
+        $httpBackend.flush();
+
+        expect($scope.attributes).toBe(undefined);
+        expect($rootScope.errors[0].plainText).toBe('Object key is missing');
+    });
+
+    it('should show error on missing source', function () {
+
+        $httpBackend.whenGET(/.*.html/).respond(200);
+
+        $stateParams.source = undefined;
+        $stateParams.objectType = 'inetnum';
+        $stateParams.name = 'asdf';
+
+        $controller('ReclaimController', {
+            $scope: $scope, $state: $state, $stateParams: $stateParams
+        });
+
+        $httpBackend.flush();
+
+        expect($scope.attributes).toBe(undefined);
+        expect($rootScope.errors[0].plainText).toBe('Source is missing');
+    });
 });

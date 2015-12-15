@@ -8,6 +8,8 @@ angular.module('webUpdates')
 
             $scope.reclaim = reclaim;
 
+            var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
+
             _initialisePage();
 
             function _initialisePage() {
@@ -22,9 +24,13 @@ angular.module('webUpdates')
                     $scope.objectName = decodeURIComponent($stateParams.name);
                 }
 
-                _fetchObject();
-
                 $log.debug('Url params: source:' + $scope.objectSource + '. type:' + $scope.objectType + ', uid:' + $scope.objectName);
+
+                if (_validateParams($scope.objectSource, $scope.objectType, $scope.objectName)){
+                    _fetchObject();
+                } else {
+                    $scope.isFormValid == false;
+                }
             }
 
             function _fetchObject() {
@@ -45,6 +51,30 @@ angular.module('webUpdates')
                         }
                     }
                 );
+            }
+
+            function _validateParams(objectSource, objectType, objectName){
+                if (! _.contains(reclaimableObjectTypes, objectType)){
+
+                    var typesString = _.reduce(reclaimableObjectTypes, function(str, n) {
+                        return str + ', ' + n;
+                    });
+
+                    AlertService.setGlobalError('Only ' + typesString + ' object types are reclaimable');
+                    return false;
+                }
+
+                if (_.isUndefined(objectSource)){
+                    AlertService.setGlobalError('Source is missing');
+                    return false;
+                }
+
+                if (_.isUndefined(objectName)){
+                    AlertService.setGlobalError('Object key is missing');
+                    return false;
+                }
+
+                return true;
             }
 
             function _addLinkToReferenceAttributes(attributes) {

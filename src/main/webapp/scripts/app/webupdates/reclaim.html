@@ -28,6 +28,6 @@
 
     <section>
         <br/>
-        <button ng-click="reclaim()" ng-disabled="restCallInProgress" class="red-button pull-left ga-deleteobj-create" style="border:0; margin: 0;">Reclaim this object</button>
+        <button ng-click="reclaim()" ng-disabled="restCallInProgress || !isFormValid" class="red-button pull-left ga-deleteobj-create" style="border:0; margin: 0;">Reclaim this object</button>
     </section>
 </div>
