@@ -28,7 +28,7 @@
 
     <section>
         <br/>
-        <input type="submit" ng-click="reclaim()" ng-disabled="!isFormValid || restCallInProgress" class="red-button pull-left ga-deleteobj-create" value="Reclaim this object" />
+        <input type="submit" ng-click="reclaim()" ng-disabled="!isFormValid() || restCallInProgress" class="red-button pull-left ga-deleteobj-create" value="Reclaim this object" />
 
     </section>
 </div>

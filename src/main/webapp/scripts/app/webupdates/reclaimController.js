@@ -7,6 +7,7 @@ angular.module('webUpdates')
         function ($scope, $stateParams, $state, $log, WhoisResources, ModalService, AlertService, RestService, STATE) {
 
             $scope.reclaim = reclaim;
+            $scope.isFormValid = _isFormValid;
 
             var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
@@ -25,7 +26,9 @@ angular.module('webUpdates')
 
                 $log.debug('Url params: source:' + $scope.objectSource + '. type:' + $scope.objectType + ', uid:' + $scope.objectName);
 
-                if (_validateParams($scope.objectSource, $scope.objectType, $scope.objectName)){
+                _validateParams();
+
+                if (_isFormValid()){
                     _fetchObject();
                 }
             }
@@ -51,31 +54,27 @@ angular.module('webUpdates')
                 );
             }
 
-            function _validateParams(objectSource, objectType, objectName){
-                $scope.isFormValid = false;
+            function _isFormValid() {
+                return ! AlertService.hasErrors();
+            }
 
-                if (! _.contains(reclaimableObjectTypes, objectType)){
+            function _validateParams(){
+                if (! _.contains(reclaimableObjectTypes, $scope.objectType)){
 
                     var typesString = _.reduce(reclaimableObjectTypes, function(str, n) {
                         return str + ', ' + n;
                     });
 
                     AlertService.setGlobalError('Only ' + typesString + ' object types are reclaimable');
-                    return false;
                 }
 
-                if (_.isUndefined(objectSource)){
+                if (_.isUndefined($scope.objectSource)){
                     AlertService.setGlobalError('Source is missing');
-                    return false;
                 }
 
-                if (_.isUndefined(objectName)){
+                if (_.isUndefined($scope.objectName)){
                     AlertService.setGlobalError('Object key is missing');
-                    return false;
                 }
-
-                $scope.isFormValid = true;
-                return true;
             }
 
             function _addLinkToReferenceAttributes(attributes) {
@@ -100,12 +99,14 @@ angular.module('webUpdates')
             };
 
             function reclaim () {
-                $state.transitionTo('delete', {
-                    source: $scope.objectSource,
-                    objectType: $scope.objectType,
-                    name: $scope.objectName,
-                    onCancel: STATE.RECLAIM
-                });
+                if (_isFormValid()){
+                    $state.transitionTo('delete', {
+                        source: $scope.objectSource,
+                        objectType: $scope.objectType,
+                        name: $scope.objectName,
+                        onCancel: STATE.RECLAIM
+                    });
+                }
             }
 
         }]);
