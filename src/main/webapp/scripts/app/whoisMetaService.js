@@ -605,10 +605,10 @@ angular.module('dbWebApp')
                 syntax: 'A valid email address, e.g. user@example.net.'
             },
             nicHandle: {
-                syntax: 'When using \"AUTO-1\", by default the first characters of the name of the person or role are used to create the NIC handle. For example, \"John Smith\" will result in a NIC handle such as JS99999-RIPE. You can enter up to 4 additional characters to after \"AUTO-1\" to influence which characters are used. For example, specifying \"AUTO-1BAR\" will result in a NIC handle such as BAR9999-RIPE, regardless of the name.'
+                syntax: 'From 2 to 4 characters, followed by up to 6 digits and a source specification. The first digit must not be \"0\". The source specification is \"-RIPE\" for the RIPE Database.'
             },
             freeForm: {
-                syntax: 'A sequence of ASCII characters.'
+                syntax: 'Any free-form text using <a href="https://en.wikipedia.org/wiki/ISO/IEC_8859-1#Codepage_layout" target="_blank">Latin-1 character encoding</a>.'
             },
             objectName: {
                 syntax: 'Made up of letters, digits, the underscore \"_\" and hyphen \"-\". The first character of a name must be a letter, and the last character a letter or digit. Note that <a href="https://tools.ietf.org/html/rfc2622#section-2" target="_blank">certain words are reserved by RPSL</a> and cannot be used.'
@@ -617,7 +617,7 @@ angular.module('dbWebApp')
                 syntax: 'The letters \"AS\" followed by an integer in the range from 0 to 4294967295, e.g. AS65536'
             },
             keyCert: {
-                syntax: 'PGPKEY-&lt;id&gt;' + '<br/>' + '&lt;id&gt; is  the PGP key ID of the public key in 8-digit hexadecimal format without \"0x\" prefix.'
+                syntax: 'PGPKEY-&lt;id&gt;, where &lt;id&gt; is the PGP key ID of the public key in 8-digit hexadecimal format without the \"0x\" prefix.'
             },
             phone: {
                 syntax: 'Contact telephone number including country code. Can take one of the forms:' + '<br/>' +
@@ -662,7 +662,7 @@ angular.module('dbWebApp')
             },
             'address': {
                 short: undefined,
-                description: 'Full postal address of a contact.',
+                description: 'Specifies the full postal address of a contact.',
                 syntax: _shared.freeForm.syntax
             },
             'admin-c': {
@@ -712,12 +712,12 @@ angular.module('dbWebApp')
                 '<tr>' +
                 '<th>auth-scheme</th>' +
                 '<th>scheme-info</th>' +
-                '<th>Description</th>' +
+                '<th>Notes</th>' +
                 '</tr>' +
                 '<tr>' +
                 '<td>SSO</td>' +
                 '<td>user@example.net</td>' +
-                '<td>The email address is the same as one used for your RIPE NCC Access account.</td>' +
+                '<td>The email address used for your RIPE NCC Access account.</td>' +
                 '</tr>' +
                 '<tr>' +
                 '<td>MD5-PW</td>' +
@@ -727,7 +727,7 @@ angular.module('dbWebApp')
                 '<tr>' +
                 '<td>PGPKEY&#8209;&lt;id&gt;</td>' +
                 '<td></td>' +
-                '<td>;&lt;id&gt; is the PGP key ID to be used for authentication.</td>' +
+                '<td>&lt;id&gt; is the PGP key ID to be used for authentication.</td>' +
                 '</tr>' +
                 '</table>'
             },
@@ -812,8 +812,8 @@ angular.module('dbWebApp')
                 syntax: ''
             }, // no syntax available
             'e-mail': {
-                short: 'The email address of a person.',
-                description: 'The email address of a person. This attribute is filtered from the default whois output when at least one of the objects returned by the query contains an abuse-mailbox attribute.',
+                short: 'The email address of a contact person.',
+                description: 'The email address of a contact person. This attribute is filtered from the default whois output when at least one of the objects returned by the query contains an abuse-mailbox attribute.',
                 syntax: _shared.email.syntax
             },
             'fax-no': {
@@ -829,7 +829,7 @@ angular.module('dbWebApp')
             'filter-set': {
                 short: undefined,
                 description: 'Defines the name of the filter.',
-                syntax: 'A filter-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \"fltr-\", and the last character of a name must be a letter or a digit. A filter-set name can also be hierarchical.  A hierarchical  set name is a sequence of set names and AS numbers separated  by colons \":\".  At least one component of such a name must  be an actual set name (i.e. start with \"fltr-\"). All the  set name components of a hierarchical filter-name have to be filter-set names.'
+                syntax: 'A filter-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \"fltr-\", and the last character of a name must be a letter or a digit. A filter-set name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated  by colons \":\".  At least one component of such a name must  be an actual set name (i.e. start with \"fltr-\"). All the  set name components of a hierarchical filter-name have to be filter-set names.'
             },
             'fingerpr': {
                 short: undefined,
@@ -844,7 +844,7 @@ angular.module('dbWebApp')
             'geoloc': {
                 short: undefined,
                 description: 'The location coordinates for the resource.',
-                syntax: 'Decimal degrees with negative numbers for South and West, e.g. 12.3456, -98.7654'
+                syntax: '<a href="https://en.wikipedia.org/wiki/Decimal_degrees" target="_blank">Decimal degrees</a> with negative numbers for South and West, e.g. 12.3456, -98.7654'
             },
             'holes': {
                 short: 'Lists the component address prefixes that are not reachable through the aggregate route.',
@@ -879,8 +879,8 @@ angular.module('dbWebApp')
             },
             'inet-rtr': {
                 short: undefined,
-                description: 'Fully qualified DNS name of the inet-rtr without trailing \'.\'.',
-                syntax: 'Domain name as specified in RFC 1034 (point 5.2.1.2) with or without trailing dot (\".\"). The total length should not exceed 254 characters (octets).'
+                description: 'Fully qualified DNS name of the inet-rtr without trailing dot.',
+                syntax: 'Domain name in the format \"hostname.example.net\" with or without trailing dot.'
             },
             'inject': {
                 short: 'Specifies which routers perform the aggregation.',
@@ -894,8 +894,8 @@ angular.module('dbWebApp')
                 'afi &lt;afi&gt; &lt;ipv6-address&gt; masklen &lt;integer&gt; [action &lt;action&gt;]' + '[tunnel &lt;remote-endpoint-address&gt;,&lt;encapsulation&gt;]'
             },
             'irt': {
-                short: 'Specifies the name of the irt object, must start with \'IRT-\'',
-                description: 'Specifies the name of the irt object. The name should start with the prefix \'IRT-\' reserved for this type of object.',
+                short: 'Specifies the name of the irt object, must start with \"IRT-\"',
+                description: 'Specifies the name of the irt object. The name should start with the prefix \"IRT-\" reserved for this type of object.',
                 syntax: _shared.irt.syntax
             },
             'irt-nfy': {
@@ -911,11 +911,11 @@ angular.module('dbWebApp')
             'language': {
                 short: 'Identifies the language as a two-letter ISO 639-1 code, e.g. NL.',
                 description: 'Identifies the language.',
-                syntax: 'Valid two-letter ISO 639-1 language code.'
+                syntax: 'Valid two-letter <a href="https://en.wikipedia.org/wiki/ISO_639-1" target="_blank">ISO 639-1 language code</a>.'
             },
             'last-modified': {
                 short: 'Value will be generated by the server.',
-                description: 'This attributes reflects when the object was last changed in ISO 8601 format (yyyy-MM-dd\'T\'HH:mm:ssZ).',
+                description: 'This attributes reflects when the object was last changed in <a href="https://en.wikipedia.org/wiki/ISO_8601" target="_blank">ISO 8601 format</a> (yyyy-MM-dd\'T\'HH:mm:ssZ).',
                 syntax: _shared.generated.syntax
             },
             'local-as': {
@@ -960,7 +960,7 @@ angular.module('dbWebApp')
             },
             'mnt-irt': {
                 short: 'Specifies the IRT object used for CSIRT security incidents.',
-                description: 'May appear in an inetnum or inet6num object. It points to an irt object representing a Computer Security Incident Response Team (CSIRT that handles security incidents for the address space specified by the inetnum or inet6num object.',
+                description: 'May appear in an inetnum or inet6num object. It points to an irt object representing a Computer Security Incident Response Team (CSIRT) that handles security incidents for the address space specified by the inetnum or inet6num object.',
                 syntax: _shared.irt.syntax
             },
             'mnt-lower': {
@@ -1016,15 +1016,15 @@ angular.module('dbWebApp')
             'mp-import': {
                 short: undefined,
                 description: 'Specifies multiprotocol import policy expression.',
-                syntax: '[protocol &lt;protocol-1&gt;] [into &lt;protocol-1&gt;]' + '&lt;br/&gt;' +
+                syntax: '[protocol &lt;protocol-1&gt;] [into &lt;protocol-1&gt;]' + '<br/>' +
                 'afi &lt;afi-list&gt;' + '&lt;br/&gt;' +
-                'from &lt;peering-1&gt; [action &lt;action-1&gt;]' + '&lt;br/&gt;' +
-                '    .' + '&lt;br/&gt;' +
-                '    .' + '&lt;br/&gt;' +
-                '    .' + '&lt;br/&gt;' +
-                'from &lt;peering-N&gt; [action &lt;action-N&gt;]' + '&lt;br/&gt;' +
-                'accept (&lt;filter&gt;|&lt;filter&gt; except &lt;importexpression&gt;|' + '&lt;br/&gt;' +
-                '        &lt;filter&gt; refine &lt;importexpression&gt;)' + '&lt;br/&gt;'
+                'from &lt;peering-1&gt; [action &lt;action-1&gt;]' + '<br/>' +
+                '.' + '<br/>' +
+                '.' + '<br/>' +
+                '.' + '<br/>' +
+                'from &lt;peering-N&gt; [action &lt;action-N&gt;]' + '<br/>' +
+                'accept (&lt;filter&gt;|&lt;filter&gt; except &lt;importexpression&gt;|' + '<br/>' +
+                '        &lt;filter&gt; refine &lt;importexpression&gt;)' + '<br/>'
             },
             'import-via': {
                 short: undefined,
@@ -1060,7 +1060,7 @@ angular.module('dbWebApp')
             'nic-hdl': {
                 short: 'Leave value at \"AUTO-1\" to generate a unique NIC handle',
                 description: 'Specifies the NIC handle of a role or person object. Leave this value on \"AUTO-1\" let the database assign the NIC handle automatically.',
-                syntax: _shared.nicHandle.syntax
+                syntax: 'When using \"AUTO-1\", by default the first characters of the name of the person or role are used to create the NIC handle. For example, \"John Smith\" will result in a NIC handle such as JS99999-RIPE. You can enter up to 4 additional characters after \"AUTO-1\" to influence which characters are used. For example, specifying \"AUTO-1BAR\" will result in a NIC handle such as BAR9999-RIPE, regardless of the specified name.'
             },
             'notify': {
                 short: 'Notification email address where changes to an object should be sent.',
@@ -1070,7 +1070,7 @@ angular.module('dbWebApp')
             'nserver': {
                 short: 'Specifies the nameserver of the domain. Include this attribute at least twice.',
                 description: 'Specifies the nameservers of the domain.',
-                syntax: 'Nameserver name as specified in RFC 1034 with or without trailing dot (\".\").  The total length should not exceed 254 characters (octets). The nameserver name may be optionally followed by IPv4 address in decimal dotted quad form (e.g. 192.0.2.1) or IPv6 address in lowercase canonical form (Section 2.2.1, RFC 4291). The nameserver name may be followed by an IP address only when the name is inside of the domain being delegated.'
+                syntax: 'Nameserver name in the format \"nameserver.example.net\" with or without trailing dot. The nameserver name may be optionally followed by IPv4 address in decimal dotted quad form (e.g. 192.0.2.1) or IPv6 address in lowercase canonical form (e.g. 2001:db8::8:800:200c:417a). The nameserver name may be followed by an IP address only when the name is inside of the domain being delegated.'
             },
             'org': {
                 short: 'Reference to an organisation object representing the holder of the resource.',
@@ -1079,7 +1079,7 @@ angular.module('dbWebApp')
             },
             'org-name': {
                 short: 'Specifies the name of the organisation in ASCII-only.',
-                description: 'Specifies the name of the organisation that this organisation object represents in the RIPE Database. This is an ASCII-only text attribute. The restriction is because this attribute is a look-up key and the whois protocol does not allow specifying character sets in queries.  The user can put the name of the organisation in non-ASCII character sets in the \'descr:\' attribute if required.',
+                description: 'Specifies the name of the organisation that this object represents in the RIPE Database. This is an ASCII-only text attribute. You can specify the name of the organisation in <a href="https://en.wikipedia.org/wiki/ISO/IEC_8859-1#Codepage_layout" target="_blank">Latin-1 character encoding</a> in the \'descr:\' attribute, if required.',
                 syntax: _shared.objectName.syntax
             },
             'org-type': {
@@ -1097,9 +1097,9 @@ angular.module('dbWebApp')
                 '</ul>'
             },
             'organisation': {
-                short: 'Leave value at \'AUTO-1\' to generate a unique org-id.',
-                description: 'Specifies the ID of an organisation object. Leave this value on \"AUTO-1\" let the database assign the ID automatically.',
-                syntax: _shared.organisation.syntax
+                short: 'Leave value at \"AUTO-1\" to generate a unique org-id.',
+                description: 'Specifies the ID of an organisation object. Leave this value on \"AUTO-1\" to let the database assign the ID automatically.',
+                syntax: 'When using \"AUTO-1\", by default the first characters of the organisation name are used to create the ord-id. For example, \"Acme Corporation\" will result in a NIC handle such as ORG-AC9999-RIPE. You can enter up to 4 additional characters after \"AUTO-1\" to influence which characters are used. For example, specifying \"AUTO-1BAR\" will result in an org-id such as ORG-BAR9999-RIPE, regardless of the specified organisation name.'
             },
             'origin': {
                 short: 'Specifies the AS that originates the route.',
@@ -1128,7 +1128,7 @@ angular.module('dbWebApp')
                 short: undefined,
                 description: 'Specifies the name of the peering-set.',
                 syntax: 'A peering-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \'prng-\', and the last character of a name must be a letter or a digit.' + '<br/>' +
-                'A peering-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.' +
+                'A peering-set name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.' +
                 'At least one component of such a name must be an actual set name (i.e. start with \'prng-\').  All the set name components of a hierarchical peering-set name have to be peering-set names.'
             },
             'person': {
@@ -1150,7 +1150,7 @@ angular.module('dbWebApp')
             'pingable': {
                 short: 'Specifies an IP address that should be reachable from outside networks.',
                 description: 'Allows a network operator to advertise an IP address of a node that should be reachable from outside networks. This node can be used as a destination address for diagnostic tests. The IP address must be within the address range of the prefix containing this attribute.',
-                syntax: 'A single IP address'
+                syntax: 'A single IPv4 address in decimal dotted quad form (e.g. 192.0.2.1) in case of a route object, or an IPv6 address in lowercase canonical form (e.g. 2001:db8::8:800:200c:417a) in case of a route6 object.'
             }, // no syntax available
             'poem': {
                 short: undefined,
@@ -1175,7 +1175,7 @@ angular.module('dbWebApp')
             },
             'role': {
                 short: undefined,
-                description: 'Specifies the name of a role entity, e.g. My Orgs NOC.',
+                description: 'Specifies the name of a role entity, e.g. Acme Corporation NOC.',
                 syntax: _shared.organisationName.syntax
             },
             'route': {
@@ -1205,7 +1205,7 @@ angular.module('dbWebApp')
             },
             'source': {
                 short: 'Must be \'RIPE\' for the RIPE Database.',
-                description: 'Specifies the registry where the object is registered. Must be \'RIPE\' for the RIPE Database.',
+                description: 'Specifies the registry where the object is registered. Must be \"RIPE\" for the RIPE Database.',
                 syntax: 'The source is made up of letters, digits, the underscore \"_\" and hyphen \"-\". The first character of a registry name must be a letter, and the last character of a registry name must be a letter or a digit.'
             },
             'sponsoring-org': {
