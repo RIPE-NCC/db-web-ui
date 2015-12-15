@@ -34,7 +34,7 @@ describe('webUpdates: ModifyController', function () {
 
             CredentialsService.setCredentials('TEST-MNT', '@123');
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window
             });
 
@@ -302,7 +302,7 @@ describe('webUpdates: ModifyController init with failures', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
             });
 
@@ -502,7 +502,7 @@ describe('webUpdates: ModifyController ask for password before modify object wit
                     return [200, [{key: 'TEST3-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                 });
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
             });
 
@@ -591,7 +591,7 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
                     return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                 });
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
             });
 
@@ -651,7 +651,7 @@ describe('webUpdates: ModifyController for organisation', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService
             });
 

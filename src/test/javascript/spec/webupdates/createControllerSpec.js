@@ -42,7 +42,7 @@ describe('webUpdates: CreateController', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 
@@ -391,7 +391,7 @@ describe('webUpdates: CreateController', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window
             });
 
@@ -492,7 +492,7 @@ describe('webUpdates: CreateController', function () {
     });
 });
 
-describe('webUpdates: CreateController init with failures', function () {
+describe('webUpdates: CreateModifyController init with failures', function () {
 
     var $scope, $state, $stateParams, $httpBackend, $window;
     var MessageStore;
@@ -525,7 +525,7 @@ describe('webUpdates: CreateController init with failures', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 
@@ -579,7 +579,7 @@ describe('webUpdates: CreateController init with nonexistent obj type', function
 
             spyOn($state, 'transitionTo');
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 

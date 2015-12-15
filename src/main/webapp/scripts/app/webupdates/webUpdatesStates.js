@@ -62,13 +62,13 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.create', {
                     url: '/create/:source/:objectType',
-                    templateUrl: 'scripts/app/webupdates/create.html',
-                    controller: 'CreateController'
+                    templateUrl: 'scripts/app/webupdates/createModify.html',
+                    controller: 'CreateModifyController'
                 })
                 .state('webupdates.modify', {
                     url: '/modify/:source/:objectType/{name:WhoisObjectName}',
-                    templateUrl: 'scripts/app/webupdates/create.html',
-                    controller: 'CreateController'
+                    templateUrl: 'scripts/app/webupdates/createModify.html',
+                    controller: 'CreateModifyController'
                 })
                 .state('webupdates.display', {
                     url: '/display/:source/:objectType/{name:WhoisObjectName}?method',

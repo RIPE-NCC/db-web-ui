@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
         'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper',
         function ($scope, $stateParams, $state, $log, $window,
