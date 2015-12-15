@@ -237,7 +237,7 @@ angular.module('dbWebApp')
                 this.createObject = function (source, objectType, attributes, passwords) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('createObject start for objectType: ' + objectType);
+                    $log.debug('createObject start for objectType: ' + objectType + ' and payload:' +JSON.stringify(attributes));
 
                     $resource('api/whois/:source/:objectType',
                         {   source: source,

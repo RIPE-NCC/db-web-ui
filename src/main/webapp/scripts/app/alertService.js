@@ -33,10 +33,20 @@ angular.module('dbWebApp')
             return $rootScope.errors;
         };
 
+        alertService.getWarnings = function () {
+            return $rootScope.warnings;
+        };
+
         alertService.setErrors = function (whoisResources) {
             $rootScope.errors = whoisResources.getGlobalErrors();
             $rootScope.warnings = whoisResources.getGlobalWarnings();
             $rootScope.infos = whoisResources.getGlobalInfos();
+        };
+
+        alertService.setAllErrors = function (whoisResources) {
+            $rootScope.errors = whoisResources.getAllErrors();
+            $rootScope.warnings = whoisResources.getAllWarnings();
+            $rootScope.infos = whoisResources.getAllInfos();
         };
 
         alertService.addErrors = function (whoisResources) {

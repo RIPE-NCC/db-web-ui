@@ -583,7 +583,6 @@ describe('webUpdates: CreateController init with nonexistent obj type', function
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 
-
             $httpBackend.whenGET(/.*.html/).respond(200);
 
             $httpBackend.flush();

@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', 'WhoisResources', 'RestService', 'AlertService',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, RestService, AlertService) {
+    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', 'WhoisResources',
+        'RestService', 'AlertService','ErrorReporterService','MessageStore',
+        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore) {
 
             $scope.TOTAL_ATTR_LENGTH = 15;
 
@@ -29,12 +30,7 @@ angular.module('textUpdates')
                     ', object.name:' + $scope.object.name);
 
                 _prepulateText();
-
             };
-
-            function submit() {
-                $scope.restCalInProgress = true;
-            }
 
             function _prepulateText() {
                 var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
@@ -56,7 +52,6 @@ angular.module('textUpdates')
                 attributes.setSingleAttributeOnName('org-type', 'OTHER');
 
                 _enrichWithSsoMntners(attributes);
-                _capitaliseMandatory(attributes);
 
                 return attributes;
             }
@@ -67,17 +62,24 @@ angular.module('textUpdates')
                     function (ssoMntners) {
                         $scope.restCalInProgress = false;
                         var enrichedAttrs = _addSsoMntnersAsMntBy(attributes, ssoMntners);
+                        _capitaliseMandatory(enrichedAttrs);
                         $scope.object.rpsl = _toRpsl(enrichedAttrs);
                     }, function (error) {
                         $scope.restCalInProgress = false;
                         $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
+                        _capitaliseMandatory(attributes);
                         $scope.object.rpsl = _toRpsl(attributes);
                     }
                 );
             }
 
             function _addSsoMntnersAsMntBy(attributes, mntners) {
+                // keep existing
+                if( mntners.length === 0 ) {
+                    return attributes;
+                }
+
                 // merge mntners into attributes
                 var mntnersAsAttrs = _.map(mntners, function (item) {
                     return {name: 'mnt-by', value: item.key};
@@ -110,4 +112,60 @@ angular.module('textUpdates')
                 });
             }
 
+            function submit() {
+                var passwords = undefined;
+
+                var attributes = _fromRpsl($scope.object.rpsl);
+
+                $scope.restCalInProgress = true;
+                RestService.createObject($scope.object.source, $scope.object.type,
+                    WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords).then(
+                    function(result) {
+                        $scope.restCalInProgress = false;
+
+                        var whoisResources = WhoisResources.wrapWhoisResources(result);
+                        MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
+                        _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Create');
+
+                    },function(error) {
+                        $scope.restCalInProgress = false;
+
+                        if (_.isUndefined(error.data)) {
+                            $log.error('Response not understood:'+JSON.stringify(error));
+                            return;
+                        }
+
+                        var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                        AlertService.setAllErrors(whoisResources);
+                        if(!_.isUndefined(whoisResources.getAttributes())) {
+                            var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
+                            ErrorReporterService.log('Create', $scope.object.type, AlertService.getErrors(), attributes);
+                        }
+                    }
+                );
+            }
+
+            function _fromRpsl(rpsl) {
+                var attrs = [];
+                _.each(rpsl.split('\n'), function(item) {
+                    var splitted = item.split(':');
+                    if( splitted.length > 0 && !_.isUndefined(splitted[0]) && !_.isEmpty(_.trim(splitted[0]))) {
+                        var valueWithComment = undefined;
+                        if(!_.isUndefined(splitted[1]) && !_.isEmpty(_.trim(splitted[1]))) {
+                            valueWithComment = _.trim(splitted[1]);
+                        }
+                        attrs.push( {name: _.trim(splitted[0]), value: valueWithComment} );
+                    }
+                });
+                return attrs;
+            }
+
+            function _navigateToDisplayPage(source, objectType, objectName, operation) {
+                $state.transitionTo('webupdates.display', {
+                    source: source,
+                    objectType: objectType,
+                    name: objectName,
+                    method: operation
+                });
+            }
         }]);

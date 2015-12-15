@@ -97,6 +97,18 @@ angular.module('dbWebApp')
                 });
         };
 
+        var getAllErrors = function () {
+            if( ! this.errormessages ) {
+                return [];
+            }
+            var self = this;
+            return this.errormessages.errormessage.filter(
+                function (errorMessage) {
+                    errorMessage.plainText = self.readableError(errorMessage);
+                    return errorMessage.severity === 'Error';
+                });
+        };
+
          var getGlobalWarnings = function () {
              if( ! this.errormessages ) {
                  return [];
@@ -110,6 +122,18 @@ angular.module('dbWebApp')
                 });
         };
 
+        var getAllWarnings = function () {
+            if( ! this.errormessages ) {
+                return [];
+            }
+
+            var self = this;
+            return this.errormessages.errormessage.filter(
+                function (errorMessage) {
+                    errorMessage.plainText = self.readableError(errorMessage);
+                    return errorMessage.severity === 'Warning';
+                });
+        };
          var getGlobalInfos = function () {
              if( ! this.errormessages ) {
                  return [];
@@ -120,6 +144,19 @@ angular.module('dbWebApp')
                 function (errorMessage) {
                     errorMessage.plainText = self.readableError(errorMessage);
                     return errorMessage.severity === 'Info' && !errorMessage.attribute;
+                });
+        };
+
+        var getAllInfos = function () {
+            if( ! this.errormessages ) {
+                return [];
+            }
+
+            var self = this;
+            return this.errormessages.errormessage.filter(
+                function (errorMessage) {
+                    errorMessage.plainText = self.readableError(errorMessage);
+                    return errorMessage.severity === 'Info';
                 });
         };
 
@@ -224,8 +261,11 @@ angular.module('dbWebApp')
             // enrich data with methods
             whoisResources.toString = toString;
             whoisResources.readableError = readableError;
+            whoisResources.getAllErrors = getAllErrors;
             whoisResources.getGlobalErrors = getGlobalErrors;
+            whoisResources.getAllWarnings = getAllWarnings;
             whoisResources.getGlobalWarnings = getGlobalWarnings;
+            whoisResources.getAllInfos = getAllInfos;
             whoisResources.getGlobalInfos = getGlobalInfos;
             whoisResources.getErrorsOnAttribute = getErrorsOnAttribute;
             whoisResources.getAttributes = getAttributes;
