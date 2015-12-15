@@ -23,7 +23,7 @@ angular.module('textUpdates')
                 .state('textupdates.modify', {
                     url: '/modify/:source/:objectType/:name',
                     templateUrl: 'scripts/app/textupdates/modify.html',
-                    controller: 'TextController'
+                    controller: 'TextModifyController'
                 })
                 .state('textupdates.display', {
                     url: '/display/:source/:objectType/:name',
