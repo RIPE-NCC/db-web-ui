@@ -68,9 +68,9 @@ angular.module('webUpdates')
 
             function reclaim () {
                 $state.transitionTo('delete', {
-                    source: $scope.source,
+                    source: $scope.objectSource,
                     objectType: $scope.objectType,
-                    name: $scope.name
+                    name: $scope.objectName
                 });
             }
 
