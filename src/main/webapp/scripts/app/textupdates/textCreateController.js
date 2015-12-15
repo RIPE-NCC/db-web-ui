@@ -2,10 +2,9 @@
 
 angular.module('textUpdates')
     .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', 'WhoisResources',
-        'RestService', 'AlertService','ErrorReporterService','MessageStore',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore) {
+        'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService',
+        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,RpslService) {
 
-            $scope.TOTAL_ATTR_LENGTH = 15;
 
             $scope.submit = submit;
 
@@ -63,13 +62,13 @@ angular.module('textUpdates')
                         $scope.restCalInProgress = false;
                         var enrichedAttrs = _addSsoMntnersAsMntBy(attributes, ssoMntners);
                         _capitaliseMandatory(enrichedAttrs);
-                        $scope.object.rpsl = _toRpsl(enrichedAttrs);
+                        $scope.object.rpsl = RpslService.toRpsl(enrichedAttrs);
                     }, function (error) {
                         $scope.restCalInProgress = false;
                         $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                         _capitaliseMandatory(attributes);
-                        $scope.object.rpsl = _toRpsl(attributes);
+                        $scope.object.rpsl = RpslService.toRpsl(attributes);
                     }
                 );
             }
@@ -92,18 +91,6 @@ angular.module('textUpdates')
                 });
             }
 
-            function _toRpsl(attributes) {
-                var rpslData = '';
-                _.each(attributes, function (item) {
-                    rpslData = rpslData.concat(_.padRight(item.name + ':', $scope.TOTAL_ATTR_LENGTH, ' '));
-                    if (!_.isUndefined(item.value)) {
-                        rpslData = rpslData.concat(item.value);
-                    }
-                    rpslData = rpslData.concat('\n');
-                });
-                return rpslData;
-            }
-
             function _capitaliseMandatory(attributes) {
                 _.each(attributes, function(attr) {
                     if(attr.$$meta.$$mandatory) {
@@ -115,7 +102,7 @@ angular.module('textUpdates')
             function submit() {
                 var passwords = undefined;
 
-                var attributes = _fromRpsl($scope.object.rpsl);
+                var attributes = RpslService.fromRpsl($scope.object.rpsl);
 
                 $scope.restCalInProgress = true;
                 RestService.createObject($scope.object.source, $scope.object.type,
@@ -143,21 +130,6 @@ angular.module('textUpdates')
                         }
                     }
                 );
-            }
-
-            function _fromRpsl(rpsl) {
-                var attrs = [];
-                _.each(rpsl.split('\n'), function(item) {
-                    var splitted = item.split(':');
-                    if( splitted.length > 0 && !_.isUndefined(splitted[0]) && !_.isEmpty(_.trim(splitted[0]))) {
-                        var valueWithComment = undefined;
-                        if(!_.isUndefined(splitted[1]) && !_.isEmpty(_.trim(splitted[1]))) {
-                            valueWithComment = _.trim(splitted[1]);
-                        }
-                        attrs.push( {name: _.trim(splitted[0]), value: valueWithComment} );
-                    }
-                });
-                return attrs;
             }
 
             function _navigateToDisplayPage(source, objectType, objectName, operation) {

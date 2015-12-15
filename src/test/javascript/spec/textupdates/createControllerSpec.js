@@ -1,6 +1,6 @@
 'use strict';
 
-describe('webUpdates: TextCreateController', function () {
+describe('textUpdates: TextCreateController', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
     var WhoisResources;
