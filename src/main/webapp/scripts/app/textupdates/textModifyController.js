@@ -3,7 +3,7 @@
 angular.module('textUpdates')
     .controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', 'WhoisResources',
         'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,RpslService) {
+        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore, RpslService) {
 
 
             $scope.submit = submit;
@@ -28,75 +28,35 @@ angular.module('textUpdates')
                     ', object.type:' + $scope.object.type +
                     ', object.name:' + $scope.object.name);
 
-              //  _prepulateText();
+                _prepopulateText();
             };
 
-            function _prepulateText() {
-                var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
-                if (_.isEmpty(attributesOnObjectType)) {
-                    $state.transitionTo('notFound');
-                    return
-                }
-
-                _enrich(
-                    WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributesOnObjectType)
-                );
+            function _prepopulateText() {
+                _fetchObject();
             }
 
-            function _enrich(attributes) {
-                attributes.setSingleAttributeOnName('source', $scope.object.source);
-                attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
-                // other org-types only settable with override
-                attributes.setSingleAttributeOnName('org-type', 'OTHER');
+            function _fetchObject() {
 
-                _enrichWithSsoMntners(attributes);
-
-                return attributes;
-            }
-
-            function _enrichWithSsoMntners(attributes) {
                 $scope.restCalInProgress = true;
-                RestService.fetchMntnersForSSOAccount().then(
-                    function (ssoMntners) {
+                RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name).then(
+                    function (whoisObject) {
                         $scope.restCalInProgress = false;
-                        var enrichedAttrs = _addSsoMntnersAsMntBy(attributes, ssoMntners);
-                        _capitaliseMandatory(enrichedAttrs);
-                        $scope.object.rpsl = RpslService.toRpsl(enrichedAttrs);
+                        _wrapAndEnrichResources($scope.object.type, whoisObject);
+                        $scope.object.rpsl = RpslService.toRpsl(whoisObject.getAttributes());
                     }, function (error) {
                         $scope.restCalInProgress = false;
-                        $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
-                        AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
-                        _capitaliseMandatory(attributes);
-                        $scope.object.rpsl = RpslService.toRpsl(attributes);
+
+
                     }
                 );
             }
 
-            function _addSsoMntnersAsMntBy(attributes, mntners) {
-                // keep existing
-                if( mntners.length === 0 ) {
-                    return attributes;
+            function _wrapAndEnrichResources(objectType, resp) {
+                var whoisResources = WhoisResources.wrapWhoisResources(resp);
+                if (whoisResources) {
+                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
                 }
-
-                // merge mntners into attributes
-                var mntnersAsAttrs = _.map(mntners, function (item) {
-                    return {name: 'mnt-by', value: item.key};
-                });
-                var attrsWithMntners = attributes.addAttrsSorted('mnt-by', mntnersAsAttrs);
-
-                // strip mnt-by without value from attributes
-                return _.filter(attrsWithMntners, function(item) {
-                    return !(item.name === 'mnt-by' && _.isUndefined(item.value));
-                });
-            }
-
-            function _capitaliseMandatory(attributes) {
-                _.each(attributes, function(attr) {
-                    if(attr.$$meta.$$mandatory) {
-                        attr.name = attr.name.toUpperCase();
-                    }
-                });
+                return whoisResources;
             }
 
             function submit() {
@@ -105,14 +65,15 @@ angular.module('textUpdates')
                 var attributes = RpslService.fromRpsl($scope.object.rpsl);
 
                 $scope.restCalInProgress = true;
-                RestService.createObject($scope.object.source, $scope.object.type,
+
+                RestService.modifyObject($scope.object.source, $scope.object.type,
                     WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords).then(
                     function(result) {
                         $scope.restCalInProgress = false;
 
                         var whoisResources = WhoisResources.wrapWhoisResources(result);
                         MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
-                        _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Create');
+                        _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Modify');
 
                     },function(error) {
                         $scope.restCalInProgress = false;

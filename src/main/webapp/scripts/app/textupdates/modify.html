@@ -1,7 +1,7 @@
 <div>
     <h1>Text updates modify {{object.source}} {{object.type}} {{object.name}}</h1>
     <alerts></alerts>
-    <form id="textCreateForm">
+    <form id="textModifyForm">
 
         <div class="form-group">
             <label for="createRpsl">RPSL to create object</label>
@@ -12,9 +12,9 @@
                       style="font-family:monospace;"></textarea>
 
             <input type="submit" ng-click="submit()" ng-disabled="restCalInProgress"
-                   class="blue-button pull-right ga-createobj-create" value="Create"/>
+                   class="blue-button pull-right ga-modifyobj-modify" value="Modify"/>
 
-            <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
+            <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
 
         </div>
     </form>
