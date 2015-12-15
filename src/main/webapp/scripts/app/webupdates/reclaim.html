@@ -1,7 +1,6 @@
 <div>
 
-
-    <h1>{{operation}} {{objectType}} {{objectName}}</h1>
+    <h1>Reclaim {{objectType}} {{objectName}}</h1>
 
     <alerts></alerts>
 
@@ -25,10 +24,10 @@
                 </td>
             </tr>
         </table>
-
+    </section>
 
     <section>
         <br/>
-        <button ng-click="reclaim()" class="blue-button pull-right ga-createobj-select">Reclaim</button>
+        <button ng-click="reclaim()" ng-disabled="restCallInProgress" class="red-button pull-left ga-deleteobj-create" style="border:0; margin: 0;">Reclaim this object</button>
     </section>
 </div>

@@ -11,6 +11,7 @@ angular.module('webUpdates')
             _initialisePage();
 
             function _initialisePage() {
+                $scope.restCallInProgress = true;
 
                 AlertService.clearErrors();
 
@@ -34,6 +35,7 @@ angular.module('webUpdates')
                         _addLinkToReferenceAttributes($scope.attributes);
                         AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp);
                         AlertService.setErrors(whoisResources);
+                        $scope.restCallInProgress = false;
 
                     }, function (resp) {
                         var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
