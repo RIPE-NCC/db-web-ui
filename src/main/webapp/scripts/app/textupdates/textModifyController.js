@@ -66,7 +66,7 @@ angular.module('textUpdates')
 
                 $scope.restCalInProgress = true;
 
-                RestService.modifyObject($scope.object.source, $scope.object.type,
+                RestService.modifyObject($scope.object.source, $scope.object.type, $scope.object.name,
                     WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords).then(
                     function(result) {
                         $scope.restCalInProgress = false;
