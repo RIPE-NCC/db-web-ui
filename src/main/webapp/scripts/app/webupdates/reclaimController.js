@@ -8,7 +8,6 @@ angular.module('webUpdates')
 
             $scope.reclaim = reclaim;
 
-
             _initialisePage();
 
             function _initialisePage() {
