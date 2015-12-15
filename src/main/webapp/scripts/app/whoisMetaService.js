@@ -90,7 +90,7 @@ angular.module('dbWebApp')
                 if (!_.isUndefined(attr.$$meta)) {
                     idx = attr.$$meta.$$idx;
                 }
-                return  _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attrMeta, idx)
+                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attrMeta, idx);
             });
         };
 

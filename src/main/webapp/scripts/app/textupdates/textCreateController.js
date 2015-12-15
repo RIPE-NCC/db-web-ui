@@ -15,7 +15,7 @@ angular.module('textUpdates')
 
                 $scope.restCalInProgress = false;
 
-                $cookies.put('ui-mode','textupdates');
+                $cookies.put('ui-mode', 'textupdates');
 
                 // extract parameters from the url
                 $scope.object = {}
@@ -24,11 +24,11 @@ angular.module('textUpdates')
                 $scope.object.name = decodeURIComponent($stateParams.name);
 
                 $log.debug('TextUpdatesController: Url params:' +
-                    ' object.source:'+ $scope.object.source +
+                    ' object.source:' + $scope.object.source +
                     ', object.type:' + $scope.object.type +
-                    ', object.name:' + $scope.object.name  );
+                    ', object.name:' + $scope.object.name);
 
-               _prepulateText();
+                _prepulateText();
 
             };
 
@@ -43,12 +43,9 @@ angular.module('textUpdates')
                     return;
                 }
 
-                var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, mandatoryAttributesOnObjectType);
-
-                _enrich(attributes);
-
-                $scope.object.rpsl = _toRpsl(attributes);
-
+                _enrich(
+                    WhoisResources.wrapAndEnrichAttributes($scope.object.type, mandatoryAttributesOnObjectType)
+                );
             }
 
             function _enrich(attributes) {
@@ -57,20 +54,51 @@ angular.module('textUpdates')
                 attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                 // other org-types only settable with override
                 attributes.setSingleAttributeOnName('org-type', 'OTHER');
+
+                _enrichWithSsoMntners(attributes);
+
+                return attributes;
             }
 
-            function _toRpsl( attributes ) {
-                var data = '';
-                _.each(attributes, function(item) {
-                    $log.error('name:'+item.name + " value:" + item.value);
-                    data = data.concat(_.padRight(item.name+':', $scope.TOTAL_ATTR_LENGTH, ' '));
-                    if(!_.isUndefined(item.value)) {
-                        data = data.concat(item.value);
-
+            function _enrichWithSsoMntners(attributes) {
+                $scope.restCalInProgress = true;
+                RestService.fetchMntnersForSSOAccount().then(
+                    function (ssoMntners) {
+                        $scope.restCalInProgress = false;
+                        var enrichedAttrs = _addSsoMntnersAsMntBy(attributes, ssoMntners);
+                        $scope.object.rpsl = _toRpsl(enrichedAttrs);
+                    }, function (error) {
+                        $scope.restCalInProgress = false;
+                        $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
+                        AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
+                        $scope.object.rpsl = _toRpsl(attributes);
                     }
-                    data = data.concat('\n');
+                );
+            }
+
+            function _addSsoMntnersAsMntBy(attributes, mntners) {
+                // merge mntners into attributes
+                var mntnersAsAttrs = _.map(mntners, function (item) {
+                    return {name: 'mnt-by', value: item.key};
                 });
-                return data;
+                var attrsWithMntners = attributes.addAttrsSorted('mnt-by', mntnersAsAttrs);
+
+                // strip mnt-by without value from attributes
+                return _.filter(attrsWithMntners, function(item) {
+                    return !(item.name === 'mnt-by' && _.isUndefined(item.value));
+                });
+            }
+
+            function _toRpsl(attributes) {
+                var rpslData = '';
+                _.each(attributes, function (item) {
+                    rpslData = rpslData.concat(_.padRight(item.name + ':', $scope.TOTAL_ATTR_LENGTH, ' '));
+                    if (!_.isUndefined(item.value)) {
+                        rpslData = rpslData.concat(item.value);
+                    }
+                    rpslData = rpslData.concat('\n');
+                });
+                return rpslData;
             }
 
         }]);
