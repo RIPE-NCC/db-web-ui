@@ -59,6 +59,28 @@ describe('webUpdates: TextCreateController', function () {
         expect($scope.object.type).toBe('inetnum');
     });
 
+    it('should populate an empty person rpsl, mandatory attrs uppercase and optional lowercase', function() {
+        doCreateController('person');
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
+        expect($scope.object.rpsl).toEqual(
+            'PERSON:        \n' +
+            'ADDRESS:       \n' +
+            'PHONE:         \n' +
+            'fax-no:        \n' +
+            'e-mail:        \n' +
+            'org:           \n' +
+            'NIC-HDL:       AUTO-1\n' +
+            'remarks:       \n' +
+            'notify:        \n' +
+            'abuse-mailbox: \n' +
+            'MNT-BY:        \n' +
+            'changed:       \n' +
+            'created:       \n' +
+            'last-modified: \n' +
+            'SOURCE:        RIPE\n');
+    });
+
     it('should fetch and populate sso mntners', function () {
         doCreateController('inetnum');
 
@@ -286,25 +308,4 @@ describe('webUpdates: TextCreateController', function () {
     });
 
 
-    it('should populate an empty person rpsl, mandatory attrs uppercase and optional lowercase', function() {
-        doCreateController('person');
-        $httpBackend.whenGET('api/user/mntners').respond([]);
-        $httpBackend.flush();
-        expect($scope.object.rpsl).toEqual(
-            'PERSON:        \n' +
-            'ADDRESS:       \n' +
-            'PHONE:         \n' +
-            'fax-no:        \n' +
-            'e-mail:        \n' +
-            'org:           \n' +
-            'NIC-HDL:       AUTO-1\n' +
-            'remarks:       \n' +
-            'notify:        \n' +
-            'abuse-mailbox: \n' +
-            'MNT-BY:        \n' +
-            'changed:       \n' +
-            'created:       \n' +
-            'last-modified: \n' +
-            'SOURCE:        RIPE\n');
-    });
 });
