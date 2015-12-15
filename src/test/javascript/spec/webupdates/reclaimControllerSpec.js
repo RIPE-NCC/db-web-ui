@@ -112,8 +112,6 @@ describe('webUpdates: ReclaimController', function () {
     });
 
     it('should populate the ui with attributes', function () {
-        var stateBefore = $state.current.name;
-
         createReclaimController();
 
         expect($scope.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);

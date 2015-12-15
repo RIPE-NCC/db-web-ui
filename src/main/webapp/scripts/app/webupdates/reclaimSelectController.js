@@ -6,6 +6,9 @@ angular.module('webUpdates')
     .controller('ReclaimSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log',
         function ($scope, $stateParams, $state, SOURCE, $log) {
 
+            $scope.isFormValid = _isFormValid;
+            $scope.navigateToReclaim = _navigateToReclaim;
+
             _initialisePage();
 
             function _initialisePage() {
@@ -19,12 +22,17 @@ angular.module('webUpdates')
                 };
             }
 
-            $scope.navigateToReclaim = function () {
+            function _navigateToReclaim() {
                 $state.transitionTo('reclaim', {
                     source: $scope.selected.source,
                     objectType: $scope.selected.objectType,
                     name: $scope.selected.name
                 });
+            }
 
-            };
+            function _isFormValid() {
+                return $scope.selected.name != undefined && $scope.selected.name !== '';
+            }
+
         }]);
+

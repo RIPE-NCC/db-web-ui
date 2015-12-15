@@ -9,6 +9,7 @@
                     ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
             <br/>
             <label>Object key to reclaim</label>
+            <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
             <input type="text"
                    name="key"
                    ng-model="selected.name"
@@ -19,6 +20,7 @@
 
     <section>
         <br/>
-        <button ng-click="navigateToReclaim()" class="blue-button pull-right ga-createobj-select">Reclaim</button>
+        <input type="submit" ng-click="navigateToReclaim()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-createobj-create" value="Reclaim"/>
+
     </section>
 </div>
