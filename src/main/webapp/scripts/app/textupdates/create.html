@@ -1,4 +1,19 @@
 <div>
-    <h1>Text updates create {{objectSource}} {{objectType}}</h1>
+    <h1>Create {{object.type}}</h1>
+
     <alerts></alerts>
+
+    <form id="textCreateForm">
+
+        <div class="form-group">
+            <label for="createRpsl">RPSL to create object</label>
+            <textarea class="form-control" rows="15" id="createRpsl">{{object.rpsl}}</textarea>
+
+            <input type="submit" ng-click="submit()" ng-disabled="restCalInProgress"
+                   class="blue-button pull-right ga-createobj-create" value="Create"/>
+
+            <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
+
+        </div>
+    </form>
 </div>

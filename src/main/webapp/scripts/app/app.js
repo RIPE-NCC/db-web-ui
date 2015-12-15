@@ -73,6 +73,8 @@ angular.module('dbWebApp', [
 
             $rootScope.$on('$stateChangeStart',
                 function (event, toState, toParams, fromState, fromParams) {
+                    $log.error('$stateChangeStart:' + JSON.stringify(toState));
+
                     var requiredMode = 'webupdates';
                     var otherMode = 'textupdates';
 
@@ -82,20 +84,19 @@ angular.module('dbWebApp', [
                         otherMode = 'webupdates';
                     }
                     $log.error('requested mode:' + requiredMode);
-                    $log.error('$stateChangeStart:' + JSON.stringify(toState));
-                    if (toState.name === otherMode + '.display') {
-                        event.preventDefault();
-                        $state.transitionTo(requiredMode + '..display', toParams);
-                    } else if (toState.name === otherMode + '.modify') {
-                        event.preventDefault();
-                        $state.transitionTo(requiredMode + '.modify', toParams);
-                    } else if (toState.name === otherMode + '.delete') {
-                        event.preventDefault();
-                        $state.transitionTo(requiredMode + '.delete', toParams);
-                    } else if (toState.name === otherMode + '.select') {
-                        event.preventDefault();
-                        $state.transitionTo(requiredMode + '.select', toParams);
-                    }
+                    //if (toState.name === otherMode + '.display') {
+                    //    event.preventDefault();
+                    //    $state.transitionTo(requiredMode + '..display', toParams);
+                    //} else if (toState.name === otherMode + '.modify') {
+                    //    event.preventDefault();
+                    //    $state.transitionTo(requiredMode + '.modify', toParams);
+                    //} else if (toState.name === otherMode + '.delete') {
+                    //    event.preventDefault();
+                    //    $state.transitionTo(requiredMode + '.delete', toParams);
+                    //} else if (toState.name === otherMode + '.select') {
+                    //    event.preventDefault();
+                    //    $state.transitionTo(requiredMode + '.select', toParams);
+                    //}
                 }
             );
 
