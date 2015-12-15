@@ -37,14 +37,14 @@ angular.module('textUpdates')
             }
 
             function _prepulateText() {
-                var mandatoryAttributesOnObjectType = WhoisResources.getMandatoryAttributesOnObjectType($scope.object.type);
-                if (_.isEmpty(mandatoryAttributesOnObjectType)) {
+                var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
+                if (_.isEmpty(attributesOnObjectType)) {
                     $state.transitionTo('notFound');
-                    return;
+                    return
                 }
 
                 _enrich(
-                    WhoisResources.wrapAndEnrichAttributes($scope.object.type, mandatoryAttributesOnObjectType)
+                    WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributesOnObjectType)
                 );
             }
 
@@ -56,6 +56,7 @@ angular.module('textUpdates')
                 attributes.setSingleAttributeOnName('org-type', 'OTHER');
 
                 _enrichWithSsoMntners(attributes);
+                _capitaliseMandatory(attributes);
 
                 return attributes;
             }
@@ -99,6 +100,14 @@ angular.module('textUpdates')
                     rpslData = rpslData.concat('\n');
                 });
                 return rpslData;
+            }
+
+            function _capitaliseMandatory(attributes) {
+                _.each(attributes, function(attr) {
+                    if(attr.$$meta.$$mandatory) {
+                        attr.name = attr.name.toUpperCase();
+                    }
+                });
             }
 
         }]);
