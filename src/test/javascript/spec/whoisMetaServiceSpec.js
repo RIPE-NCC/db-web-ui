@@ -15,13 +15,13 @@ describe('dbWebApp: WhoisMetaService', function () {
     });
 
     it('should return correct documentation based on object- and attribute-name',function() {
-        expect($whoisMetaService.getAttributeDescription("mntner","admin-c")).toEqual('References an on-site administrative contact.')
-        expect($whoisMetaService.getAttributeDescription("inet-rtr","mp-peer")).toEqual('Details of any (interior or exterior) multiprotocol router peerings.')
+        expect($whoisMetaService.getAttributeDescription("mntner","admin-c")).toEqual('References an on-site administrative contact.');
+        expect($whoisMetaService.getAttributeDescription("inet-rtr","mp-peer")).toEqual('Details of any (interior or exterior) multiprotocol router peerings.');
     });
 
     it('should return correct syntax based on object- and attribute-name',function() {
-        expect($whoisMetaService.getAttributeSyntax("mntner","admin-c")).toEqual('From 2 to 4 characters optionally followed by up to 6 digits optionally followed by a source specification. The first digit must not be "0".  Source specification starts with "-" followed by source name up to 9-character length.')
-        expect($whoisMetaService.getAttributeSyntax("inet-rtr","mp-peer")).toEqual('&lt;protocol&gt; &lt;ipv4-address&gt; &lt;options&gt;&lt;br/&gt;| &lt;protocol&gt; &lt;inet-rtr-name&gt; &lt;options&gt;&lt;br/&gt;| &lt;protocol&gt; &lt;rtr-set-name&gt; &lt;options&gt;&lt;br/&gt;| &lt;protocol&gt; &lt;peering-set-name&gt; &lt;options&gt;')
+        expect($whoisMetaService.getAttributeSyntax("mntner","admin-c")).toEqual('From 2 to 4 characters, followed by up to 6 digits and a source specification. The first digit must not be \"0\". The source specification is \"-RIPE\" for the RIPE Database.');
+        expect($whoisMetaService.getAttributeSyntax("inet-rtr","mp-peer")).toEqual('&lt;protocol&gt; &lt;ipv4-address&gt; &lt;options&gt;&lt;br/&gt;| &lt;protocol&gt; &lt;inet-rtr-name&gt; &lt;options&gt;&lt;br/&gt;| &lt;protocol&gt; &lt;rtr-set-name&gt; &lt;options&gt;&lt;br/&gt;| &lt;protocol&gt; &lt;peering-set-name&gt; &lt;options&gt;');
     });
 
     it('should return all objectTypes', function(){
