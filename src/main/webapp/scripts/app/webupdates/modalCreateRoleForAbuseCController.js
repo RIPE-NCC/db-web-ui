@@ -27,8 +27,8 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
                     var whoisResources = WhoisResources.wrapWhoisResources(response);
                     $modalInstance.close(whoisResources.getAttributes());
                 },
-                function () {
-                    return $modalInstance.dismiss('cancel');
+                function (error) {
+                    return $modalInstance.dismiss(error);
                 });
         }
 
