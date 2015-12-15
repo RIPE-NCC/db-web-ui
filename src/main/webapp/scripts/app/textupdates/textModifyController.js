@@ -23,30 +23,26 @@ angular.module('textUpdates')
                 $scope.object.type = $stateParams.objectType;
                 $scope.object.name = decodeURIComponent($stateParams.name);
 
-                $log.debug('TextUpdatesController: Url params:' +
+                $log.debug('TextModifyController: Url params:' +
                     ' object.source:' + $scope.object.source +
                     ', object.type:' + $scope.object.type +
                     ', object.name:' + $scope.object.name);
 
-                _prepopulateText();
+                _fetchAndPopulateObject();
             };
 
-            function _prepopulateText() {
-                _fetchObject();
-            }
-
-            function _fetchObject() {
+            function _fetchAndPopulateObject() {
 
                 $scope.restCalInProgress = true;
                 RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name).then(
                     function (whoisObject) {
                         $scope.restCalInProgress = false;
+                        // TODO: look ar create-text-screen and web-modify-screen on how to do this
                         _wrapAndEnrichResources($scope.object.type, whoisObject);
                         $scope.object.rpsl = RpslService.toRpsl(whoisObject.getAttributes());
                     }, function (error) {
                         $scope.restCalInProgress = false;
-
-
+                        // TODO: what?
                     }
                 );
             }

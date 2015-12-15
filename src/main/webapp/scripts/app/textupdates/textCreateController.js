@@ -21,41 +21,39 @@ angular.module('textUpdates')
                 $scope.object = {}
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
-                $scope.object.name = decodeURIComponent($stateParams.name);
 
-                $log.debug('TextUpdatesController: Url params:' +
+                $log.debug('TextCreateController: Url params:' +
                     ' object.source:' + $scope.object.source +
-                    ', object.type:' + $scope.object.type +
-                    ', object.name:' + $scope.object.name);
+                    ', object.type:' + $scope.object.type );
 
-                _prepulateText();
+                _prepopulateRpsl();
             };
 
-            function _prepulateText() {
+            function _prepopulateRpsl() {
                 var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
                 if (_.isEmpty(attributesOnObjectType)) {
                     $state.transitionTo('notFound');
                     return
                 }
 
-                _enrich(
+                _enrichAttributes(
                     WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributesOnObjectType)
                 );
             }
 
-            function _enrich(attributes) {
+            function _enrichAttributes(attributes) {
                 attributes.setSingleAttributeOnName('source', $scope.object.source);
                 attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                 attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                 // other org-types only settable with override
                 attributes.setSingleAttributeOnName('org-type', 'OTHER');
 
-                _enrichWithSsoMntners(attributes);
+                _enrichAttributesWithSsoMntners(attributes);
 
                 return attributes;
             }
 
-            function _enrichWithSsoMntners(attributes) {
+            function _enrichAttributesWithSsoMntners(attributes) {
                 $scope.restCalInProgress = true;
                 RestService.fetchMntnersForSSOAccount().then(
                     function (ssoMntners) {
