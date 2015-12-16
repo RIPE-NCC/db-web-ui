@@ -49,11 +49,8 @@ angular.module('textUpdates')
             }
 
             function _enrichAttributes(attributes) {
-                attributes.setSingleAttributeOnName('source', $scope.object.source);
-                attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
-                // other org-types only settable with override
-                attributes.setSingleAttributeOnName('org-type', 'OTHER');
+
+                _enrichWithDefaults(attributes);
 
                 _enrichAttributesWithSsoMntners(attributes).then(
                     function (attributes) {
@@ -63,6 +60,14 @@ angular.module('textUpdates')
                 );
 
                 return attributes;
+            }
+
+            function _enrichWithDefaults(attributes) {
+                // This does only add value if attribute exist
+                attributes.setSingleAttributeOnName('source', $scope.object.source);
+                attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+                attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
+                attributes.setSingleAttributeOnName('org-type', 'OTHER'); // other org-types only settable with override
             }
 
             function _enrichAttributesWithSsoMntners(attributes) {
@@ -96,7 +101,7 @@ angular.module('textUpdates')
                     return attributes;
                 }
 
-                // merge mntners into attributes
+                // merge mntners into json-attributes
                 var mntnersAsAttrs = _.map(mntners, function (item) {
                     return {name: 'mnt-by', value: item.key};
                 });
@@ -127,8 +132,10 @@ angular.module('textUpdates')
                 );
 
                 $log.info("attributes:"+ JSON.stringify(attributes));
+
                 // TODO validate?
 
+                // show password popup if needed
                 var objectMntners = _getObjectMntners(attributes);
                 if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
                     _performAuthentication(objectMntners);
