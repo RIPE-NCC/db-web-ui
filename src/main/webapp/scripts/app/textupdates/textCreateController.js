@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', 'WhoisResources',
+    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q', 'WhoisResources',
         'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,RpslService) {
+        function ($scope, $stateParams, $state, $resource, $log, $cookies, $q, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,RpslService) {
 
 
             $scope.submit = submit;
@@ -48,27 +48,35 @@ angular.module('textUpdates')
                 // other org-types only settable with override
                 attributes.setSingleAttributeOnName('org-type', 'OTHER');
 
-                _enrichAttributesWithSsoMntners(attributes);
+                _enrichAttributesWithSsoMntners(attributes).then(
+                    function(attributes) {
+                        $log.info("Attributes:" +JSON.stringify(attributes));
+                        _capitaliseMandatory(attributes);
+                        $scope.object.rpsl = RpslService.toRpsl(attributes);
+                    }
+                );
 
                 return attributes;
             }
 
             function _enrichAttributesWithSsoMntners(attributes) {
+                var deferredObject = $q.defer();
+
                 $scope.restCalInProgress = true;
                 RestService.fetchMntnersForSSOAccount().then(
                     function (ssoMntners) {
                         $scope.restCalInProgress = false;
                         var enrichedAttrs = _addSsoMntnersAsMntBy(attributes, ssoMntners);
-                        _capitaliseMandatory(enrichedAttrs);
-                        $scope.object.rpsl = RpslService.toRpsl(enrichedAttrs);
+                        deferredObject.resolve(enrichedAttrs);
                     }, function (error) {
                         $scope.restCalInProgress = false;
                         $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
-                        _capitaliseMandatory(attributes);
-                        $scope.object.rpsl = RpslService.toRpsl(attributes);
+                        deferredObject.resolve(attributes);
                     }
                 );
+
+                return deferredObject.promise;
             }
 
             function _addSsoMntnersAsMntBy(attributes, mntners) {
@@ -100,7 +108,11 @@ angular.module('textUpdates')
             function submit() {
                 var passwords = undefined;
 
+                $log.info("RPSL:" +JSON.stringify($scope.object.rpsl));
+
                 var attributes = RpslService.fromRpsl($scope.object.rpsl);
+
+                $log.info("Attributes:" +JSON.stringify(attributes));
 
                 $scope.restCalInProgress = true;
                 RestService.createObject($scope.object.source, $scope.object.type,

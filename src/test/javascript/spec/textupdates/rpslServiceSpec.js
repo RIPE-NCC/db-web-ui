@@ -56,15 +56,15 @@ describe('textUpdates: RpslService', function () {
     it('should parse regular rpsl with comments into json-attributes', function () {
         var rpsl =
             'person:        \n' +
-            'phone:         +316\n' +
-            'address:       Singel # My comment\n';
+            'phone:         +316 # My comment\n' +
+            'address:       Singel\n';
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
             {name: 'person', value: undefined,         comment: undefined},
-            {name: 'phone',  value: '         +316',   comment: undefined},
-            {name: 'address', value: '       Singel ', comment: 'My comment'}
+            {name: 'phone',  value: '         +316 ',  comment: 'My comment'},
+            {name: 'address', value: '       Singel', comment: undefined}
         ]);
     });
 
@@ -85,6 +85,16 @@ describe('textUpdates: RpslService', function () {
 
         expect(attrs).toEqual([
             {name: 'person', value: undefined, comment: undefined}
+        ]);
+    });
+
+    it('should parse value without terminating newline', function () {
+        var rpsl = 'person: Peter Person';
+
+        var attrs = $RpslService.fromRpsl(rpsl);
+
+        expect(attrs).toEqual([
+            {name: 'person', value: ' Peter Person', comment: undefined}
         ]);
     });
 
@@ -119,7 +129,7 @@ describe('textUpdates: RpslService', function () {
 
         expect(attrs).toEqual([
             {name: 'person',  value: undefined, comment: 'hoi'},
-            {name: 'phone',   value: '         +316 ',  comment: undefined},
+            {name: 'phone',   value: '         +316',  comment: undefined},
             {name: 'address', value: '       Singel ',  comment: 'My comment'}
         ]);
     });
