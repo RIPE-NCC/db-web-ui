@@ -122,20 +122,30 @@ angular.module('textUpdates')
             }
 
             function submit() {
-                $log.info("rpsl:" + $scope.object.rpsl);
+                AlertService.clearErrors();
+
+                $log.debug("rpsl:" + $scope.object.rpsl);
 
                 var passwords = [];
                 var overrides = [];
-                var attributes = WhoisResources.wrapAttributes(
+                var attributes =
                     _.map(RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides), function (attr) {
                         attr.name = attr.name.toLowerCase();
                         return attr;
-                    })
-                );
+                    });
 
-                $log.info("attributes:" + JSON.stringify(attributes));
+                attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributes);
 
-                // TODO validate?
+                $log.debug("attributes:" + JSON.stringify(attributes));
+
+                if( ! attributes.validate() ) {
+                    _.each(attributes, function( item) {
+                        if(item.$$error) {
+                            AlertService.addGlobalError(item.name + ': ' + item.$$error );
+                        }
+                    });
+                    return;
+                }
 
                 if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
                     // show password popup if needed

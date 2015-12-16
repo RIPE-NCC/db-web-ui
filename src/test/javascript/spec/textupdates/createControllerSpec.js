@@ -197,6 +197,27 @@ describe('textUpdates: TextCreateController', function () {
         expect(AlertService.getErrors()).toEqual([{plainText: 'Error fetching maintainers associated with this SSO account'}]);
     });
 
+    it('should report an error when mandatory field is missing', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+        doCreateController('person');
+
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {'key': 'TESTSSO-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
+        ]);
+        $httpBackend.flush();
+
+        $scope.submit();
+
+        expect(AlertService.getErrors()).toEqual( [
+            { plainText: 'person: Mandatory attribute not set' } ,
+            { plainText: 'address: Mandatory attribute not set' } ,
+            { plainText: 'phone: Mandatory attribute not set' } ,
+        ]);
+
+        expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
+    });
+
     var person_correct =
         'person:        Tester X\n' +
         'address:       Singel, Amsterdam\n' +

@@ -104,12 +104,12 @@ angular.module('dbWebApp')
             var self = this;
             return this.errormessages.errormessage.filter(
                 function (errorMessage) {
-                    errorMessage.plainText = _getRlatedAttribute(errorMessage) + self.readableError(errorMessage);
+                    errorMessage.plainText = _getRelatedAttribute(errorMessage) + self.readableError(errorMessage);
                     return errorMessage.severity === 'Error';
                 });
         };
 
-        function _getRlatedAttribute( errorMessage ) {
+        function _getRelatedAttribute( errorMessage ) {
             var msgPrefix = '';
             if( errorMessage.attribute && errorMessage.attribute.name ) {
                 msgPrefix = errorMessage.attribute.name + ": " ;
@@ -138,7 +138,7 @@ angular.module('dbWebApp')
             var self = this;
             return this.errormessages.errormessage.filter(
                 function (errorMessage) {
-                    errorMessage.plainText = _getRlatedAttribute(errorMessage) +  self.readableError(errorMessage);
+                    errorMessage.plainText = _getRelatedAttribute(errorMessage) +  self.readableError(errorMessage);
                     return errorMessage.severity === 'Warning';
                 });
         };
@@ -163,7 +163,7 @@ angular.module('dbWebApp')
             var self = this;
             return this.errormessages.errormessage.filter(
                 function (errorMessage) {
-                    errorMessage.plainText = _getRlatedAttribute(errorMessage) +  self.readableError(errorMessage);
+                    errorMessage.plainText = _getRelatedAttribute(errorMessage) +  self.readableError(errorMessage);
                     return errorMessage.severity === 'Info';
                 });
         };
