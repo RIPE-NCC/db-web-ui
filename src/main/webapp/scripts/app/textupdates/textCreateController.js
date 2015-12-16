@@ -50,7 +50,6 @@ angular.module('textUpdates')
 
                 _enrichAttributesWithSsoMntners(attributes).then(
                     function(attributes) {
-                        $log.info("Attributes:" +JSON.stringify(attributes));
                         _capitaliseMandatory(attributes);
                         $scope.object.rpsl = RpslService.toRpsl(attributes);
                     }
@@ -108,11 +107,7 @@ angular.module('textUpdates')
             function submit() {
                 var passwords = undefined;
 
-                $log.info("RPSL:" +JSON.stringify($scope.object.rpsl));
-
                 var attributes = RpslService.fromRpsl($scope.object.rpsl);
-
-                $log.info("Attributes:" +JSON.stringify(attributes));
 
                 $scope.restCalInProgress = true;
                 RestService.createObject($scope.object.source, $scope.object.type,
