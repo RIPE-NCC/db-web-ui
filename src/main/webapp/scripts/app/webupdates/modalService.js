@@ -27,6 +27,7 @@ angular.module('dbWebApp')
             };
 
             this.openDeleteObjectModal = function(source, objectType, name, onCancel) {
+                $log.debug("_openDeleteObjectModal called");
                 var modalInstance = $modal.open({
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalDeleteObject.html',
@@ -69,13 +70,14 @@ angular.module('dbWebApp')
                     }
                 });
 
-                modalInstance.result.then(function (selectedItem) {
-                    $log.debug('openAddAttributeModal completed with: ' + JSON.stringify(selectedItem));
-                    deferredObject.resolve(selectedItem);
-                }, function (reason) {
-                    $log.debug('openAddAttributeModal cancelled because: ' + reason);
-                    deferredObject.reject(reason);
-                });
+                modalInstance.result.then(
+                    function (selectedItem) {
+                        $log.debug('openAddAttributeModal completed with: ' + JSON.stringify(selectedItem));
+                        deferredObject.resolve(selectedItem);
+                    }, function (reason) {
+                        $log.debug('openAddAttributeModal cancelled because: ' + reason);
+                        deferredObject.reject(reason);
+                    });
 
                 return deferredObject.promise;
             };

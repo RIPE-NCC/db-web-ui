@@ -35,6 +35,7 @@ angular.module('webUpdates')
             }
 
             function _deleteObject() {
+                $log.debug("_deleteObject called");
                 ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name, $scope.onCancel).then(
                     function (whoisResources) {
                         $scope.modalInProgress = false;
@@ -46,13 +47,13 @@ angular.module('webUpdates')
                                 AlertService.setGlobalInfo('The following object(s) have been successfully deleted');
                             }
                         } catch (err) {
-                            $log.err('Error processing result from delete-modal' + JSON.stringify(err));
+                            $log.debug('Error processing result from delete-modal' + JSON.stringify(err));
                         }
                     },
                     function (errorResp) {
                         $scope.modalInProgress = false;
 
-                        $log.info('ERROR delete object'+JSON.stringify(errorResp));
+                        $log.debug('ERROR delete object'+JSON.stringify(errorResp));
 
                         try {
                             var whoisResources = WhoisResources.wrapWhoisResources(errorResp);
