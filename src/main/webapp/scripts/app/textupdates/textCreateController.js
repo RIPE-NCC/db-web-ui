@@ -144,8 +144,10 @@ angular.module('textUpdates')
                         _performAuthentication(objectMntners);
                         return;
                     }
-                    passwords = _getPasswordsForRestCall();
                 }
+
+                // combine all passwords
+                _.union( passwords, _getPasswordsForRestCall() );
 
                 $scope.restCalInProgress = true;
                 RestService.createObject($scope.object.source, $scope.object.type,
@@ -200,10 +202,8 @@ angular.module('textUpdates')
                     passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
 
-                /*
-                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-                 */
+                // For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                // This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
                 if ($scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
                     passwords.push('RPSL');
                 }

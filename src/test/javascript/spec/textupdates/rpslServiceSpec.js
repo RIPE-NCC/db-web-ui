@@ -177,13 +177,18 @@ describe('textUpdates: RpslService', function () {
             '++Europa\n' +
             'phone:         +316 #ok\n';
 
-        var attrs = $RpslService.fromRpsl(rpsl);
+        var passwords = [];
+        var overrides = [];
+        var attrs = $RpslService.fromRpslWithPasswords(rpsl);
 
         expect(attrs).toEqual([
             {name: 'person',  value: undefined,                                            comment: undefined},
             {name: 'address', value: '       Singel    Amsterdam \tNederland ++ ++Europa', comment: 'part 1 part 2 part 4'},
             {name: 'phone',   value: '         +316',                                      comment: 'ok'},
         ]);
+
+        expect(passwords).toEqual([]);
+        expect(overrides).toEqual([]);
     });
 
     it('should parse password from rpsl', function () {
