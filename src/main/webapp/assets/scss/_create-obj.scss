@@ -120,6 +120,9 @@ ul.form-fields {
 			span.text-error {
 				@extend %float-r;
 			}
+            span.text-success {
+                @extend %float-r;
+            }
 		}
 		li:last-child {
 			margin-bottom: 0 !important;

@@ -126,14 +126,19 @@ angular.module('webUpdates')
                 var maintainers = _.map($scope.maintainers.object, function(o) {
                     return {name: 'mnt-by', value: o.key};
                 });
+                var abuseAttr = $scope.attributes.getSingleAttributeOnName('abuse-c');
+                abuseAttr.$$error = undefined;
+                abuseAttr.$$success = undefined;
                 ModalService.openCreateRoleForAbuseCAttribute($scope.source, maintainers, _getPasswordsForRestCall()).then(
                     function (roleAttrs) {
                         $scope.roleForAbuseC = WhoisResources.wrapAndEnrichAttributes('role', roleAttrs);
                         $scope.attributes.setSingleAttributeOnName('abuse-c', $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);
-
-                        AlertService.setGlobalInfo("Successfully created abuse-c role object with nic-hdl " + $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);
-                    }, function () {
-                        AlertService.setGlobalError("There was a problem creating the abuse-c attribute");
+                        abuseAttr.$$success = 'Role object for abuse-c successfully created';
+                    }, function (error) {
+                        if(error != "cancel") { //dismissing modal will hit this function with the string "cancel" in error arg
+                            //TODO: pass more specific errors from REST? [RM]
+                            abuseAttr.$$error = 'There was a problem creating the role object for the abuse-c attribute';
+                        }
                     }
                 );
             }
