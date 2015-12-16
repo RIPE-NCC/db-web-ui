@@ -5,13 +5,15 @@ describe('textUpdates: TextCreateController', function () {
     var $scope, $state, $stateParams, $httpBackend;
     var WhoisResources;
     var AlertService;
+    var ModalService;
     var SOURCE = 'RIPE';
     var doCreateController;
+    var $q;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _AlertService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _AlertService_, _ModalService_,_$q_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -21,6 +23,22 @@ describe('textUpdates: TextCreateController', function () {
             $httpBackend = _$httpBackend_;
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
+            ModalService = _ModalService_;
+            $q = _$q_;
+
+            var SOURCE = 'RIPE';
+
+            var logger = {
+                debug: function (msg) {
+                    //console.log('info:' + msg);
+                },
+                info: function (msg) {
+                    //console.log('info:' + msg);
+                },
+                error: function(msg) {
+                    //console.log('error:'+ msg);
+                }
+            };
 
             doCreateController = function(objectType) {
 
@@ -29,14 +47,13 @@ describe('textUpdates: TextCreateController', function () {
                 $stateParams.name = undefined;
 
                 _$controller_('TextCreateController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams, AlertService: AlertService
+                    $scope: $scope, $state: $state, $log: logger, $stateParams: $stateParams, AlertService: AlertService, ModalService:ModalService
                 });
             }
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
             $httpBackend.flush();
-
         });
     });
 
@@ -181,18 +198,39 @@ describe('textUpdates: TextCreateController', function () {
     });
 
     var person_correct =
-        'person:        Tester X' +
-        'address:       Singel, Amsterdam' +
-        'phone:         +316' +
-        'nic-hdl:       AUTO-1' +
-        'mnt-by:        grol129-mnt' +
-        'mnt-by:        TEST-MNT' +
-        'source:        RIPE';
+        'person:        Tester X\n' +
+        'address:       Singel, Amsterdam\n' +
+        'phone:         +316\n' +
+        'nic-hdl:       AUTO-1\n' +
+        'mnt-by:        grol129-mnt\n' +
+        'mnt-by:        TEST-MNT\n' +
+        'source:        RIPE\n';
 
-    it('should navigate to display after successfull submit', function () {
+    it('should present password popup upon submit when no sso mnt-by is used', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
         doCreateController('person');
 
-        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {'key': 'TESTSSO-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
+        ]);
+        $httpBackend.flush();
+
+        $scope.object.rpsl = person_correct;
+
+        $scope.submit();
+
+        expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
+    });
+
+    it('should navigate to display after successfull submit', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+        doCreateController('person');
+
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {'key': 'TEST-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
+        ]);
         $httpBackend.flush();
 
         $scope.object.rpsl = person_correct;
@@ -224,14 +262,21 @@ describe('textUpdates: TextCreateController', function () {
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('person');
         expect($stateParams.name).toBe('TX01-RIPE');
+
+        expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
     });
 
+
     it('should show errors after submit failure ', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
         doCreateController('person');
 
         var stateBefore = $state.current.name;
 
-        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {'key': 'TEST-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
+        ]);
         $httpBackend.flush();
 
         $scope.object.rpsl = person_correct;
@@ -301,7 +346,7 @@ describe('textUpdates: TextCreateController', function () {
 
         expect($state.current.name).toBe(stateBefore);
 
+        expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
     });
-
 
 });

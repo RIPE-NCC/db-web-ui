@@ -1,9 +1,12 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q', 'WhoisResources',
-        'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, $q, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,RpslService) {
+    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q',
+        'WhoisResources', 'RestService', 'AlertService','ErrorReporterService','MessageStore',
+        'RpslService', 'MntnerService', 'ModalService', 'CredentialsService',
+        function ($scope, $stateParams, $state, $resource, $log, $cookies, $q,
+                  WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,
+                  RpslService, MntnerService, ModalService, CredentialsService) {
 
 
             $scope.submit = submit;
@@ -22,9 +25,13 @@ angular.module('textUpdates')
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
 
+                // maintainers associated with this SSO-account
+                $scope.mntners = {}
+                $scope.mntners.sso = [];
+
                 $log.debug('TextCreateController: Url params:' +
                     ' object.source:' + $scope.object.source +
-                    ', object.type:' + $scope.object.type );
+                    ', object.type:' + $scope.object.type);
 
                 _prepopulateRpsl();
             };
@@ -49,7 +56,7 @@ angular.module('textUpdates')
                 attributes.setSingleAttributeOnName('org-type', 'OTHER');
 
                 _enrichAttributesWithSsoMntners(attributes).then(
-                    function(attributes) {
+                    function (attributes) {
                         _capitaliseMandatory(attributes);
                         $scope.object.rpsl = RpslService.toRpsl(attributes);
                     }
@@ -65,10 +72,15 @@ angular.module('textUpdates')
                 RestService.fetchMntnersForSSOAccount().then(
                     function (ssoMntners) {
                         $scope.restCalInProgress = false;
+
+                        $scope.mntners.sso = ssoMntners;
+
                         var enrichedAttrs = _addSsoMntnersAsMntBy(attributes, ssoMntners);
                         deferredObject.resolve(enrichedAttrs);
+
                     }, function (error) {
                         $scope.restCalInProgress = false;
+
                         $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                         deferredObject.resolve(attributes);
@@ -80,7 +92,7 @@ angular.module('textUpdates')
 
             function _addSsoMntnersAsMntBy(attributes, mntners) {
                 // keep existing
-                if( mntners.length === 0 ) {
+                if (mntners.length === 0) {
                     return attributes;
                 }
 
@@ -91,50 +103,109 @@ angular.module('textUpdates')
                 var attrsWithMntners = attributes.addAttrsSorted('mnt-by', mntnersAsAttrs);
 
                 // strip mnt-by without value from attributes
-                return _.filter(attrsWithMntners, function(item) {
+                return _.filter(attrsWithMntners, function (item) {
                     return !(item.name === 'mnt-by' && _.isUndefined(item.value));
                 });
             }
 
             function _capitaliseMandatory(attributes) {
-                _.each(attributes, function(attr) {
-                    if(attr.$$meta.$$mandatory) {
+                _.each(attributes, function (attr) {
+                    if (attr.$$meta.$$mandatory) {
                         attr.name = attr.name.toUpperCase();
                     }
                 });
             }
 
             function submit() {
-                var passwords = undefined;
+                $log.info("rpsl:"+ $scope.object.rpsl);
 
-                var attributes = RpslService.fromRpsl($scope.object.rpsl);
+                var attributes = WhoisResources.wrapAttributes(
+                    _.map(RpslService.fromRpsl($scope.object.rpsl), function(attr) {
+                            attr.name = attr.name.toLowerCase();
+                            return attr;
+                        })
+                );
+
+                $log.info("attributes:"+ JSON.stringify(attributes));
+                // TODO validate?
+
+                var objectMntners = _getObjectMntners(attributes);
+                if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
+                    _performAuthentication(objectMntners);
+                    return;
+                }
 
                 $scope.restCalInProgress = true;
-                RestService.createObject($scope.object.source, $scope.object.type,
-                    WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords).then(
-                    function(result) {
+                RestService.createObject( $scope.object.source, $scope.object.type,
+                    WhoisResources.turnAttrsIntoWhoisObject(attributes),
+                    _getPasswordsForRestCall()).then(
+                    function (result) {
                         $scope.restCalInProgress = false;
 
                         var whoisResources = WhoisResources.wrapWhoisResources(result);
                         MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
                         _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Create');
 
-                    },function(error) {
+                    }, function (error) {
                         $scope.restCalInProgress = false;
 
                         if (_.isUndefined(error.data)) {
-                            $log.error('Response not understood:'+JSON.stringify(error));
+                            $log.error('Response not understood:' + JSON.stringify(error));
                             return;
                         }
 
                         var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                         AlertService.setAllErrors(whoisResources);
-                        if(!_.isUndefined(whoisResources.getAttributes())) {
+                        if (!_.isUndefined(whoisResources.getAttributes())) {
                             var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
                             ErrorReporterService.log('Create', $scope.object.type, AlertService.getErrors(), attributes);
                         }
                     }
                 );
+            }
+
+            function _performAuthentication(objectMntners) {
+                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.mntners.sso, [], objectMntners);
+                    ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
+                    function (result) {
+                        AlertService.clearErrors();
+
+                        var authenticatedMntner = result.selectedItem;
+                        if ($scope.isMine(authenticatedMntner)) {
+                            // has been successfully associated in authentication modal
+                            $scope.mntners.sso.push(authenticatedMntner);
+                        }
+                    }, function () {
+                        $state.transitionTo('webupdates.select');
+                    }
+                );
+            }
+
+            function _getPasswordsForRestCall() {
+                var passwords = [];
+
+                if (CredentialsService.hasCredentials()) {
+                    passwords.push(CredentialsService.getCredentials().successfulPassword);
+                }
+
+                /*
+                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
+                 */
+                if ($scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
+                    passwords.push('RPSL');
+                }
+                return passwords;
+            }
+
+            function _getObjectMntners(attributes) {
+                return _.map(attributes.getAllAttributesWithValueOnName('mnt-by'), function (objMntner) {
+                    $log.info('getAllAttributesWithValueOnName:'+objMntner);
+                    // Notes:
+                    // - RPSL attribute values can contain leading and traling spaces, so the must be trimmed
+                    // - Assume maintainers have md5-password, so prevent unmodifyable error
+                    return { type: 'mntner', key: _.trim(objMntner.value), auth:['MD5-PW'] };
+                });
             }
 
             function _navigateToDisplayPage(source, objectType, objectName, operation) {
