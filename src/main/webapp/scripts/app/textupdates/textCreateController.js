@@ -2,7 +2,7 @@
 
 angular.module('textUpdates')
     .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q',
-        'WhoisResources', 'RestService', 'AlertService','ErrorReporterService','MessageStore',
+        'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore',
         'RpslService', 'MntnerService', 'ModalService', 'CredentialsService',
         function ($scope, $stateParams, $state, $resource, $log, $cookies, $q,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,
@@ -122,30 +122,35 @@ angular.module('textUpdates')
             }
 
             function submit() {
-                $log.info("rpsl:"+ $scope.object.rpsl);
+                $log.info("rpsl:" + $scope.object.rpsl);
 
+                var passwords = [];
+                var overrides = [];
                 var attributes = WhoisResources.wrapAttributes(
-                    _.map(RpslService.fromRpsl($scope.object.rpsl), function(attr) {
-                            attr.name = attr.name.toLowerCase();
-                            return attr;
-                        })
+                    _.map(RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides), function (attr) {
+                        attr.name = attr.name.toLowerCase();
+                        return attr;
+                    })
                 );
 
-                $log.info("attributes:"+ JSON.stringify(attributes));
+                $log.info("attributes:" + JSON.stringify(attributes));
 
                 // TODO validate?
 
-                // show password popup if needed
-                var objectMntners = _getObjectMntners(attributes);
-                if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
-                    _performAuthentication(objectMntners);
-                    return;
+                if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
+                    // show password popup if needed
+                    var objectMntners = _getObjectMntners(attributes);
+                    if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
+                        _performAuthentication(objectMntners);
+                        return;
+                    }
+                    passwords = _getPasswordsForRestCall();
                 }
 
                 $scope.restCalInProgress = true;
-                RestService.createObject( $scope.object.source, $scope.object.type,
+                RestService.createObject($scope.object.source, $scope.object.type,
                     WhoisResources.turnAttrsIntoWhoisObject(attributes),
-                    _getPasswordsForRestCall()).then(
+                    passwords, overrides).then(
                     function (result) {
                         $scope.restCalInProgress = false;
 
@@ -173,7 +178,7 @@ angular.module('textUpdates')
 
             function _performAuthentication(objectMntners) {
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.mntners.sso, [], objectMntners);
-                    ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
+                ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
                     function (result) {
                         AlertService.clearErrors();
 
@@ -207,11 +212,10 @@ angular.module('textUpdates')
 
             function _getObjectMntners(attributes) {
                 return _.map(attributes.getAllAttributesWithValueOnName('mnt-by'), function (objMntner) {
-                    $log.info('getAllAttributesWithValueOnName:'+objMntner);
                     // Notes:
                     // - RPSL attribute values can contain leading and traling spaces, so the must be trimmed
                     // - Assume maintainers have md5-password, so prevent unmodifyable error
-                    return { type: 'mntner', key: _.trim(objMntner.value), auth:['MD5-PW'] };
+                    return {type: 'mntner', key: _.trim(objMntner.value), auth: ['MD5-PW']};
                 });
             }
 

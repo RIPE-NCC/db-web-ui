@@ -234,7 +234,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.createObject = function (source, objectType, attributes, passwords) {
+                this.createObject = function (source, objectType, attributes, passwords, overrides) {
                     var deferredObject = $q.defer();
 
                     $log.debug('createObject start for objectType: ' + objectType + ' and payload:' +JSON.stringify(attributes));
@@ -242,8 +242,9 @@ angular.module('dbWebApp')
                     $resource('api/whois/:source/:objectType',
                         {   source: source,
                             objectType: objectType,
-                            password: '@password'})
-                        .save({password:passwords}, attributes)
+                            password: '@password',
+                            override: '@override'})
+                        .save({password:passwords,override:overrides}, attributes)
                         .$promise
                         .then(function (result) {
                             $log.debug('createObject success:' + JSON.stringify(result));
@@ -257,7 +258,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.modifyObject = function (source, objectType, objectName, attributes, passwords) {
+                this.modifyObject = function (source, objectType, objectName, attributes, passwords, overrides) {
                     var deferredObject = $q.defer();
 
                     $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -272,9 +273,10 @@ angular.module('dbWebApp')
                         {   source: source,
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            password: '@password'},
+                            password: '@password',
+                            override: '@override'},
                         {'update': {method: 'PUT'}})
-                        .update({password:passwords}, attributes)
+                        .update({password:passwords,override:overrides}, attributes)
                         .$promise
                         .then(function (result) {
                             $log.debug('modifyObject success:' + JSON.stringify(result));

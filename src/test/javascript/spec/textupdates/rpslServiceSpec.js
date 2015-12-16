@@ -189,5 +189,45 @@ describe('textUpdates: RpslService', function () {
             {name: 'phone',   value: '         +316 ',                                     comment: 'ok'},
         ]);
     });
+
+    it('should parse password from rpsl', function () {
+        var rpsl = 'person: Tester X\n' +
+            'password:secret\n';
+
+        var passwords = [];
+        var overrides = [];
+        var attrs = $RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
+
+        expect(attrs).toEqual([
+            {name: 'person', value: ' Tester X', comment: undefined}
+        ]);
+
+        expect(passwords).toEqual([
+            'secret'
+        ]);
+
+        expect(overrides).toEqual([]);
+
+    });
+
+    it('should parse override from rpsl', function () {
+        var rpsl =
+            'override:admin.secret,because\n'+
+            'person: Tester X\n';
+
+        var passwords = [];
+        var overrides = [];
+        var attrs = $RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
+
+        expect(attrs).toEqual([
+            {name: 'person', value: ' Tester X', comment: undefined}
+        ]);
+
+        expect(passwords).toEqual([]);
+
+        expect(overrides).toEqual([
+            'admin.secret,because'
+        ]);
+    });
 });
 

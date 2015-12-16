@@ -266,6 +266,91 @@ describe('textUpdates: TextCreateController', function () {
         expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
     });
 
+    it('should extract password from rpsl', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+        doCreateController('person');
+
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {'key': 'TEST-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
+        ]);
+        $httpBackend.flush();
+
+        $scope.object.rpsl = person_correct + 'password:secret\n';
+
+        $scope.submit();
+
+        $httpBackend.expectPOST('api/whois/RIPE/person?password=secret').respond({
+            objects: {
+                object: [
+                    {
+                        'primary-key': {attribute: [{name: 'person', value: 'TX01-RIPE'}]},
+                        attributes: {
+                            attribute: [
+                                {name: 'person', value: 'Tester X'},
+                                {name: 'address', value: 'Singel, Amsterdam'},
+                                {name: 'phone', value: '+316'},
+                                {name: 'nic-hdl', value: 'TX01-RIPE'},
+                                {name: 'mnt-by', value: 'TEST-MNT'},
+                                {name: 'source', value: 'RIPE'}
+                            ]
+                        }
+                    }
+                ]
+            }
+        });
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('webupdates.display');
+        expect($stateParams.source).toBe('RIPE');
+        expect($stateParams.objectType).toBe('person');
+        expect($stateParams.name).toBe('TX01-RIPE');
+
+        expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
+    });
+
+    it('should extract override from rpsl', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+        doCreateController('person');
+
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {'key': 'TEST-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
+        ]);
+        $httpBackend.flush();
+
+        $scope.object.rpsl = person_correct + 'override:me,secret,because\n';
+
+        $scope.submit();
+
+        $httpBackend.expectPOST('api/whois/RIPE/person?override=me,secret,because').respond({
+            objects: {
+                object: [
+                    {
+                        'primary-key': {attribute: [{name: 'person', value: 'TX01-RIPE'}]},
+                        attributes: {
+                            attribute: [
+                                {name: 'person', value: 'Tester X'},
+                                {name: 'address', value: 'Singel, Amsterdam'},
+                                {name: 'phone', value: '+316'},
+                                {name: 'nic-hdl', value: 'TX01-RIPE'},
+                                {name: 'mnt-by', value: 'TEST-MNT'},
+                                {name: 'source', value: 'RIPE'}
+                            ]
+                        }
+                    }
+                ]
+            }
+        });
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('webupdates.display');
+        expect($stateParams.source).toBe('RIPE');
+        expect($stateParams.objectType).toBe('person');
+        expect($stateParams.name).toBe('TX01-RIPE');
+
+        expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
+    });
 
     it('should show errors after submit failure ', function () {
         spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
