@@ -32,27 +32,32 @@ angular.module('textUpdates')
             };
 
             function _fetchAndPopulateObject() {
-
                 $scope.restCalInProgress = true;
                 RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name).then(
-                    function (whoisObject) {
+                    function (result) {
                         $scope.restCalInProgress = false;
-                        // TODO: look ar create-text-screen and web-modify-screen on how to do this
-                        _wrapAndEnrichResources($scope.object.type, whoisObject);
-                        $scope.object.rpsl = RpslService.toRpsl(whoisObject.getAttributes());
+
+                        var whoisResources = WhoisResources.wrapWhoisResources(result);
+
+                        $scope.object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
+                        MessageStore.add('DIFF', whoisResources.getAttributes());
+
                     }, function (error) {
                         $scope.restCalInProgress = false;
-                        // TODO: what?
+
+                        if (_.isUndefined(error.data)) {
+                            $log.error('Response not understood:'+JSON.stringify(error));
+                            return;
+                        }
+
+                        var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                        AlertService.setAllErrors(whoisResources);
+                        if(!_.isUndefined(whoisResources.getAttributes())) {
+                            var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
+                            ErrorReporterService.log('Modify', $scope.object.type, AlertService.getErrors(), attributes);
+                        }
                     }
                 );
-            }
-
-            function _wrapAndEnrichResources(objectType, resp) {
-                var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                if (whoisResources) {
-                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
-                }
-                return whoisResources;
             }
 
             function submit() {
@@ -81,10 +86,12 @@ angular.module('textUpdates')
 
                         var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                         AlertService.setAllErrors(whoisResources);
+
                         if(!_.isUndefined(whoisResources.getAttributes())) {
                             var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
-                            ErrorReporterService.log('Create', $scope.object.type, AlertService.getErrors(), attributes);
+                            ErrorReporterService.log('Modify', $scope.object.type, AlertService.getErrors(), attributes);
                         }
+
                     }
                 );
             }

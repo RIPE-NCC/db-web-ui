@@ -22,12 +22,8 @@ describe('textUpdates: TextCreateController', function () {
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
 
-            var SOURCE = 'RIPE';
-
             doCreateController = function(objectType) {
-                if(_.isUndefined(objectType)) {
-                    objectType = OBJECT_TYPE;
-                }
+
                 $stateParams.source = SOURCE;
                 $stateParams.objectType = objectType;
                 $stateParams.name = undefined;
@@ -207,7 +203,7 @@ describe('textUpdates: TextCreateController', function () {
             objects: {
                 object: [
                     {
-                        'primary-key': {attribute: [{name: 'person', value: 'TX01-RIPE'}]},
+                        'primary-key': {attribute: [{name: 'nic-hdl', value: 'TX01-RIPE'}]},
                         attributes: {
                             attribute: [
                                 {name: 'person', value: 'Tester X'},
