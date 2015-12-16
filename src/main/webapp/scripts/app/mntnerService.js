@@ -98,7 +98,7 @@ angular.module('dbWebApp')
             if (CredentialsService.hasCredentials()) {
                 var trustedMtnerName = CredentialsService.getCredentials().mntner;
                 return _.any(originalObjectMntners, function (mntner) {
-                    return mntner.key === trustedMtnerName;
+                    return mntner.key.toUpperCase() === trustedMtnerName.toUpperCase();
                 });
             }
             return false;
@@ -106,7 +106,7 @@ angular.module('dbWebApp')
 
         function _isMntnerOnlist(list, mntner) {
             var status = _.any(list, function (item) {
-                return item.key === mntner.key;
+                return item.key.toUpperCase() === mntner.key.toUpperCase();
             });
             return status;
         }
