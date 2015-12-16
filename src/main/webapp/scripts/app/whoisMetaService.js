@@ -1151,7 +1151,7 @@ angular.module('dbWebApp')
                 short: 'Specifies an IP address that should be reachable from outside networks.',
                 description: 'Allows a network operator to advertise an IP address of a node that should be reachable from outside networks. This node can be used as a destination address for diagnostic tests. The IP address must be within the address range of the prefix containing this attribute.',
                 syntax: 'A single IPv4 address in decimal dotted quad form (e.g. 192.0.2.1) in case of a route object, or an IPv6 address in lowercase canonical form (e.g. 2001:db8::8:800:200c:417a) in case of a route6 object.'
-            }, // no syntax available
+            },
             'poem': {
                 short: undefined,
                 description: 'Specifies the title of the poem.',
