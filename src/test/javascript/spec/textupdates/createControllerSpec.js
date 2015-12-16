@@ -416,7 +416,7 @@ describe('textUpdates: TextCreateController', function () {
         });
         expect(plaintextErrors).toEqual([
             {plainText: 'Unrecognized source: INVALID_SOURCE'},
-            {plainText: '\'Tester X\' is not valid for this object type'}
+            {plainText: 'person: \'Tester X\' is not valid for this object type'}
         ]);
 
         expect(AlertService.getWarnings().length).toEqual(1);
