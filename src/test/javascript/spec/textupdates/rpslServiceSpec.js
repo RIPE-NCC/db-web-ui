@@ -14,19 +14,38 @@ describe('textUpdates: RpslService', function () {
 
     });
 
-    it('should convert regular json-attributes into rpsl', function () {
+
+    it('should empty json-attributes into rpsl', function () {
         var attrs = [
             {name: 'person'},
-            {name: 'phone', value: '+316'},
-            {name: 'address', value: 'Singel', comment: 'My comment'}
+            {name: 'phone'},
+            {name: 'address'}
 
         ];
         var rpsl = $RpslService.toRpsl(attrs);
 
+        // should we padded with spaces
         expect(rpsl).toEqual(
-            'person:        \n' +
-            'phone:         +316\n' +
-            'address:       Singel # My comment\n'
+            'person:        \n'+
+            'phone:         \n'+
+            'address:       \n'
+        );
+    });
+
+    it('should convert populated json-attributes into rpsl', function () {
+        var attrs = [
+            {name: 'person',  value: '        Tester X'},
+            {name: 'phone',   value: '        +316'},
+            {name: 'address', value: '        Singel', comment: 'My comment'}
+
+        ];
+        var rpsl = $RpslService.toRpsl(attrs);
+
+        // should exta padding spaces should be added
+        expect(rpsl).toEqual(
+            'person:        Tester X\n' +
+            'phone:        +316\n' +
+            'address:        Singel # My comment\n'
         );
     });
 
@@ -43,9 +62,9 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: undefined, comment: undefined},
-            {name: 'phone', value: '+316', comment: undefined},
-            {name: 'address', value: 'Singel', comment: 'My comment'}
+            {name: 'person', value: undefined,         comment: undefined},
+            {name: 'phone',  value: '         +316',   comment: undefined},
+            {name: 'address', value: '       Singel ', comment: 'My comment'}
         ]);
     });
 
@@ -55,7 +74,7 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: 'Me', comment: 'hoi'}
+            {name: 'person', value: '   Me     ', comment: 'hoi'}
         ]);
     });
 
@@ -71,7 +90,7 @@ describe('textUpdates: RpslService', function () {
 
     it('should parse empty value with comment', function () {
         // TODO: is this allowed?
-        var rpsl = 'person: # A comment';
+        var rpsl = 'person: # A comment\n';
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
@@ -80,9 +99,8 @@ describe('textUpdates: RpslService', function () {
         ]);
     });
 
-
     it('should ignore empty attribute without keye', function () {
-        var rpsl = ': value # comment';
+        var rpsl = ': value # comment\n';
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
@@ -100,33 +118,33 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: undefined, comment: 'hoi'},
-            {name: 'phone', value: '+316', comment: undefined},
-            {name: 'address', value: 'Singel', comment: 'My comment'}
+            {name: 'person',  value: undefined, comment: 'hoi'},
+            {name: 'phone',   value: '         +316 ',  comment: undefined},
+            {name: 'address', value: '       Singel ',  comment: 'My comment'}
         ]);
     });
 
     it('should parse value continuation with space', function () {
         var rpsl =
             'person: value  1# comment 1\n' +
-            ' more value 2 # and more comment';
+            ' more value 2 # and more comment\n';
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: 'value  1 more value 2', comment: 'comment 1 and more comment'}
+            {name: 'person', value: ' value  1  more value 2 ', comment: 'comment 1 and more comment'}
         ]);
     });
 
     it('should parse value continuation with tab', function () {
         var rpsl =
             'person: value  1\n' +
-            '\tmore value 2 # more comment';
+            '\tmore value 2 # more comment\n';
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: 'value  1\tmore value 2', comment: 'more comment'}
+            {name: 'person', value: ' value  1 \tmore value 2 ', comment: 'more comment'}
         ]);
     });
 
@@ -134,16 +152,16 @@ describe('textUpdates: RpslService', function () {
         // TODO: is this ok?
         var rpsl =
             'person: value  1\n' +
-            '+more value 2 # second comment';
+            '+more value 2 # second comment\n';
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: 'value  1+more value 2', comment: 'second comment'}
+            {name: 'person', value: ' value  1 +more value 2 ', comment: 'second comment'}
         ]);
     });
 
-    it('should parse multi-line rpsl with comments into json-attributes', function () {
+    it('should parse extraordinary multi-line rpsl with comments into json-attributes', function () {
         var rpsl =
             'person:        \n' +
             'address:       Singel # part 1\n' +
@@ -156,9 +174,9 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: undefined, comment: undefined},
-            {name: 'address', value: 'Singel    Amsterdam \tNederland++  ++Europa', comment: 'part 1 part 2 part 4'},
-            {name: 'phone', value: '+316', comment: 'ok'},
+            {name: 'person',  value: undefined,                                            comment: undefined},
+            {name: 'address', value: '       Singel     Amsterdam  \tNederland ++   ++Europa', comment: 'part 1 part 2 part 4'},
+            {name: 'phone',   value: '         +316 ',                                     comment: 'ok'},
         ]);
     });
 });
