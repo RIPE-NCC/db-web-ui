@@ -1,10 +1,14 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('WhoisResources', [ 'WhoisMetaService', function (WhoisMetaService) {
+    .service('WhoisResources', [ '$log', 'WhoisMetaService', function ($log,    WhoisMetaService) {
 
-        this.getAttributeDocumentation = function( objectType, attrName ) {
-            return WhoisMetaService.getAttributeDocumentation(objectType, attrName);
+        this.getAttributeShortDescription = function( objectType, attrName ) {
+            return WhoisMetaService.getAttributeShortDescription(objectType, attrName);
+        };
+
+        this.getAttributeDescription = function( objectType, attrName ) {
+            return WhoisMetaService.getAttributeDescription(objectType, attrName);
         };
 
         this.getAttributeSyntax = function (objectType, attrName) {
@@ -248,6 +252,7 @@ angular.module('dbWebApp')
                 });
         };
 
+
         var getAllAttributesOnName = function (attributeName) {
             return _.filter(this,
                 function (attribute) {
@@ -262,9 +267,9 @@ angular.module('dbWebApp')
                 });
         };
 
-        var addAttrsSorted = function (attrType, attrs) {
+        var addAttrsSorted = function (attrTypeName, attrs) {
             var lastIdxOfType = _.findLastIndex( this, function(item) {
-                return item.name === attrType;
+                return item.name === attrTypeName;
             });
             if( lastIdxOfType > -1 ) {
                 var lastItemDetail = this[lastIdxOfType];
@@ -288,7 +293,6 @@ angular.module('dbWebApp')
                 // TODO smarter merge
                 return this.concat(attrs);
             }
-
         };
 
         var setSingleAttributeOnName = function( name, value) {
@@ -318,15 +322,10 @@ angular.module('dbWebApp')
         };
 
         var validateWithoutSettingErrors = function() {
-            var errorFound = false;
-
             var self = this;
-            _.map(this, function (attr) {
-                if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0 ) {
-                    errorFound = true;
-                }
+            return !_.any(this, function (attr) {
+                return attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0;
             });
-            return errorFound === false;
         };
 
         var clearErrors = function() {
@@ -338,6 +337,12 @@ angular.module('dbWebApp')
         var removeAttribute = function(attr) {
             return _.filter(this, function(next) {
                 return attr !== next;
+            });
+        };
+
+        var removeAttributeWithType = function(attrName) {
+            return _.filter(this, function(next) {
+                return next.name !== attrName;
             });
         };
 
@@ -392,9 +397,10 @@ angular.module('dbWebApp')
         };
 
         var getAddableAttributes = function(objectType,attributes) {
-
             return _.filter(WhoisMetaService.getAllAttributesOnObjectType(objectType), function (attr) {
-                if( attr.$$meta.$$multiple === true ) {
+                if( attr.name === 'last-modified' ) {
+                    return false;
+                } else if( attr.$$meta.$$multiple === true ) {
                     return true;
                 } else if( attr.$$meta.$$mandatory === false ) {
                     if( !_.any(attributes,
@@ -441,6 +447,55 @@ angular.module('dbWebApp')
             return new Array(n + 1).join(string);
         };
 
+        function attributeWithNameExists(attrs, attributeName) {
+            return _.any(attrs, function (attribute) {
+                return attribute.name === attributeName;
+            });
+        };
+
+        var getMissingMandatoryAttributes = function(objectType) {
+            var missingAttrs = [];
+            var self = this;
+            _.each(WhoisMetaService.getMandatoryAttributesOnObjectType(objectType), function(item) {
+                if( ! attributeWithNameExists(self, item.name) ) {
+                    missingAttrs.push(item);
+                }
+            });
+            return missingAttrs;
+        }
+
+        function getFirstMandatoryAttrAbove(objectType, attrTypeName) {
+            var metaAttrs =  WhoisMetaService.getMandatoryAttributesOnObjectType(objectType);
+            var idx = _.findIndex(metaAttrs, function(item) {
+                return item.name === attrTypeName;
+            });
+            if( idx <= 0 ) {
+                return metaAttrs[0].name;
+            } else {
+                return metaAttrs[idx-1].name;
+            }
+        }
+
+        function addBelowLastOf( attrs, attrTypeName, item) {
+            var last =  _.last(_.filter(attrs,
+                function (attr) {
+                    return attr.name === attrTypeName;
+             }));
+
+            var result = [];
+            _.each(attrs, function(next){
+                result.push(next);
+                 if (next.name === last.name && next.value === last.value) {
+                    result.push(item);
+                }
+            });
+            return result;
+        }
+
+        var addMissingMandatoryAttribute = function(objectType, attr) {
+            return addBelowLastOf(this, getFirstMandatoryAttrAbove(objectType, attr.name), attr);
+        }
+
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {
                 return [];
@@ -458,6 +513,7 @@ angular.module('dbWebApp')
             attrs.clearErrors = clearErrors;
             attrs.getAddableAttributes = getAddableAttributes;
 
+            attrs.removeAttributeWithType = removeAttributeWithType;
             attrs.removeAttribute = removeAttribute;
             attrs.duplicateAttribute = duplicateAttribute;
             attrs.canAttributeBeDuplicated = canAttributeBeDuplicated;
@@ -465,7 +521,8 @@ angular.module('dbWebApp')
             attrs.addAttributeAfter = addAttributeAfter;
             attrs.addAttributeAfterType = addAttributeAfterType;
             attrs.removeNullAttributes = removeNullAttributes;
-
+            attrs.getMissingMandatoryAttributes = getMissingMandatoryAttributes;
+            attrs.addMissingMandatoryAttribute = addMissingMandatoryAttribute;
             return attrs;
         };
 

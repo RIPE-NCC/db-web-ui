@@ -36,13 +36,21 @@ generate the appropriate scripts/app/app.constants.js file.
 
 Also add the "-Dspring.profiles.active=<ENV>" to the JVM args of the application server.
 
+Testing
+-------------------
+Login to the DEV or PREPDEV environments using the SSO username db-staff@ripe.net / password dbstaffsso.
+
 IntelliJ Preferences
 --------------------
 * Editor
 	* File Types
 		* Ignore Files and Folders
 			* Add: node_modules
-	
+* Project Structure
+        * Project Settings
+                * Project
+                        * Project SDK: 1.8
+                        * Language level: 1.8	
 
 Architecture
 ------------

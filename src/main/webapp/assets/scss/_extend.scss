@@ -1,11 +1,11 @@
 %float-l {
-	float: left;	
+	float: left;
 }
 %float-r {
-	float: right;	
+	float: right;
 }
 %clear-b {
-	clear: both;	
+	clear: both;
 }
 %width-100 {
 	width: 100%;
@@ -15,4 +15,7 @@
 }
 %brd {
 	border: 1px solid #ccc;
+}
+%no-pad-top {
+    padding-top: 0 !important;
 }

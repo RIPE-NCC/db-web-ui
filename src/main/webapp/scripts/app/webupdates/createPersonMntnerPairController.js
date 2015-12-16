@@ -104,21 +104,23 @@ angular.module('webUpdates')
             }
 
             function cancel() {
-                if ( window.confirm('Are you sure?') ) {
-                    window.history.back();
+                if (window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+                    $state.transitionTo('select');
                 }
             }
 
             function fieldVisited( objectName, attr ) {
-                if (attr.$$meta.$$primaryKey === true && attr.value.length >= 2) {
+                if (attr.$$meta.$$primaryKey === true ) {
+                    attr.$$error = '';
                     RestService.autocomplete(attr.name, attr.value, true, []).then(
                         function (data) {
-                            if(_.any(data, function(item) {
-                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
-                                })) {
-                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
-                            } else {
-                                attr.$$error = '';
+                            var found = _.find(data, function(item) {
+                                    if( item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase() ) {
+                                        return item;
+                                    }
+                                });
+                            if(!_.isUndefined(found)) {
+                                attr.$$error = attr.name + ' ' + found.key + ' already exists';
                             }
                         }
                     );

@@ -96,6 +96,18 @@ describe('dbWebApp: MntnerService', function () {
 
     });
 
+    it('no authentication needed for SSO mntner with different case',function() {
+        var ssoMntners = [
+            { type:'mntner', key:'A-MNT', mine:true, auth:['SSO']}
+        ];
+        var objectMntners = [
+            { type:'mntner', key:'a-mnt', }
+        ];
+        expect(subject.needsPasswordAuthentication( ssoMntners, [], objectMntners)).toBe(false);
+        expect(subject.needsPasswordAuthentication( ssoMntners, objectMntners, [])).toBe(false);
+
+    });
+
     it('no authentication needed for trusted mntner',function() {
         var ssoMntners = [
                 { type:'mntner', key:'A-MNT', mine:true, auth:['SSO']},

@@ -14,7 +14,7 @@ angular.module('dbWebApp')
                     $resource('api/references/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
-                            name: encodeURIComponent(name), // TODO perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
+                            name: encodeURIComponent(name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
                             limit:limit
                         }).get()
                         .$promise.then(
@@ -42,8 +42,8 @@ angular.module('dbWebApp')
                         {   source: source,
                             objectType: objectType,
                             name: name, // Note: double encoding not needed for delete
-                            password: passwords
-                        }).delete({reason: reason})
+                            password: '@password'
+                        }).delete({password:passwords, reason: reason})
                         .$promise.then(
                         function (result) {
                             $log.debug('deleteObject success:' + JSON.stringify(result));
@@ -110,16 +110,16 @@ angular.module('dbWebApp')
                     $log.debug('detailsForMntners start for: ' + JSON.stringify(mntners));
 
                     var promises = _.map(mntners, function (item) {
-                        return _mntnerDetails(item);
+                        return _singleMntnerDetails(item);
                     });
 
                     return $q.all(promises);
                 };
 
-                function _mntnerDetails(mntner) {
+                function _singleMntnerDetails(mntner) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('_mntnerDetails start for: ' +  JSON.stringify(mntner));
+                    $log.debug('_singleMntnerDetails start for: ' +  JSON.stringify(mntner));
 
                     $resource('api/whois/autocomplete',
                         {   query: mntner.key,
@@ -129,22 +129,22 @@ angular.module('dbWebApp')
                         .query()
                         .$promise
                         .then(function (result) {
-                            // enrich with mine
-                            result = _.map(result, function( item ) {
-                                if( item.key === mntner.key && mntner.mine === true ) {
-                                    item.mine = true;
-                                }
-                                return item;
+                            var found = _.find(result, function( item ) {
+                                return item.key === mntner.key;
                             });
-                            if(_.isEmpty(result)) {
-                                // better something than nothing:
-                                // in case search-index does not yet know this newly created mntner
-                                result = [mntner];
+                            if( _.isUndefined(found)) {
+                                // TODO: the  autocomplete service just returns 10 matching records. The exact match could not be part of this set.
+                                // So if this happens, perform best guess and just enrich the xisting mntner with md5.
+                                mntner.auth = ['MD5-PW'];
+                                found = mntner;
+                            } else {
+                                found.mine = mntner.mine;
                             }
-                            $log.debug('_mntnerDetails success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
+
+                            $log.debug('_singleMntnerDetails success:' + JSON.stringify(found));
+                            deferredObject.resolve(found);
                         }, function (error) {
-                            $log.error('_mntnerDetails error:' + JSON.stringify(error));
+                            $log.error('_singleMntnerDetails error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );
@@ -155,23 +155,29 @@ angular.module('dbWebApp')
                 this.autocomplete = function (objectType, objectName, extended, attrs) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    if( _.isUndefined(objectName) || objectName.length < 2 ) {
+                        deferredObject.resolve([]);
+                    } else {
+                        $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    $resource('api/whois/autocomplete',
-                        {   query: encodeURIComponent(objectName),
-                            field: objectType,
-                            attribute: attrs,
-                            extended: extended})
-                        .query()
-                        .$promise
-                        .then(function (result) {
-                            $log.debug('autocomplete success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function (error) {
-                            $log.error('autocomplete error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        }
-                    );
+                        $resource('api/whois/autocomplete',
+                            {
+                                query: encodeURIComponent(objectName),
+                                field: objectType,
+                                attribute: attrs,
+                                extended: extended
+                            })
+                            .query()
+                            .$promise
+                            .then(function (result) {
+                                $log.debug('autocomplete success:' + JSON.stringify(result));
+                                deferredObject.resolve(result);
+                            }, function (error) {
+                                $log.error('autocomplete error:' + JSON.stringify(error));
+                                deferredObject.reject(error);
+                            }
+                        );
+                    }
 
                     return deferredObject.promise;
                 };
@@ -187,8 +193,8 @@ angular.module('dbWebApp')
                             objectType: objectType,
                             objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
-                            password: passwords
-                        }).get()
+                            password: '@password'
+                        }).get({password:passwords})
                         .$promise
                         .then(function (result) {
                             $log.debug('authenticate success:' + JSON.stringify(result));
@@ -208,12 +214,13 @@ angular.module('dbWebApp')
                     $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
-                        {   source: source,
+                        {
+                            source: source,
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            password: passwords,
-                            unfiltered: true})
-                        .get()
+                            unfiltered: true,
+                            password: '@password'
+                        }).get({password:passwords})
                         .$promise
                         .then(function (result) {
                             $log.debug('fetchObject success:' + JSON.stringify(result));
@@ -235,8 +242,8 @@ angular.module('dbWebApp')
                     $resource('api/whois/:source/:objectType',
                         {   source: source,
                             objectType: objectType,
-                            password: passwords})
-                        .save(attributes)
+                            password: '@password'})
+                        .save({password:passwords}, attributes)
                         .$promise
                         .then(function (result) {
                             $log.debug('createObject success:' + JSON.stringify(result));
@@ -255,13 +262,19 @@ angular.module('dbWebApp')
 
                     $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
+                    /*
+                     * A url-parameter starting with an '@' has special meaning in angular.
+                     * Since passwords can start with a '@', we need to take special precautions.
+                     * The following '@password'-trick  seems to work.
+                     * TODO This needs more testing.
+                     */
                     $resource('api/whois/:source/:objectType/:name',
                         {   source: source,
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            password: passwords},
+                            password: '@password'},
                         {'update': {method: 'PUT'}})
-                        .update(attributes)
+                        .update({password:passwords}, attributes)
                         .$promise
                         .then(function (result) {
                             $log.debug('modifyObject success:' + JSON.stringify(result));
@@ -280,13 +293,13 @@ angular.module('dbWebApp')
 
                     $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    $resource('api/whois/:source/:objectType/:name',
+                    $resource('api/whois/:source/:objectType/:name?password=:password',
                         {   source: source,
                             objectType: objectType,
                             name: objectName,  // only for mntners so no url-decosong applied
-                            password: passwords},
-                        {'update': {method: 'PUT'}})
-                        .update(whoisResources)
+                            password: '@password'},
+                        {update: {method: 'PUT'}})
+                        .update({password:passwords}, whoisResources)
                         .$promise
                         .then(function (result) {
                             $log.debug('associateSSOMntner success:' + JSON.stringify(result));

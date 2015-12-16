@@ -24,7 +24,7 @@ describe('webUpdates: CreateController', function () {
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            $window =_$window_;
+            $window = { confirm: function() { return true; } };
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             CredentialsService = _CredentialsService_;
@@ -115,7 +115,7 @@ describe('webUpdates: CreateController', function () {
     it('should handle success post upon submit click when form is complete', function () {
 
         // api/whois/RIPE/as-block
-        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond({
+        $httpBackend.expectPOST('api/whois/RIPE/as-block?password=@123').respond({
             objects: {
                 object: [
                     {
@@ -131,6 +131,8 @@ describe('webUpdates: CreateController', function () {
                 ]
             }
         });
+
+        CredentialsService.setCredentials('TEST-MNT', '@123');
 
         $scope.attributes.setSingleAttributeOnName('as-block', 'A');
 
@@ -338,6 +340,12 @@ describe('webUpdates: CreateController', function () {
         $httpBackend.flush();
 
         expect($state.current.name).toBe('delete');
+    });
+
+    it('should transition to select state if cancel is pressed during create', function() {
+        spyOn($state, 'transitionTo');
+        $scope.cancel();
+        expect($state.transitionTo).toHaveBeenCalledWith('select');
     });
 });
 
