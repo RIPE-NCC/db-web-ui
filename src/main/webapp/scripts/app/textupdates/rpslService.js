@@ -83,15 +83,15 @@ angular.module('textUpdates')
 
                         if( !_.isEmpty(trimmed)) {
                             if (item.indexOf('#') < 0) { // no comment
-                                // keep spacing for value
-                                values.push(item);
+                                // keep left spacing for value
+                                values.push(_.trimRight(item));
                             } else if (_.startsWith(trimmed, '#')) { // only comment
                                 // trim comment
                                 comments.push(_.trim(trimmed.substring(1)));
                             } else { // both value and comment
                                 var valueWithComment = item.split('#');
-                                // keep spacing for value
-                                values.push(valueWithComment[0]);
+                                // keep left spacing for value
+                                values.push(_.trimRight(valueWithComment[0]));
                                 // trim comment
                                 comments.push(_.trim(valueWithComment[1]));
                             }

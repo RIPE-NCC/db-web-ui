@@ -49,10 +49,6 @@ describe('textUpdates: RpslService', function () {
         );
     });
 
-    it('should convert multi-line json-attributes with comments into rpsl', function () {
-        // TODO: can this happen?
-    });
-
     it('should parse regular rpsl with comments into json-attributes', function () {
         var rpsl =
             'person:        \n' +
@@ -62,8 +58,8 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: undefined,         comment: undefined},
-            {name: 'phone',  value: '         +316 ',  comment: 'My comment'},
+            {name: 'person', value: undefined,        comment: undefined},
+            {name: 'phone',  value: '         +316',  comment: 'My comment'},
             {name: 'address', value: '       Singel', comment: undefined}
         ]);
     });
@@ -74,7 +70,7 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: '   Me     ', comment: 'hoi'}
+            {name: 'person', value: '   Me', comment: 'hoi'}
         ]);
     });
 
@@ -128,9 +124,9 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person',  value: undefined, comment: 'hoi'},
+            {name: 'person',  value: undefined,        comment: 'hoi'},
             {name: 'phone',   value: '         +316',  comment: undefined},
-            {name: 'address', value: '       Singel ',  comment: 'My comment'}
+            {name: 'address', value: '       Singel',  comment: 'My comment'}
         ]);
     });
 
@@ -142,7 +138,7 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: ' value  1  more value 2 ', comment: 'comment 1 and more comment'}
+            {name: 'person', value: ' value  1  more value 2', comment: 'comment 1 and more comment'}
         ]);
     });
 
@@ -154,7 +150,7 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: ' value  1 \tmore value 2 ', comment: 'more comment'}
+            {name: 'person', value: ' value  1 \tmore value 2', comment: 'more comment'}
         ]);
     });
 
@@ -167,7 +163,7 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person', value: ' value  1 +more value 2 ', comment: 'second comment'}
+            {name: 'person', value: ' value  1 +more value 2', comment: 'second comment'}
         ]);
     });
 
@@ -185,8 +181,8 @@ describe('textUpdates: RpslService', function () {
 
         expect(attrs).toEqual([
             {name: 'person',  value: undefined,                                            comment: undefined},
-            {name: 'address', value: '       Singel     Amsterdam  \tNederland ++   ++Europa', comment: 'part 1 part 2 part 4'},
-            {name: 'phone',   value: '         +316 ',                                     comment: 'ok'},
+            {name: 'address', value: '       Singel    Amsterdam \tNederland ++ ++Europa', comment: 'part 1 part 2 part 4'},
+            {name: 'phone',   value: '         +316',                                      comment: 'ok'},
         ]);
     });
 
