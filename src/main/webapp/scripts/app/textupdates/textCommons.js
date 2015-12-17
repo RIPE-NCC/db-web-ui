@@ -1,0 +1,122 @@
+'use strict';
+
+angular.module('textUpdates')
+    .service('TextCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService',
+        function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService) {
+
+            this.enrichWithDefaults = function (objectSource, objectType, attributes) {
+                // This does only add value if attribute exist
+                attributes.setSingleAttributeOnName('source', objectSource);
+                attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+                attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
+                attributes.setSingleAttributeOnName('org-type', 'OTHER'); // other org-types only settable with override
+
+                // Remove unneeded optional attrs
+                attributes.removeAttributeWithName('created');
+                attributes.removeAttributeWithName('last-modified');
+                attributes.removeAttributeWithName('changed');
+            }
+
+            this.validate = function (objectType, attributes) {
+                var enrichedAttributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
+                if (!enrichedAttributes.validate()) {
+                    _.each(enrichedAttributes, function (item) {
+                        if (item.$$error) {
+                            AlertService.addGlobalError(item.name.toUpperCase() + ': ' + item.$$error);
+                        }
+                    });
+                    return false;
+                }
+                return true;
+            }
+
+            this.authenticate = function (objectType, ssoMaintainers, attributes, passwords, overrides) {
+                if (overrides.length > 0) {
+                    // prefer override over passwords
+                    _clear(passwords);
+                } else {
+                    if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
+                        // show password popup if needed
+                        var objectMntners = _getObjectMntners(attributes);
+                        if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
+                            _performAuthentication(objectMntners);
+                            return false;
+                        }
+                    }
+                    // combine all passwords
+                    _.union(passwords, _getPasswordsForRestCall(objectType));
+                }
+                return true;
+            }
+
+            function _clear(array) {
+                while (array.length) {
+                    array.pop();
+                }
+            }
+
+            function _performAuthentication(objectSource, ssoMntners, objectMntners) {
+                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
+                ModalService.openAuthenticationModal(objectSource, mntnersWithPasswords).then(
+                    function (result) {
+                        AlertService.clearErrors();
+
+                        var authenticatedMntner = result.selectedItem;
+                        if (_isMine(authenticatedMntner)) {
+                            // has been successfully associated in authentication modal
+                            ssoMntners.push(authenticatedMntner);
+                        }
+                    }, function () {
+                        $state.transitionTo('webupdates.select');
+                    }
+                );
+            }
+
+            function _isMine(mntner) {
+                if (!mntner.mine) {
+                    return false;
+                } else {
+                    return mntner.mine;
+                }
+            }
+
+            function _getPasswordsForRestCall(objectType) {
+                var passwords = [];
+
+                if (CredentialsService.hasCredentials()) {
+                    passwords.push(CredentialsService.getCredentials().successfulPassword);
+                }
+
+                // For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                // This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
+                if (objectType === 'route' || objectType === 'route6' || objectType === 'aut-num') {
+                    passwords.push('RPSL');
+                }
+                return passwords;
+            }
+
+            function _getObjectMntners(attributes) {
+                return _.map(attributes.getAllAttributesWithValueOnName('mnt-by'), function (objMntner) {
+                    // Notes:
+                    // - RPSL attribute values can contain leading and traling spaces, so the must be trimmed
+                    // - Assume maintainers have md5-password, so prevent unmodifyable error
+                    return {type: 'mntner', key: _.trim(objMntner.value), auth: ['MD5-PW']};
+                });
+            }
+
+            this.stripEmptyAttributes = function (attributes) {
+                return _.filter(attributes, function (attr) {
+                    return !_.isUndefined(attr.value);
+                });
+            }
+
+            this.navigateToDisplayPage = function (source, objectType, objectName, operation) {
+                $state.transitionTo('webupdates.display', {
+                    source: source,
+                    objectType: objectType,
+                    name: objectName,
+                    method: operation
+                });
+            }
+
+        }]);

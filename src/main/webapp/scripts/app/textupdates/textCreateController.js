@@ -3,20 +3,19 @@
 angular.module('textUpdates')
     .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore',
-        'RpslService', 'MntnerService', 'ModalService', 'CredentialsService',
+        'RpslService', 'TextCommons',
         function ($scope, $stateParams, $state, $resource, $log, $cookies, $q,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,
-                  RpslService, MntnerService, ModalService, CredentialsService) {
-
+                  RpslService, TextCommons) {
 
             $scope.submit = submit;
 
             _initialisePage();
 
             function _initialisePage() {
-                AlertService.clearErrors();
-
                 $scope.restCalInProgress = false;
+
+                AlertService.clearErrors();
 
                 $cookies.put('ui-mode', 'textupdates');
 
@@ -50,7 +49,7 @@ angular.module('textUpdates')
 
             function _enrichAttributes(attributes) {
 
-                _enrichWithDefaults(attributes);
+                TextCommons.enrichWithDefaults($scope.object.source, $scope.object.type, attributes);
 
                 _enrichAttributesWithSsoMntners(attributes).then(
                     function (attributes) {
@@ -60,19 +59,6 @@ angular.module('textUpdates')
                 );
 
                 return attributes;
-            }
-
-            function _enrichWithDefaults(attributes) {
-                // This does only add value if attribute exist
-                attributes.setSingleAttributeOnName('source', $scope.object.source);
-                attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
-                attributes.setSingleAttributeOnName('org-type', 'OTHER'); // other org-types only settable with override
-
-                // Remove unneeded optional attrs
-                attributes.removeAttributeWithName('created');
-                attributes.removeAttributeWithName('last-modified');
-                attributes.removeAttributeWithName('changed');
             }
 
             function _enrichAttributesWithSsoMntners(attributes) {
@@ -139,17 +125,17 @@ angular.module('textUpdates')
                 attributes = _uncapitalize(attributes);
                 $log.debug("attributes:" + JSON.stringify(attributes));
 
-                if( ! _validate(attributes)) {
+                if( ! TextCommons.validate($scope.object.type, attributes)) {
                     return;
                 }
 
-                if( !_authenticate(attributes,passwords,overrides) ) {
+                if( ! TextCommons.authenticate($scope.object.type, $scope.mntners.sso, attributes,passwords,overrides) ) {
                     return;
                 }
 
-                attributes = _stripEmptyAttributes(attributes);
+                attributes = TextCommons.stripEmptyAttributes(attributes);
 
-                // rest-put to server
+                // rest-POST to server
                 $scope.restCalInProgress = true;
                 RestService.createObject($scope.object.source, $scope.object.type,
                     WhoisResources.turnAttrsIntoWhoisObject(attributes),
@@ -159,7 +145,7 @@ angular.module('textUpdates')
 
                         var whoisResources = WhoisResources.wrapWhoisResources(result);
                         MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
-                        _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Create');
+                        TextCommons.navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Create');
 
                     }, function (error) {
                         $scope.restCalInProgress = false;
@@ -188,95 +174,4 @@ angular.module('textUpdates')
                 );
             }
 
-            function _validate(attributes) {
-                var enrichedAttributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributes);
-                if( ! enrichedAttributes.validate() ) {
-                    _.each(enrichedAttributes, function( item) {
-                        if(item.$$error) {
-                            AlertService.addGlobalError(item.name.toUpperCase() + ': ' + item.$$error );
-                        }
-                    });
-                    return false;
-                }
-                return true;
-            }
-
-            function _authenticate(attributes, passwords, overrides) {
-                if( overrides.length > 0 ) {
-                    // prefer override over passwords
-                    _clear(passwords);
-                } else {
-                    if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
-                        // show password popup if needed
-                        var objectMntners = _getObjectMntners(attributes);
-                        if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
-                            _performAuthentication(objectMntners);
-                            return false;
-                        }
-                    }
-                    // combine all passwords
-                    _.union( passwords, _getPasswordsForRestCall() );
-                }
-                return true;
-            }
-
-            function _clear(array) {
-                while (array.length) { array.pop(); }
-            }
-
-            function _stripEmptyAttributes(attributes) {
-                return _.filter(attributes, function(attr) {
-                    return !_.isUndefined(attr.value);
-                });
-            }
-
-            function _performAuthentication(objectMntners) {
-                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.mntners.sso, [], objectMntners);
-                ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
-                    function (result) {
-                        AlertService.clearErrors();
-
-                        var authenticatedMntner = result.selectedItem;
-                        if ($scope.isMine(authenticatedMntner)) {
-                            // has been successfully associated in authentication modal
-                            $scope.mntners.sso.push(authenticatedMntner);
-                        }
-                    }, function () {
-                        $state.transitionTo('webupdates.select');
-                    }
-                );
-            }
-
-            function _getPasswordsForRestCall() {
-                var passwords = [];
-
-                if (CredentialsService.hasCredentials()) {
-                    passwords.push(CredentialsService.getCredentials().successfulPassword);
-                }
-
-                // For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-                // This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-                if ($scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
-                    passwords.push('RPSL');
-                }
-                return passwords;
-            }
-
-            function _getObjectMntners(attributes) {
-                return _.map(attributes.getAllAttributesWithValueOnName('mnt-by'), function (objMntner) {
-                    // Notes:
-                    // - RPSL attribute values can contain leading and traling spaces, so the must be trimmed
-                    // - Assume maintainers have md5-password, so prevent unmodifyable error
-                    return {type: 'mntner', key: _.trim(objMntner.value), auth: ['MD5-PW']};
-                });
-            }
-
-            function _navigateToDisplayPage(source, objectType, objectName, operation) {
-                $state.transitionTo('webupdates.display', {
-                    source: source,
-                    objectType: objectType,
-                    name: objectName,
-                    method: operation
-                });
-            }
         }]);
