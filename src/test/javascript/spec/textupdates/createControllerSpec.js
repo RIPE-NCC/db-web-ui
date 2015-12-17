@@ -210,9 +210,9 @@ describe('textUpdates: TextCreateController', function () {
         $scope.submit();
 
         expect(AlertService.getErrors()).toEqual( [
-            { plainText: 'person: Mandatory attribute not set' } ,
-            { plainText: 'address: Mandatory attribute not set' } ,
-            { plainText: 'phone: Mandatory attribute not set' } ,
+            { plainText: 'PERSON: Mandatory attribute not set' } ,
+            { plainText: 'ADDRESS: Mandatory attribute not set' } ,
+            { plainText: 'PHONE: Mandatory attribute not set' } ,
         ]);
 
         expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();

@@ -145,7 +145,7 @@ angular.module('textUpdates')
                 if( ! enrichedAttributes.validate() ) {
                     _.each(enrichedAttributes, function( item) {
                         if(item.$$error) {
-                            AlertService.addGlobalError(item.name + ': ' + item.$$error );
+                            AlertService.addGlobalError(item.name.toUpperCase() + ': ' + item.$$error );
                         }
                     });
                     return;
