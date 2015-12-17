@@ -4,9 +4,9 @@
 
 angular.module('webUpdates')
     .controller('ReclaimController', [
-                '$scope', '$stateParams', '$state', '$log', '$window', 'WhoisResources',
+                '$scope', '$stateParams', '$state', '$log', '$window', 'WhoisResources', 'WebUpdatesCommons',
                 'CredentialsService', 'RestService', '$q', 'ModalService', 'MntnerService', 'AlertService', 'STATE',
-        function ($scope, $stateParams, $state, $log, $window, WhoisResources,
+        function ($scope, $stateParams, $state, $log, $window, WhoisResources, WebUpdatesCommons,
                 CredentialsService, RestService, $q, ModalService, MntnerService, AlertService, STATE) {
 
             /////////////Maintainer stuff begin
@@ -42,6 +42,7 @@ angular.module('webUpdates')
                 // extract parameters from the url
                 $scope.objectSource = $stateParams.source;
                 $scope.objectType = $stateParams.objectType;
+
                 if( !_.isUndefined($stateParams.name)) {
                     $scope.objectName = decodeURIComponent($stateParams.name);
                 }
@@ -75,8 +76,7 @@ angular.module('webUpdates')
                 if (_isFormValid()){
                     $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, []);
 
-                    _fetchDataForModify();
-                    //_fetchObject();
+                    _fetchDataForReclaim();
                 }
             }
 
@@ -103,27 +103,6 @@ angular.module('webUpdates')
                 }
             }
 
-            function _addLinkToReferenceAttributes(attributes) {
-                var parser = document.createElement('a');
-                return _.map(attributes, function(attribute) {
-                    if (!_.isUndefined(attribute.link)) {
-                        attribute.link.uiHref = _displayUrl(parser, attribute);
-                    }
-                    return attribute;
-                } );
-            }
-
-            function _displayUrl(parser, attribute) {
-                parser.href = attribute.link.href;
-                var parts = parser.pathname.split('/');
-
-                return $state.href('display', {
-                    source: $scope.objectSource,
-                    objectType: attribute['referenced-type'],
-                    name: _.last(parts)
-                });
-            };
-
             function reclaim () {
                 if (_isFormValid()){
                     $state.transitionTo('delete', {
@@ -138,7 +117,7 @@ angular.module('webUpdates')
 
             /////////////Maintainer stuff begin
 
-            function _fetchDataForModify() {
+            function _fetchDataForReclaim() {
 
                 var password = null;
                 if (CredentialsService.hasCredentials()) {
@@ -161,7 +140,7 @@ angular.module('webUpdates')
 
                         // store object to modify
                         _wrapAndEnrichResources($scope.objectType,results.objectToModify);
-                        _addLinkToReferenceAttributes($scope.attributes);
+                        WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
 
                         $scope.maintainers.objectOriginal = [];
                         $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);

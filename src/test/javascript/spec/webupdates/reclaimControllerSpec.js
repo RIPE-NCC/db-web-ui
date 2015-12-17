@@ -6,6 +6,9 @@ describe('webUpdates: ReclaimController', function () {
     var WhoisResources;
     var ModalService;
     var AlertService;
+    var MntnerService;
+    var CredentialsService;
+
     var $rootScope;
     var $log;
     var $controller;
@@ -20,7 +23,7 @@ describe('webUpdates: ReclaimController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_, _AlertService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_, _AlertService_, _MntnerService_, _CredentialsService_) {
 
             $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -32,7 +35,8 @@ describe('webUpdates: ReclaimController', function () {
             ModalService = _ModalService_;
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
-
+            MntnerService = _MntnerService_;
+            CredentialsService = _CredentialsService_;
             $log = {
                 debug: function(msg) {
                     //console.log('info:'+msg);
@@ -69,9 +73,19 @@ describe('webUpdates: ReclaimController', function () {
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
 
-                $httpBackend.expectGET('api/whois/RIPE/inetnum/111%20-%20255?unfiltered=true').respond(function(method,url) {
-                    return [200, objectToDisplay, {}];
-                });
+                $httpBackend.whenGET('api/user/mntners').respond([
+                    {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true}
+                ]);
+
+                $httpBackend.expectGET('api/whois/RIPE/inetnum/111%20-%20255?unfiltered=true').respond(
+                    function(method,url) {
+                        return [200, objectToDisplay, {}];
+                    });
+
+                $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
+                    function(method,url) {
+                        return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW','SSO']} ], {}];
+                    });
 
                 $stateParams.source = SOURCE;
                 $stateParams.objectType = 'inetnum';
@@ -92,33 +106,33 @@ describe('webUpdates: ReclaimController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    //it('should get parameters from url', function () {
-    //
-    //    createReclaimController();
-    //
-    //    expect($scope.objectType).toBe('inetnum');
-    //    expect($scope.objectSource).toBe(SOURCE);
-    //    expect($scope.objectName).toBe(INETNUM);
-    //});
-    //
-    //it('should go to delete controler on reclaim', function() {
-    //
-    //    createReclaimController();
-    //
-    //    $scope.reclaim();
-    //    $httpBackend.flush();
-    //
-    //    expect($state.current.name).toBe('delete');
-    //    expect($stateParams.onCancel).toBe('reclaim');
-    //});
-    //
-    //it('should populate the ui with attributes', function () {
-    //    createReclaimController();
-    //
-    //    expect($scope.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
-    //    expect($scope.attributes.getSingleAttributeOnName('descr').value).toEqual('description');
-    //    expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
-    //});
+    it('should get parameters from url', function () {
+
+        createReclaimController();
+
+        expect($scope.objectType).toBe('inetnum');
+        expect($scope.objectSource).toBe(SOURCE);
+        expect($scope.objectName).toBe(INETNUM);
+    });
+
+    it('should go to delete controler on reclaim', function() {
+
+        createReclaimController();
+
+        $scope.reclaim();
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('delete');
+        expect($stateParams.onCancel).toBe('reclaim');
+    });
+
+    it('should populate the ui with attributes', function () {
+        createReclaimController();
+
+        expect($scope.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
+        expect($scope.attributes.getSingleAttributeOnName('descr').value).toEqual('description');
+        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+    });
     //
     //it('should have errors on wrong type', function () {
     //
