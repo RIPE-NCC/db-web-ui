@@ -198,9 +198,31 @@ describe('textUpdates: TextCreateController', function () {
         $scope.submit();
 
         expect(AlertService.getErrors()).toEqual( [
-            { plainText: 'PERSON: Mandatory attribute not set' } ,
-            { plainText: 'ADDRESS: Mandatory attribute not set' } ,
-            { plainText: 'PHONE: Mandatory attribute not set' } ,
+            { plainText: 'person: Mandatory attribute not set' } ,
+            { plainText: 'address: Mandatory attribute not set' } ,
+            { plainText: 'phone: Mandatory attribute not set' } ,
+        ]);
+
+        expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
+    });
+
+    it('should report an error when unknown attribute is encountered', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+        doCreateController('person');
+
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {'key': 'TEST-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
+        ]);
+        $httpBackend.flush();
+
+        $scope.object.rpsl = person_correct +
+            'wrong:xyz';
+
+        $scope.submit();
+
+        expect(AlertService.getErrors()).toEqual( [
+            { plainText: 'wrong: Unknown attribute' }
         ]);
 
         expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();

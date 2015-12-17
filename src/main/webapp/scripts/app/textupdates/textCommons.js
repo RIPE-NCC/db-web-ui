@@ -18,11 +18,22 @@ angular.module('textUpdates')
             }
 
             this.validate = function (objectType, attributes) {
+                var unknownAttrs = _.filter(attributes, function (attr) {
+                    return _.isUndefined(WhoisResources.findMetaAttributeOnObjectTypeAndName(objectType, attr.name));
+                });
+                if (!_.isEmpty(unknownAttrs)) {
+                    _.each(unknownAttrs, function (attr) {
+                        AlertService.addGlobalError(attr.name + ': Unknown attribute');
+                    });
+                    return;
+                }
+
                 var enrichedAttributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
                 if (!enrichedAttributes.validate()) {
                     _.each(enrichedAttributes, function (item) {
                         if (item.$$error) {
-                            AlertService.addGlobalError(item.name.toUpperCase() + ': ' + item.$$error);
+                            // Note: keep it lower-case to be consistent with server-side error reports
+                            AlertService.addGlobalError(item.name + ': ' + item.$$error);
                         }
                     });
                     return false;
@@ -30,7 +41,7 @@ angular.module('textUpdates')
                 return true;
             }
 
-            this.authenticate = function (objectType, ssoMaintainers, attributes, passwords, overrides) {
+            this.authenticate = function (objectSource, objectType, ssoMaintainers, attributes, passwords, overrides) {
                 if (overrides.length > 0) {
                     // prefer override over passwords
                     _clear(passwords);
@@ -39,7 +50,7 @@ angular.module('textUpdates')
                         // show password popup if needed
                         var objectMntners = _getObjectMntners(attributes);
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
-                            _performAuthentication(objectMntners);
+                            _performAuthentication(objectSource, objectType, ssoMaintainers, objectMntners);
                             return false;
                         }
                     }
@@ -55,7 +66,7 @@ angular.module('textUpdates')
                 }
             }
 
-            function _performAuthentication(objectSource, ssoMntners, objectMntners) {
+            function _performAuthentication(objectSource, objectType, ssoMntners, objectMntners) {
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
                 ModalService.openAuthenticationModal(objectSource, mntnersWithPasswords).then(
                     function (result) {
@@ -67,7 +78,10 @@ angular.module('textUpdates')
                             ssoMntners.push(authenticatedMntner);
                         }
                     }, function () {
-                        $state.transitionTo('webupdates.select');
+                        $state.transitionTo('textupdates.create', {
+                            source: objectSource,
+                            objectType: objectType
+                        });
                     }
                 );
             }

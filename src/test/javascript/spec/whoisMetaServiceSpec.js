@@ -35,6 +35,22 @@ describe('dbWebApp: WhoisMetaService', function () {
             'type1', 'type2'])
     });
 
+    it('should find meta attribute on objectType and name', function(){
+        $whoisMetaService._objectTypesMap =
+        {
+            'type1' : { name: 'type1', description:'Z',
+                'attributes':[
+                    { name:'mandatory1', mandatory:true,  'multiple':false, refs:[]},
+                    { name:'optional1',  mandatory:false, 'multiple':true,  refs:['b']}
+                ]
+            }
+        };
+        expect($whoisMetaService.findMetaAttributeOnObjectTypeAndName('type1', 'mandatory1')).toEqual(
+            { name:'mandatory1', mandatory:true,  'multiple':false, refs:[]}
+        );
+        expect($whoisMetaService.findMetaAttributeOnObjectTypeAndName('type1', 'mandatory3')).toBeUndefined();
+    });
+
     it('should enrich attributes with meta attributes for a given type', function(){
 
         $whoisMetaService._objectTypesMap =

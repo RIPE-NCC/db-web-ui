@@ -19,6 +19,10 @@ angular.module('dbWebApp')
             return WhoisMetaService._getMetaAttributesOnObjectType(objectTypeName, mandatoryOnly);
         };
 
+        this.findMetaAttributeOnObjectTypeAndName = function(objectTypeName, attributeName) {
+            return WhoisMetaService.findMetaAttributeOnObjectTypeAndName(objectTypeName, attributeName);
+        }
+
         this.getObjectTypes = function () {
             return WhoisMetaService.getObjectTypes();
         };

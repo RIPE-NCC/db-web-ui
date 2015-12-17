@@ -125,11 +125,11 @@ angular.module('textUpdates')
                 attributes = _uncapitalize(attributes);
                 $log.debug("attributes:" + JSON.stringify(attributes));
 
-                if( ! TextCommons.validate($scope.object.type, attributes)) {
+                if (!TextCommons.validate($scope.object.type, attributes)) {
                     return;
                 }
 
-                if( ! TextCommons.authenticate($scope.object.type, $scope.mntners.sso, attributes,passwords,overrides) ) {
+                if (!TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso, attributes, passwords, overrides)) {
                     return;
                 }
 
@@ -167,7 +167,7 @@ angular.module('textUpdates')
 
             function _uncapitalize(attributes) {
                 return WhoisResources.wrapAttributes(
-                    _.map( attributes, function (attr) {
+                    _.map(attributes, function (attr) {
                         attr.name = attr.name.toLowerCase();
                         return attr;
                     })

@@ -52,6 +52,16 @@ angular.module('dbWebApp')
             );
         };
 
+        this.findMetaAttributeOnObjectTypeAndName = function (objectTypeName, attributeName) {
+            if (!objectTypeName || !this._objectTypesMap[objectTypeName]) {
+                return undefined;
+            }
+            return _.find(this._objectTypesMap[objectTypeName].attributes,
+                function (attr) {
+                    return attr.name === attributeName;
+            });
+        };
+
         this.getObjectTypes = function () {
             var keys = [];
             for (var key in this._objectTypesMap) {
