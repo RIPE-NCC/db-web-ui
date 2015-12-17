@@ -168,6 +168,11 @@ angular.module('textUpdates')
                     _.union( passwords, _getPasswordsForRestCall() );
                 }
 
+                // strip attributes without a value
+                attributes = _.filter(attributes, function(attr) {
+                    return !_.isUndefined(attr.value);
+                });
+
                 // rest-put to server
                 $scope.restCalInProgress = true;
                 var unformatted = true;
