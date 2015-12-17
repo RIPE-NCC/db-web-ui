@@ -1,28 +1,29 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q',
+    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore',
-        'RpslService', 'TextCommons',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, $q,
+        'RpslService', 'TextCommons', 'PreferenceService',
+        function ($scope, $stateParams, $state, $resource, $log, $q,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,
-                  RpslService, TextCommons) {
+                  RpslService, TextCommons, PreferenceService) {
 
             $scope.submit = submit;
+            $scope.switchToWebMode = switchToWebMode;
 
             _initialisePage();
 
             function _initialisePage() {
+
                 $scope.restCalInProgress = false;
 
                 AlertService.clearErrors();
-
-                $cookies.put('ui-mode', 'textupdates');
 
                 // extract parameters from the url
                 $scope.object = {};
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
+                var noRedirect = $stateParams.noRedirect;
 
                 // maintainers associated with this SSO-account
                 $scope.mntners = {};
@@ -30,10 +31,23 @@ angular.module('textUpdates')
 
                 $log.debug('TextCreateController: Url params:' +
                     ' object.source:' + $scope.object.source +
-                    ', object.type:' + $scope.object.type);
+                    ', object.type:' + $scope.object.type +
+                    ', noRedirect:' + noRedirect);
+
+                if( PreferenceService.isWebMode() && _canRedirect(noRedirect) ) {
+                    switchToWebMode();
+                } else {
+                    $log.debug("Not switching to web-mode");
+                }
 
                 _prepopulateRpsl();
             };
+
+            function _canRedirect(noRedirect ) {
+                var status =  _.isUndefined(noRedirect) || noRedirect === false;
+                $log.debug('Can redirect:' + status );
+                return status;
+            }
 
             function _prepopulateRpsl() {
                 var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
@@ -172,6 +186,17 @@ angular.module('textUpdates')
                         return attr;
                     })
                 );
+            }
+
+            function switchToWebMode() {
+                $log.debug("Switching to web-mode");
+
+                PreferenceService.setWebMode();
+
+                $state.transitionTo('webupdates.create', {
+                    source: $scope.object.source,
+                    objectType: $scope.object.type
+                });
             }
 
         }]);

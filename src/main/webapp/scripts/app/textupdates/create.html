@@ -3,6 +3,8 @@
 
     <alerts></alerts>
 
+    <button ng-click="switchToWebMode()" class="blue-button pull-right ga-text-createobj-switch-mode" style="border:0;">Switch to web mode</button>
+
     <form id="textCreateForm">
 
         <div class="form-group">
@@ -14,9 +16,9 @@
                       style="font-family:monospace;"></textarea>
 
             <input type="submit" ng-click="submit()" ng-disabled="restCalInProgress"
-                   class="blue-button pull-right ga-createobj-create" value="Create"/>
+                   class="blue-button pull-right ga-text-createobj-create" value="Create"/>
 
-            <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
+            <button ng-click="cancel()" class="blue-button pull-right ga-text-createobj-cancel" style="border:0;">Cancel</button>
 
         </div>
     </form>

@@ -11,12 +11,12 @@ angular.module('textUpdates')
                     template: '<div ui-view></div>'
                 })
                 .state('textupdates.create', {
-                    url: '/create/:source/:objectType',
+                    url: '/create/:source/:objectType?noRedirect',
                     templateUrl: 'scripts/app/textupdates/create.html',
                     controller: 'TextCreateController'
                 })
                 .state('textupdates.modify', {
-                    url: '/modify/:source/:objectType/:name',
+                    url: '/modify/:source/:objectType/:name?noRedirect',
                     templateUrl: 'scripts/app/textupdates/modify.html',
                     controller: 'TextModifyController'
                 });

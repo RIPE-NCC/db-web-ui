@@ -71,34 +71,4 @@ angular.module('dbWebApp', [
                 $log.error('Authentication error');
             });
 
-            $rootScope.$on('$stateChangeStart',
-                function (event, toState, toParams, fromState, fromParams) {
-                    $log.error('$stateChangeStart:' + JSON.stringify(toState));
-
-                    var requiredMode = 'webupdates';
-                    var otherMode = 'textupdates';
-
-                    var uiModeCookie = $cookies.get('ui-mode');
-                    if (!_.isUndefined(uiModeCookie) && uiModeCookie === 'textupdates') {
-                        requiredMode = 'textupdates';
-                        otherMode = 'webupdates';
-                    }
-                    $log.error('requested mode:' + requiredMode);
-                    //if (toState.name === otherMode + '.display') {
-                    //    event.preventDefault();
-                    //    $state.transitionTo(requiredMode + '..display', toParams);
-                    //} else if (toState.name === otherMode + '.modify') {
-                    //    event.preventDefault();
-                    //    $state.transitionTo(requiredMode + '.modify', toParams);
-                    //} else if (toState.name === otherMode + '.delete') {
-                    //    event.preventDefault();
-                    //    $state.transitionTo(requiredMode + '.delete', toParams);
-                    //} else if (toState.name === otherMode + '.select') {
-                    //    event.preventDefault();
-                    //    $state.transitionTo(requiredMode + '.select', toParams);
-                    //}
-                }
-            );
-
-
         }]);

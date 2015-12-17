@@ -1,32 +1,38 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', 'WhoisResources',
-        'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore, RpslService) {
-
+    .controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log',
+        'WhoisResources', 'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService', 'PreferenceService',
+        function ($scope, $stateParams, $state, $resource, $log,
+                  WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore, RpslService, PreferenceService) {
 
             $scope.submit = submit;
+            $scope.switchToWebMode = switchToWebMode;
 
             _initialisePage();
 
             function _initialisePage() {
+
                 AlertService.clearErrors();
 
                 $scope.restCalInProgress = false;
-
-                $cookies.put('ui-mode', 'textupdates');
 
                 // extract parameters from the url
                 $scope.object = {}
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
                 $scope.object.name = decodeURIComponent($stateParams.name);
+                var noRedirect = $stateParams.noRedirect;
 
                 $log.debug('TextModifyController: Url params:' +
                     ' object.source:' + $scope.object.source +
                     ', object.type:' + $scope.object.type +
-                    ', object.name:' + $scope.object.name);
+                    ', object.name:' + $scope.object.name +
+                    ', noRedirect:' + noRedirect);
+
+                if( PreferenceService.isWebMode() && ! noRedirect === true ) {
+                    switchToWebMode();
+                }
 
                 _fetchAndPopulateObject();
             };
@@ -102,6 +108,18 @@ angular.module('textUpdates')
                     objectType: objectType,
                     name: objectName,
                     method: operation
+                });
+            }
+
+            function switchToWebMode() {
+                $log.debug("Switching to web-mode");
+
+                PreferenceService.setWebMode();
+
+                $state.transitionTo('webupdates.modify', {
+                    source: $scope.object.source,
+                    objectType: $scope.object.type,
+                    name:$scope.object.name,
                 });
             }
         }]);

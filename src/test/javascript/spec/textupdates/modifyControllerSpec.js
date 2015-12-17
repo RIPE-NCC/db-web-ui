@@ -5,6 +5,7 @@ describe('textUpdates: TextModifyController', function () {
     var $scope, $state, $stateParams, $httpBackend;
     var WhoisResources;
     var AlertService;
+    var PreferenceService;
     var OBJECT_TYPE = 'person';
     var SOURCE = 'RIPE';
     var OBJECT_NAME = 'TP-RIPE';
@@ -48,7 +49,7 @@ describe('textUpdates: TextModifyController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _AlertService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _AlertService_,_PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -58,15 +59,17 @@ describe('textUpdates: TextModifyController', function () {
             $httpBackend = _$httpBackend_;
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
+            PreferenceService = _PreferenceService_;
 
             $stateParams.source = SOURCE;
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.name = OBJECT_NAME;
 
+            PreferenceService.setTextMode();
+
             _$controller_('TextModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, AlertService: AlertService
             });
-
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
@@ -91,6 +94,13 @@ describe('textUpdates: TextModifyController', function () {
         expect($scope.object.name).toBe(OBJECT_NAME);
     });
 
+    it('should redirect to webupdates when web-preference is set', function () {
+        // TODO fix
+    });
+
+    it('should not redirect to webupdates no-redirect is set', function () {
+        // TODO fix
+    });
 
     it('should populate fetched person object in rpsl area', function() {
         expect($scope.object.rpsl).toEqual(testPersonRpslNoPad); // temp object with no padding, to fix

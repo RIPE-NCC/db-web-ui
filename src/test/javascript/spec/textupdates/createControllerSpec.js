@@ -6,6 +6,7 @@ describe('textUpdates: TextCreateController', function () {
     var WhoisResources;
     var AlertService;
     var ModalService;
+    var PreferenceService;
     var SOURCE = 'RIPE';
     var doCreateController;
     var $q;
@@ -13,7 +14,8 @@ describe('textUpdates: TextCreateController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _AlertService_, _ModalService_,_$q_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
+                         _MessageStore_, _WhoisResources_, _AlertService_, _ModalService_,_$q_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -24,30 +26,34 @@ describe('textUpdates: TextCreateController', function () {
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
             ModalService = _ModalService_;
+            PreferenceService = _PreferenceService_;
             $q = _$q_;
 
             var SOURCE = 'RIPE';
 
             var logger = {
                 debug: function (msg) {
-                    //console.log('info:' + msg);
+                   // console.log('info:' + msg);
                 },
                 info: function (msg) {
-                    //console.log('info:' + msg);
+                   // console.log('info:' + msg);
                 },
-                error: function(msg) {
-                    //console.log('error:'+ msg);
+                error: function (msg) {
+                   // console.log('error:' + msg);
                 }
             };
 
-            doCreateController = function(objectType) {
+            PreferenceService.setTextMode();
+
+            doCreateController = function(objectType, noRedirect) {
 
                 $stateParams.source = SOURCE;
                 $stateParams.objectType = objectType;
-                $stateParams.name = undefined;
+                $stateParams.noRedirect = noRedirect;
 
                 _$controller_('TextCreateController', {
-                    $scope: $scope, $state: $state, $log: logger, $stateParams: $stateParams, AlertService: AlertService, ModalService:ModalService
+                    $scope: $scope, $state: $state, $log: logger, $stateParams: $stateParams,
+                    AlertService: AlertService, ModalService:ModalService
                 });
             }
 
@@ -71,7 +77,29 @@ describe('textUpdates: TextCreateController', function () {
         expect($scope.object.source).toBe(SOURCE);
         expect($scope.object.type).toBe('inetnum');
     });
+    it('should redirect to webupdates when web-preference is set', function () {
+        PreferenceService.setWebMode();
 
+        doCreateController('inetnum',false);
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('webupdates.create');
+    });
+
+    /* TODO fix
+
+    it('should not redirect to webupdates when web-preference is set and no-redirect is true', function () {
+        PreferenceService.setWebMode();
+
+        doCreateController('inetnum',true);
+
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('textupdates.create');
+    });
+  */
     it('should populate an empty person rpsl, mandatory attrs uppercase and optional lowercase', function() {
         doCreateController('person');
         $httpBackend.whenGET('api/user/mntners').respond([]);
@@ -466,5 +494,4 @@ describe('textUpdates: TextCreateController', function () {
 
         expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
     });
-
 });

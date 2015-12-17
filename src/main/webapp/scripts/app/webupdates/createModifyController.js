@@ -5,12 +5,13 @@
 angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
-        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper',
+        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper', 'PreferenceService',
         function ($scope, $stateParams, $state, $log, $window,
                   WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService,
-                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper) {
+                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper, PreferenceService ) {
 
             // exposed methods called from html fragment
+            $scope.switchToTextMode = switchToTextMode;
             $scope.onMntnerAdded = onMntnerAdded;
             $scope.onMntnerRemoved = onMntnerRemoved;
 
@@ -67,8 +68,17 @@ angular.module('webUpdates')
                 if (!_.isUndefined($stateParams.name)) {
                     $scope.name = decodeURIComponent($stateParams.name);
                 }
+                var noRedirect = $stateParams.noRedirect;
 
-                $log.debug('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
+                $log.debug('Url params: source:' + $scope.source +
+                    '. type:' + $scope.objectType +
+                    ', uid:' + $scope.name +
+                    ', noRedirect:' + noRedirect);
+
+                // switch to text-screen if cookie says so and cookie is not to be ignored
+                if( PreferenceService.isTextMode() && ! noRedirect === true ) {
+                    switchToTextMode();
+                }
 
                 // initialize data
                 $scope.maintainers = {
@@ -831,5 +841,23 @@ angular.module('webUpdates')
                 }
             }
 
+            function switchToTextMode() {
+                $log.debug("Switching to text-mode");
+
+                PreferenceService.setTextMode();
+
+                if( $scope.operation === $scope.CREATE_OPERATION ) {
+                    $state.transitionTo('textupdates.create', {
+                        source: $scope.source,
+                        objectType: $scope.objectType
+                    });
+                } else {
+                    $state.transitionTo('textupdates.modify', {
+                        source: $scope.source,
+                        objectType: $scope.objectType,
+                        name: $scope.name
+                    });
+                }
+            }
 
         }]);

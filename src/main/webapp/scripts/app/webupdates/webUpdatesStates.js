@@ -61,12 +61,12 @@ angular.module('webUpdates')
                     controller: 'CreateSelfMaintainedMaintainerController'
                 })
                 .state('webupdates.create', {
-                    url: '/create/:source/:objectType',
+                    url: '/create/:source/:objectType?noRedirect',
                     templateUrl: 'scripts/app/webupdates/createModify.html',
                     controller: 'CreateModifyController'
                 })
                 .state('webupdates.modify', {
-                    url: '/modify/:source/:objectType/{name:WhoisObjectName}',
+                    url: '/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect',
                     templateUrl: 'scripts/app/webupdates/createModify.html',
                     controller: 'CreateModifyController'
                 })
