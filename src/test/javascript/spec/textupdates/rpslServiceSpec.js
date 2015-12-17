@@ -49,6 +49,14 @@ describe('textUpdates: RpslService', function () {
         );
     });
 
+    it('should parse empty rpsls', function () {
+        var rpsl = '';
+
+        var attrs = $RpslService.fromRpsl(rpsl);
+
+        expect(attrs).toEqual([]);
+    });
+
     it('should parse regular rpsl with comments into json-attributes', function () {
         var rpsl =
             'person:        \n' +
@@ -155,7 +163,7 @@ describe('textUpdates: RpslService', function () {
     });
 
     it('should parse value continuation with plus', function () {
-        // TODO: is this ok?
+        // TODO: could collapse plusses into single space?
         var rpsl =
             'person: value  1\n' +
             '+more value 2 # second comment\n';
