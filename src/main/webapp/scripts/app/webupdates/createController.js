@@ -137,7 +137,7 @@ angular.module('webUpdates')
                     }, function (error) {
                         if(error != "cancel") { //dismissing modal will hit this function with the string "cancel" in error arg
                             //TODO: pass more specific errors from REST? [RM]
-                            abuseAttr.$$error = 'There was a problem creating the role object for the abuse-c attribute';
+                            abuseAttr.$$error = 'The role object for the abuse-c attribute was not created';
                         }
                     }
                 );
