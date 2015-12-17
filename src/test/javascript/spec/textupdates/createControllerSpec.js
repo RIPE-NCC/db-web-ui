@@ -330,7 +330,7 @@ describe('textUpdates: TextCreateController', function () {
         expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
     });
 
-    it('should extract override from rpsl', function () {
+    it('should extract override from rpsl and ignore password', function () {
         spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
 
         doCreateController('person');
@@ -340,7 +340,9 @@ describe('textUpdates: TextCreateController', function () {
         ]);
         $httpBackend.flush();
 
-        $scope.object.rpsl = person_correct + 'override:me,secret,because\n';
+        $scope.object.rpsl = person_correct +
+            'override:me,secret,because\n' +
+            'password:secret';
 
         $scope.submit();
 

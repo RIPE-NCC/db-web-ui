@@ -126,20 +126,24 @@ angular.module('textUpdates')
 
                 $log.debug("rpsl:" + $scope.object.rpsl);
 
+                // parse
                 var passwords = [];
                 var overrides = [];
-                var attributes =
-                    _.map(RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides), function (attr) {
+                var capitalizedAttributes = RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides);
+                $log.debug("capitalizedAttributes:" + JSON.stringify(capitalizedAttributes));
+
+                var attributes = WhoisResources.wrapAttributes(
+                    _.map( capitalizedAttributes, function (attr) {
                         attr.name = attr.name.toLowerCase();
                         return attr;
-                    });
-
-                attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributes);
-
+                    })
+                );
                 $log.debug("attributes:" + JSON.stringify(attributes));
 
-                if( ! attributes.validate() ) {
-                    _.each(attributes, function( item) {
+                // validate
+                    var enrichedAttributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributes);
+                if( ! enrichedAttributes.validate() ) {
+                    _.each(enrichedAttributes, function( item) {
                         if(item.$$error) {
                             AlertService.addGlobalError(item.name + ': ' + item.$$error );
                         }
@@ -147,18 +151,24 @@ angular.module('textUpdates')
                     return;
                 }
 
-                if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
-                    // show password popup if needed
-                    var objectMntners = _getObjectMntners(attributes);
-                    if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
-                        _performAuthentication(objectMntners);
-                        return;
+                if( overrides.length > 0 ) {
+                    // prefer override over passwords
+                    passwords = undefined;
+                } else {
+                    // authenticate
+                    if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
+                        // show password popup if needed
+                        var objectMntners = _getObjectMntners(attributes);
+                        if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
+                            _performAuthentication(objectMntners);
+                            return;
+                        }
                     }
+                    // combine all passwords
+                    _.union( passwords, _getPasswordsForRestCall() );
                 }
 
-                // combine all passwords
-                _.union( passwords, _getPasswordsForRestCall() );
-
+                // rest-put to server
                 $scope.restCalInProgress = true;
                 RestService.createObject($scope.object.source, $scope.object.type,
                     WhoisResources.turnAttrsIntoWhoisObject(attributes),
