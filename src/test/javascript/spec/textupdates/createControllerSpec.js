@@ -258,7 +258,7 @@ describe('textUpdates: TextCreateController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPOST('api/whois/RIPE/person').respond({
+        $httpBackend.expectPOST('api/whois/RIPE/person?unformatted=true').respond({
             objects: {
                 object: [
                     {
@@ -301,7 +301,7 @@ describe('textUpdates: TextCreateController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPOST('api/whois/RIPE/person?password=secret').respond({
+        $httpBackend.expectPOST('api/whois/RIPE/person?password=secret&unformatted=true').respond({
             objects: {
                 object: [
                     {
@@ -346,7 +346,7 @@ describe('textUpdates: TextCreateController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPOST('api/whois/RIPE/person?override=me,secret,because').respond({
+        $httpBackend.expectPOST('api/whois/RIPE/person?override=me,secret,because&unformatted=true').respond({
             objects: {
                 object: [
                     {
@@ -391,7 +391,7 @@ describe('textUpdates: TextCreateController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPOST('api/whois/RIPE/person').respond(400,{
+        $httpBackend.expectPOST('api/whois/RIPE/person?unformatted=true').respond(400,{
             objects: {
                 object: [
                     {
