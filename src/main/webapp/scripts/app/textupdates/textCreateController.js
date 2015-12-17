@@ -20,12 +20,12 @@ angular.module('textUpdates')
                 $cookies.put('ui-mode', 'textupdates');
 
                 // extract parameters from the url
-                $scope.object = {}
+                $scope.object = {};
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
 
                 // maintainers associated with this SSO-account
-                $scope.mntners = {}
+                $scope.mntners = {};
                 $scope.mntners.sso = [];
 
                 $log.debug('TextCreateController: Url params:' +
