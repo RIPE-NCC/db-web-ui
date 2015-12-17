@@ -68,6 +68,11 @@ angular.module('textUpdates')
                 attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                 attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                 attributes.setSingleAttributeOnName('org-type', 'OTHER'); // other org-types only settable with override
+
+                // Remove unneeded optional attrs
+                attributes.removeAttributeWithName('created');
+                attributes.removeAttributeWithName('last-modified');
+                attributes.removeAttributeWithName('changed');
             }
 
             function _enrichAttributesWithSsoMntners(attributes) {
@@ -129,56 +134,26 @@ angular.module('textUpdates')
                 // parse
                 var passwords = [];
                 var overrides = [];
-                var capitalizedAttributes = RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides);
-                $log.debug("capitalizedAttributes:" + JSON.stringify(capitalizedAttributes));
+                var attributes = RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides);
 
-                var attributes = WhoisResources.wrapAttributes(
-                    _.map( capitalizedAttributes, function (attr) {
-                        attr.name = attr.name.toLowerCase();
-                        return attr;
-                    })
-                );
+                attributes = _uncapitalize(attributes);
                 $log.debug("attributes:" + JSON.stringify(attributes));
 
-                // validate
-                    var enrichedAttributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributes);
-                if( ! enrichedAttributes.validate() ) {
-                    _.each(enrichedAttributes, function( item) {
-                        if(item.$$error) {
-                            AlertService.addGlobalError(item.name.toUpperCase() + ': ' + item.$$error );
-                        }
-                    });
+                if( ! _validate(attributes)) {
                     return;
                 }
 
-                if( overrides.length > 0 ) {
-                    // prefer override over passwords
-                    passwords = undefined;
-                } else {
-                    // authenticate
-                    if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
-                        // show password popup if needed
-                        var objectMntners = _getObjectMntners(attributes);
-                        if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
-                            _performAuthentication(objectMntners);
-                            return;
-                        }
-                    }
-                    // combine all passwords
-                    _.union( passwords, _getPasswordsForRestCall() );
+                if( !_authenticate(attributes,passwords,overrides) ) {
+                    return;
                 }
 
-                // strip attributes without a value
-                attributes = _.filter(attributes, function(attr) {
-                    return !_.isUndefined(attr.value);
-                });
+                attributes = _stripEmptyAttributes(attributes);
 
                 // rest-put to server
                 $scope.restCalInProgress = true;
-                var unformatted = true;
                 RestService.createObject($scope.object.source, $scope.object.type,
                     WhoisResources.turnAttrsIntoWhoisObject(attributes),
-                    passwords, overrides, unformatted).then(
+                    passwords, overrides, true).then(
                     function (result) {
                         $scope.restCalInProgress = false;
 
@@ -202,6 +177,57 @@ angular.module('textUpdates')
                         }
                     }
                 );
+            }
+
+            function _uncapitalize(attributes) {
+                return WhoisResources.wrapAttributes(
+                    _.map( attributes, function (attr) {
+                        attr.name = attr.name.toLowerCase();
+                        return attr;
+                    })
+                );
+            }
+
+            function _validate(attributes) {
+                var enrichedAttributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributes);
+                if( ! enrichedAttributes.validate() ) {
+                    _.each(enrichedAttributes, function( item) {
+                        if(item.$$error) {
+                            AlertService.addGlobalError(item.name.toUpperCase() + ': ' + item.$$error );
+                        }
+                    });
+                    return false;
+                }
+                return true;
+            }
+
+            function _authenticate(attributes, passwords, overrides) {
+                if( overrides.length > 0 ) {
+                    // prefer override over passwords
+                    _clear(passwords);
+                } else {
+                    if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
+                        // show password popup if needed
+                        var objectMntners = _getObjectMntners(attributes);
+                        if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, [], objectMntners)) {
+                            _performAuthentication(objectMntners);
+                            return false;
+                        }
+                    }
+                    // combine all passwords
+                    _.union( passwords, _getPasswordsForRestCall() );
+                }
+                return true;
+            }
+
+            function _clear(array) {
+                while (array.length) { array.pop(); }
+            }
+
+            function _stripEmptyAttributes(attributes) {
+                return _.filter(attributes, function(attr) {
+                    return !_.isUndefined(attr.value);
+                });
             }
 
             function _performAuthentication(objectMntners) {

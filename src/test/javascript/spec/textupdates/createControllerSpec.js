@@ -88,9 +88,6 @@ describe('textUpdates: TextCreateController', function () {
             'notify:        \n' +
             'abuse-mailbox: \n' +
             'MNT-BY:        \n' +
-            'changed:       \n' +
-            'created:       \n' +
-            'last-modified: \n' +
             'SOURCE:        RIPE\n');
     });
 
@@ -121,9 +118,6 @@ describe('textUpdates: TextCreateController', function () {
             'mnt-domains:   \n' +
             'mnt-routes:    \n' +
             'mnt-irt:       \n' +
-            'changed:       \n' +
-            'created:       \n' +
-            'last-modified: \n' +
             'SOURCE:        RIPE\n');
 
         expect(AlertService.getErrors().length).toEqual(0);
@@ -154,9 +148,6 @@ describe('textUpdates: TextCreateController', function () {
             'mnt-domains:   \n' +
             'mnt-routes:    \n' +
             'mnt-irt:       \n' +
-            'changed:       \n' +
-            'created:       \n' +
-            'last-modified: \n' +
             'SOURCE:        RIPE\n');
         expect(AlertService.getErrors().length).toEqual(0);
     });
@@ -186,9 +177,6 @@ describe('textUpdates: TextCreateController', function () {
             'mnt-domains:   \n' +
             'mnt-routes:    \n' +
             'mnt-irt:       \n' +
-            'changed:       \n' +
-            'created:       \n' +
-            'last-modified: \n' +
             'SOURCE:        RIPE\n');
 
         expect(AlertService.getErrors().length).toEqual(1);
