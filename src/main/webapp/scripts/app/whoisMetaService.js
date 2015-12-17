@@ -1099,7 +1099,7 @@ angular.module('dbWebApp')
             'organisation': {
                 short: 'Leave value at \"AUTO-1\" to generate a unique org-id.',
                 description: 'Specifies the ID of an organisation object. Leave this value on \"AUTO-1\" to let the database assign the ID automatically.',
-                syntax: 'When using \"AUTO-1\", by default the first characters of the organisation name are used to create the ord-id. For example, \"Acme Corporation\" will result in a NIC handle such as ORG-AC9999-RIPE. You can enter up to 4 additional characters after \"AUTO-1\" to influence which characters are used. For example, specifying \"AUTO-1BAR\" will result in an org-id such as ORG-BAR9999-RIPE, regardless of the specified organisation name.'
+                syntax: 'When using \"AUTO-1\", by default the first characters of the organisation name are used to create the org-id. For example, \"Acme Corporation\" will result in a NIC handle such as ORG-AC9999-RIPE. You can enter up to 4 additional characters after \"AUTO-1\" to influence which characters are used. For example, specifying \"AUTO-1BAR\" will result in an org-id such as ORG-BAR9999-RIPE, regardless of the specified organisation name.'
             },
             'origin': {
                 short: 'Specifies the AS that originates the route.',
