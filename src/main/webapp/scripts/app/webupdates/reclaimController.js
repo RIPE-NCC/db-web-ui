@@ -231,7 +231,7 @@ angular.module('webUpdates')
             }
 
             function _navigateToReclaim() {
-                $state.transitionTo('reclaim', {
+                $state.transitionTo(STATE.RECLAIM, {
                     source: $scope.objectSource,
                     objectType: $scope.objectType,
                     name: $scope.objectName
