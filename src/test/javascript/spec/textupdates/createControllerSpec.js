@@ -10,6 +10,7 @@ describe('textUpdates: TextCreateController', function () {
     var SOURCE = 'RIPE';
     var doCreateController;
     var $q;
+    var initialState;
 
     beforeEach(function () {
         module('webUpdates');
@@ -33,13 +34,13 @@ describe('textUpdates: TextCreateController', function () {
 
             var logger = {
                 debug: function (msg) {
-                   // console.log('info:' + msg);
+                    //console.log('info:' + msg);
                 },
                 info: function (msg) {
-                   // console.log('info:' + msg);
+                    //console.log('info:' + msg);
                 },
                 error: function (msg) {
-                   // console.log('error:' + msg);
+                    //console.log('error:' + msg);
                 }
             };
 
@@ -55,6 +56,7 @@ describe('textUpdates: TextCreateController', function () {
                     $scope: $scope, $state: $state, $log: logger, $stateParams: $stateParams,
                     AlertService: AlertService, ModalService:ModalService
                 });
+                initialState = $state.current.name;
             }
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -77,6 +79,7 @@ describe('textUpdates: TextCreateController', function () {
         expect($scope.object.source).toBe(SOURCE);
         expect($scope.object.type).toBe('inetnum');
     });
+
     it('should redirect to webupdates when web-preference is set', function () {
         PreferenceService.setWebMode();
 
@@ -84,10 +87,9 @@ describe('textUpdates: TextCreateController', function () {
         $httpBackend.whenGET('api/user/mntners').respond([]);
         $httpBackend.flush();
 
+        expect($state.current.name).not.toBe(initialState);
         expect($state.current.name).toBe('webupdates.create');
     });
-
-    /* TODO fix
 
     it('should not redirect to webupdates when web-preference is set and no-redirect is true', function () {
         PreferenceService.setWebMode();
@@ -97,9 +99,9 @@ describe('textUpdates: TextCreateController', function () {
         $httpBackend.whenGET('api/user/mntners').respond([]);
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('textupdates.create');
+        expect($state.current.name).toBe(initialState);
     });
-  */
+
     it('should populate an empty person rpsl, mandatory attrs uppercase and optional lowercase', function() {
         doCreateController('person');
         $httpBackend.whenGET('api/user/mntners').respond([]);
@@ -418,8 +420,6 @@ describe('textUpdates: TextCreateController', function () {
 
         doCreateController('person');
 
-        var stateBefore = $state.current.name;
-
         $httpBackend.whenGET('api/user/mntners').respond([
             {'key': 'TEST-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
         ]);
@@ -490,7 +490,7 @@ describe('textUpdates: TextCreateController', function () {
 
         expect($scope.object.rpsl).toEqual(person_correct);
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe(initialState);
 
         expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
     });

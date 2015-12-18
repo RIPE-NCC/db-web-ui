@@ -34,24 +34,17 @@ angular.module('textUpdates')
                     ', object.type:' + $scope.object.type +
                     ', noRedirect:' + noRedirect);
 
-                if( PreferenceService.isWebMode() && _canRedirect(noRedirect) ) {
+                if( PreferenceService.isWebMode() && ! noRedirect === true ) {
                     switchToWebMode();
-                } else {
-                    $log.debug("Not switching to web-mode");
                 }
 
                 _prepopulateRpsl();
             };
 
-            function _canRedirect(noRedirect ) {
-                var status =  _.isUndefined(noRedirect) || noRedirect === false;
-                $log.debug('Can redirect:' + status );
-                return status;
-            }
-
             function _prepopulateRpsl() {
                 var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
                 if (_.isEmpty(attributesOnObjectType)) {
+                    $log.error('Object type ' + $scope.object.type + ' was not found' );
                     $state.transitionTo('notFound');
                     return
                 }
@@ -62,7 +55,6 @@ angular.module('textUpdates')
             }
 
             function _enrichAttributes(attributes) {
-
                 TextCommons.enrichWithDefaults($scope.object.source, $scope.object.type, attributes);
 
                 _enrichAttributesWithSsoMntners(attributes).then(
