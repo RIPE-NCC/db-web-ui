@@ -13,11 +13,12 @@ angular.module('webUpdates')
             $scope.onMntnerAdded = onMntnerAddedReclaim;
             $scope.onMntnerRemoved = onMntnerRemovedReclaim;
 
-            $scope.isMine = isMine;
-            $scope.hasSSo = hasSSo;
-            $scope.hasPgp = hasPgp;
-            $scope.hasMd5 = hasMd5;
-            $scope.isNew = isNew;
+            $scope.isMine = MntnerService.isMine;
+            $scope.hasSSo = MntnerService.hasSSo;
+            $scope.hasPgp = MntnerService.hasPgp;
+            $scope.hasMd5 = MntnerService.hasMd5;
+            $scope.isNew = MntnerService.isNew;
+
             $scope.needToLockLastMntner = needToLockLastMntner;
 
             $scope.mntnerAutocomplete = mntnerAutocomplete;
@@ -198,48 +199,7 @@ angular.module('webUpdates')
                 //DO NOTHING
             }
 
-            function isMine(mntner) {
-                if (!mntner.mine) {
-                    return false;
-                } else {
-                    return mntner.mine;
-                }
-            }
 
-            function hasSSo(mntner) {
-                if (_.isUndefined(mntner.auth)) {
-                    return false;
-                }
-                return _.any(mntner.auth, function (i) {
-                    return _.startsWith(i, 'SSO');
-                });
-            }
-
-            function hasPgp(mntner) {
-                if (_.isUndefined(mntner.auth)) {
-                    return false;
-                }
-                return _.any(mntner.auth, function (i) {
-                    return _.startsWith(i, 'PGP');
-                });
-            }
-
-            function hasMd5(mntner) {
-                if (_.isUndefined(mntner.auth)) {
-                    return false;
-                }
-
-                return _.any(mntner.auth, function (i) {
-                    return _.startsWith(i, 'MD5');
-                });
-            }
-
-            function isNew(mntner) {
-                if (_.isUndefined(mntner.isNew)) {
-                    return false;
-                }
-                return mntner.isNew;
-            }
 
             function needToLockLastMntner() {
                 if ($scope.name && $scope.maintainers.object.length === 1) {
@@ -268,33 +228,21 @@ angular.module('webUpdates')
                 return whoisResources;
             }
 
-            function _isMntnerOnlist(selectedMntners, mntner) {
-                var status = _.any(selectedMntners, function (m) {
-                    return m.key === mntner.key;
-                });
-                return status;
-            }
-
-            function _isRpslMntner(mntner) {
-                return mntner.key === 'RIPE-NCC-RPSL-MNT';
-            }
-
             function _filterMntners(mntners) {
                 return _.filter(mntners, function (mntner) {
                     // prevent that RIPE-NCC-RPSL-MNT can be added to an object upon create of modify
                     // prevent same mntner to be added multiple times
-                    return !_isRpslMntner(mntner) && !_isMntnerOnlist($scope.maintainers.object, mntner);
+                    return ! MntnerService.isRpslMntner(mntner) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
                 });
             }
 
             function _enrichWithMine(mntners) {
                 return _.map(mntners, function (mntner) {
                     // search in selected list
-                    if (_isMntnerOnlist($scope.maintainers.sso, mntner)) {
+                    if (MntnerService.isMntnerOnlist($scope.maintainers.sso, mntner)) {
                         mntner.mine = true;
                     } else {
                         mntner.mine = false;
-
                     }
                     return mntner;
                 });

@@ -3,9 +3,65 @@
 angular.module('dbWebApp')
     .service('MntnerService', ['$log','CredentialsService', function ($log, CredentialsService) {
 
-        this.enrichWithSsoStatus = function (ssoMntners, mntners) {
+        var mntnerService = {};
+
+        mntnerService.isRpslMntner = function(mntner) {
+            return mntner.key === 'RIPE-NCC-RPSL-MNT';
+        };
+
+        mntnerService.isMntnerOnlist = function(list, mntner) {
+            var status = _.any(list, function (item) {
+                return item.key.toUpperCase() === mntner.key.toUpperCase();
+            });
+            return status;
+        };
+
+        mntnerService.hasMd5 = function(mntner) {
+            if (_.isUndefined(mntner.auth)) {
+                return false;
+            }
+
+            return _.any(mntner.auth, function (i) {
+                return _.startsWith(i, 'MD5');
+            });
+        };
+
+        mntnerService.isMine = function(mntner) {
+            if (!mntner.mine) {
+                return false;
+            } else {
+                return mntner.mine;
+            }
+        };
+
+        mntnerService.hasSSo = function(mntner) {
+            if (_.isUndefined(mntner.auth)) {
+                return false;
+            }
+            return _.any(mntner.auth, function (i) {
+                return _.startsWith(i, 'SSO');
+            });
+        };
+
+        mntnerService.hasPgp = function(mntner) {
+            if (_.isUndefined(mntner.auth)) {
+                return false;
+            }
+            return _.any(mntner.auth, function (i) {
+                return _.startsWith(i, 'PGP');
+            });
+        };
+
+        mntnerService.isNew = function(mntner) {
+            if (_.isUndefined(mntner.isNew)) {
+                return false;
+            }
+            return mntner.isNew;
+        };
+
+        mntnerService.enrichWithSsoStatus = function (ssoMntners, mntners) {
             return  _.map(mntners, function (mntner) {
-                if (_isMntnerOnlist(ssoMntners, mntner)) {
+                if (mntnerService.isMntnerOnlist(ssoMntners, mntner)) {
                     mntner.mine = true;
                 } else {
                     mntner.mine = false;
@@ -14,9 +70,9 @@ angular.module('dbWebApp')
             });
         };
 
-        this.enrichWithNewStatus = function (originalMntners, actualMntners) {
+        mntnerService.enrichWithNewStatus = function (originalMntners, actualMntners) {
             return  _.map(actualMntners, function (mntner) {
-                if (_isMntnerOnlist(originalMntners, mntner)) {
+                if (mntnerService.isMntnerOnlist(originalMntners, mntner)) {
                     mntner.isNew = false;
                 } else {
                     mntner.isNew = true;
@@ -25,13 +81,13 @@ angular.module('dbWebApp')
             });
         };
 
-        this.needsPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
+        mntnerService.needsPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
             var input = originalObjectMntners;
             if( originalObjectMntners.length === 0 ) {
                 // it is a create
                 input = objectMntners;
             }
-            var mntners = this.enrichWithSsoStatus(ssoMntners, input);
+            var mntners = mntnerService.enrichWithSsoStatus(ssoMntners, input);
 
             // ignore rpsl mntner while deciding if password authent. is needed
             mntners = _stripRpslMntner(mntners);
@@ -54,23 +110,23 @@ angular.module('dbWebApp')
             return true;
         };
 
-        this.getMntnersForPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
+        mntnerService.getMntnersForPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
             var input = originalObjectMntners;
             if( originalObjectMntners.length === 0 ) {
                 // it is a create
                 input = objectMntners;
             }
-            var mntners = this.enrichWithSsoStatus(ssoMntners, input);
+            var mntners = mntnerService.enrichWithSsoStatus(ssoMntners, input);
 
             return  _.filter(mntners, function(mntner) {
                 if( mntner.mine === true) {
                     return false;
-                } else if( _isRpslMntner(mntner)) {
+                } else if( mntnerService.isRpslMntner(mntner)) {
                     // prevent authenticating against RPSL mntner (and later associating everybodies SSO with it)
                     return false;
                 } else if( CredentialsService.hasCredentials() && CredentialsService.getCredentials().mntner === mntner.key ) {
                     return false;
-                } else if( _hasMd5(mntner)) {
+                } else if( mntnerService.hasMd5(mntner)) {
                     return true;
                 } else {
                     return false;
@@ -80,12 +136,8 @@ angular.module('dbWebApp')
 
         function _stripRpslMntner(mntners) {
             return _.filter(mntners, function(mntner) {
-                return !_isRpslMntner(mntner);
+                return ! mntnerService.isRpslMntner(mntner);
             });
-        }
-
-        function _isRpslMntner(mntner) {
-            return mntner.key === 'RIPE-NCC-RPSL-MNT';
         }
 
         function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
@@ -104,20 +156,6 @@ angular.module('dbWebApp')
             return false;
         }
 
-        function _isMntnerOnlist(list, mntner) {
-            var status = _.any(list, function (item) {
-                return item.key.toUpperCase() === mntner.key.toUpperCase();
-            });
-            return status;
-        }
-
-        function _hasMd5(mntner) {
-            if(_.isUndefined(mntner.auth)) {
-                return false;
-            }
-            return _.any(mntner.auth, function (i) {
-                return _.startsWith(i, 'MD5');
-            });
-        }
+        return mntnerService;
 
     }]);
