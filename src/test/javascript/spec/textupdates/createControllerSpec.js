@@ -182,10 +182,19 @@ describe('textUpdates: TextCreateController', function () {
         expect(AlertService.getErrors().length).toEqual(0);
     });
 
-    it('should handle error fetching sso mntners', function () {
+    it('should handle 404 error while fetching sso mntners', function () {
         doCreateController('inetnum');
 
         $httpBackend.whenGET('api/user/mntners').respond(404);
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('notFound');
+    });
+
+    it('should handle error while fetching sso mntners', function () {
+        doCreateController('inetnum');
+
+        $httpBackend.whenGET('api/user/mntners').respond(400);
         $httpBackend.flush();
 
         expect($scope.object.rpsl).toEqual(
@@ -213,6 +222,7 @@ describe('textUpdates: TextCreateController', function () {
         expect(AlertService.getErrors()).toEqual( [ { plainText: 'Error fetching maintainers associated with this SSO account' } ]);
 
         expect(AlertService.getErrors()).toEqual([{plainText: 'Error fetching maintainers associated with this SSO account'}]);
+        expect($state.current.name).toBe(initialState);
     });
 
     it('should report an error when mandatory field is missing', function () {
@@ -234,6 +244,32 @@ describe('textUpdates: TextCreateController', function () {
         ]);
 
         expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
+        expect($state.current.name).toBe(initialState);
+    });
+
+    it('should report an error when multiple objects are passed in', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+
+        doCreateController('person');
+
+        $httpBackend.whenGET('api/user/mntners').respond([
+            {'key': 'TESTSSO-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
+        ]);
+        $httpBackend.flush();
+
+        $scope.object.rpsl = person_correct +
+            'person: Tester X\n' +
+            '\n' +
+            'person:Tester Y\n';
+
+        $scope.submit();
+
+        expect(AlertService.getErrors()).toEqual( [
+            { plainText: 'Only a single object is allowed' } ,
+        ]);
+
+        expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
+        expect($state.current.name).toBe(initialState);
     });
 
     it('should report an error when unknown attribute is encountered', function () {
@@ -256,6 +292,7 @@ describe('textUpdates: TextCreateController', function () {
         ]);
 
         expect(ModalService.openAuthenticationModal).not.toHaveBeenCalled();
+        expect($state.current.name).toBe(initialState);
     });
 
     var person_correct =
