@@ -12,7 +12,7 @@ angular.module('textUpdates')
             // otherwise we will inherit existing formatting
             var f = _.first(attributes);
             if( !_.isUndefined(f)) {
-                if(_.isUndefined(f.value) ) {
+                if(_.isUndefined(f.value) || f.value == 'AUTO-1') {
                     spacing = TOTAL_ATTR_LENGTH;
                 }
             }
