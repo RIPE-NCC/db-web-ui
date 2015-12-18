@@ -20,17 +20,12 @@ angular.module('webUpdates')
             $scope.isNew = MntnerService.isNew;
 
             $scope.needToLockLastMntner = needToLockLastMntner;
-
             $scope.mntnerAutocomplete = mntnerAutocomplete;
-
             $scope.hasMntners = hasMntners;
             /////////////Maintainer stuff end
 
-
             $scope.reclaim = reclaim;
             $scope.isFormValid = _isFormValid;
-
-            var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
             _initialisePage();
 
@@ -47,12 +42,12 @@ angular.module('webUpdates')
                 if( !_.isUndefined($stateParams.name)) {
                     $scope.objectName = decodeURIComponent($stateParams.name);
                 }
-
                 $log.debug('Url params: source:' + $scope.objectSource + '. type:' + $scope.objectType + ', uid:' + $scope.objectName);
 
-                _validateParams();
+                $scope.mntbyDescription = MntnerService.mntbyDescription;
+                $scope.mntbySyntax = MntnerService.mntbySyntax;
+                $scope.attributes = [];
 
-                /////////////Maintainer stuff begin
                 // workaround for problem with order of loading ui-select fragments
                 $scope.uiSelectTemplateReady = false;
                 RestService.fetchUiSelectResources().then(
@@ -60,7 +55,6 @@ angular.module('webUpdates')
                         $scope.uiSelectTemplateReady = true;
                     });
 
-                // initialize data
                 $scope.maintainers = {
                     sso: [],
                     objectOriginal: [],
@@ -68,15 +62,9 @@ angular.module('webUpdates')
                     alternatives: []
                 };
 
-                $scope.attributes = [];
-                $scope.mntbyDescription = WhoisResources.getAttributeDescription($scope.objectType, 'mnt-by');
-                $scope.mntbySyntax = WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
-
-                /////////////Maintainer stuff end
+                _validateParamsAndShowErrors();
 
                 if (_isFormValid()){
-                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, []);
-
                     _fetchDataForReclaim();
                 }
             }
@@ -85,7 +73,9 @@ angular.module('webUpdates')
                 return ! AlertService.hasErrors();
             }
 
-            function _validateParams(){
+            function _validateParamsAndShowErrors(){
+                var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
+
                 if (! _.contains(reclaimableObjectTypes, $scope.objectType)){
 
                     var typesString = _.reduce(reclaimableObjectTypes, function(str, n) {
@@ -115,16 +105,13 @@ angular.module('webUpdates')
                 }
             }
 
-
-            /////////////Maintainer stuff begin
-
             function _fetchDataForReclaim() {
 
                 var password = null;
                 if (CredentialsService.hasCredentials()) {
                     password = CredentialsService.getCredentials().successfulPassword;
                 }
-                // wait untill both have completed
+                // wait until both have completed
                 $scope.restCallInProgress = true;
                 $q.all({
                     mntners: RestService.fetchMntnersForSSOAccount(),
@@ -140,7 +127,9 @@ angular.module('webUpdates')
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
                         // store object to modify
-                        _wrapAndEnrichResources($scope.objectType,results.objectToModify);
+                        _wrapAndEnrichResources($scope.objectType, results.objectToModify);
+
+                        //BUG: wrapAndEnrichResources strips attributes from 'link', so next line does not have effect.
                         WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
 
                         $scope.maintainers.objectOriginal = [];
@@ -176,7 +165,6 @@ angular.module('webUpdates')
                 );
             }
 
-
             function hasMntners() {
                 return $scope.maintainers.object.length > 0;
             }
@@ -186,8 +174,8 @@ angular.module('webUpdates')
                 // enrich with new-flag
                 $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, $scope.maintainers.object);
 
-                if (MntnerService.needsPasswordAuthentication([], $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
-                    _performAuthenticationReclaim();
+                if (needsPasswordAuthenticationForReclaim($scope.maintainers.object)) {
+                    WebUpdatesCommons.performAuthentication($scope.maintainers, $scope.objectSource, _onSuccessfulAuthentication, _navigateToReclaim);
                     return;
                 }
 
@@ -195,11 +183,13 @@ angular.module('webUpdates')
                 $log.debug('onMntnerAdded: attributes' + JSON.stringify($scope.attributes));
             }
 
+            function _onSuccessfulAuthentication(maintainers){
+                $scope.maintainers = maintainers;
+            }
+
             function onMntnerRemovedReclaim(item) {
                 //DO NOTHING
             }
-
-
 
             function needToLockLastMntner() {
                 if ($scope.name && $scope.maintainers.object.length === 1) {
@@ -215,7 +205,7 @@ angular.module('webUpdates')
                     function (data) {
                         // mark new
                         $scope.maintainers.alternatives = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
-                            _filterMntners(_enrichWithMine(data)));
+                            _filterMntners(MntnerService.enrichWithMine($scope.maintainers.sso, data)));
                     }
                 );
             }
@@ -236,59 +226,15 @@ angular.module('webUpdates')
                 });
             }
 
-            function _enrichWithMine(mntners) {
-                return _.map(mntners, function (mntner) {
-                    // search in selected list
-                    if (MntnerService.isMntnerOnlist($scope.maintainers.sso, mntner)) {
-                        mntner.mine = true;
-                    } else {
-                        mntner.mine = false;
-                    }
-                    return mntner;
-                });
+            function needsPasswordAuthenticationForReclaim(objectMaintainers){
+                return MntnerService.needsPasswordAuthentication([], [], objectMaintainers);
             }
 
-            function _performAuthenticationReclaim() {
-                $log.debug('Perform authentication');
-                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
-                if (mntnersWithPasswords.length === 0) {
-                    AlertService.setGlobalError('You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have password');
-                } else {
-
-                    ModalService.openAuthenticationModal($scope.objectSource, mntnersWithPasswords).then(
-                        function (result) {
-                            AlertService.clearErrors();
-
-                            var selectedMntner = result.selectedItem;
-                            $log.debug('selected mntner:' + JSON.stringify(selectedMntner));
-                            var associationResp = result.response;
-                            $log.debug('associationResp:' + JSON.stringify(associationResp));
-
-                            if ($scope.isMine(selectedMntner)) {
-                                // has been successfully associated in authentication modal
-
-                                $scope.maintainers.sso.push(selectedMntner);
-                                // mark starred in selected
-                                $scope.maintainers.object = _enrichWithMine($scope.maintainers.object);
-                            }
-                            $log.debug('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
-                            $log.debug('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
-
-                            //_refreshObjectIfNeeded(associationResp);
-
-                        }, function () {
-                            _navigateAway();
-                        }
-                    );
-                }
-            }
-
-            function _navigateAway() {
+            function _navigateToReclaim() {
                 $state.transitionTo('reclaim', {
-                    source: $scope.selected.source,
-                    objectType: $scope.selected.objectType,
-                    name: $scope.selected.name
+                    source: $scope.objectSource,
+                    objectType: $scope.objectType,
+                    name: $scope.objectName
                 });
             }
-            /////////////Maintainer stuff end
         }]);

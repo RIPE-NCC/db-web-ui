@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('MntnerService', ['$log','CredentialsService', function ($log, CredentialsService) {
+    .service('MntnerService', ['$log','CredentialsService', 'WhoisResources',
+        function ($log, CredentialsService, WhoisResources) {
 
         var mntnerService = {};
 
@@ -81,6 +82,18 @@ angular.module('dbWebApp')
             });
         };
 
+        mntnerService.enrichWithMine = function (ssoMntners, mntners) {
+            return _.map(mntners, function (mntner) {
+                // search in selected list
+                if (mntnerService.isMntnerOnlist(ssoMntners, mntner)) {
+                    mntner.mine = true;
+                } else {
+                    mntner.mine = false;
+                }
+                return mntner;
+            });
+        };
+
         mntnerService.needsPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
             var input = originalObjectMntners;
             if( originalObjectMntners.length === 0 ) {
@@ -132,6 +145,14 @@ angular.module('dbWebApp')
                     return false;
                 }
             });
+        };
+
+        mntnerService.mntbyDescription = function () {
+            WhoisResources.getAttributeDescription($scope.objectType, 'mnt-by');
+        };
+
+        mntnerService.mntbySyntax = function () {
+            WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
         };
 
         function _stripRpslMntner(mntners) {
