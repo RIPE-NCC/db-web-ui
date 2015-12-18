@@ -126,7 +126,12 @@ angular.module('textUpdates')
                 // parse
                 var passwords = [];
                 var overrides = [];
-                var attributes = RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides);
+                var objects = RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides);
+                if( objects.length > 1 ) {
+                    AlertService.setGlobalError('Only a single object is allowed');
+                    return;
+                }
+                var attributes = objects[0];
 
                 attributes = _uncapitalize(attributes);
                 $log.debug("attributes:" + JSON.stringify(attributes));

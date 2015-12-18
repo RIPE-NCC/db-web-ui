@@ -36,6 +36,18 @@ angular.module('textUpdates')
         }
 
         this.fromRpslWithPasswords = function(rpslText, passwords, overrides) {
+            var objs = [];
+
+            _.each(rpslText.split('\n\n'), function(objRpsl) {
+                if( objRpsl !== '') {
+                    objs.push(_parseSingleObject(objRpsl,passwords, overrides ));
+                }
+            });
+
+            return objs;
+        }
+
+        function _parseSingleObject( rpslText, passwords, overrides ) {
             var attrs = [];
 
             var buffer = '';
@@ -46,7 +58,7 @@ angular.module('textUpdates')
                 buffer += current;
 
                 // newline followed by alpha-numeric character is attribute separator
-                if (idx === rpslText.length - 1 || current === '\n' && _isLetter(next)) {
+                if (idx === rpslText.length - 1 || (current === '\n' && _isLetter(next))) {
                     // end of attribute reached
                     var attr = _parseSingleAttribute(_.clone(buffer));
                     if(!_.isUndefined(attr)) {

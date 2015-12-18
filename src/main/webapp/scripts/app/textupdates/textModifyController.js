@@ -69,7 +69,12 @@ angular.module('textUpdates')
             function submit() {
                 var passwords = undefined;
 
-                var attributes = RpslService.fromRpsl($scope.object.rpsl);
+                var objects = RpslService.fromRpsl($scope.object.rpsl);
+                if( objects.length > 1 ) {
+                    AlertService.setGlobalError('Only a single object is allowed');
+                    return;
+                }
+                var attributes = objects[0];
 
                 $scope.restCalInProgress = true;
 

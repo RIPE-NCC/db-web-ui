@@ -20,7 +20,6 @@ describe('textUpdates: RpslService', function () {
             {name: 'person'},
             {name: 'phone'},
             {name: 'address'}
-
         ];
         var rpsl = $RpslService.toRpsl(attrs);
 
@@ -65,11 +64,11 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: undefined,        comment: undefined},
             {name: 'phone',  value: '         +316',  comment: 'My comment'},
             {name: 'address', value: '       Singel', comment: undefined}
-        ]);
+        ]]);
     });
 
     it('should parse rpsl with spaces before colon', function () {
@@ -77,9 +76,9 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: '   Me', comment: 'hoi'}
-        ]);
+        ]]);
     });
 
     it('should parse empty value', function () {
@@ -87,9 +86,9 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: undefined, comment: undefined}
-        ]);
+        ]]);
     });
 
     it('should parse value without terminating newline', function () {
@@ -97,9 +96,9 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: ' Peter Person', comment: undefined}
-        ]);
+        ]]);
     });
 
     it('should parse empty value with comment', function () {
@@ -108,9 +107,9 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: undefined, comment: 'A comment'}
-        ]);
+        ]]);
     });
 
     it('should ignore empty attribute without keye', function () {
@@ -118,11 +117,10 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([]);
+        expect(attrs).toEqual([[]]);
     });
 
-    it('should ignore empty lines in rpsl', function () {
-        // TODO should we?
+    it('should interpret empty-line as object separator', function () {
         var rpsl =
             'person:        #hoi\n' +
             'phone:         +316\n' +
@@ -132,9 +130,13 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([
-            {name: 'person',  value: undefined,        comment: 'hoi'},
-            {name: 'phone',   value: '         +316',  comment: undefined},
-            {name: 'address', value: '       Singel',  comment: 'My comment'}
+            [
+                {name: 'person',  value: undefined,        comment: 'hoi'},
+                {name: 'phone',   value: '         +316',  comment: undefined}
+            ],
+            [
+                {name: 'address',   value: '       Singel',  comment: 'My comment'}
+            ]
         ]);
     });
 
@@ -145,9 +147,9 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: ' value  1  more value 2', comment: 'comment 1 and more comment'}
-        ]);
+        ]]);
     });
 
     it('should parse value continuation with tab', function () {
@@ -157,9 +159,9 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: ' value  1 \tmore value 2', comment: 'more comment'}
-        ]);
+        ]]);
     });
 
     it('should parse value continuation with plus', function () {
@@ -170,9 +172,9 @@ describe('textUpdates: RpslService', function () {
 
         var attrs = $RpslService.fromRpsl(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: ' value  1 +more value 2', comment: 'second comment'}
-        ]);
+        ]]);
     });
 
     it('should parse extraordinary multi-line rpsl with comments into json-attributes', function () {
@@ -189,11 +191,11 @@ describe('textUpdates: RpslService', function () {
         var overrides = [];
         var attrs = $RpslService.fromRpslWithPasswords(rpsl);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person',  value: undefined,                                            comment: undefined},
             {name: 'address', value: '       Singel    Amsterdam \tNederland ++ ++Europa', comment: 'part 1 part 2 part 4'},
             {name: 'phone',   value: '         +316',                                      comment: 'ok'},
-        ]);
+        ]]);
 
         expect(passwords).toEqual([]);
         expect(overrides).toEqual([]);
@@ -207,9 +209,9 @@ describe('textUpdates: RpslService', function () {
         var overrides = [];
         var attrs = $RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: ' Tester X', comment: undefined}
-        ]);
+        ]]);
 
         expect(passwords).toEqual([
             'secret'
@@ -228,9 +230,9 @@ describe('textUpdates: RpslService', function () {
         var overrides = [];
         var attrs = $RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
 
-        expect(attrs).toEqual([
+        expect(attrs).toEqual([[
             {name: 'person', value: ' Tester X', comment: undefined}
-        ]);
+        ]]);
 
         expect(passwords).toEqual([]);
 
