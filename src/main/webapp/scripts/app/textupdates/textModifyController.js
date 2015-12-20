@@ -22,6 +22,9 @@ angular.module('textUpdates')
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
                 $scope.object.name = decodeURIComponent($stateParams.name);
+                if( !_.isUndefined($stateParams.rpsl)) {
+                    $scope.object.rpsl = decodeURIComponent($stateParams.rpsl);
+                }
                 var noRedirect = $stateParams.noRedirect;
 
                 $log.debug('TextModifyController: Url params:' +
@@ -34,7 +37,9 @@ angular.module('textUpdates')
                     switchToWebMode();
                 }
 
-                _fetchAndPopulateObject();
+                if(_.isUndefined($scope.object.rpsl) ) {
+                    _fetchAndPopulateObject();
+                }
             };
 
             function _fetchAndPopulateObject() {

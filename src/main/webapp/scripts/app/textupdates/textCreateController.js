@@ -23,6 +23,10 @@ angular.module('textUpdates')
                 $scope.object = {};
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
+                if( !_.isUndefined($stateParams.rpsl)) {
+                    $scope.object.rpsl = decodeURIComponent($stateParams.rpsl);
+                }
+
                 var noRedirect = $stateParams.noRedirect;
 
                 // maintainers associated with this SSO-account
@@ -38,7 +42,9 @@ angular.module('textUpdates')
                     switchToWebMode();
                 }
 
-                _prepopulateRpsl();
+                if(_.isUndefined($scope.object.rpsl)) {
+                    _prepopulateRpsl();
+                }
             };
 
             function _prepopulateRpsl() {

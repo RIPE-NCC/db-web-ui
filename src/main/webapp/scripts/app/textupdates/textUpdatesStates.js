@@ -11,14 +11,19 @@ angular.module('textUpdates')
                     template: '<div ui-view></div>'
                 })
                 .state('textupdates.create', {
-                    url: '/create/:source/:objectType?noRedirect',
+                    url: '/create/:source/:objectType?noRedirect&rpsl',
                     templateUrl: 'scripts/app/textupdates/create.html',
                     controller: 'TextCreateController'
                 })
                 .state('textupdates.modify', {
-                    url: '/modify/:source/:objectType/:name?noRedirect',
+                    url: '/modify/:source/:objectType/:name?noRedirect&rpsl',
                     templateUrl: 'scripts/app/textupdates/modify.html',
                     controller: 'TextModifyController'
+                })
+                .state('textupdates.multi', {
+                    url: '/multi/:source',
+                    templateUrl: 'scripts/app/textupdates/multi.html',
+                    controller: 'TextMultiController'
                 });
 
         }]);

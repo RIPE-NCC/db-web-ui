@@ -14,9 +14,11 @@ angular.module('interceptors')
         }
 
         function _mustErrorBeSwallowed( response ) {
-            var toBeSwallowed = _isAuthorisationError(response.status) && _.endsWith(response.config.url, 'api/user/info');
+            var toBeSwallowed = (_isAuthorisationError(response.status) && _.endsWith(response.config.url, 'api/user/info'))
+                ||
+                (response.status == 404 && _.startsWith('/textupdates/multi/'));
 
-            $log.info('Must error ' + response.status + ' for ' + response.config.url + ' be swallowed? ' + toBeSwallowed);
+            $log.info($location.path() + ':Must error ' + response.status + ' for ' + response.config.url + ' be swallowed? ' + toBeSwallowed);
 
             return toBeSwallowed;
         }
