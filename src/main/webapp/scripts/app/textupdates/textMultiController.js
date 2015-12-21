@@ -115,7 +115,11 @@ angular.module('textUpdates')
                             function (action) {
                                 _setStatus(object, undefined, '-');
                                 object.action = action;
-                                object.displayUrl = _asDisplayLink(source, object);
+                                if( object.action === 'Modify' ) {
+                                    object.displayUrl = _asDisplayLink(source, object);
+                                } else {
+                                    object.displayUrl = undefined;
+                                }
                                 object.textupdatesUrl = _asTextUpdatesLink(source, object);
                             }
                         );
@@ -143,7 +147,7 @@ angular.module('textUpdates')
             function verifyAndSubmit() {
                 AlertService.clearErrors();
 
-                $scope.objects = $scope.verify($scope.source, $scope.rpsl, $scope.password, $scope.overrides);
+                $scope.objects = $scope.verify($scope.source, $scope.rpsl, $scope.passwords, $scope.overrides);
                 $scope.submit();
             }
 
@@ -164,11 +168,7 @@ angular.module('textUpdates')
             }
 
             function _asDisplayLink(source, object) {
-                if( object.action === 'Create') {
-                    return '';
-                } else {
-                    return '/db-web-ui/#/webupdates/display/'+  source + '/' + object.type + '/' + object.name;
-                }
+                return '/db-web-ui/#/webupdates/display/'+  source + '/' + object.type + '/' + object.name;
             }
 
             function _asTextUpdatesLink(source, object) {
@@ -233,7 +233,9 @@ angular.module('textUpdates')
                         }, function (error) {
                             _setStatus( object, false, 'Error creating');
 
-                            if (!_.isUndefined(error.data)) {
+                            if (_.isUndefined(error.data.errormessages)) {
+                                object.errors = 'Response '+ error.status +' not understood';
+                            } else {
                                 var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                                 var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                                 object.errors = whoisResources.getAllErrors();
@@ -259,7 +261,9 @@ angular.module('textUpdates')
                         }, function (error) {
                             _setStatus( object, false, 'Error modifying');
 
-                            if (!_.isUndefined(error.data)) {
+                            if (_.isUndefined(error.data.errormessages)) {
+                                object.errors = 'Response '+ error.status +' not understood';
+                            } else {
                                 var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                                 object.errors = whoisResources.getAllErrors();
                                 object.warnings = whoisResources.getAllWarnings();

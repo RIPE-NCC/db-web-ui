@@ -49,7 +49,12 @@
                     </td>
                     <td>{{object.action}}</td>
                     <td>{{object.type}}</td>
-                    <td><a ng-href="{{object.displayUrl}}" target="_blank">{{object.name}}</a></td>
+                    <td>
+                        <a ng-if="object.displayUrl" ng-href="{{object.displayUrl}}" target="_blank">{{object.name}}</a>
+                        <apan ng-if="!object.displayUrl">{{object.name}}</apan>
+
+                    </td>
+
                     <td ng-style="object.statusStyle">{{object.status}}</td>
                 </tr>
                 <tr ng-if="object.expanded && object.errors.length>0">
