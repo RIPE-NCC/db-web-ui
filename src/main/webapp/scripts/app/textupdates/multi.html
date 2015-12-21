@@ -5,7 +5,7 @@
 
     <div class="form-group" ng-if="textMode">
 
-        <button ng-click="setWebMode()" class="blue-button pull-right ga-multiobj-webmode" >Web mode</button>
+        <button ng-click="setWebMode()" class="blue-button pull-right ga-multiobj-webmode">Web mode</button>
 
         <form id="textMultiRpslForm">
 
@@ -27,9 +27,9 @@
 
     <div class="form-group" ng-if="!textMode">
 
-        <button ng-click="setTextMode()" class="blue-button pull-right ga-multiobj-textmode" >Text mode</button>
+        <button ng-click="setTextMode()" class="blue-button pull-right ga-multiobj-textmode">Text mode</button>
 
-        <form id="textRpslTableForm">
+        <form id="textTableRpslForm">
             <label for="multiObjectTable">Objects to update</label>
             <table id="multiObjectTable" class="table">
                 <thead>
@@ -83,9 +83,11 @@
                     <td></td>
                     <td colspan="5">
                         <textarea readonly ng-model="object.rpsl" auto-height cols="60"
-                                              style="font-family:monospace;"></textarea></td>
+                                  style="font-family:monospace;"></textarea></td>
 
-                    <td ng-if="object.textupdatesUrl"><a ng-href="{{object.textupdatesUrl}}" target="_blank">{{object.action}} single object</a>
+                    <td ng-if="object.textupdatesUrl"><a ng-href="{{object.textupdatesUrl}}" target="_blank">{{object.action}}
+                        single object</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
