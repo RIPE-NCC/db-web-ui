@@ -85,7 +85,7 @@
                         <textarea readonly ng-model="object.rpsl" auto-height cols="60"
                                               style="font-family:monospace;"></textarea></td>
 
-                    <td><a ng-href="{{object.textupdatesUrl}}" target="_blank">{{object.action}} single object</a>
+                    <td ng-if="object.textupdatesUrl"><a ng-href="{{object.textupdatesUrl}}" target="_blank">{{object.action}} single object</a>
                 </tr>
                 </tbody>
             </table>

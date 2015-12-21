@@ -109,11 +109,7 @@ angular.module('textUpdates')
                         _setStatus(object, false, 'Invalid syntax');
                     } else {
                         object.attributes  = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
-
                         object.name = _getPkey(object.type, object.attributes);
-
-                        // convert back to rpsl for visualisation
-
                         _setStatus(object, undefined, 'Fetching');
                         _determineOperation(source, object, passwords).then(
                             function (action) {
@@ -180,7 +176,7 @@ angular.module('textUpdates')
                 if( object.success !== true ) {
                     suffix = '&rpsl=' + encodeURIComponent(object.rpsl);
                 }
-                if( object.action === 'Modify' || object.success === true ) {
+                if( object.action === 'Modify') {
                     return '/db-web-ui/#/textupdates/modify/'+  source + '/' + object.type + '/' + object.name + '?noRedirect=true'+ suffix;
                 } else {
                     return '/db-web-ui/#/textupdates/create/'+  source + '/' + object.type + '?noRedirect=true'+ suffix;
