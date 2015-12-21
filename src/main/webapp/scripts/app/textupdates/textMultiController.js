@@ -1,24 +1,6 @@
 'use strict';
 
 angular.module('textUpdates')
-    .directive("autoHeight", function ($timeout) {
-        return {
-            restrict: 'A',
-            link: function($scope, element) {
-                if(element[0].scrollHeight < 5 ){
-                    element[0].style.height = 5;
-                } else {
-                    element[0].style.height = (element[0].scrollHeight) + "px";
-                }
-
-                var resize = function() {
-                    return element[0].style.height = "" + element[0].scrollHeight + "px";
-                };
-
-                element.on("blur keyup change", resize);
-                $timeout(resize, 0);
-            }
-    }})
     .controller('TextMultiController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService',
         'RpslService', 'TextCommons',
@@ -86,6 +68,8 @@ angular.module('textUpdates')
             };
 
             function setWebMode() {
+                AlertService.clearErrors();
+
                 $scope.textMode = false;
                 $scope.objects = verify($scope.source, $scope.rpsl, $scope.passwords, $scope.overrides);
             }
@@ -108,9 +92,6 @@ angular.module('textUpdates')
 
                 $log.debug("rpsl:" + rpsl);
 
-                // parse
-                var passwords = [];
-                var overrides = [];
                 var objs = RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
 
                 $log.debug("objects:" + JSON.stringify(objs));
@@ -127,7 +108,7 @@ angular.module('textUpdates')
                         return item.name === 'last-modified';
                     });
                     object.lastModified = _.isUndefined(lastModifiedAttr) ? '' : lastModifiedAttr.value;
-                    _setStatus( object, undefined, 'Verifying' );
+                    _setStatus( object, undefined, 'Fetching' );
                     _determineOperation(source, object, passwords).then(
                         function (action) {
                             _setStatus( object, undefined, '-' );
@@ -141,6 +122,8 @@ angular.module('textUpdates')
             }
 
             function submit() {
+                AlertService.clearErrors();
+
                 $scope.textMode = false;
 
                 _.each($scope.objects, function(obj) {
@@ -155,6 +138,8 @@ angular.module('textUpdates')
             }
 
             function verifyAndSubmit() {
+                AlertService.clearErrors();
+
                 $scope.objects = $scope.verify($scope.source, $scope.rpsl, $scope.password, $scope.overrides);
                 $scope.submit();
             }
