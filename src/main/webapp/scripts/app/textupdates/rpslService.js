@@ -12,7 +12,7 @@ angular.module('textUpdates')
             // otherwise we will inherit existing formatting
             var f = _.first(attributes);
             if( !_.isUndefined(f)) {
-                if(_.isUndefined(f.value) ) {
+                if(_.isUndefined(f.value) || f.value == 'AUTO-1') {
                     spacing = TOTAL_ATTR_LENGTH;
                 }
             }
@@ -113,27 +113,19 @@ angular.module('textUpdates')
 
                 attr = {
                     name: key,
-                    value: _undefinedForEmpty(_concatenateWithSpaces(values)),
-                    comment: _undefinedForEmpty(_concatenateWithSpaces(comments))
+                    value: _undefinedForEmpty(_concatenate(values,"")),
+                    comment: _undefinedForEmpty(_concatenate(comments, " "))
                 };
             }
             return attr;
         }
 
-        function _concatenateWithSpaces(array) {
-            var idx = 0;
-            var all = '';
-            _.each(array, function (item) {
+        function _concatenate(array, separator) {
+            return _.reduce(array, function (combined, item) {
                 if (!_.isUndefined(item)) {
-                    all = all.concat(item);
-                    // no more space after last
-                    if (idx < array.length - 1) {
-                        all = all.concat(' ');
-                    }
+                    return combined + separator + item;
                 }
-                idx++;
             });
-            return all;
         }
 
         function _isLetter(c) {

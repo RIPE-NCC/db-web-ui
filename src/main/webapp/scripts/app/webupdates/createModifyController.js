@@ -846,7 +846,7 @@ angular.module('webUpdates')
 
                 PreferenceService.setTextMode();
 
-                if( $scope.operation === $scope.CREATE_OPERATION ) {
+                if( !$scope.name ) {
                     $state.transitionTo('textupdates.create', {
                         source: $scope.source,
                         objectType: $scope.objectType

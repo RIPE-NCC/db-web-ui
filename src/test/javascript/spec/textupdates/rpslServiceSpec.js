@@ -148,7 +148,7 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([[
-            {name: 'person', value: ' value  1  more value 2', comment: 'comment 1 and more comment'}
+            {name: 'person', value: ' value  1 more value 2', comment: 'comment 1 and more comment'}
         ]]);
     });
 
@@ -160,7 +160,7 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([[
-            {name: 'person', value: ' value  1 \tmore value 2', comment: 'more comment'}
+            {name: 'person', value: ' value  1\tmore value 2', comment: 'more comment'}
         ]]);
     });
 
@@ -173,7 +173,7 @@ describe('textUpdates: RpslService', function () {
         var attrs = $RpslService.fromRpsl(rpsl);
 
         expect(attrs).toEqual([[
-            {name: 'person', value: ' value  1 +more value 2', comment: 'second comment'}
+            {name: 'person', value: ' value  1+more value 2', comment: 'second comment'}
         ]]);
     });
 
@@ -193,7 +193,7 @@ describe('textUpdates: RpslService', function () {
 
         expect(attrs).toEqual([[
             {name: 'person',  value: undefined,                                            comment: undefined},
-            {name: 'address', value: '       Singel    Amsterdam \tNederland ++ ++Europa', comment: 'part 1 part 2 part 4'},
+            {name: 'address', value: '       Singel   Amsterdam\tNederland++++Europa', comment: 'part 1 part 2 part 4'},
             {name: 'phone',   value: '         +316',                                      comment: 'ok'},
         ]]);
 
