@@ -113,11 +113,23 @@ angular.module('textUpdates')
 
                 attr = {
                     name: key,
-                    value: _undefinedForEmpty(_concatenateWithSpaces(values)),
+                    value: _undefinedForEmpty(_concatenate(values)),
                     comment: _undefinedForEmpty(_concatenateWithSpaces(comments))
                 };
             }
             return attr;
+        }
+
+        function _concatenate(array) {
+            var all = '';
+
+            _.each(array, function (item) {
+                if (!_.isUndefined(item)) {
+                    all = all.concat(item);
+                }
+            });
+
+            return all;
         }
 
         function _concatenateWithSpaces(array) {
