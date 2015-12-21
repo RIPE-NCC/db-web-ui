@@ -187,16 +187,16 @@ angular.module('webUpdates')
                 $scope.maintainers = maintainers;
             }
 
-            function onMntnerRemovedReclaim(item) {
-                //DO NOTHING
-            }
-
             function needToLockLastMntner() {
                 if ($scope.name && $scope.maintainers.object.length === 1) {
                     // only lock last for modify
                     return true;
                 }
                 return false;
+            }
+
+            function onMntnerRemovedReclaim(item) {
+                // DO NOTHING
             }
 
             function mntnerAutocomplete(query) {
