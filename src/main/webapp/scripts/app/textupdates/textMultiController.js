@@ -30,6 +30,7 @@ angular.module('textUpdates')
 
                 $scope.rpsl =
                     'person:        Eva Berkhout\n' +
+                    "kikoe: bah\n" +
                     '\n'+
                     'person:        Marc Grol\n' +
                     'address:       Singel, Amsterdam\n' +
@@ -80,6 +81,7 @@ angular.module('textUpdates')
 
             function setTextMode() {
                 $scope.textMode = true;
+                $scope.objects = [];
             }
 
             function isTextMode() {
@@ -93,30 +95,35 @@ angular.module('textUpdates')
                 $log.debug("rpsl:" + rpsl);
 
                 var objs = RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
-
                 $log.debug("objects:" + JSON.stringify(objs));
 
                 _.each(objs, function(attributes) {
 
                     var object  = {};
                     objects.push(object);
+                    // assume first attribute is type indicator
                     object.type = attributes[0].name;
-                    object.attributes  = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
-                    object.name = _getPkey(object.type, object.attributes);
-                    object.rpsl = RpslService.toRpsl(object.attributes);
-                    var lastModifiedAttr =_.find(object.attributes, function(item) {
-                        return item.name === 'last-modified';
-                    });
-                    object.lastModified = _.isUndefined(lastModifiedAttr) ? '' : lastModifiedAttr.value;
-                    _setStatus( object, undefined, 'Fetching' );
-                    _determineOperation(source, object, passwords).then(
-                        function (action) {
-                            _setStatus( object, undefined, '-' );
-                            object.action = action;
-                            object.displayUrl =_asDisplayLink(source, object);
-                            object.textupdatesUrl =_asTextUpdatesLink(source, object);
-                        }
-                    );
+                    object.rpsl = RpslService.toRpsl(attributes);
+                    object.errors = [];
+                    if (!TextCommons.validate(object.type, attributes, object.errors)) {
+                        _setStatus(object, false, 'Invalid syntax');
+                    } else {
+                        object.attributes  = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
+
+                        object.name = _getPkey(object.type, object.attributes);
+
+                        // convert back to rpsl for visualisation
+
+                        _setStatus(object, undefined, 'Fetching');
+                        _determineOperation(source, object, passwords).then(
+                            function (action) {
+                                _setStatus(object, undefined, '-');
+                                object.action = action;
+                                object.displayUrl = _asDisplayLink(source, object);
+                                object.textupdatesUrl = _asTextUpdatesLink(source, object);
+                            }
+                        );
+                    }
                 });
                 return objects;
             }

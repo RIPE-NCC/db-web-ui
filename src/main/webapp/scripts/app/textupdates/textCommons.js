@@ -17,13 +17,18 @@ angular.module('textUpdates')
                 attributes.removeAttributeWithName('changed');
             }
 
-            this.validate = function (objectType, attributes) {
+            this.validate = function (objectType, attributes, errors) {
                 var unknownAttrs = _.filter(attributes, function (attr) {
                     return _.isUndefined(WhoisResources.findMetaAttributeOnObjectTypeAndName(objectType, attr.name));
                 });
                 if (!_.isEmpty(unknownAttrs)) {
                     _.each(unknownAttrs, function (attr) {
-                        AlertService.addGlobalError(attr.name + ': Unknown attribute');
+                        var msg = attr.name + ': Unknown attribute';
+                        if(_.isUndefined(errors)) {
+                            AlertService.addGlobalError(msg);
+                        } else {
+                            errors.push({plainText:msg});
+                        }
                     });
                     return;
                 }
@@ -33,7 +38,12 @@ angular.module('textUpdates')
                     _.each(enrichedAttributes, function (item) {
                         if (item.$$error) {
                             // Note: keep it lower-case to be consistent with server-side error reports
-                            AlertService.addGlobalError(item.name + ': ' + item.$$error);
+                            var msg = item.name + ': ' + item.$$error;
+                            if(_.isUndefined(errors)) {
+                                AlertService.addGlobalError(msg);
+                            } else {
+                                errors.push({plainText:msg});
+                            }
                         }
                     });
                     return false;
