@@ -59,7 +59,7 @@ describe('textUpdates: TextModifyController', function () {
             PreferenceService.setTextMode();
 
             setupController = function(objectType, objectName, noRedirect) {
-                setupBackend();
+
                 $stateParams.source = SOURCE;
                 $stateParams.objectType = (_.isUndefined(objectType) ? OBJECT_TYPE : objectType);
                 $stateParams.name = (_.isUndefined(objectName) ? OBJECT_NAME : objectName);
@@ -69,31 +69,29 @@ describe('textUpdates: TextModifyController', function () {
                     $scope: $scope, $state: $state, $stateParams: $stateParams, AlertService: AlertService
                 });
                 initialState = $state.current.name;
-                $httpBackend.flush();
             }
 
-            setupBackend = function() {
-                $httpBackend.whenGET(/.*.html/).respond(200);
+            $httpBackend.whenGET(/.*.html/).respond(200);
+            $httpBackend.flush();
 
-                $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
-                    function(method,url) {
-                        return [200, testPersonObject, {}];
-                    });
-                $httpBackend.whenGET('api/user/mntners').respond([]);
-                $httpBackend.flush();
-            }
+
         });
     });
 
     afterEach(function () {
-
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
 
     it('should get parameters from url', function () {
-
         setupController();
+
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+            function(method,url) {
+                return [200, testPersonObject, {}];
+            });
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
 
         expect($scope.object.source).toBe(SOURCE);
         expect($scope.object.type).toBe(OBJECT_TYPE);
@@ -106,6 +104,13 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController('person', 'TP-RIPE', false);
 
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+            function(method,url) {
+                return [200, testPersonObject, {}];
+            });
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
+
         expect($state.current.name).not.toBe(initialState);
         expect($state.current.name).toBe('webupdates.modify');
     });
@@ -116,6 +121,13 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController('person', 'TP-RIPE', true);
 
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+            function(method,url) {
+                return [200, testPersonObject, {}];
+            });
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
+
         expect($state.current.name).toBe(initialState);
     });
 
@@ -123,12 +135,26 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController();
 
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+            function(method,url) {
+                return [200, testPersonObject, {}];
+            });
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
+
         expect($scope.object.rpsl).toEqual(testPersonRpsl);
     });
 
     it('should navigate to display after successful submit', function () {
 
         setupController();
+
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+            function(method,url) {
+                return [200, testPersonObject, {}];
+            });
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
 
         $scope.object.rpsl = testPersonRpsl;
         $scope.submit();
@@ -145,6 +171,10 @@ describe('textUpdates: TextModifyController', function () {
 
     it('should report a fetch failure', function () {
 
+
+
+        setupController();
+
         $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(400,{
                 "errormessages": {
                     "errormessage": [{
@@ -155,8 +185,8 @@ describe('textUpdates: TextModifyController', function () {
                 }
             }
         );
-
-        setupController();
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
 
         var plaintextErrors = _.map(AlertService.getErrors(), function(item) {
             return {plainText:item.plainText};
@@ -169,6 +199,13 @@ describe('textUpdates: TextModifyController', function () {
     it('should show error after submit failure with incorrect attr', function () {
 
         setupController();
+
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+            function(method,url) {
+                return [200, testPersonObject, {}];
+            });
+        $httpBackend.whenGET('api/user/mntners').respond([]);
+        $httpBackend.flush();
 
         var stateBefore = $state.current.name;
 
