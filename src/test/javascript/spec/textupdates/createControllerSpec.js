@@ -46,11 +46,12 @@ describe('textUpdates: TextCreateController', function () {
 
             PreferenceService.setTextMode();
 
-            doCreateController = function(objectType, noRedirect) {
+            doCreateController = function(objectType, noRedirect, rpsl) {
 
                 $stateParams.source = SOURCE;
                 $stateParams.objectType = objectType;
                 $stateParams.noRedirect = noRedirect;
+                $stateParams.rpsl = rpsl;
 
                 _$controller_('TextCreateController', {
                     $scope: $scope, $state: $state, $log: logger, $stateParams: $stateParams,
@@ -78,6 +79,14 @@ describe('textUpdates: TextCreateController', function () {
 
         expect($scope.object.source).toBe(SOURCE);
         expect($scope.object.type).toBe('inetnum');
+    });
+
+    it('should get rpsl from url-parameter', function () {
+        doCreateController('inetnum', false, "inetnum:1\inetnum:2\n");
+
+        expect($scope.object.source).toBe(SOURCE);
+        expect($scope.object.type).toBe('inetnum');
+        expect($scope.object.rpsl).toBe('inetnum:1\inetnum:2\n');
     });
 
     it('should redirect to webupdates when web-preference is set', function () {
