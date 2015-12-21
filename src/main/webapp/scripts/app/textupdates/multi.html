@@ -16,11 +16,14 @@
                           auto-height
                           cols="60"
                           placeholder="Paste your RPSL in here"
-                          ng-model="rpsl"
+                          ng-model="objects.rpsl"
                           style="font-family:monospace;"></textarea>
 
             <input type="submit" ng-click="verifyAndSubmit()"
                    class="blue-button pull-right ga-multiobj-verifySubmit" value="Update all"/>
+            <p>
+                You should use virtual attributes <strong>password</strong> and <strong>override</strong> within your rpsl to authenticate.
+            </p>
         </form>
 
     </div>
@@ -42,7 +45,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat-start="object in objects">
+                <tr ng-repeat-start="object in objects.objects">
                     <td>
                         <button ng-if="object.expanded" ng-click="object.expanded = false">-</button>
                         <button ng-if="!object.expanded" ng-click="object.expanded = true">+</button>

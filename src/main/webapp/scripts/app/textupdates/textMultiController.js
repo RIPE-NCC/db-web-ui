@@ -12,7 +12,6 @@ angular.module('textUpdates')
             $scope.isTextMode = isTextMode;
             $scope.setWebMode = setWebMode;
             $scope.isWebMode = isWebMode;
-
             $scope.verify = verify;
             $scope.submit = submit;
             $scope.verifyAndSubmit = verifyAndSubmit;
@@ -23,56 +22,26 @@ angular.module('textUpdates')
 
                 AlertService.clearErrors();
 
+                // extract parameters from the url
+                $scope.objects = {};
+                $scope.objects.source = $stateParams.source;
+                $scope.objects.passwords = [];
+                $scope.objects.overrides = [];
+                $scope.objects.rpsl = '';
+
+                // start with text-area
                 $scope.setTextMode();
 
-                // extract parameters from the url
-                $scope.source = $stateParams.source;
-
-                $scope.rpsl =
-                    'person:        Eva Berkhout\n' +
-                    "kikoe: bah\n" +
-                    '\n'+
-                    'person:        Marc Grol\n' +
-                    'address:       Singel, Amsterdam\n' +
-                    'phone:         +316\n' +
-                    'nic-hdl:       AUTO-1\n' +
-                    'mnt-by:        GROLTEST1-MNT\n' +
-                    'last-modified: 2015-11-30T18:16:38Z\n' +
-                    'source:        RIPE\n' +
-                    'password:Houtman28\n' +
-                    '\n'+
-                    'mntner:          AARDVARK-MNT\n' +
-                    'descr:           Mntner for denis\n' +
-                    'admin-c:         DW6465-RIPE\n' +
-                    'tech-c:          DW-RIPE\n' +
-                    'upd-to:          denis@ripe.net\n' +
-                    'auth:            X509-1689\n' +
-                    'notify:          ripedenis@yahoo.co.uk\n' +
-                    'mnt-by:          AARDVARK-MNT\n' +
-                    'source:          RIPE # Filtered\n' +
-                    'mntner:          AARDVARK-MNT\n' +
-                    'descr:           Mntner for denis\n' +
-                    'admin-c:         DW6465-RIPE\n' +
-                    'tech-c:          DW-RIPE\n' +
-                    'upd-to:          denis@ripe.net\n' +
-                    'auth:            SSO mgrol@ripe.net\n' +
-                    'notify:          ripedenis@yahoo.co.uk\n' +
-                    'mnt-by:          AARDVARK-MNT\n' +
-                    'source:          RIPE # Filtered\n';
-
-                $scope.objects = [];
-                $scope.passwords = [];
-                $scope.overrides = [];
-
                 $log.debug('TextMultiController: Url params:' +
-                    ' object.source:' + $scope.source);
+                    ' object.source:' + $scope.objects.source);
+
             };
 
             function setWebMode() {
                 AlertService.clearErrors();
 
                 $scope.textMode = false;
-                $scope.objects = verify($scope.source, $scope.rpsl, $scope.passwords, $scope.overrides);
+                $scope.objects.objects = verify($scope.source, $scope.objects.rpsl, $scope.objects.passwords, $scope.objects.overrides);
             }
 
             function isWebMode() {
@@ -81,7 +50,7 @@ angular.module('textUpdates')
 
             function setTextMode() {
                 $scope.textMode = true;
-                $scope.objects = [];
+                $scope.objects.objects = [];
             }
 
             function isTextMode() {
@@ -133,21 +102,22 @@ angular.module('textUpdates')
 
                 $scope.textMode = false;
 
-                _.each($scope.objects, function(obj) {
-                    _performAction($scope.source, obj);
+                _.each($scope.objects.objects, function(obj) {
+                    _performAction($scope.objects.source, obj);
                 });
 
-                $log.debug("submit:" + JSON.stringify($scope.objects));
+                $log.debug("submit:" + JSON.stringify($scope.objects.objects));
 
-                _.each($scope.objects, function(obj) {
-                    _performAction($scope.source, obj);
+                _.each($scope.objects.objects, function(obj) {
+                    _performAction($scope.objects.source, obj);
                 });
             }
 
             function verifyAndSubmit() {
                 AlertService.clearErrors();
 
-                $scope.objects = $scope.verify($scope.source, $scope.rpsl, $scope.passwords, $scope.overrides);
+                $scope.objects.objects = $scope.verify($scope.objects.source, $scope.objects.rpsl,
+                    $scope.objects.passwords, $scope.objects.overrides);
                 $scope.submit();
             }
 
@@ -234,9 +204,8 @@ angular.module('textUpdates')
                             _setStatus( object, false, 'Error creating');
 
                             if (_.isUndefined(error.data.errormessages)) {
-                                object.errors = 'Response '+ error.status +' not understood';
+                                object.errors = {plainText: 'Response '+ error.status +' not understood'};
                             } else {
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                                 var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                                 object.errors = whoisResources.getAllErrors();
                                 object.warnings = whoisResources.getAllWarnings();
@@ -262,7 +231,7 @@ angular.module('textUpdates')
                             _setStatus( object, false, 'Error modifying');
 
                             if (_.isUndefined(error.data.errormessages)) {
-                                object.errors = 'Response '+ error.status +' not understood';
+                                object.errors = {plainText: 'Response '+ error.status +' not understood'};
                             } else {
                                 var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                                 object.errors = whoisResources.getAllErrors();
