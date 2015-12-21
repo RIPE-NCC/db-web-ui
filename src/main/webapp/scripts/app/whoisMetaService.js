@@ -136,7 +136,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: false, refs: ['MNTNER']},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -156,7 +155,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -187,7 +185,6 @@ angular.module('dbWebApp')
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -207,7 +204,6 @@ angular.module('dbWebApp')
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -227,7 +223,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -255,7 +250,6 @@ angular.module('dbWebApp')
                     {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-domains', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-irt', mandatory: false, multiple: true, refs: ['IRT']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -282,7 +276,6 @@ angular.module('dbWebApp')
                     {name: 'mnt-domains', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-irt', mandatory: false, multiple: true, refs: ['IRT']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -306,7 +299,6 @@ angular.module('dbWebApp')
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -331,7 +323,6 @@ angular.module('dbWebApp')
                     {name: 'irt-nfy', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -351,7 +342,6 @@ angular.module('dbWebApp')
                     {name: 'admin-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -372,7 +362,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'abuse-mailbox', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -401,7 +390,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'abuse-mailbox', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -421,7 +409,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -441,7 +428,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'abuse-mailbox', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -458,7 +444,6 @@ angular.module('dbWebApp')
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: false, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -473,7 +458,6 @@ angular.module('dbWebApp')
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -495,7 +479,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'abuse-mailbox', mandatory: false, multiple: false, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -522,7 +505,6 @@ angular.module('dbWebApp')
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -549,7 +531,6 @@ angular.module('dbWebApp')
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -570,7 +551,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -591,7 +571,6 @@ angular.module('dbWebApp')
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
-                    {name: 'changed', mandatory: false, multiple: true, refs: []},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
                     {name: 'source', mandatory: true, multiple: false, refs: []}
@@ -745,11 +724,6 @@ angular.module('dbWebApp')
                 short: undefined,
                 description: 'Contains the public key.',
                 syntax: 'The value of the public key should be supplied using multiple \"certif:\" attributes. This is done by exporting the key from your local key ring in ASCII armored format and prepending each line with the string \"certif:\".'
-            },
-            'changed': {
-                short: 'Deprecated attribute, do not use.',
-                description: 'Specifies who submitted the update. This attribute is filtered from the default whois output. This attribute is deprecated and will be removed in a next release.',
-                syntax: 'A valid email address, e.g. user@example.net, followed by a date in the format YYYYMMDD.'
             },
             'components': {
                 short: 'Defines what component routes are used to form the aggregate.',
