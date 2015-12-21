@@ -3,10 +3,10 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window',
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window', 'WebUpdatesCommons',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
         'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper', 'STATE',
-        function ($scope, $stateParams, $state, $log, $window,
+        function ($scope, $stateParams, $state, $log, $window, WebUpdatesCommons,
                   WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper, STATE) {
 
@@ -746,39 +746,14 @@ angular.module('webUpdates')
             }
 
             function _performAuthentication() {
-                $log.debug('Perform authentication');
-                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
-                if (mntnersWithPasswords.length === 0) {
-                    AlertService.setGlobalError('You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have password');
-                } else {
-
-                    ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
-                        function (result) {
-                            AlertService.clearErrors();
-
-                            var selectedMntner = result.selectedItem;
-                            $log.debug('selected mntner:' + JSON.stringify(selectedMntner));
-                            var associationResp = result.response;
-                            $log.debug('associationResp:' + JSON.stringify(associationResp));
-
-                            if ($scope.isMine(selectedMntner)) {
-                                // has been successfully associated in authentication modal
-
-                                $scope.maintainers.sso.push(selectedMntner);
-                                // mark starred in selected
-                                $scope.maintainers.object = _enrichWithMine($scope.maintainers.object);
-                            }
-                            $log.debug('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
-                            $log.debug('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
-
-                            _refreshObjectIfNeeded(associationResp);
-
-                        }, function () {
-                            _navigateAway();
-                        }
-                    );
-                }
+                WebUpdatesCommons.performAuthentication(
+                    $scope.maintainers,
+                    $scope.source,
+                    _onSuccessfulAuthentication,
+                    _navigateAway)
             }
 
-
+            function _onSuccessfulAuthentication(associationResp){
+                _refreshObjectIfNeeded(associationResp)
+            }
         }]);

@@ -33,7 +33,7 @@ angular.module('webUpdates')
                             $log.debug('After auth: maintainers.object:' + JSON.stringify(maintainers.object));
 
                             if (! _.isUndefined(successCloseCallback)){
-                                successCloseCallback(maintainers);
+                                successCloseCallback(associationResp);
                             }
                         }, function () {
                             if (! _.isUndefined(cancelCloseCallback)){

@@ -183,8 +183,8 @@ angular.module('webUpdates')
                 $log.debug('onMntnerAdded: attributes' + JSON.stringify($scope.attributes));
             }
 
-            function _onSuccessfulAuthentication(maintainers){
-                $scope.maintainers = maintainers;
+            function _onSuccessfulAuthentication(associationResp){
+                //DO NOTHING
             }
 
             function needToLockLastMntner() {
