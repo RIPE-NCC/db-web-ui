@@ -117,7 +117,7 @@ describe('textUpdates: TextModifyController', function () {
     it('should get parameters from url', function () {
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -149,7 +149,7 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController('person', 'TP-RIPE', false);
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -172,7 +172,7 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController('person', 'TP-RIPE', true);
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -192,7 +192,7 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -211,7 +211,7 @@ describe('textUpdates: TextModifyController', function () {
     it('should report an error when mandatory field is missing', function () {
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -237,7 +237,7 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -272,7 +272,7 @@ describe('textUpdates: TextModifyController', function () {
             auth: ['SSO'],
             mine: true
         }]);
-        $httpBackend.whenGET('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, routeJSON, {}];
             });
@@ -294,7 +294,7 @@ describe('textUpdates: TextModifyController', function () {
     it('should report a fetch failure', function () {
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(400, {
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(400, {
                 "errormessages": {
                     "errormessage": [{
                         "severity": "Error",
@@ -324,7 +324,7 @@ describe('textUpdates: TextModifyController', function () {
     it('should give warning if fetching SSO mntners fails', function () {
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -346,7 +346,7 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -416,7 +416,7 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -447,7 +447,7 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController();
 
-        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
             });
@@ -471,7 +471,7 @@ describe('textUpdates: TextModifyController', function () {
 
         setupController('mntner', 'TEST-MNT');
 
-        $httpBackend.whenGET('api/whois/RIPE/mntner/TEST-MNT?unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/mntner/TEST-MNT?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, {
                     objects: {
@@ -500,7 +500,7 @@ describe('textUpdates: TextModifyController', function () {
             {'key': 'TESTSSO-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
         ]);
 
-        $httpBackend.whenGET('api/whois/RIPE/mntner/TEST-MNT?password=secret&unfiltered=true').respond(
+        $httpBackend.whenGET('api/whois/RIPE/mntner/TEST-MNT?password=secret&unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, {
                     objects: {
