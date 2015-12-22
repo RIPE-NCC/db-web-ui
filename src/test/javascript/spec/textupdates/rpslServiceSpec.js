@@ -189,7 +189,7 @@ describe('textUpdates: RpslService', function () {
 
         var passwords = [];
         var overrides = [];
-        var attrs = $RpslService.fromRpslWithPasswords(rpsl);
+        var attrs = $RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
 
         expect(attrs).toEqual([[
             {name: 'person',  value: undefined,                                            comment: undefined},
@@ -203,7 +203,8 @@ describe('textUpdates: RpslService', function () {
 
     it('should parse password from rpsl', function () {
         var rpsl = 'person: Tester X\n' +
-            'password:secret\n';
+            'password:  secret\n' +
+            'password:  secret\n';
 
         var passwords = [];
         var overrides = [];
@@ -223,7 +224,7 @@ describe('textUpdates: RpslService', function () {
 
     it('should parse override from rpsl', function () {
         var rpsl =
-            'override:admin.secret,because\n'+
+            'override:admin.secret,because    \n'+
             'person: Tester X\n';
 
         var passwords = [];

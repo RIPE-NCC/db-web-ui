@@ -44,7 +44,21 @@ angular.module('textUpdates')
                 }
             });
 
+            passwords = _stripDuplicates(passwords);
+            overrides = _stripDuplicates(overrides);
+
             return objs;
+        }
+
+        function _stripDuplicates( array ) {
+            var uniqued = _.unique(_.clone(array));
+            // don't copy into a new pointer, but leave existibg pointer in tact
+            while (array.length) {
+                array.pop();
+            }
+            _.each(uniqued, function(item) {
+                array.push(item);
+            });
         }
 
         function _parseSingleObject( rpslText, passwords, overrides ) {
@@ -62,10 +76,11 @@ angular.module('textUpdates')
                     // end of attribute reached
                     var attr = _parseSingleAttribute(_.clone(buffer));
                     if(!_.isUndefined(attr)) {
-                        if( attr.name === 'password') {
-                            passwords.push(attr.value);
-                        } else  if( attr.name === 'override') {
-                            overrides.push(attr.value);
+                        var trimmed = _.trim(attr.value);
+                        if( attr.name === 'password' && !_.isEmpty(trimmed)) {
+                            passwords.push(trimmed);
+                        } else  if( attr.name === 'override'  && !_.isEmpty(trimmed)) {
+                            overrides.push(trimmed);
                         } else {
                             attrs.push(attr);
                         }
