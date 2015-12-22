@@ -90,8 +90,7 @@
                 <tr ng-if="object.expanded" ng-repeat-end>
                     <td></td>
                     <td colspan="5">
-                        <textarea readonly ng-model="object.rpsl" auto-height cols="60"
-                                  style="font-family:monospace;"></textarea></td>
+                        <pre style="font-family:monospace;">{{object.rpsl}}</pre></td>
 
                     <td ng-if="object.textupdatesUrl"><a ng-href="{{object.textupdatesUrl}}" target="_blank">{{object.action}}
                         single object</a>
