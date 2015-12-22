@@ -76,9 +76,19 @@ angular.module('webUpdates')
                     controller: 'DisplayController'
                 })
                 .state('webupdates.delete', {
-                    url: '/delete/:source/:objectType/{name:WhoisObjectName}',
+                    url: '/delete/:source/:objectType/{name:WhoisObjectName}?onCancel',
                     templateUrl: 'scripts/app/webupdates/delete.html',
                     controller: 'DeleteController'
+                })
+                .state('webupdates.reclaimSelect', {
+                    url: '/reclaimSelect',
+                    templateUrl: 'scripts/app/webupdates/reclaimSelect.html',
+                    controller: 'ReclaimSelectController'
+                })
+                .state('webupdates.reclaim', {
+                    url: '/reclaim/:source/:objectType/{name:WhoisObjectName}',
+                    templateUrl: 'scripts/app/webupdates/reclaim.html',
+                    controller: 'ReclaimController'
                 });
 
         }]);
