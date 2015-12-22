@@ -77,7 +77,7 @@ describe('webUpdates: ReclaimController', function () {
                     {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true}
                 ]);
 
-                $httpBackend.expectGET('api/whois/RIPE/inetnum/111%20-%20255?unfiltered=true').respond(
+                $httpBackend.expectGET('api/whois/RIPE/inetnum/111%20-%20255?password=@123&unfiltered=true').respond(
                     function(method,url) {
                         return [200, objectToDisplay, {}];
                     });
@@ -86,6 +86,8 @@ describe('webUpdates: ReclaimController', function () {
                     function(method,url) {
                         return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW','SSO']} ], {}];
                     });
+
+                CredentialsService.setCredentials('TEST-MNT', '@123');
 
                 $stateParams.source = SOURCE;
                 $stateParams.objectType = 'inetnum';
@@ -124,6 +126,10 @@ describe('webUpdates: ReclaimController', function () {
 
         expect($state.current.name).toBe('delete');
         expect($stateParams.onCancel).toBe('reclaim');
+        expect($stateParams.source).toBe(SOURCE);
+        expect($stateParams.objectType).toBe('inetnum');
+        expect($stateParams.name).toBe('111%20-%20255');
+
     });
 
     it('should populate the ui with attributes', function () {
@@ -142,17 +148,6 @@ describe('webUpdates: ReclaimController', function () {
 
         expect($state.transitionTo).toHaveBeenCalledWith('display', { source: SOURCE, objectType: 'inetnum', name: INETNUM, method: undefined});
     });
-
-
-
-
-
-
-
-
-
-
-
 
     it('should have errors on wrong type', function () {
 
