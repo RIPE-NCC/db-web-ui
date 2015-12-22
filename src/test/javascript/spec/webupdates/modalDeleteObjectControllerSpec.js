@@ -3,6 +3,7 @@
 var objectType = 'mntner';
 var name = 'TEST-MNT';
 var source = 'RIPE';
+var ON_CANCEL = 'modify';
 
 describe('webUpdates: primitives of ModalDeleteObjectController', function () {
 
@@ -35,7 +36,8 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
             };
 
             _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state:$state, $log:logger, $modalInstance: {}, RestService:restService, source:source, objectType:objectType, name:name
+                $scope: $scope, $state:$state, $log:logger, $modalInstance: {}, RestService:restService,
+                    source:source, objectType:objectType, name:name, onCancel:ON_CANCEL
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -163,7 +165,7 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
             };
             _$controller_('ModalDeleteObjectController', {
                 $scope: $scope, $state:$state, $log:logger, $modalInstance: modalInstance, RestService:RestService, CredentialsService:CredentialsService,
-                        source:source, objectType:objectType, name:name
+                        source:source, objectType:objectType, name:name, onCancel:ON_CANCEL
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -201,14 +203,26 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
         expect(RestService.deleteObject).not.toHaveBeenCalled();
     });
 
-    it('should close the modal and return error when canceled', function () {
+    it('should close the modal and return to modify when canceled', function () {
 
+        $scope.onCancel = 'webupdates.modify';
         $scope.doCancel();
         expect(modalInstance.close).toHaveBeenCalled();
 
         $httpBackend.flush();
 
         expect($state.current.name).toBe('webupdates.modify');
+    });
+
+    it('should close the modal and return to reclaim when canceled', function () {
+
+        $scope.onCancel = 'webupdates.reclaim';
+        $scope.doCancel();
+        expect(modalInstance.close).toHaveBeenCalled();
+
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('webupdates.reclaim');
     });
 
 });
@@ -265,7 +279,7 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
 
             _$controller_('ModalDeleteObjectController', {
                 $scope: $scope, $state:$state, $log:logger, $modalInstance: modalInstance, RestService:RestService, CredentialService:CredentialsService,
-                    source:source, objectType:objectType, name:name
+                    source:source, objectType:objectType, name:name, onCancel: ON_CANCEL
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -372,7 +386,7 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
 
             _$controller_('ModalDeleteObjectController', {
                 $scope: $scope, $state:$state, $modalInstance: modalInstance, RestService:RestService, CredentialsService:CredentialsService,
-                source:source, objectType:objectType, name:name
+                source:source, objectType:objectType, name:name, onCancel:ON_CANCEL
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);

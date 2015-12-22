@@ -1,12 +1,16 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'WhoisResources', 'MessageStore', 'source', 'objectType', 'name',
-    function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, WhoisResources, MessageStore, source, objectType, name) {
+angular.module('webUpdates').controller('ModalDeleteObjectController',
+    [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'WhoisResources',
+            'MessageStore', 'source', 'objectType', 'name', 'onCancel',
+    function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, WhoisResources,
+              MessageStore, source, objectType, name, onCancel) {
 
         $scope.MAX_REFS_TO_SHOW = 5;
 
         $scope.objectType = objectType;
         $scope.name = name;
+        $scope.onCancel = onCancel;
         $scope.reason = 'I don\'t need this object';
         $scope.incomingReferences = undefined;
         $scope.canBeDeleted = undefined;
@@ -57,7 +61,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
 
         function doCancel() {
             $modalInstance.close();
-            _transitionToModifyObject(source, $scope.objectType, $scope.name);
+            _transitionToState(source, $scope.objectType, $scope.name, $scope.onCancel);
         }
 
         function isEqualTo(selfType, selfName, ref) {
@@ -121,8 +125,9 @@ angular.module('webUpdates').controller('ModalDeleteObjectController', [ '$scope
             return objectDeletable;
         }
 
-        function _transitionToModifyObject(source, objectType, pkey) {
-            $state.transitionTo('webupdates.modify', {
+
+        function _transitionToState(source, objectType, pkey, onCancel) {
+            $state.transitionTo(onCancel, {
                 source: source,
                 objectType: objectType,
                 name: pkey

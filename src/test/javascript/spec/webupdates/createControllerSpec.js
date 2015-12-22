@@ -184,7 +184,7 @@ describe('webUpdates: CreateController', function () {
 
     it('should remove attribute', function() {
         var lengthBefore = $scope.attributes.length;
-        var currentThird = $scope.attributes[2]
+        var currentThird = $scope.attributes[2];
 
         $scope.removeAttribute($scope.attributes[1]);
 
@@ -340,6 +340,7 @@ describe('webUpdates: CreateController', function () {
         $httpBackend.flush();
 
         expect($state.current.name).toBe('webupdates.delete');
+        expect($stateParams.onCancel).toBe('webupdates.modify');
     });
 
     it('should transition to select state if cancel is pressed during create', function() {
@@ -365,7 +366,8 @@ describe('webUpdates: CreateController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
+                         _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_) {
 
             $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
