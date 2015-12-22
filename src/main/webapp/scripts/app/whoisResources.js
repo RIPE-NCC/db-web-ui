@@ -456,7 +456,9 @@ angular.module('dbWebApp')
 
         var getAddableAttributes = function(objectType,attributes) {
             return _.filter(WhoisMetaService.getAllAttributesOnObjectType(objectType), function (attr) {
-                if( attr.name === 'last-modified' ) {
+                if( attr.name === 'created  ' ) {
+                    return false;
+                } else if( attr.name === 'last-modified' ) {
                     return false;
                 } else if( attr.$$meta.$$multiple === true ) {
                     return true;
