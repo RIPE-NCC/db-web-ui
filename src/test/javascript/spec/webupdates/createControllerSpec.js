@@ -42,7 +42,7 @@ describe('webUpdates: CreateController', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 
@@ -146,7 +146,7 @@ describe('webUpdates: CreateController', function () {
         expect(attrs.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
         expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
-        expect($state.current.name).toBe('display');
+        expect($state.current.name).toBe('webupdates.display');
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('as-block');
         expect($stateParams.name).toBe('MY-AS-BLOCK');
@@ -339,14 +339,14 @@ describe('webUpdates: CreateController', function () {
         $scope.deleteObject();
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('delete');
-        expect($stateParams.onCancel).toBe('modify');
+        expect($state.current.name).toBe('webupdates.delete');
+        expect($stateParams.onCancel).toBe('webupdates.modify');
     });
 
     it('should transition to select state if cancel is pressed during create', function() {
         spyOn($state, 'transitionTo');
         $scope.cancel();
-        expect($state.transitionTo).toHaveBeenCalledWith('select');
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.select');
     });
 });
 
@@ -393,8 +393,7 @@ describe('webUpdates: CreateController', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;
 
-
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window
             });
 
@@ -488,14 +487,14 @@ describe('webUpdates: CreateController', function () {
             '<a target="_blank" href="https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage">' +
             'Click here for more information</a>.');
 
-        expect($state.current.name).toBe('display');
+        expect($state.current.name).toBe('webupdates.display');
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('route');
         expect($stateParams.name).toBe('193.0.7.231%2F32AS1299');
     });
 });
 
-describe('webUpdates: CreateController init with failures', function () {
+describe('webUpdates: CreateModifyController init with failures', function () {
 
     var $scope, $state, $stateParams, $httpBackend, $window;
     var MessageStore;
@@ -528,7 +527,7 @@ describe('webUpdates: CreateController init with failures', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = undefined;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
 
@@ -582,10 +581,9 @@ describe('webUpdates: CreateController init with nonexistent obj type', function
 
             spyOn($state, 'transitionTo');
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window:$window
             });
-
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 

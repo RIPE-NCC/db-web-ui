@@ -69,7 +69,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController',
         }
 
         function displayUrl(ref) {
-            return $state.href('display', {
+            return $state.href('webupdates.display', {
                 source: source,
                 objectType: ref.objectType,
                 name: ref.primaryKey
@@ -124,6 +124,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController',
 
             return objectDeletable;
         }
+
 
         function _transitionToState(source, objectType, pkey, onCancel) {
             $state.transitionTo(onCancel, {

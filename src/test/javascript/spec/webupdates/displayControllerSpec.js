@@ -198,7 +198,7 @@ describe('webUpdates: DisplayController', function () {
 
         $scope.navigateToSelect();
 
-        expect($state.current.name).toBe('select');
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
@@ -211,7 +211,7 @@ describe('webUpdates: DisplayController', function () {
         $scope.navigateToModify();
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('modify');
+        expect($state.current.name).toBe('webupdates.modify');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe(OBJECT_TYPE);
         expect($stateParams.name).toBe(OBJECT_NAME);
@@ -338,7 +338,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('modify');
+        expect($state.current.name).toBe('webupdates.modify');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe(OBJECT_TYPE);
         expect($stateParams.name).toBe('212.235.32.0%2F19AS1680');
@@ -360,7 +360,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         // select screen already loaded so no flush here
 
-        expect($state.current.name).toBe('select');
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 

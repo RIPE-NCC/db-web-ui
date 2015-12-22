@@ -1,10 +1,11 @@
 angular.module('webUpdates', ['dbWebApp'])
     .constant(
         "STATE", {
-        SELECT: "select",
-        MODIFY: "modify",
-        DELETE: "delete",
-        DISPLAY: "display",
-        RECLAIM: "reclaim",
-        RECLAIM_SELECT: "reclaimSelect"
+        CREATE: "webupdates.create",
+        SELECT: "webupdates.select",
+        MODIFY: "webupdates.modify",
+        DELETE: "webupdates.delete",
+        DISPLAY: "webupdates.display",
+        RECLAIM: "webupdates.reclaim",
+        RECLAIM_SELECT: "webupdates.reclaimSelect"
 });

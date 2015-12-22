@@ -114,11 +114,11 @@ angular.module('webUpdates')
             };
 
             function navigateToSelect() {
-                $state.transitionTo('select');
+                $state.transitionTo('webupdates.select');
             };
 
             function navigateToModify() {
-                $state.transitionTo('modify', {
+                $state.transitionTo('webupdates.modify', {
                     source: $scope.objectSource,
                     objectType: $scope.objectType,
                     name: $scope.objectName

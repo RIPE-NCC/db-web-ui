@@ -3,8 +3,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('ReclaimSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log', 'AlertService',
-        function ($scope, $stateParams, $state, SOURCE, $log, AlertService) {
+    .controller('ReclaimSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log', 'AlertService', 'STATE',
+        function ($scope, $stateParams, $state, SOURCE, $log, AlertService,STATE) {
 
             $scope.isFormValid = _isFormValid;
             $scope.navigateToReclaim = _navigateToReclaim;
@@ -25,7 +25,7 @@ angular.module('webUpdates')
             }
 
             function _navigateToReclaim() {
-                $state.transitionTo('reclaim', {
+                $state.transitionTo(STATE.RECLAIM, {
                     source: $scope.selected.source,
                     objectType: $scope.selected.objectType,
                     name: $scope.selected.name

@@ -124,11 +124,11 @@ describe('webUpdates: ReclaimController', function () {
         $scope.reclaim();
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('delete');
-        expect($stateParams.onCancel).toBe('reclaim');
+        expect($state.current.name).toBe('webupdates.delete');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe('inetnum');
         expect($stateParams.name).toBe('111%20-%20255');
+        expect($stateParams.onCancel).toBe('webupdates.reclaim');
 
     });
 
@@ -146,7 +146,7 @@ describe('webUpdates: ReclaimController', function () {
 
         $scope.cancel();
 
-        expect($state.transitionTo).toHaveBeenCalledWith('display', { source: SOURCE, objectType: 'inetnum', name: INETNUM, method: undefined});
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', { source: SOURCE, objectType: 'inetnum', name: INETNUM, method: undefined});
     });
 
     it('should have errors on wrong type', function () {

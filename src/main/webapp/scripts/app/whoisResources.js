@@ -19,6 +19,10 @@ angular.module('dbWebApp')
             return WhoisMetaService._getMetaAttributesOnObjectType(objectTypeName, mandatoryOnly);
         };
 
+        this.findMetaAttributeOnObjectTypeAndName = function(objectTypeName, attributeName) {
+            return WhoisMetaService.findMetaAttributeOnObjectTypeAndName(objectTypeName, attributeName);
+        }
+
         this.getObjectTypes = function () {
             return WhoisMetaService.getObjectTypes();
         };
@@ -97,6 +101,26 @@ angular.module('dbWebApp')
                 });
         };
 
+        var getAllErrors = function () {
+            if( ! this.errormessages ) {
+                return [];
+            }
+            var self = this;
+            return this.errormessages.errormessage.filter(
+                function (errorMessage) {
+                    errorMessage.plainText = _getRelatedAttribute(errorMessage) + self.readableError(errorMessage);
+                    return errorMessage.severity === 'Error';
+                });
+        };
+
+        function _getRelatedAttribute( errorMessage ) {
+            var msgPrefix = '';
+            if( errorMessage.attribute && errorMessage.attribute.name ) {
+                msgPrefix = errorMessage.attribute.name + ": " ;
+            }
+            return msgPrefix;
+        }
+
          var getGlobalWarnings = function () {
              if( ! this.errormessages ) {
                  return [];
@@ -110,6 +134,18 @@ angular.module('dbWebApp')
                 });
         };
 
+        var getAllWarnings = function () {
+            if( ! this.errormessages ) {
+                return [];
+            }
+
+            var self = this;
+            return this.errormessages.errormessage.filter(
+                function (errorMessage) {
+                    errorMessage.plainText = _getRelatedAttribute(errorMessage) +  self.readableError(errorMessage);
+                    return errorMessage.severity === 'Warning';
+                });
+        };
          var getGlobalInfos = function () {
              if( ! this.errormessages ) {
                  return [];
@@ -120,6 +156,19 @@ angular.module('dbWebApp')
                 function (errorMessage) {
                     errorMessage.plainText = self.readableError(errorMessage);
                     return errorMessage.severity === 'Info' && !errorMessage.attribute;
+                });
+        };
+
+        var getAllInfos = function () {
+            if( ! this.errormessages ) {
+                return [];
+            }
+
+            var self = this;
+            return this.errormessages.errormessage.filter(
+                function (errorMessage) {
+                    errorMessage.plainText = _getRelatedAttribute(errorMessage) +  self.readableError(errorMessage);
+                    return errorMessage.severity === 'Info';
                 });
         };
 
@@ -224,8 +273,11 @@ angular.module('dbWebApp')
             // enrich data with methods
             whoisResources.toString = toString;
             whoisResources.readableError = readableError;
+            whoisResources.getAllErrors = getAllErrors;
             whoisResources.getGlobalErrors = getGlobalErrors;
+            whoisResources.getAllWarnings = getAllWarnings;
             whoisResources.getGlobalWarnings = getGlobalWarnings;
+            whoisResources.getAllInfos = getAllInfos;
             whoisResources.getGlobalInfos = getGlobalInfos;
             whoisResources.getErrorsOnAttribute = getErrorsOnAttribute;
             whoisResources.getAttributes = getAttributes;
@@ -346,6 +398,12 @@ angular.module('dbWebApp')
             });
         };
 
+        var removeAttributeWithName = function(attrName) {
+            return _.remove(this, function(next) {
+                return next.name === attrName;
+            });
+        };
+
         var duplicateAttribute = function(attr) {
             var result = [];
 
@@ -398,7 +456,9 @@ angular.module('dbWebApp')
 
         var getAddableAttributes = function(objectType,attributes) {
             return _.filter(WhoisMetaService.getAllAttributesOnObjectType(objectType), function (attr) {
-                if( attr.name === 'last-modified' ) {
+                if( attr.name === 'created  ' ) {
+                    return false;
+                } else if( attr.name === 'last-modified' ) {
                     return false;
                 } else if( attr.$$meta.$$multiple === true ) {
                     return true;
@@ -514,6 +574,7 @@ angular.module('dbWebApp')
             attrs.getAddableAttributes = getAddableAttributes;
 
             attrs.removeAttributeWithType = removeAttributeWithType;
+            attrs.removeAttributeWithName = removeAttributeWithName; // mutates array
             attrs.removeAttribute = removeAttribute;
             attrs.duplicateAttribute = duplicateAttribute;
             attrs.canAttributeBeDuplicated = canAttributeBeDuplicated;

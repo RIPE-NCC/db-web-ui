@@ -52,6 +52,16 @@ angular.module('dbWebApp')
             );
         };
 
+        this.findMetaAttributeOnObjectTypeAndName = function (objectTypeName, attributeName) {
+            if (!objectTypeName || !this._objectTypesMap[objectTypeName]) {
+                return undefined;
+            }
+            return _.find(this._objectTypesMap[objectTypeName].attributes,
+                function (attr) {
+                    return attr.name === attributeName;
+            });
+        };
+
         this.getObjectTypes = function () {
             var keys = [];
             for (var key in this._objectTypesMap) {
@@ -90,7 +100,7 @@ angular.module('dbWebApp')
                 if (!_.isUndefined(attr.$$meta)) {
                     idx = attr.$$meta.$$idx;
                 }
-                return  _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attrMeta, idx)
+                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attrMeta, idx);
             });
         };
 

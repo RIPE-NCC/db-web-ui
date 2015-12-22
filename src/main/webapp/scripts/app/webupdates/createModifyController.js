@@ -3,14 +3,17 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window', 'WebUpdatesCommons',
-        'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
-        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper', 'STATE',
-        function ($scope, $stateParams, $state, $log, $window, WebUpdatesCommons,
-                  WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService,
-                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper, STATE) {
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
+                'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
+                'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
+                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService',
+        function ($scope, $stateParams, $state, $log, $window, $q,
+                  WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
+                  MntnerService, AlertService, ErrorReporterService, LinkService,
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService) {
 
             // exposed methods called from html fragment
+            $scope.switchToTextMode = switchToTextMode;
             $scope.onMntnerAdded = onMntnerAdded;
             $scope.onMntnerRemoved = onMntnerRemoved;
 
@@ -19,7 +22,6 @@ angular.module('webUpdates')
             $scope.hasPgp = MntnerService.hasPgp;
             $scope.hasMd5 = MntnerService.hasMd5;
             $scope.isNew = MntnerService.isNew;
-
 
             $scope.needToLockLastMntner = needToLockLastMntner;
 
@@ -69,8 +71,17 @@ angular.module('webUpdates')
                 if (!_.isUndefined($stateParams.name)) {
                     $scope.name = decodeURIComponent($stateParams.name);
                 }
+                var noRedirect = $stateParams.noRedirect;
 
-                $log.debug('Url params: source:' + $scope.source + '. type:' + $scope.objectType + ', uid:' + $scope.name);
+                $log.debug('Url params: source:' + $scope.source +
+                    '. type:' + $scope.objectType +
+                    ', uid:' + $scope.name +
+                    ', noRedirect:' + noRedirect);
+
+                // switch to text-screen if cookie says so and cookie is not to be ignored
+                if( PreferenceService.isTextMode() && ! noRedirect === true ) {
+                    switchToTextMode();
+                }
 
                 // initialize data
                 $scope.maintainers = {
@@ -727,7 +738,7 @@ angular.module('webUpdates')
                 if ($scope.operation === 'Modify') {
                     WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, $scope.name, undefined);
                 } else {
-                    $state.transitionTo('select');
+                    $state.transitionTo('webupdates.select');
                 }
             }
 
@@ -742,4 +753,25 @@ angular.module('webUpdates')
             function _onSuccessfulAuthentication(associationResp){
                 _refreshObjectIfNeeded(associationResp)
             }
-        }]);
+
+
+            function switchToTextMode() {
+                $log.debug("Switching to text-mode");
+
+                PreferenceService.setTextMode();
+
+                if( !$scope.name ) {
+                    $state.transitionTo('textupdates.create', {
+                        source: $scope.source,
+                        objectType: $scope.objectType
+                    });
+                } else {
+                    $state.transitionTo('textupdates.modify', {
+                        source: $scope.source,
+                        objectType: $scope.objectType,
+                        name: $scope.name
+                    });
+                }
+            }
+
+          }]);

@@ -9,6 +9,8 @@
         </p>
 
 </div>
+<button ng-click="switchToTextMode()" class="blue-button pull-right ga-createobj-switch-mode" style="border:0;">Switch to text mode</button>
+
 <form id="createForm">
 
     <h1>{{operation}} &quot;{{objectType}}&quot; object</h1>
@@ -53,7 +55,7 @@
     <section class="visible-field-form" ng-if="hasMntners()">
         <ul class="form-fields appeared-fields">
 
-        <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'})" class="form-group input-group">
+        <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" class="form-group input-group">
 
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>

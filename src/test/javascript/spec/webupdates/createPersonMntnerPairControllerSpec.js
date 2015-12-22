@@ -88,8 +88,6 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
             $httpBackend.whenGET(/.*.html/).respond(200);
 
             $httpBackend.flush();
-
-
         });
     });
 
@@ -195,7 +193,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         var mntnerAttrs = WhoisResources.wrapAttributes(cachedMntner.getAttributes());
         expect(mntnerAttrs.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
 
-        expect($state.current.name).toBe('displayPersonMntnerPair');
+        expect($state.current.name).toBe('webupdates.displayPersonMntnerPair');
         expect($stateParams.person).toBe(PERSON_UID);
         expect($stateParams.mntner).toBe(MNTNER_NAME);
 

@@ -48,7 +48,7 @@ describe('webUpdates: ReclaimSelectController', function () {
 
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('reclaim');
+        expect($state.current.name).toBe('webupdates.reclaim');
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('inetnum');
         expect($stateParams.name).toBe('127.0.0.1%20-%20127.0.0.10');

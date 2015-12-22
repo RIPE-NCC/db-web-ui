@@ -1,6 +1,6 @@
 'use strict';
 
-describe('webUpdates: CreateController for organisation', function () {
+describe('webUpdates: CreateModifyController for organisation', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
     var MessageStore;
@@ -44,7 +44,7 @@ describe('webUpdates: CreateController for organisation', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService
             });
 
