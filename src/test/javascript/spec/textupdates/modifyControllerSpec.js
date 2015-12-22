@@ -114,7 +114,7 @@ describe('textUpdates: TextModifyController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-  /*  it('should get parameters from url', function () {
+    it('should get parameters from url', function () {
         setupController();
 
         $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true').respond(
@@ -252,7 +252,7 @@ describe('textUpdates: TextModifyController', function () {
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('person');
         expect($stateParams.name).toBe('TP-RIPE');
-    });*/
+    });
 
     it('should navigate to display after successful submit with a slash', function () {
 
@@ -282,7 +282,7 @@ describe('textUpdates: TextModifyController', function () {
         expect($stateParams.objectType).toBe('route');
         expect($stateParams.name).toBe('12.235.32.0%2F19AS1680');
     });
-/*
+
     it('should report a fetch failure', function () {
         setupController();
 
@@ -526,7 +526,7 @@ describe('textUpdates: TextModifyController', function () {
             'mnt-by:TEST-MNT\n' +
             'source:RIPE\n');
 
-    });*/
+    });
 
     var routeJSON = {
         objects: {
