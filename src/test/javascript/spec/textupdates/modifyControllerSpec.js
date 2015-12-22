@@ -72,13 +72,13 @@ describe('textUpdates: TextModifyController', function () {
 
             var logger = {
                 debug: function (msg) {
-                    console.log('info:' + msg);
+                    //console.log('info:' + msg);
                 },
                 info: function (msg) {
-                    console.log('info:' + msg);
+                    //console.log('info:' + msg);
                 },
                 error: function (msg) {
-                    console.log('error:' + msg);
+                    //console.log('error:' + msg);
                 }
             };
 
