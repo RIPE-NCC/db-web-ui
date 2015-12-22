@@ -33,6 +33,22 @@ angular.module('textUpdates')
                     return;
                 }
 
+                var errorCount=0;
+                var mandatoryAtrs = WhoisResources._getMetaAttributesOnObjectType(objectType, true);
+                _.each(mandatoryAtrs, function(meta) {
+                    if( _.any(attributes, function(attr) {
+                        return attr.name === meta.name;
+                    }) === false ) {
+                        var msg = meta.name + ': ' + "Missing mandatory attribute";
+                        if(_.isUndefined(errors)) {
+                            AlertService.addGlobalError(msg);
+                        } else {
+                            errors.push({plainText:msg});
+                        }
+                        errorCount++;
+                    }
+                });
+
                 var enrichedAttributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
                 if (!enrichedAttributes.validate()) {
                     _.each(enrichedAttributes, function (item) {
@@ -46,9 +62,9 @@ angular.module('textUpdates')
                             }
                         }
                     });
-                    return false;
+                    errorCount++;
                 }
-                return true;
+                return errorCount === 0;
             }
 
             this.authenticate = function (objectSource, objectType, ssoMaintainers, attributes, passwords, overrides) {

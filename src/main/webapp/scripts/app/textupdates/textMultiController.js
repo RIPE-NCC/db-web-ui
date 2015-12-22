@@ -12,13 +12,13 @@ angular.module('textUpdates')
             $scope.isTextMode = isTextMode;
             $scope.setWebMode = setWebMode;
             $scope.isWebMode = isWebMode;
-            $scope.verify = verify;
             $scope.submit = submit;
-            $scope.verifyAndSubmit = verifyAndSubmit;
+            $scope.didAllActionsComplete = didAllActionsComplete;
 
             _initialisePage();
 
             function _initialisePage() {
+                $scope.actionsPending = 0;
 
                 AlertService.clearErrors();
 
@@ -67,6 +67,7 @@ angular.module('textUpdates')
                 var objs = RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
                 $log.debug("objects:" + JSON.stringify(objs));
 
+                _initializeActionCounter(objs);
                 _.each(objs, function(attributes) {
 
                     var object  = {};
@@ -77,10 +78,13 @@ angular.module('textUpdates')
                     object.errors = [];
                     if (!TextCommons.validate(object.type, attributes, object.errors)) {
                         _setStatus(object, false, 'Invalid syntax');
+                        _markActionCompleted(object, 'syntax error');
+
                     } else {
                         object.attributes  = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
                         object.name = _getPkey(object.type, object.attributes);
                         _setStatus(object, undefined, 'Fetching');
+
                         _determineOperation(source, object, passwords).then(
                             function (action) {
                                 $log.debug('Action: ' + action );
@@ -92,6 +96,8 @@ angular.module('textUpdates')
                                     object.displayUrl = undefined;
                                 }
                                 object.textupdatesUrl = _asTextUpdatesLink(source, object);
+                                _markActionCompleted(object, 'fetch');
+
                             }
                         );
                     }
@@ -102,21 +108,12 @@ angular.module('textUpdates')
             function submit() {
                 AlertService.clearErrors();
 
-                $scope.textMode = false;
-
                 $log.debug("submit:" + JSON.stringify($scope.objects.objects));
 
+                _initializeActionCounter($scope.objects.objects);
                 _.each($scope.objects.objects, function(obj) {
                     _performAction($scope.objects.source, obj, $scope.objects.passwords, $scope.objects.overrides);
                 });
-            }
-
-            function verifyAndSubmit() {
-                AlertService.clearErrors();
-
-                $scope.objects.objects = $scope.verify($scope.objects.source, $scope.objects.rpsl,
-                    $scope.objects.passwords, $scope.objects.overrides);
-                $scope.submit();
             }
 
             function _getPkey(objectType, attributes) {
@@ -184,64 +181,102 @@ angular.module('textUpdates')
             }
 
             function _performAction( source, object, passwords, overrides) {
-                if( object.action === 'Create') {
-                    _setStatus( object, undefined, 'Creating' );
+                $log.debug('_performAction: '+ JSON.stringify(object));
 
-                    RestService.createObject(source, object.type,
-                        WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
-                        passwords, overrides, true).then(
-                        function (result) {
-                            _setStatus( object, true, 'Created successfully' );
-                            var whoisResources = WhoisResources.wrapWhoisResources(result);
-                            object.name = whoisResources.getPrimaryKey();
-                            object.displayUrl =_asDisplayLink(source, object);
-                            object.textupdatesUrl =_asTextUpdatesLink(source, object);
-                            object.oldRpsl = _.clone(object.rpsl)
-                            object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
-                            object.infos = whoisResources.getAllInfos();
+                if( object.errors.length > 0 ) {
 
-                        }, function (error) {
-                            _setStatus( object, false, 'Error creating');
-
-                            if (_.isUndefined(error.data.errormessages)) {
-                                object.errors = {plainText: 'Response '+ error.status +' not understood'};
-                            } else {
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                object.errors = whoisResources.getAllErrors();
-                                object.warnings = whoisResources.getAllWarnings();
-                                object.infos = whoisResources.getAllInfos();
-                            }
-                        }
-                    );
+                    $log.debug('Skip performing action '+ object.action + '-' + object.type + '-' + object.name + ' since validation failed');
+                    _markActionCompleted(object, "skipped");
 
                 } else {
-                    _setStatus( object, undefined, 'Modifying' );
+                    $log.debug('Start performing action '+ object.action + '-' + object.type + '-' + object.name );
 
-                    RestService.modifyObject(source, object.type,object.name,
-                        WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
-                        passwords, overrides, true).then(
-                        function (result) {
-                            _setStatus( object, true, 'Modified successfully' );
-                            var whoisResources = WhoisResources.wrapWhoisResources(result);
-                            object.oldRpsl = _.clone(object.rpsl)
-                            object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
-                            object.infos = whoisResources.getAllInfos();
+                    if (object.action === 'Create') {
+                        _setStatus(object, undefined, 'Creating');
 
-                        }, function (error) {
-                            _setStatus( object, false, 'Error modifying');
+                        RestService.createObject(source, object.type,
+                            WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
+                            passwords, overrides, true).then(
+                            function (result) {
+                                _setStatus(object, true, 'Created successfully');
 
-                            if (_.isUndefined(error.data.errormessages)) {
-                                object.errors = {plainText: 'Response '+ error.status +' not understood'};
-                            } else {
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                object.errors = whoisResources.getAllErrors();
+                                var whoisResources = WhoisResources.wrapWhoisResources(result);
+                                object.name = whoisResources.getPrimaryKey();
+                                object.displayUrl = _asDisplayLink(source, object);
+                                object.oldRpsl = _.clone(object.rpsl)
+                                object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
+                                object.textupdatesUrl = undefined;
                                 object.warnings = whoisResources.getAllWarnings();
                                 object.infos = whoisResources.getAllInfos();
-                            }
-                        }
-                    );
 
+                                _markActionCompleted(object,'create success');
+
+                            }, function (error) {
+                                _setStatus(object, false, 'Error creating');
+
+                                if (_.isUndefined(error.data.errormessages)) {
+                                    object.errors = {plainText: 'Response ' + error.status + ' not understood'};
+                                } else {
+                                    var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                    object.errors = whoisResources.getAllErrors();
+                                    object.warnings = whoisResources.getAllWarnings();
+                                    object.infos = whoisResources.getAllInfos();
+                                }
+
+                                _markActionCompleted(object, 'create error');
+
+                            }
+                        );
+
+                    } else {
+                        _setStatus(object, undefined, 'Modifying');
+
+                        RestService.modifyObject(source, object.type, object.name,
+                            WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
+                            passwords, overrides, true).then(
+                            function (result) {
+                                _setStatus(object, true, 'Modified successfully');
+                                var whoisResources = WhoisResources.wrapWhoisResources(result);
+                                object.oldRpsl = _.clone(object.rpsl)
+                                object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
+                                object.textupdatesUrl = undefined;
+                                object.warnings = whoisResources.getAllWarnings();
+                                object.infos = whoisResources.getAllInfos();
+
+                                _markActionCompleted(object, 'modify success');
+
+                            }, function (error) {
+                                _setStatus(object, false, 'Error modifying');
+
+                                if (_.isUndefined(error.data.errormessages)) {
+                                    object.errors = {plainText: 'Response ' + error.status + ' not understood'};
+                                } else {
+                                    var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                    object.errors = whoisResources.getAllErrors();
+                                    object.warnings = whoisResources.getAllWarnings();
+                                    object.infos = whoisResources.getAllInfos();
+                                }
+
+                                _markActionCompleted(object, 'modify eroro');
+
+                            }
+                        );
+                    }
                 }
+            }
+
+            function _initializeActionCounter(objects) {
+                $scope.actionsPending = objects.length;
+                $log.debug('_initializeActionCounter:'+$scope.actionsPending);
+            }
+
+            function _markActionCompleted(object, action) {
+                $scope.actionsPending--;
+                $log.debug('mark ' +  object.action + '-' + object.type + '-' + object.name + ' action completed for ' + action + ': '+ $scope.actionsPending);
+            }
+
+            function didAllActionsComplete() {
+                return $scope.actionsPending === 0;
             }
 
         }]);
