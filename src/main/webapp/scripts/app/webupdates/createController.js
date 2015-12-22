@@ -3,22 +3,24 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window',
+    .controller('CreateController', ['$scope', '$stateParams', '$state', '$log', '$window', 'WebUpdatesCommons',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', '$q', 'ModalService',
-        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper',
-        function ($scope, $stateParams, $state, $log, $window,
+        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'OrganisationHelper', 'STATE',
+        function ($scope, $stateParams, $state, $log, $window, WebUpdatesCommons,
                   WhoisResources, MessageStore, CredentialsService, RestService, $q, ModalService,
-                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper) {
+                  MntnerService, AlertService, ErrorReporterService, LinkService, OrganisationHelper, STATE) {
 
             // exposed methods called from html fragment
             $scope.onMntnerAdded = onMntnerAdded;
             $scope.onMntnerRemoved = onMntnerRemoved;
 
-            $scope.isMine = isMine;
-            $scope.hasSSo = hasSSo;
-            $scope.hasPgp = hasPgp;
-            $scope.hasMd5 = hasMd5;
-            $scope.isNew = isNew;
+            $scope.isMine = MntnerService.isMine;
+            $scope.hasSSo = MntnerService.hasSSo;
+            $scope.hasPgp = MntnerService.hasPgp;
+            $scope.hasMd5 = MntnerService.hasMd5;
+            $scope.isNew = MntnerService.isNew;
+
+
             $scope.needToLockLastMntner = needToLockLastMntner;
 
             $scope.mntnerAutocomplete = mntnerAutocomplete;
@@ -80,8 +82,8 @@ angular.module('webUpdates')
 
                 $scope.attributes = [];
 
-                $scope.mntbyDescription = WhoisResources.getAttributeDescription($scope.objectType, 'mnt-by');
-                $scope.mntbySyntax = WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
+                $scope.mntbyDescription = MntnerService.mntbyDescription;
+                $scope.mntbySyntax = MntnerService.mntbySyntax;
 
                 $scope.CREATE_OPERATION = 'Create';
                 $scope.MODIFY_OPERATION = 'Modify';
@@ -180,49 +182,6 @@ angular.module('webUpdates')
 
                 $log.debug('onMntnerRemoved: ' + JSON.stringify(item) + ' object mntners now:' + JSON.stringify($scope.maintainers.object));
                 $log.debug('onMntnerRemoved: attributes' + JSON.stringify($scope.attributes));
-            }
-
-            function isMine(mntner) {
-                if (!mntner.mine) {
-                    return false;
-                } else {
-                    return mntner.mine;
-                }
-            }
-
-            function hasSSo(mntner) {
-                if (_.isUndefined(mntner.auth)) {
-                    return false;
-                }
-                return _.any(mntner.auth, function (i) {
-                    return _.startsWith(i, 'SSO');
-                });
-            }
-
-            function hasPgp(mntner) {
-                if (_.isUndefined(mntner.auth)) {
-                    return false;
-                }
-                return _.any(mntner.auth, function (i) {
-                    return _.startsWith(i, 'PGP');
-                });
-            }
-
-            function hasMd5(mntner) {
-                if (_.isUndefined(mntner.auth)) {
-                    return false;
-                }
-
-                return _.any(mntner.auth, function (i) {
-                    return _.startsWith(i, 'MD5');
-                });
-            }
-
-            function isNew(mntner) {
-                if (_.isUndefined(mntner.isNew)) {
-                    return false;
-                }
-                return mntner.isNew;
             }
 
             function needToLockLastMntner() {
@@ -374,11 +333,7 @@ angular.module('webUpdates')
             }
 
             function deleteObject() {
-                $state.transitionTo('delete', {
-                    source: $scope.source,
-                    objectType: $scope.objectType,
-                    name: $scope.name
-                });
+                WebUpdatesCommons.navigateToDelete($scope.source, $scope.objectType, $scope.name, STATE.MODIFY);
             }
 
             function submit() {
@@ -393,7 +348,7 @@ angular.module('webUpdates')
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
 
                     // make transition to next display screen
-                    _navigateToDisplayPage($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
+                    WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
                 }
 
                 function _isPendingAuthenticationError(resp) {
@@ -451,7 +406,7 @@ angular.module('webUpdates')
                             // TODO: let whois come with a single information errormessage [MG]
                             MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
                             /* Instruct downstream screen (typically display screen) that object is in pending state */
-                            _navigateToDisplayPage($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
+                            WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
                         } else {
                             _validateForm();
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
@@ -688,22 +643,11 @@ angular.module('webUpdates')
                 return selected;
             }
 
-            function _isMntnerOnlist(selectedMntners, mntner) {
-                var status = _.any(selectedMntners, function (m) {
-                    return m.key === mntner.key;
-                });
-                return status;
-            }
-
-            function _isRpslMntner(mntner) {
-                return mntner.key === 'RIPE-NCC-RPSL-MNT';
-            }
-
             function _filterMntners(mntners) {
                 return _.filter(mntners, function (mntner) {
                     // prevent that RIPE-NCC-RPSL-MNT can be added to an object upon create of modify
                     // prevent same mntner to be added multiple times
-                    return !_isRpslMntner(mntner) && !_isMntnerOnlist($scope.maintainers.object, mntner);
+                    return ! MntnerService.isRpslMntner(mntner) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
                 });
             }
 
@@ -735,7 +679,7 @@ angular.module('webUpdates')
             function _enrichWithMine(mntners) {
                 return _.map(mntners, function (mntner) {
                     // search in selected list
-                    if (_isMntnerOnlist($scope.maintainers.sso, mntner)) {
+                    if (MntnerService.isMntnerOnlist($scope.maintainers.sso, mntner)) {
                         mntner.mine = true;
                     } else {
                         mntner.mine = false;
@@ -781,55 +725,21 @@ angular.module('webUpdates')
 
             function _navigateAway() {
                 if ($scope.operation === 'Modify') {
-                    _navigateToDisplayPage($scope.source, $scope.objectType, $scope.name, undefined);
+                    WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, $scope.name, undefined);
                 } else {
                     $state.transitionTo('select');
                 }
             }
 
-            function _navigateToDisplayPage(source, objectType, objectName, operation) {
-                $state.transitionTo('display', {
-                    source: source,
-                    objectType: objectType,
-                    name: objectName,
-                    method: operation
-                });
-            }
-
             function _performAuthentication() {
-                $log.debug('Perform authentication');
-                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
-                if (mntnersWithPasswords.length === 0) {
-                    AlertService.setGlobalError('You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have password');
-                } else {
-
-                    ModalService.openAuthenticationModal($scope.source, mntnersWithPasswords).then(
-                        function (result) {
-                            AlertService.clearErrors();
-
-                            var selectedMntner = result.selectedItem;
-                            $log.debug('selected mntner:' + JSON.stringify(selectedMntner));
-                            var associationResp = result.response;
-                            $log.debug('associationResp:' + JSON.stringify(associationResp));
-
-                            if ($scope.isMine(selectedMntner)) {
-                                // has been successfully associated in authentication modal
-
-                                $scope.maintainers.sso.push(selectedMntner);
-                                // mark starred in selected
-                                $scope.maintainers.object = _enrichWithMine($scope.maintainers.object);
-                            }
-                            $log.debug('After auth: maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
-                            $log.debug('After auth: maintainers.object:' + JSON.stringify($scope.maintainers.object));
-
-                            _refreshObjectIfNeeded(associationResp);
-
-                        }, function () {
-                            _navigateAway();
-                        }
-                    );
-                }
+                WebUpdatesCommons.performAuthentication(
+                    $scope.maintainers,
+                    $scope.source,
+                    _onSuccessfulAuthentication,
+                    _navigateAway)
             }
 
-
+            function _onSuccessfulAuthentication(associationResp){
+                _refreshObjectIfNeeded(associationResp)
+            }
         }]);
