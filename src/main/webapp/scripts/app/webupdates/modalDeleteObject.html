@@ -2,8 +2,8 @@
     <div class="modal-header">
         <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="doCancel()"></i>
         <h5 class="modal-title" id="commonModalLabel">
-            <span ng-if="canBeDeleted">Please provide the reason for delete</span>
-            <span ng-if="!canBeDeleted">This object cannot be deleted</span>
+            <span ng-if="canBeDeleted">{{modalTitle}}</span>
+            <span ng-if="!canBeDeleted">{{canBeDeletedText}}</span>
         </h5>
     </div>
 
@@ -35,7 +35,7 @@
 
     <div class="modal-footer">
         <div ng-if="canBeDeleted">
-            <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="doDelete()" value="Confirm delete"/>
+            <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="doDelete()" value="{{confirmDeleteButtonText}}"/>
         </div>
         <div ng-if="!canBeDeleted">
             <input type="submit" class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="doCancel()" value="Return to object"/>

@@ -2,9 +2,9 @@
 
 angular.module('webUpdates').controller('ModalDeleteObjectController',
     [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'WhoisResources',
-            'MessageStore', 'source', 'objectType', 'name', 'onCancel',
+            'MessageStore', 'source', 'objectType', 'name', 'onCancel', 'STATE',
     function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, WhoisResources,
-              MessageStore, source, objectType, name, onCancel) {
+              MessageStore, source, objectType, name, onCancel, STATE) {
 
         $scope.MAX_REFS_TO_SHOW = 5;
 
@@ -23,9 +23,27 @@ angular.module('webUpdates').controller('ModalDeleteObjectController',
         $scope.hasNonSelfIncomingRefs = hasNonSelfIncomingRefs;
         $scope.restCallInProgress = false;
 
+        var operation = {
+            DELETE: 'delete',
+            RECLAIM: 'reclaim'
+        };
+
         _initialisePage();
 
         function _initialisePage() {
+            //THIS LOGIC SHOULD GO TO THE MODAL PARAMETERS
+            if (onCancel === STATE.MODIFY) {
+                $scope.confirmDeleteButtonText = 'Confirm delete';
+                $scope.modalTitle = 'Please provide the reason for delete';
+                $scope.canBeDeletedText = 'This object cannot be deleted';
+            } else if (onCancel === STATE.RECLAIM) {
+                $scope.confirmDeleteButtonText = 'Confirm reclaim';
+                $scope.modalTitle = 'Please provide the reason for reclaim';
+                $scope.canBeDeletedText = 'This object cannot be reclaimed';
+            } else {
+                $scope.operation = undefined;
+            }
+
             getReferences(source, $scope.objectType, $scope.name);
         }
 
