@@ -41,7 +41,7 @@ angular.module('textUpdates')
                 AlertService.clearErrors();
 
                 $scope.textMode = false;
-                $scope.objects.objects = verify($scope.source, $scope.objects.rpsl, $scope.objects.passwords, $scope.objects.overrides);
+                $scope.objects.objects = verify($scope.objects.source, $scope.objects.rpsl, $scope.objects.passwords, $scope.objects.overrides);
             }
 
             function isWebMode() {
@@ -102,14 +102,10 @@ angular.module('textUpdates')
 
                 $scope.textMode = false;
 
-                _.each($scope.objects.objects, function(obj) {
-                    _performAction($scope.objects.source, obj);
-                });
-
                 $log.debug("submit:" + JSON.stringify($scope.objects.objects));
 
                 _.each($scope.objects.objects, function(obj) {
-                    _performAction($scope.objects.source, obj);
+                    _performAction($scope.objects.source, obj, $scope.objects.passwords, $scope.objects.overrides);
                 });
             }
 
