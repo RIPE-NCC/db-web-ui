@@ -19,12 +19,13 @@ angular.module('webUpdates')
             $scope.hasMd5 = MntnerService.hasMd5;
             $scope.isNew = MntnerService.isNew;
 
-            $scope.needToLockLastMntner = needToLockLastMntner;
+            $scope.needToLockLastMntner = needToLockLastMntnerReclaim;
             $scope.mntnerAutocomplete = mntnerAutocomplete;
             $scope.hasMntners = hasMntners;
             /////////////Maintainer stuff end
 
             $scope.reclaim = reclaim;
+            $scope.cancel = cancel;
             $scope.isFormValid = _isFormValid;
 
             _initialisePage();
@@ -55,6 +56,8 @@ angular.module('webUpdates')
                         $scope.uiSelectTemplateReady = true;
                     });
 
+                //The maintainers appearing on the horizontal box (not the dropdown area)
+                // are stored to $scope.maintainers.object in the construct below
                 $scope.maintainers = {
                     sso: [],
                     objectOriginal: [],
@@ -94,14 +97,13 @@ angular.module('webUpdates')
                 }
             }
 
+            function cancel() {
+                WebUpdatesCommons.navigateToDisplay($scope.objectSource, $scope.objectType, $scope.objectName, undefined);
+            }
+
             function reclaim () {
                 if (_isFormValid()){
-                    $state.transitionTo('delete', {
-                        source: $scope.objectSource,
-                        objectType: $scope.objectType,
-                        name: $scope.objectName,
-                        onCancel: STATE.RECLAIM
-                    });
+                    WebUpdatesCommons.navigateToDelete($scope.objectSource, $scope.objectType, $scope.objectName, STATE.RECLAIM);
                 }
             }
 
@@ -187,11 +189,11 @@ angular.module('webUpdates')
                 //DO NOTHING
             }
 
-            function needToLockLastMntner() {
-                if ($scope.name && $scope.maintainers.object.length === 1) {
-                    // only lock last for modify
-                    return true;
-                }
+            function needToLockLastMntnerReclaim() {
+                //if ($scope.objectName && $scope.maintainers.object.length === 1) {
+                //    // only lock last for modify
+                //    return true;
+                //}
                 return false;
             }
 

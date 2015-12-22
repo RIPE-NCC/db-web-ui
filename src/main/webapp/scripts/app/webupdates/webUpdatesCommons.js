@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService',
-        function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService) {
+    .service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
+        function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, STATE) {
 
             var webUpdatesCommons = {};
 
@@ -52,6 +52,24 @@ angular.module('webUpdates')
                     }
                     return attribute;
                 } );
+            };
+
+            webUpdatesCommons.navigateToDisplay = function (objectSource, objectType, objectName, operation) {
+                $state.transitionTo(STATE.DISPLAY, {
+                    source: objectSource,
+                    objectType: objectType,
+                    name: objectName,
+                    method: operation
+                });
+            };
+
+            webUpdatesCommons.navigateToDelete = function (objectSource, objectType, objectName, onCancel) {
+                $state.transitionTo(STATE.DELETE, {
+                    source: objectSource,
+                    objectType: objectType,
+                    name: objectName,
+                    onCancel: onCancel
+                });
             };
 
             function _displayUrl(parser, attribute, objectSource) {

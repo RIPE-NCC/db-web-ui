@@ -68,11 +68,12 @@
                 </td>
             </tr>
         </table>
-    </section>
-
-    <section>
-        <br/>
+    <!--</section>-->
+<!---->
+    <!--<section>-->
+    <span>        <br/>
         <input type="submit" ng-click="reclaim()" ng-disabled="!isFormValid() || restCallInProgress" class="red-button pull-left ga-deleteobj-create" value="Reclaim this object" />
-
-    </section>
+        <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
+    </span>
+</section>
 </div>

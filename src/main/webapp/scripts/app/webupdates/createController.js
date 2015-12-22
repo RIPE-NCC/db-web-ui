@@ -333,12 +333,7 @@ angular.module('webUpdates')
             }
 
             function deleteObject() {
-                $state.transitionTo('delete', {
-                    source: $scope.source,
-                    objectType: $scope.objectType,
-                    name: $scope.name,
-                    onCancel: STATE.MODIFY
-                });
+                WebUpdatesCommons.navigateToDelete($scope.source, $scope.objectType, $scope.name, STATE.MODIFY);
             }
 
             function submit() {
@@ -353,7 +348,7 @@ angular.module('webUpdates')
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
 
                     // make transition to next display screen
-                    _navigateToDisplayPage($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
+                    WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
                 }
 
                 function _isPendingAuthenticationError(resp) {
@@ -411,7 +406,7 @@ angular.module('webUpdates')
                             // TODO: let whois come with a single information errormessage [MG]
                             MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
                             /* Instruct downstream screen (typically display screen) that object is in pending state */
-                            _navigateToDisplayPage($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
+                            WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
                         } else {
                             _validateForm();
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
@@ -730,19 +725,10 @@ angular.module('webUpdates')
 
             function _navigateAway() {
                 if ($scope.operation === 'Modify') {
-                    _navigateToDisplayPage($scope.source, $scope.objectType, $scope.name, undefined);
+                    WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, $scope.name, undefined);
                 } else {
                     $state.transitionTo('select');
                 }
-            }
-
-            function _navigateToDisplayPage(source, objectType, objectName, operation) {
-                $state.transitionTo('display', {
-                    source: source,
-                    objectType: objectType,
-                    name: objectName,
-                    method: operation
-                });
             }
 
             function _performAuthentication() {

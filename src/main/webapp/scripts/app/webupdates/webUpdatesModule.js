@@ -4,6 +4,7 @@ angular.module('webUpdates', ['dbWebApp'])
         SELECT: "select",
         MODIFY: "modify",
         DELETE: "delete",
+        DISPLAY: "display",
         RECLAIM: "reclaim",
         RECLAIM_SELECT: "reclaimSelect"
 });
