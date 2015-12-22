@@ -38,7 +38,7 @@ angular.module('textUpdates')
                     ', object.type:' + $scope.object.type +
                     ', noRedirect:' + noRedirect);
 
-                if( PreferenceService.isWebMode() && ! noRedirect === true ) {
+                if (PreferenceService.isWebMode() && !noRedirect === true) {
                     switchToWebMode();
                 }
 
@@ -50,7 +50,7 @@ angular.module('textUpdates')
             function _prepopulateRpsl() {
                 var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
                 if (_.isEmpty(attributesOnObjectType)) {
-                    $log.error('Object type ' + $scope.object.type + ' was not found' );
+                    $log.error('Object type ' + $scope.object.type + ' was not found');
                     $state.transitionTo('notFound');
                     return
                 }
@@ -133,7 +133,7 @@ angular.module('textUpdates')
                 var passwords = [];
                 var overrides = [];
                 var objects = RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides);
-                if( objects.length > 1 ) {
+                if (objects.length > 1) {
                     AlertService.setGlobalError('Only a single object is allowed');
                     return;
                 }
@@ -146,38 +146,40 @@ angular.module('textUpdates')
                     return;
                 }
 
-                if (!TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso, attributes, passwords, overrides)) {
-                    return;
-                }
+                TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso,
+                    attributes, passwords, overrides).then(
+                    function (authenticated) {
 
-                attributes = TextCommons.stripEmptyAttributes(attributes);
+                        attributes = TextCommons.stripEmptyAttributes(attributes);
 
-                // rest-POST to server
-                $scope.restCalInProgress = true;
-                RestService.createObject($scope.object.source, $scope.object.type,
-                    WhoisResources.turnAttrsIntoWhoisObject(attributes),
-                    passwords, overrides, true).then(
-                    function (result) {
-                        $scope.restCalInProgress = false;
+                        // rest-POST to server
+                        $scope.restCalInProgress = true;
+                        RestService.createObject($scope.object.source, $scope.object.type,
+                                                WhoisResources.turnAttrsIntoWhoisObject(attributes),
+                                                passwords, overrides, true).then(
+                            function (result) {
+                                $scope.restCalInProgress = false;
 
-                        var whoisResources = WhoisResources.wrapWhoisResources(result);
-                        MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
-                        TextCommons.navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Create');
+                                var whoisResources = WhoisResources.wrapWhoisResources(result);
+                                MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
+                                TextCommons.navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Create');
 
-                    }, function (error) {
-                        $scope.restCalInProgress = false;
+                            }, function (error) {
+                                $scope.restCalInProgress = false;
 
-                        if (_.isUndefined(error.data)) {
-                            $log.error('Response not understood:' + JSON.stringify(error));
-                            return;
-                        }
+                                if (_.isUndefined(error.data)) {
+                                    $log.error('Response not understood:' + JSON.stringify(error));
+                                    return;
+                                }
 
-                        var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                        AlertService.setAllErrors(whoisResources);
-                        if (!_.isUndefined(whoisResources.getAttributes())) {
-                            var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
-                            ErrorReporterService.log('Create', $scope.object.type, AlertService.getErrors(), attributes);
-                        }
+                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                AlertService.setAllErrors(whoisResources);
+                                if (!_.isUndefined(whoisResources.getAttributes())) {
+                                    var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
+                                    ErrorReporterService.log('Create', $scope.object.type, AlertService.getErrors(), attributes);
+                                }
+                            }
+                        );
                     }
                 );
             }

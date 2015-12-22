@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('textUpdates')
-    .service('TextCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService',
-        function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService) {
+    .service('TextCommons', ['$state', '$log', '$q', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService',
+        function ($state, $log, $q, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService) {
 
             this.enrichWithDefaults = function (objectSource, objectType, attributes) {
                 // This does only add value if attribute exist
@@ -52,6 +52,9 @@ angular.module('textUpdates')
             }
 
             this.authenticate = function (objectSource, objectType, ssoMaintainers, attributes, passwords, overrides) {
+                var deferredObject = $q.defer();
+                var needsAuth = false;
+
                 if (overrides.length > 0) {
                     // prefer override over passwords
                     _clear(passwords);
@@ -61,13 +64,17 @@ angular.module('textUpdates')
                         var objectMntners = _getObjectMntners(attributes);
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
                             _performAuthentication(objectSource, objectType, ssoMaintainers, objectMntners);
-                            return false;
+                            needsAuth = true;
+                            deferredObject.reject(false);
                         }
                     }
                     // combine all passwords
                     _.union(passwords, _getPasswordsForRestCall(objectType));
                 }
-                return true;
+                if( needsAuth === false) {
+                    deferredObject.resolve(true);
+                }
+                return deferredObject.promise;
             }
 
             function _clear(array) {
@@ -86,7 +93,9 @@ angular.module('textUpdates')
                         if (_isMine(authenticatedMntner)) {
                             // has been successfully associated in authentication modal
                             ssoMntners.push(authenticatedMntner);
+
                         }
+
                     }, function () {
                         $state.transitionTo('textupdates.create', {
                             source: objectSource,
@@ -142,5 +151,7 @@ angular.module('textUpdates')
                     method: operation
                 });
             }
+
+
 
         }]);
