@@ -26,7 +26,6 @@ angular.module('textUpdates')
                 if( !_.isUndefined($stateParams.rpsl)) {
                     $scope.object.rpsl = decodeURIComponent($stateParams.rpsl);
                 }
-
                 var noRedirect = $stateParams.noRedirect;
 
                 // maintainers associated with this SSO-account

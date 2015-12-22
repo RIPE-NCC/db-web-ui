@@ -29,11 +29,12 @@ angular.module('textUpdates')
                 $scope.objects.overrides = [];
                 $scope.objects.rpsl = '';
 
+                $log.debug('TextMultiController: Url params:' +
+                    ' object.source:' + $scope.objects.source);
+
                 // start with text-area
                 $scope.setTextMode();
 
-                $log.debug('TextMultiController: Url params:' +
-                    ' object.source:' + $scope.objects.source);
 
             };
 
@@ -82,6 +83,7 @@ angular.module('textUpdates')
                         _setStatus(object, undefined, 'Fetching');
                         _determineOperation(source, object, passwords).then(
                             function (action) {
+                                $log.debug('Action: ' + action );
                                 _setStatus(object, undefined, '-');
                                 object.action = action;
                                 if( object.action === 'Modify' ) {
@@ -157,9 +159,11 @@ angular.module('textUpdates')
                 } else {
                     RestService.fetchObject(source, object.type, object.name, passwords).then(
                         function (result) {
+                            $log.debug('Successfully fetched object ' + object.name );
                             deferredObject.resolve('Modify');
                         },
                         function (error) {
+                            $log.debug('Error fetching object ' + object.name + ', http-status:'+ error.status );
                             deferredObject.resolve('Create');
                         }
                     );

@@ -208,7 +208,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.fetchObject = function (source, objectType, objectName, passwords) {
+                this.fetchObject = function (source, objectType, objectName, passwords, unformatted) {
                     var deferredObject = $q.defer();
 
                     $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -219,7 +219,8 @@ angular.module('dbWebApp')
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
-                            password: '@password'
+                            password: '@password',
+                            unformatted: unformatted
                         }).get({password:passwords})
                         .$promise
                         .then(function (result) {

@@ -761,12 +761,12 @@ angular.module('webUpdates')
                 PreferenceService.setTextMode();
 
                 if( !$scope.name ) {
-                    $state.transitionTo(STATE.CREATE, {
+                    $state.transitionTo('textupdates.create', {
                         source: $scope.source,
                         objectType: $scope.objectType
                     });
                 } else {
-                    $state.transitionTo(STATE.MODIFY, {
+                    $state.transitionTo('textupdates.modify', {
                         source: $scope.source,
                         objectType: $scope.objectType,
                         name: $scope.name
@@ -774,4 +774,4 @@ angular.module('webUpdates')
                 }
             }
 
-        }]);
+          }]);

@@ -57,7 +57,7 @@ angular.module('textUpdates')
                 $scope.restCalInProgress = true;
                 $q.all({
                     mntners: RestService.fetchMntnersForSSOAccount(),
-                    objectToModify: RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name, $scope.passwords)
+                    objectToModify: RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name, $scope.passwords, true)
                 }).then(
                     function (results) {
                         $scope.restCalInProgress = false;
