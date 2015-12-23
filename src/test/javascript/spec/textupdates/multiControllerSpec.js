@@ -60,11 +60,10 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should switch to preview with the rspl in text-area', function() {
+    it('should switch to pre-view', function() {
         doSetupController();
 
-        expect($scope.textMode).toBe(true);
-
+        $scope.textMode = true;
         $scope.objects.rpsl = '';
 
         $scope.setWebMode();
@@ -72,11 +71,24 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.textMode).toBe(false);
     });
 
+    it('should switch back to text-view', function() {
+        doSetupController();
+
+        $scope.textMode = false;
+        $scope.objects.rpsl = 'I don\'t care';
+        $scope.objects.objects = [{},{},{}];
+
+        $scope.setTextMode();
+
+        expect($scope.textMode).toBe(true);
+        expect($scope.objects.objects.length).toBe(0);
+
+    });
+
     it('should extract the rpsl, type and name for each object', function () {
         doSetupController();
 
-        expect($scope.textMode).toBe(true);
-
+        $scope.textMode = false;
         $scope.objects.rpsl =
             'person: Me\n' +
             '\n' +
@@ -98,8 +110,7 @@ describe('textUpdates: TextMultiController', function () {
     it('should report a syntactically invalid object: unknown attribute', function () {
         doSetupController();
 
-        expect($scope.textMode).toBe(true);
-
+        $scope.textMode = false;
         $scope.objects.rpsl =
             'person: Me\n' +
             'bibaboe: xyz\n';
@@ -110,6 +121,8 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].type).toBe('person')
         expect($scope.objects.objects[0].name).toBeUndefined();
         expect($scope.objects.objects[0].status).toBe('Invalid syntax');
+        expect($scope.objects.objects[0].success).toBe(false);
+
         expect($scope.objects.objects[0].errors.length).toBe(1);
         expect($scope.objects.objects[0].errors[0].plainText).toBe('bibaboe: Unknown attribute');
     });
@@ -117,8 +130,7 @@ describe('textUpdates: TextMultiController', function () {
     it('should report a syntactically invalid objec: missing mandatory attribute', function () {
         doSetupController();
 
-        expect($scope.textMode).toBe(true);
-
+        $scope.textMode = false;
         $scope.objects.rpsl =
             'person: Me Me\n' +
             'address: xyz\n' +
@@ -132,16 +144,17 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].type).toBe('person')
         expect($scope.objects.objects[0].name).toBeUndefined();
         expect($scope.objects.objects[0].status).toBe('Invalid syntax');
+        expect($scope.objects.objects[0].success).toBe(false);
+
         expect($scope.objects.objects[0].errors.length).toBe(2);
         expect($scope.objects.objects[0].errors[0].plainText).toBe('nic-hdl: Missing mandatory attribute');
         expect($scope.objects.objects[0].errors[1].plainText).toBe('source: Missing mandatory attribute');
     });
 
-    it('should determine the action for each valid object (requires fetch)', function () {
+    it('should determine the action for a non existing valid "AUTO-1"-object without a fetch', function () {
         doSetupController();
 
-        expect($scope.textMode).toBe(true);
-
+        $scope.textMode = false;
         $scope.objects.rpsl =
             'person: Me Me\n' +
             'address: xyz\n' +
@@ -159,20 +172,115 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Fetching');
         expect($scope.objects.objects[0].errors.length).toBe(0);
 
-        // TODO expect fetch
+        // TODO Not expect fetch returning 404
+
+        // TODO verify display-url
+    });
+
+    it('should determine the action for a non existing valid object (uses fetch)', function () {
+        doSetupController();
+
+        $scope.textMode = false;
+        $scope.objects.rpsl =
+            'person: Me Me\n' +
+            'address: xyz\n' +
+            'phone:+316\n' +
+            'nic-hdl: MM1-RIPE\n' +
+            'mnt-by: TEST-MMT\n' +
+            'source: RIPE\n';
+        ;
+
+        /*
+        $scope.setWebMode();
+
+        expect($scope.objects.objects.length).toBe(1);
+        expect($scope.objects.objects[0].type).toBe('person');
+        expect($scope.objects.objects[0].name).toBe('MM1-RIPE');
+        expect($scope.objects.objects[0].status).toBe('Fetching');
+        expect($scope.objects.objects[0].errors.length).toBe(0);
+
+        // TODO expect fetch returning 404
+
+        // TODO verify display-url
+        */
+    });
+
+    it('should determine the action for a pre-existing valid object (uses fetch)', function () {
+        doSetupController();
+
+        $scope.textMode = false;
+        $scope.objects.rpsl =
+            'person: Me Me\n' +
+            'address: xyz\n' +
+            'phone:+316\n' +
+            'nic-hdl: MM1-RIPE\n' +
+            'mnt-by: TEST-MMT\n' +
+            'source: RIPE\n';
+        ;
+
+        /*
+        $scope.setWebMode();
+
+        expect($scope.objects.objects.length).toBe(1);
+        expect($scope.objects.objects[0].type).toBe('person');
+        expect($scope.objects.objects[0].name).toBe('AUTO-1');
+        expect($scope.objects.objects[0].status).toBe('Fetching');
+        expect($scope.objects.objects[0].errors.length).toBe(0);
+
+        // TODO expect fetch returning 200
+
+        // TODO verify display-url
+        */
+
+    });
+
+    it('should not perform an update for syntactically failed objects', function () {
+        doSetupController();
+
+        $scope.objects.objects = [];
+        var object = {
+            action: undefined,
+            type: 'person',
+            name: undefined,
+            status: 'Invalid syntax',
+            success: false
+        };
+        $scope.objects.objects.push(object);
+
+        // TODO
     });
 
     it('should perform a create for non-existing objects', function () {
+        doSetupController();
+
+        $scope.objects.objects = [];
+        var object = {
+            action: 'Create',
+            type: 'person',
+            name: 'AUTO-1',
+            success: true
+        };
+        $scope.objects.objects.push(object);
+
         // TODO
     });
 
     it('should report an error upon create-failure', function () {
+        doSetupController();
+
+        $scope.objects.objects = [];
+        var object = {
+            action: 'Create',
+            type: 'person',
+            name: 'AUTO-1',
+            success: true
+        };
+        $scope.objects.objects.push(object);
         // TODO
+
+        // TODO verify link to textupdates
     });
 
-    it('should navigate to create single-object in textupdates when right link is clicked', function () {
-        // TODO
-    });
 
     it('should perform a modify for existing objects', function () {
         // TODO
@@ -180,9 +288,16 @@ describe('textUpdates: TextMultiController', function () {
 
     it('should report an error upon modify-failure', function () {
         // TODO
+
+        // TODO verify link to textupdates
+
     });
 
-    it('should navigate to modify single-object in textupdates when right link is clicked', function () {
+    it('should provide a link to modify single-object in textupdates', function () {
+        // TODO
+    });
+
+    it('should do it all combined', function () {
         // TODO
     });
 
