@@ -62,17 +62,14 @@ angular.module('textUpdates')
                     function (results) {
                         $scope.restCalInProgress = false;
 
-                        _handleFetchResponse(results.objectToModify);
+                        var attributes = _handleFetchResponse(results.objectToModify);
 
                         // store mntners for SSO account
                         $scope.mntners.sso = results.mntners;
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
 
-                        $scope.object.rpsl = RpslService.toRpsl($scope.object.attributes);
-                        $log.debug("RPSL:" +$scope.object.rpsl );
-
                         TextCommons.authenticate($scope.object.source, $scope.object.type,
-                                $scope.mntners.sso, $scope.object.attributes, [], []).then(
+                                $scope.mntners.sso, attributes, [], []).then(
                             function(authenticated) {
                                 $log.error('Successfully authenticated');
                                 _refreshObjectIfNeeded($scope.object.source, $scope.object.type, $scope.object.name);
@@ -103,12 +100,16 @@ angular.module('textUpdates')
                 $log.debug('object to modify:' + JSON.stringify(objectToModify));
                 // Extract attributes from response
                 var whoisResources = WhoisResources.wrapWhoisResources(objectToModify);
-                $scope.object.attributes = WhoisResources.wrapAttributes(
+                var attributes = WhoisResources.wrapAttributes(
                     whoisResources.getAttributes()
                 );
-                // Needed by display screen
-                MessageStore.add('DIFF', _.cloneDeep($scope.object.attributes));
+                $scope.object.rpsl = RpslService.toRpsl(attributes);
+                $log.debug("RPSL:" +$scope.object.rpsl );
 
+                // Needed by display screen
+                MessageStore.add('DIFF', _.cloneDeep(attributes));
+
+                return attributes;
             }
 
             function submit() {
@@ -132,7 +133,6 @@ angular.module('textUpdates')
                     // todo: prevent duplicate password
                     $scope.passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
-                $log.error('Passsords:' + $scope.passwords);
 
                 TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso, attributes,
                         $scope.passwords, overrides).then(
