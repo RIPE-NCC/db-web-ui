@@ -215,7 +215,6 @@ angular.module('textUpdates')
                     if (CredentialsService.hasCredentials()) {
                         password = CredentialsService.getCredentials().successfulPassword;
                     }
-                    $log.debug('_refreshObjectIfNeeded: password ' + password);
 
                     $scope.restCalInProgress = true;
                     RestService.fetchObject(objectSource, objectType, objectName, password).then(
