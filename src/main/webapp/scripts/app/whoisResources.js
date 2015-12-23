@@ -498,7 +498,7 @@ angular.module('dbWebApp')
         var toPlaintext = function() {
             var result = '';
             _.each(this, function (attr) {
-                result += attr.name + ':' + _repeat(' ', Math.max(0, (20 - attr.name.length))) + attr.value + '\n';
+                result += attr.name + ':' + _repeat(' ', Math.max(0, (20 - attr.name.length))) + _.trim( attr.value) + '\n';
             });
             return result;
         };
