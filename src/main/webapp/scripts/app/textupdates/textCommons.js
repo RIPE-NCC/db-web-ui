@@ -79,15 +79,22 @@ angular.module('textUpdates')
                         // show password popup if needed
                         var objectMntners = _getObjectMntners(attributes);
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
-                            _performAuthentication(objectSource, objectType, ssoMaintainers, objectMntners);
                             needsAuth = true;
-                            deferredObject.reject(false);
+
+                            _performAuthentication(objectSource, objectType, ssoMaintainers, objectMntners).then(
+                                function() {
+                                    $log.debug( "Authentication succeeded");
+                                    deferredObject.resolve(true);
+                                }, function() {
+                                    $log.debug( "Authentication failed");
+                                    deferredObject.reject(false);
+                                }
+                            );
                         }
                     }
-                    // combine all passwords
-                    _.union(passwords, _getPasswordsForRestCall(objectType));
                 }
                 if( needsAuth === false) {
+                    $log.debug( "No authentication needed");
                     deferredObject.resolve(true);
                 }
                 return deferredObject.promise;
@@ -100,6 +107,8 @@ angular.module('textUpdates')
             }
 
             function _performAuthentication(objectSource, objectType, ssoMntners, objectMntners) {
+                var deferredObject = $q.defer();
+
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
                 ModalService.openAuthenticationModal(objectSource, mntnersWithPasswords).then(
                     function (result) {
@@ -111,14 +120,14 @@ angular.module('textUpdates')
                             ssoMntners.push(authenticatedMntner);
 
                         }
+                        deferredObject.resolve(true);
 
                     }, function () {
-                        $state.transitionTo('textupdates.create', {
-                            source: objectSource,
-                            objectType: objectType
-                        });
+                        deferredObject.reject(false);
                     }
                 );
+
+                return deferredObject.promise;
             }
 
             function _isMine(mntner) {
@@ -129,20 +138,6 @@ angular.module('textUpdates')
                 }
             }
 
-            function _getPasswordsForRestCall(objectType) {
-                var passwords = [];
-
-                if (CredentialsService.hasCredentials()) {
-                    passwords.push(CredentialsService.getCredentials().successfulPassword);
-                }
-
-                // For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-                // This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-                if (objectType === 'route' || objectType === 'route6' || objectType === 'aut-num') {
-                    passwords.push('RPSL');
-                }
-                return passwords;
-            }
 
             function _getObjectMntners(attributes) {
                 return _.map(attributes.getAllAttributesWithValueOnName('mnt-by'), function (objMntner) {

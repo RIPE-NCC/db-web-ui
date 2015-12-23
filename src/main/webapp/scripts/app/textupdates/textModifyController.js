@@ -74,7 +74,11 @@ angular.module('textUpdates')
                         TextCommons.authenticate($scope.object.source, $scope.object.type,
                                 $scope.mntners.sso, $scope.object.attributes, [], []).then(
                             function(authenticated) {
+                                $log.error('Successfully authenticated');
                                 _refreshObjectIfNeeded($scope.object.source, $scope.object.type, $scope.object.name);
+                            },
+                            function(authenticated) {
+                                $log.error('Error authenticating');
                             }
                         );
 
@@ -122,14 +126,18 @@ angular.module('textUpdates')
                 if (!TextCommons.validate($scope.object.type, attributes)) {
                     return;
                 }
+                $log.error('Successfully validated');
+
                 if(CredentialsService.hasCredentials()) {
                     // todo: prevent duplicate password
                     $scope.passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
+                $log.error('Passsords:' + $scope.passwords);
 
                 TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso, attributes,
                         $scope.passwords, overrides).then(
                     function(authenticated) {
+                        $log.error('Successfully authenticated');
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
@@ -158,6 +166,10 @@ angular.module('textUpdates')
                                     var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
                                     ErrorReporterService.log('Modify', $scope.object.type, AlertService.getErrors(), attributes);
                                 }
+
+                            },
+                            function(authenticated) {
+                                $log.error('Error authenticating');
 
                             }
                         );

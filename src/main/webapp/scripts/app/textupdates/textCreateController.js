@@ -3,10 +3,10 @@
 angular.module('textUpdates')
     .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore',
-        'RpslService', 'TextCommons', 'PreferenceService',
+        'RpslService', 'TextCommons', 'PreferenceService', 'CredentialsService',
         function ($scope, $stateParams, $state, $resource, $log, $q,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,
-                  RpslService, TextCommons, PreferenceService) {
+                  RpslService, TextCommons, PreferenceService, CredentialsService) {
 
             $scope.submit = submit;
             $scope.switchToWebMode = switchToWebMode;
@@ -148,6 +148,10 @@ angular.module('textUpdates')
                 TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso,
                     attributes, passwords, overrides).then(
                     function (authenticated) {
+                        $log.debug('Authenticated successfully:' + authenticated);
+
+                        // combine all passwords
+                        var combinedPaswords =_.union(passwords, _getPasswordsForRestCall( $scope.object.type));
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
@@ -155,7 +159,7 @@ angular.module('textUpdates')
                         $scope.restCalInProgress = true;
                         RestService.createObject($scope.object.source, $scope.object.type,
                                                 WhoisResources.turnAttrsIntoWhoisObject(attributes),
-                                                passwords, overrides, true).then(
+                                             combinedPaswords, overrides, true).then(
                             function (result) {
                                 $scope.restCalInProgress = false;
 
@@ -179,6 +183,9 @@ angular.module('textUpdates')
                                 }
                             }
                         );
+                    }, function(authenticated) {
+                        $log.debug('Authentication failure:'+authenticated);
+
                     }
                 );
             }
@@ -202,5 +209,21 @@ angular.module('textUpdates')
                     objectType: $scope.object.type
                 });
             }
+
+            function _getPasswordsForRestCall(objectType) {
+                var passwords = [];
+
+                if (CredentialsService.hasCredentials()) {
+                    passwords.push(CredentialsService.getCredentials().successfulPassword);
+                }
+
+                // For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                // This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
+                if (objectType === 'route' || objectType === 'route6' || objectType === 'aut-num') {
+                    passwords.push('RPSL');
+                }
+                return passwords;
+            }
+
 
         }]);
