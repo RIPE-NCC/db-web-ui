@@ -58,13 +58,13 @@ angular.module('webUpdates')
                             $scope.after = $scope.attributes.toPlaintext();
                         }
                     }
-                    WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
+                    $scope.attributes = WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
                 } else {
                     RestService.fetchObject($scope.objectSource, $scope.objectType, $scope.objectName, null).then(
                         function (resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
                             $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                            WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
+                            $scope.attributes = WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp);
                             AlertService.setErrors(whoisResources);
 

@@ -76,7 +76,7 @@ angular.module('webUpdates')
                 parser.href = attribute.link.href;
                 var parts = parser.pathname.split('/');
 
-                return $state.href('display', {
+                return $state.href(STATE.DISPLAY, {
                     source: objectSource,
                     objectType: attribute['referenced-type'],
                     name: _.last(parts)
