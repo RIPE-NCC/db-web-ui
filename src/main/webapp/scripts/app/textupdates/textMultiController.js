@@ -32,10 +32,8 @@ angular.module('textUpdates')
                 $log.debug('TextMultiController: Url params:' +
                     ' object.source:' + $scope.objects.source);
 
-                // start with text-area
+                // start in text-mode
                 $scope.setTextMode();
-
-
             };
 
             function setWebMode() {
@@ -69,27 +67,33 @@ angular.module('textUpdates')
 
                 _initializeActionCounter(objs);
                 _.each(objs, function(attributes) {
-
+                    // create a new object and add it to the array right away
                     var object  = {};
+                    object.errors = [];
                     objects.push(object);
+
                     // assume first attribute is type indicator
                     object.type = attributes[0].name;
+
+                    // parse
                     object.rpsl = RpslService.toRpsl(attributes);
-                    object.errors = [];
+
+                    // validate
                     if (!TextCommons.validate(object.type, attributes, object.errors)) {
                         _setStatus(object, false, 'Invalid syntax');
                         _markActionCompleted(object, 'syntax error');
-
                     } else {
-                        object.attributes  = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
-                        object.name = _getPkey(object.type, object.attributes);
-                        _setStatus(object, undefined, 'Fetching');
 
+                        // determine primary key pf object
+                        object.attributes = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
+                        object.name = _getPkey(object.type, object.attributes);
+
+                        //
+                        _setStatus(object, undefined, 'Fetching');
                         _determineOperation(source, object, passwords).then(
                             function (action) {
-                                $log.debug('Action: ' + action );
-                                _setStatus(object, undefined, '-');
                                 object.action = action;
+                                _setStatus(object, undefined, '-');
                                 if( object.action === 'Modify' ) {
                                     object.displayUrl = _asDisplayLink(source, object);
                                 } else {
@@ -97,7 +101,11 @@ angular.module('textUpdates')
                                 }
                                 object.textupdatesUrl = _asTextUpdatesLink(source, object);
                                 _markActionCompleted(object, 'fetch');
-
+                            },
+                            function(errors) {
+                                _setStatus(object, false, 'Error fetching');
+                                _markActionCompleted(object, 'fetch');
+                                object.errors = errors;
                             }
                         );
                     }
@@ -137,31 +145,39 @@ angular.module('textUpdates')
             }
 
             function _asTextUpdatesLink(source, object) {
-                var suffix = '';
+                var suffix = '?noRedirect=true';
                 if( object.success !== true ) {
-                    suffix = '&rpsl=' + encodeURIComponent(object.rpsl);
+                    suffix = suffix.concat( '&rpsl=' + encodeURIComponent(object.rpsl));
                 }
                 if( object.action === 'Modify') {
-                    return '/db-web-ui/#/textupdates/modify/'+  source + '/' + object.type + '/' + object.name + '?noRedirect=true'+ suffix;
+                    return '/db-web-ui/#/textupdates/modify/'+  source + '/' + object.type + '/' + object.name + suffix;
                 } else {
-                    return '/db-web-ui/#/textupdates/create/'+  source + '/' + object.type + '?noRedirect=true'+ suffix;
+                    return '/db-web-ui/#/textupdates/create/'+  source + '/' + object.type + suffix;
                 }
             }
 
-            function _determineOperation(source, object, passwords) {
-                var deferredObject = $q.defer();
-
+            function _determineOperation(source, object, passwords)
                 if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.trim(object.name) === 'AUTO-1') {
                     deferredObject.resolve('Create');
                 } else {
-                    RestService.fetchObject(source, object.type, object.name, passwords).then(
+                    RestService.fetchObject(source, object.type, object.name, passwords, true).then(
                         function (result) {
                             $log.debug('Successfully fetched object ' + object.name );
                             deferredObject.resolve('Modify');
                         },
                         function (error) {
-                            $log.debug('Error fetching object ' + object.name + ', http-status:'+ error.status );
-                            deferredObject.resolve('Create');
+                            if (_.isUndefined(error.data.errormessages)) {
+                                $log.error('Error fetching object ' + object.name + ', http-status:' + error);
+                                deferredObject.reject([{plainText: 'Response ' + error.status + ' not understood'}]);
+                            } else {
+                                $log.debug('Error fetching object ' + object.name + ', http-status:' + error.status);
+                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                if (error.status === 404) {
+                                    deferredObject.resolve('Create');
+                                } else {
+                                    deferredObject.reject( whoisResources.getAllErrors());
+                                }
+                            }
                         }
                     );
                 }
@@ -181,10 +197,7 @@ angular.module('textUpdates')
             }
 
             function _performAction( source, object, passwords, overrides) {
-                $log.debug('_performAction: '+ JSON.stringify(object));
-
                 if( object.errors.length > 0 ) {
-
                     $log.debug('Skip performing action '+ object.action + '-' + object.type + '-' + object.name + ' since validation failed');
                     _markActionCompleted(object, "skipped");
 
@@ -239,6 +252,7 @@ angular.module('textUpdates')
                                 var whoisResources = WhoisResources.wrapWhoisResources(result);
                                 object.oldRpsl = _.clone(object.rpsl)
                                 object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
+                                object.displayUrl = _asDisplayLink(source, object);
                                 object.textupdatesUrl = undefined;
                                 object.warnings = whoisResources.getAllWarnings();
                                 object.infos = whoisResources.getAllInfos();
@@ -252,6 +266,7 @@ angular.module('textUpdates')
                                     object.errors = {plainText: 'Response ' + error.status + ' not understood'};
                                 } else {
                                     var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                    object.displayUrl = _asDisplayLink(source, object);
                                     object.errors = whoisResources.getAllErrors();
                                     object.warnings = whoisResources.getAllWarnings();
                                     object.infos = whoisResources.getAllInfos();
