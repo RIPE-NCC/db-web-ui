@@ -217,7 +217,7 @@ angular.module('textUpdates')
                     }
 
                     $scope.restCalInProgress = true;
-                    RestService.fetchObject(objectSource, objectType, objectName, password).then(
+                    RestService.fetchObject(objectSource, objectType, objectName, password, true).then(
                         function (result) {
                             $scope.restCalInProgress = false;
                             _handleFetchResponse(result);

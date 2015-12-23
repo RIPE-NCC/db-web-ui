@@ -14,7 +14,6 @@ describe('textUpdates: TextModifyController', function () {
     var setupController;
     var initialState;
 
-
     var testPersonRpsl =
         'person:test person\n' +
         'address:Amsterdam\n' +
@@ -410,8 +409,10 @@ describe('textUpdates: TextModifyController', function () {
 
     it('should extract password from rpsl', function () {
         spyOn(ModalService, 'openAuthenticationModal').and.callFake(function () {
+            var deferredObject = $q.defer();
             CredentialsService.setCredentials('TEST-MNT', 'secret');
-            return $q.defer().promise;
+            deferredObject.resolve({selectedItem:{key:'TEST-MNT', name:'mntner', mine:true}});
+            return deferredObject.promise;
         });
 
         setupController();
@@ -442,7 +443,10 @@ describe('textUpdates: TextModifyController', function () {
 
     it('should present password popup when trying to modify object with no sso mnt-by ', function () {
         spyOn(ModalService, 'openAuthenticationModal').and.callFake(function () {
-            return $q.defer().promise;
+            var deferredObject = $q.defer();
+            CredentialsService.setCredentials('TEST-MNT', 'secret');
+            deferredObject.resolve({selectedItem:{key:'TEST-MNT', name:'mntner', mine:true}});
+            return deferredObject.promise;
         });
 
         setupController();
@@ -465,8 +469,10 @@ describe('textUpdates: TextModifyController', function () {
 
     it('should re-fetch maintainer after authentication', function () {
         spyOn(ModalService, 'openAuthenticationModal').and.callFake(function () {
+            var deferredObject = $q.defer();
             CredentialsService.setCredentials('TEST-MNT', 'secret');
-            return $q.defer().promise;
+            deferredObject.resolve({selectedItem:{key:'TEST-MNT', name:'mntner', mine:true}});
+            return deferredObject.promise;
         });
 
         setupController('mntner', 'TEST-MNT');
@@ -484,7 +490,7 @@ describe('textUpdates: TextModifyController', function () {
                                         {name: 'descr', value: '.'},
                                         {name: 'admin-c', value: 'TP-RIPE'},
                                         {name: 'upd-to', value: 'email@email.com'},
-                                        {name: 'auth', value: 'MD5-PW xyz'},
+                                        {name: 'auth', value: 'MD5-PW first fetch'},
                                         {name: 'mnt-by', value: 'TEST-MNT'},
                                         {name: 'source', value: 'RIPE'}
                                     ]
@@ -500,6 +506,7 @@ describe('textUpdates: TextModifyController', function () {
             {'key': 'TESTSSO-MNT', 'type': 'mntner', 'auth': ['SSO'], 'mine': true}
         ]);
 
+
         $httpBackend.whenGET('api/whois/RIPE/mntner/TEST-MNT?password=secret&unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, {
@@ -513,7 +520,7 @@ describe('textUpdates: TextModifyController', function () {
                                         {name: 'descr', value: '.'},
                                         {name: 'admin-c', value: 'TP-RIPE'},
                                         {name: 'upd-to', value: 'email@email.com'},
-                                        {name: 'auth', value: 'MD5-PW 123'},
+                                        {name: 'auth', value: 'MD5-PW authenticated refetch'},
                                         {name: 'mnt-by', value: 'TEST-MNT'},
                                         {name: 'source', value: 'RIPE'}
                                     ]
@@ -526,11 +533,13 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
+        expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
+
         expect($scope.object.rpsl).toEqual('mntner:TEST-MNT\n' +
             'descr:.\n' +
             'admin-c:TP-RIPE\n' +
             'upd-to:email@email.com\n' +
-            'auth:MD5-PW xyz\n' +
+            'auth:MD5-PW authenticated refetch\n' +
             'mnt-by:TEST-MNT\n' +
             'source:RIPE\n');
 
