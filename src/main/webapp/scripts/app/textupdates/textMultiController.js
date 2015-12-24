@@ -158,14 +158,14 @@ angular.module('textUpdates')
                             object.name = whoisResources.getPrimaryKey();
                             object.oldRpsl = _.clone(object.rpsl)
                             object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
-                            object.displayUrl = _asDisplayLink(source, object);
+                            object.displayUrl = _asDisplayLink($scope.objects.source, object);
                             object.textupdatesUrl = undefined;
+                            object.errors = [];
                             object.warnings = whoisResources.getAllWarnings();
                             object.infos = whoisResources.getAllInfos();
 
-                            _markActionCompleted(object, object.action + ' success');
                             _setStatus(object, true, object.action + ' success');
-
+                            _markActionCompleted(object, object.action + ' success');
                         },
                         function(whoisResources) {
                             if( !_.isUndefined(whoisResources) ) {
@@ -174,8 +174,8 @@ angular.module('textUpdates')
                                 object.infos = whoisResources.getAllInfos();
                             }
 
-                            _markActionCompleted(object, object.action + ' failed');
                             _setStatus(object, false, object.action + ' error');
+                            _markActionCompleted(object, object.action + ' failed');
 
                         }
                     );
