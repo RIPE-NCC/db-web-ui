@@ -1,15 +1,16 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q',
+    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q', '$window',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore',
         'RpslService', 'TextCommons', 'PreferenceService', 'CredentialsService',
-        function ($scope, $stateParams, $state, $resource, $log, $q,
+        function ($scope, $stateParams, $state, $resource, $log, $q, $window,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,
                   RpslService, TextCommons, PreferenceService, CredentialsService) {
 
             $scope.submit = submit;
             $scope.switchToWebMode = switchToWebMode;
+            $scope.cancel = cancel;
 
             _initialisePage();
 
@@ -188,6 +189,12 @@ angular.module('textUpdates')
 
                     }
                 );
+            }
+
+            function cancel() {
+                if ($window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+                    $state.transitionTo('webupdates.select');
+                }
             }
 
             function _uncapitalize(attributes) {

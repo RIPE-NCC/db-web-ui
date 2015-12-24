@@ -1,15 +1,16 @@
 'use strict';
 
 angular.module('textUpdates')
-        .controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q', 'WhoisResources',
-        'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService', 'TextCommons', 'CredentialsService',
-        'PreferenceService',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, $q,
+        .controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q', '$window',
+        'WhoisResources', 'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService', 'TextCommons',
+        'CredentialsService', 'PreferenceService',
+        function ($scope, $stateParams, $state, $resource, $log, $cookies, $q, $window,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore, RpslService,
                   TextCommons, CredentialsService, PreferenceService) {
 
             $scope.submit = submit;
             $scope.switchToWebMode = switchToWebMode;
+            $scope.cancel = cancel;
 
             _initialisePage();
 
@@ -176,6 +177,12 @@ angular.module('textUpdates')
                     }
                 );
 
+            }
+
+            function cancel() {
+                if ($window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
+                    _navigateToDisplayPage($scope.object.source, $scope.object.type, $scope.object.name, undefined);
+                }
             }
 
             function _navigateToDisplayPage(source, objectType, objectName, operation) {
