@@ -317,6 +317,14 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Create success');
         expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
+        expect($scope.objects.objects[0].rpsl).toBe(
+            'person:Me Me\n'+
+            'address:Amsterdam\n'+
+            'phone:+316\n'+
+            'nic-hdl:MM1-RIPE\n'+
+            'mnt-by:TEST-MNT\n'+
+            'source:RIPE\n');
+
     });
 
     it('should report an error upon create-failure', function () {
@@ -364,7 +372,13 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Modify success');
         expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
-        // TODO verify RPSL
+        expect($scope.objects.objects[0].rpsl).toBe(
+            'person:Me Me\n'+
+            'address:Amsterdam\n'+
+            'phone:+316\n'+
+            'nic-hdl:MM1-RIPE\n'+
+            'mnt-by:TEST-MNT\n'+
+            'source:RIPE\n');
     });
 
     it('should report an error upon modify-failure', function () {
@@ -405,12 +419,12 @@ describe('textUpdates: TextMultiController', function () {
                     'primary-key': {attribute: [{name: 'nic-hdl', value: 'MM1-RIPE'}]},
                     attributes: {
                         attribute: [
-                            {name: 'person', value: 'Me Me'},
+                            {name: 'person',  value: 'Me Me'},
                             {name: 'address', value: 'Amsterdam'},
-                            {name: 'phone', value: '+316'},
+                            {name: 'phone',   value: '+316'},
                             {name: 'nic-hdl', value: 'MM1-RIPE'},
-                            {name: 'mnt-by', value: 'TEST-MNT'},
-                            {name: 'source', value: 'RIPE'}
+                            {name: 'mnt-by',  value: 'TEST-MNT'},
+                            {name: 'source',  value: 'RIPE'}
                         ]
                     }
                 }
