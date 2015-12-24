@@ -165,7 +165,7 @@ angular.module('textUpdates')
                             object.infos = whoisResources.getAllInfos();
 
                             _setStatus(object, true, object.action + ' success');
-                            _markActionCompleted(object, object.action + ' success');
+                            _markActionCompleted(object, object.action + ' success', _rewriteRpsl);
                         },
                         function(whoisResources) {
                             if( !_.isUndefined(whoisResources) ) {
@@ -175,12 +175,27 @@ angular.module('textUpdates')
                             }
 
                             _setStatus(object, false, object.action + ' error');
-                            _markActionCompleted(object, object.action + ' failed');
+                            _markActionCompleted(object, object.action + ' failed', _rewriteRpsl);
 
                         }
                     );
                 });
             }
+
+            function _rewriteRpsl() {
+                $log.debug( "Rewriting RPSL");
+                $scope.objects.rpsl = '';
+                _.each($scope.objects.objects, function(object) {
+                    $scope.objects.rpsl += ('\n'+ object.rpsl );
+                });
+                _.each($scope.objects.passwords, function(password) {
+                    $scope.objects.rpsl += ('password:'+ password + '\n');
+                });
+                _.each($scope.objects.overrides, function(override) {
+                    $scope.objects.rpsl += ('override:'+ override + '\n');
+                });
+            }
+
 
             function _performAction( source, object, passwords, overrides) {
                 var deferredObject = $q.defer();
@@ -285,9 +300,12 @@ angular.module('textUpdates')
                 $log.debug('_initializeActionCounter:'+$scope.actionsPending);
             }
 
-            function _markActionCompleted(object, action) {
+            function _markActionCompleted(object, action, callback) {
                 $scope.actionsPending--;
                 $log.debug('mark ' +  object.action + '-' + object.type + '-' + object.name + ' action completed for ' + action + ': '+ $scope.actionsPending);
+                if( $scope.actionsPending === 0 ) {
+                    callback();
+                }
             }
 
             function didAllActionsComplete() {
