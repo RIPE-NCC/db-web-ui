@@ -40,7 +40,7 @@ angular.module('textUpdates')
                 AlertService.clearErrors();
 
                 $scope.textMode = false;
-                $scope.objects.objects = verify($scope.objects.source, $scope.objects.rpsl, $scope.objects.passwords, $scope.objects.overrides);
+                $scope.objects.objects = _verify($scope.objects.source, $scope.objects.rpsl, $scope.objects.passwords, $scope.objects.overrides);
             }
 
             function isWebMode() {
@@ -56,7 +56,7 @@ angular.module('textUpdates')
                 return $scope.textMode === true;
             }
 
-            function verify(source, rpsl, passwords, overrides) {
+            function _verify(source, rpsl, passwords, overrides) {
 
                 var objects = [];
 
@@ -88,15 +88,16 @@ angular.module('textUpdates')
                         object.attributes = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
                         object.name = _getPkey(object.type, object.attributes);
 
-                        //
                         _setStatus(object, undefined, 'Fetching');
-                        _determineOperation(source, object, passwords).then(
-                            function (action) {
-                                object.action = action;
-                                _setStatus(object, undefined, '-');
-                                if( object.action === 'Modify' ) {
+                        _doesExist(source, object, passwords).then(
+                            function (exists) {
+                                if( exists === true ) {
+                                    object.action = 'Modify';
+                                    _setStatus(object, undefined, 'Object exists');
                                     object.displayUrl = _asDisplayLink(source, object);
                                 } else {
+                                    object.action = 'Create';
+                                    _setStatus(object, undefined, 'Object does not yet exist');
                                     object.displayUrl = undefined;
                                 }
                                 object.textupdatesUrl = _asTextUpdatesLink(source, object);
@@ -113,15 +114,134 @@ angular.module('textUpdates')
                 return objects;
             }
 
+            function _doesExist(source, object, passwords) {
+                var deferredObject = $q.defer();
+
+                if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.trim(object.name) === 'AUTO-1') {
+                    deferredObject.resolve('Create');
+                } else {
+                    RestService.fetchObject(source, object.type, object.name, passwords, true).then(
+                        function (result) {
+                            $log.debug('Successfully fetched object ' + object.name );
+                            deferredObject.resolve(true);
+                        },
+                        function (error) {
+                            if (_.isUndefined(error.data.errormessages)) {
+                                $log.error('Error fetching object ' + object.name + ', http-status:' + error);
+                                deferredObject.reject([{plainText: 'Response ' + error.status + ' not understood'}]);
+                            } else {
+                                $log.debug('Error fetching object ' + object.name + ', http-status:' + error.status);
+                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                if (error.status === 404) {
+                                    deferredObject.resolve(false);
+                                } else {
+                                    deferredObject.reject( whoisResources.getAllErrors());
+                                }
+                            }
+                        }
+                    );
+                }
+                return deferredObject.promise;
+            }
+
             function submit() {
                 AlertService.clearErrors();
 
                 $log.debug("submit:" + JSON.stringify($scope.objects.objects));
 
                 _initializeActionCounter($scope.objects.objects);
-                _.each($scope.objects.objects, function(obj) {
-                    _performAction($scope.objects.source, obj, $scope.objects.passwords, $scope.objects.overrides);
+                _.each($scope.objects.objects, function(object) {
+
+                    _setStatus(object, undefined, 'Start ' + object.action );
+                    _performAction($scope.objects.source, object, $scope.objects.passwords, $scope.objects.overrides).then(
+                        function(whoisResources) {
+                            object.name = whoisResources.getPrimaryKey();
+                            object.oldRpsl = _.clone(object.rpsl)
+                            object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
+                            object.displayUrl = _asDisplayLink(source, object);
+                            object.textupdatesUrl = undefined;
+                            object.warnings = whoisResources.getAllWarnings();
+                            object.infos = whoisResources.getAllInfos();
+
+                            _markActionCompleted(object, object.action + ' success');
+                            _setStatus(object, true, object.action + ' success');
+
+                        },
+                        function(whoisResources) {
+                            if( !_.isUndefined(whoisResources) ) {
+                                object.errors = whoisResources.getAllErrors();
+                                object.warnings = whoisResources.getAllWarnings();
+                                object.infos = whoisResources.getAllInfos();
+                            }
+
+                            _markActionCompleted(object, object.action + ' failed');
+                            _setStatus(object, false, object.action + ' error');
+
+                        }
+                    );
                 });
+            }
+
+            function _performAction( source, object, passwords, overrides) {
+                var deferredObject = $q.defer();
+
+                if( object.errors.length > 0 ) {
+                    $log.debug('Skip performing action '+ object.action + '-' + object.type + '-' + object.name + ' since has errors');
+                } else {
+                    $log.debug('Start performing action '+ object.action + '-' + object.type + '-' + object.name );
+
+                    if (object.action === 'Create') {
+                        RestService.createObject(source, object.type,
+                            WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
+                            passwords, overrides, true).then(
+                            function (result) {
+                                var whoisResources = WhoisResources.wrapWhoisResources(result);
+                                deferredObject.resolve(whoisResources);
+                            },
+                            function (error) {
+                                var whoisResources = undefined;
+                                if (_.isUndefined(error.data.errormessages)) {
+                                    object.errors = {plainText: 'Response ' + error.status + ' not understood'};
+                                } else {
+                                    whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                }
+                                deferredObject.reject(whoisResources);
+                            }
+                        );
+
+                    } else {
+                        RestService.modifyObject(source, object.type, object.name,
+                            WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
+                            passwords, overrides, true).then(
+                            function (result) {
+                                var whoisResources = WhoisResources.wrapWhoisResources(result);
+                                deferredObject.resolve(whoisResources);
+                            },
+                            function (error) {
+                                var whoisResources = undefined;
+                                if (_.isUndefined(error.data.errormessages)) {
+                                    object.errors = {plainText: 'Response ' + error.status + ' not understood'};
+                                } else {
+                                    whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                }
+                                deferredObject.reject(whoisResources);
+                            }
+                        );
+                    }
+                }
+                return deferredObject.promise;
+            }
+
+            function _setStatus(object, status, statusName)  {
+                object.success = status;
+                object.status = statusName;
+                if(_.isUndefined(status)  ) {
+                    object.statusStyle = {color: 'blue'};
+                } else if( status === false ) {
+                    object.statusStyle = {color:'red'};
+                } else if( status === true ) {
+                    object.statusStyle = {color:'green'};
+                }
             }
 
             function _getPkey(objectType, attributes) {
@@ -141,6 +261,9 @@ angular.module('textUpdates')
             }
 
             function _asDisplayLink(source, object) {
+                if(_.isUndefined(object.name) ) {
+                    return undefined;
+                }
                 return '/db-web-ui/#/webupdates/display/'+  source + '/' + object.type + '/' + object.name;
             }
 
@@ -156,129 +279,6 @@ angular.module('textUpdates')
                 }
             }
 
-            function _determineOperation(source, object, passwords)
-                if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.trim(object.name) === 'AUTO-1') {
-                    deferredObject.resolve('Create');
-                } else {
-                    RestService.fetchObject(source, object.type, object.name, passwords, true).then(
-                        function (result) {
-                            $log.debug('Successfully fetched object ' + object.name );
-                            deferredObject.resolve('Modify');
-                        },
-                        function (error) {
-                            if (_.isUndefined(error.data.errormessages)) {
-                                $log.error('Error fetching object ' + object.name + ', http-status:' + error);
-                                deferredObject.reject([{plainText: 'Response ' + error.status + ' not understood'}]);
-                            } else {
-                                $log.debug('Error fetching object ' + object.name + ', http-status:' + error.status);
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                if (error.status === 404) {
-                                    deferredObject.resolve('Create');
-                                } else {
-                                    deferredObject.reject( whoisResources.getAllErrors());
-                                }
-                            }
-                        }
-                    );
-                }
-                return deferredObject.promise;
-            }
-
-            function _setStatus(object, status, statusName)  {
-                object.success = status;
-                object.status = statusName;
-                if(_.isUndefined(status)  ) {
-                    object.statusStyle = {color: 'blue'};
-                } else if( status === false ) {
-                    object.statusStyle = {color:'red'};
-                } else if( status === true ) {
-                    object.statusStyle = {color:'green'};
-                }
-            }
-
-            function _performAction( source, object, passwords, overrides) {
-                if( object.errors.length > 0 ) {
-                    $log.debug('Skip performing action '+ object.action + '-' + object.type + '-' + object.name + ' since validation failed');
-                    _markActionCompleted(object, "skipped");
-
-                } else {
-                    $log.debug('Start performing action '+ object.action + '-' + object.type + '-' + object.name );
-
-                    if (object.action === 'Create') {
-                        _setStatus(object, undefined, 'Creating');
-
-                        RestService.createObject(source, object.type,
-                            WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
-                            passwords, overrides, true).then(
-                            function (result) {
-                                _setStatus(object, true, 'Created successfully');
-
-                                var whoisResources = WhoisResources.wrapWhoisResources(result);
-                                object.name = whoisResources.getPrimaryKey();
-                                object.displayUrl = _asDisplayLink(source, object);
-                                object.oldRpsl = _.clone(object.rpsl)
-                                object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
-                                object.textupdatesUrl = undefined;
-                                object.warnings = whoisResources.getAllWarnings();
-                                object.infos = whoisResources.getAllInfos();
-
-                                _markActionCompleted(object,'create success');
-
-                            }, function (error) {
-                                _setStatus(object, false, 'Error creating');
-
-                                if (_.isUndefined(error.data.errormessages)) {
-                                    object.errors = {plainText: 'Response ' + error.status + ' not understood'};
-                                } else {
-                                    var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                    object.errors = whoisResources.getAllErrors();
-                                    object.warnings = whoisResources.getAllWarnings();
-                                    object.infos = whoisResources.getAllInfos();
-                                }
-
-                                _markActionCompleted(object, 'create error');
-
-                            }
-                        );
-
-                    } else {
-                        _setStatus(object, undefined, 'Modifying');
-
-                        RestService.modifyObject(source, object.type, object.name,
-                            WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
-                            passwords, overrides, true).then(
-                            function (result) {
-                                _setStatus(object, true, 'Modified successfully');
-                                var whoisResources = WhoisResources.wrapWhoisResources(result);
-                                object.oldRpsl = _.clone(object.rpsl)
-                                object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
-                                object.displayUrl = _asDisplayLink(source, object);
-                                object.textupdatesUrl = undefined;
-                                object.warnings = whoisResources.getAllWarnings();
-                                object.infos = whoisResources.getAllInfos();
-
-                                _markActionCompleted(object, 'modify success');
-
-                            }, function (error) {
-                                _setStatus(object, false, 'Error modifying');
-
-                                if (_.isUndefined(error.data.errormessages)) {
-                                    object.errors = {plainText: 'Response ' + error.status + ' not understood'};
-                                } else {
-                                    var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                    object.displayUrl = _asDisplayLink(source, object);
-                                    object.errors = whoisResources.getAllErrors();
-                                    object.warnings = whoisResources.getAllWarnings();
-                                    object.infos = whoisResources.getAllInfos();
-                                }
-
-                                _markActionCompleted(object, 'modify eroro');
-
-                            }
-                        );
-                    }
-                }
-            }
 
             function _initializeActionCounter(objects) {
                 $scope.actionsPending = objects.length;
