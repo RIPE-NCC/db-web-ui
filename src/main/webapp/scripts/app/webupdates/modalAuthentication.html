@@ -8,7 +8,7 @@
     <div class="modal-body">
 
         <div ng-if="mntners.length === 0" class="alert-expired alert alert-danger">
-            You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have a password
+            You cannot modify this object here because none of the maintainers are protected with a password.
         </div>
 
         <div ng-if="(mntners && mntners.length > 0)">
@@ -29,26 +29,32 @@
                 </li>
                 <li>
                     <input type="checkbox" ng-model="selected.associate" id="associate" class="ga-associate-checkbox" />
-                    <label for="associate">Associate my SSO account with this maintainer. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data" target="_blank">Learn more</a></label>
+                    <label for="associate">Also authorise my RIPE NCC Access account for this maintainer.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data" target="_blank">Learn more.</a></label>
                 </li>
             </ul>
         </div>
 
+
         <div ng-if="(mntnersWithoutPassword && mntnersWithoutPassword.length > 0)">
             <hr>
-            Maintainers you cannot authenticate with:
-            <ul class="bullet">
-                <li ng-repeat="mnt in mntnersWithoutPassword">
-                    <a href="#/webupdates/display/{{source}}/mntner/{{mnt.key}}" target="_blank">
-                        {{mnt.key}}
-                    </a>
-                </li>
-            </ul>
+            You may wish to contact one of these maintainers to request access:
+            </br>
+            <span ng-repeat="mnt in mntnersWithoutPassword">
+                <a href="#/webupdates/display/{{source}}/mntner/{{mnt.key}}" target="_blank">
+                    {{mnt.key}}
+                </a> <span ng-if="$middle">,</span>
+            </span>
+
         </div>
+
+
 
     </div>
 
     <div class="modal-footer">
+        <div style="float:left;">
+            <a href="#">Force Delete</a> this object? <a href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/@@fullbodyrecursive-view#0898f0a758ab4643ad741d8f9f3ede9d" target="_blank">Learn More.</a>
+        </div>
         <div ng-if="mntners.length === 0">
             <input type="submit" class="blue-button ga-auth-popup-btn" data-dismiss="modal"  value="Cancel" ng-click="cancel()" />
         </div>
@@ -56,6 +62,8 @@
             <input type="submit" class="blue-button ga-auth-popup-btn" value="Submit" ng-click="ok()" />
         </div>
     </div>
+
+
 
 </div>
 
