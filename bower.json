@@ -27,7 +27,7 @@
     "angular-selectize2": "1.2.1",
     "angular-bootstrap": "~0.13.0",
     "angular-ui-select": "~0.12.0",
-    "angular-diff-match-patch": "0.1.10",
+    "angular-diff-match-patch": "0.1.12",
     "angular-loading-bar": "~0.8.0"
   },
   "devDependencies": {
