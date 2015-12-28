@@ -757,7 +757,7 @@ angular.module('dbWebApp')
             },
             'descr': {
                 short: undefined,
-                description: 'A short decription related to the object.',
+                description: 'A short description related to the object.',
                 syntax: _shared.freeForm.syntax
             },
             'domain': {
