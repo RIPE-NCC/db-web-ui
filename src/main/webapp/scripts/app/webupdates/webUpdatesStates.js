@@ -19,12 +19,14 @@ angular.module('webUpdates')
                         return encodeURIComponent(val);
                     },
                     equals: function (decodedA, decodedB) {
-                        if (decodedA.indexOf('/') > -1) {
+                        if (decodedA.indexOf('/') > -1 || decodedA.indexOf(' ') > -1) {
                             decodedA = encodeURIComponent(decodedA);
                         }
-                        if (decodedB.indexOf('/') > -1) {
+
+                        if (decodedB.indexOf('/') > -1 || decodedB.indexOf(' ') > -1) {
                             decodedB = encodeURIComponent(decodedB);
                         }
+
                         return decodedA === decodedB;
                     },
                     is: function (decodedVal, key) {
