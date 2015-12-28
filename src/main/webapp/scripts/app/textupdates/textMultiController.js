@@ -304,7 +304,9 @@ angular.module('textUpdates')
                 $scope.actionsPending--;
                 $log.debug('mark ' +  object.action + '-' + object.type + '-' + object.name + ' action completed for ' + action + ': '+ $scope.actionsPending);
                 if( $scope.actionsPending === 0 ) {
-                    callback();
+                    if (!_.isUndefined(callback)) {
+                        callback();
+                    }
                 }
             }
 
