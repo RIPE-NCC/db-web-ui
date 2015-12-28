@@ -178,7 +178,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
         var whoisResources = WhoisResources.wrapWhoisResources(CREATE_RESPONSE);
         expect(MessageStore.add).toHaveBeenCalledWith('test-mnt', whoisResources);
-        expect($state.transitionTo).toHaveBeenCalledWith('display', { source: SOURCE, objectType: 'mntner', name: 'test-mnt'});
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', { source: SOURCE, objectType: 'mntner', name: 'test-mnt'});
     });
 
     it('should not post if invalid attributes', function () {

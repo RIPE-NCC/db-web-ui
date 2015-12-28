@@ -208,7 +208,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.fetchObject = function (source, objectType, objectName, passwords) {
+                this.fetchObject = function (source, objectType, objectName, passwords, unformatted) {
                     var deferredObject = $q.defer();
 
                     $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -219,7 +219,8 @@ angular.module('dbWebApp')
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
-                            password: '@password'
+                            password: '@password',
+                            unformatted: unformatted
                         }).get({password:passwords})
                         .$promise
                         .then(function (result) {
@@ -234,16 +235,18 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.createObject = function (source, objectType, attributes, passwords) {
+                this.createObject = function (source, objectType, attributes, passwords, overrides, unformatted) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('createObject start for objectType: ' + objectType);
+                    $log.debug('createObject start for objectType: ' + objectType + ' and payload:' +JSON.stringify(attributes));
 
                     $resource('api/whois/:source/:objectType',
                         {   source: source,
                             objectType: objectType,
-                            password: '@password'})
-                        .save({password:passwords}, attributes)
+                            password: '@password',
+                            override: '@override',
+                            unformatted: '@unformatted'})
+                        .save({password:passwords,override:overrides,unformatted:unformatted}, attributes)
                         .$promise
                         .then(function (result) {
                             $log.debug('createObject success:' + JSON.stringify(result));
@@ -257,7 +260,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.modifyObject = function (source, objectType, objectName, attributes, passwords) {
+                this.modifyObject = function (source, objectType, objectName, attributes, passwords, overrides, unformatted) {
                     var deferredObject = $q.defer();
 
                     $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -272,9 +275,11 @@ angular.module('dbWebApp')
                         {   source: source,
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            password: '@password'},
+                            password: '@password',
+                            override: '@override',
+                            unformatted: '@unformatted'},
                         {'update': {method: 'PUT'}})
-                        .update({password:passwords}, attributes)
+                        .update({password:passwords,override:overrides,unformatted:unformatted}, attributes)
                         .$promise
                         .then(function (result) {
                             $log.debug('modifyObject success:' + JSON.stringify(result));

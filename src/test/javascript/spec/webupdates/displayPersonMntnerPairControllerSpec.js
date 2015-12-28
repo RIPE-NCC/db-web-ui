@@ -192,7 +192,7 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
 
         $scope.navigateToSelect();
 
-        expect($state.current.name).toBe('select');
+        expect($state.current.name).toBe('webupdates.select');
     });
 
     it('should navigate to modify person screen', function () {
@@ -206,7 +206,7 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         // fragment of new target view will be fetched
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('modify');
+        expect($state.current.name).toBe('webupdates.modify');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe('person');
         expect($stateParams.name).toBe(PERSON_NAME);
@@ -224,7 +224,7 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         // fragment of new target view will be fetched
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('modify');
+        expect($state.current.name).toBe('webupdates.modify');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe('mntner');
         expect($stateParams.name).toBe(MNTNER_NAME);

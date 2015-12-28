@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', '$log', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService', 'UserInfoService',
-        function ($scope, $stateParams, $state, $resource, $log, WhoisResources, MessageStore, RestService, AlertService, UserInfoService) {
+    .controller('DisplayController', ['$scope', '$stateParams', '$state', '$resource', '$log', 'WhoisResources', 'MessageStore', 'RestService', 'AlertService', 'UserInfoService', 'WebUpdatesCommons',
+        function ($scope, $stateParams, $state, $resource, $log, WhoisResources, MessageStore, RestService, AlertService, UserInfoService, WebUpdatesCommons) {
 
             $scope.modifyButtonToBeShown = modifyButtonToBeShown;
             $scope.isCreateOrModify = isCreateOrModify;
@@ -58,13 +58,13 @@ angular.module('webUpdates')
                             $scope.after = $scope.attributes.toPlaintext();
                         }
                     }
-                    _addLinkToReferenceAttributes($scope.attributes);
+                    WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
                 } else {
                     RestService.fetchObject($scope.objectSource, $scope.objectType, $scope.objectName, null).then(
                         function (resp) {
                             var whoisResources = WhoisResources.wrapWhoisResources(resp);
                             $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
-                            _addLinkToReferenceAttributes($scope.attributes);
+                            WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp);
                             AlertService.setErrors(whoisResources);
 
@@ -114,11 +114,11 @@ angular.module('webUpdates')
             };
 
             function navigateToSelect() {
-                $state.transitionTo('select');
+                $state.transitionTo('webupdates.select');
             };
 
             function navigateToModify() {
-                $state.transitionTo('modify', {
+                $state.transitionTo('webupdates.modify', {
                     source: $scope.objectSource,
                     objectType: $scope.objectType,
                     name: $scope.objectName
@@ -127,27 +127,6 @@ angular.module('webUpdates')
 
             function isDiff() {
                 return !_.isUndefined($scope.before) && !_.isUndefined($scope.after);
-            };
-
-            function _addLinkToReferenceAttributes(attributes) {
-                var parser = document.createElement('a');
-                return _.map(attributes, function(attribute) {
-                    if (!_.isUndefined(attribute.link)) {
-                        attribute.link.uiHref = _displayUrl(parser, attribute);
-                    }
-                    return attribute;
-                } );
-            }
-
-            function _displayUrl(parser, attribute) {
-                parser.href = attribute.link.href;
-                var parts = parser.pathname.split('/');
-
-                return $state.href('display', {
-                    source: $scope.objectSource,
-                    objectType: attribute['referenced-type'],
-                    name: _.last(parts)
-                });
             };
 
         }]);

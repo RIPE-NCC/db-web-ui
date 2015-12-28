@@ -34,7 +34,7 @@ describe('webUpdates: ModifyController', function () {
 
             CredentialsService.setCredentials('TEST-MNT', '@123');
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window
             });
 
@@ -161,7 +161,6 @@ describe('webUpdates: ModifyController', function () {
                             attribute: [
                                 {name: 'as-block', value: 'MY-AS-BLOCK'},
                                 {name: 'mnt-by', value: 'TEST-MNT'},
-                                {name: 'changed', value: 'test@ripe.net'},
                                 {name: 'source', value: 'RIPE'}
                             ]
                         }
@@ -182,7 +181,7 @@ describe('webUpdates: ModifyController', function () {
         expect(attrs.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
         expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
-        expect($state.current.name).toBe('display');
+        expect($state.current.name).toBe('webupdates.display');
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('as-block');
         expect($stateParams.name).toBe('MY-AS-BLOCK');
@@ -268,7 +267,7 @@ describe('webUpdates: ModifyController', function () {
     it('should transition to display state if cancel is pressed', function() {
         spyOn($state, 'transitionTo');
         $scope.cancel();
-        expect($state.transitionTo).toHaveBeenCalledWith('display', { source: SOURCE, objectType: 'as-block', name: 'MY-AS-BLOCK', method: undefined});
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', { source: SOURCE, objectType: 'as-block', name: 'MY-AS-BLOCK', method: undefined});
     });
 });
 
@@ -302,7 +301,7 @@ describe('webUpdates: ModifyController init with failures', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
             });
 
@@ -362,7 +361,7 @@ describe('webUpdates: ModifyController init with failures', function () {
         $httpBackend.flush();
 
         expect($scope.hasErrors()).toBe(true);
-        expect($scope.errors[0].plainText).toEqual('You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have password');
+        expect($scope.errors[0].plainText).toEqual('You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have a password');
 
     });
 
@@ -502,7 +501,7 @@ describe('webUpdates: ModifyController ask for password before modify object wit
                     return [200, [{key: 'TEST3-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                 });
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
             });
 
@@ -591,7 +590,7 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
                     return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                 });
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams
             });
 
@@ -651,7 +650,7 @@ describe('webUpdates: ModifyController for organisation', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateController', {
+            _$controller_('CreateModifyController', {
                 $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService
             });
 
