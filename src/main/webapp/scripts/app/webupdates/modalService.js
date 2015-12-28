@@ -115,7 +115,6 @@ angular.module('dbWebApp')
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalAuthentication.html',
                     controller: 'ModalAuthenticationController',
-                    size: 'lg',
                     keyboard:false,
                     resolve: {
                             source: function() {

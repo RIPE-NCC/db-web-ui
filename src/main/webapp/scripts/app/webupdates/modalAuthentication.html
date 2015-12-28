@@ -6,30 +6,55 @@
     </div>
 
     <div class="modal-body">
-    <div ng-if="selected.message.length > 0" class="alert-expired alert alert-danger">
-        <p>{{selected.message}}</p>
-    </div>
-    <ul>
-        <li>
-            <label>Select a maintainer to authenticate the update operation.</label>
-            <select ng-model="selected.item"
-                    ng-required="true"
-                    ng-options="item.key for item in mntners | orderBy:key" class="form-control select-height"></select>
-        </li>
 
-        <li>
-            <label>Provide the password for the selected maintainer</label>
-            <input type="password" class="form-control" ng-model="selected.password" ng-required="true" />
-        </li>
-        <li>
-            <input type="checkbox" ng-model="selected.associate" id="associate" class="ga-associate-checkbox" />
-            <label for="associate">Associate my SSO account with this maintainer. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data" target="_blank">Learn more</a></label>
-        </li>
-    </ul>
+        <div ng-if="mntners.length === 0" class="alert-expired alert alert-danger">
+            You cannot modify this object through web updates because your SSO account is not associated with any of the maintainers on this object, and none of the maintainers have a password
+        </div>
+
+        <div ng-if="(mntners && mntners.length > 0)">
+            <div ng-if="selected.message.length > 0" class="alert-expired alert alert-danger">
+                <p>{{selected.message}}</p>
+            </div>
+            <ul>
+                <li>
+                    <label>Select a maintainer to authenticate the update operation.</label>
+                    <select ng-model="selected.item"
+                            ng-required="true"
+                            ng-options="item.key for item in mntners | orderBy:key" class="form-control select-height"></select>
+                </li>
+
+                <li>
+                    <label>Provide the password for the selected maintainer</label>
+                    <input type="password" class="form-control" ng-model="selected.password" ng-required="true" />
+                </li>
+                <li>
+                    <input type="checkbox" ng-model="selected.associate" id="associate" class="ga-associate-checkbox" />
+                    <label for="associate">Associate my SSO account with this maintainer. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data" target="_blank">Learn more</a></label>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-if="(mntnersWithoutPassword && mntnersWithoutPassword.length > 0)">
+            <hr>
+            Maintainers you cannot authenticate with:
+            <ul class="bullet">
+                <li ng-repeat="mnt in mntnersWithoutPassword">
+                    <a href="#/webupdates/display/{{source}}/mntner/{{mnt.key}}" target="_blank">
+                        {{mnt.key}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
     </div>
 
     <div class="modal-footer">
-        <input type="submit" class="blue-button ga-auth-popup-btn" value="Submit" ng-click="ok()" />
+        <div ng-if="mntners.length === 0">
+            <input type="submit" class="blue-button ga-auth-popup-btn" data-dismiss="modal"  value="Cancel" ng-click="cancel()" />
+        </div>
+        <div ng-if="mntners.length > 0">
+            <input type="submit" class="blue-button ga-auth-popup-btn" value="Submit" ng-click="ok()" />
+        </div>
     </div>
 
 </div>

@@ -5,6 +5,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
+        $scope.source = source;
         $scope.selected = {
             item: $scope.mntners[0],
             password: '',
