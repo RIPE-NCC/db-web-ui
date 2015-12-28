@@ -4,7 +4,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
 
     var $scope, $log, modalInstance, WhoisResources, RestService, userInfoService, credentialsService, $httpBackend ;
     var source = 'RIPE'
-    var mntners;
+    var mntners, mntnersWithoutPassword;
 
     beforeEach(function () {
         module('webUpdates');
@@ -38,11 +38,12 @@ describe('webUpdates: ModalAuthenticationController', function () {
             };
 
             mntners = [ {type:'mntner', key:'a-mnt', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
+            mntnersWithoutPassword = [ {type:'mntner', key:'z-mnt', auth:['SSO']} ];
 
             _$controller_('ModalAuthenticationController', {
                 $scope: $scope, $log: $log, $modalInstance: modalInstance, WhoisResources:WhoisResources,
                 RestService:RestService, UserInfoService:userInfoService, CredentialsService:credentialsService,
-                source: source, mntners: function() { return mntners; }
+                source: source, mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -183,6 +184,9 @@ describe('webUpdates: ModalAuthenticationController', function () {
         expect(modalInstance.dismiss).toHaveBeenCalledWith("cancel");
     });
 
+    it('should set mntnersWithoutPassword to the scope', function () {
+        expect($scope.mntnersWithoutPassword).toEqual(mntnersWithoutPassword);
+    });
 
 });
 

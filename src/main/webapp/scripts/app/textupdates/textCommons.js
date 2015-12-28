@@ -110,7 +110,8 @@ angular.module('textUpdates')
                 var deferredObject = $q.defer();
 
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
-                ModalService.openAuthenticationModal(objectSource, mntnersWithPasswords).then(
+                var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
+                ModalService.openAuthenticationModal(objectSource, mntnersWithPasswords, mntnersWithoutPasswords).then(
                     function (result) {
                         AlertService.clearErrors();
 

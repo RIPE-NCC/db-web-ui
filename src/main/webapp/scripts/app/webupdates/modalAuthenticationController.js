@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'mntners',
-    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, mntners) {
+angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'mntners', 'mntnersWithoutPassword',
+    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, mntners, mntnersWithoutPassword) {
 
         $scope.mntners = mntners;
+        $scope.mntnersWithoutPassword = mntnersWithoutPassword;
         $scope.selected = {
             item: $scope.mntners[0],
             password: '',

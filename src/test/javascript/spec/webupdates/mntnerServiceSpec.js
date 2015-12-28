@@ -196,4 +196,47 @@ describe('dbWebApp: MntnerService', function () {
         expect(mntnersWithPasswordModify[0].key).toBe('A-MNT');
 
     });
+
+
+    it('get mntners that do not support password auth', function() {
+            var ssoMntners = [
+                { type:'mntner', key:'A-MNT', mine:true, auth:['SSO','MD5-PW']},
+                { type:'mntner', key:'Y-MNT', mine:true, auth:['SSO','PGP']}
+            ];
+            var objectMntners = [
+                { type:'mntner', key:'A-MNT', auth:['SSO','MD5-PW']},
+                { type:'mntner', key:'B-MNT', auth:['SSO','PGP']},
+                { type:'mntner', key:'C-MNT', auth:['MD5-PW', 'PGP']},
+                { type:'mntner', key:'D-MNT', auth:['MD5-PW']},
+                { type:'mntner', key:'E-MNT', auth:['SSO','PGP']}
+
+            ];
+
+            var mntnersWithoutPasswordCreate = subject.getMntnersNotEligibleForPasswordAuthentication(ssoMntners,[], objectMntners);
+            expect(mntnersWithoutPasswordCreate.length).toBe(2);
+            expect(mntnersWithoutPasswordCreate[0].key).toBe('B-MNT');
+            expect(mntnersWithoutPasswordCreate[1].key).toBe('E-MNT');
+
+            var mntnersWithoutPasswordModify = subject.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, objectMntners,[]);
+            expect(mntnersWithoutPasswordModify.length).toBe(2);
+            expect(mntnersWithoutPasswordModify[0].key).toBe('B-MNT');
+            expect(mntnersWithoutPasswordModify[1].key).toBe('E-MNT');
+        });
+
+        it('should not not return RIPE-NCC-RPSL-MNT as candidate not eligible for authentication', function() {
+            var ssoMntners = [];
+            var objectMntners = [
+                { type:'mntner', key:'RIPE-NCC-RPSL-MNT', auth:['SSO']},
+                { type:'mntner', key:'A-MNT',             auth:['SSO']}
+            ];
+
+            var mntnersWithoutPasswordCreate = subject.getMntnersNotEligibleForPasswordAuthentication(ssoMntners,[], objectMntners);
+            expect(mntnersWithoutPasswordCreate.length).toBe(1);
+            expect(mntnersWithoutPasswordCreate[0].key).toBe('A-MNT');
+
+            var mntnersWithoutPasswordModify = subject.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, objectMntners,[]);
+            expect(mntnersWithoutPasswordModify.length).toBe(1);
+            expect(mntnersWithoutPasswordModify[0].key).toBe('A-MNT');
+
+        });
 });
