@@ -184,6 +184,7 @@ angular.module('textUpdates')
 
             function _rewriteRpsl() {
                 $log.debug( "Rewriting RPSL");
+
                 $scope.objects.rpsl = '';
                 _.each($scope.objects.objects, function(object) {
                     $scope.objects.rpsl += ('\n'+ object.rpsl );
@@ -195,7 +196,6 @@ angular.module('textUpdates')
                     $scope.objects.rpsl += ('override:'+ override + '\n');
                 });
             }
-
 
             function _performAction( source, object, passwords, overrides) {
                 var deferredObject = $q.defer();
@@ -304,7 +304,7 @@ angular.module('textUpdates')
                 $scope.actionsPending--;
                 $log.debug('mark ' +  object.action + '-' + object.type + '-' + object.name + ' action completed for ' + action + ': '+ $scope.actionsPending);
                 if( $scope.actionsPending === 0 ) {
-                    if (!_.isUndefined(callback)) {
+                    if (!_.isUndefined(callback) && _.isFunction(callback)) {
                         callback();
                     }
                 }

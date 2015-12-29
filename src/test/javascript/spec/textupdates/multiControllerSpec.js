@@ -317,14 +317,16 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Create success');
         expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
+        // verify RPSL is rewritten to prevent second create
         expect($scope.objects.objects[0].rpsl).toBe(
             'person:Me Me\n'+
             'address:Amsterdam\n'+
             'phone:+316\n'+
             'nic-hdl:MM1-RIPE\n'+
             'mnt-by:TEST-MNT\n'+
+            'created:2015-12-28T09:10:20Z\n'+
+            'last-modified:2015-12-28T09:12:25Z\n'+
             'source:RIPE\n');
-
     });
 
     it('should report an error upon create-failure', function () {
@@ -378,6 +380,8 @@ describe('textUpdates: TextMultiController', function () {
             'phone:+316\n'+
             'nic-hdl:MM1-RIPE\n'+
             'mnt-by:TEST-MNT\n'+
+            'created:2015-12-28T09:10:20Z\n'+
+            'last-modified:2015-12-28T09:12:25Z\n'+
             'source:RIPE\n');
     });
 
@@ -424,6 +428,8 @@ describe('textUpdates: TextMultiController', function () {
                             {name: 'phone',   value: '+316'},
                             {name: 'nic-hdl', value: 'MM1-RIPE'},
                             {name: 'mnt-by',  value: 'TEST-MNT'},
+                            {name: 'created',  value: '2015-12-28T09:10:20Z'},
+                            {name: 'last-modified',  value: '2015-12-28T09:12:25Z'},
                             {name: 'source',  value: 'RIPE'}
                         ]
                     }
