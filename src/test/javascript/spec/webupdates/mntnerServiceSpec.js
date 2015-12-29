@@ -226,7 +226,7 @@ describe('dbWebApp: MntnerService', function () {
         it('should not not return RIPE-NCC-RPSL-MNT as candidate not eligible for authentication', function() {
             var ssoMntners = [];
             var objectMntners = [
-                { type:'mntner', key:'RIPE-NCC-RPSL-MNT', auth:['SSO']},
+                { type:'mntner', key:'RIPE-NCC-RPSL-MNT', auth:['SSO','MD5-PW']},
                 { type:'mntner', key:'A-MNT',             auth:['SSO']}
             ];
 

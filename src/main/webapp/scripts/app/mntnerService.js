@@ -148,6 +148,7 @@ angular.module('dbWebApp')
         };
 
         mntnerService.getMntnersNotEligibleForPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
+            // Note: this function is NOT the exact opposite of getMntnersForPasswordAuthentication()
             var input = originalObjectMntners;
             if( originalObjectMntners.length === 0 ) {
                 // it is a create
@@ -160,7 +161,7 @@ angular.module('dbWebApp')
                 if( mntner.mine === true) {
                     return false;
                 } else if( mntnerService.isRpslMntner(mntner)) {
-                    // prevent authenticating against RPSL mntner (and later associating everybodies SSO with it)
+                    // prevent customers contacting us about the RPSL mntner
                     return false;
                 } else if( mntnerService.hasMd5(mntner)) {
                     return false;
