@@ -17,16 +17,17 @@
                       ng-model="object.rpsl"
                       style="font-family:monospace;"></textarea>
 
-            <input type="submit" ng-click="submit()"
-                   class="blue-button pull-right ga-text-modifyobj-modify" value="Modify"/>
-
-            <button ng-click="cancel()" class="blue-button pull-right ga-text-modifyobj-cancel" style="border:0;">
-                Cancel
-            </button>
-
             <p>
                 You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.
             </p>
+
+            <input type="submit" ng-click="submit()"
+                   class="blue-button pull-right ga-text-modifyobj-modify" value="Modify"/>
+
+            <button ng-click="cancel()" class="blue-button pull-right ga-text-modifyobj-cancel" style="border:0;"> Cancel </button>
+
+            <button ng-click="deleteObject()" class="red-button pull-left ga-text-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
+
         </div>
     </form>
 </div>

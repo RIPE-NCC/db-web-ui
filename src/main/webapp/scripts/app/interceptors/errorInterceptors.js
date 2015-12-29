@@ -27,7 +27,7 @@ angular.module('interceptors')
             if( response.status === 404 && _.startsWith( $location.path(), '/textupdates/multi/')) {
                 toBeSwallowed = true;
             }
-            
+
             $log.debug('Must be swallowed? ' + toBeSwallowed);
 
             return toBeSwallowed;

@@ -163,6 +163,14 @@ angular.module('textUpdates')
                 });
             }
 
+            this.navigateToDelete = function (objectSource, objectType, objectName, onCancel) {
+                $state.transitionTo('webupdates.delete', {
+                    source: objectSource,
+                    objectType: objectType,
+                    name: objectName,
+                    onCancel: onCancel
+                });
+            };
 
 
         }]);

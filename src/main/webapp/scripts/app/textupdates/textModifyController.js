@@ -11,6 +11,7 @@ angular.module('textUpdates')
             $scope.submit = submit;
             $scope.switchToWebMode = switchToWebMode;
             $scope.cancel = cancel;
+            $scope.deleteObject = deleteObject;
 
             _initialisePage();
 
@@ -183,6 +184,10 @@ angular.module('textUpdates')
                 if ($window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
                     _navigateToDisplayPage($scope.object.source, $scope.object.type, $scope.object.name, undefined);
                 }
+            }
+
+            function deleteObject() {
+                TextCommons.navigateToDelete($scope.object.source, $scope.object.type, $scope.object.name, 'textupdates.modify');
             }
 
             function _navigateToDisplayPage(source, objectType, objectName, operation) {

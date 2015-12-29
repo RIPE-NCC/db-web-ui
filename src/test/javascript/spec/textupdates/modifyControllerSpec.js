@@ -261,6 +261,35 @@ describe('textUpdates: TextModifyController', function () {
         expect($stateParams.name).toBe('TP-RIPE');
     });
 
+
+    it('should navigate to delete after pressing delete button', function () {
+
+        setupController('route', '12.235.32.0%2F19AS1680');
+
+        $httpBackend.whenGET('api/user/mntners').respond([{
+            key: 'TEST-MNT',
+            type: 'mntner',
+            auth: ['SSO'],
+            mine: true
+        }]);
+        $httpBackend.whenGET('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true&unformatted=true').respond(
+            function (method, url) {
+                return [200, routeJSON, {}];
+            });
+
+        $httpBackend.flush();
+
+        $scope.deleteObject();
+
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('webupdates.delete');
+        expect($stateParams.source).toBe('RIPE');
+        expect($stateParams.objectType).toBe('route');
+        expect($stateParams.name).toBe('12.235.32.0%2F19AS1680');
+        expect($stateParams.onCancel).toBe('textupdates.modify');
+    });
+
     it('should navigate to display after successful submit with a slash', function () {
 
         setupController('route', '12.235.32.0%2F19AS1680');
