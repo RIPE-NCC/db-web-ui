@@ -147,6 +147,30 @@ angular.module('dbWebApp')
             });
         };
 
+        mntnerService.getMntnersNotEligibleForPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
+            // Note: this function is NOT the exact opposite of getMntnersForPasswordAuthentication()
+            var input = originalObjectMntners;
+            if( originalObjectMntners.length === 0 ) {
+                // it is a create
+                input = objectMntners;
+            }
+            var mntners = mntnerService.enrichWithSsoStatus(ssoMntners, input);
+
+            return  _.filter(mntners, function(mntner) {
+
+                if( mntner.mine === true) {
+                    return false;
+                } else if( mntnerService.isRpslMntner(mntner)) {
+                    // prevent customers contacting us about the RPSL mntner
+                    return false;
+                } else if( mntnerService.hasMd5(mntner)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+        };
+
         mntnerService.mntbyDescription = function () {
             WhoisResources.getAttributeDescription($scope.objectType, 'mnt-by');
         };
