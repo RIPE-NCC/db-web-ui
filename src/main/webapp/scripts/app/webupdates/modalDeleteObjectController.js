@@ -9,10 +9,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController',
         $scope.MAX_REFS_TO_SHOW = 5;
 
         $scope.objectType = objectType;
-
-        if( !_.isUndefined(name)) {
-            $scope.name = decodeURIComponent(name);
-        }
+        $scope.name = decodeURIComponent(name);
 
         $scope.onCancel = onCancel;
         $scope.reason = 'I don\'t need this object';
