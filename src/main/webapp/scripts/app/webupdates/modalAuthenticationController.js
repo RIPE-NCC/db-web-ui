@@ -16,7 +16,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         };
 
         $scope.allowForceDelete = function () {
-            if(!_.isEmpty(_.filter($scope.mntners, 'key', 'RIPE-NCC-END-MNT'))) {
+            if(_.any($scope.mntners, 'key', 'RIPE-NCC-END-MNT')) {
                 return false;
             }
 
