@@ -43,7 +43,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
             _$controller_('ModalAuthenticationController', {
                 $scope: $scope, $log: $log, $modalInstance: modalInstance, WhoisResources:WhoisResources,
                 RestService:RestService, UserInfoService:userInfoService, CredentialsService:credentialsService,
-                source: source, mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword
+                source: source, objectType: 'mntner', mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -186,6 +186,31 @@ describe('webUpdates: ModalAuthenticationController', function () {
 
     it('should set mntnersWithoutPassword to the scope', function () {
         expect($scope.mntnersWithoutPassword).toEqual(mntnersWithoutPassword);
+    });
+
+    it('should allow force delete if objectType is inetnum', function () {
+        $scope.objectType = 'inetnum';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should allow force delete if objectType is inet6num', function () {
+        $scope.objectType = 'inet6num';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should allow force delete if objectType is route', function () {
+        $scope.objectType = 'route';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should allow force delete if objectType is route6', function () {
+        $scope.objectType = 'route6';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should allow force delete if objectType is domain', function () {
+        $scope.objectType = 'domain';
+        expect($scope.allowForceDelete()).toBe(true);
     });
 
 });

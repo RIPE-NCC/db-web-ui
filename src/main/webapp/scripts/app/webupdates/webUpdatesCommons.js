@@ -6,11 +6,11 @@ angular.module('webUpdates')
 
             var webUpdatesCommons = {};
 
-            webUpdatesCommons.performAuthentication = function(maintainers, objectSource, successCloseCallback, cancelCloseCallback) {
+            webUpdatesCommons.performAuthentication = function(maintainers, objectSource, objectType, successCloseCallback, cancelCloseCallback) {
                 $log.debug('Perform authentication');
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
-                ModalService.openAuthenticationModal(objectSource, mntnersWithPasswords, mntnersWithoutPasswords).then(
+                ModalService.openAuthenticationModal(objectSource, objectType, mntnersWithPasswords, mntnersWithoutPasswords).then(
                     function (result) {
                         AlertService.clearErrors();
 

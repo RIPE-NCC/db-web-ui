@@ -111,7 +111,7 @@ angular.module('textUpdates')
 
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
-                ModalService.openAuthenticationModal(objectSource, mntnersWithPasswords, mntnersWithoutPasswords).then(
+                ModalService.openAuthenticationModal(objectSource, objectType, mntnersWithPasswords, mntnersWithoutPasswords).then(
                     function (result) {
                         AlertService.clearErrors();
 
