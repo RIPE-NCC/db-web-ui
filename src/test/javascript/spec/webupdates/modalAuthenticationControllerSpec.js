@@ -225,5 +225,11 @@ describe('webUpdates: ModalAuthenticationController', function () {
         expect($scope.allowForceDelete()).toBe(false);
     });
 
+    it('should not allow force delete if objectType has RIPE-NCC-END-MNT', function () {
+        $scope.objectType = 'inetnum';
+        $scope.mntners = [ {type:'mntner', key:'RIPE-NCC-END-MNT', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
+        expect($scope.allowForceDelete()).toBe(false);
+    });
+
 });
 

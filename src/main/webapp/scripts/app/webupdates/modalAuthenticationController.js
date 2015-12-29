@@ -16,6 +16,10 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         };
 
         $scope.allowForceDelete = function () {
+            if(!_.isEmpty(_.filter($scope.mntners, 'key', 'RIPE-NCC-END-MNT'))) {
+                return false;
+            }
+
             var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
             return !_.isEmpty($scope.objectName) && _.contains(reclaimableObjectTypes, $scope.objectType);
         };
