@@ -106,7 +106,7 @@ angular.module('dbWebApp')
                 return deferredObject.promise;
             };
 
-            this.openAuthenticationModal = function (source, mntners, mntnersWithoutPassword) {
+            this.openAuthenticationModal = function (source, objectType, objectName, mntners, mntnersWithoutPassword) {
                 var deferredObject = $q.defer();
 
                 $log.debug('openAuthenticationModal start with: ' + source + '  mntners:' +  JSON.stringify(mntners));
@@ -117,8 +117,14 @@ angular.module('dbWebApp')
                     controller: 'ModalAuthenticationController',
                     keyboard:false,
                     resolve: {
-                            source: function() {
+                            source: function () {
                                 return source;
+                            },
+                            objectType: function () {
+                                return objectType;
+                            },
+                            objectName: function () {
+                                return objectName;
                             },
                             mntners: function () {
                                 return mntners;

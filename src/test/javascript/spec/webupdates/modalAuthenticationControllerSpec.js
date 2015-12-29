@@ -43,7 +43,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
             _$controller_('ModalAuthenticationController', {
                 $scope: $scope, $log: $log, $modalInstance: modalInstance, WhoisResources:WhoisResources,
                 RestService:RestService, UserInfoService:userInfoService, CredentialsService:credentialsService,
-                source: source, mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword
+                source: source, objectType: 'mntner', objectName: 'someName', mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -186,6 +186,49 @@ describe('webUpdates: ModalAuthenticationController', function () {
 
     it('should set mntnersWithoutPassword to the scope', function () {
         expect($scope.mntnersWithoutPassword).toEqual(mntnersWithoutPassword);
+    });
+
+    it('should allow force delete if objectType is inetnum', function () {
+        $scope.objectType = 'inetnum';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should allow force delete if objectType is inet6num', function () {
+        $scope.objectType = 'inet6num';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should allow force delete if objectType is route', function () {
+        $scope.objectType = 'route';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should allow force delete if objectType is route6', function () {
+        $scope.objectType = 'route6';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should allow force delete if objectType is domain', function () {
+        $scope.objectType = 'domain';
+        expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should not allow force delete if objectType has no name', function () {
+        $scope.objectType = 'inetnum';
+        delete $scope.objectName;
+        expect($scope.allowForceDelete()).toBe(false);
+    });
+
+    it('should not allow force delete if objectType has empty name', function () {
+        $scope.objectType = 'inetnum';
+        $scope.objectName = '';
+        expect($scope.allowForceDelete()).toBe(false);
+    });
+
+    it('should not allow force delete if objectType has RIPE-NCC-END-MNT', function () {
+        $scope.objectType = 'inetnum';
+        $scope.mntners = [ {type:'mntner', key:'RIPE-NCC-END-MNT', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
+        expect($scope.allowForceDelete()).toBe(false);
     });
 
 });

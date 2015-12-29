@@ -746,6 +746,8 @@ angular.module('webUpdates')
                 WebUpdatesCommons.performAuthentication(
                     $scope.maintainers,
                     $scope.source,
+                    $scope.objectType,
+                    $scope.name,
                     _onSuccessfulAuthentication,
                     _navigateAway)
             }
