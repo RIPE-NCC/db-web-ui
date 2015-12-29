@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'objectType', 'mntners', 'mntnersWithoutPassword',
-    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, objectType, mntners, mntnersWithoutPassword) {
+angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword',
+    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, objectType, objectName, mntners, mntnersWithoutPassword) {
 
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
         $scope.source = source;
         $scope.objectType = objectType;
+        $scope.objectName = objectName;
         $scope.selected = {
             item: $scope.mntners[0],
             password: '',
@@ -16,7 +17,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
         $scope.allowForceDelete = function () {
             var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
-            return _.contains(reclaimableObjectTypes, $scope.objectType);
+            return !_.isEmpty($scope.objectName) && _.contains(reclaimableObjectTypes, $scope.objectType);
         };
 
         $scope.cancel = function () {

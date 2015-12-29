@@ -43,7 +43,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
             _$controller_('ModalAuthenticationController', {
                 $scope: $scope, $log: $log, $modalInstance: modalInstance, WhoisResources:WhoisResources,
                 RestService:RestService, UserInfoService:userInfoService, CredentialsService:credentialsService,
-                source: source, objectType: 'mntner', mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword
+                source: source, objectType: 'mntner', objectName: 'someName', mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -211,6 +211,18 @@ describe('webUpdates: ModalAuthenticationController', function () {
     it('should allow force delete if objectType is domain', function () {
         $scope.objectType = 'domain';
         expect($scope.allowForceDelete()).toBe(true);
+    });
+
+    it('should not allow force delete if objectType has no name', function () {
+        $scope.objectType = 'inetnum';
+        delete $scope.objectName;
+        expect($scope.allowForceDelete()).toBe(false);
+    });
+
+    it('should not allow force delete if objectType has empty name', function () {
+        $scope.objectType = 'inetnum';
+        $scope.objectName = '';
+        expect($scope.allowForceDelete()).toBe(false);
     });
 
 });

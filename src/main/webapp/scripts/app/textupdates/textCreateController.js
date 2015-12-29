@@ -146,7 +146,8 @@ angular.module('textUpdates')
                     return;
                 }
 
-                TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso,
+                var undefinedName;
+                TextCommons.authenticate($scope.object.source, $scope.object.type, undefinedName, $scope.mntners.sso,
                     attributes, passwords, overrides).then(
                     function (authenticated) {
                         $log.debug('Authenticated successfully:' + authenticated);

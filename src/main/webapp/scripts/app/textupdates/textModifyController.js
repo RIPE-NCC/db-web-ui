@@ -70,7 +70,7 @@ angular.module('textUpdates')
                         $scope.mntners.sso = results.mntners;
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
 
-                        TextCommons.authenticate($scope.object.source, $scope.object.type,
+                        TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.object.name,
                                 $scope.mntners.sso, attributes, [], []).then(
                             function(authenticated) {
                                 $log.error('Successfully authenticated');
@@ -136,7 +136,7 @@ angular.module('textUpdates')
                     $scope.passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
 
-                TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso, attributes,
+                TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.object.name, $scope.mntners.sso, attributes,
                         $scope.passwords, overrides).then(
                     function(authenticated) {
                         $log.error('Successfully authenticated');

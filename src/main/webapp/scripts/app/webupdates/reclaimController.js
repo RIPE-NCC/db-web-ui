@@ -177,7 +177,7 @@ angular.module('webUpdates')
                 $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, $scope.maintainers.object);
 
                 if (needsPasswordAuthenticationForReclaim($scope.maintainers.object)) {
-                    WebUpdatesCommons.performAuthentication($scope.maintainers, $scope.objectSource, $scope.objectType, _onSuccessfulAuthentication, _navigateToReclaim);
+                    WebUpdatesCommons.performAuthentication($scope.maintainers, $scope.objectSource, $scope.objectType, $scope.objectName, _onSuccessfulAuthentication, _navigateToReclaim);
                     return;
                 }
 
