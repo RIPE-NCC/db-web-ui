@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log',
-        function ($resource, $q, $http, $templateCache, $log) {
+    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', 'WhoisResources',
+        function ($resource, $q, $http, $templateCache, $log, WhoisResources) {
 
             function RestService() {
 
@@ -152,19 +152,19 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 }
 
-                this.autocomplete = function (objectType, objectName, extended, attrs) {
+                this.autocomplete = function ( attrName, query, extended, attrsToBeReturned) {
                     var deferredObject = $q.defer();
 
-                    if( _.isUndefined(objectName) || objectName.length < 2 ) {
+                    if( _.isUndefined(query) || query.length < 2 ) {
                         deferredObject.resolve([]);
                     } else {
-                        $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                        $log.debug('autocomplete start for: ' + attrName + ' that is like ' + query );
 
                         $resource('api/whois/autocomplete',
                             {
-                                query: encodeURIComponent(objectName),
-                                field: objectType,
-                                attribute: attrs,
+                                field: attrName,
+                                attribute: attrsToBeReturned,
+                                query: encodeURIComponent(query),
                                 extended: extended
                             })
                             .query()
@@ -174,6 +174,43 @@ angular.module('dbWebApp')
                                 deferredObject.resolve(result);
                             }, function (error) {
                                 $log.error('autocomplete error:' + JSON.stringify(error));
+                                deferredObject.reject(error);
+                            }
+                        );
+                    }
+
+                    return deferredObject.promise;
+                };
+
+                this.autocompleteAdvanced = function (query, targetObjectTypes ) {
+                    var deferredObject = $q.defer();
+
+                    if( _.isUndefined(query) || query.length < 2 ) {
+                        deferredObject.resolve([]);
+                    } else {
+                        var attrsToFilterOn = WhoisResources.getFilterableAttrsForObjectTypes(targetObjectTypes);
+                        var attrsToReturn = WhoisResources.getViewableAttrsForObjectTypes(targetObjectTypes); //['person', 'role', 'org-name', 'abuse-mailbox'];
+
+                        $log.debug('autocompleteAdvanced start: ' +
+                            ' select: ' + JSON.stringify(attrsToReturn) +
+                            ' from: '   + JSON.stringify(targetObjectTypes) +
+                            ' where: '  + JSON.stringify(attrsToFilterOn) +
+                            ' like:'    + JSON.stringify(query));
+
+                        $resource('api/whois/autocomplete',
+                            {
+                                select: attrsToReturn,
+                                from: targetObjectTypes,
+                                where: attrsToFilterOn,
+                                like: encodeURIComponent(query),
+                            })
+                            .query()
+                            .$promise
+                            .then(function (result) {
+                                $log.debug('autocompleteAdvanced success:' + JSON.stringify(result));
+                                deferredObject.resolve(result);
+                            }, function (error) {
+                                $log.error('autocompleteAdvanced error:' + JSON.stringify(error));
                                 deferredObject.reject(error);
                             }
                         );

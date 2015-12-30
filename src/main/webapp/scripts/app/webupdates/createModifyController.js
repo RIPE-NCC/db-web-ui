@@ -222,6 +222,9 @@ angular.module('webUpdates')
                         name = item.person;
                     } else if (item.role != null) {
                         name = item.role;
+                        if (item['abuse-mailbox'] != null) {
+                            name = name.concat( separator + item['abuse-mailbox']);
+                        }
                     } else if (item['org-name'] != null) {
                         name = item['org-name'];
                     } else {
@@ -233,7 +236,6 @@ angular.module('webUpdates')
                 });
             }
 
-
             function _isServerLookupKey(refs) {
                 return !(_.isUndefined(refs) || refs.length === 0 );
             }
@@ -241,7 +243,8 @@ angular.module('webUpdates')
             function _isEnum(allowedValues) {
                 return ! (_.isUndefined(allowedValues) || allowedValues.length === 0 );
             }
-            function referenceAutocomplete(attrType, query, refs, allowedValues) {
+
+            function referenceAutocomplete(attrName, query, refs, allowedValues) {
                 if( _isEnum(allowedValues)) {
                     var filtered =  _.filter(allowedValues, function(val) {
                         return (val.indexOf(query.toUpperCase()) > -1);
@@ -250,12 +253,21 @@ angular.module('webUpdates')
                         return {key:val, readableName:val}
                     });
                 } else if (_isServerLookupKey(refs)) {
-                    return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
+                    return RestService.autocomplete(attrName, query, true, ['person', 'role', 'org-name','abuse-mailbox']).then(
                         function (resp) {
                             return _addNiceAutocompleteName(resp)
                         }, function () {
                             return [];
                         });
+                    /*
+                     * If we are ready to start using advanced autocomplete
+                    return RestService.autocompleteAdvanced( query, refs).then(
+                        function (resp) {
+                            return _addNiceAutocompleteName(resp)
+                        }, function () {
+                            return [];
+                        });
+                        */
                 } else {
                     // No suggestions since not a reference or enumeration
                     return [];
@@ -272,7 +284,7 @@ angular.module('webUpdates')
 
             function fieldVisited(attr) {
                 if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
-                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                    RestService.autocomplete( attr.name, attr.value, true, []).then(
                         function (data) {
                             if (_.any(data, function (item) {
                                     return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();

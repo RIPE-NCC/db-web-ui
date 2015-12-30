@@ -361,7 +361,7 @@ angular.module('dbWebApp')
                 name: 'mntner', description: undefined,
                 'attributes': [
                     {name: 'mntner', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: true, multiple: true, refs: [], searchable:true},
                     {name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
@@ -381,7 +381,7 @@ angular.module('dbWebApp')
                 name: 'organisation', description: undefined,
                 'attributes': [
                     {name: 'organisation', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'org-name', mandatory: true, multiple: false, refs: []},
+                    {name: 'org-name', mandatory: true, multiple: false, refs: [], searchable:true},
                     {name: 'org-type', mandatory: true, multiple: false, refs: []},
                     {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
@@ -427,7 +427,7 @@ angular.module('dbWebApp')
             'person': {
                 name: 'person', description: undefined,
                 'attributes': [
-                    {name: 'person', mandatory: true, multiple: false, refs: []},
+                    {name: 'person', mandatory: true, multiple: false, refs: [], searchable:true},
                     {name: 'address', mandatory: true, multiple: true, refs: []},
                     {name: 'phone', mandatory: true, multiple: true, refs: []},
                     {name: 'fax-no', mandatory: false, multiple: true, refs: []},
@@ -476,7 +476,7 @@ angular.module('dbWebApp')
             'role': {
                 name: 'role', description: undefined,
                 'attributes': [
-                    {name: 'role', mandatory: true, multiple: false, refs: []},
+                    {name: 'role', mandatory: true, multiple: false, refs: [], searchable:true},
                     {name: 'address', mandatory: true, multiple: true, refs: []},
                     {name: 'phone', mandatory: false, multiple: true, refs: []},
                     {name: 'fax-no', mandatory: false, multiple: true, refs: []},
@@ -487,7 +487,7 @@ angular.module('dbWebApp')
                     {name: 'nic-hdl', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
-                    {name: 'abuse-mailbox', mandatory: false, multiple: false, refs: []},
+                    {name: 'abuse-mailbox', mandatory: false, multiple: false, refs: [], searchable:true},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
