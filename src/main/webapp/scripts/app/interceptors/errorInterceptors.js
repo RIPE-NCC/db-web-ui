@@ -16,9 +16,10 @@ angular.module('interceptors')
         function _mustErrorBeSwallowed( response ) {
             var toBeSwallowed = false;
 
-            $log.debug('ui-url:' + $location.path());
-            $log.debug('rest-url:' + response.config.url );
-            $log.debug('http-status:' +  response.status );
+            $log.debug('http-status:' +  response.status  + ' ui-url:' + $location.path());
+            if(!_.isUndefined( response.config)) {
+                $log.debug('rest-url:' + response.config.url);
+            }
 
             if( _isAuthorisationError(response.status) && _.endsWith(response.config.url, 'api/user/info')) {
                 toBeSwallowed = true;
