@@ -1,9 +1,9 @@
+<button ng-click="switchToWebMode()" class="blue-button pull-right ga-text-createobj-switch-mode" style="border:0;">Switch to web mode</button>
+
 <div>
     <h1>Create &quot;{{object.type}}&quot; object</h1>
 
     <alerts></alerts>
-
-    <button ng-click="switchToWebMode()" class="blue-button pull-right ga-text-createobj-switch-mode" style="border:0;">Switch to web mode</button>
 
     <form id="textCreateForm">
 
@@ -14,15 +14,16 @@
                       rows="20"
                       ng-model="object.rpsl"
                       style="font-family:monospace;"></textarea>
+            <section class="supporting-text">
+                <p>You can optionally use the <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</p>
+                <p>By submitting this form you explicitly express your agreement with the <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+            </section>
 
             <input type="submit" ng-click="submit()" ng-disabled="restCalInProgress"
                    class="blue-button pull-right ga-text-createobj-create" value="Create"/>
 
             <button ng-click="cancel()" class="blue-button pull-right ga-text-createobj-cancel" style="border:0;">Cancel</button>
 
-            <p>
-                You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.
-            </p>
         </div>
     </form>
 </div>

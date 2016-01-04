@@ -79,7 +79,7 @@ ul.form-fields {
     	a.maintainer-help {
     	    padding: 5px 11px;
             color: #00abab;
-            border-radius: 0px 3px 3px 0px;
+            border-radius: 0 3px 3px 0;
             display: inline-block;
     	}
         span.maintainer-search-icon {
@@ -195,4 +195,14 @@ ul.form-fields {
 }
 #selectForm {
 	@extend %width-100;
+}
+.form-group {
+    section.supporting-text {
+        margin: 10px 0;
+        p {
+            @extend %clear-b;
+            color: #737373;
+            margin: 5px 0 0 0 !important;
+        }
+    }
 }
