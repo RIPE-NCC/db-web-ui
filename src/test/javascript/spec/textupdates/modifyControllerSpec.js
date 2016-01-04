@@ -20,6 +20,16 @@ describe('textUpdates: TextModifyController', function () {
         'phone:+316\n' +
         'nic-hdl:TP-RIPE\n' +
         'mnt-by:TEST-MNT\n' +
+        'last-modified: 2012-02-27T10:11:12Z\n'+
+        'source:RIPE\n';
+
+
+    var testPersonRpslScreen =
+        'person:test person\n' +
+        'address:Amsterdam\n' +
+        'phone:+316\n' +
+        'nic-hdl:TP-RIPE\n' +
+        'mnt-by:TEST-MNT\n' +
         'source:RIPE\n';
 
     var testPersonRpslMissingPhone =
@@ -204,7 +214,7 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        expect($scope.object.rpsl).toEqual(testPersonRpsl);
+        expect($scope.object.rpsl).toEqual(testPersonRpslScreen );
     });
 
     it('should report an error when mandatory field is missing', function () {

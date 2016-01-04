@@ -103,13 +103,17 @@ angular.module('textUpdates')
                 // Extract attributes from response
                 var whoisResources = WhoisResources.wrapWhoisResources(objectToModify);
                 var attributes = WhoisResources.wrapAttributes(
-                    whoisResources.getAttributes()
+                    WhoisResources.enrichAttributesWithMetaInfo($scope.object.type, whoisResources.getAttributes())
                 );
-                $scope.object.rpsl = RpslService.toRpsl(attributes);
-                $log.debug("RPSL:" +$scope.object.rpsl );
 
                 // Needed by display screen
                 MessageStore.add('DIFF', _.cloneDeep(attributes));
+
+                // prevent last-modfied to be in
+                attributes.removeAttributeWithName('last-modified');
+
+                $scope.object.rpsl = RpslService.toRpsl(attributes);
+                $log.debug("RPSL:" +$scope.object.rpsl );
 
                 return attributes;
             }
