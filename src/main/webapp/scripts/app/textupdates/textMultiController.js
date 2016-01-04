@@ -72,6 +72,8 @@ angular.module('textUpdates')
                     object.errors = [];
                     objects.push(object);
 
+                    attributes = TextCommons.uncapitalize(attributes);
+
                     // assume first attribute is type indicator
                     object.type = attributes[0].name;
 

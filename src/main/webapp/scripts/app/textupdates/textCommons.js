@@ -184,8 +184,8 @@ angular.module('textUpdates')
 
             this.capitaliseMandatory = function(attributes) {
                 _.each(attributes, function (attr) {
-                    if (attr.$$meta.$$mandatory) {
-                        attr.name = attr.name.toUpperCase();
+                    if (!_.isUndefined(attr.$$meta) && attr.$$meta.$$mandatory) {
+                            attr.name = attr.name.toUpperCase();
                     }
                 });
             }
