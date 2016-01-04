@@ -173,5 +173,37 @@ angular.module('textUpdates')
                 });
             };
 
+            this.uncapitalize = function(attributes) {
+                return WhoisResources.wrapAttributes(
+                    _.map(attributes, function (attr) {
+                        attr.name = attr.name.toLowerCase();
+                        return attr;
+                    })
+                );
+            }
+
+            this.capitaliseMandatory = function(attributes) {
+                _.each(attributes, function (attr) {
+                    if (attr.$$meta.$$mandatory) {
+                        attr.name = attr.name.toUpperCase();
+                    }
+                });
+            }
+
+            this.getPasswordsForRestCall = function(objectType) {
+                var passwords = [];
+
+                if (CredentialsService.hasCredentials()) {
+                    passwords.push(CredentialsService.getCredentials().successfulPassword);
+                }
+
+                // For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                // This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
+                if (objectType === 'route' || objectType === 'route6' || objectType === 'aut-num') {
+                    passwords.push('RPSL');
+                }
+                return passwords;
+            }
+
 
         }]);

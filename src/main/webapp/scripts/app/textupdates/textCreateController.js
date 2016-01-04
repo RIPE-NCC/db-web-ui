@@ -65,7 +65,7 @@ angular.module('textUpdates')
 
                 _enrichAttributesWithSsoMntners(attributes).then(
                     function (attributes) {
-                        _capitaliseMandatory(attributes);
+                        TextCommons.capitaliseMandatory(attributes);
                         $scope.object.rpsl = RpslService.toRpsl(attributes);
                     }
                 );
@@ -116,14 +116,6 @@ angular.module('textUpdates')
                 });
             }
 
-            function _capitaliseMandatory(attributes) {
-                _.each(attributes, function (attr) {
-                    if (attr.$$meta.$$mandatory) {
-                        attr.name = attr.name.toUpperCase();
-                    }
-                });
-            }
-
             function submit() {
                 AlertService.clearErrors();
 
@@ -139,7 +131,7 @@ angular.module('textUpdates')
                 }
                 var attributes = objects[0];
 
-                attributes = _uncapitalize(attributes);
+                attributes = TextCommons.uncapitalize(attributes);
                 $log.debug("attributes:" + JSON.stringify(attributes));
 
                 if (!TextCommons.validate($scope.object.type, attributes)) {
@@ -153,7 +145,7 @@ angular.module('textUpdates')
                         $log.debug('Authenticated successfully:' + authenticated);
 
                         // combine all passwords
-                        var combinedPaswords =_.union(passwords, _getPasswordsForRestCall( $scope.object.type));
+                        var combinedPaswords =_.union(passwords, TextCommons.getPasswordsForRestCall( $scope.object.type));
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
@@ -198,15 +190,6 @@ angular.module('textUpdates')
                 }
             }
 
-            function _uncapitalize(attributes) {
-                return WhoisResources.wrapAttributes(
-                    _.map(attributes, function (attr) {
-                        attr.name = attr.name.toLowerCase();
-                        return attr;
-                    })
-                );
-            }
-
             function switchToWebMode() {
                 $log.debug("Switching to web-mode");
 
@@ -217,21 +200,5 @@ angular.module('textUpdates')
                     objectType: $scope.object.type
                 });
             }
-
-            function _getPasswordsForRestCall(objectType) {
-                var passwords = [];
-
-                if (CredentialsService.hasCredentials()) {
-                    passwords.push(CredentialsService.getCredentials().successfulPassword);
-                }
-
-                // For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-                // This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-                if (objectType === 'route' || objectType === 'route6' || objectType === 'aut-num') {
-                    passwords.push('RPSL');
-                }
-                return passwords;
-            }
-
 
         }]);

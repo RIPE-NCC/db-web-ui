@@ -123,7 +123,7 @@ angular.module('textUpdates')
                 }
                 var attributes = objects[0];
 
-                attributes = _uncapitalize(attributes);
+                attributes = TextCommons.uncapitalize(attributes);
                 $log.debug("attributes:" + JSON.stringify(attributes));
 
                 if (!TextCommons.validate($scope.object.type, attributes)) {
@@ -141,11 +141,14 @@ angular.module('textUpdates')
                     function(authenticated) {
                         $log.error('Successfully authenticated');
 
+                        // combine all passwords
+                        var combinedPaswords =_.union($scope.passwords, TextCommons.getPasswordsForRestCall( $scope.object.type));
+
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
                         $scope.restCalInProgress = true;
                         RestService.modifyObject($scope.object.source, $scope.object.type, $scope.object.name,
-                            WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.passwords, overrides, true).then(
+                            WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPaswords, overrides, true).then(
                             function(result) {
                                 $scope.restCalInProgress = false;
 
@@ -197,15 +200,6 @@ angular.module('textUpdates')
                     name: objectName,
                     method: operation
                 });
-            }
-
-            function _uncapitalize(attributes) {
-                return WhoisResources.wrapAttributes(
-                    _.map(attributes, function (attr) {
-                        attr.name = attr.name.toLowerCase();
-                        return attr;
-                    })
-                );
             }
 
            function switchToWebMode() {
