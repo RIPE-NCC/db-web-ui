@@ -83,16 +83,15 @@ angular.module('textUpdates')
 
                     }
                 ).catch(
-
                     function (error) {
                         $scope.restCalInProgress = false;
-                        if (error && error.data) {
+                        if (error && error.data && TextCommons.isValidJson(error.data)) {
                             $log.error('Error fetching object:' + JSON.stringify(error));
                             var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                             AlertService.setErrors(whoisResources);
                         } else {
-                            $log.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
-                            AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
+                            $log.error('Error interpreting responses:' + JSON.stringify(error));
+                            AlertService.setGlobalError('Error fetching information: Unexpected response');
                         }
                     }
                 );
@@ -160,11 +159,13 @@ angular.module('textUpdates')
                                 MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
                                 _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Modify');
 
-                            },function(error) {
+                            },
+                            function(error) {
                                 $scope.restCalInProgress = false;
 
-                                if (_.isUndefined(error.data)) {
+                                if (_.isUndefined(error.data) || !TextCommons.isValidJson(error.data)) {
                                     $log.error('Response not understood:'+JSON.stringify(error));
+                                    AlertService.setGlobalError('Error fetching information: Unexpected response');
                                     return;
                                 }
 
@@ -176,12 +177,11 @@ angular.module('textUpdates')
                                     ErrorReporterService.log('Modify', $scope.object.type, AlertService.getErrors(), attributes);
                                 }
 
-                            },
-                            function(authenticated) {
-                                $log.error('Error authenticating');
-
                             }
                         );
+                    },
+                    function(authenticated) {
+                        $log.error('Error authenticating');
                     }
                 );
 

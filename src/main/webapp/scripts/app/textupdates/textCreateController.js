@@ -164,7 +164,7 @@ angular.module('textUpdates')
                             }, function (error) {
                                 $scope.restCalInProgress = false;
 
-                                if (_.isUndefined(error.data)) {
+                                if (_.isUndefined(error.data) || !TextCommons.isValidJson(error.data)) {
                                     $log.error('Response not understood:' + JSON.stringify(error));
                                     return;
                                 }
