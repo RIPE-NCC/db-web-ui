@@ -205,5 +205,4 @@ angular.module('textUpdates')
                 return passwords;
             }
 
-
         }]);
