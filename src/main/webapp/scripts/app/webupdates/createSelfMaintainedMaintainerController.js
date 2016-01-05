@@ -115,16 +115,15 @@ angular.module('webUpdates')
                 RestService.createObject($scope.source, MNT_TYPE, obj)
                     .then(function (resp) {
                         $scope.submitInProgress = false;
-                        $log.debug('createObject success:' + JSON.stringify(resp));
-                        var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
-                        var primaryKey = whoisResources.getPrimaryKey();
-                        MessageStore.add(primaryKey, whoisResources);
+                        var primaryKey = resp.getPrimaryKey();
+                        MessageStore.add(primaryKey, resp);
 
                         $state.transitionTo('webupdates.display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
-                    }, function(error) {
+                    },
+                    function(error) {
                         $scope.submitInProgress = false;
-                        $log.error('create error:' +  JSON.stringify(error));
+
                         AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
                         AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
                         ErrorReporterService.log('Create', MNT_TYPE, AlertService.getErrors(), $scope.maintainerAttributes);

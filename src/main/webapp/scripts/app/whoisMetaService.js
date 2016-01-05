@@ -70,10 +70,11 @@ angular.module('dbWebApp')
             return keys;
         };
 
-        function _wrapMetaInAttribute( self, objectTypeName, attrName, attrValue, metaAttribute, idx ) {
+        function _wrapMetaInAttribute( self, objectTypeName, attrName, attrValue, attrComment, metaAttribute, idx ) {
             return {
                 name: attrName,
                 value: attrValue,
+                comment: attrComment,
                 $$meta: {
                     $$idx: idx,
                     $$mandatory: metaAttribute.mandatory,
@@ -100,7 +101,7 @@ angular.module('dbWebApp')
                 if (!_.isUndefined(attr.$$meta)) {
                     idx = attr.$$meta.$$idx;
                 }
-                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attrMeta, idx);
+                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attrMeta, idx);
             });
         };
 
@@ -114,7 +115,7 @@ angular.module('dbWebApp')
             // enrich with order info
             var idx = 0;
             return _.map(this._getMetaAttributesOnObjectType(objectTypeName, false), function (meta) {
-                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, meta, idx);
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, meta, idx);
                 idx++;
                 return wrapped;
             });
@@ -129,7 +130,7 @@ angular.module('dbWebApp')
             // enrich with order info
             var idx = 0;
             return _.map(this._getMetaAttributesOnObjectType(objectTypeName, true), function (meta) {
-                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, meta, idx);
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, meta, idx);
                 idx++;
                 return wrapped;
             });

@@ -37,7 +37,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
             RestService.authenticate(source, 'mntner', $scope.selected.item.key, $scope.selected.password).then(
                 function (result) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(result);
+                    var whoisResources = result;
 
                     if (whoisResources.isFiltered()) {
                         $scope.selected.message =

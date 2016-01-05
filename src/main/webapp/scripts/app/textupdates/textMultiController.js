@@ -128,17 +128,11 @@ angular.module('textUpdates')
                             deferredObject.resolve(true);
                         },
                         function (error) {
-                            if (_.isUndefined(error.data.errormessages)) {
-                                $log.error('Error fetching object ' + object.name + ', http-status:' + error);
-                                deferredObject.reject([{plainText: 'Response ' + error.status + ' not understood'}]);
+                            $log.debug('Error fetching object ' + object.name + ', http-status:' + error.status);
+                            if (error.status === 404) {
+                                deferredObject.resolve(false);
                             } else {
-                                $log.debug('Error fetching object ' + object.name + ', http-status:' + error.status);
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                if (error.status === 404) {
-                                    deferredObject.resolve(false);
-                                } else {
-                                    deferredObject.reject( whoisResources.getAllErrors());
-                                }
+                                deferredObject.reject( error.data.getAllErrors());
                             }
                         }
                     );
@@ -170,11 +164,9 @@ angular.module('textUpdates')
                             _markActionCompleted(object, object.action + ' success', _rewriteRpsl);
                         },
                         function(whoisResources) {
-                            if( !_.isUndefined(whoisResources) ) {
-                                object.errors = whoisResources.getAllErrors();
-                                object.warnings = whoisResources.getAllWarnings();
-                                object.infos = whoisResources.getAllInfos();
-                            }
+                            object.errors = whoisResources.getAllErrors();
+                            object.warnings = whoisResources.getAllWarnings();
+                            object.infos = whoisResources.getAllInfos();
 
                             _setStatus(object, false, object.action + ' error');
                             _markActionCompleted(object, object.action + ' failed', _rewriteRpsl);
@@ -216,13 +208,7 @@ angular.module('textUpdates')
                                 deferredObject.resolve(whoisResources);
                             },
                             function (error) {
-                                var whoisResources = undefined;
-                                if (_.isUndefined(error.data.errormessages)) {
-                                    object.errors = {plainText: 'Response ' + error.status + ' not understood'};
-                                } else {
-                                    whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                }
-                                deferredObject.reject(whoisResources);
+                                deferredObject.reject(error.data);
                             }
                         );
 
@@ -235,13 +221,7 @@ angular.module('textUpdates')
                                 deferredObject.resolve(whoisResources);
                             },
                             function (error) {
-                                var whoisResources = undefined;
-                                if (_.isUndefined(error.data.errormessages)) {
-                                    object.errors = {plainText: 'Response ' + error.status + ' not understood'};
-                                } else {
-                                    whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                }
-                                deferredObject.reject(whoisResources);
+                                deferredObject.reject(error.data);
                             }
                         );
                     }

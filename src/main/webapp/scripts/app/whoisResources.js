@@ -210,7 +210,11 @@ angular.module('dbWebApp')
             if( ! this.objects ) {
                 return undefined;
             }
-            return this.objects.object[0].type;
+            var objectType =  this.objects.object[0].type;
+            if(!objectType) {
+                objectType = this.objects.object[0].attributes.attribute[0].name;
+            }
+            return objectType;
         };
 
         var isFiltered = function () {
@@ -249,11 +253,13 @@ angular.module('dbWebApp')
             return this.objects.object[idx].attributes.attribute;
         };
 
-        var isValidWhoisResources = function( whoisResources) {
+        function isValidWhoisResources( whoisResources) {
             if( _.isUndefined(whoisResources) || _.isNull(whoisResources) ) {
+                console.log('isValidWhoisResources: Null input:' + whoisResources);
                 return false;
             }
             if( _.has(whoisResources,'objects' ) === false && _.has(whoisResources,'errormessages' ) === false ) {
+                console.log('Missing objects or errormessages:' + whoisResources);
                 return false;
             }
 
@@ -271,6 +277,7 @@ angular.module('dbWebApp')
                 return undefined;
             }
             // enrich data with methods
+            whoisResources.wrapped = true;
             whoisResources.toString = toString;
             whoisResources.readableError = readableError;
             whoisResources.getAllErrors = getAllErrors;
@@ -362,7 +369,7 @@ angular.module('dbWebApp')
             var errorFound = false;
 
             var self = this;
-            _.map(this, function (attr) {
+            _.each(this, function (attr) {
                 if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0 ) {
                     attr.$$error = 'Mandatory attribute not set';
                     errorFound = true;
@@ -587,6 +594,41 @@ angular.module('dbWebApp')
             return attrs;
         };
 
+        this.wrapSuccess = function(whoisResources) {
+            var result = whoisResources;
+            if(!_.isUndefined(whoisResources)) {
+                var wrapped = this.wrapWhoisResources(whoisResources);
+                if (whoisResources.objects) {
+                    var objectType = wrapped.getObjectType();
+                    var wrappedAttrs = this.wrapAttributes(
+                        this.enrichAttributesWithMetaInfo(objectType, wrapped.getAttributes())
+                    );
+                    wrapped.objects.object[0].attributes.attribute = wrappedAttrs;
+                }
+                result = wrapped;
+            }
+            return result;
+        }
+
+        this.wrapError = function(error) {
+            var whoisResources = error.data;
+            if(_.isUndefined(whoisResources) ) {
+                whoisResources = error.config.data;
+
+            }
+            if ( ! isValidWhoisResources(whoisResources) ) {
+                $log.info("Not valid whois-resources:" + JSON.stringify(error));
+                whoisResources = {};
+                whoisResources.errormessages = {};
+                whoisResources.errormessages.errormessage = [];
+                whoisResources.errormessages.errormessage.push(
+                    {severity: 'Error', text: 'Unexpected error: please retry later'}
+                );
+            }
+            error.data = this.wrapSuccess(whoisResources);
+
+            return error;
+        }
 
     }]);
 

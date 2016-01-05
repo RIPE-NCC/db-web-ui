@@ -21,17 +21,13 @@ angular.module('webUpdates')
                 } else {
                     RestService.fetchObject($scope.objectSource, 'person', $scope.personName, null).then(
                         function (resp) {
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                            $scope.personAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                            $scope.personAttributes = resp.getAttributes();
                             AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, resp);
-                            AlertService.addErrors(whoisResources);
+                            AlertService.addErrors(resp);
                         },
                         function (error) {
-                            var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                            if (!_.isUndefined(whoisResources)) {
-                                AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, error.data);
-                                AlertService.addErrors(whoisResources);
-                            }
+                            AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, error.data);
+                            AlertService.addErrors(error.data);
                         });
                 }
 
@@ -43,21 +39,13 @@ angular.module('webUpdates')
                 } else {
                     RestService.fetchObject($scope.objectSource, 'mntner', $scope.mntnerName, null).then(
                         function (resp) {
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                            $scope.mntnerAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                            $scope.mntnerAttributes = resp.getAttributes();
                             AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, resp);
-                            AlertService.addErrors(whoisResources);
+                            AlertService.addErrors(resp);
                         },
                         function (error) {
-                            if(_.isUndefined(error.data)) {
-                                $log.error('Got unexpected error response:' + error );
-                            } else {
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                if (!_.isUndefined(whoisResources)) {
-                                    AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, error.data);
-                                    AlertService.addErrors(whoisResources);
-                                }
-                            }
+                            AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, error.data);
+                            AlertService.addErrors(error.data);
                         });
                 }
             }

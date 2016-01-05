@@ -69,10 +69,10 @@ angular.module('dbWebApp')
             $rootScope.infos.push({plainText:errorMsg});
         };
 
-        alertService.populateFieldSpecificErrors = function(objectType, attrs, error) {
-            var whoisResources = WhoisResources.wrapWhoisResources(error);
+        alertService.populateFieldSpecificErrors = function(objectType, attrs, whoisResources) {
+            var whoisResources = WhoisResources.wrapWhoisResources(whoisResources);
 
-            _.map(attrs, function (attr) {
+            _.each(attrs, function (attr) {
                 // keep existing error messages
                 if (!attr.$$error) {
                     var errors = whoisResources.getErrorsOnAttribute(attr.name, attr.value);
@@ -80,7 +80,6 @@ angular.module('dbWebApp')
                         attr.$$error = errors[0].plainText;
                     }
                 }
-                return attr;
             });
         };
 

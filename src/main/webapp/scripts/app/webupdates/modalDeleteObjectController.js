@@ -44,8 +44,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController',
 
             RestService.deleteObject(source, $scope.objectType, $scope.name, $scope.reason, deleteWithRefs, password).then(
                 function (resp ) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                    $modalInstance.close(whoisResources);
+                    $modalInstance.close(resp);
                 },
                 function (error) {
                     $modalInstance.dismiss(error.data);

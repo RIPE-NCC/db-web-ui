@@ -6,16 +6,16 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     var SOURCE = 'TEST';
 
     var RestService = {
-        createObject: function(source, objectType, attributes, passwords){
-           return {
-                then:function(s) {
-                    s(CREATE_RESPONSE);
+        createObject: function (source, objectType, attributes, passwords) {
+            return {
+                then: function (s) {
+                    s(WhoisResources.wrapSuccess(CREATE_RESPONSE));
                 }
             }
         },
-        fetchUiSelectResources: function(){
+        fetchUiSelectResources: function () {
             return {
-                then:function(s) {
+                then: function (s) {
                     s();
                 }
             }
@@ -23,11 +23,11 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     };
 
     var userInfoData = {
-        'username':'tdacruzper@ripe.net',
-        'displayName':'Test User',
-        'expiryDate':'[2015,7,7,14,58,3,244]',
-        'uuid':'aaaa-bbbb-cccc-dddd',
-        'active':'true'
+        'username': 'tdacruzper@ripe.net',
+        'displayName': 'Test User',
+        'expiryDate': '[2015,7,7,14,58,3,244]',
+        'uuid': 'aaaa-bbbb-cccc-dddd',
+        'active': 'true'
     };
 
     beforeEach(function () {
@@ -50,24 +50,29 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
             UserInfoService.clear();
 
             $log = {
-                debug: function(msg) {
+                debug: function (msg) {
                     //console.log('info:'+msg);
                 },
-                info: function(msg) {
+                info: function (msg) {
                     //console.log('info:'+msg);
                 },
-                error: function(msg) {
+                error: function (msg) {
                     //console.log('error:'+msg);
                 }
             };
 
             _$controller_('CreateSelfMaintainedMaintainerController', {
-                $scope: $scope, $stateParams: $stateParams, $log:$log, UserInfoService: UserInfoService, RestService: RestService, MessageStore: MessageStore
+                $scope: $scope,
+                $stateParams: $stateParams,
+                $log: $log,
+                UserInfoService: UserInfoService,
+                RestService: RestService,
+                MessageStore: MessageStore
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
-            $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+            $httpBackend.expectGET('api/user/info').respond(function (method, url) {
                 return [200, userInfoData, {}];
             });
 
@@ -76,7 +81,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         });
     });
 
-    afterEach(function() {
+    afterEach(function () {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
@@ -102,7 +107,10 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     it('should remove admin-c from the maintainer attributes', function () {
 
         $scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value = 'first-admin';
-        $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c', value: 'some-admin-c'}, {name: 'admin-c'});
+        $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({
+            name: 'admin-c',
+            value: 'some-admin-c'
+        }, {name: 'admin-c'});
 
         $scope.onAdminCRemoved({key: 'first-admin'});
         $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
@@ -178,7 +186,11 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
         var whoisResources = WhoisResources.wrapWhoisResources(CREATE_RESPONSE);
         expect(MessageStore.add).toHaveBeenCalledWith('test-mnt', whoisResources);
-        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', { source: SOURCE, objectType: 'mntner', name: 'test-mnt'});
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', {
+            source: SOURCE,
+            objectType: 'mntner',
+            name: 'test-mnt'
+        });
     });
 
     it('should not post if invalid attributes', function () {
@@ -198,10 +210,10 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         fillForm();
         spyOn(RestService, 'createObject').and.returnValue(
             {
-                then: function(s, f) {
+                then: function (s, f) {
                     f(ERROR_RESPONSE);
-            }
-         });
+                }
+            });
 
         spyOn(AlertService, 'populateFieldSpecificErrors');
         spyOn(AlertService, 'showWhoisResourceErrors');
@@ -220,71 +232,71 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 });
 
 var CREATE_RESPONSE = {
-    'link' : {
-    'type' : 'locator',
-        'href' : 'http://rest-prepdev.db.ripe.net/ripe/mntner'
+    'link': {
+        'type': 'locator',
+        'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner'
     },
-    'objects' : {
-    'object' : [ {
-        'type' : 'mntner',
-        'link' : {
-            'type' : 'locator',
-            'href' : 'http://rest-prepdev.db.ripe.net/ripe/mntner/jsdhgkjsd-mnt'
-        },
-        'source' : {
-            'id' : 'ripe'
-        },
-        'primary-key' : {
-            'attribute' : [ {
-                'name' : 'mntner',
-                'value' : 'test-mnt'
-            } ]
-        },
-        'attributes' : {
-            'attribute' : [ {
-                'name' : 'mntner',
-                'value' : 'jsdhgkjsd-mnt'
-            }, {
-                'name' : 'descr',
-                'value' : 'jjjj'
-            }, {
-                'link' : {
-                    'type' : 'locator',
-                    'href' : 'http://rest-prepdev.db.ripe.net/ripe/person/DW-RIPE'
-                },
-                'name' : 'admin-c',
-                'value' : 'DW-RIPE',
-                'referenced-type' : 'person'
-            }, {
-                'name' : 'upd-to',
-                'value' : 'tdacruzper@ripe.net'
-            }, {
-                'name' : 'auth',
-                'value' : 'SSO tdacruzper@ripe.net'
-            }, {
-                'link' : {
-                    'type' : 'locator',
-                    'href' : 'http://rest-prepdev.db.ripe.net/ripe/mntner/jsdhgkjsd-mnt'
-                },
-                'name' : 'mnt-by',
-                'value' : 'jsdhgkjsd-mnt',
-                'referenced-type' : 'mntner'
-            }, {
-                'name' : 'created',
-                'value' : '2015-08-12T11:56:29Z'
-            }, {
-                'name' : 'last-modified',
-                'value' : '2015-08-12T11:56:29Z'
-            }, {
-                'name' : 'source',
-                'value' : 'RIPE'
-            } ]
-        }
-    } ]
-},
- 'terms-and-conditions' : {
-    'type' : 'locator',
-        'href' : 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+    'objects': {
+        'object': [{
+            'type': 'mntner',
+            'link': {
+                'type': 'locator',
+                'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/jsdhgkjsd-mnt'
+            },
+            'source': {
+                'id': 'ripe'
+            },
+            'primary-key': {
+                'attribute': [{
+                    'name': 'mntner',
+                    'value': 'test-mnt'
+                }]
+            },
+            'attributes': {
+                'attribute': [{
+                    'name': 'mntner',
+                    'value': 'jsdhgkjsd-mnt'
+                }, {
+                    'name': 'descr',
+                    'value': 'jjjj'
+                }, {
+                    'link': {
+                        'type': 'locator',
+                        'href': 'http://rest-prepdev.db.ripe.net/ripe/person/DW-RIPE'
+                    },
+                    'name': 'admin-c',
+                    'value': 'DW-RIPE',
+                    'referenced-type': 'person'
+                }, {
+                    'name': 'upd-to',
+                    'value': 'tdacruzper@ripe.net'
+                }, {
+                    'name': 'auth',
+                    'value': 'SSO tdacruzper@ripe.net'
+                }, {
+                    'link': {
+                        'type': 'locator',
+                        'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/jsdhgkjsd-mnt'
+                    },
+                    'name': 'mnt-by',
+                    'value': 'jsdhgkjsd-mnt',
+                    'referenced-type': 'mntner'
+                }, {
+                    'name': 'created',
+                    'value': '2015-08-12T11:56:29Z'
+                }, {
+                    'name': 'last-modified',
+                    'value': '2015-08-12T11:56:29Z'
+                }, {
+                    'name': 'source',
+                    'value': 'RIPE'
+                }]
+            }
+        }]
+    },
+    'terms-and-conditions': {
+        'type': 'locator',
+        'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
     }
 };
 
