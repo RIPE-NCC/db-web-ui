@@ -253,25 +253,26 @@ angular.module('webUpdates')
                         return {key:val, readableName:val}
                     });
                 } else if (_isServerLookupKey(refs)) {
-                    return RestService.autocomplete(attrName, query, true, ['person', 'role', 'org-name','abuse-mailbox']).then(
-                        function (resp) {
-                            return _addNiceAutocompleteName(resp)
-                        }, function () {
-                            return [];
-                        });
-                    /*
-                     * If we are ready to start using advanced autocomplete
                     return RestService.autocompleteAdvanced( query, refs).then(
                         function (resp) {
-                            return _addNiceAutocompleteName(resp)
+                            return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName));
                         }, function () {
                             return [];
                         });
-                        */
                 } else {
                     // No suggestions since not a reference or enumeration
                     return [];
                 }
+            }
+
+            function _filterBasedOnAttr(suggestions, attrName) {
+                return _.filter(suggestions, function(item) {
+                    if( attrName === 'abuse-c') {
+                        $log.debug("Filter out suggestions without abuse-mailbox");
+                        return !_.isEmpty(item['abuse-mailbox']);
+                    }
+                    return true;
+                });
             }
 
             function isBrowserAutoComplete(refs,allowedValues){
