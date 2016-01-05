@@ -84,14 +84,14 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects.length).toBe(0);
     });
 
-    it('should extract the rpsl, type and name for each object', function () {
+    it('should extract the rpsl, type and name for each object indepent of capitalisation', function () {
         doSetupController();
 
         $scope.textMode = false;
         $scope.objects.rpsl =
             'person: Me\n' +
             '\n' +
-            'mntner: Him\n';
+            'MNTNER: Him\n';
 
         $scope.setWebMode();
 

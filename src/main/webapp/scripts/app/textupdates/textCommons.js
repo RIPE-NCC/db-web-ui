@@ -67,7 +67,7 @@ angular.module('textUpdates')
                 return errorCount === 0;
             }
 
-            this.authenticate = function (objectSource, objectType, ssoMaintainers, attributes, passwords, overrides) {
+            this.authenticate = function (objectSource, objectType, objectName, ssoMaintainers, attributes, passwords, overrides) {
                 var deferredObject = $q.defer();
                 var needsAuth = false;
 
@@ -81,7 +81,7 @@ angular.module('textUpdates')
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
                             needsAuth = true;
 
-                            _performAuthentication(objectSource, objectType, ssoMaintainers, objectMntners).then(
+                            _performAuthentication(objectSource, objectType, objectName, ssoMaintainers, objectMntners).then(
                                 function() {
                                     $log.debug( "Authentication succeeded");
                                     deferredObject.resolve(true);
@@ -106,12 +106,12 @@ angular.module('textUpdates')
                 }
             }
 
-            function _performAuthentication(objectSource, objectType, ssoMntners, objectMntners) {
+            function _performAuthentication(objectSource, objectType, objectName, ssoMntners, objectMntners) {
                 var deferredObject = $q.defer();
 
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
-                ModalService.openAuthenticationModal(objectSource, mntnersWithPasswords, mntnersWithoutPasswords).then(
+                ModalService.openAuthenticationModal(objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords).then(
                     function (result) {
                         AlertService.clearErrors();
 
@@ -172,6 +172,38 @@ angular.module('textUpdates')
                     onCancel: onCancel
                 });
             };
+
+            this.uncapitalize = function(attributes) {
+                return WhoisResources.wrapAttributes(
+                    _.map(attributes, function (attr) {
+                        attr.name = attr.name.toLowerCase();
+                        return attr;
+                    })
+                );
+            }
+
+            this.capitaliseMandatory = function(attributes) {
+                _.each(attributes, function (attr) {
+                    if (!_.isUndefined(attr.$$meta) && attr.$$meta.$$mandatory) {
+                            attr.name = attr.name.toUpperCase();
+                    }
+                });
+            }
+
+            this.getPasswordsForRestCall = function(objectType) {
+                var passwords = [];
+
+                if (CredentialsService.hasCredentials()) {
+                    passwords.push(CredentialsService.getCredentials().successfulPassword);
+                }
+
+                // For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                // This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
+                if (objectType === 'route' || objectType === 'route6' || objectType === 'aut-num') {
+                    passwords.push('RPSL');
+                }
+                return passwords;
+            }
 
 
         }]);

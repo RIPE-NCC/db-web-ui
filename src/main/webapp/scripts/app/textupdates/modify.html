@@ -1,11 +1,10 @@
+<button ng-click="switchToWebMode()" class="blue-button pull-right ga-text-modifyobj-switch-mode" style="border:0;">
+    Switch to web mode
+</button>
 <div>
     <h1>Modify &quot;{{object.type}}&quot; object</h1>
 
     <alerts></alerts>
-
-    <button ng-click="switchToWebMode()" class="blue-button pull-right ga-text-modifyobj-switch-mode" style="border:0;">
-        Switch to web mode
-    </button>
 
     <form id="textModifyForm">
 
@@ -17,12 +16,14 @@
                       ng-model="object.rpsl"
                       style="font-family:monospace;"></textarea>
 
-            <p>
-                You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.
-            </p>
+            <section class="supporting-text">
+                <p>You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</p>
+                <p>By submitting this form you explicitly express your agreement with the <a
+                    href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+            </section>
 
             <input type="submit" ng-click="submit()"
-                   class="blue-button pull-right ga-text-modifyobj-modify" value="Modify"/>
+                   class="blue-button pull-right ga-text-modifyobj-modify" value="Submit"/>
 
             <button ng-click="cancel()" class="blue-button pull-right ga-text-modifyobj-cancel" style="border:0;"> Cancel </button>
 

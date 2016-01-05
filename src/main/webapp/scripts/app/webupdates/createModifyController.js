@@ -556,6 +556,9 @@ angular.module('webUpdates')
                         // Create empty attribute with warning for each missing mandatory attribute
                         _insertMissingMandatoryAttributes();
 
+                        // save object for later diff in display-screen
+                        MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
+
                         // prevent warning upon modify with last-modified
                         $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
                             $scope.attributes.removeAttributeWithType('last-modified')
@@ -566,9 +569,6 @@ angular.module('webUpdates')
 
                         // starting point for further editing
                         $scope.maintainers.object = _extractEnrichMntnersFromObject($scope.attributes);
-
-                        // save object for later diff in display-screen
-                        MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
                         if(missingAbuseC()) {
                             $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
@@ -759,6 +759,8 @@ angular.module('webUpdates')
                 WebUpdatesCommons.performAuthentication(
                     $scope.maintainers,
                     $scope.source,
+                    $scope.objectType,
+                    $scope.name,
                     _onSuccessfulAuthentication,
                     _navigateAway)
             }

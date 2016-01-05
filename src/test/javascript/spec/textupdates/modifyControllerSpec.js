@@ -20,6 +20,16 @@ describe('textUpdates: TextModifyController', function () {
         'phone:+316\n' +
         'nic-hdl:TP-RIPE\n' +
         'mnt-by:TEST-MNT\n' +
+        'last-modified: 2012-02-27T10:11:12Z\n'+
+        'source:RIPE\n';
+
+
+    var testPersonRpslScreen =
+        'person:test person\n' +
+        'address:Amsterdam\n' +
+        'phone:+316\n' +
+        'nic-hdl:TP-RIPE\n' +
+        'mnt-by:TEST-MNT\n' +
         'source:RIPE\n';
 
     var testPersonRpslMissingPhone =
@@ -204,7 +214,7 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        expect($scope.object.rpsl).toEqual(testPersonRpsl);
+        expect($scope.object.rpsl).toEqual(testPersonRpslScreen );
     });
 
     it('should report an error when mandatory field is missing', function () {
@@ -310,7 +320,7 @@ describe('textUpdates: TextModifyController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPUT('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unformatted=true').respond(routeJSON);
+        $httpBackend.expectPUT('api/whois/RIPE/route/12.235.32.0%2F19AS1680?password=RPSL&unformatted=true').respond(routeJSON);
         $httpBackend.flush();
 
         expect($state.current.name).toBe('webupdates.display');

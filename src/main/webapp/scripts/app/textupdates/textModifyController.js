@@ -70,7 +70,7 @@ angular.module('textUpdates')
                         $scope.mntners.sso = results.mntners;
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
 
-                        TextCommons.authenticate($scope.object.source, $scope.object.type,
+                        TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.object.name,
                                 $scope.mntners.sso, attributes, [], []).then(
                             function(authenticated) {
                                 $log.error('Successfully authenticated');
@@ -103,13 +103,17 @@ angular.module('textUpdates')
                 // Extract attributes from response
                 var whoisResources = WhoisResources.wrapWhoisResources(objectToModify);
                 var attributes = WhoisResources.wrapAttributes(
-                    whoisResources.getAttributes()
+                    WhoisResources.enrichAttributesWithMetaInfo($scope.object.type, whoisResources.getAttributes())
                 );
-                $scope.object.rpsl = RpslService.toRpsl(attributes);
-                $log.debug("RPSL:" +$scope.object.rpsl );
 
                 // Needed by display screen
                 MessageStore.add('DIFF', _.cloneDeep(attributes));
+
+                // prevent last-modfied to be in
+                attributes.removeAttributeWithName('last-modified');
+
+                $scope.object.rpsl = RpslService.toRpsl(attributes);
+                $log.debug("RPSL:" +$scope.object.rpsl );
 
                 return attributes;
             }
@@ -123,7 +127,7 @@ angular.module('textUpdates')
                 }
                 var attributes = objects[0];
 
-                attributes = _uncapitalize(attributes);
+                attributes = TextCommons.uncapitalize(attributes);
                 $log.debug("attributes:" + JSON.stringify(attributes));
 
                 if (!TextCommons.validate($scope.object.type, attributes)) {
@@ -136,16 +140,19 @@ angular.module('textUpdates')
                     $scope.passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
 
-                TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.mntners.sso, attributes,
+                TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.object.name, $scope.mntners.sso, attributes,
                         $scope.passwords, overrides).then(
                     function(authenticated) {
                         $log.error('Successfully authenticated');
+
+                        // combine all passwords
+                        var combinedPaswords =_.union($scope.passwords, TextCommons.getPasswordsForRestCall( $scope.object.type));
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
                         $scope.restCalInProgress = true;
                         RestService.modifyObject($scope.object.source, $scope.object.type, $scope.object.name,
-                            WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.passwords, overrides, true).then(
+                            WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPaswords, overrides, true).then(
                             function(result) {
                                 $scope.restCalInProgress = false;
 
@@ -197,15 +204,6 @@ angular.module('textUpdates')
                     name: objectName,
                     method: operation
                 });
-            }
-
-            function _uncapitalize(attributes) {
-                return WhoisResources.wrapAttributes(
-                    _.map(attributes, function (attr) {
-                        attr.name = attr.name.toLowerCase();
-                        return attr;
-                    })
-                );
             }
 
            function switchToWebMode() {

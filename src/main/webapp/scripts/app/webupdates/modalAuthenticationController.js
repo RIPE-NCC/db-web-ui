@@ -1,16 +1,27 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'mntners', 'mntnersWithoutPassword',
-    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, mntners, mntnersWithoutPassword) {
+angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword',
+    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, objectType, objectName, mntners, mntnersWithoutPassword) {
 
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
         $scope.source = source;
+        $scope.objectType = objectType;
+        $scope.objectName = objectName;
         $scope.selected = {
             item: $scope.mntners[0],
             password: '',
             associate: true,
             message: undefined
+        };
+
+        $scope.allowForceDelete = function () {
+            if(_.any($scope.mntners, 'key', 'RIPE-NCC-END-MNT')) {
+                return false;
+            }
+
+            var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
+            return !_.isEmpty($scope.objectName) && _.contains(reclaimableObjectTypes, $scope.objectType);
         };
 
         $scope.cancel = function () {
