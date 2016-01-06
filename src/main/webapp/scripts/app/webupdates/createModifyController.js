@@ -3,12 +3,12 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
                 'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService',
-        function ($scope, $stateParams, $state, $log, $window, $q,
-                  WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
+        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
+        WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
                   WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService) {
 
@@ -228,12 +228,14 @@ angular.module('webUpdates')
                     } else if (item['org-name'] != null) {
                         name = item['org-name'];
                     } else if (item['descr'] != null) {
-                        name = item['descr'];
+                        name = item['descr'].join();
+                    } else if (item['owner'] != null) {
+                        name = item['owner'].join();
                     } else {
                         separator = '';
                     }
 
-                    item.readableName = item.key + separator + name;
+                    item.readableName = $sce.trustAsHtml(item.key + separator + name);
                     return item;
                 });
             }
