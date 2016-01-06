@@ -3,11 +3,11 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
                 'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService',
-        function ($scope, $stateParams, $state, $log, $window, $q,
+        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
         WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
                   WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService) {
@@ -235,9 +235,13 @@ angular.module('webUpdates')
                         separator = '';
                     }
 
-                    item.readableName = item.key + separator + name;
+                    item.readableName = $sce.trustAsHtml(_escape(item.key + separator + name));
                     return item;
                 });
+            }
+
+            function _escape(input) {
+                return input.replace(/\</g,'&lt;').replace(/\>/g, '&gt;');
             }
 
             function _isServerLookupKey(refs) {

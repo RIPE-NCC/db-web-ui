@@ -69,8 +69,6 @@
                    class="form-control"
                    typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs, attribute.$$meta.$$allowedValues)"
                    typeahead-min-length="1"
-                   typeahead-select-on-exact="true"
-                   typeahead-template-url="typeaheadTemplate.html"
                    ng-disabled="isToBeDisabled(attribute)"
                    autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs,attribute.$$meta.allowedValues)}}"
                    />
@@ -147,8 +145,3 @@
     </section>
 </form>
 
-<script type="text/ng-template" id="typeaheadTemplate.html">
-    <a>
-        <span ng-bind="match.label"></span>
-    </a>
-</script>
