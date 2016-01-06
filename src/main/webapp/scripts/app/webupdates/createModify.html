@@ -33,7 +33,7 @@
             <span class="fa fa-star" ng-if="isMine($item)"></span>
         </ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
-                           refresh="mntnerAutocomplete($select.search)"
+                               refresh="mntnerAutocomplete($select.search)"
                            refresh-delay="100">
             <div class="option">
                 <span class="title">{{mntner.key}}</span>
