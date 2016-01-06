@@ -3,11 +3,11 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
                 'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService',
-        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
+        function ($scope, $stateParams, $state, $log, $window, $q,
         WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
                   WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService) {
@@ -214,7 +214,7 @@ angular.module('webUpdates')
                 );
             }
 
-            function _addNiceAutocompleteName(items) {
+            function _addNiceAutocompleteName(items, attrName) {
                 return _.map(items, function (item) {
                     var name = '';
                     var separator = ' / ';
@@ -222,7 +222,7 @@ angular.module('webUpdates')
                         name = item.person;
                     } else if (item.role != null) {
                         name = item.role;
-                        if (item['abuse-mailbox'] != null) {
+                        if (attrName === 'abuse-c' && item['abuse-mailbox'] != null) {
                             name = name.concat( separator + item['abuse-mailbox']);
                         }
                     } else if (item['org-name'] != null) {
@@ -235,7 +235,7 @@ angular.module('webUpdates')
                         separator = '';
                     }
 
-                    item.readableName = $sce.trustAsHtml(item.key + separator + name);
+                    item.readableName = item.key + separator + name;
                     return item;
                 });
             }
@@ -259,7 +259,7 @@ angular.module('webUpdates')
                 } else if (_isServerLookupKey(refs)) {
                     return RestService.autocompleteAdvanced( query, refs).then(
                         function (resp) {
-                            return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName));
+                            return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
                         }, function () {
                             return [];
                         });
