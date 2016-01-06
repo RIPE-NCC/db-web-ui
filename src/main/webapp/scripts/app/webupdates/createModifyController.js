@@ -227,6 +227,8 @@ angular.module('webUpdates')
                         }
                     } else if (item['org-name'] != null) {
                         name = item['org-name'];
+                    } else if (item['descr'] != null) {
+                        name = item['descr'];
                     } else {
                         separator = '';
                     }
