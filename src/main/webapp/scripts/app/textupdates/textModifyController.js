@@ -158,10 +158,11 @@ angular.module('textUpdates')
                                 $scope.restCalInProgress = false;
 
                                 var whoisResources = error.data;
+
                                 AlertService.setAllErrors(whoisResources);
 
                                 if(!_.isEmpty(whoisResources.getAttributes())) {
-                                    ErrorReporterService.log('Modify', $scope.object.type, AlertService.getErrors(), whoisResources.getAttributes());
+                                    ErrorReporterService.log('TextModify', $scope.object.type, AlertService.getErrors(), whoisResources.getAttributes());
                                 }
                             }
                         );

@@ -207,6 +207,9 @@ angular.module('textUpdates')
                                 deferredObject.resolve(result);
                             },
                             function (error) {
+                                if(!_.isEmpty(error.data.getAttributes())) {
+                                    ErrorReporterService.log('MultiCreate', object.type, AlertService.getErrors(), error.data.getAttributes());
+                                }
                                 deferredObject.reject(error.data);
                             }
                         );
@@ -219,6 +222,9 @@ angular.module('textUpdates')
                                 deferredObject.resolve(result);
                             },
                             function (error) {
+                                if(!_.isEmpty(error.data.getAttributes())) {
+                                    ErrorReporterService.log('MultiModify', object.type, AlertService.getErrors(), error.data.getAttributes());
+                                }
                                 deferredObject.reject(error.data);
                             }
                         );

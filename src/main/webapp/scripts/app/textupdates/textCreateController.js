@@ -170,7 +170,7 @@ angular.module('textUpdates')
                                 var whoisResources = error.data;
                                 AlertService.setAllErrors(whoisResources);
                                 if (!_.isEmpty(whoisResources.getAttributes())) {
-                                    ErrorReporterService.log('Create', $scope.object.type, AlertService.getErrors(), whoisResources.getAttributes());
+                                    ErrorReporterService.log('TextCreate', $scope.object.type, AlertService.getErrors(), whoisResources.getAttributes());
                                 }
 
                             }

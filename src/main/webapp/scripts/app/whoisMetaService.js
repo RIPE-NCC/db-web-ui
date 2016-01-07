@@ -836,7 +836,7 @@ angular.module('dbWebApp')
             'geoloc': {
                 short: undefined,
                 description: 'The location coordinates for the resource.',
-                syntax: '<a href="https://en.wikipedia.org/wiki/Decimal_degrees" target="_blank">Decimal degrees</a> with negative numbers for South and West, e.g. 12.3456, -98.7654'
+                syntax: '<a href="https://en.wikipedia.org/wiki/Decimal_degrees" target="_blank">Decimal degrees</a> with negative numbers for South and West, e.g. 12.3456 -98.7654'
             },
             'holes': {
                 short: 'Lists the component address prefixes that are not reachable through the aggregate route.',
