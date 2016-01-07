@@ -19,7 +19,7 @@ angular.module('webUpdates')
 
                 $scope.ssoUserName = undefined;
 
-                $scope.source = source;
+                $scope.source = SOURCE;
 
                 $scope.personAttributes = WhoisResources.wrapAndEnrichAttributes('person',
                     WhoisResources.getMandatoryAttributesOnObjectType('person'));
