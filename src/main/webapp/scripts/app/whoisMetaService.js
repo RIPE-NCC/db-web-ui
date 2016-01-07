@@ -70,12 +70,13 @@ angular.module('dbWebApp')
             return keys;
         };
 
-        function _wrapMetaInAttribute( self, objectTypeName, attrName, attrValue, attrComment, attrLink, metaAttribute, idx ) {
+        function _wrapMetaInAttribute( self, objectTypeName, attrName, attrValue, attrComment, attrLink, reffedAttrType, metaAttribute, idx ) {
             return {
                 name: attrName,
                 value: attrValue,
                 comment: attrComment,
                 link: attrLink,
+                'referenced-type':reffedAttrType,
                 $$meta: {
                     $$idx: idx,
                     $$mandatory: metaAttribute.mandatory,
@@ -105,7 +106,7 @@ angular.module('dbWebApp')
                 if (!_.isUndefined(attr.$$meta)) {
                     idx = attr.$$meta.$$idx;
                 }
-                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attr.link, attrMeta, idx);
+                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attr.link, attr['referenced-type'], attrMeta, idx);
             });
 
             return result;
@@ -121,7 +122,7 @@ angular.module('dbWebApp')
             // enrich with order info
             var idx = 0;
             return _.map(this._getMetaAttributesOnObjectType(objectTypeName, false), function (meta) {
-                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, undefined, meta, idx);
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, undefined, undefined, meta, idx);
                 idx++;
                 return wrapped;
             });
@@ -136,7 +137,7 @@ angular.module('dbWebApp')
             // enrich with order info
             var idx = 0;
             return _.map(this._getMetaAttributesOnObjectType(objectTypeName, true), function (meta) {
-                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, undefined, meta, idx);
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, undefined, undefined, meta, idx);
                 idx++;
                 return wrapped;
             });
