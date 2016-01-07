@@ -70,7 +70,6 @@ angular.module('dbWebApp')
         };
 
         alertService.populateFieldSpecificErrors = function(objectType, attrs, whoisResources) {
-            var whoisResources = WhoisResources.wrapWhoisResources(whoisResources);
 
             _.each(attrs, function (attr) {
                 // keep existing error messages
@@ -84,11 +83,10 @@ angular.module('dbWebApp')
         };
 
         alertService.showWhoisResourceErrors = function( objectType, error ) {
-            var whoisResources = WhoisResources.wrapWhoisResources(error);
 
-            $rootScope.errors = whoisResources.getGlobalErrors();
-            $rootScope.warnings = whoisResources.getGlobalWarnings();
-            $rootScope.infos = whoisResources.getGlobalInfos();
+            $rootScope.errors = error.getGlobalErrors();
+            $rootScope.warnings = error.getGlobalWarnings();
+            $rootScope.infos = error.getGlobalInfos();
         };
 
         return alertService;

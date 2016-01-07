@@ -70,11 +70,12 @@ angular.module('dbWebApp')
             return keys;
         };
 
-        function _wrapMetaInAttribute( self, objectTypeName, attrName, attrValue, attrComment, metaAttribute, idx ) {
+        function _wrapMetaInAttribute( self, objectTypeName, attrName, attrValue, attrComment, attrLink, metaAttribute, idx ) {
             return {
                 name: attrName,
                 value: attrValue,
                 comment: attrComment,
+                link: attrLink,
                 $$meta: {
                     $$idx: idx,
                     $$mandatory: metaAttribute.mandatory,
@@ -90,10 +91,13 @@ angular.module('dbWebApp')
         }
 
         this.enrichAttributesWithMetaInfo = function (objectTypeName, attrs) {
+            if(_.isUndefined(objectTypeName) || _.isUndefined(attrs)) {
+                return attrs;
+            }
             var attrsMeta = this._getMetaAttributesOnObjectType(objectTypeName, false);
 
             var self = this;
-            return _.map(attrs, function (attr) {
+            var result =  _.map(attrs, function (attr) {
                 var attrMeta = _.find(attrsMeta, function (am) {
                     return am.name === attr.name;
                 });
@@ -101,8 +105,10 @@ angular.module('dbWebApp')
                 if (!_.isUndefined(attr.$$meta)) {
                     idx = attr.$$meta.$$idx;
                 }
-                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attrMeta, idx);
+                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attr.link, attrMeta, idx);
             });
+
+            return result;
         };
 
         this.getAllAttributesOnObjectType = function (objectTypeName) {
@@ -115,7 +121,7 @@ angular.module('dbWebApp')
             // enrich with order info
             var idx = 0;
             return _.map(this._getMetaAttributesOnObjectType(objectTypeName, false), function (meta) {
-                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, meta, idx);
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, undefined, meta, idx);
                 idx++;
                 return wrapped;
             });
@@ -130,7 +136,7 @@ angular.module('dbWebApp')
             // enrich with order info
             var idx = 0;
             return _.map(this._getMetaAttributesOnObjectType(objectTypeName, true), function (meta) {
-                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, meta, idx);
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, undefined, meta, idx);
                 idx++;
                 return wrapped;
             });

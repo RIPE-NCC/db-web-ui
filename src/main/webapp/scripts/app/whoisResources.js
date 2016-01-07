@@ -207,12 +207,18 @@ angular.module('dbWebApp')
         };
 
         var getObjectType = function () {
-            if( ! this.objects ) {
+            if (!this.objects || !this.objects.object || this.objects.object.length === 0 ) {
                 return undefined;
             }
-            var objectType =  this.objects.object[0].type;
-            if(!objectType) {
-                objectType = this.objects.object[0].attributes.attribute[0].name;
+            var obj = this.objects.object[0];
+
+            var objectType = undefined;
+            if ( obj.type ) {
+                objectType = obj.type;
+            } else if( obj.attributes.attribute[0].name ) {
+                objectType = obj.attributes.attribute[0].name;
+            } else {
+                $log.error("No object type found for " + JSON.stringify(this));
             }
             return objectType;
         };
@@ -254,12 +260,13 @@ angular.module('dbWebApp')
         };
 
         function isValidWhoisResources( whoisResources) {
-            if( _.isUndefined(whoisResources) || _.isNull(whoisResources) ) {
-                console.log('isValidWhoisResources: Null input:' + whoisResources);
+            if(_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
+                $log.error('isValidWhoisResources: Null input:' + JSON.stringify(whoisResources));
                 return false;
             }
-            if( _.has(whoisResources,'objects' ) === false && _.has(whoisResources,'errormessages' ) === false ) {
-                console.log('Missing objects or errormessages:' + whoisResources);
+            if( (_.isUndefined(whoisResources.objects)       || _.isNull(whoisResources.objects) ) &&
+                (_.isUndefined(whoisResources.errormessages) ||  _.isNull(whoisResources.errormessages) ) ) {
+                $log.error('isValidWhoisResources: Missing objects and errormessages:' + JSON.stringify(whoisResources));
                 return false;
             }
 
@@ -596,14 +603,14 @@ angular.module('dbWebApp')
 
         this.wrapSuccess = function(whoisResources) {
             var result = whoisResources;
-            if(!_.isUndefined(whoisResources)) {
+            if(!_.isUndefined(whoisResources) && isValidWhoisResources(whoisResources)) {
                 var wrapped = this.wrapWhoisResources(whoisResources);
-                if (whoisResources.objects) {
-                    var objectType = wrapped.getObjectType();
-                    var wrappedAttrs = this.wrapAttributes(
-                        this.enrichAttributesWithMetaInfo(objectType, wrapped.getAttributes())
+                var objectType = wrapped.getObjectType();
+                if (!_.isUndefined(objectType) && !_.isUndefined(wrapped.getAttributes())) {
+                    wrapped.objects.object[0].attributes.attribute =
+                        this.wrapAttributes(
+                            this.enrichAttributesWithMetaInfo(objectType, wrapped.getAttributes())
                     );
-                    wrapped.objects.object[0].attributes.attribute = wrappedAttrs;
                 }
                 result = wrapped;
             }
@@ -614,10 +621,9 @@ angular.module('dbWebApp')
             var whoisResources = error.data;
             if(_.isUndefined(whoisResources) ) {
                 whoisResources = error.config.data;
-
             }
             if ( ! isValidWhoisResources(whoisResources) ) {
-                $log.info("Not valid whois-resources:" + JSON.stringify(error));
+                $log.error("Not valid whois-resources:" + JSON.stringify(error));
                 whoisResources = {};
                 whoisResources.errormessages = {};
                 whoisResources.errormessages.errormessage = [];

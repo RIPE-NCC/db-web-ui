@@ -62,18 +62,14 @@ angular.module('webUpdates')
                 } else {
                     RestService.fetchObject($scope.objectSource, $scope.objectType, $scope.objectName, null).then(
                         function (resp) {
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                            $scope.attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
+                            $scope.attributes = resp.getAttributes();
                             WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
                             AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp);
-                            AlertService.setErrors(whoisResources);
+                            AlertService.setErrors(resp);
 
                         }, function (resp) {
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp.data);
-                            if (!_.isUndefined(whoisResources)) {
-                                AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
-                                AlertService.setErrors(whoisResources);
-                            }
+                            AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
+                            AlertService.setErrors(resp.data);
                         }
                     );
                 }

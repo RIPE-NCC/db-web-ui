@@ -204,8 +204,7 @@ angular.module('textUpdates')
                             WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
                             passwords, overrides, true).then(
                             function (result) {
-                                var whoisResources = WhoisResources.wrapWhoisResources(result);
-                                deferredObject.resolve(whoisResources);
+                                deferredObject.resolve(result);
                             },
                             function (error) {
                                 deferredObject.reject(error.data);
@@ -217,8 +216,7 @@ angular.module('textUpdates')
                             WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
                             passwords, overrides, true).then(
                             function (result) {
-                                var whoisResources = WhoisResources.wrapWhoisResources(result);
-                                deferredObject.resolve(whoisResources);
+                                deferredObject.resolve(result);
                             },
                             function (error) {
                                 deferredObject.reject(error.data);

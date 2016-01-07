@@ -84,7 +84,6 @@ angular.module('textUpdates')
                     }
                 ).catch(
                     function (error) {
-                        console.log('_fetchAndPopulateObject:'+JSON.stringify(error));
                         $scope.restCalInProgress = false;
                         if( error.data) {
                             AlertService.setErrors(error.data);
@@ -98,10 +97,7 @@ angular.module('textUpdates')
             function _handleFetchResponse(objectToModify) {
                 $log.debug('object to modify:' + JSON.stringify(objectToModify));
                 // Extract attributes from response
-                var whoisResources = WhoisResources.wrapWhoisResources(objectToModify);
-                var attributes = WhoisResources.wrapAttributes(
-                    WhoisResources.enrichAttributesWithMetaInfo($scope.object.type, whoisResources.getAttributes())
-                );
+                var attributes = objectToModify.getAttributes();
 
                 // Needed by display screen
                 MessageStore.add('DIFF', _.cloneDeep(attributes));

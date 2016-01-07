@@ -68,13 +68,13 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         var attrs = [
-            {name: 'mandatory1', value:'mandatory1value'},
+            {name: 'mandatory1', value:'mandatory1value', link: {type : "locator", href : "http://abc.com/here" }},
             {name: 'optional1', value:'optional1value', comment:'My comment'}
         ];
         expect($whoisMetaService.enrichAttributesWithMetaInfo('type1', attrs)).toEqual([
-            { name: 'mandatory1', value:'mandatory1value', comment: undefined, $$meta: {$$idx: undefined, $$mandatory:true,  $$multiple:false, $$primaryKey: undefined, $$short:'p A', $$description:'A', $$syntax:'S A', $$refs:[], $$allowedValues: undefined}},
-            { name: 'optional1',  value:'optional1value',  comment:'My comment', $$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$short:'p B', $$description:'B', $$syntax:'S B', $$refs:['b'], $$allowedValues: undefined}}
-        ])
+            { name: 'mandatory1', value:'mandatory1value', comment: undefined, link: {type : "locator", href : "http://abc.com/here" }, $$meta: {$$idx: undefined, $$mandatory:true,  $$multiple:false, $$primaryKey: undefined, $$short:'p A', $$description:'A', $$syntax:'S A', $$refs:[], $$allowedValues: undefined}},
+            { name: 'optional1',  value:'optional1value',  comment:'My comment', link:undefined,                                        §$$meta: {$$idx: undefined, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$short:'p B', $$description:'B', $$syntax:'S B', $$refs:['b'], $$allowedValues: undefined}}
+        ]);
     });
 
     it('should return exactly the mandatory meta attributes for a given type', function(){
@@ -138,8 +138,8 @@ describe('dbWebApp: WhoisMetaService', function () {
         };
 
         expect($whoisMetaService.getAllAttributesOnObjectType('type1')).toEqual([
-            { name:'mandatory1', value: undefined, comment: undefined, $$meta: {$$idx:0, $$mandatory:true, $$multiple:false,  $$primaryKey: undefined, $$short:'p A', $$description:'A', $$syntax:'S A', $$refs:[], $$allowedValues: undefined}},
-            { name:'optional1',  value: undefined, comment: undefined, $$meta: {$$idx:1, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$short:'p B', $$description:'B', $$syntax:'S B', $$refs:[], $$allowedValues: undefined}}
+            { name:'mandatory1', value: undefined, comment: undefined, link: undefined, $$meta: {$$idx:0, $$mandatory:true, $$multiple:false,  $$primaryKey: undefined, $$short:'p A', $$description:'A', $$syntax:'S A', $$refs:[], $$allowedValues: undefined}},
+            { name:'optional1',  value: undefined, comment: undefined, link: undefined, $$meta: {$$idx:1, $$mandatory:false, $$multiple:true,  $$primaryKey: undefined, $$short:'p B', $$description:'B', $$syntax:'S B', $$refs:[], $$allowedValues: undefined}}
         ])
     });
 
@@ -164,6 +164,7 @@ describe('dbWebApp: WhoisMetaService', function () {
                 name:'mandatory1',
                 value: undefined,
                 comment: undefined,
+                link:undefined,
                 $$meta: {
                     $$idx:0,$$mandatory:true, $$multiple:false, $$primaryKey: undefined, $$short:'p A',$$description: 'A', $$syntax:'S A', $$refs:[], $$allowedValues: undefined
                 }

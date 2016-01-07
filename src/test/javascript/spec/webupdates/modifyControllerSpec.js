@@ -114,7 +114,7 @@ describe('webUpdates: ModifyController', function () {
 
     });
 
-    it('should populate the ui based on object-tyoem meta model and source', function () {
+    it('should populate the ui based on object-type meta model and source', function () {
         var stateBefore = $state.current.name;
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toBeUndefined();

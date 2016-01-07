@@ -420,7 +420,6 @@ angular.module('webUpdates')
                         /* Instruct downstream screen (typically display screen) that object is in pending state */
                         WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
                     } else {
-                        console.log('submit error:'+$scope.attributes.toString() );
                         _validateForm();
                         AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
                         AlertService.setErrors(whoisResources);
@@ -548,7 +547,7 @@ angular.module('webUpdates')
                         MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
                         // prevent warning upon modify with last-modified
-                        $scope.attributes = $scope.attributes.removeAttributeWithType('last-modified');
+                        $scope.attributes.removeAttributeWithName('last-modified');
 
                         // this is where we must authenticate against
                         $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
@@ -662,7 +661,6 @@ angular.module('webUpdates')
             }
 
             function _validateForm() {
-                //$scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
                 return $scope.attributes.validate() && OrganisationHelper.validateAbuseC($scope.objectType, $scope.attributes);
             }
 
