@@ -85,13 +85,13 @@ angular.module('textUpdates')
                 ).catch(
                     function (error) {
                         $scope.restCalInProgress = false;
-                        if (error && error.data && TextCommons.isValidJson(error.data)) {
+                        if (error && error.data ) {
                             $log.error('Error fetching object:' + JSON.stringify(error));
                             var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                             AlertService.setErrors(whoisResources);
                         } else {
                             $log.error('Error interpreting responses:' + JSON.stringify(error));
-                            AlertService.setGlobalError('Error fetching information: Unexpected response');
+                            AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                         }
                     }
                 );
@@ -163,7 +163,7 @@ angular.module('textUpdates')
                             function(error) {
                                 $scope.restCalInProgress = false;
 
-                                if (_.isUndefined(error.data) || !TextCommons.isValidJson(error.data)) {
+                                if (_.isUndefined(error.data)) {
                                     $log.error('Response not understood:'+JSON.stringify(error));
                                     AlertService.setGlobalError('Error fetching information: Unexpected response');
                                     return;
