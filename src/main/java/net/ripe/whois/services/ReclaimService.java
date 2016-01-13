@@ -66,8 +66,10 @@ public class ReclaimService extends RestClient {
                 );
             }
 
+            List<String> stripped = stripRipeMntners(authenticationCandidates);
+
             // return response
-            return wrapIntoObjects(authenticationCandidates);
+            return wrapIntoObjects(stripped);
 
         } catch (Exception exc) {
             LOGGER.warn("Error getting mntners to reclaim object {}/{}/{}:{}", source, objectType, objectName, exc);
@@ -285,6 +287,19 @@ public class ReclaimService extends RestClient {
                 existingItems.add(newItem);
             }
         }
+    }
+
+    private List<String> stripRipeMntners( final List<String> mntners ) {
+        final List<String> stripped = Lists.newArrayList();
+
+        Preconditions.checkArgument(mntners != null);
+
+        for( String mntnerName: mntners ) {
+            if( !mntnerName.toUpperCase().startsWith("RIPE-NCC-")) {
+                stripped.add( mntnerName);
+            }
+        }
+        return stripped;
     }
 
     private List<Map<String, Object>> wrapIntoObjects(final List<String> authcandodates) {

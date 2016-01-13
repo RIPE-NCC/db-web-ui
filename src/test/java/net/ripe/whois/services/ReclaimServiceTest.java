@@ -172,7 +172,7 @@ public class ReclaimServiceTest {
                 RpslObject.parse("domain: 200.193.193.in-addr.arpa\n" + "mnt-by:  TEST0-MNT\n"),
                 Lists.newArrayList("inetnum", "inet6num"), "193.193.200.0/24",
                 Lists.newArrayList(
-                    RpslObject.parse("inetnum: 0.0.0.0 - 255.255.255.255\n"),
+                    RpslObject.parse("inetnum: 0.0.0.0 - 255.255.255.255\n" + "mnt-by: RIPE-NCC-RPSL-MNT\n"),
                     RpslObject.parse("inetnum: 193.0.0.0 - 195.255.255.255\n" + "mnt-by: TEST3-MNT\n"),
                     RpslObject.parse("inetnum: 193.193.192.0 - 193.193.223.255\n" + "mnt-domains: TEST2-MNT\n"),
                     RpslObject.parse("inetnum: 193.193.200.0 - 193.193.200.255\n" + "mnt-domains: TEST1-MNT\n")
