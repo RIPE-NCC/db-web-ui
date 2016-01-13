@@ -4,11 +4,10 @@
 
 angular.module('webUpdates')
     .controller('ReclaimController', [
-                '$scope', '$stateParams', '$state', '$log', '$window', 'WhoisResources', 'WebUpdatesCommons',
-                'CredentialsService', 'RestService', '$q', 'ModalService', 'MntnerService', 'AlertService', 'STATE',
-        function ($scope, $stateParams, $state, $log, $window, WhoisResources, WebUpdatesCommons,
-                CredentialsService, RestService, $q, ModalService, MntnerService, AlertService, STATE) {
-
+                '$scope', '$stateParams', '$state', '$log', '$q','WhoisResources', 'WebUpdatesCommons',
+                 'RestService', 'MntnerService', 'AlertService', 'STATE',
+        function ($scope, $stateParams, $state, $log, $q, WhoisResources, WebUpdatesCommons,
+                  RestService, MntnerService, AlertService, STATE) {
 
             $scope.reclaim = reclaim;
             $scope.cancel = cancel;
@@ -37,7 +36,7 @@ angular.module('webUpdates')
                 $scope.maintainers = {
                     sso: [],
                     object: [],
-                    objectOriginal:[],
+                    objectOriginal:[], // needed to make MntnerService.performAuthentication happy
                     selected: undefined
                 };
 
@@ -55,7 +54,9 @@ angular.module('webUpdates')
             }
 
             function _isFormValid() {
-                return !_.isUndefined($scope.maintainers.selected);
+                var status =  !_.isUndefined($scope.maintainers.selected);
+                $log.debug('_isFormValid:'+status);
+                return status;
             }
 
             function _validateParamsAndShowErrors(){
@@ -87,7 +88,7 @@ angular.module('webUpdates')
 
             function _fetchDataForReclaim() {
 
-                // wait until both have completed
+                // wait until all three have completed
                 $scope.restCallInProgress = true;
                 $q.all({
                     objectToModify: RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name),
@@ -103,7 +104,7 @@ angular.module('webUpdates')
 
                         // store mntners for SSO account
                         $scope.maintainers.sso = results.ssoMntners;
-                        $log.debug('ssoMntners:' + JSON.stringify($scope.maintainers.sso));
+                        $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
                         // store mntners that can be used to reclaim object
                         if( results.objectMntners.length === 0 ) {
@@ -118,14 +119,19 @@ angular.module('webUpdates')
                             function (enrichedMntners) {
                                 $scope.restCallInProgress = false;
 
-                                $scope.maintainers.object = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, []);
-                                if( results.objectMntners.length === 0 ) {
-                                    AlertService.setGlobalError('No mntners with password found to reclaim this object');
-                                    return;
-                                }
+                                $scope.maintainers.object = enrichedMntners;
+                                //    MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, []);
+                                //if( results.objectMntners.length === 0 ) {
+                                //    AlertService.setGlobalError('No mntners with password found to reclaim this object');
+                                //    return;
+                                //}
+                                $log.debug('maintainers.object:' + JSON.stringify($scope.maintainers.object ));
+
+                                // TODO when has RPSL-mntner: remove RPSL mntner from list select but prevent popup
                                 $scope.maintainers.selected = $scope.maintainers.object[0];
 
-                            }, function (error) {
+                            },
+                            function (error) {
                                 $scope.restCallInProgress = false;
                                 $log.error('Error fetching mntner details' + JSON.stringify(error));
                                 AlertService.setGlobalError('Error fetching maintainer details');
@@ -160,12 +166,13 @@ angular.module('webUpdates')
 
             function reclaim () {
                 if (_isFormValid()){
-                    // TODO: check if authentication dialog is needefd
                     if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, [], $scope.maintainers.object)) {
+                        $log.debug("Need auth");
                         _performAuthentication();
-                        return;
+                    } else {
+                        $log.debug("No auth needed");
+                        _onSuccessfulAuthentication();
                     }
-
                 }
             }
 
@@ -180,15 +187,8 @@ angular.module('webUpdates')
             }
 
             function _onSuccessfulAuthentication() {
+                $log.debug("Nav to delete screen");
                 WebUpdatesCommons.navigateToDelete($scope.object.source, $scope.object.type, $scope.object.name, STATE.RECLAIM);
-            }
-
-            function _navigateToReclaim() {
-                $state.transitionTo(STATE.RECLAIM, {
-                    source: $scope.objectSource,
-                    objectType: $scope.objectType,
-                    name: $scope.objectName
-                });
             }
 
         }]);

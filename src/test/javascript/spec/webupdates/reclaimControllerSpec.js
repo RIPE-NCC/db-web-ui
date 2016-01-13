@@ -79,7 +79,7 @@ describe('webUpdates: ReclaimController', function () {
                     });
 
                 $httpBackend.whenGET('api/user/mntners').respond([
-                    {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true}
+                    {key:'TESTSSO-MNT', type: 'mntner', auth:['SSO'], mine:true}
                 ]);
 
                 $httpBackend.expectGET('api/reclaim/RIPE/inetnum/111%2520-%2520255').respond(
@@ -104,7 +104,7 @@ describe('webUpdates: ReclaimController', function () {
                 $stateParams.name = '111%20-%20255';
 
                 _$controller_('ReclaimController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams
+                    $scope: $scope, $state: $state, $stateParams: $stateParams, $log:$log
                 });
 
                 $httpBackend.flush();
@@ -132,6 +132,8 @@ describe('webUpdates: ReclaimController', function () {
         createReclaimController();
 
         $scope.reclaim();
+
+        $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.flush();
 
         expect($state.current.name).toBe('webupdates.delete');
@@ -140,6 +142,11 @@ describe('webUpdates: ReclaimController', function () {
         expect($stateParams.name).toBe('111%20-%20255');
         expect($stateParams.onCancel).toBe('webupdates.reclaim');
 
+    });
+
+    it('should present auth popup upon reclaim', function() {
+        createReclaimController();
+        // TODO: expect auth popup
     });
 
     it('should populate the ui with attributes', function () {
