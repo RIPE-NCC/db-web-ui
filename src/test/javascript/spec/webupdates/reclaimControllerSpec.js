@@ -39,13 +39,13 @@ describe('webUpdates: ReclaimController', function () {
             CredentialsService = _CredentialsService_;
             $log = {
                 debug: function(msg) {
-                    //console.log('info:'+msg);
+                    console.log('info:'+msg);
                 },
                 info: function(msg) {
-                    //console.log('info:'+msg);
+                    console.log('info:'+msg);
                 },
                 error: function(msg) {
-                    //console.log('error:'+msg);
+                    console.log('error:'+msg);
                 }
             };
 
@@ -73,18 +73,28 @@ describe('webUpdates: ReclaimController', function () {
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
 
-                $httpBackend.whenGET('api/user/mntners').respond([
-                    {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true}
-                ]);
-
-                $httpBackend.expectGET('api/whois/RIPE/inetnum/111%20-%20255?password=@123&unfiltered=true').respond(
+                $httpBackend.expectGET('api/whois/RIPE/inetnum/111%20-%20255?unfiltered=true').respond(
                     function(method,url) {
                         return [200, objectToDisplay, {}];
                     });
 
+                $httpBackend.whenGET('api/user/mntners').respond([
+                    {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true}
+                ]);
+
+                $httpBackend.expectGET('api/reclaim/RIPE/inetnum/111%2520-%2520255').respond(
+                    function(method,url) {
+                        return [200, [ {key:'TESTSSO-MNT', type:'mntner', mine:false} ], {}];
+                    });
+
+                $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TESTSSO-MNT').respond(
+                    function(method,url) {
+                        return [200, [ {key:'TESTSSO-MNT', type:'mntner', auth:['MD5-PW','SSO']} ], {}];
+                    });
+
                 $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
                     function(method,url) {
-                        return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW','SSO']} ], {}];
+                        return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW']} ], {}];
                     });
 
                 CredentialsService.setCredentials('TEST-MNT', '@123');
@@ -112,9 +122,9 @@ describe('webUpdates: ReclaimController', function () {
 
         createReclaimController();
 
-        expect($scope.objectType).toBe('inetnum');
-        expect($scope.objectSource).toBe(SOURCE);
-        expect($scope.objectName).toBe(INETNUM);
+        expect($scope.object.type).toBe('inetnum');
+        expect($scope.object.source).toBe(SOURCE);
+        expect($scope.object.name).toBe(INETNUM);
     });
 
     it('should go to delete controler on reclaim', function() {
@@ -135,9 +145,9 @@ describe('webUpdates: ReclaimController', function () {
     it('should populate the ui with attributes', function () {
         createReclaimController();
 
-        expect($scope.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
-        expect($scope.attributes.getSingleAttributeOnName('descr').value).toEqual('description');
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($scope.object.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
+        expect($scope.object.attributes.getSingleAttributeOnName('descr').value).toEqual('description');
+        expect($scope.object.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
     });
 
     it('should transition to display state if cancel is pressed', function() {
@@ -241,7 +251,13 @@ describe('webUpdates: ReclaimController should be able to handle escape objected
             $stateParams.name = NAME;
 
             $httpBackend.whenGET('api/user/mntners').respond([
-                {key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true}
+                {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
+            ]);
+
+            $httpBackend.whenGET('api/reclaim/RIPE/route/12.235.32.0%252F19AS1680').respond([
+                {key: 'TEST-MNT', type: 'mntner', mine: false},
+                {key: 'TESTSSO-MNT', type: 'mntner', mine: false},
+
             ]);
 
             $httpBackend.whenGET('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true').respond(
@@ -264,6 +280,11 @@ describe('webUpdates: ReclaimController should be able to handle escape objected
                             }
 
                         }, {}];
+                });
+
+            $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TESTSSO-MNT').respond(
+                function (method, url) {
+                    return [200, [{key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO', 'MD5-PW']}], {}];
                 });
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
