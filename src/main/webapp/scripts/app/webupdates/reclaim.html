@@ -1,12 +1,21 @@
 <div>
 
-    <h1>Reclaim {{objectType}} {{objectName}}</h1>
+    <h1>Force delete {{objectType}} {{objectName}}</h1>
+
+
+    <section>
+        <div class="alert alert-info">
+            Force delete allows you to delete inet(6)num, route(6) and domain objects by using the maintainer of a covering address space object,
+            instead of the maintainer of the object itself. This means the "mnt-lower:" of an allocation or the "mnt-by:" of a provider
+            independent (PI) or anycast assignment each have the authority to force delete any more specific or related object.
+        </div>
+    </section>
 
     <alerts></alerts>
 
     <section class="inner-container">
         <br/>
-        <strong>Object to reclaim</strong>
+        <strong>Object to be deleted</strong>
         <br/><br/>
         <table class="success-fields grey">
             <tr ng-repeat="attribute in object.attributes">
@@ -20,7 +29,7 @@
         </table>
 
         <span>
-            <input type="submit" ng-click="reclaim()" ng-disabled="!isFormValid() || restCallInProgress" class="blue-button pull-right ga-reclaimobj-reclaim" value="Reclaim this object" />
+            <input type="submit" ng-click="reclaim()" ng-disabled="!isFormValid() || restCallInProgress" class="red-button pull-right ga-reclaimobj-reclaim" value="Reclaim this object" />
             <button ng-click="cancel()" class="blue-button pull-right ga-reclaimobj-cancel" style="border:0;">Cancel</button>
         </span>
 
