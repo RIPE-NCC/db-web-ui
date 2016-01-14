@@ -157,6 +157,41 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
+    it('should extract authentication candidates from error resp', function() {
+        var errorResponse = $whoisResources.wrapWhoisResources({
+            errormessages: {
+                errormessage: [
+                    { severity: "Error",
+                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                        args: [
+                            {value: "inetnum"  }, {value: "194.219.52.240 - 194.219.52.243"},
+                            {value: "mnt-by" },{value: "TPOLYCHNIA4-MNT"}
+                        ]
+                    },
+                    {  severity: "Error",
+                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                        args: [
+                            { value: "inetnum" }, {  value: "194.219.0.0 - 194.219.255.255" },
+                            { value: "mnt-lower" }, { value: "FORTHNETGR-MNT" }
+                        ]
+                    },
+                    {  severity: "Error",
+                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                        args: [  { value: "inetnum"  }, {  value: "194.219.0.0 - 194.219.255.255" },
+                            { value: "mnt-by"  }, { value: "RIPE-NCC-HM-MNT, AARDVARK-MNT"  }
+                        ]
+                    },
+                    { severity: "Info",
+                        text: "Dry-run performed, no changes to the database have been made" }
+                ]
+            }
+        });
+
+        expect(errorResponse.getAuthenticationCandidatesFromError()).toEqual(
+            ['TPOLYCHNIA4-MNT', 'FORTHNETGR-MNT', 'RIPE-NCC-HM-MNT', ' AARDVARK-MNT']
+        );
+
+    });
     it('should interact with whoisresources success-response', function () {
 
         var successResponse = $whoisResources.wrapWhoisResources({

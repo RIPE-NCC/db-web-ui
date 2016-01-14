@@ -97,6 +97,11 @@ describe('webUpdates: ReclaimController', function () {
                         return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW']} ], {}];
                     });
 
+                $httpBackend.expectDELETE('api/whois/RIPE/inetnum/111%20-%20255?dry-run=true&reason=dry-run').respond(
+                    function(method,url) {
+                        return [200, objectToDisplay, {}];
+                    });
+
                 CredentialsService.setCredentials('TEST-MNT', '@123');
 
                 $stateParams.source = SOURCE;
@@ -297,6 +302,11 @@ describe('webUpdates: ReclaimController should be able to handle escape objected
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
                 function (method, url) {
                     return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
+                });
+
+            $httpBackend.expectDELETE('api/whois/RIPE/inetnum/111%20-%20255?dry-run=true&reason=dry-run').respond(
+                function(method,url) {
+                    return [200, objectToDisplay, {}];
                 });
 
             _$controller_('ReclaimController', {

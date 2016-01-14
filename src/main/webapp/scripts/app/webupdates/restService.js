@@ -30,10 +30,13 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.deleteObject = function(source, objectType, name, reason, withReferences, passwords) {
+                this.deleteObject = function(source, objectType, name, reason, withReferences, passwords, dryRun) {
                     var deferredObject = $q.defer();
 
                     var service = withReferences ? 'references' : 'whois';
+                    if(_.isUndefined(dryRun)) {
+                        dryRun = false;
+                    }
 
                     $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
                         ' reason:' + reason + ' with-refs:' + withReferences);
@@ -42,7 +45,8 @@ angular.module('dbWebApp')
                         {   source: source,
                             objectType: objectType,
                             name: name, // Note: double encoding not needed for delete
-                            password: '@password'
+                            password: '@password',
+                            'dry-run': dryRun
                         }).delete({password:passwords, reason: reason})
                         .$promise.then(
                         function (result) {
@@ -210,46 +214,25 @@ angular.module('dbWebApp')
 
                     $log.debug('authenticate start for method: ' + method + ' and objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    if( method === 'Reclaim') {
-                        // Perform a dry-run delete to detect if supplied password was correct
-                        $resource('api/whois/:source/:objectType/:objectName',
-                            {
-                                source: source,
-                                objectType: objectType,
-                                objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                                'dry-run': true,
-                                password: '@password'
-                            }).delete({password: passwords})
-                            .$promise
-                            .then(function (result) {
-                                $log.debug('reclaim authenticate success:' + JSON.stringify(result));
-                                deferredObject.resolve(result);
-                            }, function (error) {
-                                $log.error('reclaim authenticate error:' + JSON.stringify(error));
-                                deferredObject.reject(error);
-                            }
-                        );
-                    } else {
-                        // Perform a regular get to detect if supplied password was correct
-                        $resource('api/whois/:source/:objectType/:objectName',
-                            {
-                                source: source,
-                                objectType: objectType,
-                                objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                                unfiltered: true,
-                                password: '@password'
-                            }).get({password: passwords})
-                            .$promise
-                            .then(function (result) {
-                                $log.debug('authenticate success:' + JSON.stringify(result));
-                                deferredObject.resolve(result);
-                            }, function (error) {
-                                deferredObject.resolve(result);
-                                $log.error('authenticate error:' + JSON.stringify(error));
-                                deferredObject.reject(error);
-                            }
-                        );
-                    }
+                    // Perform a get on the mntner to detect if supplied password was correct
+                    $resource('api/whois/:source/:objectType/:objectName',
+                        {
+                            source: source,
+                            objectType: objectType,
+                            objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            unfiltered: true,
+                            password: '@password'
+                        }).get({password: passwords})
+                        .$promise
+                        .then(function (result) {
+                            $log.debug('authenticate success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            deferredObject.resolve(result);
+                            $log.error('authenticate error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
 
                     return deferredObject.promise;
                 };

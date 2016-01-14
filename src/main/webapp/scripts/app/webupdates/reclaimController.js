@@ -90,7 +90,7 @@ angular.module('webUpdates')
                 $q.all({
                     objectToModify: RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name),
                     ssoMntners: RestService.fetchMntnersForSSOAccount(),
-                    objectMntners: RestService.getMntnersToReclaim($scope.object.source, $scope.object.type, $scope.object.name)
+                    objectMntners: RestService.getMntnersToReclaim($scope.object.source, $scope.object.type, $scope.object.name),
                 }).then(
                     function (results) {
                         $scope.restCallInProgress = false;
@@ -119,6 +119,31 @@ angular.module('webUpdates')
                                 $scope.maintainers.object = enrichedMntners;
                                 $log.debug('maintainers.object:' + JSON.stringify($scope.maintainers.object ));
 
+                                $scope.restCallInProgress = true;
+                                RestService.deleteObject($scope.object.source, $scope.object.type, $scope.object.name, 'dry-run', false,  [], true).then(
+                                    function(resp) {
+                                        $scope.restCallInProgress = false;
+                                        $log.debug('auth can be performed without interactive popup');
+                                    },
+                                    function(error) {
+                                        $scope.restCallInProgress = false;
+                                        var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                        if( whoisResources.getRequiresAdminRightFromError()) {
+                                            AlertService.setGlobalError('Deleting this object requires administrative authorisation');
+                                        } else {
+                                            var authCandidates = _.filter(whoisResources.getAuthenticationCandidatesFromError(), function (mntner) {
+                                                return !mntner.startsWith('RIPE-NCC-');
+                                            });
+                                            $log.debug('auth mntners:' + authCandidates);
+                                            // TODO: this should return the same thing as our reclaim service
+                                            if( authCandidates.length != $scope.maintainers.object.length) {
+                                                $log.error("Different mechanisms deliver different results:");
+                                                $log.error("Via service:" + $scope.maintainers.object);
+                                                $log.error("Via dry-run-delete error:" + authCandidates);
+                                            }
+                                        }
+                                    }
+                                );
                             },
                             function (error) {
                                 $scope.restCallInProgress = false;
