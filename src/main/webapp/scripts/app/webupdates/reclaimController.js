@@ -37,7 +37,6 @@ angular.module('webUpdates')
                     sso: [],
                     object: [],
                     objectOriginal:[], // needed to make MntnerService.performAuthentication happy
-                    selected: undefined
                 };
 
                 var hasError =  _validateParamsAndShowErrors();
@@ -54,9 +53,7 @@ angular.module('webUpdates')
             }
 
             function _isFormValid() {
-                var status =  !_.isUndefined($scope.maintainers.selected);
-                $log.debug('_isFormValid:'+status);
-                return status;
+                return ! AlertService.hasErrors();
             }
 
             function _validateParamsAndShowErrors(){
@@ -120,15 +117,7 @@ angular.module('webUpdates')
                                 $scope.restCallInProgress = false;
 
                                 $scope.maintainers.object = enrichedMntners;
-                                //    MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, []);
-                                //if( results.objectMntners.length === 0 ) {
-                                //    AlertService.setGlobalError('No mntners with password found to reclaim this object');
-                                //    return;
-                                //}
                                 $log.debug('maintainers.object:' + JSON.stringify($scope.maintainers.object ));
-
-                                // TODO when has RPSL-mntner: remove RPSL mntner from list select but prevent popup
-                                $scope.maintainers.selected = $scope.maintainers.object[0];
 
                             },
                             function (error) {
@@ -177,8 +166,9 @@ angular.module('webUpdates')
             }
 
             function _performAuthentication() {
-                WebUpdatesCommons.performAuthentication(
+               WebUpdatesCommons.performAuthentication(
                     $scope.maintainers,
+                    'Reclaim',
                     $scope.object.source,
                     $scope.object.type,
                     $scope.object.name,

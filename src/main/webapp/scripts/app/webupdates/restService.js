@@ -205,28 +205,51 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.authenticate = function (source, objectType, objectName, passwords) {
+                this.authenticate = function (method, source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('authenticate start for method: ' + method + ' and objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    $resource('api/whois/:source/:objectType/:objectName',
-                        {
-                            source: source,
-                            objectType: objectType,
-                            objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            unfiltered: true,
-                            password: '@password'
-                        }).get({password:passwords})
-                        .$promise
-                        .then(function (result) {
-                            $log.debug('authenticate success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function (error) {
-                            $log.error('authenticate error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        }
-                    );
+                    if( method === 'Reclaim') {
+                        // Perform a dry-run delete to detect if supplied password was correct
+                        $resource('api/whois/:source/:objectType/:objectName',
+                            {
+                                source: source,
+                                objectType: objectType,
+                                objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                                'dry-run': true,
+                                password: '@password'
+                            }).delete({password: passwords})
+                            .$promise
+                            .then(function (result) {
+                                $log.debug('reclaim authenticate success:' + JSON.stringify(result));
+                                deferredObject.resolve(result);
+                            }, function (error) {
+                                $log.error('reclaim authenticate error:' + JSON.stringify(error));
+                                deferredObject.reject(error);
+                            }
+                        );
+                    } else {
+                        // Perform a regular get to detect if supplied password was correct
+                        $resource('api/whois/:source/:objectType/:objectName',
+                            {
+                                source: source,
+                                objectType: objectType,
+                                objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                                unfiltered: true,
+                                password: '@password'
+                            }).get({password: passwords})
+                            .$promise
+                            .then(function (result) {
+                                $log.debug('authenticate success:' + JSON.stringify(result));
+                                deferredObject.resolve(result);
+                            }, function (error) {
+                                deferredObject.resolve(result);
+                                $log.error('authenticate error:' + JSON.stringify(error));
+                                deferredObject.reject(error);
+                            }
+                        );
+                    }
 
                     return deferredObject.promise;
                 };
