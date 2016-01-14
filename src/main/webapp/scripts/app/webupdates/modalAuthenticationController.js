@@ -29,14 +29,6 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
             return !_.isEmpty($scope.objectName) && _.contains(reclaimableObjectTypes, $scope.objectType);
         };
 
-        $scope.associationSupported = function () {
-            if (method === 'Reclaim') {
-                $scope.selected.associate = false;
-                return false;
-            }
-            return true;
-        }
-
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
