@@ -1,6 +1,6 @@
 'use strict';
 
-describe('webUpdates: ReclaimController', function () {
+describe('webUpdates: ForceDeleteController', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
     var WhoisResources;
@@ -16,7 +16,7 @@ describe('webUpdates: ReclaimController', function () {
     var INETNUM = '111 - 255';
     var SOURCE = 'RIPE';
 
-    var createReclaimController;
+    var createForceDeleteController;
 
     var objectToDisplay;
 
@@ -69,7 +69,7 @@ describe('webUpdates: ReclaimController', function () {
 
                 });
 
-            createReclaimController = function () {
+            createForceDeleteController = function () {
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
 
@@ -82,7 +82,7 @@ describe('webUpdates: ReclaimController', function () {
                     {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
                 ]);
 
-                $httpBackend.expectGET('api/reclaim/RIPE/inetnum/111%2520-%2520255').respond(
+                $httpBackend.expectGET('api/forceDelete/RIPE/inetnum/111%2520-%2520255').respond(
                     function (method, url) {
                         return [200, [{key: 'TESTSSO-MNT', type: 'mntner', mine: false}], {}];
                     });
@@ -108,7 +108,7 @@ describe('webUpdates: ReclaimController', function () {
                 $stateParams.objectType = 'inetnum';
                 $stateParams.name = '111%20-%20255';
 
-                _$controller_('ReclaimController', {
+                _$controller_('ForceDeleteController', {
                     $scope: $scope, $state: $state, $stateParams: $stateParams, $log: $log
                 });
 
@@ -125,7 +125,7 @@ describe('webUpdates: ReclaimController', function () {
 
     it('should get parameters from url', function () {
 
-        createReclaimController();
+        createForceDeleteController();
 
         expect($scope.object.type).toBe('inetnum');
         expect($scope.object.source).toBe(SOURCE);
@@ -133,7 +133,7 @@ describe('webUpdates: ReclaimController', function () {
     });
 
     it('should populate the ui with attributes', function () {
-        createReclaimController();
+        createForceDeleteController();
 
         expect($scope.object.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
         expect($scope.object.attributes.getSingleAttributeOnName('descr').value).toEqual('description');
@@ -141,7 +141,7 @@ describe('webUpdates: ReclaimController', function () {
     });
 
     it('should transition to display state if cancel is pressed', function () {
-        createReclaimController();
+        createForceDeleteController();
         spyOn($state, 'transitionTo');
 
         $scope.cancel();
@@ -162,7 +162,7 @@ describe('webUpdates: ReclaimController', function () {
         $stateParams.objectType = 'mntner';
         $stateParams.name = 'TPOLYCHNIA-MNT';
 
-        $controller('ReclaimController', {
+        $controller('ForceDeleteController', {
             $scope: $scope, $state: $state, $stateParams: $stateParams
         });
 
@@ -171,7 +171,7 @@ describe('webUpdates: ReclaimController', function () {
         //console.log('attributes::::' + JSON.stringify($scope.attributes));
         //expect($scope.attributes).toBe([]);
         expect($rootScope.errors[0].plainText)
-            .toBe('Only inetnum, inet6num, route, route6, domain object types are reclaimable');
+            .toBe('Only inetnum, inet6num, route, route6, domain object types are force-deletable');
     });
 
 
@@ -183,7 +183,7 @@ describe('webUpdates: ReclaimController', function () {
         $stateParams.objectType = 'inetnum';
         $stateParams.name = undefined;
 
-        $controller('ReclaimController', {
+        $controller('ForceDeleteController', {
             $scope: $scope, $state: $state, $stateParams: $stateParams
         });
 
@@ -201,7 +201,7 @@ describe('webUpdates: ReclaimController', function () {
         $stateParams.objectType = 'inetnum';
         $stateParams.name = 'asdf';
 
-        $controller('ReclaimController', {
+        $controller('ForceDeleteController', {
             $scope: $scope, $state: $state, $stateParams: $stateParams
         });
 
@@ -214,9 +214,9 @@ describe('webUpdates: ReclaimController', function () {
 
     it('should go to delete controler on reclaim', function () {
 
-        createReclaimController();
+        createForceDeleteController();
 
-        $scope.reclaim();
+        $scope.forceDelete();
 
         $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.flush();
@@ -225,18 +225,18 @@ describe('webUpdates: ReclaimController', function () {
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe('inetnum');
         expect($stateParams.name).toBe('111%20-%20255');
-        expect($stateParams.onCancel).toBe('webupdates.reclaim');
+        expect($stateParams.onCancel).toBe('webupdates.forceDelete');
 
     });
 
-    it('should present auth popup upon reclaim', function () {
-        createReclaimController();
+    it('should present auth popup upon force-delete', function () {
+        createForceDeleteController();
         // TODO: expect auth popup
     });
 
 });
 
-describe('webUpdates: ReclaimController should be able to handle escape objected with slash', function () {
+describe('webUpdates: ForceDeleteController should be able to handle escape objected with slash', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
     var MessageStore;
@@ -273,7 +273,7 @@ describe('webUpdates: ReclaimController should be able to handle escape objected
                 $stateParams.source = SOURCE;
                 $stateParams.name = NAME;
 
-                _$controller_('ReclaimController', {
+                _$controller_('ForceDeleteController', {
                     $scope: $scope, $state: $state, $stateParams: $stateParams
                 });
 
@@ -291,7 +291,7 @@ describe('webUpdates: ReclaimController should be able to handle escape objected
             {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
         ]);
 
-        $httpBackend.whenGET('api/reclaim/RIPE/route/12.235.32.0%252F19AS1680').respond([
+        $httpBackend.whenGET('api/forceDelete/RIPE/route/12.235.32.0%252F19AS1680').respond([
             {key: 'TEST-MNT', type: 'mntner', mine: false},
             {key: 'TESTSSO-MNT', type: 'mntner', mine: false},
 
@@ -336,7 +336,7 @@ describe('webUpdates: ReclaimController should be able to handle escape objected
             {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
         ]);
 
-        $httpBackend.whenGET('api/reclaim/RIPE/route/12.235.32.0%252F19AS1680').respond([
+        $httpBackend.whenGET('api/forceDelete/RIPE/route/12.235.32.0%252F19AS1680').respond([
             {key: 'TEST-MNT', type: 'mntner', mine: false},
             {key: 'TEST2-MNT', type: 'mntner', mine: false},
             {key: 'TEST3-MNT', type: 'mntner', mine: false},
@@ -372,7 +372,7 @@ describe('webUpdates: ReclaimController should be able to handle escape objected
 
         $httpBackend.flush();
 
-        $scope.reclaim();
+        $scope.forceDelete();
 
         expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
 

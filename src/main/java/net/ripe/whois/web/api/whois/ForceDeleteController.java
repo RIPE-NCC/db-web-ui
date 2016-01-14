@@ -1,10 +1,7 @@
 package net.ripe.whois.web.api.whois;
 
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import net.ripe.db.whois.api.rest.client.RestClientUtils;
-import net.ripe.whois.services.ReclaimService;
+import net.ripe.whois.services.ForceDeleteService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +25,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/reclaim")
-public class ReclaimController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReclaimController.class);
+@RequestMapping("/api/forceDelete")
+public class ForceDeleteController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ForceDeleteController.class);
     private String whoisApiUrl;
 
     @Autowired
-    public ReclaimController(@Value("${rest.api.ripeUrl}") final String whoisApiUrl ) {
+    public ForceDeleteController(@Value("${rest.api.ripeUrl}") final String whoisApiUrl) {
         this.whoisApiUrl = whoisApiUrl;
     }
 
@@ -42,10 +39,10 @@ public class ReclaimController {
     public ResponseEntity getMntnerThatCanAuthenticate(@PathVariable String source, @PathVariable String objectType, @PathVariable String objectName)
         throws URISyntaxException, UnsupportedEncodingException {
 
-        ReclaimService service = new ReclaimService(RestClientUtils.createRestClient(whoisApiUrl, source).request());
+        ForceDeleteService service = new ForceDeleteService(RestClientUtils.createRestClient(whoisApiUrl, source).request());
 
         final String decodedName = URLDecoder.decode(objectName, "UTF-8");
-        List<Map<String,Object>> authenticationCandidates = service.getMntnersToReclaim(source, objectType, decodedName);
+        List<Map<String,Object>> authenticationCandidates = service.getMntnersToForceDelete(source, objectType, decodedName);
 
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);

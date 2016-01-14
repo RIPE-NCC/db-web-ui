@@ -110,22 +110,22 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.getMntnersToReclaim = function( source, objectType, objectName ) {
+                this.getMntnersToForceDelete = function( source, objectType, objectName ) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('getMntnersToReclaim start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('getMntnersToForceDelete start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    $resource('api/reclaim/:source/:objectType/:objectName',
+                    $resource('api/forceDelete/:source/:objectType/:objectName',
                         {   source: source,
                             objectType: objectType,
                             objectName: encodeURIComponent(objectName) // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
                         }).query()
                         .$promise.then(
                         function(result) {
-                            $log.debug('getMntnersToReclaim success:' + JSON.stringify(result));
+                            $log.debug('getMntnersToForceDelete success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function(error) {
-                            $log.debug('getMntnersToReclaim error:' + JSON.stringify(error));
+                            $log.debug('getMntnersToForceDeleteerror:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );

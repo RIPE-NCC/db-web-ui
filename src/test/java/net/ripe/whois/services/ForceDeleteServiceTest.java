@@ -23,17 +23,17 @@ import static org.junit.Assert.fail;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ReclaimServiceTest {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReclaimServiceTest.class);
+public class ForceDeleteServiceTest {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ForceDeleteServiceTest.class);
 
     @Test
     public void shouldDetectInvalidObjectType() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("xyz", "193.0.0.1-193.0.0.1", null, null, null, Collections.<RpslObject>emptyList())
         );
 
         try {
-            subject.getMntnersToReclaim("RIPE", "xyz", "193.0.0.1");
+            subject.getMntnersToForceDelete("RIPE", "xyz", "193.0.0.1");
             fail();
         } catch (RestClientException exc) {
             assertThat(400, is(exc.getStatus()));
@@ -42,12 +42,12 @@ public class ReclaimServiceTest {
 
     @Test
     public void shouldDetectInvalidObjectName() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("inetnum", "abc", null, null, null, Collections.<RpslObject>emptyList())
         );
 
         try {
-            subject.getMntnersToReclaim("RIPE", "inetnum", "abc");
+            subject.getMntnersToForceDelete("RIPE", "inetnum", "abc");
             fail();
         } catch (RestClientException exc) {
             assertThat(400, is(exc.getStatus()));
@@ -56,12 +56,12 @@ public class ReclaimServiceTest {
 
     @Test
     public void shouldFindMntnersForNonExistingInetnum() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("inetnum", "193.0.0.1-193.0.0.1", null,
                 Lists.newArrayList("inetnum"), "193.0.0.1-193.0.0.1", Collections.<RpslObject>emptyList())
         );
 
-        List<Map<String, Object>> mntners = subject.getMntnersToReclaim("RIPE", "inetnum", "193.0.0.1-193.0.0.1");
+        List<Map<String, Object>> mntners = subject.getMntnersToForceDelete("RIPE", "inetnum", "193.0.0.1-193.0.0.1");
 
         assertThat(mntners, hasSize(0));
     }
@@ -69,7 +69,7 @@ public class ReclaimServiceTest {
 
     @Test
     public void shouldFindMntnersForNonExactMatchingInetnum() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("inetnum", "193.0.0.1-193.0.0.1", null,
                 Lists.newArrayList("inetnum"), "193.0.0.1-193.0.0.1", Lists.newArrayList(
                     RpslObject.parse("inetnum: 190.0.0.0 - 195.255.255.255\nmnt-by: TEST2-MNT\n"),
@@ -77,7 +77,7 @@ public class ReclaimServiceTest {
                 ))
         );
 
-        List<Map<String, Object>> mntners = subject.getMntnersToReclaim("RIPE", "inetnum", "193.0.0.1-193.0.0.1");
+        List<Map<String, Object>> mntners = subject.getMntnersToForceDelete("RIPE", "inetnum", "193.0.0.1-193.0.0.1");
 
         assertThat(mntners, hasSize(2));
         assertThat("TEST1-MNT", is(mntners.get(0).get("key")));
@@ -86,7 +86,7 @@ public class ReclaimServiceTest {
 
     @Test
     public void shouldFindMntnersForExactMatchingInetnum() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("inetnum", "193.0.0.1-193.255.255",
                 RpslObject.parse("inetnum: 193.0.0.1 - 193.255.255\n" + "mnt-by:  TEST0-MNT\n"),
                 Lists.newArrayList("inetnum"), "193.0.0.1-193.255.255",
@@ -96,7 +96,7 @@ public class ReclaimServiceTest {
                 ))
         );
 
-        List<Map<String, Object>> mntners = subject.getMntnersToReclaim("RIPE", "inetnum", "193.0.0.1-193.255.255");
+        List<Map<String, Object>> mntners = subject.getMntnersToForceDelete("RIPE", "inetnum", "193.0.0.1-193.255.255");
         assertThat(mntners, hasSize(3));
         assertThat("TEST0-MNT", is(mntners.get(0).get("key")));
         assertThat("TEST1-MNT", is(mntners.get(1).get("key")));
@@ -106,7 +106,7 @@ public class ReclaimServiceTest {
 
     @Test
     public void shouldFindMntnersForInet6num() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("inet6num", "2001:FFFF:0000:0000::/60",
                 RpslObject.parse("inet6num: 2001:FFFF:0000:0000::/60\n" + "mnt-by:  TEST0-MNT\n"),
                 Lists.newArrayList("inet6num"), "2001:FFFF:0000:0000::/60",
@@ -116,7 +116,7 @@ public class ReclaimServiceTest {
                 ))
         );
 
-        List<Map<String, Object>> mntners = subject.getMntnersToReclaim("RIPE", "inet6num", "2001:FFFF:0000:0000::/60");
+        List<Map<String, Object>> mntners = subject.getMntnersToForceDelete("RIPE", "inet6num", "2001:FFFF:0000:0000::/60");
         assertThat(mntners, hasSize(3));
         assertThat("TEST0-MNT", is(mntners.get(0).get("key")));
         assertThat("TEST1-MNT", is(mntners.get(1).get("key")));
@@ -125,7 +125,7 @@ public class ReclaimServiceTest {
 
     @Test
     public void shouldFindMntnersForRoute() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("route", "193.0.0.1/21AS3333",
                 RpslObject.parse("route: 193.0.0.1/21\n" + "origin: AS3333\n" + "mnt-by:  TEST0-MNT\n"),
                 Lists.newArrayList("inetnum"), "193.0.0.1/21",
@@ -136,7 +136,7 @@ public class ReclaimServiceTest {
                 ))
         );
 
-        List<Map<String, Object>> mntners = subject.getMntnersToReclaim("RIPE", "route", "193.0.0.1/21AS3333");
+        List<Map<String, Object>> mntners = subject.getMntnersToForceDelete("RIPE", "route", "193.0.0.1/21AS3333");
 
         assertThat(mntners, hasSize(4));
         assertThat("TEST0-MNT", is(mntners.get(0).get("key")));
@@ -147,7 +147,7 @@ public class ReclaimServiceTest {
 
     @Test
     public void shouldFindMntnersForRoute6() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("route6", "2001:FFFF:0000:0000::/60AS4444",
                 RpslObject.parse("route6: 2001:FFFF:0000:0000::/60\n" + "origin: AS4444\n" + "mnt-by:  TEST0-MNT\n"),
                 Lists.newArrayList("inet6num"), "2001:FFFF:0000:0000::/60",
@@ -158,7 +158,7 @@ public class ReclaimServiceTest {
                 ))
         );
 
-        List<Map<String, Object>> mntners = subject.getMntnersToReclaim("RIPE", "route6", "2001:FFFF:0000:0000::/60AS4444");
+        List<Map<String, Object>> mntners = subject.getMntnersToForceDelete("RIPE", "route6", "2001:FFFF:0000:0000::/60AS4444");
         assertThat(mntners, hasSize(3));
         assertThat("TEST0-MNT", is(mntners.get(0).get("key")));
         assertThat("TEST1-MNT", is(mntners.get(1).get("key")));
@@ -167,7 +167,7 @@ public class ReclaimServiceTest {
 
     @Test
     public void shouldFindMntnersForExactMatchingDomain() {
-        ReclaimService subject = new ReclaimService(
+        ForceDeleteService subject = new ForceDeleteService(
             setupRestClientTarget("domain", "200.193.193.in-addr.arpa",
                 RpslObject.parse("domain: 200.193.193.in-addr.arpa\n" + "mnt-by:  TEST0-MNT\n"),
                 Lists.newArrayList("inetnum", "inet6num"), "193.193.200.0/24",
@@ -180,7 +180,7 @@ public class ReclaimServiceTest {
                 ))
         );
 
-        List<Map<String, Object>> mntners = subject.getMntnersToReclaim("RIPE", "domain", "200.193.193.in-addr.arpa");
+        List<Map<String, Object>> mntners = subject.getMntnersToForceDelete("RIPE", "domain", "200.193.193.in-addr.arpa");
         assertThat(mntners, hasSize(3));
         assertThat("TEST0-MNT", is(mntners.get(0).get("key")));
         assertThat("TEST1-MNT", is(mntners.get(1).get("key")));

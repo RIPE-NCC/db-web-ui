@@ -3,13 +3,13 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('ReclaimController', [
+    .controller('ForceDeleteController', [
                 '$scope', '$stateParams', '$state', '$log', '$q','WhoisResources', 'WebUpdatesCommons',
                  'RestService', 'MntnerService', 'AlertService', 'STATE',
         function ($scope, $stateParams, $state, $log, $q, WhoisResources, WebUpdatesCommons,
                   RestService, MntnerService, AlertService, STATE) {
 
-            $scope.reclaim = reclaim;
+            $scope.forceDelete = forceDelete;
             $scope.cancel = cancel;
             $scope.isFormValid = _isFormValid;
 
@@ -29,7 +29,7 @@ angular.module('webUpdates')
                     attributes: []
                 }
 
-                $log.debug('ReclaimController: Url params: source:' + $scope.object.source + '. type:' + $scope.object.type + ', name:' + $scope.object.name);
+                $log.debug('ForceDeleteController: Url params: source:' + $scope.object.source + '. type:' + $scope.object.type + ', name:' + $scope.object.name);
 
                 //The maintainers appearing on the horizontal box (not the dropdown area)
                 // are stored to $scope.maintainers.object in the construct below
@@ -41,7 +41,7 @@ angular.module('webUpdates')
 
                 var hasError =  _validateParamsAndShowErrors();
                 if( hasError === false ) {
-                    _fetchDataForReclaim();
+                    _fetchDataForForceDelete();
                 }
             }
 
@@ -58,15 +58,15 @@ angular.module('webUpdates')
 
             function _validateParamsAndShowErrors(){
                 var hasError = false;
-                var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
+                var forceDeletableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
-                if (! _.contains(reclaimableObjectTypes, $scope.object.type)){
+                if (! _.contains(forceDeletableObjectTypes, $scope.object.type)){
 
-                    var typesString = _.reduce(reclaimableObjectTypes, function(str, n) {
+                    var typesString = _.reduce(forceDeletableObjectTypes, function(str, n) {
                         return str + ', ' + n;
                     });
 
-                    AlertService.setGlobalError('Only ' + typesString + ' object types are reclaimable');
+                    AlertService.setGlobalError('Only ' + typesString + ' object types are force-deletable');
                     hasError = true;
                 }
 
@@ -83,14 +83,14 @@ angular.module('webUpdates')
                 return hasError;
             }
 
-            function _fetchDataForReclaim() {
+            function _fetchDataForForceDelete() {
 
                 // wait until all three have completed
                 $scope.restCallInProgress = true;
                 $q.all({
                     objectToModify: RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name),
                     ssoMntners: RestService.fetchMntnersForSSOAccount(),
-                    objectMntners: RestService.getMntnersToReclaim($scope.object.source, $scope.object.type, $scope.object.name),
+                    objectMntners: RestService.getMntnersToForceDelete($scope.object.source, $scope.object.type, $scope.object.name),
                 }).then(
                     function (results) {
                         $scope.restCallInProgress = false;
@@ -103,9 +103,9 @@ angular.module('webUpdates')
                         $scope.maintainers.sso = results.ssoMntners;
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
-                        // store mntners that can be used to reclaim object
+                        // store mntners that can be used to force-delete object
                         if( results.objectMntners.length === 0 ) {
-                            AlertService.setGlobalError('No mntners found to reclaim this object');
+                            AlertService.setGlobalError('No mntners found to force-delete this object');
                             return;
                         }
                         $log.debug('objectMntners:' + JSON.stringify(results.objectMntners));
@@ -137,7 +137,7 @@ angular.module('webUpdates')
                             AlertService.setErrors(whoisResources);
                         } else {
                             $log.error('Error fetching mntner information:' + JSON.stringify(error));
-                            AlertService.setGlobalError('Error fetching maintainers to reclaim this object');
+                            AlertService.setGlobalError('Error fetching maintainers to force-delete this object');
                         }
                     }
                 );
@@ -160,7 +160,7 @@ angular.module('webUpdates')
                                 return !mntner.startsWith('RIPE-NCC-');
                             });
                             $log.debug('auth candidates:' + authCandidates);
-                            // TODO: this should return the same thing as our reclaim service
+                            // TODO: this should return the same thing as our force-delete service
                             if( authCandidates.length != $scope.maintainers.object.length) {
                                 $log.error("Different mechanisms deliver different results:");
                                 $log.error("Via service:" + $scope.maintainers.object);
@@ -183,7 +183,7 @@ angular.module('webUpdates')
                 WebUpdatesCommons.navigateToDisplay($scope.object.source, $scope.object.type, $scope.object.name, undefined);
             }
 
-            function reclaim () {
+            function forceDelete () {
                 if (_isFormValid()){
                     if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, [], $scope.maintainers.object)) {
                         $log.debug("Need auth");
@@ -198,7 +198,7 @@ angular.module('webUpdates')
             function _performAuthentication() {
                WebUpdatesCommons.performAuthentication(
                     $scope.maintainers,
-                    'Reclaim',
+                    'ForceDelete',
                     $scope.object.source,
                     $scope.object.type,
                     $scope.object.name,
@@ -207,8 +207,8 @@ angular.module('webUpdates')
             }
 
             function _onSuccessfulAuthentication() {
-                $log.debug("Nav to delete screen");
-                WebUpdatesCommons.navigateToDelete($scope.object.source, $scope.object.type, $scope.object.name, STATE.RECLAIM);
+                $log.debug("Navigate to force-delete screen");
+                WebUpdatesCommons.navigateToDelete($scope.object.source, $scope.object.type, $scope.object.name, STATE.FORCE_DELETE);
             }
 
         }]);

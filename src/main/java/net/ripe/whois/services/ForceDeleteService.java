@@ -22,8 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class ReclaimService extends RestClient {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ReclaimService.class);
+public class ForceDeleteService extends RestClient {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ForceDeleteService.class);
     private final static List<String> IP_RESOURCE_TYPES = Lists.newArrayList("inetnum", "inet6num", "route", "route6", "domain");
     private final static Map<String, List<String>> SEARCH_TYPES_FOR_OBJECT_TYPE = Maps.newHashMap(ImmutableMap.of(
         "inetnum", Lists.newArrayList("inetnum"),
@@ -35,12 +35,12 @@ public class ReclaimService extends RestClient {
 
     private RestClientTarget restClient;
 
-    public ReclaimService(final RestClientTarget restClient) {
+    public ForceDeleteService(final RestClientTarget restClient) {
         this.restClient = restClient;
     }
 
-    public List<Map<String, Object>> getMntnersToReclaim(final String source, final String objectType, final String objectName) {
-        LOGGER.warn("Search for mntners to reclaim {}/{}/{}", source, objectType, objectName);
+    public List<Map<String, Object>> getMntnersToForceDelete(final String source, final String objectType, final String objectName) {
+        LOGGER.warn("Search for mntners to force-delete object {}/{}/{}", source, objectType, objectName);
 
         Preconditions.checkArgument(source != null);
         Preconditions.checkArgument(objectType != null);
@@ -72,7 +72,7 @@ public class ReclaimService extends RestClient {
             return wrapIntoObjects(stripped);
 
         } catch (Exception exc) {
-            LOGGER.warn("Error getting mntners to reclaim object {}/{}/{}:{}", source, objectType, objectName, exc);
+            LOGGER.warn("Error getting mntners to force-delete object {}/{}/{}:{}", source, objectType, objectName, exc);
             throw new RestClientException(400, exc);
         }
     }

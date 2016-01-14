@@ -1,7 +1,7 @@
 'use strict';
 
-describe('webUpdates: ReclaimSelectController', function () {
-    var reclaimSelectController;
+describe('webUpdates: ForceDeleteSelectController', function () {
+    var forceDeleteSelectController;
 
     var $scope, $rootScope, $state, $stateParams, $window, $httpBackend;
 
@@ -18,8 +18,8 @@ describe('webUpdates: ReclaimSelectController', function () {
             $httpBackend = _$httpBackend_;
             $window = _$window_;
 
-            reclaimSelectController = function() {
-                _$controller_('ReclaimSelectController', {
+            forceDeleteSelectController = function() {
+                _$controller_('ForceDeleteSelectController', {
                     $scope: $scope, $state: $state, $stateParams: $stateParams
                 });
             };
@@ -35,8 +35,8 @@ describe('webUpdates: ReclaimSelectController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should navigate to reclaim screen', function () {
-        reclaimSelectController();
+    it('should navigate to force-delete screen', function () {
+        forceDeleteSelectController();
 
         $scope.selected = {
             source: 'RIPE',
@@ -44,11 +44,11 @@ describe('webUpdates: ReclaimSelectController', function () {
             name: '127.0.0.1 - 127.0.0.10'
         };
 
-        $scope.navigateToReclaim();
+        $scope.navigateToForceDelete();
 
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('webupdates.reclaim');
+        expect($state.current.name).toBe('webupdates.forceDelete');
         expect($stateParams.source).toBe('RIPE');
         expect($stateParams.objectType).toBe('inetnum');
         expect($stateParams.name).toBe('127.0.0.1%20-%20127.0.0.10');

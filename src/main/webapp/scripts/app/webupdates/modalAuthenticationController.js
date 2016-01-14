@@ -21,12 +21,12 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                 return false;
             }
 
-            if (method === 'Reclaim') {
+            if (method === 'ForceDelete') {
                 return false;
             }
 
-            var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
-            return !_.isEmpty($scope.objectName) && _.contains(reclaimableObjectTypes, $scope.objectType);
+            var forceDeletableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
+            return !_.isEmpty($scope.objectName) && _.contains(forceDeletableObjectTypes, $scope.objectType);
         };
 
         $scope.cancel = function () {
