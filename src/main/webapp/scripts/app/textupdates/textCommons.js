@@ -67,7 +67,7 @@ angular.module('textUpdates')
                 return errorCount === 0;
             }
 
-            this.authenticate = function (objectSource, objectType, objectName, ssoMaintainers, attributes, passwords, overrides) {
+            this.authenticate = function (method, objectSource, objectType, objectName, ssoMaintainers, attributes, passwords, overrides) {
                 var deferredObject = $q.defer();
                 var needsAuth = false;
 
@@ -81,7 +81,7 @@ angular.module('textUpdates')
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
                             needsAuth = true;
 
-                            _performAuthentication(objectSource, objectType, objectName, ssoMaintainers, objectMntners).then(
+                            _performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners).then(
                                 function() {
                                     $log.debug( "Authentication succeeded");
                                     deferredObject.resolve(true);
@@ -106,12 +106,12 @@ angular.module('textUpdates')
                 }
             }
 
-            function _performAuthentication(objectSource, objectType, objectName, ssoMntners, objectMntners) {
+            function _performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners) {
                 var deferredObject = $q.defer();
 
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
-                ModalService.openAuthenticationModal(objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords).then(
+                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords).then(
                     function (result) {
                         AlertService.clearErrors();
 

@@ -1,7 +1,8 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance',  'WhoisResources', 'RestService', 'UserInfoService', 'CredentialsService', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword',
-    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, source, objectType, objectName, mntners, mntnersWithoutPassword) {
+angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance', 'WhoisResources', 'RestService',
+    'UserInfoService', 'CredentialsService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword',
+    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, method, source, objectType, objectName, mntners, mntnersWithoutPassword) {
 
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
@@ -16,12 +17,16 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         };
 
         $scope.allowForceDelete = function () {
-            if(_.any($scope.mntners, 'key', 'RIPE-NCC-END-MNT')) {
+            if (_.any($scope.mntners, 'key', 'RIPE-NCC-END-MNT')) {
                 return false;
             }
 
-            var reclaimableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
-            return !_.isEmpty($scope.objectName) && _.contains(reclaimableObjectTypes, $scope.objectType);
+            if (method === 'ForceDelete') {
+                return false;
+            }
+
+            var forceDeletableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
+            return !_.isEmpty($scope.objectName) && _.contains(forceDeletableObjectTypes, $scope.objectType);
         };
 
         $scope.cancel = function () {
@@ -30,12 +35,12 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
         $scope.ok = function () {
 
-            if( $scope.selected.password.length === 0 ) {
+            if ($scope.selected.password.length === 0) {
                 $scope.selected.message = 'Password for mntner: \'' + $scope.selected.item.key + '\'' + ' too short';
                 return;
             }
 
-            RestService.authenticate(source, 'mntner', $scope.selected.item.key, $scope.selected.password).then(
+            RestService.authenticate(method, source, 'mntner', $scope.selected.item.key, $scope.selected.password).then(
                 function (result) {
                     var whoisResources = result;
 
@@ -48,7 +53,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                     CredentialsService.setCredentials($scope.selected.item.key, $scope.selected.password);
 
                     var ssoUserName = UserInfoService.getUsername();
-                    if( $scope.selected.associate && ssoUserName ) {
+                    if ($scope.selected.associate && ssoUserName) {
 
                         // append auth-md5 attribute
                         var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({
@@ -57,28 +62,28 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                         }, {name: 'auth'});
 
                         // do adjust the maintainer
-                        RestService.associateSSOMntner(whoisResources.getSource(),'mntner', $scope.selected.item.key,
-                            WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.selected.password) .then(
+                        RestService.associateSSOMntner(whoisResources.getSource(), 'mntner', $scope.selected.item.key,
+                            WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.selected.password).then(
                             function (resp) {
                                 $scope.selected.item.mine = true;
                                 CredentialsService.removeCredentials(); //i because ts now an sso mntner
                                 // report success back
-                                $modalInstance.close({selectedItem:$scope.selected.item, response: resp});
+                                $modalInstance.close({selectedItem: $scope.selected.item, response: resp});
 
-                            }, function(error) {
+                            }, function (error) {
                                 $log.error('Association error:' + JSON.stringify(error));
                                 // remove modal anyway
-                                $modalInstance.close({selectedItem:$scope.selected.item});
+                                $modalInstance.close({selectedItem: $scope.selected.item});
                             });
                     } else {
                         $log.debug('No need to associate');
                         // report success back
-                        $modalInstance.close({selectedItem:$scope.selected.item});
+                        $modalInstance.close({selectedItem: $scope.selected.item});
                     }
 
 
-                }, function( error ) {
-                    $log.error('Authentication error:' + JSON.stringify(error) );
+                }, function (error) {
+                    $log.error('Authentication error:' + JSON.stringify(error));
 
                     var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                     if (!_.isUndefined(whoisResources)) {

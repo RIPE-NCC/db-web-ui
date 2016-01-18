@@ -113,6 +113,36 @@ angular.module('dbWebApp')
                 });
         };
 
+        var getAuthenticationCandidatesFromError = function() {
+            if( ! this.errormessages ) {
+                return [];
+            }
+            var myMsgs =  _.filter(this.errormessages.errormessage, function (msg) {
+                if (msg.severity === 'Error' &&
+                    msg.text === 'Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s') {
+                    return true;
+                }
+                return false;
+            });
+
+            var mntners = [];
+            _.each(myMsgs, function(msg) {
+                var candidates = msg.args[3].value;
+                _.each(candidates.split(','), function(mntner) {
+                    if (!_.contains(mntners, mntner)) {
+                        mntners.push(mntner);
+                    }
+                });
+            });
+            return mntners;
+        }
+
+        var getRequiresAdminRightFromError = function() {
+            return _.any(this.errormessages.errormessage, function (msg) {
+                return msg.text === 'Deleting this object requires administrative authorisation';
+            });
+        }
+
         function _getRelatedAttribute( errorMessage ) {
             var msgPrefix = '';
             if( errorMessage.attribute && errorMessage.attribute.name ) {
@@ -289,6 +319,8 @@ angular.module('dbWebApp')
             whoisResources.readableError = readableError;
             whoisResources.getAllErrors = getAllErrors;
             whoisResources.getGlobalErrors = getGlobalErrors;
+            whoisResources.getAuthenticationCandidatesFromError = getAuthenticationCandidatesFromError;
+            whoisResources.getRequiresAdminRightFromError = getRequiresAdminRightFromError;
             whoisResources.getAllWarnings = getAllWarnings;
             whoisResources.getGlobalWarnings = getGlobalWarnings;
             whoisResources.getAllInfos = getAllInfos;

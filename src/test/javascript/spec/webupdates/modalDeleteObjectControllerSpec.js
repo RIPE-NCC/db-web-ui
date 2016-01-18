@@ -214,15 +214,15 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
         expect($state.current.name).toBe('webupdates.modify');
     });
 
-    it('should close the modal and return to reclaim when canceled', function () {
+    it('should close the modal and return to force-delete when canceled', function () {
 
-        $scope.onCancel = 'webupdates.reclaim';
+        $scope.onCancel = 'webupdates.forceDelete';
         $scope.doCancel();
         expect(modalInstance.close).toHaveBeenCalled();
 
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('webupdates.reclaim');
+        expect($state.current.name).toBe('webupdates.forceDelete');
     });
 
 });

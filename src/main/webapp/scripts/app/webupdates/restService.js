@@ -27,10 +27,10 @@ angular.module('dbWebApp')
                             limit: limit
                         }).get()
                         .$promise.then(
-                        function (result) {
+                        function(result) {
                             $log.debug('getReferences success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
-                        }, function (error) {
+                        }, function(error) {
                             $log.debug('getReferences error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
@@ -164,7 +164,7 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.authenticate = function (source, objectType, objectName, passwords) {
+                this.authenticate = function (method, source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
 
                     $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -221,6 +221,7 @@ angular.module('dbWebApp')
                     var deferredObject = $q.defer();
 
                     $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('body: ' + JSON.stringify(attributes));
 
                     /*
                      * A url-parameter starting with an '@' has special meaning in angular.
@@ -252,10 +253,13 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.deleteObject = function (source, objectType, name, reason, withReferences, passwords) {
+                this.deleteObject = function (source, objectType, name, reason, withReferences, passwords, dryRun) {
                     var deferredObject = $q.defer();
 
                     var service = withReferences ? 'references' : 'whois';
+                    if(_.isUndefined(dryRun)) {
+                        dryRun = false;
+                    }
 
                     $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
                         ' reason:' + reason + ' with-refs:' + withReferences);
@@ -265,7 +269,8 @@ angular.module('dbWebApp')
                             source: source,
                             objectType: objectType,
                             name: name, // Note: double encoding not needed for delete
-                            password: '@password'
+                            password: '@password',
+                            'dry-run': dryRun
                         }).delete({password: passwords, reason: reason})
                         .$promise.then(
                         function (result) {
