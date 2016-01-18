@@ -163,9 +163,9 @@ angular.module('textUpdates')
                             function(error) {
                                 $scope.restCalInProgress = false;
 
-                                if (_.isUndefined(error.data)) {
+                                if (_.isUndefined(error.data) || (_.isUndefined(error.data.objects) && _.isUndefined(error.data.errormessages) )) {
                                     $log.error('Response not understood:'+JSON.stringify(error));
-                                    AlertService.setGlobalError('Error fetching information: Unexpected response');
+                                    AlertService.setGlobalError('Error sunmitting information: Unexpected response');
                                     return;
                                 }
 

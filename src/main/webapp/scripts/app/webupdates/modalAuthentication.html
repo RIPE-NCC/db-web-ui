@@ -36,13 +36,15 @@
 
         <div ng-if="(mntnersWithoutPassword && mntnersWithoutPassword.length > 0)">
             <hr>
-            You may wish to contact one of these maintainers to request access:
+            The following maintainers are used to protect this object, but are not eligible to be used here:
             </br>
             <span ng-repeat="mnt in mntnersWithoutPassword">
                 <a href="#/webupdates/display/{{source}}/mntner/{{mnt.key}}" target="_blank">
                     {{mnt.key}}
                 </a> <span ng-if="$middle">,</span>
             </span>
+            <br/>
+            <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data#solving-authentication-problems" taget="_blank">Learn more.</a>
 
         </div>
 
