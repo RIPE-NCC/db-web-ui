@@ -633,7 +633,7 @@ angular.module('dbWebApp')
             return attrs;
         };
 
-        this.wrapSuccess = function(whoisResources) {
+        this.wrap = function(whoisResources) {
             var result = whoisResources;
             if(!_.isUndefined(whoisResources) && isValidWhoisResources(whoisResources)) {
                 var wrapped = this.wrapWhoisResources(whoisResources);
@@ -642,11 +642,15 @@ angular.module('dbWebApp')
                     wrapped.objects.object[0].attributes.attribute =
                         this.wrapAttributes(
                             this.enrichAttributesWithMetaInfo(objectType, wrapped.getAttributes())
-                    );
+                        );
                 }
                 result = wrapped;
             }
             return result;
+        }
+
+        this.wrapSuccess = function(whoisResources) {
+            return this.wrap(whoisResources);
         }
 
         this.wrapError = function(error) {
@@ -663,7 +667,7 @@ angular.module('dbWebApp')
                     {severity: 'Error', text: 'Unexpected error: please retry later'}
                 );
             }
-            error.data = this.wrapSuccess(whoisResources);
+            error.data = this.wrap(whoisResources);
 
             return error;
         }
