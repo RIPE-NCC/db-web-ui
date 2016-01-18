@@ -1,6 +1,20 @@
 'use strict';
 
+
+var logger = {
+    debug: function (msg) {
+        //console.log('info:'+msg);
+    },
+    info: function (msg) {
+        //console.log('info:'+msg);
+    },
+    error: function (msg) {
+        //console.log('error:'+msg);
+    }
+};
+
 describe('webUpdates: ForceDeleteController', function () {
+
 
     var $scope, $state, $stateParams, $httpBackend;
     var WhoisResources;
@@ -10,7 +24,6 @@ describe('webUpdates: ForceDeleteController', function () {
     var CredentialsService;
 
     var $rootScope;
-    var $log;
     var $controller;
 
     var INETNUM = '111 - 255';
@@ -37,17 +50,7 @@ describe('webUpdates: ForceDeleteController', function () {
             AlertService = _AlertService_;
             MntnerService = _MntnerService_;
             CredentialsService = _CredentialsService_;
-            $log = {
-                debug: function (msg) {
-                    //console.log('info:'+msg);
-                },
-                info: function (msg) {
-                    //console.log('info:'+msg);
-                },
-                error: function (msg) {
-                    //console.log('error:'+msg);
-                }
-            };
+
 
             objectToDisplay = WhoisResources.wrapWhoisResources(
                 {
@@ -82,11 +85,6 @@ describe('webUpdates: ForceDeleteController', function () {
                     {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
                 ]);
 
-                $httpBackend.expectGET('api/forceDelete/RIPE/inetnum/111%2520-%2520255').respond(
-                    function (method, url) {
-                        return [200, [{key: 'TESTSSO-MNT', type: 'mntner', mine: false}], {}];
-                    });
-
                 $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TESTSSO-MNT').respond(
                     function (method, url) {
                         return [200, [{key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO']}], {}];
@@ -99,7 +97,39 @@ describe('webUpdates: ForceDeleteController', function () {
 
                 $httpBackend.expectDELETE('api/whois/RIPE/inetnum/111%20-%20255?dry-run=true&reason=dry-run').respond(
                     function (method, url) {
-                        return [200, objectToDisplay, {}];
+                        return [200, {
+                            errormessages: {
+                                errormessage: [
+                                    {
+                                        severity: "Error",
+                                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                                        args: [
+                                            {value: "inetnum"}, {value: "194.219.52.240 - 194.219.52.243"},
+                                            {value: "mnt-by"}, {value: "TESTSSO-MNT"}
+                                        ]
+                                    },
+                                    {
+                                        severity: "Error",
+                                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                                        args: [
+                                            {value: "inetnum"}, {value: "194.219.0.0 - 194.219.255.255"},
+                                            {value: "mnt-lower"}, {value: "TEST1-MNT"}
+                                        ]
+                                    },
+                                    {
+                                        severity: "Error",
+                                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                                        args: [{value: "inetnum"}, {value: "194.219.0.0 - 194.219.255.255"},
+                                            {value: "mnt-by"}, {value: "RIPE-NCC-HM-MNT, TEST2-MNT"}
+                                        ]
+                                    },
+                                    {
+                                        severity: "Info",
+                                        text: "Dry-run performed, no changes to the database have been made"
+                                    }
+                                ]
+                            }
+                        }, {}];
                     });
 
                 CredentialsService.setCredentials('TEST-MNT', '@123');
@@ -109,7 +139,7 @@ describe('webUpdates: ForceDeleteController', function () {
                 $stateParams.name = '111%20-%20255';
 
                 _$controller_('ForceDeleteController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams, $log: $log
+                    $scope: $scope, $state: $state, $stateParams: $stateParams, $log:logger
                 });
 
                 $httpBackend.flush();
@@ -168,8 +198,6 @@ describe('webUpdates: ForceDeleteController', function () {
 
         $httpBackend.flush();
 
-        //console.log('attributes::::' + JSON.stringify($scope.attributes));
-        //expect($scope.attributes).toBe([]);
         expect($rootScope.errors[0].plainText)
             .toBe('Only inetnum, inet6num, route, route6, domain object types are force-deletable');
     });
@@ -189,7 +217,6 @@ describe('webUpdates: ForceDeleteController', function () {
 
         $httpBackend.flush();
 
-        //expect($scope.attributes).toBe(undefined);
         expect($rootScope.errors[0].plainText).toBe('Object key is missing');
     });
 
@@ -207,7 +234,6 @@ describe('webUpdates: ForceDeleteController', function () {
 
         $httpBackend.flush();
 
-        //expect($scope.attributes).toBe(undefined);
         expect($rootScope.errors[0].plainText).toBe('Source is missing');
     });
 
@@ -227,11 +253,6 @@ describe('webUpdates: ForceDeleteController', function () {
         expect($stateParams.name).toBe('111%20-%20255');
         expect($stateParams.onCancel).toBe('webupdates.forceDelete');
 
-    });
-
-    it('should present auth popup upon force-delete', function () {
-        createForceDeleteController();
-        // TODO: expect auth popup
     });
 
 });
@@ -274,8 +295,8 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
                 $stateParams.name = NAME;
 
                 _$controller_('ForceDeleteController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams
-                });
+                    $scope: $scope, $state: $state, $stateParams: $stateParams, $log:logger
+            });
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
             }
@@ -291,20 +312,14 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
             {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
         ]);
 
-        $httpBackend.whenGET('api/forceDelete/RIPE/route/12.235.32.0%252F19AS1680').respond([
-            {key: 'TEST-MNT', type: 'mntner', mine: false},
-            {key: 'TESTSSO-MNT', type: 'mntner', mine: false},
-
-        ]);
-
         $httpBackend.whenGET('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true').respond(
             function (method, url) {
                 return [200,objectToDisplay, {}];
             });
 
-        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TESTSSO-MNT').respond(
+        $httpBackend.expectDELETE('api/whois/RIPE/route/12.235.32.0%2F19AS1680?dry-run=true&reason=dry-run').respond(
             function (method, url) {
-                return [200, [{key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO', 'MD5-PW']}], {}];
+                return [403, dryRunDeleteFailure, {}];
             });
 
         $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
@@ -312,10 +327,15 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
                 return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
             });
 
-        $httpBackend.expectDELETE('api/whois/RIPE/route/12.235.32.0%2F19AS1680?dry-run=true&reason=dry-run').respond(
+        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-MNT').respond(
             function (method, url) {
-                return [200, objectToDisplay, {}];
+                return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
             });
+        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST2-MNT').respond(
+            function (method, url) {
+                return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
+            });
+
 
         $httpBackend.flush();
 
@@ -347,27 +367,22 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
                 return [200,objectToDisplay, {}];
             });
 
-        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TESTSSO-MNT').respond(
+        $httpBackend.expectDELETE('api/whois/RIPE/route/12.235.32.0%2F19AS1680?dry-run=true&reason=dry-run').respond(
             function (method, url) {
-                return [200, [{key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO', 'MD5-PW']}], {}];
+                return [403, dryRunDeleteFailure, {}];
             });
 
         $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
             function (method, url) {
                 return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
             });
+        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-MNT').respond(
+            function (method, url) {
+                return [200, [{key: 'TEST1-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
+            });
         $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST2-MNT').respond(
             function (method, url) {
                 return [200, [{key: 'TEST2-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
-            });
-        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT').respond(
-            function (method, url) {
-                return [200, [{key: 'TEST3-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
-            });
-
-        $httpBackend.expectDELETE('api/whois/RIPE/route/12.235.32.0%2F19AS1680?dry-run=true&reason=dry-run').respond(
-            function (method, url) {
-                return [200, objectToDisplay, {}];
             });
 
         $httpBackend.flush();
@@ -395,6 +410,37 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
         }
 
     };
+
+    var dryRunDeleteFailure = {
+        errormessages: {
+            errormessage: [
+                { severity: "Error",
+                    text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    args: [
+                        {value: "inetnum"  }, {value: "194.219.52.240 - 194.219.52.243"},
+                        {value: "mnt-by" },{value: "TEST-MNT"}
+                    ]
+                },
+                {  severity: "Error",
+                    text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    args: [
+                        { value: "inetnum" }, {  value: "194.219.0.0 - 194.219.255.255" },
+                        { value: "mnt-lower" }, { value: "TEST1-MNT" }
+                    ]
+                },
+                {  severity: "Error",
+                    text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    args: [  { value: "inetnum"  }, {  value: "194.219.0.0 - 194.219.255.255" },
+                        { value: "mnt-by"  }, { value: "RIPE-NCC-HM-MNT, TEST2-MNT"  }
+                    ]
+                },
+                { severity: "Info",
+                    text: "Dry-run performed, no changes to the database have been made" }
+            ]
+        }
+
+    };
+
 
 });
 

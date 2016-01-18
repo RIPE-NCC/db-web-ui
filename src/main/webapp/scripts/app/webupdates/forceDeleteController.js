@@ -89,8 +89,7 @@ angular.module('webUpdates')
                 $scope.restCallInProgress = true;
                 $q.all({
                     objectToModify: RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name),
-                    ssoMntners: RestService.fetchMntnersForSSOAccount(),
-                    objectMntners: RestService.getMntnersToForceDelete($scope.object.source, $scope.object.type, $scope.object.name),
+                    ssoMntners: RestService.fetchMntnersForSSOAccount()
                 }).then(
                     function (results) {
                         $scope.restCallInProgress = false;
@@ -103,29 +102,33 @@ angular.module('webUpdates')
                         $scope.maintainers.sso = results.ssoMntners;
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
-                        // store mntners that can be used to force-delete object
-                        if( results.objectMntners.length === 0 ) {
-                            AlertService.setGlobalError('No mntners found to force-delete this object');
-                            return;
-                        }
-                        $log.debug('objectMntners:' + JSON.stringify(results.objectMntners));
+                        _use_dryrun_delete_to_detect_auth_candidates().then(
+                            function(authCandidates) {
+                                var objectMntners =_.map(authCandidates, function(item) {
+                                        return {
+                                            key: item,
+                                            type:'mntner'
+                                        };
+                                });
 
-                        // fetch details of all selected maintainers concurrently
-                        $scope.restCallInProgress = true;
-                        RestService.detailsForMntners(results.objectMntners).then(
-                            function (enrichedMntners) {
-                                $scope.restCallInProgress = false;
+                                // fetch details of all selected maintainers concurrently
+                                $scope.restCallInProgress = true;
+                                RestService.detailsForMntners(objectMntners).then(
+                                    function (enrichedMntners) {
+                                        $scope.restCallInProgress = false;
 
-                                $scope.maintainers.object = enrichedMntners;
-                                $log.debug('maintainers.object:' + JSON.stringify($scope.maintainers.object ));
+                                        $scope.maintainers.object = enrichedMntners;
+                                        $log.debug('maintainers.object:' + JSON.stringify($scope.maintainers.object ));
 
-                                _use_dryrun_delete_to_detect_auth_candidates();
+                                    },
+                                    function (error) {
+                                        $scope.restCallInProgress = false;
+                                        $log.error('Error fetching mntner details' + JSON.stringify(error));
+                                        AlertService.setGlobalError('Error fetching maintainer details');
+                                    });
 
-                            },
-                            function (error) {
-                                $scope.restCallInProgress = false;
-                                $log.error('Error fetching mntner details' + JSON.stringify(error));
-                                AlertService.setGlobalError('Error fetching maintainer details');
+                            }, function(errorMsg) {
+                                AlertService.setGlobalError(errorMsg);
                             });
                     }
                 ).catch(
@@ -144,31 +147,34 @@ angular.module('webUpdates')
             }
 
             function _use_dryrun_delete_to_detect_auth_candidates() {
+                var deferredObject = $q.defer();
+
                 $scope.restCallInProgress = true;
                 RestService.deleteObject($scope.object.source, $scope.object.type, $scope.object.name, 'dry-run', false,  [], true).then(
-                    function(resp) {
+                    function() {
                         $scope.restCallInProgress = false;
                         $log.debug('auth can be performed without interactive popup');
+                        deferredObject.resolve([]);
                     },
                     function(error) {
                         $scope.restCallInProgress = false;
+                        // we expect an error: from the error we except auth candidates
                         var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                         if( whoisResources.getRequiresAdminRightFromError()) {
-                            AlertService.setGlobalError('Deleting this object requires administrative authorisation');
+                            deferredObject.reject('Deleting this object requires administrative authorisation');
                         } else {
-                            var authCandidates = _.filter(whoisResources.getAuthenticationCandidatesFromError(), function (mntner) {
-                                return !mntner.startsWith('RIPE-NCC-');
+                            // strip RIPE-NCC- mntners
+                            var authCandidates = whoisResources.getAuthenticationCandidatesFromError();
+                            authCandidates = _.filter(authCandidates, function (mntner) {
+                                return !(_.startsWith(mntner, 'RIPE-NCC-'));
                             });
-                            $log.debug('auth candidates:' + authCandidates);
-                            // TODO: this should return the same thing as our force-delete service
-                            if( authCandidates.length != $scope.maintainers.object.length) {
-                                $log.error("Different mechanisms deliver different results:");
-                                $log.error("Via service:" + $scope.maintainers.object);
-                                $log.error("Via dry-run-delete error:" + authCandidates);
-                            }
+                            deferredObject.resolve(_.map(authCandidates, function(item) {
+                                return _.trim(item);
+                            }));
                         }
                     }
                 );
+                return deferredObject.promise;
             }
 
             function _wrapAndEnrichResources(objectType, resp) {

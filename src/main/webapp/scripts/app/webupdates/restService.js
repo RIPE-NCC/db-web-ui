@@ -293,6 +293,7 @@ angular.module('dbWebApp')
                     var deferredObject = $q.defer();
 
                     $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                    $log.debug('body: ' + JSON.stringify(attributes));
 
                     /*
                      * A url-parameter starting with an '@' has special meaning in angular.
