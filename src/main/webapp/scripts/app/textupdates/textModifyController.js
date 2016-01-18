@@ -165,7 +165,7 @@ angular.module('textUpdates')
 
                                 if (_.isUndefined(error.data) || (_.isUndefined(error.data.objects) && _.isUndefined(error.data.errormessages) )) {
                                     $log.error('Response not understood:'+JSON.stringify(error));
-                                    AlertService.setGlobalError('Error sunmitting information: Unexpected response');
+                                    AlertService.setGlobalError('Error submitting information: Unexpected response');
                                     return;
                                 }
 
