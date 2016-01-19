@@ -20,7 +20,7 @@ angular.module('dbWebApp')
                 return doc[docKind]
             }
             return doc;
-        }
+        };
 
         this.getAttributeShortDescription = function (objectType, attrName) {
             var short = this._getDocumentationForAttribute(objectType, attrName, 'short');
@@ -633,7 +633,7 @@ angular.module('dbWebApp')
                 syntax: 'An irt name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \"irt-\" and the last character of a name must be a letter or a digit.'
             },
             organisation: {
-                syntax: 'The \'ORG-\' string followed by 2 to 4 characters, followed by up to 5 digits followed by a source specification. The first digit must not be \"0\". The source specification is \"-RIPE\" for the RIPE Database.'
+                syntax: 'The \"ORG-\" string followed by 2 to 4 characters, followed by up to 5 digits followed by a source specification. The first digit must not be \"0\". The source specification is \"-RIPE\" for the RIPE Database.'
             },
             organisationName: {
                 syntax: 'A word may have up to 64 characters and is not case sensitive. Each word can have any combination of the above characters with no restriction on the start or end of a word.'
@@ -643,18 +643,18 @@ angular.module('dbWebApp')
                 '| &lt;protocol&gt; &lt;inet-rtr-name&gt; &lt;options&gt;' + '&lt;br/&gt;' +
                 '| &lt;protocol&gt; &lt;rtr-set-name&gt; &lt;options&gt;' + '&lt;br/&gt;' +
                 '| &lt;protocol&gt; &lt;peering-set-name&gt; &lt;options&gt;'
-            },
+            }
         };
 
         this._attrDocumentation = {
             'abuse-mailbox': {
                 short: 'Specifies the email address for abuse complaints.',
-                description: 'Specifies the email address to which abuse complaints should be sent. This attribute should only be used in the <strong>role</strong> object. <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">Learn more...</a>',
+                description: 'Specifies the email address to which abuse complaints should be sent. This attribute should only be used in the <strong>role</strong> object. <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">Learn more.</a>',
                 syntax: _shared.email.syntax
             },
             'abuse-c': {
-                short: 'Enter the nic-handle of your abuse-c role object or click the \'bell\' icon to create one.',
-                description: 'References an abuse contact. This can only be a <strong>role</strong> object containing an \'abuse-mailbox:\' attribute.',
+                short: 'Enter the nic-handle of your abuse-c role object or click the \"bell\" icon to create one.',
+                description: 'References an abuse contact. This can only be a <strong>role</strong> object containing an \"abuse-mailbox:\" attribute.',
                 syntax: _shared.nicHandle.syntax
             },
             'address': {
@@ -745,7 +745,7 @@ angular.module('dbWebApp')
             },
             'components': {
                 short: 'Defines what component routes are used to form the aggregate.',
-                description: 'The \'components:\' attribute defines what component routes are used to form the aggregate.',
+                description: 'The \"components:\" attribute defines what component routes are used to form the aggregate.',
                 syntax: ''
             }, // no documentation available
             'country': {
@@ -917,7 +917,7 @@ angular.module('dbWebApp')
             },
             'mbrs-by-ref': {
                 short: 'Enter a mntner-name or ANY',
-                description: 'This attribute can be used in all \'set\' objects; it allows indirect population of a set. If this attribute is used, the set also includes objects of the corresponding type (aut-num objects for as-set, for example) that are protected by one of these maintainers and whose \'member-of:\' attributes refer to the name of the set. If the value of a \'mbrs-by-ref:\' attribute is ANY, any object of the corresponding type  referring to the set is a member of the set. If the \'mbrs-by-ref:\' attribute is missing, the set is defined explicitly by the \'members:\' attribute.',
+                description: 'This attribute can be used in all \"set\" objects; it allows indirect population of a set. If this attribute is used, the set also includes objects of the corresponding type (aut-num objects for as-set, for example) that are protected by one of these maintainers and whose \"member-of:\" attributes refer to the name of the set. If the value of a \"mbrs-by-ref:\" attribute is ANY, any object of the corresponding type  referring to the set is a member of the set. If the \"mbrs-by-ref:\" attribute is missing, the set is defined explicitly by the \"members:\" attribute.',
                 syntax: '&lt;mntner-name&gt; | ANY'
             },
             'members': {
@@ -927,7 +927,7 @@ angular.module('dbWebApp')
             }, // no syntax available
             'member-of': {
                 short: 'Identifies a set object that this object wants to be a member of.',
-                description: 'This attribute can be used in the route , aut-num and inet-rtr classes. The value of the \'member-of:\' attribute identifies a set object that this object wants to be a member of. This claim  however, should be acknowledged by a respective \'mbrs-by-ref:\' attribute in the referenced object.',
+                description: 'This attribute can be used in the route , aut-num and inet-rtr classes. The value of the \"member-of:\" attribute identifies a set object that this object wants to be a member of. This claim  however, should be acknowledged by a respective \"mbrs-by-ref:\" attribute in the referenced object.',
                 syntax: ''
             }, // no syntax available
             'method': {
@@ -941,13 +941,13 @@ angular.module('dbWebApp')
                 syntax: _shared.objectName.syntax
             },
             'mnt-by': {
-                short: 'Specifies a mntner object used for authorisation.',
-                description: 'Specifies the identifier of a registered mntner object used for authorisation of operations performed with the object that contains this attribute. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
+                short: 'Specifies one or more maintainer objects used for authorisation.',
+                description: 'Specifies one or more maintainers used for authorisation on the object as \"mnt-by:\". Add maintainers by typing in the input field, remove them by clicking the \"x\". Maintainers marked with a star can be used with your RIPE NCC Access SSO account. RIPE NCC maintainers, if present, cannot be removed. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                 syntax: _shared.objectName.syntax
             },
             'mnt-domains': {
                 short: 'Specifies the mntner object used for reverse domain authorisation.',
-                description: 'Specifies the identifier of a registered mntner object used for reverse domain authorisation. Protects domain objects. The authentication method of this maintainer object will be used for any encompassing reverse domain object.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
+                description: 'Specifies the identifier of a registered mntner object used for reverse domain authorisation. Protects domain objects. The authentication method of this maintainer object will be used for any encompassing reverse domain object.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                 syntax: _shared.objectName.syntax
             },
             'mnt-irt': {
@@ -957,7 +957,7 @@ angular.module('dbWebApp')
             },
             'mnt-lower': {
                 short: 'Specifies the mntner object used for hierarchical authorisation.',
-                description: 'Specifies the identifier of a registered mntner object used for hierarchical authorisation. Protects creation of objects directly (one level below) in the hierarchy of an object type. The authentication method of this maintainer object will then be used upon creation of any object directly below the object that contains the \'mnt-lower:\' attribute.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
+                description: 'Specifies the identifier of a registered mntner object used for hierarchical authorisation. Protects creation of objects directly (one level below) in the hierarchy of an object type. The authentication method of this maintainer object will then be used upon creation of any object directly below the object that contains the \"mnt-lower:\" attribute.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                 syntax: _shared.objectName.syntax
             },
             'mnt-nfy': {
@@ -1071,7 +1071,7 @@ angular.module('dbWebApp')
             },
             'org-name': {
                 short: 'Specifies the name of the organisation in ASCII-only.',
-                description: 'Specifies the name of the organisation that this object represents in the RIPE Database. This is an ASCII-only text attribute. You can specify the name of the organisation in <a href="https://en.wikipedia.org/wiki/ISO/IEC_8859-1#Codepage_layout" target="_blank">Latin-1 character encoding</a> in the \'descr:\' attribute, if required.',
+                description: 'Specifies the name of the organisation that this object represents in the RIPE Database. This is an ASCII-only text attribute. You can specify the name of the organisation in <a href="https://en.wikipedia.org/wiki/ISO/IEC_8859-1#Codepage_layout" target="_blank">Latin-1 character encoding</a> in the \"descr:\" attribute, if required.',
                 syntax: _shared.objectName.syntax
             },
             'org-type': {
@@ -1095,7 +1095,7 @@ angular.module('dbWebApp')
             },
             'origin': {
                 short: 'Specifies the AS that originates the route.',
-                description: 'Specifies the AS that originates the route. The corresponding aut-num object should be registered in the database. Together with the \'route:\' attribute constitutes a primary key of the object, which is why the value cannot be modified after creation.',
+                description: 'Specifies the AS that originates the route. The corresponding aut-num object should be registered in the database. Together with the \"route:\" attribute constitutes a primary key of the object, which is why the value cannot be modified after creation.',
                 syntax: _shared.asNumber.syntax
             },
             'owner': {
@@ -1119,9 +1119,9 @@ angular.module('dbWebApp')
             'peering-set': {
                 short: undefined,
                 description: 'Specifies the name of the peering-set.',
-                syntax: 'A peering-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \'prng-\', and the last character of a name must be a letter or a digit.' + '<br/>' +
-                'A peering-set name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.' +
-                'At least one component of such a name must be an actual set name (i.e. start with \'prng-\').  All the set name components of a hierarchical peering-set name have to be peering-set names.'
+                syntax: 'A peering-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \"prng-\", and the last character of a name must be a letter or a digit.' + '<br/>' +
+                'A peering-set name can also be hierarchical. A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".' +
+                'At least one component of such a name must be an actual set name (i.e. start with \"prng-\").  All the set name components of a hierarchical peering-set name have to be peering-set names.'
             },
             'person': {
                 short: 'Specifies the full name of a contact, e.g. John Smith.',
@@ -1135,8 +1135,8 @@ angular.module('dbWebApp')
                 syntax: _shared.phone.syntax
             },
             'ping-hdl': {
-                short: 'References a person or role related to the \'pingable\' attribute.',
-                description: 'References a person or role capable of responding to queries concerning the IP addresses specified in the \'pingable\' attribute.',
+                short: 'References a person or role related to the \"pingable:\" attribute.',
+                description: 'References a person or role capable of responding to queries concerning the IP addresses specified in the \"pingable:\" attribute.',
                 syntax: _shared.nicHandle.syntax
             },
             'pingable': {
@@ -1172,23 +1172,23 @@ angular.module('dbWebApp')
             },
             'route': {
                 short: 'Specifies the prefix of the interAS route.',
-                description: 'Specifies the prefix of the interAS route. Together with the \'origin:\' attribute constitutes a primary key of the route object, which is why the value cannot be modified after creation.',
+                description: 'Specifies the prefix of the interAS route. Together with the \"origin:\" attribute constitutes a primary key of the route object, which is why the value cannot be modified after creation.',
                 syntax: 'A prefix in Classless Inter-Domain Routing (CIDR) notation using all four octets of an IPv4 address, e.g. 192.168.2.0/24.'
             },
             'route6': {
                 short: 'Specifies the IPv6 prefix of the interAS route.',
-                description: 'Specifies the IPv6 prefix of the interAS route. Together with the \'origin:\' attribute, constitutes a primary key of the route6 object, which is why the value cannot be modified after creation.',
+                description: 'Specifies the IPv6 prefix of the interAS route. Together with the \"origin:\" attribute, constitutes a primary key of the route6 object, which is why the value cannot be modified after creation.',
                 syntax: 'A prefix in Classless Inter-Domain Routing (CIDR) notation, e.g. 2001:db8::/32'
             },
             'route-set': {
-                short: 'Specifies the name of the route set, must start with \'rs-\'',
+                short: 'Specifies the name of the route set, must start with \"rs-\"',
                 description: 'Specifies the name of the route set. It is a primary key for the route-set object.',
-                syntax: 'An route-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \'rs-\', and the last character of a name must be a letter or a digit. A route-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.  At least one component of such a name must be an actual set name (i.e. start with \'rs-\'). All the set name components of a hierarchical route-name have to be route-set names.'
+                syntax: 'An route-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \"rs-\", and the last character of a name must be a letter or a digit. A route-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".  At least one component of such a name must be an actual set name (i.e. start with \"rs-\"). All the set name components of a hierarchical route-name have to be route-set names.'
             },
             'rtr-set': {
-                short: 'Specifies the name of the rtr-set, must start with \'rtrs-\'',
+                short: 'Specifies the name of the rtr-set, must start with \"rtrs-\"',
                 description: 'Defines the name of the rtr-set.',
-                syntax: 'A router-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \'rtrs-\', and the last character of a name must be a letter or a digit. A router-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \':\'.  At least one component of such a name must be an actual set name (i.e. start with \'rtrs-\').  All the set name components of a hierarchical router-set name have to be router-set names.'
+                syntax: 'A router-set name is made up of letters, digits, the underscore \"_\" and hyphen \"-\". It must start with \"rtrs-\", and the last character of a name must be a letter or a digit. A router-set name can also be hierarchical.  A hierarchical set name is a sequence of set names and AS numbers separated by colons \":\".  At least one component of such a name must be an actual set name (i.e. start with \"rtrs-\").  All the set name components of a hierarchical router-set name have to be router-set names.'
             },
             'signature': {
                 short: 'References a CSIRT key-cert object.',
@@ -1196,7 +1196,7 @@ angular.module('dbWebApp')
                 syntax: _shared.keyCert.syntax
             },
             'source': {
-                short: 'Must be \'RIPE\' for the RIPE Database.',
+                short: 'Must be \"RIPE\" for the RIPE Database.',
                 description: 'Specifies the registry where the object is registered. Must be \"RIPE\" for the RIPE Database.',
                 syntax: 'The source is made up of letters, digits, the underscore \"_\" and hyphen \"-\". The first character of a registry name must be a letter, and the last character of a registry name must be a letter or a digit.'
             },
@@ -1270,33 +1270,33 @@ angular.module('dbWebApp')
                 '<li>NOT-SET</li>' +
                 '<li>LEGACY</li>' +
                 '</ul>'
-            },
-        }
+            }
+        };
 
         this._mntRoutesDoc = {
             'aut-num': {
                 short: 'References a mntner used in determining authorisation for the creation of route(6) objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects.  This entry is for the mnt-routes attribute of aut-num class.  After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects.  This entry is for the mnt-routes attribute of aut-num class.  After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of (&lt;ipv4-address&gt;/&lt;prefix&gt; or &lt;ipv6-address&gt;/&lt;prefix&gt;) } | ANY ]'
             },
             'inet6num': {
                 short: 'References a mntner used in determining authorisation for the creation of route6 objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects. This entry is for the mnt-routes attribute of route6 and inet6num classes. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects. This entry is for the mnt-routes attribute of route6 and inet6num classes. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of &lt;ipv6-address&gt;/&lt;prefix&gt; } | ANY ]'
             },
             'inetnum': {
                 short: 'References a mntner used in determining authorisation for the creation of route objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route objects. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route objects. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of &lt;address-prefix-range&gt; } | ANY ]'
             },
             'route': {
                 short: 'References a mntner used in determining authorisation for the creation of route objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route objects. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route objects. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of &lt;address-prefix-range&gt; } | ANY ]'
             },
             'route6': {
                 short: 'References a mntner used in determining authorisation for the creation of route6 objects.',
-                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects. This entry is for the mnt-routes attribute of route6 and inet6num classes. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \'ANY\' may follow. The default, when no additional set items are specified, is \'ANY\' or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more...</a>',
+                description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects. This entry is for the mnt-routes attribute of route6 and inet6num classes. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                 syntax: '&lt;mnt-name&gt; [ { list of &lt;ipv6-address&gt;/&lt;prefix&gt; } | ANY ]'
             }
         };

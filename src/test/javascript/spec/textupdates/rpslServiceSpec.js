@@ -81,6 +81,16 @@ describe('textUpdates: RpslService', function () {
         ]]);
     });
 
+    it('should parse rpsl with colon in value', function () {
+        var rpsl = 'inet6num: 2001:7F8:1::A500:3333:1\n';
+
+        var attrs = $RpslService.fromRpsl(rpsl);
+
+        expect(attrs).toEqual([[
+            {name: 'inet6num', value: ' 2001:7F8:1::A500:3333:1', comment: undefined}
+        ]]);
+    });
+
     it('should parse empty value', function () {
         var rpsl = 'person:  \n';
 
