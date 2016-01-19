@@ -98,18 +98,21 @@ angular.module('dbWebApp')
             var attrsMeta = this._getMetaAttributesOnObjectType(objectTypeName, false);
 
             var self = this;
-            var result =  _.map(attrs, function (attr) {
+            var enrichedAttrs = [];
+            _.each(attrs, function (attr) {
                 var attrMeta = _.find(attrsMeta, function (am) {
                     return am.name === attr.name;
                 });
-                var idx;
-                if (!_.isUndefined(attr.$$meta)) {
-                    idx = attr.$$meta.$$idx;
+                if( !_.isUndefined(attrMeta) ) {
+                    var idx;
+                    if (!_.isUndefined(attr.$$meta)) {
+                        idx = attr.$$meta.$$idx;
+                    }
+                    enrichedAttrs.push(_wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attr.link, attr['referenced-type'], attrMeta, idx));
                 }
-                return _wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attr.link, attr['referenced-type'], attrMeta, idx);
             });
 
-            return result;
+            return enrichedAttrs;
         };
 
         this.getAllAttributesOnObjectType = function (objectTypeName) {

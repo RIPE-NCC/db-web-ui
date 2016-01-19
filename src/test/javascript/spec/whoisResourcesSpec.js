@@ -14,6 +14,105 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
+    it('should wrap a success response', function() {
+        var resp = {
+            "link": {
+                "type": "locator",
+                "href": "http://rest-prepdev.db.ripe.net/ripe/route/80.99.0.0/16AS6830?dry-run=false&reason=I+don%27t+need+this+object"
+            },
+            "objects": {
+                "object": [
+                    {
+                        "type": "route",
+                        "link": {
+                            "type": "locator",
+                            "href": "http://rest-prepdev.db.ripe.net/ripe/route/80.99.0.0/16AS6830"
+                        },
+                        "source": {
+                            "id": "ripe"
+                        },
+                        "primary-key": {
+                            "attribute": [
+                                {
+                                    "name": "route",
+                                    "value": "80.99.0.0/16"
+                                },
+                                {
+                                    "name": "origin",
+                                    "value": "AS6830"
+                                }
+                            ]
+                        },
+                        "attributes": {
+                            "attribute": [
+                                {
+                                    "name": "route",
+                                    "value": "80.99.0.0/16"
+                                },
+                                {
+                                    "name": "descr",
+                                    "value": "UPC"
+                                },
+                                {
+                                    "name": "descr",
+                                    "value": "UPC Magyarorszag Kft."
+                                },
+                                {
+                                    "link": {
+                                        "type": "locator",
+                                        "href": "http://rest-prepdev.db.ripe.net/ripe/aut-num/AS6830"
+                                    },
+                                    "name": "origin",
+                                    "value": "AS6830",
+                                    "referenced-type": "aut-num"
+                                },
+                                {
+                                    "name": "notify",
+                                    "value": "***@broadband.hu"
+                                },
+                                {
+                                    "link": {
+                                        "type": "locator",
+                                        "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/SZABINET-MNT"
+                                    },
+                                    "name": "mnt-by",
+                                    "value": "SZABINET-MNT",
+                                    "referenced-type": "mntner"
+                                },
+                                {
+                                    "name": "changed",
+                                    "value": "***@broadband.hu 20040702"
+                                },
+                                {
+                                    "name": "changed",
+                                    "value": "***@chello.at 20100125"
+                                },
+                                {
+                                    "name": "created",
+                                    "value": "2010-01-25T10:18:10Z"
+                                },
+                                {
+                                    "name": "last-modified",
+                                    "value": "2010-01-25T10:18:10Z"
+                                },
+                                {
+                                    "name": "source",
+                                    "value": "RIPE"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "terms-and-conditions": {
+                "type": "locator",
+                "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+            }
+        };
+
+        $whoisResources.wrapSuccess(resp);
+    });
+
     it('should detect invalid whoisressources', function () {
         expect($whoisResources.wrapWhoisResources(null)).toBeUndefined();
         expect($whoisResources.wrapWhoisResources('garbage')).toBeUndefined();
