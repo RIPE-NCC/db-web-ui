@@ -102,7 +102,8 @@ angular.module('textUpdates')
                 // Needed by display screen
                 MessageStore.add('DIFF', _.cloneDeep(attributes));
 
-                // prevent last-modfied to be in
+                // prevent created and last-modfied to be in
+                attributes.removeAttributeWithName('created');
                 attributes.removeAttributeWithName('last-modified');
 
                 $scope.object.rpsl = RpslService.toRpsl(attributes);
