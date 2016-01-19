@@ -588,7 +588,6 @@ angular.module('webUpdates')
                     function (error) {
                         $scope.restCalInProgress = false;
                         try {
-                            $log.error('Error fetching object:' + JSON.stringify(error));
                             var whoisResources = error.data;
                             $scope.attributes = _wrapAndEnrichResources($scope.objectType, error.data);
                             AlertService.setErrors(whoisResources);

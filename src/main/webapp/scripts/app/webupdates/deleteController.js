@@ -37,29 +37,15 @@ angular.module('webUpdates')
                 ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name, $scope.onCancel).then(
                     function (whoisResources) {
                         $scope.modalInProgress = false;
-                        try {
-                            $scope.deletedObjects = whoisResources.objects.object;
-                            if (!_.isUndefined(whoisResources)) {
-                                $log.debug('SUCCESS delete object' + JSON.stringify(whoisResources));
-                                $scope.deletedObjects = whoisResources.objects.object;
-                                AlertService.setGlobalInfo('The following object(s) have been successfully deleted');
-                            }
-                        } catch (err) {
-                            $log.debug('Error processing result from delete-modal' + JSON.stringify(err));
-                        }
+                        $scope.deletedObjects = whoisResources.objects.object;
+                        $log.debug('SUCCESS delete object' + JSON.stringify(whoisResources));
+                        $scope.deletedObjects = whoisResources.objects.object;
+                        AlertService.setGlobalInfo('The following object(s) have been successfully deleted');
                     },
                     function (errorResp) {
                         $scope.modalInProgress = false;
-
-                        $log.debug('ERROR delete object'+JSON.stringify(errorResp));
-
-                        try {
-                            var whoisResources = WhoisResources.wrapWhoisResources(errorResp);
-                            AlertService.setErrors(whoisResources);
-                        }
-                        catch (err) {
-                            AlertService.setGlobalError('Error deleting object. Please reload and try again.');
-                        }
+                        $log.debug('ERROR deleting object'+JSON.stringify(errorResp));
+                        AlertService.setErrors(errorResp.data);
                     }
                 );
             }

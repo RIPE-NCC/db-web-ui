@@ -338,7 +338,7 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
 
         $scope.doDelete();
 
-        expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
+        expect(modalInstance.dismiss).toHaveBeenCalledWith({data:'error'});
     });
 
     it('should redirect to success delete page after delete object', function() {

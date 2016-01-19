@@ -38,23 +38,15 @@ angular.module('dbWebApp')
         };
 
         alertService.setErrors = function (whoisResources) {
-            if(_.isUndefined(whoisResources) ) {
-                $log.error('alertService.setErrors: undefined input' );
-            } else {
-                $rootScope.errors = whoisResources.getGlobalErrors();
-                $rootScope.warnings = whoisResources.getGlobalWarnings();
-                $rootScope.infos = whoisResources.getGlobalInfos();
-            }
+            $rootScope.errors = whoisResources.getGlobalErrors();
+            $rootScope.warnings = whoisResources.getGlobalWarnings();
+            $rootScope.infos = whoisResources.getGlobalInfos();
         };
 
         alertService.setAllErrors = function (whoisResources) {
-            if(_.isUndefined(whoisResources) ) {
-                $log.error('alertService.setAllErrors: undefined input' );
-            } else {
-                $rootScope.errors = whoisResources.getAllErrors();
-                $rootScope.warnings = whoisResources.getAllWarnings();
-                $rootScope.infos = whoisResources.getAllInfos();
-            }
+            $rootScope.errors = whoisResources.getAllErrors();
+            $rootScope.warnings = whoisResources.getAllWarnings();
+            $rootScope.infos = whoisResources.getAllInfos();
         };
 
         alertService.addErrors = function (whoisResources) {

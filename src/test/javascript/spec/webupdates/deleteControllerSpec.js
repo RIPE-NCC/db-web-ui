@@ -115,7 +115,7 @@ describe('webUpdates: DeleteController', function () {
 
             $log = {
                 debug: function(msg) {
-                    //console.log('info:'+msg);
+                    //console.log('debug:'+msg);
                 },
                 info: function(msg) {
                     //console.log('info:'+msg);
@@ -162,8 +162,11 @@ describe('webUpdates: DeleteController', function () {
     });
 
     it('should display errors if delete object fail', function() {
+        var error = {
+            data:whoisObjectWithErrors
+        };
 
-        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { b(whoisObjectWithErrors); }});
+        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { b(WhoisResources.wrapError(error)); }});
 
         createDeleteController();
 
@@ -174,11 +177,15 @@ describe('webUpdates: DeleteController', function () {
 
 
     it('should display generic errors if delete object fail without returning a whois object', function() {
-        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { b('just text'); }});
+        var error = {
+            data:'just text'
+        };
+
+        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { b(WhoisResources.wrapError(error)); }});
 
         createDeleteController();
 
-        expect(AlertService.getErrors()).toEqual([{ plainText:'Error deleting object. Please reload and try again.'}]);
+        expect(AlertService.getErrors()).toEqual([{ severity: 'Error', text:'Unexpected error: please retry later', plainText:'Unexpected error: please retry later'}]);
 
         expect($state.current.name).toBe('delete');
     });

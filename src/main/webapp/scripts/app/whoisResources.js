@@ -654,12 +654,19 @@ angular.module('dbWebApp')
         }
 
         this.wrapError = function(error) {
-            var whoisResources = error.data;
-            if(_.isUndefined(whoisResources) ) {
-                whoisResources = error.config.data;
+            var whoisResources = undefined;
+
+            if(error) {
+                if (error.data) {
+                    whoisResources = error.data;
+                } else if (error.config && error.config.data) {
+                    whoisResources = error.config.data;
+                }
+            } else {
+                error = {};
             }
+
             if ( ! isValidWhoisResources(whoisResources) ) {
-                $log.error("Not valid whois-resources:" + JSON.stringify(error));
                 whoisResources = {};
                 whoisResources.errormessages = {};
                 whoisResources.errormessages.errormessage = [];
@@ -667,6 +674,7 @@ angular.module('dbWebApp')
                     {severity: 'Error', text: 'Unexpected error: please retry later'}
                 );
             }
+
             error.data = this.wrap(whoisResources);
 
             return error;

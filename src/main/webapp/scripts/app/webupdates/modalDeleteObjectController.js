@@ -47,7 +47,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController',
                     $modalInstance.close(resp);
                 },
                 function (error) {
-                    $modalInstance.dismiss(error.data);
+                    $modalInstance.dismiss(error);
                 }
             );
         }

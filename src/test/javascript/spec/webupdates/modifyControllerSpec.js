@@ -1,5 +1,17 @@
 'use strict';
 
+var logger = {
+    debug: function (msg) {
+        //console.log('info:'+msg);
+    },
+    info: function (msg) {
+        //console.log('info:'+msg);
+    },
+    error: function (msg) {
+        //console.log('error:'+msg);
+    }
+};
+
 describe('webUpdates: ModifyController', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
@@ -35,7 +47,7 @@ describe('webUpdates: ModifyController', function () {
             CredentialsService.setCredentials('TEST-MNT', '@123');
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window, $log:logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -302,7 +314,7 @@ describe('webUpdates: ModifyController init with failures', function () {
             $stateParams.name = NAME;
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $log:logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -317,8 +329,8 @@ describe('webUpdates: ModifyController init with failures', function () {
 
     it('should report error when fetching sso maintainers fails', function () {
 
-        failToGetSsoMaintainers();
         getObject();
+        failToGetSsoMaintainers();
 
         $httpBackend.flush();
 
@@ -358,11 +370,9 @@ describe('webUpdates: ModifyController init with failures', function () {
         ]);
     }
 
-
     function failToGetSsoMaintainers() {
         $httpBackend.whenGET('api/user/mntners').respond(404);
     }
-
 
     function getObject() {
         $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
@@ -487,7 +497,7 @@ describe('webUpdates: ModifyController ask for password before modify object wit
                 });
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $log:logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -576,7 +586,7 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
                 });
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $log:logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -636,7 +646,7 @@ describe('webUpdates: ModifyController for organisation', function () {
             $stateParams.name = NAME;
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService
+                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService, $log:logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);

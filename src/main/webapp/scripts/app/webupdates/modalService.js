@@ -27,7 +27,7 @@ angular.module('dbWebApp')
             };
 
             this.openDeleteObjectModal = function(source, objectType, name, onCancel) {
-                $log.debug("_openDeleteObjectModal called");
+                $log.debug("_openDeleteObjectModal called for " + objectType + '/'+ name);
                 var modalInstance = $modal.open({
                     animation:true,
                     templateUrl: 'scripts/app/webupdates/modalDeleteObject.html',
