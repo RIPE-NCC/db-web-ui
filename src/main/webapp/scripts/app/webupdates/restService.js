@@ -1,21 +1,30 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log',
-        function ($resource, $q, $http, $templateCache, $log) {
+    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', 'WhoisResources',
+        function ($resource, $q, $http, $templateCache, $log, WhoisResources) {
 
             function RestService() {
 
-                this.getReferences = function(source, objectType, name, limit) {
+                this.fetchUiSelectResources = function () {
+                    return $q.all([
+                        // workaround to cope with order of loading problem
+                        $http.get('selectize/match-multiple.tpl.html', {cache: $templateCache}),
+                        $http.get('selectize/select-multiple.tpl.html', {cache: $templateCache})
+                    ]);
+                };
+
+                this.getReferences = function (source, objectType, name, limit) {
                     var deferredObject = $q.defer();
 
                     $log.debug('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
 
                     $resource('api/references/:source/:objectType/:name',
-                        {   source: source,
+                        {
+                            source: source,
                             objectType: objectType,
                             name: encodeURIComponent(name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
-                            limit:limit
+                            limit: limit
                         }).get()
                         .$promise.then(
                         function(result) {
@@ -28,66 +37,6 @@ angular.module('dbWebApp')
                     );
 
                     return deferredObject.promise;
-                };
-
-                this.deleteObject = function(source, objectType, name, reason, withReferences, passwords, dryRun) {
-                    var deferredObject = $q.defer();
-
-                    var service = withReferences ? 'references' : 'whois';
-                    if(_.isUndefined(dryRun)) {
-                        dryRun = false;
-                    }
-
-                    $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
-                        ' reason:' + reason + ' with-refs:' + withReferences);
-
-                    $resource('api/'+service+'/:source/:objectType/:name',
-                        {   source: source,
-                            objectType: objectType,
-                            name: name, // Note: double encoding not needed for delete
-                            password: '@password',
-                            'dry-run': dryRun
-                        }).delete({password:passwords, reason: reason})
-                        .$promise.then(
-                        function (result) {
-                            $log.debug('deleteObject success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function (error) {
-                            $log.error('deleteObject error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        }
-                    );
-
-                    return deferredObject.promise;
-                };
-
-                this.createPersonMntner = function(source, multipleWhoisObjects ) {
-                    var deferredObject = $q.defer();
-
-                    $log.debug('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
-
-                    $resource('api/references/:source',
-                        {source: source})
-                        .save(multipleWhoisObjects)
-                        .$promise
-                        .then(function (result) {
-                            $log.debug('createPersonMntner success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function (error) {
-                            $log.error('createPersonMntner error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        }
-                    );
-
-                    return deferredObject.promise;
-                };
-
-                this.fetchUiSelectResources = function () {
-                    return $q.all([
-                        // workaround to cope with order of loading problem
-                        $http.get('selectize/match-multiple.tpl.html', {cache: $templateCache}),
-                        $http.get('selectize/select-multiple.tpl.html', {cache: $templateCache})
-                    ]);
                 };
 
                 this.fetchMntnersForSSOAccount = function () {
@@ -110,29 +59,6 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.getMntnersToForceDelete = function( source, objectType, objectName ) {
-                    var deferredObject = $q.defer();
-
-                    $log.debug('getMntnersToForceDelete start for objectType: ' + objectType + ' and objectName: ' + objectName);
-
-                    $resource('api/forceDelete/:source/:objectType/:objectName',
-                        {   source: source,
-                            objectType: objectType,
-                            objectName: encodeURIComponent(objectName) // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
-                        }).query()
-                        .$promise.then(
-                        function(result) {
-                            $log.debug('getMntnersToForceDelete success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function(error) {
-                            $log.debug('getMntnersToForceDeleteerror:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        }
-                    );
-
-                    return deferredObject.promise;
-                }
-
                 this.detailsForMntners = function (mntners) {
                     $log.debug('detailsForMntners start for: ' + JSON.stringify(mntners));
 
@@ -146,20 +72,22 @@ angular.module('dbWebApp')
                 function _singleMntnerDetails(mntner) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('_singleMntnerDetails start for: ' +  JSON.stringify(mntner));
+                    $log.debug('_singleMntnerDetails start for: ' + JSON.stringify(mntner));
 
                     $resource('api/whois/autocomplete',
-                        {   query: mntner.key,
+                        {
+                            query: mntner.key,
                             field: 'mntner',
                             attribute: 'auth',
-                            extended:true})
+                            extended: true
+                        })
                         .query()
                         .$promise
                         .then(function (result) {
-                            var found = _.find(result, function( item ) {
+                            var found = _.find(result, function (item) {
                                 return item.key === mntner.key;
                             });
-                            if( _.isUndefined(found)) {
+                            if (_.isUndefined(found)) {
                                 // TODO: the  autocomplete service just returns 10 matching records. The exact match could not be part of this set.
                                 // So if this happens, perform best guess and just enrich the xisting mntner with md5.
                                 mntner.auth = ['MD5-PW'];
@@ -182,7 +110,7 @@ angular.module('dbWebApp')
                 this.autocomplete = function (objectType, objectName, extended, attrs) {
                     var deferredObject = $q.defer();
 
-                    if( _.isUndefined(objectName) || objectName.length < 2 ) {
+                    if (_.isUndefined(objectName) || objectName.length < 2) {
                         deferredObject.resolve([]);
                     } else {
                         $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
@@ -209,34 +137,6 @@ angular.module('dbWebApp')
                     return deferredObject.promise;
                 };
 
-                this.authenticate = function (method, source, objectType, objectName, passwords) {
-                    var deferredObject = $q.defer();
-
-                    $log.debug('authenticate start for method: ' + method + ' and objectType: ' + objectType + ' and objectName: ' + objectName);
-
-                    // Perform a get on the mntner to detect if supplied password was correct
-                    $resource('api/whois/:source/:objectType/:objectName',
-                        {
-                            source: source,
-                            objectType: objectType,
-                            objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            unfiltered: true,
-                            password: '@password'
-                        }).get({password: passwords})
-                        .$promise
-                        .then(function (result) {
-                            $log.debug('authenticate success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function (error) {
-                            deferredObject.resolve(result);
-                            $log.error('authenticate error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        }
-                    );
-
-                    return deferredObject.promise;
-                };
-
                 this.fetchObject = function (source, objectType, objectName, passwords, unformatted) {
                     var deferredObject = $q.defer();
 
@@ -250,14 +150,40 @@ angular.module('dbWebApp')
                             unfiltered: true,
                             password: '@password',
                             unformatted: unformatted
-                        }).get({password:passwords})
+                        }).get({password: passwords})
                         .$promise
                         .then(function (result) {
                             $log.debug('fetchObject success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
                             $log.error('fetchObject error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
+                            deferredObject.reject(WhoisResources.wrapError(error));
+                        }
+                    );
+
+                    return deferredObject.promise;
+                };
+
+                this.authenticate = function (method, source, objectType, objectName, passwords) {
+                    var deferredObject = $q.defer();
+
+                    $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
+
+                    $resource('api/whois/:source/:objectType/:objectName',
+                        {
+                            source: source,
+                            objectType: objectType,
+                            objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            unfiltered: true,
+                            password: '@password'
+                        }).get({password: passwords})
+                        .$promise
+                        .then(function (result) {
+                            $log.debug('authenticate success:' + JSON.stringify(result));
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
+                        }, function (error) {
+                            $log.error('authenticate error:' + JSON.stringify(error));
+                            deferredObject.reject(WhoisResources.wrapError(error));
                         }
                     );
 
@@ -267,22 +193,24 @@ angular.module('dbWebApp')
                 this.createObject = function (source, objectType, attributes, passwords, overrides, unformatted) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('createObject start for objectType: ' + objectType + ' and payload:' +JSON.stringify(attributes));
+                    $log.debug('createObject start for objectType: ' + objectType + ' and payload:' + JSON.stringify(attributes));
 
                     $resource('api/whois/:source/:objectType',
-                        {   source: source,
+                        {
+                            source: source,
                             objectType: objectType,
                             password: '@password',
                             override: '@override',
-                            unformatted: '@unformatted'})
-                        .save({password:passwords,override:overrides,unformatted:unformatted}, attributes)
+                            unformatted: '@unformatted'
+                        })
+                        .save({password: passwords, override: overrides, unformatted: unformatted}, attributes)
                         .$promise
                         .then(function (result) {
                             $log.debug('createObject success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
                             $log.error('createObject error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
+                            deferredObject.reject(WhoisResources.wrapError(error));
                         }
                     );
 
@@ -302,21 +230,55 @@ angular.module('dbWebApp')
                      * TODO This needs more testing.
                      */
                     $resource('api/whois/:source/:objectType/:name',
-                        {   source: source,
+                        {
+                            source: source,
                             objectType: objectType,
                             name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             password: '@password',
                             override: '@override',
-                            unformatted: '@unformatted'},
+                            unformatted: '@unformatted'
+                        },
                         {'update': {method: 'PUT'}})
-                        .update({password:passwords,override:overrides,unformatted:unformatted}, attributes)
+                        .update({password: passwords, override: overrides, unformatted: unformatted}, attributes)
                         .$promise
                         .then(function (result) {
                             $log.debug('modifyObject success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
                             $log.error('modifyObject error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
+                            deferredObject.reject(WhoisResources.wrapError(error));
+                        }
+                    );
+
+                    return deferredObject.promise;
+                };
+
+                this.deleteObject = function (source, objectType, name, reason, withReferences, passwords, dryRun) {
+                    var deferredObject = $q.defer();
+
+                    var service = withReferences ? 'references' : 'whois';
+                    if(_.isUndefined(dryRun)) {
+                        dryRun = false;
+                    }
+
+                    $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
+                        ' reason:' + reason + ' with-refs:' + withReferences);
+
+                    $resource('api/' + service + '/:source/:objectType/:name',
+                        {
+                            source: source,
+                            objectType: objectType,
+                            name: name, // Note: double encoding not needed for delete
+                            password: '@password',
+                            'dry-run': dryRun
+                        }).delete({password: passwords, reason: reason})
+                        .$promise.then(
+                        function (result) {
+                            $log.debug('deleteObject success:' + JSON.stringify(result));
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
+                        }, function (error) {
+                            $log.error('deleteObject error:' + JSON.stringify(error));
+                            deferredObject.reject(WhoisResources.wrapError(error));
                         }
                     );
 
@@ -329,25 +291,49 @@ angular.module('dbWebApp')
                     $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name?password=:password',
-                        {   source: source,
+                        {
+                            source: source,
                             objectType: objectType,
                             name: objectName,  // only for mntners so no url-decosong applied
-                            password: '@password'},
+                            password: '@password'
+                        },
                         {update: {method: 'PUT'}})
-                        .update({password:passwords}, whoisResources)
+                        .update({password: passwords}, whoisResources)
                         .$promise
                         .then(function (result) {
                             $log.debug('associateSSOMntner success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
                             $log.error('associateSSOMntner error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
+                            deferredObject.reject(WhoisResources.wrapError(error));
                         }
                     );
                     return deferredObject.promise;
                 };
-            }
 
+                this.createPersonMntner = function (source, multipleWhoisObjects) {
+                    var deferredObject = $q.defer();
+
+                    $log.debug('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
+
+                    $resource('api/references/:source',
+                        {source: source})
+                        .save(multipleWhoisObjects)
+                        .$promise
+                        .then(function (result) {
+                            $log.debug('createPersonMntner success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function (error) {
+                            $log.error('createPersonMntner error:' + JSON.stringify(error));
+                            deferredObject.reject(WhoisResources.wrapError(error));
+                        }
+                    );
+
+                    return deferredObject.promise;
+                };
+
+
+            }
             return new RestService();
         }]);
 

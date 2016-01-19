@@ -24,7 +24,7 @@ angular.module('webUpdates').controller('ModalCreateRoleForAbuseCController', [ 
             attributes = WhoisResources.wrapAndEnrichAttributes('role', attributes.removeNullAttributes());
             RestService.createObject(source, 'role', WhoisResources.turnAttrsIntoWhoisObject(attributes), passwords).then(
                 function(response) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(response);
+                    var whoisResources = response;
                     $modalInstance.close(whoisResources.getAttributes());
                 },
                 function (error) {

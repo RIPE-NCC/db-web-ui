@@ -85,12 +85,9 @@ angular.module('textUpdates')
                 ).catch(
                     function (error) {
                         $scope.restCalInProgress = false;
-                        if (error && error.data ) {
-                            $log.error('Error fetching object:' + JSON.stringify(error));
-                            var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                            AlertService.setErrors(whoisResources);
+                        if( error.data) {
+                            AlertService.setErrors(error.data);
                         } else {
-                            $log.error('Error interpreting responses:' + JSON.stringify(error));
                             AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                         }
                     }
@@ -100,10 +97,7 @@ angular.module('textUpdates')
             function _handleFetchResponse(objectToModify) {
                 $log.debug('object to modify:' + JSON.stringify(objectToModify));
                 // Extract attributes from response
-                var whoisResources = WhoisResources.wrapWhoisResources(objectToModify);
-                var attributes = WhoisResources.wrapAttributes(
-                    WhoisResources.enrichAttributesWithMetaInfo($scope.object.type, whoisResources.getAttributes())
-                );
+                var attributes = objectToModify.getAttributes();
 
                 // Needed by display screen
                 MessageStore.add('DIFF', _.cloneDeep(attributes));
@@ -155,7 +149,7 @@ angular.module('textUpdates')
                             function(result) {
                                 $scope.restCalInProgress = false;
 
-                                var whoisResources = WhoisResources.wrapWhoisResources(result);
+                                var whoisResources = result;
                                 MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
                                 _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Modify');
 
@@ -163,20 +157,11 @@ angular.module('textUpdates')
                             function(error) {
                                 $scope.restCalInProgress = false;
 
-                                if (_.isUndefined(error.data) || (_.isUndefined(error.data.objects) && _.isUndefined(error.data.errormessages) )) {
-                                    $log.error('Response not understood:'+JSON.stringify(error));
-                                    AlertService.setGlobalError('Error submitting information: Unexpected response');
-                                    return;
-                                }
-
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                var whoisResources = error.data;
                                 AlertService.setAllErrors(whoisResources);
-
-                                if(!_.isUndefined(whoisResources.getAttributes())) {
-                                    var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
-                                    ErrorReporterService.log('Modify', $scope.object.type, AlertService.getErrors(), attributes);
+                                if(!_.isEmpty(whoisResources.getAttributes())) {
+                                    ErrorReporterService.log('TextModify', $scope.object.type, AlertService.getErrors(), whoisResources.getAttributes());
                                 }
-
                             }
                         );
                     },

@@ -3,7 +3,7 @@
 angular.module('webUpdates')
     .controller('CreatePersonMntnerPairController', [
         '$scope', '$state', '$log', 'SOURCE', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore','ErrorReporterService',
-        function ($scope, $state, $log, source, WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService) {
+        function ($scope, $state, $log, SOURCE, WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService) {
 
             $scope.cancel = cancel;
             $scope.submit = submit;
@@ -19,7 +19,7 @@ angular.module('webUpdates')
 
                 $scope.ssoUserName = undefined;
 
-                $scope.source = source;
+                $scope.source = SOURCE;
 
                 $scope.personAttributes = WhoisResources.wrapAndEnrichAttributes('person',
                     WhoisResources.getMandatoryAttributesOnObjectType('person'));
@@ -66,30 +66,24 @@ angular.module('webUpdates')
                         WhoisResources.turnAttrsIntoWhoisObjects([$scope.personAttributes, $scope.mntnerAttributes])).then(
                         function(resp) {
                             $scope.submitInProgress = false;
-                            var whoisResources = WhoisResources.wrapWhoisResources(resp);
 
-                            var personUid = _addObjectOfTypeToCache(whoisResources, 'person', 'nic-hdl');
-                            var mntnerName = _addObjectOfTypeToCache(whoisResources, 'mntner', 'mntner');
+                            var personUid = _addObjectOfTypeToCache(resp, 'person', 'nic-hdl');
+                            var mntnerName = _addObjectOfTypeToCache(resp, 'mntner', 'mntner');
 
                             _navigateToDisplayPage($scope.source, personUid, mntnerName);
 
                         },
                         function(error) {
                             $scope.submitInProgress = false;
-                            if(_.isUndefined(error.data.objects) || _.isUndefined(error.data.errormessages) ) {
-                                $log.error('Got unexpected error response:' + JSON.stringify(error) );
-                                AlertService.setGlobalError('Recieved unexpected response');
-                            } else {
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                _validateForm();
-                                AlertService.addErrors(whoisResources);
-                                AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
-                                AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
 
-                                ErrorReporterService.log('Create','post-submit', 'person', AlertService.getErrors(), $scope.personAttributes);
-                                ErrorReporterService.log('Create','post-submit', 'mntner', AlertService.getErrors(), $scope.mntnerAttributes);
+                            var whoisResources = error.data;
+                            _validateForm();
+                            AlertService.addErrors(whoisResources);
+                            AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
+                            AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
 
-                            }
+                            ErrorReporterService.log('Create','post-submit', 'person', AlertService.getErrors(), $scope.personAttributes);
+                            ErrorReporterService.log('Create','post-submit', 'mntner', AlertService.getErrors(), $scope.mntnerAttributes);
                         });
 
                 }

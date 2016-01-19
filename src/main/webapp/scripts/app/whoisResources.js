@@ -237,10 +237,20 @@ angular.module('dbWebApp')
         };
 
         var getObjectType = function () {
-            if( ! this.objects ) {
+            if (!this.objects || !this.objects.object || this.objects.object.length === 0 ) {
                 return undefined;
             }
-            return this.objects.object[0].type;
+            var obj = this.objects.object[0];
+
+            var objectType = undefined;
+            if ( obj.type ) {
+                objectType = obj.type;
+            } else if( obj.attributes.attribute[0].name ) {
+                objectType = obj.attributes.attribute[0].name;
+            } else {
+                $log.error("No object type found for " + JSON.stringify(this));
+            }
+            return objectType;
         };
 
         var isFiltered = function () {
@@ -279,11 +289,14 @@ angular.module('dbWebApp')
             return this.objects.object[idx].attributes.attribute;
         };
 
-        var isValidWhoisResources = function( whoisResources) {
-            if( _.isUndefined(whoisResources) || _.isNull(whoisResources) ) {
+        function isValidWhoisResources( whoisResources) {
+            if(_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
+                $log.error('isValidWhoisResources: Null input:' + JSON.stringify(whoisResources));
                 return false;
             }
-            if( _.has(whoisResources,'objects' ) === false && _.has(whoisResources,'errormessages' ) === false ) {
+            if( (_.isUndefined(whoisResources.objects)       || _.isNull(whoisResources.objects) ) &&
+                (_.isUndefined(whoisResources.errormessages) ||  _.isNull(whoisResources.errormessages) ) ) {
+                $log.error('isValidWhoisResources: Missing objects and errormessages:' + JSON.stringify(whoisResources));
                 return false;
             }
 
@@ -301,6 +314,7 @@ angular.module('dbWebApp')
                 return undefined;
             }
             // enrich data with methods
+            whoisResources.wrapped = true;
             whoisResources.toString = toString;
             whoisResources.readableError = readableError;
             whoisResources.getAllErrors = getAllErrors;
@@ -394,7 +408,7 @@ angular.module('dbWebApp')
             var errorFound = false;
 
             var self = this;
-            _.map(this, function (attr) {
+            _.each(this, function (attr) {
                 if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0 ) {
                     attr.$$error = 'Mandatory attribute not set';
                     errorFound = true;
@@ -619,6 +633,44 @@ angular.module('dbWebApp')
             return attrs;
         };
 
+        this.wrap = function(whoisResources) {
+            var result = whoisResources;
+            if(!_.isUndefined(whoisResources) && isValidWhoisResources(whoisResources)) {
+                var wrapped = this.wrapWhoisResources(whoisResources);
+                var objectType = wrapped.getObjectType();
+                if (!_.isUndefined(objectType) && !_.isUndefined(wrapped.getAttributes())) {
+                    wrapped.objects.object[0].attributes.attribute =
+                        this.wrapAttributes(
+                            this.enrichAttributesWithMetaInfo(objectType, wrapped.getAttributes())
+                        );
+                }
+                result = wrapped;
+            }
+            return result;
+        }
+
+        this.wrapSuccess = function(whoisResources) {
+            return this.wrap(whoisResources);
+        }
+
+        this.wrapError = function(error) {
+            var whoisResources = error.data;
+            if(_.isUndefined(whoisResources) ) {
+                whoisResources = error.config.data;
+            }
+            if ( ! isValidWhoisResources(whoisResources) ) {
+                $log.error("Not valid whois-resources:" + JSON.stringify(error));
+                whoisResources = {};
+                whoisResources.errormessages = {};
+                whoisResources.errormessages.errormessage = [];
+                whoisResources.errormessages.errormessage.push(
+                    {severity: 'Error', text: 'Unexpected error: please retry later'}
+                );
+            }
+            error.data = this.wrap(whoisResources);
+
+            return error;
+        }
 
     }]);
 
