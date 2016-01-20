@@ -93,8 +93,8 @@ angular.module('webUpdates')
 
                 $scope.attributes = [];
 
-                $scope.mntbyDescription = MntnerService.mntbyDescription;
-                $scope.mntbySyntax = MntnerService.mntbySyntax;
+                $scope.mntbyDescription = MntnerService.mntbyDescription($scope.objectType);
+                $scope.mntbySyntax = MntnerService.mntbySyntax($scope.objectType);
 
                 $scope.CREATE_OPERATION = 'Create';
                 $scope.MODIFY_OPERATION = 'Modify';

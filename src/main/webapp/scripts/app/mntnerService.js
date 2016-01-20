@@ -171,12 +171,12 @@ angular.module('dbWebApp')
             });
         };
 
-        mntnerService.mntbyDescription = function () {
-            WhoisResources.getAttributeDescription($scope.objectType, 'mnt-by');
+        mntnerService.mntbyDescription = function (objectType) {
+            return WhoisResources.getAttributeDescription(objectType, 'mnt-by');
         };
 
-        mntnerService.mntbySyntax = function () {
-            WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
+        mntnerService.mntbySyntax = function (objectType) {
+            return WhoisResources.getAttributeSyntax(objectType, 'mnt-by');
         };
 
         function _stripRpslMntner(mntners) {

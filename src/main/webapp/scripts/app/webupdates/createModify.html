@@ -48,7 +48,7 @@
     </ui-select>
     <div collapse="!isMntHelpShown" class="text field-description">
         <strong>Description</strong></br>
-        {{mntbyDescription}}</br>
+        <span ng-bind-html="mntbyDescription"></span></br>
         <strong>Syntax</strong></br>
         <span ng-bind-html="mntbySyntax"></span>
     </div>
