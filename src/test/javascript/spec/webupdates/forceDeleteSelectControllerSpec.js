@@ -35,7 +35,7 @@ describe('webUpdates: ForceDeleteSelectController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should navigate to force-delete screen', function () {
+    it('should navigate to force delete screen', function () {
         forceDeleteSelectController();
 
         $scope.selected = {

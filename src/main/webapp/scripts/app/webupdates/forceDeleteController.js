@@ -140,7 +140,7 @@ angular.module('webUpdates')
                             AlertService.setErrors(whoisResources);
                         } else {
                             $log.error('Error fetching mntner information:' + JSON.stringify(error));
-                            AlertService.setGlobalError('Error fetching maintainers to force-delete this object');
+                            AlertService.setGlobalError('Error fetching maintainers to force delete this object');
                         }
                     }
                 );
@@ -213,7 +213,7 @@ angular.module('webUpdates')
             }
 
             function _onSuccessfulAuthentication() {
-                $log.debug("Navigate to force-delete screen");
+                $log.debug("Navigate to force delete screen");
                 WebUpdatesCommons.navigateToDelete($scope.object.source, $scope.object.type, $scope.object.name, STATE.FORCE_DELETE);
             }
 

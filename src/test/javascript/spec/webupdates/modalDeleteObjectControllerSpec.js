@@ -214,7 +214,7 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
         expect($state.current.name).toBe('webupdates.modify');
     });
 
-    it('should close the modal and return to force-delete when canceled', function () {
+    it('should close the modal and return to force delete when canceled', function () {
 
         $scope.onCancel = 'webupdates.forceDelete';
         $scope.doCancel();
