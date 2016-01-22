@@ -71,18 +71,18 @@ angular.module('dbWebApp')
             });
         };
 
-        mntnerService.enrichWithNewStatus = function (originalMntners, actualMntners) {
-            return  _.map(actualMntners, function (mntner) {
-                if (mntnerService.isMntnerOnlist(originalMntners, mntner)) {
-                    mntner.isNew = false;
-                } else {
-                    mntner.isNew = true;
-                }
-                return mntner;
-            });
-        };
+            mntnerService.enrichWithNewStatus = function (originalMntners, actualMntners) {
+                return  _.map(actualMntners, function (mntner) {
+                    if (mntnerService.isMntnerOnlist(originalMntners, mntner)) {
+                        mntner.isNew = false;
+                    } else {
+                        mntner.isNew = true;
+                    }
+                    return mntner;
+                });
+            };
 
-        mntnerService.enrichWithMine = function (ssoMntners, mntners) {
+            mntnerService.enrichWithMine = function (ssoMntners, mntners) {
             return _.map(mntners, function (mntner) {
                 // search in selected list
                 if (mntnerService.isMntnerOnlist(ssoMntners, mntner)) {
@@ -171,12 +171,12 @@ angular.module('dbWebApp')
             });
         };
 
-        mntnerService.mntbyDescription = function () {
-            WhoisResources.getAttributeDescription($scope.objectType, 'mnt-by');
+        mntnerService.mntbyDescription = function (objectType) {
+            return WhoisResources.getAttributeDescription(objectType, 'mnt-by');
         };
 
-        mntnerService.mntbySyntax = function () {
-            WhoisResources.getAttributeSyntax($scope.objectType, 'mnt-by');
+        mntnerService.mntbySyntax = function (objectType) {
+            return WhoisResources.getAttributeSyntax(objectType, 'mnt-by');
         };
 
         function _stripRpslMntner(mntners) {

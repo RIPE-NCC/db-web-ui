@@ -251,7 +251,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
                 objects: {
                     object: [
                         {
-                            'primary-key': {attribute: [{name: 'as-block', value: OBJECT_NAME}]},
+                            'primary-key': {attribute: [{name: OBJECT_TYPE, value: OBJECT_NAME}]},
                             attributes: {
                                 attribute: [
                                     {name: 'route', value: OBJECT_NAME},

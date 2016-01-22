@@ -99,13 +99,14 @@ angular.module('textUpdates')
             // extract the key
             var keyWithRest = rawAttribute.split(':');
             if (keyWithRest.length > 0 && !_.isEmpty(_.trim(keyWithRest[0]))) {
-                var key = _.trim(keyWithRest[0]);
+                var key = _.trim(_.head(keyWithRest));
+                var rest = _.tail(keyWithRest).join(':'); // allow colons in value
                 var values = [];
                 var comments = [];
 
                 // extract the value and comment
                 if (keyWithRest.length > 1) {
-                    _.each(keyWithRest[1].split('\n'), function (item) {
+                    _.each(rest.split('\n'), function (item) {
                         var trimmed = _.trim(item);
 
                         if( !_.isEmpty(trimmed)) {

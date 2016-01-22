@@ -25,7 +25,7 @@ describe('dbWebApp: RestService', function () {
         var name = 'TEST-MNT';
         var reason = 'testing';
 
-        $httpBackend.expectDELETE('api/whois/'+source+'/'+objectType+'/'+name+'?reason='+reason).respond(200);
+        $httpBackend.expectDELETE('api/whois/'+source+'/'+objectType+'/'+name+'?dry-run=false&reason='+reason).respond(200);
 
         restService.deleteObject(source, objectType, name, reason, false);
         $httpBackend.flush();
@@ -37,7 +37,7 @@ describe('dbWebApp: RestService', function () {
         var name = 'TEST-MNT';
         var reason = 'testing';
 
-        $httpBackend.expectDELETE('api/references/'+source+'/'+objectType+'/'+name+'?reason='+reason).respond(200);
+        $httpBackend.expectDELETE('api/references/'+source+'/'+objectType+'/'+name+'?dry-run=false&reason='+reason).respond(200);
 
         restService.deleteObject(source, objectType, name, reason, true);
         $httpBackend.flush();

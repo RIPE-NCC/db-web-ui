@@ -82,15 +82,15 @@ angular.module('webUpdates')
                     templateUrl: 'scripts/app/webupdates/delete.html',
                     controller: 'DeleteController'
                 })
-                .state('webupdates.reclaimSelect', {
-                    url: '/reclaimSelect',
-                    templateUrl: 'scripts/app/webupdates/reclaimSelect.html',
-                    controller: 'ReclaimSelectController'
+                .state('webupdates.forceDeleteSelect', {
+                    url: '/forceDeleteSelect',
+                    templateUrl: 'scripts/app/webupdates/forceDeleteSelect.html',
+                    controller: 'ForceDeleteSelectController'
                 })
-                .state('webupdates.reclaim', {
-                    url: '/reclaim/:source/:objectType/{name:WhoisObjectName}',
-                    templateUrl: 'scripts/app/webupdates/reclaim.html',
-                    controller: 'ReclaimController'
+                .state('webupdates.forceDelete', {
+                    url: '/forceDelete/:source/:objectType/{name:WhoisObjectName}',
+                    templateUrl: 'scripts/app/webupdates/forceDelete.html',
+                    controller: 'ForceDeleteController'
                 });
 
         }]);

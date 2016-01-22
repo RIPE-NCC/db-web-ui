@@ -86,11 +86,13 @@ angular.module('textUpdates')
                         var enrichedAttrs = _addSsoMntnersAsMntBy(attributes, ssoMntners);
                         deferredObject.resolve(enrichedAttrs);
 
-                    }, function (error) {
+                    },
+                    function (error) {
                         $scope.restCalInProgress = false;
 
                         $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
+
                         deferredObject.resolve(attributes);
                     }
                 );
@@ -139,7 +141,7 @@ angular.module('textUpdates')
                 }
 
                 var undefinedName;
-                TextCommons.authenticate($scope.object.source, $scope.object.type, undefinedName, $scope.mntners.sso,
+                TextCommons.authenticate('Create', $scope.object.source, $scope.object.type, undefinedName, $scope.mntners.sso,
                     attributes, passwords, overrides).then(
                     function (authenticated) {
                         $log.debug('Authenticated successfully:' + authenticated);
@@ -157,24 +159,20 @@ angular.module('textUpdates')
                             function (result) {
                                 $scope.restCalInProgress = false;
 
-                                var whoisResources = WhoisResources.wrapWhoisResources(result);
+                                var whoisResources = result;
                                 MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
                                 TextCommons.navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Create');
 
-                            }, function (error) {
+                            },
+                            function (error) {
                                 $scope.restCalInProgress = false;
 
-                                if (_.isUndefined(error.data)) {
-                                    $log.error('Response not understood:' + JSON.stringify(error));
-                                    return;
+                                var whoisResources = error.data;
+                                AlertService.setAllErrors(whoisResources);
+                                if (!_.isEmpty(whoisResources.getAttributes())) {
+                                    ErrorReporterService.log('TextCreate', $scope.object.type, AlertService.getErrors(), whoisResources.getAttributes());
                                 }
 
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                                AlertService.setAllErrors(whoisResources);
-                                if (!_.isUndefined(whoisResources.getAttributes())) {
-                                    var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
-                                    ErrorReporterService.log('Create', $scope.object.type, AlertService.getErrors(), attributes);
-                                }
                             }
                         );
                     }, function(authenticated) {

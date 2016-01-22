@@ -70,7 +70,7 @@ angular.module('textUpdates')
                         $scope.mntners.sso = results.mntners;
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
 
-                        TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.object.name,
+                        TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name,
                                 $scope.mntners.sso, attributes, [], []).then(
                             function(authenticated) {
                                 $log.error('Successfully authenticated');
@@ -83,15 +83,11 @@ angular.module('textUpdates')
 
                     }
                 ).catch(
-
                     function (error) {
                         $scope.restCalInProgress = false;
-                        if (error && error.data) {
-                            $log.error('Error fetching object:' + JSON.stringify(error));
-                            var whoisResources = WhoisResources.wrapWhoisResources(error.data);
-                            AlertService.setErrors(whoisResources);
+                        if( error.data) {
+                            AlertService.setErrors(error.data);
                         } else {
-                            $log.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
                             AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                         }
                     }
@@ -101,15 +97,13 @@ angular.module('textUpdates')
             function _handleFetchResponse(objectToModify) {
                 $log.debug('object to modify:' + JSON.stringify(objectToModify));
                 // Extract attributes from response
-                var whoisResources = WhoisResources.wrapWhoisResources(objectToModify);
-                var attributes = WhoisResources.wrapAttributes(
-                    WhoisResources.enrichAttributesWithMetaInfo($scope.object.type, whoisResources.getAttributes())
-                );
+                var attributes = objectToModify.getAttributes();
 
                 // Needed by display screen
                 MessageStore.add('DIFF', _.cloneDeep(attributes));
 
-                // prevent last-modfied to be in
+                // prevent created and last-modfied to be in
+                attributes.removeAttributeWithName('created');
                 attributes.removeAttributeWithName('last-modified');
 
                 $scope.object.rpsl = RpslService.toRpsl(attributes);
@@ -140,7 +134,7 @@ angular.module('textUpdates')
                     $scope.passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
 
-                TextCommons.authenticate($scope.object.source, $scope.object.type, $scope.object.name, $scope.mntners.sso, attributes,
+                TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name, $scope.mntners.sso, attributes,
                         $scope.passwords, overrides).then(
                     function(authenticated) {
                         $log.error('Successfully authenticated');
@@ -156,32 +150,24 @@ angular.module('textUpdates')
                             function(result) {
                                 $scope.restCalInProgress = false;
 
-                                var whoisResources = WhoisResources.wrapWhoisResources(result);
+                                var whoisResources = result;
                                 MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
                                 _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Modify');
 
-                            },function(error) {
+                            },
+                            function(error) {
                                 $scope.restCalInProgress = false;
 
-                                if (_.isUndefined(error.data)) {
-                                    $log.error('Response not understood:'+JSON.stringify(error));
-                                    return;
-                                }
-
-                                var whoisResources = WhoisResources.wrapWhoisResources(error.data);
+                                var whoisResources = error.data;
                                 AlertService.setAllErrors(whoisResources);
-
-                                if(!_.isUndefined(whoisResources.getAttributes())) {
-                                    var attributes = WhoisResources.wrapAndEnrichAttributes($scope.object.type, whoisResources.getAttributes());
-                                    ErrorReporterService.log('Modify', $scope.object.type, AlertService.getErrors(), attributes);
+                                if(!_.isEmpty(whoisResources.getAttributes())) {
+                                    ErrorReporterService.log('TextModify', $scope.object.type, AlertService.getErrors(), whoisResources.getAttributes());
                                 }
-
-                            },
-                            function(authenticated) {
-                                $log.error('Error authenticating');
-
                             }
                         );
+                    },
+                    function(authenticated) {
+                        $log.error('Error authenticating');
                     }
                 );
 

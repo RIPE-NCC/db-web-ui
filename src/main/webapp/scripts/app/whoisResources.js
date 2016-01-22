@@ -130,6 +130,36 @@ angular.module('dbWebApp')
                 });
         };
 
+        var getAuthenticationCandidatesFromError = function() {
+            if( ! this.errormessages ) {
+                return [];
+            }
+            var myMsgs =  _.filter(this.errormessages.errormessage, function (msg) {
+                if (msg.severity === 'Error' &&
+                    msg.text === 'Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s') {
+                    return true;
+                }
+                return false;
+            });
+
+            var mntners = [];
+            _.each(myMsgs, function(msg) {
+                var candidates = msg.args[3].value;
+                _.each(candidates.split(','), function(mntner) {
+                    if (!_.contains(mntners, mntner)) {
+                        mntners.push(mntner);
+                    }
+                });
+            });
+            return mntners;
+        }
+
+        var getRequiresAdminRightFromError = function() {
+            return _.any(this.errormessages.errormessage, function (msg) {
+                return msg.text === 'Deleting this object requires administrative authorisation';
+            });
+        }
+
         function _getRelatedAttribute( errorMessage ) {
             var msgPrefix = '';
             if( errorMessage.attribute && errorMessage.attribute.name ) {
@@ -224,10 +254,20 @@ angular.module('dbWebApp')
         };
 
         var getObjectType = function () {
-            if( ! this.objects ) {
+            if (!this.objects || !this.objects.object || this.objects.object.length === 0 ) {
                 return undefined;
             }
-            return this.objects.object[0].type;
+            var obj = this.objects.object[0];
+
+            var objectType = undefined;
+            if ( obj.type ) {
+                objectType = obj.type;
+            } else if( obj.attributes.attribute[0].name ) {
+                objectType = obj.attributes.attribute[0].name;
+            } else {
+                $log.error("No object type found for " + JSON.stringify(this));
+            }
+            return objectType;
         };
 
         var isFiltered = function () {
@@ -266,11 +306,14 @@ angular.module('dbWebApp')
             return this.objects.object[idx].attributes.attribute;
         };
 
-        var isValidWhoisResources = function( whoisResources) {
-            if( _.isUndefined(whoisResources) || _.isNull(whoisResources) ) {
+        function isValidWhoisResources( whoisResources) {
+            if(_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
+                $log.error('isValidWhoisResources: Null input:' + JSON.stringify(whoisResources));
                 return false;
             }
-            if( _.has(whoisResources,'objects' ) === false && _.has(whoisResources,'errormessages' ) === false ) {
+            if( (_.isUndefined(whoisResources.objects)       || _.isNull(whoisResources.objects) ) &&
+                (_.isUndefined(whoisResources.errormessages) ||  _.isNull(whoisResources.errormessages) ) ) {
+                $log.error('isValidWhoisResources: Missing objects and errormessages:' + JSON.stringify(whoisResources));
                 return false;
             }
 
@@ -288,10 +331,13 @@ angular.module('dbWebApp')
                 return undefined;
             }
             // enrich data with methods
+            whoisResources.wrapped = true;
             whoisResources.toString = toString;
             whoisResources.readableError = readableError;
             whoisResources.getAllErrors = getAllErrors;
             whoisResources.getGlobalErrors = getGlobalErrors;
+            whoisResources.getAuthenticationCandidatesFromError = getAuthenticationCandidatesFromError;
+            whoisResources.getRequiresAdminRightFromError = getRequiresAdminRightFromError;
             whoisResources.getAllWarnings = getAllWarnings;
             whoisResources.getGlobalWarnings = getGlobalWarnings;
             whoisResources.getAllInfos = getAllInfos;
@@ -379,7 +425,7 @@ angular.module('dbWebApp')
             var errorFound = false;
 
             var self = this;
-            _.map(this, function (attr) {
+            _.each(this, function (attr) {
                 if (attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0 ) {
                     attr.$$error = 'Mandatory attribute not set';
                     errorFound = true;
@@ -604,6 +650,52 @@ angular.module('dbWebApp')
             return attrs;
         };
 
+        this.wrap = function(whoisResources) {
+            var result = whoisResources;
+            if(!_.isUndefined(whoisResources) && isValidWhoisResources(whoisResources)) {
+                var wrapped = this.wrapWhoisResources(whoisResources);
+                var objectType = wrapped.getObjectType();
+                if (!_.isUndefined(objectType) && !_.isUndefined(wrapped.getAttributes())) {
+                    wrapped.objects.object[0].attributes.attribute =
+                        this.wrapAttributes(
+                            this.enrichAttributesWithMetaInfo(objectType, wrapped.getAttributes())
+                        );
+                }
+                result = wrapped;
+            }
+            return result;
+        }
+
+        this.wrapSuccess = function(whoisResources) {
+            return this.wrap(whoisResources);
+        }
+
+        this.wrapError = function(error) {
+            var whoisResources = undefined;
+
+            if(error) {
+                if (error.data) {
+                    whoisResources = error.data;
+                } else if (error.config && error.config.data) {
+                    whoisResources = error.config.data;
+                }
+            } else {
+                error = {};
+            }
+
+            if ( ! isValidWhoisResources(whoisResources) ) {
+                whoisResources = {};
+                whoisResources.errormessages = {};
+                whoisResources.errormessages.errormessage = [];
+                whoisResources.errormessages.errormessage.push(
+                    {severity: 'Error', text: 'Unexpected error: please retry later'}
+                );
+            }
+
+            error.data = this.wrap(whoisResources);
+
+            return error;
+        }
 
     }]);
 

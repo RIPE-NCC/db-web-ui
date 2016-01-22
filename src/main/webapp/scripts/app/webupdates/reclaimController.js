@@ -129,7 +129,7 @@ angular.module('webUpdates')
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
                         // store object to modify
-                        _wrapAndEnrichResources($scope.objectType, results.objectToModify);
+                        $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, results.objectToModify.getAttributes());
 
                         //BUG: wrapAndEnrichResources strips attributes from 'link', so next line does not have effect.
                         WebUpdatesCommons.addLinkToReferenceAttributes($scope.attributes, $scope.objectSource);
@@ -155,10 +155,9 @@ angular.module('webUpdates')
                 ).catch(
                     function (error) {
                         $scope.restCallInProgress = false;
-                        if (error && error.data) {
+                        if (error && error.data && error.data.errormessages ) {
                             $log.error('Error fetching object:' + JSON.stringify(error));
-                            var whoisResources = _wrapAndEnrichResources($scope.objectType, error.data);
-                            AlertService.setErrors(whoisResources);
+                            AlertService.setErrors(error.data);
                         } else {
                             $log.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
                             AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
@@ -210,14 +209,6 @@ angular.module('webUpdates')
                             _filterMntners(MntnerService.enrichWithMine($scope.maintainers.sso, data)));
                     }
                 );
-            }
-
-            function _wrapAndEnrichResources(objectType, resp) {
-                var whoisResources = WhoisResources.wrapWhoisResources(resp);
-                if (whoisResources) {
-                    $scope.attributes = WhoisResources.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
-                }
-                return whoisResources;
             }
 
             function _filterMntners(mntners) {

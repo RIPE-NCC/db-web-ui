@@ -93,8 +93,8 @@ angular.module('webUpdates')
 
                 $scope.attributes = [];
 
-                $scope.mntbyDescription = MntnerService.mntbyDescription;
-                $scope.mntbySyntax = MntnerService.mntbySyntax;
+                $scope.mntbyDescription = MntnerService.mntbyDescription($scope.objectType);
+                $scope.mntbySyntax = MntnerService.mntbySyntax($scope.objectType);
 
                 $scope.CREATE_OPERATION = 'Create';
                 $scope.MODIFY_OPERATION = 'Modify';
@@ -371,11 +371,13 @@ angular.module('webUpdates')
             function submit() {
 
                 function _onSubmitSuccess(resp) {
+                    $scope.restCalInProgress = false;
+
+                    var whoisResources = resp;
+
                     //It' ok to just let it happen or fail.
                     OrganisationHelper.updateAbuseC($scope.source, $scope.objectType, $scope.roleForAbuseC, $scope.attributes, passwords);
 
-                    $scope.restCalInProgress = false;
-                    var whoisResources = WhoisResources.wrapWhoisResources(resp);
                     // stick created object in temporary store, so display-screen can fetch it from here
                     MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
 
@@ -428,23 +430,21 @@ angular.module('webUpdates')
 
                 function _onSubmitError(resp) {
                     $scope.restCalInProgress = false;
-                    if (_.isUndefined(resp.data)) {
-                        // TIMEOUT: to be handled globally by response interceptor
-                        $log.error('Response not understood');
+
+                    var whoisResources = resp.data;
+                    $scope.attributes = whoisResources.getAttributes();
+
+                    // TODO: fix whois to return a 200 series response in case of pending object [MG]
+                    if (_isPendingAuthenticationError(resp)) {
+                        // TODO: let whois come with a single information errormessage [MG]
+                        MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
+                        /* Instruct downstream screen (typically display screen) that object is in pending state */
+                        WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
                     } else {
-                        var whoisResources = _wrapAndEnrichResources($scope.objectType, resp.data);
-                        // TODO: fix whois to return a 200 series response in case of pending object [MG]
-                        if (_isPendingAuthenticationError(resp)) {
-                            // TODO: let whois come with a single information errormessage [MG]
-                            MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
-                            /* Instruct downstream screen (typically display screen) that object is in pending state */
-                            WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
-                        } else {
-                            _validateForm();
-                            AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, resp.data);
-                            AlertService.setErrors(whoisResources);
-                            ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
-                        }
+                        _validateForm();
+                        AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
+                        AlertService.setErrors(whoisResources);
+                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
                     }
                 }
 
@@ -559,7 +559,7 @@ angular.module('webUpdates')
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.maintainers.sso));
 
                         // store object to modify
-                        _wrapAndEnrichResources($scope.objectType,results.objectToModify);
+                        $scope.attributes = results.objectToModify.getAttributes();
 
                         // Create empty attribute with warning for each missing mandatory attribute
                         _insertMissingMandatoryAttributes();
@@ -568,9 +568,7 @@ angular.module('webUpdates')
                         MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
 
                         // prevent warning upon modify with last-modified
-                        $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
-                            $scope.attributes.removeAttributeWithType('last-modified')
-                        );
+                        $scope.attributes.removeAttributeWithName('last-modified');
 
                         // this is where we must authenticate against
                         $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
@@ -610,11 +608,11 @@ angular.module('webUpdates')
                 ).catch(
                     function (error) {
                         $scope.restCalInProgress = false;
-                        if (error && error.data) {
-                            $log.error('Error fetching object:' + JSON.stringify(error));
-                            var whoisResources = _wrapAndEnrichResources($scope.objectType, error.data);
+                        try {
+                            var whoisResources = error.data;
+                            $scope.attributes = _wrapAndEnrichResources($scope.objectType, error.data);
                             AlertService.setErrors(whoisResources);
-                        } else {
+                        } catch(e) {
                             $log.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
                             AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                         }
@@ -631,7 +629,6 @@ angular.module('webUpdates')
                     });
                     _validateForm();
                 }
-
             }
 
             function _copyAddedMntnerToAttributes(mntnerName) {
@@ -684,7 +681,6 @@ angular.module('webUpdates')
             }
 
             function _validateForm() {
-                $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
                 return $scope.attributes.validate() && OrganisationHelper.validateAbuseC($scope.objectType, $scope.attributes);
             }
 
@@ -734,7 +730,9 @@ angular.module('webUpdates')
                         RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password).then(
                             function (result) {
                                 $scope.restCalInProgress = false;
-                                _wrapAndEnrichResources($scope.objectType, result);
+
+                                var whoisResources = result.data;
+                                $scope.attributes = whoisResources.getAttributes();
 
                                 // save object for later diff in display-screen
                                 MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
@@ -766,6 +764,7 @@ angular.module('webUpdates')
             function _performAuthentication() {
                 WebUpdatesCommons.performAuthentication(
                     $scope.maintainers,
+                    $scope.operation,
                     $scope.source,
                     $scope.objectType,
                     $scope.name,

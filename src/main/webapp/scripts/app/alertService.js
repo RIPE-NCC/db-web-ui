@@ -50,9 +50,13 @@ angular.module('dbWebApp')
         };
 
         alertService.addErrors = function (whoisResources) {
-            $rootScope.errors = $rootScope.errors.concat(whoisResources.getGlobalErrors());
-            $rootScope.warnings =  $rootScope.warnings.concat( whoisResources.getGlobalWarnings());
-            $rootScope.infos = $rootScope.infos.concat(whoisResources.getGlobalInfos());
+            if(_.isUndefined(whoisResources) ) {
+                $log.error('alertService.addErrors: undefined input' );
+            } else {
+                $rootScope.errors = $rootScope.errors.concat(whoisResources.getGlobalErrors());
+                $rootScope.warnings = $rootScope.warnings.concat(whoisResources.getGlobalWarnings());
+                $rootScope.infos = $rootScope.infos.concat(whoisResources.getGlobalInfos());
+            }
         };
 
         alertService.setGlobalError = function( errorMsg ) {
@@ -69,10 +73,9 @@ angular.module('dbWebApp')
             $rootScope.infos.push({plainText:errorMsg});
         };
 
-        alertService.populateFieldSpecificErrors = function(objectType, attrs, error) {
-            var whoisResources = WhoisResources.wrapWhoisResources(error);
+        alertService.populateFieldSpecificErrors = function(objectType, attrs, whoisResources) {
 
-            _.map(attrs, function (attr) {
+            _.each(attrs, function (attr) {
                 // keep existing error messages
                 if (!attr.$$error) {
                     var errors = whoisResources.getErrorsOnAttribute(attr.name, attr.value);
@@ -80,16 +83,14 @@ angular.module('dbWebApp')
                         attr.$$error = errors[0].plainText;
                     }
                 }
-                return attr;
             });
         };
 
         alertService.showWhoisResourceErrors = function( objectType, error ) {
-            var whoisResources = WhoisResources.wrapWhoisResources(error);
 
-            $rootScope.errors = whoisResources.getGlobalErrors();
-            $rootScope.warnings = whoisResources.getGlobalWarnings();
-            $rootScope.infos = whoisResources.getGlobalInfos();
+            $rootScope.errors = error.getGlobalErrors();
+            $rootScope.warnings = error.getGlobalWarnings();
+            $rootScope.infos = error.getGlobalInfos();
         };
 
         return alertService;

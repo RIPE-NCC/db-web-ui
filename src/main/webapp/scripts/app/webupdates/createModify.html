@@ -9,7 +9,9 @@
         </p>
 
 </div>
-<button ng-click="switchToTextMode()" class="blue-button pull-right ga-createobj-switch-mode" style="border:0;">Switch to text mode</button>
+
+<button ng-show="operation == CREATE_OPERATION" ng-click="switchToTextMode()" class="blue-button pull-right ga-modifyobj-switch-mode" style="border:0;"><span class="fa fa-pencil-square-o"></span> Create in text area</button>
+<button ng-show="operation == MODIFY_OPERATION" ng-click="switchToTextMode()" class="blue-button pull-right ga-createobj-switch-mode" style="border:0;"><span class="fa fa-pencil-square-o"></span> Edit in text area</button>
 
 <form id="createForm">
 
@@ -46,7 +48,7 @@
     </ui-select>
     <div collapse="!isMntHelpShown" class="text field-description">
         <strong>Description</strong></br>
-        {{mntbyDescription}}</br>
+        <span ng-bind-html="mntbyDescription"></span></br>
         <strong>Syntax</strong></br>
         <span ng-bind-html="mntbySyntax"></span>
     </div>
@@ -140,7 +142,7 @@
     </span>
 
     <span ng-show="operation == MODIFY_OPERATION">
-        <button ng-click="deleteObject()" ng-disabled="restCalInProgress" class="red-button pull-left ga-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
+        <button ng-click="deleteObject()" ng-disabled="restCalInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
     </span>
     </section>
 </form>

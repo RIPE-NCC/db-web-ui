@@ -1,5 +1,7 @@
 <div>
 
+    <h1>Specify object you want to force delete</h1>
+
     <alerts></alerts>
     <section>
         <div>
@@ -8,7 +10,7 @@
                     ng-required="true"
                     ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
             <br/>
-            <label>Object key to reclaim</label>
+            <label>Object key to be deleted with force</label>
             <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
             <input type="text"
                    name="key"
@@ -20,7 +22,7 @@
 
     <section>
         <br/>
-        <input type="submit" ng-click="navigateToReclaim()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-createobj-create" value="Reclaim"/>
+        <input type="submit" ng-click="navigateToForceDelete()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-createobj-create" value="Force delete"/>
 
     </section>
 </div>

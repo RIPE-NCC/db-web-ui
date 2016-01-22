@@ -40,6 +40,8 @@ angular.module('interceptors')
             if( !_mustErrorBeSwallowed(response) ) {
                 $rootScope.$broadcast({
                     500: ERROR_EVENTS.serverError,
+                    502: ERROR_EVENTS.serverError,
+                    503: ERROR_EVENTS.serverError,
                     404: ERROR_EVENTS.notFound,
                     401: ERROR_EVENTS.authenticationError,
                     403: ERROR_EVENTS.authenticationError
