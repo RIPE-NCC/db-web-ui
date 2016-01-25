@@ -239,4 +239,35 @@ describe('dbWebApp: MntnerService', function () {
             expect(mntnersWithoutPasswordModify[0].key).toBe('A-MNT');
 
         });
+
+        it('should ensure NCC mntners are stripped and duplicates removed', function() {
+            var ssoMntners = [
+                { type:'mntner', key:'C-MNT', mine:true, auth:['SSO','MD5-PW']}
+            ];
+            var objectMntners = [
+                { type:'mntner', key:'RIPE-NCC-RPSL-MNT', auth:['MD5-PW']},
+                { type:'mntner', key:'A-MNT',             auth:['SSO']},
+                { type:'mntner', key:'A-MNT',             auth:['SSO']},
+                { type:'mntner', key:'RIPE-NCC-END-MNT',  auth:['MD5-PW']},
+                { type:'mntner', key:'F-MNT',             auth:['MD5-PW']},
+                { type:'mntner', key:'F-MNT',             auth:['MD5-PW']},
+                { type:'mntner', key:'C-MNT',             auth:['SSO','MD5-PW']}
+            ];
+
+            var mntnersWithoutPasswordCreate = subject.getMntnersNotEligibleForPasswordAuthentication(ssoMntners,[], objectMntners);
+            expect(mntnersWithoutPasswordCreate.length).toBe(1);
+            expect(mntnersWithoutPasswordCreate[0].key).toBe('A-MNT');
+
+            var mntnersWithoutPasswordModify = subject.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, objectMntners,[]);
+            expect(mntnersWithoutPasswordModify.length).toBe(1);
+            expect(mntnersWithoutPasswordModify[0].key).toBe('A-MNT');
+
+            var mntnersWithPasswordCreate = subject.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
+            expect(mntnersWithPasswordCreate.length).toBe(1);
+            expect(mntnersWithPasswordCreate[0].key).toBe('F-MNT');
+
+            var mntnersWithPasswordModify = subject.getMntnersForPasswordAuthentication(ssoMntners, objectMntners, []);
+            expect(mntnersWithPasswordModify.length).toBe(1);
+            expect(mntnersWithPasswordModify[0].key).toBe('F-MNT');
+        });
 });

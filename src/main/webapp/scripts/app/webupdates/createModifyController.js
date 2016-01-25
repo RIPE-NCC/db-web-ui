@@ -208,8 +208,8 @@ angular.module('webUpdates')
                 RestService.autocomplete('mnt-by', query, true, ['auth']).then(
                     function (data) {
                         // mark new
-                        $scope.maintainers.alternatives = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
-                            _filterMntners(_enrichWithMine(data)));
+                        $scope.maintainers.alternatives = MntnerService.stripNccMntners(MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
+                            _filterAutocompleteMntners(_enrichWithMine(data))));
                     }
                 );
             }
@@ -651,9 +651,9 @@ angular.module('webUpdates')
                 return selected;
             }
 
-            function _filterMntners(mntners) {
+            function _filterAutocompleteMntners(mntners) {
                 return _.filter(mntners, function (mntner) {
-                    // prevent that RIPE-NCC-RPSL-MNT can be added to an object upon create of modify
+                    // prevent that RIPE-NCC mntners can be added to an object upon create of modify
                     // prevent same mntner to be added multiple times
                     return ! MntnerService.isRpslMntner(mntner) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
                 });
