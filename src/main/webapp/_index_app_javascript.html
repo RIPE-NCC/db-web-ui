@@ -82,3 +82,10 @@
 
 
 <!-- Textupdates specific javascript end -->
+
+<!-- TEST environment banner -->
+<script>
+    if(window.location.hostname.split('.').shift() === 'apps-test') {
+        $('#envbanner').show();
+    }
+</script>
