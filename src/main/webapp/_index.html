@@ -2,8 +2,8 @@
 
 <html>
 
-<!-- this is template 3.23 fetched using the following url:
-https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&db=true -->
+<!-- this is template 3.24 fetched using the following url:
+https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true -->
 
 <!-- Settings:
 NODE_ENV:   <!-- @echo NODE_ENV -->
@@ -12,77 +12,55 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
 -->
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" name="description"/>
-
     <link rel="stylesheet" type="text/css" media="screen" href="https://www-static.ripe.net/static/common/fonts/open-sans.css"/>
     <link rel="stylesheet" type="text/css" media="print"  href="https://www.ripe.net/portal_css/Ripe/print.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.28/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.28/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.28/template.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.29/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.29/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.29/template.css"/>
     <!--[if lte IE 8]>
-    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.28/ie-template.css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.29/ie-template.css"/>
     <![endif]-->
-
     <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
-
     <link rel="shortcut icon" type="image/x-icon" href="https://www.ripe.net/favicon.ico"/>
     <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png"/>
     <link rel="search" href="https://www.ripe.net/search" title="Search this site"/>
-
     <!-- your custom styles here CSSMARKER -->
     <!-- @include _index_app_css.html -->
-
-
-            <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen" type="text/css" rel="stylesheet" />
-
-
+    <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen" type="text/css" rel="stylesheet" />
     <!-- JQuery JavaScript placeholder here -->
     <script type="text/javascript" src="https://www.ripe.net/jquery.js"></script>
     <!-- END JQuery JavaScript placeholder here -->
-    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.28/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.28/template.js"></script>
-    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.28/browser-update.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.29/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.29/template.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.29/browser-update.js"></script>
     <script type="text/javascript" src="https://www.ripe.net/modernizr.js"></script>
-
     <!--[if lte IE 8]>
-    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.28/html5.js"></script>
-    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.28/respond.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.29/html5.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.29/respond.js"></script>
     <![endif]-->
-
-
   <!-- your custom javascripts here JSMARKER -->
-
-
-    <meta name="generator" content="Plone - http://plone.org"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="generator" content="Plone - http://plone.org" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
-
 <body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr" >
-
 <!-- @include _index_app_body_start.html -->
-
 <header class="header-gradient container-fluid">
     <div id="site-header" class="container">
         <div id="portal-header">
             <p class="hiddenStructure">
-  <a accesskey="2" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&amp;show_left_column=true&amp;db=true#content">Skip to content.</a> |
-  <a accesskey="6" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&amp;show_left_column=true&amp;db=true#portal-globalnav">Skip to navigation</a>
+  <a accesskey="2" href="https://www-pre.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&amp;show_left_column=true&amp;database_includes=true#content">Skip to content.</a> |
+  <a accesskey="6" href="https://www-pre.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&amp;show_left_column=true&amp;database_includes=true#portal-globalnav">Skip to navigation</a>
             </p>
-
             <!-- @include _index_app_login.html -->
-
             <div class="header-item">
                 <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
                     <img id="logo" alt="RIPE NCC Network Coordination" src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png" /></a>
             </div>
-
-
             <div class="header-item">
                 <div id="tabs">
-
                     <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" data-target="#whois-search">RIPE Database (Whois)</a></li>
                         <li><a data-toggle="tab" data-target="#website-search">Website</a></li>
@@ -97,31 +75,20 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             </form>
                         </div>
                         <div class="tab-pane" id="website-search">
-
                             <form id="searchGadget_form" action="https://www.ripe.net/@@search">
-
                                 <div class="LSBox">
                                     <label class="hiddenStructure" for="searchGadget">Search Site</label>
-
                         <input name="SearchableText" type="text" title="Search the content of this website" accesskey="4" class="searchField" id="searchGadget" placeholder="Search the content of this website" />
-
                                     <div class="input-group-btn">
                             <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                                     </div>
-
-
                                     <div class="LSResult" id="LSResult" style="">
                                         <div class="LSShadow" id="LSShadow"></div>
                                     </div>
-
                                 </div>
-
                             </form>
                         </div>
-
                         <div id="search-info" class="clearfix">
-
-
                             <div id="termandconditions">
                     By searching you explicitly express your agreement with the RIPE Database terms and conditions
                             </div>
@@ -132,13 +99,9 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     <i class="fa fa-bars btn btn-default"></i>
                 </div>
             </div>
-
         </div>
-
     </div>
 </header>
-
-
 <nav class="container-fluid">
     <div id="nav" class="container clearfix">
         <ul class="nav navbar-nav">
@@ -449,6 +412,9 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                                 </li>
                                 <li>
                                         <a href="https://www.ripe.net/participate/meetings/roundtable">Roundtable Meetings</a>
+                                </li>
+                                <li>
+                                        <a href="https://www.ripe.net/participate/meetings/new-years-event-2016">New Year's Event 2016</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/participate/meetings/calendar">Upcoming Events</a>
@@ -806,19 +772,13 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
         </div>
     </div>
 </nav>
-
-
 <main class="container-fluid">
-
     <div id="portal-columns" class="container box-shadow clearfix">
-
         <!-- TEST environment banner -->
         <p id="envbanner" class="envbanner alert orangebackground" style="text-align: center; display: none">
             <span id="envBannerId">TEST<br>Welcome to the TEST Environment of the RIPE Database. You can use this environment to learn and experiment with RIPE Database. It uses a TEST 'source' and all changes are reverted in the night.</span>
         </p>
-
         <div id="portal-breadcrumbs">
-
         <span id="breadcrumbs-you-are-here">You
     are here:</span>
         <span id="breadcrumbs-home">
@@ -829,9 +789,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
             </span>
         </span>
         <span id="breadcrumbs-1" dir="ltr">
-
                 <a href="https://www.ripe.net/manage-ips-and-asns">Manage IPs and ASNs</a>
-
                 <span class="breadcrumbSeparator">
                     >
 
@@ -839,33 +797,20 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
 
         </span>
         <span id="breadcrumbs-2" dir="ltr">
-
                 <a href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
-
                 <span class="breadcrumbSeparator">
                     >
 
                 </span>
-
         </span>
         <span id="breadcrumbs-3" dir="ltr">
-
-
                 <span id="pathbar_here">Webupdates</span>
-
-
         </span>
-
         </div>
-
-
         <div id="portal-column-one" class="col-md-3">
-
             <!-- Insert your navigation here NAVIGATIONMARKER -->
             <!-- @include _index_app_menu.html -->
-
         </div>
-
         <div id="portal-column-content" class="sl col-md-9">
             <noscript>
                 <meta HTTP-EQUIV="REFRESH" content="5; url=https://www.ripe.net/about-us/legal/supported-browsers">
@@ -873,44 +818,30 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     Javascript is disabled.<br/>You will be redirected to <a href="https://www.ripe.net/about-us/legal/supported-browsers">Supported Browsers</a> page.
                 </h1>
             </noscript>
-
-
             <div id="viewlet-above-content"></div>
-
             <div class=" ">
                 <dl class="portalMessage info" id="kssPortalMessage" style="display:none">
                     <dt>Info</dt>
                     <dd></dd>
                 </dl>
-
                 <div id="content">
                     <div>
                         <div id="external">
                             <!-- End of header ENDHEADERMARKER -->
-
                             <!-- Insert your content here CONTENTMARKER -->
                             <!-- @include _index_app_content.html -->
-
                             <!-- Start of footer STARTFOOTERMARKER -->
                         </div>
                     </div>
                 </div>
             </div>
-
             <div id="viewlet-below-content">
             </div>
         </div>
-
-
     </div>
-
 </main>
-
-
 <footer class="container-fluid">
     <a href="#" id="scrollToTop"></a>
-
-
     <div class="container box-shadow">
         <div class="col-lg-2">
                 <span id="social-icons" title="RIPE NCC - Social Media">
@@ -923,10 +854,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     </a>
                 </span>
         </div>
-
-
         <div class="col-lg-10" id="footer-links">
-
             <a href="/">Home</a>
             <a href="https://www.ripe.net/sitemap">Sitemap</a>
             <a href="https://www.ripe.net/support/contact">Contact Us</a>
@@ -936,33 +864,16 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
             <a href="https://www.ripe.net/about-us/legal/cookies">Cookies</a>
             <a href="https://www.ripe.net/about-us/legal/copyright-statement">Copyright Statement</a>
         </div>
-
-
     </div>
-
-
     <div id="cookiepopup">
         <div id="cookie-close"><i class="fa fa-close"></i></div>
         <div class="cookie-content">
 		       <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies" class="external-link" target="_self">privacy policy</a><span>. You can accept our cookies either by </span><span id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
         </div>
     </div>
-
-
-
-
 </footer>
-
-
-
 <!-- Footer JavaScript placeholder FOOTERMARKER -->
-
 <!-- @include _index_app_javascript.html -->
-
 <!-- @include _index_app_body_end.html -->
-
 </body>
-
 </html>
-
-
