@@ -14,10 +14,8 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database"
-          name="description"/>
+    <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" name="description"/>
 
-    <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
     <link rel="stylesheet" type="text/css" media="screen" href="https://www-static.ripe.net/static/common/fonts/open-sans.css"/>
     <link rel="stylesheet" type="text/css" media="print"  href="https://www.ripe.net/portal_css/Ripe/print.css"/>
     <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.28/bootstrap.min.css"/>
@@ -27,6 +25,8 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
     <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/portal_css/Ripe/++resource++ripe.plonetheme.stylesheets/versions/1.28/ie-template.css"/>
     <![endif]-->
 
+    <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
+
     <link rel="shortcut icon" type="image/x-icon" href="https://www.ripe.net/favicon.ico"/>
     <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png"/>
     <link rel="search" href="https://www.ripe.net/search" title="Search this site"/>
@@ -34,8 +34,9 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
     <!-- your custom styles here CSSMARKER -->
     <!-- @include _index_app_css.html -->
 
-    <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen"
-          type="text/css" rel="stylesheet"/>
+
+            <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen" type="text/css" rel="stylesheet" />
+
 
     <!-- JQuery JavaScript placeholder here -->
     <script type="text/javascript" src="https://www.ripe.net/jquery.js"></script>
@@ -50,13 +51,16 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
     <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.28/respond.js"></script>
     <![endif]-->
 
+
+  <!-- your custom javascripts here JSMARKER -->
+
+
     <meta name="generator" content="Plone - http://plone.org"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
 
-<body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color"
-      dir="ltr" >
+<body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr" >
 
 <!-- @include _index_app_body_start.html -->
 
@@ -64,21 +68,16 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
     <div id="site-header" class="container">
         <div id="portal-header">
             <p class="hiddenStructure">
-                <a accesskey="2"
-                   href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&amp;show_left_column=true#content">Skip
-                    to content.</a> |
+  <a accesskey="2" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true#content">Skip to content.</a> |
 
-                <a accesskey="6"
-                   href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&amp;show_left_column=true#portal-globalnav">Skip
-                    to navigation</a>
+  <a accesskey="6" href="https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true#portal-globalnav">Skip to navigation</a>
             </p>
 
             <!-- @include _index_app_login.html -->
 
             <div class="header-item">
                 <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
-                    <img id="logo" alt="RIPE NCC Network Coordination"
-                         src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png"/></a>
+        <img id="logo" alt="RIPE NCC Network Coordination" src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png" /></a>
 
 
             </div>
@@ -88,18 +87,13 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                 <div id="tabs">
 
                     <ul class="nav nav-tabs">
-                        <li class="active"><a data-toggle="tab" data-target="#whois-search">RIPE Database (Whois)</a>
-                        </li>
+            <li class="active"><a data-toggle="tab" data-target="#whois-search">RIPE Database (Whois)</a></li>
                         <li><a data-toggle="tab" data-target="#website-search">Website</a></li>
                     </ul>
                     <div class="tab-content box-shadow clearfix">
                         <div class="tab-pane active" id="whois-search">
-                            <form method="get" action="/search/query.html">
-                                <input type="text" size="15" class="searchField terms-popover" id="searchtext"
-                                       name="searchtext" data-toggle="popover" data-placement="bottom"
-                                       placeholder="Search IP Address or ASN"
-                                       data-content="<span id='terms-condition-close' class='close fa fa-close margin-left'></span> By clicking the search button you explicitly express your agreement with the RIPE Database <a href='https://www.ripe.net/data-tools/db/support/terms'>Terms &amp; Conditions</a>"/>
-
+                <form method="get" action="https://apps.db.ripe.net/search/query.html">
+                    <input type="text" size="15" class="searchField terms-popover" id="searchtext" name="searchtext" data-toggle="popover" data-placement="bottom" placeholder="Search IP Address or ASN" data-content="<span id='terms-condition-close' class='close fa fa-close margin-left'></span> By clicking the search button you explicitly express your agreement with the RIPE Database <a href='https://www.ripe.net/data-tools/db/support/terms'>Terms &amp; Conditions</a>" />
                                 <div class="input-group-btn">
                                     <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                                 </div>
@@ -112,13 +106,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                                 <div class="LSBox">
                                     <label class="hiddenStructure" for="searchGadget">Search Site</label>
 
-                                    <input name="SearchableText" type="text" title="Search the content of this website"
-                                           accesskey="4" class="searchField" id="searchGadget"
-                                           placeholder="Search the content of this website"/>
+                        <input name="SearchableText" type="text" title="Search the content of this website" accesskey="4" class="searchField" id="searchGadget" placeholder="Search the content of this website" />
 
                                     <div class="input-group-btn">
-                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i>
-                                        </button>
+                            <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                                     </div>
 
 
@@ -135,8 +126,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
 
 
                             <div id="termandconditions">
-                                By searching you explicitly express your agreement with the RIPE Database terms and
-                                conditions
+                    By searching you explicitly express your agreement with the RIPE Database terms and conditions
                             </div>
                         </div>
                     </div>
@@ -160,13 +150,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     Manage IPs and ASNs
                     <i class="fa fa-angle-right"></i>
                 </a>
-
                 <div class="megamenu subnav container clearfix box-shadow">
                     <div class="row">
                         <div class="col-md-2 description">
-                            <p>We distribute Internet number resources to our members and provide tools to help them
-                                manage their allocations and assignments. </p>
-
+                                <p>We distribute Internet number resources to our members and provide tools to help them manage their allocations and assignments. </p>
                             <div class="mega-more">
                                 <p>More information about
                                     <a href="https://www.ripe.net/manage-ips-and-asns">
@@ -179,12 +166,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/ipv4">IPv4</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/ipv4/request-an-ipv4-22-from-the-last-8">Request
-                                        an IPv4 /22</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/ipv4/request-an-ipv4-22-from-the-last-8">Request an IPv4 /22</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6/ipv4-exhaustion">IPv4
-                                        Exhaustion</a>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6/ipv4-exhaustion">IPv4 Exhaustion</a>
                                 </li>
                             </ul>
                         </div>
@@ -192,12 +177,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/ipv6">IPv6</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/ipv6/request-ipv6">Request
-                                        IPv6</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/ipv6/request-ipv6">Request IPv6</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ipv6-info-centre">IPv6 Info
-                                        Centre</a>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre">IPv6 Info Centre</a>
                                 </li>
                             </ul>
                         </div>
@@ -205,12 +188,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/as-numbers">AS Numbers</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/request-an-as-number">Request
-                                        an AS Number</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/request-an-as-number">Request an AS Number</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/reassigning-as-numbers">Reassigning
-                                        AS Numbers</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/reassigning-as-numbers">Reassigning Referenced AS Numbers</a>
                                 </li>
                             </ul>
                         </div>
@@ -218,19 +199,16 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/tools">Related Software and
-                                        Tools</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/db/tools">Related Software and Tools</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/manage-ips-and-asns/db/webupdates">Webupdates</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/release-notes">Release
-                                        Notes</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/db/release-notes">Release Notes</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/support">Database
-                                        Support</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/db/support">Database Support</a>
                                 </li>
                             </ul>
                         </div>
@@ -238,8 +216,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/dns">DNS</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/dns/reverse-dns">Reverse
-                                        DNS</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/dns/reverse-dns">Reverse DNS</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/manage-ips-and-asns/dns/dnssec">DNSSEC</a>
@@ -252,48 +229,52 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/resource-management">Documentation
-                                for Resource Management</a>
+                                <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/resource-management">Documentation for Resource Management</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/number-resources">Number
-                                        Resources</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/number-resources">Number Resources</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/certification">Resource
-                                        Certification (RPKI)</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/certification">Resource Certification (RPKI)</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/legacy-resources">Legacy
-                                        Internet Resources</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/policy-implementation-status">Policy Implementation Status</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/policy-implementation-status">Policy
-                                        Implementation Status</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/assisted-registry-check">Assisted Registry Check</a>
                                 </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-2">
+                                <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers">Resource Transfers and Mergers</a>
+                                <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/assisted-registry-check">Assisted
-                                        Registry Check</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/transfers">Transfers</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/mergers-and-acquisitions">Mergers and Acquisitions</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/required-documents-for-registry-updates">Required Documents</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6"
-                               href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers">Resource
-                                Management</a>
+                                <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/legacy-resources">Legacy Internet Resources</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/transfers">Transfers</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-internet-resources-faqs">FAQ: Legacy Internet Resources</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/mergers-and-acquisitions">Mergers
-                                        and Acquisitions</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-space-in-the-ripe-registry">Legacy space in the RIPE Registry </a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-internet-resources-documentation">Documentation</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/contact">Contact
-                                Registration Services</a>
+                                <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/contact">Contact Registration Services</a>
                             <ul>
                             </ul>
                         </div>
@@ -305,14 +286,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     Analyse
                     <i class="fa fa-angle-right"></i>
                 </a>
-
                 <div class="megamenu subnav container clearfix box-shadow">
                     <div class="row">
                         <div class="col-md-2 description">
-                            <p>We collect a wide range of Internet data and provide statistics and tools that our
-                                members and the wider Internet community can use for their own operations and
-                                analyses.</p>
-
+                                <p>We collect a wide range of Internet data and provide statistics and tools that our members and the wider Internet community can use for their own operations and analyses.</p>
                             <div class="mega-more">
                                 <p>More information about
                                     <a href="https://www.ripe.net/analyse">
@@ -328,8 +305,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                                     <a href="https://labs.ripe.net/statistics/number-of-lirs">Total Number of LIRs</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6/ipv4-exhaustion/ipv4-available-pool-graph">Remaining
-                                        IPv4 Addresses</a>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6/ipv4-exhaustion/ipv4-available-pool-graph">Remaining IPv4 Addresses</a>
                                 </li>
                                 <li>
                                     <a href="https://labs.ripe.net/statistics/ipv6-ripeness-summary">IPv6 RIPEness</a>
@@ -343,12 +319,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/analyse/internet-measurements">Internet
-                                Measurements</a>
+                                <a class="h6" href="https://www.ripe.net/analyse/internet-measurements">Internet Measurements</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/analyse/internet-measurements/atlas">RIPE
-                                        Atlas</a>
+                                        <a href="https://www.ripe.net/analyse/internet-measurements/atlas">RIPE Atlas</a>
                                 </li>
                                 <li>
                                     <a href="https://atlas.ripe.net/results/maps/">Internet Traffic Maps</a>
@@ -357,8 +331,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                                     <a href="https://labs.ripe.net/atlas/user-experiences">Analyses and Use Cases</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris-1">Routing
-                                        Information Service (RIS)</a>
+                                        <a href="https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris">Routing Information Service (RIS)</a>
                                 </li>
                             </ul>
                         </div>
@@ -372,8 +345,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                                     <a href="https://www.ripe.net/analyse/dns/k-root">K-root</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/analyse/dns/reverse-delegation-dns-zonecheck">Reverse
-                                        DNS Zonecheck</a>
+                                        <a href="https://www.ripe.net/analyse/dns/reverse-delegation-dns-zonecheck">Reverse DNS Zonecheck</a>
                                 </li>
                             </ul>
                         </div>
@@ -384,37 +356,25 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                                     <a href="https://atlas.ripe.net/docs/data_struct/">RIPE Atlas Raw Data</a>
                                 </li>
                                 <li>
-                                    <a href="https://labs.ripe.net/datarepository/data-sets/routing-information-service-ris-raw-data-set">RIS
-                                        Raw Data</a>
+                                        <a href="https://labs.ripe.net/datarepository/data-sets/routing-information-service-ris-raw-data-set">RIS Raw Data</a>
                                 </li>
                                 <li>
-                                    <a href="https://labs.ripe.net/datarepository/conditions/basic">Terms and
-                                        Conditions</a>
+                                        <a href="https://labs.ripe.net/datarepository/conditions/basic">Terms and Conditions</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/analyse/archived-projects">Archived
-                                Projects</a>
+                                <a class="h6" href="https://www.ripe.net/analyse/archived-projects">Archived Projects</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/analyse/archived-projects/former-dnsmon">Former
-                                        DNSMON</a>
+                                        <a href="https://www.ripe.net/analyse/archived-projects/former-dnsmon">Former DNSMON</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/analyse/archived-projects/ris-tools-web-interfaces">RIS
-                                        Tools and Web Interfaces</a>
+                                        <a href="https://www.ripe.net/analyse/archived-projects/ris-tools-web-interfaces">RIS Tools and Web Interfaces</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/analyse/archived-projects/ttm">Test Traffic
-                                        Measurement Service (TTM)</a>
+                                        <a href="https://www.ripe.net/analyse/archived-projects/ttm">Test Traffic Measurement Service (TTM)</a>
                                 </li>
-                            </ul>
-                        </div>
-                        <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/analyse/test-page-for-pre">test page for
-                                pre</a>
-                            <ul>
                             </ul>
                         </div>
                     </div>
@@ -425,15 +385,11 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     Participate
                     <i class="fa fa-angle-right"></i>
                 </a>
-
                 <div class="megamenu subnav container clearfix box-shadow">
                     <div class="row">
                         <div class="col-md-2 description">
-                            <p>The smooth running of the Internet depends on the involvement of those who give their
-                                input on membership and policy issues. And there are many ways to get involved, online
-                                and in person.
+                                <p>The smooth running of the Internet depends on the involvement of those who give their input on membership and policy issues. And there are many ways to get involved, online and in person.
                             </p>
-
                             <div class="mega-more">
                                 <p>More information about
                                     <a href="https://www.ripe.net/participate">
@@ -443,28 +399,22 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/participate/member-support">RIPE NCC
-                                Membership </a>
+                                <a class="h6" href="https://www.ripe.net/participate/member-support">RIPE NCC Membership </a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/member-support/info">Membership
-                                        Information</a>
+                                        <a href="https://www.ripe.net/participate/member-support/info">Membership Information</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/member-support/become-a-member">Become
-                                        a Member</a>
+                                        <a href="https://www.ripe.net/participate/member-support/become-a-member">Become a Member</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/member-support/new-member">Information
-                                        for New Members</a>
+                                        <a href="https://www.ripe.net/participate/member-support/new-member">Information for New Members</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/member-support/ripe-ncc-access">RIPE
-                                        NCC Access</a>
+                                        <a href="https://www.ripe.net/participate/member-support/ripe-ncc-access">RIPE NCC Access</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/member-support/surveys">RIPE NCC
-                                        Surveys</a>
+                                        <a href="https://www.ripe.net/participate/member-support/surveys">RIPE NCC Surveys</a>
                                 </li>
                             </ul>
                         </div>
@@ -478,11 +428,13 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                                     <a href="https://www.ripe.net/participate/ripe/tf">Task Forces</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/ripe/raci">RIPE Academic Cooperation
-                                        Initiative (RACI)</a>
+                                        <a href="https://www.ripe.net/participate/ripe/raci">RIPE Academic Cooperation Initiative (RACI)</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/ripe/ripe-deputy-chair">RIPE Chair</a>
+                                        <a href="https://www.ripe.net/participate/ripe/ripe-chair">RIPE Chair</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.ripe.net/participate/ripe/rob-blokzijl-obituary">Rob Blokzijl Obituary</a>
                                 </li>
                             </ul>
                         </div>
@@ -490,19 +442,16 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/participate/meetings">Meetings and Events</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/meetings/ripe-meetings">RIPE
-                                        Meetings</a>
+                                        <a href="https://www.ripe.net/participate/meetings/ripe-meetings">RIPE Meetings</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/meetings/regional-meetings">Regional
-                                        Meetings</a>
+                                        <a href="https://www.ripe.net/participate/meetings/regional-meetings">Regional Meetings</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/participate/meetings/gm">General Meetings</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/meetings/roundtable">Roundtable
-                                        Meetings</a>
+                                        <a href="https://www.ripe.net/participate/meetings/roundtable">Roundtable Meetings</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/participate/meetings/calendar">Upcoming Events</a>
@@ -513,12 +462,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/participate/policies">Policy Development</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/policies/current-proposals">Current
-                                        Policy Proposals</a>
+                                        <a href="https://www.ripe.net/participate/policies/current-proposals">Current Policy Proposals</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/policy-implementation-status">Policy
-                                        Implementation Status</a>
+                                        <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/policy-implementation-status">Policy Implementation Status</a>
                                 </li>
                             </ul>
                         </div>
@@ -526,34 +473,27 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/participate/mail">Join a Discussion</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/mail/ripe-ncc-mailing-lists">Membership
-                                        Mailing Lists</a>
+                                        <a href="https://www.ripe.net/participate/mail/ripe-ncc-mailing-lists">Membership Mailing Lists</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/mail/ripe-mailing-lists">RIPE Mailing
-                                        Lists</a>
+                                        <a href="https://www.ripe.net/participate/mail/ripe-mailing-lists">RIPE Mailing Lists</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/participate/internet-governance">Internet
-                                Governance</a>
+                                <a class="h6" href="https://www.ripe.net/participate/internet-governance">Internet Governance</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/internet-governance/internet-technical-community/iana/iana-stewardship-transition">IANA
-                                        Stewardship Transition</a>
+                                        <a href="https://www.ripe.net/participate/internet-governance/internet-technical-community/iana/iana-stewardship-transition">IANA Stewardship Transition</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/internet-governance/internet-technical-community">Internet
-                                        Technical Community</a>
+                                        <a href="https://www.ripe.net/participate/internet-governance/internet-technical-community">Internet Technical Community</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/internet-governance/multi-stakeholder-engagement">Multi-stakeholder
-                                        Engagement</a>
+                                        <a href="https://www.ripe.net/participate/internet-governance/multi-stakeholder-engagement">Multi-stakeholder Engagement</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/participate/internet-governance/internet-governance-news">Internet
-                                        Governance News</a>
+                                        <a href="https://www.ripe.net/participate/internet-governance/internet-governance-news">Internet Governance News</a>
                                 </li>
                             </ul>
                         </div>
@@ -565,13 +505,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     Get Support
                     <i class="fa fa-angle-right"></i>
                 </a>
-
                 <div class="megamenu subnav container clearfix box-shadow">
                     <div class="row">
                         <div class="col-md-2 description">
-                            <p>We support members and the RIPE community through several channels to offer timely and
-                                efficient help – whether it’s a ticket, a tweet or a training course.</p>
-
+                                <p>We support members and the RIPE community through several channels to offer timely and efficient help – whether it’s a ticket, a tweet or a training course.</p>
                             <div class="mega-more">
                                 <p>More information about
                                     <a href="https://www.ripe.net/support">
@@ -584,16 +521,13 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/support/contact">Contact Us</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/support/contact/office-information">Office
-                                        Information</a>
+                                        <a href="https://www.ripe.net/support/contact/office-information">Office Information</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/support/contact/report-form">RIPE NCC Report
-                                        Form</a>
+                                        <a href="https://www.ripe.net/support/contact/report-form">RIPE NCC Report Form</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/support/contact/technical-emergency-hotline">Report
-                                        Technical Emergency</a>
+                                        <a href="https://www.ripe.net/support/contact/technical-emergency-hotline">Report Technical Emergency</a>
                                 </li>
                             </ul>
                         </div>
@@ -604,8 +538,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                                     <a href="https://www.ripe.net/support/training/courses">Training Courses</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/support/training/ripe-ncc-academy">RIPE NCC
-                                        Academy</a>
+                                        <a href="https://www.ripe.net/support/training/ripe-ncc-academy">RIPE NCC Academy</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/support/training/learn-online/webinars">Webinars</a>
@@ -622,12 +555,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/support/documentation">Documentation</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/support/documentation/developer-documentation">Developer
-                                        Documentation</a>
+                                        <a href="https://www.ripe.net/support/documentation/developer-documentation">Developer Documentation</a>
                                 </li>
                                 <li>
-                                    <a href="/manage-ips-and-asns/db/support/documentation/ripe-database-documentation">RIPE
-                                        Database Documentation</a>
+                                        <a href="/manage-ips-and-asns/db/support/documentation/ripe-database-documentation">RIPE Database Documentation</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/support/documentation/faqs">FAQs</a>
@@ -638,8 +569,7 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/support/abuse">Spam, Hacking and Phishing</a>
                             <ul>
                                 <li>
-                                    <a href="/search/abuse-finder.html">RIPE Database Abuse
-                                        Finder</a>
+                                        <a href="https://apps.db.ripe.net/search/abuse-finder.html">RIPE Database Abuse Finder</a>
                                 </li>
                                 <li>
                                     <a href="https://stat.ripe.net/specials/abuse">RIPEstat Abuse Contact Finder</a>
@@ -647,16 +577,8 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/support/service-announcements">Service &amp;
-                                Security Announcements</a>
+                                <a class="h6" href="https://www.ripe.net/support/service-announcements">Service &amp; Security Announcements</a>
                             <ul>
-                                <li>
-                                    <a href="https://www.ripe.net/support/service-announcements/services">Services</a>
-                                </li>
-                                <li>
-                                    <a href="https://www.ripe.net/support/service-announcements/test-service-announcement">Test
-                                        Service Announcement</a>
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -667,13 +589,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     Publications
                     <i class="fa fa-angle-right"></i>
                 </a>
-
                 <div class="megamenu subnav container clearfix box-shadow">
                     <div class="row">
                         <div class="col-md-2 description">
-                            <p>Stay informed about everything Internet-related, from RIPE Policy and RIPE NCC member
-                                information to RIPE Labs blog posts and the latest Internet news.</p>
-
+                                <p>Stay informed about everything Internet-related, from RIPE Policy and RIPE NCC member information to RIPE Labs blog posts and the latest Internet news.</p>
                             <div class="mega-more">
                                 <p>More information about
                                     <a href="https://www.ripe.net/publications">
@@ -686,12 +605,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/publications/docs">RIPE Document Store</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/docs/all-ripe-documents-by-number">RIPE
-                                        Documents by Number</a>
+                                        <a href="https://www.ripe.net/publications/docs/all-ripe-documents-by-number">RIPE Documents by Number</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/docs/ripe-documents">RIPE Documents
-                                        by Category </a>
+                                        <a href="https://www.ripe.net/publications/docs/ripe-documents">RIPE Documents by Category </a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/publications/docs/ripe-policies">RIPE Policies</a>
@@ -699,43 +616,36 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6"
-                               href="https://www.ripe.net/publications/ripe-ncc-organisational-documents">RIPE NCC
-                                Organisational Documents</a>
+                                <a class="h6" href="https://www.ripe.net/publications/ripe-ncc-organisational-documents">RIPE NCC Organisational Documents</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/budgets">Activity
-                                        Plan and Budget</a>
+                                        <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/budgets">Activity Plan and Budget</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/reports">Annual
-                                        Reports</a>
+                                        <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/reports">Annual Reports</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/charging-schemes">Charging
-                                        Schemes</a>
+                                        <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/charging-schemes">Charging Schemes</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/publications/ipv6-info-centre">IPv6 Info
-                                Centre</a>
+                                <a class="h6" href="https://www.ripe.net/publications/ipv6-info-centre">IPv6 Info Centre</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6">About
-                                        IPv6</a>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6">About IPv6</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/deployment-planning">Deploy
-                                        IPv6 Now</a>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre/deployment-planning">Deploy IPv6 Now</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/statistics-and-tools">Statistics
-                                        and Tools</a>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre/statistics-and-tools">Statistics and Tools</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/news-and-events">News
-                                        and Events</a>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre/training-and-materials">Training and Materials</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre/news-and-events">News and Events</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/publications/ipv6-info-centre/ipv6-documents">Documents</a>
@@ -748,14 +658,16 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                         <div class="col-md-2">
                             <a class="h6" href="https://www.ripe.net/publications/ripe-labs">RIPE Labs</a>
                             <ul>
+                                    <li>
+                                        <a href="https://www.ripe.net/support/documentation/ripe-labs-documentation/contributing-to-ripe-labs"> Contributing to RIPE Labs</a>
+                                    </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
                             <a class="h6" href="https://www.ripe.net/publications/news">News</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/news/latest-news">News and
-                                        Announcements</a>
+                                        <a href="https://www.ripe.net/publications/news/latest-news">News and Announcements</a>
                                 </li>
                                 <li>
                                     <a href="https://www.ripe.net/publications/news/feeds">RSS News Feeds</a>
@@ -770,14 +682,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                     About Us
                     <i class="fa fa-angle-right"></i>
                 </a>
-
                 <div class="megamenu subnav container clearfix box-shadow">
                     <div class="row">
                         <div class="col-md-2 description">
-                            <p>We’re a membership organisation supporting the Internet through technical coordination.
-                                Our core function is as a Regional Internet Registry. We are also the secretariat for
-                                the RIPE community.</p>
-
+                                <p>We’re a membership organisation supporting the Internet through technical coordination. Our core function is as a Regional Internet Registry. We are also the secretariat for the RIPE community.</p>
                             <div class="mega-more">
                                 <p>More information about
                                     <a href="https://www.ripe.net/about-us">
@@ -790,23 +698,19 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/about-us/what-we-do">What We Do</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/what-we-do/regional-internet-registry">Regional
-                                        Internet Registry</a>
+                                        <a href="https://www.ripe.net/about-us/what-we-do/regional-internet-registry">Regional Internet Registry</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/what-we-do/coordination-function">Coordination
-                                        Function</a>
+                                        <a href="https://www.ripe.net/about-us/what-we-do/coordination-function">Coordination Function</a>
                                 </li>
                                 <li>
-                                    <a href="/analyse/statistics">Statistics</a>
+                                        <a href="https://www.ripe.net/analyse/statistics">Statistics</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/publications/ipv6-info-centre">Transition to
-                                        IPv6</a>
+                                        <a href="https://www.ripe.net/publications/ipv6-info-centre">Transition to IPv6</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/what-we-do/list-of-ripe-ncc-services">List
-                                        of RIPE NCC Services</a>
+                                        <a href="https://www.ripe.net/about-us/what-we-do/list-of-ripe-ncc-services">List of RIPE NCC Services</a>
                                 </li>
                             </ul>
                         </div>
@@ -814,12 +718,10 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/about-us/staff">Staff</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/staff/structure">RIPE NCC Staff
-                                        Structure</a>
+                                        <a href="https://www.ripe.net/about-us/staff/structure">RIPE NCC Staff Structure</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/staff/working-at-the-ripe-ncc">Working at
-                                        the RIPE NCC</a>
+                                        <a href="https://www.ripe.net/about-us/staff/working-at-the-ripe-ncc">Working at the RIPE NCC</a>
                                 </li>
                             </ul>
                         </div>
@@ -827,25 +729,21 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/about-us/executive-board">Executive Board</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/executive-board/ripe-ncc-executive-board-functions-and-expectations">Functions
-                                        and Expectations </a>
+                                        <a href="https://www.ripe.net/about-us/executive-board/ripe-ncc-executive-board-functions-and-expectations">Functions and Expectations </a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/executive-board/minutes">Minutes from
-                                        Executive Board Meetings</a>
+                                        <a href="https://www.ripe.net/about-us/executive-board/minutes">Minutes from Executive Board Meetings</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/about-us/financial-information">Financial
-                                Information</a>
+                                <a class="h6" href="https://www.ripe.net/about-us/financial-information">Financial Information</a>
                             <ul>
                                 <li>
-                                    <a href="/ripe/docs/ripe-620">Current Charging Scheme</a>
+                                        <a href="/publications/docs/charging">Current Charging Scheme</a>
                                 </li>
                                 <li>
-                                    <a href="/participate/member-support/info/billing/billing-procedure-and-fee-schedule-2015">Current
-                                        Billing Procedure</a>
+                                        <a href="/participate/billing/procedure">Current Billing Procedure</a>
                                 </li>
                             </ul>
                         </div>
@@ -853,20 +751,16 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/about-us/press-centre">Press Centre</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/press-centre/ripe-ncc-in-the-news">RIPE
-                                        NCC in the News</a>
+                                        <a href="https://www.ripe.net/about-us/press-centre/ripe-ncc-in-the-news">RIPE NCC in the News</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/press-centre/press-releases">Press
-                                        Releases</a>
+                                        <a href="https://www.ripe.net/about-us/press-centre/press-releases">Press Releases</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/press-centre/publications">Publications
-                                        and Presentations</a>
+                                        <a href="https://www.ripe.net/about-us/press-centre/publications">Publications and Presentations</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/press-centre/press-photos">Press Quality
-                                        Photos</a>
+                                        <a href="https://www.ripe.net/about-us/press-centre/press-photos">Press Quality Photos</a>
                                 </li>
                             </ul>
                         </div>
@@ -874,30 +768,30 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
                             <a class="h6" href="https://www.ripe.net/about-us/legal">Legal</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/legal/arbitration">Conflict Arbitration
-                                        Procedure</a>
+                                        <a href="https://www.ripe.net/about-us/legal/corporate-governance-documents">Corporate Governance</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/legal/copyright-statement">Copyright
-                                        Statement</a>
+                                        <a href="https://www.ripe.net/about-us/legal/internet-number-resources">Internet Number Resources</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/legal/ripe-ncc-listing-service-terms-and-conditions">RIPE
-                                        NCC Listing Service Terms and Conditions</a>
+                                        <a href="https://www.ripe.net/about-us/legal/arbitration-documents">Arbitration</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.ripe.net/about-us/legal/other-ripe-ncc-services-documents">Other RIPE NCC Services</a>
+                                    </li>
+                                    <li>
+                                        <a href="https://www.ripe.net/about-us/legal/information-for-law-enforcement-agencies">Information for Law Enforcement Agencies</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="col-md-2">
-                            <a class="h6" href="https://www.ripe.net/about-us/corporate-governance">Corporate
-                                Governance</a>
+                                <a class="h6" href="https://www.ripe.net/about-us/corporate-governance">Corporate Governance</a>
                             <ul>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/corporate-governance/treasury-statute">Treasury
-                                        Statute</a>
+                                        <a href="https://www.ripe.net/about-us/corporate-governance/treasury-statute">Treasury Statute</a>
                                 </li>
                                 <li>
-                                    <a href="https://www.ripe.net/about-us/corporate-governance/ripe-ncc-articles-of-association">RIPE
-                                        NCC Articles of Association</a>
+                                        <a href="https://www.ripe.net/about-us/corporate-governance/ripe-ncc-articles-of-association">RIPE NCC Articles of Association</a>
                                 </li>
                             </ul>
                         </div>
@@ -919,7 +813,9 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
 
 <main class="container-fluid">
 
-    <div id="portal-columns" class="container box-shadow clearfix no-pad-top">
+    <div id="portal-columns" class="container box-shadow clearfix">
+
+        <!-- TEST environment banner -->
         <p id="envbanner" class="envbanner alert orangebackground" style="text-align: center; display: none">
             <span id="envBannerId">TEST<br>Welcome to the TEST Environment of the RIPE Database. You can use this environment to learn and experiment with RIPE Database. It uses a TEST 'source' and all changes are reverted in the night.</span>
         </p>
@@ -1035,11 +931,11 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
         <div class="col-lg-10" id="footer-links">
 
             <a href="/">Home</a>
-            <a href="/sitemap">Sitemap</a>
+            <a href="https://www.ripe.net/sitemap">Sitemap</a>
             <a href="https://www.ripe.net/support/contact">Contact Us</a>
-            <a href="https://www.ripe.net/support/service-announcements/service-and-security-announcements">Service
-                Announcements</a>
+            <a href="https://www.ripe.net/support/service-announcements/service-and-security-announcements">Service Announcements</a>
             <a href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement">Privacy Statement</a>
+            <a href="https://www.ripe.net/about-us/legal">Legal</a>
             <a href="https://www.ripe.net/about-us/legal/cookies">Cookies</a>
             <a href="https://www.ripe.net/about-us/legal/copyright-statement">Copyright Statement</a>
         </div>
@@ -1051,17 +947,16 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
     <div id="cookiepopup">
         <div id="cookie-close"><i class="fa fa-close"></i></div>
         <div class="cookie-content">
-            <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a
-                title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies"
-                class="external-link" target="_self">privacy
-                policy</a><span>. You can accept our cookies either by </span><span
-                id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
+		       <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies" class="external-link" target="_self">privacy policy</a><span>. You can accept our cookies either by </span><span id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
         </div>
     </div>
 
 
+
+
 </footer>
 
+<!-- TEST environment banner -->
 <script>
     if(window.location.hostname.split('.').shift() === 'apps-test') {
         $('#envbanner').show();
@@ -1078,3 +973,5 @@ ACCESS_URL: <!-- @echo ACCESS_URL -->
 </body>
 
 </html>
+
+
