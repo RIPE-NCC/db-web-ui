@@ -104,7 +104,7 @@ describe('webUpdates: CreateController', function () {
 
         $scope.submit();
         expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('Mandatory attribute not set');
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBeUndefined();
+        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toEqual('');
 
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
@@ -179,7 +179,7 @@ describe('webUpdates: CreateController', function () {
 
         expect($scope.attributes.length).toEqual(lengthBefore+1);
         expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
-        expect($scope.attributes[2].value).toBeUndefined();
+        expect($scope.attributes[2].value).toEqual('');
     });
 
     it('should remove attribute', function() {
@@ -317,9 +317,8 @@ describe('webUpdates: CreateController', function () {
         ];
 
         $scope.onMntnerRemoved($scope.maintainers.object[0]);
-
-
-        expect($scope.attributes.getSingleAttributeOnName('mnt-by').value).toBeUndefined();
+        
+        expect($scope.attributes.getSingleAttributeOnName('mnt-by').value).toEqual('');
 
     });
 

@@ -161,7 +161,7 @@ describe('dbWebApp: WhoisMetaService', function () {
         expect($whoisMetaService.getMandatoryAttributesOnObjectType('type1')).toEqual([
             {
                 name:'mandatory1',
-                value: undefined,
+                value: '',
                 comment: undefined,
                 link: undefined,
                 'referenced-type': undefined,

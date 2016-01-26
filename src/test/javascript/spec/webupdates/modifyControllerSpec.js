@@ -262,7 +262,7 @@ describe('webUpdates: ModifyController', function () {
 
         expect($scope.attributes.length).toEqual(4);
         expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
-        expect($scope.attributes[2].value).toBeUndefined();
+        expect($scope.attributes[2].value).toEqual('');
     });
 
     it('remove attribute', function() {

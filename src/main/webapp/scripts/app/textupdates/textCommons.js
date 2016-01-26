@@ -150,9 +150,7 @@ angular.module('textUpdates')
             }
 
             this.stripEmptyAttributes = function (attributes) {
-                return _.filter(attributes, function (attr) {
-                    return !_.isUndefined(attr.value);
-                });
+                return attributes.removeNullAttributes();
             }
 
             this.navigateToDisplayPage = function (source, objectType, objectName, operation) {
