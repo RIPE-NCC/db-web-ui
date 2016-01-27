@@ -209,7 +209,7 @@ angular.module('webUpdates')
                     function (data) {
                         // mark new
                         $scope.maintainers.alternatives = MntnerService.stripNccMntners(MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
-                            _filterAutocompleteMntners(_enrichWithMine(data))));
+                            _filterAutocompleteMntners(_enrichWithMine(data))), true);
                     }
                 );
             }

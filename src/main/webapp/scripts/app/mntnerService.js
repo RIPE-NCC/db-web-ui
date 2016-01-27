@@ -186,13 +186,13 @@ angular.module('dbWebApp')
             return WhoisResources.getAttributeSyntax(objectType, 'mnt-by');
         };
 
-        mntnerService.stripNccMntners = function (mntners) {
+        mntnerService.stripNccMntners = function (mntners, allowEmptyResult) {
             //remove NCC mntners and dupes
             var stripped = _.reject(mntners, function(mntner) {
                 return(mntnerService.isNccMntner(mntner));
             });
             //if we are left with no mntners, return mntners array untouched
-            if(_.isEmpty(stripped)) {
+            if(_.isEmpty(stripped) && !allowEmptyResult) {
                 return mntners;
             }
             else {
