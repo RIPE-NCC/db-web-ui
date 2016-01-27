@@ -23,7 +23,20 @@
     <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png"/>
     <link rel="search" href="https://www.ripe.net/search" title="Search this site"/>
 
-    <!-- @include _index_app_css.html -->
+    <!--  Webupdates specific css start -->
+    
+    <!-- 3rd party css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css"/>
+    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css"/>
+    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.css"/>
+    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"/>
+    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
+    
+    <!-- Our own css -->
+    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/main.css" />
+    
+    <!-- Webupdates specific css end -->
+    
 
     <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen"
           type="text/css" rel="stylesheet"/>
@@ -48,7 +61,24 @@
     class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color"
     dir="ltr">
 
-<!-- @include _index_app_body_start.html -->
+<!--  Webupdates specific body-start start -->
+<div ng-app="dbWebApp">
+
+<!-- Google Tag Manager, Use env prepdev with id: GTM-WTWTB7 -->
+<noscript>
+    <iframe src="//www.googletagmanager.com/ns.html?id=GTM-WTWTB7"
+            height="0" width="0" style="display:none;visibility:hidden">
+    </iframe>
+</noscript>
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WTWTB7');</script>
+<!-- End Google Tag Manager -->
+
+<!--  Webupdates specific body-start end -->
+
 
 <header class="header-gradient container-fluid">
     <div id="site-header" class="container">
@@ -62,7 +92,26 @@
                     to navigation</a>
             </p>
 
-            <!-- @include _index_app_login.html -->
+            <!--  Webupdates specific login start -->
+            
+            <!-- Login widget, Use ACCESS_URL https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/ -->
+            
+            <div id="login" ng-controller="UserInfoController">
+                <a class="anon" href="https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/">Login</a>
+                <div id="loggedin">
+                    <a class="active" href="#">
+                        <span id="loggedin-username"></span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <a class="profile" style="background-image(https://access.ripe.net/)"></a>
+                    <div id="loggedin-box" class="portlet box-shadow"></div>
+                    <a href="notification" id="notifications"></a>
+                </div>
+            </div>
+            
+            
+            <!--  Webupdates specific login end -->
+            
 
             <div class="header-item">
                 <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
@@ -915,7 +964,87 @@
         </div>
         <div id="portal-column-one" class="col-md-3">
             <!-- Insert your navigation here NAVIGATIONMARKER -->
-            <!-- @include _index_app_menu.html -->
+            <!--  Webupdates specific menu start -->
+            <div>
+                <div class="portlet navigation margin-bottom">
+                    <div class="Title">
+                        <i title="Show/Hide navigation" class="fa fa-angle-double-left"></i>
+                        <a href="/search/query.html" class="h5">RIPE Database</a>
+                    </div>
+                    <ul class="toplevel">
+                        <li class="child ">
+                            <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                            <a href="/search/query.html">Query and Update</a>
+                            <ul class="level2" style="display: none;">
+                                <li><a href="/search/query.html">Query the RIPE Database</a>
+                                </li>
+                                <li><a href="/search/full-text.html">Full Text Search</a>
+                                </li>
+                                <li><a href="/search/geolocation-finder.html">Geolocation Finder</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="child active">
+                            <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                            <a href="/db-web-ui/#/">Create</a>
+                            <ul class="level2" style="display: block;">
+                                <li>
+                                    <a class="menuItem current" href="/db-web-ui/#/">Create an object</a>
+                                </li>
+                                <li>
+                                    <a class="menuItem" href="/db-web-ui/#/webupdates/create/person/self">Create maintainer and
+                                        person pair</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="child">
+                            <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                            <a href="/syncupdates/simple-rpsl.html">Syncupdates</a>
+                            <ul class="level2" style="display: none;">
+                                <li>
+                                    <a href="/syncupdates/simple-rpsl.html">Syncupdates</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="child ">
+                            <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                            <a href="/search/abuse-finder.html">Abuse Contact</a>
+                            <ul class="level2" style="display: none;">
+                                <li><a href="/search/abuse-finder.html">Abuse Finder</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="child ">
+                            <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                            <a href="/change-auth/">Passwords</a>
+                            <ul class="level2" style="display: none;">
+                                <li><a href="/change-auth/">Forgotten MNTNER password?</a>
+                                </li>
+                                <li><a href="/crypt/crypt.html">Password Generator</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div>
+                <div class="portlet margin-bottom grey grey-border">
+                </div>
+            </div>
+            
+            <script type="text/javascript">
+                $(document).ready(function(){
+                    $('.menuItem').on('click', function(){
+                        $('.menuItem').removeClass('current');
+                        $(this).addClass(function(n){
+                            return 'current';
+                        });
+                    });
+                });
+            </script>
+            
+            <!--  Webupdates specific menu end -->
+            
         </div>
         <div id="portal-column-content" class="sl col-md-9">
             <noscript>
@@ -936,7 +1065,8 @@
                     <div>
                         <div id="external">
 
-                            <!-- @include _index_app_content.html -->
+                            <div ui-view></div>
+                            
 
                         </div>
                     </div>
@@ -985,9 +1115,117 @@
     </div>
 </footer>
 
-<!-- @include _index_app_javascript.html -->
+<!--  Webupdates specific javascript start -->
 
-<!-- @include _index_app_body_end.html -->
+<!-- 3rd party javascript -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/angulartics/dist/angulartics.min.js"></script>
+<script src="bower_components/angulartics/dist/angulartics-gtm.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/selectize/dist/js/standalone/selectize.js"></script>
+<script src="bower_components/angular-ui-select/dist/select.js"></script>
+<script src="bower_components/google-diff-match-patch/diff_match_patch.js"></script>
+<script src="bower_components/angular-diff-match-patch/angular-diff-match-patch.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+
+<!-- our own javascript -->
+<script src="scripts/app/app.js"></script>
+<script src="scripts/app/app.constants.js"></script>
+
+<!-- Interceptors -->
+<script src="scripts/app/interceptors/interceptorsModule.js"></script>
+<script src="scripts/app/interceptors/errorInterceptors.js"></script>
+
+<!-- App Services -->
+<script src="scripts/app/cryptojs.js"></script>
+<script src="scripts/app/whoisMetaService.js"></script>
+<script src="scripts/app/credentialsService.js"></script>
+<script src="scripts/app/whoisResources.js"></script>
+<script src="scripts/app/messageStore.js"></script>
+<script src="scripts/app/userInfoService.js"></script>
+<script src="scripts/app/cryptService.js"></script>
+<script src="scripts/app/alertService.js"></script>
+<script src="scripts/app/errorReporterService.js"></script>
+<script src="scripts/app/mntnerService.js"></script>
+<script src="scripts/app/linkService.js"></script>
+<script src="scripts/app/preferenceService.js"></script>
+
+<!-- Directives -->
+<script src="scripts/app/directives/alertsDirective.js"></script>
+
+<!-- WebUpdates Services -->
+<script src="scripts/app/webupdates/webUpdatesModule.js"></script>
+<script src="scripts/app/webupdates/restService.js"></script>
+<script src="scripts/app/webupdates/modalService.js"></script>
+<script src="scripts/app/webupdates/webUpdatesStates.js"></script>
+<script src="scripts/app/webupdates/organisationHelper.js"></script>
+<script src="scripts/app/webupdates/webUpdatesCommons.js"></script>
+
+<!-- Webupdates Controllers -->
+<script src="scripts/app/userInfoController.js"></script>
+<script src="scripts/app/webupdates/modalCreateRoleForAbuseCController.js"></script>
+<script src="scripts/app/webupdates/modalAuthenticationController.js"></script>
+<script src="scripts/app/webupdates/modalMd5PasswordController.js"></script>
+<script src="scripts/app/webupdates/modalAddAttributeController.js"></script>
+<script src="scripts/app/webupdates/modalDeleteObjectController.js"></script>
+<script src="scripts/app/webupdates/selectController.js"></script>
+<script src="scripts/app/webupdates/createModifyController.js"></script>
+<script src="scripts/app/webupdates/createSelfMaintainedMaintainerController.js"></script>
+<script src="scripts/app/webupdates/createPersonMntnerPairController.js"></script>
+<script src="scripts/app/webupdates/deleteController.js"></script>
+<script src="scripts/app/webupdates/displayPersonMntnerPairController.js"></script>
+<script src="scripts/app/webupdates/displayController.js"></script>
+<script src="scripts/app/webupdates/forceDeleteSelectController.js"></script>
+<script src="scripts/app/webupdates/forceDeleteController.js"></script>
+
+
+<!--  Webupdates specific javascript end -->
+
+<!-- Textupdates Controllers -->
+
+<script src="scripts/app/textupdates/textUpdatesModule.js"></script>
+<script src="scripts/app/textupdates/textUpdatesStates.js"></script>
+<script src="scripts/app/textupdates/rpslService.js"></script>
+<script src="scripts/app/textupdates/textCommons.js"></script>
+<script src="scripts/app/textupdates/textCreateController.js"></script>
+<script src="scripts/app/textupdates/textModifyController.js"></script>
+<script src="scripts/app/textupdates/textMultiController.js"></script>
+
+
+<!-- Textupdates specific javascript end -->
+
+<!-- TEST environment banner -->
+<script>
+    if(window.location.hostname.split('.').shift() === 'apps-test') {
+        $('#envbanner').show();
+    }
+</script>
+
+
+<!--  Webupdates specific body-end start -->
+
+<!-- Usersnap widget: always on -->
+<script type="text/javascript">
+    (function() {
+        var s = document.createElement("script");
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = '//api.usersnap.com/load/'+
+            'b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js';
+        var x = document.getElementsByTagName('script')[0];
+        x.parentNode.insertBefore(s, x);
+    })();
+</script>
+
+</div>
+<!--  Webupdates specific body-end end -->
+
 
 </body>
 </html>
