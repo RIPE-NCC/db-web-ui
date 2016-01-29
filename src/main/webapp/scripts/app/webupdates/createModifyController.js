@@ -51,22 +51,6 @@ angular.module('webUpdates')
             $scope.missingAbuseC = missingAbuseC;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
-            $scope.sortMntners = function(array) {
-                var nccMntners = _.filter(array, function(o) { return MntnerService.isNccMntner(o); });
-                var notNccMntners = _.filter(array, function(o) { return !MntnerService.isNccMntner(o); });
-console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-//console.log(JSON.stringify(array));
-//console.log('********************************************************************************************************');
-//console.log(JSON.stringify(_.concat(nccMntners, notNccMntners)));
-console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
-                return nccMntners.concat(notNccMntners);
-
-            }
-
             _initialisePage();
 
             function _initialisePage() {
