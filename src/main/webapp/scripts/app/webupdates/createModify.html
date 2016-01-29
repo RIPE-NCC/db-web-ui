@@ -26,12 +26,12 @@
     </article>
     <ui-select multiple="true"
                theme="selectize"
-               ng-model="maintainers.object"
+               ng-model="sortMntners(maintainers.object)"
                close-on-select="true"
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
                ng-if="uiSelectTemplateReady">
-        <ui-select-match ui-lock-choice="needToLockLastMntner($item) || isNccMntner($item)" placeholder="Type maintainer name">{{$item.key}}
+        <ui-select-match ui-lock-choice="needToLockLastMntner() || isNccMntner($item)" placeholder="Type maintainer name">{{$item.key}}
             <span class="fa fa-star" ng-if="isMine($item)"></span>
             <span class="fa fa-lock" ng-if="isNccMntner($item)"></span>
         </ui-select-match>
