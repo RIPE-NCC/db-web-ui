@@ -13,10 +13,6 @@ angular.module('dbWebApp')
             return _.includes(nccMntners,mntner.key.toUpperCase());
         };
 
-        mntnerService.isRpslMntner = function(mntner) {
-            return mntner.key === 'RIPE-NCC-RPSL-MNT';
-        };
-
         mntnerService.isMntnerOnlist = function(list, mntner) {
             var status = _.any(list, function (item) {
                 return item.key.toUpperCase() === mntner.key.toUpperCase();
@@ -109,10 +105,14 @@ angular.module('dbWebApp')
             }
             var mntners = mntnerService.enrichWithSsoStatus(ssoMntners, input);
 
-            // ignore rpsl mntner while deciding if password authent. is needed
-            mntners = _stripRpslMntner(mntners);
             if( mntners.length === 0 ) {
                 $log.debug('needsPasswordAuthentication: no: No mntners left to authenticate against');
+                return false;
+            }
+
+            //do not need password if RIPE-NCC-RPSL-MNT is present
+            if(_.some(mntners, {key:'RIPE-NCC-RPSL-MNT'})) {
+                $log.debug('needsPasswordAuthentication: no: RIPE-NCC-RPSL-MNT is present and do not require authentication');
                 return false;
             }
 
@@ -199,12 +199,6 @@ angular.module('dbWebApp')
                 return stripped;
             }
         };
-
-        function _stripRpslMntner(mntners) {
-            return _.filter(mntners, function(mntner) {
-                return ! mntnerService.isRpslMntner(mntner);
-            });
-        }
 
         function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
             return _.any(originalObjectMntners, function (mntner) {
