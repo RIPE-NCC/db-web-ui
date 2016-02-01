@@ -413,17 +413,23 @@ angular.module('webUpdates')
                     var whoisResources = resp.data;
                     $scope.attributes = whoisResources.getAttributes();
 
-                    // TODO: fix whois to return a 200 series response in case of pending object [MG]
-                    if (_isPendingAuthenticationError(resp)) {
-                        // TODO: let whois come with a single information errormessage [MG]
-                        MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
-                        /* Instruct downstream screen (typically display screen) that object is in pending state */
-                        WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
-                    } else {
-                        _validateForm();
-                        AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
-                        AlertService.setErrors(whoisResources);
-                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
+
+                    // Post-process atttribute after submit-error using screen-logic-interceptor
+                    if( _interceptOnSubnitError( $scope.operation, resp.status,
+                            $scope.attributes, whoisResources.getAttributes()) == false ) {
+
+                        // TODO: fix whois to return a 200 series response in case of pending object [MG]
+                        if (_isPendingAuthenticationError(resp)) {
+                            // TODO: let whois come with a single information errormessage [MG]
+                            MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
+                            /* Instruct downstream screen (typically display screen) that object is in pending state */
+                            WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
+                        } else {
+                            _validateForm();
+                            AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
+                            AlertService.setErrors(whoisResources);
+                            ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
+                        }
                     }
                 }
 
@@ -558,6 +564,26 @@ angular.module('webUpdates')
                     AlertService.setGlobalInfos(infoMessages);
                 }
                 return attributes;
+            }
+
+            function _interceptOnSubnitError( method, status, requestAttributes, responseAttributes ) {
+                var errorMessages = [];
+                var warningMessages = [];
+                var infoMessages = [];
+                var status = ScreenLogicInterceptor.afterSubmitError(method,
+                    $scope.source, $scope.objectType,
+                    requestAttributes,  status, responseAttributes,
+                    errorMessages, warningMessages, infoMessages );
+                if( errorMessages.length > 0 ) {
+                    AlertService.setGlobalErrors(errorMessages);
+                }
+                if( warningMessages.length > 0 ) {
+                    AlertService.setGlobalWarnings(warningMessages);
+                }
+                if( infoMessages.length > 0 ) {
+                    AlertService.setGlobalInfos(infoMessages);
+                }
+                return status;
             }
 
             function _fetchDataForModify() {

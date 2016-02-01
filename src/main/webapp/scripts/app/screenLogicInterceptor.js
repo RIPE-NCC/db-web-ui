@@ -188,12 +188,12 @@ angular.module('dbWebApp')
                 return interceptorFunc(method, source, objectType, attts, errors, warnings, infos);
             };
 
-            logicInterceptor.afterSubmitError = function (method, source, objectType, status, requestAttributes, responseAttributes, errors, warnings, infos) {
+            logicInterceptor.afterSubmitError = function (method, source, objectType, requestAttributes, status, responseAttributes, errors, warnings, infos) {
                 var interceptorFunc = _getAfterSubmitErrorFilter(objectType);
                 if (_.isUndefined(interceptorFunc)) {
-                    return attributes;
+                    return false;
                 }
-                return interceptorFunc(method, source, objectType, requestAttributes, status, attributes, errors, warnings, infos);
+                return interceptorFunc(method, source, objectType, requestAttributes, status, responseAttributes, errors, warnings, infos);
             };
 
             return logicInterceptor;
