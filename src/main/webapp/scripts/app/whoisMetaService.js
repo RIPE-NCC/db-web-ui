@@ -140,7 +140,7 @@ angular.module('dbWebApp')
             // enrich with order info
             var idx = 0;
             return _.map(this._getMetaAttributesOnObjectType(objectTypeName, true), function (meta) {
-                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, undefined, undefined, undefined, undefined, meta, idx);
+                var wrapped = _wrapMetaInAttribute(self, objectTypeName, meta.name, '', undefined, undefined, undefined, meta, idx);
                 idx++;
                 return wrapped;
             });
