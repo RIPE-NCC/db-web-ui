@@ -783,8 +783,7 @@ angular.module('webUpdates')
                             function (result) {
                                 $scope.restCalInProgress = false;
 
-                                var whoisResources = result.data;
-                                $scope.attributes = whoisResources.getAttributes();
+                                $scope.attributes = result.getAttributes();
 
                                 // save object for later diff in display-screen
                                 MessageStore.add('DIFF', _.cloneDeep($scope.attributes));
