@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('LogicInterceptor', ['$log', 'WhoisResources',
+    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources',
         function ($log, WhoisResources) {
 
             var globalInterceptor = {

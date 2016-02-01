@@ -1,15 +1,15 @@
 'use strict';
 
-describe('dbWebApp: LogicInterceptor', function () {
+describe('dbWebApp: ScreenLogicInterceptor', function () {
 
-    var logicInterceptor;
+    var interceptor;
     var whoisResources;
 
     beforeEach(module('dbWebApp'));
 
-    beforeEach(inject(function (WhoisResources, LogicInterceptor) {
+    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptor) {
         whoisResources = WhoisResources;
-        logicInterceptor = LogicInterceptor;
+        interceptor = ScreenLogicInterceptor;
     }));
 
     afterEach(function() {
@@ -33,8 +33,7 @@ describe('dbWebApp: LogicInterceptor', function () {
         var infos = [];
 
         printAttrs('before:', before );
-        var after =
-            logicInterceptor.beforeEdit('Create', 'RIPE', 'person', before, errors, warnings, infos );
+        var after = interceptor.beforeEdit('Create', 'RIPE', 'person', before, errors, warnings, infos );
         printAttrs('after:', after);
 
         expect(after.length).toEqual(6);
@@ -45,6 +44,10 @@ describe('dbWebApp: LogicInterceptor', function () {
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual('nic-hdl');
         expect(nicHdle[0].value).toEqual('AUTO-1');
+
+        expect(errors.length).toBe(0);
+        expect(warnings.length).toBe(0);
+        expect(infos.length).toBe(0);
     });
 
 

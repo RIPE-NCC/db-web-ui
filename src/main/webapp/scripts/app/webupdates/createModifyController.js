@@ -6,11 +6,11 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
-                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService',
+                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'ScreenLogicInterceptor',
         function ($scope, $stateParams, $state, $log, $window, $q,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService) {
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, ScreenLogicInterceptor ) {
 
             // exposed methods called from html fragment
             $scope.switchToTextMode = switchToTextMode;

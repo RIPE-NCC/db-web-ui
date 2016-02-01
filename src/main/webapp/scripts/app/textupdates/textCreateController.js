@@ -3,10 +3,10 @@
 angular.module('textUpdates')
     .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q', '$window',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore',
-        'RpslService', 'TextCommons', 'PreferenceService', 'CredentialsService',
+        'RpslService', 'TextCommons', 'PreferenceService', 'CredentialsService', 'ScreenLogicInterceptor',
         function ($scope, $stateParams, $state, $resource, $log, $q, $window,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,
-                  RpslService, TextCommons, PreferenceService, CredentialsService) {
+                  RpslService, TextCommons, PreferenceService, CredentialsService, ScreenLogicInterceptor) {
 
             $scope.submit = submit;
             $scope.switchToWebMode = switchToWebMode;
