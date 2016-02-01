@@ -6,8 +6,11 @@ angular.module('dbWebApp')
 
         var mntnerService = {};
 
-        mntnerService.isRpslMntner = function(mntner) {
-            return mntner.key === 'RIPE-NCC-RPSL-MNT';
+        var nccMntners = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT','RIPE-NCC-HM-PI-MNT','RIPE-GII-MNT','RIPE-NCC-MNT','RIPE-NCC-RPSL-MNT',
+                'RIPE-DBM-MNT','RIPE-NCC-LOCKED-MNT','RIPE-DBM-UNREFERENCED-CLEANUP-MNT','RIPE-ERX-MNT','RIPE-NCC-LEGACY-MNT'];
+
+        mntnerService.isNccMntner = function(mntner) {
+            return _.includes(nccMntners,mntner.key.toUpperCase());
         };
 
         mntnerService.isMntnerOnlist = function(list, mntner) {
@@ -102,10 +105,14 @@ angular.module('dbWebApp')
             }
             var mntners = mntnerService.enrichWithSsoStatus(ssoMntners, input);
 
-            // ignore rpsl mntner while deciding if password authent. is needed
-            mntners = _stripRpslMntner(mntners);
             if( mntners.length === 0 ) {
                 $log.debug('needsPasswordAuthentication: no: No mntners left to authenticate against');
+                return false;
+            }
+
+            //do not need password if RIPE-NCC-RPSL-MNT is present
+            if(_.some(mntners, {key:'RIPE-NCC-RPSL-MNT'})) {
+                $log.debug('needsPasswordAuthentication: no: RIPE-NCC-RPSL-MNT is present and do not require authentication');
                 return false;
             }
 
@@ -131,11 +138,11 @@ angular.module('dbWebApp')
             }
             var mntners = mntnerService.enrichWithSsoStatus(ssoMntners, input);
 
-            return  _.filter(mntners, function(mntner) {
+            return  _.filter(_.uniq(mntners,'key'), function(mntner) {
                 if( mntner.mine === true) {
                     return false;
-                } else if( mntnerService.isRpslMntner(mntner)) {
-                    // prevent authenticating against RPSL mntner (and later associating everybodies SSO with it)
+                } else if( mntnerService.isNccMntner(mntner)) {
+                    // prevent authenticating against RIPE-NCC mntner
                     return false;
                 } else if( CredentialsService.hasCredentials() && CredentialsService.getCredentials().mntner === mntner.key ) {
                     return false;
@@ -156,12 +163,12 @@ angular.module('dbWebApp')
             }
             var mntners = mntnerService.enrichWithSsoStatus(ssoMntners, input);
 
-            return  _.filter(mntners, function(mntner) {
+            return  _.filter(_.uniq(mntners,'key'), function(mntner) {
 
                 if( mntner.mine === true) {
                     return false;
-                } else if( mntnerService.isRpslMntner(mntner)) {
-                    // prevent customers contacting us about the RPSL mntner
+                } else if( mntnerService.isNccMntner(mntner)) {
+                    // prevent customers contacting us about RIPE-NCC mntners
                     return false;
                 } else if( mntnerService.hasMd5(mntner)) {
                     return false;
@@ -179,11 +186,19 @@ angular.module('dbWebApp')
             return WhoisResources.getAttributeSyntax(objectType, 'mnt-by');
         };
 
-        function _stripRpslMntner(mntners) {
-            return _.filter(mntners, function(mntner) {
-                return ! mntnerService.isRpslMntner(mntner);
+        mntnerService.stripNccMntners = function (mntners, allowEmptyResult) {
+            //remove NCC mntners and dupes
+            var stripped = _.reject(mntners, function(mntner) {
+                return(mntnerService.isNccMntner(mntner));
             });
-        }
+            //if we are left with no mntners, return mntners array untouched
+            if(_.isEmpty(stripped) && !allowEmptyResult) {
+                return mntners;
+            }
+            else {
+                return stripped;
+            }
+        };
 
         function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
             return _.any(originalObjectMntners, function (mntner) {
