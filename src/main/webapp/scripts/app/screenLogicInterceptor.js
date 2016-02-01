@@ -137,7 +137,7 @@ angular.module('dbWebApp')
                     return undefined;
                 }
                 if (_.isUndefined(objectInterceptors[objectType].beforeEdit)) {
-                    console.log('Interceptor-function  ' + objectType+ '.beforeEdit not found');
+                    $log.info('Interceptor-function  ' + objectType+ '.beforeEdit not found');
                     return undefined;
                 }
 
@@ -150,7 +150,7 @@ angular.module('dbWebApp')
                     return undefined;
                 }
                 if (_.isUndefined(objectInterceptors[objectType].afterEdit)) {
-                    console.log('Interceptor-function ' + objectType+ '.afterEdit not found');
+                    $log.info('Interceptor-function ' + objectType+ '.afterEdit not found');
                     return undefined;
                 }
                 return objectInterceptors[objectType].afterEdit;
@@ -162,7 +162,7 @@ angular.module('dbWebApp')
                     return undefined;
                 }
                 if (_.isUndefined(objectInterceptors[objectType].afterSubmitError)) {
-                    console.log('Interceptor-function ' + objectType+ '.afterSubmitError not found');
+                    $log.info('Interceptor-function ' + objectType+ '.afterSubmitError not found');
                     return undefined;
                 }
                 return objectInterceptors[objectType].afterSubmitError;

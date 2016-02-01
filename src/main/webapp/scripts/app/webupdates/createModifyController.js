@@ -497,16 +497,19 @@ angular.module('webUpdates')
                             // pupulate ui-select box with sso-mntners
                             $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
 
-                            // copy mntners to attributes (for later submit)
-                            var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
-                                return {name: 'mnt-by', value: i.key};
-                            });
-                            $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
-
                             $log.debug('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
                             $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
                             $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
 
+                            // copy mntners to attributes (for later submit)
+                            var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
+                                return {name: 'mnt-by', value: i.key};
+                            });
+                            var attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                                $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
+
+                            // Post-process atttribute before showing using screen-logic-interceptor
+                            $scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
                         }
                     }, function (error) {
                         $scope.restCalInProgress = false;
@@ -514,6 +517,25 @@ angular.module('webUpdates')
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                     }
                 );
+            }
+
+            function _interceptBeforeEdit( method, attributes ) {
+                var errorMessages = [];
+                var warningMessages = [];
+                var infoMessages = [];
+                var attributes = ScreenLogicInterceptor.beforeEdit($scope.operation,
+                    $scope.source, $scope.objectType, attributes,
+                    errorMessages, warningMessages, infoMessages );
+                if( errorMessages.length > 0 ) {
+                    AlertService.setGlobalErrors(errorMessages);
+                }
+                if( warningMessages.length > 0 ) {
+                    AlertService.setGlobalWarnings(warningMessages);
+                }
+                if( infoMessages.length > 0 ) {
+                    AlertService.setGlobalInfos(infoMessages);
+                }
+                return attributes;
             }
 
             function _fetchDataForModify() {
@@ -558,6 +580,9 @@ angular.module('webUpdates')
                         if(missingAbuseC()) {
                             $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
                         }
+
+                        // Post-process atttribute before showing using screen-logic-interceptor
+                        $scope.attributes = _interceptBeforeEdit($scope.MODIFY_OPERATION, $scope.attributes);
 
                         // fetch details of all selected maintainers concurrently
                         $scope.restCalInProgress = true;
