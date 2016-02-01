@@ -427,6 +427,9 @@ angular.module('webUpdates')
                     }
                 }
 
+                // Post-process atttributes before submit using screen-logic-interceptor
+                $scope.attributes = _interceptAfterEdit($scope.operation, $scope.attributes);
+
                 if (!_validateForm()) {
                     ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes);
                 } else {
@@ -508,7 +511,7 @@ angular.module('webUpdates')
                             var attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
                                 $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
 
-                            // Post-process atttribute before showing using screen-logic-interceptor
+                            // Post-process atttributes before showing using screen-logic-interceptor
                             $scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
                         }
                     }, function (error) {
@@ -523,7 +526,26 @@ angular.module('webUpdates')
                 var errorMessages = [];
                 var warningMessages = [];
                 var infoMessages = [];
-                var attributes = ScreenLogicInterceptor.beforeEdit($scope.operation,
+                var attributes = ScreenLogicInterceptor.beforeEdit(method,
+                    $scope.source, $scope.objectType, attributes,
+                    errorMessages, warningMessages, infoMessages );
+                if( errorMessages.length > 0 ) {
+                    AlertService.setGlobalErrors(errorMessages);
+                }
+                if( warningMessages.length > 0 ) {
+                    AlertService.setGlobalWarnings(warningMessages);
+                }
+                if( infoMessages.length > 0 ) {
+                    AlertService.setGlobalInfos(infoMessages);
+                }
+                return attributes;
+            }
+
+            function _interceptAfterEdit( method, attributes ) {
+                var errorMessages = [];
+                var warningMessages = [];
+                var infoMessages = [];
+                var attributes = ScreenLogicInterceptor.afterEdit(method,
                     $scope.source, $scope.objectType, attributes,
                     errorMessages, warningMessages, infoMessages );
                 if( errorMessages.length > 0 ) {
