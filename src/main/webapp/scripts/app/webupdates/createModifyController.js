@@ -453,7 +453,7 @@ angular.module('webUpdates')
                     } else {
                         //TODO: Temporary function till RPSL clean up
                         if(MntnerService.isLoneRpslMntner($scope.maintainers.object)) {
-                            passwords.push('RIPE-NCC-RPSL-MNT');
+                            passwords.push('RPSL');
                         }
                         RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
                             WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
