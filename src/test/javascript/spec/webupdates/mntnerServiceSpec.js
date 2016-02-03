@@ -270,4 +270,20 @@ describe('dbWebApp: MntnerService', function () {
             expect(mntnersWithPasswordModify.length).toBe(1);
             expect(mntnersWithPasswordModify[0].key).toBe('F-MNT');
         });
+
+        it('should return true with single mntner that is RPSL and false otherwise', function() {
+            var mntners = [
+                { type:'mntner', key:'RIPE-NCC-RPSL-MNT', auth:['MD5-PW']},
+                { type:'mntner', key:'A-MNT',             auth:['SSO']},
+                { type:'mntner', key:'RIPE-NCC-END-MNT',  auth:['MD5-PW']},
+                { type:'mntner', key:'F-MNT',             auth:['MD5-PW']},
+                { type:'mntner', key:'C-MNT',             auth:['SSO','MD5-PW']}
+            ];
+            expect(subject.isLoneRpslMntner(mntners)).toBeFalsy();
+
+            mntners = [
+                { type:'mntner', key:'RIPE-NCC-RPSL-MNT', auth:['MD5-PW']}
+            ];
+            expect(subject.isLoneRpslMntner(mntners)).toBeTruthy();
+        });
 });
