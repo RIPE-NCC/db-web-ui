@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('fmp')
-    .controller('ConfirmMaintainerCtrl', ['$scope', '$routeParams', '$location', 'EmailLink',
-        function ($scope, $routeParams, $location, EmailLink) {
+    .controller('ConfirmMaintainerCtrl', ['$scope', '$stateParams', '$location', 'EmailLink',
+        function ($scope, $stateParams, $location, EmailLink) {
 
-            if ($routeParams.hash === undefined) {
+            if ($stateParams.hash === undefined) {
                 $scope.state = 'fail';
             } else {
-                $scope.localHash = $routeParams.hash;
+                $scope.localHash = $stateParams.hash;
                 EmailLink.get({hash: $scope.localHash}, function (link) {
                     if (!link.hasOwnProperty('expiredDate') || moment(link.expiredDate, moment.ISO_8601).isBefore(moment())) {
                         $location.path('/legacy');
