@@ -16,7 +16,7 @@ angular.module('textUpdates')
                     controller: 'TextCreateController'
                 })
                 .state('textupdates.modify', {
-                    url: '/modify/:source/:objectType/:name?noRedirect&rpsl',
+                    url: '/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect&rpsl',
                     templateUrl: 'scripts/app/textupdates/modify.html',
                     controller: 'TextModifyController'
                 })
