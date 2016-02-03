@@ -13,6 +13,7 @@ angular.module('dbWebApp', [
     'ui.select',
     'webUpdates',
     'textUpdates',
+    'fmp',
     'ngCookies',
 ])
 

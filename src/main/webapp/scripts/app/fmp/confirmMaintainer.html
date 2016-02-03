@@ -1,0 +1,59 @@
+<div>
+
+  <div class="alert alert-success" ng-if="state === 'success'">
+    <div>Your RIPE NCC Access account {{user}} has been added to the <span class="mntner">MNTNER</span> object {{key}}.</div>
+    You can now authorise updates in the RIPE Database using this <span class="mntner">MNTNER</span> object. You can do this using
+    <a href="/db-web-ui/">Webupdates</a>
+  </div>
+
+  <div class="alert alert-info" ng-if="state === 'currentUserAlreadyManagesMntner'">
+    Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner
+    <a ng-href="{{mntnerModificationUrl}}">here</a>.
+  </div>
+
+  <div class="alert alert-warning" ng-if="state === 'fail'">
+    <div>An error occurred while adding the RIPE NCC Access account to the <span class="mntner">MNTNER</span> object.</div>
+    {{reason}}
+    <p>No changes were made to the <span class="mntner">MNTNER</span> object {{key}}.</p>
+    <p>If this error continues, please contact us at <a href="mailto:ripe-dbm@ripe.net">ripe-dbm@ripe.net</a> for assistance.</p>
+  </div>
+
+  <section>
+    <div class="padding grey" ng-if="state === 'init'">
+      <div class="alert alert-info">You are logged in with the RIPE NCC Access account {{user}}</div>
+      Please confirm that you wish to add {{user}} to the <span class="mntner">MNTNER</span> object {{key}}
+
+      <div class="clearfix margin-top">
+        <div class="pull-right">
+          <input type="button" ng-click="associate()" value="Confirm" class="blue-button"/>
+          <input type="button" ng-click="cancelAssociate()" value="Cancel" class="blue-button"/>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="alert alert-warning" ng-if="status === 'notloggedin'">
+    <p>You need to be logged in to your RIPE NCC Access account to recover access to your mntner object.</p>
+    Please log in or create a RIPE NCC Access account to continue.
+  </div>
+
+  <section>
+    <div class="grey padding" ng-if="state === 'cancel'">
+      <div class="alert alert-info">
+        <p>No changes were made to the <span class="mntner">MNTNER</span> object {{key}}.</p>
+      </div>
+
+      If you wish to add a different RIPE NCC Access account to your <strong>MNTNER</strong> object:
+      <ol>
+        <li>Sign out of RIPE NCC Access.</li>
+        <li>Sign back in to RIPE NCC Access with the account you wish to use.</li>
+        <li>Click on the link in the instruction email again.</li>
+      </ol>
+      <div class="clearfix">
+        <div class="pull-right">
+          <a class="blue-button" href="https://access.ripe.net/logout?originalUrl=https:%2F%2Fapps.db.ripe.net%2Fchange-auth%2Fsearch.html">Sign Out</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

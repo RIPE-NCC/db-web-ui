@@ -30,6 +30,7 @@ public class CrowdTokenFilter implements Filter {
         ".*/api/.*", /* let rest-operation itself decide about authentication */
         ".*/db-web-ui/",
         ".*/index.html",
+        ".*/fmp/findMaintainer.html",
         ".*/webupdates/select.html",
         ".*/webupdates/display.html",
         ".*/alertsDirective.html",

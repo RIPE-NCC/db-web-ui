@@ -13,7 +13,12 @@ angular.module('interceptors')
             return status === 401 || status === 403;
         }
 
-        function _mustErrorBeSwallowed( response ) {
+        function _isNotFoundError( status ) {
+            return status === 404;
+        }
+
+
+    function _mustErrorBeSwallowed( response ) {
             var toBeSwallowed = false;
 
             $log.debug('ui-url:' + $location.path());
@@ -24,7 +29,11 @@ angular.module('interceptors')
                 toBeSwallowed = true;
             }
 
-            if( response.status === 404 && _.startsWith( $location.path(), '/textupdates/multi/')) {
+            if( _isNotFoundError(response.status) && _.startsWith(response.config.url, '/api/whois-internal/')) {
+                toBeSwallowed = true;
+            }
+
+            if( _isNotFoundError(response.status)   && _.startsWith( $location.path(), '/textupdates/multi/')) {
                 toBeSwallowed = true;
             }
 

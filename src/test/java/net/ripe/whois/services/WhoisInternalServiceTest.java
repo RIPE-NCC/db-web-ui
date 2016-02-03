@@ -90,7 +90,7 @@ public class WhoisInternalServiceTest {
     @Rule
     public WireMockRule wireMockRule = new WireMockRule(8089);
 
-    private final WhoisInternalService whoisInternalService = new WhoisInternalService(MOCK_WHOIS_INTERNAL_URL, API_KEY);
+    private final WhoisInternalService whoisInternalService = new WhoisInternalService(MOCK_WHOIS_INTERNAL_URL, API_KEY, "/");
 
     @Test
     public void shouldFetchMantainersForCookieWithXm() {

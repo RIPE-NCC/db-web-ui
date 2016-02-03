@@ -1,6 +1,6 @@
 package net.ripe.whois.web.api.whois;
 
-import net.ripe.whois.services.WhoisService;
+import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.ApiController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,24 +16,23 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/whois")
-public class WhoisProxyController extends ApiController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
+@RequestMapping("/api/whois-internal")
+public class WhoisInternalProxyController extends ApiController {
+    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalProxyController.class);
 
     @Autowired
-    private WhoisService whoisService;
+    private WhoisInternalService whoisInternalService;
 
     @RequestMapping(value = "/**")
-    public ResponseEntity<String> proxyRestCalls(
-            final HttpServletRequest request,
-            @Nullable @RequestBody(required = false) final String body,
-            @RequestHeader final HttpHeaders headers) throws Exception {
+    public ResponseEntity<String> proxyRestCalls(final HttpServletRequest request,
+                                                 @Nullable @RequestBody(required = false) final String body,
+                                                 @RequestHeader final HttpHeaders headers) throws Exception {
 
-        LOGGER.info("whois-request: {}", request.toString());
+        LOGGER.info("whois-internal request: {}", request.toString());
 
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
 
-        return whoisService.bypass(request, body, headers);
+        return whoisInternalService.bypass(request, body, headers);
     }
 }
