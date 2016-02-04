@@ -22,7 +22,7 @@ angular.module('fmp')
 
                 EmailLink.get({hash: $scope.localHash}, function (link) {
 
-                    $log.info('Successfully fetched email-link');
+                    $log.info('Successfully fetched email-link:' + JSON.stringify(link));
 
                     $scope.key = link.mntner;
                     $scope.email = link.email;
@@ -45,17 +45,21 @@ angular.module('fmp')
 
                 }, function (error) {
 
-                    $log.error('Error fetching email-link:' + error.data);
+                    $log.error('Error fetching email-link:' +  JSON.stringify(error));
                     AlertService.setGlobalError('Error fetching email-link');
 
                 });
 
-                $scope.associate = function () {
+                $scope.associate = function (resp) {
                     EmailLink.update({hash: $scope.localHash}, {hash: $scope.localHash}, function (resp) {
 
-                        _navigateToSsoAdded($scope.key, $scope.user);
+                        $log.error('Successfully associated email-link:' + resp);
+
+                        _navigateToSsoAdded($scope.key, $scope.user, $scope.key);
 
                     }, function (error) {
+
+                        $log.error('Error associating email-link:' +  JSON.stringify(error));
 
                         if (error.status === 400 && !_.isUndefined(error.data) && error.data.match(/already contains SSO/).length === 1) {
                             AlertService.setGlobalError(error.data);
@@ -80,9 +84,9 @@ angular.module('fmp')
                         '</ol>');
                 };
 
-                function _navigateToSsoAdded(maintainerKey, user) {
+                function _navigateToSsoAdded(mntnerKey, user) {
                     $state.transitionTo('fmp.ssoAdded', {
-                        maintainerKey: maintainerKey,
+                        mntnerKey: mntnerKey,
                         user: user
                     });
                 }

@@ -36,7 +36,7 @@ angular.module('fmp')
                     controller: 'MailSentCtrl'
                 })
                 .state('fmp.ssoAdded', {
-                    url: '/ssoAdded/:user',
+                    url: '/ssoAdded/:mntnerKey/:user',
                     templateUrl:  'scripts/app/fmp/ssoAdded.html',
                     controller: 'SsoAddedCtrl'
                 })

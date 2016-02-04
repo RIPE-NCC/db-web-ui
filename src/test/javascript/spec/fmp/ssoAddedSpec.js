@@ -15,6 +15,7 @@ describe('SsoAddedCtrl', function() {
     it('should extract email from url params', function() {
         $stateParams.user = 'userX';
 
+        $stateParams.mntnerKey = 'test@work.net';
 
         $controller('SsoAddedCtrl', {
             $scope:$scope,
