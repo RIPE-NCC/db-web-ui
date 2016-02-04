@@ -36,7 +36,7 @@ angular.module('fmp')
                     if (link.currentUserAlreadyManagesMntner === true) {
                         AlertService.addGlobalWarning(
                             'Your RIPE NCC Access account is already associated with this mntner. ' +
-                            'You can modify this mntner.');
+                            'You can modify this mntner <a href="' + _makeModificationUrl($scope.key ) + '">here</a>.');
                         return;
                     }
 
@@ -83,6 +83,10 @@ angular.module('fmp')
                         '<li>Click on the link in the instruction email again.</li>' +
                         '</ol>');
                 };
+
+                function _makeModificationUrl( key ) {
+                    return '/db-web-ui/#/webupdates/modify/RIPE/mntner/' + key;
+                }
 
                 function _navigateToSsoAdded(mntnerKey, user) {
                     $state.transitionTo('fmp.ssoAdded', {
