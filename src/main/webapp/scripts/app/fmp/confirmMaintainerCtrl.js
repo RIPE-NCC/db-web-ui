@@ -11,7 +11,7 @@ angular.module('fmp')
                 $scope.mntnerModificationUrl = undefined;
                 $scope.email = undefined;
                 $scope.user = undefined;
-
+                $scope.hashOk = false;
 
                 if ($stateParams.hash === undefined) {
                     AlertService.setGlobalError('No hash passed along');
@@ -20,24 +20,28 @@ angular.module('fmp')
 
                 $scope.localHash = $stateParams.hash;
 
-
                 EmailLink.get({hash: $scope.localHash}, function (link) {
 
                     $log.info('Successfully fetched email-link');
 
+                    $scope.key = link.mntner;
+                    $scope.email = link.email;
+                    $scope.user = link.username;
+
                     if (!link.hasOwnProperty('expiredDate') || moment(link.expiredDate, moment.ISO_8601).isBefore(moment())) {
-                        AlertService.addGlobalWarning('Your link has expired')
+                        AlertService.addGlobalWarning('Your link has expired');
                         return;
                     }
 
                     if (link.currentUserAlreadyManagesMntner === true) {
-                        AlertService.addGlobalWarning('Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner');
+                        AlertService.addGlobalWarning(
+                            'Your RIPE NCC Access account is already associated with this mntner. ' +
+                            'You can modify this mntner.');
+                        return;
                     }
 
-                    $scope.key = link.mntner;
-                    $scope.mntnerModificationUrl = _makeModificationUrl($scope.key);
-                    $scope.email = link.email;
-                    $scope.user = link.username;
+                    $scope.hashOk = true;
+                    AlertService.addGlobalInfo('You are logged in with the RIPE NCC Access account ' + $scope.user );
 
                 }, function (error) {
 
@@ -65,6 +69,7 @@ angular.module('fmp')
                 };
 
                 $scope.cancelAssociate = function () {
+                    AlertService.clearErrors();
                     AlertService.addGlobalWarning(
                         '<p>No changes were made to the <span class="mntner">MNTNER</span> object ' + $scope.key + '.</p>' +
                         '<p>If you wish to add a different RIPE NCC Access account to your <strong>MNTNER</strong> object:' +
@@ -74,14 +79,6 @@ angular.module('fmp')
                         '<li>Click on the link in the instruction email again.</li>' +
                         '</ol>');
                 };
-
-                function _makeModificationUrl(key) {
-                    $state.transitionTo('webupdates.modify', {
-                        source: 'RIPE',
-                        objectType: 'mntner',
-                        name: $scope.key
-                    });
-                }
 
                 function _navigateToSsoAdded(maintainerKey, user) {
                     $state.transitionTo('fmp.ssoAdded', {

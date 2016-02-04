@@ -50,7 +50,8 @@ describe('ConfirmMaintainerCtrl', function() {
 
         expect(AlertService.getErrors().length).toBe(0);
         expect(AlertService.getWarnings().length).toBe(0);
-        expect(AlertService.getInfos().length).toBe(0);
+        expect(AlertService.getInfos().length).toBe(1);
+        expect(AlertService.getInfos()[0].plainText).toBe('You are logged in with the RIPE NCC Access account user');
     });
 
     it('should redirect to legacy on invalid hash', function() {
@@ -94,7 +95,8 @@ describe('ConfirmMaintainerCtrl', function() {
             {
                 mntner:'maintainer',
                 email:'a@b.c',
-                expiredDate: '2114-08-20T02:35:51+02:00'
+                expiredDate: '2114-08-20T02:35:51+02:00',
+                username:'user'
             }
         );
 
@@ -102,10 +104,12 @@ describe('ConfirmMaintainerCtrl', function() {
 
         expect($scope.key).toBe('maintainer');
         expect($scope.email).toBe('a@b.c');
+        expect($scope.user).toBe('user');
 
         expect(AlertService.getErrors().length).toBe(0);
         expect(AlertService.getWarnings().length).toBe(0);
-        expect(AlertService.getInfos().length).toBe(0);
+        expect(AlertService.getInfos().length).toBe(1);
+        expect(AlertService.getInfos()[0].plainText).toBe('You are logged in with the RIPE NCC Access account user');
     });
 
     it('should inform user mntner already associated with current user', function() {
@@ -129,7 +133,7 @@ describe('ConfirmMaintainerCtrl', function() {
         expect($scope.user).toBe('user');
 
         expect(AlertService.getErrors().length).toBe(0);
-        expect(AlertService.getWarnings()[0].plainText).toBe('Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner');
+        expect(AlertService.getWarnings()[0].plainText).toBe('Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner.');
         expect(AlertService.getInfos().length).toBe(0);
     });
 

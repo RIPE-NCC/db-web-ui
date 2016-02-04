@@ -36,12 +36,12 @@ angular.module('fmp')
                     controller: 'MailSentCtrl'
                 })
                 .state('fmp.ssoAdded', {
-                    url: '/ssoAdded/:mntnerKey/:user',
+                    url: '/ssoAdded/:user',
                     templateUrl:  'scripts/app/fmp/ssoAdded.html',
                     controller: 'SsoAddedCtrl'
                 })
                 .state('fmp.confirm', {
-                    url: '/confirm',
+                    url: '/confirm?hash',
                     templateUrl: 'scripts/app/fmp/confirmMaintainer.html',
                     controller: 'ConfirmMaintainerCtrl'
                 });

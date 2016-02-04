@@ -1,7 +1,7 @@
 'use strict';
 
 describe('RequireLoginCtrl', function() {
-    var $stateParams, $scope, $controller;
+    var $scope, $controller;
 
     beforeEach(module('fmp'));
 
