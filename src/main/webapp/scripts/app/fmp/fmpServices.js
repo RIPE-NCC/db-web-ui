@@ -1,6 +1,9 @@
 'use strict';
 
 angular.module('fmp')
+    .factory('UserInfo', function($resource) {
+        return $resource('api/user/info', {});
+    })
     .factory('Maintainer', function ($resource) {
         return $resource('api/whois-internal/api/fmp-pub/mntner/:maintainerKey', {});
     })

@@ -29,6 +29,8 @@ describe('FindMaintainer', function () {
         initialState = $state.current.name;
 
         $httpBackend.whenGET(/.*.html/).respond(200);
+        $httpBackend.whenGET('api/user/info').respond(200);
+
         $httpBackend.flush();
 
     }));

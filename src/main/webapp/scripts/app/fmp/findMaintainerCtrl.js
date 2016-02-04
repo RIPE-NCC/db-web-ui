@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('fmp')
-    .controller('FindMaintainerCtrl', ['$scope', '$log', '$state', 'AlertService', 'Maintainer', 'SendMail', 'Validate',
+    .controller('FindMaintainerCtrl', ['$scope', '$log', '$state', 'AlertService', 'Maintainer', 'SendMail', 'Validate','UserInfo',
 
-        function ($scope,  $log, $state, AlertService, Maintainer, SendMail, Validate) {
+        function ($scope,  $log, $state, AlertService, Maintainer, SendMail, Validate, UserInfo) {
             AlertService.clearErrors();
 
             $log.info('FindMaintainerCtrl starts');
@@ -11,6 +11,14 @@ angular.module('fmp')
             $scope.mntnerFound = false;
             $scope.selectedMaintainer = undefined;
             $scope.email = undefined;
+
+            UserInfo.get({}, function(resp) {
+                $log.info('User is logged in');
+
+            }, function(error) {
+                $log.info('User is not logged in: ' + error);
+                _navigateToRequireLogin();
+            });
 
             $scope.selectMaintainer = function () {
 
@@ -48,9 +56,7 @@ angular.module('fmp')
 
                     $log.error('Error searching mntner ' + $scope.maintainerKey + ':' + error);
 
-                    if (error.status === 401 || error.status === 403) {
-                        _navigateToRequireLogin();
-                    } else if (error.status === 404) {
+                    if (error.status === 404) {
                         AlertService.setGlobalError('The Maintainer could not be found.')
                     } else {
                         AlertService.setGlobalError(error.data);
@@ -74,7 +80,6 @@ angular.module('fmp')
                         $log.error('Error validating email:' + error);
 
                         if (error.status === 401 || error.status === 403) {
-                            _navigateToRequireLogin();
 
                         } else {
                             if (_.isUndefined(error.data)) {
