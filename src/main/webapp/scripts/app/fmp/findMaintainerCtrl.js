@@ -1,79 +1,113 @@
 'use strict';
 
 angular.module('fmp')
-    .controller('FindMaintainerCtrl', ['$scope', '$location', '$log', 'Maintainer', 'SendMail', 'Validate',
+    .controller('FindMaintainerCtrl', ['$scope', '$log', '$state', 'AlertService', 'Maintainer', 'SendMail', 'Validate',
 
-        function ($scope, $location, $log, Maintainer, SendMail, Validate) {
+        function ($scope,  $log, $state, AlertService, Maintainer, SendMail, Validate) {
+            AlertService.clearErrors();
 
-            $log.info('FindMaintainerCtrl');
+            $log.info('FindMaintainerCtrl starts');
+
+            $scope.mntnerFound = false;
+            $scope.selectedMaintainer = undefined;
+            $scope.email = undefined;
 
             $scope.selectMaintainer = function () {
 
                 $log.info('Search for mntner ' + $scope.maintainerKey);
-
-                $scope.showSearchSpinner = true;
-                $scope.warningMessage = null;
-                $scope.infoMessage = null;
-                $scope.selectedMaintainer = null;
                 Maintainer.get({maintainerKey: $scope.maintainerKey}, function (result) {
 
-                    $log.info('Found mntner ' + $scope.maintainerKey + ':' + JSON.stringify(result));
+                    $log.info('Found mntner ' + $scope.maintainerKey + ':' +result);
 
                     Validate.get({maintainerKey: $scope.maintainerKey}, function (validationResult) {
-                            $scope.showSearchSpinner = false;
 
-                            $log.info('Validated mntner ' + $scope.maintainerKey + ':' + JSON.stringify(validationResult));
+                            $log.info('Validated mntner ' + $scope.maintainerKey + ':' + validationResult);
 
+                            $scope.mntnerFound = true;
                             $scope.selectedMaintainer = result.objects.object[0];
-                            $scope.errorMessage = null;
-                            $scope.infoMessage = null;
-
-                            var updTos = $scope.selectedMaintainer.attributes.attribute.filter(function (elm) {
-                                return elm.name === 'upd-to';
+                            _.each($scope.selectedMaintainer.attributes.attribute, function (elm) {
+                                if (elm.name === 'upd-to') {
+                                    $scope.email = elm.value;
+                                }
                             });
-                            if (updTos.length > 0) {
-                                $scope.email = updTos[0].value;
+
+                            if (validationResult.expired === false) {
+                                AlertService.addGlobalWarning('There is already an open request to reset the password of this maintainer. Proceeding now will cancel the earlier request.');
                             }
-
-                            $scope.expiredLink = validationResult.expired;
                         },
-                        function (data) {
-                            $log.error('Error validating mntner ' + $scope.maintainerKey + ':' + JSON.stringify(data));
+                        function (error) {
+                            $log.error('Error validating mntner ' + $scope.maintainerKey + ':' + error);
 
-                            $location.path('/legacy/' + $scope.maintainerKey);
+                            if (error.status === 401 || error.status === 403) {
+                                _navigateToRequireLogin();
+                            } else {
+                                _navigateToLegacy($scope.maintainerKey);
+                            }
                         });
-                }, function (data) {
-                    $scope.showSearchSpinner = false;
+                }, function (error) {
 
-                    $log.error('Error searching mntner ' + $scope.maintainerKey + ':' + JSON.stringify(data));
+                    $log.error('Error searching mntner ' + $scope.maintainerKey + ':' + error);
 
-                    if (data.status === 403) {
-                        $scope.errorMessage = data.data;
+                    if (error.status === 401 || error.status === 403) {
+                        _navigateToRequireLogin();
+                    } else if (error.status === 404) {
+                        AlertService.setGlobalError('The Maintainer could not be found.')
                     } else {
-                        $scope.errorMessage = ' The Maintainer could not be found.';
+                        AlertService.setGlobalError(error.data);
                     }
                 });
             };
 
             $scope.switchToManualResetProcess = function () {
-                $location.path('/legacy/' + $scope.maintainerKey + '/voluntary');
+                $log.info('Switch to voluntary manual');
+                _navigateVoluntarilyToLegacy($scope.maintainerKey)
             };
 
             $scope.validateEmail = function () {
-                $scope.emailValidating = true;
-                $scope.showEmailSpinner = true;
                 SendMail.save({maintainerKey: $scope.maintainerKey},
                     function (result) {
-                        $scope.infoMessage = result.email;
-                        $scope.showEmailSpinner = false;
-                    }, function (failData) {
-                        $scope.showEmailSpinner = false;
-                        if (failData.data.match(/unable to send email/i)) {
-                            $scope.warningMessage = failData.data;
+                        $log.info('Successfully validated email');
+                        _navigateToEmailSent($scope.maintainerKey, $scope.email);
+
+                    }, function (error) {
+
+                        $log.error('Error validating email:' + error);
+
+                        if (error.status === 401 || error.status === 403) {
+                            _navigateToRequireLogin();
+
                         } else {
-                            $location.path('/legacy/' + $scope.maintainerKey);
+                            if (_.isUndefined(error.data)) {
+                                AlertService.setGlobalError('Error sending email');
+                            } else if (error.data.match(/unable to send email/i)) {
+                                AlertService.setGlobalError(error.data);
+                            }
+
+                            _navigateToLegacy($scope.maintainerKey);
                         }
                     });
             };
-        }]
-    );
+
+            function _navigateToLegacy(maintainerKey) {
+                $state.transitionTo('fmp.legacy', {
+                    maintainerKey: maintainerKey
+                });
+            }
+
+            function _navigateVoluntarilyToLegacy(maintainerKey) {
+                $state.transitionTo('fmp.voluntary', {
+                    maintainerKey: maintainerKey
+                });
+            }
+
+            function _navigateToRequireLogin() {
+                $state.transitionTo('fmp.requireLogin');
+            }
+
+            function _navigateToEmailSent(maintainerKey, email) {
+                $state.transitionTo('fmp.mailSent', {
+                    maintainerKey:maintainerKey,
+                    email:email
+                });
+            }
+        }]);

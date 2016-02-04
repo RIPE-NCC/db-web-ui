@@ -1,71 +1,68 @@
+<alerts></alerts>
+
+<h1>Forgot maintainer password</h1>
+
 <div>
-    <div ng-if="errorMessage != null" class="alert alert-danger">
-      <span ng-bind-html="errorMessage"></span>
-    </div>
     <form class="padding grey ga-forgotpass-findmnt-form">
         <label>Please enter your <span class="mntner">MNTNER</span> name:</label>
         <div class="input-group">
-          <input type="text" class="searchField form-control" ng-model="maintainerKey" autofocus="true">
+            <input type="text" class="searchField form-control" ng-model="maintainerKey" autofocus="true">
             <span class="input-group-btn">
-              <input class="btn blue-button ga-forgotpass-findmnt-search" type="submit" ng-click="selectMaintainer()" value="Search">
+              <input class="btn blue-button ga-forgotpass-findmnt-search" type="submit" ng-click="selectMaintainer()"
+                     value="Search">
             </span>
         </div>
     </form>
 
-    <div class="spinner searchSpinner" ng-show="showSearchSpinner"><i class="fa fa-spinner fa-pulse fa-lg"></i></div>
-    <div ng-if="selectedMaintainer.type === 'mntner' || selectedMaintainer === 'MNTNER' ">
-        <div class="margin-top grey padding">
-            <div class="alert alert-warning">Please check that this is the correct object before proceeding.</div>
-                <h6>Maintainer Object</h6>
-                <div class="form-horizontal">
-                  <div class="form-group margin-bottom-none" ng-repeat="attribute in selectedMaintainer.attributes.attribute">
-                    <label class="col-sm-2 control-label">{{attribute.name}}:</label>
-                    <div class="col-sm-10"><p class="form-control-static padding-bottom-none">{{attribute.value}}</p></div>
-                  </div>
-                </div>
+    <div ng-if="mntnerFound === true">
+        <div class="alert alert-warning">Please check that this is the correct object before proceeding.</div>
 
-                <div class="grey-border margin-bottom margin-top"></div>
+        <section class="inner-container">
+            <h2>Maintainer Object</h2>
+            <div class="margin-top grey padding">
 
-               <div ng-if="expiredLink == false" class="alert alert-warning clearfix">
-                   <b>Warning</b>: There is already an open request to reset the password of this maintainer. Proceeding now will cancel the earlier request.
-               </div>
-              <div>
-                  <div class="alert alert-info">An email containing further instructions will be sent to the address {{email}}.</div>
+                <table class="success-fields grey">
+                    <tr ng-repeat="attribute in selectedMaintainer.attributes.attribute">
+                        <td width="20%"><label>{{attribute.name}}:</label></td>
+                        <td> {{attribute.value}}</td>
+                    </tr>
+                </table>
+        </section>
 
-                <div class="form-horizontal">
-                  <div class="form-group">
-                    <label for="goThrough" class="col-sm-7 control-label">I have access to {{email}}. Take me to the automated recovery process</label>
+        <div class="grey-border margin-bottom margin-top"></div>
+
+        <div>
+            <div class="alert alert-info">An email containing further instructions will be sent to the address
+                {{email}}.
+            </div>
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="goThrough" class="col-sm-7 control-label">I have access to {{email}}. Take me to
+                        the
+                        automated recovery process</label>
                     <div class="col-sm-3">
-                      <input id="goThrough" type="button" name="hasAccessButton" value="GO" ng-click="validateEmail()" class="blue-button" />
+                        <input id="goThrough" type="button" name="hasAccessButton" value="GO"
+                               ng-click="validateEmail()" class="blue-button"/>
                     </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="manual" class="col-sm-7 control-label">I do not have access to {{email}}. Take me to the manual recovery process</label>
-                    <div class="col-sm-3">
-                      <input id="manual" type="button" name="hasAccessButton" value="GO" ng-click="switchToManualResetProcess()" class="blue-button" />
-                    </div>
-                  </div>
                 </div>
+                <div class="form-group">
+                    <label for="manual" class="col-sm-7 control-label">I do not have access to {{email}}. Take
+                        me to
+                        the manual recovery process</label>
+                    <div class="col-sm-3">
+                        <input id="manual" type="button" name="hasAccessButton" value="GO"
+                               ng-click="switchToManualResetProcess()" class="blue-button"/>
+                    </div>
+                </div>
+            </div>
 
-                 <div class="margin-top clearfix">
-                     <a href="/change-auth/" class="blue-button pull-right" id="cancel" name="cancelButton">Cancel</a>
-                 </div>
-             </div>
         </div>
-      <div class="spinner emailSpinner" ng-show="showEmailSpinner"><i class="fa fa-spinner fa-pulse fa-lg"></i></div>
     </div>
-
-
-    <div class="margin-top" ng-if="infoMessage != null">
-      <div class="alert alert-success">
-        <strong>Success!</strong>
-          <div>The instructions have been sent to {{infoMessage}}.</div>
-          <div>If the email does not arrive within 12 hours, please contact us at <a href="mailto:ripe-dbm@ripe.net?Subject=Forgot%20Maintainer%20Password">ripe-dbm@ripe.net</a>.</div>
-      </div>
+    <div class="margin-top clearfix">
+        <a href="/change-auth/" class="blue-button pull-right" id="cancel"
+           name="cancelButton">Cancel</a>
     </div>
-
-  <div ng-if="warningMessage != null" class="alert alert-warning">{{warningMessage}}</div>
-
 </div>
 
 

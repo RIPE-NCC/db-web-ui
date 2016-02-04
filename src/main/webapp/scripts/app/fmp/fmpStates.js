@@ -10,6 +10,11 @@ angular.module('fmp')
                     url: '/fmp',
                     template: '<div ui-view></div>'
                 })
+                .state('fmp.requireLogin', {
+                    url: '/requireLogin',
+                    templateUrl: 'scripts/app/fmp/requireLogin.html',
+                    controller: 'RequireLoginCtrl'
+                })
                 .state('fmp.find', {
                     url: '/',
                     templateUrl: 'scripts/app/fmp/findMaintainer.html',
@@ -24,6 +29,16 @@ angular.module('fmp')
                     url: '/legacy/:maintainerKey',
                     template: '<div></div>',
                     controller: 'RedirectToLegacyCtrl'
+                })
+                .state('fmp.mailSent', {
+                    url: '/mailSent/:email',
+                    templateUrl:  'scripts/app/fmp/mailSent.html',
+                    controller: 'MailSentCtrl'
+                })
+                .state('fmp.ssoAdded', {
+                    url: '/ssoAdded/:mntnerKey/:user',
+                    templateUrl:  'scripts/app/fmp/ssoAdded.html',
+                    controller: 'SsoAddedCtrl'
                 })
                 .state('fmp.confirm', {
                     url: '/confirm',
