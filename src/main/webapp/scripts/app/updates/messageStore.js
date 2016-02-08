@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp').service('MessageStore', [ function( ) {
+angular.module('updates').service('MessageStore', [ function( ) {
     var messages = {};
 
     messages.add = function(key, value){

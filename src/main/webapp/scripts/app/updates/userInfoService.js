@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('updates')
     .service('UserInfoService', ['$resource', '$q', '$http', '$log',
         function ($resource, $q, $http, $log) {
 

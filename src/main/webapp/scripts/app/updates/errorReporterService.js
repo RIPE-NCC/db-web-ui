@@ -1,4 +1,4 @@
-angular.module('dbWebApp')
+angular.module('updates')
     .service('ErrorReporterService', ['$log','$location','$analytics', function ($log, $location, $analytics) {
         this.log = function (operation, objectType, globalErrors, attributes) {
             _.each(globalErrors, function(item) {

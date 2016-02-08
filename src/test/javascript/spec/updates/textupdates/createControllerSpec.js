@@ -13,7 +13,7 @@ describe('textUpdates: TextCreateController', function () {
     var initialState;
 
     beforeEach(function () {
-        module('webUpdates');
+        module('textUpdates');
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
                          _MessageStore_, _WhoisResources_, _AlertService_, _ModalService_,_$q_, _PreferenceService_) {

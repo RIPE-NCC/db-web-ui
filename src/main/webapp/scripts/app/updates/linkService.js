@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('updates')
     .service('LinkService', [function () {
 
         var linkService = {};

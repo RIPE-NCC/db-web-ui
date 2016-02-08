@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('updates')
     .service('PreferenceService', ['$log', '$cookies', function ($log, $cookies) {
         var EXPIRY = 'Tue, 19 Jan 2038 03:14:07 GMT';
         var COOKIE_NAME = 'pref-ui-mode';

@@ -14,8 +14,6 @@ var logger = {
 };
 
 describe('webUpdates: ForceDeleteController', function () {
-
-
     var $scope, $state, $stateParams, $httpBackend;
     var WhoisResources;
     var ModalService;

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('updates')
     .service('MntnerService', ['$log','CredentialsService', 'WhoisResources',
         function ($log, CredentialsService, WhoisResources) {
 

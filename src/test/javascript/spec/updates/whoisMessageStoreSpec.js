@@ -1,11 +1,10 @@
 'use strict';
 
-describe('dbWebApp: MessageStore', function () {
+describe('updates: MessageStore', function () {
 
     var $messageStore;
 
-    beforeEach(module('dbWebApp'));
-    beforeEach(module('webUpdates'));
+    beforeEach(module('updates'));
 
     beforeEach(inject(function (MessageStore) {
         $messageStore = MessageStore;
@@ -31,7 +30,5 @@ describe('dbWebApp: MessageStore', function () {
 
         expect($messageStore.get( "1")).toEqual(undefined);
     });
-
-
 
 });

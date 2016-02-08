@@ -61,7 +61,7 @@ describe('textUpdates: TextModifyController', function () {
     }
 
     beforeEach(function () {
-        module('webUpdates');
+        module('textUpdates');
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _$q_,
                          _MessageStore_, _WhoisResources_, _AlertService_, _ModalService_, _PreferenceService_, _CredentialsService_) {

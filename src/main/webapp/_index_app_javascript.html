@@ -22,41 +22,40 @@
 <script src="scripts/app/app.js"></script>
 <script src="scripts/app/app.constants.js"></script>
 
-<!-- Interceptors -->
+<!-- General Interceptors -->
 <script src="scripts/app/interceptors/interceptorsModule.js"></script>
 <script src="scripts/app/interceptors/errorInterceptors.js"></script>
 
-<!-- App Services -->
-<script src="scripts/app/cryptojs.js"></script>
+<!-- General Services -->
 <script src="scripts/app/whoisMetaService.js"></script>
-<script src="scripts/app/credentialsService.js"></script>
 <script src="scripts/app/whoisResources.js"></script>
-<script src="scripts/app/messageStore.js"></script>
-<script src="scripts/app/userInfoService.js"></script>
-
-<script src="scripts/app/cryptService.js"></script>
 <script src="scripts/app/alertService.js"></script>
-<script src="scripts/app/errorReporterService.js"></script>
-<script src="scripts/app/mntnerService.js"></script>
-<script src="scripts/app/linkService.js"></script>
-<script src="scripts/app/preferenceService.js"></script>
 
 <!-- Directives -->
 <script src="scripts/app/directives/alertsDirective.js"></script>
 
-<!-- WebUpdates -->
+<!-- General Update services -->
 <script src="scripts/app/updates/updatesModule.js"></script>
+<script src="scripts/app/updates/restService.js"></script>
+<script src="scripts/app/updates/credentialsService.js"></script>
+<script src="scripts/app/updates/messageStore.js"></script>
+<script src="scripts/app/updates/linkService.js"></script>
+<script src="scripts/app/updates/userInfoService.js"></script>
+<script src="scripts/app/updates/errorReporterService.js"></script>
+<script src="scripts/app/updates/mntnerService.js"></script>
+<script src="scripts/app/updates/preferenceService.js"></script>
 
 <!-- WebUpdates Services -->
-<script src="scripts/app/updates/webupdates/webUpdatesModule.js"></script>
-<script src="scripts/app/updates/webupdates/restService.js"></script>
 <script src="scripts/app/updates/webupdates/modalService.js"></script>
-<script src="scripts/app/updates/webupdates/webUpdatesStates.js"></script>
 <script src="scripts/app/updates/webupdates/organisationHelper.js"></script>
 <script src="scripts/app/updates/webupdates/webUpdatesCommons.js"></script>
+<script src="scripts/app/updates/webupdates/cryptojs.js"></script>
+<script src="scripts/app/updates/webupdates/cryptService.js"></script>
 
 <!-- Webupdates Controllers -->
 
+<script src="scripts/app/updates/webupdates/webUpdatesModule.js"></script>
+<script src="scripts/app/updates/webupdates/webUpdatesStates.js"></script>
 <script src="scripts/app/updates/webupdates/modalCreateRoleForAbuseCController.js"></script>
 <script src="scripts/app/updates/webupdates/modalAuthenticationController.js"></script>
 <script src="scripts/app/updates/webupdates/modalMd5PasswordController.js"></script>
@@ -72,6 +71,20 @@
 <script src="scripts/app/updates/webupdates/forceDeleteSelectController.js"></script>
 <script src="scripts/app/updates/webupdates/forceDeleteController.js"></script>
 
+<!-- Webupdates specific javascript end -->
+
+<!-- Textupdates -->
+
+<script src="scripts/app/updates/textupdates/textUpdatesModule.js"></script>
+<script src="scripts/app/updates/textupdates/textUpdatesStates.js"></script>
+<script src="scripts/app/updates/textupdates/rpslService.js"></script>
+<script src="scripts/app/updates/textupdates/textCommons.js"></script>
+<script src="scripts/app/updates/textupdates/textCreateController.js"></script>
+<script src="scripts/app/updates/textupdates/textModifyController.js"></script>
+<script src="scripts/app/updates/textupdates/textMultiController.js"></script>
+
+<!-- Textupdates specific javascript end -->
+
 <!-- LoginStatus Controllers -->
 
 <script src="scripts/app/loginStatus/loginStatusModule.js"></script>
@@ -85,18 +98,6 @@
 <script src="scripts/app/menu/leftMenuController.js"></script>
 
 <!--  Menu specific javascript end -->
-
-<!-- Textupdates Controllers -->
-
-<script src="scripts/app/updates/textupdates/textUpdatesModule.js"></script>
-<script src="scripts/app/updates/textupdates/textUpdatesStates.js"></script>
-<script src="scripts/app/updates/textupdates/rpslService.js"></script>
-<script src="scripts/app/updates/textupdates/textCommons.js"></script>
-<script src="scripts/app/updates/textupdates/textCreateController.js"></script>
-<script src="scripts/app/updates/textupdates/textModifyController.js"></script>
-<script src="scripts/app/updates/textupdates/textMultiController.js"></script>
-
-<!-- Textupdates specific javascript end -->
 
 <!-- Forgot-Maintainer-Password Controllers -->
 

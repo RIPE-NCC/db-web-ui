@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('updates')
     .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', 'WhoisResources',
         function ($resource, $q, $http, $templateCache, $log, WhoisResources) {
 

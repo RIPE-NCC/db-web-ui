@@ -1,10 +1,10 @@
 'use strict';
 
-describe('dbWebApp: CredentialsService', function () {
+describe('updates: CredentialsService', function () {
 
     var $credentialsService;
 
-    beforeEach(module('dbWebApp'));
+    beforeEach(module('updates'));
 
     beforeEach(inject(function (CredentialsService) {
         $credentialsService = CredentialsService;

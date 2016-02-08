@@ -1,9 +1,9 @@
 'use strict';
 
-describe('dbWebApp: MntnerService', function () {
+describe('updates: MntnerService', function () {
     var subject, credentialServiceMock;
 
-    beforeEach(module('dbWebApp'));
+    beforeEach(module('updates'));
 
     beforeEach(function () {
         credentialServiceMock = {

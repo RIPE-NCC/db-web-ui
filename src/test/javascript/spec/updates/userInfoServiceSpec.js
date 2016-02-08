@@ -4,7 +4,7 @@ var RIPE = {};
 var init_user_menu = function() {};
 var display_user_menu = function() {};
 
-describe('dbWebApp: UserInfoService', function () {
+describe('updates: UserInfoService', function () {
 
     var $httpBackend;
     var userInfoService;
@@ -16,7 +16,7 @@ describe('dbWebApp: UserInfoService', function () {
             'active':'true'
         };;
 
-    beforeEach(module('dbWebApp'));
+    beforeEach(module('updates'));
 
     beforeEach(inject(function (_$httpBackend_, _UserInfoService_) {
         $httpBackend = _$httpBackend_;

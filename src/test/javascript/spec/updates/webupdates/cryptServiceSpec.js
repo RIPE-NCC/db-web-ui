@@ -1,10 +1,10 @@
 'use strict';
 
-describe('dbWebApp: CryptService', function () {
+describe('webUpdates: CryptService', function () {
 
     var cryptService;
 
-    beforeEach(module('dbWebApp'));
+    beforeEach(module('webUpdates'));
 
     beforeEach(inject(function (_CryptService_) {
         cryptService = _CryptService_;

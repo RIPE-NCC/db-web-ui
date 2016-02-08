@@ -3,7 +3,7 @@
 
 // libc crypt implementation, based on Apache commons-codec Md5Crypt
 // depends on CryptJS library
-angular.module('dbWebApp')
+angular.module('webUpdates')
     .service( 'CryptService', function() {
 
         var _b64t = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';

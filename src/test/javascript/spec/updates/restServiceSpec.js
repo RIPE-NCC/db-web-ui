@@ -1,11 +1,11 @@
 'use strict';
 
-describe('dbWebApp: RestService', function () {
+describe('updates: RestService', function () {
 
     var restService;
     var $httpBackend;
 
-    beforeEach(module('dbWebApp'));
+    beforeEach(module('updates'));
 
     beforeEach(inject(function (_RestService_, _$httpBackend_) {
         restService = _RestService_;

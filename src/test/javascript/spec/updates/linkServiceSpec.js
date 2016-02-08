@@ -1,11 +1,11 @@
 'use strict';
 
-describe('dbWebApp: LinkService', function () {
+describe('updates: LinkService', function () {
 
     var linkService;
     var source = 'TEST';
 
-    beforeEach(module('dbWebApp'));
+    beforeEach(module('updates'));
 
     beforeEach(inject(function (LinkService) {
         linkService = LinkService;

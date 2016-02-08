@@ -11,7 +11,7 @@ describe('textUpdates: TextMultiController', function () {
     var initialState;
 
     beforeEach(function () {
-        module('webUpdates');
+        module('textUpdates');
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
                          _WhoisResources_, _AlertService_, _$q_) {
