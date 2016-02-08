@@ -72,13 +72,19 @@ angular.module('dbWebApp', [
                 $log.error('Authentication error');
             });
 
-            $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams, err) {
-                if( toState.name.startsWith('fmp.') ) {
-                    $rootScope.$emit('dbWebApp.moduleActive', 'passwords');
-                } else if(toState.name.startsWith('search.')) {
-                    $rootScope.$emit('dbWebApp.moduleActive', 'search');
-                } else { // // webupdates, textupdates etc
-                    $rootScope.$emit('dbWebApp.moduleActive', 'webUpdates');
+            // expand the right oart of the menu based on target controller
+            $rootScope.$on('$stateChangeSuccess', function (event, toState) {
+                if(!_.isUndefined(toState) && !_.isUndefined(toState.name)) {
+                    var targetStateName = toState.name;
+                    if (_.startsWith(targetStateName, 'search.')) {
+                        $rootScope.$emit('dbWebApp.moduleActive', 'search');
+                    } else if (_.startsWith(targetStateName,'fmp.')) {
+                        $rootScope.$emit('dbWebApp.moduleActive', 'passwords');
+                    } else if (_.startsWith(targetStateName, 'webUpdates.') || _.startsWith(targetStateName, 'textUpdates.') ) {
+                        $rootScope.$emit('dbWebApp.moduleActive', 'webUpdates');
+                    } else {
+                        $log.error('Received unrecognized transition ' + targetStateName );
+                    }
                 }
             });
 

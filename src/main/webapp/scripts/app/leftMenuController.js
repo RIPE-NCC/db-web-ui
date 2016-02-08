@@ -11,8 +11,10 @@ angular.module('dbWebApp')
                     _expandSearchMenu();
                 } else if (data === 'passwords') {
                     _expandPasswordsMenu();
-                } else { // webupdates, textupdates etc
+                } else if (data === 'webUpdates') {
                     _expandWebUpdatesMenu();
+                } else {
+                   $log.error('LeftMenuController: Received unrecognized value ' + data + ' of event ' + event.name );
                 }
             });
 
