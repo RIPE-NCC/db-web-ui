@@ -11,10 +11,11 @@ angular.module('dbWebApp', [
     'diff-match-patch',
     'ui.bootstrap',
     'ui.select',
+    'ngCookies',
     'webUpdates',
     'textUpdates',
     'fmp',
-    'ngCookies',
+    'loginStatus'
 ])
 
     .config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV',
@@ -76,11 +77,14 @@ angular.module('dbWebApp', [
             $rootScope.$on('$stateChangeSuccess', function (event, toState) {
                 if(!_.isUndefined(toState) && !_.isUndefined(toState.name)) {
                     var targetStateName = toState.name;
+
+                    $log.debug('Transition to ' + targetStateName);
+
                     if (_.startsWith(targetStateName, 'search.')) {
                         $rootScope.$emit('dbWebApp.moduleActive', 'search');
                     } else if (_.startsWith(targetStateName,'fmp.')) {
                         $rootScope.$emit('dbWebApp.moduleActive', 'passwords');
-                    } else if (_.startsWith(targetStateName, 'webUpdates.') || _.startsWith(targetStateName, 'textUpdates.') ) {
+                    } else if (_.startsWith(targetStateName, 'webupdates.') || _.startsWith(targetStateName, 'textupdates.') ) {
                         $rootScope.$emit('dbWebApp.moduleActive', 'webUpdates');
                     } else {
                         $log.error('Received unrecognized transition ' + targetStateName );
