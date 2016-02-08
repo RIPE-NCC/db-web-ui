@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('interceptors')
+angular.module('dbWebApp')
     .constant('ERROR_EVENTS', {
         serverError: 'server-error-occurred',
         notFound: 'not-found',

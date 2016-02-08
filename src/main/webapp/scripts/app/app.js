@@ -5,7 +5,6 @@ angular.module('dbWebApp', [
     'angular-loading-bar',
     'ngResource',
     'ngSanitize',
-    'interceptors',
     'angulartics',
     'angulartics.google.tagmanager',
     'diff-match-patch',
