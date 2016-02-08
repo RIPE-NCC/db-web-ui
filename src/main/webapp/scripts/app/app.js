@@ -15,7 +15,8 @@ angular.module('dbWebApp', [
     'webUpdates',
     'textUpdates',
     'fmp',
-    'loginStatus'
+    'loginStatus',
+    'menu'
 ])
 
     .config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV',

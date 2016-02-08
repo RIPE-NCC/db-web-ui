@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('menu')
     .controller('LeftMenuController', ['$scope', '$rootScope', '$log',
         function ($scope, $rootScope, $log) {
 
@@ -14,7 +14,7 @@ angular.module('dbWebApp')
                 } else if (data === 'webUpdates') {
                     _expandWebUpdatesMenu();
                 } else {
-                   $log.error('LeftMenuController: Received unrecognized value ' + data + ' of event ' + event.name );
+                   $log.error('LeftMenuController: Received unrecognized value ' + data + ' for event ' + event.name );
                 }
             });
 
