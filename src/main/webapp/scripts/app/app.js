@@ -72,4 +72,14 @@ angular.module('dbWebApp', [
                 $log.error('Authentication error');
             });
 
+            $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams, err) {
+                if( toState.name.startsWith('fmp.') ) {
+                    $rootScope.$emit('dbWebApp.moduleActive', 'passwords');
+                } else if(toState.name.startsWith('search.')) {
+                    $rootScope.$emit('dbWebApp.moduleActive', 'search');
+                } else { // // webupdates, textupdates etc
+                    $rootScope.$emit('dbWebApp.moduleActive', 'webUpdates');
+                }
+            });
+
         }]);
