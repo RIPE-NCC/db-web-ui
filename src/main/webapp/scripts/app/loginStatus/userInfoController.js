@@ -3,7 +3,7 @@
 
 'use strict';
 
-angular.module('dbWebApp')
+angular.module('loginStatus')
     .controller('UserInfoController', ['$scope', '$log', 'UserInfoService', 'LOGIN_URL',
         function ($scope, $log, UserInfoService, loginUrl) {
 

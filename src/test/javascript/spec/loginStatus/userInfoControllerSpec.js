@@ -4,13 +4,13 @@ var RIPE = {};
 var init_user_menu = function() {};
 var display_user_menu = function() {};
 
-describe('dbWebApp: UserInfoController', function () {
+describe('loginStatus: UserInfoController', function () {
     var createController;
 
     var $scope, $stateParams, $state, $httpBackend, UserInfoService, $log;
 
     beforeEach(function () {
-        module('dbWebApp');
+        module('loginStatus');
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_) {
 
             var $rootScope = _$rootScope_;
