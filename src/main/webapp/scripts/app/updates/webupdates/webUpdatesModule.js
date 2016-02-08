@@ -1,4 +1,4 @@
-angular.module('webUpdates', ['dbWebApp'])
+angular.module('webUpdates', ['updates'])
     .constant(
     'STATE', {
         CREATE: 'webupdates.create',

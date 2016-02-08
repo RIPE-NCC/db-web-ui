@@ -12,17 +12,17 @@ angular.module('textUpdates')
                 })
                 .state('textupdates.create', {
                     url: '/create/:source/:objectType?noRedirect&rpsl',
-                    templateUrl: 'scripts/app/textupdates/create.html',
+                    templateUrl: 'scripts/app/updates/textupdates/create.html',
                     controller: 'TextCreateController'
                 })
                 .state('textupdates.modify', {
                     url: '/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect&rpsl',
-                    templateUrl: 'scripts/app/textupdates/modify.html',
+                    templateUrl: 'scripts/app/updates/textupdates/modify.html',
                     controller: 'TextModifyController'
                 })
                 .state('textupdates.multi', {
                     url: '/multi/:source',
-                    templateUrl: 'scripts/app/textupdates/multi.html',
+                    templateUrl: 'scripts/app/updates/textupdates/multi.html',
                     controller: 'TextMultiController'
                 });
 

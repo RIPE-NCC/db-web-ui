@@ -12,6 +12,7 @@ angular.module('dbWebApp', [
     'ui.bootstrap',
     'ui.select',
     'ngCookies',
+    'updates',
     'webUpdates',
     'textUpdates',
     'fmp',
