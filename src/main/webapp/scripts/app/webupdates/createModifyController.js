@@ -242,14 +242,30 @@ angular.module('webUpdates')
             function _isEnum(allowedValues) {
                 return ! (_.isUndefined(allowedValues) || allowedValues.length === 0 );
             }
+
+            function _isObjectArray( array ) {
+                var first = _.first(array);
+                if(_.isUndefined(first)) {
+                    return false;
+                }
+                return _.isObject(first);
+            }
+
             function referenceAutocomplete(attrType, query, refs, allowedValues) {
+                $log.info("query:"+query);
                 if( _isEnum(allowedValues)) {
-                    var filtered =  _.filter(allowedValues, function(val) {
-                        return (val.indexOf(query.toUpperCase()) > -1);
+                    if(!_isObjectArray(allowedValues) ) {
+                        allowedValues = _.map(allowedValues, function(item){
+                            return {
+                                key:          item,
+                                readableName: item
+                            };
+                        });
+                    }
+                    return  _.filter(allowedValues, function(item) {
+                        return (item.readableName.toUpperCase().indexOf(query.toUpperCase()) > -1);
                     });
-                    return _.map(filtered, function(val) {
-                        return {key:val, readableName:val}
-                    });
+
                 } else if (_isServerLookupKey(refs)) {
                     return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
                         function (resp) {
