@@ -255,6 +255,7 @@ angular.module('webUpdates')
                 $log.info("query:"+query);
                 if( _isEnum(allowedValues)) {
                     if(!_isObjectArray(allowedValues) ) {
+                        // convert array of strings into array of objects
                         allowedValues = _.map(allowedValues, function(item){
                             return {
                                 key:          item,
@@ -262,6 +263,7 @@ angular.module('webUpdates')
                             };
                         });
                     }
+                    // case-insensitive comparison
                     return  _.filter(allowedValues, function(item) {
                         return (item.readableName.toUpperCase().indexOf(query.toUpperCase()) > -1);
                     });
