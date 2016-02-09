@@ -62,7 +62,7 @@ describe('ConfirmMaintainerCtrl', function() {
         $httpBackend.whenGET('api/whois-internal/api/fmp-pub/emaillink/invalidhash.json').respond(404);
         $httpBackend.flush();
 
-        expect(AlertService.getErrors()[0].plainText).toBe('Error fetching email-link');
+        expect(AlertService.getErrors()[0].plainText).toContain('Error fetching email-link');
         expect(AlertService.getWarnings().length).toBe(0);
         expect(AlertService.getInfos().length).toBe(0);
     });

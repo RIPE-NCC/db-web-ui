@@ -46,7 +46,7 @@ angular.module('fmp')
                 }, function (error) {
 
                     $log.error('Error fetching email-link:' +  JSON.stringify(error));
-                    AlertService.setGlobalError('Error fetching email-link');
+                    AlertService.setGlobalError('Error fetching email-link:' + error.data);
 
                 });
 
