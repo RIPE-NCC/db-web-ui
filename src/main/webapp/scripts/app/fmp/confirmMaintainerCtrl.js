@@ -44,9 +44,12 @@ angular.module('fmp')
                     AlertService.addGlobalInfo('You are logged in with the RIPE NCC Access account ' + $scope.user );
 
                 }, function (error) {
-
-                    $log.error('Error fetching email-link:' +  JSON.stringify(error));
-                    AlertService.setGlobalError('Error fetching email-link:' + error.data);
+                    var msg = 'Error fetching email-link';
+                    if(!_.isObject(error.data)) {
+                        msg = msg.concat( ': '+ error.data);
+                    }
+                    $log.error(msg);
+                    AlertService.setGlobalError(msg);
 
                 });
 
