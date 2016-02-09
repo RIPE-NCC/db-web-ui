@@ -7,11 +7,12 @@ angular.module('menu')
             $scope.menu = {};
 
             $rootScope.$on('dbWebApp.moduleActive', function (event, data) {
+                $log.info("Got " + event.name + ' event with value ' + data);
                 if (data === 'search') {
                     _expandSearchMenu();
                 } else if (data === 'passwords') {
                     _expandPasswordsMenu();
-                } else if (data === 'webUpdates') {
+                } else if (data === 'updates') {
                     _expandWebUpdatesMenu();
                 } else {
                    $log.error('LeftMenuController: Received unrecognized value ' + data + ' for event ' + event.name );

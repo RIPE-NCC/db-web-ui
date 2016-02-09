@@ -7,7 +7,7 @@ angular.module('dbWebApp')
             this.openCreateRoleForAbuseCAttribute = function(source, maintainers, passwords) {
                 var modalInstance = $modal.open({
                     animation:true,
-                    templateUrl: 'scripts/app/webupdates/modalCreateRoleForAbuseC.html',
+                    templateUrl: 'scripts/app/updates/web/modalCreateRoleForAbuseC.html',
                     controller: 'ModalCreateRoleForAbuseCController',
                     keyboard:false,
                     resolve: {
@@ -30,7 +30,7 @@ angular.module('dbWebApp')
                 $log.debug("_openDeleteObjectModal called for " + objectType + '/'+ name);
                 var modalInstance = $modal.open({
                     animation:true,
-                    templateUrl: 'scripts/app/webupdates/modalDeleteObject.html',
+                    templateUrl: 'scripts/app/updates/web/modalDeleteObject.html',
                     controller: 'ModalDeleteObjectController',
                     keyboard:false,
                     resolve: {
@@ -59,7 +59,7 @@ angular.module('dbWebApp')
 
                 var modalInstance = $modal.open({
                     animation:true,
-                    templateUrl: 'scripts/app/webupdates/modalAddAttribute.html',
+                    templateUrl: 'scripts/app/updates/web/modalAddAttribute.html',
                     controller: 'ModalAddAttributeController',
                     size: 'lg',
                     keyboard:false,
@@ -89,7 +89,7 @@ angular.module('dbWebApp')
 
                 var modalInstance = $modal.open({
                     animation:true,
-                    templateUrl: 'scripts/app/webupdates/modalMd5Password.html',
+                    templateUrl: 'scripts/app/updates/web/modalMd5Password.html',
                     controller: 'ModalMd5PasswordController',
                     size: 'lg',
                     keyboard:false,
@@ -113,7 +113,7 @@ angular.module('dbWebApp')
 
                 var modalInstance = $modal.open({
                     animation:true,
-                    templateUrl: 'scripts/app/webupdates/modalAuthentication.html',
+                    templateUrl: 'scripts/app/updates/web/modalAuthentication.html',
                     controller: 'ModalAuthenticationController',
                     keyboard:false,
                     resolve: {

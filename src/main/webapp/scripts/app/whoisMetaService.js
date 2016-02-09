@@ -255,7 +255,7 @@ angular.module('dbWebApp')
                     {name: 'inet6num', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'netname', mandatory: true, multiple: false, refs: []},
                     {name: 'descr', mandatory: true, multiple: true, refs: []},
-                    {name: 'country', mandatory: true, multiple: true, refs: []},
+                    {name: 'country', mandatory: true, multiple: true, refs: [], allowedValues:[]},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
                     {name: 'language', mandatory: false, multiple: true, refs: []},
                     {name: 'org', mandatory: false, multiple: false, refs: ['ORGANISATION']},

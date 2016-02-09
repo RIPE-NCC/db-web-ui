@@ -32,8 +32,8 @@ public class CrowdTokenFilter implements Filter {
         ".*/index.html",
         ".*/fmp/requireLogin.html",
         ".*/fmp/findMaintainer.html",
-        ".*/webupdates/select.html",
-        ".*/webupdates/display.html",
+        ".*/updates/web/select.html",
+        ".*/updates/web/display.html",
         ".*/alertsDirective.html",
         ".*/match-multiple.tpl.html",
         ".*/select-multiple.tpl.html"
