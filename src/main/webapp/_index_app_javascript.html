@@ -16,73 +16,110 @@
 <script src="bower_components/angular-diff-match-patch/angular-diff-match-patch.js"></script>
 <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
 <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/moment/moment.js"></script>
 
 <!-- our own javascript -->
+<!-- General Interceptors -->
 <script src="scripts/app/app.js"></script>
 <script src="scripts/app/app.constants.js"></script>
+<script src="scripts/app/errorInterceptors.js"></script>
 
-<!-- Interceptors -->
-<script src="scripts/app/interceptors/interceptorsModule.js"></script>
-<script src="scripts/app/interceptors/errorInterceptors.js"></script>
-
-<!-- App Services -->
-<script src="scripts/app/cryptojs.js"></script>
+<!-- General Services -->
 <script src="scripts/app/whoisMetaService.js"></script>
 <script src="scripts/app/credentialsService.js"></script>
 <script src="scripts/app/countryCodes.js"></script>
 <script src="scripts/app/whoisResources.js"></script>
-<script src="scripts/app/messageStore.js"></script>
-<script src="scripts/app/userInfoService.js"></script>
-<script src="scripts/app/cryptService.js"></script>
 <script src="scripts/app/alertService.js"></script>
-<script src="scripts/app/errorReporterService.js"></script>
-<script src="scripts/app/mntnerService.js"></script>
-<script src="scripts/app/linkService.js"></script>
-<script src="scripts/app/preferenceService.js"></script>
 
 <!-- Directives -->
 <script src="scripts/app/directives/alertsDirective.js"></script>
 
+<!-- General Update services -->
+<script src="scripts/app/updates/updatesModule.js"></script>
+<script src="scripts/app/updates/restService.js"></script>
+<script src="scripts/app/updates/credentialsService.js"></script>
+<script src="scripts/app/updates/messageStore.js"></script>
+<script src="scripts/app/updates/linkService.js"></script>
+<script src="scripts/app/updates/userInfoService.js"></script>
+<script src="scripts/app/updates/errorReporterService.js"></script>
+<script src="scripts/app/updates/mntnerService.js"></script>
+<script src="scripts/app/updates/preferenceService.js"></script>
+
 <!-- WebUpdates Services -->
-<script src="scripts/app/webupdates/webUpdatesModule.js"></script>
-<script src="scripts/app/webupdates/restService.js"></script>
-<script src="scripts/app/webupdates/modalService.js"></script>
-<script src="scripts/app/webupdates/webUpdatesStates.js"></script>
-<script src="scripts/app/webupdates/organisationHelper.js"></script>
-<script src="scripts/app/webupdates/webUpdatesCommons.js"></script>
+<script src="scripts/app/updates/web/webUpdatesModule.js"></script>
+<script src="scripts/app/updates/web/modalService.js"></script>
+<script src="scripts/app/updates/web/organisationHelper.js"></script>
+<script src="scripts/app/updates/web/webUpdatesCommons.js"></script>
+<script src="scripts/app/updates/web/cryptojs.js"></script>
+<script src="scripts/app/updates/web/cryptService.js"></script>
 
 <!-- Webupdates Controllers -->
-<script src="scripts/app/userInfoController.js"></script>
-<script src="scripts/app/webupdates/modalCreateRoleForAbuseCController.js"></script>
-<script src="scripts/app/webupdates/modalAuthenticationController.js"></script>
-<script src="scripts/app/webupdates/modalMd5PasswordController.js"></script>
-<script src="scripts/app/webupdates/modalAddAttributeController.js"></script>
-<script src="scripts/app/webupdates/modalDeleteObjectController.js"></script>
-<script src="scripts/app/webupdates/selectController.js"></script>
-<script src="scripts/app/webupdates/createModifyController.js"></script>
-<script src="scripts/app/webupdates/createSelfMaintainedMaintainerController.js"></script>
-<script src="scripts/app/webupdates/createPersonMntnerPairController.js"></script>
-<script src="scripts/app/webupdates/deleteController.js"></script>
-<script src="scripts/app/webupdates/displayPersonMntnerPairController.js"></script>
-<script src="scripts/app/webupdates/displayController.js"></script>
-<script src="scripts/app/webupdates/forceDeleteSelectController.js"></script>
-<script src="scripts/app/webupdates/forceDeleteController.js"></script>
 
+<script src="scripts/app/updates/web/webUpdatesStates.js"></script>
+<script src="scripts/app/updates/web/modalCreateRoleForAbuseCController.js"></script>
+<script src="scripts/app/updates/web/modalAuthenticationController.js"></script>
+<script src="scripts/app/updates/web/modalMd5PasswordController.js"></script>
+<script src="scripts/app/updates/web/modalAddAttributeController.js"></script>
+<script src="scripts/app/updates/web/modalDeleteObjectController.js"></script>
+<script src="scripts/app/updates/web/selectController.js"></script>
+<script src="scripts/app/updates/web/createModifyController.js"></script>
+<script src="scripts/app/updates/web/createSelfMaintainedMaintainerController.js"></script>
+<script src="scripts/app/updates/web/createPersonMntnerPairController.js"></script>
+<script src="scripts/app/updates/web/deleteController.js"></script>
+<script src="scripts/app/updates/web/displayPersonMntnerPairController.js"></script>
+<script src="scripts/app/updates/web/displayController.js"></script>
+<script src="scripts/app/updates/web/forceDeleteSelectController.js"></script>
+<script src="scripts/app/updates/web/forceDeleteController.js"></script>
 
-<!--  Webupdates specific javascript end -->
+<!-- Webupdates specific javascript end -->
 
-<!-- Textupdates Controllers -->
+<!-- Textupdates -->
 
-<script src="scripts/app/textupdates/textUpdatesModule.js"></script>
-<script src="scripts/app/textupdates/textUpdatesStates.js"></script>
-<script src="scripts/app/textupdates/rpslService.js"></script>
-<script src="scripts/app/textupdates/textCommons.js"></script>
-<script src="scripts/app/textupdates/textCreateController.js"></script>
-<script src="scripts/app/textupdates/textModifyController.js"></script>
-<script src="scripts/app/textupdates/textMultiController.js"></script>
-
+<script src="scripts/app/updates/text/textUpdatesModule.js"></script>
+<script src="scripts/app/updates/text/textUpdatesStates.js"></script>
+<script src="scripts/app/updates/text/rpslService.js"></script>
+<script src="scripts/app/updates/text/textCommons.js"></script>
+<script src="scripts/app/updates/text/textCreateController.js"></script>
+<script src="scripts/app/updates/text/textModifyController.js"></script>
+<script src="scripts/app/updates/text/textMultiController.js"></script>
 
 <!-- Textupdates specific javascript end -->
+
+<!-- LoginStatus Controllers -->
+
+<script src="scripts/app/loginStatus/loginStatusModule.js"></script>
+<script src="scripts/app/loginStatus/userInfoController.js"></script>
+
+<!--  LoginStatus specific javascript end -->
+
+<!-- Menu Controllers -->
+
+<script src="scripts/app/menu/menuModule.js"></script>
+<script src="scripts/app/menu/leftMenuController.js"></script>
+
+<!--  Menu specific javascript end -->
+
+<!-- Forgot-Maintainer-Password Controllers -->
+
+<script src="scripts/app/fmp/fmpModule.js"></script>
+<script src="scripts/app/fmp/fmpStates.js"></script>
+<script src="scripts/app/fmp/fmpServices.js"></script>
+<script src="scripts/app/fmp/requireLoginController.js"></script>
+<script src="scripts/app/fmp/findMaintainerCtrl.js"></script>
+<script src="scripts/app/fmp/mailSentController.js"></script>
+<script src="scripts/app/fmp/confirmMaintainerCtrl.js"></script>
+<script src="scripts/app/fmp/ssoAddedController.js"></script>
+<script src="scripts/app/fmp/redirectToLegacyController.js"></script>
+<script src="scripts/app/fmp/voluntarilyRedirectToLegacyController.js"></script>
+
+<!-- Forgot-Maintainer-Password javascript end -->
+
+
+<!-- Search Controllers -->
+
+<script src="scripts/app/search/searchModule.js"></script>
+
+<!-- Search javascript end -->
 
 <!-- TEST environment banner -->
 <script>

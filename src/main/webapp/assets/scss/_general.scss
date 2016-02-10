@@ -110,3 +110,19 @@ ul.radio {
 #portal-columns.no-pad-top {
     @extend %no-pad-top;
 }
+
+/* Side menu **/
+div.portlet.navigation {
+    ul.toplevel {
+        > li.child {
+            > ul.level2 {
+                display: none;
+            }
+            &.active {
+                > ul.level2 {
+                    display: block !important;
+                }
+            }
+        }
+    }
+}

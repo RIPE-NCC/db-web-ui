@@ -5,15 +5,18 @@ angular.module('dbWebApp', [
     'angular-loading-bar',
     'ngResource',
     'ngSanitize',
-    'interceptors',
     'angulartics',
     'angulartics.google.tagmanager',
     'diff-match-patch',
     'ui.bootstrap',
     'ui.select',
+    'ngCookies',
+    'updates',
     'webUpdates',
     'textUpdates',
-    'ngCookies',
+    'fmp',
+    'loginStatus',
+    'menu'
 ])
 
     .config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV',
