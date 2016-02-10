@@ -23,79 +23,79 @@ angular.module('updates')
                 'as-block': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'as-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'aut-num': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 domain: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'filter-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 inet6num: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 inetnum: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'inet-rtr': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'irt': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'key-cert': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 mntner: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 organisation: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'peering-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 person: {
@@ -105,48 +105,49 @@ angular.module('updates')
                             return attributes;
                         },
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 poem: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'poetic-form': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 role: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 route: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 route6: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'route-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 'rtr-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
-                    afterSubmitSuccess: undefined
+                    afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 }
             };
