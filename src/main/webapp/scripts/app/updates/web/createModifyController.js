@@ -242,6 +242,7 @@ angular.module('webUpdates')
             function _isEnum(allowedValues) {
                 return ! (_.isUndefined(allowedValues) || allowedValues.length === 0 );
             }
+
             function referenceAutocomplete(attrType, query, refs, allowedValues) {
                 if( _isEnum(allowedValues)) {
                     var filtered =  _.filter(allowedValues, function(val) {
@@ -355,14 +356,19 @@ angular.module('webUpdates')
 
                     var whoisResources = resp;
 
-                    //It' ok to just let it happen or fail.
-                    OrganisationHelper.updateAbuseC($scope.source, $scope.objectType, $scope.roleForAbuseC, $scope.attributes, passwords);
+                    _interceptOnSubmitSuccess
+                    // Post-process atttribute after submit-success using screen-logic-interceptor
+                    if( _interceptOnSubmitSuccess( $scope.operation, resp.status, whoisResources.getAttributes()) === false ) {
 
-                    // stick created object in temporary store, so display-screen can fetch it from here
-                    MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
+                        //It' ok to just let it happen or fail.
+                        OrganisationHelper.updateAbuseC($scope.source, $scope.objectType, $scope.roleForAbuseC, $scope.attributes, passwords);
 
-                    // make transition to next display screen
-                    WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
+                        // stick created object in temporary store, so display-screen can fetch it from here
+                        MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
+
+                        // make transition to next display screen
+                        WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
+                    }
                 }
 
                 function _isPendingAuthenticationError(resp) {
@@ -416,8 +422,8 @@ angular.module('webUpdates')
 
 
                     // Post-process atttribute after submit-error using screen-logic-interceptor
-                    if( _interceptOnSubnitError( $scope.operation, resp.status,
-                            $scope.attributes, whoisResources.getAttributes()) == false ) {
+                    if( _interceptOnSubmitError( $scope.operation, resp.status,
+                            $scope.attributes, whoisResources.getAttributes()) === false ) {
 
                         // TODO: fix whois to return a 200 series response in case of pending object [MG]
                         if (_isPendingAuthenticationError(resp)) {
@@ -571,7 +577,26 @@ angular.module('webUpdates')
                 return attributes;
             }
 
-            function _interceptOnSubnitError( method, status, requestAttributes, responseAttributes ) {
+            function _interceptOnSubmitSuccess( method, responseAttributes ) {
+                var errorMessages = [];
+                var warningMessages = [];
+                var infoMessages = [];
+                var status = ScreenLogicInterceptor.afterSubmitSuccess(method,
+                    $scope.source, $scope.objectType, responseAttributes,
+                    warningMessages, infoMessages );
+                if( errorMessages.length > 0 ) {
+                    AlertService.setGlobalErrors(errorMessages);
+                }
+                if( warningMessages.length > 0 ) {
+                    AlertService.setGlobalWarnings(warningMessages);
+                }
+                if( infoMessages.length > 0 ) {
+                    AlertService.setGlobalInfos(infoMessages);
+                }
+                return status;
+            }
+
+            function _interceptOnSubmitError( method, status, requestAttributes, responseAttributes ) {
                 var errorMessages = [];
                 var warningMessages = [];
                 var infoMessages = [];

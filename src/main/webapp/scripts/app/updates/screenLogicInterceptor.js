@@ -16,73 +16,86 @@ angular.module('updates')
                     function(method, source, objectType, attributes, errors, warnings, infos) {
                         return attributes;
                     }
-                // Currently we have no global afterSubmitError callback
+                // Currently we have no global afterSubmitSuccess and afterSubmitError callback
             };
 
             var objectInterceptors = {
                 'as-block': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'as-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'aut-num': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 domain: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'filter-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 inet6num: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 inetnum: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'inet-rtr': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'irt': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'key-cert': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 mntner: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 organisation: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'peering-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 person: {
@@ -92,6 +105,7 @@ angular.module('updates')
                             return attributes;
                         },
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 poem: {
@@ -102,31 +116,37 @@ angular.module('updates')
                 'poetic-form': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 role: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 route: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 route6: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'route-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 },
                 'rtr-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
+                    afterSubmitSuccess: undefined
                     afterSubmitError: undefined
                 }
             };
@@ -154,6 +174,18 @@ angular.module('updates')
                     return undefined;
                 }
                 return objectInterceptors[objectType].afterEdit;
+            }
+
+            function _getAfterSubmitSuccessFilter(objectType) {
+                if(_.isUndefined(objectInterceptors[objectType])) {
+                    $log.error('Object-type ' + objectType+ ' not understood');
+                    return undefined;
+                }
+                if (_.isUndefined(objectInterceptors[objectType].afterSubmitSuccess)) {
+                    $log.info('Interceptor-function ' + objectType+ '.afterSubmitSuccess not found');
+                    return undefined;
+                }
+                return objectInterceptors[objectType].afterSubmitSuccess;
             }
 
             function _getAfterSubmitErrorFilter(objectType) {
@@ -186,6 +218,14 @@ angular.module('updates')
                     return attrs;
                 }
                 return interceptorFunc(method, source, objectType, attts, errors, warnings, infos);
+            };
+
+            logicInterceptor.afterSubmitSuccess = function (method, source, objectType, responseAttributes, warnings, infos) {
+                var interceptorFunc = _getAfterSubmitSuccessFilter(objectType);
+                if (_.isUndefined(interceptorFunc)) {
+                    return false;
+                }
+                return interceptorFunc(method, source, objectType, responseAttributes, warnings, infos);
             };
 
             logicInterceptor.afterSubmitError = function (method, source, objectType, requestAttributes, status, responseAttributes, errors, warnings, infos) {
