@@ -451,6 +451,10 @@ angular.module('webUpdates')
                             _onSubmitError);
 
                     } else {
+                        //TODO: Temporary function till RPSL clean up
+                        if(MntnerService.isLoneRpslMntner($scope.maintainers.object)) {
+                            passwords.push('RPSL');
+                        }
                         RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
                             WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
                             _onSubmitSuccess,

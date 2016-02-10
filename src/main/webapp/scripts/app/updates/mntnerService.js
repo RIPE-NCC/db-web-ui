@@ -200,6 +200,19 @@ angular.module('updates')
             }
         };
 
+        //temporary function to check if only mntner is RPSL
+        mntnerService.isLoneRpslMntner = function(mntners) {
+
+            if(mntners.length != 1) {
+                return false;
+            }
+
+            if(mntners[0].key.toUpperCase() == 'RIPE-NCC-RPSL-MNT') {
+                return true;
+            }
+            return false;
+        };
+
         function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
             return _.any(originalObjectMntners, function (mntner) {
                 return mntner.mine === true;
