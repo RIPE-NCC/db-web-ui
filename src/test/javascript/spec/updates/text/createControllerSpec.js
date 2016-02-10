@@ -141,7 +141,7 @@ describe('textUpdates: TextCreateController', function () {
         expect($scope.object.rpsl).toEqual(
             'INETNUM:       \n' +
             'NETNAME:       \n' +
-            'descr:         \n' +
+            'DESCR:         \n' +
             'COUNTRY:       \n' +
             'geoloc:        \n' +
             'language:      \n' +
@@ -171,7 +171,7 @@ describe('textUpdates: TextCreateController', function () {
         expect($scope.object.rpsl).toEqual(
             'INETNUM:       \n' +
             'NETNAME:       \n' +
-            'descr:         \n' +
+            'DESCR:         \n' +
             'COUNTRY:       \n' +
             'geoloc:        \n' +
             'language:      \n' +
@@ -212,7 +212,7 @@ describe('textUpdates: TextCreateController', function () {
         expect($scope.object.rpsl).toEqual(
             'INETNUM:       \n' +
             'NETNAME:       \n' +
-            'descr:         \n' +
+            'DESCR:         \n' +
             'COUNTRY:       \n' +
             'geoloc:        \n' +
             'language:      \n' +
