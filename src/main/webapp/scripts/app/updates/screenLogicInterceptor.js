@@ -4,6 +4,18 @@ angular.module('updates')
     .service('ScreenLogicInterceptor', ['$log', 'WhoisResources',
         function ($log, WhoisResources) {
 
+            // TODO: start
+            // Move the following stuff from Create-modify-controller:
+            // - defaults
+            // - limit allowed values (like org-type: OTHER)
+            // - add abuse-c attribute although optional
+            // - disable read-only attributes
+            // - convert error intop success for creation of pending route(6)
+            // - strip nulls
+            // - RPSL password for resources
+            // - refresh after authenticating mntner
+            // TODO end
+
             var globalInterceptor = {
                 beforeEdit:
                     function (method, source, objectType, attributes, errors, warnings, infos) {
