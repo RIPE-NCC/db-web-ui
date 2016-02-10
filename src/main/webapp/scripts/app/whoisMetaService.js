@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('WhoisMetaService', ['CountryCodes', function (CountryCodes) {
+    .service('WhoisMetaService', ['CountryCodes', 'LanguageCodes', function (CountryCodes, LanguageCodes) {
 
         this._getDocumentationForAttribute = function(objectType, attrName, docKind) {
             var doc = undefined;
@@ -257,7 +257,7 @@ angular.module('dbWebApp')
                     {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'country', mandatory: true, multiple: true, refs: [], allowedValues: CountryCodes.get()},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
-                    {name: 'language', mandatory: false, multiple: true, refs: []},
+                    {name: 'language', mandatory: false, multiple: true, refs: [], allowedValues: LanguageCodes.get()},
                     {name: 'org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
@@ -284,7 +284,7 @@ angular.module('dbWebApp')
                     {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'country', mandatory: true, multiple: true, refs: [], allowedValues: CountryCodes.get()},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
-                    {name: 'language', mandatory: false, multiple: true, refs: []},
+                    {name: 'language', mandatory: false, multiple: true, refs: [], allowedValues: LanguageCodes.get()},
                     {name: 'org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
@@ -401,7 +401,7 @@ angular.module('dbWebApp')
                     {name: 'fax-no', mandatory: false, multiple: true, refs: []},
                     {name: 'e-mail', mandatory: true, multiple: true, refs: []},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
-                    {name: 'language', mandatory: false, multiple: true, refs: []},
+                    {name: 'language', mandatory: false, multiple: true, refs: [], allowedValues: LanguageCodes.get()},
                     {name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},

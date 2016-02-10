@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('WhoisResources', [ '$log', 'WhoisMetaService', function ($log,    WhoisMetaService) {
+    .service('WhoisResources', [ '$log', 'WhoisMetaService', function ($log, WhoisMetaService) {
 
         var allowedEmptyAttrs = ['remarks','descr', 'certif', 'address'];
 

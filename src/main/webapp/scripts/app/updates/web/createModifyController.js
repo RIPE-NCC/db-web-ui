@@ -258,7 +258,7 @@ angular.module('webUpdates')
                         // convert array of strings into array of objects
                         allowedValues = _.map(allowedValues, function(item){
                             return {
-                                key:          item,
+                                key:          item.toUpperCase(),
                                 readableName: item
                             };
                         });
