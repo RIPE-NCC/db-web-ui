@@ -262,6 +262,13 @@ angular.module('webUpdates')
                                 readableName: item
                             };
                         });
+                    } else {
+                        // add a readableName that combines description and code
+                        allowedValues = _.map(allowedValues, function(item){
+                            item.key = item.key.toUpperCase();
+                            item.readableName = item.value + ' [' + item.key + ']';
+                            return item;
+                        });
                     }
                     // case-insensitive comparison
                     return  _.filter(allowedValues, function(item) {
