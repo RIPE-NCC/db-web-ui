@@ -29,7 +29,7 @@ public class WhoisProxyController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) throws Exception {
 
-        LOGGER.debug("request: {}", request.toString());
+        LOGGER.info("whois-request: {}", request.toString());
 
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);

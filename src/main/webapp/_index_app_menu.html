@@ -1,27 +1,36 @@
 <!--  Webupdates specific menu start -->
-<div>
+<div ng-controller="LeftMenuController">
     <div class="portlet navigation margin-bottom">
         <div class="Title">
             <i title="Show/Hide navigation" class="fa fa-angle-double-left"></i>
             <a href="/search/query.html" class="h5">RIPE Database</a>
         </div>
         <ul class="toplevel">
-            <li class="child ">
+            <li class="child" ng-class="{active: menu.searchExpanded}">
                 <i title="Expand sub navigation" class="fa fa-angle-right"></i>
                 <a href="/search/query.html">Query and Update</a>
-                <ul class="level2" style="display: none;">
-                    <li><a href="/search/query.html">Query the RIPE Database</a>
+                <ul class="level2">
+                    <li>
+                        <a class="menuItem current" href="/search/query.html">Query the RIPE Database</a>
                     </li>
-                    <li><a href="/search/full-text.html">Full Text Search</a>
+                    <li>
+                        <a class="menuItem" href="/search/full-text.html">Full Text Search</a>
                     </li>
-                    <li><a href="/search/geolocation-finder.html">Geolocation Finder</a>
+                    <li>
+                        <a class="menuItem" href="/syncupdates/simple-rpsl.html">Syncupdates</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="/search/abuse-finder.html">Abuse Finder</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="/search/geolocation-finder.html">Geolocation Finder</a>
                     </li>
                 </ul>
             </li>
-            <li class="child active">
+            <li class="child" ng-class="{active: menu.webUpdatesExpanded}">
                 <i title="Expand sub navigation" class="fa fa-angle-right"></i>
                 <a href="/db-web-ui/#/">Create</a>
-                <ul class="level2" style="display: block;">
+                <ul class="level2">
                     <li>
                         <a class="menuItem current" href="/db-web-ui/#/">Create an object</a>
                     </li>
@@ -31,30 +40,15 @@
                     </li>
                 </ul>
             </li>
-            <li class="child">
+            <li class="child" ng-class="{active: menu.passwordsExpanded}">
                 <i title="Expand sub navigation" class="fa fa-angle-right"></i>
-                <a href="/syncupdates/simple-rpsl.html">Syncupdates</a>
-                <ul class="level2" style="display: none;">
+                <a href="/db-web-ui/#/fmp/">Passwords</a>
+                <ul class="level2">
                     <li>
-                        <a href="/syncupdates/simple-rpsl.html">Syncupdates</a>
+                        <a class="menuItem current" href="/db-web-ui/#/fmp/">Forgotten MNTNER password?</a>
                     </li>
-                </ul>
-            </li>
-            <li class="child ">
-                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
-                <a href="/search/abuse-finder.html">Abuse Contact</a>
-                <ul class="level2" style="display: none;">
-                    <li><a href="/search/abuse-finder.html">Abuse Finder</a>
-                    </li>
-                </ul>
-            </li>
-            <li class="child ">
-                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
-                <a href="/change-auth/">Passwords</a>
-                <ul class="level2" style="display: none;">
-                    <li><a href="/change-auth/">Forgotten MNTNER password?</a>
-                    </li>
-                    <li><a href="/crypt/crypt.html">Password Generator</a>
+                    <li>
+                        <a class="menuItem" href="/crypt/crypt.html">Password Generator</a>
                     </li>
                 </ul>
             </li>

@@ -54,6 +54,7 @@ module.exports = function (config) {
             'main/webapp/bower_components/google-diff-match-patch/diff_match_patch.js',
             'main/webapp/bower_components/angular-diff-match-patch/angular-diff-match-patch.js',
             'main/webapp/bower_components/angular-loading-bar/build/loading-bar.js',
+            'main/webapp/bower_components/moment/moment.js',
             'main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'main/webapp/scripts/app/app.js',
