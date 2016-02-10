@@ -37,6 +37,10 @@ angular.module('dbWebApp')
             return $rootScope.warnings;
         };
 
+        alertService.getInfos = function () {
+            return $rootScope.infos;
+        };
+
         alertService.setErrors = function (whoisResources) {
             $rootScope.errors = whoisResources.getGlobalErrors();
             $rootScope.warnings = whoisResources.getGlobalWarnings();
@@ -64,12 +68,20 @@ angular.module('dbWebApp')
             $rootScope.errors.push({plainText:errorMsg});
         };
 
+        alertService.addGlobalWarning = function( errorMsg ) {
+            $rootScope.warnings.push({plainText:errorMsg});
+        };
+
         alertService.addGlobalError = function( errorMsg ) {
             $rootScope.errors.push({plainText:errorMsg});
         };
 
         alertService.setGlobalInfo = function( errorMsg ) {
             alertService.clearErrors();
+            $rootScope.infos.push({plainText:errorMsg});
+        };
+
+        alertService.addGlobalInfo = function( errorMsg ) {
             $rootScope.infos.push({plainText:errorMsg});
         };
 
