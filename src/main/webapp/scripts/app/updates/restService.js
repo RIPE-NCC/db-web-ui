@@ -117,7 +117,7 @@ angular.module('updates')
 
                         $resource('api/whois/autocomplete',
                             {
-                                query: encodeURIComponent(objectName),
+                                query: objectName,
                                 field: objectType,
                                 attribute: attrs,
                                 extended: extended
