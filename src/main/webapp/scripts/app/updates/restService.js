@@ -119,7 +119,7 @@ angular.module('updates')
                             {
                                 field: attrName,
                                 attribute: attrsToBeReturned,
-                                query: encodeURIComponent(query),
+                                query: query,
                                 extended: extended
                             })
                             .query()
@@ -157,7 +157,7 @@ angular.module('updates')
                                 select: attrsToReturn,
                                 from: targetObjectTypes,
                                 where: attrsToFilterOn,
-                                like: encodeURIComponent(query),
+                                like: query,
                             })
                             .query()
                             .$promise
