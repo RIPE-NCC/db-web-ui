@@ -3,6 +3,8 @@
 angular.module('dbWebApp')
     .service('WhoisResources', [ '$log', 'WhoisMetaService', function ($log,    WhoisMetaService) {
 
+        var allowedEmptyAttrs = ['remarks','descr', 'certif', 'address'];
+
         this.getAttributeShortDescription = function( objectType, attrName ) {
             return WhoisMetaService.getAttributeShortDescription(objectType, attrName);
         };
@@ -475,13 +477,16 @@ angular.module('dbWebApp')
                 if (next.name === attr.name && next.value === attr.value) {
                     result.push(
                         {
-                            name:attr.name, $$meta:{
-                            $$mandatory:next.$$meta.mandatory,
-                            $$multiple:next.$$meta.multiple,
-                            $$primaryKey:next.$$meta.primaryKey,
-                            $$description:next.$$description,
-                            $$syntax:next.$$syntax,
-                        }});
+                            name:attr.name,
+                            value:'',
+                            $$meta:{
+                                $$mandatory:next.$$meta.mandatory,
+                                $$multiple:next.$$meta.multiple,
+                                $$primaryKey:next.$$meta.primaryKey,
+                                $$description:next.$$description,
+                                $$syntax:next.$$syntax,
+                            }
+                        });
                 }
             });
 
@@ -553,9 +558,21 @@ angular.module('dbWebApp')
         };
 
         var removeNullAttributes = function() {
-            return _.filter(this, function(attr) {
+            var filtered = _.filter(this, function(attr) {
+                var allowedEmpty = _.includes(allowedEmptyAttrs, attr.name);
+                if(allowedEmpty) {
+                    return true;
+                }
                 return attr.value;
             });
+
+            return _.map(filtered, function(item) {
+               if(_.isUndefined(item.value)) {
+                   item.value = '';
+               }
+                return item;
+            });
+
         };
 
         var toPlaintext = function() {

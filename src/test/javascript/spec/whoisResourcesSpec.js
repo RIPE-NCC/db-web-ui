@@ -549,10 +549,10 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs[0].value).toEqual('a');
 
         expect(attrs[1].name).toEqual('mnt-by');
-        expect(attrs[1].value).toBeUndefined();
+        expect(attrs[1].value).toEqual('');
 
         expect(attrs[2].name).toEqual('source');
-        expect(attrs[2].value).toBeUndefined();
+        expect(attrs[2].value).toEqual('');
     });
 
     it('should accept a correct object', function () {
@@ -705,6 +705,27 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
+
+    it('should allow certain attrs to be empty but remove all others', function () {
+        var attrs = $whoisResources.wrapAttributes([
+            {name: 'as-block', value: 'a'},
+            {name: 'address', value: 'c'},
+            {name: 'address', value: null},
+            {name: 'remarks', value: ''},
+            {name: 'mnt-by', value: ''},
+            {name: 'source', value: 'd'}
+        ]);
+
+        var result = attrs.removeNullAttributes();
+
+        expect(result.length).toEqual(5);
+        expect(result[0].value).toEqual('a');
+        expect(result[1].value).toEqual('c');
+        expect(result[2].value).toBeNull();
+        expect(result[3].value).toEqual('');
+        expect(result[4].value).toEqual('d');
+    });
+
     it('remove an attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a'},
@@ -768,7 +789,7 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs[0].value).toEqual('a');
         expect(attrs[1].value).toEqual('b');
         expect(attrs[2].name).toEqual('mnt-by');
-        expect(attrs[2].value).toBeUndefined();
+        expect(attrs[2].value).toEqual('');
         expect(attrs[3].value).toEqual('c');
     });
 
