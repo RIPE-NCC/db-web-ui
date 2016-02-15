@@ -81,12 +81,19 @@
                        />
 
             <span ng-if="isEnum(attribute)">
-                <br/>
-                <select name="{{attribute.name}}"
-                        ng-required="{{attribute.$$meta.$$mandatory}}"
-                        ng-model="attribute.value">
-                    <option ng-repeat="item in enumAutocomplete(attribute)" value="{{item.key}}">{{displayEnumValue(item)}}</option>
-                </select>
+                 <ui-select ng-model="attribute.value"
+                            theme="select2"
+                           class="form-control"
+                           ng-disabled="disabled"
+                            style="min-width: 300px;"
+                            title="`Select an item">
+                     <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
+                     <ui-select-choices repeat="item in  enumAutocomplete(attribute) | filter: {'value':$select.search}">
+                         <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
+                     </ui-select-choices>
+                 </ui-select>
+
+
             </span>
 
             <div class="text field-description" collapse="!isHelpShown">
