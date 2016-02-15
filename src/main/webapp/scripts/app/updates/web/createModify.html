@@ -31,7 +31,8 @@
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
                ng-if="uiSelectTemplateReady">
-        <ui-select-match ui-lock-choice="needToLockLastMntner() || isNccMntner($item)" placeholder="Type maintainer name">{{$item.key}}
+        <ui-select-match ui-lock-choice="needToLockLastMntner() || isNccMntner($item)"
+                         placeholder="Type maintainer name">{{$item.key}}
             <span class="fa fa-star" ng-if="isMine($item)"></span>
             <span class="fa fa-lock" ng-if="isNccMntner($item)"></span>
         </ui-select-match>
@@ -49,9 +50,9 @@
     </ui-select>
     <div collapse="!isMntHelpShown" class="text field-description">
         <strong>Description</strong></br>
-        <span ng-bind-html="mntbyDescription"></span></br>
+        <span ng-bind-html="getAttributeDescription('mnt-by')"></span></br>
         <strong>Syntax</strong></br>
-        <span ng-bind-html="mntbySyntax"></span>
+        <span ng-bind-html="getAttributeSyntax('mnt-by')"></span>
     </div>
 	</section>
 
@@ -63,25 +64,36 @@
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
             <span ng-if="attribute.$$success" class="text-success">{{attribute.$$success}}</span>
-            <input type="text"
-                   name="{{attribute.name}}"
-                   ng-model="attribute.value"
-                   ng-blur="fieldVisited(attribute)"
-                   ng-required="{{attribute.$$meta.$$mandatory}}"
-                   placeholder="{{attribute.$$meta.$$short}}"
-                   class="form-control"
-                   typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs, attribute.$$meta.$$allowedValues)"
-                   typeahead-min-length="1"
-                   typeahead-select-on-exact="true"
-                   ng-disabled="isToBeDisabled(attribute)"
-                   autocomplete="{{isBrowserAutoComplete(attribute.$$meta.$$refs,attribute.$$meta.allowedValues)}}"
-                   />
+
+            <input ng-if="!isEnum(attribute)"
+                       type="text"
+                       name="{{attribute.name}}"
+                       ng-model="attribute.value"
+                       ng-blur="fieldVisited(attribute)"
+                       ng-required="{{attribute.$$meta.$$mandatory}}"
+                       placeholder="{{getAttributeShortDescription(attribute.name)}}"
+                       class="form-control"
+                       typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute.name, $viewValue, attribute.$$meta.$$refs, attribute.$$meta.$$allowedValues)"
+                       typeahead-min-length="1"
+                       typeahead-select-on-exact="true"
+                       ng-disabled="isToBeDisabled(attribute)"
+                       autocomplete="{{isBrowserAutoComplete(attribute)}}"
+                       />
+
+            <span ng-if="isEnum(attribute)">
+                <br/>
+                <select name="{{attribute.name}}"
+                        ng-required="{{attribute.$$meta.$$mandatory}}"
+                        ng-model="attribute.value">
+                    <option ng-repeat="item in enumAutocomplete(attribute)" value="{{item.key}}">{{displayEnumValue(item)}}</option>
+                </select>
+            </span>
 
             <div class="text field-description" collapse="!isHelpShown">
                 <strong>Description</strong></br>
-                <span ng-bind-html="attribute.$$meta.$$description"></span></br>
+                <span ng-bind-html="getAttributeDescription(attribute.name)"></span></br>
                 <strong>Syntax</strong></br>
-                <span ng-bind-html="attribute.$$meta.$$syntax"></span>
+                <span ng-bind-html="getAttributeSyntax(attribute.name)"></span>
             </div>
             <ul class="input-group-btn">
                 <li>
