@@ -96,9 +96,9 @@
 }
 
 
-/* Multi select **/
-div.ui-select-container {
-    padding-right: 180px;
+/* Multi select */
+div.select2-container {
+    padding-right: 160px;
     a.select2-choice {
         padding: 0;
         top: -3px;
@@ -114,13 +114,20 @@ div.ui-select-container {
         }
     }
     div.ui-select-dropdown {
-        left: 0;
         border: 1px solid #ccc;
         border-radius: 0 !important;
+        box-shadow: none !important;
+        position: relative !important;
+        top: 1px !important;
+        z-index: 4;
+        width: 103%;
+        left: -13px;
+        margin: 0 !important;
         div.select2-search {
+            margin: 10px 0;
             input.ui-select-search {
                 @extend %brd;
-                padding: 0;
+                padding: inherit !important;
             }
         }
         ul.ui-select-choices {
