@@ -6,11 +6,11 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
-                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService',
+                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService',
         function ($scope, $stateParams, $state, $log, $window, $q,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService) {
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService) {
 
             // exposed methods called from html fragment
             $scope.switchToTextMode = switchToTextMode;
@@ -23,11 +23,16 @@ angular.module('webUpdates')
             $scope.hasPgp = MntnerService.hasPgp;
             $scope.hasMd5 = MntnerService.hasMd5;
             $scope.isNew = MntnerService.isNew;
-
             $scope.needToLockLastMntner = needToLockLastMntner;
 
             $scope.mntnerAutocomplete = mntnerAutocomplete;
             $scope.referenceAutocomplete = referenceAutocomplete;
+            $scope.isEnum = isEnum;
+            $scope.enumAutocomplete = enumAutocomplete;
+            $scope.displayEnumValue = displayEnumValue;
+            $scope.getAttributeShortDescription = getAttributeShortDescription;
+            $scope.getAttributeDescription = getAttributeDescription;
+            $scope.getAttributeSyntax = getAttributeSyntax;
 
             $scope.hasMntners = hasMntners;
             $scope.canAttributeBeDuplicated = canAttributeBeDuplicated;
@@ -239,18 +244,35 @@ angular.module('webUpdates')
                 return !(_.isUndefined(refs) || refs.length === 0 );
             }
 
-            function _isEnum(allowedValues) {
-                return ! (_.isUndefined(allowedValues) || allowedValues.length === 0 );
+            function _isEnum(attribute) {
+                return attribute.$$meta.$$isEnum;
             }
+
+            function _isObjectArray( array ) {
+                var first = _.first(array);
+                if(_.isUndefined(first)) {
+                    return false;
+                }
+                return _.isObject(first);
+            }
+
+            function enumAutocomplete(attribute) {
+                if( !isEnum(attribute)) {
+                    return [];
+                }
+                return EnumService.get($scope.objectType, attribute.name);
+            }
+
+            function displayEnumValue(item) {
+                if ( item.key === item.value ) {
+                    return item.key;
+                }
+                return item.value + ' [' + item.key.toUpperCase() + ']';
+            }
+
             function referenceAutocomplete(attrType, query, refs, allowedValues) {
-                if( _isEnum(allowedValues)) {
-                    var filtered =  _.filter(allowedValues, function(val) {
-                        return (val.indexOf(query.toUpperCase()) > -1);
-                    });
-                    return _.map(filtered, function(val) {
-                        return {key:val, readableName:val}
-                    });
-                } else if (_isServerLookupKey(refs)) {
+                $log.info("referenceAutocomplete query:"+query);
+                if (_isServerLookupKey(refs)) {
                     return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
                         function (resp) {
                             return _addNiceAutocompleteName(resp)
@@ -263,8 +285,12 @@ angular.module('webUpdates')
                 }
             }
 
-            function isBrowserAutoComplete(refs,allowedValues){
-                if (_isServerLookupKey(refs) || _isEnum(allowedValues)) {
+            function isEnum(attribute) {
+                return attribute.$$meta.$$isEnum;
+            }
+
+            function isBrowserAutoComplete(attribute){
+                if (_isServerLookupKey(attribute.$$meta.$$refs) || isEnum(attribute)) {
                     return "off";
                 } else {
                     return "on";
@@ -467,6 +493,18 @@ angular.module('webUpdates')
                 if ($window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
                     _navigateAway();
                 }
+            }
+
+            function getAttributeShortDescription(attrName) {
+                return WhoisResources.getAttributeShortDescription($scope.objectType, attrName);
+            }
+
+            function getAttributeDescription(attrName) {
+                return WhoisResources.getAttributeDescription($scope.objectType, attrName);
+            }
+
+            function getAttributeSyntax(attrName) {
+                return WhoisResources.getAttributeSyntax($scope.objectType, attrName);
             }
 
             /*

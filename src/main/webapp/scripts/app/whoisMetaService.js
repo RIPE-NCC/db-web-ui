@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .service('WhoisMetaService', function () {
+    .service('WhoisMetaService', [ function () {
 
         this._getDocumentationForAttribute = function(objectType, attrName, docKind) {
             var doc = undefined;
@@ -82,11 +82,8 @@ angular.module('dbWebApp')
                     $$mandatory: metaAttribute.mandatory,
                     $$multiple: metaAttribute.multiple,
                     $$primaryKey: metaAttribute.primaryKey,
-                    $$short: self.getAttributeShortDescription(objectTypeName, metaAttribute.name),
-                    $$description: self.getAttributeDescription(objectTypeName, metaAttribute.name),
-                    $$syntax: self.getAttributeSyntax(objectTypeName, metaAttribute.name),
                     $$refs: metaAttribute.refs,
-                    $$allowedValues: metaAttribute.allowedValues
+                    $$isEnum:metaAttribute.isEnum
                 }
             }
         }
@@ -201,7 +198,7 @@ angular.module('dbWebApp')
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: false, multiple: false, refs: [], allowedValues:['ASSIGNED','LEGACY','OTHER']},
+                    {name: 'status', mandatory: false, multiple: false, refs: [], isEnum:true},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
@@ -255,14 +252,14 @@ angular.module('dbWebApp')
                     {name: 'inet6num', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'netname', mandatory: true, multiple: false, refs: []},
                     {name: 'descr', mandatory: true, multiple: true, refs: []},
-                    {name: 'country', mandatory: true, multiple: true, refs: []},
+                    {name: 'country', mandatory: true, multiple: true, refs: [], isEnum:true},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
-                    {name: 'language', mandatory: false, multiple: true, refs: []},
+                    {name: 'language', mandatory: false, multiple: true, refs: [], isEnum:true},
                     {name: 'org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: true, multiple: false, refs: [], allowedValues:['ALLOCATED-BY-RIR','ALLOCATED-BY-LIR','AGGREGATED-BY-LIR','ASSIGNED','ASSIGNED ANYCAST','ASSIGNED PI']},
+                    {name: 'status', mandatory: true, multiple: false, refs: [], isEnum:true},
                     {name: 'assignment-size', mandatory: false, multiple: false, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
@@ -282,14 +279,14 @@ angular.module('dbWebApp')
                     {name: 'inetnum', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'netname', mandatory: true, multiple: false, refs: []},
                     {name: 'descr', mandatory: true, multiple: true, refs: []},
-                    {name: 'country', mandatory: true, multiple: true, refs: []},
+                    {name: 'country', mandatory: true, multiple: true, refs: [], isEnum:true},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
-                    {name: 'language', mandatory: false, multiple: true, refs: []},
+                    {name: 'language', mandatory: false, multiple: true, refs: [], isEnum:true},
                     {name: 'org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'status', mandatory: true, multiple: false, refs: [], allowedValues: ['ALLOCATED PA','ALLOCATED PI','ALLOCATED UNSPECIFIED','LIR-PARTITIONED PA','LIR-PARTITIONED PI', 'SUB-ALLOCATED PA','ASSIGNED PA','ASSIGNED PI','ASSIGNED ANYCAST','EARLY-REGISTRATION','NOT-SET','LEGACY']},
+                    {name: 'status', mandatory: true, multiple: false, refs: [], isEnum:true},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
@@ -401,7 +398,7 @@ angular.module('dbWebApp')
                     {name: 'fax-no', mandatory: false, multiple: true, refs: []},
                     {name: 'e-mail', mandatory: true, multiple: true, refs: []},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
-                    {name: 'language', mandatory: false, multiple: true, refs: []},
+                    {name: 'language', mandatory: false, multiple: true, refs: [], isEnum:true},
                     {name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
@@ -1316,4 +1313,4 @@ angular.module('dbWebApp')
                 syntax: _shared.peer.syntax
             }
         };
-    });
+    }]);

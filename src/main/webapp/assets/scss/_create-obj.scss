@@ -16,6 +16,7 @@ ul.form-fields {
 		position: relative;
 		input {
 			padding-right: 160px;
+            z-index: 0 !important;
 		}
 	}
 	ul.input-group-btn {
@@ -212,4 +213,7 @@ ul.form-fields {
             margin: 5px 0 0 0 !important;
         }
     }
+}
+.input-group .form-control {
+    z-index: auto !important;
 }
