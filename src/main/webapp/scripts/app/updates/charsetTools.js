@@ -3,18 +3,19 @@
 angular.module('updates')
     .service('CharsetTools', ['$log', function ($log) {
 
-        this.isLatin1 = function (attribute) {
+        this.isLatin1 = function (value) {
+            if(_.isUndefined(value) || _.isEmpty(value)) {
+                return true;
+            }
             try {
-                var fixedstring = decodeURIComponent(escape(attribute.value));
-                if( fixedstring !== attribute.value) {
+                var fixedstring = decodeURIComponent(escape(value));
+                if( fixedstring !== value) {
                     return false;
                 }
                 return true;
             } catch(exc) {
                 return false;
             }
-
-
         }
 
     }]);

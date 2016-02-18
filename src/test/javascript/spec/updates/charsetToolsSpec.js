@@ -30,20 +30,29 @@ describe('updates: CharsetTools', function () {
      ð	ñ	ò	ó	ô	õ	ö	÷	ø	ù	ú	û	ü	ý	þ	ÿ
      */
 
+    it('should handle undefined string', function(){
+        expect(subject.isLatin1(undefined)).toEqual(true);
+    });
+
+    it('should handle empty string', function(){
+        expect(subject.isLatin1('')).toEqual(true);
+    });
+
     it('should recognize latin-1 string', function(){
-        expect(subject.isLatin1({name:'test',value:'"hello"'})).toEqual(true);
+        expect(subject.isLatin1('"hello"')).toEqual(true);
     });
 
-    it('should recognize all as latin1 string', function(){
-        expect(subject.isLatin1({name:'test',value:"!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~"})).toEqual(true);
+    it('should recognize all as us-ascii string', function(){
+        expect(subject.isLatin1("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~")).toEqual(true);
     });
 
-    //it('should recognize even more as latin1 string', function(){
-    //    expect(subject.isLatin1({name:'test',value:" ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ"})).toEqual(true);
+    // TODO: handle extended latin
+    //it('should recognize extended latin1 string', function(){
+    //    expect(subject.isLatin1(" ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ")).toEqual(true);
     //});
 
     it('should recognize utf-8 string', function(){
-        expect(subject.isLatin1({name:'test',value:'Здравствуйте'})).toEqual(false);
+        expect(subject.isLatin1('Здравствуйте')).toEqual(false);
     });
 
 

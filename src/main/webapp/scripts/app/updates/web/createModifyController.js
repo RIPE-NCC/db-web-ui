@@ -270,18 +270,23 @@ angular.module('webUpdates')
                 return item.value + ' [' + item.key.toUpperCase() + ']';
             }
 
-            function referenceAutocomplete(attrType, query, refs, allowedValues) {
-                $log.info("referenceAutocomplete query:"+query);
-                if (_isServerLookupKey(refs)) {
-                    return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
-                        function (resp) {
-                            return _addNiceAutocompleteName(resp)
-                        }, function () {
-                            return [];
-                        });
+            function referenceAutocomplete(attribute, query) {
+                if( !CharsetTools.isLatin1(query)) {
+                    attribute.$$error = 'Value ' + query + ' is not valid latin-1';
                 } else {
-                    // No suggestions since not a reference or enumeration
-                    return [];
+                    attribute.$$error = undefined;
+                    if (_isServerLookupKey(attribute.$$meta.$$refs)) {
+                        $log.info("referenceAutocomplete query:" + query);
+                        return RestService.autocomplete(attribute.name, query, true, ['person', 'role', 'org-name']).then(
+                            function (resp) {
+                                return _addNiceAutocompleteName(resp)
+                            }, function () {
+                                return [];
+                            });
+                    } else {
+                        // No suggestions since not a reference or enumeration
+                        return [];
+                    }
                 }
             }
 
@@ -298,7 +303,7 @@ angular.module('webUpdates')
             }
 
             function fieldVisited(attr) {
-                if( !CharsetTools.isLatin1(attr)) {
+                if( !CharsetTools.isLatin1(attr.value)) {
                     attr.$$error = 'Value ' + attr.value + ' is not valid latin-1';
                 } else {
                     if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
