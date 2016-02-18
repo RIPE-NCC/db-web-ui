@@ -6,11 +6,11 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
-                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService',
+                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools',
         function ($scope, $stateParams, $state, $log, $window, $q,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService) {
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools) {
 
             // exposed methods called from html fragment
             $scope.switchToTextMode = switchToTextMode;
@@ -298,6 +298,10 @@ angular.module('webUpdates')
             }
 
             function fieldVisited(attr) {
+                $log.error('fieldVisited:' + JSON.stringify(attr));
+                if( !CharsetTools.isLatin1(attr)) {
+                    attr.$$error = 'Value ' + attr.value + ' is not valid latin-1';
+                }
                 if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
                     RestService.autocomplete(attr.name, attr.value, true, []).then(
                         function (data) {
@@ -700,6 +704,27 @@ angular.module('webUpdates')
                     // prevent same mntner to be added multiple times
                     return ! MntnerService.isNccMntner(mntner) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
                 });
+            }
+
+            function _isCorrectLatin1(attribute) {
+                var isLatin1 = true;
+
+                $log.info('_isCorrectLatin1: name' + attribute.name + ' value:' +  attribute.value );
+                var fixedstring;
+                try {
+                    // If the string is UTF-8, this will work and not throw an error.
+                    fixedstring = decodeURIComponent(escape(attribute.value));
+
+                    $log.error('_isCorrectLatin1: input' + attribute.value + ' output:' + fixedstring);
+                }catch(e){
+                    // If it isn't, an error will be thrown, and we can asume that we have an ISO string.
+                    fixedstring = attribute.value;
+                    $log.error('_isCorrectLatin1: error' + attribute.value + ' output:' + fixedstring);
+                }
+                if( fixedstring !== attribute.value) {
+                    isLatin1 = false;
+                }
+                return isLatin1;
             }
 
             function _validateForm() {
