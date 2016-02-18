@@ -298,25 +298,25 @@ angular.module('webUpdates')
             }
 
             function fieldVisited(attr) {
-                $log.error('fieldVisited:' + JSON.stringify(attr));
                 if( !CharsetTools.isLatin1(attr)) {
                     attr.$$error = 'Value ' + attr.value + ' is not valid latin-1';
-                }
-                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
-                    RestService.autocomplete(attr.name, attr.value, true, []).then(
-                        function (data) {
-                            if (_.any(data, function (item) {
-                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
-                                })) {
-                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
-                            } else {
-                                attr.$$error = '';
+                } else {
+                    if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
+                        RestService.autocomplete(attr.name, attr.value, true, []).then(
+                            function (data) {
+                                if (_.any(data, function (item) {
+                                        return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                    })) {
+                                    attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
+                                } else {
+                                    attr.$$error = '';
+                                }
+                            },
+                            function (error) {
+                                $log.error('Autocomplete error ' + JSON.stringify(error));
                             }
-                        },
-                        function (error) {
-                            $log.error('Autocomplete error ' + JSON.stringify(error));
-                        }
-                    );
+                        );
+                    }
                 }
             }
 
