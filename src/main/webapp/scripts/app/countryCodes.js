@@ -72,7 +72,7 @@ angular.module('dbWebApp')
             {key: "EH", value: "Western Sahara"},
             {key: "ER", value: "Eritrea"},
             {key: "ES", value: "Spain"},
-            {key: "EU", value: "European Union"},
+            {key: "EU", value: "Europe"},
             {key: "ET", value: "Ethiopia"},
             {key: "FI", value: "Finland"},
             {key: "FJ", value: "Fiji"},
