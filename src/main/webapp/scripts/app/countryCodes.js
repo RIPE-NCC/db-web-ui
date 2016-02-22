@@ -1,5 +1,6 @@
 'use strict';
 
+// all ISO3166 "officially assigned" country codes, also "exceptionally reserved" EU, from http://www.iso.org/iso/country_codes
 angular.module('dbWebApp')
     .service('CountryCodes', ['$log', function ($log) {
         var countryCodes = [

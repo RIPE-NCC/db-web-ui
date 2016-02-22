@@ -1,5 +1,6 @@
 'use strict';
 
+// All ISO639-1 codes from http://www.loc.gov/standards/iso639-2/php/code_list.php
 angular.module('dbWebApp')
     .service('LanguageCodes', ['$log', function ($log) {
         var languageCodes = [
