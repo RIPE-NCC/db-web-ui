@@ -42,14 +42,19 @@ describe('updates: CharsetTools', function () {
         expect(subject.isLatin1('"hello"')).toEqual(true);
     });
 
+    // handle extended us-ascii
     it('should recognize all as us-ascii string', function(){
         expect(subject.isLatin1("!#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~")).toEqual(true);
     });
 
-    // TODO: handle extended latin
-    //it('should recognize extended latin1 string', function(){
-    //    expect(subject.isLatin1(" ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ")).toEqual(true);
-    //});
+    // handle extended part of ascii(=latin1)
+    it('should recognize extended latin1 string', function(){
+        expect(subject.isLatin1(" ¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ")).toEqual(true);
+    });
+
+    it('should recognize escaped utf-8 string', function(){
+        expect(subject.isLatin1("%u0430")).toEqual(true);
+    });
 
     it('should recognize utf-8 string', function(){
         expect(subject.isLatin1('Здравствуйте')).toEqual(false);
