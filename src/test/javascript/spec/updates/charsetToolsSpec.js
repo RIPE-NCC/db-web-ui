@@ -60,5 +60,13 @@ describe('updates: CharsetTools', function () {
         expect(subject.isLatin1('Здравствуйте')).toEqual(false);
     });
 
+    it('should replace certain latin-1 characters', function() {
+        expect(subject.substitute('emdash\u2013test')).toEqual('emdash-test');
+        expect(subject.substitute('endash\u2014test')).toEqual('endash-test');
+        expect(subject.substitute('nbsp\u00A0test')).toEqual('nbsp test');
+        expect(subject.substitute('mixed\u2013\u2014\u00A0test')).toEqual('mixed-- test');
+        expect(subject.substitute('multiple\u2013\u2013\u00A0\u2014\u2014test')).toEqual('multiple-- --test');
+    });
+
 
 });

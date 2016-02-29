@@ -271,24 +271,50 @@ angular.module('webUpdates')
             }
 
             function referenceAutocomplete(attribute, query) {
-                if( !CharsetTools.isLatin1(query)) {
-                    attribute.$$error = 'Value ' + query + ' is not valid latin-1';
+
+                if(!validateLatin1(attribute, query)) {
+                    return;
+                }
+
+                attribute.$$error = undefined;
+                if (_isServerLookupKey(attribute.$$meta.$$refs)) {
+                    $log.info("referenceAutocomplete query:" + query);
+                    return RestService.autocomplete(attribute.name, query, true, ['person', 'role', 'org-name']).then(
+                        function (resp) {
+                            return _addNiceAutocompleteName(resp)
+                        }, function () {
+                            return [];
+                        });
                 } else {
-                    attribute.$$error = undefined;
-                    if (_isServerLookupKey(attribute.$$meta.$$refs)) {
-                        $log.info("referenceAutocomplete query:" + query);
-                        return RestService.autocomplete(attribute.name, query, true, ['person', 'role', 'org-name']).then(
-                            function (resp) {
-                                return _addNiceAutocompleteName(resp)
-                            }, function () {
-                                return [];
-                            });
-                    } else {
-                        // No suggestions since not a reference or enumeration
-                        return [];
-                    }
+                    // No suggestions since not a reference or enumeration
+                    return [];
                 }
             }
+
+            function validateLatin1(attr, attrValue) {
+                if(_.isUndefined(attrValue)) {
+                    attrValue = attr.value;
+                }
+                if( !CharsetTools.isLatin1(attrValue)) {
+                    // see if any chars can be substituted
+                    var subbedValue = CharsetTools.substitute(attrValue);
+                    if (!CharsetTools.isLatin1(subbedValue)) {
+                        attr.$$error = 'Value ' + attr.value + ' is not valid latin-1';
+                        return false;
+                    }
+
+                    if (subbedValue !== attr.value) {
+                        attr.$$error = "";
+                        return true;
+                    }
+                }
+                return true;
+            }
+
+            function substituteForValidLatin1(attr) {
+                return CharsetTools.substitute(attr.value)
+            }
+
 
             function isEnum(attribute) {
                 return attribute.$$meta.$$isEnum;
@@ -303,26 +329,31 @@ angular.module('webUpdates')
             }
 
             function fieldVisited(attr) {
-                if( !CharsetTools.isLatin1(attr.value)) {
-                    attr.$$error = 'Value ' + attr.value + ' is not valid latin-1';
-                } else {
-                    if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
-                        RestService.autocomplete(attr.name, attr.value, true, []).then(
-                            function (data) {
-                                if (_.any(data, function (item) {
-                                        return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
-                                    })) {
-                                    attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
-                                } else {
-                                    attr.$$error = '';
-                                }
-                            },
-                            function (error) {
-                                $log.error('Autocomplete error ' + JSON.stringify(error));
-                            }
-                        );
+
+                if(!validateLatin1(attr)) {
+                    attr.value = substituteForValidLatin1(attr)
+                    if(!validateLatin1(attr)) {
+                        return;
                     }
                 }
+
+                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
+                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                        function (data) {
+                            if (_.any(data, function (item) {
+                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                })) {
+                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
+                            } else {
+                                attr.$$error = '';
+                            }
+                        },
+                        function (error) {
+                            $log.error('Autocomplete error ' + JSON.stringify(error));
+                        }
+                    );
+                }
+
             }
 
             function hasMntners() {
