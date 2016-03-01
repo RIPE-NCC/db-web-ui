@@ -102,10 +102,10 @@ angular.module('webUpdates')
                 }
             }
 
-            function fieldVisited( objectName, attr ) {
+            function fieldVisited( attr ) {
                 if (attr.$$meta.$$primaryKey === true ) {
                     attr.$$error = '';
-                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                    RestService.autocomplete( attr.name, attr.value, true, []).then(
                         function (data) {
                             var found = _.find(data, function(item) {
                                     if( item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase() ) {
