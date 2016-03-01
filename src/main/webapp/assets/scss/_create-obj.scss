@@ -16,6 +16,7 @@ ul.form-fields {
 		position: relative;
 		input {
 			padding-right: 160px;
+            z-index: 0 !important;
 		}
 	}
 	ul.input-group-btn {
@@ -74,8 +75,8 @@ ul.form-fields {
 	article.maintainer-icons {
         z-index: 2;
         position: absolute;
-        right: 14px;
-        top: 37px;
+        right: 15px;
+        top: 38px;
     	a.maintainer-help {
     	    padding: 5px 11px;
             color: #00abab;
@@ -102,6 +103,13 @@ ul.form-fields {
 	li:last-child {
 		margin-bottom: 0 !important;
 	}
+    div.ui-select-multiple.ui-select-bootstrap {
+        height: auto;
+        div {
+            input.ui-select-search {
+            }
+        }
+    }
 }
 .visible-field-form {
 	@extend %float-l;
@@ -205,4 +213,7 @@ ul.form-fields {
             margin: 5px 0 0 0 !important;
         }
     }
+}
+.input-group .form-control {
+    z-index: auto !important;
 }

@@ -9,6 +9,10 @@ angular.module('dbWebApp')
     })
     .factory('ErrorInterceptor', function ($rootScope, $q, $location, $log, ERROR_EVENTS) {
 
+        function _isServerError(status) {
+            return status === 500;
+        }
+
         function _isAuthorisationError(status) {
             return status === 401 || status === 403;
         }
@@ -30,6 +34,12 @@ angular.module('dbWebApp')
                     toBeSwallowed = true;
                 }
                 if (_isNotFoundError(response.status) && _.startsWith(response.config.url, 'api/whois-internal/')) {
+                    toBeSwallowed = true;
+                }
+                //TODO - We can remove the following code after WhoIs 1.86 deployment
+                // Code added to prevent 500 exploding to the user during autocomplete.
+                // The real way to fix it is in Whois, but we're waiting it to be deployed.
+                if (_isServerError(response.status) && _.startsWith(response.config.url, 'api/whois/autocomplete')) {
                     toBeSwallowed = true;
                 }
             }
