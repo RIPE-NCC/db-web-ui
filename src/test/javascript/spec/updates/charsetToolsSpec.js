@@ -68,5 +68,9 @@ describe('updates: CharsetTools', function () {
         expect(subject.substitute('multiple\u2013\u2013\u00A0\u2014\u2014test')).toEqual('multiple-- --test');
     });
 
+    it('should replace invalid chars with ?', function () {
+       expect(subject.replaceNonSubstitutables('test漢字')).toEqual('test??');
+    });
+
 
 });

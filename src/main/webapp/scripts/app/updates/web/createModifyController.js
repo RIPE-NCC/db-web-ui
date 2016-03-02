@@ -272,7 +272,7 @@ angular.module('webUpdates')
 
             function referenceAutocomplete(attribute, query) {
 
-                if(!validateLatin1(attribute, query)) {
+                if(!_isLatin1(attribute, query)) {
                     return;
                 }
 
@@ -291,31 +291,6 @@ angular.module('webUpdates')
                 }
             }
 
-            function validateLatin1(attr, attrValue) {
-                if(_.isUndefined(attrValue)) {
-                    attrValue = attr.value;
-                }
-                if( !CharsetTools.isLatin1(attrValue)) {
-                    // see if any chars can be substituted
-                    var subbedValue = CharsetTools.substitute(attrValue);
-                    if (!CharsetTools.isLatin1(subbedValue)) {
-                        attr.$$error = 'Value ' + attr.value + ' is not valid latin-1';
-                        return false;
-                    }
-
-                    if (subbedValue !== attr.value) {
-                        attr.$$error = "";
-                        return true;
-                    }
-                }
-                return true;
-            }
-
-            function substituteForValidLatin1(attr) {
-                return CharsetTools.substitute(attr.value)
-            }
-
-
             function isEnum(attribute) {
                 return attribute.$$meta.$$isEnum;
             }
@@ -329,12 +304,8 @@ angular.module('webUpdates')
             }
 
             function fieldVisited(attr) {
-
-                if(!validateLatin1(attr)) {
-                    attr.value = substituteForValidLatin1(attr)
-                    if(!validateLatin1(attr)) {
-                        return;
-                    }
+                if(!_isLatin1(attr)) {
+                    attr.value = _substituteForValidLatin1(attr)
                 }
 
                 if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
@@ -551,6 +522,37 @@ angular.module('webUpdates')
              * private methods
              */
 
+            function _isLatin1(attr, attrValue) {
+                if(_.isUndefined(attrValue)) {
+                    attrValue = attr.value;
+                }
+                if( !CharsetTools.isLatin1(attrValue)) {
+
+                    // see if any chars can be substituted
+                    var subbedValue = CharsetTools.substitute(attrValue);
+                    if (!CharsetTools.isLatin1(subbedValue)) {
+                        attr.$$error = "Input contains illegal characters. These will be converted to \'?\'";
+                        attr.is
+                        return false;
+                    }
+
+                    if (subbedValue !== attr.value) {
+                        attr.$$error = "";
+                        attr.value = subbedValue;
+                        return true;
+                    }
+                }
+                return true;
+            }
+
+            function _substituteForValidLatin1(attr) {
+                var subbed = CharsetTools.substitute(attr.value);
+                attr.$$error = "";
+                // and replace all further non latin-1 chars with ?
+
+                return CharsetTools.replaceNonSubstitutables(subbed);
+            }
+
             function _getPasswordsForRestCall() {
                 var passwords = [];
 
@@ -740,27 +742,6 @@ angular.module('webUpdates')
                     // prevent same mntner to be added multiple times
                     return ! MntnerService.isNccMntner(mntner) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
                 });
-            }
-
-            function _isCorrectLatin1(attribute) {
-                var isLatin1 = true;
-
-                $log.info('_isCorrectLatin1: name' + attribute.name + ' value:' +  attribute.value );
-                var fixedstring;
-                try {
-                    // If the string is UTF-8, this will work and not throw an error.
-                    fixedstring = decodeURIComponent(escape(attribute.value));
-
-                    $log.error('_isCorrectLatin1: input' + attribute.value + ' output:' + fixedstring);
-                }catch(e){
-                    // If it isn't, an error will be thrown, and we can asume that we have an ISO string.
-                    fixedstring = attribute.value;
-                    $log.error('_isCorrectLatin1: error' + attribute.value + ' output:' + fixedstring);
-                }
-                if( fixedstring !== attribute.value) {
-                    isLatin1 = false;
-                }
-                return isLatin1;
             }
 
             function _validateForm() {

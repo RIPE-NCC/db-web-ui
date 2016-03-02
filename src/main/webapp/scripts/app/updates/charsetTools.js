@@ -20,27 +20,24 @@ angular.module('updates')
 
         // compare string against array of substitutable values and replace if found
         this.substitute = function (value) {
-            var subbedValue;
+            var subbedValue = value;
 
             // if we have this unicode char in the string we always want to replace it
-            $log.debug('Checking for possible substitutions in attr value..')
-
             _.forEach(substitutions, function (sub) {
                 var subbed = [];
-                $log.debug('Checking for ' + sub.code);        // g to replace all not just the first
-                subbedValue = value.replace(new RegExp(sub.code, 'g'), function () {
+                                                                     // g to replace all not just the first
+                subbedValue = subbedValue.replace(new RegExp(sub.code, 'g'), function () {
                     subbed.push(sub);
 
                     $log.debug('Found match for substitution : ' + sub.code + ' > ' + sub.sub)
                     return sub.sub;
                 });
-                if (subbed.length > 0) {
-                    $log.debug('Substitution/s were made - original: [' + value + '], subbed: [' + subbedValue + ']');
-                    value = subbedValue;
-                }
             });
-            return value;
+            return subbedValue;
+        }
 
+        this.replaceNonSubstitutables = function (value) {
+            return value.replace(/[\u0100-\ue007]/g, '?');
         }
 
 
