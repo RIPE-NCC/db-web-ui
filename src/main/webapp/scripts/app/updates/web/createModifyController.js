@@ -3,11 +3,12 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
                 'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools',
-        function ($scope, $stateParams, $state, $log, $window, $q,
+        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
+
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
                   WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools) {
@@ -220,7 +221,7 @@ angular.module('webUpdates')
                 );
             }
 
-            function _addNiceAutocompleteName(items) {
+            function _addNiceAutocompleteName(items, attrName) {
                 return _.map(items, function (item) {
                     var name = '';
                     var separator = ' / ';
@@ -228,32 +229,26 @@ angular.module('webUpdates')
                         name = item.person;
                     } else if (item.role != null) {
                         name = item.role;
+                        if (attrName === 'abuse-c' && item['abuse-mailbox'] != null) {
+                            name = name.concat( separator + item['abuse-mailbox']);
+                        }
                     } else if (item['org-name'] != null) {
                         name = item['org-name'];
+                    } else if (item['descr'] != null) {
+                        name = item['descr'].join();
+                    } else if (item['owner'] != null) {
+                        name = item['owner'].join();
                     } else {
                         separator = '';
                     }
 
-                    item.readableName = item.key + separator + name;
+                    item.readableName = $sce.trustAsHtml(_escape(item.key + separator + name));
                     return item;
                 });
             }
 
-
-            function _isServerLookupKey(refs) {
-                return !(_.isUndefined(refs) || refs.length === 0 );
-            }
-
-            function _isEnum(attribute) {
-                return attribute.$$meta.$$isEnum;
-            }
-
-            function _isObjectArray( array ) {
-                var first = _.first(array);
-                if(_.isUndefined(first)) {
-                    return false;
-                }
-                return _.isObject(first);
+            function _escape(input) {
+                return input.replace(/\</g,'&lt;').replace(/\>/g, '&gt;');
             }
 
             function enumAutocomplete(attribute) {
@@ -270,25 +265,39 @@ angular.module('webUpdates')
                 return item.value + ' [' + item.key.toUpperCase() + ']';
             }
 
-            function referenceAutocomplete(attribute, query) {
+            function _isServerLookupKey(refs) {
+                return !(_.isUndefined(refs) || refs.length === 0 );
+            }
 
-                if(!_isLatin1(attribute, query)) {
-                    return;
-                }
 
-                attribute.$$error = undefined;
-                if (_isServerLookupKey(attribute.$$meta.$$refs)) {
-                    $log.info("referenceAutocomplete query:" + query);
-                    return RestService.autocomplete(attribute.name, query, true, ['person', 'role', 'org-name']).then(
-                        function (resp) {
-                            return _addNiceAutocompleteName(resp)
-                        }, function () {
-                            return [];
-                        });
-                } else {
-                    // No suggestions since not a reference or enumeration
-                    return [];
+            function referenceAutocomplete(attribute, userInput) {
+                var attrName = attribute.name;
+                var refs = attribute.$$meta.$$refs;
+
+                var utf8Substituted =  _warnForNonSubstitutableUtf8(attribute, userInput);
+                if( utf8Substituted ) {
+                    if (_isServerLookupKey(refs)) {
+                        return RestService.autocompleteAdvanced(userInput, refs).then(
+                            function (resp) {
+                                return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
+                            }, function () {
+                                return [];
+                            });
+                    } else {
+                        // No suggestions since not a reference
+                        return [];
+                    }
                 }
+            }
+
+            function _filterBasedOnAttr(suggestions, attrName) {
+                return _.filter(suggestions, function(item) {
+                    if( attrName === 'abuse-c') {
+                        $log.debug("Filter out suggestions without abuse-mailbox");
+                        return !_.isEmpty(item['abuse-mailbox']);
+                    }
+                    return true;
+                });
             }
 
             function isEnum(attribute) {
@@ -303,20 +312,22 @@ angular.module('webUpdates')
                 }
             }
 
-            function fieldVisited(attr) {
-                if(!_isLatin1(attr)) {
-                    attr.value = _substituteForValidLatin1(attr)
+            function fieldVisited(attribute) {
+
+                if( !CharsetTools.isLatin1(attribute.value)) {
+                    CharsetTools.replaceUtf8(attribute);
+                    attribute.$$error = '';
                 }
 
-                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
-                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                if ($scope.operation === $scope.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
+                    RestService.autocomplete( attribute.name, attribute.value, true, []).then(
                         function (data) {
                             if (_.any(data, function (item) {
-                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                    return item.type === attribute.name && item.key.toLowerCase() === attribute.value.toLowerCase();
                                 })) {
-                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
+                                attribute.$$error = attribute.name + ' ' + data[0].key + ' already exists';
                             } else {
-                                attr.$$error = '';
+                                attribute.$$error = '';
                             }
                         },
                         function (error) {
@@ -522,35 +533,21 @@ angular.module('webUpdates')
              * private methods
              */
 
-            function _isLatin1(attr, attrValue) {
-                if(_.isUndefined(attrValue)) {
-                    attrValue = attr.value;
-                }
-                if( !CharsetTools.isLatin1(attrValue)) {
-
+            function _warnForNonSubstitutableUtf8(attribute, userInput) {
+                $log.debug('userinput in warn :' + userInput);
+                $log.debug('attr name :' + JSON.stringify(attribute));
+                if( !CharsetTools.isLatin1(userInput)) {
                     // see if any chars can be substituted
-                    var subbedValue = CharsetTools.substitute(attrValue);
+                    var subbedValue = CharsetTools.replaceSubstitutables(userInput);
                     if (!CharsetTools.isLatin1(subbedValue)) {
-                        attr.$$error = "Input contains illegal characters. These will be converted to \'?\'";
-                        attr.is
+                        attribute.$$error = 'Input contains illegal characters. These will be converted to \'?\'';
                         return false;
-                    }
-
-                    if (subbedValue !== attr.value) {
-                        attr.$$error = "";
-                        attr.value = subbedValue;
+                    } else {
+                        attribute.$$error = '';
                         return true;
                     }
                 }
                 return true;
-            }
-
-            function _substituteForValidLatin1(attr) {
-                var subbed = CharsetTools.substitute(attr.value);
-                attr.$$error = "";
-                // and replace all further non latin-1 chars with ?
-
-                return CharsetTools.replaceNonSubstitutables(subbed);
             }
 
             function _getPasswordsForRestCall() {

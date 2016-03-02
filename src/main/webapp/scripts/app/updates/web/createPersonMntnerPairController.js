@@ -28,7 +28,6 @@ angular.module('webUpdates')
 
                 $scope.mntnerAttributes = WhoisResources.wrapAndEnrichAttributes('mntner',
                     WhoisResources.getMandatoryAttributesOnObjectType('mntner'));
-                $scope.mntnerAttributes.setSingleAttributeOnName('descr', 'Startup maintainer');
                 $scope.mntnerAttributes.setSingleAttributeOnName('admin-c', 'AUTO-1');
                 $scope.mntnerAttributes.setSingleAttributeOnName('source', $scope.source);
 
@@ -103,10 +102,10 @@ angular.module('webUpdates')
                 }
             }
 
-            function fieldVisited( objectName, attr ) {
+            function fieldVisited( attr ) {
                 if (attr.$$meta.$$primaryKey === true ) {
                     attr.$$error = '';
-                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                    RestService.autocomplete( attr.name, attr.value, true, []).then(
                         function (data) {
                             var found = _.find(data, function(item) {
                                     if( item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase() ) {

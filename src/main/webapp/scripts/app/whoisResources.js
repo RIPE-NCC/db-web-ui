@@ -33,9 +33,26 @@ angular.module('dbWebApp')
             return WhoisMetaService.enrichAttributesWithMetaInfo(objectTypeName, attrs);
         };
 
-         this.getAllAttributesOnObjectType = function (objectTypeName) {
+        this.getAllAttributesOnObjectType = function (objectTypeName) {
             return WhoisMetaService.getAllAttributesOnObjectType(objectTypeName);
         };
+
+        this.getFilterableAttrsForObjectTypes  = function (targetObjectTypes) {
+            var attrsToFilterOn = [];
+            _.each( targetObjectTypes, function(objectType) {
+                _.each(WhoisMetaService._getMetaAttributesOnObjectType(objectType.toLowerCase(), false), function(metaAttr) {
+                    if (( metaAttr.primaryKey === true || metaAttr.searchable === true ) && !_.contains(attrsToFilterOn, metaAttr.name)) {
+                        attrsToFilterOn.push(metaAttr.name);
+                    }
+                });
+            });
+            $log.info('attrsToFilterOn:'+attrsToFilterOn);
+            return attrsToFilterOn;
+        }
+
+        this.getViewableAttrsForObjectTypes  = function (targetObjectTypes) {
+            return this.getFilterableAttrsForObjectTypes(targetObjectTypes);
+        }
 
         this.getMandatoryAttributesOnObjectType = function (objectTypeName) {
             return WhoisMetaService.getMandatoryAttributesOnObjectType(objectTypeName);

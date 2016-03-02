@@ -1,10 +1,11 @@
 'use strict';
 
+// All ISO639-1 codes from http://www.loc.gov/standards/iso639-2/php/code_list.php
 angular.module('dbWebApp')
     .service('LanguageCodes', ['$log', function ($log) {
         var languageCodes = [
             {key: 'AA', value: 'Afar'},
-            {key: 'AB', value: 'Abkhaz'},
+            {key: 'AB', value: 'Abkhazian'},
             {key: 'AE', value: 'Avestan'},
             {key: 'AF', value: 'Afrikaans'},
             {key: 'AK', value: 'Akan'},
@@ -22,7 +23,7 @@ angular.module('dbWebApp')
             {key: 'BI', value: 'Bislama'},
             {key: 'BM', value: 'Bambara'},
             {key: 'BN', value: 'Bengali'},
-            {key: 'BO', value: 'Tibetan Standard, Tibetan, Central'},
+            {key: 'BO', value: 'Tibetan'},
             {key: 'BR', value: 'Breton'},
             {key: 'BS', value: 'Bosnian'},
             {key: 'CA', value: 'Catalan; Valencian'},
@@ -31,12 +32,13 @@ angular.module('dbWebApp')
             {key: 'CO', value: 'Corsican'},
             {key: 'CR', value: 'Cree'},
             {key: 'CS', value: 'Czech'},
-            {key: 'CU', value: 'Old Church Slavonic, Church Slavic, Church Slavonic, Old Bulgarian, Old Slavonic'},
+            {key: 'CU', value: 'Church Slavic'},
             {key: 'CV', value: 'Chuvash'},
             {key: 'CY', value: 'Welsh'},
             {key: 'DA', value: 'Danish'},
             {key: 'DE', value: 'German'},
             {key: 'DV', value: 'Divehi; Dhivehi; Maldivian;'},
+            {key: 'DZ', value: 'Dzongkha'},
             {key: 'EE', value: 'Ewe'},
             {key: 'EL', value: 'Greek, Modern'},
             {key: 'EN', value: 'English'},
@@ -58,7 +60,7 @@ angular.module('dbWebApp')
             {key: 'GU', value: 'Gujarati'},
             {key: 'GV', value: 'Manx'},
             {key: 'HA', value: 'Hausa'},
-            {key: 'HE', value: 'Hebrew (modern)'},
+            {key: 'HE', value: 'Hebrew'},
             {key: 'HI', value: 'Hindi'},
             {key: 'HO', value: 'Hiri Motu'},
             {key: 'HR', value: 'Croatian'},
@@ -68,9 +70,9 @@ angular.module('dbWebApp')
             {key: 'HZ', value: 'Herero'},
             {key: 'IA', value: 'Interlingua'},
             {key: 'ID', value: 'Indonesian'},
-            {key: 'IE', value: 'Interlingue'},
+            {key: 'IE', value: 'Interlingue; Occidental'},
             {key: 'IG', value: 'Igbo'},
-            {key: 'II', value: 'Nuosu'},
+            {key: 'II', value: 'Sichuan Yi; Nuosu'},
             {key: 'IK', value: 'Inupiaq'},
             {key: 'IO', value: 'Ido'},
             {key: 'IS', value: 'Icelandic'},
@@ -146,7 +148,7 @@ angular.module('dbWebApp')
             {key: 'SG', value: 'Sango'},
             {key: 'SI', value: 'Sinhala, Sinhalese'},
             {key: 'SK', value: 'Slovak'},
-            {key: 'SL', value: 'Slovene'},
+            {key: 'SL', value: 'Slovenian'},
             {key: 'SM', value: 'Samoan'},
             {key: 'SN', value: 'Shona'},
             {key: 'SO', value: 'Somali'},
@@ -184,7 +186,8 @@ angular.module('dbWebApp')
             {key: 'YI', value: 'Yiddish'},
             {key: 'YO', value: 'Yoruba'},
             {key: 'ZA', value: 'Zhuang, Chuang'},
-            {key: 'ZH', value: 'Chinese'}
+            {key: 'ZH', value: 'Chinese'},
+            {key: 'ZU', value: 'Zulu'}
         ];
 
         this.get = function () {

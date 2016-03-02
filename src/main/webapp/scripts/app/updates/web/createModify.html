@@ -75,7 +75,6 @@
                        class="form-control"
                        typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute, $viewValue)"
                        typeahead-min-length="1"
-                       typeahead-select-on-exact="true"
                        ng-disabled="isToBeDisabled(attribute)"
                        autocomplete="{{isBrowserAutoComplete(attribute)}}"
                        />
@@ -87,7 +86,7 @@
                             ng-disabled="disabled"
                             style="min-width: 300px;" >
                      <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
-                     <ui-select-choices repeat="item.key as item in enumAutocomplete(attribute) | filter: {'value':$select.search}">
+                     <ui-select-choices repeat="item.key as item in enumAutocomplete(attribute) | filter: $select.search">
                          <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
                      </ui-select-choices>
                  </ui-select>

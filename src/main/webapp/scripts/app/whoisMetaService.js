@@ -163,7 +163,7 @@ angular.module('dbWebApp')
                 name: 'as-set', description: undefined,
                 'attributes': [
                     {name: 'as-set', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'members', mandatory: false, multiple: true, refs: []},
                     {name: 'mbrs-by-ref', mandatory: false, multiple: true, refs: ['MNTNER']},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
@@ -183,7 +183,7 @@ angular.module('dbWebApp')
                 'attributes': [
                     {name: 'aut-num', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'as-name', mandatory: true, multiple: false, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'member-of', mandatory: false, multiple: true, refs: ['AS_SET', 'ROUTE_SET', 'RTR_SET']},
                     {name: 'import-via', mandatory: false, multiple: true, refs: []},
                     {name: 'import', mandatory: false, multiple: true, refs: []},
@@ -212,7 +212,7 @@ angular.module('dbWebApp')
                 name: 'domain', description: undefined,
                 'attributes': [
                     {name: 'domain', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
@@ -231,7 +231,7 @@ angular.module('dbWebApp')
                 name: 'filter-set', description: undefined,
                 'attributes': [
                     {name: 'filter-set', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'filter', mandatory: false, multiple: false, refs: []},
                     {name: 'mp-filter', mandatory: false, multiple: false, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
@@ -251,7 +251,7 @@ angular.module('dbWebApp')
                 'attributes': [
                     {name: 'inet6num', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'netname', mandatory: true, multiple: false, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'country', mandatory: true, multiple: true, refs: [], isEnum:true},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
                     {name: 'language', mandatory: false, multiple: true, refs: [], isEnum:true},
@@ -278,7 +278,7 @@ angular.module('dbWebApp')
                 'attributes': [
                     {name: 'inetnum', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'netname', mandatory: true, multiple: false, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'country', mandatory: true, multiple: true, refs: [], isEnum:true},
                     {name: 'geoloc', mandatory: false, multiple: false, refs: []},
                     {name: 'language', mandatory: false, multiple: true, refs: [], isEnum:true},
@@ -303,7 +303,7 @@ angular.module('dbWebApp')
                 name: 'inet-rtr', description: undefined,
                 'attributes': [
                     {name: 'inet-rtr', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'alias', mandatory: false, multiple: true, refs: []},
                     {name: 'local-as', mandatory: true, multiple: false, refs: []},
                     {name: 'ifaddr', mandatory: true, multiple: true, refs: []},
@@ -331,12 +331,12 @@ angular.module('dbWebApp')
                     {name: 'fax-no', mandatory: false, multiple: true, refs: []},
                     {name: 'e-mail', mandatory: true, multiple: true, refs: []},
                     {name: 'abuse-mailbox', mandatory: false, multiple: true, refs: []},
-                    {name: 'signature', mandatory: false, multiple: true, refs: ['KEY_CERT']},
-                    {name: 'encryption', mandatory: false, multiple: true, refs: ['KEY_CERT']},
+                    {name: 'signature', mandatory: false, multiple: true, refs: ['KEY-CERT']},
+                    {name: 'encryption', mandatory: false, multiple: true, refs: ['KEY-CERT']},
                     {name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
-                    {name: 'auth', mandatory: true, multiple: true, refs: ['KEY_CERT']},
+                    {name: 'auth', mandatory: true, multiple: true, refs: ['KEY-CERT']},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'irt-nfy', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
@@ -351,7 +351,7 @@ angular.module('dbWebApp')
                 'attributes': [
                     {name: 'key-cert', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'method', mandatory: false, multiple: false, refs: []},
-                    {name: 'owner', mandatory: false, multiple: true, refs: []},
+                    {name: 'owner', mandatory: false, multiple: true, refs: [],searchable:true},
                     {name: 'fingerpr', mandatory: false, multiple: false, refs: []},
                     {name: 'certif', mandatory: true, multiple: true, refs: []},
                     {name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION']},
@@ -369,13 +369,13 @@ angular.module('dbWebApp')
                 name: 'mntner', description: undefined,
                 'attributes': [
                     {name: 'mntner', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: [], searchable:true},
                     {name: 'org', mandatory: false, multiple: true, refs: ['ORGANISATION']},
                     {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'tech-c', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
                     {name: 'upd-to', mandatory: true, multiple: true, refs: []},
                     {name: 'mnt-nfy', mandatory: false, multiple: true, refs: []},
-                    {name: 'auth', mandatory: true, multiple: true, refs: ['KEY_CERT']},
+                    {name: 'auth', mandatory: true, multiple: true, refs: ['KEY-CERT']},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
                     {name: 'abuse-mailbox', mandatory: false, multiple: true, refs: []},
@@ -389,7 +389,7 @@ angular.module('dbWebApp')
                 name: 'organisation', description: undefined,
                 'attributes': [
                     {name: 'organisation', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'org-name', mandatory: true, multiple: false, refs: []},
+                    {name: 'org-name', mandatory: true, multiple: false, refs: [], searchable:true},
                     {name: 'org-type', mandatory: true, multiple: false, refs: []},
                     {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
@@ -417,7 +417,7 @@ angular.module('dbWebApp')
                 name: 'peering-set', description: undefined,
                 'attributes': [
                     {name: 'peering-set', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'peering', mandatory: false, multiple: true, refs: []},
                     {name: 'mp-peering', mandatory: false, multiple: true, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
@@ -435,7 +435,7 @@ angular.module('dbWebApp')
             'person': {
                 name: 'person', description: undefined,
                 'attributes': [
-                    {name: 'person', mandatory: true, multiple: false, refs: []},
+                    {name: 'person', mandatory: true, multiple: false, refs: [], searchable:true},
                     {name: 'address', mandatory: true, multiple: true, refs: []},
                     {name: 'phone', mandatory: true, multiple: true, refs: []},
                     {name: 'fax-no', mandatory: false, multiple: true, refs: []},
@@ -484,7 +484,7 @@ angular.module('dbWebApp')
             'role': {
                 name: 'role', description: undefined,
                 'attributes': [
-                    {name: 'role', mandatory: true, multiple: false, refs: []},
+                    {name: 'role', mandatory: true, multiple: false, refs: [], searchable:true},
                     {name: 'address', mandatory: true, multiple: true, refs: []},
                     {name: 'phone', mandatory: false, multiple: true, refs: []},
                     {name: 'fax-no', mandatory: false, multiple: true, refs: []},
@@ -495,7 +495,7 @@ angular.module('dbWebApp')
                     {name: 'nic-hdl', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'remarks', mandatory: false, multiple: true, refs: []},
                     {name: 'notify', mandatory: false, multiple: true, refs: []},
-                    {name: 'abuse-mailbox', mandatory: false, multiple: false, refs: []},
+                    {name: 'abuse-mailbox', mandatory: false, multiple: false, refs: [], searchable:true},
                     {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
                     {name: 'created', mandatory: false, multiple: false, refs: []},
                     {name: 'last-modified', mandatory: false, multiple: false, refs: []},
@@ -506,7 +506,7 @@ angular.module('dbWebApp')
                 name: 'route', description: undefined,
                 'attributes': [
                     {name: 'route', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'origin', mandatory: true, multiple: false, primaryKey: true, refs: ['AUT_NUM']},
                     {name: 'pingable', mandatory: false, multiple: true, refs: []},
                     {name: 'ping-hdl', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
@@ -532,7 +532,7 @@ angular.module('dbWebApp')
                 name: 'route6', description: undefined,
                 'attributes': [
                     {name: 'route6', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'origin', mandatory: true, multiple: false, primaryKey: true, refs: ['AUT_NUM']},
                     {name: 'pingable', mandatory: false, multiple: true, refs: []},
                     {name: 'ping-hdl', mandatory: false, multiple: true, refs: ['PERSON', 'ROLE']},
@@ -558,7 +558,7 @@ angular.module('dbWebApp')
                 name: 'route-set', description: undefined,
                 'attributes': [
                     {name: 'route-set', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'members', mandatory: false, multiple: true, refs: []},
                     {name: 'mp-members', mandatory: false, multiple: true, refs: []},
                     {name: 'mbrs-by-ref', mandatory: false, multiple: true, refs: ['MNTNER']},
@@ -578,7 +578,7 @@ angular.module('dbWebApp')
                 name: 'rtr-set', description: undefined,
                 'attributes': [
                     {name: 'rtr-set', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'descr', mandatory: true, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: []},
                     {name: 'members', mandatory: false, multiple: true, refs: []},
                     {name: 'mp-members', mandatory: false, multiple: true, refs: []},
                     {name: 'mbrs-by-ref', mandatory: false, multiple: true, refs: ['MNTNER']},

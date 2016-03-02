@@ -61,15 +61,15 @@ describe('updates: CharsetTools', function () {
     });
 
     it('should replace certain latin-1 characters', function() {
-        expect(subject.substitute('emdash\u2013test')).toEqual('emdash-test');
-        expect(subject.substitute('endash\u2014test')).toEqual('endash-test');
-        expect(subject.substitute('nbsp\u00A0test')).toEqual('nbsp test');
-        expect(subject.substitute('mixed\u2013\u2014\u00A0test')).toEqual('mixed-- test');
-        expect(subject.substitute('multiple\u2013\u2013\u00A0\u2014\u2014test')).toEqual('multiple-- --test');
+        expect(subject.replaceSubstitutables('emdash\u2013test')).toEqual('emdash-test');
+        expect(subject.replaceSubstitutables('endash\u2014test')).toEqual('endash-test');
+        expect(subject.replaceSubstitutables('nbsp\u00A0test')).toEqual('nbsp test');
+        expect(subject.replaceSubstitutables('mixed\u2013\u2014\u00A0test')).toEqual('mixed-- test');
+        expect(subject.replaceSubstitutables('multiple\u2013\u2013\u00A0\u2014\u2014test')).toEqual('multiple-- --test');
     });
 
     it('should replace invalid chars with ?', function () {
-       expect(subject.replaceNonSubstitutables('test漢字')).toEqual('test??');
+       expect(subject._replaceNonSubstitutables('test漢字')).toEqual('test??');
     });
 
 

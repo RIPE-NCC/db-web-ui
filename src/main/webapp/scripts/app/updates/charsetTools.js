@@ -19,7 +19,7 @@ angular.module('updates')
         }
 
         // compare string against array of substitutable values and replace if found
-        this.substitute = function (value) {
+        this.replaceSubstitutables = function (value) {
             var subbedValue = value;
 
             // if we have this unicode char in the string we always want to replace it
@@ -33,7 +33,12 @@ angular.module('updates')
             return subbedValue;
         }
 
-        this.replaceNonSubstitutables = function (value) {
+        this._replaceNonSubstitutables = function (value) {
             return value.replace(/[\u0100-\ue007]/g, '?');
+        }
+
+        this.replaceUtf8 = function(attribute) {
+            var subbed = this.replaceSubstitutables(attribute.value);
+            attribute.value = this._replaceNonSubstitutables(subbed);
         }
     }]);
