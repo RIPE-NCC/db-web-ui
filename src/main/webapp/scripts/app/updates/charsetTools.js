@@ -24,11 +24,8 @@ angular.module('updates')
 
             // if we have this unicode char in the string we always want to replace it
             _.forEach(substitutions, function (sub) {
-                var subbed = [];
-                                                                     // g to replace all not just the first
+                                                // g to replace all not just the first
                 subbedValue = subbedValue.replace(new RegExp(sub.code, 'g'), function () {
-                    subbed.push(sub);
-
                     $log.debug('Found match for substitution : ' + sub.code + ' > ' + sub.sub)
                     return sub.sub;
                 });
@@ -39,6 +36,4 @@ angular.module('updates')
         this.replaceNonSubstitutables = function (value) {
             return value.replace(/[\u0100-\ue007]/g, '?');
         }
-
-
     }]);
