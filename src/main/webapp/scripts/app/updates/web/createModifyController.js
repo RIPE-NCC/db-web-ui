@@ -275,18 +275,18 @@ angular.module('webUpdates')
                 var refs = attribute.$$meta.$$refs;
 
                 var utf8Substituted =  _warnForNonSubstitutableUtf8(attribute, userInput);
-                if( utf8Substituted ) {
-                    if (_isServerLookupKey(refs)) {
-                        return RestService.autocompleteAdvanced(userInput, refs).then(
-                            function (resp) {
-                                return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
-                            }, function () {
-                                return [];
-                            });
-                    } else {
-                        // No suggestions since not a reference
-                        return [];
-                    }
+                if( utf8Substituted  && _isServerLookupKey(refs)) {
+                    return RestService.autocompleteAdvanced(userInput, refs).then(
+                        function (resp) {
+                            return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
+                        },
+                        function () {
+                            // autocomplete error
+                            return [];
+                        });
+                } else {
+                    // No suggestions since not a reference
+                    return [];
                 }
             }
 
@@ -314,11 +314,14 @@ angular.module('webUpdates')
 
             function fieldVisited(attribute) {
 
+                // replace utf-8 to become latin1
                 if( !CharsetTools.isLatin1(attribute.value)) {
                     CharsetTools.replaceUtf8(attribute);
+                    // clear attribute specific warning
                     attribute.$$error = '';
                 }
 
+                // Verify if primary-key not already in use
                 if ($scope.operation === $scope.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
                     RestService.autocomplete( attribute.name, attribute.value, true, []).then(
                         function (data) {
@@ -335,7 +338,6 @@ angular.module('webUpdates')
                         }
                     );
                 }
-
             }
 
             function hasMntners() {
@@ -534,8 +536,6 @@ angular.module('webUpdates')
              */
 
             function _warnForNonSubstitutableUtf8(attribute, userInput) {
-                $log.debug('userinput in warn :' + userInput);
-                $log.debug('attr name :' + JSON.stringify(attribute));
                 if( !CharsetTools.isLatin1(userInput)) {
                     // see if any chars can be substituted
                     var subbedValue = CharsetTools.replaceSubstitutables(userInput);
@@ -809,7 +809,6 @@ angular.module('webUpdates')
                     }
                     $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
                     $scope.maintainers.object = _extractEnrichMntnersFromObject($scope.attributes);
-
                 }
             }
 
