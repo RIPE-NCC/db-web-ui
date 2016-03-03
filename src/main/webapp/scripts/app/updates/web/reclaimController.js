@@ -46,7 +46,7 @@ angular.module('webUpdates')
                 $log.debug('Url params: source:' + $scope.objectSource + '. type:' + $scope.objectType + ', uid:' + $scope.objectName);
 
                 $scope.mntbyDescription = MntnerService.mntbyDescription;
-                $scope.mntbySyntax = MntnerService.mntbySyntax;
+                 $scope.mntbySyntax = MntnerService.mntbySyntax;
                 $scope.attributes = [];
 
                 // workaround for problem with order of loading ui-select fragments

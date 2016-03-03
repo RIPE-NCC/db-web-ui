@@ -146,6 +146,25 @@ describe('dbWebApp: WhoisResources', function () {
         });
     });
 
+    it('should produce a list of filterable attributes', function () {
+        var attrs = $whoisResources.getFilterableAttrsForObjectTypes(['role']);
+        expect(attrs).toEqual([ 'role', 'nic-hdl', 'abuse-mailbox']);
+
+        var attrs = $whoisResources.getFilterableAttrsForObjectTypes(['person']);
+        expect(attrs).toEqual(['person', 'nic-hdl']);
+
+        var attrs = $whoisResources.getFilterableAttrsForObjectTypes(['organisation']);
+        expect(attrs).toEqual(['organisation','org-name']);
+
+        var attrs = $whoisResources.getFilterableAttrsForObjectTypes(['person', 'role', 'organisation']);
+        expect(attrs).toEqual(['person', 'nic-hdl', 'role', 'abuse-mailbox', 'organisation', 'org-name' ]);
+
+    });
+
+
+    it('should produce a list of viewable attributes', function () {
+    });
+
     it('should embed multiple objects within a whoisressources-request', function () {
 
         expect($whoisResources.turnAttrsIntoWhoisObjects(

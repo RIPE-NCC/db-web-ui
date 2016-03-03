@@ -107,19 +107,19 @@ angular.module('updates')
                     return deferredObject.promise;
                 }
 
-                this.autocomplete = function (objectType, objectName, extended, attrs) {
+                this.autocomplete = function ( attrName, query, extended, attrsToBeReturned) {
                     var deferredObject = $q.defer();
 
-                    if (_.isUndefined(objectName) || objectName.length < 2) {
+                    if( _.isUndefined(query) || query.length < 2 ) {
                         deferredObject.resolve([]);
                     } else {
-                        $log.debug('autocomplete start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                        $log.debug('autocomplete start for: ' + attrName + ' that is like ' + query );
 
                         $resource('api/whois/autocomplete',
                             {
-                                query: encodeURIComponent(objectName),
-                                field: objectType,
-                                attribute: attrs,
+                                field: attrName,
+                                attribute: attrsToBeReturned,
+                                query: query,
                                 extended: extended
                             })
                             .query()
@@ -133,6 +133,69 @@ angular.module('updates')
                             }
                         );
                     }
+
+                    return deferredObject.promise;
+                };
+
+                this.autocompleteAdvanced = function (query, targetObjectTypes ) {
+                    var deferredObject = $q.defer();
+
+                    if( _.isUndefined(query) || query.length < 2 ) {
+                        deferredObject.resolve([]);
+                    } else {
+                        var attrsToFilterOn = WhoisResources.getFilterableAttrsForObjectTypes(targetObjectTypes);
+                        var attrsToReturn = WhoisResources.getViewableAttrsForObjectTypes(targetObjectTypes); //['person', 'role', 'org-name', 'abuse-mailbox'];
+
+                        $log.debug('autocompleteAdvanced start: ' +
+                            ' select: ' + JSON.stringify(attrsToReturn) +
+                            ' from: '   + JSON.stringify(targetObjectTypes) +
+                            ' where: '  + JSON.stringify(attrsToFilterOn) +
+                            ' like:'    + JSON.stringify(query));
+
+                        $resource('api/whois/autocomplete',
+                            {
+                                select: attrsToReturn,
+                                from: targetObjectTypes,
+                                where: attrsToFilterOn,
+                                like: query,
+                            })
+                            .query()
+                            .$promise
+                            .then(function (result) {
+                                $log.debug('autocompleteAdvanced success:' + JSON.stringify(result));
+                                deferredObject.resolve(result);
+                            }, function (error) {
+                                $log.error('autocompleteAdvanced error:' + JSON.stringify(error));
+                                deferredObject.reject(error);
+                            }
+                        );
+                    }
+
+                    return deferredObject.promise;
+                };
+
+                this.authenticate = function (method, source, objectType, objectName, passwords) {
+                    var deferredObject = $q.defer();
+
+                    $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
+
+                    $resource('api/whois/:source/:objectType/:objectName',
+                        {
+                            source: source,
+                            objectType: objectType,
+                            objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            unfiltered: true,
+                            password: '@password'
+                        }).get({password: passwords})
+                        .$promise
+                        .then(function (result) {
+                            $log.debug('authenticate success:' + JSON.stringify(result));
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
+                        }, function (error) {
+                            $log.error('authenticate error:' + JSON.stringify(error));
+                            deferredObject.reject(WhoisResources.wrapError(error));
+                        }
+                    );
 
                     return deferredObject.promise;
                 };
@@ -157,32 +220,6 @@ angular.module('updates')
                             deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
                             $log.error('fetchObject error:' + JSON.stringify(error));
-                            deferredObject.reject(WhoisResources.wrapError(error));
-                        }
-                    );
-
-                    return deferredObject.promise;
-                };
-
-                this.authenticate = function (method, source, objectType, objectName, passwords) {
-                    var deferredObject = $q.defer();
-
-                    $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
-
-                    $resource('api/whois/:source/:objectType/:objectName',
-                        {
-                            source: source,
-                            objectType: objectType,
-                            objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            unfiltered: true,
-                            password: '@password'
-                        }).get({password: passwords})
-                        .$promise
-                        .then(function (result) {
-                            $log.debug('authenticate success:' + JSON.stringify(result));
-                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
-                        }, function (error) {
-                            $log.error('authenticate error:' + JSON.stringify(error));
                             deferredObject.reject(WhoisResources.wrapError(error));
                         }
                     );
@@ -253,6 +290,32 @@ angular.module('updates')
                     return deferredObject.promise;
                 };
 
+                this.associateSSOMntner = function (source, objectType, objectName, whoisResources, passwords) {
+                    var deferredObject = $q.defer();
+
+                    $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
+
+                    $resource('api/whois/:source/:objectType/:name?password=:password',
+                        {
+                            source: source,
+                            objectType: objectType,
+                            name: objectName,  // only for mntners so no url-decosong applied
+                            password: '@password'
+                        },
+                        {update: {method: 'PUT'}})
+                        .update({password: passwords}, whoisResources)
+                        .$promise
+                        .then(function (result) {
+                            $log.debug('associateSSOMntner success:' + JSON.stringify(result));
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
+                        }, function (error) {
+                            $log.error('associateSSOMntner error:' + JSON.stringify(error));
+                            deferredObject.reject(WhoisResources.wrapError(error));
+                        }
+                    );
+                    return deferredObject.promise;
+                };
+
                 this.deleteObject = function (source, objectType, name, reason, withReferences, passwords, dryRun) {
                     var deferredObject = $q.defer();
 
@@ -282,32 +345,6 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
-
-                this.associateSSOMntner = function (source, objectType, objectName, whoisResources, passwords) {
-                    var deferredObject = $q.defer();
-
-                    $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
-
-                    $resource('api/whois/:source/:objectType/:name?password=:password',
-                        {
-                            source: source,
-                            objectType: objectType,
-                            name: objectName,  // only for mntners so no url-decosong applied
-                            password: '@password'
-                        },
-                        {update: {method: 'PUT'}})
-                        .update({password: passwords}, whoisResources)
-                        .$promise
-                        .then(function (result) {
-                            $log.debug('associateSSOMntner success:' + JSON.stringify(result));
-                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
-                        }, function (error) {
-                            $log.error('associateSSOMntner error:' + JSON.stringify(error));
-                            deferredObject.reject(WhoisResources.wrapError(error));
-                        }
-                    );
                     return deferredObject.promise;
                 };
 

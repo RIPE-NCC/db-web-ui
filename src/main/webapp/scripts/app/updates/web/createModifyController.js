@@ -3,14 +3,14 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
-                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'ScreenLogicInterceptor',
-        function ($scope, $stateParams, $state, $log, $window, $q,
+                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'ScreenLogicInterceptor',
+        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, ScreenLogicInterceptor ) {
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, ScreenLogicInterceptor) {
 
             // exposed methods called from html fragment
             $scope.switchToTextMode = switchToTextMode;
@@ -23,11 +23,16 @@ angular.module('webUpdates')
             $scope.hasPgp = MntnerService.hasPgp;
             $scope.hasMd5 = MntnerService.hasMd5;
             $scope.isNew = MntnerService.isNew;
-
             $scope.needToLockLastMntner = needToLockLastMntner;
 
             $scope.mntnerAutocomplete = mntnerAutocomplete;
             $scope.referenceAutocomplete = referenceAutocomplete;
+            $scope.isEnum = isEnum;
+            $scope.enumAutocomplete = enumAutocomplete;
+            $scope.displayEnumValue = displayEnumValue;
+            $scope.getAttributeShortDescription = getAttributeShortDescription;
+            $scope.getAttributeDescription = getAttributeDescription;
+            $scope.getAttributeSyntax = getAttributeSyntax;
 
             $scope.hasMntners = hasMntners;
             $scope.canAttributeBeDuplicated = canAttributeBeDuplicated;
@@ -215,7 +220,7 @@ angular.module('webUpdates')
                 );
             }
 
-            function _addNiceAutocompleteName(items) {
+            function _addNiceAutocompleteName(items, attrName) {
                 return _.map(items, function (item) {
                     var name = '';
                     var separator = ' / ';
@@ -223,49 +228,78 @@ angular.module('webUpdates')
                         name = item.person;
                     } else if (item.role != null) {
                         name = item.role;
+                        if (attrName === 'abuse-c' && item['abuse-mailbox'] != null) {
+                            name = name.concat( separator + item['abuse-mailbox']);
+                        }
                     } else if (item['org-name'] != null) {
                         name = item['org-name'];
+                    } else if (item['descr'] != null) {
+                        name = item['descr'].join();
+                    } else if (item['owner'] != null) {
+                        name = item['owner'].join();
                     } else {
                         separator = '';
                     }
 
-                    item.readableName = item.key + separator + name;
+                    item.readableName = $sce.trustAsHtml(_escape(item.key + separator + name));
                     return item;
                 });
             }
 
+            function _escape(input) {
+                return input.replace(/\</g,'&lt;').replace(/\>/g, '&gt;');
+            }
+
+            function enumAutocomplete(attribute) {
+                if( !isEnum(attribute)) {
+                    return [];
+                }
+                return EnumService.get($scope.objectType, attribute.name);
+            }
+
+            function displayEnumValue(item) {
+                if ( item.key === item.value ) {
+                    return item.key;
+                }
+                return item.value + ' [' + item.key.toUpperCase() + ']';
+            }
 
             function _isServerLookupKey(refs) {
                 return !(_.isUndefined(refs) || refs.length === 0 );
             }
 
-            function _isEnum(allowedValues) {
-                return ! (_.isUndefined(allowedValues) || allowedValues.length === 0 );
-            }
-
-            function referenceAutocomplete(attrType, query, refs, allowedValues) {
-                if( _isEnum(allowedValues)) {
-                    var filtered =  _.filter(allowedValues, function(val) {
-                        return (val.indexOf(query.toUpperCase()) > -1);
-                    });
-                    return _.map(filtered, function(val) {
-                        return {key:val, readableName:val}
-                    });
-                } else if (_isServerLookupKey(refs)) {
-                    return RestService.autocomplete(attrType, query, true, ['person', 'role', 'org-name']).then(
+            function referenceAutocomplete(attribute, userInput) {
+                var refs = attribute.$$meta.$$refs;
+                if (_isServerLookupKey(refs)) {
+                    return RestService.autocompleteAdvanced( userInput, refs).then(
                         function (resp) {
-                            return _addNiceAutocompleteName(resp)
-                        }, function () {
+                            return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attribute.name), attribute.name);
+                        },
+                        function () {
                             return [];
                         });
                 } else {
-                    // No suggestions since not a reference or enumeration
+                    // No suggestions since not a reference
                     return [];
                 }
             }
 
-            function isBrowserAutoComplete(refs,allowedValues){
-                if (_isServerLookupKey(refs) || _isEnum(allowedValues)) {
+            function _filterBasedOnAttr(suggestions, attrName) {
+                return _.filter(suggestions, function(item) {
+                    if( attrName === 'abuse-c') {
+                        $log.debug("Filter out suggestions without abuse-mailbox");
+                        return !_.isEmpty(item['abuse-mailbox']);
+                    }
+                    return true;
+                });
+            }
+
+            function isEnum(attribute) {
+                return attribute.$$meta.$$isEnum;
+            }
+
+            function isBrowserAutoComplete(attribute){
+                if (_isServerLookupKey(attribute.$$meta.$$refs) || isEnum(attribute)) {
                     return "off";
                 } else {
                     return "on";
@@ -274,7 +308,7 @@ angular.module('webUpdates')
 
             function fieldVisited(attr) {
                 if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
-                    RestService.autocomplete(attr.name, attr.value, true, []).then(
+                    RestService.autocomplete( attr.name, attr.value, true, []).then(
                         function (data) {
                             if (_.any(data, function (item) {
                                     return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
@@ -482,6 +516,18 @@ angular.module('webUpdates')
                 if ($window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
                     _navigateAway();
                 }
+            }
+
+            function getAttributeShortDescription(attrName) {
+                return WhoisResources.getAttributeShortDescription($scope.objectType, attrName);
+            }
+
+            function getAttributeDescription(attrName) {
+                return WhoisResources.getAttributeDescription($scope.objectType, attrName);
+            }
+
+            function getAttributeSyntax(attrName) {
+                return WhoisResources.getAttributeSyntax($scope.objectType, attrName);
             }
 
             /*
