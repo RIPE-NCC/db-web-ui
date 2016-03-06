@@ -367,6 +367,10 @@ angular.module('webUpdates')
 
             function isToBeDisabled(attribute) {
 
+                if (attribute.$$disable) {
+                    return true;
+                }
+
                 if (attribute.name === 'created') {
                     return true;
                 } else if (attribute.name === 'org-type') {

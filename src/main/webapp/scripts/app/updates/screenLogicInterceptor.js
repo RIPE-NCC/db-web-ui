@@ -45,7 +45,9 @@ angular.module('updates')
                     afterSubmitError: undefined
                 },
                 'aut-num': {
-                    beforeEdit: undefined,
+                    beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        return disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
+                    },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
@@ -63,13 +65,17 @@ angular.module('updates')
                     afterSubmitError: undefined
                 },
                 inet6num: {
-                    beforeEdit: undefined,
+                    beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        return disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
+                    },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
                 },
                 inetnum: {
-                    beforeEdit: undefined,
+                    beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        return disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
+                    },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined
@@ -163,6 +169,17 @@ angular.module('updates')
                     afterSubmitError: undefined
                 }
             };
+
+            function disableOrgWhenStatusIsAssignedPI (method, source, objectType, attributes, errors, warnings, infos) {
+                var statusAttr = attributes.getSingleAttributeOnName('status');
+
+                if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
+                    var sponsoringOrgAttr = attributes.getSingleAttributeOnName('org');
+                    if(sponsoringOrgAttr) sponsoringOrgAttr.$$disable = true;
+                }
+
+                return attributes;
+            }
 
             function _getBeforeEditFilter(objectType) {
                 if(_.isUndefined(objectInterceptors[objectType])) {

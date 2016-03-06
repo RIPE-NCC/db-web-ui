@@ -113,7 +113,7 @@
                 </li>
                 <li>
                     <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
-                      ng-click="removeAttribute(attribute)"  ng-disabled="!canAttributeBeRemoved(attribute)" >
+                      ng-click="removeAttribute(attribute)"  ng-disabled="!canAttributeBeRemoved(attribute) || isToBeDisabled(attribute)" >
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>
