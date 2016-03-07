@@ -48,12 +48,14 @@ angular.module('updates')
                 },
                 'aut-num': {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
-                        return disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
+                        return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
-                    beforeAddAttribute:undefined
+                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAtributes) {
+                        return _removeSponsoringOrgWhenStatusIsAssignedPI(method, source, objectType, objectAttributes, addableAtributes);
+                    }
                 },
                 domain: {
                     beforeEdit: undefined,
@@ -71,21 +73,25 @@ angular.module('updates')
                 },
                 inet6num: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
-                        return disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
+                        return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
-                    beforeAddAttribute:undefined
+                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAtributes) {
+                        return _removeSponsoringOrgWhenStatusIsAssignedPI(method, source, objectType, objectAttributes, addableAtributes);
+                    }
                 },
                 inetnum: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
-                        return disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
+                        return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
-                    beforeAddAttribute:undefined
+                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAtributes) {
+                        return _removeSponsoringOrgWhenStatusIsAssignedPI(method, source, objectType, objectAttributes, addableAtributes);
+                    }
                 },
                 'inet-rtr': {
                     beforeEdit: undefined,
@@ -191,7 +197,18 @@ angular.module('updates')
                 }
             };
 
-            function disableOrgWhenStatusIsAssignedPI (method, source, objectType, attributes, errors, warnings, infos) {
+            function _removeSponsoringOrgWhenStatusIsAssignedPI(method, source, objectType, objectAttributes, addableAttributes) {
+                var statusAttr = objectAttributes.getSingleAttributeOnName('status');
+
+                if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
+                    console.log(JSON.stringify(addableAttributes.removeAttributeWithName('sponsoring-org')));
+                    addableAttributes.removeAttributeWithName('sponsoring-org');
+                }
+
+                return addableAttributes;
+            }
+
+            function _disableOrgWhenStatusIsAssignedPI (method, source, objectType, attributes, errors, warnings, infos) {
                 var statusAttr = attributes.getSingleAttributeOnName('status');
 
                 if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
@@ -256,7 +273,7 @@ angular.module('updates')
                     $log.error('Object-type ' + objectType+ ' not understood');
                     return undefined;
                 }
-                if (_.isUndefined(objectInterceptors[objectType].afterSubmitError)) {
+                if (_.isUndefined(objectInterceptors[objectType].beforeAddAttribute)) {
                     $log.info('Interceptor-function ' + objectType+ '.afterSubmitError not found');
                     return undefined;
                 }
@@ -299,12 +316,12 @@ angular.module('updates')
                 return interceptorFunc(method, source, objectType, requestAttributes, status, responseAttributes, errors, warnings, infos);
             };
 
-            logicInterceptor.beforeAddAttribute = function (method, source, objectType, objectAttributes, addableAtrinutes) {
+            logicInterceptor.beforeAddAttribute = function (method, source, objectType, objectAttributes, addableAttributes) {
                 var interceptorFunc = _getBeforeAddAttribute(objectType);
                 if (_.isUndefined(interceptorFunc)) {
                     return false;
                 }
-                return interceptorFunc(method, source, objectType, objectAttributes, addableAtrinutes);
+                return interceptorFunc(method, source, objectType, objectAttributes, addableAttributes);
             };
 
 
