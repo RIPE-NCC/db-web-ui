@@ -53,9 +53,7 @@ angular.module('updates')
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
-                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAtributes) {
-                        return _removeSponsoringOrgWhenStatusIsAssignedPI(method, source, objectType, objectAttributes, addableAtributes);
-                    }
+                    beforeAddAttribute: undefined
                 },
                 domain: {
                     beforeEdit: undefined,
@@ -79,7 +77,7 @@ angular.module('updates')
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
                     beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAtributes) {
-                        return _removeSponsoringOrgWhenStatusIsAssignedPI(method, source, objectType, objectAttributes, addableAtributes);
+                        return _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAtributes);
                     }
                 },
                 inetnum: {
@@ -90,7 +88,7 @@ angular.module('updates')
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
                     beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAtributes) {
-                        return _removeSponsoringOrgWhenStatusIsAssignedPI(method, source, objectType, objectAttributes, addableAtributes);
+                        return _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAtributes);
                     }
                 },
                 'inet-rtr': {
@@ -197,11 +195,11 @@ angular.module('updates')
                 }
             };
 
-            function _removeSponsoringOrgWhenStatusIsAssignedPI(method, source, objectType, objectAttributes, addableAttributes) {
+            // https://www.ripe.net/participate/policies/proposals/2012-08
+            function _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes) {
                 var statusAttr = objectAttributes.getSingleAttributeOnName('status');
 
-                if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
-                    console.log(JSON.stringify(addableAttributes.removeAttributeWithName('sponsoring-org')));
+                if(statusAttr && statusAttr.value != 'ASSIGNED PI' && statusAttr.value != 'ASSIGNED ANYCAST' && statusAttr.value != 'LEGACY') {
                     addableAttributes.removeAttributeWithName('sponsoring-org');
                 }
 

@@ -26,33 +26,108 @@ describe('updates: ScreenLogicInterceptor', function () {
         );
     }
 
+    it('should not remove sponsoring org from inet6num addable attributes when status is LEGACY', function() {
 
-    //"ASSIGNED-PI" or "ASSIGNED-ANYCAST".
-    it('should remove sponsoring org from intnum when status is ASSIGNED-PI', function() {
+        var inet6NumSubject = _wrap('inet6num', inet6NumAttributes);
+        inet6NumSubject.setSingleAttributeOnName('status', 'LEGACY');
 
-        var inet6NumSubject = whoisResources.wrapAndEnrichAttributes('inet6num', inet6NumAttributes);
-        var addableAttributes = whoisResources.wrapAndEnrichAttributes('inet6num', inet6NumSubject.getAddableAttributes('inet6num', inet6NumSubject));
+        var addableAttributes = _wrap('inet6num', inet6NumSubject.getAddableAttributes('inet6num', inet6NumSubject));
 
         var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inet6num', inet6NumSubject, addableAttributes);
 
         var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
+        expect(sponsoringOrgAttr).not.toBeUndefined();
+    });
 
+    it('should not remove sponsoring org from inet6num addable attributes when status is ASSIGNED-PI', function() {
+
+        var inet6NumSubject = _wrap('inet6num', inet6NumAttributes);
+        inet6NumSubject.setSingleAttributeOnName('status', 'ASSIGNED PI');
+
+        var addableAttributes = _wrap('inet6num', inet6NumSubject.getAddableAttributes('inet6num', inet6NumSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inet6num', inet6NumSubject, addableAttributes);
+
+        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
+        expect(sponsoringOrgAttr).not.toBeUndefined();
+    });
+
+    it('should not remove sponsoring org from inet6num addable attributes when status is ASSIGNED-ANYCAST', function() {
+
+        var inet6NumSubject = _wrap('inet6num', inet6NumAttributes);
+        inet6NumSubject.setSingleAttributeOnName('status', 'ASSIGNED ANYCAST');
+
+        var addableAttributes = _wrap('inet6num', inet6NumSubject.getAddableAttributes('inet6num', inet6NumSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inet6num', inet6NumSubject, addableAttributes);
+
+        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
+        expect(sponsoringOrgAttr).not.toBeUndefined();
+    });
+
+    it('should remove sponsoring org from inet6num addable attributes when status is not ASSIGNED-PI or ASSIGNED-ANYCAST', function() {
+
+        var inet6NumSubject = _wrap('inet6num', inet6NumAttributes);
+        inet6NumSubject.setSingleAttributeOnName('status', 'ASSIGNED');
+
+        var addableAttributes = _wrap('inet6num', inet6NumSubject.getAddableAttributes('inet6num', inet6NumSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inet6num', inet6NumSubject, addableAttributes);
+
+        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
         expect(sponsoringOrgAttr).toBeUndefined();
     });
 
-    it('should not remove sponsoring org from int6num when status is not ASSIGNED-PI', function() {
+    it('should not remove sponsoring org from inetnum addable attributes when status is LEGACY', function() {
 
-        var inet6NumSubject = whoisResources.wrapAndEnrichAttributes('inet6num', inet6NumAttributes);
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('status', 'LEGACY');
 
-        inet6NumSubject.setSingleAttributeOnName('status', 'ASSIGNED');
+        var addableAttributes = _wrap('inetnum', inetNumSubject.getAddableAttributes('inetnum', inetNumSubject));
 
-        var addableAttributes = whoisResources.wrapAndEnrichAttributes('inet6num', inet6NumSubject.getAddableAttributes('inet6num', inet6NumSubject));
-
-        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inet6num', inet6NumSubject, addableAttributes);
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inetnum', inetNumSubject, addableAttributes);
 
         var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
-
         expect(sponsoringOrgAttr).not.toBeUndefined();
+    });
+
+    it('should not remove sponsoring org from inetnum addable attributes when status is ASSIGNED-PI', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('status', 'ASSIGNED PI');
+
+        var addableAttributes = _wrap('inetnum', inetNumSubject.getAddableAttributes('inetnum', inetNumSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inetnum', inetNumSubject, addableAttributes);
+
+        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
+        expect(sponsoringOrgAttr).not.toBeUndefined();
+    });
+
+    it('should not remove sponsoring org from inetnum addable attributes when status is ASSIGNED-ANYCAST', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('status', 'ASSIGNED ANYCAST');
+
+        var addableAttributes = _wrap('inetnum', inetNumSubject.getAddableAttributes('inetnum', inetNumSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inetnum', inetNumSubject, addableAttributes);
+
+        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
+        expect(sponsoringOrgAttr).not.toBeUndefined();
+    });
+
+    it('should remove sponsoring org from inetnum addable attributes when status is not ASSIGNED-PI or ASSIGNED-ANYCAST', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('status', 'ASSIGNED');
+
+        var addableAttributes = _wrap('inetnum', inetNumSubject.getAddableAttributes('inetnum', inetNumSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inetnum', inetNumSubject, addableAttributes);
+
+        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
+        expect(sponsoringOrgAttr).toBeUndefined();
     });
 
     it('should call before-edit interceptor for person', function() {
@@ -78,6 +153,10 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(infos.length).toBe(0);
     });
 
+
+    var _wrap = function(type, attrs) {
+        return whoisResources.wrapAndEnrichAttributes(type, attrs);
+    };
 
     var inet6NumAttributes =  [{
         name : 'inet6num',
@@ -126,5 +205,51 @@ describe('updates: ScreenLogicInterceptor', function () {
         value : 'RIPE'
     } ];
 
+    var inetNumAttributes =  [{
+        name : 'inetnum',
+        value : '192.0.0.0 - 192.0.0.255'
+    }, {
+        name : 'netname',
+        value : 'FICIX-V6-20020201'
+    }, {
+        name : 'descr',
+        value : 'Finnish Communication and Internet Exchange - FICIX ryy'
+    }, {
+        name : 'country',
+        value : 'FI'
+    }, {
+        name : 'org',
+        value : 'ORG-Fr4-RIPE'
+    }, {
+        name : 'admin-c',
+        value : 'JM289-RIPE'
+    }, {
+        name : 'tech-c',
+        value : 'JM289-RIPE'
+    }, {
+        name : 'mnt-by',
+        value : 'RIPE-NCC-END-MNT'
+    }, {
+        name : 'mnt-by',
+        value : 'jome-mnt'
+    }, {
+        name : 'mnt-domains',
+        value : 'jome-mnt'
+    }, {
+        name : 'notify',
+        value : '***@ficix.fi'
+    }, {
+        name : 'status',
+        value : 'ASSIGNED PI'
+    }, {
+        name : 'created',
+        value : '2002-08-06T05:54:20Z'
+    }, {
+        name : 'last-modified',
+        value : '2016-03-06T10:58:07Z'
+    }, {
+        name : 'source',
+        value : 'RIPE'
+    } ];
 
 });
