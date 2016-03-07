@@ -56,7 +56,6 @@ describe('updates: ScreenLogicInterceptor', function () {
         var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'aut-num', autNumSubject);
 
         var orgAttr = attributes.getSingleAttributeOnName('org');
-        console.log(JSON.stringify(orgAttr));
         expect(orgAttr.$$disable).toBe(true);
     });
 

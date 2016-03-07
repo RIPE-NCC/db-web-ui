@@ -217,72 +217,23 @@ angular.module('updates')
                 return attributes;
             }
 
-            function _getBeforeEditFilter(objectType) {
+            function _getInterceptorFunc(objectType, actionName) {
                 if(_.isUndefined(objectInterceptors[objectType])) {
                     $log.error('Object-type ' + objectType+ ' not understood');
                     return undefined;
                 }
-                if (_.isUndefined(objectInterceptors[objectType].beforeEdit)) {
-                    $log.info('Interceptor-function  ' + objectType+ '.beforeEdit not found');
+                if (_.isUndefined(objectInterceptors[objectType][actionName])) {
+                    $log.info('Interceptor-function ' + objectType+ '.' +actionName+ ' not found');
                     return undefined;
                 }
-
-                return objectInterceptors[objectType].beforeEdit;
-            }
-
-            function _getAfterEditFilter(objectType) {
-                if(_.isUndefined(objectInterceptors[objectType])) {
-                    $log.error('Object-type ' + objectType+ ' not understood');
-                    return undefined;
-                }
-                if (_.isUndefined(objectInterceptors[objectType].afterEdit)) {
-                    $log.info('Interceptor-function ' + objectType+ '.afterEdit not found');
-                    return undefined;
-                }
-                return objectInterceptors[objectType].afterEdit;
-            }
-
-            function _getAfterSubmitSuccessFilter(objectType) {
-                if(_.isUndefined(objectInterceptors[objectType])) {
-                    $log.error('Object-type ' + objectType+ ' not understood');
-                    return undefined;
-                }
-                if (_.isUndefined(objectInterceptors[objectType].afterSubmitSuccess)) {
-                    $log.info('Interceptor-function ' + objectType+ '.afterSubmitSuccess not found');
-                    return undefined;
-                }
-                return objectInterceptors[objectType].afterSubmitSuccess;
-            }
-
-            function _getAfterSubmitErrorFilter(objectType) {
-                if(_.isUndefined(objectInterceptors[objectType])) {
-                    $log.error('Object-type ' + objectType+ ' not understood');
-                    return undefined;
-                }
-                if (_.isUndefined(objectInterceptors[objectType].afterSubmitError)) {
-                    $log.info('Interceptor-function ' + objectType+ '.afterSubmitError not found');
-                    return undefined;
-                }
-                return objectInterceptors[objectType].afterSubmitError;
-            }
-
-            function _getBeforeAddAttribute(objectType) {
-                if(_.isUndefined(objectInterceptors[objectType])) {
-                    $log.error('Object-type ' + objectType+ ' not understood');
-                    return undefined;
-                }
-                if (_.isUndefined(objectInterceptors[objectType].beforeAddAttribute)) {
-                    $log.info('Interceptor-function ' + objectType+ '.afterSubmitError not found');
-                    return undefined;
-                }
-                return objectInterceptors[objectType].beforeAddAttribute;
+                return objectInterceptors[objectType][actionName];
             }
 
             var logicInterceptor = {};
 
             logicInterceptor.beforeEdit = function (method, source, objectType, attributes, errors, warnings, infos) {
                 var attrs = globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
-                var interceptorFunc = _getBeforeEditFilter(objectType);
+                var interceptorFunc = _getInterceptorFunc(objectType, 'beforeEdit');
                 if (_.isUndefined(interceptorFunc)) {
                     return attrs;
                 }
@@ -291,7 +242,7 @@ angular.module('updates')
 
             logicInterceptor.afterEdit = function (method, source, objectType, attributes, errors, warnings, infos) {
                 var attrs = globalInterceptor.beforeEdit(method, source, objectType, attributes, errors, warnings, infos);
-                var interceptorFunc = _getAfterEditFilter(objectType);
+                var interceptorFunc = _getInterceptorFunc(objectType, 'afterEdit');
                 if (_.isUndefined(interceptorFunc)) {
                     return attrs;
                 }
@@ -299,7 +250,7 @@ angular.module('updates')
             };
 
             logicInterceptor.afterSubmitSuccess = function (method, source, objectType, responseAttributes, warnings, infos) {
-                var interceptorFunc = _getAfterSubmitSuccessFilter(objectType);
+                var interceptorFunc = _getInterceptorFunc(objectType, 'afterSubmitSuccess');
                 if (_.isUndefined(interceptorFunc)) {
                     return false;
                 }
@@ -307,7 +258,7 @@ angular.module('updates')
             };
 
             logicInterceptor.afterSubmitError = function (method, source, objectType, requestAttributes, status, responseAttributes, errors, warnings, infos) {
-                var interceptorFunc = _getAfterSubmitErrorFilter(objectType);
+                var interceptorFunc = _getInterceptorFunc(objectType, 'afterSubmitError');
                 if (_.isUndefined(interceptorFunc)) {
                     return false;
                 }
@@ -315,7 +266,7 @@ angular.module('updates')
             };
 
             logicInterceptor.beforeAddAttribute = function (method, source, objectType, objectAttributes, addableAttributes) {
-                var interceptorFunc = _getBeforeAddAttribute(objectType);
+                var interceptorFunc = _getInterceptorFunc(objectType, 'beforeAddAttribute');
                 if (_.isUndefined(interceptorFunc)) {
                     return false;
                 }
