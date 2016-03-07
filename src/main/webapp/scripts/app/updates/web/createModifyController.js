@@ -346,7 +346,10 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes), _getPasswordsForRestCall())
+                var originalAddableAttributes = $scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes);
+                var addableAttributes = ScreenLogicInterceptor.beforeAddAttribute($scope.operation, $scope.source, $scope.objectType, $scope.attributes, originalAddableAttributes);
+
+                ModalService.openAddAttributeModal(addableAttributes, _getPasswordsForRestCall())
                     .then(function (selectedItem) {
                         addSelectedAttribute(selectedItem, attr);
                     });

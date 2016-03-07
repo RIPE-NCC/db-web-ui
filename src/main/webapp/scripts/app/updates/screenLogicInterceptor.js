@@ -36,13 +36,15 @@ angular.module('updates')
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'as-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'aut-num': {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
@@ -50,19 +52,22 @@ angular.module('updates')
                     },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 domain: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'filter-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 inet6num: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
@@ -70,7 +75,8 @@ angular.module('updates')
                     },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 inetnum: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
@@ -78,43 +84,50 @@ angular.module('updates')
                     },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'inet-rtr': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'irt': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'key-cert': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 mntner: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 organisation: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'peering-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 person: {
                     beforeEdit:
@@ -124,49 +137,57 @@ angular.module('updates')
                         },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 poem: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'poetic-form': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 role: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 route: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 route6: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'route-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 },
                 'rtr-set': {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined
+                    afterSubmitError: undefined,
+                    beforeAddAttribute:undefined
                 }
             };
 
@@ -230,6 +251,18 @@ angular.module('updates')
                 return objectInterceptors[objectType].afterSubmitError;
             }
 
+            function _getBeforeAddAttribute(objectType) {
+                if(_.isUndefined(objectInterceptors[objectType])) {
+                    $log.error('Object-type ' + objectType+ ' not understood');
+                    return undefined;
+                }
+                if (_.isUndefined(objectInterceptors[objectType].afterSubmitError)) {
+                    $log.info('Interceptor-function ' + objectType+ '.afterSubmitError not found');
+                    return undefined;
+                }
+                return objectInterceptors[objectType].beforeAddAttribute;
+            }
+
             var logicInterceptor = {};
 
             logicInterceptor.beforeEdit = function (method, source, objectType, attributes, errors, warnings, infos) {
@@ -265,6 +298,15 @@ angular.module('updates')
                 }
                 return interceptorFunc(method, source, objectType, requestAttributes, status, responseAttributes, errors, warnings, infos);
             };
+
+            logicInterceptor.beforeAddAttribute = function (method, source, objectType, objectAttributes, addableAtrinutes) {
+                var interceptorFunc = _getBeforeAddAttribute(objectType);
+                if (_.isUndefined(interceptorFunc)) {
+                    return false;
+                }
+                return interceptorFunc(method, source, objectType, objectAttributes, addableAtrinutes);
+            };
+
 
             return logicInterceptor;
         }]);

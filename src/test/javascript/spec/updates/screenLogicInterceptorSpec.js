@@ -32,9 +32,8 @@ describe('updates: ScreenLogicInterceptor', function () {
         var warnings = [];
         var infos = [];
 
-        printAttrs('before:', before );
+
         var after = interceptor.beforeEdit('Create', 'RIPE', 'person', before, errors, warnings, infos );
-        printAttrs('after:', after);
 
         expect(after.length).toEqual(6);
 
