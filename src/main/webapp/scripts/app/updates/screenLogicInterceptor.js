@@ -174,8 +174,8 @@ angular.module('updates')
                 var statusAttr = attributes.getSingleAttributeOnName('status');
 
                 if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
-                    var sponsoringOrgAttr = attributes.getSingleAttributeOnName('org');
-                    if(sponsoringOrgAttr) sponsoringOrgAttr.$$disable = true;
+                    var org = attributes.getSingleAttributeOnName('org');
+                    if(org) org.$$disable = true;
                 }
 
                 return attributes;
