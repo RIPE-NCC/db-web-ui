@@ -347,6 +347,8 @@ angular.module('webUpdates')
 
             function displayAddAttributeDialog(attr) {
                 var originalAddableAttributes = $scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes);
+                originalAddableAttributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, originalAddableAttributes);
+
                 var addableAttributes = ScreenLogicInterceptor.beforeAddAttribute($scope.operation, $scope.source, $scope.objectType, $scope.attributes, originalAddableAttributes);
 
                 ModalService.openAddAttributeModal(addableAttributes, _getPasswordsForRestCall())
