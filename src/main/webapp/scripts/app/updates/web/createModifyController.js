@@ -118,7 +118,6 @@ angular.module('webUpdates')
                     }
 
                     $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, mandatoryAttributesOnObjectType);
-                    $scope.attributes.setSingleAttributeOnName('source', $scope.source);
                     $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
 
                     _fetchDataForCreate();

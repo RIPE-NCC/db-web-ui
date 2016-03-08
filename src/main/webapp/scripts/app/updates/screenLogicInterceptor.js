@@ -6,8 +6,6 @@ angular.module('updates')
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
-            // - defaults
-            // - limit allowed values (like org-type: OTHER)
             // - add abuse-c attribute although optional
             // - disable read-only attributes
             // - convert error intop success for creation of pending route(6)
@@ -19,10 +17,7 @@ angular.module('updates')
             var globalInterceptor = {
                 beforeEdit:
                     function (method, source, objectType, attributes, errors, warnings, infos) {
-                        if( method === 'Create') {
-                            attributes.setSingleAttributeOnName('source', source);
-                        }
-                        return attributes;
+                        return _loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos);
                     },
                 afterEdit:
                     function(method, source, objectType, attributes, errors, warnings, infos) {
@@ -215,9 +210,11 @@ angular.module('updates')
                 return attributes;
             }
 
-            function _loadDefaultValues(method, source, objectType, attributes, errors, warnings, infos) {
-                //$scope.attributes.setSingleAttributeOnName('source', source);
-
+            function _loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos) {
+                if( method === 'Create') {
+                    attributes.setSingleAttributeOnName('source', source);
+                }
+                return attributes;
             }
 
             // https://www.ripe.net/participate/policies/proposals/2012-08

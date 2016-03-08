@@ -165,10 +165,10 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     it('should set default nic-ndl before-edit person on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('person', true));
+
         var errors = [];
         var warnings = [];
         var infos = [];
-
         var after = interceptor.beforeEdit('Create', 'RIPE', 'person', before, errors, warnings, infos);
 
         var nicHdle = after.getAllAttributesOnName('nic-hdl');
@@ -196,10 +196,10 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     it('should set default nic-ndl before-edit role on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('role', true));
+
         var errors = [];
         var warnings = [];
         var infos = [];
-
         var after = interceptor.beforeEdit('Create', 'RIPE', 'role', before, errors, warnings, infos);
 
         var nicHdle = after.getAllAttributesOnName('nic-hdl');
@@ -227,10 +227,10 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     it('should set default organisation before-edit organisation on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+
         var errors = [];
         var warnings = [];
         var infos = [];
-
         var after = interceptor.beforeEdit('Create', 'RIPE', 'organisation', before, errors, warnings, infos);
 
         var organisation = after.getAllAttributesOnName('organisation');
@@ -258,10 +258,10 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     it('should set default org-type before-edit organisation on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+
         var errors = [];
         var warnings = [];
         var infos = [];
-
         var after = interceptor.beforeEdit('Create', 'RIPE', 'organisation', before, errors, warnings, infos);
 
         var organisation = after.getAllAttributesOnName('org-type');
@@ -284,6 +284,21 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual('org-type');
         expect(organisation[0].value).toEqual('SOME_ORG_TYPE');
+
+    });
+
+    it('should set default source before-edit any object on Create operation', function() {
+        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Create', 'TEST', 'organisation', before, errors, warnings, infos);
+
+        var organisation = after.getAllAttributesOnName('source');
+        expect(organisation.length).toEqual(1);
+        expect(organisation[0].name).toEqual('source');
+        expect(organisation[0].value).toEqual('TEST');
 
     });
 
