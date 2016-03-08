@@ -136,8 +136,7 @@ angular.module('updates')
                 person: {
                     beforeEdit:
                         function (method, source, objectType, attributes, errors, warnings, infos) {
-                            attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                            return attributes;
+                            return _replaceNicHdl(method, source, objectType, attributes, errors, warnings, infos);
                         },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
@@ -159,7 +158,10 @@ angular.module('updates')
                     beforeAddAttribute:undefined
                 },
                 role: {
-                    beforeEdit: undefined,
+                    beforeEdit:
+                        function (method, source, objectType, attributes, errors, warnings, infos) {
+                            return _replaceNicHdl(method, source, objectType, attributes, errors, warnings, infos);
+                        },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
@@ -194,6 +196,21 @@ angular.module('updates')
                     beforeAddAttribute:undefined
                 }
             };
+
+            function _replaceNicHdl(method, source, objectType, attributes, errors, warnings, infos) {
+                if(method === 'Create') {
+                    attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+                }
+                return attributes;
+            }
+
+            function _loadDefaultValues(method, source, objectType, attributes, errors, warnings, infos) {
+                //$scope.attributes.setSingleAttributeOnName('source', source);
+
+                //$scope.attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
+                //// other types only settable with override
+                //$scope.attributes.setSingleAttributeOnName('org-type', 'OTHER');
+            }
 
             // https://www.ripe.net/participate/policies/proposals/2012-08
             function _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes) {

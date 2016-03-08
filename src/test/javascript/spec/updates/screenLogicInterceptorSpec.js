@@ -163,29 +163,71 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(sponsoringOrgAttr).toBeUndefined();
     });
 
-    it('should call before-edit interceptor for person', function() {
+    it('should set nic-ndl before-edit person on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('person', true));
         var errors = [];
         var warnings = [];
         var infos = [];
 
+        var after = interceptor.beforeEdit('Create', 'RIPE', 'person', before, errors, warnings, infos);
 
-        var after = interceptor.beforeEdit('Create', 'RIPE', 'person', before, errors, warnings, infos );
-
-        expect(after.length).toEqual(6);
-
-        expect(after.getSingleAttributeOnName('source').value).toBe('RIPE');
+        //expect(after.getSingleAttributeOnName('source').value).toBe('RIPE');
 
         var nicHdle = after.getAllAttributesOnName('nic-hdl');
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual('nic-hdl');
         expect(nicHdle[0].value).toEqual('AUTO-1');
 
-        expect(errors.length).toBe(0);
-        expect(warnings.length).toBe(0);
-        expect(infos.length).toBe(0);
     });
 
+    it('should NOT set nic-ndl before-edit person on Modify operation', function() {
+        var personSubject = _wrap('person', personAttributes);
+        personSubject.setSingleAttributeOnName('nic-hdl', 'SOME_NIC');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'person', personSubject, errors, warnings, infos);
+
+        var nicHdle = after.getAllAttributesOnName('nic-hdl');
+        expect(nicHdle.length).toEqual(1);
+        expect(nicHdle[0].name).toEqual('nic-hdl');
+        expect(nicHdle[0].value).toEqual('SOME_NIC');
+
+    });
+
+    it('should set nic-ndl before-edit role on Create operation', function() {
+        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('role', true));
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+
+        var after = interceptor.beforeEdit('Create', 'RIPE', 'role', before, errors, warnings, infos);
+
+        //expect(after.getSingleAttributeOnName('source').value).toBe('RIPE');
+
+        var nicHdle = after.getAllAttributesOnName('nic-hdl');
+        expect(nicHdle.length).toEqual(1);
+        expect(nicHdle[0].name).toEqual('nic-hdl');
+        expect(nicHdle[0].value).toEqual('AUTO-1');
+
+    });
+
+    it('should NOT set nic-ndl before-edit role on Modify operation', function() {
+        var roleSubject = _wrap('person', roleAttributes);
+        roleSubject.setSingleAttributeOnName('nic-hdl', 'SOME_NIC');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'role ', roleSubject, errors, warnings, infos);
+
+        var nicHdle = after.getAllAttributesOnName('nic-hdl');
+        expect(nicHdle.length).toEqual(1);
+        expect(nicHdle[0].name).toEqual('nic-hdl');
+        expect(nicHdle[0].value).toEqual('SOME_NIC');
+
+    });
 
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
@@ -300,6 +342,52 @@ describe('updates: ScreenLogicInterceptor', function () {
     }, {
         name : 'mnt-by',
         value : 'RIPE-NCC-END-MNT'
+    }, {
+        name : 'source',
+        value : 'RIPE'
+    } ];
+
+    var personAttributes = [{
+        name : 'person',
+        value : 'Name Removed'
+    }, {
+        name : 'address',
+        value : 'The Netherlands'
+    }, {
+        name : 'phone',
+        value : '+31 20 ... ....'
+    }, {
+        name : 'e-mail',
+        value : '****@ripe.net'
+    }, {
+        name : 'mnt-by',
+        value : 'aardvark-mnt'
+    }, {
+        name : 'nic-hdl',
+        value : 'DW-RIPE'
+    }, {
+        name : 'source',
+        value : 'RIPE'
+    } ];
+
+    var roleAttributes = [{
+        name : 'role',
+        value : 'Name Removed'
+    }, {
+        name : 'address',
+        value : 'The Netherlands'
+    }, {
+        name : 'phone',
+        value : '+31 20 ... ....'
+    }, {
+        name : 'e-mail',
+        value : '****@ripe.net'
+    }, {
+        name : 'mnt-by',
+        value : 'aardvark-mnt'
+    }, {
+        name : 'nic-hdl',
+        value : 'DW-RIPE'
     }, {
         name : 'source',
         value : 'RIPE'
