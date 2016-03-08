@@ -163,15 +163,13 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(sponsoringOrgAttr).toBeUndefined();
     });
 
-    it('should set nic-ndl before-edit person on Create operation', function() {
+    it('should set default nic-ndl before-edit person on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('person', true));
         var errors = [];
         var warnings = [];
         var infos = [];
 
         var after = interceptor.beforeEdit('Create', 'RIPE', 'person', before, errors, warnings, infos);
-
-        //expect(after.getSingleAttributeOnName('source').value).toBe('RIPE');
 
         var nicHdle = after.getAllAttributesOnName('nic-hdl');
         expect(nicHdle.length).toEqual(1);
@@ -180,7 +178,7 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     });
 
-    it('should NOT set nic-ndl before-edit person on Modify operation', function() {
+    it('should NOT set default nic-ndl before-edit person on Modify operation', function() {
         var personSubject = _wrap('person', personAttributes);
         personSubject.setSingleAttributeOnName('nic-hdl', 'SOME_NIC');
 
@@ -196,15 +194,13 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     });
 
-    it('should set nic-ndl before-edit role on Create operation', function() {
+    it('should set default nic-ndl before-edit role on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('role', true));
         var errors = [];
         var warnings = [];
         var infos = [];
 
         var after = interceptor.beforeEdit('Create', 'RIPE', 'role', before, errors, warnings, infos);
-
-        //expect(after.getSingleAttributeOnName('source').value).toBe('RIPE');
 
         var nicHdle = after.getAllAttributesOnName('nic-hdl');
         expect(nicHdle.length).toEqual(1);
@@ -213,7 +209,7 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     });
 
-    it('should NOT set nic-ndl before-edit role on Modify operation', function() {
+    it('should NOT set default nic-ndl before-edit role on Modify operation', function() {
         var roleSubject = _wrap('person', roleAttributes);
         roleSubject.setSingleAttributeOnName('nic-hdl', 'SOME_NIC');
 
@@ -229,168 +225,262 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     });
 
+    it('should set default organisation before-edit organisation on Create operation', function() {
+        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+
+        var after = interceptor.beforeEdit('Create', 'RIPE', 'organisation', before, errors, warnings, infos);
+
+        var organisation = after.getAllAttributesOnName('organisation');
+        expect(organisation.length).toEqual(1);
+        expect(organisation[0].name).toEqual('organisation');
+        expect(organisation[0].value).toEqual('AUTO-1');
+
+    });
+
+    it('should NOT set default organisation before-edit organisation on Modify operation', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('organisation', 'SOME_ORG');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        var organisation = after.getAllAttributesOnName('organisation');
+        expect(organisation.length).toEqual(1);
+        expect(organisation[0].name).toEqual('organisation');
+        expect(organisation[0].value).toEqual('SOME_ORG');
+
+    });
+
+    it('should set default org-type before-edit organisation on Create operation', function() {
+        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+
+        var after = interceptor.beforeEdit('Create', 'RIPE', 'organisation', before, errors, warnings, infos);
+
+        var organisation = after.getAllAttributesOnName('org-type');
+        expect(organisation.length).toEqual(1);
+        expect(organisation[0].name).toEqual('org-type');
+        expect(organisation[0].value).toEqual('OTHER');
+
+    });
+
+    it('should NOT set default org-type before-edit organisation on Modify operation', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('org-type', 'SOME_ORG_TYPE');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        var organisation = after.getAllAttributesOnName('org-type');
+        expect(organisation.length).toEqual(1);
+        expect(organisation[0].name).toEqual('org-type');
+        expect(organisation[0].value).toEqual('SOME_ORG_TYPE');
+
+    });
+
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
     };
 
     var inet6NumAttributes =  [{
-        name : 'inet6num',
-        value : '2001:7f8:7::/48'
+        name :'inet6num',
+        value :'2001:7f8:7::/48'
     }, {
-        name : 'netname',
-        value : 'FICIX-V6-20020201'
+        name :'netname',
+        value :'FICIX-V6-20020201'
     }, {
-        name : 'descr',
-        value : 'Finnish Communication and Internet Exchange - FICIX ryy'
+        name :'descr',
+        value :'Finnish Communication and Internet Exchange - FICIX ryy'
     }, {
-        name : 'country',
-        value : 'FI'
+        name :'country',
+        value :'FI'
     }, {
-        name : 'org',
-        value : 'ORG-Fr4-RIPE'
+        name :'org',
+        value :'ORG-Fr4-RIPE'
     }, {
-        name : 'admin-c',
-        value : 'JM289-RIPE'
+        name :'admin-c',
+        value :'JM289-RIPE'
     }, {
-        name : 'tech-c',
-        value : 'JM289-RIPE'
+        name :'tech-c',
+        value :'JM289-RIPE'
     }, {
-        name : 'mnt-by',
-        value : 'RIPE-NCC-END-MNT'
+        name :'mnt-by',
+        value :'RIPE-NCC-END-MNT'
     }, {
-        name : 'mnt-by',
-        value : 'jome-mnt'
+        name :'mnt-by',
+        value :'jome-mnt'
     }, {
-        name : 'mnt-domains',
-        value : 'jome-mnt'
+        name :'mnt-domains',
+        value :'jome-mnt'
     }, {
-        name : 'notify',
-        value : '***@ficix.fi'
+        name :'notify',
+        value :'***@ficix.fi'
     }, {
-        name : 'status',
-        value : 'ASSIGNED PI'
+        name :'status',
+        value :'ASSIGNED PI'
     }, {
-        name : 'created',
-        value : '2002-08-06T05:54:20Z'
+        name :'created',
+        value :'2002-08-06T05:54:20Z'
     }, {
-        name : 'last-modified',
-        value : '2016-03-06T10:58:07Z'
+        name :'last-modified',
+        value :'2016-03-06T10:58:07Z'
     }, {
-        name : 'source',
-        value : 'RIPE'
+        name :'source',
+        value :'RIPE'
     } ];
 
     var inetNumAttributes =  [{
-        name : 'inetnum',
-        value : '192.0.0.0 - 192.0.0.255'
+        name :'inetnum',
+        value :'192.0.0.0 - 192.0.0.255'
     }, {
-        name : 'netname',
-        value : 'FICIX-V6-20020201'
+        name :'netname',
+        value :'FICIX-V6-20020201'
     }, {
-        name : 'descr',
-        value : 'Finnish Communication and Internet Exchange - FICIX ryy'
+        name :'descr',
+        value :'Finnish Communication and Internet Exchange - FICIX ryy'
     }, {
-        name : 'country',
-        value : 'FI'
+        name :'country',
+        value :'FI'
     }, {
-        name : 'org',
-        value : 'ORG-Fr4-RIPE'
+        name :'org',
+        value :'ORG-Fr4-RIPE'
     }, {
-        name : 'admin-c',
-        value : 'JM289-RIPE'
+        name :'admin-c',
+        value :'JM289-RIPE'
     }, {
-        name : 'tech-c',
-        value : 'JM289-RIPE'
+        name :'tech-c',
+        value :'JM289-RIPE'
     }, {
-        name : 'mnt-by',
-        value : 'RIPE-NCC-END-MNT'
+        name :'mnt-by',
+        value :'RIPE-NCC-END-MNT'
     }, {
-        name : 'mnt-by',
-        value : 'jome-mnt'
+        name :'mnt-by',
+        value :'jome-mnt'
     }, {
-        name : 'mnt-domains',
-        value : 'jome-mnt'
+        name :'mnt-domains',
+        value :'jome-mnt'
     }, {
-        name : 'notify',
-        value : '***@ficix.fi'
+        name :'notify',
+        value :'***@ficix.fi'
     }, {
-        name : 'status',
-        value : 'ASSIGNED PI'
+        name :'status',
+        value :'ASSIGNED PI'
     }, {
-        name : 'created',
-        value : '2002-08-06T05:54:20Z'
+        name :'created',
+        value :'2002-08-06T05:54:20Z'
     }, {
-        name : 'last-modified',
-        value : '2016-03-06T10:58:07Z'
+        name :'last-modified',
+        value :'2016-03-06T10:58:07Z'
     }, {
-        name : 'source',
-        value : 'RIPE'
+        name :'source',
+        value :'RIPE'
     } ];
 
     var autNumAttributes =  [{
-        name : 'aut-num',
-        value : 'AS123'
+        name :'aut-num',
+        value :'AS123'
     }, {
-        name : 'as-name',
-        value : 'EXAMPLE'
+        name :'as-name',
+        value :'EXAMPLE'
     }, {
-        name : 'status',
-        value : 'ASSIGNED PI'
+        name :'status',
+        value :'ASSIGNED PI'
     }, {
-        name : 'org',
-        value : 'ORG-Fr4-RIPE'
+        name :'org',
+        value :'ORG-Fr4-RIPE'
     }, {
-        name : 'mnt-by',
-        value : 'RIPE-NCC-END-MNT'
+        name :'mnt-by',
+        value :'RIPE-NCC-END-MNT'
     }, {
-        name : 'source',
-        value : 'RIPE'
+        name :'source',
+        value :'RIPE'
     } ];
 
     var personAttributes = [{
-        name : 'person',
-        value : 'Name Removed'
+        name :'person',
+        value :'Name Removed'
     }, {
-        name : 'address',
-        value : 'The Netherlands'
+        name :'address',
+        value :'The Netherlands'
     }, {
-        name : 'phone',
-        value : '+31 20 ... ....'
+        name :'phone',
+        value :'+31 20 ... ....'
     }, {
-        name : 'e-mail',
-        value : '****@ripe.net'
+        name :'e-mail',
+        value :'****@ripe.net'
     }, {
-        name : 'mnt-by',
-        value : 'aardvark-mnt'
+        name :'mnt-by',
+        value :'aardvark-mnt'
     }, {
-        name : 'nic-hdl',
-        value : 'DW-RIPE'
+        name :'nic-hdl',
+        value :'DW-RIPE'
     }, {
-        name : 'source',
-        value : 'RIPE'
+        name :'source',
+        value :'RIPE'
     } ];
 
     var roleAttributes = [{
-        name : 'role',
-        value : 'Name Removed'
+        name :'role',
+        value :'Name Removed'
     }, {
-        name : 'address',
-        value : 'The Netherlands'
+        name :'address',
+        value :'The Netherlands'
     }, {
-        name : 'phone',
-        value : '+31 20 ... ....'
+        name :'phone',
+        value :'+31 20 ... ....'
     }, {
-        name : 'e-mail',
-        value : '****@ripe.net'
+        name :'e-mail',
+        value :'****@ripe.net'
     }, {
-        name : 'mnt-by',
-        value : 'aardvark-mnt'
+        name :'mnt-by',
+        value :'aardvark-mnt'
     }, {
-        name : 'nic-hdl',
-        value : 'DW-RIPE'
+        name :'nic-hdl',
+        value :'DW-RIPE'
     }, {
-        name : 'source',
-        value : 'RIPE'
+        name :'source',
+        value :'RIPE'
+    } ];
+
+    var organisationAttributes =  [ {
+         name : 'organisation',
+         value :'ORG-WA56-RIPE'
+    }, {
+         name :'org-name',
+         value :'Rop Gonggrijp'
+    }, {
+         name :'org-type',
+         value :'OTHER'
+    }, {
+         name :'address',
+         value :'The Netherlands'
+    }, {
+         name :'abuse-c',
+         value :'AC29651-RIPE'
+    }, {
+         name :'admin-c',
+         value :'WH869-RIPE'
+    }, {
+         name :'tech-c',
+         value :'WH869-RIPE'
+    }, {
+         name :'mnt-ref',
+         value :'WHAT-A-MESH-MNT'
+    }, {
+         name :'mnt-by',
+         value :'WHAT-A-MESH-MNT'
+    }, {
+         name :'source',
+         value :'RIPE'
     } ];
 
 });

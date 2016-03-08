@@ -119,9 +119,6 @@ angular.module('webUpdates')
 
                     $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, mandatoryAttributesOnObjectType);
                     $scope.attributes.setSingleAttributeOnName('source', $scope.source);
-                    $scope.attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
-                    // other types only settable with override
-                    $scope.attributes.setSingleAttributeOnName('org-type', 'OTHER');
                     $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
 
                     _fetchDataForCreate();
