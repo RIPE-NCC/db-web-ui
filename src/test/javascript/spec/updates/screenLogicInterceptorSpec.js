@@ -34,7 +34,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inet6num', inet6NumSubject);
 
         var orgAttr = attributes.getSingleAttributeOnName('org');
-        expect(orgAttr.$$disable).toBe(true);
+        expect(orgAttr.$$meta.$$disable).toBe(true);
     });
 
     it('should disable org attribute from inetnum when status is ASSIGNED PI', function() {
@@ -45,7 +45,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetNumSubject);
 
         var orgAttr = attributes.getSingleAttributeOnName('org');
-        expect(orgAttr.$$disable).toBe(true);
+        expect(orgAttr.$$meta.$$disable).toBe(true);
     });
 
     it('should disable org attribute from aut-num when status is ASSIGNED PI', function() {
@@ -56,7 +56,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'aut-num', autNumSubject);
 
         var orgAttr = attributes.getSingleAttributeOnName('org');
-        expect(orgAttr.$$disable).toBe(true);
+        expect(orgAttr.$$meta.$$disable).toBe(true);
     });
 
     it('should not remove sponsoring org from inet6num addable attributes when status is LEGACY', function() {

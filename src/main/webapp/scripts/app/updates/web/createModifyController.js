@@ -372,7 +372,7 @@ angular.module('webUpdates')
 
             function isToBeDisabled(attribute) {
 
-                if (attribute.$$disable) {
+                if (attribute.$$meta.$$disable) {
                     return true;
                 }
 
@@ -399,7 +399,6 @@ angular.module('webUpdates')
 
                     var whoisResources = resp;
 
-                    _interceptOnSubmitSuccess
                     // Post-process atttribute after submit-success using screen-logic-interceptor
                     if( _interceptOnSubmitSuccess( $scope.operation, resp.status, whoisResources.getAttributes()) === false ) {
 

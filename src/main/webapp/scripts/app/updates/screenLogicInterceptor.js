@@ -211,7 +211,9 @@ angular.module('updates')
 
                 if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
                     var org = attributes.getSingleAttributeOnName('org');
-                    if(org) org.$$disable = true;
+                    if(org) {
+                        org.$$meta.$$disable = true;
+                    }
                 }
 
                 return attributes;
