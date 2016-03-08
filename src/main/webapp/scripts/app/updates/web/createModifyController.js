@@ -373,10 +373,6 @@ angular.module('webUpdates')
 
                 if (attribute.name === 'created') {
                     return true;
-                } else if (attribute.name === 'org-type') {
-                    return true;
-                } else if (attribute.name === 'source') {
-                    return true;
                 } else if ($scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
                     return true;
                 }

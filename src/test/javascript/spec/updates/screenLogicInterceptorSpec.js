@@ -175,7 +175,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual('nic-hdl');
         expect(nicHdle[0].value).toEqual('AUTO-1');
-
+        expect(nicHdle[0].$$meta.$$disable).toBe(true);
     });
 
     it('should NOT set default nic-ndl before-edit person on Modify operation', function() {
@@ -191,6 +191,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual('nic-hdl');
         expect(nicHdle[0].value).toEqual('SOME_NIC');
+        expect(nicHdle[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -206,6 +207,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual('nic-hdl');
         expect(nicHdle[0].value).toEqual('AUTO-1');
+        expect(nicHdle[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -216,12 +218,13 @@ describe('updates: ScreenLogicInterceptor', function () {
         var errors = [];
         var warnings = [];
         var infos = [];
-        var after = interceptor.beforeEdit('Modify', 'RIPE', 'role ', roleSubject, errors, warnings, infos);
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'person', roleSubject, errors, warnings, infos);
 
         var nicHdle = after.getAllAttributesOnName('nic-hdl');
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual('nic-hdl');
         expect(nicHdle[0].value).toEqual('SOME_NIC');
+        expect(nicHdle[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -237,6 +240,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual('organisation');
         expect(organisation[0].value).toEqual('AUTO-1');
+        expect(organisation[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -253,6 +257,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual('organisation');
         expect(organisation[0].value).toEqual('SOME_ORG');
+        expect(organisation[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -268,6 +273,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual('org-type');
         expect(organisation[0].value).toEqual('OTHER');
+        expect(organisation[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -284,6 +290,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual('org-type');
         expect(organisation[0].value).toEqual('SOME_ORG_TYPE');
+        expect(organisation[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -299,6 +306,7 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual('source');
         expect(organisation[0].value).toEqual('TEST');
+        expect(organisation[0].$$meta.$$disable).toBe(true);
 
     });
 

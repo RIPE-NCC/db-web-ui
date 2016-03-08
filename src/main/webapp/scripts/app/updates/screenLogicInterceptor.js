@@ -7,7 +7,6 @@ angular.module('updates')
             // TODO: start
             // Move the following stuff from Create-modify-controller:
             // - add abuse-c attribute although optional
-            // - disable read-only attributes
             // - convert error intop success for creation of pending route(6)
             // - strip nulls
             // - RPSL password for resources
@@ -197,8 +196,9 @@ angular.module('updates')
 
             function _loadPersonRoleDefaults(method, source, objectType, attributes, errors, warnings, infos) {
                 if(method === 'Create') {
-                    attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
+                    attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1')
                 }
+                attributes.getSingleAttributeOnName('nic-hdl').$$meta.$$disable = true;
                 return attributes;
             }
 
@@ -207,6 +207,8 @@ angular.module('updates')
                     attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                     attributes.setSingleAttributeOnName('org-type', 'OTHER');
                 }
+                attributes.getSingleAttributeOnName('organisation').$$meta.$$disable = true;
+                attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
                 return attributes;
             }
 
@@ -214,6 +216,7 @@ angular.module('updates')
                 if( method === 'Create') {
                     attributes.setSingleAttributeOnName('source', source);
                 }
+                attributes.getSingleAttributeOnName('source').$$meta.$$disable = true;
                 return attributes;
             }
 
