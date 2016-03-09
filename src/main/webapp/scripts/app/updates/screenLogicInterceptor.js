@@ -198,7 +198,6 @@ angular.module('updates')
                 if(method === 'Create') {
                     attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1')
                 }
-                attributes.getSingleAttributeOnName('nic-hdl').$$meta.$$disable = true;
                 return attributes;
             }
 
@@ -207,7 +206,6 @@ angular.module('updates')
                     attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                     attributes.setSingleAttributeOnName('org-type', 'OTHER');
                 }
-                attributes.getSingleAttributeOnName('organisation').$$meta.$$disable = true;
                 attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
                 return attributes;
             }
