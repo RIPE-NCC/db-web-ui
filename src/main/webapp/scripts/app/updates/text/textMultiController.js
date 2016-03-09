@@ -14,6 +14,7 @@ angular.module('textUpdates')
             $scope.isWebMode = isWebMode;
             $scope.submit = submit;
             $scope.didAllActionsComplete = didAllActionsComplete;
+            $scope.autoKeyMap = {};
 
             _initialisePage();
 
@@ -119,7 +120,7 @@ angular.module('textUpdates')
             function _doesExist(source, object, passwords) {
                 var deferredObject = $q.defer();
 
-                if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.trim(object.name) === 'AUTO-1') {
+                if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.startsWith(_.trim(object.name), 'AUTO-')) {
                     deferredObject.resolve('Create');
                 } else {
                     RestService.fetchObject(source, object.type, object.name, passwords, true).then(
