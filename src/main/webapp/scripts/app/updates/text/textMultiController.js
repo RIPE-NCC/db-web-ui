@@ -57,10 +57,6 @@ angular.module('textUpdates')
                 return $scope.textMode === true;
             }
 
-            function _determineAction( exists ) {
-                return exists === true ? 'modify' : 'create';
-            }
-
             function _verify(source, rpsl, passwords, overrides) {
                 $scope.autoKeyMap = {};
 
@@ -336,6 +332,7 @@ angular.module('textUpdates')
                 } else if (object.success === true) {
                     object.statusStyle = {color: 'green'};
                 }
+                object.action = _determineAction(object.exists)
             }
 
             function _getPkey(objectType, attributes) {
@@ -373,6 +370,9 @@ angular.module('textUpdates')
                 }
             }
 
+            function _determineAction( exists ) {
+                return exists === true ? 'modify' : 'create';
+            }
 
             function _initializeActionCounter(objects) {
                 $scope.actionsPending = objects.length;
