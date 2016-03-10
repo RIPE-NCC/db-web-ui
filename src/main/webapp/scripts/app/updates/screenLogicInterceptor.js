@@ -6,7 +6,6 @@ angular.module('updates')
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
-            // - add abuse-c attribute although optional
             // - convert error intop success for creation of pending route(6)
             // - strip nulls
             // - RPSL password for resources

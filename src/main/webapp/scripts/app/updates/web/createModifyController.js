@@ -573,14 +573,7 @@ angular.module('webUpdates')
                 );
             }
 
-            function _interceptBeforeEdit( method, attributes ) {
-                var errorMessages = [];
-                var warningMessages = [];
-                var infoMessages = [];
-                var attributes = ScreenLogicInterceptor.beforeEdit(method,
-                    $scope.source, $scope.objectType, attributes,
-                    errorMessages, warningMessages, infoMessages );
-
+            function loadAlerts(errorMessages, warningMessages, infoMessages) {
                 errorMessages.forEach(function(error) {
                     AlertService.addGlobalError(error);
                 });
@@ -592,6 +585,19 @@ angular.module('webUpdates')
                 infoMessages.forEach(function(info) {
                     AlertService.addGlobalInfo(info);
                 });
+
+                return;
+            }
+
+            function _interceptBeforeEdit( method, attributes ) {
+                var errorMessages = [];
+                var warningMessages = [];
+                var infoMessages = [];
+                var attributes = ScreenLogicInterceptor.beforeEdit(method,
+                    $scope.source, $scope.objectType, attributes,
+                    errorMessages, warningMessages, infoMessages );
+
+                loadAlerts(errorMessages, warningMessages, infoMessages);
 
                 return attributes;
             }
@@ -603,17 +609,9 @@ angular.module('webUpdates')
                 var attributes = ScreenLogicInterceptor.afterEdit(method,
                     $scope.source, $scope.objectType, attributes,
                     errorMessages, warningMessages, infoMessages );
-                errorMessages.forEach(function(error) {
-                    AlertService.addGlobalError(error);
-                });
 
-                warningMessages.forEach(function(warning) {
-                    AlertService.addGlobalWarning(warning);
-                });
+                loadAlerts(errorMessages, warningMessages, infoMessages);
 
-                infoMessages.forEach(function(info) {
-                    AlertService.addGlobalInfo(info);
-                });
                 return attributes;
             }
 
@@ -624,17 +622,9 @@ angular.module('webUpdates')
                 var status = ScreenLogicInterceptor.afterSubmitSuccess(method,
                     $scope.source, $scope.objectType, responseAttributes,
                     warningMessages, infoMessages );
-                errorMessages.forEach(function(error) {
-                    AlertService.addGlobalError(error);
-                });
 
-                warningMessages.forEach(function(warning) {
-                    AlertService.addGlobalWarning(warning);
-                });
+                loadAlerts(errorMessages, warningMessages, infoMessages);
 
-                infoMessages.forEach(function(info) {
-                    AlertService.addGlobalInfo(info);
-                });
                 return status;
             }
 
@@ -646,17 +636,9 @@ angular.module('webUpdates')
                     $scope.source, $scope.objectType,
                     requestAttributes,  status, responseAttributes,
                     errorMessages, warningMessages, infoMessages );
-                errorMessages.forEach(function(error) {
-                    AlertService.addGlobalError(error);
-                });
 
-                warningMessages.forEach(function(warning) {
-                    AlertService.addGlobalWarning(warning);
-                });
+                loadAlerts(errorMessages, warningMessages, infoMessages);
 
-                infoMessages.forEach(function(info) {
-                    AlertService.addGlobalInfo(info);
-                });
                 return status;
             }
 
