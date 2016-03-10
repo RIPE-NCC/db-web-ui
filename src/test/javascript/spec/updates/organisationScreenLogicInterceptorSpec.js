@@ -90,6 +90,54 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
 
     });
 
+    it('should add empty abuse-c by default organisation before-edit organisation on Create operation', function() {
+        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Create', 'RIPE', 'organisation', before, errors, warnings, infos);
+
+        var abuseC = after.getAllAttributesOnName('abuse-c');
+        expect(abuseC.length).toEqual(1);
+        expect(abuseC[0].name).toEqual('abuse-c');
+        expect(abuseC[0].value).toEqual('');
+
+    });
+
+    it('should add flag if abuse-c is not present for the organisation before-edit organisation on Modify operation', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+
+        var abuseC = after.getAllAttributesOnName('abuse-c');
+        expect(abuseC.length).toEqual(1);
+        expect(abuseC[0].name).toEqual('abuse-c');
+        expect(abuseC[0].value).toEqual('');
+        expect(abuseC[0].$$meta.$$missing).toBe(true);
+        expect(warnings.length).toEqual(1);
+        expect(warnings[0]).toEqual('<p>There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p><p>Please specify the abuse-c attribute below.</p>');
+
+    });
+
+    it('should add warning if abuse-c is not present for the organisation before-edit organisation on Modify operation', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        expect(warnings.length).toEqual(1);
+        expect(warnings[0]).toEqual('<p>There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p><p>Please specify the abuse-c attribute below.</p>');
+
+    });
+
+
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
     };
@@ -107,8 +155,8 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
          name :'address',
          value :'The Netherlands'
     }, {
-         name :'abuse-c',
-         value :'AC29651-RIPE'
+        name :'e-mail',
+        value :'bla@blu.net'
     }, {
          name :'admin-c',
          value :'WH869-RIPE'

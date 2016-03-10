@@ -612,6 +612,7 @@ describe('webUpdates: ModifyController for organisation', function () {
     var MessageStore;
     var WhoisResources;
     var MntnerService;
+    var OrganisationHelper;
     var ModalService;
     var OBJECT_TYPE = 'organisation';
     var SOURCE = 'RIPE';
@@ -620,7 +621,7 @@ describe('webUpdates: ModifyController for organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -630,6 +631,7 @@ describe('webUpdates: ModifyController for organisation', function () {
             $httpBackend = _$httpBackend_;
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
+            OrganisationHelper = _OrganisationHelper_;
             MntnerService = _MntnerService_;
             ModalService = {
                 openCreateRoleForAbuseCAttribute: function(){
@@ -740,53 +742,15 @@ describe('webUpdates: ModifyController for organisation', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should add abuse-c with no value by default', function () {
-        $scope.operation == $scope.MODIFY_OPERATION;
-        var abuseC = _.find($scope.attributes, function(attr) {
-            return attr.name === 'abuse-c';
-        });
-
-        expect(abuseC.value).toBe('');
-    });
-
-    it('should not display abuse-c banner if no sttribute is loaded', function () {
-        $scope.attributes = [];
-        expect($scope.missingAbuseC()).toBe(false);
-    });
-
-    it('should not display abuse-c banner if abuse-c is available', function () {
-        $scope.operation == $scope.MODIFY_OPERATION;
-        $scope.attributes = $scope.attributes.addAttributeAfterType({name: 'abuse-c', value: 'some abuse-c'}, {name: 'e-mail'});
-        expect($scope.missingAbuseC()).toBe(false);
-    });
-
-    it('should display abuse-c banner if abuse-c is not available', function () {
-        $scope.operation == $scope.MODIFY_OPERATION;
-        $scope.attributes.removeNullAttributes();
-        expect($scope.missingAbuseC()).toBe(true);
-    });
-
-    it('should not display abuse-c banner if operation is not modify', function () {
-        $scope.operation == $scope.CREATE_OPERATION;
-        $scope.attributes = $scope.attributes.addAttributeAfterType({name: 'abuse-c', value: 'some abuse-c'}, {name: 'e-mail'});
-        expect($scope.missingAbuseC()).toBe(false);
-    });
-
-    it('should not display abuse-c banner if object type is not organisation', function () {
-        $scope.operation == $scope.MODIFY_OPERATION;
-        $scope.objectType == 'blabla';
-        $scope.attributes = $scope.attributes.addAttributeAfterType({name: 'abuse-c', value: 'some abuse-c'}, {name: 'e-mail'});
-
-        expect($scope.missingAbuseC()).toBe(false);
-    });
-
     it('should populate abuse-c with new role\'s nic-hdl', function () {
+        $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
         $scope.createRoleForAbuseCAttribute();
 
         expect($scope.attributes.getSingleAttributeOnName('abuse-c').value).toBe('SR11027-RIPE');
     });
 
     it('should populate $scope.roleForAbuseC', function () {
+        $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
         $scope.createRoleForAbuseCAttribute();
 
         expect($scope.roleForAbuseC).toBeDefined();

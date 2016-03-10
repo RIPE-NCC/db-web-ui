@@ -53,7 +53,6 @@ angular.module('webUpdates')
             $scope.isFormValid = isFormValid;
             $scope.isToBeDisabled = isToBeDisabled;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
-            $scope.missingAbuseC = missingAbuseC;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
             _initialisePage();
@@ -118,8 +117,6 @@ angular.module('webUpdates')
                     }
 
                     $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, mandatoryAttributesOnObjectType);
-                    $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-
                     _fetchDataForCreate();
 
                 } else {
@@ -155,14 +152,6 @@ angular.module('webUpdates')
                         }
                     }
                 );
-            }
-
-            function missingAbuseC() {
-                if(_.isEmpty($scope.attributes)) {
-                    return false;
-                };
-
-                return $scope.operation == $scope.MODIFY_OPERATION && $scope.objectType == 'organisation' && !OrganisationHelper.containsAbuseC($scope.attributes);
             }
 
             function onMntnerAdded(item) {
@@ -591,15 +580,19 @@ angular.module('webUpdates')
                 var attributes = ScreenLogicInterceptor.beforeEdit(method,
                     $scope.source, $scope.objectType, attributes,
                     errorMessages, warningMessages, infoMessages );
-                if( errorMessages.length > 0 ) {
-                    AlertService.setGlobalErrors(errorMessages);
-                }
-                if( warningMessages.length > 0 ) {
-                    AlertService.setGlobalWarnings(warningMessages);
-                }
-                if( infoMessages.length > 0 ) {
-                    AlertService.setGlobalInfos(infoMessages);
-                }
+
+                errorMessages.forEach(function(error) {
+                    AlertService.addGlobalError(error);
+                });
+
+                warningMessages.forEach(function(warning) {
+                    AlertService.addGlobalWarning(warning);
+                });
+
+                infoMessages.forEach(function(info) {
+                    AlertService.addGlobalInfo(info);
+                });
+
                 return attributes;
             }
 
@@ -610,15 +603,17 @@ angular.module('webUpdates')
                 var attributes = ScreenLogicInterceptor.afterEdit(method,
                     $scope.source, $scope.objectType, attributes,
                     errorMessages, warningMessages, infoMessages );
-                if( errorMessages.length > 0 ) {
-                    AlertService.setGlobalErrors(errorMessages);
-                }
-                if( warningMessages.length > 0 ) {
-                    AlertService.setGlobalWarnings(warningMessages);
-                }
-                if( infoMessages.length > 0 ) {
-                    AlertService.setGlobalInfos(infoMessages);
-                }
+                errorMessages.forEach(function(error) {
+                    AlertService.addGlobalError(error);
+                });
+
+                warningMessages.forEach(function(warning) {
+                    AlertService.addGlobalWarning(warning);
+                });
+
+                infoMessages.forEach(function(info) {
+                    AlertService.addGlobalInfo(info);
+                });
                 return attributes;
             }
 
@@ -629,15 +624,17 @@ angular.module('webUpdates')
                 var status = ScreenLogicInterceptor.afterSubmitSuccess(method,
                     $scope.source, $scope.objectType, responseAttributes,
                     warningMessages, infoMessages );
-                if( errorMessages.length > 0 ) {
-                    AlertService.setGlobalErrors(errorMessages);
-                }
-                if( warningMessages.length > 0 ) {
-                    AlertService.setGlobalWarnings(warningMessages);
-                }
-                if( infoMessages.length > 0 ) {
-                    AlertService.setGlobalInfos(infoMessages);
-                }
+                errorMessages.forEach(function(error) {
+                    AlertService.addGlobalError(error);
+                });
+
+                warningMessages.forEach(function(warning) {
+                    AlertService.addGlobalWarning(warning);
+                });
+
+                infoMessages.forEach(function(info) {
+                    AlertService.addGlobalInfo(info);
+                });
                 return status;
             }
 
@@ -649,15 +646,17 @@ angular.module('webUpdates')
                     $scope.source, $scope.objectType,
                     requestAttributes,  status, responseAttributes,
                     errorMessages, warningMessages, infoMessages );
-                if( errorMessages.length > 0 ) {
-                    AlertService.setGlobalErrors(errorMessages);
-                }
-                if( warningMessages.length > 0 ) {
-                    AlertService.setGlobalWarnings(warningMessages);
-                }
-                if( infoMessages.length > 0 ) {
-                    AlertService.setGlobalInfos(infoMessages);
-                }
+                errorMessages.forEach(function(error) {
+                    AlertService.addGlobalError(error);
+                });
+
+                warningMessages.forEach(function(warning) {
+                    AlertService.addGlobalWarning(warning);
+                });
+
+                infoMessages.forEach(function(info) {
+                    AlertService.addGlobalInfo(info);
+                });
                 return status;
             }
 
@@ -699,10 +698,6 @@ angular.module('webUpdates')
 
                         // starting point for further editing
                         $scope.maintainers.object = _extractEnrichMntnersFromObject($scope.attributes);
-
-                        if(missingAbuseC()) {
-                            $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-                        }
 
                         // Post-process atttribute before showing using screen-logic-interceptor
                         $scope.attributes = _interceptBeforeEdit($scope.MODIFY_OPERATION, $scope.attributes);
