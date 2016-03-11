@@ -1,15 +1,11 @@
 'use strict';
 
 angular.module('updates')
-    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources',
-        function ($log, WhoisResources) {
+    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper',
+        function ($log, WhoisResources, OrganisationHelper) {
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
-            // - defaults
-            // - limit allowed values (like org-type: OTHER)
-            // - add abuse-c attribute although optional
-            // - disable read-only attributes
             // - convert error intop success for creation of pending route(6)
             // - strip nulls
             // - RPSL password for resources
@@ -19,10 +15,7 @@ angular.module('updates')
             var globalInterceptor = {
                 beforeEdit:
                     function (method, source, objectType, attributes, errors, warnings, infos) {
-                        if( method === 'Create') {
-                            attributes.setSingleAttributeOnName('source', source);
-                        }
-                        return attributes;
+                        return _loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos);
                     },
                 afterEdit:
                     function(method, source, objectType, attributes, errors, warnings, infos) {
@@ -120,7 +113,10 @@ angular.module('updates')
                     beforeAddAttribute:undefined
                 },
                 organisation: {
-                    beforeEdit: undefined,
+                    beforeEdit:
+                        function (method, source, objectType, attributes, errors, warnings, infos) {
+                            return _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
+                        },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
@@ -136,8 +132,7 @@ angular.module('updates')
                 person: {
                     beforeEdit:
                         function (method, source, objectType, attributes, errors, warnings, infos) {
-                            attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                            return attributes;
+                            return _loadPersonRoleDefaults(method, source, objectType, attributes, errors, warnings, infos);
                         },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
@@ -159,7 +154,10 @@ angular.module('updates')
                     beforeAddAttribute:undefined
                 },
                 role: {
-                    beforeEdit: undefined,
+                    beforeEdit:
+                        function (method, source, objectType, attributes, errors, warnings, infos) {
+                            return _loadPersonRoleDefaults(method, source, objectType, attributes, errors, warnings, infos);
+                        },
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
@@ -194,6 +192,46 @@ angular.module('updates')
                     beforeAddAttribute:undefined
                 }
             };
+
+            function _loadPersonRoleDefaults(method, source, objectType, attributes, errors, warnings, infos) {
+                if(method === 'Create') {
+                    attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1')
+                }
+                return attributes;
+            }
+
+            function _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos) {
+                if(method === 'Create') {
+                    attributes = OrganisationHelper.addAbuseC(objectType, attributes);
+                    attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
+                    attributes.setSingleAttributeOnName('org-type', 'OTHER');
+                }
+
+                if(method === 'Modify' && !OrganisationHelper.containsAbuseC(attributes)) {
+                    attributes = OrganisationHelper.addAbuseC(objectType, attributes);
+
+                    attributes.getSingleAttributeOnName('abuse-c').$$meta.$$missing = true;
+                    warnings.push('' +
+                        '<p>'+
+                            'There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.'+
+                        '</p>'+
+                        '<p>'+
+                            'Please specify the abuse-c attribute below.'+
+                        '</p>' +
+                    '');
+                }
+
+                attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
+                return attributes;
+            }
+
+            function _loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos) {
+                if( method === 'Create') {
+                    attributes.setSingleAttributeOnName('source', source);
+                }
+                attributes.getSingleAttributeOnName('source').$$meta.$$disable = true;
+                return attributes;
+            }
 
             // https://www.ripe.net/participate/policies/proposals/2012-08
             function _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes) {

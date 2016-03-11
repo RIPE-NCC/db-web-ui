@@ -101,11 +101,11 @@ angular.module('dbWebApp')
                     return am.name === attr.name;
                 });
                 if( !_.isUndefined(attrMeta) ) {
-                    var idx;
                     if (!_.isUndefined(attr.$$meta)) {
-                        idx = attr.$$meta.$$idx;
+                        enrichedAttrs.push(attr);
+                    } else {
+                        enrichedAttrs.push(_wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attr.link, attr['referenced-type'], attrMeta, undefined));
                     }
-                    enrichedAttrs.push(_wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attr.link, attr['referenced-type'], attrMeta, idx));
                 }
             });
 
