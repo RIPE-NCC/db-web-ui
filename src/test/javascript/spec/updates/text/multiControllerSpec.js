@@ -307,6 +307,7 @@ describe('textUpdates: TextMultiController', function () {
             exists:false,
             type: 'person',
             name: 'AUTO-1',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
             success: true,
             errors:[],
         });
@@ -340,6 +341,7 @@ describe('textUpdates: TextMultiController', function () {
             exists: false,
             type: 'person',
             name: 'AUTO-1',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
             success: true,
             errors:[],
         });
@@ -365,6 +367,7 @@ describe('textUpdates: TextMultiController', function () {
             action: 'modify',
             type: 'person',
             name: 'MM1-RIPE',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
             success: true,
             errors:[],
         });
@@ -396,6 +399,7 @@ describe('textUpdates: TextMultiController', function () {
             action: 'modify',
             type: 'person',
             name: 'MM1-RIPE',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
             success: true,
             errors:[],
         });
@@ -420,6 +424,7 @@ describe('textUpdates: TextMultiController', function () {
             action: 'modify',
             type: 'person',
             name: 'MM1-RIPE',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
             success: true,
             deleteReason:'just because',
             passwords:['secret'],
@@ -455,6 +460,7 @@ describe('textUpdates: TextMultiController', function () {
             action: 'modify',
             type: 'person',
             name: 'MM1-RIPE',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
             success: true,
             deleteReason:'just because',
             passwords:['secret'],

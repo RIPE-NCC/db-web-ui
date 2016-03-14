@@ -23,16 +23,28 @@ angular.module('textUpdates')
             }
 
             var callWrapper = function(index, deferred) {
-                $log.info("Processing task " + (index+1) + " of " + tasks.length);
-                tasks[index]().then(function() {
-                    var nextIndex = index + 1;
-                    if (nextIndex < tasks.length) {
-                        callWrapper(nextIndex, deferred);
-                    } else {
-                        $log.info("All tasks processed");
-                        deferred.resolve();
-                    }
-                });
+                $log.info("Start processing task " + (index+1) + " of " + tasks.length);
+                tasks[index]().then(
+                    function() {
+                        $log.info("Success performing task " + (index+1) + " of " + tasks.length);
+                        var nextIndex = index + 1;
+                        if (nextIndex < tasks.length) {
+                            callWrapper(nextIndex, deferred);
+                        } else {
+                            $log.info("All tasks processed");
+                            deferred.resolve();
+                        }
+                    }, function() {
+                        $log.error("Error performing task " + (index+1) + " of " + tasks.length);
+                        // go on in case of error
+                        var nextIndex = index + 1;
+                        if (nextIndex < tasks.length) {
+                            callWrapper(nextIndex, deferred);
+                        } else {
+                            $log.info("All tasks processed");
+                            deferred.resolve();
+                        }
+                    });
 
                 return deferred.promise;
             };

@@ -239,7 +239,7 @@ angular.module('textUpdates')
                             deleteReason:object.deleteReason,
                         };
                         object.rpsl = RpslService.toRpsl(obj);
-                        if( !_.isUndefined(object.deleteReason) ) {
+                        if( object.deleted !== true) {
                             object.displayUrl = _asDisplayLink($scope.objects.source, object);
                         }
                         object.textupdatesUrl = undefined;
@@ -299,6 +299,8 @@ angular.module('textUpdates')
                         RestService.deleteObject(source, object.type, object.name, object.deleteReason, false,
                             object.passwords, false).then(
                             function (result) {
+                                object.deleted = true;
+                                object.exists = false;
                                 _setStatus(object, true, 'Delete success' );
 
                                 deferredObject.resolve(result);
