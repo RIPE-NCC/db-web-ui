@@ -4,13 +4,13 @@ angular.module('textUpdates')
     .service('RpslService', ['$log', function ($log) {
         var TOTAL_ATTR_LENGTH = 15;
 
-        this.toRpsl = function (attributes) {
+        this.toRpsl = function (obj) {
             var spacing = 0;
 
             // If the first attribute of an object has no value, we are composing a new template.
             // In tghis case we should using padding (max 15 spaces)
             // otherwise we will inherit existing formatting
-            var f = _.first(attributes);
+            var f = _.first(obj.attributes);
             if( !_.isUndefined(f)) {
                 if((_.isUndefined(f.value) || _.isEmpty(f.value)) || f.value == 'AUTO-1') {
                     spacing = TOTAL_ATTR_LENGTH;
@@ -18,7 +18,7 @@ angular.module('textUpdates')
             }
 
             var rpslData = '';
-            _.each(attributes, function (item) {
+            _.each(obj.attributes, function (item) {
                 rpslData = rpslData.concat(_.padRight(item.name + ':', spacing, ' '));
                 if (!_.isUndefined(item.value)) {
                     rpslData = rpslData.concat(item.value);
@@ -26,31 +26,68 @@ angular.module('textUpdates')
                 if (!_.isUndefined(item.comment)) {
                     rpslData = rpslData.concat(' # ' + item.comment);
                 }
+
                 rpslData = rpslData.concat('\n');
             });
+
+            if( !_.isUndefined(obj.deleteReason) ) {
+                rpslData = rpslData.concat('delete:'+ obj.deleteReason + '\n');
+            }
+
+            if( !_.isUndefined(obj.passwords) && obj.passwords.length > 0 ) {
+                _.each(obj.passwords, function(pwd){
+                    rpslData = rpslData.concat('password:'+ pwd + '\n');
+                });
+            }
+
+            if( !_.isUndefined(obj.override) ) {
+                rpslData = rpslData.concat('override:'+ obj.override + '\n');
+            }
+
             return rpslData;
         };
 
         this.fromRpsl = function(rpslText) {
-            return this.fromRpslWithPasswords(rpslText, [], []);
-        }
-
-        this.fromRpslWithPasswords = function(rpslText, passwords, overrides) {
             var objs = [];
 
             _.each(rpslText.split('\n\n'), function(objRpsl) {
                 if( objRpsl !== '') {
-                    objs.push(_parseSingleObject(objRpsl,passwords, overrides ));
+                    var passwords = [];
+                    var overrides = [];
+                    var deleteReasons = [];
+
+                    var obj = {
+                        attributes: _parseSingleObject(objRpsl, passwords, overrides, deleteReasons),
+                        passwords:[],
+                        override:undefined,
+                        deleteReason:undefined
+                    };
+
+                    _stripDuplicates(passwords);
+                    if( passwords.length > 0 ){
+                        obj.passwords = passwords;
+                    }
+
+                    _stripDuplicates(overrides);
+                    if( overrides.length > 0 ){
+                        obj.override = overrides[0];
+                    }
+
+                    _stripDuplicates(deleteReasons);
+                    _stripDuplicates(deleteReasons);
+                    if( deleteReasons.length > 0 ) {
+                        obj.deleteReason = deleteReasons[0];
+                    }
+                    objs.push(obj);
                 }
             });
 
-            passwords = _stripDuplicates(passwords);
-            overrides = _stripDuplicates(overrides);
 
             return objs;
         }
 
         function _stripDuplicates( array ) {
+
             var uniqued = _.unique(_.clone(array));
             // don't copy into a new pointer, but leave existibg pointer in tact
             while (array.length) {
@@ -61,7 +98,7 @@ angular.module('textUpdates')
             });
         }
 
-        function _parseSingleObject( rpslText, passwords, overrides ) {
+        function _parseSingleObject( rpslText, passwords, overrides, deleteReasons ) {
             var attrs = [];
 
             var buffer = '';
@@ -77,10 +114,18 @@ angular.module('textUpdates')
                     var attr = _parseSingleAttribute(_.clone(buffer));
                     if(!_.isUndefined(attr)) {
                         var trimmed = _.trim(attr.value);
-                        if( attr.name === 'password' && !_.isEmpty(trimmed)) {
-                            passwords.push(trimmed);
-                        } else  if( attr.name === 'override'  && !_.isEmpty(trimmed)) {
-                            overrides.push(trimmed);
+                        if( attr.name === 'password' ) {
+                            if(!_.isEmpty(trimmed)) {
+                                passwords.push(trimmed);
+                            }
+                        } else  if( attr.name === 'override'  ) {
+                            if(!_.isEmpty(trimmed)) {
+                                overrides.push(trimmed);
+                            }
+                        } else  if( attr.name === 'delete'  ) {
+                            if( !_.isEmpty(trimmed)) {
+                                deleteReasons.push(trimmed);
+                            }
                         } else {
                             attrs.push(attr);
                         }

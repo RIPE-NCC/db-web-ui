@@ -71,9 +71,9 @@ angular.module('textUpdates')
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
 
                         TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name,
-                                $scope.mntners.sso, attributes, [], []).then(
+                                $scope.mntners.sso, attributes, $scope.psswords, $scope.override).then(
                             function(authenticated) {
-                                $log.error('Successfully authenticated');
+                                $log.debug('Successfully authenticated');
                                 _refreshObjectIfNeeded($scope.object.source, $scope.object.type, $scope.object.name);
                             },
                             function(authenticated) {
@@ -106,28 +106,33 @@ angular.module('textUpdates')
                 attributes.removeAttributeWithName('created');
                 attributes.removeAttributeWithName('last-modified');
 
-                $scope.object.rpsl = RpslService.toRpsl(attributes);
+                var obj = {
+                    attributes: attributes,
+                    passwords: $scope.passwords,
+                    override: $scope.override,
+                    //deleteReason: deleteReason,
+                }
+                $scope.object.rpsl = RpslService.toRpsl(obj);
                 $log.debug("RPSL:" +$scope.object.rpsl );
 
                 return attributes;
             }
 
             function submit() {
-                var overrides = [];
-                var objects = RpslService.fromRpslWithPasswords($scope.object.rpsl, $scope.passwords, overrides);
+                var objects = RpslService.fromRpsl($scope.object.rpsl);
                 if( objects.length > 1 ) {
                     AlertService.setGlobalError('Only a single object is allowed');
                     return;
                 }
-                var attributes = objects[0];
 
-                attributes = TextCommons.uncapitalize(attributes);
+                $scope.passwords = objects[0].passwords;
+                $scope.override = objects[0].override;
+                var attributes = TextCommons.uncapitalize(objects[0].attributes);
+
                 $log.debug("attributes:" + JSON.stringify(attributes));
-
                 if (!TextCommons.validate($scope.object.type, attributes)) {
                     return;
                 }
-                $log.error('Successfully validated');
 
                 if(CredentialsService.hasCredentials()) {
                     // todo: prevent duplicate password
@@ -135,9 +140,9 @@ angular.module('textUpdates')
                 }
 
                 TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name, $scope.mntners.sso, attributes,
-                        $scope.passwords, overrides).then(
+                        $scope.passwords, $scope.override).then(
                     function(authenticated) {
-                        $log.error('Successfully authenticated');
+                        $log.info('Successfully authenticated');
 
                         // combine all passwords
                         var combinedPaswords =_.union($scope.passwords, TextCommons.getPasswordsForRestCall( $scope.object.type));
@@ -146,7 +151,7 @@ angular.module('textUpdates')
 
                         $scope.restCalInProgress = true;
                         RestService.modifyObject($scope.object.source, $scope.object.type, $scope.object.name,
-                            WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPaswords, overrides, true).then(
+                            WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPaswords, $scope.override, true).then(
                             function(result) {
                                 $scope.restCalInProgress = false;
 

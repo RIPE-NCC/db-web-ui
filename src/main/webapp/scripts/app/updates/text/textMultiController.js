@@ -26,8 +26,6 @@ angular.module('textUpdates')
                 // extract parameters from the url
                 $scope.objects = {};
                 $scope.objects.source = $stateParams.source;
-                $scope.objects.passwords = [];
-                $scope.objects.overrides = [];
                 $scope.objects.rpsl = '';
 
                 $log.debug('TextMultiController: Url params:' +
@@ -41,7 +39,7 @@ angular.module('textUpdates')
                 AlertService.clearErrors();
 
                 $scope.textMode = false;
-                $scope.objects.objects = _verify($scope.objects.source, $scope.objects.rpsl, $scope.objects.passwords, $scope.objects.overrides);
+                $scope.objects.objects = _verify($scope.objects.source, $scope.objects.rpsl);
             }
 
             function isWebMode() {
@@ -57,47 +55,59 @@ angular.module('textUpdates')
                 return $scope.textMode === true;
             }
 
-            function _verify(source, rpsl, passwords, overrides) {
+            function _verify(source, rpsl) {
+
+                $log.info('_verify: source' + source + ', rpsl:'+ rpsl);
+
                 $scope.autoKeyMap = {};
 
                 var objects = [];
 
-                $log.debug("rpsl:" + rpsl);
+                var parsedObjs = RpslService.fromRpsl(rpsl);
+                $log.debug('parsed rpsl:' + JSON.stringify(parsedObjs));
 
-                var objs = RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
-                $log.debug("objects:" + JSON.stringify(objs));
+                _initializeActionCounter(parsedObjs);
+                _.each(parsedObjs, function(parsedObj) {
 
-                _initializeActionCounter(objs);
-                _.each(objs, function(attributes) {
                     // create a new object and add it to the array right away
                     var object  = {};
+                    object.passwords = parsedObj.passwords;
+                    object.override = parsedObj.override;
+                    object.deleteReason = parsedObj.deleteReason;
+
                     object.errors = [];
                     objects.push(object);
 
-                    attributes = TextCommons.uncapitalize(attributes);
+                    var attrs = TextCommons.uncapitalize(parsedObj.attributes);
 
                     // assume first attribute is type indicator
-                    object.type = attributes[0].name;
+                    object.type = attrs[0].name;
 
                     // parse
-                    object.rpsl = RpslService.toRpsl(attributes);
+                    object.rpsl = RpslService.toRpsl(parsedObj);
+
+                    $log.info('object:' + JSON.stringify(object));
 
                     // validate
-                    if (!TextCommons.validate(object.type, attributes, object.errors)) {
+                    if (!TextCommons.validate(object.type, attrs, object.errors)) {
+                        $log.info('validation error:' + JSON.stringify( object.errors));
                         _setStatus(object, false, 'Invalid syntax');
                         _markActionCompleted(object, 'syntax error');
                     } else {
+                        $log.info('start checking if exists:');
 
                         // determine primary key pf object
-                        object.attributes = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
+                        object.attributes = WhoisResources.wrapAndEnrichAttributes(object.type, attrs);
                         object.name = _getPkey(object.type, object.attributes);
 
-                        _identifyAutoKeys(object.type, attributes, $scope.autoKeyMap );
+                        _identifyAutoKeys(object.type, attrs, $scope.autoKeyMap );
                         $log.info('auto-key-store:' + JSON.stringify($scope.autoKeyMap));
 
                         _setStatus(object, undefined, 'Fetching');
                         object.exists = undefined;
-                        _doesExist(source, object, passwords).then(
+                        var passwords = object.passwords;
+                        var override = object.override;
+                        _doesExist(source, object, passwords, override).then(
                             function (exists) {
                                 if( exists === true ) {
                                     object.exists = true;
@@ -122,8 +132,8 @@ angular.module('textUpdates')
                 return objects;
             }
 
-            function _identifyAutoKeys( objectType, attributes, autoKeyMap ) {
-                _.each(attributes, function( attr) {
+            function _identifyAutoKeys( objectType, attrs, autoKeyMap ) {
+                _.each(attrs, function( attr) {
                     var trimmedValue = _.trim(attr.value);
                     if(_.startsWith(trimmedValue, 'AUTO-')) {
                         var key = objectType + '.' + _.trim(attr.name);
@@ -155,8 +165,8 @@ angular.module('textUpdates')
                 });
             }
 
-            function _substituteAutoKeys( attributes, autoKeyMap ) {
-                _.each(attributes, function(attr) {
+            function _substituteAutoKeys( attrs, autoKeyMap ) {
+                _.each(attrs, function(attr) {
                     var trimmedValue = _.trim(attr.value);
                     if(_.startsWith(trimmedValue, 'AUTO-')) {
                         var autoMeta = autoKeyMap[trimmedValue];
@@ -168,19 +178,22 @@ angular.module('textUpdates')
                 });
             }
 
-            function _getAutoKeys(attributes) {
-                var attrs =  _.filter(attributes, function( attr) {
+            function _getAutoKeys(attrs) {
+                var attrs =  _.filter(attrs, function( attr) {
                     return _.startsWith(_.trim(attr.value), 'AUTO-');
                 });
                 return attrs;
             }
 
-            function _doesExist(source, object, passwords) {
+            function _doesExist(source, object, passwords, override) {
                 var deferredObject = $q.defer();
 
                 if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.startsWith(_.trim(object.name), 'AUTO-')) {
+                    $log.info( "Need need to perform fetch to check if exists");
                     deferredObject.resolve('Create');
                 } else {
+                    $log.info( "Perform fetch to check if exists");
+                    // TODO fetch with override
                     RestService.fetchObject(source, object.type, object.name, passwords, true).then(
                         function (result) {
                             $log.debug('Successfully fetched object ' + object.name );
@@ -214,13 +227,21 @@ angular.module('textUpdates')
                 var deferredObject = $q.defer();
 
                 _setStatus(object, undefined, 'Start ' + _determineAction(object.exists) );
-                _performAction($scope.objects.source, object, $scope.objects.passwords, $scope.objects.overrides).then(
+                _performAction($scope.objects.source, object).then(
                     function(whoisResources) {
                         object.name = whoisResources.getPrimaryKey();
                         object.oldRpsl = _.clone(object.rpsl);
                         object.attributes = whoisResources.getAttributes();
-                        object.rpsl = RpslService.toRpsl(object.attributes);
-                        object.displayUrl = _asDisplayLink($scope.objects.source, object);
+                        var obj = {
+                            attributes:object.attributes,
+                            passwords:object.passwords,
+                            override:object.override,
+                            deleteReason:object.deleteReason,
+                        };
+                        object.rpsl = RpslService.toRpsl(obj);
+                        if( object.deleted !== true ) {
+                            object.displayUrl = _asDisplayLink($scope.objects.source, object);
+                        }
                         object.textupdatesUrl = undefined;
                         object.errors = [];
                         object.warnings = whoisResources.getAllWarnings();
@@ -251,15 +272,9 @@ angular.module('textUpdates')
                 _.each($scope.objects.objects, function(object) {
                     $scope.objects.rpsl += ('\n'+ object.rpsl );
                 });
-                _.each($scope.objects.passwords, function(password) {
-                    $scope.objects.rpsl += ('password:'+ password + '\n');
-                });
-                _.each($scope.objects.overrides, function(override) {
-                    $scope.objects.rpsl += ('override:'+ override + '\n');
-                });
             }
 
-            function _performAction( source, object, passwords, overrides) {
+            function _performAction( source, object) {
                 var deferredObject = $q.defer();
 
                 if( object.errors.length > 0 ) {
@@ -267,7 +282,26 @@ angular.module('textUpdates')
                 } else {
                     $log.debug('Start performing action '+ _determineAction(object.exists) + '-' + object.type + '-' + object.name );
 
-                    if (object.exists === false) {
+                    if (!_.isUndefined(object.deleteReason) ) {
+                        // TODO: add support for override
+                        RestService.deleteObject(source, object.type, object.name, object.deleteReason, false,
+                            object.passwords, false).then(
+                            function (result) {
+                                object.deleted = true;
+                                _setStatus(object, true, 'Delete success' );
+
+                                deferredObject.resolve(result);
+                            },
+                            function (error) {
+                                _setStatus(object, false, 'Delete error' );
+
+                                if(!_.isEmpty(error.data.getAttributes())) {
+                                    ErrorReporterService.log('MultiDelete', object.type, AlertService.getErrors(), error.data.getAttributes());
+                                }
+                                deferredObject.reject(error.data);
+                            }
+                        );
+                    } else if (object.exists === false) {
 
                         // replace auto-key with real generated key
                         _substituteAutoKeys( object.attributes, $scope.autoKeyMap );
@@ -275,7 +309,7 @@ angular.module('textUpdates')
 
                         RestService.createObject(source, object.type,
                             WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
-                            passwords, overrides, true).then(
+                            object.passwords, object.override, true).then(
                             function (result) {
 
                                 // next time perform a modify
@@ -302,7 +336,7 @@ angular.module('textUpdates')
                     } else {
                         RestService.modifyObject(source, object.type, object.name,
                             WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
-                            passwords, overrides, true).then(
+                            object.passwords, object.override, true).then(
                             function (result) {
                                 _setStatus(object, true, 'Modify success' );
 
@@ -332,7 +366,7 @@ angular.module('textUpdates')
                 } else if (object.success === true) {
                     object.statusStyle = {color: 'green'};
                 }
-                object.action = _determineAction(object.exists)
+                    object.action = _determineAction(object.exists)
             }
 
             function _getPkey(objectType, attributes) {

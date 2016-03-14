@@ -67,15 +67,15 @@ angular.module('textUpdates')
                 return errorCount === 0;
             }
 
-            this.authenticate = function (method, objectSource, objectType, objectName, ssoMaintainers, attributes, passwords, overrides) {
+            this.authenticate = function (method, objectSource, objectType, objectName, ssoMaintainers, attributes, passwords, override) {
                 var deferredObject = $q.defer();
                 var needsAuth = false;
 
-                if (overrides.length > 0) {
+                if (!_.isUndefined(override)) {
                     // prefer override over passwords
                     _clear(passwords);
                 } else {
-                    if (_.isEmpty(passwords) && _.isEmpty(overrides)) {
+                    if (_.isEmpty(passwords) && _.isUndefined(override)) {
                         // show password popup if needed
                         var objectMntners = _getObjectMntners(attributes);
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
