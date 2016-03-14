@@ -226,7 +226,7 @@ angular.module('textUpdates')
             function _submitSingle( object ) {
                 var deferredObject = $q.defer();
 
-                _setStatus(object, undefined, 'Start ' + _determineAction(object.exists) );
+                _setStatus(object, undefined, 'Start ' + _determineAction(object) );
                 _performAction($scope.objects.source, object).then(
                     function(whoisResources) {
                         object.name = whoisResources.getPrimaryKey();
@@ -239,7 +239,7 @@ angular.module('textUpdates')
                             deleteReason:object.deleteReason,
                         };
                         object.rpsl = RpslService.toRpsl(obj);
-                        if( object.deleted !== true ) {
+                        if( !_.isUndefined(object.deleteReason) ) {
                             object.displayUrl = _asDisplayLink($scope.objects.source, object);
                         }
                         object.textupdatesUrl = undefined;
@@ -247,7 +247,7 @@ angular.module('textUpdates')
                         object.warnings = whoisResources.getAllWarnings();
                         object.infos = whoisResources.getAllInfos();
 
-                        _markActionCompleted(object, _determineAction(object.exists) + ' success', _rewriteRpsl);
+                        _markActionCompleted(object, _determineAction(object) + ' success', _rewriteRpsl);
 
                         deferredObject.resolve(object);
                     },
@@ -256,7 +256,7 @@ angular.module('textUpdates')
                         object.warnings = whoisResources.getAllWarnings();
                         object.infos = whoisResources.getAllInfos();
 
-                        _markActionCompleted(object, _determineAction(object.exists) + ' failed', _rewriteRpsl);
+                        _markActionCompleted(object, _determineAction(object) + ' failed', _rewriteRpsl);
 
                         deferredObject.reject(object);
                     }
@@ -278,16 +278,27 @@ angular.module('textUpdates')
                 var deferredObject = $q.defer();
 
                 if( object.errors.length > 0 ) {
-                    $log.debug('Skip performing action '+_determineAction(object.exists) + '-' + object.type + '-' + object.name + ' since has errors');
+                    $log.debug('Skip performing action '+_determineAction(object) + '-' + object.type + '-' + object.name + ' since has errors');
                 } else {
-                    $log.debug('Start performing action '+ _determineAction(object.exists) + '-' + object.type + '-' + object.name );
+                    $log.debug('Start performing action '+ _determineAction(object) + '-' + object.type + '-' + object.name );
+
+                    // replace auto-key with real generated key
+                    _substituteAutoKeys( object.attributes, $scope.autoKeyMap );
+                    var autoAttrs = _getAutoKeys(object.attributes);
+
+                    // might have changed due to auto-key
+                    var oldName = _.trim(object.name);
+                    object.name = _.trim( _getPkey(object.type, object.attributes));
+                    if(_.startsWith(oldName, 'AUTO-') && !_.startsWith(object.name, 'AUTO-')) {
+                        object.exists = true;
+                    }
 
                     if (!_.isUndefined(object.deleteReason) ) {
-                        // TODO: add support for override
+                        // TODO: add support for delete override
+
                         RestService.deleteObject(source, object.type, object.name, object.deleteReason, false,
                             object.passwords, false).then(
                             function (result) {
-                                object.deleted = true;
                                 _setStatus(object, true, 'Delete success' );
 
                                 deferredObject.resolve(result);
@@ -302,10 +313,6 @@ angular.module('textUpdates')
                             }
                         );
                     } else if (object.exists === false) {
-
-                        // replace auto-key with real generated key
-                        _substituteAutoKeys( object.attributes, $scope.autoKeyMap );
-                        var autoAttrs = _getAutoKeys(object.attributes);
 
                         RestService.createObject(source, object.type,
                             WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
@@ -366,7 +373,7 @@ angular.module('textUpdates')
                 } else if (object.success === true) {
                     object.statusStyle = {color: 'green'};
                 }
-                    object.action = _determineAction(object.exists)
+                    object.action = _determineAction(object)
             }
 
             function _getPkey(objectType, attributes) {
@@ -404,8 +411,8 @@ angular.module('textUpdates')
                 }
             }
 
-            function _determineAction( exists ) {
-                return exists === true ? 'modify' : 'create';
+            function _determineAction( obj ) {
+                return !_.isUndefined(obj.deleteReason) ? 'delete' : obj.exists === true ? 'modify' : 'create';
             }
 
             function _initializeActionCounter(objects) {
@@ -415,8 +422,8 @@ angular.module('textUpdates')
 
             function _markActionCompleted(object, action, callback) {
                 $scope.actionsPending--;
-                $log.debug('mark ' +  _determineAction(object.exists) + '-' + object.type + '-' + object.name +
-                    ' action completed for ' + _determineAction(object.exists) + ': '+ $scope.actionsPending);
+                $log.debug('mark ' +  _determineAction(object) + '-' + object.type + '-' + object.name +
+                    ' action completed for ' + _determineAction(object) + ': '+ $scope.actionsPending);
                 if( $scope.actionsPending === 0 ) {
                     if (!_.isUndefined(callback) && _.isFunction(callback)) {
                         callback();
