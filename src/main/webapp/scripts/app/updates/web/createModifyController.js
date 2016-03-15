@@ -419,7 +419,8 @@ angular.module('webUpdates')
                         _validateForm();
                         AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
                         AlertService.setErrors(whoisResources);
-                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
+                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes);
+                        $scope.attributes = _interceptBeforeEdit($scope.operation, $scope.attributes);
                     }
                 }
 

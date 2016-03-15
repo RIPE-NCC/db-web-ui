@@ -172,6 +172,22 @@ describe('webUpdates: CreateController', function () {
 
     });
 
+    it('should reload defaults after error', function () {
+        var stateBefore = $state.current.name;
+
+        // api/whois/RIPE/as-block
+        $httpBackend.expectPOST('api/whois/RIPE/as-block').respond(400, whoisObjectWithErrors);
+
+        $scope.attributes.setSingleAttributeOnName('as-block', 'A');
+
+        $scope.submit();
+        $httpBackend.flush();
+
+        expect($scope.attributes.getSingleAttributeOnName('source').$$meta.$$disable).toEqual(true);
+
+    });
+
+
     it('should duplicate attribute', function() {
         var lengthBefore = $scope.attributes.length;
 
@@ -317,7 +333,7 @@ describe('webUpdates: CreateController', function () {
         ];
 
         $scope.onMntnerRemoved($scope.maintainers.object[0]);
-        
+
         expect($scope.attributes.getSingleAttributeOnName('mnt-by').value).toEqual('');
 
     });
