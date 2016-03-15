@@ -6,11 +6,12 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
-                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'ScreenLogicInterceptor',
+
+                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
         function ($scope, $stateParams, $state, $log, $window, $q, $sce,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, ScreenLogicInterceptor) {
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor) {
 
             // exposed methods called from html fragment
             $scope.switchToTextMode = switchToTextMode;
@@ -253,13 +254,17 @@ angular.module('webUpdates')
             }
 
             function referenceAutocomplete(attribute, userInput) {
+                var attrName = attribute.name;
                 var refs = attribute.$$meta.$$refs;
-                if (_isServerLookupKey(refs)) {
-                    return RestService.autocompleteAdvanced( userInput, refs).then(
+
+                var utf8Substituted =  _warnForNonSubstitutableUtf8(attribute, userInput);
+                if( utf8Substituted  && _isServerLookupKey(refs)) {
+                    return RestService.autocompleteAdvanced(userInput, refs).then(
                         function (resp) {
-                            return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attribute.name), attribute.name);
+                            return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
                         },
                         function () {
+                            // autocomplete error
                             return [];
                         });
                 } else {
@@ -290,16 +295,25 @@ angular.module('webUpdates')
                 }
             }
 
-            function fieldVisited(attr) {
-                if ($scope.operation === $scope.CREATE_OPERATION && attr.$$meta.$$primaryKey === true) {
-                    RestService.autocomplete( attr.name, attr.value, true, []).then(
+            function fieldVisited(attribute) {
+
+                // replace utf-8 to become latin1
+                if( !CharsetTools.isLatin1(attribute.value)) {
+                    CharsetTools.replaceUtf8(attribute);
+                    // clear attribute specific warning
+                    attribute.$$error = '';
+                }
+
+                // Verify if primary-key not already in use
+                if ($scope.operation === $scope.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
+                    RestService.autocomplete( attribute.name, attribute.value, true, []).then(
                         function (data) {
                             if (_.any(data, function (item) {
-                                    return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
+                                    return item.type === attribute.name && item.key.toLowerCase() === attribute.value.toLowerCase();
                                 })) {
-                                attr.$$error = attr.name + ' ' + data[0].key + ' already exists';
+                                attribute.$$error = attribute.name + ' ' + data[0].key + ' already exists';
                             } else {
-                                attr.$$error = '';
+                                attribute.$$error = '';
                             }
                         },
                         function (error) {
@@ -483,6 +497,21 @@ angular.module('webUpdates')
             /*
              * private methods
              */
+
+            function _warnForNonSubstitutableUtf8(attribute, userInput) {
+                if( !CharsetTools.isLatin1(userInput)) {
+                    // see if any chars can be substituted
+                    var subbedValue = CharsetTools.replaceSubstitutables(userInput);
+                    if (!CharsetTools.isLatin1(subbedValue)) {
+                        attribute.$$error = 'Input contains illegal characters. These will be converted to \'?\'';
+                        return false;
+                    } else {
+                        attribute.$$error = '';
+                        return true;
+                    }
+                }
+                return true;
+            }
 
             function _getPasswordsForRestCall() {
                 var passwords = [];
@@ -802,7 +831,6 @@ angular.module('webUpdates')
                     }
                     $scope.maintainers.objectOriginal = _extractEnrichMntnersFromObject($scope.attributes);
                     $scope.maintainers.object = _extractEnrichMntnersFromObject($scope.attributes);
-
                 }
             }
 
