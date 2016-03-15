@@ -3,10 +3,10 @@
 angular.module('textUpdates')
     .controller('TextMultiController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService',
-        'RpslService', 'TextCommons', 'SerialExecutor',
+        'RpslService', 'TextCommons', 'SerialExecutor', 'AutoKeyLogic',
         function ($scope, $stateParams, $state, $resource, $log, $q,
                   WhoisResources, RestService, AlertService, ErrorReporterService,
-                  RpslService, TextCommons, SerialExecutor) {
+                  RpslService, TextCommons, SerialExecutor, AutoKeyLogic) {
 
             $scope.setTextMode = setTextMode;
             $scope.isTextMode = isTextMode;
@@ -14,7 +14,6 @@ angular.module('textUpdates')
             $scope.isWebMode = isWebMode;
             $scope.submit = submit;
             $scope.didAllActionsComplete = didAllActionsComplete;
-            $scope.autoKeyMap = {};
 
             _initialisePage();
 
@@ -59,7 +58,7 @@ angular.module('textUpdates')
 
                 $log.info('_verify: source' + source + ', rpsl:'+ rpsl);
 
-                $scope.autoKeyMap = {};
+                AutoKeyLogic.clear();
 
                 var objects = [];
 
@@ -70,20 +69,20 @@ angular.module('textUpdates')
                 _.each(parsedObjs, function(parsedObj) {
 
                     // create a new object and add it to the array right away
-                    var object  = {};
-                    object.passwords = parsedObj.passwords;
-                    object.override = parsedObj.override;
-                    object.deleteReason = parsedObj.deleteReason;
-
-                    object.errors = [];
+                    var object  = {
+                        passwords: parsedObj.passwords,
+                        override: parsedObj.override,
+                        deleteReason: parsedObj.deleteReason,
+                        errors: []
+                    };
                     objects.push(object);
 
                     var attrs = TextCommons.uncapitalize(parsedObj.attributes);
 
-                    // assume first attribute is type indicator
-                    object.type = attrs[0].name;
+                    // assume nam of first attribute is type indicator
+                    object.type = _determineObjectType(attrs);
 
-                    // parse
+                    // back to rpsl
                     object.rpsl = RpslService.toRpsl(parsedObj);
 
                     $log.info('object:' + JSON.stringify(object));
@@ -94,20 +93,17 @@ angular.module('textUpdates')
                         _setStatus(object, false, 'Invalid syntax');
                         _markActionCompleted(object, 'syntax error');
                     } else {
-                        $log.info('start checking if exists:');
-
                         // determine primary key pf object
                         object.attributes = WhoisResources.wrapAndEnrichAttributes(object.type, attrs);
                         object.name = _getPkey(object.type, object.attributes);
 
-                        _identifyAutoKeys(object.type, attrs, $scope.autoKeyMap );
-                        $log.info('auto-key-store:' + JSON.stringify($scope.autoKeyMap));
+                        // find out if this object has AUTO-keys
+                        AutoKeyLogic.identifyAutoKeys(object.type, attrs );
 
+                        // start fetching to determine if exists
                         _setStatus(object, undefined, 'Fetching');
                         object.exists = undefined;
-                        var passwords = object.passwords;
-                        var override = object.override;
-                        _doesExist(source, object, passwords, override).then(
+                        _doesExist(source, object, object.passwords, object.override).then(
                             function (exists) {
                                 if( exists === true ) {
                                     object.exists = true;
@@ -132,57 +128,8 @@ angular.module('textUpdates')
                 return objects;
             }
 
-            function _identifyAutoKeys( objectType, attrs, autoKeyMap ) {
-                _.each(attrs, function( attr) {
-                    var trimmedValue = _.trim(attr.value);
-                    if(_.startsWith(trimmedValue, 'AUTO-')) {
-                        var key = objectType + '.' + _.trim(attr.name);
-                        var autoMeta =  autoKeyMap[trimmedValue];
-                        if( _.isUndefined(autoMeta)) {
-                            autoKeyMap[trimmedValue] = {provider: key, consumers:[], value: undefined};
-                            $log.info('Identified auto-key provider ' + JSON.stringify(autoKeyMap[trimmedValue]));
-                        } else {
-                            autoMeta.consumers.push(key);
-                            $log.info('Identified  auto-key consumer ' + JSON.stringify(autoMeta));
-                        }
-                    }
-                });
-            }
-
-            function _registerAutoKeyValue( autoAttr, afterCreateAttrs, autoKeyMap ) {
-                autoAttr.value = _.trim(autoAttr.value);
-
-                _.each(afterCreateAttrs, function(after) {
-                    if( autoAttr.name === after.name) {
-                        after.value = _.trim(after.value);
-                        $log.error("After:" + JSON.stringify(after));
-                        var autoMeta =  autoKeyMap[autoAttr.value];
-                        if( !_.isUndefined(autoMeta)) {
-                            autoMeta.value = after.value;
-                            $log.info('Register ' + autoAttr.name +' with auto-key ' + autoAttr.value + ' to ' + autoMeta.value);
-                        }
-                    }
-                });
-            }
-
-            function _substituteAutoKeys( attrs, autoKeyMap ) {
-                _.each(attrs, function(attr) {
-                    var trimmedValue = _.trim(attr.value);
-                    if(_.startsWith(trimmedValue, 'AUTO-')) {
-                        var autoMeta = autoKeyMap[trimmedValue];
-                        if (!_.isUndefined(autoMeta) && !_.isUndefined(autoMeta.value)) {
-                            $log.info('Substituting ' + trimmedValue + ' with ' + autoMeta.value);
-                            attr.value = autoMeta.value;
-                        }
-                    }
-                });
-            }
-
-            function _getAutoKeys(attrs) {
-                var attrs =  _.filter(attrs, function( attr) {
-                    return _.startsWith(_.trim(attr.value), 'AUTO-');
-                });
-                return attrs;
+            function _determineObjectType( attributes ) {
+                return attributes[0].name;
             }
 
             function _doesExist(source, object, passwords, override) {
@@ -190,7 +137,7 @@ angular.module('textUpdates')
 
                 if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.startsWith(_.trim(object.name), 'AUTO-')) {
                     $log.info( "Need need to perform fetch to check if exists");
-                    deferredObject.resolve('Create');
+                    deferredObject.resolve(false);
                 } else {
                     $log.info( "Perform fetch to check if exists");
                     // TODO fetch with override
@@ -283,8 +230,10 @@ angular.module('textUpdates')
                     $log.debug('Start performing action '+ _determineAction(object) + '-' + object.type + '-' + object.name );
 
                     // replace auto-key with real generated key
-                    _substituteAutoKeys( object.attributes, $scope.autoKeyMap );
-                    var autoAttrs = _getAutoKeys(object.attributes);
+                    AutoKeyLogic.substituteAutoKeys( object.attributes);
+
+                    // find attrs with an auto key
+                    var autoAttrs = AutoKeyLogic.getAutoKeys(object.attributes);
 
                     // might have changed due to auto-key
                     var oldName = _.trim(object.name);
@@ -327,9 +276,8 @@ angular.module('textUpdates')
 
                                 // Associate generated value for auto-key so that next object with auto- can be substituted
                                 _.each(autoAttrs, function(attr) {
-                                    _registerAutoKeyValue(attr, result.getAttributes(),$scope.autoKeyMap);
+                                    AutoKeyLogic.registerAutoKeyValue(attr, result.getAttributes());
                                 });
-                                $log.info('auto-key-store after create:' + JSON.stringify($scope.autoKeyMap));
                                 deferredObject.resolve(result);
                             },
                             function (error) {

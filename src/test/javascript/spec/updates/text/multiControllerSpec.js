@@ -5,6 +5,7 @@ describe('textUpdates: TextMultiController', function () {
     var $scope, $state, $stateParams, $httpBackend, $window;
     var WhoisResources;
     var AlertService;
+    var AutoKeyLogic;
     var SOURCE = 'RIPE';
     var doSetupController;
     var $q;
@@ -14,7 +15,7 @@ describe('textUpdates: TextMultiController', function () {
         module('textUpdates');
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
-                         _WhoisResources_, _AlertService_, _$q_) {
+                         _WhoisResources_, _AlertService_, _$q_, _AutoKeyLogic_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -25,6 +26,7 @@ describe('textUpdates: TextMultiController', function () {
             $window = _$window_;
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
+            AutoKeyLogic = _AutoKeyLogic_;
             $q = _$q_;
 
             var logger = {
