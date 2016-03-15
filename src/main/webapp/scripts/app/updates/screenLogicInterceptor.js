@@ -6,10 +6,8 @@ angular.module('updates')
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
-            // - convert error intop success for creation of pending route(6)
             // - strip nulls
             // - RPSL password for resources
-            // - refresh after authenticating mntner
             // TODO end
 
             var globalInterceptor = {
