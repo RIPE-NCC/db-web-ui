@@ -1,15 +1,13 @@
 'use strict';
 
 angular.module('updates')
-    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper',
-        function ($log, WhoisResources, OrganisationHelper) {
+    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'LinkService',
+        function ($log, WhoisResources, OrganisationHelper, MessageStore, LinkService) {
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
-            // - convert error intop success for creation of pending route(6)
             // - strip nulls
             // - RPSL password for resources
-            // - refresh after authenticating mntner
             // TODO end
 
             var globalInterceptor = {
@@ -167,14 +165,20 @@ angular.module('updates')
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined,
+                    afterSubmitError:
+                        function(method, source, objectType, status, whoisResources, errors, warnings, infos) {
+                            return _handlePendingAuthenticationError(method, source, objectType, status, whoisResources, errors, warnings, infos);
+                        },
                     beforeAddAttribute:undefined
                 },
                 route6: {
                     beforeEdit: undefined,
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
-                    afterSubmitError: undefined,
+                    afterSubmitError:
+                        function(method, source, objectType, status, whoisResources, errors, warnings, infos) {
+                            return _handlePendingAuthenticationError(method, source, objectType, status, whoisResources, errors, warnings, infos);
+                        },
                     beforeAddAttribute:undefined
                 },
                 'route-set': {
@@ -257,6 +261,59 @@ angular.module('updates')
                 return attributes;
             }
 
+            function _handlePendingAuthenticationError(method, source, objectType, status, whoisResources, errors, warnings, infos) {
+                if (_isPendingAuthenticationError(status, whoisResources)) {
+
+                    MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources, source));
+                    return true;
+
+                }
+                return false;
+            }
+
+            function _isPendingAuthenticationError(httpStatus, whoisResources) {
+                var status = false;
+                if (httpStatus === 400) {
+                    status = _.any(whoisResources.errormessages.errormessage,
+                        function (item) {
+                            return item.severity === 'Warning' && item.text === 'This update has only passed one of the two required hierarchical authorisations';
+                        }
+                    );
+                }
+                $log.info('_isPendingAuthenticationError:' + status);
+                return status;
+            }
+
+            function _composePendingResponse(resp, source) {
+                var found = _.find(resp.errormessages.errormessage, function (item) {
+                    return item.severity === 'Error' && item.text === 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s';
+                });
+
+                if (!_.isUndefined(found) && found.args.length >= 4) {
+                    var obstructingType = found.args[0].value;
+                    var obstructingName = found.args[1].value;
+                    var mntnersToConfirm = found.args[3].value;
+
+                    var obstructingObjectLink = LinkService.getLink(source, obstructingType, obstructingName);
+                    var mntnersToConfirmLinks = LinkService.filterAndCreateTextWithLinksForMntners(source, mntnersToConfirm);
+
+                    var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
+                    var moreInfoLink = '<a target="_blank" href="' + moreInfoUrl + '">Click here for more information</a>.';
+
+                    var pendngMsg = 'Your object is still pending authorisation by a maintainer of the ' +
+                        '<strong>' + obstructingType + '</strong> object ' + obstructingObjectLink + '. ' +
+                        'Please ask them to confirm, by submitting the same object as outlined below ' +
+                        'using syncupdates or mail updates, and authenticate it using the maintainer ' +
+                        mntnersToConfirmLinks + '. ' + moreInfoLink;
+
+                    // Keep existing message and overwrite existing errors
+                    resp.errormessages.errormessage = [{'severity': 'Info', 'text': pendngMsg}];
+                }
+                // otherwise keep existing response
+
+                return resp;
+            }
+
             function _getInterceptorFunc(objectType, actionName) {
                 if(_.isUndefined(objectInterceptors[objectType])) {
                     $log.error('Object-type ' + objectType+ ' not understood');
@@ -297,12 +354,12 @@ angular.module('updates')
                 return interceptorFunc(method, source, objectType, responseAttributes, warnings, infos);
             };
 
-            logicInterceptor.afterSubmitError = function (method, source, objectType, requestAttributes, status, responseAttributes, errors, warnings, infos) {
+            logicInterceptor.afterSubmitError = function (method, source, objectType, status, whoisResources, errors, warnings, infos) {
                 var interceptorFunc = _getInterceptorFunc(objectType, 'afterSubmitError');
                 if (_.isUndefined(interceptorFunc)) {
                     return false;
                 }
-                return interceptorFunc(method, source, objectType, requestAttributes, status, responseAttributes, errors, warnings, infos);
+                return interceptorFunc(method, source, objectType, status, whoisResources, errors, warnings, infos);
             };
 
             logicInterceptor.beforeAddAttribute = function (method, source, objectType, objectAttributes, addableAttributes) {

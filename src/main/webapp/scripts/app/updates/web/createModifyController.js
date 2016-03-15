@@ -393,72 +393,33 @@ angular.module('webUpdates')
                     }
                 }
 
-                function _isPendingAuthenticationError(resp) {
-                    var status = false;
-                    if (resp.status === 400) {
-                        status = _.any(resp.data.errormessages.errormessage,
-                            function (item) {
-                                return item.severity === 'Warning' && item.text === 'This update has only passed one of the two required hierarchical authorisations';
-                            }
-                        );
-                    }
-                    $log.info('_isPendingAuthenticationError:' + status);
-                    return status;
-                }
-
-                function _composePendingResponse(resp) {
-                    var found = _.find(resp.errormessages.errormessage, function (item) {
-                        return item.severity === 'Error' && item.text === 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s';
-                    });
-
-                    if (!_.isUndefined(found) && found.args.length >= 4) {
-                        var obstructingType = found.args[0].value;
-                        var obstructingName = found.args[1].value;
-                        var mntnersToConfirm = found.args[3].value;
-
-                        var obstructingObjectLink = LinkService.getLink($scope.source, obstructingType, obstructingName);
-                        var mntnersToConfirmLinks = LinkService.filterAndCreateTextWithLinksForMntners($scope.source, mntnersToConfirm);
-
-                        var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
-                        var moreInfoLink = '<a target="_blank" href="' + moreInfoUrl + '">Click here for more information</a>.';
-
-                        var pendngMsg = 'Your object is still pending authorisation by a maintainer of the ' +
-                            '<strong>' + obstructingType + '</strong> object ' + obstructingObjectLink + '. ' +
-                            'Please ask them to confirm, by submitting the same object as outlined below ' +
-                            'using syncupdates or mail updates, and authenticate it using the maintainer ' +
-                            mntnersToConfirmLinks + '. ' + moreInfoLink;
-
-                        // Keep existing message and overwrite existing errors
-                        resp.errormessages.errormessage = [{'severity': 'Info', 'text': pendngMsg}];
-                    }
-                    // otherwise keep existing response
-
-                    return resp;
-                }
-
                 function _onSubmitError(resp) {
                     $scope.restCalInProgress = false;
 
                     var whoisResources = resp.data;
                     $scope.attributes = whoisResources.getAttributes();
 
+                    var errorMessages = [];
+                    var warningMessages = [];
+                    var infoMessages = [];
 
-                    // Post-process atttribute after submit-error using screen-logic-interceptor
-                    if( _interceptOnSubmitError( $scope.operation, resp.status,
-                            $scope.attributes, whoisResources.getAttributes()) === false ) {
+                    //This interceptor allows us to convert error into success
+                    //This could change in the future
+                    var intercepted = ScreenLogicInterceptor.afterSubmitError($scope.operation,
+                        $scope.source, $scope.objectType,
+                        resp.status,  resp.data,
+                        errorMessages, warningMessages, infoMessages );
 
-                        // TODO: fix whois to return a 200 series response in case of pending object [MG]
-                        if (_isPendingAuthenticationError(resp)) {
-                            // TODO: let whois come with a single information errormessage [MG]
-                            MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
-                            /* Instruct downstream screen (typically display screen) that object is in pending state */
-                            WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
-                        } else {
-                            _validateForm();
-                            AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
-                            AlertService.setErrors(whoisResources);
-                            ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
-                        }
+                    // Post-process attribute after submit-error using screen-logic-interceptor
+                    if( intercepted ) {
+                        loadAlerts(errorMessages, warningMessages, infoMessages);
+                        /* Instruct downstream screen (typically display screen) that object is in pending state */
+                        WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
+                    } else {
+                        _validateForm();
+                        AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
+                        AlertService.setErrors(whoisResources);
+                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
                     }
                 }
 
@@ -551,19 +512,21 @@ angular.module('webUpdates')
                             // pupulate ui-select box with sso-mntners
                             $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
 
-                            $log.debug('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
-                            $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
-                            $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
-
                             // copy mntners to attributes (for later submit)
                             var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
                                 return {name: 'mnt-by', value: i.key};
                             });
+
                             var attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
                                 $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
 
                             // Post-process atttributes before showing using screen-logic-interceptor
                             $scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
+
+                            $log.debug('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
+                            $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
+                            $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
+
                         }
                     }, function (error) {
                         $scope.restCalInProgress = false;
@@ -622,20 +585,6 @@ angular.module('webUpdates')
                 var status = ScreenLogicInterceptor.afterSubmitSuccess(method,
                     $scope.source, $scope.objectType, responseAttributes,
                     warningMessages, infoMessages );
-
-                loadAlerts(errorMessages, warningMessages, infoMessages);
-
-                return status;
-            }
-
-            function _interceptOnSubmitError( method, status, requestAttributes, responseAttributes ) {
-                var errorMessages = [];
-                var warningMessages = [];
-                var infoMessages = [];
-                var status = ScreenLogicInterceptor.afterSubmitError(method,
-                    $scope.source, $scope.objectType,
-                    requestAttributes,  status, responseAttributes,
-                    errorMessages, warningMessages, infoMessages );
 
                 loadAlerts(errorMessages, warningMessages, infoMessages);
 
