@@ -166,8 +166,8 @@ angular.module('updates')
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError:
-                        function(method, source, objectType, requestAttributes, resp, responseAttributes, errors, warnings, infos) {
-                            return _handlePendingAuthenticationError(method, source, objectType, requestAttributes, resp, responseAttributes, errors, warnings, infos);
+                        function(method, source, objectType, status, whoisResources, errors, warnings, infos) {
+                            return _handlePendingAuthenticationError(method, source, objectType, status, whoisResources, errors, warnings, infos);
                         },
                     beforeAddAttribute:undefined
                 },
@@ -176,8 +176,8 @@ angular.module('updates')
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError:
-                        function(method, source, objectType, requestAttributes, resp, responseAttributes, errors, warnings, infos) {
-                            return _handlePendingAuthenticationError(method, source, objectType, requestAttributes, resp, responseAttributes, errors, warnings, infos);
+                        function(method, source, objectType, status, whoisResources, errors, warnings, infos) {
+                            return _handlePendingAuthenticationError(method, source, objectType, status, whoisResources, errors, warnings, infos);
                         },
                     beforeAddAttribute:undefined
                 },
@@ -261,26 +261,20 @@ angular.module('updates')
                 return attributes;
             }
 
-            function _handlePendingAuthenticationError(method, source, objectType, requestAttributes, resp, responseAttributes, errors, warnings, infos) {
-                if (_isPendingAuthenticationError(resp)) {
+            function _handlePendingAuthenticationError(method, source, objectType, status, whoisResources, errors, warnings, infos) {
+                if (_isPendingAuthenticationError(status, whoisResources)) {
 
-                    var keys = _.map(_.filter(requestAttributes, function(item) {
-                        return item.$$meta.$$primaryKey;
-                    }), function(item) {
-                        return item.value;
-                    });
-
-                    MessageStore.add(keys.join(''), _composePendingResponse(resp.data, source));
+                    MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources, source));
                     return true;
 
                 }
                 return false;
             }
 
-            function _isPendingAuthenticationError(resp) {
+            function _isPendingAuthenticationError(httpStatus, whoisResources) {
                 var status = false;
-                if (resp.status === 400) {
-                    status = _.any(resp.data.errormessages.errormessage,
+                if (httpStatus === 400) {
+                    status = _.any(whoisResources.errormessages.errormessage,
                         function (item) {
                             return item.severity === 'Warning' && item.text === 'This update has only passed one of the two required hierarchical authorisations';
                         }
@@ -360,12 +354,12 @@ angular.module('updates')
                 return interceptorFunc(method, source, objectType, responseAttributes, warnings, infos);
             };
 
-            logicInterceptor.afterSubmitError = function (method, source, objectType, requestAttributes, resp, responseAttributes, errors, warnings, infos) {
+            logicInterceptor.afterSubmitError = function (method, source, objectType, status, whoisResources, errors, warnings, infos) {
                 var interceptorFunc = _getInterceptorFunc(objectType, 'afterSubmitError');
                 if (_.isUndefined(interceptorFunc)) {
                     return false;
                 }
-                return interceptorFunc(method, source, objectType, requestAttributes, resp, responseAttributes, errors, warnings, infos);
+                return interceptorFunc(method, source, objectType, status, whoisResources, errors, warnings, infos);
             };
 
             logicInterceptor.beforeAddAttribute = function (method, source, objectType, objectAttributes, addableAttributes) {

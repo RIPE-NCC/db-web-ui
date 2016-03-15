@@ -403,22 +403,23 @@ angular.module('webUpdates')
                     var warningMessages = [];
                     var infoMessages = [];
 
+                    //This interceptor allows us to convert error into success
+                    //This could change in the future
                     var intercepted = ScreenLogicInterceptor.afterSubmitError($scope.operation,
                         $scope.source, $scope.objectType,
-                        $scope.attributes,  resp, $scope.attributes,
+                        resp.status,  resp.data,
                         errorMessages, warningMessages, infoMessages );
 
-                    loadAlerts(errorMessages, warningMessages, infoMessages);
-
                     // Post-process attribute after submit-error using screen-logic-interceptor
-                    if( intercepted === false ) {
+                    if( intercepted ) {
+                        loadAlerts(errorMessages, warningMessages, infoMessages);
+                        /* Instruct downstream screen (typically display screen) that object is in pending state */
+                        WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
+                    } else {
                         _validateForm();
                         AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
                         AlertService.setErrors(whoisResources);
                         ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
-                    } else {
-                        /* Instruct downstream screen (typically display screen) that object is in pending state */
-                        WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
                     }
                 }
 
@@ -511,19 +512,21 @@ angular.module('webUpdates')
                             // pupulate ui-select box with sso-mntners
                             $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
 
-                            $log.debug('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
-                            $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
-                            $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
-
                             // copy mntners to attributes (for later submit)
                             var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
                                 return {name: 'mnt-by', value: i.key};
                             });
+
                             var attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
                                 $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
 
                             // Post-process atttributes before showing using screen-logic-interceptor
                             $scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
+
+                            $log.debug('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
+                            $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
+                            $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
+
                         }
                     }, function (error) {
                         $scope.restCalInProgress = false;
