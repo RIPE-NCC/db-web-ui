@@ -1,0 +1,26 @@
+form#textTableRpslForm {
+    table.multi-sync-table {
+        thead {
+            th.expand {
+                width: 6%;
+            }
+            th {
+                width: 21%;
+            }
+        }
+        tbody {
+            td {
+                button.add-button {
+                    width: 25px;
+                    height: 25px;
+                    padding: 0 !important;
+                }
+            }
+        }
+    }
+    button.grey-button {
+        background-color: #C0C0C0 !important;
+        border: none !important;
+        color: #363636;
+    }
+}
