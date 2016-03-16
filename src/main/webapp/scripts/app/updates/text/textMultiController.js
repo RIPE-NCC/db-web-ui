@@ -212,15 +212,6 @@ angular.module('textUpdates')
                 return deferredObject.promise;
             }
 
-            function _rewriteRpsl() {
-                $log.debug( "Rewriting RPSL");
-
-                $scope.objects.rpsl = '';
-                _.each($scope.objects.objects, function(object) {
-                    $scope.objects.rpsl += ('\n'+ object.rpsl );
-                });
-            }
-
             function _performAction( source, object) {
                 var deferredObject = $q.defer();
 
@@ -313,17 +304,26 @@ angular.module('textUpdates')
                 return deferredObject.promise;
             }
 
+            function _rewriteRpsl() {
+                $log.debug( "Rewriting RPSL");
+
+                $scope.objects.rpsl = '';
+                _.each($scope.objects.objects, function(object) {
+                    $scope.objects.rpsl += ('\n'+ object.rpsl );
+                });
+            }
+
             function _setStatus(object, isSuccess, statusMsg) {
                 object.success = isSuccess;
                 object.status = statusMsg;
                 if (_.isUndefined(object.success)) {
-                    object.statusStyle = {color: 'blue'};
+                    object.statusStyle = 'text-info';
                 } else if (object.success === false) {
-                    object.statusStyle = {color: 'red'};
+                    object.statusStyle = 'text-error';
                 } else if (object.success === true) {
-                    object.statusStyle = {color: 'green'};
+                    object.statusStyle = 'text-success';
                 }
-                    object.action = _determineAction(object)
+                object.action = _determineAction(object)
             }
 
             function _getPkey(objectType, attributes) {
