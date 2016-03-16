@@ -1,4 +1,10 @@
-form#textTableRpslForm {
+aside.multisync-rpsl {
+    section.footer {
+        @extend %mar-top-10;
+    }
+}
+
+aside.multisync-result {
     table.multi-sync-table {
         thead {
             th.expand {

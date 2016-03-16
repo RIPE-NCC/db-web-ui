@@ -1,83 +1,87 @@
 <h1>Syncupdates</h1>
 <alerts></alerts>
-<form id="textMultiRpslForm" ng-if="textMode">
-    <label for="multiRpsl">RPSL for multiple objects</label>
-        <textarea id="multiRpsl"
-                  class="form-control"
-                  rows="15"
-                  cols="60"
-                  placeholder="Paste your RPSL in here"
-                  ng-model="objects.rpsl"
-                  style="font-family:monospace;"></textarea>
 
-    <button ng-click="setWebMode()" class="blue-button pull-right ga-multiobj-webmode">Preview</button>
-    <p>
-        You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.
-    </p>
-</form>
+<aside class="multisync-rpsl" ng-if="textMode">
+    <form>
+        <label for="multiRpsl">RPSL for multiple objects</label>
+            <textarea id="multiRpsl"
+                      class="form-control"
+                      rows="15"
+                      cols="60"
+                      placeholder="Paste your RPSL in here"
+                      ng-model="objects.rpsl"
+                      style="font-family:monospace;"></textarea>
+        <section class="footer">
+            <button ng-click="setWebMode()" class="blue-button pull-right">Continue</button>
+            <p>You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</p>
+        </section>
+    </form>
+</aside>
 
-<form id="textTableRpslForm" ng-if="!textMode">
-    <label for="multiObjectTable">Objects to update</label>
-    <table id="multiObjectTable" class="table multi-sync-table">
-        <thead>
-        <tr>
-            <th class="expand"></th>
-            <th class="action">Action</th>
-            <th class="type">Type</th>
-            <th class="name">Name</th>
-            <th class="status">Status</th>
-        </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat-start="object in objects.objects">
-                <td>
-                    <button class="blue-button grey-button add-button" ng-if="object.expanded" ng-click="object.expanded = false">-</button>
-                    <button class="blue-button add-button" ng-if="!object.expanded" ng-click="object.expanded = true">+</button>
-                </td>
-                <td>{{object.action}}</td>
-                <td>{{object.type}}</td>
-                <td>
-                    <a ng-if="object.displayUrl" ng-href="{{object.displayUrl}}" target="_blank">{{object.name}}</a>
-                    <span ng-if="!object.displayUrl">{{object.name}}</span>
-                </td>
-                <td><p ng-class="object.statusStyle">{{object.status}}</p></td>
+<aside class="multisync-result" ng-if="!textMode">
+    <form>
+        <label for="multiObjectTable">Objects to update</label>
+        <table id="multiObjectTable" class="table multi-sync-table">
+            <thead>
+            <tr>
+                <th class="expand"></th>
+                <th class="action">Action</th>
+                <th class="type">Type</th>
+                <th class="name">Name</th>
+                <th class="status">Status</th>
             </tr>
-            <tr ng-if="object.expanded && object.errors.length>0">
-                <td></td>
-                <td>errors</td>
-                <td colspan="3">
-                    <ul>
-                        <li ng-repeat="error in object.errors">{{error.plainText}}</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr ng-if="object.expanded && object.warnings.length>0">
-                <td></td>
-                <td>warnings</td>
-                <td colspan="3">
-                    <ul>
-                        <li ng-repeat="warning in object.warnings">{{warning.plainText}}</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr ng-if="object.expanded && object.infos.length>0">
-                <td></td>
-                <td>infos</td>
-                <td colspan="3">
-                    <ul>
-                        <li ng-repeat="info in object.infos">{{info.plainText}}</li>
-                    </ul>
-                </td>
-            </tr>
-            <tr ng-if="object.expanded" ng-repeat-end>
-                <td></td>
-                <td colspan="4">
-                    <pre style="font-family:monospace;">{{object.rpsl}}</pre></td>
-                <td style="display: none;"><a ng-if="object.textupdatesUrl" ng-href="{{object.textupdatesUrl}}" target="_blank">{{object.action}}single object</a></td>
-            </tr>
-        </tbody>
-    </table>
-    <input type="submit" ng-disabled="! didAllActionsComplete()" ng-click="submit()"
-           class="blue-button pull-right ga-multiobj-updateall" value="Update all"/>
-    <button ng-click="setTextMode()" class="blue-button pull-right grey-button">&lt;</button>
-</form>
+            </thead>
+            <tbody>
+                <tr ng-repeat-start="object in objects.objects">
+                    <td>
+                        <button class="blue-button grey-button add-button" ng-if="object.expanded" ng-click="object.expanded = false">-</button>
+                        <button class="blue-button add-button" ng-if="!object.expanded" ng-click="object.expanded = true">+</button>
+                    </td>
+                    <td>{{object.action}}</td>
+                    <td>{{object.type}}</td>
+                    <td>
+                        <a ng-if="object.displayUrl" ng-href="{{object.displayUrl}}" target="_blank">{{object.name}}</a>
+                        <span ng-if="!object.displayUrl">{{object.name}}</span>
+                    </td>
+                    <td><p ng-class="object.statusStyle">{{object.status}}</p></td>
+                </tr>
+                <tr ng-if="object.expanded && object.errors.length>0">
+                    <td></td>
+                    <td>errors</td>
+                    <td colspan="3">
+                        <ul>
+                            <li ng-repeat="error in object.errors">{{error.plainText}}</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-if="object.expanded && object.warnings.length>0">
+                    <td></td>
+                    <td>warnings</td>
+                    <td colspan="3">
+                        <ul>
+                            <li ng-repeat="warning in object.warnings">{{warning.plainText}}</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-if="object.expanded && object.infos.length>0">
+                    <td></td>
+                    <td>infos</td>
+                    <td colspan="3">
+                        <ul>
+                            <li ng-repeat="info in object.infos">{{info.plainText}}</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr ng-if="object.expanded" ng-repeat-end>
+                    <td></td>
+                    <td colspan="4">
+                        <pre style="font-family:monospace;">{{object.rpsl}}</pre></td>
+                    <td style="display: none;"><a ng-if="object.textupdatesUrl" ng-href="{{object.textupdatesUrl}}" target="_blank">{{object.action}}single object</a></td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="submit" ng-disabled="! didAllActionsComplete()" ng-click="submit()"
+               class="blue-button pull-right ga-multiobj-updateall" value="Update all"/>
+        <button ng-click="setTextMode()" class="blue-button pull-right grey-button">&lt;</button>
+    </form>
+</aside>
