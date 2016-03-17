@@ -1,15 +1,5 @@
 <alerts></alerts>
 
-<div ng-if="missingAbuseC()" class="alert alert-warning">
-        <p>
-            There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.
-        </p>
-        <p>
-            Please specify the abuse-c attribute below.
-        </p>
-
-</div>
-
 <button ng-show="operation == CREATE_OPERATION" ng-click="switchToTextMode()" class="blue-button pull-right ga-modifyobj-switch-mode" style="border:0;"><span class="fa fa-pencil-square-o"></span> Create in text area</button>
 <button ng-show="operation == MODIFY_OPERATION" ng-click="switchToTextMode()" class="blue-button pull-right ga-createobj-switch-mode" style="border:0;"><span class="fa fa-pencil-square-o"></span> Edit in text area</button>
 
@@ -113,7 +103,7 @@
                 </li>
                 <li>
                     <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
-                      ng-click="removeAttribute(attribute)"  ng-disabled="!canAttributeBeRemoved(attribute)" >
+                      ng-click="removeAttribute(attribute)"  ng-disabled="!canAttributeBeRemoved(attribute) || isToBeDisabled(attribute)" >
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>

@@ -6,12 +6,12 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
-                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools',
-        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
 
+                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
+        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools) {
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor) {
 
             // exposed methods called from html fragment
             $scope.switchToTextMode = switchToTextMode;
@@ -54,7 +54,6 @@ angular.module('webUpdates')
             $scope.isFormValid = isFormValid;
             $scope.isToBeDisabled = isToBeDisabled;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
-            $scope.missingAbuseC = missingAbuseC;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
             _initialisePage();
@@ -119,13 +118,6 @@ angular.module('webUpdates')
                     }
 
                     $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, mandatoryAttributesOnObjectType);
-                    $scope.attributes.setSingleAttributeOnName('source', $scope.source);
-                    $scope.attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
-                    $scope.attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
-                    // other types only settable with override
-                    $scope.attributes.setSingleAttributeOnName('org-type', 'OTHER');
-                    $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-
                     _fetchDataForCreate();
 
                 } else {
@@ -161,14 +153,6 @@ angular.module('webUpdates')
                         }
                     }
                 );
-            }
-
-            function missingAbuseC() {
-                if(_.isEmpty($scope.attributes)) {
-                    return false;
-                };
-
-                return $scope.operation == $scope.MODIFY_OPERATION && $scope.objectType == 'organisation' && !OrganisationHelper.containsAbuseC($scope.attributes);
             }
 
             function onMntnerAdded(item) {
@@ -269,7 +253,6 @@ angular.module('webUpdates')
                 return !(_.isUndefined(refs) || refs.length === 0 );
             }
 
-
             function referenceAutocomplete(attribute, userInput) {
                 var attrName = attribute.name;
                 var refs = attribute.$$meta.$$refs;
@@ -361,7 +344,12 @@ angular.module('webUpdates')
             }
 
             function displayAddAttributeDialog(attr) {
-                ModalService.openAddAttributeModal($scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes), _getPasswordsForRestCall())
+                var originalAddableAttributes = $scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes);
+                originalAddableAttributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, originalAddableAttributes);
+
+                var addableAttributes = ScreenLogicInterceptor.beforeAddAttribute($scope.operation, $scope.source, $scope.objectType, $scope.attributes, originalAddableAttributes);
+
+                ModalService.openAddAttributeModal(addableAttributes, _getPasswordsForRestCall())
                     .then(function (selectedItem) {
                         addSelectedAttribute(selectedItem, attr);
                     });
@@ -382,11 +370,11 @@ angular.module('webUpdates')
 
             function isToBeDisabled(attribute) {
 
+                if (attribute.$$meta.$$disable) {
+                    return true;
+                }
+
                 if (attribute.name === 'created') {
-                    return true;
-                } else if (attribute.name === 'org-type') {
-                    return true;
-                } else if (attribute.name === 'source') {
                     return true;
                 } else if ($scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
                     return true;
@@ -405,57 +393,18 @@ angular.module('webUpdates')
 
                     var whoisResources = resp;
 
-                    //It' ok to just let it happen or fail.
-                    OrganisationHelper.updateAbuseC($scope.source, $scope.objectType, $scope.roleForAbuseC, $scope.attributes, passwords);
+                    // Post-process atttribute after submit-success using screen-logic-interceptor
+                    if( _interceptOnSubmitSuccess( $scope.operation, resp.status, whoisResources.getAttributes()) === false ) {
 
-                    // stick created object in temporary store, so display-screen can fetch it from here
-                    MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
+                        //It' ok to just let it happen or fail.
+                        OrganisationHelper.updateAbuseC($scope.source, $scope.objectType, $scope.roleForAbuseC, $scope.attributes, passwords);
 
-                    // make transition to next display screen
-                    WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
-                }
+                        // stick created object in temporary store, so display-screen can fetch it from here
+                        MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
 
-                function _isPendingAuthenticationError(resp) {
-                    var status = false;
-                    if (resp.status === 400) {
-                        status = _.any(resp.data.errormessages.errormessage,
-                            function (item) {
-                                return item.severity === 'Warning' && item.text === 'This update has only passed one of the two required hierarchical authorisations';
-                            }
-                        );
+                        // make transition to next display screen
+                        WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
                     }
-                    $log.info('_isPendingAuthenticationError:' + status);
-                    return status;
-                }
-
-                function _composePendingResponse(resp) {
-                    var found = _.find(resp.errormessages.errormessage, function (item) {
-                        return item.severity === 'Error' && item.text === 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s';
-                    });
-
-                    if (!_.isUndefined(found) && found.args.length >= 4) {
-                        var obstructingType = found.args[0].value;
-                        var obstructingName = found.args[1].value;
-                        var mntnersToConfirm = found.args[3].value;
-
-                        var obstructingObjectLink = LinkService.getLink($scope.source, obstructingType, obstructingName);
-                        var mntnersToConfirmLinks = LinkService.filterAndCreateTextWithLinksForMntners($scope.source, mntnersToConfirm);
-
-                        var moreInfoUrl = 'https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage';
-                        var moreInfoLink = '<a target="_blank" href="' + moreInfoUrl + '">Click here for more information</a>.';
-
-                        var pendngMsg = 'Your object is still pending authorisation by a maintainer of the ' +
-                            '<strong>' + obstructingType + '</strong> object ' + obstructingObjectLink + '. ' +
-                            'Please ask them to confirm, by submitting the same object as outlined below ' +
-                            'using syncupdates or mail updates, and authenticate it using the maintainer ' +
-                            mntnersToConfirmLinks + '. ' + moreInfoLink;
-
-                        // Keep existing message and overwrite existing errors
-                        resp.errormessages.errormessage = [{'severity': 'Info', 'text': pendngMsg}];
-                    }
-                    // otherwise keep existing response
-
-                    return resp;
                 }
 
                 function _onSubmitError(resp) {
@@ -464,19 +413,33 @@ angular.module('webUpdates')
                     var whoisResources = resp.data;
                     $scope.attributes = whoisResources.getAttributes();
 
-                    // TODO: fix whois to return a 200 series response in case of pending object [MG]
-                    if (_isPendingAuthenticationError(resp)) {
-                        // TODO: let whois come with a single information errormessage [MG]
-                        MessageStore.add(whoisResources.getPrimaryKey(), _composePendingResponse(whoisResources));
+                    var errorMessages = [];
+                    var warningMessages = [];
+                    var infoMessages = [];
+
+                    //This interceptor allows us to convert error into success
+                    //This could change in the future
+                    var intercepted = ScreenLogicInterceptor.afterSubmitError($scope.operation,
+                        $scope.source, $scope.objectType,
+                        resp.status,  resp.data,
+                        errorMessages, warningMessages, infoMessages );
+
+                    // Post-process attribute after submit-error using screen-logic-interceptor
+                    if( intercepted ) {
+                        loadAlerts(errorMessages, warningMessages, infoMessages);
                         /* Instruct downstream screen (typically display screen) that object is in pending state */
                         WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
                     } else {
                         _validateForm();
                         AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
                         AlertService.setErrors(whoisResources);
-                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes)
+                        ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes);
+                        $scope.attributes = _interceptBeforeEdit($scope.operation, $scope.attributes);
                     }
                 }
+
+                // Post-process atttributes before submit using screen-logic-interceptor
+                $scope.attributes = _interceptAfterEdit($scope.operation, $scope.attributes);
 
                 if (!_validateForm()) {
                     ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes);
@@ -583,7 +546,12 @@ angular.module('webUpdates')
                             var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
                                 return {name: 'mnt-by', value: i.key};
                             });
-                            $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
+
+                            var attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                                $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
+
+                            // Post-process atttributes before showing using screen-logic-interceptor
+                            $scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
 
                             $log.debug('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
                             $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
@@ -596,6 +564,61 @@ angular.module('webUpdates')
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                     }
                 );
+            }
+
+            function loadAlerts(errorMessages, warningMessages, infoMessages) {
+                errorMessages.forEach(function(error) {
+                    AlertService.addGlobalError(error);
+                });
+
+                warningMessages.forEach(function(warning) {
+                    AlertService.addGlobalWarning(warning);
+                });
+
+                infoMessages.forEach(function(info) {
+                    AlertService.addGlobalInfo(info);
+                });
+
+                return;
+            }
+
+            function _interceptBeforeEdit( method, attributes ) {
+                var errorMessages = [];
+                var warningMessages = [];
+                var infoMessages = [];
+                var attributes = ScreenLogicInterceptor.beforeEdit(method,
+                    $scope.source, $scope.objectType, attributes,
+                    errorMessages, warningMessages, infoMessages );
+
+                loadAlerts(errorMessages, warningMessages, infoMessages);
+
+                return attributes;
+            }
+
+            function _interceptAfterEdit( method, attributes ) {
+                var errorMessages = [];
+                var warningMessages = [];
+                var infoMessages = [];
+                var attributes = ScreenLogicInterceptor.afterEdit(method,
+                    $scope.source, $scope.objectType, attributes,
+                    errorMessages, warningMessages, infoMessages );
+
+                loadAlerts(errorMessages, warningMessages, infoMessages);
+
+                return attributes;
+            }
+
+            function _interceptOnSubmitSuccess( method, responseAttributes ) {
+                var errorMessages = [];
+                var warningMessages = [];
+                var infoMessages = [];
+                var status = ScreenLogicInterceptor.afterSubmitSuccess(method,
+                    $scope.source, $scope.objectType, responseAttributes,
+                    warningMessages, infoMessages );
+
+                loadAlerts(errorMessages, warningMessages, infoMessages);
+
+                return status;
             }
 
             function _fetchDataForModify() {
@@ -637,9 +660,8 @@ angular.module('webUpdates')
                         // starting point for further editing
                         $scope.maintainers.object = _extractEnrichMntnersFromObject($scope.attributes);
 
-                        if(missingAbuseC()) {
-                            $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-                        }
+                        // Post-process atttribute before showing using screen-logic-interceptor
+                        $scope.attributes = _interceptBeforeEdit($scope.MODIFY_OPERATION, $scope.attributes);
 
                         // fetch details of all selected maintainers concurrently
                         $scope.restCalInProgress = true;

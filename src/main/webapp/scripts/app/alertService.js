@@ -81,6 +81,18 @@ angular.module('dbWebApp')
             $rootScope.infos.push({plainText:errorMsg});
         };
 
+        alertService.setGlobalErrors = function( errorMsgs ) {
+            $rootScope.errors = errorMsgs;
+        };
+
+        alertService.setGlobalWarnings = function( warningMsgs ) {
+            $rootScope.warnings = warningMsgs;
+        };
+
+        alertService.setGlobalInfos = function( infoMsgs ) {
+            $rootScope.infos = infoMsgs;
+        };
+
         alertService.addGlobalInfo = function( errorMsg ) {
             $rootScope.infos.push({plainText:errorMsg});
         };
