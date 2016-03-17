@@ -20,11 +20,12 @@ angular.module('webUpdates')
 
             $scope.isMine = MntnerService.isMine;
             $scope.isNccMntner = MntnerService.isNccMntner;
+            $scope.isRemoveable = MntnerService.isRemoveable;
             $scope.hasSSo = MntnerService.hasSSo;
             $scope.hasPgp = MntnerService.hasPgp;
             $scope.hasMd5 = MntnerService.hasMd5;
             $scope.isNew = MntnerService.isNew;
-            $scope.needToLockLastMntner = needToLockLastMntner;
+            $scope.isModifyWithSingleMntnerRemaining = isModifyWithSingleMntnerRemaining;
 
             $scope.mntnerAutocomplete = mntnerAutocomplete;
             $scope.referenceAutocomplete = referenceAutocomplete;
@@ -186,8 +187,8 @@ angular.module('webUpdates')
                 $log.debug('onMntnerRemoved: attributes' + JSON.stringify($scope.attributes));
             }
 
-            function needToLockLastMntner() {
-                if ($scope.name && $scope.maintainers.object.length === 1) {
+            function isModifyWithSingleMntnerRemaining() {
+                if ($scope.operation === 'Modify' && $scope.maintainers.object.length === 1) {
                     // only lock last for modify
                     return true;
                 }
@@ -465,9 +466,10 @@ angular.module('webUpdates')
 
                     } else {
                         //TODO: Temporary function till RPSL clean up
-                        if(MntnerService.isLoneRpslMntner($scope.maintainers.object)) {
+                        if(MntnerService.isLoneRpslMntner($scope.maintainers.objectOriginal)) {
                             passwords.push('RPSL');
                         }
+
                         RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
                             WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
                             _onSubmitSuccess,
