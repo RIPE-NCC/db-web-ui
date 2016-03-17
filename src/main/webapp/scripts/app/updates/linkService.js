@@ -13,6 +13,15 @@ angular.module('updates')
             return '<a target="_blank" href="' + linkService.getDisplayUrl(source, type, name) + '">' + name + '</a>';
         };
 
+
+        linkService.getModifyUrl = function ( source, type, name ) {
+            return '/db-web-ui/#/webupdates/display/'+ source + '/' + type + '/' + name;
+        };
+
+        linkService.getModifyLink = function ( source, type, name ) {
+            return '<a target="_blank" href="' + linkService.getModifyUrl(source, type, name) + '">' + name + '</a>';
+        };
+
         linkService.filterAndCreateTextWithLinksForMntners = function ( source, mntners ) {
             var chopped = _.words(mntners, /[^, ]+/g);
             if(_.isUndefined(chopped)) {

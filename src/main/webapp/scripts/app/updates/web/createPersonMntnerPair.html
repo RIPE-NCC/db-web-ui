@@ -9,7 +9,9 @@
             <li ng-repeat="attribute in (mntnerAttributes| filter: {name:'!descr'}  | filter: {name:'!admin-c'}  | filter: {name:'!upd-to'} | filter:  {name:'!auth'} | filter: {name:'!mnt-by'} | filter: {name: '!source'} )"
                 class="form-group input-group">
                 <label>{{attribute.name}}</label>
-                <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
+                <span ng-if="attribute.$$error" class="text-error">
+                    <span ng-bind-html="attribute.$$error"></span>
+                </span>
                 <input type="text"
                        name="{{attribute.name}}"
                        ng-model="attribute.value"

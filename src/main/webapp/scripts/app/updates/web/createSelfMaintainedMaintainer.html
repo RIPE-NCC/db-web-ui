@@ -44,7 +44,10 @@
 
             <li ng-repeat="attribute in (maintainerAttributes | filter: {name: '!mnt-by'} | filter: {name: '!source'} | filter: {name: '!upd-to'} | filter: {name:'!auth'} | filter: {name:'!admin-c'})" class="form-group input-group">
                 <label>{{attribute.name}}</label>
-                <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
+
+                <span ng-if="attribute.$$error" class="text-error">
+                    <span ng-bind-html="attribute.$$error"></span>
+                </span>
 
                 <input type="text"
                        name="{{attribute.name}}"

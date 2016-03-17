@@ -52,7 +52,9 @@
         <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" class="form-group input-group">
 
             <label>{{attribute.name}}</label>
-            <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
+            <span ng-if="attribute.$$error" class="text-error">
+                <span ng-bind-html="attribute.$$error"></span>
+            </span>
             <span ng-if="attribute.$$success" class="text-success">{{attribute.$$success}}</span>
 
             <input ng-if="!isEnum(attribute)"
@@ -63,8 +65,9 @@
                        ng-required="{{attribute.$$meta.$$mandatory}}"
                        placeholder="{{getAttributeShortDescription(attribute.name)}}"
                        class="form-control"
+                       attributetransformer
                        typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute, $viewValue)"
-                       typeahead-min-length="1"
+                       typeahead-min-length="2"
                        ng-disabled="isToBeDisabled(attribute)"
                        autocomplete="{{isBrowserAutoComplete(attribute)}}"
                        />

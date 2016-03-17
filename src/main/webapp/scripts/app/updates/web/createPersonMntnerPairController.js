@@ -2,8 +2,10 @@
 
 angular.module('webUpdates')
     .controller('CreatePersonMntnerPairController', [
-        '$scope', '$state', '$log', 'SOURCE', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore','ErrorReporterService',
-        function ($scope, $state, $log, SOURCE, WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService) {
+        '$scope', '$state', '$log', 'SOURCE',
+        'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore','ErrorReporterService', 'LinkService',
+        function ($scope, $state, $log, SOURCE,
+                  WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService, LinkService) {
 
             $scope.cancel = cancel;
             $scope.submit = submit;
@@ -113,7 +115,7 @@ angular.module('webUpdates')
                                     }
                                 });
                             if(!_.isUndefined(found)) {
-                                attr.$$error = attr.name + ' ' + found.key + ' already exists';
+                                attr.$$error = attr.name + ' ' + LinkService.getModifyLink($scope.source, attr.name, found.key) + ' already exists';
                             }
                         }
                     );

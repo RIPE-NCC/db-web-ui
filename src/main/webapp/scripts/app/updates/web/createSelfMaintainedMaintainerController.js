@@ -4,8 +4,10 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams', 'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore', 'ErrorReporterService',
-        function ($scope, $state, $log, $stateParams, WhoisResources, AlertService, UserInfoService, RestService, MessageStore,ErrorReporterService) {
+    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams',
+        'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore', 'ErrorReporterService', 'LinkService',
+        function ($scope, $state, $log, $stateParams,
+                  WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService, LinkService) {
 
             var MNT_TYPE = 'mntner';
 
@@ -98,7 +100,7 @@ angular.module('webUpdates')
                         if(_.any(data, function(item) {
                                 return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
                             })) {
-                            attr.$$error = attr.name + ' ' + attr.value + ' already exists';
+                            attr.$$error = attr.name + ' ' + LinkService.getModifyLink($scope.source, attr.name, attr.value) + ' already exists';
                         } else {
                             attr.$$error = '';
                         }

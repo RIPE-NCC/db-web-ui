@@ -309,9 +309,14 @@ angular.module('webUpdates')
                     RestService.autocomplete( attribute.name, attribute.value, true, []).then(
                         function (data) {
                             if (_.any(data, function (item) {
-                                    return item.type === attribute.name && item.key.toLowerCase() === attribute.value.toLowerCase();
+                                    return _uniformed(item.type) === _uniformed(attribute.name)
+                                        &&
+                                        _uniformed(item.key) === _uniformed(attribute.value);
                                 })) {
-                                attribute.$$error = attribute.name + ' ' + data[0].key + ' already exists';
+                                attribute.$$error = attribute.name + ' ' +
+                                    LinkService.getModifyLink($scope.source, $scope.objectType, attribute.value) +
+                                    ' already exists';
+                                    ;
                             } else {
                                 attribute.$$error = '';
                             }
@@ -321,6 +326,13 @@ angular.module('webUpdates')
                         }
                     );
                 }
+            }
+
+            function _uniformed( input ) {
+                if (_.isUndefined(input)) {
+                    return input;
+                }
+                return _.trim(input).toUpperCase();
             }
 
             function hasMntners() {
