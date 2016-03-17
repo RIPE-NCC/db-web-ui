@@ -19,7 +19,6 @@ angular.module('webUpdates')
             $scope.onMntnerRemoved = onMntnerRemoved;
 
             $scope.isMine = MntnerService.isMine;
-            $scope.isNccMntner = MntnerService.isNccMntner;
             $scope.isRemoveable = MntnerService.isRemoveable;
             $scope.hasSSo = MntnerService.hasSSo;
             $scope.hasPgp = MntnerService.hasPgp;
