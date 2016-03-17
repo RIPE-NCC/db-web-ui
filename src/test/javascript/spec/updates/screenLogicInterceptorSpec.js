@@ -53,6 +53,18 @@ describe('updates: ScreenLogicInterceptor', function () {
 
     });
 
+    it('should not change addable attributes by default', function() {
+
+        var autNumSubject = _wrap('aut-num', autNumAttributes);
+        autNumSubject.setSingleAttributeOnName('status', 'ASSIGNED PI');
+
+        var addableAttributes = {attr:'some data'};
+        var addableAttributesAfter = interceptor.beforeAddAttribute('Modify', 'RIPE', 'aut-num', autNumSubject, addableAttributes);
+
+        expect(addableAttributesAfter).toBe(addableAttributes);
+    });
+
+
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
     };

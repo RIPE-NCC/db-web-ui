@@ -18,7 +18,10 @@ angular.module('updates')
                 afterEdit:
                     function(method, source, objectType, attributes, errors, warnings, infos) {
                         return attributes;
-                    }
+                    },
+                beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAttributes) {
+                    return addableAttributes;
+                }
                 // Currently we have no global afterSubmitSuccess and afterSubmitError callback
             };
 
@@ -67,8 +70,8 @@ angular.module('updates')
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
-                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAtributes) {
-                        return _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAtributes);
+                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAttributes) {
+                        return _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes);
                     }
                 },
                 inetnum: {
@@ -78,8 +81,8 @@ angular.module('updates')
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
-                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAtributes) {
-                        return _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAtributes);
+                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAttributes) {
+                        return _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes);
                     }
                 },
                 'inet-rtr': {
@@ -363,11 +366,12 @@ angular.module('updates')
             };
 
             logicInterceptor.beforeAddAttribute = function (method, source, objectType, objectAttributes, addableAttributes) {
+                var addableAttrs = globalInterceptor.beforeAddAttribute(method, source, objectType, objectAttributes, addableAttributes);
                 var interceptorFunc = _getInterceptorFunc(objectType, 'beforeAddAttribute');
                 if (_.isUndefined(interceptorFunc)) {
-                    return false;
+                    return addableAttrs;
                 }
-                return interceptorFunc(method, source, objectType, objectAttributes, addableAttributes);
+                return interceptorFunc(method, source, objectType, objectAttributes, addableAttrs);
             };
 
 
