@@ -89,6 +89,20 @@ describe('updates: InetNum ScreenLogicInterceptor', function () {
         expect(sponsoringOrgAttr).toBeUndefined();
     });
 
+    it('should not remove sponsoring org from inetnum addable attributes when status is empty', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('status', '');
+
+        var addableAttributes = _wrap('inetnum', inetNumSubject.getAddableAttributes('inetnum', inetNumSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'inetnum', inetNumSubject, addableAttributes);
+
+        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName('sponsoring-org');
+        expect(sponsoringOrgAttr).not.toBeUndefined();
+    });
+
+
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
     };

@@ -244,7 +244,7 @@ angular.module('updates')
             function _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes) {
                 var statusAttr = objectAttributes.getSingleAttributeOnName('status');
 
-                if(statusAttr && statusAttr.value != 'ASSIGNED PI' && statusAttr.value != 'ASSIGNED ANYCAST' && statusAttr.value != 'LEGACY') {
+                if(statusAttr && !_.isEmpty(statusAttr.value) && statusAttr.value != 'ASSIGNED PI' && statusAttr.value != 'ASSIGNED ANYCAST' && statusAttr.value != 'LEGACY') {
                     addableAttributes.removeAttributeWithName('sponsoring-org');
                 }
 
