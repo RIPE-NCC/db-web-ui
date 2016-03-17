@@ -3,10 +3,10 @@
 angular.module('textUpdates')
     .controller('TextMultiController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService',
-        'RpslService', 'TextCommons',
+        'RpslService', 'TextCommons', 'SerialExecutor', 'AutoKeyLogic',
         function ($scope, $stateParams, $state, $resource, $log, $q,
                   WhoisResources, RestService, AlertService, ErrorReporterService,
-                  RpslService, TextCommons) {
+                  RpslService, TextCommons, SerialExecutor, AutoKeyLogic) {
 
             $scope.setTextMode = setTextMode;
             $scope.isTextMode = isTextMode;
@@ -25,8 +25,6 @@ angular.module('textUpdates')
                 // extract parameters from the url
                 $scope.objects = {};
                 $scope.objects.source = $stateParams.source;
-                $scope.objects.passwords = [];
-                $scope.objects.overrides = [];
                 $scope.objects.rpsl = '';
 
                 $log.debug('TextMultiController: Url params:' +
@@ -40,7 +38,7 @@ angular.module('textUpdates')
                 AlertService.clearErrors();
 
                 $scope.textMode = false;
-                $scope.objects.objects = _verify($scope.objects.source, $scope.objects.rpsl, $scope.objects.passwords, $scope.objects.overrides);
+                $scope.objects.objects = _verify($scope.objects.source, $scope.objects.rpsl);
             }
 
             function isWebMode() {
@@ -56,49 +54,63 @@ angular.module('textUpdates')
                 return $scope.textMode === true;
             }
 
-            function _verify(source, rpsl, passwords, overrides) {
+            function _verify(source, rpsl) {
+
+                $log.info('_verify: source' + source + ', rpsl:'+ rpsl);
+
+                AutoKeyLogic.clear();
 
                 var objects = [];
 
-                $log.debug("rpsl:" + rpsl);
+                var parsedObjs = RpslService.fromRpsl(rpsl);
+                $log.debug('parsed rpsl:' + JSON.stringify(parsedObjs));
 
-                var objs = RpslService.fromRpslWithPasswords(rpsl, passwords, overrides);
-                $log.debug("objects:" + JSON.stringify(objs));
+                _initializeActionCounter(parsedObjs);
+                _.each(parsedObjs, function(parsedObj) {
 
-                _initializeActionCounter(objs);
-                _.each(objs, function(attributes) {
                     // create a new object and add it to the array right away
-                    var object  = {};
-                    object.errors = [];
+                    var object  = {
+                        passwords: parsedObj.passwords,
+                        override: parsedObj.override,
+                        deleteReason: parsedObj.deleteReason,
+                        errors: []
+                    };
                     objects.push(object);
 
-                    attributes = TextCommons.uncapitalize(attributes);
+                    var attrs = TextCommons.uncapitalize(parsedObj.attributes);
 
-                    // assume first attribute is type indicator
-                    object.type = attributes[0].name;
+                    // assume nam of first attribute is type indicator
+                    object.type = _determineObjectType(attrs);
 
-                    // parse
-                    object.rpsl = RpslService.toRpsl(attributes);
+                    // back to rpsl
+                    object.rpsl = RpslService.toRpsl(parsedObj);
+
+                    $log.info('object:' + JSON.stringify(object));
 
                     // validate
-                    if (!TextCommons.validate(object.type, attributes, object.errors)) {
+                    if (!TextCommons.validate(object.type, attrs, object.errors)) {
+                        $log.info('validation error:' + JSON.stringify( object.errors));
                         _setStatus(object, false, 'Invalid syntax');
                         _markActionCompleted(object, 'syntax error');
                     } else {
-
                         // determine primary key pf object
-                        object.attributes = WhoisResources.wrapAndEnrichAttributes(object.type, attributes);
+                        object.attributes = WhoisResources.wrapAndEnrichAttributes(object.type, attrs);
                         object.name = _getPkey(object.type, object.attributes);
 
+                        // find out if this object has AUTO-keys
+                        AutoKeyLogic.identifyAutoKeys(object.type, attrs );
+
+                        // start fetching to determine if exists
                         _setStatus(object, undefined, 'Fetching');
-                        _doesExist(source, object, passwords).then(
+                        object.exists = undefined;
+                        _doesExist(source, object, object.passwords, object.override).then(
                             function (exists) {
                                 if( exists === true ) {
-                                    object.action = 'Modify';
+                                    object.exists = true;
                                     _setStatus(object, undefined, 'Object exists');
                                     object.displayUrl = _asDisplayLink(source, object);
                                 } else {
-                                    object.action = 'Create';
+                                    object.exists = false;
                                     _setStatus(object, undefined, 'Object does not yet exist');
                                     object.displayUrl = undefined;
                                 }
@@ -116,12 +128,19 @@ angular.module('textUpdates')
                 return objects;
             }
 
-            function _doesExist(source, object, passwords) {
+            function _determineObjectType( attributes ) {
+                return attributes[0].name;
+            }
+
+            function _doesExist(source, object, passwords, override) {
                 var deferredObject = $q.defer();
 
-                if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.trim(object.name) === 'AUTO-1') {
-                    deferredObject.resolve('Create');
+                if(_.isUndefined(object.name) || _.isEmpty(object.name) || _.startsWith(_.trim(object.name), 'AUTO-')) {
+                    $log.info( "Need need to perform fetch to check if exists");
+                    deferredObject.resolve(false);
                 } else {
+                    $log.info( "Perform fetch to check if exists");
+                    // TODO fetch with override
                     RestService.fetchObject(source, object.type, object.name, passwords, true).then(
                         function (result) {
                             $log.debug('Successfully fetched object ' + object.name );
@@ -146,67 +165,115 @@ angular.module('textUpdates')
                 $log.debug("submit:" + JSON.stringify($scope.objects.objects));
 
                 _initializeActionCounter($scope.objects.objects);
-                _.each($scope.objects.objects, function(object) {
 
-                    _setStatus(object, undefined, 'Start ' + object.action );
-                    _performAction($scope.objects.source, object, $scope.objects.passwords, $scope.objects.overrides).then(
-                        function(whoisResources) {
-                            object.name = whoisResources.getPrimaryKey();
-                            object.oldRpsl = _.clone(object.rpsl)
-                            object.rpsl = RpslService.toRpsl(whoisResources.getAttributes());
+                // Execute any by one so that AUT0-keys can be resolved
+                SerialExecutor.execute($scope.objects.objects, _submitSingle);
+            }
+
+            function _submitSingle( object ) {
+                var deferredObject = $q.defer();
+
+                _setStatus(object, undefined, 'Start ' + _determineAction(object) );
+                _performAction($scope.objects.source, object).then(
+                    function(whoisResources) {
+                        object.name = whoisResources.getPrimaryKey();
+                        object.oldRpsl = _.clone(object.rpsl);
+                        object.attributes = whoisResources.getAttributes();
+                        var obj = {
+                            attributes:object.attributes,
+                            passwords:object.passwords,
+                            override:object.override,
+                            deleteReason:object.deleteReason,
+                        };
+                        object.rpsl = RpslService.toRpsl(obj);
+                        if( object.deleted !== true) {
                             object.displayUrl = _asDisplayLink($scope.objects.source, object);
-                            object.textupdatesUrl = undefined;
-                            object.errors = [];
-                            object.warnings = whoisResources.getAllWarnings();
-                            object.infos = whoisResources.getAllInfos();
-
-                            _setStatus(object, true, object.action + ' success');
-                            _markActionCompleted(object, object.action + ' success', _rewriteRpsl);
-                        },
-                        function(whoisResources) {
-                            object.errors = whoisResources.getAllErrors();
-                            object.warnings = whoisResources.getAllWarnings();
-                            object.infos = whoisResources.getAllInfos();
-
-                            _setStatus(object, false, object.action + ' error');
-                            _markActionCompleted(object, object.action + ' failed', _rewriteRpsl);
-
                         }
-                    );
-                });
+                        object.textupdatesUrl = undefined;
+                        object.errors = [];
+                        object.warnings = whoisResources.getAllWarnings();
+                        object.infos = whoisResources.getAllInfos();
+
+                        _markActionCompleted(object, _determineAction(object) + ' success', _rewriteRpsl);
+
+                        deferredObject.resolve(object);
+                    },
+                    function(whoisResources) {
+                        object.errors = whoisResources.getAllErrors();
+                        object.warnings = whoisResources.getAllWarnings();
+                        object.infos = whoisResources.getAllInfos();
+
+                        _markActionCompleted(object, _determineAction(object) + ' failed', _rewriteRpsl);
+
+                        deferredObject.reject(object);
+                    }
+                );
+
+                return deferredObject.promise;
             }
 
-            function _rewriteRpsl() {
-                $log.debug( "Rewriting RPSL");
-
-                $scope.objects.rpsl = '';
-                _.each($scope.objects.objects, function(object) {
-                    $scope.objects.rpsl += ('\n'+ object.rpsl );
-                });
-                _.each($scope.objects.passwords, function(password) {
-                    $scope.objects.rpsl += ('password:'+ password + '\n');
-                });
-                _.each($scope.objects.overrides, function(override) {
-                    $scope.objects.rpsl += ('override:'+ override + '\n');
-                });
-            }
-
-            function _performAction( source, object, passwords, overrides) {
+            function _performAction( source, object) {
                 var deferredObject = $q.defer();
 
                 if( object.errors.length > 0 ) {
-                    $log.debug('Skip performing action '+ object.action + '-' + object.type + '-' + object.name + ' since has errors');
+                    $log.debug('Skip performing action '+_determineAction(object) + '-' + object.type + '-' + object.name + ' since has errors');
                 } else {
-                    $log.debug('Start performing action '+ object.action + '-' + object.type + '-' + object.name );
+                    $log.debug('Start performing action '+ _determineAction(object) + '-' + object.type + '-' + object.name );
 
-                    if (object.action === 'Create') {
-                        RestService.createObject(source, object.type,
-                            WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
-                            passwords, overrides, true).then(
+                    // replace auto-key with real generated key
+                    AutoKeyLogic.substituteAutoKeys( object.attributes);
+
+                    // find attrs with an auto key
+                    var autoAttrs = AutoKeyLogic.getAutoKeys(object.attributes);
+
+                    // might have changed due to auto-key
+                    var oldName = _.trim(object.name);
+                    object.name = _.trim( _getPkey(object.type, object.attributes));
+                    if(_.startsWith(oldName, 'AUTO-') && !_.startsWith(object.name, 'AUTO-')) {
+                        object.exists = true;
+                    }
+
+                    if (!_.isUndefined(object.deleteReason) ) {
+                        // TODO: add support for delete override
+
+                        RestService.deleteObject(source, object.type, object.name, object.deleteReason, false,
+                            object.passwords, false).then(
                             function (result) {
+                                object.deleted = true;
+                                object.exists = false;
+                                _setStatus(object, true, 'Delete success' );
+
                                 deferredObject.resolve(result);
                             },
                             function (error) {
+                                _setStatus(object, false, 'Delete error' );
+
+                                if(!_.isEmpty(error.data.getAttributes())) {
+                                    ErrorReporterService.log('MultiDelete', object.type, AlertService.getErrors(), error.data.getAttributes());
+                                }
+                                deferredObject.reject(error.data);
+                            }
+                        );
+                    } else if (object.exists === false) {
+
+                        RestService.createObject(source, object.type,
+                            WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
+                            object.passwords, object.override, true).then(
+                            function (result) {
+
+                                // next time perform a modify
+                                object.exists = true;
+                                _setStatus(object, true, 'Create success' );
+
+                                // Associate generated value for auto-key so that next object with auto- can be substituted
+                                _.each(autoAttrs, function(attr) {
+                                    AutoKeyLogic.registerAutoKeyValue(attr, result.getAttributes());
+                                });
+                                deferredObject.resolve(result);
+                            },
+                            function (error) {
+                                _setStatus(object, false, 'Create error' );
+
                                 if(!_.isEmpty(error.data.getAttributes())) {
                                     ErrorReporterService.log('MultiCreate', object.type, AlertService.getErrors(), error.data.getAttributes());
                                 }
@@ -217,11 +284,15 @@ angular.module('textUpdates')
                     } else {
                         RestService.modifyObject(source, object.type, object.name,
                             WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
-                            passwords, overrides, true).then(
+                            object.passwords, object.override, true).then(
                             function (result) {
+                                _setStatus(object, true, 'Modify success' );
+
                                 deferredObject.resolve(result);
                             },
                             function (error) {
+                                _setStatus(object, false, 'Modify error' );
+
                                 if(!_.isEmpty(error.data.getAttributes())) {
                                     ErrorReporterService.log('MultiModify', object.type, AlertService.getErrors(), error.data.getAttributes());
                                 }
@@ -233,16 +304,26 @@ angular.module('textUpdates')
                 return deferredObject.promise;
             }
 
-            function _setStatus(object, status, statusName)  {
-                object.success = status;
-                object.status = statusName;
-                if(_.isUndefined(status)  ) {
-                    object.statusStyle = {color: 'blue'};
-                } else if( status === false ) {
-                    object.statusStyle = {color:'red'};
-                } else if( status === true ) {
-                    object.statusStyle = {color:'green'};
+            function _rewriteRpsl() {
+                $log.debug( "Rewriting RPSL");
+
+                $scope.objects.rpsl = '';
+                _.each($scope.objects.objects, function(object) {
+                    $scope.objects.rpsl += ('\n'+ object.rpsl );
+                });
+            }
+
+            function _setStatus(object, isSuccess, statusMsg) {
+                object.success = isSuccess;
+                object.status = statusMsg;
+                if (_.isUndefined(object.success)) {
+                    object.statusStyle = 'text-info';
+                } else if (object.success === false) {
+                    object.statusStyle = 'text-error';
+                } else if (object.success === true) {
+                    object.statusStyle = 'text-success';
                 }
+                object.action = _determineAction(object)
             }
 
             function _getPkey(objectType, attributes) {
@@ -273,13 +354,16 @@ angular.module('textUpdates')
                 if( object.success !== true ) {
                     suffix = suffix.concat( '&rpsl=' + encodeURIComponent(object.rpsl));
                 }
-                if( object.action === 'Modify') {
+                if( object.exists === true) {
                     return '/db-web-ui/#/textupdates/modify/'+  source + '/' + object.type + '/' + object.name + suffix;
                 } else {
                     return '/db-web-ui/#/textupdates/create/'+  source + '/' + object.type + suffix;
                 }
             }
 
+            function _determineAction( obj ) {
+                return !_.isUndefined(obj.deleteReason) ? 'delete' : obj.exists === true ? 'modify' : 'create';
+            }
 
             function _initializeActionCounter(objects) {
                 $scope.actionsPending = objects.length;
@@ -288,7 +372,8 @@ angular.module('textUpdates')
 
             function _markActionCompleted(object, action, callback) {
                 $scope.actionsPending--;
-                $log.debug('mark ' +  object.action + '-' + object.type + '-' + object.name + ' action completed for ' + action + ': '+ $scope.actionsPending);
+                $log.debug('mark ' +  _determineAction(object) + '-' + object.type + '-' + object.name +
+                    ' action completed for ' + _determineAction(object) + ': '+ $scope.actionsPending);
                 if( $scope.actionsPending === 0 ) {
                     if (!_.isUndefined(callback) && _.isFunction(callback)) {
                         callback();

@@ -5,6 +5,7 @@ describe('textUpdates: TextMultiController', function () {
     var $scope, $state, $stateParams, $httpBackend, $window;
     var WhoisResources;
     var AlertService;
+    var AutoKeyLogic;
     var SOURCE = 'RIPE';
     var doSetupController;
     var $q;
@@ -14,7 +15,7 @@ describe('textUpdates: TextMultiController', function () {
         module('textUpdates');
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
-                         _WhoisResources_, _AlertService_, _$q_) {
+                         _WhoisResources_, _AlertService_, _$q_, _AutoKeyLogic_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -25,6 +26,7 @@ describe('textUpdates: TextMultiController', function () {
             $window = _$window_;
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
+            AutoKeyLogic = _AutoKeyLogic_;
             $q = _$q_;
 
             var logger = {
@@ -175,7 +177,7 @@ describe('textUpdates: TextMultiController', function () {
 
         expect($scope.objects.objects[0].success).toBeUndefined();
         expect($scope.objects.objects[0].status).toBe('Object does not yet exist');
-        expect($scope.objects.objects[0].action).toBe('Create');
+        expect($scope.objects.objects[0].action).toBe('create');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
         expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20AUTO-1%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
 
@@ -207,7 +209,7 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].success).toBeUndefined();
-        expect($scope.objects.objects[0].action).toBe('Modify');
+        expect($scope.objects.objects[0].action).toBe('modify');
         expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/modify/RIPE/person/MM1-RIPE?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
         expect($scope.objects.objects[0].status).toBe('Object exists');
@@ -240,7 +242,8 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].success).toBe(false);
-        expect($scope.objects.objects[0].action).toBeUndefined();
+        expect($scope.objects.objects[0].exists).toBe(undefined);
+        expect($scope.objects.objects[0].action).toBe('create');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect($scope.objects.objects[0].status).toBe('Error fetching');
@@ -273,7 +276,7 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].success).toBeUndefined();
-        expect($scope.objects.objects[0].action).toBe('Create');
+        expect($scope.objects.objects[0].action).toBe('create');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
         expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20Amsterdam%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
         expect($scope.objects.objects[0].status).toBe('Object does not yet exist');
@@ -302,9 +305,11 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.objects.objects = [];
         $scope.objects.objects.push({
-            action: 'Create',
+            action: 'create',
+            exists:false,
             type: 'person',
             name: 'AUTO-1',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
             success: true,
             errors:[],
         });
@@ -334,9 +339,11 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.objects.objects = [];
         $scope.objects.objects.push({
-            action: 'Create',
+            action: 'create',
+            exists: false,
             type: 'person',
             name: 'AUTO-1',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
             success: true,
             errors:[],
         });
@@ -359,9 +366,10 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.objects.objects = [];
         $scope.objects.objects.push({
-            action: 'Modify',
+            action: 'modify',
             type: 'person',
             name: 'MM1-RIPE',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
             success: true,
             errors:[],
         });
@@ -390,9 +398,10 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.objects.objects = [];
         $scope.objects.objects.push( {
-            action: 'Modify',
+            action: 'modify',
             type: 'person',
             name: 'MM1-RIPE',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
             success: true,
             errors:[],
         });
@@ -407,6 +416,70 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
 
     });
+
+
+    it('should perform a delete for existing object', function () {
+        doSetupController();
+
+        $scope.objects.objects = [];
+        $scope.objects.objects.push({
+            action: 'modify',
+            type: 'person',
+            name: 'MM1-RIPE',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
+            success: true,
+            deleteReason:'just because',
+            passwords:['secret'],
+            errors:[],
+        });
+
+        $scope.submit();
+
+        $httpBackend.expectDELETE('api/whois/RIPE/person/MM1-RIPE?dry-run=false&password=secret&reason=just+because').respond(successResponse);
+        $httpBackend.flush();
+
+        expect($scope.objects.objects[0].status).toBe('Delete success');
+        expect($scope.objects.objects[0].displayUrl).toBeUndefined();
+        expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
+        expect($scope.objects.objects[0].rpsl).toBe(
+            'person:Me Me\n'+
+            'address:Amsterdam\n'+
+            'phone:+316\n'+
+            'nic-hdl:MM1-RIPE\n'+
+            'mnt-by:TEST-MNT\n'+
+            'created:2015-12-28T09:10:20Z\n'+
+            'last-modified:2015-12-28T09:12:25Z\n'+
+            'source:RIPE\n' +
+            'delete:just because\n' +
+            'password:secret\n');
+    });
+
+    it('should report an error upon delete-failure', function () {
+        doSetupController();
+
+        $scope.objects.objects = [];
+        $scope.objects.objects.push( {
+            action: 'modify',
+            type: 'person',
+            name: 'MM1-RIPE',
+            attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
+            success: true,
+            deleteReason:'just because',
+            passwords:['secret'],
+            errors:[],
+        });
+
+        $scope.submit();
+
+        $httpBackend.expectDELETE('api/whois/RIPE/person/MM1-RIPE?dry-run=false&password=secret&reason=just+because').respond(403,errorResponse);
+        $httpBackend.flush();
+
+        expect($scope.objects.objects[0].status).toBe('Delete error');
+        expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
+        expect($scope.objects.objects[0].displayUrl).toBeUndefined();
+
+    });
+
 
     var errorResponse = {
         errormessages: {

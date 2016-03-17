@@ -66,7 +66,12 @@ angular.module('textUpdates')
                 _enrichAttributesWithSsoMntners(attributes).then(
                     function (attributes) {
                         TextCommons.capitaliseMandatory(attributes);
-                        $scope.object.rpsl = RpslService.toRpsl(attributes);
+                        var obj = {
+                            attributes: attributes,
+                            passwords: $scope.passwords,
+                            override: $scope.override
+                        }
+                        $scope.object.rpsl = RpslService.toRpsl(obj);
                     }
                 );
 
@@ -124,16 +129,14 @@ angular.module('textUpdates')
                 $log.debug("rpsl:" + $scope.object.rpsl);
 
                 // parse
-                var passwords = [];
-                var overrides = [];
-                var objects = RpslService.fromRpslWithPasswords($scope.object.rpsl, passwords, overrides);
+                var objects = RpslService.fromRpsl($scope.object.rpsl);
                 if (objects.length > 1) {
                     AlertService.setGlobalError('Only a single object is allowed');
                     return;
                 }
-                var attributes = objects[0];
-
-                attributes = TextCommons.uncapitalize(attributes);
+                $scope.passwords = objects[0].passwords;
+                $scope.override = objects[0].override;
+                var attributes = TextCommons.uncapitalize(objects[0].attributes);
                 $log.debug("attributes:" + JSON.stringify(attributes));
 
                 if (!TextCommons.validate($scope.object.type, attributes)) {
@@ -142,12 +145,12 @@ angular.module('textUpdates')
 
                 var undefinedName;
                 TextCommons.authenticate('Create', $scope.object.source, $scope.object.type, undefinedName, $scope.mntners.sso,
-                    attributes, passwords, overrides).then(
+                    attributes, $scope.passwords, $scope.override).then(
                     function (authenticated) {
                         $log.debug('Authenticated successfully:' + authenticated);
 
                         // combine all passwords
-                        var combinedPaswords =_.union(passwords, TextCommons.getPasswordsForRestCall( $scope.object.type));
+                        var combinedPaswords =_.union($scope.passwords, TextCommons.getPasswordsForRestCall( $scope.object.type));
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
@@ -155,7 +158,7 @@ angular.module('textUpdates')
                         $scope.restCalInProgress = true;
                         RestService.createObject($scope.object.source, $scope.object.type,
                                                 WhoisResources.turnAttrsIntoWhoisObject(attributes),
-                                             combinedPaswords, overrides, true).then(
+                                             combinedPaswords, $scope.override, true).then(
                             function (result) {
                                 $scope.restCalInProgress = false;
 
@@ -176,7 +179,7 @@ angular.module('textUpdates')
                             }
                         );
                     }, function(authenticated) {
-                        $log.debug('Authentication failure:'+authenticated);
+                        $log.error('Authentication failure:'+authenticated);
 
                     }
                 );
