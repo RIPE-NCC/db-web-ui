@@ -69,7 +69,7 @@
                        typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute, $viewValue)"
                        typeahead-min-length="2"
                        ng-disabled="isToBeDisabled(attribute)"
-                       autocomplete="{{isBrowserAutoComplete(attribute)}}"
+                       autocomplete="off"
                        />
 
             <span ng-if="isEnum(attribute)">

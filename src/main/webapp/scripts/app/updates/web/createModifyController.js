@@ -94,7 +94,7 @@ angular.module('webUpdates')
                     sso: [],
                     objectOriginal: [],
                     object: [],
-                    alternatives: [],
+                    alternatives: []
                 };
 
                 $scope.attributes = [];
@@ -232,7 +232,7 @@ angular.module('webUpdates')
             }
 
             function _escape(input) {
-                return input.replace(/\</g,'&lt;').replace(/\>/g, '&gt;');
+                return input.replace(/</g,'&lt;').replace(/>/g, '&gt;');
             }
 
             function enumAutocomplete(attribute) {
@@ -257,8 +257,8 @@ angular.module('webUpdates')
                 var attrName = attribute.name;
                 var refs = attribute.$$meta.$$refs;
 
-                var utf8Substituted =  _warnForNonSubstitutableUtf8(attribute, userInput);
-                if( utf8Substituted  && _isServerLookupKey(refs)) {
+                var utf8Substituted = _warnForNonSubstitutableUtf8(attribute, userInput);
+                if( utf8Substituted && _isServerLookupKey(refs)) {
                     return RestService.autocompleteAdvanced(userInput, refs).then(
                         function (resp) {
                             return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
@@ -275,7 +275,7 @@ angular.module('webUpdates')
 
             function _filterBasedOnAttr(suggestions, attrName) {
                 return _.filter(suggestions, function(item) {
-                    if( attrName === 'abuse-c') {
+                    if (attrName === 'abuse-c') {
                         $log.debug("Filter out suggestions without abuse-mailbox");
                         return !_.isEmpty(item['abuse-mailbox']);
                     }
@@ -287,7 +287,7 @@ angular.module('webUpdates')
                 return attribute.$$meta.$$isEnum;
             }
 
-            function isBrowserAutoComplete(attribute){
+            function isBrowserAutoComplete(attribute) {
                 if (_isServerLookupKey(attribute.$$meta.$$refs) || isEnum(attribute)) {
                     return "off";
                 } else {
@@ -316,7 +316,6 @@ angular.module('webUpdates')
                                 attribute.$$error = attribute.name + ' ' +
                                     LinkService.getModifyLink($scope.source, $scope.objectType, attribute.value) +
                                     ' already exists';
-                                    ;
                             } else {
                                 attribute.$$error = '';
                             }
@@ -405,7 +404,7 @@ angular.module('webUpdates')
 
                     var whoisResources = resp;
 
-                    // Post-process atttribute after submit-success using screen-logic-interceptor
+                    // Post-process attribute after submit-success using screen-logic-interceptor
                     if( _interceptOnSubmitSuccess( $scope.operation, resp.status, whoisResources.getAttributes()) === false ) {
 
                         //It' ok to just let it happen or fail.

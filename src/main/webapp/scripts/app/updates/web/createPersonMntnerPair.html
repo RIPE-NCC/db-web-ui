@@ -18,7 +18,8 @@
                        placeholder="{{attribute.$$meta.$$short}}"
                        ng-blur="fieldVisited('mntner', attribute)"
                        ng-required="{{attribute.$$meta.$$mandatory}}"
-                       class="form-control" />
+                       class="form-control"
+                       autocomplete="off"/>
                 <div class="text field-description" collapse="!isHelpShown">
                     <strong>Description</strong></br>
                     <span ng-bind-html="attribute.$$meta.$$description"></span></br>
@@ -44,7 +45,8 @@
                        placeholder="{{attribute.$$meta.$$short}}"
                        ng-blur="fieldVisited('person', attribute)"
                        ng-required="{{attribute.$$meta.$$mandatory}}"
-                       class="form-control" />
+                       class="form-control"
+                       autocomplete="off"/>
                 <div class="text field-description" collapse="!isHelpShown">
                     <strong>Description</strong></br>
                     <span ng-bind-html="attribute.$$meta.$$description"></span>

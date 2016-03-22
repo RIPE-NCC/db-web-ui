@@ -76,9 +76,10 @@ angular.module('webUpdates')
                         },
                         function(error) {
                             $scope.submitInProgress = false;
-
                             var whoisResources = error.data;
+
                             _validateForm();
+                            console.log('whoisResources', whoisResources);
                             AlertService.addErrors(whoisResources);
                             AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
                             AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
@@ -123,7 +124,7 @@ angular.module('webUpdates')
                 }
             }
 
-            function _validateForm(perso) {
+            function _validateForm() {
                 var personValid =  $scope.personAttributes.validate();
                 var mntnerValid = $scope.mntnerAttributes.validate();
                 return personValid && mntnerValid;
