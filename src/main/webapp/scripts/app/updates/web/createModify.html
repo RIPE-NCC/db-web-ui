@@ -21,10 +21,10 @@
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
                ng-if="uiSelectTemplateReady">
-        <ui-select-match ui-lock-choice="needToLockLastMntner() || isNccMntner($item)"
+        <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !isRemoveable($item)"
                          placeholder="Type maintainer name">{{$item.key}}
             <span class="fa fa-star" ng-if="isMine($item)"></span>
-            <span class="fa fa-lock" ng-if="isNccMntner($item)"></span>
+            <span class="fa fa-lock" ng-if="!isRemoveable($item)"></span>
         </ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="mntnerAutocomplete($select.search)"
