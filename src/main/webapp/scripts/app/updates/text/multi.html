@@ -9,6 +9,7 @@
                       rows="15"
                       cols="60"
                       ng-model="objects.rpsl"
+                      ng-change="onRpslTyped()"
                       style="font-family:monospace;"></textarea>
         <section class="footer">
             <button ng-click="setWebMode()" class="blue-button pull-right">Continue</button>
@@ -80,8 +81,13 @@
                 </tr>
             </tbody>
         </table>
-        <input type="submit" ng-disabled="! didAllActionsComplete()" ng-click="submit()"
-               class="blue-button pull-right ga-multiobj-updateall" value="Update all"/>
-        <button ng-click="setTextMode()" class="blue-button pull-right grey-button">&lt;</button>
+        <div ng-if="!didAllActionsSucceed()">
+            <input type="submit" ng-disabled="! didAllActionsComplete()" ng-click="submit()"
+                   class="blue-button pull-right ga-multiobj-updateall" value="Update all"/>
+            <button ng-click="setTextMode()" class="blue-button pull-right grey-button">&lt;</button>
+        </div>
+        <div ng-if="didAllActionsSucceed()">
+            <button ng-click="startFresh()" class="blue-button pull-right grey-button">Create new objects</button>
+        </div>
     </form>
 </aside>

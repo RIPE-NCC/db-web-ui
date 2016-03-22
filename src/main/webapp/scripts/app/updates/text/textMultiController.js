@@ -14,6 +14,9 @@ angular.module('textUpdates')
             $scope.isWebMode = isWebMode;
             $scope.submit = submit;
             $scope.didAllActionsComplete = didAllActionsComplete;
+            $scope.didAllActionsSucceed = didAllActionsSucceed;
+            $scope.startFresh = startFresh;
+            $scope.onRpslTyped = onRpslTyped;
 
             _initialisePage();
 
@@ -37,8 +40,22 @@ angular.module('textUpdates')
             function setWebMode() {
                 AlertService.clearErrors();
 
+                $log.info('TextMultiController.setWebMode: source' + $scope.objects.source + ', rpsl:'+ $scope.objects.rpsl);
+
+                if( !_hasValidRpsl()) {
+                    AlertService.setGlobalError('No valid RPSL found');
+                    return;
+                }
+
+                var parsedObjs = RpslService.fromRpsl($scope.objects.rpsl);
+                if( parsedObjs.length === 0 ) {
+                    AlertService.setGlobalError('No valid RPSL object(s) found');
+                    return;
+                }
+
+                $log.debug('parsed rpsl:' + JSON.stringify(parsedObjs));
                 $scope.textMode = false;
-                $scope.objects.objects = _verify($scope.objects.source, $scope.objects.rpsl);
+                $scope.objects.objects = _verify($scope.objects.source, $scope.objects.rpsl, parsedObjs);
             }
 
             function isWebMode() {
@@ -54,18 +71,11 @@ angular.module('textUpdates')
                 return $scope.textMode === true;
             }
 
-            function _verify(source, rpsl) {
-
-                $log.info('_verify: source' + source + ', rpsl:'+ rpsl);
-
-                AutoKeyLogic.clear();
-
+            function _verify(source, rpsl, parsedObjs) {
                 var objects = [];
-
-                var parsedObjs = RpslService.fromRpsl(rpsl);
-                $log.debug('parsed rpsl:' + JSON.stringify(parsedObjs));
-
+                AutoKeyLogic.clear();
                 _initializeActionCounter(parsedObjs);
+
                 _.each(parsedObjs, function(parsedObj) {
 
                     // create a new object and add it to the array right away
@@ -151,6 +161,7 @@ angular.module('textUpdates')
                         },
                         function (error) {
                             $log.debug('Error fetching object ' + object.name + ', http-status:' + error.status);
+                            object.rpslOriginal = undefined;
                             if (error.status === 404) {
                                 deferredObject.resolve(false);
                             } else {
@@ -176,41 +187,47 @@ angular.module('textUpdates')
             function _submitSingle( object ) {
                 var deferredObject = $q.defer();
 
-                _setStatus(object, undefined, 'Start ' + _determineAction(object) );
-                _performAction($scope.objects.source, object).then(
-                    function(whoisResources) {
-                        object.name = whoisResources.getPrimaryKey();
-                        object.oldRpsl = _.clone(object.rpsl);
-                        object.attributes = whoisResources.getAttributes();
-                        var obj = {
-                            attributes:object.attributes,
-                            passwords:object.passwords,
-                            override:object.override,
-                            deleteReason:object.deleteReason,
-                        };
-                        object.rpsl = RpslService.toRpsl(obj);
-                        if( object.deleted !== true) {
-                            object.displayUrl = _asDisplayLink($scope.objects.source, object);
+                if( object.success === true ) {
+                    deferredObject.resolve(object);
+                    _markActionCompleted(object, _determineAction(object) + ' already performed', undefined);
+                } else {
+                    _setStatus(object, undefined, 'Start ' + _determineAction(object));
+                    _performAction($scope.objects.source, object).then(
+                        function (whoisResources) {
+                            object.name = whoisResources.getPrimaryKey();
+                            object.attributes = whoisResources.getAttributes();
+                            var obj = {
+                                attributes: object.attributes,
+                                passwords: object.passwords,
+                                override: object.override,
+                                deleteReason: object.deleteReason,
+                            };
+                            object.rpsl = RpslService.toRpsl(obj);
+                            if (object.deleted !== true) {
+                                object.displayUrl = _asDisplayLink($scope.objects.source, object);
+                            }
+                            object.textupdatesUrl = undefined;
+                            object.errors = [];
+                            object.warnings = whoisResources.getAllWarnings();
+                            object.infos = whoisResources.getAllInfos();
+
+                            _markActionCompleted(object, _determineAction(object) + ' success', _rewriteRpsl);
+
+                            deferredObject.resolve(object);
+                        },
+                        function (whoisResources) {
+                            if( !_.isUndefined(whoisResources)) {
+                                object.errors = whoisResources.getAllErrors();
+                                object.warnings = whoisResources.getAllWarnings();
+                                object.infos = whoisResources.getAllInfos();
+                            }
+
+                            _markActionCompleted(object, _determineAction(object) + ' failed', _rewriteRpsl);
+
+                            deferredObject.reject(object);
                         }
-                        object.textupdatesUrl = undefined;
-                        object.errors = [];
-                        object.warnings = whoisResources.getAllWarnings();
-                        object.infos = whoisResources.getAllInfos();
-
-                        _markActionCompleted(object, _determineAction(object) + ' success', _rewriteRpsl);
-
-                        deferredObject.resolve(object);
-                    },
-                    function(whoisResources) {
-                        object.errors = whoisResources.getAllErrors();
-                        object.warnings = whoisResources.getAllWarnings();
-                        object.infos = whoisResources.getAllInfos();
-
-                        _markActionCompleted(object, _determineAction(object) + ' failed', _rewriteRpsl);
-
-                        deferredObject.reject(object);
-                    }
-                );
+                    );
+                }
 
                 return deferredObject.promise;
             }
@@ -220,6 +237,7 @@ angular.module('textUpdates')
 
                 if( object.errors.length > 0 ) {
                     $log.debug('Skip performing action '+_determineAction(object) + '-' + object.type + '-' + object.name + ' since has errors');
+                    deferredObject.reject(undefined);
                 } else {
                     $log.debug('Start performing action '+ _determineAction(object) + '-' + object.type + '-' + object.name );
 
@@ -387,6 +405,27 @@ angular.module('textUpdates')
 
             function didAllActionsComplete() {
                 return $scope.actionsPending === 0;
+            }
+
+            function didAllActionsSucceed() {
+                var successes = _.filter($scope.objects.objects, function(obj) {
+                    return obj.success === true;
+                });
+
+                return successes.length === $scope.objects.objects.length;
+            }
+
+            function startFresh() {
+                 _initialisePage();
+            }
+
+            function onRpslTyped() {
+                $log.debug('Typed RPSL:'+$scope.objects.rpsl);
+            }
+
+            function _hasValidRpsl() {
+                // RPSL contains at least a colon
+                return !_.isUndefined($scope.objects.rpsl) && $scope.objects.rpsl.indexOf(':') >= 0;
             }
 
         }]);
