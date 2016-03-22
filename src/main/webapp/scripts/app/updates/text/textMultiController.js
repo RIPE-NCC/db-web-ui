@@ -73,7 +73,8 @@ angular.module('textUpdates')
                         passwords: parsedObj.passwords,
                         override: parsedObj.override,
                         deleteReason: parsedObj.deleteReason,
-                        errors: []
+                        errors: [],
+                        showDiff:false
                     };
                     objects.push(object);
 
@@ -144,6 +145,8 @@ angular.module('textUpdates')
                     RestService.fetchObject(source, object.type, object.name, passwords, true).then(
                         function (result) {
                             $log.debug('Successfully fetched object ' + object.name );
+                            // store original value to make diff-view later
+                            object.rpslOriginal = RpslService.toRpsl({attributes:result.getAttributes()});
                             deferredObject.resolve(true);
                         },
                         function (error) {
@@ -287,6 +290,7 @@ angular.module('textUpdates')
                             object.passwords, object.override, true).then(
                             function (result) {
                                 _setStatus(object, true, 'Modify success' );
+                                object.showDiff = true;
 
                                 deferredObject.resolve(result);
                             },
