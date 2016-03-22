@@ -16,7 +16,7 @@
                        name="{{attribute.name}}"
                        ng-model="attribute.value"
                        placeholder="{{attribute.$$meta.$$short}}"
-                       ng-blur="fieldVisited(attribute)"
+                       ng-blur="fieldVisited('mntner', attribute)"
                        ng-required="{{attribute.$$meta.$$mandatory}}"
                        class="form-control" />
                 <div class="text field-description" collapse="!isHelpShown">

@@ -83,8 +83,8 @@ angular.module('webUpdates')
                             AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
                             AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
 
-                            ErrorReporterService.log('Create','post-submit', 'person', AlertService.getErrors(), $scope.personAttributes);
-                            ErrorReporterService.log('Create','post-submit', 'mntner', AlertService.getErrors(), $scope.mntnerAttributes);
+                            ErrorReporterService.log('Create','person', AlertService.getErrors(), $scope.personAttributes);
+                            ErrorReporterService.log('Create','mntner', AlertService.getErrors(), $scope.mntnerAttributes);
                         });
 
                 }
@@ -104,7 +104,8 @@ angular.module('webUpdates')
                 }
             }
 
-            function fieldVisited( attr ) {
+            function fieldVisited( objectName, attr ) {
+                $log.info('fieldVisited:'+JSON.stringify(attr));
                 if (attr.$$meta.$$primaryKey === true ) {
                     attr.$$error = '';
                     RestService.autocomplete( attr.name, attr.value, true, []).then(
