@@ -104,7 +104,8 @@ angular.module('webUpdates')
                 }
             }
 
-            function fieldVisited( attr ) {
+            function fieldVisited( objectName, attr ) {
+                $log.info('fieldVisited:'+JSON.stringify(attr));
                 if (attr.$$meta.$$primaryKey === true ) {
                     attr.$$error = '';
                     RestService.autocomplete( attr.name, attr.value, true, []).then(
