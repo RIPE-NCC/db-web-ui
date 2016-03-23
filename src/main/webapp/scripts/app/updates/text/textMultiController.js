@@ -430,7 +430,7 @@ angular.module('textUpdates')
             }
 
             function useOld() {
-                PreferenceService.setOldSyncupdatesMode();
+                PreferenceService.setPoorSyncupdatesMode();
                 $window.location.href = '/syncupdates/simple-rpsl.html';
             }
 
