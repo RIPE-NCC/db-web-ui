@@ -84,8 +84,8 @@ angular.module('webUpdates')
                             AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
                             AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
 
-                            ErrorReporterService.log('Create','post-submit', 'person', AlertService.getErrors(), $scope.personAttributes);
-                            ErrorReporterService.log('Create','post-submit', 'mntner', AlertService.getErrors(), $scope.mntnerAttributes);
+                            ErrorReporterService.log('Create','person', AlertService.getErrors(), $scope.personAttributes);
+                            ErrorReporterService.log('Create','mntner', AlertService.getErrors(), $scope.mntnerAttributes);
                         });
 
                 }
