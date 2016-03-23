@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextMultiController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q',
+    .controller('TextMultiController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q', '$window',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService',
-        'RpslService', 'TextCommons', 'SerialExecutor', 'AutoKeyLogic',
-        function ($scope, $stateParams, $state, $resource, $log, $q,
+        'RpslService', 'TextCommons', 'SerialExecutor', 'AutoKeyLogic', 'SOURCE', 'PreferenceService',
+        function ($scope, $stateParams, $state, $resource, $log, $q, $window,
                   WhoisResources, RestService, AlertService, ErrorReporterService,
-                  RpslService, TextCommons, SerialExecutor, AutoKeyLogic) {
+                  RpslService, TextCommons, SerialExecutor, AutoKeyLogic, SOURCE, PreferenceService) {
 
             $scope.setTextMode = setTextMode;
             $scope.isTextMode = isTextMode;
@@ -17,6 +17,7 @@ angular.module('textUpdates')
             $scope.didAllActionsSucceed = didAllActionsSucceed;
             $scope.startFresh = startFresh;
             $scope.onRpslTyped = onRpslTyped;
+            $scope.useOld = useOld;
 
             _initialisePage();
 
@@ -27,7 +28,7 @@ angular.module('textUpdates')
 
                 // extract parameters from the url
                 $scope.objects = {};
-                $scope.objects.source = $stateParams.source;
+                $scope.objects.source = SOURCE;
                 $scope.objects.rpsl = '';
 
                 $log.debug('TextMultiController: Url params:' +
@@ -426,6 +427,11 @@ angular.module('textUpdates')
             function _hasValidRpsl() {
                 // RPSL contains at least a colon
                 return !_.isUndefined($scope.objects.rpsl) && $scope.objects.rpsl.indexOf(':') >= 0;
+            }
+
+            function useOld() {
+                PreferenceService.setOldSyncupdatesMode();
+                $window.location.href = '/syncupdates/simple-rpsl.html';
             }
 
         }]);
