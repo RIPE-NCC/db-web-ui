@@ -4,48 +4,50 @@ angular.module('updates')
     .service('PreferenceService', ['$log', '$cookies', function ($log, $cookies) {
         var EXPIRY = 'Tue, 19 Jan 2038 03:14:07 GMT';
 
-        var TEXT_MODE_COOKIE = {
+        var UI_MODE_COOKIE = {
             name: 'pref-ui-mode',
             web: 'webupdates',
-            text: 'textupdates'
+            text: 'textupdates',
+            defaultValue:'webupdates'
         };
 
         this.setTextMode = function () {
-            _setCookie(TEXT_MODE_COOKIE.name, TEXT_MODE_COOKIE.text);
+            _setCookie(UI_MODE_COOKIE.name, UI_MODE_COOKIE.text);
         }
 
         this.setWebMode = function () {
-            _setCookie(TEXT_MODE_COOKIE.name, TEXT_MODE_COOKIE.web);
+            _setCookie(UI_MODE_COOKIE.name, UI_MODE_COOKIE.web);
         }
 
         this.isTextMode = function () {
-            return _getCookie(TEXT_MODE_COOKIE.name, TEXT_MODE_COOKIE.web) === TEXT_MODE_COOKIE.text;
+            return _getCookie(UI_MODE_COOKIE.name, UI_MODE_COOKIE.defaultValue) === UI_MODE_COOKIE.text;
         }
 
         this.isWebMode = function () {
-            return _getCookie(TEXT_MODE_COOKIE.name, TEXT_MODE_COOKIE.web) === TEXT_MODE_COOKIE.web;
+            return _getCookie(UI_MODE_COOKIE.name, UI_MODE_COOKIE.defaultValue) === UI_MODE_COOKIE.web;
         }
 
         var SYNCUPDATE_MODE_COOKIE = {
             name: 'pref-syncupdates-mode',
-            old: "old",
-            new: 'new'
+            poor: 'poor',
+            rich: 'rich',
+            defaultValue:'poor'
         };
 
-        this.setNewSyncupdatesMode = function () {
-            _setCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.new);
+        this.setRichSyncupdatesMode = function () {
+            _setCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.rich);
         }
 
-        this.setOldSyncupdatesMode = function () {
-            _setCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.old);
+        this.setPoorSyncupdatesMode = function () {
+            _setCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.poor);
         }
 
-        this.isNewSyncupdatesMode = function () {
-            return _getCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.old) === SYNCUPDATE_MODE_COOKIE.new;
+        this.isRichSyncupdatesMode = function () {
+            return _getCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.defaultValue) === SYNCUPDATE_MODE_COOKIE.rich;
         }
 
-        this.isOldSyncupdatesMode = function () {
-            return _getCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.old) === SYNCUPDATE_MODE_COOKIE.old;
+        this.isPoorSyncupdatesMode = function () {
+            return _getCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.defaultValue) === SYNCUPDATE_MODE_COOKIE.poor;
         }
 
         this.hasMadeSyncUpdatesDecision = function() {
