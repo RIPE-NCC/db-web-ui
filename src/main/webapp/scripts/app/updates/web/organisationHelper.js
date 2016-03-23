@@ -6,7 +6,6 @@ angular.module('dbWebApp')
 
     .service('OrganisationHelper', ['WhoisResources', 'RestService', function (WhoisResources, RestService) {
 
-
         this.validateAbuseC = function(objectType, attributes) {
             if(objectType === 'organisation') {
 
@@ -23,9 +22,7 @@ angular.module('dbWebApp')
                     } else {
                         return true;
                     }
-
                 }
-
             } else {
                 return true;
             }
@@ -43,11 +40,10 @@ angular.module('dbWebApp')
             }
         };
 
-
         this.addAbuseC = function (objectType, attributes) {
-            if(objectType === 'organisation') {
-                attributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
 
+            if (objectType === 'organisation' && !this.containsAbuseC(attributes)) {
+                attributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
                 var attrs = attributes.addAttributeAfter({name:'abuse-c', value:''}, attributes.getSingleAttributeOnName('e-mail'));
                 return WhoisResources.wrapAndEnrichAttributes(objectType, attrs);
             } else {

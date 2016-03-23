@@ -419,14 +419,14 @@ angular.module('webUpdates')
                 }
 
                 function _onSubmitError(resp) {
-                    $scope.restCalInProgress = false;
 
                     var whoisResources = resp.data;
-                    $scope.attributes = whoisResources.getAttributes();
-
                     var errorMessages = [];
                     var warningMessages = [];
                     var infoMessages = [];
+
+                    $scope.restCalInProgress = false;
+                    $scope.attributes = whoisResources.getAttributes();
 
                     //This interceptor allows us to convert error into success
                     //This could change in the future
