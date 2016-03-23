@@ -16,11 +16,11 @@ angular.module('textUpdates')
 
                 } else {
                     $log.info('TextMultiDecisionController: Decision made:' );
-                    $log.info('new-mode:' + PreferenceService.isNewSyncupdatesMode() );
-                    $log.info('old-mode:' + PreferenceService.isOldSyncupdatesMode() );
+                    $log.info('new-mode:' + PreferenceService.isRichSyncupdatesMode() );
+                    $log.info('old-mode:' + PreferenceService.isPoorSyncupdatesMode() );
 
                     // redirect to new or old
-                    if( PreferenceService.isNewSyncupdatesMode()) {
+                    if( PreferenceService.isRichSyncupdatesMode()) {
                         tryNew();
                     } else {
                         useOld();
@@ -29,12 +29,12 @@ angular.module('textUpdates')
             }
 
             function tryNew() {
-                PreferenceService.setNewSyncupdates();
-                $state.transitionTo('textupdates.multi');
+                PreferenceService.setRichSyncupdatesMode();
+                $window.location.href = '/db-web-ui/#/textupdates/multi';
             }
 
             function useOld() {
-                PreferenceService.setOldSyncupdatesMode();
+                PreferenceService.setPoorSyncupdatesMode();
                 $window.location.href = '/syncupdates/simple-rpsl.html';
             }
 
