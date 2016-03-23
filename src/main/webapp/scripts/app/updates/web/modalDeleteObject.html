@@ -15,7 +15,7 @@
 
         <div ng-if="canBeDeleted">
             <label for="reason">Reason</label><br/>
-            <input class="form-control" type="text" name="reason" id="reason" ng-model="$parent.reason">
+            <input class="form-control" type="text" name="reason" id="reason" ng-model="$parent.reason" autocomplete="off">
         </div>
 
         <div ng-if="hasNonSelfIncomingRefs( objectType, name, incomingReferences)">
