@@ -3,6 +3,7 @@
 angular.module('updates')
     .service('PreferenceService', ['$log', '$cookies', function ($log, $cookies) {
         var EXPIRY = 'Tue, 19 Jan 2038 03:14:07 GMT';
+        var PATH = '/';
 
         var UI_MODE_COOKIE = {
             name: 'pref-ui-mode',
@@ -63,7 +64,8 @@ angular.module('updates')
         function _setCookie( name, value ) {
             $log.debug('Setting cookie:' + name + ' to value ' + value);
             $cookies.put(name, value, {
-                expires: EXPIRY
+                expires: EXPIRY,
+                path: PATH
             });
         }
 
