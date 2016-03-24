@@ -38,7 +38,7 @@ angular.module('webUpdates')
                     function(result) {
                         $scope.mntnerAttributes.setSingleAttributeOnName('auth','SSO ' + result.username);
                         $scope.mntnerAttributes.setSingleAttributeOnName('upd-to',result.username);
-                    }, function(errpr) {
+                    }, function() {
                         AlertService.setGlobalError('Error fetching SSO information');
                     }
                 );
@@ -79,15 +79,14 @@ angular.module('webUpdates')
                             var whoisResources = error.data;
 
                             _validateForm();
-                            console.log('whoisResources', whoisResources);
                             AlertService.addErrors(whoisResources);
                             AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
                             AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
 
                             ErrorReporterService.log('Create','person', AlertService.getErrors(), $scope.personAttributes);
                             ErrorReporterService.log('Create','mntner', AlertService.getErrors(), $scope.mntnerAttributes);
-                        });
-
+                        }
+                    );
                 }
             }
 

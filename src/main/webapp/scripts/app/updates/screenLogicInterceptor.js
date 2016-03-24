@@ -209,14 +209,15 @@ angular.module('updates')
 
             function _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos) {
                 if(method === 'Create') {
-                    attributes = OrganisationHelper.addAbuseC(objectType, attributes);
+                    if (!OrganisationHelper.containsAbuseC(attributes)) {
+                        attributes = OrganisationHelper.addAbuseC(objectType, attributes);
+                    }
                     attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                     attributes.setSingleAttributeOnName('org-type', 'OTHER');
                 }
 
                 if(method === 'Modify' && !OrganisationHelper.containsAbuseC(attributes)) {
                     attributes = OrganisationHelper.addAbuseC(objectType, attributes);
-
                     attributes.getSingleAttributeOnName('abuse-c').$$meta.$$missing = true;
                     warnings.push('' +
                         '<p>'+

@@ -42,7 +42,7 @@ angular.module('dbWebApp')
 
         this.addAbuseC = function (objectType, attributes) {
 
-            if (objectType === 'organisation' && !this.containsAbuseC(attributes)) {
+            if (objectType === 'organisation') {
                 attributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
                 var attrs = attributes.addAttributeAfter({name:'abuse-c', value:''}, attributes.getSingleAttributeOnName('e-mail'));
                 return WhoisResources.wrapAndEnrichAttributes(objectType, attrs);
