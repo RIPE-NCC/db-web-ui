@@ -1,4 +1,4 @@
-/*global window: false */
+/*global window: false, angular */
 
 'use strict';
 
@@ -6,7 +6,6 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
-
                 'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
         function ($scope, $stateParams, $state, $log, $window, $q, $sce,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
@@ -211,30 +210,29 @@ angular.module('webUpdates')
                 return _.map(items, function (item) {
                     var name = '';
                     var separator = ' / ';
-                    if (item.person != null) {
+                    if (typeof item.person === 'string') {
                         name = item.person;
-                    } else if (item.role != null) {
+                    } else if (typeof item.role === 'string') {
                         name = item.role;
-                        if (attrName === 'abuse-c' && item['abuse-mailbox'] != null) {
-                            name = name.concat( separator + item['abuse-mailbox']);
+                        if (attrName === 'abuse-c' && typeof item['abuse-mailbox'] === 'string') {
+                            name = name.concat(separator + item['abuse-mailbox']);
                         }
-                    } else if (item['org-name'] != null) {
+                    } else if (item['org-name'] === 'string') {
                         name = item['org-name'];
-                    } else if (item['descr'] != null) {
+                    } else if (angular.isArray(item['descr'])) {
                         name = item['descr'].join();
-                    } else if (item['owner'] != null) {
+                    } else if (angular.isArray(item['owner'])) {
                         name = item['owner'].join();
                     } else {
                         separator = '';
                     }
-
                     item.readableName = $sce.trustAsHtml(_escape(item.key + separator + name));
                     return item;
                 });
             }
 
             function _escape(input) {
-                return input.replace(/</g,'&lt;').replace(/>/g, '&gt;');
+                return input.replace(/</g, '&lt;').replace(/>/g, '&gt;');
             }
 
             function enumAutocomplete(attribute) {
