@@ -21,13 +21,13 @@ module.exports = function (grunt) {
     grunt.initConfig({
          protractor: {
             options: {
-              configFile: "src/test/javascript/e2e/conf.js", // Default config file
+              configFile: 'src/test/javascript/e2e/conf.js', // Default config file
               noColor: false, // If true, protractor will not use colors in its output.
               args: {}
             },
             e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
               options: {
-                  keepAlive: false, // If false, the grunt process stops when the test fails.
+                  keepAlive: false // If false, the grunt process stops when the test fails.
               }
             },
             continuous: {
@@ -113,9 +113,7 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                'src/main/webapp/scripts/app.js',
-                'src/main/webapp/scripts/app/**/*.js',
-                'src/main/webapp/scripts/components/**/*.js'
+                'src/main/webapp/scripts/**/*.js'
             ]
         },
         compass: {
@@ -132,7 +130,7 @@ module.exports = function (grunt) {
         ngtemplates: {
             dist: {
                 cwd: 'src/main/webapp',
-                src: ['scripts/app/**/*.html', 'scripts/components/**/*.html',],
+                src: ['scripts/app/**/*.html'],
                 dest: '.tmp/templates/templates.js',
                 options: {
                     module: 'dbWebApp',
