@@ -113,7 +113,6 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         var infos = [];
         var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
 
-
         var abuseC = after.getAllAttributesOnName('abuse-c');
         expect(abuseC.length).toEqual(1);
         expect(abuseC[0].name).toEqual('abuse-c');
@@ -137,6 +136,21 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
 
     });
 
+    it('should NOT add empty abuse-c if it exists for default organisation before-edit organisation on Create operation', function() {
+        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after0 = interceptor.beforeEdit('Create', 'RIPE', 'organisation', before, errors, warnings, infos);
+        after0.setSingleAttributeOnName('abuse-c', 'bogus abuse-c string');
+        var after1 = interceptor.beforeEdit('Create', 'RIPE', 'organisation', after0, errors, warnings, infos);
+
+        var abuseC = after1.getAllAttributesOnName('abuse-c');
+        expect(abuseC.length).toEqual(1);
+        expect(abuseC[0].name).toEqual('abuse-c');
+        expect(abuseC[0].value).toEqual('bogus abuse-c string');
+
+    });
 
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
