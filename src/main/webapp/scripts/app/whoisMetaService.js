@@ -1127,7 +1127,7 @@ angular.module('dbWebApp')
                 short: 'Specifies the full name of a contact, e.g. John Smith.',
                 description: 'Specifies the full name of an administrative, technical or zone contact person for other objects in the database.',
                 syntax: 'It should contain 2 to 10 words. Each word consists of letters, digits or the following symbols: .`\'_-' + '<br/>' +
-                'The first word should begin with a letter. Max 64 characters can be used in each word.'
+                'The first word should begin with a letter. At least one other word should also begin with a letter. Max 64 characters can be used in each word.'
             },
             'phone': {
                 short: 'Phone number with country code, e.g. +44 161 715 1234.',
