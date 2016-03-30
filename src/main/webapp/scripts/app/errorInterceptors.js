@@ -44,7 +44,7 @@ angular.module('dbWebApp')
                 }
             }
 
-            if (_isNotFoundError(response.status) && _.startsWith($location.path(), '/textupdates/multi/')) {
+            if (_isNotFoundError(response.status) && _.startsWith($location.path(), '/textupdates/multi')) {
                 toBeSwallowed = true;
             }
 
