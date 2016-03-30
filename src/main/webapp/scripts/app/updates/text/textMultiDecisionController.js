@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextMultiDecisionController', ['$scope', '$state', '$log', '$window', 'PreferenceService',
-        function ($scope, $state, $log, $window, PreferenceService) {
+    .controller('TextMultiDecisionController', ['$scope', '$state', '$log', '$window', 'ModalService', '$modalInstance', 'PreferenceService',
+        function ($scope, $state, $log, $window, ModalService, $modalInstance, PreferenceService) {
 
             $scope.tryNew = tryNew;
             $scope.useOld = useOld;
@@ -13,6 +13,18 @@ angular.module('textUpdates')
                 if( !PreferenceService.hasMadeSyncUpdatesDecision()) {
                     $log.info('TextMultiDecisionController: Force use to make decision:');
                     // stay on page to force decision
+                    modalService.openChoosePoorRichSyncupdates().then(
+                        function(useNewSyncUpdates) {
+                            if(useNewSyncUpdates) {
+                                tryNew();
+                            } else {
+                                useOld();
+                            }
+                        },
+                        function () {
+                            useOld();
+                        }
+                    );
 
                 } else {
                     $log.info('TextMultiDecisionController: Decision made:' );
@@ -28,12 +40,20 @@ angular.module('textUpdates')
                  }
             }
 
-            function tryNew() {
+            function onPoorClicked() {
+                $modalInstance.close(false);
+            }
+
+            function onRichClicked() {
+                $modalInstance.close(true);
+            }
+
+            function navigateToNew() {
                 PreferenceService.setRichSyncupdatesMode();
                 $window.location.href = '/db-web-ui/#/textupdates/multi';
             }
 
-            function useOld() {
+            function navigateToOld() {
                 PreferenceService.setPoorSyncupdatesMode();
                 $window.location.href = '/syncupdates/simple-rpsl.html';
             }
