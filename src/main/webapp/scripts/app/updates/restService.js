@@ -157,7 +157,7 @@ angular.module('updates')
                                 select: attrsToReturn,
                                 from: targetObjectTypes,
                                 where: attrsToFilterOn,
-                                like: query,
+                                like: query
                             })
                             .query()
                             .$promise

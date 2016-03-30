@@ -4,7 +4,7 @@ angular.module('dbWebApp')
     .service('WhoisMetaService', [ function () {
 
         this._getDocumentationForAttribute = function(objectType, attrName, docKind) {
-            var doc = undefined;
+            var doc;
             if (attrName === 'mp-peer') {
                 doc = this._mpPeerDoc[objectType];
             } else if (attrName === 'mnt-routes') {
@@ -17,7 +17,7 @@ angular.module('dbWebApp')
             }
 
             if (!_.isUndefined(doc)) {
-                return doc[docKind]
+                return doc[docKind];
             }
             return doc;
         };
@@ -76,7 +76,7 @@ angular.module('dbWebApp')
                 value: attrValue,
                 comment: attrComment,
                 link: attrLink,
-                'referenced-type':reffedAttrType,
+                'referenced-type': reffedAttrType,
                 $$meta: {
                     $$idx: idx,
                     $$mandatory: metaAttribute.mandatory,
@@ -85,7 +85,7 @@ angular.module('dbWebApp')
                     $$refs: metaAttribute.refs,
                     $$isEnum:metaAttribute.isEnum
                 }
-            }
+            };
         }
 
         this.enrichAttributesWithMetaInfo = function (objectTypeName, attrs) {
@@ -183,7 +183,7 @@ angular.module('dbWebApp')
                 'attributes': [
                     {name: 'aut-num', mandatory: true, multiple: false, primaryKey: true, refs: []},
                     {name: 'as-name', mandatory: true, multiple: false, refs: []},
-                    {name: 'descr', mandatory: false, multiple: true, refs: []},
+                    {name: 'descr', mandatory: false, multiple: true, refs: [], searchable: true},
                     {name: 'member-of', mandatory: false, multiple: true, refs: ['AS-SET', 'ROUTE-SET', 'RTR-SET']},
                     {name: 'import-via', mandatory: false, multiple: true, refs: []},
                     {name: 'import', mandatory: false, multiple: true, refs: []},
