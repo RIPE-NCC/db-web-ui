@@ -45,7 +45,6 @@
         <span ng-bind-html="getAttributeSyntax('mnt-by')"></span>
     </div>
 	</section>
-
     <section class="visible-field-form" ng-if="hasMntners()">
         <ul class="form-fields appeared-fields">
 
@@ -120,8 +119,6 @@
                 <li>
                     <a id="createRoleForAbuseCAttribute" class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c"
                        ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="(attribute.name == 'abuse-c') && (objectType == 'organisation') && (!attribute.value)">
-
-
                         <span class="fa fa-bell-o degree-25"></span>
                     </a>
                 </li>

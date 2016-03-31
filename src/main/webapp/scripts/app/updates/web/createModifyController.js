@@ -379,18 +379,21 @@ angular.module('webUpdates')
                 );
             }
 
-            function isToBeDisabled(attribute) {
+            function isRestrictedLirAttribute(attribute) {
+                return ['address', 'phone', 'fax', 'email'].indexOf(attribute.name) >= 0 &&
+                    _.find($scope.attributes, {name: 'org-type', value: 'LIR'});
+            }
 
+            function isToBeDisabled(attribute) {
                 if (attribute.$$meta.$$disable) {
                     return true;
                 }
-
                 if (attribute.name === 'created') {
                     return true;
                 } else if ($scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
                     return true;
                 }
-                return false;
+                return isRestrictedLirAttribute(attribute);
             }
 
             function deleteObject() {
