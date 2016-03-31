@@ -1,11 +1,8 @@
 'use strict';
 
 angular.module('textUpdates')
-    .controller('TextMultiDecisionController', ['$scope', '$state', '$log', '$window', 'ModalService', '$modalInstance', 'PreferenceService',
-        function ($scope, $state, $log, $window, ModalService, $modalInstance, PreferenceService) {
-
-            $scope.tryNew = tryNew;
-            $scope.useOld = useOld;
+    .controller('TextMultiDecisionController', ['$scope', '$state', '$log', '$window', 'ModalService', 'PreferenceService',
+        function ($scope, $state, $log, $window, ModalService, PreferenceService) {
 
             _initializePage();
 
@@ -13,16 +10,16 @@ angular.module('textUpdates')
                 if( !PreferenceService.hasMadeSyncUpdatesDecision()) {
                     $log.info('TextMultiDecisionController: Force use to make decision:');
                     // stay on page to force decision
-                    modalService.openChoosePoorRichSyncupdates().then(
+                    ModalService.openChoosePoorRichSyncupdates().then(
                         function(useNewSyncUpdates) {
                             if(useNewSyncUpdates) {
-                                tryNew();
+                                _navigateToNew();
                             } else {
-                                useOld();
+                                _navigateToOld();
                             }
                         },
                         function () {
-                            useOld();
+                            _navigateToOld();
                         }
                     );
 
@@ -33,27 +30,19 @@ angular.module('textUpdates')
 
                     // redirect to new or old
                     if( PreferenceService.isRichSyncupdatesMode()) {
-                        tryNew();
+                        _navigateToNew();
                     } else {
-                        useOld();
+                        _navigateToOld();
                     }
                  }
             }
 
-            function onPoorClicked() {
-                $modalInstance.close(false);
-            }
-
-            function onRichClicked() {
-                $modalInstance.close(true);
-            }
-
-            function navigateToNew() {
+            function _navigateToNew() {
                 PreferenceService.setRichSyncupdatesMode();
                 $window.location.href = '/db-web-ui/#/textupdates/multi';
             }
 
-            function navigateToOld() {
+            function _navigateToOld() {
                 PreferenceService.setPoorSyncupdatesMode();
                 $window.location.href = '/syncupdates/simple-rpsl.html';
             }

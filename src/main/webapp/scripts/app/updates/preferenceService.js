@@ -13,11 +13,11 @@ angular.module('updates')
         };
 
         this.setTextMode = function () {
-            _setCookie(UI_MODE_COOKIE.name, UI_MODE_COOKIE.text);
+            _setCookie(UI_MODE_COOKIE.name, UI_MODE_COOKIE.text, undefined);
         }
 
         this.setWebMode = function () {
-            _setCookie(UI_MODE_COOKIE.name, UI_MODE_COOKIE.web);
+            _setCookie(UI_MODE_COOKIE.name, UI_MODE_COOKIE.web, undefined);
         }
 
         this.isTextMode = function () {
@@ -36,11 +36,11 @@ angular.module('updates')
         };
 
         this.setRichSyncupdatesMode = function () {
-            _setCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.rich);
+            _setCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.rich, '/');
         }
 
         this.setPoorSyncupdatesMode = function () {
-            _setCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.poor);
+            _setCookie(SYNCUPDATE_MODE_COOKIE.name, SYNCUPDATE_MODE_COOKIE.poor, '/');
         }
 
         this.isRichSyncupdatesMode = function () {
@@ -61,11 +61,11 @@ angular.module('updates')
             return  !_.isUndefined(value);
         }
 
-        function _setCookie( name, value ) {
+        function _setCookie( name, value, path ) {
             $log.debug('Setting cookie:' + name + ' to value ' + value);
             $cookies.put(name, value, {
                 expires: EXPIRY,
-                path: PATH
+                path: path
             });
         }
 

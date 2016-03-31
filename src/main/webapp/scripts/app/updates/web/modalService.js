@@ -4,6 +4,18 @@ angular.module('dbWebApp')
     .factory('ModalService', ['$q', '$modal', '$log', function ( $q, $modal, $log ) {
         function ModalService() {
 
+            this.openChoosePoorRichSyncupdates = function() {
+                var modalInstance = $modal.open({
+                    animation:true,
+                    templateUrl: 'scripts/app/updates/text/multiDecisionModal.html',
+                    controller: 'TextMultiDecisionModalController',
+                    keyboard:false,
+                    resolve: { }
+                });
+
+                return modalInstance.result;
+            };
+
             this.openCreateRoleForAbuseCAttribute = function(source, maintainers, passwords) {
                 var modalInstance = $modal.open({
                     animation:true,
