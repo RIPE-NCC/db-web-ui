@@ -12,5 +12,8 @@ angular.module('textUpdates')
                 $modalInstance.close(true);
             }
 
+            $scope.cancel = function() {
+                $modalInstance.close(false);
+            }
 
         }]);
