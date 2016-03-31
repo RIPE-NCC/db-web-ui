@@ -188,11 +188,7 @@ angular.module('webUpdates')
             }
 
             function isModifyWithSingleMntnerRemaining() {
-                if ($scope.operation === 'Modify' && $scope.maintainers.object.length === 1) {
-                    // only lock last for modify
-                    return true;
-                }
-                return false;
+                return $scope.operation === 'Modify' && $scope.maintainers.object.length === 1;
             }
 
             function mntnerAutocomplete(query) {
@@ -217,12 +213,19 @@ angular.module('webUpdates')
                         if (attrName === 'abuse-c' && typeof item['abuse-mailbox'] === 'string') {
                             name = name.concat(separator + item['abuse-mailbox']);
                         }
-                    } else if (item['org-name'] === 'string') {
+                    } else if (typeof item['as-name'] === 'string') {
+                        // When we're using an as-name then we'll need descr as well (pivotal#116279723)
+                        if (angular.isArray(item['descr'])) {
+                            name = [item['as-name'], separator, item['descr']].join('');
+                        } else {
+                            name = item['as-name'];
+                        }
+                    } else if (typeof item['org-name'] === 'string') {
                         name = item['org-name'];
                     } else if (angular.isArray(item['descr'])) {
-                        name = item['descr'].join();
+                        name = item['descr'].join('');
                     } else if (angular.isArray(item['owner'])) {
-                        name = item['owner'].join();
+                        name = item['owner'].join('');
                     } else {
                         separator = '';
                     }
@@ -594,8 +597,6 @@ angular.module('webUpdates')
                 infoMessages.forEach(function(info) {
                     AlertService.addGlobalInfo(info);
                 });
-
-                return;
             }
 
             function _interceptBeforeEdit( method, attributes ) {
@@ -643,7 +644,7 @@ angular.module('webUpdates')
                 if (CredentialsService.hasCredentials()) {
                     password = CredentialsService.getCredentials().successfulPassword;
                 }
-                // wait untill both have completed
+                // wait until both have completed
                 $scope.restCalInProgress = true;
                 $q.all({
                     mntners: RestService.fetchMntnersForSSOAccount(),

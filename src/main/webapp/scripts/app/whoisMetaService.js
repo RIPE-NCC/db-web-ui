@@ -182,7 +182,7 @@ angular.module('dbWebApp')
                 name: 'aut-num', description: undefined,
                 'attributes': [
                     {name: 'aut-num', mandatory: true, multiple: false, primaryKey: true, refs: []},
-                    {name: 'as-name', mandatory: true, multiple: false, refs: []},
+                    {name: 'as-name', mandatory: true, multiple: false, refs: [], searchable: true},
                     {name: 'descr', mandatory: false, multiple: true, refs: [], searchable: true},
                     {name: 'member-of', mandatory: false, multiple: true, refs: ['AS-SET', 'ROUTE-SET', 'RTR-SET']},
                     {name: 'import-via', mandatory: false, multiple: true, refs: []},
