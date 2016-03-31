@@ -213,10 +213,10 @@ angular.module('webUpdates')
                         if (attrName === 'abuse-c' && typeof item['abuse-mailbox'] === 'string') {
                             name = name.concat(separator + item['abuse-mailbox']);
                         }
-                    } else if (typeof item['as-name'] === 'string') {
-                        // When we're using an as-name then we'll need descr as well (pivotal#116279723)
-                        if (angular.isArray(item['descr'])) {
-                            name = [item['as-name'], separator, item['descr']].join('');
+                    } else if (item.type === 'aut-num') {
+                        // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
+                        if (angular.isArray(item['descr']) && item['descr'].length) {
+                            name = [item['as-name'], separator, item['descr'][0]].join('');
                         } else {
                             name = item['as-name'];
                         }
