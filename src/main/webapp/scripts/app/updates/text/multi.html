@@ -1,4 +1,4 @@
-<button ng-click="useOld()" class="blue-button pull-right ga-multiobj-switch-to-old" style="border:0;"><span class="fa"></span>Switch to classic syncupdates</button>
+<button ng-click="useOld()" class="blue-button pull-right ga-multiobj-switch-poor" style="border:0;"><span class="fa"></span>Switch to classic syncupdates</button>
 
 <h1>Syncupdates <sup style="color:red">Beta</sup></h1>
 <alerts></alerts>
@@ -15,7 +15,7 @@
                       ng-change="onRpslTyped()"
                       style="font-family:monospace;"></textarea>
         <section class="footer">
-            <button ng-click="setWebMode()" class="blue-button pull-right">Continue</button>
+            <button ng-click="setWebMode()" class="blue-button pull-right ga-multiobj-continue">Continue</button>
             <p>You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</p>
         </section>
     </form>
@@ -87,10 +87,10 @@
         <div ng-if="!didAllActionsSucceed()">
             <input type="submit" ng-disabled="! didAllActionsComplete()" ng-click="submit()"
                    class="blue-button pull-right ga-multiobj-updateall" value="Update all"/>
-            <button ng-click="setTextMode()" class="blue-button pull-right grey-button">&lt;</button>
+            <button ng-click="setTextMode()" class="blue-button pull-right grey-button ga-multiobj-back">&lt;</button>
         </div>
         <div ng-if="didAllActionsSucceed()">
-            <button ng-click="startFresh()" class="blue-button pull-right grey-button">Create new objects</button>
+            <button ng-click="startFresh()" class="blue-button pull-right grey-button ga-multiobj-done">Create new objects</button>
         </div>
     </form>
 </aside>
