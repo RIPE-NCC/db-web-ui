@@ -206,9 +206,9 @@ angular.module('webUpdates')
                 return _.map(items, function (item) {
                     var name = '';
                     var separator = ' / ';
-                    if (typeof item.person === 'string') {
+                    if (typeof item.type === 'person') {
                         name = item.person;
-                    } else if (typeof item.role === 'string') {
+                    } else if (item.type === 'role') {
                         name = item.role;
                         if (attrName === 'abuse-c' && typeof item['abuse-mailbox'] === 'string') {
                             name = name.concat(separator + item['abuse-mailbox']);
@@ -259,9 +259,8 @@ angular.module('webUpdates')
             function referenceAutocomplete(attribute, userInput) {
                 var attrName = attribute.name;
                 var refs = attribute.$$meta.$$refs;
-
                 var utf8Substituted = _warnForNonSubstitutableUtf8(attribute, userInput);
-                if( utf8Substituted && _isServerLookupKey(refs)) {
+                if (utf8Substituted && _isServerLookupKey(refs)) {
                     return RestService.autocompleteAdvanced(userInput, refs).then(
                         function (resp) {
                             return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
