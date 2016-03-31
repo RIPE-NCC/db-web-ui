@@ -52,7 +52,9 @@ angular.module('webUpdates')
             $scope.submit = submit;
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
-            $scope.isToBeDisabled = isToBeDisabled;
+            $scope.isDisabledAttribute = isDisabledAttribute;
+            $scope.isDisabledLirAttribute = isDisabledLirAttribute;
+            $scope.isLirObject = isLirObject;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
@@ -339,7 +341,7 @@ angular.module('webUpdates')
             }
 
             function canAttributeBeDuplicated(attr) {
-                return $scope.attributes.canAttributeBeDuplicated(attr);
+                return $scope.attributes.canAttributeBeDuplicated(attr) && !isDisabledLirAttribute(attr);
             }
 
             function duplicateAttribute(attr) {
@@ -347,7 +349,7 @@ angular.module('webUpdates')
             }
 
             function canAttributeBeRemoved(attr) {
-                return $scope.attributes.canAttributeBeRemoved(attr);
+                return $scope.attributes.canAttributeBeRemoved(attr) && !isDisabledLirAttribute(attr);
             }
 
             function removeAttribute(attr) {
@@ -358,7 +360,10 @@ angular.module('webUpdates')
                 var originalAddableAttributes = $scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes);
                 originalAddableAttributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, originalAddableAttributes);
 
-                var addableAttributes = ScreenLogicInterceptor.beforeAddAttribute($scope.operation, $scope.source, $scope.objectType, $scope.attributes, originalAddableAttributes);
+                var addableAttributes = _.filter(ScreenLogicInterceptor.beforeAddAttribute($scope.operation, $scope.source, $scope.objectType, $scope.attributes, originalAddableAttributes),
+                    function (attr) {
+                        return !isDisabledLirAttribute(attr);
+                    });
 
                 ModalService.openAddAttributeModal(addableAttributes, _getPasswordsForRestCall())
                     .then(function (selectedItem) {
@@ -378,19 +383,20 @@ angular.module('webUpdates')
                     }
                 );
             }
+            function isLirObject() {
+                return !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
+            }
 
-            function isToBeDisabled(attribute) {
+            function isDisabledLirAttribute(attribute) {
+                return ['address', 'phone', 'fax-no', 'e-mail', 'org-name'].indexOf(attribute.name) >= 0 && isLirObject();
+            }
 
-                if (attribute.$$meta.$$disable) {
+            function isDisabledAttribute(attribute) {
+                if (attribute.$$meta.$$disable || attribute.name === 'created' ||
+                        $scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
                     return true;
                 }
-
-                if (attribute.name === 'created') {
-                    return true;
-                } else if ($scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
-                    return true;
-                }
-                return false;
+                return isDisabledLirAttribute(attribute);
             }
 
             function deleteObject() {
