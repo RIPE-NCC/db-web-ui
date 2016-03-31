@@ -55,7 +55,8 @@
                        placeholder="{{attribute.$$meta.$$short}}"
                        ng-blur="fieldVisited(attribute)"
                        ng-required="{{attribute.$$meta.$$mandatory}}"
-                       class="form-control" />
+                       class="form-control"
+                       autocomplete="off"/>
                 <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
                     <strong>Description</strong></br>
                     <span ng-bind-html="attribute.$$meta.$$description"></span></br>
