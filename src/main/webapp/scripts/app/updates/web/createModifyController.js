@@ -52,7 +52,7 @@ angular.module('webUpdates')
             $scope.submit = submit;
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
-            $scope.isToBeDisabled = isToBeDisabled;
+            $scope.isDisabledAttribute = isDisabledAttribute;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
@@ -339,7 +339,7 @@ angular.module('webUpdates')
             }
 
             function canAttributeBeDuplicated(attr) {
-                return $scope.attributes.canAttributeBeDuplicated(attr);
+                return $scope.attributes.canAttributeBeDuplicated(attr) && !isDisabledAttribute(attr);
             }
 
             function duplicateAttribute(attr) {
@@ -347,7 +347,7 @@ angular.module('webUpdates')
             }
 
             function canAttributeBeRemoved(attr) {
-                return $scope.attributes.canAttributeBeRemoved(attr);
+                return $scope.attributes.canAttributeBeRemoved(attr) && !isDisabledAttribute(attr);
             }
 
             function removeAttribute(attr) {
@@ -384,7 +384,7 @@ angular.module('webUpdates')
                     _.find($scope.attributes, {name: 'org-type', value: 'LIR'});
             }
 
-            function isToBeDisabled(attribute) {
+            function isDisabledAttribute(attribute) {
                 if (attribute.$$meta.$$disable) {
                     return true;
                 }
