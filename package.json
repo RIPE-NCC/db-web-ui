@@ -14,7 +14,7 @@
     "grunt-autoprefixer": "3.0.3",
     "grunt-browser-sync": "2.2.0",
     "grunt-build-control": "0.6.1",
-    "grunt-cache-bust": "^0.6.0",
+    "grunt-cache-bust": "1.2.0",
     "grunt-concurrent": "2.1.0",
     "grunt-connect-rewrite": "0.2.1",
     "grunt-contrib-clean": "0.7.0",

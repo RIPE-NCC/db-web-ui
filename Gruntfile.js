@@ -205,7 +205,7 @@ module.exports = function (grunt) {
                 NODE_ENV:'prod',
                 GTM_ID:'GTM-TP3SK6',
                 ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/'
-            },
+            }
         },
         ngconstant: {
             options: {
@@ -282,14 +282,14 @@ module.exports = function (grunt) {
                 encoding: 'utf8',
                 algorithm: 'md5',
                 length: 16,
-                rename: false // Append a query string instead of renaming files
+                queryString: true,
+                assets: ['**/*.js', '**/*.css']
             },
-            assets: {
+            taskName: {
                 files: [{
                     expand: true,
                     cwd: './src/main/webapp/',
-                    src: ['index.html'],
-                    dest: './dest/'
+                    src: ['index.html']
                 }]
             }
         },
