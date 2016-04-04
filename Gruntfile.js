@@ -4,10 +4,10 @@ var fs = require('fs');
 
 var parseString = require('xml2js').parseString;
 // Returns the second occurence of the version number
-var parseVersionFromPomXml = function() {
+var parseVersionFromPomXml = function () {
     var version;
     var pomXml = fs.readFileSync('pom.xml', 'utf8');
-    parseString(pomXml, function (err, result){
+    parseString(pomXml, function (err, result) {
         version = result.project.version[0];
     });
     return version;
@@ -21,21 +21,21 @@ module.exports = function (grunt) {
     var urlRewrite = require('grunt-connect-rewrite');
 
     grunt.initConfig({
-         protractor: {
+        protractor: {
             options: {
-              noColor: false, // If true, protractor will not use colors in its output.
-              args: {}
+                configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
+                noColor: false, // If true, protractor will not use colors in its output.
+                args: {}
             },
             e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
-              options: {
-                  configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
-                  keepAlive: false // If false, the grunt process stops when the test fails.
-              }
+                options: {
+                    keepAlive: false // If false, the grunt process stops when the test fails.
+                }
             },
             continuous: {
-                 options: {
-                     keepAlive: true
-                 }
+                options: {
+                    keepAlive: true
+                }
             }
         },
         yeoman: {
@@ -125,7 +125,7 @@ module.exports = function (grunt) {
             },
             server: {
                 options: {
-                	outputStyle: 'compressed'
+                    outputStyle: 'compressed'
                 }
             }
         },
@@ -137,7 +137,7 @@ module.exports = function (grunt) {
                 options: {
                     module: 'dbWebApp',
                     usemin: 'scripts/app.js',
-                    htmlmin:  {
+                    htmlmin: {
                         removeCommentsFromCDATA: true,
                         // https://github.com/yeoman/grunt-usemin/issues/44
                         collapseWhitespace: true,
@@ -182,30 +182,30 @@ module.exports = function (grunt) {
                 }
             }
         },
-        env : {
+        env: {
             dev: {
-                NODE_ENV:'dev',
+                NODE_ENV: 'dev',
                 GTM_ID: 'GTM-WTWTB7',
                 ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/'
             },
             prepdev: {
-                NODE_ENV:'prepdev',
+                NODE_ENV: 'prepdev',
                 GTM_ID: 'GTM-WTWTB7',
                 ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/'
             },
             rc: {
-                NODE_ENV:'rc',
-                GTM_ID:'GTM-T5J6RH',
+                NODE_ENV: 'rc',
+                GTM_ID: 'GTM-T5J6RH',
                 ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/'
             },
             test: {
-                NODE_ENV:'test',
-                GTM_ID:'GTM-W4MMHJ',
+                NODE_ENV: 'test',
+                GTM_ID: 'GTM-W4MMHJ',
                 ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/'
             },
             prod: {
-                NODE_ENV:'prod',
-                GTM_ID:'GTM-TP3SK6',
+                NODE_ENV: 'prod',
+                GTM_ID: 'GTM-TP3SK6',
                 ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/'
             },
         },
@@ -271,9 +271,9 @@ module.exports = function (grunt) {
                 }
             }
         },
-        preprocess : {
-            html : {
-                src:'src/main/webapp/_index.html',
+        preprocess: {
+            html: {
+                src: 'src/main/webapp/_index.html',
                 dest: 'src/main/webapp/index.html'
             }
         },
@@ -297,10 +297,10 @@ module.exports = function (grunt) {
         },
         connect: {
             options: {
-                protocol:'http',
+                protocol: 'http',
                 hostname: 'localhost',
                 port: 9000,
-                base:'src/main/webapp'
+                base: 'src/main/webapp'
             },
             test: {
                 options: {
@@ -308,7 +308,7 @@ module.exports = function (grunt) {
                     base: ['src/main/webapp']
                 }
             }
-	    }
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-connect');
