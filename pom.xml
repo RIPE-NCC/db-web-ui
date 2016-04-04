@@ -50,7 +50,7 @@
     </distributionManagement>
 
     <properties>
-        <apache-httpclient>4.4</apache-httpclient>
+        <apache-httpclient>4.4.1</apache-httpclient>
         <assertj-core.version>2.0.0</assertj-core.version>
         <awaitility.version>1.4.0</awaitility.version>
         <commons-io.version>2.4</commons-io.version>
