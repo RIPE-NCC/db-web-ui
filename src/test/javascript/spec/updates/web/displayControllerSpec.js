@@ -110,7 +110,7 @@ describe('webUpdates: DisplayController', function () {
         expect($scope.objectName).toBe(OBJECT_NAME);
     });
 
-    if('should detect logged in', function() {
+    it('should detect logged in', function() {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 

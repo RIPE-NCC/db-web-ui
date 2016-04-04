@@ -28,8 +28,8 @@ angular.module('webUpdates')
                 $scope.objectName = decodeURIComponent($stateParams.name);
                 $scope.method = $stateParams.method; // optional: added by create- and modify-controller
 
-                $log.debug('DisplayController: Url params: source:'+ $scope.objectSource + '. objectType:' + $scope.objectType +
-                    ', objectName:' + $scope.objectName + ', method:' + $scope.method );
+                $log.debug('DisplayController: Url params: source:' + $scope.objectSource + '. objectType:' + $scope.objectType +
+                    ', objectName:' + $scope.objectName + ', method:' + $scope.method);
 
                 $scope.before = undefined;
                 $scope.after = undefined;
@@ -73,45 +73,36 @@ angular.module('webUpdates')
                         }
                     );
                 }
-            };
+            }
 
             /*
-             * Methods called from the html-teplate
+             * Methods called from the html-template
              */
-
             function modifyButtonToBeShown() {
                 return !AlertService.hasErrors() && !isPending();
             }
 
             function isPending() {
-                if(!_.isUndefined($scope.method) && $scope.method === "Pending") {
-                    return true;
-                }
-                return false;
-            };
+                return !_.isUndefined($scope.method) && $scope.method === 'Pending';
+            }
 
             function isCreateOrModify() {
-                if( _.isUndefined($scope.method) || isPending() ) {
-                    return false;
-                }
-                return true;
-            };
+                return !(_.isUndefined($scope.method) || isPending());
+            }
 
-           function getOperationName() {
-                var name = ''   ;
-                if( $scope.method ) {
-                    if ($scope.method === 'Create') {
-                        name = 'created';
-                    } else if ($scope.method === 'Modify') {
-                        name = 'modified';
-                    }
+            function getOperationName() {
+                var name = '';
+                if ($scope.method === 'Create') {
+                    name = 'created';
+                } else if ($scope.method === 'Modify') {
+                    name = 'modified';
                 }
                 return name;
-            };
+            }
 
             function navigateToSelect() {
                 $state.transitionTo('webupdates.select');
-            };
+            }
 
             function navigateToModify() {
                 $state.transitionTo('webupdates.modify', {
@@ -119,10 +110,11 @@ angular.module('webUpdates')
                     objectType: $scope.objectType,
                     name: $scope.objectName
                 });
-            };
+            }
 
             function isDiff() {
                 return !_.isUndefined($scope.before) && !_.isUndefined($scope.after);
-            };
+            }
 
-        }]);
+        }
+    ]);
