@@ -62,7 +62,18 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should switch to pre-view', function () {
+    it('should switch to switch to pre-view when rpsl objects are found', function () {
+        doSetupController();
+
+        $scope.textMode = true;
+        $scope.objects.rpsl = 'person: test person\n';
+
+        $scope.setWebMode();
+
+        expect($scope.textMode).toBe(false);
+    });
+
+    it('should not switch to switch to pre-view when no rpsl objects where found', function () {
         doSetupController();
 
         $scope.textMode = true;
@@ -70,7 +81,8 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.setWebMode();
 
-        expect($scope.textMode).toBe(false);
+        expect($scope.textMode).toBe(true);
+        expect(AlertService.getErrors()[0].plainText).toEqual('No valid RPSL found');
     });
 
     it('should switch back to text-view', function () {
@@ -208,6 +220,7 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.whenGET('api/whois/RIPE/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(successResponse);
         $httpBackend.flush();
 
+        expect($scope.objects.objects[0].rpslOriginal).toBeDefined();
         expect($scope.objects.objects[0].success).toBeUndefined();
         expect($scope.objects.objects[0].action).toBe('modify');
         expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
@@ -241,6 +254,7 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.whenGET('api/whois/RIPE/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(400, errorResponse);
         $httpBackend.flush();
 
+        expect($scope.objects.objects[0].rpslOriginal).toBeUndefined();
         expect($scope.objects.objects[0].success).toBe(false);
         expect($scope.objects.objects[0].exists).toBe(undefined);
         expect($scope.objects.objects[0].action).toBe('create');
@@ -275,6 +289,7 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.whenGET('api/whois/RIPE/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(404, errorResponse);
         $httpBackend.flush();
 
+        expect($scope.objects.objects[0].rpslOriginal).toBeUndefined();
         expect($scope.objects.objects[0].success).toBeUndefined();
         expect($scope.objects.objects[0].action).toBe('create');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
@@ -310,7 +325,7 @@ describe('textUpdates: TextMultiController', function () {
             type: 'person',
             name: 'AUTO-1',
             attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
-            success: true,
+            success: undefined,
             errors:[],
         });
 
@@ -332,6 +347,8 @@ describe('textUpdates: TextMultiController', function () {
             'created:2015-12-28T09:10:20Z\n'+
             'last-modified:2015-12-28T09:12:25Z\n'+
             'source:RIPE\n');
+        expect($scope.objects.objects[0].showDiff).toBeFalsy();
+
     });
 
     it('should report an error upon create-failure', function () {
@@ -344,7 +361,7 @@ describe('textUpdates: TextMultiController', function () {
             type: 'person',
             name: 'AUTO-1',
             attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
-            success: true,
+            success: undefined,
             errors:[],
         });
 
@@ -358,6 +375,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect($scope.objects.objects[0].errors.length).toBe(1);
         expect($scope.objects.objects[0].errors[0].plainText).toBe('Not authenticated');
+        expect($scope.objects.objects[0].showDiff).toBeFalsy();
 
     });
 
@@ -370,7 +388,7 @@ describe('textUpdates: TextMultiController', function () {
             type: 'person',
             name: 'MM1-RIPE',
             attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
-            success: true,
+            success: undefined,
             errors:[],
         });
 
@@ -382,6 +400,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Modify success');
         expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
+        expect($scope.objects.objects[0].showDiff).toBe(true);
         expect($scope.objects.objects[0].rpsl).toBe(
             'person:Me Me\n'+
             'address:Amsterdam\n'+
@@ -402,7 +421,7 @@ describe('textUpdates: TextMultiController', function () {
             type: 'person',
             name: 'MM1-RIPE',
             attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
-            success: true,
+            success: undefined,
             errors:[],
         });
 
@@ -414,6 +433,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Modify error');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
+        expect($scope.objects.objects[0].showDiff).toBeFalsy();
 
     });
 
@@ -427,7 +447,7 @@ describe('textUpdates: TextMultiController', function () {
             type: 'person',
             name: 'MM1-RIPE',
             attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
-            success: true,
+            success: undefined,
             deleteReason:'just because',
             passwords:['secret'],
             errors:[],
@@ -441,6 +461,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Delete success');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
+        expect($scope.objects.objects[0].showDiff).toBeFalsy();
         expect($scope.objects.objects[0].rpsl).toBe(
             'person:Me Me\n'+
             'address:Amsterdam\n'+
@@ -463,7 +484,7 @@ describe('textUpdates: TextMultiController', function () {
             type: 'person',
             name: 'MM1-RIPE',
             attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
-            success: true,
+            success: undefined,
             deleteReason:'just because',
             passwords:['secret'],
             errors:[],
@@ -477,6 +498,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Delete error');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
+        expect($scope.objects.objects[0].showDiff).toBeFalsy();
 
     });
 

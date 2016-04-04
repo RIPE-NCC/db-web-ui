@@ -23,7 +23,7 @@ angular.module('dbWebApp')
 
         this.findMetaAttributeOnObjectTypeAndName = function(objectTypeName, attributeName) {
             return WhoisMetaService.findMetaAttributeOnObjectTypeAndName(objectTypeName, attributeName);
-        }
+        };
 
         this.getObjectTypes = function () {
             return WhoisMetaService.getObjectTypes();
@@ -48,11 +48,11 @@ angular.module('dbWebApp')
             });
             $log.info('attrsToFilterOn:'+attrsToFilterOn);
             return attrsToFilterOn;
-        }
+        };
 
         this.getViewableAttrsForObjectTypes  = function (targetObjectTypes) {
             return this.getFilterableAttrsForObjectTypes(targetObjectTypes);
-        }
+        };
 
         this.getMandatoryAttributesOnObjectType = function (objectTypeName) {
             return WhoisMetaService.getMandatoryAttributesOnObjectType(objectTypeName);
@@ -81,14 +81,15 @@ angular.module('dbWebApp')
         this.turnAttrsIntoWhoisObjects = function( attrsList ) {
             // list of attribute-arrays ia passed along
             var wrapped = _.map(attrsList, function(attrs) {
+                var packed;
                 var first = attrs[0];
-                if( !_.isUndefined(first)) {
-                    var packed = {type: first.name, attributes: {attribute: attrs}};
+                if (!_.isUndefined(first)) {
+                    packed = {type: first.name, attributes: {attribute: attrs}};
                 }
                 return packed;
             });
-            return{
-                objects:{
+            return {
+                objects: {
                     object: wrapped
                 }
             };
@@ -154,33 +155,32 @@ angular.module('dbWebApp')
                 });
             });
             return mntners;
-        }
+        };
 
         var getRequiresAdminRightFromError = function() {
             return _.any(this.errormessages.errormessage, function (msg) {
                 return msg.text === 'Deleting this object requires administrative authorisation';
             });
-        }
+        };
 
         function _getRelatedAttribute( errorMessage ) {
-            var msgPrefix = '';
-            if( errorMessage.attribute && errorMessage.attribute.name ) {
-                msgPrefix = errorMessage.attribute.name + ": " ;
+            if (errorMessage.attribute && typeof errorMessage.attribute.name === 'string') {
+                return errorMessage.attribute.name + ': ';
             }
-            return msgPrefix;
+            return '';
         }
 
          var getGlobalWarnings = function () {
-             if( ! this.errormessages ) {
+             if (! this.errormessages) {
                  return [];
              }
 
              var self = this;
-            return this.errormessages.errormessage.filter(
-                function (errorMessage) {
-                    errorMessage.plainText = self.readableError(errorMessage);
-                    return errorMessage.severity === 'Warning' && !errorMessage.attribute;
-                });
+             return this.errormessages.errormessage.filter(
+                 function (errorMessage) {
+                     errorMessage.plainText = self.readableError(errorMessage);
+                     return errorMessage.severity === 'Warning' && !errorMessage.attribute;
+                 });
         };
 
         var getAllWarnings = function () {
@@ -261,13 +261,13 @@ angular.module('dbWebApp')
             }
             var obj = this.objects.object[0];
 
-            var objectType = undefined;
+            var objectType;
             if ( obj.type ) {
                 objectType = obj.type;
             } else if( obj.attributes.attribute[0].name ) {
                 objectType = obj.attributes.attribute[0].name;
             } else {
-                $log.error("No object type found for " + JSON.stringify(this));
+                $log.error('No object type found for ' + JSON.stringify(this));
             }
             return objectType;
         };
@@ -320,7 +320,7 @@ angular.module('dbWebApp')
             }
 
             return true;
-        };
+        }
 
         var objectNamesAsAttributes = function( attributeType) {
             return _.map(this.objects.object,  function (obj) {
@@ -591,7 +591,7 @@ angular.module('dbWebApp')
             return _.any(attrs, function (attribute) {
                 return attribute.name === attributeName;
             });
-        };
+        }
 
         var getMissingMandatoryAttributes = function(objectType) {
             var missingAttrs = [];
@@ -602,7 +602,7 @@ angular.module('dbWebApp')
                 }
             });
             return missingAttrs;
-        }
+        };
 
         function getFirstMandatoryAttrAbove(objectType, attrTypeName) {
             var metaAttrs =  WhoisMetaService.getMandatoryAttributesOnObjectType(objectType);
@@ -634,7 +634,7 @@ angular.module('dbWebApp')
 
         var addMissingMandatoryAttribute = function(objectType, attr) {
             return addBelowLastOf(this, getFirstMandatoryAttrAbove(objectType, attr.name), attr);
-        }
+        };
 
         this.wrapAttributes  = function( attrs ) {
             if ( !attrs ) {
@@ -681,16 +681,16 @@ angular.module('dbWebApp')
                 result = wrapped;
             }
             return result;
-        }
+        };
 
         this.wrapSuccess = function(whoisResources) {
             return this.wrap(whoisResources);
-        }
+        };
 
         this.wrapError = function(error) {
-            var whoisResources = undefined;
+            var whoisResources;
 
-            if(error) {
+            if (error) {
                 if (error.data) {
                     whoisResources = error.data;
                 } else if (error.config && error.config.data) {
@@ -700,7 +700,7 @@ angular.module('dbWebApp')
                 error = {};
             }
 
-            if ( ! isValidWhoisResources(whoisResources) ) {
+            if (!isValidWhoisResources(whoisResources)) {
                 whoisResources = {};
                 whoisResources.errormessages = {};
                 whoisResources.errormessages.errormessage = [];
@@ -712,7 +712,7 @@ angular.module('dbWebApp')
             error.data = this.wrap(whoisResources);
 
             return error;
-        }
+        };
 
     }]);
 

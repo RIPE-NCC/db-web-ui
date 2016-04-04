@@ -20,8 +20,13 @@ angular.module('textUpdates')
                     templateUrl: 'scripts/app/updates/text/modify.html',
                     controller: 'TextModifyController'
                 })
+                .state('textupdates.multiDecision', {
+                    url: '/multiDecision',
+                    templateUrl: 'scripts/app/updates/text/multiDecision.html',
+                    controller: 'TextMultiDecisionController'
+                })
                 .state('textupdates.multi', {
-                    url: '/multi/:source',
+                    url: '/multi',
                     templateUrl: 'scripts/app/updates/text/multi.html',
                     controller: 'TextMultiController'
                 });
