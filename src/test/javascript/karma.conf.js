@@ -61,8 +61,7 @@ module.exports = function (config) {
             'main/webapp/scripts/app/**/*Module.js',
             'main/webapp/scripts/app/**/*States.js',
             'main/webapp/scripts/app/**/*.js',
-            'main/webapp/scripts/components/**/*.{js,html}',
-            'test/javascript/**/!(karma.conf).js'
+            'test/javascript/spec/**/*.js'
         ],
 
 
