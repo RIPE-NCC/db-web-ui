@@ -12,6 +12,100 @@ var logger = {
     }
 };
 
+var orgMock = {
+    'type': 'organisation',
+    'link': {
+        'type': 'locator',
+        'href': 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE'
+    },
+    'source': {
+        'id': 'ripe'
+    },
+    'primary-key': {
+        'attribute': [{
+            'name': 'organisation',
+            'value': 'ORG-UA300-RIPE'
+        }]
+    },
+    'attributes': {
+        'attribute': [{
+            'name': 'organisation',
+            'value': 'ORG-UA300-RIPE'
+        }, {
+            'name': 'org-name',
+            'value': 'uhuuu'
+        }, {
+            'name': 'org-type',
+            'value': 'OTHER'
+        }, {
+            'name': 'address',
+            'value': 'Singel 258'
+        }, {
+            'name': 'e-mail',
+            'value': 'tdacruzper@ripe.net'
+        }, {
+            'link': {
+                'type': 'locator',
+                'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT'
+            },
+            'name': 'mnt-ref',
+            'value': 'IS-NET-MNT',
+            'referenced-type': 'mntner'
+        }, {
+            'link': {
+                'type': 'locator',
+                'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT'
+            },
+            'name': 'mnt-by',
+            'value': 'TEST-MNT',
+            'referenced-type': 'mntner'
+        }, {
+            'name': 'created',
+            'value': '2015-12-02T14:01:06Z'
+        }, {
+            'name': 'last-modified',
+            'value': '2015-12-02T14:01:06Z'
+        }, {
+            'name': 'source',
+            'value': 'RIPE'
+        }]
+    }
+};
+
+var ROLE_OBJ = [{
+    'name': 'role',
+    'value': 'some role'
+}, {
+    'name': 'address',
+    'value': 'Singel 258'
+}, {
+    'name': 'e-mail',
+    'value': 'fdsd@sdfsd.com'
+}, {
+    'name': 'abuse-mailbox',
+    'value': 'fdsd@sdfsd.com'
+}, {
+    'name': 'nic-hdl',
+    'value': 'SR11027-RIPE'
+}, {
+    'link': {
+        'type': 'locator',
+        'href': 'http://rest-dev.db.ripe.net/ripe/mntner/MNT-THINK'
+    },
+    'name': 'mnt-by',
+    'value': 'MNT-THINK',
+    'referenced-type': 'mntner'
+}, {
+    'name': 'created',
+    'value': '2015-12-04T15:12:10Z'
+}, {
+    'name': 'last-modified',
+    'value': '2015-12-04T15:12:10Z'
+}, {
+    'name': 'source',
+    'value': 'RIPE'
+}];
+
 describe('webUpdates: ModifyController', function () {
 
     var $scope, $state, $stateParams, $httpBackend;
@@ -31,10 +125,14 @@ describe('webUpdates: ModifyController', function () {
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
 
-            $state =  _$state_;
+            $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            $window = { confirm: function() { return true; } };
+            $window = {
+                confirm: function () {
+                    return true;
+                }
+            };
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
@@ -47,18 +145,18 @@ describe('webUpdates: ModifyController', function () {
             CredentialsService.setCredentials('TEST-MNT', '@123');
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window, $log:logger
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
             $httpBackend.whenGET('api/user/mntners').respond([
-                {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true},
-                {key:'TESTSSO-MNT', type: 'mntner', auth:['MD5-PW','SSO'], mine:true}
+                {key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true},
+                {key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO'], mine: true}
             ]);
 
             $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123&unfiltered=true').respond(
-                function(method,url) {
+                function (method, url) {
                     return [200,
                         {
                             objects: {
@@ -76,12 +174,12 @@ describe('webUpdates: ModifyController', function () {
                                 ]
                             }
 
-                        } , {}];
+                        }, {}];
                 });
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
-                function(method,url) {
-                    return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW','SSO']} ], {}];
+                function (method, url) {
+                    return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO']}], {}];
                 });
 
             $httpBackend.flush();
@@ -89,7 +187,7 @@ describe('webUpdates: ModifyController', function () {
         });
     });
 
-    afterEach(function() {
+    afterEach(function () {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
@@ -113,7 +211,7 @@ describe('webUpdates: ModifyController', function () {
 
         expect($scope.maintainers.sso[0].key).toEqual('TEST-MNT');
         expect($scope.maintainers.sso[0].type).toEqual('mntner');
-        expect($scope.maintainers.object[0].auth).toEqual(['MD5-PW','SSO']);
+        expect($scope.maintainers.object[0].auth).toEqual(['MD5-PW', 'SSO']);
         expect($scope.maintainers.object[0].mine).toEqual(true);
 
         expect($scope.maintainers.objectOriginal[0].key).toEqual('TEST-MNT');
@@ -122,7 +220,7 @@ describe('webUpdates: ModifyController', function () {
         expect($scope.maintainers.object[0].type).toEqual('mntner');
         expect($scope.maintainers.object[0].mine).toEqual(true);
         expect($scope.maintainers.object[0].isNew).toEqual(false);
-        expect($scope.maintainers.object[0].auth).toEqual(['MD5-PW','SSO']);
+        expect($scope.maintainers.object[0].auth).toEqual(['MD5-PW', 'SSO']);
 
     });
 
@@ -255,7 +353,7 @@ describe('webUpdates: ModifyController', function () {
 
     });
 
-    it('duplicate attribute', function() {
+    it('duplicate attribute', function () {
         expect($scope.attributes.length).toEqual(3);
 
         $scope.duplicateAttribute($scope.attributes[1]);
@@ -265,7 +363,7 @@ describe('webUpdates: ModifyController', function () {
         expect($scope.attributes[2].value).toEqual('');
     });
 
-    it('remove attribute', function() {
+    it('remove attribute', function () {
         expect($scope.attributes.length).toEqual(3);
 
         $scope.removeAttribute($scope.attributes[1]);
@@ -276,10 +374,15 @@ describe('webUpdates: ModifyController', function () {
 
     });
 
-    it('should transition to display state if cancel is pressed', function() {
+    it('should transition to display state if cancel is pressed', function () {
         spyOn($state, 'transitionTo');
         $scope.cancel();
-        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', { source: SOURCE, objectType: 'as-block', name: 'MY-AS-BLOCK', method: undefined});
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', {
+            source: SOURCE,
+            objectType: 'as-block',
+            name: 'MY-AS-BLOCK',
+            method: undefined
+        });
     });
 });
 
@@ -314,7 +417,7 @@ describe('webUpdates: ModifyController init with failures', function () {
             $stateParams.name = NAME;
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $log:logger
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -497,7 +600,7 @@ describe('webUpdates: ModifyController ask for password before modify object wit
                 });
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $log:logger
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -511,8 +614,10 @@ describe('webUpdates: ModifyController ask for password before modify object wit
     });
 
 
-    it('should ask for password before modify object with non-sso maintainer with password.', function() {
-        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
+    it('should ask for password before modify object with non-sso maintainer with password.', function () {
+        spyOn(ModalService, 'openAuthenticationModal').and.callFake(function () {
+            return $q.defer().promise;
+        });
 
         $httpBackend.flush();
 
@@ -586,7 +691,7 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
                 });
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $log:logger
+                $scope: $scope, $state: $state, $stateParams: $stateParams, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -600,7 +705,7 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
     });
 
 
-    it('Call rest backend with slash-escaped url', function() {
+    it('Call rest backend with slash-escaped url', function () {
         $httpBackend.flush();
     });
 
@@ -626,7 +731,7 @@ describe('webUpdates: ModifyController for organisation', function () {
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
 
-            $state =  _$state_;
+            $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             MessageStore = _MessageStore_;
@@ -634,9 +739,9 @@ describe('webUpdates: ModifyController for organisation', function () {
             OrganisationHelper = _OrganisationHelper_;
             MntnerService = _MntnerService_;
             ModalService = {
-                openCreateRoleForAbuseCAttribute: function(){
+                openCreateRoleForAbuseCAttribute: function () {
                     return {
-                        then:function(s) {
+                        then: function (s) {
                             s(ROLE_OBJ);
                         }
                     }
@@ -648,88 +753,32 @@ describe('webUpdates: ModifyController for organisation', function () {
             $stateParams.name = NAME;
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService, $log:logger
+                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
             $httpBackend.whenGET('api/user/mntners').respond([
-                {key:'TEST-MNT', type: 'mntner', auth:['SSO'], mine:true},
-                {key:'TESTSSO-MNT', type: 'mntner', auth:['MD5-PW','SSO'], mine:true}
+                {key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true},
+                {key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO'], mine: true}
             ]);
 
-            $httpBackend.whenGET('api/whois/RIPE/'+OBJECT_TYPE+'/'+NAME+'?unfiltered=true').respond(
-                function(method,url) {
-                    return [200,{'objects':{'object':[ {
-                        'type' : 'organisation',
-                        'link' : {
-                            'type' : 'locator',
-                            'href' : 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE'
+            $httpBackend.whenGET('api/whois/RIPE/' + OBJECT_TYPE + '/' + NAME + '?unfiltered=true').respond(
+                function (method, url) {
+                    return [200, {
+                        'objects': {
+                            'object': [orgMock]
                         },
-                        'source' : {
-                            'id' : 'ripe'
-                        },
-                        'primary-key' : {
-                            'attribute' : [ {
-                                'name' : 'organisation',
-                                'value' : 'ORG-UA300-RIPE'
-                            } ]
-                        },
-                        'attributes' : {
-                            'attribute' : [ {
-                                'name' : 'organisation',
-                                'value' : 'ORG-UA300-RIPE'
-                            }, {
-                                'name' : 'org-name',
-                                'value' : 'uhuuu'
-                            }, {
-                                'name' : 'org-type',
-                                'value' : 'OTHER'
-                            }, {
-                                'name' : 'address',
-                                'value' : 'Singel 258'
-                            }, {
-                                'name' : 'e-mail',
-                                'value' : 'tdacruzper@ripe.net'
-                            }, {
-                                'link' : {
-                                    'type' : 'locator',
-                                    'href' : 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT'
-                                },
-                                'name' : 'mnt-ref',
-                                'value' : 'IS-NET-MNT',
-                                'referenced-type' : 'mntner'
-                            }, {
-                                'link' : {
-                                    'type' : 'locator',
-                                    'href' : 'http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT'
-                                },
-                                'name' : 'mnt-by',
-                                'value' : 'TEST-MNT',
-                                'referenced-type' : 'mntner'
-                            }, {
-                                'name' : 'created',
-                                'value' : '2015-12-02T14:01:06Z'
-                            }, {
-                                'name' : 'last-modified',
-                                'value' : '2015-12-02T14:01:06Z'
-                            }, {
-                                'name' : 'source',
-                                'value' : 'RIPE'
-                            } ]
-                        }
-                    } ]
-                    },
-                        'terms-and-conditions' : {
-                            'type' : 'locator',
-                            'href' : 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+                        'terms-and-conditions': {
+                            'type': 'locator',
+                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
                         }
                     }, {}];
                 });
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
-                function(method,url) {
-                    return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW','SSO']} ], {}];
+                function (method, url) {
+                    return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO']}], {}];
                 });
 
             $httpBackend.flush();
@@ -737,7 +786,7 @@ describe('webUpdates: ModifyController for organisation', function () {
         });
     });
 
-    afterEach(function() {
+    afterEach(function () {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
@@ -756,41 +805,106 @@ describe('webUpdates: ModifyController for organisation', function () {
         expect($scope.roleForAbuseC).toBeDefined();
     });
 
-    var ROLE_OBJ = [ {
-                        'name' : 'role',
-                        'value' : 'some role'
-                    }, {
-                        'name' : 'address',
-                        'value' : 'Singel 258'
-                    }, {
-                        'name' : 'e-mail',
-                        'value' : 'fdsd@sdfsd.com'
-                    }, {
-                        'name' : 'abuse-mailbox',
-                        'value' : 'fdsd@sdfsd.com'
-                    }, {
-                        'name' : 'nic-hdl',
-                        'value' : 'SR11027-RIPE'
-                    }, {
-                        'link' : {
-                            'type' : 'locator',
-                            'href' : 'http://rest-dev.db.ripe.net/ripe/mntner/MNT-THINK'
-                        },
-                        'name' : 'mnt-by',
-                        'value' : 'MNT-THINK',
-                        'referenced-type' : 'mntner'
-                    }, {
-                        'name' : 'created',
-                        'value' : '2015-12-04T15:12:10Z'
-                    }, {
-                        'name' : 'last-modified',
-                        'value' : '2015-12-04T15:12:10Z'
-                    }, {
-                        'name' : 'source',
-                        'value' : 'RIPE'
-                    } ];
+    it('should show LIR orgs with certain attributes disabled', function() {
+        expect();
+    });
 
 });
 
+describe('webUpdates: ModifyController for LIR organisation', function () {
+
+    var $scope, $state, $stateParams, $httpBackend;
+    var MessageStore;
+    var WhoisResources;
+    var MntnerService;
+    var OrganisationHelper;
+    var ModalService;
+    var OBJECT_TYPE = 'organisation';
+    var SOURCE = 'RIPE';
+    var NAME = 'ORG-UA300-RIPE';
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
+
+            var $rootScope = _$rootScope_;
+            $scope = $rootScope.$new();
+
+            $state = _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            MessageStore = _MessageStore_;
+            WhoisResources = _WhoisResources_;
+            OrganisationHelper = _OrganisationHelper_;
+            MntnerService = _MntnerService_;
+            ModalService = {
+                openCreateRoleForAbuseCAttribute: function () {
+                    return {
+                        then: function (s) {
+                            s(ROLE_OBJ);
+                        }
+                    }
+                }
+            };
+
+            $stateParams.objectType = OBJECT_TYPE;
+            $stateParams.source = SOURCE;
+            $stateParams.name = NAME;
+
+            _$controller_('CreateModifyController', {
+                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService, $log: logger
+            });
+
+            $httpBackend.whenGET(/.*.html/).respond(200);
+
+            $httpBackend.whenGET('api/user/mntners').respond([
+                {key: 'TEST-MNT', type: 'mntner', auth: ['SSO'], mine: true},
+                {key: 'TESTSSO-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO'], mine: true}
+            ]);
+
+            $httpBackend.whenGET('api/whois/RIPE/' + OBJECT_TYPE + '/' + NAME + '?unfiltered=true').respond(
+                function (method, url) {
+                    // Modify the mock so it looks like an LIR
+                    if (orgMock.attributes.attribute[2].name === 'org-type') {
+                        orgMock.attributes.attribute[2].value = 'LIR';
+                    }
+                    return [200, {
+                        'objects': {
+                            'object': [orgMock]
+                        },
+                        'terms-and-conditions': {
+                            'type': 'locator',
+                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+                        }
+                    }, {}];
+                });
+
+            $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
+                function (method, url) {
+                    return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO']}], {}];
+                });
+
+            $httpBackend.flush();
+
+        });
+    });
+
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    it('should restrict edits to certain attributes', function () {
+        // 'address', 'phone', 'fax-no', 'e-mail', 'org-name'
+        expect($scope.isDisabledLirAttribute({name: 'address', value: ''})).toBe(true);
+        expect($scope.isDisabledLirAttribute({name: 'phone', value: ''})).toBe(true);
+        expect($scope.isDisabledLirAttribute({name: 'fax-no', value: ''})).toBe(true);
+        expect($scope.isDisabledLirAttribute({name: 'e-mail', value: ''})).toBe(true);
+        expect($scope.isDisabledLirAttribute({name: 'org-name', value: ''})).toBe(true);
+        expect($scope.isDisabledLirAttribute({name: 'bogus-attribute', value: ''})).toBe(false);
+    });
+
+});
 
 
