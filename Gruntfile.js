@@ -14,19 +14,21 @@ var parseVersionFromPomXml = function() {
 };
 
 module.exports = function (grunt) {
+
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
+
     var urlRewrite = require('grunt-connect-rewrite');
 
     grunt.initConfig({
          protractor: {
             options: {
-              configFile: 'src/test/javascript/e2e/conf.js', // Default config file
               noColor: false, // If true, protractor will not use colors in its output.
               args: {}
             },
             e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
               options: {
+                  configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
                   keepAlive: false // If false, the grunt process stops when the test fails.
               }
             },
