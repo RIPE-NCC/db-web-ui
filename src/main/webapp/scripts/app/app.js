@@ -23,12 +23,7 @@ angular.module('dbWebApp', [
         function ($stateProvider, $logProvider, $httpProvider, ENV) {
 
             // conditional log-level
-            if (ENV === "dev" || ENV == 'prepdev') {
-                $logProvider.debugEnabled(true);
-            } else {
-                // disable debug logging for production
-                $logProvider.debugEnabled(false);
-            }
+            $logProvider.debugEnabled(ENV === 'dev' || ENV == 'prepdev');
 
             $stateProvider
                 .state('error', {

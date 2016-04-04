@@ -1,3 +1,8 @@
+/*global angular*/
+
+(function() {
+'use strict';
+
 angular.module('webUpdates', ['updates'])
     .constant(
         'STATE', {
@@ -22,3 +27,4 @@ angular.module('webUpdates', ['updates'])
         });
 
     }]);
+})();
