@@ -1,16 +1,22 @@
 exports.config = {
     // The address of a running selenium server.
-    //seleniumAddress: 'http://localhost:4444/wd/hub',
+    seleniumAddress: 'http://localhost:4444/wd/hub',
     seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
+    localSeleniumStandaloneOpts: {
+        port: 4444
+    },
+    directConnect: true,
 
     // Spec patterns are relative to the location of this config.
     specs: ['e2e/bogusSpec.js'],
 
     capabilities: {
-        'browserName': 'chrome',
-        'chromeOptions': {'args': ['--disable-extensions']}
+        'browserName': 'chrome'//,
+        //'chromeOptions': {'args': ['--disable-extensions']}
     },
 
+    framework: 'jasmine2',
+    //framework: 'jasmine',
 
     // A base URL for your application under test. Calls to protractor.get()
     // with relative paths will be prepended with this.

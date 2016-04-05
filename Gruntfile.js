@@ -1,16 +1,16 @@
 // Generated on 2015-05-18 using generator-jhipster 2.11.0
 'use strict';
 var fs = require('fs');
+var serveStatic = require('serve-static');
 
 var parseString = require('xml2js').parseString;
-// Returns the second occurence of the version number
+
+// Returns the second occurrence of the version number
 var parseVersionFromPomXml = function () {
-    var version;
     var pomXml = fs.readFileSync('pom.xml', 'utf8');
     parseString(pomXml, function (err, result) {
-        version = result.project.version[0];
+        return result.project.version[0];
     });
-    return version;
 };
 
 module.exports = function (grunt) {
@@ -18,7 +18,28 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
 
+// Configurable paths for the application
+    var appConfig = {
+        app: require('./bower.json').appPath || 'app',
+        dist: 'src/main/webapp/dist'
+    };
+
     grunt.initConfig({
+        // Run some tasks in parallel to speed up the build process
+        concurrent: {
+            server: [
+                'compass:server'
+            ],
+            test: [
+                'compass'
+            ],
+            dist: [
+                'compass:dist',
+                'imagemin',
+                'svgmin'
+            ]
+        },
+
         protractor: {
             options: {
                 configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
@@ -38,8 +59,8 @@ module.exports = function (grunt) {
         },
         yeoman: {
             // configurable paths
-            app: require('./bower.json').appPath || 'app',
-            dist: 'src/main/webapp/dist'
+            app: appConfig.app,
+            dist: appConfig.dist
         },
         watch: {
             options: {
@@ -295,12 +316,60 @@ module.exports = function (grunt) {
         },
         connect: {
             options: {
-                protocol: 'http',
-                hostname: 'localhost',
                 port: 9000,
-                base: 'src/main/webapp'
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: 'localhost',
+                livereload: 35729
+            },
+            livereload: {
+                options: {
+                    open: true,
+                    middleware: function (connect, options, middlewares) {
+
+                        return [
+                            serveStatic(appConfig.app)
+                        ];
+                        // connect(serveStatic('.tmp')),
+                        // connect().use(
+                        //     '/bower_components',
+                        //     connect(serveStatic('./bower_components'))
+                        // ),
+                        // connect().use(
+                        //     '/app/styles',
+                        //     connect(serveStatic('./app/styles'))
+                        // ),
+                    }
+                }
+            },
+            e2e: {
+                options: {
+                    middleware: function (connect, options, middlewares) {
+                        return [
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                }
             },
             test: {
+                options: {
+                    port: 9001,
+                    middleware: function (connect) {
+                        return [
+                            serveStatic('test'),
+                            connect().use(
+                                '/bower_components',
+                                serveStatic('./bower_components')
+                            ),
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                }
+            },
+            dist: {
+                options: {
+                    open: true,
+                    base: '<%= yeoman.dist %>'
+                }
             }
         }
     });
@@ -315,6 +384,23 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-preprocess');
 
+    grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+
+        if (target === 'dist') {
+            return grunt.task.run(['build', 'connect:dist:keepalive']);
+        }
+
+        grunt.task.run([
+            'clean:server',
+            'wiredep',
+            'preprocess',
+            'concurrent:server',
+            //'postcss:server',
+            'connect:livereload',
+            'watch'
+        ]);
+    });
+
     // grunt.registerTask('e2e-test', [
     //     'connect:test',
     //     'protractor:continuous',
@@ -322,7 +408,7 @@ module.exports = function (grunt) {
     // ]);
 
     grunt.registerTask('e2e-test', [
-        'connect:test',
+        'connect:e2e',
         'protractor:e2e'
     ]);
 
