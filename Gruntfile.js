@@ -18,8 +18,6 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
 
-    var urlRewrite = require('grunt-connect-rewrite');
-
     grunt.initConfig({
         protractor: {
             options: {
@@ -29,7 +27,7 @@ module.exports = function (grunt) {
             },
             e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
                 options: {
-                    keepAlive: false // If false, the grunt process stops when the test fails.
+                    keepAlive: true // If false, the grunt process stops when the test fails.
                 }
             },
             continuous: {
@@ -207,7 +205,7 @@ module.exports = function (grunt) {
                 NODE_ENV: 'prod',
                 GTM_ID: 'GTM-TP3SK6',
                 ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/'
-            },
+            }
         },
         ngconstant: {
             options: {
@@ -303,10 +301,6 @@ module.exports = function (grunt) {
                 base: 'src/main/webapp'
             },
             test: {
-                options: {
-                    // set the location of the application files
-                    base: ['src/main/webapp']
-                }
             }
         }
     });
@@ -321,11 +315,11 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-preprocess');
 
-    grunt.registerTask('e2e-test', [
-        'connect:test',
-        'protractor:continuous',
-        'watch:protractor'
-    ]);
+    // grunt.registerTask('e2e-test', [
+    //     'connect:test',
+    //     'protractor:continuous',
+    //     'watch:protractor'
+    // ]);
 
     grunt.registerTask('e2e-test', [
         'connect:test',

@@ -8,16 +8,158 @@
           name="description"/>
     <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+
 </head>
-<body
-    class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color"
-    dir="ltr">
+<body>
 
 <!--  Webupdates specific body-start start -->
-<div ng-app="dbWebApp">
+
     <div id="xxx">
-        Hi there.
+        Hello Tomcats
     </div>
-</div>
+
+<!--  Webupdates specific javascript start -->
+
+<!-- 3rd party javascript -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="bower_components/angular-resource/angular-resource.js"></script>
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/angulartics/dist/angulartics.min.js"></script>
+<script src="bower_components/angulartics/dist/angulartics-gtm.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="bower_components/selectize/dist/js/standalone/selectize.js"></script>
+<script src="bower_components/angular-ui-select/dist/select.js"></script>
+<script src="bower_components/google-diff-match-patch/diff_match_patch.js"></script>
+<script src="bower_components/angular-diff-match-patch/angular-diff-match-patch.js"></script>
+<script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="bower_components/angular-mocks/ngMockE2E.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+
+<!-- our own javascript -->
+<!-- General Interceptors -->
+<script src="scripts/app/app.js"></script>
+<script src="scripts/app/app.constants.js"></script>
+<script src="scripts/app/errorInterceptors.js"></script>
+
+<!-- General Services -->
+<script src="scripts/app/whoisMetaService.js"></script>
+<script src="scripts/app/countryCodes.js"></script>
+<script src="scripts/app/languageCodes.js"></script>
+<script src="scripts/app/resourceStatus.js"></script>
+<script src="scripts/app/whoisResources.js"></script>
+<script src="scripts/app/alertService.js"></script>
+
+<!-- General directives -->
+<script src="scripts/app/alertsDirective.js"></script>
+
+<!-- General Update services -->
+<script src="scripts/app/updates/updatesModule.js"></script>
+<script src="scripts/app/updates/restService.js"></script>
+<script src="scripts/app/updates/credentialsService.js"></script>
+<script src="scripts/app/updates/messageStore.js"></script>
+<script src="scripts/app/updates/linkService.js"></script>
+<script src="scripts/app/updates/userInfoService.js"></script>
+<script src="scripts/app/updates/errorReporterService.js"></script>
+<script src="scripts/app/updates/mntnerService.js"></script>
+<script src="scripts/app/updates/preferenceService.js"></script>
+<script src="scripts/app/updates/screenLogicInterceptor.js"></script>
+<script src="scripts/app/updates/charsetTools.js"></script>
+
+<!-- WebUpdates Services -->
+<script src="scripts/app/updates/web/webUpdatesModule.js"></script>
+<script src="scripts/app/updates/web/modalService.js"></script>
+<script src="scripts/app/updates/web/organisationHelper.js"></script>
+<script src="scripts/app/updates/web/webUpdatesCommons.js"></script>
+<script src="scripts/app/updates/web/cryptojs.js"></script>
+<script src="scripts/app/updates/web/cryptService.js"></script>
+<script src="scripts/app/updates/web/enumService.js"></script>
+
+<!-- WebUpdates Directives -->
+<script src="scripts/app/updates/web/attributeTransformerDirective.js"></script>
+
+<!-- Webupdates Controllers -->
+
+<script src="scripts/app/updates/web/webUpdatesStates.js"></script>
+<script src="scripts/app/updates/web/modalCreateRoleForAbuseCController.js"></script>
+<script src="scripts/app/updates/web/modalAuthenticationController.js"></script>
+<script src="scripts/app/updates/web/modalMd5PasswordController.js"></script>
+<script src="scripts/app/updates/web/modalAddAttributeController.js"></script>
+<script src="scripts/app/updates/web/modalDeleteObjectController.js"></script>
+<script src="scripts/app/updates/web/selectController.js"></script>
+<script src="scripts/app/updates/web/createModifyController.js"></script>
+<script src="scripts/app/updates/web/createSelfMaintainedMaintainerController.js"></script>
+<script src="scripts/app/updates/web/createPersonMntnerPairController.js"></script>
+<script src="scripts/app/updates/web/deleteController.js"></script>
+<script src="scripts/app/updates/web/displayPersonMntnerPairController.js"></script>
+<script src="scripts/app/updates/web/displayController.js"></script>
+<script src="scripts/app/updates/web/forceDeleteSelectController.js"></script>
+<script src="scripts/app/updates/web/forceDeleteController.js"></script>
+
+<!-- Webupdates specific javascript end -->
+
+<!-- Textupdates -->
+
+<script src="scripts/app/updates/text/textUpdatesModule.js"></script>
+<script src="scripts/app/updates/text/textUpdatesStates.js"></script>
+<script src="scripts/app/updates/text/rpslService.js"></script>
+<script src="scripts/app/updates/text/serialExecutor.js"></script>
+<script src="scripts/app/updates/text/autoKeyLogic.js"></script>
+<script src="scripts/app/updates/text/textCommons.js"></script>
+<script src="scripts/app/updates/text/textCreateController.js"></script>
+<script src="scripts/app/updates/text/textModifyController.js"></script>
+<script src="scripts/app/updates/text/textMultiDecisionController.js"></script>
+<script src="scripts/app/updates/text/textMultiDecisionModalController.js"></script>
+<script src="scripts/app/updates/text/textMultiController.js"></script>
+
+<!-- Textupdates specific javascript end -->
+
+<!-- LoginStatus Controllers -->
+
+<script src="scripts/app/loginStatus/loginStatusModule.js"></script>
+<script src="scripts/app/loginStatus/userInfoController.js"></script>
+
+<!--  LoginStatus specific javascript end -->
+
+<!-- Menu Controllers -->
+
+<script src="scripts/app/menu/menuModule.js"></script>
+<script src="scripts/app/menu/leftMenuController.js"></script>
+
+<!--  Menu specific javascript end -->
+
+<!-- Forgot-Maintainer-Password Controllers -->
+
+<script src="scripts/app/fmp/fmpModule.js"></script>
+<script src="scripts/app/fmp/fmpStates.js"></script>
+<script src="scripts/app/fmp/fmpServices.js"></script>
+<script src="scripts/app/fmp/requireLoginController.js"></script>
+<script src="scripts/app/fmp/findMaintainerCtrl.js"></script>
+<script src="scripts/app/fmp/mailSentController.js"></script>
+<script src="scripts/app/fmp/confirmMaintainerCtrl.js"></script>
+<script src="scripts/app/fmp/ssoAddedController.js"></script>
+<script src="scripts/app/fmp/redirectToLegacyController.js"></script>
+<script src="scripts/app/fmp/voluntarilyRedirectToLegacyController.js"></script>
+
+<!-- Forgot-Maintainer-Password javascript end -->
+
+
+<!-- Search Controllers -->
+
+<script src="scripts/app/search/searchModule.js"></script>
+
+<!-- Search javascript end -->
+
+<!-- TEST environment banner -->
+<script>
+    if(window.location.hostname.split('.').shift() === 'apps-test') {
+        $('#envbanner').show();
+    }
+</script>
+
 </body>
 </html>
