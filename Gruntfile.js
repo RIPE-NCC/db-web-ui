@@ -325,24 +325,15 @@ module.exports = function (grunt) {
                 options: {
                     open: true,
                     middleware: function (connect, options, middlewares) {
-
                         return [
                             serveStatic(appConfig.app)
                         ];
-                        // connect(serveStatic('.tmp')),
-                        // connect().use(
-                        //     '/bower_components',
-                        //     connect(serveStatic('./bower_components'))
-                        // ),
-                        // connect().use(
-                        //     '/app/styles',
-                        //     connect(serveStatic('./app/styles'))
-                        // ),
                     }
                 }
             },
             e2e: {
                 options: {
+                    //keepalive: true,
                     middleware: function (connect, options, middlewares) {
                         return [
                             serveStatic(appConfig.app)
