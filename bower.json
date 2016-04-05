@@ -19,7 +19,7 @@
     "swagger-ui": "2.0.24",
     "angular-cache-buster": "0.4.3",
     "ngInfiniteScroll": "1.2.0",
-    "lodash": "3.3.1",
+    "lodash": "3.10.1",
     "angulartics": "0.17.2",
     "angular-selectize2": "1.2.1",
     "angular-bootstrap": "~0.13.0",
