@@ -19,9 +19,14 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
 
 // Configurable paths for the application
+    var hostname = 'localhost.dev.ripe.net';
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
         dist: 'src/main/webapp/dist'
+    };
+    var proxyMiddleware = function (req, res, next) {
+        console.log('req', req.headers);
+        next();
     };
 
     grunt.initConfig({
@@ -291,6 +296,13 @@ module.exports = function (grunt) {
             }
         },
         preprocess: {
+            options: {
+                srcDir: 'src/main/webapp'
+            },
+            e2e: {
+                src: 'src/test/javascript/e2e/_index.html',
+                dest: 'src/main/webapp/index.html'
+            },
             html: {
                 src: 'src/main/webapp/_index.html',
                 dest: 'src/main/webapp/index.html'
@@ -317,25 +329,48 @@ module.exports = function (grunt) {
         connect: {
             options: {
                 port: 9000,
+                //protocol: 'https',
                 // Change this to '0.0.0.0' to access the server from outside.
-                hostname: 'localhost',
-                livereload: 35729
+                hostname: hostname
             },
             livereload: {
                 options: {
+                    livereload: 35729,
                     open: true,
-                    middleware: function (connect, options, middlewares) {
+                    middleware: function (connect, options) {
+                        if (!Array.isArray(options.base)) {
+                            options.base = [options.base];
+                        }
                         return [
+                            //proxyMiddleware,
+                            require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic(appConfig.app)
                         ];
                     }
-                }
+                },
+                proxies: [{
+                    host: hostname,
+                    context: '/api',
+                    port: 8443,
+                    https: true,
+                    xforward: false,
+                    rewrite: {
+                        '^/api': '/db-web-ui/api'
+                    }
+                }, {
+                    host: hostname,
+                    context: '/db-web-ui/api',
+                    port: 8443,
+                    https: true,
+                    xforward: false
+                }]
             },
             e2e: {
                 options: {
-                    //keepalive: true,
+                    keepalive: false,
                     middleware: function (connect, options, middlewares) {
                         return [
+                            //require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic(appConfig.app)
                         ];
                     }
@@ -384,21 +419,18 @@ module.exports = function (grunt) {
         grunt.task.run([
             'clean:server',
             'wiredep',
-            'preprocess',
+            'preprocess:html',
+            'configureProxies:livereload',
             'concurrent:server',
-            //'postcss:server',
             'connect:livereload',
             'watch'
         ]);
     });
 
-    // grunt.registerTask('e2e-test', [
-    //     'connect:test',
-    //     'protractor:continuous',
-    //     'watch:protractor'
-    // ]);
-
     grunt.registerTask('e2e-test', [
+        'clean:server',
+        'wiredep',
+        'preprocess:e2e',
         'connect:e2e',
         'protractor:e2e'
     ]);
@@ -407,7 +439,7 @@ module.exports = function (grunt) {
         'env:dev',
         'clean:server',
         'wiredep',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:dev',
         'watch',
         'connect'
@@ -417,7 +449,7 @@ module.exports = function (grunt) {
         'env:dev',
         'clean:server',
         'wiredep:test',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:dev',
         'karma',
         'cacheBust'
@@ -427,7 +459,7 @@ module.exports = function (grunt) {
         'env:prod',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',
@@ -440,7 +472,7 @@ module.exports = function (grunt) {
         'env:dev',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:dev',
         'ngtemplates',
         'concurrent:dist',
@@ -453,7 +485,7 @@ module.exports = function (grunt) {
         'env:prepdev',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:prepdev',
         'ngtemplates',
         'concurrent:dist',
@@ -466,7 +498,7 @@ module.exports = function (grunt) {
         'env:rc',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:rc',
         'ngtemplates',
         'concurrent:dist',
@@ -479,7 +511,7 @@ module.exports = function (grunt) {
         'env:test',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:test',
         'ngtemplates',
         'concurrent:dist',
@@ -492,7 +524,7 @@ module.exports = function (grunt) {
         'env:prod',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',

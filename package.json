@@ -17,6 +17,7 @@
     "grunt-build-control": "0.6.1",
     "grunt-cache-bust": "^0.6.0",
     "grunt-concurrent": "2.1.0",
+    "grunt-connect-proxy": "^0.2.0",
     "grunt-contrib-clean": "0.7.0",
     "grunt-contrib-compass": "1.0.4",
     "grunt-contrib-concat": "0.5.1",

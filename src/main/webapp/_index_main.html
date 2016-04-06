@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 <head>
 
     <meta charset="UTF-8"/>
@@ -24,20 +22,7 @@
     <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png"/>
     <link rel="search" href="https://www.ripe.net/search" title="Search this site"/>
 
-    <!--  Webupdates specific css start -->
-
-    <!-- 3rd party css -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/3.4.5/select2.css"/>
-    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.default.css"/>
-    <link rel="stylesheet" href="bower_components/selectize/dist/css/selectize.css"/>
-    <link rel="stylesheet" href="bower_components/angular-ui-select/dist/select.css"/>
-    <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css" />
-
-    <!-- Our own css -->
-    <link rel="stylesheet" type="text/css" media="screen" href="assets/css/main.css" />
-
-    <!-- Webupdates specific css end -->
-
+    <!-- @include _index_app_css.html -->
 
     <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen"
           type="text/css" rel="stylesheet"/>
@@ -64,12 +49,7 @@
 
 <div>
 
-    <!--  Webupdates specific body-start start -->
-
-    <!-- Google Tag Manager, Use env development with id: undefined -->
-
-    <!--  Webupdates specific body-start end -->
-
+    <!-- @include _index_app_body_start.html -->
 
     <header class="header-gradient container-fluid">
         <div id="site-header" class="container">
@@ -83,13 +63,7 @@
                         to navigation</a>
                 </p>
 
-                <!--  Webupdates specific login start -->
-
-                <!-- Login widget, Use ACCESS_URL undefined -->
-
-
-                <!--  Webupdates specific login end -->
-
+                <!-- @include _index_app_login.html -->
 
                 <div class="header-item">
                     <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
@@ -942,84 +916,7 @@
             </div>
             <div id="portal-column-one" class="col-md-3">
                 <!-- Insert your navigation here NAVIGATIONMARKER -->
-                <!--  Webupdates specific menu start -->
-                <div ng-controller="LeftMenuController">
-                    <div class="portlet navigation margin-bottom">
-                        <div class="Title">
-                            <i title="Show/Hide navigation" class="fa fa-angle-double-left"></i>
-                            <a href="/search/query.html" class="h5">RIPE Database</a>
-                        </div>
-                        <ul class="toplevel">
-                            <li class="child" ng-class="{active: menu.searchExpanded}">
-                                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
-                                <a href="/search/query.html">Query and Update</a>
-                                <ul class="level2">
-                                    <li>
-                                        <a class="menuItem current" href="/search/query.html">Query the RIPE Database</a>
-                                    </li>
-                                    <li>
-                                        <a class="menuItem" href="/search/full-text.html">Full Text Search</a>
-                                    </li>
-                                    <li>
-                                        <a class="menuItem" href="/syncupdates/simple-rpsl.html">Syncupdates</a>
-                                    </li>
-                                    <li>
-                                        <a class="menuItem" href="/search/abuse-finder.html">Abuse Finder</a>
-                                    </li>
-                                    <li>
-                                        <a class="menuItem" href="/search/geolocation-finder.html">Geolocation Finder</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="child" ng-class="{active: menu.webUpdatesExpanded}">
-                                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
-                                <a href="/db-web-ui/#/">Create</a>
-                                <ul class="level2">
-                                    <li>
-                                        <a class="menuItem current" href="/db-web-ui/#/">Create an object</a>
-                                    </li>
-                                    <li>
-                                        <a class="menuItem" href="/db-web-ui/#/webupdates/create/person/self">Create maintainer and
-                                            person pair</a>
-                                    </li>
-                                    <li>
-                                        <a class="menuItem" href="/db-web-ui/#/textupdates/multiDecision">Syncupdates</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="child" ng-class="{active: menu.passwordsExpanded}">
-                                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
-                                <a href="/db-web-ui/#/fmp/">Passwords</a>
-                                <ul class="level2">
-                                    <li>
-                                        <a class="menuItem current" href="/db-web-ui/#/fmp/">Forgotten MNTNER password?</a>
-                                    </li>
-                                    <li>
-                                        <a class="menuItem" href="/crypt/crypt.html">Password Generator</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div>
-                    <div class="portlet margin-bottom grey grey-border">
-                    </div>
-                </div>
-
-                <script type="text/javascript">
-                    $(document).ready(function(){
-                        $('.menuItem').on('click', function(){
-                            $('.menuItem').removeClass('current');
-                            $(this).addClass(function(n){
-                                return 'current';
-                            });
-                        });
-                    });
-                </script>
-
-                <!--  Webupdates specific menu end -->
-
+                <!-- @include _index_app_menu.html -->
             </div>
             <div id="portal-column-content" class="sl col-md-9">
                 <noscript>
@@ -1040,8 +937,7 @@
                         <div>
                             <div id="external">
 
-                                <div ui-view></div>
-
+                                <!-- @include _index_app_content.html -->
 
                             </div>
                         </div>
@@ -1090,169 +986,8 @@
         </div>
     </footer>
 
-    <!--  Webupdates specific javascript start -->
-
-    <!-- 3rd party javascript -->
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="bower_components/lodash/lodash.js"></script>
-    <script src="bower_components/angulartics/dist/angulartics.min.js"></script>
-    <script src="bower_components/angulartics/dist/angulartics-gtm.min.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-    <script src="bower_components/selectize/dist/js/standalone/selectize.js"></script>
-    <script src="bower_components/angular-ui-select/dist/select.js"></script>
-    <script src="bower_components/google-diff-match-patch/diff_match_patch.js"></script>
-    <script src="bower_components/angular-diff-match-patch/angular-diff-match-patch.js"></script>
-    <script src="bower_components/angular-loading-bar/build/loading-bar.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/moment/moment.js"></script>
-
-    <!-- our own javascript -->
-    <!-- General Interceptors -->
-    <script src="scripts/app/app.js"></script>
-    <script src="scripts/app/app.constants.js"></script>
-    <script src="scripts/app/errorInterceptors.js"></script>
-
-    <!-- General Services -->
-    <script src="scripts/app/whoisMetaService.js"></script>
-    <script src="scripts/app/countryCodes.js"></script>
-    <script src="scripts/app/languageCodes.js"></script>
-    <script src="scripts/app/resourceStatus.js"></script>
-    <script src="scripts/app/whoisResources.js"></script>
-    <script src="scripts/app/alertService.js"></script>
-
-    <!-- General directives -->
-    <script src="scripts/app/alertsDirective.js"></script>
-
-    <!-- General Update services -->
-    <script src="scripts/app/updates/updatesModule.js"></script>
-    <script src="scripts/app/updates/restService.js"></script>
-    <script src="scripts/app/updates/credentialsService.js"></script>
-    <script src="scripts/app/updates/messageStore.js"></script>
-    <script src="scripts/app/updates/linkService.js"></script>
-    <script src="scripts/app/updates/userInfoService.js"></script>
-    <script src="scripts/app/updates/errorReporterService.js"></script>
-    <script src="scripts/app/updates/mntnerService.js"></script>
-    <script src="scripts/app/updates/preferenceService.js"></script>
-    <script src="scripts/app/updates/screenLogicInterceptor.js"></script>
-    <script src="scripts/app/updates/charsetTools.js"></script>
-
-    <!-- WebUpdates Services -->
-    <script src="scripts/app/updates/web/webUpdatesModule.js"></script>
-    <script src="scripts/app/updates/web/modalService.js"></script>
-    <script src="scripts/app/updates/web/organisationHelper.js"></script>
-    <script src="scripts/app/updates/web/webUpdatesCommons.js"></script>
-    <script src="scripts/app/updates/web/cryptojs.js"></script>
-    <script src="scripts/app/updates/web/cryptService.js"></script>
-    <script src="scripts/app/updates/web/enumService.js"></script>
-
-    <!-- WebUpdates Directives -->
-    <script src="scripts/app/updates/web/attributeTransformerDirective.js"></script>
-
-    <!-- Webupdates Controllers -->
-
-    <script src="scripts/app/updates/web/webUpdatesStates.js"></script>
-    <script src="scripts/app/updates/web/modalCreateRoleForAbuseCController.js"></script>
-    <script src="scripts/app/updates/web/modalAuthenticationController.js"></script>
-    <script src="scripts/app/updates/web/modalMd5PasswordController.js"></script>
-    <script src="scripts/app/updates/web/modalAddAttributeController.js"></script>
-    <script src="scripts/app/updates/web/modalDeleteObjectController.js"></script>
-    <script src="scripts/app/updates/web/selectController.js"></script>
-    <script src="scripts/app/updates/web/createModifyController.js"></script>
-    <script src="scripts/app/updates/web/createSelfMaintainedMaintainerController.js"></script>
-    <script src="scripts/app/updates/web/createPersonMntnerPairController.js"></script>
-    <script src="scripts/app/updates/web/deleteController.js"></script>
-    <script src="scripts/app/updates/web/displayPersonMntnerPairController.js"></script>
-    <script src="scripts/app/updates/web/displayController.js"></script>
-    <script src="scripts/app/updates/web/forceDeleteSelectController.js"></script>
-    <script src="scripts/app/updates/web/forceDeleteController.js"></script>
-
-    <!-- Webupdates specific javascript end -->
-
-    <!-- Textupdates -->
-
-    <script src="scripts/app/updates/text/textUpdatesModule.js"></script>
-    <script src="scripts/app/updates/text/textUpdatesStates.js"></script>
-    <script src="scripts/app/updates/text/rpslService.js"></script>
-    <script src="scripts/app/updates/text/serialExecutor.js"></script>
-    <script src="scripts/app/updates/text/autoKeyLogic.js"></script>
-    <script src="scripts/app/updates/text/textCommons.js"></script>
-    <script src="scripts/app/updates/text/textCreateController.js"></script>
-    <script src="scripts/app/updates/text/textModifyController.js"></script>
-    <script src="scripts/app/updates/text/textMultiDecisionController.js"></script>
-    <script src="scripts/app/updates/text/textMultiDecisionModalController.js"></script>
-    <script src="scripts/app/updates/text/textMultiController.js"></script>
-
-    <!-- Textupdates specific javascript end -->
-
-    <!-- LoginStatus Controllers -->
-
-    <script src="scripts/app/loginStatus/loginStatusModule.js"></script>
-    <script src="scripts/app/loginStatus/userInfoController.js"></script>
-
-    <!--  LoginStatus specific javascript end -->
-
-    <!-- Menu Controllers -->
-
-    <script src="scripts/app/menu/menuModule.js"></script>
-    <script src="scripts/app/menu/leftMenuController.js"></script>
-
-    <!--  Menu specific javascript end -->
-
-    <!-- Forgot-Maintainer-Password Controllers -->
-
-    <script src="scripts/app/fmp/fmpModule.js"></script>
-    <script src="scripts/app/fmp/fmpStates.js"></script>
-    <script src="scripts/app/fmp/fmpServices.js"></script>
-    <script src="scripts/app/fmp/requireLoginController.js"></script>
-    <script src="scripts/app/fmp/findMaintainerCtrl.js"></script>
-    <script src="scripts/app/fmp/mailSentController.js"></script>
-    <script src="scripts/app/fmp/confirmMaintainerCtrl.js"></script>
-    <script src="scripts/app/fmp/ssoAddedController.js"></script>
-    <script src="scripts/app/fmp/redirectToLegacyController.js"></script>
-    <script src="scripts/app/fmp/voluntarilyRedirectToLegacyController.js"></script>
-
-    <!-- Forgot-Maintainer-Password javascript end -->
-
-
-    <!-- Search Controllers -->
-
-    <script src="scripts/app/search/searchModule.js"></script>
-
-    <!-- Search javascript end -->
-
-    <!-- TEST environment banner -->
-    <script>
-        if(window.location.hostname.split('.').shift() === 'apps-test') {
-            $('#envbanner').show();
-        }
-    </script>
+    <!-- @include _index_app_javascript.html -->
 
 </div>
-<!--  Webupdates specific body-end start -->
-
-<!-- Usersnap widget: always on -->
-<script type="text/javascript">
-    (function() {
-        var s = document.createElement("script");
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = '//api.usersnap.com/load/'+
-            'b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js';
-        var x = document.getElementsByTagName('script')[0];
-        x.parentNode.insertBefore(s, x);
-    })();
-</script>
-
-<!--  Webupdates specific body-end end -->
-
-<script type="text/javascript">
-    angular.element(document).ready(function() {
-        angular.bootstrap(document, ['dbWebApp']);
-    });
-</script>
+<!-- @include _index_app_body_end.html -->
 </body>
-</html>
