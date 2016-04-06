@@ -1,12 +1,7 @@
 exports.config = {
-    // The address of a running selenium server.
-    //seleniumAddress: 'http://localhost:4444/wd/hub',
-    //seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
-    //localSeleniumStandaloneOpts: {
-        //port: 4444
-    //},
-    //chromeDriver: '../lib/chromedriver',
-    directConnect: true,
+    //directConnect: true,
+    chromeDriver: '../lib/chromedriver',
+    seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
 
     // Spec patterns are relative to the location of this config.
     specs: [
@@ -19,7 +14,7 @@ exports.config = {
     },
 
     framework: 'jasmine2',
-    rootElement: '[ng-app]',
+    rootElement: 'div', // test everything inside the 1st div
 
     // A base URL for your application under test. Calls to protractor.get()
     // with relative paths will be prepended with this.

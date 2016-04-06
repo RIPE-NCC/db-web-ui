@@ -49,6 +49,8 @@
     class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color"
     dir="ltr">
 
+<div>
+
 <!-- @include _index_app_body_start.html -->
 
 <header class="header-gradient container-fluid">
@@ -988,7 +990,13 @@
 
 <!-- @include _index_app_javascript.html -->
 
+</div>
 <!-- @include _index_app_body_end.html -->
 
+<script type="text/javascript">
+    angular.element(document).ready(function() {
+        angular.bootstrap(document, ['dbWebApp']);
+    });
+</script>
 </body>
 </html>
