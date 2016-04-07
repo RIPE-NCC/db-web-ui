@@ -368,6 +368,7 @@ module.exports = function (grunt) {
             e2e: {
                 options: {
                     keepalive: false,
+                    //open: true,
                     middleware: function (connect, options, middlewares) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
@@ -431,8 +432,17 @@ module.exports = function (grunt) {
         'clean:server',
         'wiredep',
         'preprocess:e2e',
+        'concurrent:server',
         'connect:e2e',
         'protractor:e2e'
+    ]);
+
+    grunt.registerTask('e2e-no-test', [
+        'clean:server',
+        'wiredep',
+        'preprocess:e2e',
+        'concurrent:server',
+        'connect:e2e:keepalive'
     ]);
 
     grunt.registerTask('default', [
