@@ -137,9 +137,8 @@ module.exports = function (grunt) {
             options: {
                 jshintrc: '.jshintrc'
             },
-            all: [
-                'Gruntfile.js',
-                'src/main/webapp/scripts/**/*.js'
+            app: [
+                'src/main/webapp/scripts/app/**/*.js'
             ]
         },
         compass: {
@@ -451,8 +450,7 @@ module.exports = function (grunt) {
         'wiredep',
         'preprocess:html',
         'ngconstant:dev',
-        'watch',
-        'connect'
+        'jshint'
     ]);
 
     grunt.registerTask('test', [
