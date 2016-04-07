@@ -5,7 +5,7 @@ exports.config = {
 
     // Spec patterns are relative to the location of this config.
     specs: [
-        'e2e/bogusSpec.js'
+        'e2e/*Spec.js'
     ],
 
     capabilities: {
