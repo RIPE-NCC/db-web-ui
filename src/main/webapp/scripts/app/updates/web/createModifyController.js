@@ -204,7 +204,7 @@ angular.module('webUpdates')
                 return _.map(items, function (item) {
                     var name = '';
                     var separator = ' / ';
-                    if (typeof item.type === 'person') {
+                    if (item.type === 'person') {
                         name = item.person;
                     } else if (item.type === 'role') {
                         name = item.role;
