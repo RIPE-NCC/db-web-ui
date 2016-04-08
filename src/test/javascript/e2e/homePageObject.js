@@ -8,6 +8,6 @@ module.exports = {
     heading: element(by.id('createForm')).element(by.css('h1')),
     searchTextInput: element(by.id('searchtext')),
     selectObjectType: function(itemValue) {
-        return element(by.cssContainingText('option', itemValue));
+        return element(by.id('objectTypeSelector')).element(by.css('option[label=' + itemValue + ']'));
     }
 };
