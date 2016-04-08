@@ -6,16 +6,16 @@ describe('webupdates homepage', function() {
     beforeEach(function() {
         browser.get('index.html');
         // Noisy logs enabled here...
-        browser.manage().logs().get('browser').then(function(browserLog) {
-            console.log('>>>>>> ' + require('util').inspect(browserLog));
-        });
+        // browser.manage().logs().get('browser').then(function(browserLog) {
+        //    console.log('>>>>>> ' + require('util').inspect(browserLog));
+        // });
     });
 
     it('should not crash when showing index page', function() {
         expect(page.searchTextInput.isPresent()).toEqual(true);
         // test that we're detecting failures properly -- ptor gets confused by bad configs so make sure we're not using
         // one of those :S
-        expect(element(by.id('nosuch')).isPresent()).toEqual(false);
+        expect(element(by.id('nosuchelement')).isPresent()).toEqual(false);
     });
 
     it('should show an editor for as-set', function() {
@@ -112,6 +112,54 @@ describe('webupdates homepage', function() {
         page.createButton.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "peering-set" object');
+    });
+
+    it('should show an editor for person', function() {
+        expect(page.selectForm.isPresent()).toEqual(true);
+        page.selectObjectType('person').click();
+        page.createButton.click();
+        expect(page.createForm.isPresent()).toEqual(true);
+        expect(page.heading.getText()).toEqual('Create "person" object');
+    });
+
+    it('should show an editor for role', function() {
+        expect(page.selectForm.isPresent()).toEqual(true);
+        page.selectObjectType('role').click();
+        page.createButton.click();
+        expect(page.createForm.isPresent()).toEqual(true);
+        expect(page.heading.getText()).toEqual('Create "role" object');
+    });
+
+    it('should show an editor for route', function() {
+        expect(page.selectForm.isPresent()).toEqual(true);
+        page.selectObjectType('route').click();
+        page.createButton.click();
+        expect(page.createForm.isPresent()).toEqual(true);
+        expect(page.heading.getText()).toEqual('Create "route" object');
+    });
+
+    it('should show an editor for route6', function() {
+        expect(page.selectForm.isPresent()).toEqual(true);
+        page.selectObjectType('route6').click();
+        page.createButton.click();
+        expect(page.createForm.isPresent()).toEqual(true);
+        expect(page.heading.getText()).toEqual('Create "route6" object');
+    });
+
+    it('should show an editor for route-set', function() {
+        expect(page.selectForm.isPresent()).toEqual(true);
+        page.selectObjectType('route-set').click();
+        page.createButton.click();
+        expect(page.createForm.isPresent()).toEqual(true);
+        expect(page.heading.getText()).toEqual('Create "route-set" object');
+    });
+
+    it('should show an editor for rtr-set', function() {
+        expect(page.selectForm.isPresent()).toEqual(true);
+        page.selectObjectType('rtr-set').click();
+        page.createButton.click();
+        expect(page.createForm.isPresent()).toEqual(true);
+        expect(page.heading.getText()).toEqual('Create "rtr-set" object');
     });
 
 });
