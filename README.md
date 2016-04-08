@@ -87,3 +87,24 @@ Grunt
 * e2e-no-test
   - Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
    when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks.
+
+Protractor
+----------
+
+##### Matchers
+
+``` javascript
+expect(fn).toThrow(e);
+expect(instance).toBe(instance);
+expect(mixed).toBeDefined();
+expect(mixed).toBeFalsy();
+expect(number).toBeGreaterThan(number);
+expect(number).toBeLessThan(number);
+expect(mixed).toBeNull();
+expect(mixed).toBeTruthy();
+expect(mixed).toBeUndefined();
+expect(array).toContain(member);
+expect(string).toContain(substring);
+expect(mixed).toEqual(mixed);
+expect(mixed).toMatch(pattern);
+```

@@ -21,7 +21,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for as-set', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('as-set').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "as-set" object');
     });
@@ -29,7 +29,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for aut-num', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('aut-num').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "aut-num" object');
     });
@@ -37,7 +37,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for domain', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('domain').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "domain" object');
     });
@@ -45,7 +45,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for filter-set', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('filter-set').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "filter-set" object');
     });
@@ -53,7 +53,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for inet6num', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inet6num').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "inet6num" object');
     });
@@ -61,7 +61,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for inetnum', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inetnum').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "inetnum" object');
     });
@@ -69,7 +69,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for inet-rtr', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inet-rtr').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "inet-rtr" object');
     });
@@ -77,7 +77,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for irt', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('irt').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "irt" object');
     });
@@ -85,7 +85,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for key-cert', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('key-cert').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "key-cert" object');
     });
@@ -93,7 +93,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for mntner', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('mntner').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "mntner" object');
     });
@@ -101,7 +101,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for organisation', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('organisation').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "organisation" object');
     });
@@ -109,7 +109,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for peering-set', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('peering-set').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "peering-set" object');
     });
@@ -117,7 +117,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for person', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('person').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "person" object');
     });
@@ -125,7 +125,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for role', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('role').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "role" object');
     });
@@ -133,7 +133,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for route', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('route').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "route" object');
     });
@@ -141,7 +141,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for route6', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('route6').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "route6" object');
     });
@@ -149,7 +149,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for route-set', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('route-set').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "route-set" object');
     });
@@ -157,7 +157,7 @@ describe('webupdates homepage', function() {
     it('should show an editor for rtr-set', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('rtr-set').click();
-        page.createButton.click();
+        page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "rtr-set" object');
     });

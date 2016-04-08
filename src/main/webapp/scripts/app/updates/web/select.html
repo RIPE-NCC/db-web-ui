@@ -11,7 +11,9 @@
 	</div>
     <br/>
 
-    <button ng-click="navigateToCreate()" class="blue-button pull-right ga-createobj-select">{{loggedIn ? 'Create' : 'Login to create'}}</button>
+    <button id="btnNavigateToCreate"
+            class="blue-button pull-right ga-createobj-select"
+            ng-click="navigateToCreate()">{{loggedIn ? 'Create' : 'Login to create'}}</button>
 
 </form>
 </section>
