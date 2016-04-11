@@ -38,13 +38,13 @@ describe('The organisation editor', function() {
         expect(page.inpOrgType.getAttribute('disabled')).toBeTruthy();
 
         expect(page.inpAddress.isPresent()).toEqual(true);
-        expect(page.inpAddress.getAttribute('disabled')).toBeTruthy();
+        expect(page.inpAddress.getAttribute('disabled')).toBeFalsy();
 
         expect(page.inpEmail.isPresent()).toEqual(true);
-        expect(page.inpEmail.getAttribute('disabled')).toBeTruthy();
+        expect(page.inpEmail.getAttribute('disabled')).toBeFalsy();
 
         expect(page.inpAbuseC.isPresent()).toEqual(true);
-        expect(page.inpAbuseC.getAttribute('disabled')).toBeTruthy();
+        expect(page.inpAbuseC.getAttribute('disabled')).toBeFalsy();
 
         expect(page.inpMntRef.isPresent()).toEqual(true);
         expect(page.inpMntRef.getAttribute('disabled')).toBeFalsy();
