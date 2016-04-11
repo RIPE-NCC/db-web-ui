@@ -186,11 +186,7 @@ angular.module('webUpdates')
             }
 
             function isModifyWithSingleMntnerRemaining() {
-                if ($scope.operation === 'Modify' && $scope.maintainers.object.length === 1) {
-                    // only lock last for modify
-                    return true;
-                }
-                return false;
+                return $scope.operation === 'Modify' && $scope.maintainers.object.length === 1;
             }
 
             function mntnerAutocomplete(query) {
@@ -208,19 +204,26 @@ angular.module('webUpdates')
                 return _.map(items, function (item) {
                     var name = '';
                     var separator = ' / ';
-                    if (typeof item.person === 'string') {
+                    if (item.type === 'person') {
                         name = item.person;
-                    } else if (typeof item.role === 'string') {
+                    } else if (item.type === 'role') {
                         name = item.role;
                         if (attrName === 'abuse-c' && typeof item['abuse-mailbox'] === 'string') {
                             name = name.concat(separator + item['abuse-mailbox']);
                         }
-                    } else if (item['org-name'] === 'string') {
+                    } else if (item.type === 'aut-num') {
+                        // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
+                        if (angular.isArray(item['descr']) && item['descr'].length) {
+                            name = [item['as-name'], separator, item['descr'][0]].join('');
+                        } else {
+                            name = item['as-name'];
+                        }
+                    } else if (typeof item['org-name'] === 'string') {
                         name = item['org-name'];
                     } else if (angular.isArray(item['descr'])) {
-                        name = item['descr'].join();
+                        name = item['descr'].join('');
                     } else if (angular.isArray(item['owner'])) {
-                        name = item['owner'].join();
+                        name = item['owner'].join('');
                     } else {
                         separator = '';
                     }
@@ -254,9 +257,8 @@ angular.module('webUpdates')
             function referenceAutocomplete(attribute, userInput) {
                 var attrName = attribute.name;
                 var refs = attribute.$$meta.$$refs;
-
                 var utf8Substituted = _warnForNonSubstitutableUtf8(attribute, userInput);
-                if( utf8Substituted && _isServerLookupKey(refs)) {
+                if (utf8Substituted && _isServerLookupKey(refs)) {
                     return RestService.autocompleteAdvanced(userInput, refs).then(
                         function (resp) {
                             return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
@@ -588,8 +590,6 @@ angular.module('webUpdates')
                 infoMessages.forEach(function(info) {
                     AlertService.addGlobalInfo(info);
                 });
-
-                return;
             }
 
             function _interceptBeforeEdit( method, attributes ) {
@@ -637,7 +637,7 @@ angular.module('webUpdates')
                 if (CredentialsService.hasCredentials()) {
                     password = CredentialsService.getCredentials().successfulPassword;
                 }
-                // wait untill both have completed
+                // wait until both have completed
                 $scope.restCalInProgress = true;
                 $q.all({
                     mntners: RestService.fetchMntnersForSSOAccount(),
