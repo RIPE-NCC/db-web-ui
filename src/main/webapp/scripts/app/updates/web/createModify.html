@@ -54,10 +54,6 @@
             <span ng-if="attribute.$$error" class="text-error">
                 <span ng-bind-html="attribute.$$error"></span>
             </span>
-            <span class="text-info" ng-if="isDisabledLirAttribute(attribute)">
-                <a ng-if="attribute.name === 'org-name'" href="https://my.ripe.net/#/update-registry">Request to update</a>
-                <a ng-if="attribute.name !== 'org-name'" href="https://lirportal.ripe.net/general/">LIR Portal</a>
-            </span>
             <span ng-if="attribute.$$success" class="text-success">{{attribute.$$success}}</span>
 
             <input ng-if="!isEnum(attribute)"
@@ -94,35 +90,42 @@
                 <span ng-bind-html="getAttributeSyntax(attribute.name)"></span>
             </div>
             <ul class="input-group-btn">
-                <li>
+                <li ng-if="canAttributeBeDuplicated(attribute)">
                     <a id="duplicateAttribute" class="btn btn-default ga-add-dup" title="Add another attribute of this type"
-                            ng-disabled="!canAttributeBeDuplicated(attribute)" ng-click="duplicateAttribute(attribute)">
+                             ng-click="duplicateAttribute(attribute)">
                     <span class="fa fa-arrow-down degree-25"></span>
                     </a>
                 </li>
-                <li>
+                <li ng-if="canAttributeBeDuplicated(attribute)">
                     <a id="addAnyAttribute" class="btn btn-default ga-add-attr" title="Add any attribute (opens dialog)"
-                            ng-disabled="!canAttributeBeDuplicated(attribute)" ng-click="displayAddAttributeDialog(attribute)">
+                             ng-click="displayAddAttributeDialog(attribute)">
                         <span class="fa fa-plus"></span>
                     </a>
                 </li>
-                <li>
+                <li ng-if="canAttributeBeRemoved(attribute)">
                     <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
-                            ng-disabled="!canAttributeBeRemoved(attribute)" ng-click="removeAttribute(attribute)">
+                             ng-click="removeAttribute(attribute)">
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>
-
                 <li>
-                <a id="changePassword" class="btn btn-default ga-pass-attr" title="Add/change Password (opens dialog)"
-                   ng-click="displayMd5DialogDialog(attribute)" ng-show="(attribute.name == 'auth')">
-                    <span class="fa fa-lock fa-3"></span>
-                </a>
+                    <a id="changePassword" class="btn btn-default ga-pass-attr" title="Add/change Password (opens dialog)"
+                       ng-click="displayMd5DialogDialog(attribute)" ng-show="(attribute.name == 'auth')">
+                        <span class="fa fa-lock fa-3"></span>
+                    </a>
                 </li>
                 <li>
                     <a id="createRoleForAbuseCAttribute" class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c"
                        ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="(attribute.name == 'abuse-c') && (objectType == 'organisation') && (!attribute.value)">
                         <span class="fa fa-bell-o degree-25"></span>
+                    </a>
+                </li>
+                <li ng-if="isDisabledLirAttribute(attribute)">
+                    <a title="Request to update" class="btn btn-default ga-edit-attr" ng-if="attribute.name === 'org-name'" target="_blank" href="https://my.ripe.net/#/update-registry">
+                        <span class="fa fa-pencil"></span>
+                    </a>
+                    <a title="Edit in LIR portal" class="btn btn-default ga-edit-attr" ng-if="attribute.name !== 'org-name'" target="_blank" href="https://lirportal.ripe.net/general/">
+                        <span class="fa fa-pencil"></span>
                     </a>
                 </li>
                 <li>
