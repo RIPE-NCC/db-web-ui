@@ -45,7 +45,6 @@
         <span ng-bind-html="getAttributeSyntax('mnt-by')"></span>
     </div>
 	</section>
-
     <section class="visible-field-form" ng-if="hasMntners()">
         <ul class="form-fields appeared-fields">
 
@@ -66,9 +65,9 @@
                        placeholder="{{getAttributeShortDescription(attribute.name)}}"
                        class="form-control"
                        attributetransformer
-                       typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute, $viewValue)"
+                       typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
                        typeahead-min-length="2"
-                       ng-disabled="isToBeDisabled(attribute)"
+                       ng-disabled="isDisabledAttribute(attribute)"
                        autocomplete="off"
                        />
 
@@ -84,7 +83,6 @@
                      </ui-select-choices>
                  </ui-select>
             </span>
-
             <div class="text field-description" collapse="!isHelpShown">
                 <strong>Description</strong></br>
                 <span ng-bind-html="getAttributeDescription(attribute.name)"></span></br>
@@ -92,37 +90,42 @@
                 <span ng-bind-html="getAttributeSyntax(attribute.name)"></span>
             </div>
             <ul class="input-group-btn">
-                <li>
+                <li ng-if="canAttributeBeDuplicated(attribute)">
                     <a id="duplicateAttribute" class="btn btn-default ga-add-dup" title="Add another attribute of this type"
-                               ng-click="duplicateAttribute(attribute)"  ng-disabled="!canAttributeBeDuplicated(attribute)" >
+                             ng-click="duplicateAttribute(attribute)">
                     <span class="fa fa-arrow-down degree-25"></span>
                     </a>
                 </li>
-                <li>
+                <li ng-if="canAttributeBeDuplicated(attribute)">
                     <a id="addAnyAttribute" class="btn btn-default ga-add-attr" title="Add any attribute (opens dialog)"
-                                    ng-click="displayAddAttributeDialog(attribute)">
+                             ng-click="displayAddAttributeDialog(attribute)">
                         <span class="fa fa-plus"></span>
                     </a>
                 </li>
-                <li>
+                <li ng-if="canAttributeBeRemoved(attribute)">
                     <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
-                      ng-click="removeAttribute(attribute)"  ng-disabled="!canAttributeBeRemoved(attribute) || isToBeDisabled(attribute)" >
+                             ng-click="removeAttribute(attribute)">
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>
-
                 <li>
-                <a id="changePassword" class="btn btn-default ga-pass-attr" title="Add/change Password (opens dialog)"
-                   ng-click="displayMd5DialogDialog(attribute)" ng-show="(attribute.name == 'auth')">
-                    <span class="fa fa-lock fa-3"></span>
-                </a>
+                    <a id="changePassword" class="btn btn-default ga-pass-attr" title="Add/change Password (opens dialog)"
+                       ng-click="displayMd5DialogDialog(attribute)" ng-show="(attribute.name == 'auth')">
+                        <span class="fa fa-lock fa-3"></span>
+                    </a>
                 </li>
                 <li>
                     <a id="createRoleForAbuseCAttribute" class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c"
                        ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="(attribute.name == 'abuse-c') && (objectType == 'organisation') && (!attribute.value)">
-
-
                         <span class="fa fa-bell-o degree-25"></span>
+                    </a>
+                </li>
+                <li ng-if="isDisabledLirAttribute(attribute)">
+                    <a title="Request to update" class="btn btn-default ga-edit-attr" ng-if="attribute.name === 'org-name'" target="_blank" href="https://my.ripe.net/#/update-registry">
+                        <span class="fa fa-pencil"></span>
+                    </a>
+                    <a title="Edit in LIR portal" class="btn btn-default ga-edit-attr" ng-if="attribute.name !== 'org-name'" target="_blank" href="https://lirportal.ripe.net/general/">
+                        <span class="fa fa-pencil"></span>
                     </a>
                 </li>
                 <li>
@@ -151,7 +154,7 @@
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 
-    <span ng-show="operation == MODIFY_OPERATION">
+    <span ng-show="operation == MODIFY_OPERATION && !isLirObject()">
         <button ng-click="deleteObject()" ng-disabled="restCalInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
     </span>
     </section>
