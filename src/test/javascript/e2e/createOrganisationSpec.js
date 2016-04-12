@@ -1,9 +1,48 @@
 /*global beforeEach, browser, describe, expect, it, require */
+
+// System requires
+var fs = require('fs');
+
+// Local requires
 var page = require('./homePageObject');
 
-describe('The organisation editor', function() {
+/*
+ * Helper functions
+ */
 
-    beforeEach(function() {
+// abstract writing screen shot to a file
+function writeToDisk(data, filename) {
+    var stream = fs.createWriteStream(filename);
+    stream.write(new Buffer(data, 'base64'));
+    stream.end();
+}
+
+function pad(val) {
+    if (typeof val !== 'number') {
+        return val;
+    }
+    return val < 10 ? '0' + val : val;
+}
+
+function timestamp() {
+    var date = new Date();
+    var d = { h: '', m: '', s: ''};
+    return [pad(date.getHours()), '_', pad(date.getMinutes()), '_', pad(date.getSeconds()), '.', date.getMilliseconds()].join('');
+}
+
+function takeScreenshot(imageName) {
+    browser.takeScreenshot().then(function (png) {
+        var filename = imageName ? imageName : 'screenshot-' + timestamp() + '.png';
+        writeToDisk(png, filename);
+    });
+}
+
+/*
+ * Tests...
+ */
+describe('The organisation editor', function () {
+
+    beforeEach(function () {
         browser.get('/#/webupdates/create/RIPE/organisation');
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {
@@ -11,7 +50,7 @@ describe('The organisation editor', function() {
         // });
     });
 
-    it('should not crash when showing the single line editor', function() {
+    it('should not crash when showing the single line editor', function () {
         expect(page.searchTextInput.isPresent()).toEqual(true);
         expect(page.selectMaintainerDropdown.isPresent()).toEqual(true);
         // test that we're detecting failures properly -- ptor gets confused by bad configs so make sure we're not using
@@ -19,14 +58,14 @@ describe('The organisation editor', function() {
         expect(element(by.id('nosuchelement')).isPresent()).toEqual(false);
     });
 
-    it('should be able to switch to text mode and back', function() {
+    it('should be able to switch to text mode and back', function () {
         expect(page.createForm.isPresent()).toEqual(true);
         page.btnCreateInTextArea.click();
         expect(page.textCreateForm.isPresent()).toEqual(true);
         page.btnSwitchToWebCreate.click();
     });
 
-    it('should have the right attributes', function() {
+    it('should have the right attributes', function () {
         expect(page.inpOrgName.isPresent()).toEqual(true);
         expect(page.inpOrgName.getAttribute('disabled')).toBeFalsy();
 
@@ -53,11 +92,17 @@ describe('The organisation editor', function() {
         expect(page.inpSource.getAttribute('disabled')).toBeTruthy();
     });
 
-    xit('should validate input fields', function() {
+    it('should accept a valid abuse-c value', function () {
+        expect(page.btnAbuseCBell.isPresent()).toEqual(true);
+        takeScreenshot();
+        // TODO: implement test
+    });
+
+    xit('should validate input fields', function () {
         // TODO: test field validation
     });
 
-    xit('should work in single line mode', function() {
+    xit('should work in single line mode', function () {
         // TODO: create an org in single line mode
     });
 

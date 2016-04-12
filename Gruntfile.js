@@ -366,6 +366,7 @@ module.exports = function (grunt) {
             },
             e2e: {
                 options: {
+                    port: 9002,
                     keepalive: false,
                     //open: true,
                     middleware: function (connect, options, middlewares) {

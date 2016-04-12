@@ -23,6 +23,10 @@ module.exports = {
     inpAbuseC: element(by.id('createForm')).element(by.name('abuse-c')),
     inpMntRef: element(by.id('createForm')).element(by.name('mnt-ref')),
     inpSource: element(by.id('createForm')).element(by.name('source')),
+    btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
+
+    modalEmail: element(by.css('[modal-window]')).element(by.name('email')),
+    modalBtnSubmit: element(by.css('[modal-window]')).element(by.css('[value=Submit]')),
 
     selectObjectType: function(itemValue) {
         return element(by.id('objectTypeSelector')).element(by.css('option[label=' + itemValue + ']'));
