@@ -91,7 +91,7 @@ Grunt
 Protractor
 ----------
 
-##### Matchers
+##### Notes on matchers
 
 ``` javascript
 expect(fn).toThrow(e);
