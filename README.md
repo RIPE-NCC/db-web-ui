@@ -75,5 +75,23 @@ Responsibilities of java-proxy: Non functionals only
 * Caching
 * Flexibilty: fix whois problems temporarily
 
+Chores
+------
 
+### Updating the web site template
+
+Download the [latest template from here]
+(https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true)
+
+It's always a good idea to format the file so it's easier to see the changes with the previous version, assuming that it
+ was also formatted the same way. The best tool for this is `js-beautify` -- you can install it with:
+
+    npm install -g js-beautify
+
+Example usage: Open a terminal and cd into the `src/main/webapp` directory, then type these commands:
+ 
+    curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" > template.html
+    js-beautify --type html -r -f template.html
+    diff _index.html template.html
+ 
 
