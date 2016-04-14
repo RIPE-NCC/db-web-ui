@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('updates')
-    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'LinkService',
-        function ($log, WhoisResources, OrganisationHelper, MessageStore, LinkService) {
+    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'LinkService', 'RestService',
+        function ($log, WhoisResources, OrganisationHelper, MessageStore, LinkService, RestService) {
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
@@ -42,6 +42,7 @@ angular.module('updates')
                 },
                 'aut-num': {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -65,6 +66,7 @@ angular.module('updates')
                 },
                 inet6num: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -76,6 +78,7 @@ angular.module('updates')
                 },
                 inetnum: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -252,16 +255,39 @@ angular.module('updates')
                 return addableAttributes;
             }
 
+            function setReadOnlyIfOrgIsLir(source, orgAttribute) {
+                RestService.fetchObject(source, 'organisation', orgAttribute.value).then(
+                    function (result) { // yay!
+                        if (result) {
+                            if (result.getAttributes().getSingleAttributeOnName('org-type').value === 'LIR') {
+                                orgAttribute.$$meta.$$disable = true;
+                            }
+                        }
+                    }, function (err) { // meh.
+                        $log.error('Error retrieving organisation', err);
+                    }
+                );
+            }
+
+            function _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos) {
+                var org = attributes.getSingleAttributeOnName('sponsoring-org');
+                if (org) {
+                    setReadOnlyIfOrgIsLir(source, org);
+                }
+                org = attributes.getSingleAttributeOnName('org');
+                if (org) {
+                    setReadOnlyIfOrgIsLir(source, org);
+                }
+            }
+
             function _disableOrgWhenStatusIsAssignedPI (method, source, objectType, attributes, errors, warnings, infos) {
                 var statusAttr = attributes.getSingleAttributeOnName('status');
-
                 if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
                     var org = attributes.getSingleAttributeOnName('org');
                     if(org) {
                         org.$$meta.$$disable = true;
                     }
                 }
-
                 return attributes;
             }
 

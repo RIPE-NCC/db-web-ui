@@ -86,7 +86,7 @@ angular.module('webUpdates')
                     ', noRedirect:' + noRedirect);
 
                 // switch to text-screen if cookie says so and cookie is not to be ignored
-                if( PreferenceService.isTextMode() && ! noRedirect === true ) {
+                if (PreferenceService.isTextMode() && ! noRedirect === true ) {
                     switchToTextMode();
                 }
 
@@ -383,12 +383,13 @@ angular.module('webUpdates')
                     }
                 );
             }
+
             function isLirObject() {
                 return !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
             }
 
             function isDisabledLirAttribute(attribute) {
-                return ['address', 'phone', 'fax-no', 'e-mail', 'org-name'].indexOf(attribute.name) >= 0 && isLirObject();
+                return ['address', 'phone', 'fax-no', 'e-mail', 'org-name'].indexOf(attribute.name) > -1 && isLirObject();
             }
 
             function isDisabledAttribute(attribute) {
@@ -703,6 +704,12 @@ angular.module('webUpdates')
                                 $log.error('Error fetching sso-mntners details' + JSON.stringify(error));
                                 AlertService.setGlobalError('Error fetching maintainer details');
                             });
+                        // now let's see if there are any read-only restrictions on these attributes. There is if any of
+                        // these are true:
+                        //
+                        // * this is an inet(6)num and it has a 'sponsoring-org' attribute which refers to an LIR
+                        // * this is an inet(6)num and it has a 'org' attribute which refers to an LIR
+                        // * this is an organisation with an 'org-type: LIR' attribute and attribute.name is address|fax|e-mail|phone
                     }
                 ).catch(
                     function (error) {
