@@ -257,18 +257,18 @@ angular.module('updates')
 
             function setReadOnlyIfOrgIsLir(source, orgAttribute) {
                 RestService.fetchObject(source, 'organisation', orgAttribute.value).then(
-                    function (result) { // yay!
+                    function (result) { // success
                         if (result) {
                             if (result.getAttributes().getSingleAttributeOnName('org-type').value === 'LIR') {
                                 orgAttribute.$$meta.$$disable = true;
                             }
                         }
-                    }, function (err) { // meh.
-                        $log.error('Error retrieving organisation', err);
+                    }, function (err) { // failure
+                        $log.error('Error on RestService.fetchObject(): organisation "' + orgAttribute.value + '" from ' + source, err);
                     }
                 );
             }
-
+            
             function _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos) {
                 var org = attributes.getSingleAttributeOnName('sponsoring-org');
                 if (org) {
