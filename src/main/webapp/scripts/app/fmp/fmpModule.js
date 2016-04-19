@@ -9,8 +9,9 @@ angular.module('fmp', ['dbWebApp'])
             LEGACY:        'fmp.legacy',
             CONFIRM:       'fmp.confirm',
             SSO_ADDED:     'fmp.ssoAdded',
-            MAIL_SENT:     'fmp.mailSent',
-        })  .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
+            MAIL_SENT:     'fmp.mailSent'
+        })
+    .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
 
     $log.info('Starting up fmp-module');
 

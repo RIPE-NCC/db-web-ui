@@ -1,4 +1,6 @@
-/*global window: false */
+/*global angular*/
+
+(function() {
 
 'use strict';
 
@@ -76,3 +78,4 @@ angular.module('dbWebApp')
         };
 
     }]);
+})();

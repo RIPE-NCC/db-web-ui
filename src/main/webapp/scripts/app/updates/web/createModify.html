@@ -1,7 +1,21 @@
 <alerts></alerts>
 
-<button ng-show="operation == CREATE_OPERATION" ng-click="switchToTextMode()" class="blue-button pull-right ga-modifyobj-switch-mode" style="border:0;"><span class="fa fa-pencil-square-o"></span> Create in text area</button>
-<button ng-show="operation == MODIFY_OPERATION" ng-click="switchToTextMode()" class="blue-button pull-right ga-createobj-switch-mode" style="border:0;"><span class="fa fa-pencil-square-o"></span> Edit in text area</button>
+<button
+    id="btnCreateInTextArea"
+    class="blue-button pull-right ga-modifyobj-switch-mode"
+    style="border:0;"
+    ng-show="operation == CREATE_OPERATION"
+    ng-click="switchToTextMode()">
+    <span class="fa fa-pencil-square-o"></span> Create in text area
+</button>
+<button
+    id="btnEditInTextArea"
+    style="border:0;"
+    class="blue-button pull-right ga-createobj-switch-mode"
+    ng-show="operation == MODIFY_OPERATION"
+    ng-click="switchToTextMode()">
+    <span class="fa fa-pencil-square-o"></span> Edit in text area
+</button>
 
 <form id="createForm" accept-charset="ISO-8859-1">
 
@@ -14,7 +28,8 @@
               <span class="fa fa-question"></span>
         </a>
     </article>
-    <ui-select multiple="true"
+    <ui-select id="selectMaintainerDropdown"
+               multiple="true"
                theme="selectize"
                ng-model="maintainers.object"
                close-on-select="true"

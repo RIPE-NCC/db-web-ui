@@ -12,10 +12,10 @@ angular.module('webUpdates')
             $urlMatcherFactory.type('WhoisObjectName',
                 {
                     name: 'WhoisObjectName',
-                    decode: function (val, key) {
+                    decode: function (val) {
                         return decodeURIComponent(val);
                     },
-                    encode: function (val, key) {
+                    encode: function (val) {
                         return encodeURIComponent(val);
                     },
                     equals: function (decodedA, decodedB) {
@@ -29,7 +29,7 @@ angular.module('webUpdates')
 
                         return decodedA === decodedB;
                     },
-                    is: function (decodedVal, key) {
+                    is: function () {
                         return true;
                     }
                 });

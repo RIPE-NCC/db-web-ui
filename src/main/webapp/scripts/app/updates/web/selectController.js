@@ -15,7 +15,7 @@ angular.module('webUpdates')
 
             $scope.loggedIn = undefined;
             UserInfoService.getUserInfo().then(
-                function (userData) {
+                function () {
                     $scope.loggedIn = true;
                 }
             );
@@ -30,7 +30,7 @@ angular.module('webUpdates')
              */
             $scope.labelForSource = function (src) {
                 return src === 'RIPE' ? 'RIPE    production database' : 'Test database (currently not available)';
-            }
+            };
 
             $scope.navigateToCreate = function () {
                 if ($scope.selected.objectType === 'mntner'){

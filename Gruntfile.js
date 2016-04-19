@@ -1,45 +1,71 @@
 // Generated on 2015-05-18 using generator-jhipster 2.11.0
 'use strict';
 var fs = require('fs');
+var serveStatic = require('serve-static');
 
 var parseString = require('xml2js').parseString;
-// Returns the second occurence of the version number
-var parseVersionFromPomXml = function() {
-    var version;
+
+// Returns the second occurrence of the version number
+var parseVersionFromPomXml = function () {
     var pomXml = fs.readFileSync('pom.xml', 'utf8');
-    parseString(pomXml, function (err, result){
-        version = result.project.version[0];
+    parseString(pomXml, function (err, result) {
+        return result.project.version[0];
     });
-    return version;
 };
 
 module.exports = function (grunt) {
+
     require('load-grunt-tasks')(grunt);
     require('time-grunt')(grunt);
-    var urlRewrite = require('grunt-connect-rewrite');
+
+// Configurable paths for the application
+    var hostname = 'localhost.dev.ripe.net';
+    var appConfig = {
+        app: require('./bower.json').appPath || 'app',
+        dist: 'src/main/webapp/dist'
+    };
+    var proxyMiddleware = function (req, res, next) {
+        console.log('req', req.headers);
+        next();
+    };
 
     grunt.initConfig({
-         protractor: {
+        // Run some tasks in parallel to speed up the build process
+        concurrent: {
+            server: [
+                'compass:server'
+            ],
+            test: [
+                'compass'
+            ],
+            dist: [
+                'compass:dist',
+                'imagemin',
+                'svgmin'
+            ]
+        },
+
+        protractor: {
             options: {
-              configFile: 'src/test/javascript/e2e/conf.js', // Default config file
-              noColor: false, // If true, protractor will not use colors in its output.
-              args: {}
+                configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
+                noColor: false, // If true, protractor will not use colors in its output.
+                args: {}
             },
             e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
-              options: {
-                  keepAlive: false // If false, the grunt process stops when the test fails.
-              }
+                options: {
+                    keepAlive: true // If false, the grunt process stops when the test fails.
+                }
             },
             continuous: {
-                 options: {
-                     keepAlive: true
-                 }
+                options: {
+                    keepAlive: true
+                }
             }
         },
         yeoman: {
             // configurable paths
-            app: require('./bower.json').appPath || 'app',
-            dist: 'src/main/webapp/dist'
+            app: appConfig.app,
+            dist: appConfig.dist
         },
         watch: {
             options: {
@@ -111,9 +137,8 @@ module.exports = function (grunt) {
             options: {
                 jshintrc: '.jshintrc'
             },
-            all: [
-                'Gruntfile.js',
-                'src/main/webapp/scripts/**/*.js'
+            app: [
+                'src/main/webapp/scripts/app/**/*.js'
             ]
         },
         compass: {
@@ -123,7 +148,7 @@ module.exports = function (grunt) {
             },
             server: {
                 options: {
-                	outputStyle: 'compressed'
+                    outputStyle: 'compressed'
                 }
             }
         },
@@ -135,7 +160,7 @@ module.exports = function (grunt) {
                 options: {
                     module: 'dbWebApp',
                     usemin: 'scripts/app.js',
-                    htmlmin:  {
+                    htmlmin: {
                         removeCommentsFromCDATA: true,
                         // https://github.com/yeoman/grunt-usemin/issues/44
                         collapseWhitespace: true,
@@ -180,32 +205,32 @@ module.exports = function (grunt) {
                 }
             }
         },
-        env : {
+        env: {
             dev: {
-                NODE_ENV:'dev',
+                NODE_ENV: 'dev',
                 GTM_ID: 'GTM-WTWTB7',
                 ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/'
             },
             prepdev: {
-                NODE_ENV:'prepdev',
+                NODE_ENV: 'prepdev',
                 GTM_ID: 'GTM-WTWTB7',
                 ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/'
             },
             rc: {
-                NODE_ENV:'rc',
-                GTM_ID:'GTM-T5J6RH',
+                NODE_ENV: 'rc',
+                GTM_ID: 'GTM-T5J6RH',
                 ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/'
             },
             test: {
-                NODE_ENV:'test',
-                GTM_ID:'GTM-W4MMHJ',
+                NODE_ENV: 'test',
+                GTM_ID: 'GTM-W4MMHJ',
                 ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/'
             },
             prod: {
-                NODE_ENV:'prod',
-                GTM_ID:'GTM-TP3SK6',
+                NODE_ENV: 'prod',
+                GTM_ID: 'GTM-TP3SK6',
                 ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/'
-            },
+            }
         },
         ngconstant: {
             options: {
@@ -269,9 +294,16 @@ module.exports = function (grunt) {
                 }
             }
         },
-        preprocess : {
-            html : {
-                src:'src/main/webapp/_index.html',
+        preprocess: {
+            options: {
+                srcDir: 'src/main/webapp'
+            },
+            e2e: {
+                src: 'src/test/javascript/e2e/_index.html',
+                dest: 'src/main/webapp/index.html'
+            },
+            html: {
+                src: 'src/main/webapp/_index.html',
                 dest: 'src/main/webapp/index.html'
             }
         },
@@ -295,18 +327,78 @@ module.exports = function (grunt) {
         },
         connect: {
             options: {
-                protocol:'http',
-                hostname: 'localhost',
                 port: 9000,
-                base:'src/main/webapp'
+                //protocol: 'https',
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: hostname
+            },
+            livereload: {
+                options: {
+                    livereload: 35729,
+                    open: true,
+                    middleware: function (connect, options) {
+                        if (!Array.isArray(options.base)) {
+                            options.base = [options.base];
+                        }
+                        return [
+                            //proxyMiddleware,
+                            require('grunt-connect-proxy/lib/utils').proxyRequest,
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                },
+                proxies: [{
+                    host: hostname,
+                    context: '/api',
+                    port: 8443,
+                    https: true,
+                    xforward: false,
+                    rewrite: {
+                        '^/api': '/db-web-ui/api'
+                    }
+                }, {
+                    host: hostname,
+                    context: '/db-web-ui/api',
+                    port: 8443,
+                    https: true,
+                    xforward: false
+                }]
+            },
+            e2e: {
+                options: {
+                    port: 9002,
+                    keepalive: false,
+                    //open: true,
+                    middleware: function (connect, options, middlewares) {
+                        return [
+                            //require('grunt-connect-proxy/lib/utils').proxyRequest,
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                }
             },
             test: {
                 options: {
-                    // set the location of the application files
-                    base: ['src/main/webapp']
+                    port: 9001,
+                    middleware: function (connect) {
+                        return [
+                            serveStatic('test'),
+                            connect().use(
+                                '/bower_components',
+                                serveStatic('./bower_components')
+                            ),
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                }
+            },
+            dist: {
+                options: {
+                    open: true,
+                    base: '<%= yeoman.dist %>'
                 }
             }
-	    }
+        }
     });
 
     grunt.loadNpmTasks('grunt-contrib-connect');
@@ -319,32 +411,54 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-preprocess');
 
-    grunt.registerTask('e2e-test', [
-        'connect:test',
-        'protractor:continuous',
-        'watch:protractor'
-    ]);
+    grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
+
+        if (target === 'dist') {
+            return grunt.task.run(['build', 'connect:dist:keepalive']);
+        }
+
+        grunt.task.run([
+            'clean:server',
+            'wiredep',
+            'preprocess:html',
+            'configureProxies:livereload',
+            'concurrent:server',
+            'connect:livereload',
+            'watch'
+        ]);
+    });
 
     grunt.registerTask('e2e-test', [
-        'connect:test',
+        'clean:server',
+        'wiredep',
+        'preprocess:e2e',
+        'concurrent:server',
+        'connect:e2e',
         'protractor:e2e'
+    ]);
+
+    grunt.registerTask('e2e-no-test', [
+        'clean:server',
+        'wiredep',
+        'preprocess:e2e',
+        'concurrent:server',
+        'connect:e2e:keepalive'
     ]);
 
     grunt.registerTask('default', [
         'env:dev',
         'clean:server',
         'wiredep',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:dev',
-        'watch',
-        'connect'
+        'jshint'
     ]);
 
     grunt.registerTask('test', [
         'env:dev',
         'clean:server',
         'wiredep:test',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:dev',
         'karma',
         'cacheBust'
@@ -354,7 +468,7 @@ module.exports = function (grunt) {
         'env:prod',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',
@@ -367,7 +481,7 @@ module.exports = function (grunt) {
         'env:dev',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:dev',
         'ngtemplates',
         'concurrent:dist',
@@ -380,7 +494,7 @@ module.exports = function (grunt) {
         'env:prepdev',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:prepdev',
         'ngtemplates',
         'concurrent:dist',
@@ -393,7 +507,7 @@ module.exports = function (grunt) {
         'env:rc',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:rc',
         'ngtemplates',
         'concurrent:dist',
@@ -406,7 +520,7 @@ module.exports = function (grunt) {
         'env:test',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:test',
         'ngtemplates',
         'concurrent:dist',
@@ -419,7 +533,7 @@ module.exports = function (grunt) {
         'env:prod',
         'clean:dist',
         'wiredep:app',
-        'preprocess',
+        'preprocess:html',
         'ngconstant:prod',
         'ngtemplates',
         'concurrent:dist',

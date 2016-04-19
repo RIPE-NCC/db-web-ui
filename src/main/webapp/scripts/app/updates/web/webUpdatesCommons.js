@@ -77,7 +77,7 @@ angular.module('webUpdates')
                     objectType: attribute['referenced-type'],
                     name: _.last(parts)
                 });
-            };
+            }
 
 
             return webUpdatesCommons;

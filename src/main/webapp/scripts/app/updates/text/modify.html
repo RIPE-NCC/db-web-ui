@@ -1,5 +1,10 @@
 
-<button ng-click="switchToWebMode()" class="blue-button pull-right ga-text-modifyobj-switch-mode" style="border:0;"><span class="fa fa-bars"></span> Edit in single lines</button>
+<button id="btnSwitchToTextModify"
+        class="blue-button pull-right ga-text-modifyobj-switch-mode"
+        style="border:0;"
+        ng-click="switchToWebMode()">
+    <span class="fa fa-bars"></span> Edit in single lines
+</button>
 
 <div>
     <h1>Modify &quot;{{object.type}}&quot; object</h1>
