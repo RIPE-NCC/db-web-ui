@@ -1,5 +1,6 @@
-/*global window: false */
+/*global angular*/
 
+(function() {
 'use strict';
 
 angular.module('webUpdates')
@@ -184,7 +185,7 @@ angular.module('webUpdates')
                 $log.debug('onMntnerAdded: attributes' + JSON.stringify($scope.attributes));
             }
 
-            function _onSuccessfulAuthentication(associationResp){
+            function _onSuccessfulAuthentication(/*associationResp*/) {
                 //DO NOTHING
             }
 
@@ -196,7 +197,7 @@ angular.module('webUpdates')
                 return false;
             }
 
-            function onMntnerRemovedReclaim(item) {
+            function onMntnerRemovedReclaim(/*item*/) {
                 // DO NOTHING
             }
 
@@ -231,3 +232,4 @@ angular.module('webUpdates')
                 });
             }
         }]);
+})();

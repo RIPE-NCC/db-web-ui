@@ -4,13 +4,16 @@
 <form id="selectForm" class="grey padding pull-left">
     <div>
 	    <label>Object type</label>
-	    <select ng-model="selected.objectType"
+	    <select id="objectTypeSelector"
+            ng-model="selected.objectType"
 	            ng-required="true"
 	            ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
 	</div>
     <br/>
 
-    <button ng-click="navigateToCreate()" class="blue-button pull-right ga-createobj-select">{{loggedIn ? 'Create' : 'Login to create'}}</button>
+    <button id="btnNavigateToCreate"
+            class="blue-button pull-right ga-createobj-select"
+            ng-click="navigateToCreate()">{{loggedIn ? 'Create' : 'Login to create'}}</button>
 
 </form>
 </section>
