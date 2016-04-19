@@ -1,6 +1,5 @@
-// jshint ignore: start
-/*global window: false */
-
+/*global angular */
+(function() {
 'use strict';
 
 angular.module('loginStatus')
@@ -26,3 +25,4 @@ angular.module('loginStatus')
 
         }
 ]);
+})();

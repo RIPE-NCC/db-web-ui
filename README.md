@@ -1,5 +1,5 @@
-README for whois_webui
-==========================
+README for db-web-ui
+====================
 
 Pre-requisites
 -----------------
@@ -94,3 +94,38 @@ Open a terminal and cd into the `src/main/webapp` directory, then type these com
  
     curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" |js-beautify --type html |sed -e "/^\s*$/d" > template.html
     diff _index.html template.html
+
+Grunt
+-----
+
+* \<empty\>
+  - does a JSHint report for on all the JS files in the app
+* serve
+  - starts a server on port 9000 which connects to a live backend. NOTE: doesn't work yet.
+* e2e-test
+  - runs the Protractor test suite. Data resource is mocked.
+* e2e-no-test
+  - Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
+   when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks.
+
+Protractor
+----------
+
+##### Notes on matchers
+
+``` javascript
+expect(fn).toThrow(e);
+expect(instance).toBe(instance);
+expect(mixed).toBeDefined();
+expect(mixed).toBeFalsy();
+expect(number).toBeGreaterThan(number);
+expect(number).toBeLessThan(number);
+expect(mixed).toBeNull();
+expect(mixed).toBeTruthy();
+expect(mixed).toBeUndefined();
+expect(array).toContain(member);
+expect(string).toContain(substring);
+expect(mixed).toEqual(mixed);
+expect(mixed).toMatch(pattern);
+```
+
