@@ -7,6 +7,9 @@ exports.config = {
     specs: [
         'e2e/*Spec.js'
         //'e2e/createOrganisationSpec.js'
+        //'e2e/modifyAutNumSpec.js',
+        //'e2e/modifyRipeResourceSpec.js'
+        //'e2e/navigateToObjectCreationSpec.js
     ],
 
     capabilities: {

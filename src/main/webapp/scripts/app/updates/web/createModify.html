@@ -36,10 +36,10 @@
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
                ng-if="uiSelectTemplateReady">
-        <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !isRemoveable($item)"
+        <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !isRemoveable($item.key)"
                          placeholder="Type maintainer name">{{$item.key}}
             <span class="fa fa-star" ng-if="isMine($item)"></span>
-            <span class="fa fa-lock" ng-if="!isRemoveable($item)"></span>
+            <span class="fa fa-lock" ng-if="!isRemoveable($item.key)"></span>
         </ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="mntnerAutocomplete($select.search)"
@@ -54,9 +54,9 @@
         </ui-select-choices>
     </ui-select>
     <div collapse="!isMntHelpShown" class="text field-description">
-        <strong>Description</strong></br>
-        <span ng-bind-html="getAttributeDescription('mnt-by')"></span></br>
-        <strong>Syntax</strong></br>
+        <strong>Description</strong><br>
+        <span ng-bind-html="getAttributeDescription('mnt-by')"></span><br>
+        <strong>Syntax</strong><br>
         <span ng-bind-html="getAttributeSyntax('mnt-by')"></span>
     </div>
 	</section>
@@ -99,9 +99,9 @@
                  </ui-select>
             </span>
             <div class="text field-description" collapse="!isHelpShown">
-                <strong>Description</strong></br>
-                <span ng-bind-html="getAttributeDescription(attribute.name)"></span></br>
-                <strong>Syntax</strong></br>
+                <strong>Description</strong><br>
+                <span ng-bind-html="getAttributeDescription(attribute.name)"></span><br>
+                <strong>Syntax</strong><br>
                 <span ng-bind-html="getAttributeSyntax(attribute.name)"></span>
             </div>
             <ul class="input-group-btn">
@@ -145,7 +145,7 @@
                 </li>
                 <li>
                     <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
-                        <span class="fa fa-question" ></span>
+                        <span class="fa fa-question"></span>
                     </a>
                 </li>
                 <li>

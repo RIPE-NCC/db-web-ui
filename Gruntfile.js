@@ -89,7 +89,7 @@ module.exports = function (grunt) {
             },
             protractor: {
                 files: ['src/test/javascript/e2e/*.js'],
-                tasks: ['protractor:continuous']
+                tasks: ['protractor:e2e']
             }
         },
         wiredep: {
@@ -309,8 +309,8 @@ module.exports = function (grunt) {
         },
         cacheBust: {
             options: {
-                baseDir: './src/main/webapp/',
-                ignorePatterns: ['index_tmpl.html'],
+                baseDir: './src/main/webapp',
+                //ignorePatterns: ['index_tmpl.html'],
                 encoding: 'utf8',
                 algorithm: 'md5',
                 length: 16,
@@ -319,9 +319,9 @@ module.exports = function (grunt) {
             assets: {
                 files: [{
                     expand: true,
-                    cwd: './src/main/webapp/',
+                    cwd: './src/main/webapp',
                     src: ['index.html'],
-                    dest: './dest/'
+                    dest: './dest'
                 }]
             }
         },
@@ -460,8 +460,7 @@ module.exports = function (grunt) {
         'wiredep:test',
         'preprocess:html',
         'ngconstant:dev',
-        'karma',
-        'cacheBust'
+        'karma'
     ]);
 
     grunt.registerTask('build', [

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('updates')
-    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'LinkService', 'RestService',
-        function ($log, WhoisResources, OrganisationHelper, MessageStore, LinkService, RestService) {
+    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'MntnerService', 'LinkService',
+        function ($log, WhoisResources, OrganisationHelper, MessageStore, MntnerService, LinkService) {
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
@@ -42,7 +42,7 @@ angular.module('updates')
                 },
                 'aut-num': {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
-                        _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos);
+                        //_disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -66,7 +66,7 @@ angular.module('updates')
                 },
                 inet6num: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
-                        _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -78,7 +78,7 @@ angular.module('updates')
                 },
                 inetnum: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
-                        _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -222,14 +222,9 @@ angular.module('updates')
                 if(method === 'Modify' && !OrganisationHelper.containsAbuseC(attributes)) {
                     attributes = OrganisationHelper.addAbuseC(objectType, attributes);
                     attributes.getSingleAttributeOnName('abuse-c').$$meta.$$missing = true;
-                    warnings.push('' +
-                        '<p>'+
-                            'There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.'+
-                        '</p>'+
-                        '<p>'+
-                            'Please specify the abuse-c attribute below.'+
-                        '</p>' +
-                    '');
+                    warnings.push('<p>There is currently no abuse contact set up for your organisation, which is required under ' +
+                        '<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>'+
+                        '<p>Please specify the abuse-c attribute below.</p>');
                 }
 
                 attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
@@ -255,36 +250,24 @@ angular.module('updates')
                 return addableAttributes;
             }
 
-            function setReadOnlyIfOrgIsLir(source, orgAttribute) {
-                RestService.fetchObject(source, 'organisation', orgAttribute.value).then(
-                    function (result) { // success
-                        if (result) {
-                            if (result.getAttributes().getSingleAttributeOnName('org-type').value === 'LIR') {
-                                orgAttribute.$$meta.$$disable = true;
-                            }
-                        }
-                    }, function (err) { // failure
-                        $log.error('Error on RestService.fetchObject(): organisation "' + orgAttribute.value + '" from ' + source, err);
-                    }
-                );
-            }
-            
-            function _disableOrgRefWhenItsAnLir(method, source, objectType, attributes, errors, warnings, infos) {
-                var org = attributes.getSingleAttributeOnName('sponsoring-org');
-                if (org) {
-                    setReadOnlyIfOrgIsLir(source, org);
+            function _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos) {
+                // if any of the maintainers is a ripe maintainer then some attributes are read-only
+                var attr;
+                attr = attributes.getSingleAttributeOnName('sponsoring-org');
+                if (attr) {
+                    attr.$$meta.$$disable = true;
                 }
-                org = attributes.getSingleAttributeOnName('org');
-                if (org) {
-                    setReadOnlyIfOrgIsLir(source, org);
+                attr = attributes.getSingleAttributeOnName('org');
+                if (attr) {
+                    attr.$$meta.$$disable = true;
                 }
             }
 
             function _disableOrgWhenStatusIsAssignedPI (method, source, objectType, attributes, errors, warnings, infos) {
                 var statusAttr = attributes.getSingleAttributeOnName('status');
-                if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
+                if (statusAttr && statusAttr.value === 'ASSIGNED PI') {
                     var org = attributes.getSingleAttributeOnName('org');
-                    if(org) {
+                    if (org) {
                         org.$$meta.$$disable = true;
                     }
                 }

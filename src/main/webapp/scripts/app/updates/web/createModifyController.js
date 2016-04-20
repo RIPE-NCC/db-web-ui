@@ -782,7 +782,7 @@ angular.module('webUpdates')
                 return _.filter(mntners, function (mntner) {
                     // prevent that RIPE-NCC mntners can be added to an object upon create of modify
                     // prevent same mntner to be added multiple times
-                    return ! MntnerService.isNccMntner(mntner) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
+                    return ! MntnerService.isNccMntner(mntner.key) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
                 });
             }
 

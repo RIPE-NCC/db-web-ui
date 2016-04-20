@@ -1,41 +1,7 @@
 /*global beforeEach, browser, describe, expect, it, require */
 
-// System requires
-var fs = require('fs');
-
 // Local requires
 var page = require('./homePageObject');
-
-/*
- * Helper functions
- */
-
-// abstract writing screen shot to a file
-function writeToDisk(data, filename) {
-    var stream = fs.createWriteStream(filename);
-    stream.write(new Buffer(data, 'base64'));
-    stream.end();
-}
-
-function pad(val) {
-    if (typeof val !== 'number') {
-        return val;
-    }
-    return val < 10 ? '0' + val : val;
-}
-
-function timestamp() {
-    var date = new Date();
-    var d = { h: '', m: '', s: ''};
-    return [pad(date.getHours()), '_', pad(date.getMinutes()), '_', pad(date.getSeconds()), '.', date.getMilliseconds()].join('');
-}
-
-function takeScreenshot(imageName) {
-    browser.takeScreenshot().then(function (png) {
-        var filename = imageName ? imageName : 'screenshot-' + timestamp() + '.png';
-        writeToDisk(png, filename);
-    });
-}
 
 /*
  * Tests...
@@ -94,7 +60,7 @@ describe('The organisation editor', function () {
 
     it('should accept a valid abuse-c value', function () {
         expect(page.btnAbuseCBell.isPresent()).toEqual(true);
-        takeScreenshot();
+        page.takeScreenshot();
         // TODO: implement test
     });
 
