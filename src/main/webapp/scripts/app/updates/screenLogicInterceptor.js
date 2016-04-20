@@ -252,6 +252,11 @@ angular.module('updates')
 
             function _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos) {
                 // if any of the maintainers is a ripe maintainer then some attributes are read-only
+                if (_.findIndex(attributes.getAllAttributesOnName('mnt-by'), function (mntBy) {
+                        return MntnerService.isNccMntner(mntBy.value);
+                    }) < 0) { // findIndex returns -1 if not found
+                    return;
+                }
                 var attr;
                 attr = attributes.getSingleAttributeOnName('sponsoring-org');
                 if (attr) {
