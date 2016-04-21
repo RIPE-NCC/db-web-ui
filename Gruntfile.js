@@ -314,14 +314,14 @@ module.exports = function (grunt) {
                 encoding: 'utf8',
                 algorithm: 'md5',
                 length: 16,
-                rename: false // Append a query string instead of renaming files
+                queryString: true,
+                assets: ['**/*.js', '**/*.css']
             },
-            assets: {
+            taskName: {
                 files: [{
                     expand: true,
                     cwd: './src/main/webapp/',
-                    src: ['index.html'],
-                    dest: './dest/'
+                    src: ['index.html']
                 }]
             }
         },
