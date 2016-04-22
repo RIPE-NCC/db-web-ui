@@ -75,6 +75,26 @@ Responsibilities of java-proxy: Non functionals only
 * Caching
 * Flexibilty: fix whois problems temporarily
 
+HOWTOs
+------
+
+### Update the web site template
+
+Download the [latest template from here]
+(https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true)
+
+It's always a good idea to format the file in a consistent way so it's easier to see the changes with the previous
+version. The best tool for this is `js-beautify` -- you can install it with:
+
+    npm install -g js-beautify
+
+##### Example: download, format and diff the latest version of the template
+
+Open a terminal and cd into the `src/main/webapp` directory, then type these commands:
+ 
+    curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" |js-beautify --type html |sed -e "/^\s*$/d" > template.html
+    diff _index.html template.html
+
 Grunt
 -----
 
@@ -108,3 +128,4 @@ expect(string).toContain(substring);
 expect(mixed).toEqual(mixed);
 expect(mixed).toMatch(pattern);
 ```
+
