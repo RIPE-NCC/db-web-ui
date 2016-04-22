@@ -1,23 +1,23 @@
 'use strict';
 
 angular.module('dbWebApp', [
-    'ui.router',
-    'angular-loading-bar',
-    'ngResource',
-    'ngSanitize',
-    'angulartics',
-    'angulartics.google.tagmanager',
-    'diff-match-patch',
-    'ui.bootstrap',
-    'ui.select',
-    'ngCookies',
-    'updates',
-    'webUpdates',
-    'textUpdates',
-    'fmp',
-    'loginStatus',
-    'menu'
-])
+        'ui.router',
+        'angular-loading-bar',
+        'ngResource',
+        'ngSanitize',
+        'angulartics',
+        'angulartics.google.tagmanager',
+        'diff-match-patch',
+        'ui.bootstrap',
+        'ui.select',
+        'ngCookies',
+        'updates',
+        'webUpdates',
+        'textUpdates',
+        'fmp',
+        'loginStatus',
+        'menu'
+    ])
 
     .config(['$stateProvider', '$logProvider', '$httpProvider', 'ENV',
         function ($stateProvider, $logProvider, $httpProvider, ENV) {
