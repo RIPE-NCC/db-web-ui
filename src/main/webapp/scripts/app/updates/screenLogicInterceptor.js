@@ -43,6 +43,7 @@ angular.module('updates')
                 'aut-num': {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         //_disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -66,6 +67,7 @@ angular.module('updates')
                 },
                 inet6num: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
@@ -78,6 +80,7 @@ angular.module('updates')
                 },
                 inetnum: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
@@ -248,6 +251,12 @@ angular.module('updates')
                 }
 
                 return addableAttributes;
+            }
+
+            function _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
+                if (method === 'Modify') {
+                    attributes.getSingleAttributeOnName('status').$$meta.$$disable = true;
+                }
             }
 
             function _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos) {
