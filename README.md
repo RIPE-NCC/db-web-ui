@@ -98,12 +98,13 @@ Open a terminal and cd into the `src/main/webapp` directory, then type these com
 Grunt
 -----
 
-* \<empty\><br>
+* \<no args\><br>
   does a JSHint report for on all the JS files in the app
 * serve<br>
-  starts a server on port 9000 which connects to a live backend. NOTE: doesn't work yet.
+  starts a server on port 9000 which connects to a live backend. NOTE: doesn't work yet because Grunt can't
+  negotiate with the https server -- partly due to a bug in a bug in a grunt dependency
 * e2e-test<br>
-  runs the Protractor test suite. Data resource is mocked.
+  runs the Protractor test suite (uses port 9002). Data resource is mocked.
 * e2e-no-test<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
   when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks.

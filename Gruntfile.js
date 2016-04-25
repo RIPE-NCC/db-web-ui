@@ -421,10 +421,7 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             serveStatic('test'),
-                            connect().use(
-                                '/bower_components',
-                                serveStatic('./bower_components')
-                            ),
+                            connect().use('/bower_components', serveStatic('./bower_components')),
                             serveStatic(appConfig.app)
                         ];
                     }
