@@ -98,15 +98,19 @@ Open a terminal and cd into the `src/main/webapp` directory, then type these com
 Grunt
 -----
 
-* \<empty\>
-  - does a JSHint report for on all the JS files in the app
-* serve
-  - starts a server on port 9000 which connects to a live backend. NOTE: doesn't work yet.
-* e2e-test
-  - runs the Protractor test suite. Data resource is mocked.
-* e2e-no-test
-  - Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
-   when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks.
+* \<empty\><br>
+  does a JSHint report for on all the JS files in the app
+* serve<br>
+  starts a server on port 9000 which connects to a live backend. NOTE: doesn't work yet.
+* e2e-test<br>
+  runs the Protractor test suite. Data resource is mocked.
+* e2e-no-test<br>
+  Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
+  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks.
+* e2e-coverage<br>
+  Runs the E2E tests and shows coverage stats in two ways:
+  - a text summary in the console
+  - a detailed html report at ./reports/coverage/e2e/lcov-report/index.html
 
 Protractor
 ----------

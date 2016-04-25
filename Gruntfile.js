@@ -62,6 +62,42 @@ module.exports = function (grunt) {
                 }
             }
         },
+
+        protractor_coverage: {
+            options: {
+                keepAlive: true,
+                noColor: false,
+                collectorPort: 3001,
+                coverageDir: 'reports/coverage/e2e',
+                args: {
+                    baseUrl: 'http://localhost:9002'
+                }
+            },
+            e2e: {
+                options: {
+                    configFile: 'src/test/javascript/protractor-e2e-coverage.conf.js'
+                }
+            }
+        },
+
+        instrument: {
+            files: 'scripts/**/*.js',
+            options: {
+                cwd: 'src/main/webapp',
+                lazy: true,
+                basePath: 'instrumented'
+            }
+        },
+
+        makeReport: {
+            src: 'reports/coverage/e2e/*.json',
+            options: {
+                type: 'lcov',
+                dir: 'reports/coverage/e2e',
+                print: 'detail'
+            }
+        },
+
         yeoman: {
             // configurable paths
             app: appConfig.app,
@@ -373,6 +409,7 @@ module.exports = function (grunt) {
                     middleware: function (connect, options, middlewares) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
+                            serveStatic('instrumented'),
                             serveStatic(appConfig.app)
                         ];
                     }
@@ -436,6 +473,17 @@ module.exports = function (grunt) {
         'concurrent:server',
         'connect:e2e',
         'protractor:e2e'
+    ]);
+
+    grunt.registerTask('e2e-coverage', [
+        'clean:server',
+        'wiredep',
+        'preprocess:e2e',
+        'instrument',
+        'concurrent:server',
+        'connect:e2e',
+        'protractor_coverage',
+        'makeReport'
     ]);
 
     grunt.registerTask('e2e-no-test', [
