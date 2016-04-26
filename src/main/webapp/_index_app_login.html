@@ -1,0 +1,22 @@
+<!--  Webupdates specific login start -->
+
+<!-- Login widget, Use ACCESS_URL <!-- @echo ACCESS_URL --> -->
+
+<!-- @ifdef GTM_ID -->
+
+<div id="login" ng-controller="UserInfoController">
+    <a class="anon" href="<!-- @echo ACCESS_URL -->">Login</a>
+    <div id="loggedin">
+        <a class="active" href="#">
+            <span id="loggedin-username"></span>
+            <i class="fa fa-angle-down"></i>
+        </a>
+        <a class="profile" style="background-image(https://access.ripe.net/)"></a>
+        <div id="loggedin-box" class="portlet box-shadow"></div>
+        <a href="notification" id="notifications"></a>
+    </div>
+</div>
+
+<! @endif -->
+
+<!--  Webupdates specific login end -->
