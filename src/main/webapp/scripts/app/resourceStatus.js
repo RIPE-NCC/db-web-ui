@@ -1,7 +1,67 @@
 'use strict';
-
+/**
+ */
 angular.module('dbWebApp')
-    .service('ResourceStatus', ['$log', function ($log) {
+    .service('ResourceStatus', [function () {
+        var states = {
+            inetnum: {
+                ALLOCATED_PI: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'}
+                ],
+                ALLOCATED_PA: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'}
+                ],
+                ALLOCATED_UNSPECIFIED: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'}
+                ],
+                LIR_PARTITIONED_PA: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'},
+                    {key: 'ALLOCATED PA',          value: 'ALLOCATED PA'},
+                    {key: 'LIR-PARTITIONED PA',    value: 'LIR-PARTITIONED PA'},
+                    {key: 'SUB-ALLOCATED PA',      value: 'SUB-ALLOCATED PA'},
+                    {key: 'EARLY-REGISTRATION',    value: 'EARLY-REGISTRATION'}
+                ],
+                LIR_PARTITIONED_PI: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'},
+                    {key: 'ALLOCATED PI',          value: 'ALLOCATED PI'},
+                    {key: 'LIR-PARTITIONED PI',    value: 'LIR-PARTITIONED PI'},
+                    {key: 'EARLY-REGISTRATION',    value: 'EARLY-REGISTRATION'}
+                ],
+                SUB_ALLOCATED_PA: [
+                    {key: 'ALLOCATED PA',          value: 'ALLOCATED PA'},
+                    {key: 'LIR-PARTITIONED PA',    value: 'LIR-PARTITIONED PA'},
+                    {key: 'SUB-ALLOCATED PA',      value: 'SUB-ALLOCATED PA'},
+                    {key: 'EARLY-REGISTRATION',    value: 'EARLY-REGISTRATION'}
+                ],
+                ASSIGNED_PA: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'},
+                    {key: 'ALLOCATED PA',          value: 'ALLOCATED PA'},
+                    {key: 'LIR-PARTITIONED PA',    value: 'LIR-PARTITIONED PA'},
+                    {key: 'SUB-ALLOCATED PA',      value: 'SUB-ALLOCATED PA'},
+                    {key: 'EARLY-REGISTRATION',    value: 'EARLY-REGISTRATION'},
+                    {key: 'ASSIGNED PA',           value: 'ASSIGNED PA'}
+                ],
+                ASSIGNED_ANYCAST: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'},
+                    {key: 'ALLOCATED PI',          value: 'ALLOCATED PI'}
+                ],
+                EARLY_REGISTRATION: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'},
+                    {key: 'EARLY-REGISTRATION',    value: 'EARLY-REGISTRATION'}
+                ],
+                ASSIGNED_PI: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'},
+                    {key: 'ALLOCATED PI',          value: 'ALLOCATED PI'},
+                    {key: 'LIR-PARTITIONED PI',    value: 'LIR-PARTITIONED PI'},
+                    {key: 'EARLY-REGISTRATION',    value: 'EARLY-REGISTRATION'},
+                    {key: 'ASSIGNED PI',           value: 'ASSIGNED PI'}
+                ],
+                LEGACY: [
+                    {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'},
+                    {key: 'LEGACY',                value: 'LEGACY'}
+                ]
+            }
+        };
         var statuses = {
             'aut-num': [
                 {key: 'ASSIGNED', value: 'ASSIGNED'},
@@ -32,7 +92,11 @@ angular.module('dbWebApp')
             ]
         };
 
-        this.get = function (type) {
-            return statuses[type];
+        this.get = function (type, parentStatus) {
+            if (!parentStatus) {
+                return statuses[type];
+            } else {
+                return states[type][parentStatus];
+            }
         }
     }]);
