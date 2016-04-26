@@ -91,7 +91,7 @@
                  <ui-select ng-model="attribute.value"
                             theme="select2"
                             class="form-control"
-                            ng-disabled="disabled"
+                            ng-disabled="attribute.$$meta.$$disable"
                             style="min-width: 300px;" >
                      <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
                      <ui-select-choices repeat="item.key as item in enumAutocomplete(attribute) | filter: $select.search">
