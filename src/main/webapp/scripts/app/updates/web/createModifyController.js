@@ -58,11 +58,14 @@ angular.module('webUpdates')
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
             $scope.nrAttributesToRender = 50; // initial
+            $scope.attributesAllRendered = false;
             $scope.showMoreAttributes = function() {
                 // Called from scrollmarker directive
-                if ($scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
+                if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
                     $scope.nrAttributesToRender+= 50; // increment
                     $scope.$apply();
+                } else {
+                    $scope.attributesAllRendered = true;
                 }
             };
 
