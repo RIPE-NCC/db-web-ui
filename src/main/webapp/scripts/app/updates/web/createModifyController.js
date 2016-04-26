@@ -3,11 +3,11 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce', '$document',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
                 'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
                 'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
-        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
+        function ($scope, $stateParams, $state, $log, $window, $q, $sce, $document,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService,
                   WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor) {
@@ -56,6 +56,15 @@ angular.module('webUpdates')
             $scope.isLirObject = isLirObject;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
+
+            $scope.nrAttributesToRender = 50; // initial
+            $scope.showMoreAttributes = function() {
+                // Called from scrollmarker directive
+                if ($scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
+                    $scope.nrAttributesToRender+= 50; // increment
+                    $scope.$apply();
+                }
+            };
 
             _initialisePage();
 
