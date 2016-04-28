@@ -1,5 +1,4 @@
 exports.config = {
-    //directConnect: true,
     chromeDriver: '../lib/chromedriver',
     seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
 
@@ -9,7 +8,7 @@ exports.config = {
         //'e2e/createOrganisationSpec.js'
         //'e2e/modifyAutNumSpec.js',
         //'e2e/modifyRipeResourceSpec.js'
-        //'e2e/navigateToObjectCreationSpec.js
+        //'e2e/navigateToObjectCreationSpec.js'
     ],
 
     capabilities: {
@@ -31,5 +30,11 @@ exports.config = {
         showColors: true,
         includeStackTrace: true,
         defaultTimeoutInterval: 10000
+    },
+
+    onPrepare: function() {
+        // If the window isn't big enough you might see exceptions relating to elements being 'not visible'
+        //browser.manage().window().setSize(1200, 1080);
     }
+
 };

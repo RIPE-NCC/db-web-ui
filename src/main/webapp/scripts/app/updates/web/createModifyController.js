@@ -5,12 +5,16 @@
 angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce', '$document',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
-                'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
+                'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'ResourceStatus',
                 'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
         function ($scope, $stateParams, $state, $log, $window, $q, $sce, $document,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
-                  MntnerService, AlertService, ErrorReporterService, LinkService,
+                  MntnerService, AlertService, ErrorReporterService, LinkService, ResourceStatus,
                   WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor) {
+
+            $scope.optionList = {
+                status: []
+            };
 
             // exposed methods called from html fragment
             $scope.switchToTextMode = switchToTextMode;
@@ -27,7 +31,6 @@ angular.module('webUpdates')
 
             $scope.mntnerAutocomplete = mntnerAutocomplete;
             $scope.referenceAutocomplete = referenceAutocomplete;
-            $scope.isEnum = isEnum;
             $scope.enumAutocomplete = enumAutocomplete;
             $scope.displayEnumValue = displayEnumValue;
             $scope.getAttributeShortDescription = getAttributeShortDescription;
@@ -58,16 +61,29 @@ angular.module('webUpdates')
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
             $scope.nrAttributesToRender = 50; // initial
-            $scope.attributesAllRendered = false;
             $scope.showMoreAttributes = function() {
+                var attributesAllRendered = false;
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
                     $scope.nrAttributesToRender+= 50; // increment
                     $scope.$apply();
-                } else {
-                    $scope.attributesAllRendered = true;
                 }
+                return $scope.nrAttributesToRender < $scope.attributes.length;
             };
+
+            $scope.$on('resource-parent-found', function(event, parent) {
+                var parentStatusValue, parentStatusAttr;
+                // if parent wasn't found but we got an event anyway, use the default
+                if (parent) {
+                    parentStatusAttr = _.find(parent.attributes.attribute, function (attr) {
+                        return 'status' === attr.name;
+                    });
+                    if (parentStatusAttr && parentStatusAttr.value) {
+                        parentStatusValue = parentStatusAttr.value
+                    }
+                }
+                $scope.optionList.status = ResourceStatus.get($scope.objectType, parentStatusValue);
+            });
 
             _initialisePage();
 
@@ -118,10 +134,12 @@ angular.module('webUpdates')
                 $scope.CREATE_OPERATION = 'Create';
                 $scope.MODIFY_OPERATION = 'Modify';
                 $scope.PENDING_OPERATION = 'Pending';
-
                 // Determine if this is a create or a modify
                 if (!$scope.name) {
                     $scope.operation = $scope.CREATE_OPERATION;
+
+                    // set the statuses which apply to the objectType (if any)
+                    $scope.optionList.status = ResourceStatus.get($scope.objectType);
 
                     // Populate empty attributes based on meta-info
                     var mandatoryAttributesOnObjectType = WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType);
@@ -251,14 +269,14 @@ angular.module('webUpdates')
             }
 
             function enumAutocomplete(attribute) {
-                if( !isEnum(attribute)) {
+                if (!attribute.$$meta.$$isEnum) {
                     return [];
                 }
                 return EnumService.get($scope.objectType, attribute.name);
             }
 
             function displayEnumValue(item) {
-                if ( item.key === item.value ) {
+                if (item.key === item.value) {
                     return item.key;
                 }
                 return item.value + ' [' + item.key.toUpperCase() + ']';
@@ -295,10 +313,6 @@ angular.module('webUpdates')
                     }
                     return true;
                 });
-            }
-
-            function isEnum(attribute) {
-                return attribute.$$meta.$$isEnum;
             }
 
             function isBrowserAutoComplete(attribute) {
@@ -338,6 +352,23 @@ angular.module('webUpdates')
                             $log.error('Autocomplete error ' + JSON.stringify(error));
                         }
                     );
+                }
+
+                if ($scope.operation === $scope.CREATE_OPERATION && attribute.value) {
+                    if ($scope.objectType === 'aut-num' && attribute.name === 'aut-num' ||
+                        $scope.objectType === 'inetnum' && attribute.name === 'inetnum' ||
+                        $scope.objectType === 'inet6num' && attribute.name === 'inet6num') {
+
+                        $log.debug('looking for parent of ' + attribute.value);
+                        RestService.fetchParentResource($scope.objectType, attribute.value).get(function (result) {
+                            var parent;
+                            if (result && result.objects && angular.isArray(result.objects.object)) {
+                                if (parent = result.objects.object[0]) {
+                                    $scope.$broadcast('resource-parent-found', parent);
+                                }
+                            }
+                        });
+                    }
                 }
             }
 
@@ -404,6 +435,16 @@ angular.module('webUpdates')
                 return ['address', 'phone', 'fax-no', 'e-mail', 'org-name'].indexOf(attribute.name) > -1 && isLirObject();
             }
 
+            /*
+             * TODO: refactor the code so it doesn't use scope functions to figure out if an attribute is disabled.
+             * Enrich the attribute instead, i.e. do this:
+             *
+             * attribute.$$meta.$$disable = true
+             *
+             * ...then the html only has to look at that flag. keeping it until there's a better way to communicate
+             * the fact that an attribute is disabled due to it being linked to an LIR, cz in that case the edit button
+             * has a link to LIR portal.
+             */
             function isDisabledAttribute(attribute) {
                 if (attribute.$$meta.$$disable || attribute.name === 'created' ||
                         $scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {

@@ -21,7 +21,11 @@ function pad(val) {
 
 function timestamp() {
     var date = new Date();
-    return [pad(date.getHours()), '_', pad(date.getMinutes()), '_', pad(date.getSeconds()), '.', date.getMilliseconds()].join('');
+    return [
+        pad(date.getFullYear()), '-', pad(date.getMonth() + 1), '-', pad(date.getDate()),
+        'T',
+        pad(date.getHours()), '_', pad(date.getMinutes()), '_', pad(date.getSeconds()), '.', date.getMilliseconds()
+    ].join('');
 }
 
 module.exports = {
@@ -49,19 +53,32 @@ module.exports = {
     inpSource: element(by.id('createForm')).element(by.name('source')),
     inpOrg: element(by.id('createForm')).element(by.name('org')),
     inpSponsoringOrg: element(by.id('createForm')).element(by.name('sponsoring-org')),
+    inpInetnum: element(by.id('createForm')).element(by.name('inetnum')),
+    inpInet6num: element(by.id('createForm')).element(by.name('inet6num')),
+    inpStatus: element(by.id('createForm')).element(by.name('status')),
+    inpStatusLink: element(by.id('createForm')).element(by.name('status')).element(by.css('a')),
+    inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('div > ul > li > ul')).all(by.css('li')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
 
     modalEmail: element(by.css('[modal-window]')).element(by.name('email')),
     modalBtnSubmit: element(by.css('[modal-window]')).element(by.css('[value=Submit]')),
 
-    selectObjectType: function(itemValue) {
+    selectObjectType: function (itemValue) {
         return element(by.id('objectTypeSelector')).element(by.css('option[label=' + itemValue + ']'));
     },
 
-    takeScreenshot: function(/*optional string*/ imageName) {
+    takeScreenshot: function (/*optional string*/ imageName) {
+        var filename = imageName ? imageName : 'screenshot-' + timestamp() + '.png';
         browser.takeScreenshot().then(function (png) {
-            var filename = imageName ? imageName : 'screenshot-' + timestamp() + '.png';
             writeToDisk(png, filename);
         });
+        return filename;
+    },
+
+    scrollIntoView: function (el) {
+        browser.executeScript(function (el) {
+            el.scrollIntoView();
+        }, el.getWebElement());
     }
+
 };

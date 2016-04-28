@@ -49,16 +49,12 @@ module.exports = function (grunt) {
             options: {
                 configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
                 noColor: false, // If true, protractor will not use colors in its output.
-                args: {}
+                args: {},
+                keepAlive: true
             },
             e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
                 options: {
-                    keepAlive: true // If false, the grunt process stops when the test fails.
-                }
-            },
-            continuous: {
-                options: {
-                    keepAlive: true
+                    keepAlive: false // If false, the grunt process stops when the test fails.
                 }
             }
         },
@@ -167,7 +163,17 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '.tmp'
+            server: '.tmp',
+            e2e: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        'instrumented/*',
+                        'reports/*'
+                    ]
+                }]
+            }
         },
         jshint: {
             options: {
@@ -464,7 +470,8 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('e2e-test', [
-        'clean:server',
+        'env:dev',
+        'clean:e2e',
         'wiredep',
         'preprocess:e2e',
         'concurrent:server',
@@ -473,7 +480,8 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('e2e-coverage', [
-        'clean:server',
+        'env:dev',
+        'clean:e2e',
         'wiredep',
         'preprocess:e2e',
         'instrument',
@@ -484,7 +492,8 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('e2e-no-test', [
-        'clean:server',
+        'env:dev',
+        'clean:e2e',
         'wiredep',
         'preprocess:e2e',
         'concurrent:server',
