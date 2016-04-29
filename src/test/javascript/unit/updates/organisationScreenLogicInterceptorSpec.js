@@ -65,11 +65,11 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         var infos = [];
         var after = interceptor.beforeEdit('Create', 'RIPE', 'organisation', before, errors, warnings, infos);
 
-        var organisation = after.getAllAttributesOnName('org-type');
-        expect(organisation.length).toEqual(1);
-        expect(organisation[0].name).toEqual('org-type');
-        expect(organisation[0].value).toEqual('OTHER');
-        expect(organisation[0].$$meta.$$disable).toBe(true);
+        var orgType = after.getAllAttributesOnName('org-type');
+        expect(orgType.length).toEqual(1);
+        expect(orgType[0].name).toEqual('org-type');
+        expect(orgType[0].value).toEqual('OTHER');
+        expect(orgType[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -82,11 +82,11 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         var infos = [];
         var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
 
-        var organisation = after.getAllAttributesOnName('org-type');
-        expect(organisation.length).toEqual(1);
-        expect(organisation[0].name).toEqual('org-type');
-        expect(organisation[0].value).toEqual('SOME_ORG_TYPE');
-        expect(organisation[0].$$meta.$$disable).toBe(true);
+        var orgType = after.getAllAttributesOnName('org-type');
+        expect(orgType.length).toEqual(1);
+        expect(orgType[0].name).toEqual('org-type');
+        expect(orgType[0].value).toEqual('SOME_ORG_TYPE');
+        expect(orgType[0].$$meta.$$disable).toBe(true);
 
     });
 
@@ -152,6 +152,50 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
 
     });
 
+    it('should disable all mnt-by before-edit organisation on Modify operation for LIRs', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        var mntByList = after.getAllAttributesOnName('mnt-by');
+        expect(mntByList.length).toEqual(2);
+        expect(mntByList[0].$$meta.$$disable).toBe(true);
+        expect(mntByList[1].$$meta.$$disable).toBe(true);
+
+    });
+
+    it('should NOT disable any mnt-by before-edit organisation on Modify operation for non-LIRs', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('org-type', 'OTHER');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        var mntByList = after.getAllAttributesOnName('mnt-by');
+        expect(mntByList.length).toEqual(2);
+        expect(mntByList[0].$$meta.$$disable).toBeUndefined();
+        expect(mntByList[1].$$meta.$$disable).toBeUndefined();
+
+    });
+
+    it('should NOT disable mnt-by before-edit organisation on Create operation', function() {
+        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Create', 'RIPE', 'organisation', before, errors, warnings, infos);
+
+        var mntByList = after.getAllAttributesOnName('mnt-by');
+        expect(mntByList[0].$$meta.$$disable).toBeUndefined();
+    });
+
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
     };
@@ -183,6 +227,9 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
     }, {
          name :'mnt-by',
          value :'WHAT-A-MESH-MNT'
+    }, {
+        name :'mnt-by',
+        value :'WHAT-A-MESH2-MNT'
     }, {
          name :'source',
          value :'RIPE'

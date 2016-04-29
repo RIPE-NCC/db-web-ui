@@ -122,6 +122,7 @@ angular.module('updates')
                 organisation: {
                     beforeEdit:
                         function (method, source, objectType, attributes, errors, warnings, infos) {
+                            _disableReadyOnlyFieldsIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                             return _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
                         },
                     afterEdit: undefined,
@@ -213,6 +214,17 @@ angular.module('updates')
                 return attributes;
             }
 
+            function _disableReadyOnlyFieldsIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
+                var orgType = attributes.getSingleAttributeOnName('org-type');
+                orgType.$$meta.$$disable = true;
+
+                if(method === 'Modify' && orgType.value === 'LIR') {
+                    _.forEach(attributes.getAllAttributesOnName('mnt-by'), function (mnt) {
+                        mnt.$$meta.$$disable = true;
+                    });
+                }
+            }
+
             function _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos) {
                 if(method === 'Create') {
                     if (!OrganisationHelper.containsAbuseC(attributes)) {
@@ -230,7 +242,6 @@ angular.module('updates')
                         '<p>Please specify the abuse-c attribute below.</p>');
                 }
 
-                attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
                 return attributes;
             }
 
