@@ -1,6 +1,6 @@
 /*global beforeEach, browser, describe, expect, it, require */
-var page = require('./homePageObject');
 var mockModule = require('./mocks/homepagemocks');
+var page = require('./homePageObject');
 
 describe('webupdates homepage', function() {
 
@@ -52,7 +52,7 @@ describe('webupdates homepage', function() {
         expect(page.heading.getText()).toEqual('Create "filter-set" object');
     });
 
-    fit('should show an editor for inet6num', function() {
+    it('should show an editor for inet6num', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inet6num').click();
         page.btnNavigateToCreate.click();
