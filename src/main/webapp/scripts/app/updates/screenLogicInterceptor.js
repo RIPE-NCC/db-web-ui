@@ -244,9 +244,7 @@ angular.module('updates')
                         '<p>Please specify the abuse-c attribute below.</p>');
                 }
 
-                var orgType = attributes.getSingleAttributeOnName('org-type');
-                orgType.$$meta.$$disable = true;
-
+                attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
                 return attributes;
             }
 
