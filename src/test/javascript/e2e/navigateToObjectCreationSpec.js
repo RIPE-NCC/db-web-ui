@@ -1,10 +1,12 @@
 /*global beforeEach, browser, describe, expect, it, require */
 var page = require('./homePageObject');
+var mockModule = require('./mocks/homepagemocks');
 
 describe('webupdates homepage', function() {
 
     beforeEach(function() {
         browser.get('index.html');
+        browser.addMockModule('dbWebAppE2E', mockModule.module);
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {
         //    console.log('>>>>>> ' + require('util').inspect(browserLog));
