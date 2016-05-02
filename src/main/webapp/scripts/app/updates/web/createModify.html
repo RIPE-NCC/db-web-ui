@@ -82,7 +82,7 @@
                        attributetransformer
                        typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
                        typeahead-min-length="2"
-                       ng-disabled="isDisabledAttribute(attribute)"
+                       ng-disabled="attribute.$$meta.$$disable || attribute.$$meta.$$isLir"
                        autocomplete="off"
                        />
 
@@ -135,7 +135,7 @@
                         <span class="fa fa-bell-o degree-25"></span>
                     </a>
                 </li>
-                <li ng-if="isDisabledLirAttribute(attribute)">
+                <li ng-if="attribute.$$meta.$$isLir">
                     <a title="Request to update" class="btn btn-default ga-edit-attr" ng-if="attribute.name === 'org-name'" target="_blank" href="https://my.ripe.net/#/update-registry">
                         <span class="fa fa-pencil"></span>
                     </a>

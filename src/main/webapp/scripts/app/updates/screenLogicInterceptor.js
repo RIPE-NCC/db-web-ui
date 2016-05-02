@@ -13,6 +13,7 @@ angular.module('updates')
             var globalInterceptor = {
                 beforeEdit:
                     function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disablePrimaryKeyIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos);
                     },
                 afterEdit:
@@ -219,8 +220,10 @@ angular.module('updates')
                 orgType.$$meta.$$disable = true;
 
                 if(method === 'Modify' && orgType.value === 'LIR') {
-                    _.forEach(attributes.getAllAttributesOnName('mnt-by'), function (mnt) {
-                        mnt.$$meta.$$disable = true;
+                    _.forEach(attributes, function (attr) {
+                        if(['address', 'phone', 'fax-no', 'e-mail', 'org-name', 'mnt-by'].indexOf(attr.name) > -1) {
+                            attr.$$meta.$$isLir = true;
+                        }
                     });
                 }
             }
@@ -240,6 +243,18 @@ angular.module('updates')
                     warnings.push('<p>There is currently no abuse contact set up for your organisation, which is required under ' +
                         '<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>'+
                         '<p>Please specify the abuse-c attribute below.</p>');
+                }
+
+                return attributes;
+            }
+
+            function _disablePrimaryKeyIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
+                if( method === 'Modify') {
+                    _.forEach(attributes, function (attr) {
+                        if(attr.$$meta.$$primaryKey) {
+                            attr.$$meta.$$disable = true;
+                        }
+                    });
                 }
 
                 return attributes;
