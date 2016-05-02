@@ -470,27 +470,15 @@ angular.module('dbWebApp')
         };
 
         var duplicateAttribute = function(attr) {
-            var result = [];
-
-            _.each(this, function(next){
-                result.push(next);
-                if (next.name === attr.name && next.value === attr.value) {
-                    result.push(
-                        {
-                            name:attr.name,
-                            value:'',
-                            $$meta:{
-                                $$mandatory:next.$$meta.mandatory,
-                                $$multiple:next.$$meta.multiple,
-                                $$primaryKey:next.$$meta.primaryKey,
-                                $$description:next.$$description,
-                                $$syntax:next.$$syntax,
-                            }
-                        });
-                }
+            var metaClone = {};
+            Object.keys(attr.$$meta).forEach(function(itemKey) {
+                metaClone[itemKey] = attr.$$meta[itemKey];
             });
-
-            return result;
+            var foundAt = _.findIndex(this, { name: attr.name, value: attr.value });
+            var attrCopy = { name: attr.name, value: '', $$meta: metaClone };
+            $log.debug('splicing attrCopy into attributes at ' + foundAt, attrCopy);
+            this.splice(foundAt + 1, 0, attrCopy);
+            return this;
         };
 
         var canAttributeBeDuplicated = function( attr) {
