@@ -123,7 +123,7 @@ angular.module('updates')
                 organisation: {
                     beforeEdit:
                         function (method, source, objectType, attributes, errors, warnings, infos) {
-                            _disableReadyOnlyFieldsIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                            _checkLirAttributes(method, source, objectType, attributes, errors, warnings, infos);
                             return _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
                         },
                     afterEdit: undefined,
@@ -215,9 +215,8 @@ angular.module('updates')
                 return attributes;
             }
 
-            function _disableReadyOnlyFieldsIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
+            function _checkLirAttributes(method, source, objectType, attributes, errors, warnings, infos) {
                 var orgType = attributes.getSingleAttributeOnName('org-type');
-                orgType.$$meta.$$disable = true;
 
                 if(method === 'Modify' && orgType.value === 'LIR') {
                     _.forEach(attributes, function (attr) {
@@ -244,6 +243,9 @@ angular.module('updates')
                         '<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>'+
                         '<p>Please specify the abuse-c attribute below.</p>');
                 }
+
+                var orgType = attributes.getSingleAttributeOnName('org-type');
+                orgType.$$meta.$$disable = true;
 
                 return attributes;
             }
