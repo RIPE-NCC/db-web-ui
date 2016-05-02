@@ -1,5 +1,4 @@
 exports.config = {
-    //directConnect: true,
     chromeDriver: '../lib/chromedriver',
     seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
 

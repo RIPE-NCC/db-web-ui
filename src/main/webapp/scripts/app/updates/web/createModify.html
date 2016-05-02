@@ -73,7 +73,7 @@
             </span>
             <span ng-if="attribute.$$success" class="text-success">{{attribute.$$success}}</span>
 
-            <input ng-if="!isEnum(attribute)"
+            <input ng-if="!attribute.$$meta.$$isEnum"
                        type="text"
                        name="{{attribute.name}}"
                        ng-model="attribute.value"
@@ -88,14 +88,28 @@
                        autocomplete="off"
                        />
 
-            <span ng-if="isEnum(attribute)">
-                 <ui-select ng-model="attribute.value"
-                            theme="select2"
+            <span ng-if="attribute.$$meta.$$isEnum && attribute.name !== 'status'">
+                 <ui-select name="{{attribute.name}}"
                             class="form-control"
+                            style="min-width: 300px;"
+                            ng-model="attribute.value"
                             ng-disabled="attribute.$$meta.$$disable"
-                            style="min-width: 300px;">
+                            theme="select2">
                      <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
                      <ui-select-choices repeat="item.key as item in enumAutocomplete(attribute) | filter: $select.search">
+                         <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
+                     </ui-select-choices>
+                 </ui-select>
+            </span>
+            <span ng-if="attribute.$$meta.$$isEnum && attribute.name === 'status'">
+                 <ui-select name="{{attribute.name}}"
+                            class="form-control"
+                            style="min-width: 300px;"
+                            ng-model="attribute.value"
+                            ng-disabled="attribute.$$meta.$$disable"
+                            theme="select2">
+                     <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
+                     <ui-select-choices repeat="item.key as item in optionList[attribute.name] | filter: $select.search">
                          <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
                      </ui-select-choices>
                  </ui-select>
@@ -159,7 +173,7 @@
         </li>
 
     </ul>
-        <span scrollmarker><alert type="info">Please wait while loading...</alert></span>
+        <span scrollmarker><alert class="hide" type="info">Please wait while loading...</alert></span>
     <section class="supporting-text">
         <p>By submitting this form you explicitly express your agreement with the <a
             href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>

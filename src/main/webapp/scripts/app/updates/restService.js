@@ -6,6 +6,19 @@ angular.module('updates')
 
             function RestService() {
 
+                this.fetchParentResource = function(objectType, qs) {
+                    // e.g. https://rest.db.ripe.net/search?flags=lr&type-filter=inetnum&query-string=193.0.4.0%20-%20193.0.4.255
+                    if (['inetnum', 'inet6num', 'aut-num'].indexOf(objectType) < 0) {
+                        $log.error('Only aut-num, inetnum and inet6num supported');
+                        return;
+                    }
+                    return $resource('api/whois/search', {
+                            flags: 'lr',
+                            'type-filter': objectType,
+                            'query-string': qs
+                        });
+                };
+
                 this.fetchUiSelectResources = function () {
                     return $q.all([
                         // workaround to cope with order of loading problem

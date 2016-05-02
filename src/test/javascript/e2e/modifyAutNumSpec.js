@@ -1,3 +1,4 @@
+var mockModule = require('./mocks/homepagemocks');
 var page = require('./homePageObject');
 
 /*
@@ -9,6 +10,7 @@ describe('Modifying an aut-num', function () {
 
         beforeEach(function () {
             browser.get('/#/webupdates/modify/RIPE/aut-num/AS12467');
+            browser.addMockModule('dbWebAppE2E', mockModule.module);
         });
 
         it('should show sponsoring-org as read-only', function () {
