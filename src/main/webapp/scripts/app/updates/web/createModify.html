@@ -63,7 +63,7 @@
 
     <section class="visible-field-form" ng-if="hasMntners()">
         <ul class="form-fields appeared-fields">
-            <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" class="form-group input-group" ng-if="$index < nrAttributesToRender">
+            <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" class="form-group input-group">
 
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">
@@ -150,7 +150,6 @@
             </ul>
         </li>
         </ul>
-        <span scrollmarker disabled="data"><alert type="info">Please wait while loading...</alert></span>
     <section class="supporting-text">
         <p>By submitting this form you explicitly express your agreement with the <a
             href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
