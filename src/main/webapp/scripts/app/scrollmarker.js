@@ -3,7 +3,7 @@
 angular.module('dbWebApp').directive('scrollmarker', ['$document', function ($document) {
         return {
             restrict: 'A',
-            scope: false,
+            scope: { data: '='},
             controller: 'CreateModifyController',
             link: function (scope, element) {
                 var debounced = _.debounce(function () {
@@ -14,8 +14,10 @@ angular.module('dbWebApp').directive('scrollmarker', ['$document', function ($do
                     element.addClass('hide');
                 }, 100);
                 var handleScroll = function () {
-                    element.removeClass('hide');
-                    debounced();
+                    if (!scope.data.attributesAllRendered) {
+                        element.removeClass('hide');
+                        debounced();
+                    }
                 };
                 angular.element($document).on('scroll', handleScroll);
             }
