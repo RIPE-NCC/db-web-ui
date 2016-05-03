@@ -3,8 +3,7 @@
 angular.module('dbWebApp').directive('scrollmarker', ['$document', function ($document) {
         return {
             restrict: 'A',
-            scope: { data: '='},
-            controller: 'CreateModifyController',
+            scope: false,
             link: function (scope, element) {
                 var debounced = _.debounce(function () {
                     var raw = element[0];
