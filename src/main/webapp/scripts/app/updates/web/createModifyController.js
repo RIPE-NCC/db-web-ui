@@ -61,28 +61,22 @@ angular.module('webUpdates')
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
             $scope.nrAttributesToRender = 50; // initial
-            $scope.showMoreAttributes = function() {
-                var attributesAllRendered = false;
-                // Called from scrollmarker directive
-                if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
-                    $scope.nrAttributesToRender+= 50; // increment
-                    $scope.$apply();
-                }
-                return $scope.nrAttributesToRender < $scope.attributes.length;
+            $scope.data = {
+                attributesAllRendered: false
             };
 
-            $scope.$on('resource-parent-found', function(event, parent) {
-                var parentStatusValue, parentStatusAttr;
-                // if parent wasn't found but we got an event anyway, use the default
-                if (parent) {
-                    parentStatusAttr = _.find(parent.attributes.attribute, function (attr) {
-                        return 'status' === attr.name;
-                    });
-                    if (parentStatusAttr && parentStatusAttr.value) {
-                        parentStatusValue = parentStatusAttr.value
-                    }
+            var showMoreAttributes = function() {
+                // Called from scrollmarker directive
+                if (!$scope.data.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
+                    $scope.nrAttributesToRender+= 50; // increment
+                    $scope.$apply();
+                } else {
+                    $scope.data.attributesAllRendered = true;
                 }
-                $scope.optionList.status = ResourceStatus.get($scope.objectType, parentStatusValue);
+            };
+
+            $scope.$on('scrollmarker-event', function(evt) {
+                showMoreAttributes();
             });
 
             _initialisePage();

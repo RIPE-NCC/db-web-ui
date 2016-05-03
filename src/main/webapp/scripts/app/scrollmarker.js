@@ -3,21 +3,18 @@
 angular.module('dbWebApp').directive('scrollmarker', ['$document', function ($document) {
         return {
             restrict: 'A',
+            scope: { data: '='},
             controller: 'CreateModifyController',
             link: function (scope, element) {
-                var stillgoing = true;
                 var debounced = _.debounce(function () {
                     var raw = element[0];
                     if (raw.getBoundingClientRect().top < document.documentElement.clientHeight + document.body.scrollTop) {
-                        stillgoing = scope.showMoreAttributes();
-                    } else  if (stillgoing) {
-                        // set to false if earlier 'if' path not taken
-                        stillgoing = false;
+                        scope.$emit('scrollmarker-event');
                     }
                     element.addClass('hide');
                 }, 100);
                 var handleScroll = function () {
-                    if (stillgoing) {
+                    if (!scope.data.attributesAllRendered) {
                         element.removeClass('hide');
                         debounced();
                     }
