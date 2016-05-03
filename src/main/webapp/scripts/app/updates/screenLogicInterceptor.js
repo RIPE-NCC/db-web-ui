@@ -13,6 +13,7 @@ angular.module('updates')
             var globalInterceptor = {
                 beforeEdit:
                     function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disablePrimaryKeyIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos);
                     },
                 afterEdit:
@@ -122,6 +123,7 @@ angular.module('updates')
                 organisation: {
                     beforeEdit:
                         function (method, source, objectType, attributes, errors, warnings, infos) {
+                            _checkLirAttributes(method, source, objectType, attributes, errors, warnings, infos);
                             return _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
                         },
                     afterEdit: undefined,
@@ -213,6 +215,18 @@ angular.module('updates')
                 return attributes;
             }
 
+            function _checkLirAttributes(method, source, objectType, attributes, errors, warnings, infos) {
+                var orgType = attributes.getSingleAttributeOnName('org-type');
+
+                if(method === 'Modify' && orgType.value === 'LIR') {
+                    _.forEach(attributes, function (attr) {
+                        if(['address', 'phone', 'fax-no', 'e-mail', 'org-name', 'mnt-by'].indexOf(attr.name) > -1) {
+                            attr.$$meta.$$isLir = true;
+                        }
+                    });
+                }
+            }
+
             function _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos) {
                 if(method === 'Create') {
                     if (!OrganisationHelper.containsAbuseC(attributes)) {
@@ -231,6 +245,18 @@ angular.module('updates')
                 }
 
                 attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
+                return attributes;
+            }
+
+            function _disablePrimaryKeyIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
+                if( method === 'Modify') {
+                    _.forEach(attributes, function (attr) {
+                        if(attr.$$meta.$$primaryKey) {
+                            attr.$$meta.$$disable = true;
+                        }
+                    });
+                }
+
                 return attributes;
             }
 

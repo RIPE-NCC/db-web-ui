@@ -9,7 +9,7 @@ angular.module('updates')
         var nccMntners = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT','RIPE-NCC-HM-PI-MNT','RIPE-GII-MNT','RIPE-NCC-MNT','RIPE-NCC-RPSL-MNT',
                 'RIPE-DBM-MNT','RIPE-NCC-LOCKED-MNT','RIPE-DBM-UNREFERENCED-CLEANUP-MNT','RIPE-ERX-MNT','RIPE-NCC-LEGACY-MNT'];
 
-        mntnerService.isRemoveable = function(mntnerKey) {
+        mntnerService.isRemovable = function(mntnerKey) {
             // Should be possible to remove RIPE-NCC-RPSL-MNT, but allowed to add it
             if (mntnerKey.toUpperCase() === 'RIPE-NCC-RPSL-MNT') {
                 return true;
