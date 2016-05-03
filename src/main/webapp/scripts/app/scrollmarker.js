@@ -13,7 +13,7 @@ angular.module('dbWebApp').directive('scrollmarker', ['$document', function ($do
                     element.addClass('hide');
                 }, 100);
                 var handleScroll = function () {
-                    if (!scope.data.attributesAllRendered) {
+                    if (!scope.attributesAllRendered) {
                         element.removeClass('hide');
                         debounced();
                     }

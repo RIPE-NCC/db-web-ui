@@ -59,17 +59,15 @@ angular.module('webUpdates')
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
             $scope.nrAttributesToRender = 50; // initial
-            $scope.data = {
-                attributesAllRendered: false
-            };
+            $scope.attributesAllRendered = false;
 
             var showMoreAttributes = function() {
                 // Called from scrollmarker directive
-                if (!$scope.data.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
+                if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
                     $scope.nrAttributesToRender+= 50; // increment
                     $scope.$apply();
                 } else {
-                    $scope.data.attributesAllRendered = true;
+                    $scope.attributesAllRendered = true;
                 }
             };
 
@@ -422,7 +420,7 @@ angular.module('webUpdates')
             function isLirObject() {
                 return !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
             }
-            
+
             function deleteObject() {
                 WebUpdatesCommons.navigateToDelete($scope.source, $scope.objectType, $scope.name, STATE.MODIFY);
             }
