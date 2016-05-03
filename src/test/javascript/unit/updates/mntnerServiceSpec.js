@@ -75,17 +75,17 @@ describe('updates: MntnerService', function () {
     });
 
     it('should mark RIPE-NCC-RPSL-MNT as removeable', function() {
-        expect(subject.isRemoveable('ripe-ncc-rpsl-mnt')).toEqual(true);
-        expect(subject.isRemoveable('RIPE-NCC-RPSL-MNT')).toEqual(true);
+        expect(subject.isRemovable('ripe-ncc-rpsl-mnt')).toEqual(true);
+        expect(subject.isRemovable('RIPE-NCC-RPSL-MNT')).toEqual(true);
     });
 
     it('should mark other mntner as removeable', function() {
-        expect(subject.isRemoveable('test-mnt')).toEqual(true);
-        expect(subject.isRemoveable('TEST-MNT')).toEqual(true);
+        expect(subject.isRemovable('test-mnt')).toEqual(true);
+        expect(subject.isRemovable('TEST-MNT')).toEqual(true);
     });
 
     it('should mark other RIPE-NCC mntners as un-removeable', function() {
-        expect(subject.isRemoveable('RIPE-DBM-MNT')).toEqual(false);
+        expect(subject.isRemovable('RIPE-DBM-MNT')).toEqual(false);
     });
 
     it('enrich mntners with new status', function() {

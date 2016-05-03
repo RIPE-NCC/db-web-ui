@@ -895,16 +895,6 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should restrict edits to certain attributes', function () {
-        // 'address', 'phone', 'fax-no', 'e-mail', 'org-name'
-        expect($scope.isDisabledLirAttribute({name: 'address', value: ''})).toBe(true);
-        expect($scope.isDisabledLirAttribute({name: 'phone', value: ''})).toBe(true);
-        expect($scope.isDisabledLirAttribute({name: 'fax-no', value: ''})).toBe(true);
-        expect($scope.isDisabledLirAttribute({name: 'e-mail', value: ''})).toBe(true);
-        expect($scope.isDisabledLirAttribute({name: 'org-name', value: ''})).toBe(true);
-        expect($scope.isDisabledLirAttribute({name: 'bogus-attribute', value: ''})).toBe(false);
-    });
-
 });
 
 
