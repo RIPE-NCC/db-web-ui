@@ -57,7 +57,8 @@ angular.module('webUpdates')
 
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
-            $scope.showMoreAttributes = function() {
+
+            var showMoreAttributes = function() {
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
                     $scope.nrAttributesToRender+= 50; // increment
@@ -66,6 +67,10 @@ angular.module('webUpdates')
                     $scope.attributesAllRendered = true;
                 }
             };
+
+            $scope.$on('scrollmarker-event', function(evt) {
+                showMoreAttributes();
+            });
 
             _initialisePage();
 
