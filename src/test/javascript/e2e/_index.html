@@ -5,44 +5,6 @@
 <script type="text/javascript">
 
     var mimeJson = {'Content-type': 'application/json'};
-    var mockedApp = angular.module('dbWebAppE2E', ['dbWebApp', 'ngMockE2E']);
-
-    mockedApp.run(function ($httpBackend) {
-        var mockGet = {
-            info: {
-                req: 'api/user/info',
-                resp: {
-                    username: 'petchells@ripe.net',
-                    displayName: 'Paul Etchells',
-                    expiryDate: [2016, 4, 7, 14, 36, 10, 989],
-                    uuid: 'b7a7fc22-4c22-4059-b5b4-3b84b2748141',
-                    active: true
-                }
-            },
-            mntners: {
-                req: 'api/user/mntners',
-                resp: [{
-                    'mine': true,
-                    'auth': ['SSO'],
-                    'type': 'mntner',
-                    'key': 'etchells-mnt'
-                }, {
-                    'mine': true,
-                    'auth': ['MD5-PW', 'SSO', 'SSO', 'SSO', 'SSO'],
-                    'type': 'mntner',
-                    'key': 'AARDALSNETT-MNT'
-                }]
-            }
-        };
-        // prepare the mocks
-        Object.keys(mockGet).forEach(
-            function(key) {
-                $httpBackend.whenGET(mockGet[key].req).respond(200, mockGet[key].resp, mimeJson);
-            }
-        );
-        $httpBackend.whenGET(/.*/).passThrough();
-    });
-
     angular.element(document).ready(function () {
         angular.bootstrap(document, ['dbWebAppE2E']);
     });

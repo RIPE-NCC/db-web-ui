@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('updates')
-    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'LinkService',
-        function ($log, WhoisResources, OrganisationHelper, MessageStore, LinkService) {
+    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'MntnerService', 'LinkService',
+        function ($log, WhoisResources, OrganisationHelper, MessageStore, MntnerService, LinkService) {
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
@@ -42,6 +42,8 @@ angular.module('updates')
                 },
                 'aut-num': {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        //_disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -65,6 +67,8 @@ angular.module('updates')
                 },
                 inet6num: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -76,6 +80,8 @@ angular.module('updates')
                 },
                 inetnum: {
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
+                        _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -219,14 +225,9 @@ angular.module('updates')
                 if(method === 'Modify' && !OrganisationHelper.containsAbuseC(attributes)) {
                     attributes = OrganisationHelper.addAbuseC(objectType, attributes);
                     attributes.getSingleAttributeOnName('abuse-c').$$meta.$$missing = true;
-                    warnings.push('' +
-                        '<p>'+
-                            'There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.'+
-                        '</p>'+
-                        '<p>'+
-                            'Please specify the abuse-c attribute below.'+
-                        '</p>' +
-                    '');
+                    warnings.push('<p>There is currently no abuse contact set up for your organisation, which is required under ' +
+                        '<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>'+
+                        '<p>Please specify the abuse-c attribute below.</p>');
                 }
 
                 attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
@@ -252,16 +253,38 @@ angular.module('updates')
                 return addableAttributes;
             }
 
+            function _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
+                if (method === 'Modify') {
+                    attributes.getSingleAttributeOnName('status').$$meta.$$disable = true;
+                }
+            }
+
+            function _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos) {
+                // if any of the maintainers is a ripe maintainer then some attributes are read-only
+                if (_.findIndex(attributes.getAllAttributesOnName('mnt-by'), function (mntBy) {
+                        return MntnerService.isNccMntner(mntBy.value);
+                    }) < 0) { // findIndex returns -1 if not found
+                    return;
+                }
+                var attr;
+                attr = attributes.getSingleAttributeOnName('sponsoring-org');
+                if (attr) {
+                    attr.$$meta.$$disable = true;
+                }
+                attr = attributes.getSingleAttributeOnName('org');
+                if (attr) {
+                    attr.$$meta.$$disable = true;
+                }
+            }
+
             function _disableOrgWhenStatusIsAssignedPI (method, source, objectType, attributes, errors, warnings, infos) {
                 var statusAttr = attributes.getSingleAttributeOnName('status');
-
-                if(statusAttr && statusAttr.value === 'ASSIGNED PI') {
+                if (statusAttr && statusAttr.value === 'ASSIGNED PI') {
                     var org = attributes.getSingleAttributeOnName('org');
-                    if(org) {
+                    if (org) {
                         org.$$meta.$$disable = true;
                     }
                 }
-
                 return attributes;
             }
 

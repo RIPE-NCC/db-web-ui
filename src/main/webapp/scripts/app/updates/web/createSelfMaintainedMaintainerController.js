@@ -56,7 +56,7 @@ angular.module('webUpdates')
                     function (result) {
                         $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', result.username);
                         $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + result.username);
-                    }, function (errpr) {
+                    }, function () {
                         AlertService.setGlobalError('Error fetching SSO information');
                     }
                 );
@@ -74,7 +74,7 @@ angular.module('webUpdates')
                 } else {
                    _createObject();
                 }
-            };
+            }
 
             function isFormValid() {
                 _populateMissingAttributes();
@@ -150,25 +150,25 @@ angular.module('webUpdates')
                 return _.filter(adminC, function (adminC) {
                     return !$scope.adminC.object !== adminC;
                 });
-            };
+            }
 
             function hasAdminC() {
                 return $scope.adminC.object.length > 0;
-            };
+            }
 
             function onAdminCAdded(item) {
                 $log.debug('onAdminCAdded:' + JSON.stringify(item));
                 $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({name: 'admin-c', value: item.key}, {name: 'admin-c'});
                 $scope.maintainerAttributes = WhoisResources.enrichAttributesWithMetaInfo(MNT_TYPE, $scope.maintainerAttributes);
                 $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
-            };
+            }
 
             function onAdminCRemoved(item) {
                 $log.debug('onAdminCRemoved:' + JSON.stringify(item));
                 _.remove($scope.maintainerAttributes, function (i) {
                     return i.name === 'admin-c' && i.value === item.key;
                 });
-            };
+            }
 
         }]);
 

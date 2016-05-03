@@ -1,5 +1,6 @@
-/*global window: false */
+/*global angular */
 
+(function(){
 'use strict';
 
 angular.module('webUpdates')
@@ -33,7 +34,7 @@ angular.module('webUpdates')
             }
 
             function _deleteObject() {
-                $log.debug("_deleteObject called");
+                $log.debug('_deleteObject called');
                 ModalService.openDeleteObjectModal($scope.source, $scope.objectType, $scope.name, $scope.onCancel).then(
                     function (whoisResources) {
                         $scope.modalInProgress = false;
@@ -51,3 +52,4 @@ angular.module('webUpdates')
             }
 
         }]);
+})();
