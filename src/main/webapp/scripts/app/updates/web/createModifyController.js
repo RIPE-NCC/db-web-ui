@@ -343,23 +343,7 @@ angular.module('webUpdates')
                         }
                     );
                 }
-
-                if ($scope.operation === $scope.CREATE_OPERATION && attribute.value) {
-                    if ($scope.objectType === 'aut-num' && attribute.name === 'aut-num' ||
-                        $scope.objectType === 'inetnum' && attribute.name === 'inetnum' ||
-                        $scope.objectType === 'inet6num' && attribute.name === 'inet6num') {
-
-                        $log.debug('looking for parent of ' + attribute.value);
-                        RestService.fetchParentResource($scope.objectType, attribute.value).get(function (result) {
-                            var parent;
-                            if (result && result.objects && angular.isArray(result.objects.object)) {
-                                if (parent = result.objects.object[0]) {
-                                    $scope.$broadcast('resource-parent-found', parent);
-                                }
-                            }
-                        });
-                    }
-                }
+                
             }
 
             function _uniformed( input ) {
