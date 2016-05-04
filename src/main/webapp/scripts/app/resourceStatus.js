@@ -5,11 +5,13 @@
 angular.module('dbWebApp')
     .service('ResourceStatus', [function () {
         var statuses = {
-            'aut-num': [
-                {key: 'ASSIGNED', value: 'ASSIGNED'},
-                {key: 'LEGACY',   value: 'LEGACY'},
-                {key: 'OTHER',    value: 'OTHER'}
-            ],
+            'aut-num': {
+                default: [
+                    {key: 'ASSIGNED', value: 'ASSIGNED'},
+                    {key: 'LEGACY', value: 'LEGACY'},
+                    {key: 'OTHER', value: 'OTHER'}
+                ]
+            },
             inetnum: {
                 default: [
                     {key: 'ALLOCATED PA', value: 'ALLOCATED PA'},
