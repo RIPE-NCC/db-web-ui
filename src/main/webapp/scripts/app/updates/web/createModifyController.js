@@ -58,6 +58,9 @@ angular.module('webUpdates')
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
+            /*
+             * Lazy rendering of attributes with scrollmarker directive
+             */
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
 
@@ -74,6 +77,25 @@ angular.module('webUpdates')
             $scope.$on('scrollmarker-event', function(evt) {
                 showMoreAttributes();
             });
+
+            /*
+             * Select status list for resources based on parent's status.
+             */
+            $scope.$on('resource-parent-found', function(event, parent) {
+                console.log('$on resource-parent-found', parent);
+                var parentStatusValue, parentStatusAttr;
+                // if parent wasn't found but we got an event anyway, use the default
+                if (parent) {
+                    parentStatusAttr = _.find(parent.attributes.attribute, function (attr) {
+                        return 'status' === attr.name;
+                    });
+                    if (parentStatusAttr && parentStatusAttr.value) {
+                        parentStatusValue = parentStatusAttr.value
+                    }
+                }
+                $scope.optionList.status = ResourceStatus.get($scope.objectType, parentStatusValue);
+            });
+
 
             _initialisePage();
 
@@ -353,10 +375,12 @@ angular.module('webUpdates')
                         RestService.fetchParentResource($scope.objectType, attribute.value).get(function (result) {
                             var parent;
                             if (result && result.objects && angular.isArray(result.objects.object)) {
-                                if (parent = result.objects.object[0]) {
-                                    $scope.$broadcast('resource-parent-found', parent);
-                                }
+                                parent = result.objects.object[0];
                             }
+                            $scope.$emit('resource-parent-found', parent);
+                        }, function() {
+                            $log.debug('not found');
+                            $scope.$emit('resource-parent-found', null);
                         });
                     }
                 }
