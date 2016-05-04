@@ -59,33 +59,33 @@ describe('updates: MntnerService', function () {
     it('should detect RIPE-NCC mntners', function() {
         var nccMntners = ['ripe-ncc-hm-mnt', 'ripe-ncc-end-mnt','ripe-ncc-hm-pi-mnt','ripe-gii-mnt','ripe-ncc-mnt','ripe-ncc-rpsl-mnt',
             'RIPE-DBM-MNT','RIPE-NCC-LOCKED-MNT','RIPE-DBM-UNREFERENCED-CLEANUP-MNT','RIPE-ERX-MNT','RIPE-NCC-LEGACY-MNT'];
-        var ripeOwned = _.filter(nccMntners, function(mntnerName) {
-            return subject.isNccMntner({key:mntnerName});
+        var ripeOwned = _.filter(nccMntners, function(mntnerKey) {
+            return subject.isNccMntner(mntnerKey);
         });
 
         expect(ripeOwned.length).toEqual(nccMntners.length);
     });
 
     it('should detect non RIPE-NCC mntners', function() {
-        var notRipeOwned = _.filter(['test-MNT', 'other-mnt'], function(mntnerName) {
-            return subject.isNccMntner({key:mntnerName});
+        var notRipeOwned = _.filter(['test-MNT', 'other-mnt'], function(mntnerKey) {
+            return subject.isNccMntner(mntnerKey);
         });
 
         expect(notRipeOwned.length).toEqual(0);
     });
 
     it('should mark RIPE-NCC-RPSL-MNT as removeable', function() {
-        expect(subject.isRemoveable({key:'ripe-ncc-rpsl-mnt'})).toEqual(true);
-        expect(subject.isRemoveable({key:'RIPE-NCC-RPSL-MNT'})).toEqual(true);
+        expect(subject.isRemovable('ripe-ncc-rpsl-mnt')).toEqual(true);
+        expect(subject.isRemovable('RIPE-NCC-RPSL-MNT')).toEqual(true);
     });
 
     it('should mark other mntner as removeable', function() {
-        expect(subject.isRemoveable({key:'test-mnt'})).toEqual(true);
-        expect(subject.isRemoveable({key:'TEST-MNT'})).toEqual(true);
+        expect(subject.isRemovable('test-mnt')).toEqual(true);
+        expect(subject.isRemovable('TEST-MNT')).toEqual(true);
     });
 
     it('should mark other RIPE-NCC mntners as un-removeable', function() {
-        expect(subject.isRemoveable({key:'RIPE-DBM-MNT'})).toEqual(false);
+        expect(subject.isRemovable('RIPE-DBM-MNT')).toEqual(false);
     });
 
     it('enrich mntners with new status', function() {

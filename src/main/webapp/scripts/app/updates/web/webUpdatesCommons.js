@@ -47,7 +47,7 @@ angular.module('webUpdates')
                         attribute.link.uiHref = _displayUrl(parser, attribute, objectSource);
                     }
                     return attribute;
-                } );
+                });
             };
 
             webUpdatesCommons.navigateToDisplay = function (objectSource, objectType, objectName, operation) {

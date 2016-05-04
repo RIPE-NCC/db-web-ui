@@ -49,19 +49,51 @@ module.exports = function (grunt) {
             options: {
                 configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
                 noColor: false, // If true, protractor will not use colors in its output.
-                args: {}
+                args: {},
+                keepAlive: true
             },
             e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
                 options: {
-                    keepAlive: true // If false, the grunt process stops when the test fails.
-                }
-            },
-            continuous: {
-                options: {
-                    keepAlive: true
+                    keepAlive: false // If false, the grunt process stops when the test fails.
                 }
             }
         },
+
+        protractor_coverage: {
+            options: {
+                keepAlive: true,
+                noColor: false,
+                collectorPort: 3001,
+                coverageDir: 'reports/coverage/e2e',
+                args: {
+                    baseUrl: 'http://localhost:9002'
+                }
+            },
+            e2e: {
+                options: {
+                    configFile: 'src/test/javascript/protractor-e2e-coverage.conf.js'
+                }
+            }
+        },
+
+        instrument: {
+            files: 'scripts/**/*.js',
+            options: {
+                cwd: 'src/main/webapp',
+                lazy: true,
+                basePath: 'instrumented'
+            }
+        },
+
+        makeReport: {
+            src: 'reports/coverage/e2e/*.json',
+            options: {
+                type: 'lcov',
+                dir: 'reports/coverage/e2e',
+                print: 'detail'
+            }
+        },
+
         yeoman: {
             // configurable paths
             app: appConfig.app,
@@ -89,7 +121,7 @@ module.exports = function (grunt) {
             },
             protractor: {
                 files: ['src/test/javascript/e2e/*.js'],
-                tasks: ['protractor:continuous']
+                tasks: ['protractor:e2e']
             }
         },
         wiredep: {
@@ -131,7 +163,17 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '.tmp'
+            server: '.tmp',
+            e2e: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        'instrumented/*',
+                        'reports/*'
+                    ]
+                }]
+            }
         },
         jshint: {
             options: {
@@ -309,8 +351,8 @@ module.exports = function (grunt) {
         },
         cacheBust: {
             options: {
-                baseDir: './src/main/webapp/',
-                ignorePatterns: ['index_tmpl.html'],
+                baseDir: './src/main/webapp',
+                //ignorePatterns: ['index_tmpl.html'],
                 encoding: 'utf8',
                 algorithm: 'md5',
                 length: 16,
@@ -320,8 +362,9 @@ module.exports = function (grunt) {
             taskName: {
                 files: [{
                     expand: true,
-                    cwd: './src/main/webapp/',
-                    src: ['index.html']
+                    cwd: './src/main/webapp',
+                    src: ['index.html'],
+                    dest: './dest'
                 }]
             }
         },
@@ -372,6 +415,7 @@ module.exports = function (grunt) {
                     middleware: function (connect, options, middlewares) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
+                            serveStatic('instrumented'),
                             serveStatic(appConfig.app)
                         ];
                     }
@@ -383,10 +427,7 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             serveStatic('test'),
-                            connect().use(
-                                '/bower_components',
-                                serveStatic('./bower_components')
-                            ),
+                            connect().use('/bower_components', serveStatic('./bower_components')),
                             serveStatic(appConfig.app)
                         ];
                     }
@@ -429,7 +470,8 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('e2e-test', [
-        'clean:server',
+        'env:dev',
+        'clean:e2e',
         'wiredep',
         'preprocess:e2e',
         'concurrent:server',
@@ -437,8 +479,21 @@ module.exports = function (grunt) {
         'protractor:e2e'
     ]);
 
+    grunt.registerTask('e2e-coverage', [
+        'env:dev',
+        'clean:e2e',
+        'wiredep',
+        'preprocess:e2e',
+        'instrument',
+        'concurrent:server',
+        'connect:e2e',
+        'protractor_coverage',
+        'makeReport'
+    ]);
+
     grunt.registerTask('e2e-no-test', [
-        'clean:server',
+        'env:dev',
+        'clean:e2e',
         'wiredep',
         'preprocess:e2e',
         'concurrent:server',
@@ -460,8 +515,7 @@ module.exports = function (grunt) {
         'wiredep:test',
         'preprocess:html',
         'ngconstant:dev',
-        'karma',
-        'cacheBust'
+        'karma'
     ]);
 
     grunt.registerTask('build', [

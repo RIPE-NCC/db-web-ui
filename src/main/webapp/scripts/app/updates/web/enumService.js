@@ -14,6 +14,5 @@ angular.module('dbWebApp')
                 return CountryCodes.get();
             }
         }
-
-
+        
     }]);

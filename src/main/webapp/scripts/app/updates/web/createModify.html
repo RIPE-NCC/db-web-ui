@@ -35,11 +35,13 @@
                close-on-select="true"
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
+               ng-disabled="isLirObject()"
                ng-if="uiSelectTemplateReady">
-        <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !isRemoveable($item)"
+
+        <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !isRemovable($item.key) || isLirObject()"
                          placeholder="Type maintainer name">{{$item.key}}
             <span class="fa fa-star" ng-if="isMine($item)"></span>
-            <span class="fa fa-lock" ng-if="!isRemoveable($item)"></span>
+            <span class="fa fa-lock" ng-if="!isRemovable($item.key) || isLirObject()"></span>
         </ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="mntnerAutocomplete($select.search)"
@@ -54,17 +56,15 @@
         </ui-select-choices>
     </ui-select>
     <div collapse="!isMntHelpShown" class="text field-description">
-        <strong>Description</strong></br>
-        <span ng-bind-html="getAttributeDescription('mnt-by')"></span></br>
-        <strong>Syntax</strong></br>
+        <strong>Description</strong><br>
+        <span ng-bind-html="getAttributeDescription('mnt-by')"></span><br>
+        <strong>Syntax</strong><br>
         <span ng-bind-html="getAttributeSyntax('mnt-by')"></span>
     </div>
 	</section>
-
     <section class="visible-field-form" ng-if="hasMntners()">
         <ul class="form-fields appeared-fields">
-
-        <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" class="form-group input-group">
+            <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" class="form-group input-group" ng-if="$index < nrAttributesToRender">
 
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">
@@ -72,7 +72,7 @@
             </span>
             <span ng-if="attribute.$$success" class="text-success">{{attribute.$$success}}</span>
 
-            <input ng-if="!isEnum(attribute)"
+            <input ng-if="!attribute.$$meta.$$isEnum"
                        type="text"
                        name="{{attribute.name}}"
                        ng-model="attribute.value"
@@ -81,66 +81,86 @@
                        placeholder="{{getAttributeShortDescription(attribute.name)}}"
                        class="form-control"
                        attributetransformer
-                       typeahead="value.key as value.readableName for value in referenceAutocomplete( attribute, $viewValue)"
+                       typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
                        typeahead-min-length="2"
-                       ng-disabled="isToBeDisabled(attribute)"
+                       ng-disabled="attribute.$$meta.$$disable || attribute.$$meta.$$isLir"
                        autocomplete="off"
                        />
 
-            <span ng-if="isEnum(attribute)">
-                 <ui-select ng-model="attribute.value"
-                            theme="select2"
+            <span ng-if="attribute.$$meta.$$isEnum && attribute.name !== 'status'">
+                 <ui-select name="{{attribute.name}}"
                             class="form-control"
+                            style="min-width: 300px;"
+                            ng-model="attribute.value"
                             ng-disabled="attribute.$$meta.$$disable"
-                            style="min-width: 300px;" >
+                            theme="select2">
                      <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
                      <ui-select-choices repeat="item.key as item in enumAutocomplete(attribute) | filter: $select.search">
                          <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
                      </ui-select-choices>
                  </ui-select>
             </span>
-
+            <span ng-if="attribute.$$meta.$$isEnum && attribute.name === 'status'">
+                 <ui-select name="{{attribute.name}}"
+                            class="form-control"
+                            style="min-width: 300px;"
+                            ng-model="attribute.value"
+                            ng-disabled="attribute.$$meta.$$disable"
+                            theme="select2">
+                     <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
+                     <ui-select-choices repeat="item.key as item in optionList[attribute.name] | filter: $select.search">
+                         <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
+                     </ui-select-choices>
+                 </ui-select>
+            </span>
             <div class="text field-description" collapse="!isHelpShown">
-                <strong>Description</strong></br>
-                <span ng-bind-html="getAttributeDescription(attribute.name)"></span></br>
-                <strong>Syntax</strong></br>
+                <strong>Description</strong><br>
+                <span ng-bind-html="getAttributeDescription(attribute.name)"></span><br>
+                <strong>Syntax</strong><br>
                 <span ng-bind-html="getAttributeSyntax(attribute.name)"></span>
             </div>
             <ul class="input-group-btn">
-                <li>
+                <li ng-if="canAttributeBeDuplicated(attribute)">
                     <a id="duplicateAttribute" class="btn btn-default ga-add-dup" title="Add another attribute of this type"
-                               ng-click="duplicateAttribute(attribute)"  ng-disabled="!canAttributeBeDuplicated(attribute)" >
-                    <span class="fa fa-arrow-down degree-25"></span>
+                             ng-click="duplicateAttribute(attribute)">
+                        <span class="fa fa-arrow-down degree-25"></span>
                     </a>
                 </li>
-                <li>
+                <li ng-if="canAttributeBeDuplicated(attribute)">
                     <a id="addAnyAttribute" class="btn btn-default ga-add-attr" title="Add any attribute (opens dialog)"
-                                    ng-click="displayAddAttributeDialog(attribute)">
+                             ng-click="displayAddAttributeDialog(attribute)">
                         <span class="fa fa-plus"></span>
                     </a>
                 </li>
-                <li>
+                <li ng-if="canAttributeBeRemoved(attribute)">
                     <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
-                      ng-click="removeAttribute(attribute)"  ng-disabled="!canAttributeBeRemoved(attribute) || isToBeDisabled(attribute)" >
+                             ng-click="removeAttribute(attribute)">
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>
-
                 <li>
-                <a id="changePassword" class="btn btn-default ga-pass-attr" title="Add/change Password (opens dialog)"
-                   ng-click="displayMd5DialogDialog(attribute)" ng-show="(attribute.name == 'auth')">
-                    <span class="fa fa-lock fa-3"></span>
-                </a>
+                    <a id="changePassword" class="btn btn-default ga-pass-attr" title="Add/change Password (opens dialog)"
+                       ng-click="displayMd5DialogDialog(attribute)" ng-show="attribute.name == 'auth'">
+                        <span class="fa fa-lock fa-3"></span>
+                    </a>
                 </li>
                 <li>
                     <a id="createRoleForAbuseCAttribute" class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c"
-                       ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="(attribute.name == 'abuse-c') && (objectType == 'organisation') && (!attribute.value)">
+                       ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="attribute.name == 'abuse-c' && objectType == 'organisation' && !attribute.value">
                         <span class="fa fa-bell-o degree-25"></span>
+                    </a>
+                </li>
+                <li ng-if="attribute.$$meta.$$isLir">
+                    <a title="Request to update" class="btn btn-default ga-edit-attr" ng-if="attribute.name === 'org-name'" target="_blank" href="https://my.ripe.net/#/update-registry">
+                        <span class="fa fa-pencil"></span>
+                    </a>
+                    <a title="Edit in LIR portal" class="btn btn-default ga-edit-attr" ng-if="attribute.name !== 'org-name'" target="_blank" href="https://lirportal.ripe.net/general/">
+                        <span class="fa fa-pencil"></span>
                     </a>
                 </li>
                 <li>
                     <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
-                        <span class="fa fa-question" ></span>
+                        <span class="fa fa-question"></span>
                     </a>
                 </li>
                 <li>
@@ -151,6 +171,7 @@
             </ul>
         </li>
     </ul>
+        <span scrollmarker><alert type="info">Please wait while loading...</alert></span>
     <section class="supporting-text">
         <p>By submitting this form you explicitly express your agreement with the <a
             href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
@@ -164,7 +185,7 @@
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 
-    <span ng-show="operation == MODIFY_OPERATION">
+    <span ng-show="operation == MODIFY_OPERATION && !isLirObject()">
         <button ng-click="deleteObject()" ng-disabled="restCalInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
     </span>
     </section>

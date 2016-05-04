@@ -64,6 +64,16 @@ describe('updates: ScreenLogicInterceptor', function () {
         expect(addableAttributesAfter).toBe(addableAttributes);
     });
 
+    it('should disable primary key attribute from object on modify', function() {
+
+        var autNumSubject = _wrap('aut-num', autNumAttributes);
+
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'aut-num', autNumSubject);
+
+        var primaryKey = attributes.getSingleAttributeOnName('aut-num');
+        expect(primaryKey.$$meta.$$disable).toBe(true);
+    });
+
 
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);

@@ -6,11 +6,9 @@
     </div>
 
     <div class="modal-body">
-
         <div ng-if="mntners.length === 0" class="alert-expired alert alert-danger">
             You cannot modify this object here because none of the maintainers are protected with a password.
         </div>
-
         <div ng-if="(mntners && mntners.length > 0)">
             <div ng-if="selected.message.length > 0" class="alert-expired alert alert-danger">
                 <p>{{selected.message}}</p>
@@ -22,7 +20,6 @@
                             ng-required="true"
                             ng-options="item.key for item in mntners | orderBy:key" class="form-control select-height"></select>
                 </li>
-
                 <li>
                     <label>Provide the password for the selected maintainer</label>
                     <input type="password" class="form-control" ng-model="selected.password" ng-required="true" />
@@ -33,11 +30,10 @@
                 </li>
             </ul>
         </div>
-
         <div ng-if="(mntnersWithoutPassword && mntnersWithoutPassword.length > 0)">
             <hr>
             The following maintainers are used to protect this object, but are not eligible to be used here:
-            </br>
+            <br>
             <span ng-repeat="mnt in mntnersWithoutPassword">
                 <a href="#/webupdates/display/{{source}}/mntner/{{mnt.key}}" target="_blank">
                     {{mnt.key}}
@@ -45,9 +41,7 @@
             </span>
             <br/>
             <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data#solving-authentication-problems" taget="_blank">Learn more.</a>
-
         </div>
-
     </div>
 
     <div class="modal-footer">
@@ -61,8 +55,6 @@
             <input type="submit" class="blue-button ga-auth-popup-btn" value="Submit" ng-click="ok()" />
         </div>
     </div>
-
-
 
 </div>
 

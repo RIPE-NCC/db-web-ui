@@ -9,16 +9,16 @@ angular.module('updates')
         var nccMntners = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT','RIPE-NCC-HM-PI-MNT','RIPE-GII-MNT','RIPE-NCC-MNT','RIPE-NCC-RPSL-MNT',
                 'RIPE-DBM-MNT','RIPE-NCC-LOCKED-MNT','RIPE-DBM-UNREFERENCED-CLEANUP-MNT','RIPE-ERX-MNT','RIPE-NCC-LEGACY-MNT'];
 
-        mntnerService.isRemoveable  = function(mntner) {
+        mntnerService.isRemovable = function(mntnerKey) {
             // Should be possible to remove RIPE-NCC-RPSL-MNT, but allowed to add it
-            if( mntner.key.toUpperCase() === 'RIPE-NCC-RPSL-MNT' ) {
+            if (mntnerKey.toUpperCase() === 'RIPE-NCC-RPSL-MNT') {
                 return true;
             }
-            return !_.includes(nccMntners,mntner.key.toUpperCase());
+            return !_.includes(nccMntners, mntnerKey.toUpperCase());
         };
 
-        mntnerService.isNccMntner = function(mntner) {
-            return _.includes(nccMntners,mntner.key.toUpperCase());
+        mntnerService.isNccMntner = function(mntnerKey) {
+            return _.includes(nccMntners, mntnerKey.toUpperCase());
         };
 
         mntnerService.isMntnerOnlist = function(list, mntner) {
@@ -149,7 +149,7 @@ angular.module('updates')
             return  _.filter(_.uniq(mntners,'key'), function(mntner) {
                 if( mntner.mine === true) {
                     return false;
-                } else if( mntnerService.isNccMntner(mntner)) {
+                } else if( mntnerService.isNccMntner(mntner.key)) {
                     // prevent authenticating against RIPE-NCC mntner
                     return false;
                 } else if( CredentialsService.hasCredentials() && CredentialsService.getCredentials().mntner === mntner.key ) {
@@ -175,7 +175,7 @@ angular.module('updates')
 
                 if( mntner.mine === true) {
                     return false;
-                } else if( mntnerService.isNccMntner(mntner)) {
+                } else if( mntnerService.isNccMntner(mntner.key)) {
                     // prevent customers contacting us about RIPE-NCC mntners
                     return false;
                 } else if( mntnerService.hasMd5(mntner)) {
@@ -197,7 +197,7 @@ angular.module('updates')
         mntnerService.stripNccMntners = function (mntners, allowEmptyResult) {
             //remove NCC mntners and dupes
             var stripped = _.reject(mntners, function(mntner) {
-                return(mntnerService.isNccMntner(mntner));
+                return(mntnerService.isNccMntner(mntner.key));
             });
             //if we are left with no mntners, return mntners array untouched
             if(_.isEmpty(stripped) && !allowEmptyResult) {
