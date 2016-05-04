@@ -60,8 +60,11 @@ module.exports = {
     inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('div > ul > li > ul')).all(by.css('li')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
 
+    modal: element(by.css('[modal-window]')),
     modalEmail: element(by.css('[modal-window]')).element(by.name('email')),
-    modalBtnSubmit: element(by.css('[modal-window]')).element(by.css('[value=Submit]')),
+    modalInpMaintainer: element(by.css('[modal-window]')).element(by.model('selected.item')),
+    modalBtnSubmit: element(by.css('[modal-window]')).element(by.css('input[type=Submit]')),
+    modalClose: element(by.css('[modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
 
     selectObjectType: function (itemValue) {
         return element(by.id('objectTypeSelector')).element(by.css('option[label=' + itemValue + ']'));

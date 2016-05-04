@@ -47,14 +47,19 @@ module.exports = function (grunt) {
 
         protractor: {
             options: {
-                configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
                 noColor: false, // If true, protractor will not use colors in its output.
-                args: {},
-                keepAlive: true
+                args: {}
             },
             e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
                 options: {
+                    configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
                     keepAlive: false // If false, the grunt process stops when the test fails.
+                }
+            },
+            noTest: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
+                options: {
+                    configFile: 'src/test/javascript/protractor-no-test.conf.js', // Default config file
+                    keepAlive: true
                 }
             }
         },
@@ -344,6 +349,10 @@ module.exports = function (grunt) {
                 src: 'src/test/javascript/e2e/_index.html',
                 dest: 'src/main/webapp/index.html'
             },
+            mocks: {
+                src: 'src/test/javascript/e2e/_index-mocks.html',
+                dest: 'src/main/webapp/index.html'
+            },
             html: {
                 src: 'src/main/webapp/_index.html',
                 dest: 'src/main/webapp/index.html'
@@ -495,7 +504,7 @@ module.exports = function (grunt) {
         'env:dev',
         'clean:e2e',
         'wiredep',
-        'preprocess:e2e',
+        'preprocess:mocks',
         'concurrent:server',
         'connect:e2e:keepalive'
     ]);

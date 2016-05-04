@@ -19,11 +19,10 @@ describe('The password authentication dialogue', function () {
     });
 
     it('should show a single modal which asks for a password', function () {
-        expect(page.searchTextInput.isPresent()).toEqual(true);
-        expect(page.selectMaintainerDropdown.isPresent()).toEqual(true);
-        // test that we're detecting failures properly -- ptor gets confused by bad configs so make sure we're not using
-        // one of those :S
-        expect(element(by.id('nosuchelement')).isPresent()).toEqual(false);
+        expect(page.modalBtnSubmit.isPresent()).toEqual(true);
+        expect(page.modalInpMaintainer.getText()).toEqual('NEWNET-MNT');
+        page.modalClose.click();
+        expect(page.modal.isPresent()).toEqual(false);
     });
 
 });
