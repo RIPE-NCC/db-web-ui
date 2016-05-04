@@ -3,14 +3,18 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce', '$document',
                 'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
-                'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService',
+                'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'ResourceStatus',
                 'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
-        function ($scope, $stateParams, $state, $log, $window, $q, $sce,
+        function ($scope, $stateParams, $state, $log, $window, $q, $sce, $document,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
-                  MntnerService, AlertService, ErrorReporterService, LinkService,
+                  MntnerService, AlertService, ErrorReporterService, LinkService, ResourceStatus,
                   WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor) {
+
+            $scope.optionList = {
+                status: []
+            };
 
             // exposed methods called from html fragment
             $scope.switchToTextMode = switchToTextMode;
@@ -18,7 +22,7 @@ angular.module('webUpdates')
             $scope.onMntnerRemoved = onMntnerRemoved;
 
             $scope.isMine = MntnerService.isMine;
-            $scope.isRemoveable = MntnerService.isRemoveable;
+            $scope.isRemovable = MntnerService.isRemovable;
             $scope.hasSSo = MntnerService.hasSSo;
             $scope.hasPgp = MntnerService.hasPgp;
             $scope.hasMd5 = MntnerService.hasMd5;
@@ -27,7 +31,6 @@ angular.module('webUpdates')
 
             $scope.mntnerAutocomplete = mntnerAutocomplete;
             $scope.referenceAutocomplete = referenceAutocomplete;
-            $scope.isEnum = isEnum;
             $scope.enumAutocomplete = enumAutocomplete;
             $scope.displayEnumValue = displayEnumValue;
             $scope.getAttributeShortDescription = getAttributeShortDescription;
@@ -51,9 +54,26 @@ angular.module('webUpdates')
             $scope.submit = submit;
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
-            $scope.isToBeDisabled = isToBeDisabled;
+            $scope.isLirObject = isLirObject;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
+
+            $scope.nrAttributesToRender = 50; // initial
+            $scope.attributesAllRendered = false;
+
+            var showMoreAttributes = function() {
+                // Called from scrollmarker directive
+                if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
+                    $scope.nrAttributesToRender+= 50; // increment
+                    $scope.$apply();
+                } else {
+                    $scope.attributesAllRendered = true;
+                }
+            };
+
+            $scope.$on('scrollmarker-event', function(evt) {
+                showMoreAttributes();
+            });
 
             _initialisePage();
 
@@ -84,7 +104,7 @@ angular.module('webUpdates')
                     ', noRedirect:' + noRedirect);
 
                 // switch to text-screen if cookie says so and cookie is not to be ignored
-                if( PreferenceService.isTextMode() && ! noRedirect === true ) {
+                if (PreferenceService.isTextMode() && ! noRedirect === true ) {
                     switchToTextMode();
                 }
 
@@ -104,10 +124,12 @@ angular.module('webUpdates')
                 $scope.CREATE_OPERATION = 'Create';
                 $scope.MODIFY_OPERATION = 'Modify';
                 $scope.PENDING_OPERATION = 'Pending';
-
                 // Determine if this is a create or a modify
                 if (!$scope.name) {
                     $scope.operation = $scope.CREATE_OPERATION;
+
+                    // set the statuses which apply to the objectType (if any)
+                    $scope.optionList.status = ResourceStatus.get($scope.objectType);
 
                     // Populate empty attributes based on meta-info
                     var mandatoryAttributesOnObjectType = WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType);
@@ -237,14 +259,14 @@ angular.module('webUpdates')
             }
 
             function enumAutocomplete(attribute) {
-                if( !isEnum(attribute)) {
+                if (!attribute.$$meta.$$isEnum) {
                     return [];
                 }
                 return EnumService.get($scope.objectType, attribute.name);
             }
 
             function displayEnumValue(item) {
-                if ( item.key === item.value ) {
+                if (item.key === item.value) {
                     return item.key;
                 }
                 return item.value + ' [' + item.key.toUpperCase() + ']';
@@ -281,10 +303,6 @@ angular.module('webUpdates')
                     }
                     return true;
                 });
-            }
-
-            function isEnum(attribute) {
-                return attribute.$$meta.$$isEnum;
             }
 
             function isBrowserAutoComplete(attribute) {
@@ -325,6 +343,23 @@ angular.module('webUpdates')
                         }
                     );
                 }
+
+                if ($scope.operation === $scope.CREATE_OPERATION && attribute.value) {
+                    if ($scope.objectType === 'aut-num' && attribute.name === 'aut-num' ||
+                        $scope.objectType === 'inetnum' && attribute.name === 'inetnum' ||
+                        $scope.objectType === 'inet6num' && attribute.name === 'inet6num') {
+
+                        $log.debug('looking for parent of ' + attribute.value);
+                        RestService.fetchParentResource($scope.objectType, attribute.value).get(function (result) {
+                            var parent;
+                            if (result && result.objects && angular.isArray(result.objects.object)) {
+                                if (parent = result.objects.object[0]) {
+                                    $scope.$broadcast('resource-parent-found', parent);
+                                }
+                            }
+                        });
+                    }
+                }
             }
 
             function _uniformed( input ) {
@@ -339,7 +374,7 @@ angular.module('webUpdates')
             }
 
             function canAttributeBeDuplicated(attr) {
-                return $scope.attributes.canAttributeBeDuplicated(attr);
+                return $scope.attributes.canAttributeBeDuplicated(attr) && !attr.$$meta.$$isLir;
             }
 
             function duplicateAttribute(attr) {
@@ -347,7 +382,7 @@ angular.module('webUpdates')
             }
 
             function canAttributeBeRemoved(attr) {
-                return $scope.attributes.canAttributeBeRemoved(attr);
+                return $scope.attributes.canAttributeBeRemoved(attr) && !attr.$$meta.$$isLir;
             }
 
             function removeAttribute(attr) {
@@ -358,7 +393,10 @@ angular.module('webUpdates')
                 var originalAddableAttributes = $scope.attributes.getAddableAttributes($scope.objectType, $scope.attributes);
                 originalAddableAttributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, originalAddableAttributes);
 
-                var addableAttributes = ScreenLogicInterceptor.beforeAddAttribute($scope.operation, $scope.source, $scope.objectType, $scope.attributes, originalAddableAttributes);
+                var addableAttributes = _.filter(ScreenLogicInterceptor.beforeAddAttribute($scope.operation, $scope.source, $scope.objectType, $scope.attributes, originalAddableAttributes),
+                    function (attr) {
+                        return !attr.$$meta.$$isLir;
+                    });
 
                 ModalService.openAddAttributeModal(addableAttributes, _getPasswordsForRestCall())
                     .then(function (selectedItem) {
@@ -379,18 +417,8 @@ angular.module('webUpdates')
                 );
             }
 
-            function isToBeDisabled(attribute) {
-
-                if (attribute.$$meta.$$disable) {
-                    return true;
-                }
-
-                if (attribute.name === 'created') {
-                    return true;
-                } else if ($scope.operation === 'Modify' && attribute.$$meta.$$primaryKey === true) {
-                    return true;
-                }
-                return false;
+            function isLirObject() {
+                return !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
             }
 
             function deleteObject() {
@@ -697,6 +725,12 @@ angular.module('webUpdates')
                                 $log.error('Error fetching sso-mntners details' + JSON.stringify(error));
                                 AlertService.setGlobalError('Error fetching maintainer details');
                             });
+                        // now let's see if there are any read-only restrictions on these attributes. There is if any of
+                        // these are true:
+                        //
+                        // * this is an inet(6)num and it has a 'sponsoring-org' attribute which refers to an LIR
+                        // * this is an inet(6)num and it has a 'org' attribute which refers to an LIR
+                        // * this is an organisation with an 'org-type: LIR' attribute and attribute.name is address|fax|e-mail|phone
                     }
                 ).catch(
                     function (error) {
@@ -769,7 +803,7 @@ angular.module('webUpdates')
                 return _.filter(mntners, function (mntner) {
                     // prevent that RIPE-NCC mntners can be added to an object upon create of modify
                     // prevent same mntner to be added multiple times
-                    return ! MntnerService.isNccMntner(mntner) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
+                    return ! MntnerService.isNccMntner(mntner.key) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
                 });
             }
 

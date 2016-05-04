@@ -597,11 +597,7 @@ angular.module('dbWebApp')
             var idx = _.findIndex(metaAttrs, function(item) {
                 return item.name === attrTypeName;
             });
-            if( idx <= 0 ) {
-                return metaAttrs[0].name;
-            } else {
-                return metaAttrs[idx-1].name;
-            }
+            return metaAttrs[Math.max(0, idx-1)].name;
         }
 
         function addBelowLastOf( attrs, attrTypeName, item) {
