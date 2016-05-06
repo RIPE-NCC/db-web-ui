@@ -64,7 +64,7 @@ module.exports = function (grunt) {
                 keepAlive: true,
                 noColor: false,
                 collectorPort: 3001,
-                coverageDir: 'reports/coverage/e2e',
+                coverageDir: 'reports/e2e-coverage',
                 args: {
                     baseUrl: 'http://localhost:9002'
                 }
@@ -86,10 +86,10 @@ module.exports = function (grunt) {
         },
 
         makeReport: {
-            src: 'reports/coverage/e2e/*.json',
+            src: 'reports/e2e-coverage/*.json',
             options: {
                 type: 'lcov',
-                dir: 'reports/coverage/e2e',
+                dir: 'reports/e2e-coverage',
                 print: 'detail'
             }
         },
@@ -168,12 +168,20 @@ module.exports = function (grunt) {
                 files: [{
                     dot: true,
                     src: [
-                        '.tmp',
                         'instrumented/*',
-                        'reports/*'
+                        'reports/e2e-coverage'
+                    ]
+                }]
+            },
+            unittest: {
+                files: [{
+                    dot: true,
+                    src: [
+                        'reports/unittest-coverage'
                     ]
                 }]
             }
+
         },
         jshint: {
             options: {
@@ -499,7 +507,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'env:dev',
-        'clean:server',
+        'clean:unittest',
         'wiredep:test',
         'preprocess:html',
         'ngconstant:dev',

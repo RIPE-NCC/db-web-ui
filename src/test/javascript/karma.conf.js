@@ -91,8 +91,21 @@ module.exports = function (config) {
         // Continuous Integration mode
         // if true, it capture browsers, run tests and exit
         singleRun: false,
-        preprocessors : {
+
+        reporters: ['progress', 'coverage'],
+        preprocessors: {
             'main/webapp/scripts/app/**/*.js': ['coverage']
+        },
+
+        // optionally, configure the reporter
+        coverageReporter: {
+            type: 'lcov',
+            dir: '../reports/unittest-coverage',
+            reporters: [
+                {type: 'html', subdir: 'html-report'},
+                {type: 'json', subdir: './', file: 'coverage.json'}
+            ]
         }
     });
+
 };
