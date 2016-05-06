@@ -58,11 +58,6 @@ describe('webupdates homepage', function() {
         page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "inet6num" object');
-        page.inpInet6num.sendKeys('2001:888:2000::/36');
-        page.scrollIntoView(page.inpStatusLink); // bring 'status' into view
-        page.inpStatusLink.click(); // click on dropdown to populate it.
-        console.log('>>> >>> >>> screenshot: ' + page.takeScreenshot());
-        expect(page.inpStatusList.get(0).getText()).toEqual('ALLOCATED-BY-RIR');
     });
 
     it('should show an editor for inetnum', function() {
@@ -72,18 +67,6 @@ describe('webupdates homepage', function() {
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "inetnum" object');
         expect(page.inpStatusLink.getText()).toEqual('Specifies the kind of resource.');
-        page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
-        page.inpStatusLink.click(); // click on dropdown to populate it.
-        expect(page.inpStatus.isPresent()).toEqual(true);
-        page.inpInetnum.click();
-        page.inpInetnum.sendKeys('193.0.4.0 - 193.0.4.255');
-        page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
-        page.inpStatusLink.click(); // click on dropdown to populate it.
-        expect(page.inpStatusList.get(0).getText()).toEqual('ALLOCATED UNSPECIFIED');
-        expect(page.inpStatusList.get(1).getText()).toEqual('ALLOCATED PI');
-        expect(page.inpStatusList.get(2).getText()).toEqual('LIR-PARTITIONED PI');
-        expect(page.inpStatusList.get(3).getText()).toEqual('EARLY-REGISTRATION');
-        expect(page.inpStatusList.get(4).getText()).toEqual('ASSIGNED PI');
     });
 
     it('should show an editor for inet-rtr', function() {
