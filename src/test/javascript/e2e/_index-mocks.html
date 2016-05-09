@@ -1,4 +1,10 @@
-exports.module = function (data) {
+<!DOCTYPE html>
+<html>
+<!-- @include _index_main.html -->
+<script src="bower_components/angular-mocks/angular-mocks.js"></script>
+<script type="text/javascript">
+
+    var mimeJson = {'Content-type': 'application/json'};
     angular.module('dbWebAppE2E', ['dbWebApp', 'ngMockE2E'])
         .run(function ($httpBackend) {
             var mimeJson = {'Content-type': 'application/json'};
@@ -2536,4 +2542,10 @@ exports.module = function (data) {
             $httpBackend.whenGET(/.*/).passThrough();
 
         });
-};
+
+    angular.element(document).ready(function () {
+        angular.bootstrap(document, ['dbWebAppE2E']);
+    });
+
+</script>
+</html>

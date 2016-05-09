@@ -62,8 +62,6 @@ describe('The organisation editor', function () {
 
     it('should accept a valid abuse-c value', function () {
         expect(page.btnAbuseCBell.isPresent()).toEqual(true);
-        page.takeScreenshot();
-        // TODO: implement test
     });
 
     xit('should validate input fields', function () {

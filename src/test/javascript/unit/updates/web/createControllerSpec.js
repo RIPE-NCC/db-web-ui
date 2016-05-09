@@ -192,8 +192,13 @@ describe('webUpdates: CreateController', function () {
         var lengthBefore = $scope.attributes.length;
 
         $scope.duplicateAttribute($scope.attributes[1]);
+        expect($scope.attributes.length).toEqual(lengthBefore + 1);
+        expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
+        expect($scope.attributes[2].value).toEqual('');
 
-        expect($scope.attributes.length).toEqual(lengthBefore+1);
+        // and again, just 2b sure.
+        $scope.duplicateAttribute($scope.attributes[1]);
+        expect($scope.attributes.length).toEqual(lengthBefore + 2);
         expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
         expect($scope.attributes[2].value).toEqual('');
     });
