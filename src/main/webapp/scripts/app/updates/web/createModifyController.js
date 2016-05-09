@@ -58,6 +58,9 @@ angular.module('webUpdates')
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
+            /*
+             * Lazy rendering of attributes with scrollmarker directive
+             */
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
 
@@ -339,7 +342,7 @@ angular.module('webUpdates')
                         }
                     );
                 }
-                
+
             }
 
             function _uniformed( input ) {
