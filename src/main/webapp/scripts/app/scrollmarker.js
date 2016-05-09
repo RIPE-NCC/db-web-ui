@@ -6,15 +6,15 @@ angular.module('dbWebApp').directive('scrollmarker', ['$document', function ($do
             scope: false,
             link: function (scope, element) {
                 var debounced = _.debounce(function () {
-                    var raw = element[0];
-                    if (raw.getBoundingClientRect().top < document.documentElement.clientHeight + document.body.scrollTop) {
-                        scope.$emit('scrollmarker-event');
-                    }
+                    scope.$emit('scrollmarker-event');
                     element.addClass('hide');
                 }, 100);
                 var handleScroll = function () {
-                    if (!scope.attributesAllRendered) {
-                        element.removeClass('hide');
+                    var raw = element[0];
+                    if (scope.attributes && scope.nrAttributesToRender < scope.attributes.length) {
+                        if (raw.getBoundingClientRect().top < document.documentElement.clientHeight + document.body.scrollTop) {
+                            element.removeClass('hide');
+                        }
                         debounced();
                     }
                 };
