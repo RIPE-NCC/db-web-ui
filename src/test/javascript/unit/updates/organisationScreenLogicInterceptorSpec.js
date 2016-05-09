@@ -244,6 +244,35 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         expect(orgName[0].$$meta.$$isLir).toBeUndefined();
     });
 
+    it('should disable abuse-mailbox on Modify operation for LIRs', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        var abuseMailbox = after.getAllAttributesOnName('abuse-mailbox');
+        expect(abuseMailbox.length).toEqual(1);
+        expect(abuseMailbox[0].$$meta.$$disable).toBe(true);
+    });
+
+    it('should NOT disable abuse-mailbox on Modify operation for non-LIRs', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('org-type', 'OTHER');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        var abuseMailbox = after.getAllAttributesOnName('abuse-mailbox');
+        expect(abuseMailbox.length).toEqual(1);
+        expect(abuseMailbox[0].$$meta.$$isLir).toBeUndefined();
+
+    });
+
     it('should NOT disable mnt-by before-edit organisation on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
 
@@ -296,6 +325,9 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
     }, {
         name :'mnt-by',
         value :'WHAT-A-MESH2-MNT'
+    }, {
+        name :'abuse-mailbox',
+        value :'bla@ble.com'
     }, {
          name :'source',
          value :'RIPE'

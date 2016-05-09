@@ -223,6 +223,10 @@ angular.module('updates')
                         if(['address', 'phone', 'fax-no', 'e-mail', 'org-name', 'mnt-by'].indexOf(attr.name) > -1) {
                             attr.$$meta.$$isLir = true;
                         }
+
+                        if(attr.name === 'abuse-mailbox') {
+                            attr.$$meta.$$disable = true;
+                        }
                     });
                 }
             }
