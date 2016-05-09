@@ -343,7 +343,7 @@ angular.module('webUpdates')
                         }
                     );
                 }
-                
+
             }
 
             function _uniformed( input ) {
@@ -358,7 +358,7 @@ angular.module('webUpdates')
             }
 
             function canAttributeBeDuplicated(attr) {
-                return $scope.attributes.canAttributeBeDuplicated(attr) && !attr.$$meta.$$isLir;
+                return $scope.attributes.canAttributeBeDuplicated(attr) && !attr.$$meta.$$isLir && !attr.$$meta.$$disable;
             }
 
             function duplicateAttribute(attr) {
@@ -366,7 +366,7 @@ angular.module('webUpdates')
             }
 
             function canAttributeBeRemoved(attr) {
-                return $scope.attributes.canAttributeBeRemoved(attr) && !attr.$$meta.$$isLir;
+                return $scope.attributes.canAttributeBeRemoved(attr) && !attr.$$meta.$$isLir && !attr.$$meta.$$disable;
             }
 
             function removeAttribute(attr) {
