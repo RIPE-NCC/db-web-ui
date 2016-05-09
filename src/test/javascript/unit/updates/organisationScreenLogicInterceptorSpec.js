@@ -285,6 +285,39 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         expect(mntByList[0].$$meta.$$disable).toBeUndefined();
     });
 
+    it('should remove abuse-mailbox from organisation addable attributes when it is an LIR on Modify', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
+        var addableAttributes = _wrap('organisation', organisationSubject.getAddableAttributes('organisation', organisationSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'organisation', organisationSubject, addableAttributes);
+
+        var abuseMailbox = filteredAddableAttributes.getSingleAttributeOnName('abuse-mailbox');
+        expect(abuseMailbox).toBeUndefined();
+    });
+
+    it('should NOT remove abuse-mailbox from organisation addable attributes when it is an NON-LIR on Modify', function() {
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('org-type', 'OTHER');
+        var addableAttributes = _wrap('organisation', organisationSubject.getAddableAttributes('organisation', organisationSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'organisation', organisationSubject, addableAttributes);
+
+        var abuseMailbox = filteredAddableAttributes.getSingleAttributeOnName('abuse-mailbox');
+        expect(abuseMailbox).not.toBeUndefined();
+    });
+
+    it('should NOT remove abuse-mailbox from organisation addable attributes when it action is not Modify', function() {
+        var organisationSubject = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
+        var addableAttributes = _wrap('organisation', organisationSubject.getAddableAttributes('organisation', organisationSubject));
+
+        var filteredAddableAttributes = interceptor.beforeAddAttribute('Create', 'RIPE', 'organisation', organisationSubject, addableAttributes);
+
+        var abuseMailbox = filteredAddableAttributes.getSingleAttributeOnName('abuse-mailbox');
+        expect(abuseMailbox).not.toBeUndefined();
+    });
+
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
     };
