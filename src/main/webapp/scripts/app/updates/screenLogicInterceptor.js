@@ -130,7 +130,7 @@ angular.module('updates')
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
                     beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAttributes) {
-                        return _removeAbuseMailBoxIfLIR(method, source, objectType, objectAttributes, addableAttributes);
+                        return _removeAbuseMailBoxAndOrgIfLIR(method, source, objectType, objectAttributes, addableAttributes);
                     }
                 },
                 'peering-set': {
@@ -226,7 +226,7 @@ angular.module('updates')
                             attr.$$meta.$$isLir = true;
                         }
 
-                        if(attr.name === 'abuse-mailbox') {
+                        if(['org', 'abuse-mailbox'].indexOf(attr.name) > -1) {
                             attr.$$meta.$$disable = true;
                         }
                     });
@@ -254,11 +254,12 @@ angular.module('updates')
                 return attributes;
             }
 
-            function _removeAbuseMailBoxIfLIR(method, source, objectType, objectAttributes, addableAttributes) {
+            function _removeAbuseMailBoxAndOrgIfLIR(method, source, objectType, objectAttributes, addableAttributes) {
                 var orgType = objectAttributes.getSingleAttributeOnName('org-type');
 
                 if(method === 'Modify' && orgType.value === 'LIR') {
                     addableAttributes.removeAttributeWithName('abuse-mailbox');
+                    addableAttributes.removeAttributeWithName('org');
                 }
 
                 return addableAttributes;
