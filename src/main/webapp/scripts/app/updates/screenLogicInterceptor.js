@@ -129,7 +129,9 @@ angular.module('updates')
                     afterEdit: undefined,
                     afterSubmitSuccess: undefined,
                     afterSubmitError: undefined,
-                    beforeAddAttribute:undefined
+                    beforeAddAttribute: function (method, source, objectType, objectAttributes, addableAttributes) {
+                        return _removeAbuseMailBoxAndOrgIfLIR(method, source, objectType, objectAttributes, addableAttributes);
+                    }
                 },
                 'peering-set': {
                     beforeEdit: undefined,
@@ -223,6 +225,10 @@ angular.module('updates')
                         if(['address', 'phone', 'fax-no', 'e-mail', 'org-name', 'mnt-by'].indexOf(attr.name) > -1) {
                             attr.$$meta.$$isLir = true;
                         }
+
+                        if(['org', 'abuse-mailbox'].indexOf(attr.name) > -1) {
+                            attr.$$meta.$$disable = true;
+                        }
                     });
                 }
             }
@@ -246,6 +252,17 @@ angular.module('updates')
 
                 attributes.getSingleAttributeOnName('org-type').$$meta.$$disable = true;
                 return attributes;
+            }
+
+            function _removeAbuseMailBoxAndOrgIfLIR(method, source, objectType, objectAttributes, addableAttributes) {
+                var orgType = objectAttributes.getSingleAttributeOnName('org-type');
+
+                if(method === 'Modify' && orgType.value === 'LIR') {
+                    addableAttributes.removeAttributeWithName('abuse-mailbox');
+                    addableAttributes.removeAttributeWithName('org');
+                }
+
+                return addableAttributes;
             }
 
             function _disablePrimaryKeyIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
