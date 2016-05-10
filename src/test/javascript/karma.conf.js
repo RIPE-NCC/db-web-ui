@@ -92,7 +92,7 @@ module.exports = function (config) {
         // if true, it capture browsers, run tests and exit
         singleRun: false,
 
-        reporters: ['progress', 'coverage'],
+        reporters: ['coverage'],
         preprocessors: {
             'main/webapp/scripts/app/**/*.js': ['coverage']
         },
@@ -107,5 +107,4 @@ module.exports = function (config) {
             ]
         }
     });
-
 };
