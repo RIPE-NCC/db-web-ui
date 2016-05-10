@@ -92,7 +92,7 @@ module.exports = function (config) {
         // if true, it capture browsers, run tests and exit
         singleRun: false,
 
-        reporters: ['coverage'],
+        reporters: ['progress', 'coverage'],
         preprocessors: {
             'main/webapp/scripts/app/**/*.js': ['coverage']
         },
