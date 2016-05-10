@@ -19,7 +19,7 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
 
 // Configurable paths for the application
-    var hostname = 'localhost.dev.ripe.net';
+    var hostname = 'localhost.ripe.net';
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
         dist: 'src/main/webapp/dist'

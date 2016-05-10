@@ -127,9 +127,6 @@ angular.module('webUpdates')
                 if (!$scope.name) {
                     $scope.operation = $scope.CREATE_OPERATION;
 
-                    // set the statuses which apply to the objectType (if any)
-                    $scope.optionList.status = ResourceStatus.get($scope.objectType);
-
                     // Populate empty attributes based on meta-info
                     var mandatoryAttributesOnObjectType = WhoisResources.getMandatoryAttributesOnObjectType($scope.objectType);
                     if (_.isEmpty(mandatoryAttributesOnObjectType)) {
