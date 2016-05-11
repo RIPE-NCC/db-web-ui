@@ -82,7 +82,7 @@ angular.module('webUpdates')
              * Select status list for resources based on parent's status.
              */
             $scope.$on('resource-parent-found', function(event, parent) {
-                console.log('$on resource-parent-found', parent);
+                //$log.debug('$on resource-parent-found', parent);
                 var parentStatusValue, parentStatusAttr;
                 // if parent wasn't found but we got an event anyway, use the default
                 if (parent) {
