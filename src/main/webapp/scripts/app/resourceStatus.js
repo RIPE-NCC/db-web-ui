@@ -37,7 +37,7 @@ angular.module('dbWebApp')
                     {key: 'ASSIGNED PI', value: 'ASSIGNED PI'},
                     {key: 'LIR-PARTITIONED PI', value: 'LIR-PARTITIONED PI'}
                 ],
-                'ALLOCATED_UNSPECIFIED': [
+                'ALLOCATED UNSPECIFIED': [
                     {key: 'ALLOCATED PA', value: 'ALLOCATED PA'},
                     {key: 'ALLOCATED PI', value: 'ALLOCATED PI'},
                     {key: 'ALLOCATED UNSPECIFIED', value: 'ALLOCATED UNSPECIFIED'},
