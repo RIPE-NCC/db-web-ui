@@ -10,7 +10,7 @@ var page = require('./homePageObject');
 describe('The organisation editor', function () {
 
     beforeEach(function () {
-        browser.get('/#/webupdates/create/RIPE/organisation');
+        browser.get(browser.baseUrl + '/#/webupdates/create/RIPE/organisation');
         browser.addMockModule('dbWebAppE2E', mockModule.module);
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {

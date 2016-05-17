@@ -69,10 +69,7 @@ module.exports = function (grunt) {
                 keepAlive: true,
                 noColor: false,
                 collectorPort: 3001,
-                coverageDir: 'reports/e2e-coverage',
-                args: {
-                    baseUrl: 'http://localhost:9002'
-                }
+                coverageDir: 'reports/e2e-coverage'
             },
             e2e: {
                 options: {
