@@ -7,10 +7,12 @@ var parseString = require('xml2js').parseString;
 
 // Returns the second occurrence of the version number
 var parseVersionFromPomXml = function () {
-    var pomXml = fs.readFileSync('pom.xml', 'utf8');
+    var version = 0,
+        pomXml = fs.readFileSync('pom.xml', 'utf8');
     parseString(pomXml, function (err, result) {
-        return result.project.version[0];
+        version = result.project.version[0];
     });
+    return version;
 };
 
 module.exports = function (grunt) {
@@ -19,7 +21,7 @@ module.exports = function (grunt) {
     require('time-grunt')(grunt);
 
 // Configurable paths for the application
-    var hostname = 'localhost.ripe.net';
+    var hostname = '0.0.0.0';
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
         dist: 'src/main/webapp/dist'
@@ -39,9 +41,7 @@ module.exports = function (grunt) {
                 'compass'
             ],
             dist: [
-                'compass:dist',
-                'imagemin',
-                'svgmin'
+                //'compass:dist'
             ]
         },
 
@@ -387,7 +387,7 @@ module.exports = function (grunt) {
         },
         connect: {
             options: {
-                port: 9000,
+                port: 9080,
                 //protocol: 'https',
                 // Change this to '0.0.0.0' to access the server from outside.
                 hostname: hostname
@@ -408,7 +408,7 @@ module.exports = function (grunt) {
                     }
                 },
                 proxies: [{
-                    host: hostname,
+                    host: 'localhost',
                     context: '/api',
                     port: 8443,
                     https: true,
@@ -417,7 +417,7 @@ module.exports = function (grunt) {
                         '^/api': '/db-web-ui/api'
                     }
                 }, {
-                    host: hostname,
+                    host: 'localhost',
                     context: '/db-web-ui/api',
                     port: 8443,
                     https: true,
@@ -514,7 +514,7 @@ module.exports = function (grunt) {
         'jshint'
     ]);
 
-    grunt.registerTask('test', [
+    grunt.registerTask('unit-test', [
         'env:dev',
         'clean:unittest',
         'wiredep:test',
@@ -523,13 +523,18 @@ module.exports = function (grunt) {
         'karma'
     ]);
 
+    grunt.registerTask('test', [
+        'unit-test',
+        'e2e-coverage'
+    ]);
+
     grunt.registerTask('build', [
         'env:prod',
         'clean:dist',
         'wiredep:app',
         'preprocess:html',
         'ngconstant:prod',
-        'ngtemplates',
+        //'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
         'compass:server',
@@ -542,7 +547,7 @@ module.exports = function (grunt) {
         'wiredep:app',
         'preprocess:html',
         'ngconstant:dev',
-        'ngtemplates',
+        //'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
         'compass:server',
@@ -555,7 +560,7 @@ module.exports = function (grunt) {
         'wiredep:app',
         'preprocess:html',
         'ngconstant:prepdev',
-        'ngtemplates',
+        //'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
         'compass:server',

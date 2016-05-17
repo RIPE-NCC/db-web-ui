@@ -5,7 +5,7 @@ var page = require('./homePageObject');
 describe('webupdates homepage', function() {
 
     beforeEach(function() {
-        browser.get('index.html');
+        browser.get(browser.baseUrl);
         browser.addMockModule('dbWebAppE2E', mockModule.module);
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {

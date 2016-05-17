@@ -99,22 +99,32 @@ Grunt
 -----
 
 * \<no args\><br>
-  does a JSHint report for on all the JS files in the app
+  Does a JSHint report for on all the JS files in the app
 * serve<br>
-  starts a server on port 9000 which connects to a live backend. NOTE: doesn't work yet because Grunt can't
+  Starts a server on port 9080 which connects to a live backend. NOTE: doesn't work yet because Grunt can't
   negotiate with the https server -- partly due to a bug in a bug in a grunt dependency
+* test<br>
+  Shortcut tartget which runs the two test goals:
+  - unit-test
+  - e2e-coverage
+* unit-test<br>
+  Runs the karma unit tests and leaves a coverage report in ```./reports/unittest-coverage/lcov-report/index.html```
 * e2e-test<br>
-  runs the Protractor test suite (uses port 9002). Data resource is mocked.
+  Runs the Protractor tests on port 9002. These are the same tests as the e2e-coverage target but they run without
+  coverage so they are quicker.
 * e2e-no-test<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
-  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks.
+  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks (see ```_index_mocks.html```)
 * e2e-coverage<br>
-  Runs the E2E tests and shows coverage stats in two ways:
+  Runs the Protractor tests and shows coverage stats in two ways:
   - a text summary in the console
-  - a detailed html report at ./reports/coverage/e2e/lcov-report/index.html
+  - a detailed html report at ```./reports/e2e-coverage/lcov-report/index.html```
 
 Protractor
 ----------
+
+Tip: If you want run just one test then write ```fit``` (for 'focus it') instead of ```it```: i.e. ```fit(```*description*, *function*```);```
+
 
 ##### Notes on matchers
 
