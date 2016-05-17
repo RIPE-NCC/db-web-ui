@@ -102,8 +102,7 @@ module.exports = function (config) {
             type: 'lcov',
             dir: '../reports/unittest-coverage',
             reporters: [
-                {type: 'html', subdir: 'html-report'},
-                {type: 'json', subdir: './', file: 'coverage.json'}
+                { type: 'lcov', subdir: './' }
             ]
         }
     });

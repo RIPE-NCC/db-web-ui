@@ -119,6 +119,9 @@ Grunt
   Runs the Protractor tests and shows coverage stats in two ways:
   - a text summary in the console
   - a detailed html report at ```./reports/e2e-coverage/lcov-report/index.html```
+  - N.B. this task is designed to run on db-tools-1 only -- it won't work locally unless you change the line
+   containing the reference to db-tools-1 in protractor-e2e-coverage.conf.js
+  - [see the coverage results on SonarQube](http://db-tools-1:8088/view/db-web-ui/job/db-web-ui-coverage-ng/11/console)
 
 Protractor
 ----------
