@@ -70,7 +70,7 @@ describe('webupdates homepage', function() {
         expect(page.inpStatusList.get(5).getText()).toEqual('ASSIGNED PI');
     });
 
-    fit('should show an editor for inetnum', function() {
+    it('should show an editor for inetnum', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();

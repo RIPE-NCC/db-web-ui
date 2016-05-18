@@ -33,6 +33,7 @@ angular.module('dbWebApp')
                     {key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA'}
                 ],
                 'ALLOCATED PI': [
+                    {key: 'ASSIGNED ANYCAST', value: 'ASSIGNED ANYCAST'}, // *
                     {key: 'ASSIGNED PI', value: 'ASSIGNED PI'},
                     {key: 'LIR-PARTITIONED PI', value: 'LIR-PARTITIONED PI'}
                 ],
@@ -43,12 +44,15 @@ angular.module('dbWebApp')
                     {key: 'ASSIGNED ANYCAST', value: 'ASSIGNED ANYCAST'},
                     {key: 'ASSIGNED PA', value: 'ASSIGNED PA'},
                     {key: 'ASSIGNED PI', value: 'ASSIGNED PI'},
+                    {key: 'LEGACY', value: 'LEGACY'}, // *
                     {key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA'},
                     {key: 'LIR-PARTITIONED PI', value: 'LIR-PARTITIONED PI'}
                 ],
                 'ASSIGNED PA': [
+                    {key: 'ASSIGNED PA', value: 'ASSIGNED PA'} // *
                 ],
                 'ASSIGNED PI': [
+                    {key: 'ASSIGNED PI', value: 'ASSIGNED PI'} // *
                 ],
                 'EARLY-REGISTRATION': [
                 ],
@@ -56,13 +60,18 @@ angular.module('dbWebApp')
                     {key: 'LEGACY', value: 'LEGACY'}
                 ],
                 'LIR-PARTITIONED PA': [
-                    {key: 'ASSIGNED PA', value: 'ASSIGNED PA'}
+                    {key: 'ASSIGNED PA', value: 'ASSIGNED PA'},
+                    {key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA'}, // *
+                    {key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA'} // *
                 ],
                 'LIR-PARTITIONED PI': [
-                    {key: 'ASSIGNED PI', value: 'ASSIGNED PI'}
+                    {key: 'ASSIGNED PI', value: 'ASSIGNED PI'},
+                    {key: 'LIR-PARTITIONED PI', value: 'LIR-PARTITIONED PI'} // *
                 ],
                 'SUB_ALLOCATED PA': [
-                    {key: 'ASSIGNED PA', value: 'ASSIGNED PA'}
+                    {key: 'ASSIGNED PA', value: 'ASSIGNED PA'},
+                    {key: 'LIR-PARTITIONED PA', value: 'LIR-PARTITIONED PA'}, // *
+                    {key: 'SUB-ALLOCATED PA', value: 'SUB-ALLOCATED PA'} // *
                 ]
             },
             inet6num: {
@@ -80,6 +89,7 @@ angular.module('dbWebApp')
                 ],
                 'ALLOCATED-BY-LIR': [
                     {key: 'AGGREGATED-BY-LIR', value: 'AGGREGATED-BY-LIR'},
+                    {key: 'ALLOCATED-BY-LIR', value: 'ALLOCATED-BY-LIR'},
                     {key: 'ASSIGNED', value: 'ASSIGNED'}
                 ],
                 'ALLOCATED-BY-RIR': [
