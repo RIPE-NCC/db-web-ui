@@ -70,22 +70,28 @@ describe('webupdates homepage', function() {
         expect(page.inpStatusList.get(5).getText()).toEqual('ASSIGNED PI');
     });
 
-    it('should show an editor for inetnum', function() {
+    fit('should show an editor for inetnum', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual('Create "inetnum" object');
         expect(page.inpStatusLink.getText()).toEqual('Specifies the kind of resource.');
+        //page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
+        //page.inpStatusLink.click(); // click on dropdown to populate it.
+        //expect(page.inpStatus.isPresent()).toEqual(true);
+        //page.inpInetnum.click();
+        //page.inpInetnum.sendKeys('193.0.4.0 - 193.0.4.255');
+        //page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
+        //page.inpStatusLink.click(); // click on dropdown to populate it.
+        //expect(page.inpStatusList.count()).toBe(0);
+        //expect(page.inpStatusList.get(0).getText()).toEqual('ALLOCATED PA');
+        //
+        page.inpInetnum.sendKeys('213.159.160.0 - 213.159.190.255');
         page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
         page.inpStatusLink.click(); // click on dropdown to populate it.
-        expect(page.inpStatus.isPresent()).toEqual(true);
-        page.inpInetnum.click();
-        page.inpInetnum.sendKeys('193.0.4.0 - 193.0.4.255');
-        page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
-        page.inpStatusLink.click(); // click on dropdown to populate it.
-        expect(page.inpStatusList.count()).toBe(1);
-        expect(page.inpStatusList.get(0).getText()).toEqual('ASSIGNED PI');
+        expect(page.inpStatusList.count()).toBe(3);
+        expect(page.inpStatusList.get(0).getText()).toEqual('ASSIGNED PA');
     });
 
     it('should show an editor for inet-rtr', function() {

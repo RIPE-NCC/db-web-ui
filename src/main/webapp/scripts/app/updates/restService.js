@@ -15,7 +15,8 @@ angular.module('updates')
                     return $resource('api/whois/search', {
                             flags: 'lr',
                             'type-filter': objectType,
-                            'query-string': qs
+                            'query-string': qs,
+                            ignore404: true
                         });
                 };
 
