@@ -106,5 +106,4 @@ module.exports = function (config) {
             ]
         }
     });
-
 };

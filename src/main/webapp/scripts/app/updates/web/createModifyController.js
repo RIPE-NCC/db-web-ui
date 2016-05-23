@@ -64,7 +64,7 @@ angular.module('webUpdates')
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
 
-            $scope.$on('scrollmarker-event', function(evt) {
+            var showMoreAttributes = function() {
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
                     $scope.nrAttributesToRender+= 50; // increment
@@ -72,7 +72,32 @@ angular.module('webUpdates')
                 } else {
                     $scope.attributesAllRendered = true;
                 }
+            };
+
+            $scope.$on('scrollmarker-event', function(evt) {
+                showMoreAttributes();
             });
+
+            /*
+             * Select status list for resources based on parent's status.
+             */
+            $scope.$on('resource-parent-found', function(event, parent) {
+                //$log.debug('$on resource-parent-found', parent);
+                var parentStatusValue, parentStatusAttr;
+                // if parent wasn't found but we got an event anyway, use the default
+                if (parent) {
+                    parentStatusAttr = _.find(parent.attributes.attribute, function (attr) {
+                        return 'status' === attr.name;
+                    });
+                    if (parentStatusAttr && parentStatusAttr.value) {
+                        parentStatusValue = parentStatusAttr.value
+                    }
+                }
+                $scope.optionList.status = ResourceStatus.get($scope.objectType, parentStatusValue);
+                console.log('$scope.objectType, parentStatusValue', $scope.objectType, parentStatusValue);
+                console.log('$scope.optionList.status', $scope.optionList.status);
+            });
+
 
             _initialisePage();
 
@@ -95,6 +120,9 @@ angular.module('webUpdates')
                 if (!_.isUndefined($stateParams.name)) {
                     $scope.name = decodeURIComponent($stateParams.name);
                 }
+                // set the statuses which apply to the objectType (if any)
+                $scope.optionList.status = ResourceStatus.get($scope.objectType);
+
                 var noRedirect = $stateParams.noRedirect;
 
                 $log.debug('Url params: source:' + $scope.source +
@@ -123,6 +151,7 @@ angular.module('webUpdates')
                 $scope.CREATE_OPERATION = 'Create';
                 $scope.MODIFY_OPERATION = 'Modify';
                 $scope.PENDING_OPERATION = 'Pending';
+
                 // Determine if this is a create or a modify
                 if (!$scope.name) {
                     $scope.operation = $scope.CREATE_OPERATION;
@@ -340,6 +369,24 @@ angular.module('webUpdates')
                     );
                 }
 
+                if ($scope.operation === $scope.CREATE_OPERATION && attribute.value) {
+                    if ($scope.objectType === 'aut-num' && attribute.name === 'aut-num' ||
+                        $scope.objectType === 'inetnum' && attribute.name === 'inetnum' ||
+                        $scope.objectType === 'inet6num' && attribute.name === 'inet6num') {
+
+                        $log.debug('looking for parent of ' + attribute.value);
+                        RestService.fetchParentResource($scope.objectType, attribute.value).get(function (result) {
+                            var parent;
+                            if (result && result.objects && angular.isArray(result.objects.object)) {
+                                parent = result.objects.object[0];
+                            }
+                            $scope.$emit('resource-parent-found', parent);
+                        }, function() {
+                            $log.debug('not found');
+                            $scope.$emit('resource-parent-found', null);
+                        });
+                    }
+                }
             }
 
             function _uniformed( input ) {

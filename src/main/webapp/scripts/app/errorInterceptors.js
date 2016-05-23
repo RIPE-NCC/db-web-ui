@@ -35,11 +35,16 @@ angular.module('dbWebApp')
                 }
                 if (_isNotFoundError(response.status) && _.startsWith(response.config.url, 'api/whois-internal/')) {
                     toBeSwallowed = true;
+                    // TODO: here we don't fail on 404s so we can find parents of inet(6)nums
+                } else if (_isNotFoundError(response.status) && response.config.params && response.config.params.ignore404 === true) {
+                    toBeSwallowed = true;
                 }
-                //TODO - We can remove the following code after WhoIs 1.86 deployment
+                // TODO - We can remove the following code after WhoIs 1.86 deployment
                 // Code added to prevent 500 exploding to the user during autocomplete.
                 // The real way to fix it is in Whois, but we're waiting it to be deployed.
-                if (_isServerError(response.status) && _.startsWith(response.config.url, 'api/whois/autocomplete')) {
+                // NOTE..........
+                // Added code to stop parent lookups from forcing nav to 404.html if they aren't found.
+                if ((_isServerError(response.status) || _isNotFoundError(response.status)) && _.startsWith(response.config.url, 'api/whois/autocomplete')) {
                     toBeSwallowed = true;
                 }
             }

@@ -87,7 +87,7 @@
                        autocomplete="off"
                        />
 
-            <span ng-if="attribute.$$meta.$$isEnum">
+            <span ng-if="attribute.$$meta.$$isEnum && attribute.name !== 'status'">
                  <ui-select name="{{attribute.name}}"
                             class="form-control"
                             style="min-width: 300px;"
@@ -96,6 +96,19 @@
                             theme="select2">
                      <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
                      <ui-select-choices repeat="item.key as item in enumAutocomplete(attribute) | filter: $select.search">
+                         <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
+                     </ui-select-choices>
+                 </ui-select>
+            </span>
+            <span ng-if="attribute.$$meta.$$isEnum && attribute.name === 'status'">
+                 <ui-select name="{{attribute.name}}"
+                            class="form-control"
+                            style="min-width: 300px;"
+                            ng-model="attribute.value"
+                            ng-disabled="attribute.$$meta.$$disable"
+                            theme="select2">
+                     <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
+                     <ui-select-choices repeat="item.key as item in optionList[attribute.name] | filter: $select.search">
                          <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
                      </ui-select-choices>
                  </ui-select>
