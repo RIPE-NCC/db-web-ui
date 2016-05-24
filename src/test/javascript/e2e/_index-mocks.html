@@ -2255,16 +2255,13 @@
                     }
                 },
                 inet6numAutoComplete: {
-                    req: 'api/whois/autocomplete?extended=true&field=inet6num&query=2001:888:2000::%2F36',
+                    req: 'api/whois/autocomplete?extended=true&field=inet6num&query=2001:888:2000::%2F38',
                     resp: {
-                        data: [{
-                            "key": "2001:888:2000::/36",
-                            "type": "inet6num"
-                        }]
+                        data: []
                     }
                 },
                 inet6numParentQuery: {
-                    req: 'api/whois/search?flags=lr&query-string=2001:888:2000::%2F36&type-filter=inet6num',
+                    req: 'api/whois/search?flags=lr&ignore404=true&query-string=2001:888:2000::%2F38&type-filter=inet6num',
                     resp: {
                         data: {
                             "service": {
@@ -2286,7 +2283,7 @@
                                 },
                                 "query-strings": {
                                     "query-string": [{
-                                        "value": "2001:888:2000::/36"
+                                        "value": "2001:888:2000::/38"
                                     }]
                                 },
                                 "sources": {}
@@ -2296,7 +2293,7 @@
                                     "type": "inet6num",
                                     "link": {
                                         "type": "locator",
-                                        "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:888::/29"
+                                        "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:888:2000::/36"
                                     },
                                     "source": {
                                         "id": "ripe"
@@ -2304,27 +2301,25 @@
                                     "primary-key": {
                                         "attribute": [{
                                             "name": "inet6num",
-                                            "value": "2001:888::/29"
+                                            "value": "2001:888:2000::/36"
                                         }]
                                     },
                                     "attributes": {
                                         "attribute": [{
                                             "name": "inet6num",
-                                            "value": "2001:888::/29"
+                                            "value": "2001:888:2000::/36"
                                         }, {
                                             "name": "netname",
-                                            "value": "NL-XS4ALL-20020807"
+                                            "value": "XS4ALL"
+                                        }, {
+                                            "name": "descr",
+                                            "value": "XS4ALL Internet BV"
+                                        }, {
+                                            "name": "descr",
+                                            "value": "Colocation services"
                                         }, {
                                             "name": "country",
                                             "value": "NL"
-                                        }, {
-                                            "link": {
-                                                "type": "locator",
-                                                "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-XIB1-RIPE"
-                                            },
-                                            "name": "org",
-                                            "value": "ORG-XIB1-RIPE",
-                                            "referenced-type": "organisation"
                                         }, {
                                             "link": {
                                                 "type": "locator",
@@ -2343,37 +2338,30 @@
                                             "referenced-type": "role"
                                         }, {
                                             "name": "status",
-                                            "value": "ALLOCATED-BY-RIR"
+                                            "value": "AGGREGATED-BY-LIR"
+                                        }, {
+                                            "name": "assignment-size",
+                                            "value": "48"
+                                        }, {
+                                            "name": "remarks",
+                                            "value": "Please send email to \"abuse@xs4all.nl\" for complaints"
+                                        }, {
+                                            "name": "remarks",
+                                            "value": "regarding portscans, DoS attacks and spam."
                                         }, {
                                             "link": {
                                                 "type": "locator",
-                                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT"
                                             },
                                             "name": "mnt-by",
-                                            "value": "RIPE-NCC-HM-MNT",
-                                            "referenced-type": "mntner"
-                                        }, {
-                                            "link": {
-                                                "type": "locator",
-                                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT"
-                                            },
-                                            "name": "mnt-lower",
-                                            "value": "XS4ALL-MNT",
-                                            "referenced-type": "mntner"
-                                        }, {
-                                            "link": {
-                                                "type": "locator",
-                                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT"
-                                            },
-                                            "name": "mnt-routes",
                                             "value": "XS4ALL-MNT",
                                             "referenced-type": "mntner"
                                         }, {
                                             "name": "created",
-                                            "value": "2014-05-15T11:44:49Z"
+                                            "value": "2011-02-16T08:38:25Z"
                                         }, {
                                             "name": "last-modified",
-                                            "value": "2014-05-15T11:44:49Z"
+                                            "value": "2011-02-16T14:41:14Z"
                                         }, {
                                             "name": "source",
                                             "value": "RIPE",
@@ -2382,8 +2370,7 @@
                                     },
                                     "tags": {
                                         "tag": [{
-                                            "id": "RIPE-REGISTRY-RESOURCE",
-                                            "data": null
+                                            "id": "RIPE-USER-RESOURCE"
                                         }]
                                     }
                                 }]
