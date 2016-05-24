@@ -2,6 +2,7 @@
 'use strict';
 var fs = require('fs');
 var serveStatic = require('serve-static');
+var os = require('os');
 
 var parseString = require('xml2js').parseString;
 
@@ -71,9 +72,14 @@ module.exports = function (grunt) {
                 collectorPort: 3001,
                 coverageDir: 'reports/e2e-coverage'
             },
-            e2e: {
+            e2eLocal: {
                 options: {
-                    configFile: 'src/test/javascript/protractor-e2e-coverage.conf.js'
+                    configFile: 'src/test/javascript/protractor-e2e-coverage-local.conf.js'
+                }
+            },
+            e2eRemote: {
+                options: {
+                    configFile: 'src/test/javascript/protractor-e2e-coverage-remote.conf.js'
                 }
             }
         },
@@ -443,6 +449,10 @@ module.exports = function (grunt) {
         }
     });
 
+    var e2eLocalOrRemote = function() {
+        return os.hostname().indexOf('db-tools-1.') === 0 ? 'e2eRemote' : 'e2eLocal';
+    };
+
     grunt.loadNpmTasks('grunt-contrib-connect');
 
     grunt.loadNpmTasks('grunt-protractor-runner');
@@ -488,7 +498,7 @@ module.exports = function (grunt) {
         'instrument',
         'concurrent:server',
         'connect:e2e',
-        'protractor_coverage',
+        'protractor_coverage:' + e2eLocalOrRemote(),
         'makeReport'
     ]);
 

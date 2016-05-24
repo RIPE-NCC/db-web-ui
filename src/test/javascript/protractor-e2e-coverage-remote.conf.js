@@ -1,14 +1,19 @@
+/* global exports, require*/
+var os = require('os');
+
+var baseUrl = function() {
+    return [
+        'http://',
+        os.hostname(),
+        ':9002'
+    ].join('');
+};
+
 exports.config = {
-    //chromeDriver: '../lib/chromedriver',
-    //seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
 
     // Spec patterns are relative to the location of this config.
     specs: [
         './src/test/javascript/e2e/*Spec.js'
-        //'**/e2e/createOrganisationSpec.js'
-        //'e2e/modifyAutNumSpec.js',
-        //'e2e/modifyRipeResourceSpec.js'
-        //'e2e/navigateToObjectCreationSpec.js
     ],
 
     capabilities: {
@@ -23,13 +28,12 @@ exports.config = {
 
     // A base URL for your application under test. Calls to protractor.get()
     // with relative paths will be prepended with this.
-    //baseUrl: 'http://db-tools-1.ripe.net:9002',
-    baseUrl: 'http://db-tools-1.ripe.net:9002',
+    baseUrl: baseUrl(),
 
     jasmineNodeOpts: {
         onComplete: null,
         isVerbose: false,
-        showColors: true,
+        showColors: false,
         includeStackTrace: true,
         defaultTimeoutInterval: 10000
     }
