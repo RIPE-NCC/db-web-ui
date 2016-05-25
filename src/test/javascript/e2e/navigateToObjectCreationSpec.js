@@ -52,7 +52,7 @@ describe('webupdates homepage', function() {
         expect(page.heading.getText()).toEqual('Create "filter-set" object');
     });
 
-    fit('should show an editor for inet6num', function() {
+    it('should show an editor for inet6num', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inet6num').click();
         page.btnNavigateToCreate.click();
@@ -66,7 +66,7 @@ describe('webupdates homepage', function() {
         expect(page.inpStatusList.get(1).getText()).toEqual('ASSIGNED');
     });
 
-    fit('should show an editor for inetnum', function() {
+    it('should show an editor for inetnum', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();
