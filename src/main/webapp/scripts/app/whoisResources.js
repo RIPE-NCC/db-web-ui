@@ -476,7 +476,6 @@ angular.module('dbWebApp')
             });
             var foundAt = _.findIndex(this, { name: attr.name, value: attr.value });
             var attrCopy = { name: attr.name, value: '', $$meta: metaClone };
-            $log.debug('splicing attrCopy into attributes at ' + foundAt, attrCopy);
             this.splice(foundAt + 1, 0, attrCopy);
             return this;
         };
@@ -498,16 +497,16 @@ angular.module('dbWebApp')
         };
 
         var addAttributeAfter = function(attr, after) {
-            var result = [];
-
-            _.each(this, function(next){
-                result.push(next);
-                if (next.name === after.name && next.value === after.value) {
-                    result.push({name:attr.name, value:attr.value});
-                }
-            });
-
-            return result;
+            var metaClone = {};
+            if (typeof attr.$$meta === 'object') {
+                Object.keys(attr.$$meta).forEach(function(itemKey) {
+                    metaClone[itemKey] = attr.$$meta[itemKey];
+                });
+            }
+            var foundAt = _.findIndex(this, { name: after.name, value: after.value });
+            var attrCopy = { name: attr.name, value: attr.value, $$meta: metaClone };
+            this.splice(foundAt + 1, 0, attrCopy);
+            return this;
         };
 
         var getAddableAttributes = function(objectType,attributes) {
