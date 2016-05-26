@@ -530,8 +530,8 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('test', [
-        'unit-test',
-        'e2e-coverage'
+        'unit-test'//,
+        //'e2e-coverage'
     ]);
 
     grunt.registerTask('build', [
