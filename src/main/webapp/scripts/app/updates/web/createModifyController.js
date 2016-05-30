@@ -606,7 +606,7 @@ angular.module('webUpdates')
                         if ($scope.maintainers.sso.length > 0) {
 
                             $scope.maintainers.objectOriginal = [];
-                            // pupulate ui-select box with sso-mntners
+                            // populate ui-select box with sso-mntners
                             $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
 
                             // copy mntners to attributes (for later submit)
@@ -624,6 +624,9 @@ angular.module('webUpdates')
                             $log.debug('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
                             $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
 
+                        } else {
+                            var attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
+                            $scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
                         }
                     }, function (error) {
                         $scope.restCalInProgress = false;
