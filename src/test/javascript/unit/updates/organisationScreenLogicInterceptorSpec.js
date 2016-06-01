@@ -380,6 +380,36 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         expect(orgAttr).not.toBeUndefined();
     });
 
+    it('should disable mnt-ref with ripe maintainers on modify', function() {
+
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('mnt-ref', 'RIPE-NCC-HM-MNT');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        var mntRef = attributes.getSingleAttributeOnName('mnt-ref');
+        expect(mntRef.$$meta.$$disable).toBe(true);
+    });
+
+    it('should NOT disable mnt-ref with non-ripe maintainers on modify', function() {
+
+        var organisationSubject = _wrap('organisation', organisationAttributes);
+        organisationSubject.setSingleAttributeOnName('mnt-ref', 'NON-RIPE-MNT');
+
+        var errors = [];
+        var warnings = [];
+        var infos = [];
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
+
+        var mntRef = attributes.getSingleAttributeOnName('mnt-ref');
+        expect(mntRef.$$meta.$$disable).toBeUndefined();
+    });
+
+
+
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
     };
