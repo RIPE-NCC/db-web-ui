@@ -70,7 +70,7 @@ angular.module('updates')
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
-                        _disableRipeMntRefIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -84,7 +84,7 @@ angular.module('updates')
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
-                        _disableRipeMntRefIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -126,7 +126,7 @@ angular.module('updates')
                     beforeEdit:
                         function (method, source, objectType, attributes, errors, warnings, infos) {
                             _checkLirAttributes(method, source, objectType, attributes, errors, warnings, infos);
-                            _disableRipeMntRefIfModifying(method, source, objectType, attributes, errors, warnings, infos);
+                            _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                             return _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
                         },
                     afterEdit: undefined,
@@ -280,7 +280,7 @@ angular.module('updates')
                 return attributes;
             }
 
-            function _disableRipeMntRefIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
+            function _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
                 var disable = function(type) {
                     _.forEach(attributes.getAllAttributesOnName(type), function (attr) {
                         if(MntnerService.isNccMntner(attr.value)) {
