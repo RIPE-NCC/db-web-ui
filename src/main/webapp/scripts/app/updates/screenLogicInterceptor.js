@@ -291,6 +291,7 @@ angular.module('updates')
                     disable('mnt-ref');
                     disable('mnt-domains');
                     disable('mnt-lower');
+                    disable('mnt-routes');
                 }
 
                 return attributes;

@@ -146,6 +146,29 @@ describe('updates: InetNum ScreenLogicInterceptor', function () {
         expect(mntLower.$$meta.$$disable).toBeFalsy();
     });
 
+    it('should disable mnt-routes with ripe maintainers on modify', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('mnt-routes', 'RIPE-NCC-HM-MNT');
+
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetNumSubject);
+
+        var mntLower = attributes.getSingleAttributeOnName('mnt-routes');
+        expect(mntLower.$$meta.$$disable).toBe(true);
+    });
+
+    it('should NOT disable mnt-routes with non-ripe maintainers on modify', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('mnt-routes', 'NON-RIPE-MNT');
+
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetNumSubject);
+
+        var mntLower = attributes.getSingleAttributeOnName('mnt-routes');
+        expect(mntLower.$$meta.$$disable).toBeFalsy();
+    });
+
+
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
     };
@@ -182,6 +205,9 @@ describe('updates: InetNum ScreenLogicInterceptor', function () {
         value :'jome-mnt'
     }, {
         name :'mnt-lower',
+        value :'jome-mnt'
+    }, {
+        name :'mnt-routes',
         value :'jome-mnt'
     }, {
         name :'notify',
