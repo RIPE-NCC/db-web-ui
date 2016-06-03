@@ -102,6 +102,49 @@ describe('updates: InetNum ScreenLogicInterceptor', function () {
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
+    it('should disable mnt-domains with ripe maintainers on modify', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject .setSingleAttributeOnName('mnt-domains', 'RIPE-NCC-HM-MNT');
+
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetNumSubject);
+
+        var mntDomains = attributes.getSingleAttributeOnName('mnt-domains');
+        expect(mntDomains.$$meta.$$disable).toBe(true);
+    });
+
+    it('should NOT disable mnt-domains with non-ripe maintainers on modify', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('mnt-domains', 'NON-RIPE-MNT');
+
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetNumSubject);
+
+        var mntDomains = attributes.getSingleAttributeOnName('mnt-domains');
+        expect(mntDomains.$$meta.$$disable).toBeFalsy();
+    });
+
+    it('should disable mnt-lower with ripe maintainers on modify', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('mnt-lower', 'RIPE-NCC-HM-MNT');
+
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetNumSubject);
+
+        var mntLower = attributes.getSingleAttributeOnName('mnt-lower');
+        expect(mntLower.$$meta.$$disable).toBe(true);
+    });
+
+    it('should NOT disable mnt-lower with non-ripe maintainers on modify', function() {
+
+        var inetNumSubject = _wrap('inetnum', inetNumAttributes);
+        inetNumSubject.setSingleAttributeOnName('mnt-lower', 'NON-RIPE-MNT');
+
+        var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inetnum', inetNumSubject);
+
+        var mntLower = attributes.getSingleAttributeOnName('mnt-lower');
+        expect(mntLower.$$meta.$$disable).toBeFalsy();
+    });
 
     var _wrap = function(type, attrs) {
         return whoisResources.wrapAndEnrichAttributes(type, attrs);
@@ -136,6 +179,9 @@ describe('updates: InetNum ScreenLogicInterceptor', function () {
         value :'jome-mnt'
     }, {
         name :'mnt-domains',
+        value :'jome-mnt'
+    }, {
+        name :'mnt-lower',
         value :'jome-mnt'
     }, {
         name :'notify',

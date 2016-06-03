@@ -70,6 +70,7 @@ angular.module('updates')
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -83,6 +84,7 @@ angular.module('updates')
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -124,6 +126,7 @@ angular.module('updates')
                     beforeEdit:
                         function (method, source, objectType, attributes, errors, warnings, infos) {
                             _checkLirAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                            _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                             return _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
                         },
                     afterEdit: undefined,
@@ -272,6 +275,22 @@ angular.module('updates')
                             attr.$$meta.$$disable = true;
                         }
                     });
+                }
+
+                return attributes;
+            }
+
+            function _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
+                var disable = function(type) {
+                    _.forEach(attributes.getAllAttributesOnName(type), function (attr) {
+                        attr.$$meta.$$disable = MntnerService.isNccMntner(attr.value);
+                    });
+                }
+
+                if( method === 'Modify') {
+                    disable('mnt-ref');
+                    disable('mnt-domains');
+                    disable('mnt-lower');
                 }
 
                 return attributes;
