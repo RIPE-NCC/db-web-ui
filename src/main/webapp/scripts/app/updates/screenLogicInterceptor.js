@@ -283,9 +283,7 @@ angular.module('updates')
             function _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
                 var disable = function(type) {
                     _.forEach(attributes.getAllAttributesOnName(type), function (attr) {
-                        if(MntnerService.isNccMntner(attr.value)) {
-                            attr.$$meta.$$disable = true;
-                        }
+                        attr.$$meta.$$disable = MntnerService.isNccMntner(attr.value);
                     });
                 }
 

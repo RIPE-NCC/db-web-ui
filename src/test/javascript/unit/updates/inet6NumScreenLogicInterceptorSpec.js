@@ -121,7 +121,7 @@ describe('updates: Inet6Num ScreenLogicInterceptor', function () {
         var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inet6num', inetNumSubject);
 
         var mntDomains = attributes.getSingleAttributeOnName('mnt-domains');
-        expect(mntDomains.$$meta.$$disable).toBeUndefined();
+        expect(mntDomains.$$meta.$$disable).toBeFalsy();
     });
 
     it('should disable mnt-lower with ripe maintainers on modify', function() {
@@ -143,7 +143,7 @@ describe('updates: Inet6Num ScreenLogicInterceptor', function () {
         var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'inet6num', inetNumSubject);
 
         var mntLower = attributes.getSingleAttributeOnName('mnt-lower');
-        expect(mntLower.$$meta.$$disable).toBeUndefined();
+        expect(mntLower.$$meta.$$disable).toBeFalsy();
     });
 
     var _wrap = function(type, attrs) {

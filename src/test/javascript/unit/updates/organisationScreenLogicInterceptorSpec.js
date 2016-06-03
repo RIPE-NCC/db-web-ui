@@ -405,7 +405,7 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         var attributes = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
 
         var mntRef = attributes.getSingleAttributeOnName('mnt-ref');
-        expect(mntRef.$$meta.$$disable).toBeUndefined();
+        expect(mntRef.$$meta.$$disable).toBeFalsy();
     });
 
 
