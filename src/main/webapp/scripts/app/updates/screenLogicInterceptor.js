@@ -70,6 +70,7 @@ angular.module('updates')
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -83,6 +84,7 @@ angular.module('updates')
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
                     afterEdit: undefined,
@@ -315,6 +317,22 @@ angular.module('updates')
                     attr.$$meta.$$disable = true;
                 }
                 attr = attributes.getSingleAttributeOnName('org');
+                if (attr) {
+                    attr.$$meta.$$disable = true;
+                }
+            }
+
+            function _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, info) {
+                _.find(attributes.getAllAttributesOnName('mnt-by'), function (mntBy) {
+                        if(mntBy.value === 'RIPE-NCC-HM-MNT') {
+                            // for allocations
+                            var attr;
+                            attr = attributes.getSingleAttributeOnName('netname');
+                            attr.$$meta.$$disable = true;
+                        }
+                    }
+                )
+                var attr = attributes.getSingleAttributeOnName('assignment-size');
                 if (attr) {
                     attr.$$meta.$$disable = true;
                 }
