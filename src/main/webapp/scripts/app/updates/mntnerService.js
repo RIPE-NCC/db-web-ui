@@ -9,6 +9,8 @@ angular.module('updates')
         var nccMntners = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT','RIPE-NCC-HM-PI-MNT','RIPE-GII-MNT','RIPE-NCC-MNT','RIPE-NCC-RPSL-MNT',
                 'RIPE-DBM-MNT','RIPE-NCC-LOCKED-MNT','RIPE-DBM-UNREFERENCED-CLEANUP-MNT','RIPE-ERX-MNT','RIPE-NCC-LEGACY-MNT'];
 
+        var nccEndMntner = 'RIPE-NCC-END-MNT';
+
         mntnerService.isRemovable = function(mntnerKey) {
             // Should be possible to remove RIPE-NCC-RPSL-MNT, but allowed to add it
             if (mntnerKey.toUpperCase() === 'RIPE-NCC-RPSL-MNT') {
@@ -20,6 +22,10 @@ angular.module('updates')
         mntnerService.isNccMntner = function(mntnerKey) {
             return _.includes(nccMntners, mntnerKey.toUpperCase());
         };
+
+        mntnerService.isNccEndUserMntner = function(mntnerKey) {
+            return nccEndMntner === mntnerKey.toUpperCase();
+        }
 
         mntnerService.isMntnerOnlist = function(list, mntner) {
             var status = _.any(list, function (item) {
