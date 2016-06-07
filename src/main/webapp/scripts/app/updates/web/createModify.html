@@ -35,7 +35,7 @@
                close-on-select="true"
                on-select="onMntnerAdded($item, $model)"
                on-remove="onMntnerRemoved($item, $model)"
-               ng-disabled="isLirObject() || isHMObject()"
+               ng-disabled="isLirObject()"
                ng-if="uiSelectTemplateReady">
 
         <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !isRemovable($item.key) || isLirObject() || isHMObject()"

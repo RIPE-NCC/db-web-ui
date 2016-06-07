@@ -343,15 +343,15 @@ angular.module('updates')
             }
 
             function _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, info) {
-                // disable netname on all resources with no ncc end user mntner
-                if (_.findIndex(attributes.getAllAttributesOnName('mnt-by'), function (mntBy) {
-                        return MntnerService.isNccEndUserMntner(mntBy.value);
-                    }) < 0) { // findIndex returns -1 if not found
+                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED BY LIR', 'ALLOCATED BY RIR'];
+
+                if(_.includes(allocationStatuses, attributes.getSingleAttributeOnName('status').value)) {
                     var attr = attributes.getSingleAttributeOnName('netname');
                     if(attr) {
                         attr.$$meta.$$disable = true;
                     }
                 }
+
                 var attr = attributes.getSingleAttributeOnName('assignment-size');
                 if (attr) {
                     attr.$$meta.$$disable = true;

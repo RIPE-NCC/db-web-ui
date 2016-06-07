@@ -55,7 +55,6 @@ angular.module('webUpdates')
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
             $scope.isLirObject = isLirObject;
-            $scope.isHMObject = isHMObject;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
@@ -452,10 +451,6 @@ angular.module('webUpdates')
                 return !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
             }
 
-            function isHMObject() {
-                return !!_.find($scope.attributes, {name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'});
-            }
-
             function deleteObject() {
                 WebUpdatesCommons.navigateToDelete($scope.source, $scope.objectType, $scope.name, STATE.MODIFY);
             }
@@ -574,7 +569,7 @@ angular.module('webUpdates')
              */
 
             function _isAllocation() {
-                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED BY LIR', 'ALLOCATED BY RIR'];
+                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED BY LIR', 'ALLOCATED BY RIR'];
                 var status = $scope.attributes.getSingleAttributeOnName('status');
                 return _.includes(allocationStatuses, status.value);
             }
