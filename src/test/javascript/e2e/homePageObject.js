@@ -50,6 +50,7 @@ module.exports = {
     inpEmail: element(by.id('createForm')).element(by.name('e-mail')),
     inpNetname: element(by.id('createForm')).element(by.name('netname')),
     inpAssignmentSize: element(by.id('createForm')).element(by.name('assignment-size')),
+    inpMntnerBox: element(by.id('createForm')).element(by.id('selectMaintainerDropdown')),
     inpAbuseC: element(by.id('createForm')).element(by.name('abuse-c')),
     inpMntRef: element(by.id('createForm')).element(by.name('mnt-ref')),
     inpSource: element(by.id('createForm')).element(by.name('source')),

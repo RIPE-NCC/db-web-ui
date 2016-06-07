@@ -343,7 +343,7 @@ angular.module('updates')
             }
 
             function _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, info) {
-                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED BY LIR', 'ALLOCATED BY RIR'];
+                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR'];
 
                 if(_.includes(allocationStatuses, attributes.getSingleAttributeOnName('status').value)) {
                     var attr = attributes.getSingleAttributeOnName('netname');
