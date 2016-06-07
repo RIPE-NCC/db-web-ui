@@ -55,6 +55,7 @@ angular.module('webUpdates')
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
             $scope.isLirObject = isLirObject;
+            $scope.isHMObject = isHMObject;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
@@ -446,6 +447,10 @@ angular.module('webUpdates')
 
             function isLirObject() {
                 return !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
+            }
+
+            function isHMObject() {
+                return !!_.find($scope.attributes, {name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'});
             }
 
             function deleteObject() {
