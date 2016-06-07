@@ -446,6 +446,9 @@ angular.module('webUpdates')
             }
 
             function isLirObject() {
+                if(_isAllocation()) {
+                    return true;
+                }
                 return !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
             }
 
@@ -569,6 +572,12 @@ angular.module('webUpdates')
             /*
              * private methods
              */
+
+            function _isAllocation() {
+                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED BY LIR', 'ALLOCATED BY RIR'];
+                var status = $scope.attributes.getSingleAttributeOnName('status');
+                return _.includes(allocationStatuses, status.value);
+            }
 
             function _warnForNonSubstitutableUtf8(attribute, userInput) {
                 if( !CharsetTools.isLatin1(userInput)) {
