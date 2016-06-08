@@ -11,6 +11,9 @@ angular.module('webUpdates')
             $scope.submit = submit;
             $scope.isFormValid = isFormValid;
             $scope.fieldVisited = fieldVisited;
+            $scope.getAttributeDescription = getAttributeDescription;
+            $scope.getAttributeSyntax = getAttributeSyntax;
+
 
             _initialisePage();
 
@@ -162,4 +165,11 @@ angular.module('webUpdates')
                 return uid;
             }
 
+            function getAttributeDescription(attrName) {
+                return WhoisResources.getAttributeDescription($scope.objectType, attrName);
+            }
+
+            function getAttributeSyntax(attrName) {
+                return WhoisResources.getAttributeSyntax($scope.objectType, attrName);
+            }
         }]);
