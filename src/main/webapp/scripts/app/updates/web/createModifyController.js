@@ -568,7 +568,7 @@ angular.module('webUpdates')
             function _isAllocation() {
                 var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR'];
                 var status = $scope.attributes.getSingleAttributeOnName('status');
-                return _.includes(allocationStatuses, status.value);
+                return status && _.includes(allocationStatuses, status.value);
             }
 
             function _warnForNonSubstitutableUtf8(attribute, userInput) {
