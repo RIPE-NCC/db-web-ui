@@ -1,7 +1,10 @@
-'use strict';
+/*global angular*/
 
-angular.module('textUpdates')
-    .service('TextCommons', ['$state', '$log', '$q', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService',
+(function () {
+    'use strict';
+
+    angular.module('textUpdates').service('TextCommons', ['$state', '$log', '$q', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService',
+
         function ($state, $log, $q, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService) {
 
             this.enrichWithDefaults = function (objectSource, objectType, attributes) {
@@ -15,7 +18,7 @@ angular.module('textUpdates')
                 attributes.removeAttributeWithName('created');
                 attributes.removeAttributeWithName('last-modified');
                 attributes.removeAttributeWithName('changed');
-            }
+            };
 
             this.validate = function (objectType, attributes, errors) {
                 var unknownAttrs = _.filter(attributes, function (attr) {
@@ -24,26 +27,26 @@ angular.module('textUpdates')
                 if (!_.isEmpty(unknownAttrs)) {
                     _.each(unknownAttrs, function (attr) {
                         var msg = attr.name + ': Unknown attribute';
-                        if(_.isUndefined(errors)) {
+                        if (_.isUndefined(errors)) {
                             AlertService.addGlobalError(msg);
                         } else {
-                            errors.push({plainText:msg});
+                            errors.push({plainText: msg});
                         }
                     });
                     return;
                 }
 
-                var errorCount=0;
+                var errorCount = 0;
                 var mandatoryAtrs = WhoisResources._getMetaAttributesOnObjectType(objectType, true);
-                _.each(mandatoryAtrs, function(meta) {
-                    if( _.any(attributes, function(attr) {
-                        return attr.name === meta.name;
-                    }) === false ) {
-                        var msg = meta.name + ': ' + "Missing mandatory attribute";
-                        if(_.isUndefined(errors)) {
+                _.each(mandatoryAtrs, function (meta) {
+                    if (_.any(attributes, function (attr) {
+                            return attr.name === meta.name;
+                        }) === false) {
+                        var msg = meta.name + ': Missing mandatory attribute';
+                        if (_.isUndefined(errors)) {
                             AlertService.addGlobalError(msg);
                         } else {
-                            errors.push({plainText:msg});
+                            errors.push({plainText: msg});
                         }
                         errorCount++;
                     }
@@ -55,17 +58,17 @@ angular.module('textUpdates')
                         if (item.$$error) {
                             // Note: keep it lower-case to be consistent with server-side error reports
                             var msg = item.name + ': ' + item.$$error;
-                            if(_.isUndefined(errors)) {
+                            if (_.isUndefined(errors)) {
                                 AlertService.addGlobalError(msg);
                             } else {
-                                errors.push({plainText:msg});
+                                errors.push({plainText: msg});
                             }
                         }
                     });
                     errorCount++;
                 }
                 return errorCount === 0;
-            }
+            };
 
             this.authenticate = function (method, objectSource, objectType, objectName, ssoMaintainers, attributes, passwords, override) {
                 var deferredObject = $q.defer();
@@ -82,23 +85,23 @@ angular.module('textUpdates')
                             needsAuth = true;
 
                             _performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners).then(
-                                function() {
-                                    $log.debug( "Authentication succeeded");
+                                function () {
+                                    $log.debug('Authentication succeeded');
                                     deferredObject.resolve(true);
-                                }, function() {
-                                    $log.debug( "Authentication failed");
+                                }, function () {
+                                    $log.debug('Authentication failed');
                                     deferredObject.reject(false);
                                 }
                             );
                         }
                     }
                 }
-                if( needsAuth === false) {
-                    $log.debug( "No authentication needed");
+                if (needsAuth === false) {
+                    $log.debug('No authentication needed');
                     deferredObject.resolve(true);
                 }
                 return deferredObject.promise;
-            }
+            };
 
             function _clear(array) {
                 while (array.length) {
@@ -151,7 +154,7 @@ angular.module('textUpdates')
 
             this.stripEmptyAttributes = function (attributes) {
                 return attributes.removeNullAttributes();
-            }
+            };
 
             this.navigateToDisplayPage = function (source, objectType, objectName, operation) {
                 $state.transitionTo('webupdates.display', {
@@ -160,7 +163,7 @@ angular.module('textUpdates')
                     name: objectName,
                     method: operation
                 });
-            }
+            };
 
             this.navigateToDelete = function (objectSource, objectType, objectName, onCancel) {
                 $state.transitionTo('webupdates.delete', {
@@ -171,24 +174,24 @@ angular.module('textUpdates')
                 });
             };
 
-            this.uncapitalize = function(attributes) {
+            this.uncapitalize = function (attributes) {
                 return WhoisResources.wrapAttributes(
                     _.map(attributes, function (attr) {
                         attr.name = attr.name.toLowerCase();
                         return attr;
                     })
                 );
-            }
+            };
 
-            this.capitaliseMandatory = function(attributes) {
+            this.capitaliseMandatory = function (attributes) {
                 _.each(attributes, function (attr) {
                     if (!_.isUndefined(attr.$$meta) && attr.$$meta.$$mandatory) {
-                            attr.name = attr.name.toUpperCase();
+                        attr.name = attr.name.toUpperCase();
                     }
                 });
-            }
+            };
 
-            this.getPasswordsForRestCall = function(objectType) {
+            this.getPasswordsForRestCall = function (objectType) {
                 var passwords = [];
 
                 if (CredentialsService.hasCredentials()) {
@@ -201,6 +204,7 @@ angular.module('textUpdates')
                     passwords.push('RPSL');
                 }
                 return passwords;
-            }
+            };
 
         }]);
+})();

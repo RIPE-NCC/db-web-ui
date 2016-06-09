@@ -1,18 +1,20 @@
-'use strict';
+/*global angular*/
 
-angular.module('textUpdates')
-    .controller('TextMultiDecisionController', ['$scope', '$state', '$log', '$window', 'ModalService', 'PreferenceService',
+(function () {
+    'use strict';
+
+    angular.module('textUpdates').controller('TextMultiDecisionController', ['$scope', '$state', '$log', '$window', 'ModalService', 'PreferenceService',
         function ($scope, $state, $log, $window, ModalService, PreferenceService) {
 
             _initializePage();
 
             function _initializePage() {
-                if( !PreferenceService.hasMadeSyncUpdatesDecision()) {
+                if (!PreferenceService.hasMadeSyncUpdatesDecision()) {
                     $log.info('TextMultiDecisionController: Force use to make decision:');
                     // stay on page to force decision
                     ModalService.openChoosePoorRichSyncupdates().then(
-                        function(useNewSyncUpdates) {
-                            if(useNewSyncUpdates) {
+                        function (useNewSyncUpdates) {
+                            if (useNewSyncUpdates) {
                                 _navigateToNew();
                             } else {
                                 _navigateToOld();
@@ -24,17 +26,17 @@ angular.module('textUpdates')
                     );
 
                 } else {
-                    $log.info('TextMultiDecisionController: Decision made:' );
-                    $log.info('new-mode:' + PreferenceService.isRichSyncupdatesMode() );
-                    $log.info('old-mode:' + PreferenceService.isPoorSyncupdatesMode() );
+                    $log.info('TextMultiDecisionController: Decision made:');
+                    $log.info('new-mode:' + PreferenceService.isRichSyncupdatesMode());
+                    $log.info('old-mode:' + PreferenceService.isPoorSyncupdatesMode());
 
                     // redirect to new or old
-                    if( PreferenceService.isRichSyncupdatesMode()) {
+                    if (PreferenceService.isRichSyncupdatesMode()) {
                         _navigateToNew();
                     } else {
                         _navigateToOld();
                     }
-                 }
+                }
             }
 
             function _navigateToNew() {
@@ -48,3 +50,4 @@ angular.module('textUpdates')
             }
 
         }]);
+})();

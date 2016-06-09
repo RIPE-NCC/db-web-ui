@@ -1,6 +1,7 @@
 /*global angular*/
 
 (function () {
+    'use strict';
 
     angular.module('webUpdates')
         .directive('attributetransformer', ['$log', function ($log) {

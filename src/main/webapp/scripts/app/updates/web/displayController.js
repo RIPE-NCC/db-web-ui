@@ -37,7 +37,7 @@ angular.module('webUpdates')
                 // needed to determine name of modify button
                 $scope.loggedIn = undefined;
                 UserInfoService.getUserInfo().then(
-                    function (userData) {
+                    function () {
                         $scope.loggedIn = true;
                     }
                 );

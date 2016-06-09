@@ -1,11 +1,11 @@
-
 /*global window: false */
 
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('webUpdates')
-    .controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams',
+    angular.module('webUpdates').controller('CreateSelfMaintainedMaintainerController', ['$scope', '$state', '$log', '$stateParams',
         'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore', 'ErrorReporterService', 'LinkService',
+
         function ($scope, $state, $log, $stateParams,
                   WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService, LinkService) {
 
@@ -61,18 +61,19 @@ angular.module('webUpdates')
                     }
                 );
             }
+
             _initialise();
 
             function submit() {
-               _populateMissingAttributes();
+                _populateMissingAttributes();
 
                 $log.info('submit attrs:' + JSON.stringify($scope.maintainerAttributes));
 
                 $scope.maintainerAttributes.clearErrors();
-                if(!$scope.maintainerAttributes.validate()) {
+                if (!$scope.maintainerAttributes.validate()) {
                     ErrorReporterService.log('Create', MNT_TYPE, AlertService.getErrors(), $scope.maintainerAttributes);
                 } else {
-                   _createObject();
+                    _createObject();
                 }
             }
 
@@ -81,23 +82,23 @@ angular.module('webUpdates')
                 return $scope.maintainerAttributes.validateWithoutSettingErrors();
             }
 
-           function _populateMissingAttributes() {
-               $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+            function _populateMissingAttributes() {
+                $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
 
-               var mntner = $scope.maintainerAttributes.getSingleAttributeOnName(MNT_TYPE);
-               $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
-           }
+                var mntner = $scope.maintainerAttributes.getSingleAttributeOnName(MNT_TYPE);
+                $scope.maintainerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
+            }
 
-           function cancel() {
-                if ( window.confirm('Are you sure?') ) {
+            function cancel() {
+                if (window.confirm('Are you sure?')) {
                     $state.transitionTo('webupdates.select');
                 }
             }
 
-            function fieldVisited( attr ) {
+            function fieldVisited(attr) {
                 RestService.autocomplete(attr.name, attr.value, true, []).then(
                     function (data) {
-                        if(_.any(data, function(item) {
+                        if (_.any(data, function (item) {
                                 return item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase();
                             })) {
                             attr.$$error = attr.name + ' ' + LinkService.getModifyLink($scope.source, attr.name, attr.value) + ' already exists';
@@ -116,32 +117,32 @@ angular.module('webUpdates')
                 $scope.submitInProgress = true;
                 RestService.createObject($scope.source, MNT_TYPE, obj)
                     .then(function (resp) {
-                        $scope.submitInProgress = false;
+                            $scope.submitInProgress = false;
 
-                        var primaryKey = resp.getPrimaryKey();
-                        MessageStore.add(primaryKey, resp);
+                            var primaryKey = resp.getPrimaryKey();
+                            MessageStore.add(primaryKey, resp);
 
-                        $state.transitionTo('webupdates.display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
-                    },
-                    function(error) {
-                        $scope.submitInProgress = false;
+                            $state.transitionTo('webupdates.display', {source: $scope.source, objectType: MNT_TYPE, name: primaryKey});
+                        },
+                        function (error) {
+                            $scope.submitInProgress = false;
 
-                        AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
-                        AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
-                        ErrorReporterService.log('Create', MNT_TYPE, AlertService.getErrors(), $scope.maintainerAttributes);
-                    }
-                );
+                            AlertService.populateFieldSpecificErrors(MNT_TYPE, $scope.maintainerAttributes, error.data);
+                            AlertService.showWhoisResourceErrors(MNT_TYPE, error.data);
+                            ErrorReporterService.log('Create', MNT_TYPE, AlertService.getErrors(), $scope.maintainerAttributes);
+                        }
+                    );
             }
 
             function adminCAutocomplete(query) {
-                RestService.autocomplete( 'admin-c', query, true,['person','role']).then(
+                RestService.autocomplete('admin-c', query, true, ['person', 'role']).then(
                     function (data) {
                         $log.debug('autocomplete success:' + JSON.stringify(data));
                         // mark new
                         $scope.adminC.alternatives = _stripAlreadySelected(data);
                     },
-                    function(error) {
-                        $log.error('autocomplete error:' +  JSON.stringify(error));
+                    function (error) {
+                        $log.error('autocomplete error:' + JSON.stringify(error));
                     }
                 );
             }
@@ -172,3 +173,4 @@ angular.module('webUpdates')
 
         }]);
 
+})();

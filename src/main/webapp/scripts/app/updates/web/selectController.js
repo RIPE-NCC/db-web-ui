@@ -1,8 +1,11 @@
-'use strict';
+/*global angular*/
+(function () {
+    'use strict';
 
-angular.module('webUpdates')
-    .controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService', 'SOURCE',
+    angular.module('webUpdates').controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService', 'SOURCE',
+
         function ($scope, $state, WhoisResources, UserInfoService, source) {
+            
             /*
              * UI initialisation
              */
@@ -20,11 +23,12 @@ angular.module('webUpdates')
                 }
             );
 
-            function _filterObjectTypes( unfiltered) {
-                return _.filter(unfiltered, function(item) {
+            function _filterObjectTypes(unfiltered) {
+                return _.filter(unfiltered, function (item) {
                     return item !== 'as-block' && item !== 'poem' && item !== 'poetic-form';
                 });
             }
+
             /*
              * Methods called from the html-teplate
              */
@@ -33,7 +37,7 @@ angular.module('webUpdates')
             };
 
             $scope.navigateToCreate = function () {
-                if ($scope.selected.objectType === 'mntner'){
+                if ($scope.selected.objectType === 'mntner') {
                     $state.transitionTo('webupdates.createSelfMnt', {
                         source: $scope.selected.source,
                     });
@@ -46,3 +50,4 @@ angular.module('webUpdates')
             };
 
         }]);
+})();

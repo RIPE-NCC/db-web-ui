@@ -1,44 +1,50 @@
-'use strict';
+/*global angular*/
 
-angular.module('updates')
-    .service('CharsetTools', ['$log', function ($log) {
+(function () {
+    'use strict';
 
-        var substitutions  = [
-            {code:'\u2013',sub:'-'}, // em dash
-            {code:'\u2014',sub:'-'}, // en dash
-            {code:'\u00A0',sub:' '} // nbsp
-        ];
+    angular.module('updates')
+        .service('CharsetTools', ['$log', function ($log) {
 
-        this.isLatin1 = function (value) {
-            if(_.isUndefined(value) || _.isEmpty(value)) {
-                return true;
-            }
-            // escape encodes extended ISO-8859-1 characters (UTF code points U+0080-U+00ff) as %xx (two-digit hex)
-            // whereas it encodes UTF codepoints U+0100 and above as %uxxxx (%u followed by four-digit hex.)
-            return !_.contains(escape(value), "%u");
-        }
+            var substitutions = [
+                {code: '\u2013', sub: '-'}, // em dash
+                {code: '\u2014', sub: '-'}, // en dash
+                {code: '\u00A0', sub: ' '} // nbsp
+            ];
 
-        // compare string against array of substitutable values and replace if found
-        this.replaceSubstitutables = function (value) {
-            var subbedValue = value;
+            this.isLatin1 = function (value) {
+                if (_.isUndefined(value) || _.isEmpty(value)) {
+                    return true;
+                }
+                // escape encodes extended ISO-8859-1 characters (UTF code points U+0080-U+00ff) as %xx (two-digit hex)
+                // whereas it encodes UTF codepoints U+0100 and above as %uxxxx (%u followed by four-digit hex.)
+                return !_.contains(escape(value), "%u");
+            };
 
-            // if we have this unicode char in the string we always want to replace it
-            _.forEach(substitutions, function (sub) {
-                                                // g to replace all not just the first
-                subbedValue = subbedValue.replace(new RegExp(sub.code, 'g'), function () {
-                    $log.debug('Found match for substitution : ' + sub.code + ' > ' + sub.sub)
-                    return sub.sub;
+            // compare string against array of substitutable values and replace if found
+            this.replaceSubstitutables = function (value) {
+                var subbedValue = value;
+
+                // if we have this unicode char in the string we always want to replace it
+                _.forEach(substitutions, function (sub) {
+                    // g to replace all not just the first
+                    subbedValue = subbedValue.replace(new RegExp(sub.code, 'g'), function () {
+                        $log.debug('Found match for substitution : ' + sub.code + ' > ' + sub.sub)
+                        return sub.sub;
+                    });
                 });
-            });
-            return subbedValue;
-        }
+                return subbedValue;
+            };
 
-        this._replaceNonSubstitutables = function (value) {
-            return value.replace(/[\u0100-\ue007]/g, '?');
-        }
+            this._replaceNonSubstitutables = function (value) {
+                return value.replace(/[\u0100-\ue007]/g, '?');
+            };
 
-        this.replaceUtf8 = function(attribute) {
-            var subbed = this.replaceSubstitutables(attribute.value);
-            attribute.value = this._replaceNonSubstitutables(subbed);
-        }
-    }]);
+            this.replaceUtf8 = function (attribute) {
+                var subbed = this.replaceSubstitutables(attribute.value);
+                attribute.value = this._replaceNonSubstitutables(subbed);
+            };
+
+        }]);
+
+})();

@@ -1,4 +1,7 @@
-'use strict';
+/*global angular*/
+
+(function () {
+    'use strict';
 
 angular.module('fmp')
     .factory('UserInfo', function($resource) {
@@ -18,4 +21,5 @@ angular.module('fmp')
             'update': {method: 'PUT'}
         });
     });
-
+    
+})();

@@ -1,12 +1,15 @@
-'use strict';
+/*global angular*/
 
-angular.module('textUpdates')
-    .controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q', '$window',
+(function () {
+    'use strict';
+
+    angular.module('textUpdates').controller('TextCreateController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q', '$window',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore',
-        'RpslService', 'TextCommons', 'PreferenceService', 'CredentialsService', 'ScreenLogicInterceptor',
+        'RpslService', 'TextCommons', 'PreferenceService',
+        
         function ($scope, $stateParams, $state, $resource, $log, $q, $window,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore,
-                  RpslService, TextCommons, PreferenceService, CredentialsService, ScreenLogicInterceptor) {
+                  RpslService, TextCommons, PreferenceService) {
 
             $scope.submit = submit;
             $scope.switchToWebMode = switchToWebMode;
@@ -24,10 +27,10 @@ angular.module('textUpdates')
                 $scope.object = {};
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
-                if( !_.isUndefined($stateParams.rpsl)) {
+                if (!_.isUndefined($stateParams.rpsl)) {
                     $scope.object.rpsl = decodeURIComponent($stateParams.rpsl);
                 }
-                var noRedirect = $stateParams.noRedirect;
+                var redirect = !$stateParams.noRedirect;
 
                 // maintainers associated with this SSO-account
                 $scope.mntners = {};
@@ -36,23 +39,23 @@ angular.module('textUpdates')
                 $log.debug('TextCreateController: Url params:' +
                     ' object.source:' + $scope.object.source +
                     ', object.type:' + $scope.object.type +
-                    ', noRedirect:' + noRedirect);
+                    ', noRedirect:' + !redirect);
 
-                if (PreferenceService.isWebMode() && !noRedirect === true) {
+                if (PreferenceService.isWebMode() && redirect) {
                     switchToWebMode();
                 }
 
-                if(_.isUndefined($scope.object.rpsl)) {
+                if (_.isUndefined($scope.object.rpsl)) {
                     _prepopulateRpsl();
                 }
-            };
+            }
 
             function _prepopulateRpsl() {
                 var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
                 if (_.isEmpty(attributesOnObjectType)) {
                     $log.error('Object type ' + $scope.object.type + ' was not found');
                     $state.transitionTo('notFound');
-                    return
+                    return;
                 }
 
                 _enrichAttributes(
@@ -70,7 +73,7 @@ angular.module('textUpdates')
                             attributes: attributes,
                             passwords: $scope.passwords,
                             override: $scope.override
-                        }
+                        };
                         $scope.object.rpsl = RpslService.toRpsl(obj);
                     }
                 );
@@ -126,7 +129,7 @@ angular.module('textUpdates')
             function submit() {
                 AlertService.clearErrors();
 
-                $log.debug("rpsl:" + $scope.object.rpsl);
+                $log.debug('rpsl:' + $scope.object.rpsl);
 
                 // parse
                 var objects = RpslService.fromRpsl($scope.object.rpsl);
@@ -137,7 +140,7 @@ angular.module('textUpdates')
                 $scope.passwords = objects[0].passwords;
                 $scope.override = objects[0].override;
                 var attributes = TextCommons.uncapitalize(objects[0].attributes);
-                $log.debug("attributes:" + JSON.stringify(attributes));
+                $log.debug('attributes:' + JSON.stringify(attributes));
 
                 if (!TextCommons.validate($scope.object.type, attributes)) {
                     return;
@@ -150,15 +153,15 @@ angular.module('textUpdates')
                         $log.debug('Authenticated successfully:' + authenticated);
 
                         // combine all passwords
-                        var combinedPaswords =_.union($scope.passwords, TextCommons.getPasswordsForRestCall( $scope.object.type));
+                        var combinedPaswords = _.union($scope.passwords, TextCommons.getPasswordsForRestCall($scope.object.type));
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
                         // rest-POST to server
                         $scope.restCalInProgress = true;
                         RestService.createObject($scope.object.source, $scope.object.type,
-                                                WhoisResources.turnAttrsIntoWhoisObject(attributes),
-                                             combinedPaswords, $scope.override, true).then(
+                            WhoisResources.turnAttrsIntoWhoisObject(attributes),
+                            combinedPaswords, $scope.override, true).then(
                             function (result) {
                                 $scope.restCalInProgress = false;
 
@@ -178,8 +181,8 @@ angular.module('textUpdates')
 
                             }
                         );
-                    }, function(authenticated) {
-                        $log.error('Authentication failure:'+authenticated);
+                    }, function (authenticated) {
+                        $log.error('Authentication failure:' + authenticated);
 
                     }
                 );
@@ -192,7 +195,7 @@ angular.module('textUpdates')
             }
 
             function switchToWebMode() {
-                $log.debug("Switching to web-mode");
+                $log.debug('Switching to web-mode');
 
                 PreferenceService.setWebMode();
 
@@ -203,3 +206,4 @@ angular.module('textUpdates')
             }
 
         }]);
+})();

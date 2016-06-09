@@ -1,7 +1,10 @@
-'use strict';
+/*global angular*/
 
-angular.module('menu')
-    .controller('LeftMenuController', ['$scope', '$rootScope', '$log',
+(function () {
+    'use strict';
+
+    angular.module('menu').controller('LeftMenuController', ['$scope', '$rootScope', '$log',
+
         function ($scope, $rootScope, $log) {
 
             $scope.menu = {};
@@ -15,7 +18,7 @@ angular.module('menu')
                 } else if (data === 'updates') {
                     _expandWebUpdatesMenu();
                 } else {
-                   $log.error('LeftMenuController: Received unrecognized value ' + data + ' for event ' + event.name );
+                    $log.error('LeftMenuController: Received unrecognized value ' + data + ' for event ' + event.name);
                 }
             });
 
@@ -38,3 +41,4 @@ angular.module('menu')
             }
         }
     ]);
+})();

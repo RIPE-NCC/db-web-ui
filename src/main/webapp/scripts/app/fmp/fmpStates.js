@@ -1,7 +1,10 @@
-'use strict';
+/*global angular*/
 
-angular.module('fmp')
-    .config(['$stateProvider',
+(function () {
+    'use strict';
+
+    angular.module('fmp').config(['$stateProvider',
+
         function ($stateProvider) {
 
             $stateProvider
@@ -32,12 +35,12 @@ angular.module('fmp')
                 })
                 .state('fmp.mailSent', {
                     url: '/mailSent/:email',
-                    templateUrl:  'scripts/app/fmp/mailSent.html',
+                    templateUrl: 'scripts/app/fmp/mailSent.html',
                     controller: 'MailSentCtrl'
                 })
                 .state('fmp.ssoAdded', {
                     url: '/ssoAdded/:mntnerKey/:user',
-                    templateUrl:  'scripts/app/fmp/ssoAdded.html',
+                    templateUrl: 'scripts/app/fmp/ssoAdded.html',
                     controller: 'SsoAddedCtrl'
                 })
                 .state('fmp.confirm', {
@@ -47,3 +50,4 @@ angular.module('fmp')
                 });
 
         }]);
+})();

@@ -23,7 +23,7 @@ angular.module('dbWebApp', [
         function ($stateProvider, $logProvider, $httpProvider, ENV) {
 
             // conditional log-level
-            $logProvider.debugEnabled(ENV === 'dev' || ENV == 'prepdev');
+            $logProvider.debugEnabled(ENV === 'dev' || ENV === 'prepdev');
 
             $stateProvider
                 .state('error', {
@@ -36,7 +36,7 @@ angular.module('dbWebApp', [
                 });
 
             // Always tell server if request was made using ajax
-            $httpProvider.defaults.headers.common["X-Requested-With"] = 'XMLHttpRequest';
+            $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
         }])
     .run(['$rootScope', '$state', '$window', '$location', '$log', '$cookies', 'ERROR_EVENTS', 'LOGIN_URL', 'ENV',
