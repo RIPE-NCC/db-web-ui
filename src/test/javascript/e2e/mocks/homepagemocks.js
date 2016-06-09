@@ -2255,7 +2255,7 @@ exports.module = function (data) {
                     }
                 },
                 inet6numParentQuery: {
-                    req: 'api/whois/search?flags=lr&ignore404=true&query-string=2001:888:2000::%2F36&type-filter=inet6num',
+                    req: 'api/whois/search?flags=lr&ignore404=true&query-string=2001:888:2000::%2F38&type-filter=inet6num',
                     resp: {
                         data: {
                             "service": {

@@ -445,10 +445,7 @@ angular.module('webUpdates')
             }
 
             function isLirObject() {
-                if(_isAllocation()) {
-                    return true;
-                }
-                return !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
+                return _isAllocation() || !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
             }
 
             function deleteObject() {

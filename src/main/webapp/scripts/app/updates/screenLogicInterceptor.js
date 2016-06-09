@@ -343,18 +343,16 @@ angular.module('updates')
             }
 
             function _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, info) {
-                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR'];
+                var netnameAttr, assSizeAttr, allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR'];
 
-                if(_.includes(allocationStatuses, attributes.getSingleAttributeOnName('status').value)) {
-                    var attr = attributes.getSingleAttributeOnName('netname');
-                    if(attr) {
-                        attr.$$meta.$$disable = true;
+                if (_.includes(allocationStatuses, attributes.getSingleAttributeOnName('status').value)) {
+                    if (netnameAttr = attributes.getSingleAttributeOnName('netname')) {
+                        netnameAttr.$$meta.$$disable = true
                     }
                 }
 
-                var attr = attributes.getSingleAttributeOnName('assignment-size');
-                if (attr) {
-                    attr.$$meta.$$disable = true;
+                if (assSizeAttr = attributes.getSingleAttributeOnName('assignment-size')) {
+                    assSizeAttr.$$meta.$$disable = true
                 }
             }
 
