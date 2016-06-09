@@ -10,7 +10,7 @@
             $scope.menu = {};
 
             $rootScope.$on('dbWebApp.moduleActive', function (event, data) {
-                $log.info("Got " + event.name + ' event with value ' + data);
+                $log.info('Got ' + event.name + ' event with value ' + data);
                 if (data === 'search') {
                     _expandSearchMenu();
                 } else if (data === 'passwords') {

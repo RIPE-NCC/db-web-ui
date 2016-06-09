@@ -1,12 +1,15 @@
-'use strict';
+/*global angular, document*/
 
-angular.module('webUpdates')
-    .service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
+(function () {
+    'use strict';
+
+    angular.module('webUpdates').service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
+
         function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, STATE) {
 
             var webUpdatesCommons = {};
 
-            webUpdatesCommons.performAuthentication = function(maintainers, method, objectSource, objectType, objectName, successCloseCallback, cancelCloseCallback) {
+            webUpdatesCommons.performAuthentication = function (maintainers, method, objectSource, objectType, objectName, successCloseCallback, cancelCloseCallback) {
                 $log.debug('Perform authentication');
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
@@ -29,11 +32,11 @@ angular.module('webUpdates')
                         $log.debug('After auth: maintainers.sso:' + JSON.stringify(maintainers.sso));
                         $log.debug('After auth: maintainers.object:' + JSON.stringify(maintainers.object));
 
-                        if (! _.isUndefined(successCloseCallback)){
+                        if (!_.isUndefined(successCloseCallback)) {
                             successCloseCallback(associationResp);
                         }
                     }, function () {
-                        if (! _.isUndefined(cancelCloseCallback)){
+                        if (!_.isUndefined(cancelCloseCallback)) {
                             cancelCloseCallback();
                         }
                     }
@@ -42,7 +45,7 @@ angular.module('webUpdates')
 
             webUpdatesCommons.addLinkToReferenceAttributes = function (attributes, objectSource) {
                 var parser = document.createElement('a');
-                return _.map(attributes, function(attribute) {
+                return _.map(attributes, function (attribute) {
                     if (!_.isUndefined(attribute.link)) {
                         attribute.link.uiHref = _displayUrl(parser, attribute, objectSource);
                     }
@@ -79,7 +82,7 @@ angular.module('webUpdates')
                 });
             }
 
-
             return webUpdatesCommons;
 
         }]);
+})();

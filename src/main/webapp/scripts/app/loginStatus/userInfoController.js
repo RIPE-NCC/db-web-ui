@@ -1,4 +1,4 @@
-/*global angular, RIPE */
+/*global angular, display_user_menu, init_user_menu, RIPE */
 (function () {
     'use strict';
 
