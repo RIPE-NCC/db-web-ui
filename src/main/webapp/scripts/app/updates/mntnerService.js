@@ -6,7 +6,10 @@ angular.module('updates')
 
         var mntnerService = {};
 
-        var nccMntners = ['RIPE-NCC-HM-MNT', 'RIPE-NCC-END-MNT','RIPE-NCC-HM-PI-MNT','RIPE-GII-MNT','RIPE-NCC-MNT','RIPE-NCC-RPSL-MNT',
+        var nccEndMntner = 'RIPE-NCC-END-MNT';
+        var nccHmMntner = 'RIPE-NCC-HM-MNT';
+
+        var nccMntners = [nccHmMntner, nccEndMntner,'RIPE-NCC-HM-PI-MNT','RIPE-GII-MNT','RIPE-NCC-MNT','RIPE-NCC-RPSL-MNT',
                 'RIPE-DBM-MNT','RIPE-NCC-LOCKED-MNT','RIPE-DBM-UNREFERENCED-CLEANUP-MNT','RIPE-ERX-MNT','RIPE-NCC-LEGACY-MNT'];
 
         mntnerService.isRemovable = function(mntnerKey) {
@@ -20,6 +23,14 @@ angular.module('updates')
         mntnerService.isNccMntner = function(mntnerKey) {
             return _.includes(nccMntners, mntnerKey.toUpperCase());
         };
+
+        mntnerService.isNccEndUserMntner = function(mntnerKey) {
+            return nccEndMntner === mntnerKey.toUpperCase();
+        }
+
+        mntnerService.isNcHmMntner = function(mntnerKey) {
+            return nccHmMntner === mntnerKey.toUpperCase();
+        }
 
         mntnerService.isMntnerOnlist = function(list, mntner) {
             var status = _.any(list, function (item) {

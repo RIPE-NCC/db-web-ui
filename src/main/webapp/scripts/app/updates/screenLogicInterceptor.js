@@ -70,6 +70,7 @@ angular.module('updates')
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
@@ -84,6 +85,7 @@ angular.module('updates')
                     beforeEdit: function (method, source, objectType, attributes, errors, warnings, infos) {
                         _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
+                        _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, infos);
                         _disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                         return _disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
                     },
@@ -337,6 +339,20 @@ angular.module('updates')
                 attr = attributes.getSingleAttributeOnName('org');
                 if (attr) {
                     attr.$$meta.$$disable = true;
+                }
+            }
+
+            function _disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, info) {
+                var netnameAttr, assSizeAttr, allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR'];
+
+                if (_.includes(allocationStatuses, attributes.getSingleAttributeOnName('status').value)) {
+                    if (netnameAttr = attributes.getSingleAttributeOnName('netname')) {
+                        netnameAttr.$$meta.$$disable = true
+                    }
+                }
+
+                if (assSizeAttr = attributes.getSingleAttributeOnName('assignment-size')) {
+                    assSizeAttr.$$meta.$$disable = true
                 }
             }
 
