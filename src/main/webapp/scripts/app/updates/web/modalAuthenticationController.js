@@ -17,11 +17,19 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         };
 
         $scope.allowForceDelete = function () {
+            var status;
             if (_.any($scope.mntners, 'key', 'RIPE-NCC-END-MNT')) {
                 return false;
             }
 
             if (method === 'ForceDelete') {
+                return false;
+            }
+
+            // see: https://www.pivotaltracker.com/n/projects/769061
+            if ($scope.objectType === 'inetnum' && (status = $scope.attributes.getSingleAttributeOnName('status')) && ('ALLOCATED PA' === status.value)) {
+                return false;
+            } else if ($scope.objectType === 'inet6num' && (status = $scope.attributes.getSingleAttributeOnName('status')) && ('ALLOCATED-BY-RIR' === status.value)) {
                 return false;
             }
 

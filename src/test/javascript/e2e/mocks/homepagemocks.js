@@ -2472,7 +2472,7 @@ exports.module = function (data) {
                                             "name": "mnt-by",
                                             "value": "XS4ALL-MNT",
                                             "referenced-type": "mntner"
-                                         }, {
+                                        }, {
                                             "link": {
                                                 "type": "locator",
                                                 "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"

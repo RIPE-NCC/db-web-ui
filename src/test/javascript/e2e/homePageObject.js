@@ -1,9 +1,9 @@
-/*global browser, module*/
+/*global browser, by, element, module, require*/
+'use strict';
 
 // System requires
 var fs = require('fs');
 
-'use strict';
 
 // abstract writing screen shot to a file
 function writeToDisk(data, filename) {
@@ -39,9 +39,6 @@ module.exports = {
     btnNavigateToCreate: element(by.id('btnNavigateToCreate')),
     btnCreateInTextArea: element(by.id('btnCreateInTextArea')),
     btnSwitchToWebCreate: element(by.id('btnSwitchToWebCreate')),
-    //btnSwitchToTextCreate: element(by.id('btnSwitchToTextCreate')),
-    //btnSwitchToTextModify: element(by.id('btnSwitchToTextModify')),
-    //btnEditInTextArea: element(by.id('btnEditInTextArea')),
 
     inpOrgName: element(by.id('createForm')).element(by.name('org-name')),
     inpOrganisation: element(by.id('createForm')).element(by.name('organisation')),
@@ -63,11 +60,14 @@ module.exports = {
     inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('div > ul > li > ul')).all(by.css('li')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
 
+    btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
+
     modal: element(by.css('[modal-window]')),
     modalEmail: element(by.css('[modal-window]')).element(by.name('email')),
     modalInpMaintainer: element(by.css('[modal-window]')).element(by.model('selected.item')),
     modalBtnSubmit: element(by.css('[modal-window]')).element(by.css('input[type=Submit]')),
     modalClose: element(by.css('[modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
+    modalFooter: element(by.css('[modal-window]')).element(by.css('.modal-footer')),
 
     selectObjectType: function (itemValue) {
         return element(by.id('objectTypeSelector')).element(by.css('option[label=' + itemValue + ']'));
