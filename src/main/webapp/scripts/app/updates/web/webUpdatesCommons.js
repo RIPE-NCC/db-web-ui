@@ -6,11 +6,15 @@ angular.module('webUpdates')
 
             var webUpdatesCommons = {};
 
-            webUpdatesCommons.performAuthentication = function(maintainers, method, objectSource, objectType, objectName, successCloseCallback, cancelCloseCallback) {
-                $log.debug('Perform authentication');
+            webUpdatesCommons.performAuthentication = function (maintainers, method, objectSource, objectType, objectName, successCloseCallback, cancelCloseCallback) {
+                $log.debug('Perform authentication', maintainers);
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
-                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords).then(
+                // see: https://www.pivotaltracker.com/n/projects/769061
+                var allowForcedDelete = !_.find(maintainers.object, function (o) {
+                    return MntnerService.isNccMntner(o.key);
+                });
+                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete).then(
                     function (result) {
                         AlertService.clearErrors();
 
@@ -29,11 +33,11 @@ angular.module('webUpdates')
                         $log.debug('After auth: maintainers.sso:' + JSON.stringify(maintainers.sso));
                         $log.debug('After auth: maintainers.object:' + JSON.stringify(maintainers.object));
 
-                        if (! _.isUndefined(successCloseCallback)){
+                        if (!_.isUndefined(successCloseCallback)) {
                             successCloseCallback(associationResp);
                         }
                     }, function () {
-                        if (! _.isUndefined(cancelCloseCallback)){
+                        if (!_.isUndefined(cancelCloseCallback)) {
                             cancelCloseCallback();
                         }
                     }
@@ -42,7 +46,7 @@ angular.module('webUpdates')
 
             webUpdatesCommons.addLinkToReferenceAttributes = function (attributes, objectSource) {
                 var parser = document.createElement('a');
-                return _.map(attributes, function(attribute) {
+                return _.map(attributes, function (attribute) {
                     if (!_.isUndefined(attribute.link)) {
                         attribute.link.uiHref = _displayUrl(parser, attribute, objectSource);
                     }

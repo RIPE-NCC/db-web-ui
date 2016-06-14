@@ -940,7 +940,6 @@ angular.module('webUpdates')
                 _refreshObjectIfNeeded(associationResp)
             }
 
-
             function switchToTextMode() {
                 $log.debug("Switching to text-mode");
 

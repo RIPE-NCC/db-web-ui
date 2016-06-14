@@ -450,7 +450,7 @@ exports.module = function () {
                     }
                 },
                 inet6numAllocatedByRir: {
-                    req: 'api/whois/ripe/inet6num/2001:a08::%2F32?unfiltered=true',
+                    req: '0',
                     resp: {
                         data: {
                             "objects": {

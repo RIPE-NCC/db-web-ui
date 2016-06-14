@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance', 'WhoisResources', 'RestService',
-    'UserInfoService', 'CredentialsService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword',
-    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, method, source, objectType, objectName, mntners, mntnersWithoutPassword) {
+    'UserInfoService', 'CredentialsService', 'MntnerService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword', 'allowForcedDelete',
+    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, MntnerService, method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete) {
 
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
@@ -17,24 +17,11 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         };
 
         $scope.allowForceDelete = function () {
-            var status;
-            if (_.any($scope.mntners, 'key', 'RIPE-NCC-END-MNT')) {
-                return false;
-            }
-
-            if (method === 'ForceDelete') {
-                return false;
-            }
-
-            // see: https://www.pivotaltracker.com/n/projects/769061
-            if ($scope.objectType === 'inetnum' && (status = $scope.attributes.getSingleAttributeOnName('status')) && ('ALLOCATED PA' === status.value)) {
-                return false;
-            } else if ($scope.objectType === 'inet6num' && (status = $scope.attributes.getSingleAttributeOnName('status')) && ('ALLOCATED-BY-RIR' === status.value)) {
-                return false;
-            }
-
-            var forceDeletableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
-            return !_.isEmpty($scope.objectName) && _.contains(forceDeletableObjectTypes, $scope.objectType);
+            $log.warn('allowForceDelete', allowForcedDelete);
+            // if (method === 'ForceDelete') {
+            //     return false;
+            // }
+            return allowForcedDelete;
         };
 
         $scope.cancel = function () {
