@@ -17,10 +17,9 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         };
 
         $scope.allowForceDelete = function () {
-            $log.warn('allowForceDelete', allowForcedDelete);
-            // if (method === 'ForceDelete') {
-            //     return false;
-            // }
+            if (method === 'ForceDelete') {
+                return false;
+            }
             return allowForcedDelete;
         };
 
