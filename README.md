@@ -75,6 +75,14 @@ Responsibilities of java-proxy: Non functionals only
 * Caching
 * Flexibilty: fix whois problems temporarily
 
+Things every db-web-ui developer should know
+--------------------------------------------
+
+* Must read: https://github.com/johnpapa/angular-styleguide/tree/master/a1 
+* This chap knows a thing or two about Angular: Ben Nadel www.bennadel.com
+* Use the Mozilla Developer Network (MDN) for JS specs — NOT W3Schools 
+* https://www.airpair.com/angularjs/posts/top-10-mistakes-angularjs-developers-make 
+
 HOWTOs
 ------
 
