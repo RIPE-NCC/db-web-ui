@@ -94,8 +94,7 @@ angular.module('webUpdates')
                     }
                 }
                 $scope.optionList.status = ResourceStatus.get($scope.objectType, parentStatusValue);
-                console.log('$scope.objectType, parentStatusValue', $scope.objectType, parentStatusValue);
-                console.log('$scope.optionList.status', $scope.optionList.status);
+                $log.debug('Allowed status values', $scope.optionList.status);
             });
 
 
