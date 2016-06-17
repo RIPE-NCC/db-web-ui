@@ -6,16 +6,6 @@ describe('webupdates', function () {
 
     'use strict';
 
-    browser.manage().logs().get('browser').then(function (browserLog) {
-        //    console.log('LOG ' + require('util').inspect(browserLog));
-        browserLog.forEach(function (log) {
-            if (log.level.value > 100) {
-                //console.log('Browser console error!');
-                console.log(log.level.name + ': ' + log.message);
-            }
-        });
-    });
-
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module);
         //Noisy logs enabled here...
