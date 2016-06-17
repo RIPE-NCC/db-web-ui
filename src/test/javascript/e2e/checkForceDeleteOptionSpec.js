@@ -20,7 +20,7 @@ describe('webupdates', function () {
         // });
     });
 
-    it('should show "force delete" for an inetnum if NOT allocated by RIPE', function () {
+    it('should NOT show "force delete" for an inetnum if allocated by RIPE 1', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/91.208.34.0-91.208.34.255');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
@@ -29,13 +29,22 @@ describe('webupdates', function () {
         expect(page.modalFooter.getText()).toBe('');
     });
 
-    it('should NOT show "force delete" for an inetnum if allocated by RIPE', function () {
+    it('should NOT show "force delete" for an inetnum if allocated by RIPE 2', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/185.102.172.0-185.102.175.255');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
         expect(page.modalFooter.getText()).toBe('');
+    });
+
+    it('should show "force delete" for an inetnum if NOT allocated by RIPE', function () {
+        browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/194.219.52.224%2520-%2520194.219.52.239');
+        expect(page.btnModify.isPresent()).toEqual(true);
+        page.scrollIntoView(page.btnModify);
+        page.btnModify.click();
+        expect(page.modal.isPresent()).toEqual(true);
+        expect(page.modalFooter.getText()).toContain('Force delete this object?');
     });
 
 });

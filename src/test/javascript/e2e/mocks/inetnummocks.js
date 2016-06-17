@@ -688,6 +688,91 @@ exports.module = function () {
                         }
                     }
                 },
+                'api/whois/ripe/inetnum/194.219.52.224%20-%20194.219.52.239?unfiltered=true': {
+                    data: {
+                        "objects": {
+                            "object": [{
+                                "type": "inetnum",
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/194.219.52.224 - 194.219.52.239"
+                                },
+                                "source": {
+                                    "id": "ripe"
+                                },
+                                "primary-key": {
+                                    "attribute": [{
+                                        "name": "inetnum",
+                                        "value": "194.219.52.224 - 194.219.52.239"
+                                    }]
+                                },
+                                "attributes": {
+                                    "attribute": [{
+                                        "name": "inetnum",
+                                        "value": "194.219.52.224 - 194.219.52.239"
+                                    }, {
+                                        "name": "netname",
+                                        "value": "FORTHNET-NOC-KLI"
+                                    }, {
+                                        "name": "descr",
+                                        "value": "FORTHnet NOC"
+                                    }, {
+                                        "name": "descr",
+                                        "value": "Kallithea"
+                                    }, {
+                                        "name": "country",
+                                        "value": "GR"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/FTO1-RIPE"
+                                        },
+                                        "name": "admin-c",
+                                        "value": "FTO1-RIPE",
+                                        "referenced-type": "role"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/SK1697-RIPE"
+                                        },
+                                        "name": "tech-c",
+                                        "value": "SK1697-RIPE",
+                                        "referenced-type": "person"
+                                    }, {
+                                        "name": "status",
+                                        "value": "ASSIGNED PA"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TPOLYCHNIA4-MNT"
+                                        },
+                                        "name": "mnt-by",
+                                        "value": "TPOLYCHNIA4-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "name": "created",
+                                        "value": "1970-01-01T00:00:00Z"
+                                    }, {
+                                        "name": "last-modified",
+                                        "value": "2015-12-16T16:05:26Z"
+                                    }, {
+                                        "name": "source",
+                                        "value": "RIPE"
+                                    }]
+                                },
+                                "tags": {
+                                    "tag": [{
+                                        "id": "RIPE-USER-RESOURCE"
+                                    }]
+                                }
+                            }]
+                        },
+                        "terms-and-conditions": {
+                            "type": "locator",
+                            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+                        }
+                    }
+                },
                 'api/whois/autocomplete?extended=true&field=inet6num&query=2001:888:2000::%2F38': {
                     data: []
                 },
@@ -1321,6 +1406,13 @@ exports.module = function () {
                         }
                     }
 
+                },
+                'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TPOLYCHNIA4-MNT': {
+                    data: [{
+                        "key": "TPOLYCHNIA4-MNT",
+                        "type": "mntner",
+                        "auth": ["MD5-PW", "MD5-PW"]
+                    }]
                 },
                 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=RIPE-NCC-HM-MNT': {
                     data: [{
