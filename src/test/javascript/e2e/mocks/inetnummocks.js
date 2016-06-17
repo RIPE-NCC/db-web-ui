@@ -1170,6 +1170,218 @@ exports.module = function () {
                         }
                     }
                 },
+                'api/whois/ripe/inet6num/2001:a08::%2F32?unfiltered=true': {
+                    data: {
+                        "objects": {
+                            "object": [{
+                                "type": "inet6num",
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:a08::/32"
+                                },
+                                "source": {
+                                    "id": "ripe"
+                                },
+                                "primary-key": {
+                                    "attribute": [{
+                                        "name": "inet6num",
+                                        "value": "2001:a08::/32"
+                                    }]
+                                },
+                                "attributes": {
+                                    "attribute": [{
+                                        "name": "inet6num",
+                                        "value": "2001:a08::/32"
+                                    }, {
+                                        "name": "netname",
+                                        "value": "UK-HIGHSPEEDOFFICE-20021115"
+                                    }, {
+                                        "name": "country",
+                                        "value": "GB"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-HOL1-RIPE"
+                                        },
+                                        "name": "org",
+                                        "value": "ORG-HOL1-RIPE",
+                                        "referenced-type": "organisation"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/SWR1-RIPE"
+                                        },
+                                        "name": "admin-c",
+                                        "value": "SWR1-RIPE",
+                                        "referenced-type": "person"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/NPT1-RIPE"
+                                        },
+                                        "name": "tech-c",
+                                        "value": "NPT1-RIPE",
+                                        "referenced-type": "person"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/APEL1-RIPE"
+                                        },
+                                        "name": "tech-c",
+                                        "value": "APEL1-RIPE",
+                                        "referenced-type": "person"
+                                    }, {
+                                        "name": "status",
+                                        "value": "ALLOCATED-BY-RIR"
+                                    }, {
+                                        "name": "notify",
+                                        "value": "***@highspeedoffice.net"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                        },
+                                        "name": "mnt-by",
+                                        "value": "RIPE-NCC-HM-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/HSO-MNT"
+                                        },
+                                        "name": "mnt-lower",
+                                        "value": "HSO-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/HSO-MNT"
+                                        },
+                                        "name": "mnt-routes",
+                                        "value": "HSO-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/GOSCOMB-MNT"
+                                        },
+                                        "name": "mnt-routes",
+                                        "value": "GOSCOMB-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/HSO-MNT"
+                                        },
+                                        "name": "mnt-domains",
+                                        "value": "HSO-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "name": "created",
+                                        "value": "2002-11-15T09:27:57Z"
+                                    }, {
+                                        "name": "last-modified",
+                                        "value": "2014-02-19T14:53:45Z"
+                                    }, {
+                                        "name": "source",
+                                        "value": "RIPE"
+                                    }]
+                                },
+                                "tags": {
+                                    "tag": [{
+                                        "id": "RIPE-REGISTRY-RESOURCE"
+                                    }]
+                                }
+                            }]
+                        },
+                        "terms-and-conditions": {
+                            "type": "locator",
+                            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+                        }
+                    }
+                },
+                'api/whois/ripe/inet6num/2001:978:ffff:fffe::%2F64?unfiltered=true': {
+                    data: {
+                        "objects": {
+                            "object": [{
+                                "type": "inet6num",
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:978:ffff:fffe::/64"
+                                },
+                                "source": {
+                                    "id": "ripe"
+                                },
+                                "primary-key": {
+                                    "attribute": [{
+                                        "name": "inet6num",
+                                        "value": "2001:978:ffff:fffe::/64"
+                                    }]
+                                },
+                                "attributes": {
+                                    "attribute": [{
+                                        "name": "inet6num",
+                                        "value": "2001:978:ffff:fffe::/64"
+                                    }, {
+                                        "name": "netname",
+                                        "value": "ITEX-6NET"
+                                    }, {
+                                        "name": "descr",
+                                        "value": "ITEX Media GmbH"
+                                    }, {
+                                        "name": "country",
+                                        "value": "DE"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/ITEX-RIPE"
+                                        },
+                                        "name": "admin-c",
+                                        "value": "ITEX-RIPE",
+                                        "referenced-type": "person"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/ITEX-RIPE"
+                                        },
+                                        "name": "tech-c",
+                                        "value": "ITEX-RIPE",
+                                        "referenced-type": "person"
+                                    }, {
+                                        "name": "status",
+                                        "value": "ALLOCATED-BY-LIR"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/COGENT-HM-MNT"
+                                        },
+                                        "name": "mnt-by",
+                                        "value": "COGENT-HM-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "name": "created",
+                                        "value": "2002-11-14T13:31:20Z"
+                                    }, {
+                                        "name": "last-modified",
+                                        "value": "2005-01-05T13:52:29Z"
+                                    }, {
+                                        "name": "source",
+                                        "value": "RIPE"
+                                    }]
+                                },
+                                "tags": {
+                                    "tag": [{
+                                        "id": "RIPE-USER-RESOURCE"
+                                    }]
+                                }
+                            }]
+                        },
+                        "terms-and-conditions": {
+                            "type": "locator",
+                            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+                        }
+                    }
+                },
                 'api/whois/RIPE/organisation/ORG-AGNS1-RIPE?unfiltered=true': {
                     data: {
                         "objects": {
@@ -1406,6 +1618,13 @@ exports.module = function () {
                         }
                     }
 
+                },
+                'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=COGENT-HM-MNT': {
+                    data: [{
+                        "key": "COGENT-HM-MNT",
+                        "type": "mntner",
+                        "auth": ["MD5-PW", "PGPKEY-A64383E9", "PGPKEY-BBD4123B", "PGPKEY-4C8A9D8D", "PGPKEY-6B6A5097", "PGPKEY-726BD791", "PGPKEY-B3004B9E", "PGPKEY-D3D6B8C4", "PGPKEY-E3BAB9C6"]
+                    }]
                 },
                 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TPOLYCHNIA4-MNT': {
                     data: [{
