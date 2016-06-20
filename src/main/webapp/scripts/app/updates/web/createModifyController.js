@@ -569,7 +569,7 @@ angular.module('webUpdates')
                 if (!$scope.attributes) {
                     return false;
                 }
-                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR'];
+                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-RIR'];
                 var status = $scope.attributes.getSingleAttributeOnName('status');
                 return status && _.includes(allocationStatuses, status.value);
             }
