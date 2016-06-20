@@ -1674,7 +1674,7 @@ exports.module = function () {
             // prepare the mocks
             Object.keys(mockGet).forEach(
                 function (key) {
-                    $httpBackend.whenGET(key).respond(mockGet[key].status || 200, mockGet[key].data, mockGet[key].data.contentType || mimeJson);
+                    $httpBackend.whenGET(key).respond(mockGet[key].status || 200, mockGet[key].data, mockGet[key].contentType || mimeJson);
                 }
             );
             $httpBackend.whenGET(/.*/).passThrough();

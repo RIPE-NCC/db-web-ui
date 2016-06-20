@@ -2854,11 +2854,25 @@ exports.module = function (data) {
                         auth: ['MD5-PW', 'SSO', 'PGPKEY-8736F482', 'SSO']
                     }]
                 },
+                'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=etchells-mnt': {
+                    data: [{
+                        key: 'etchells-mnt',
+                        type: 'mntner',
+                        auth: ['SSO']
+                    }]
+                },
                 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=NEWNET-MNT': {
                     data: [{
-                        'key': 'NEWNET-MNT',
-                        'type': 'mntner',
-                        'auth': ['MD5-PW']
+                        key: 'NEWNET-MNT',
+                        type: 'mntner',
+                        auth: ['MD5-PW']
+                    }]
+                },
+                'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=RIPE-NCC-HM-MNT': {
+                    data: [{
+                        key: 'RIPE-NCC-HM-MNT',
+                        type: 'mntner',
+                        auth: ['MD5-PW', 'SSO', 'SSO', 'SSO', 'SSO', 'PGPKEY-0E3AEA10']
                     }]
                 }
             };
@@ -2866,7 +2880,7 @@ exports.module = function (data) {
             // prepare the mocks
             Object.keys(mockGet).forEach(
                 function (key) {
-                    $httpBackend.whenGET(key).respond(mockGet[key].status || 200, mockGet[key].data, mockGet[key].data.contentType || mimeJson);
+                    $httpBackend.whenGET(key).respond(mockGet[key].status || 200, mockGet[key].data, mockGet[key].contentType || mimeJson);
                 });
             $httpBackend.whenGET(/.*/).passThrough();
 

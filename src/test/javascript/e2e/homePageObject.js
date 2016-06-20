@@ -55,6 +55,7 @@ module.exports = {
     inpSponsoringOrg: element(by.id('createForm')).element(by.name('sponsoring-org')),
     inpInetnum: element(by.id('createForm')).element(by.name('inetnum')),
     inpInet6num: element(by.id('createForm')).element(by.name('inet6num')),
+    inpMaintainer: element(by.id('selectMaintainerDropdown')),
     inpStatus: element(by.id('createForm')).element(by.name('status')),
     inpStatusLink: element(by.id('createForm')).element(by.name('status')).element(by.css('a')),
     inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('div > ul > li > ul')).all(by.css('li')),
