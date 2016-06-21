@@ -376,16 +376,9 @@ module.exports = function (grunt) {
                 algorithm: 'md5',
                 length: 16,
                 queryString: true,
-                assets: ['**/*.js', '**/*.css']
+                assets: ['**/*.js', '**/*.css', '**/*.png']
             },
-            taskName: {
-                files: [{
-                    expand: true,
-                    cwd: './src/main/webapp',
-                    src: ['index.html'],
-                    dest: './dest'
-                }]
-            }
+            src: ['./src/main/webapp/index.html']
         },
         connect: {
             options: {
@@ -553,7 +546,7 @@ module.exports = function (grunt) {
         'wiredep:app',
         'preprocess:html',
         'ngconstant:dev',
-        //'ngtemplates',
+        'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
         'compass:server',
@@ -566,7 +559,7 @@ module.exports = function (grunt) {
         'wiredep:app',
         'preprocess:html',
         'ngconstant:prepdev',
-        //'ngtemplates',
+        'ngtemplates',
         'concurrent:dist',
         'ngAnnotate',
         'compass:server',

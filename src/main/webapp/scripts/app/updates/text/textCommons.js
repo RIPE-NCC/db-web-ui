@@ -111,7 +111,11 @@ angular.module('textUpdates')
 
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
-                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords).then(
+                var allowForcedDelete = !_.find(objectMntners, function (o) {
+                    return MntnerService.isNccMntner(o.key);
+                });
+
+                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete).then(
                     function (result) {
                         AlertService.clearErrors();
 

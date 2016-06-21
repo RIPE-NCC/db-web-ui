@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance', 'WhoisResources', 'RestService',
-    'UserInfoService', 'CredentialsService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword',
-    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, method, source, objectType, objectName, mntners, mntnersWithoutPassword) {
+    'UserInfoService', 'CredentialsService', 'MntnerService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword', 'allowForcedDelete',
+    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, MntnerService, method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete) {
 
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
@@ -17,16 +17,10 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         };
 
         $scope.allowForceDelete = function () {
-            if (_.any($scope.mntners, 'key', 'RIPE-NCC-END-MNT')) {
-                return false;
-            }
-
             if (method === 'ForceDelete') {
                 return false;
             }
-
-            var forceDeletableObjectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
-            return !_.isEmpty($scope.objectName) && _.contains(forceDeletableObjectTypes, $scope.objectType);
+            return allowForcedDelete;
         };
 
         $scope.cancel = function () {

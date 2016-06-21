@@ -565,7 +565,10 @@ angular.module('webUpdates')
              */
 
             function _isAllocation() {
-                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR'];
+                if (!$scope.attributes) {
+                    return false;
+                }
+                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-RIR'];
                 var status = $scope.attributes.getSingleAttributeOnName('status');
                 return status && _.includes(allocationStatuses, status.value);
             }
@@ -935,7 +938,6 @@ angular.module('webUpdates')
             function _onSuccessfulAuthentication(associationResp){
                 _refreshObjectIfNeeded(associationResp)
             }
-
 
             function switchToTextMode() {
                 $log.debug("Switching to text-mode");

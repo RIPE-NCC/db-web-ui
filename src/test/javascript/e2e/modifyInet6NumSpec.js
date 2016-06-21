@@ -1,3 +1,4 @@
+/*global beforeEach, browser, describe, expect, it*/
 var mockModule = require('./mocks/homepagemocks');
 var page = require('./homePageObject');
 
@@ -5,6 +6,8 @@ var page = require('./homePageObject');
  * Tests...
  */
 describe('Modifying an inet6num', function () {
+    
+    'use strict';
 
     describe('which is an allocation', function () {
 
