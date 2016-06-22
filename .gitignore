@@ -127,6 +127,7 @@ deploy/**
 *.*~
 *~
 .merge_file*
+.~*#
 
 ######################
 # Gradle Wrapper

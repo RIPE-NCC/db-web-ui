@@ -497,14 +497,18 @@ angular.module('dbWebApp')
         };
 
         var addAttributeAfter = function(attr, after) {
-            var metaClone = {};
-            if (typeof attr.$$meta === 'object') {
+            var metaClone = {}, hasMeta = false;;
+            if (attr.$$meta && typeof attr.$$meta === 'object') {
                 Object.keys(attr.$$meta).forEach(function(itemKey) {
                     metaClone[itemKey] = attr.$$meta[itemKey];
+                    hasMeta = true;
                 });
             }
             var foundAt = _.findIndex(this, { name: after.name, value: after.value });
-            var attrCopy = { name: attr.name, value: attr.value, $$meta: metaClone };
+            var attrCopy = { name: attr.name, value: attr.value }
+            if (hasMeta) {
+                attrCopy.$$meta = metaClone;
+            }
             this.splice(foundAt + 1, 0, attrCopy);
             return this;
         };
