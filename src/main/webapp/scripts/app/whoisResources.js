@@ -497,7 +497,7 @@ angular.module('dbWebApp')
         };
 
         var addAttributeAfter = function(attr, after) {
-            var metaClone = {}, hasMeta = false;;
+            var metaClone = {}, hasMeta = false;
             if (attr.$$meta && typeof attr.$$meta === 'object') {
                 Object.keys(attr.$$meta).forEach(function(itemKey) {
                     metaClone[itemKey] = attr.$$meta[itemKey];
@@ -505,7 +505,7 @@ angular.module('dbWebApp')
                 });
             }
             var foundAt = _.findIndex(this, { name: after.name, value: after.value });
-            var attrCopy = { name: attr.name, value: attr.value }
+            var attrCopy = { name: attr.name, value: attr.value };
             if (hasMeta) {
                 attrCopy.$$meta = metaClone;
             }

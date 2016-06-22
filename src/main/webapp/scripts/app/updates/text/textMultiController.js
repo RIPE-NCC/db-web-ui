@@ -204,7 +204,7 @@
                                 attributes: object.attributes,
                                 passwords: object.passwords,
                                 override: object.override,
-                                deleteReason: object.deleteReason,
+                                deleteReason: object.deleteReason
                             };
                             object.rpsl = RpslService.toRpsl(obj);
                             if (object.deleted !== true) {

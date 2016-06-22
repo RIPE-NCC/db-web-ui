@@ -111,7 +111,7 @@
                 var obj = {
                     attributes: attributes,
                     passwords: $scope.passwords,
-                    override: $scope.override,
+                    override: $scope.override
                     //deleteReason: deleteReason,
                 };
                 $scope.object.rpsl = RpslService.toRpsl(obj);
@@ -207,7 +207,7 @@
                 $state.transitionTo('webupdates.modify', {
                     source: $scope.object.source,
                     objectType: $scope.object.type,
-                    name: $scope.object.name,
+                    name: $scope.object.name
                 });
             }
 

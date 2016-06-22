@@ -314,7 +314,7 @@ angular.module('updates')
             function _removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes) {
                 var statusAttr = objectAttributes.getSingleAttributeOnName('status');
 
-                if(statusAttr && !_.isEmpty(statusAttr.value) && statusAttr.value != 'ASSIGNED PI' && statusAttr.value != 'ASSIGNED ANYCAST' && statusAttr.value != 'LEGACY') {
+                if(statusAttr && !_.isEmpty(statusAttr.value) && statusAttr.value !== 'ASSIGNED PI' && statusAttr.value !== 'ASSIGNED ANYCAST' && statusAttr.value !== 'LEGACY') {
                     addableAttributes.removeAttributeWithName('sponsoring-org');
                 }
 
@@ -349,13 +349,15 @@ angular.module('updates')
                 var netnameAttr, assSizeAttr, allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-LIR', 'ALLOCATED-BY-RIR'];
 
                 if (_.includes(allocationStatuses, attributes.getSingleAttributeOnName('status').value)) {
-                    if (netnameAttr = attributes.getSingleAttributeOnName('netname')) {
-                        netnameAttr.$$meta.$$disable = true
+                    netnameAttr = attributes.getSingleAttributeOnName('netname');
+                    if (netnameAttr) {
+                        netnameAttr.$$meta.$$disable = true;
                     }
                 }
 
-                if (assSizeAttr = attributes.getSingleAttributeOnName('assignment-size')) {
-                    assSizeAttr.$$meta.$$disable = true
+                assSizeAttr = attributes.getSingleAttributeOnName('assignment-size');
+                if (assSizeAttr) {
+                    assSizeAttr.$$meta.$$disable = true;
                 }
             }
 
@@ -452,7 +454,7 @@ angular.module('updates')
                 if (_.isUndefined(interceptorFunc)) {
                     return attrs;
                 }
-                return interceptorFunc(method, source, objectType, attts, errors, warnings, infos);
+                return interceptorFunc(method, source, objectType, attrs, errors, warnings, infos);
             };
 
             logicInterceptor.afterSubmitSuccess = function (method, source, objectType, responseAttributes, warnings, infos) {
