@@ -1,7 +1,9 @@
-'use strict';
+/*global angular*/
 
-angular.module('textUpdates')
-    .service('RpslService', ['$log', function ($log) {
+(function () {
+    'use strict';
+
+    angular.module('textUpdates').service('RpslService', [function () {
         var TOTAL_ATTR_LENGTH = 15;
 
         this.toRpsl = function (obj) {
@@ -11,8 +13,8 @@ angular.module('textUpdates')
             // In tghis case we should using padding (max 15 spaces)
             // otherwise we will inherit existing formatting
             var f = _.first(obj.attributes);
-            if( !_.isUndefined(f)) {
-                if((_.isUndefined(f.value) || _.isEmpty(f.value)) || f.value == 'AUTO-1') {
+            if (!_.isUndefined(f)) {
+                if ((_.isUndefined(f.value) || _.isEmpty(f.value)) || f.value === 'AUTO-1') {
                     spacing = TOTAL_ATTR_LENGTH;
                 }
             }
@@ -30,52 +32,52 @@ angular.module('textUpdates')
                 rpslData = rpslData.concat('\n');
             });
 
-            if( !_.isUndefined(obj.deleteReason) ) {
-                rpslData = rpslData.concat('delete:'+ obj.deleteReason + '\n');
+            if (!_.isUndefined(obj.deleteReason)) {
+                rpslData = rpslData.concat('delete:' + obj.deleteReason + '\n');
             }
 
-            if( !_.isUndefined(obj.passwords) && obj.passwords.length > 0 ) {
-                _.each(obj.passwords, function(pwd){
-                    rpslData = rpslData.concat('password:'+ pwd + '\n');
+            if (!_.isUndefined(obj.passwords) && obj.passwords.length > 0) {
+                _.each(obj.passwords, function (pwd) {
+                    rpslData = rpslData.concat('password:' + pwd + '\n');
                 });
             }
 
-            if( !_.isUndefined(obj.override) ) {
-                rpslData = rpslData.concat('override:'+ obj.override + '\n');
+            if (!_.isUndefined(obj.override)) {
+                rpslData = rpslData.concat('override:' + obj.override + '\n');
             }
 
             return rpslData;
         };
 
-        this.fromRpsl = function(rpslText) {
+        this.fromRpsl = function (rpslText) {
             var objs = [];
 
-            _.each(rpslText.split('\n\n'), function(objRpsl) {
-                if( objRpsl !== '') {
+            _.each(rpslText.split('\n\n'), function (objRpsl) {
+                if (objRpsl !== '') {
                     var passwords = [];
                     var overrides = [];
                     var deleteReasons = [];
 
                     var obj = {
                         attributes: _parseSingleObject(objRpsl, passwords, overrides, deleteReasons),
-                        passwords:[],
-                        override:undefined,
-                        deleteReason:undefined
+                        passwords: [],
+                        override: undefined,
+                        deleteReason: undefined
                     };
 
                     _stripDuplicates(passwords);
-                    if( passwords.length > 0 ){
+                    if (passwords.length > 0) {
                         obj.passwords = passwords;
                     }
 
                     _stripDuplicates(overrides);
-                    if( overrides.length > 0 ){
+                    if (overrides.length > 0) {
                         obj.override = overrides[0];
                     }
 
                     _stripDuplicates(deleteReasons);
                     _stripDuplicates(deleteReasons);
-                    if( deleteReasons.length > 0 ) {
+                    if (deleteReasons.length > 0) {
                         obj.deleteReason = deleteReasons[0];
                     }
                     objs.push(obj);
@@ -84,21 +86,21 @@ angular.module('textUpdates')
 
 
             return objs;
-        }
+        };
 
-        function _stripDuplicates( array ) {
+        function _stripDuplicates(array) {
 
             var uniqued = _.unique(_.clone(array));
             // don't copy into a new pointer, but leave existibg pointer in tact
             while (array.length) {
                 array.pop();
             }
-            _.each(uniqued, function(item) {
+            _.each(uniqued, function (item) {
                 array.push(item);
             });
         }
 
-        function _parseSingleObject( rpslText, passwords, overrides, deleteReasons ) {
+        function _parseSingleObject(rpslText, passwords, overrides, deleteReasons) {
             var attrs = [];
 
             var buffer = '';
@@ -112,18 +114,18 @@ angular.module('textUpdates')
                 if (idx === rpslText.length - 1 || (current === '\n' && _isLetter(next))) {
                     // end of attribute reached
                     var attr = _parseSingleAttribute(_.clone(buffer));
-                    if(!_.isUndefined(attr)) {
+                    if (!_.isUndefined(attr)) {
                         var trimmed = _.trim(attr.value);
-                        if( attr.name === 'password' ) {
-                            if(!_.isEmpty(trimmed)) {
+                        if (attr.name === 'password') {
+                            if (!_.isEmpty(trimmed)) {
                                 passwords.push(trimmed);
                             }
-                        } else  if( attr.name === 'override'  ) {
-                            if(!_.isEmpty(trimmed)) {
+                        } else if (attr.name === 'override') {
+                            if (!_.isEmpty(trimmed)) {
                                 overrides.push(trimmed);
                             }
-                        } else  if( attr.name === 'delete'  ) {
-                            if( !_.isEmpty(trimmed)) {
+                        } else if (attr.name === 'delete') {
+                            if (!_.isEmpty(trimmed)) {
                                 deleteReasons.push(trimmed);
                             }
                         } else {
@@ -138,8 +140,8 @@ angular.module('textUpdates')
             return attrs;
         }
 
-        function _parseSingleAttribute( rawAttribute ) {
-            var attr = undefined;
+        function _parseSingleAttribute(rawAttribute) {
+            var attr;
 
             // extract the key
             var keyWithRest = rawAttribute.split(':');
@@ -154,7 +156,7 @@ angular.module('textUpdates')
                     _.each(rest.split('\n'), function (item) {
                         var trimmed = _.trim(item);
 
-                        if( !_.isEmpty(trimmed)) {
+                        if (!_.isEmpty(trimmed)) {
                             if (item.indexOf('#') < 0) { // no comment
                                 // keep left spacing for value
                                 values.push(_.trimRight(item));
@@ -174,8 +176,8 @@ angular.module('textUpdates')
 
                 attr = {
                     name: key,
-                    value: _undefinedForEmpty(_concatenate(values,"")),
-                    comment: _undefinedForEmpty(_concatenate(comments, " "))
+                    value: _undefinedForEmpty(_concatenate(values, '')),
+                    comment: _undefinedForEmpty(_concatenate(comments, ' '))
                 };
             }
             return attr;
@@ -193,7 +195,7 @@ angular.module('textUpdates')
             if (_.isEmpty(c)) {
                 return false;
             }
-            return c.toLowerCase() != c.toUpperCase();
+            return c.toLowerCase() !== c.toUpperCase();
         }
 
         function _undefinedForEmpty(value) {
@@ -204,4 +206,6 @@ angular.module('textUpdates')
         }
 
     }]);
+
+})();
 

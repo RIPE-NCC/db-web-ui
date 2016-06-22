@@ -1,9 +1,11 @@
-'use strict';
+/*global angular*/
 
-angular.module('fmp')
-    .controller('FindMaintainerCtrl', ['$scope', '$log', '$state', 'AlertService', 'Maintainer', 'SendMail', 'Validate','UserInfo',
+(function () {
+    'use strict';
 
-        function ($scope,  $log, $state, AlertService, Maintainer, SendMail, Validate, UserInfo) {
+    angular.module('fmp').controller('FindMaintainerCtrl', ['$scope', '$log', '$state', 'AlertService', 'Maintainer', 'SendMail', 'Validate', 'UserInfo',
+
+        function ($scope, $log, $state, AlertService, Maintainer, SendMail, Validate, UserInfo) {
             AlertService.clearErrors();
 
             $log.info('FindMaintainerCtrl starts');
@@ -12,10 +14,10 @@ angular.module('fmp')
             $scope.selectedMaintainer = undefined;
             $scope.email = undefined;
 
-            UserInfo.get({}, function(resp) {
-                $log.info('User is logged in:' +  JSON.stringify(resp));
+            UserInfo.get({}, function (resp) {
+                $log.info('User is logged in:' + JSON.stringify(resp));
 
-            }, function(error) {
+            }, function (error) {
                 $log.info('User is not logged in: ' + JSON.stringify(error));
                 _navigateToRequireLogin();
             });
@@ -23,11 +25,8 @@ angular.module('fmp')
             $scope.selectMaintainer = function () {
 
                 $log.info('Search for mntner ' + $scope.maintainerKey);
-
                 Maintainer.get({maintainerKey: $scope.maintainerKey}, function (result) {
-
                     $log.info('Found mntner ' + $scope.maintainerKey + ':' + JSON.stringify(result));
-
                     Validate.get({maintainerKey: $scope.maintainerKey}, function (validationResult) {
 
                             $log.info('Validated mntner ' + $scope.maintainerKey + ':' + JSON.stringify(validationResult));
@@ -53,10 +52,10 @@ angular.module('fmp')
                         });
                 }, function (error) {
 
-                    $log.error('Error searching mntner ' + $scope.maintainerKey + ':' +  JSON.stringify(error));
+                    $log.error('Error searching mntner ' + $scope.maintainerKey + ':' + JSON.stringify(error));
 
                     if (error.status === 404) {
-                        AlertService.setGlobalError('The Maintainer could not be found.')
+                        AlertService.setGlobalError('The Maintainer could not be found.');
                     } else {
                         AlertService.setGlobalError('Eror fetching maintainer: ' + error.data);
                     }
@@ -65,28 +64,24 @@ angular.module('fmp')
 
             $scope.switchToManualResetProcess = function () {
                 $log.info('Switch to voluntary manual');
-                _navigateVoluntarilyToLegacy($scope.maintainerKey)
+                _navigateVoluntarilyToLegacy($scope.maintainerKey);
             };
 
             $scope.validateEmail = function () {
                 SendMail.save({maintainerKey: $scope.maintainerKey},
-                    function (result) {
+                    function () {
                         $log.info('Successfully validated email');
                         _navigateToEmailSent($scope.maintainerKey, $scope.email);
 
-                    }, function (error) {
-
-                        $log.error('Error validating email:' +  JSON.stringify(error));
-
-                        if (error.status === 401 || error.status === 403) {
-
-                        } else {
+                    },
+                    function (error) {
+                        $log.error('Error validating email:' + JSON.stringify(error));
+                        if (error.status !== 401 && error.status !== 403) {
                             if (_.isUndefined(error.data)) {
                                 AlertService.setGlobalError('Error sending email');
                             } else if (error.data.match(/unable to send email/i)) {
                                 AlertService.setGlobalError(error.data);
                             }
-
                             _navigateToLegacy($scope.maintainerKey);
                         }
                     });
@@ -110,8 +105,10 @@ angular.module('fmp')
 
             function _navigateToEmailSent(maintainerKey, email) {
                 $state.transitionTo('fmp.mailSent', {
-                    maintainerKey:maintainerKey,
-                    email:email
+                    maintainerKey: maintainerKey,
+                    email: email
                 });
             }
         }]);
+
+})();

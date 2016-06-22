@@ -1,4 +1,7 @@
-'use strict';
+/*global angular*/
+
+(function () {
+    'use strict';
 
 angular.module('updates')
     .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'MntnerService', 'LinkService',
@@ -217,7 +220,7 @@ angular.module('updates')
 
             function _loadPersonRoleDefaults(method, source, objectType, attributes, errors, warnings, infos) {
                 if(method === 'Create') {
-                    attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1')
+                    attributes.setSingleAttributeOnName('nic-hdl', 'AUTO-1');
                 }
                 return attributes;
             }
@@ -287,7 +290,7 @@ angular.module('updates')
                     _.forEach(attributes.getAllAttributesOnName(type), function (attr) {
                         attr.$$meta.$$disable = MntnerService.isNccMntner(attr.value);
                     });
-                }
+                };
 
                 if( method === 'Modify') {
                     disable('mnt-ref');
@@ -480,3 +483,4 @@ angular.module('updates')
 
             return logicInterceptor;
         }]);
+})();

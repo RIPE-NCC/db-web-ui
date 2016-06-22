@@ -5,6 +5,9 @@ angular.module('webUpdates')
         function ($scope, $stateParams, $state, $log, WhoisResources, MessageStore, RestService,  AlertService) {
 
             var _initialisePage = function() {
+
+                var whoisResources;
+                
                 AlertService.clearErrors();
 
                 // extract parameters from the url
@@ -15,7 +18,7 @@ angular.module('webUpdates')
                 // fetch just created object from temporary store
                 var cachedPersonObject = MessageStore.get($scope.personName);
                 if (cachedPersonObject) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(cachedPersonObject);
+                    whoisResources = WhoisResources.wrapWhoisResources(cachedPersonObject);
                     $scope.personAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
                     $log.debug('Got person from cache:' + JSON.stringify($scope.personAttributes ));
                 } else {
@@ -33,7 +36,7 @@ angular.module('webUpdates')
 
                 var cachedMntnerObject = MessageStore.get($scope.mntnerName);
                 if (cachedMntnerObject) {
-                    var whoisResources = WhoisResources.wrapWhoisResources(cachedMntnerObject);
+                    whoisResources = WhoisResources.wrapWhoisResources(cachedMntnerObject);
                     $scope.mntnerAttributes = WhoisResources.wrapAttributes(whoisResources.getAttributes());
                     $log.debug('Got mntner from cache:' + JSON.stringify($scope.mntnerAttributes ));
                 } else {
@@ -48,7 +51,7 @@ angular.module('webUpdates')
                             AlertService.addErrors(error.data);
                         });
                 }
-            }
+            };
 
             _initialisePage();
 

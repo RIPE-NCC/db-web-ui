@@ -14,7 +14,7 @@ describe('updates: UserInfoService', function () {
             'expiryDate':'[2015,7,7,14,58,3,244]',
             'uuid':'aaaa-bbbb-cccc-dddd',
             'active':'true'
-        };;
+        };
 
     beforeEach(module('updates'));
 

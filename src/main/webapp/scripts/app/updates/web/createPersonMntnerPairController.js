@@ -1,9 +1,12 @@
-'use strict';
+/*global angular, window*/
+
+(function () {
+    'use strict';
 
 angular.module('webUpdates')
     .controller('CreatePersonMntnerPairController', [
         '$scope', '$state', '$log', 'SOURCE',
-        'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore','ErrorReporterService', 'LinkService',
+        'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore', 'ErrorReporterService', 'LinkService',
         function ($scope, $state, $log, SOURCE,
                   WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService, LinkService) {
 
@@ -38,10 +41,10 @@ angular.module('webUpdates')
 
                 // kick off ajax-call to fetch email address of logged-in user
                 UserInfoService.getUserInfo().then(
-                    function(result) {
-                        $scope.mntnerAttributes.setSingleAttributeOnName('auth','SSO ' + result.username);
-                        $scope.mntnerAttributes.setSingleAttributeOnName('upd-to',result.username);
-                    }, function() {
+                    function (result) {
+                        $scope.mntnerAttributes.setSingleAttributeOnName('auth', 'SSO ' + result.username);
+                        $scope.mntnerAttributes.setSingleAttributeOnName('upd-to', result.username);
+                    }, function () {
                         AlertService.setGlobalError('Error fetching SSO information');
                     }
                 );
@@ -53,7 +56,7 @@ angular.module('webUpdates')
                 _populateMissingAttributes();
 
                 var mntner = $scope.mntnerAttributes.getSingleAttributeOnName('mntner');
-                if( !_.isUndefined(mntner.value)) {
+                if (!_.isUndefined(mntner.value)) {
                     $scope.personAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
                     $scope.mntnerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
                 }
@@ -68,7 +71,7 @@ angular.module('webUpdates')
                     $scope.submitInProgress = true;
                     RestService.createPersonMntner($scope.source,
                         WhoisResources.turnAttrsIntoWhoisObjects([$scope.personAttributes, $scope.mntnerAttributes])).then(
-                        function(resp) {
+                        function (resp) {
                             $scope.submitInProgress = false;
 
                             var personUid = _addObjectOfTypeToCache(resp, 'person', 'nic-hdl');
@@ -77,7 +80,7 @@ angular.module('webUpdates')
                             _navigateToDisplayPage($scope.source, personUid, mntnerName);
 
                         },
-                        function(error) {
+                        function (error) {
                             $scope.submitInProgress = false;
                             var whoisResources = error.data;
 
@@ -86,8 +89,8 @@ angular.module('webUpdates')
                             AlertService.populateFieldSpecificErrors('person', $scope.personAttributes, whoisResources);
                             AlertService.populateFieldSpecificErrors('mntner', $scope.mntnerAttributes, whoisResources);
 
-                            ErrorReporterService.log('Create','person', AlertService.getErrors(), $scope.personAttributes);
-                            ErrorReporterService.log('Create','mntner', AlertService.getErrors(), $scope.mntnerAttributes);
+                            ErrorReporterService.log('Create', 'person', AlertService.getErrors(), $scope.personAttributes);
+                            ErrorReporterService.log('Create', 'mntner', AlertService.getErrors(), $scope.mntnerAttributes);
                         }
                     );
                 }
@@ -95,7 +98,7 @@ angular.module('webUpdates')
 
             function _populateMissingAttributes() {
                 var mntner = $scope.mntnerAttributes.getSingleAttributeOnName('mntner');
-                if( !_.isUndefined(mntner.value)) {
+                if (!_.isUndefined(mntner.value)) {
                     $scope.personAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
                     $scope.mntnerAttributes.setSingleAttributeOnName('mnt-by', mntner.value);
                 }
@@ -107,18 +110,18 @@ angular.module('webUpdates')
                 }
             }
 
-            function fieldVisited( objectName, attr ) {
-                $log.info('fieldVisited:'+JSON.stringify(attr));
-                if (attr.$$meta.$$primaryKey === true ) {
+            function fieldVisited(objectName, attr) {
+                $log.info('fieldVisited:' + JSON.stringify(attr));
+                if (attr.$$meta.$$primaryKey === true) {
                     attr.$$error = '';
-                    RestService.autocomplete( attr.name, attr.value, true, []).then(
+                    RestService.autocomplete(attr.name, attr.value, true, []).then(
                         function (data) {
-                            var found = _.find(data, function(item) {
-                                    if( item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase() ) {
-                                        return item;
-                                    }
-                                });
-                            if(!_.isUndefined(found)) {
+                            var found = _.find(data, function (item) {
+                                if (item.type === attr.name && item.key.toLowerCase() === attr.value.toLowerCase()) {
+                                    return item;
+                                }
+                            });
+                            if (!_.isUndefined(found)) {
                                 attr.$$error = attr.name + ' ' + LinkService.getModifyLink($scope.source, attr.name, found.key) + ' already exists';
                             }
                         }
@@ -127,25 +130,25 @@ angular.module('webUpdates')
             }
 
             function _validateForm() {
-                var personValid =  $scope.personAttributes.validate();
+                var personValid = $scope.personAttributes.validate();
                 var mntnerValid = $scope.mntnerAttributes.validate();
                 return personValid && mntnerValid;
             }
 
             function isFormValid() {
                 _populateMissingAttributes();
-                var personValid =  $scope.personAttributes.validateWithoutSettingErrors();
+                var personValid = $scope.personAttributes.validateWithoutSettingErrors();
                 var mntnerValid = $scope.mntnerAttributes.validateWithoutSettingErrors();
                 return personValid && mntnerValid;
             }
 
-            function _onSsoInfoAvailable(result) {
-                $scope.ssoUserName = UserInfoService.getUsername();
-                if( $scope.ssoUserName ) {
-                    $scope.mntnerAttributes.setSingleAttributeOnName('auth','SSO ' + $scope.ssoUserName);
-                    $scope.mntnerAttributes.setSingleAttributeOnName('upd-to',$scope.ssoUserName);
-                }
-            }
+            // function _onSsoInfoAvailable() {
+            //     $scope.ssoUserName = UserInfoService.getUsername();
+            //     if( $scope.ssoUserName ) {
+            //         $scope.mntnerAttributes.setSingleAttributeOnName('auth','SSO ' + $scope.ssoUserName);
+            //         $scope.mntnerAttributes.setSingleAttributeOnName('upd-to',$scope.ssoUserName);
+            //     }
+            // }
 
             function _navigateToDisplayPage(source, personName, mntnerName) {
                 $state.transitionTo('webupdates.displayPersonMntnerPair', {
@@ -155,10 +158,10 @@ angular.module('webUpdates')
                 });
             }
 
-            function _addObjectOfTypeToCache( whoisResources, objectType, keyFieldName ) {
-                var uid = undefined;
-                var attrs = WhoisResources.getAttributesForObjectOfType( whoisResources, objectType);
-                if( attrs.length > 0 ) {
+            function _addObjectOfTypeToCache(whoisResources, objectType, keyFieldName) {
+                var uid;
+                var attrs = WhoisResources.getAttributesForObjectOfType(whoisResources, objectType);
+                if (attrs.length > 0) {
                     uid = WhoisResources.wrapAttributes(attrs).getSingleAttributeOnName(keyFieldName).value;
                     MessageStore.add(uid, WhoisResources.turnAttrsIntoWhoisObject(attrs));
                 }
@@ -173,3 +176,5 @@ angular.module('webUpdates')
                 return WhoisResources.getAttributeSyntax($scope.objectType, attrName);
             }
         }]);
+
+})();

@@ -1,7 +1,10 @@
-'use strict';
+/*global angular, document*/
 
-angular.module('webUpdates')
-    .service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
+(function () {
+    'use strict';
+
+    angular.module('webUpdates').service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
+
         function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, STATE) {
 
             var webUpdatesCommons = {};
@@ -83,7 +86,7 @@ angular.module('webUpdates')
                 });
             }
 
-
             return webUpdatesCommons;
 
         }]);
+})();

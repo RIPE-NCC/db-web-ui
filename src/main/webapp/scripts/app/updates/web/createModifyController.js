@@ -1,4 +1,4 @@
-/*global window: false, angular */
+/*global angular */
 
 'use strict';
 
@@ -74,7 +74,7 @@ angular.module('webUpdates')
                 }
             };
 
-            $scope.$on('scrollmarker-event', function(evt) {
+            $scope.$on('scrollmarker-event', function() {
                 showMoreAttributes();
             });
 
@@ -90,7 +90,7 @@ angular.module('webUpdates')
                         return 'status' === attr.name;
                     });
                     if (parentStatusAttr && parentStatusAttr.value) {
-                        parentStatusValue = parentStatusAttr.value
+                        parentStatusValue = parentStatusAttr.value;
                     }
                 }
                 $scope.optionList.status = ResourceStatus.get($scope.objectType, parentStatusValue);
@@ -122,15 +122,15 @@ angular.module('webUpdates')
                 // set the statuses which apply to the objectType (if any)
                 $scope.optionList.status = ResourceStatus.get($scope.objectType);
 
-                var noRedirect = $stateParams.noRedirect;
+                var redirect = !$stateParams.noRedirect;
 
                 $log.debug('Url params: source:' + $scope.source +
                     '. type:' + $scope.objectType +
                     ', uid:' + $scope.name +
-                    ', noRedirect:' + noRedirect);
+                    ', redirect:' + redirect);
 
                 // switch to text-screen if cookie says so and cookie is not to be ignored
-                if (PreferenceService.isTextMode() && ! noRedirect === true ) {
+                if (PreferenceService.isTextMode() && redirect) {
                     switchToTextMode();
                 }
 
@@ -192,7 +192,7 @@ angular.module('webUpdates')
                         $scope.attributes.setSingleAttributeOnName('abuse-c', $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);
                         abuseAttr.$$success = 'Role object for abuse-c successfully created';
                     }, function (error) {
-                        if(error != "cancel") { //dismissing modal will hit this function with the string "cancel" in error arg
+                        if (error !== 'cancel') { //dismissing modal will hit this function with the string "cancel" in error arg
                             //TODO: pass more specific errors from REST? [RM]
                             abuseAttr.$$error = 'The role object for the abuse-c attribute was not created';
                         }
@@ -259,17 +259,17 @@ angular.module('webUpdates')
                         }
                     } else if (item.type === 'aut-num') {
                         // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
-                        if (angular.isArray(item['descr']) && item['descr'].length) {
-                            name = [item['as-name'], separator, item['descr'][0]].join('');
+                        if (angular.isArray(item.descr) && item.descr.length) {
+                            name = [item['as-name'], separator, item.descr[0]].join('');
                         } else {
                             name = item['as-name'];
                         }
                     } else if (typeof item['org-name'] === 'string') {
                         name = item['org-name'];
-                    } else if (angular.isArray(item['descr'])) {
-                        name = item['descr'].join('');
-                    } else if (angular.isArray(item['owner'])) {
-                        name = item['owner'].join('');
+                    } else if (angular.isArray(item.descr)) {
+                        name = item.descr.join('');
+                    } else if (angular.isArray(item.owner)) {
+                        name = item.owner.join('');
                     } else {
                         separator = '';
                     }
@@ -322,7 +322,7 @@ angular.module('webUpdates')
             function _filterBasedOnAttr(suggestions, attrName) {
                 return _.filter(suggestions, function(item) {
                     if (attrName === 'abuse-c') {
-                        $log.debug("Filter out suggestions without abuse-mailbox");
+                        $log.debug('Filter out suggestions without abuse-mailbox');
                         return !_.isEmpty(item['abuse-mailbox']);
                     }
                     return true;
@@ -330,10 +330,10 @@ angular.module('webUpdates')
             }
 
             function isBrowserAutoComplete(attribute) {
-                if (_isServerLookupKey(attribute.$$meta.$$refs) || isEnum(attribute)) {
-                    return "off";
+                if (_isServerLookupKey(attribute.$$meta.$$refs) || attribute.$$meta.$$isEnum) {
+                    return 'off';
                 } else {
-                    return "on";
+                    return 'on';
                 }
             }
 
@@ -351,8 +351,7 @@ angular.module('webUpdates')
                     RestService.autocomplete( attribute.name, attribute.value, true, []).then(
                         function (data) {
                             if (_.any(data, function (item) {
-                                    return _uniformed(item.type) === _uniformed(attribute.name)
-                                        &&
+                                    return _uniformed(item.type) === _uniformed(attribute.name) &&
                                         _uniformed(item.key) === _uniformed(attribute.value);
                                 })) {
                                 attribute.$$error = attribute.name + ' ' +
@@ -574,7 +573,7 @@ angular.module('webUpdates')
             }
 
             function _warnForNonSubstitutableUtf8(attribute, userInput) {
-                if( !CharsetTools.isLatin1(userInput)) {
+                if (!CharsetTools.isLatin1(userInput)) {
                     // see if any chars can be substituted
                     var subbedValue = CharsetTools.replaceSubstitutables(userInput);
                     if (!CharsetTools.isLatin1(subbedValue)) {
@@ -609,6 +608,7 @@ angular.module('webUpdates')
                 $scope.restCalInProgress = true;
                 RestService.fetchMntnersForSSOAccount().then(
                     function (results) {
+                        var attributes;
                         $scope.restCalInProgress = false;
                         $scope.maintainers.sso = results;
                         if ($scope.maintainers.sso.length > 0) {
@@ -622,7 +622,7 @@ angular.module('webUpdates')
                                 return {name: 'mnt-by', value: i.key};
                             });
 
-                            var attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                            attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
                                 $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
 
                             // Post-process atttributes before showing using screen-logic-interceptor
@@ -633,7 +633,7 @@ angular.module('webUpdates')
                             $log.debug('mntners-object:' + JSON.stringify($scope.maintainers.object));
 
                         } else {
-                            var attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
+                            attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
                             $scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
                         }
                     }, function (error) {
@@ -662,26 +662,26 @@ angular.module('webUpdates')
                 var errorMessages = [];
                 var warningMessages = [];
                 var infoMessages = [];
-                var attributes = ScreenLogicInterceptor.beforeEdit(method,
+                var interceptedAttrs = ScreenLogicInterceptor.beforeEdit(method,
                     $scope.source, $scope.objectType, attributes,
                     errorMessages, warningMessages, infoMessages );
 
                 loadAlerts(errorMessages, warningMessages, infoMessages);
 
-                return attributes;
+                return interceptedAttrs;
             }
 
             function _interceptAfterEdit( method, attributes ) {
                 var errorMessages = [];
                 var warningMessages = [];
                 var infoMessages = [];
-                var attributes = ScreenLogicInterceptor.afterEdit(method,
+                var interceptedAttrs = ScreenLogicInterceptor.afterEdit(method,
                     $scope.source, $scope.objectType, attributes,
                     errorMessages, warningMessages, infoMessages );
 
                 loadAlerts(errorMessages, warningMessages, infoMessages);
 
-                return attributes;
+                return interceptedAttrs;
             }
 
             function _interceptOnSubmitSuccess( method, responseAttributes ) {
@@ -905,7 +905,7 @@ angular.module('webUpdates')
                                 $log.debug('objectMaintainers:' + JSON.stringify($scope.maintainers.object));
 
                             },
-                            function(error) {
+                            function() {
                                 $scope.restCalInProgress = false;
                                 // ignore
                             }
@@ -932,15 +932,15 @@ angular.module('webUpdates')
                     $scope.objectType,
                     $scope.name,
                     _onSuccessfulAuthentication,
-                    _navigateAway)
+                    _navigateAway);
             }
 
             function _onSuccessfulAuthentication(associationResp){
-                _refreshObjectIfNeeded(associationResp)
+                _refreshObjectIfNeeded(associationResp);
             }
 
             function switchToTextMode() {
-                $log.debug("Switching to text-mode");
+                $log.debug('Switching to text-mode');
 
                 PreferenceService.setTextMode();
 

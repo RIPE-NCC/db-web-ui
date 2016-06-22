@@ -1,12 +1,14 @@
-'use strict';
+/*global angular*/
 
-angular.module('textUpdates')
-        .controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q', '$window',
-        'WhoisResources', 'RestService', 'AlertService','ErrorReporterService','MessageStore','RpslService', 'TextCommons',
-        'CredentialsService', 'PreferenceService', 'ScreenLogicInterceptor',
+(function () {
+    'use strict';
+
+    angular.module('textUpdates').controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q', '$window',
+        'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore', 'RpslService', 'TextCommons',
+        'CredentialsService', 'PreferenceService',
         function ($scope, $stateParams, $state, $resource, $log, $cookies, $q, $window,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore, RpslService,
-                  TextCommons, CredentialsService, PreferenceService, ScreenLogicInterceptor) {
+                  TextCommons, CredentialsService, PreferenceService) {
 
             $scope.submit = submit;
             $scope.switchToWebMode = switchToWebMode;
@@ -25,10 +27,10 @@ angular.module('textUpdates')
                 $scope.object.source = $stateParams.source;
                 $scope.object.type = $stateParams.objectType;
                 $scope.object.name = decodeURIComponent($stateParams.name);
-                if( !_.isUndefined($stateParams.rpsl)) {
+                if (!_.isUndefined($stateParams.rpsl)) {
                     $scope.object.rpsl = decodeURIComponent($stateParams.rpsl);
                 }
-                var noRedirect = $stateParams.noRedirect;
+                var redirect = !$stateParams.noRedirect;
 
                 $scope.mntners = {};
                 $scope.mntners.sso = [];
@@ -40,14 +42,14 @@ angular.module('textUpdates')
                     ', object.name:' + $scope.object.name +
                     ', noRedirect:' + $scope.noRedirect);
 
-                if( PreferenceService.isWebMode() && ! noRedirect === true ) {
+                if (PreferenceService.isWebMode() && redirect) {
                     switchToWebMode();
                 }
 
-                if(_.isUndefined($scope.object.rpsl) ) {
+                if (_.isUndefined($scope.object.rpsl)) {
                     _fetchAndPopulateObject();
                 }
-            };
+            }
 
             function _fetchAndPopulateObject() {
 
@@ -71,12 +73,12 @@ angular.module('textUpdates')
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
 
                         TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name,
-                                $scope.mntners.sso, attributes, $scope.psswords, $scope.override).then(
-                            function(authenticated) {
+                            $scope.mntners.sso, attributes, $scope.psswords, $scope.override).then(
+                            function () {
                                 $log.debug('Successfully authenticated');
                                 _refreshObjectIfNeeded($scope.object.source, $scope.object.type, $scope.object.name);
                             },
-                            function(authenticated) {
+                            function () {
                                 $log.error('Error authenticating');
                             }
                         );
@@ -85,7 +87,7 @@ angular.module('textUpdates')
                 ).catch(
                     function (error) {
                         $scope.restCalInProgress = false;
-                        if( error.data) {
+                        if (error.data) {
                             AlertService.setErrors(error.data);
                         } else {
                             AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
@@ -111,16 +113,16 @@ angular.module('textUpdates')
                     passwords: $scope.passwords,
                     override: $scope.override,
                     //deleteReason: deleteReason,
-                }
+                };
                 $scope.object.rpsl = RpslService.toRpsl(obj);
-                $log.debug("RPSL:" +$scope.object.rpsl );
+                $log.debug('RPSL:' + $scope.object.rpsl);
 
                 return attributes;
             }
 
             function submit() {
                 var objects = RpslService.fromRpsl($scope.object.rpsl);
-                if( objects.length > 1 ) {
+                if (objects.length > 1) {
                     AlertService.setGlobalError('Only a single object is allowed');
                     return;
                 }
@@ -129,30 +131,30 @@ angular.module('textUpdates')
                 $scope.override = objects[0].override;
                 var attributes = TextCommons.uncapitalize(objects[0].attributes);
 
-                $log.debug("attributes:" + JSON.stringify(attributes));
+                $log.debug('attributes:' + JSON.stringify(attributes));
                 if (!TextCommons.validate($scope.object.type, attributes)) {
                     return;
                 }
 
-                if(CredentialsService.hasCredentials()) {
+                if (CredentialsService.hasCredentials()) {
                     // todo: prevent duplicate password
                     $scope.passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
 
                 TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name, $scope.mntners.sso, attributes,
-                        $scope.passwords, $scope.override).then(
-                    function(authenticated) {
+                    $scope.passwords, $scope.override).then(
+                    function () {
                         $log.info('Successfully authenticated');
 
                         // combine all passwords
-                        var combinedPaswords =_.union($scope.passwords, TextCommons.getPasswordsForRestCall( $scope.object.type));
+                        var combinedPaswords = _.union($scope.passwords, TextCommons.getPasswordsForRestCall($scope.object.type));
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
                         $scope.restCalInProgress = true;
                         RestService.modifyObject($scope.object.source, $scope.object.type, $scope.object.name,
                             WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPaswords, $scope.override, true).then(
-                            function(result) {
+                            function (result) {
                                 $scope.restCalInProgress = false;
 
                                 var whoisResources = result;
@@ -160,18 +162,18 @@ angular.module('textUpdates')
                                 _navigateToDisplayPage($scope.object.source, $scope.object.type, whoisResources.getPrimaryKey(), 'Modify');
 
                             },
-                            function(error) {
+                            function (error) {
                                 $scope.restCalInProgress = false;
 
                                 var whoisResources = error.data;
                                 AlertService.setAllErrors(whoisResources);
-                                if(!_.isEmpty(whoisResources.getAttributes())) {
+                                if (!_.isEmpty(whoisResources.getAttributes())) {
                                     ErrorReporterService.log('TextModify', $scope.object.type, AlertService.getErrors(), whoisResources.getAttributes());
                                 }
                             }
                         );
                     },
-                    function(authenticated) {
+                    function () {
                         $log.error('Error authenticating');
                     }
                 );
@@ -197,15 +199,15 @@ angular.module('textUpdates')
                 });
             }
 
-           function switchToWebMode() {
-                $log.debug("Switching to web-mode");
+            function switchToWebMode() {
+                $log.debug('Switching to web-mode');
 
                 PreferenceService.setWebMode();
 
                 $state.transitionTo('webupdates.modify', {
                     source: $scope.object.source,
                     objectType: $scope.object.type,
-                    name:$scope.object.name,
+                    name: $scope.object.name,
                 });
             }
 
@@ -223,7 +225,7 @@ angular.module('textUpdates')
                             $scope.restCalInProgress = false;
                             _handleFetchResponse(result);
                         },
-                        function(error) {
+                        function () {
                             $scope.restCalInProgress = false;
                             // ignore
                         }
@@ -231,3 +233,4 @@ angular.module('textUpdates')
                 }
             }
         }]);
+})();

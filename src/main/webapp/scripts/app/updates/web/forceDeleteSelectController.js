@@ -1,44 +1,42 @@
-/*global window: false */
+/*global angular*/
 
 (function () {
     'use strict';
 
-    var controller = function ($scope, $stateParams, $state, SOURCE, $log, AlertService, STATE) {
+    angular.module('webUpdates').controller('ForceDeleteSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log', 'AlertService', 'STATE',
 
-        $scope.isFormValid = _isFormValid;
-        $scope.navigateToForceDelete = _navigateToForceDelete;
+        function ($scope, $stateParams, $state, SOURCE, $log, AlertService, STATE) {
 
-        _initialisePage();
+            $scope.isFormValid = _isFormValid;
+            $scope.navigateToForceDelete = _navigateToForceDelete;
 
-        function _initialisePage() {
+            _initialisePage();
 
-            AlertService.clearErrors();
+            function _initialisePage() {
 
-            $scope.objectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
+                AlertService.clearErrors();
 
-            $scope.selected = {
-                source: SOURCE,
-                objectType: $scope.objectTypes[0],
-                name: undefined
-            };
-        }
+                $scope.objectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
-        function _navigateToForceDelete() {
-            $state.transitionTo(STATE.FORCE_DELETE, {
-                source: $scope.selected.source,
-                objectType: $scope.selected.objectType,
-                name: $scope.selected.name
-            });
-        }
+                $scope.selected = {
+                    source: SOURCE,
+                    objectType: $scope.objectTypes[0],
+                    name: undefined
+                };
+            }
 
-        function _isFormValid() {
-            return $scope.selected.name !== undefined && $scope.selected.name !== '';
-        }
+            function _navigateToForceDelete() {
+                $state.transitionTo(STATE.FORCE_DELETE, {
+                    source: $scope.selected.source,
+                    objectType: $scope.selected.objectType,
+                    name: $scope.selected.name
+                });
+            }
 
-    };
+            function _isFormValid() {
+                return $scope.selected.name !== undefined && $scope.selected.name !== '';
+            }
 
-    angular.module('webUpdates')
-        .controller('ForceDeleteSelectController',
-            ['$scope', '$stateParams', '$state', 'SOURCE', '$log', 'AlertService', 'STATE', controller]);
+        }]);
 
 })();

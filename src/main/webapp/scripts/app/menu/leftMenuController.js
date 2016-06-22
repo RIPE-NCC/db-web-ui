@@ -1,13 +1,16 @@
-'use strict';
+/*global angular*/
 
-angular.module('menu')
-    .controller('LeftMenuController', ['$scope', '$rootScope', '$log',
+(function () {
+    'use strict';
+
+    angular.module('menu').controller('LeftMenuController', ['$scope', '$rootScope', '$log',
+
         function ($scope, $rootScope, $log) {
 
             $scope.menu = {};
 
             $rootScope.$on('dbWebApp.moduleActive', function (event, data) {
-                $log.info("Got " + event.name + ' event with value ' + data);
+                $log.info('Got ' + event.name + ' event with value ' + data);
                 if (data === 'search') {
                     _expandSearchMenu();
                 } else if (data === 'passwords') {
@@ -15,7 +18,7 @@ angular.module('menu')
                 } else if (data === 'updates') {
                     _expandWebUpdatesMenu();
                 } else {
-                   $log.error('LeftMenuController: Received unrecognized value ' + data + ' for event ' + event.name );
+                    $log.error('LeftMenuController: Received unrecognized value ' + data + ' for event ' + event.name);
                 }
             });
 
@@ -38,3 +41,4 @@ angular.module('menu')
             }
         }
     ]);
+})();

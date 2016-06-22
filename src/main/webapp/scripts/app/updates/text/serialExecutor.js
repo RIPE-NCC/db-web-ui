@@ -1,18 +1,20 @@
-'use strict';
+/*global angular*/
 
-angular.module('textUpdates')
-    .service('SerialExecutor', ['$q','$log', function ($q, $log) {
+(function () {
+    'use strict';
 
-        this.execute = function(data, cb) {
+    angular.module('textUpdates').service('SerialExecutor', ['$q', '$log', function ($q, $log) {
+
+        this.execute = function (data, cb) {
             // package function and function argument
-            var tasks = _.map(data, function(item) {
-                return function() {
+            var tasks = _.map(data, function (item) {
+                return function () {
                     return cb(item);
                 };
             });
 
             _serial(tasks);
-        }
+        };
 
         function _serial(tasks) {
             if (tasks.length === 0) {
@@ -22,26 +24,26 @@ angular.module('textUpdates')
                 return deferred.promise;
             }
 
-            var callWrapper = function(index, deferred) {
-                $log.info("Start processing task " + (index+1) + " of " + tasks.length);
+            var callWrapper = function (index, deferred) {
+                $log.info('Start processing task ' + (index + 1) + ' of ' + tasks.length);
                 tasks[index]().then(
-                    function() {
-                        $log.info("Success performing task " + (index+1) + " of " + tasks.length);
+                    function () {
+                        $log.info('Success performing task ' + (index + 1) + ' of ' + tasks.length);
                         var nextIndex = index + 1;
                         if (nextIndex < tasks.length) {
                             callWrapper(nextIndex, deferred);
                         } else {
-                            $log.info("All tasks processed");
+                            $log.info('All tasks processed');
                             deferred.resolve();
                         }
-                    }, function() {
-                        $log.error("Error performing task " + (index+1) + " of " + tasks.length);
+                    }, function () {
+                        $log.error('Error performing task ' + (index + 1) + ' of ' + tasks.length);
                         // go on in case of error
                         var nextIndex = index + 1;
                         if (nextIndex < tasks.length) {
                             callWrapper(nextIndex, deferred);
                         } else {
-                            $log.info("All tasks processed");
+                            $log.info('All tasks processed');
                             deferred.resolve();
                         }
                     });
@@ -49,6 +51,6 @@ angular.module('textUpdates')
                 return deferred.promise;
             };
             return callWrapper(0, $q.defer());
-        };
+        }
     }]);
-
+})();

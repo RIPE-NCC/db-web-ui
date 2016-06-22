@@ -1,7 +1,9 @@
-'use strict';
+/*global angular, moment*/
 
-angular.module('fmp')
-    .controller('ConfirmMaintainerCtrl', ['$scope', '$log', '$stateParams', '$state', '$location', 'AlertService', 'EmailLink',
+(function () {
+    'use strict';
+
+    angular.module('fmp').controller('ConfirmMaintainerCtrl', ['$scope', '$log', '$stateParams', '$state', '$location', 'AlertService', 'EmailLink',
             function ($scope, $log, $stateParams, $state, $location, AlertService, EmailLink) {
                 AlertService.clearErrors();
 
@@ -36,24 +38,25 @@ angular.module('fmp')
                     if (link.currentUserAlreadyManagesMntner === true) {
                         AlertService.addGlobalWarning(
                             'Your RIPE NCC Access account is already associated with this mntner. ' +
-                            'You can modify this mntner <a href="' + _makeModificationUrl($scope.key ) + '">here</a>.');
+                            'You can modify this mntner <a href="' + _makeModificationUrl($scope.key) + '">here</a>.');
                         return;
                     }
 
                     $scope.hashOk = true;
-                    AlertService.addGlobalInfo('You are logged in with the RIPE NCC Access account ' + $scope.user );
+                    AlertService.addGlobalInfo('You are logged in with the RIPE NCC Access account ' + $scope.user);
 
                 }, function (error) {
                     var msg = 'Error fetching email-link';
-                    if(!_.isObject(error.data)) {
-                        msg = msg.concat( ': '+ error.data);
+                    if (!_.isObject(error.data)) {
+                        msg = msg.concat(': ' + error.data);
                     }
                     $log.error(msg);
                     AlertService.setGlobalError(msg);
 
                 });
 
-                $scope.associate = function (resp) {
+                $scope.associate = function () {
+                    
                     EmailLink.update({hash: $scope.localHash}, {hash: $scope.localHash}, function (resp) {
 
                         $log.error('Successfully associated email-link:' + resp);
@@ -62,7 +65,7 @@ angular.module('fmp')
 
                     }, function (error) {
 
-                        $log.error('Error associating email-link:' +  JSON.stringify(error));
+                        $log.error('Error associating email-link:' + JSON.stringify(error));
 
                         if (error.status === 400 && !_.isUndefined(error.data) && error.data.match(/already contains SSO/).length === 1) {
                             AlertService.setGlobalError(error.data);
@@ -87,7 +90,7 @@ angular.module('fmp')
                         '</ol>');
                 };
 
-                function _makeModificationUrl( key ) {
+                function _makeModificationUrl(key) {
                     return '/db-web-ui/#/webupdates/modify/RIPE/mntner/' + key;
                 }
 
@@ -98,11 +101,12 @@ angular.module('fmp')
                     });
                 }
 
-                function _navigateToLegacy(maintainerKey) {
-                    $state.transitionTo('fmp.legacy', {
-                        maintainerKey: maintainerKey
-                    });
-                }
+                // function _navigateToLegacy(maintainerKey) {
+                //     $state.transitionTo('fmp.legacy', {
+                //         maintainerKey: maintainerKey
+                //     });
+                // }
             }
         ]
     );
+})();

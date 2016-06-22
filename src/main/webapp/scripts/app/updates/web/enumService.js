@@ -1,7 +1,7 @@
-'use strict';
+(function () {
+    'use strict';
 
-angular.module('dbWebApp')
-    .service('EnumService', ['CountryCodes', 'LanguageCodes', 'ResourceStatus', function (CountryCodes, LanguageCodes, ResourceStatus) {
+    angular.module('dbWebApp').service('EnumService', ['CountryCodes', 'LanguageCodes', 'ResourceStatus', function (CountryCodes, LanguageCodes, ResourceStatus) {
 
         this.get = function (objectType, attrName) {
             if (attrName === 'status') {
@@ -11,6 +11,7 @@ angular.module('dbWebApp')
             } else if (attrName === 'country') {
                 return CountryCodes.get();
             }
-        }
+        };
 
     }]);
+})();
