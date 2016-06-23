@@ -74,8 +74,6 @@ angular.module('updates')
                 };
 
                 this.detailsForMntners = function (mntners) {
-                    $log.debug('detailsForMntners start for: ' + JSON.stringify(mntners));
-
                     var promises = _.map(mntners, function (item) {
                         return _singleMntnerDetails(item);
                     });
@@ -86,7 +84,7 @@ angular.module('updates')
                 function _singleMntnerDetails(mntner) {
                     var deferredObject = $q.defer();
 
-                    $log.debug('_singleMntnerDetails start for: ' + JSON.stringify(mntner));
+                    $log.debug('_singleMntnerDetails: ' + JSON.stringify(mntner));
 
                     $resource('api/whois/autocomplete',
                         {

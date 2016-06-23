@@ -15,6 +15,14 @@
             var nccMntners = [nccHmMntner, nccEndMntner, 'RIPE-NCC-HM-PI-MNT', 'RIPE-GII-MNT', 'RIPE-NCC-MNT', 'RIPE-NCC-RPSL-MNT',
                 'RIPE-DBM-MNT', 'RIPE-NCC-LOCKED-MNT', 'RIPE-DBM-UNREFERENCED-CLEANUP-MNT', 'RIPE-ERX-MNT', 'RIPE-NCC-LEGACY-MNT'];
 
+            mntnerService.isSsoAuthorised = function(object, ssoAccts) {
+                var mntBys = object.getAllAttributesOnName('mnt-by');
+                var mntLowers = object.getAllAttributesOnName('mnt-lower');
+                console.log('mntners', mntBys.concat(mntLowers));
+                console.log('ssoAccts', ssoAccts);
+                return false;
+            };
+
             mntnerService.isRemovable = function (mntnerKey) {
                 // Should be possible to remove RIPE-NCC-RPSL-MNT, but allowed to add it
                 if (mntnerKey.toUpperCase() === 'RIPE-NCC-RPSL-MNT') {
@@ -87,22 +95,14 @@
 
             mntnerService.enrichWithSsoStatus = function (ssoMntners, mntners) {
                 return _.map(mntners, function (mntner) {
-                    if (mntnerService.isMntnerOnlist(ssoMntners, mntner)) {
-                        mntner.mine = true;
-                    } else {
-                        mntner.mine = false;
-                    }
+                    mntner.mine = !!mntnerService.isMntnerOnlist(ssoMntners, mntner);
                     return mntner;
                 });
             };
 
             mntnerService.enrichWithNewStatus = function (originalMntners, actualMntners) {
                 return _.map(actualMntners, function (mntner) {
-                    if (mntnerService.isMntnerOnlist(originalMntners, mntner)) {
-                        mntner.isNew = false;
-                    } else {
-                        mntner.isNew = true;
-                    }
+                    mntner.isNew = !mntnerService.isMntnerOnlist(originalMntners, mntner);
                     return mntner;
                 });
             };
@@ -110,11 +110,7 @@
             mntnerService.enrichWithMine = function (ssoMntners, mntners) {
                 return _.map(mntners, function (mntner) {
                     // search in selected list
-                    if (mntnerService.isMntnerOnlist(ssoMntners, mntner)) {
-                        mntner.mine = true;
-                    } else {
-                        mntner.mine = false;
-                    }
+                    mntner.mine = !!mntnerService.isMntnerOnlist(ssoMntners, mntner);
                     return mntner;
                 });
             };

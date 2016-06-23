@@ -4,9 +4,9 @@
 
 angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce', '$document',
-                'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService',  'ModalService',
-                'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'ResourceStatus',
-                'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
+        'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', 'ModalService',
+        'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'ResourceStatus',
+        'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
         function ($scope, $stateParams, $state, $log, $window, $q, $sce, $document,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService, ResourceStatus,
@@ -64,25 +64,25 @@ angular.module('webUpdates')
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
 
-            var showMoreAttributes = function() {
+            var showMoreAttributes = function () {
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
-                    $scope.nrAttributesToRender+= 50; // increment
+                    $scope.nrAttributesToRender += 50; // increment
                     $scope.$apply();
                 } else {
                     $scope.attributesAllRendered = true;
                 }
             };
 
-            $scope.$on('scrollmarker-event', function() {
+            $scope.$on('scrollmarker-event', function () {
                 showMoreAttributes();
             });
 
             /*
              * Select status list for resources based on parent's status.
              */
-            $scope.$on('resource-parent-found', function(event, parent) {
-                //$log.debug('$on resource-parent-found', parent);
+            $scope.$on('resource-parent-found', function (event, parent) {
+                // get the list of available statuses for the parent
                 var parentStatusValue, parentStatusAttr;
                 // if parent wasn't found but we got an event anyway, use the default
                 if (parent) {
@@ -94,9 +94,54 @@ angular.module('webUpdates')
                     }
                 }
                 $scope.optionList.status = ResourceStatus.get($scope.objectType, parentStatusValue);
-                $log.debug('Allowed status values', $scope.optionList.status);
-            });
 
+                // Allow the user to authorize against mnt-by or mnt-lower of this parent object
+                // (https://www.pivotaltracker.com/story/show/118090295)
+
+                // first check if the user needs some auth...
+                if (parent.attributes) {
+                    var parentObject = WhoisResources.wrapAttributes(parent.attributes.attribute);
+                    if (!MntnerService.isSsoAuthorised(parentObject, $scope.maintainers.sso)) {
+                        // pop up an auth box
+                        var mntByAttrs = parentObject.getAllAttributesOnName('mnt-by');
+                        var mntLowerAttrs = parentObject.getAllAttributesOnName('mnt-lower');
+                        console.log('xxxxxx',
+                            'mntByAttrs', mntByAttrs,
+                            'mntLowerAttrs', mntLowerAttrs);
+                        $scope.restCallInProgress = true;
+
+                        var parentMntners = _.map(mntByAttrs.concat(mntLowerAttrs), function (mntner) {
+                            return {key: mntner.value};
+                        });
+                        console.log('parentMntners', parentMntners);
+                        RestService.detailsForMntners(parentMntners).then(
+                            function (enrichedMntners) {
+                                $scope.restCallInProgress = false;
+                                WebUpdatesCommons.performAuthentication({
+                                        sso: $scope.maintainers.sso,
+                                        objectOriginal: enrichedMntners,
+                                        object: null
+                                    },
+                                    $scope.operation,
+                                    $scope.source,
+                                    $scope.objectType,
+                                    $scope.name,
+                                    _onSuccessfulAuthentication,
+                                    _navigateAway);
+
+                                // $scope.maintainers.object = enrichedMntners;
+                                // $log.debug('maintainers.object:' + JSON.stringify($scope.maintainers.object));
+
+                            },
+                            function (error) {
+                                $scope.restCallInProgress = false;
+                                $log.error('Error fetching mntner details' + JSON.stringify(error));
+                                AlertService.setGlobalError('Error fetching maintainer details');
+                            });
+
+                    }
+                }
+            });
 
             _initialisePage();
 
@@ -180,7 +225,7 @@ angular.module('webUpdates')
              */
 
             function createRoleForAbuseCAttribute() {
-                var maintainers = _.map($scope.maintainers.object, function(o) {
+                var maintainers = _.map($scope.maintainers.object, function (o) {
                     return {name: 'mnt-by', value: o.key};
                 });
                 var abuseAttr = $scope.attributes.getSingleAttributeOnName('abuse-c');
@@ -320,7 +365,7 @@ angular.module('webUpdates')
             }
 
             function _filterBasedOnAttr(suggestions, attrName) {
-                return _.filter(suggestions, function(item) {
+                return _.filter(suggestions, function (item) {
                     if (attrName === 'abuse-c') {
                         $log.debug('Filter out suggestions without abuse-mailbox');
                         return !_.isEmpty(item['abuse-mailbox']);
@@ -340,7 +385,7 @@ angular.module('webUpdates')
             function fieldVisited(attribute) {
 
                 // replace utf-8 to become latin1
-                if( !CharsetTools.isLatin1(attribute.value)) {
+                if (!CharsetTools.isLatin1(attribute.value)) {
                     CharsetTools.replaceUtf8(attribute);
                     // clear attribute specific warning
                     attribute.$$error = '';
@@ -348,7 +393,7 @@ angular.module('webUpdates')
 
                 // Verify if primary-key not already in use
                 if ($scope.operation === $scope.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
-                    RestService.autocomplete( attribute.name, attribute.value, true, []).then(
+                    RestService.autocomplete(attribute.name, attribute.value, true, []).then(
                         function (data) {
                             if (_.any(data, function (item) {
                                     return _uniformed(item.type) === _uniformed(attribute.name) &&
@@ -379,7 +424,7 @@ angular.module('webUpdates')
                                 parent = result.objects.object[0];
                             }
                             $scope.$emit('resource-parent-found', parent);
-                        }, function() {
+                        }, function () {
                             $log.debug('not found');
                             $scope.$emit('resource-parent-found', null);
                         });
@@ -387,7 +432,7 @@ angular.module('webUpdates')
                 }
             }
 
-            function _uniformed( input ) {
+            function _uniformed(input) {
                 if (_.isUndefined(input)) {
                     return input;
                 }
@@ -458,7 +503,7 @@ angular.module('webUpdates')
                     var whoisResources = resp;
 
                     // Post-process attribute after submit-success using screen-logic-interceptor
-                    if( _interceptOnSubmitSuccess( $scope.operation, resp.status, whoisResources.getAttributes()) === false ) {
+                    if (_interceptOnSubmitSuccess($scope.operation, resp.status, whoisResources.getAttributes()) === false) {
 
                         //It' ok to just let it happen or fail.
                         OrganisationHelper.updateAbuseC($scope.source, $scope.objectType, $scope.roleForAbuseC, $scope.attributes, passwords);
@@ -485,11 +530,11 @@ angular.module('webUpdates')
                     //This could change in the future
                     var intercepted = ScreenLogicInterceptor.afterSubmitError($scope.operation,
                         $scope.source, $scope.objectType,
-                        resp.status,  resp.data,
-                        errorMessages, warningMessages, infoMessages );
+                        resp.status, resp.data,
+                        errorMessages, warningMessages, infoMessages);
 
                     // Post-process attribute after submit-error using screen-logic-interceptor
-                    if( intercepted ) {
+                    if (intercepted) {
                         loadAlerts(errorMessages, warningMessages, infoMessages);
                         /* Instruct downstream screen (typically display screen) that object is in pending state */
                         WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
@@ -529,7 +574,7 @@ angular.module('webUpdates')
 
                     } else {
                         //TODO: Temporary function till RPSL clean up
-                        if(MntnerService.isLoneRpslMntner($scope.maintainers.objectOriginal)) {
+                        if (MntnerService.isLoneRpslMntner($scope.maintainers.objectOriginal)) {
                             passwords.push('RPSL');
                         }
 
@@ -645,52 +690,52 @@ angular.module('webUpdates')
             }
 
             function loadAlerts(errorMessages, warningMessages, infoMessages) {
-                errorMessages.forEach(function(error) {
+                errorMessages.forEach(function (error) {
                     AlertService.addGlobalError(error);
                 });
 
-                warningMessages.forEach(function(warning) {
+                warningMessages.forEach(function (warning) {
                     AlertService.addGlobalWarning(warning);
                 });
 
-                infoMessages.forEach(function(info) {
+                infoMessages.forEach(function (info) {
                     AlertService.addGlobalInfo(info);
                 });
             }
 
-            function _interceptBeforeEdit( method, attributes ) {
+            function _interceptBeforeEdit(method, attributes) {
                 var errorMessages = [];
                 var warningMessages = [];
                 var infoMessages = [];
                 var interceptedAttrs = ScreenLogicInterceptor.beforeEdit(method,
                     $scope.source, $scope.objectType, attributes,
-                    errorMessages, warningMessages, infoMessages );
+                    errorMessages, warningMessages, infoMessages);
 
                 loadAlerts(errorMessages, warningMessages, infoMessages);
 
                 return interceptedAttrs;
             }
 
-            function _interceptAfterEdit( method, attributes ) {
+            function _interceptAfterEdit(method, attributes) {
                 var errorMessages = [];
                 var warningMessages = [];
                 var infoMessages = [];
                 var interceptedAttrs = ScreenLogicInterceptor.afterEdit(method,
                     $scope.source, $scope.objectType, attributes,
-                    errorMessages, warningMessages, infoMessages );
+                    errorMessages, warningMessages, infoMessages);
 
                 loadAlerts(errorMessages, warningMessages, infoMessages);
 
                 return interceptedAttrs;
             }
 
-            function _interceptOnSubmitSuccess( method, responseAttributes ) {
+            function _interceptOnSubmitSuccess(method, responseAttributes) {
                 var errorMessages = [];
                 var warningMessages = [];
                 var infoMessages = [];
                 var status = ScreenLogicInterceptor.afterSubmitSuccess(method,
                     $scope.source, $scope.objectType, responseAttributes,
-                    warningMessages, infoMessages );
+                    warningMessages, infoMessages);
 
                 loadAlerts(errorMessages, warningMessages, infoMessages);
 
@@ -777,7 +822,7 @@ angular.module('webUpdates')
                             var whoisResources = error.data;
                             $scope.attributes = _wrapAndEnrichResources($scope.objectType, error.data);
                             AlertService.setErrors(whoisResources);
-                        } catch(e) {
+                        } catch (e) {
                             $log.error('Error fetching sso-mntners for SSO:' + JSON.stringify(error));
                             AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                         }
@@ -841,7 +886,7 @@ angular.module('webUpdates')
                 return _.filter(mntners, function (mntner) {
                     // prevent that RIPE-NCC mntners can be added to an object upon create of modify
                     // prevent same mntner to be added multiple times
-                    return ! MntnerService.isNccMntner(mntner.key) && ! MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
+                    return !MntnerService.isNccMntner(mntner.key) && !MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
                 });
             }
 
@@ -905,7 +950,7 @@ angular.module('webUpdates')
                                 $log.debug('objectMaintainers:' + JSON.stringify($scope.maintainers.object));
 
                             },
-                            function() {
+                            function () {
                                 $scope.restCalInProgress = false;
                                 // ignore
                             }
@@ -935,7 +980,7 @@ angular.module('webUpdates')
                     _navigateAway);
             }
 
-            function _onSuccessfulAuthentication(associationResp){
+            function _onSuccessfulAuthentication(associationResp) {
                 _refreshObjectIfNeeded(associationResp);
             }
 
@@ -944,7 +989,7 @@ angular.module('webUpdates')
 
                 PreferenceService.setTextMode();
 
-                if( !$scope.name ) {
+                if (!$scope.name) {
                     $state.transitionTo('textupdates.create', {
                         source: $scope.source,
                         objectType: $scope.objectType
@@ -958,4 +1003,4 @@ angular.module('webUpdates')
                 }
             }
 
-          }]);
+        }]);
