@@ -22,4 +22,22 @@ describe('Modifying a resource for a RIPE maintained object', function () {
         expect(page.inpSponsoringOrg.getAttribute('disabled')).toBeTruthy();
     });
 
+    it('should redirect to the correct url ', function () {
+
+        var originalUrl = browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0-91.208.34.255';
+
+        browser.wait(urlChanged(originalUrl), 5000);
+
+        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
+    });
+
+
+    var urlChanged = function(url) {
+        return function () {
+            return browser.getCurrentUrl().then(function(actualUrl) {
+                return url != actualUrl;
+            });
+        };
+    };
+
 });
