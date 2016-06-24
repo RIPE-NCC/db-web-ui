@@ -7,8 +7,14 @@
 
     <div class="modal-body">
         <div ng-if="mntners.length === 0" class="alert-expired alert alert-danger">
-            You cannot modify this object here because none of the maintainers are protected with a password.
-        </div>
+            <span ng-if="!isLirObject">
+                You cannot modify this object here because none of the maintainers are protected with a password.
+            </span>
+
+            <span ng-if="isLirObject">
+                The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer <a href="https://my.ripe.net/#/account-details">here</a>.
+            </span>
+        </span>
         <div ng-if="(mntners && mntners.length > 0)">
             <div ng-if="selected.message.length > 0" class="alert-expired alert alert-danger">
                 <p>{{selected.message}}</p>

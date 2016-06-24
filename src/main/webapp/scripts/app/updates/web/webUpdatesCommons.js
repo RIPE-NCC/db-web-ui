@@ -9,7 +9,7 @@
 
             var webUpdatesCommons = {};
 
-            webUpdatesCommons.performAuthentication = function (maintainers, method, objectSource, objectType, objectName, successCloseCallback, cancelCloseCallback) {
+            webUpdatesCommons.performAuthentication = function (maintainers, method, objectSource, objectType, objectName, isLirObject, successCloseCallback, cancelCloseCallback) {
                 $log.debug('Perform authentication', maintainers);
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
@@ -17,7 +17,7 @@
                 var allowForcedDelete = !_.find(maintainers.object, function (o) {
                     return MntnerService.isNccMntner(o.key);
                 });
-                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete).then(
+                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, isLirObject).then(
                     function (result) {
                         AlertService.clearErrors();
 
