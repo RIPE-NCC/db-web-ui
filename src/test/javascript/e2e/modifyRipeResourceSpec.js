@@ -26,7 +26,7 @@ describe('Modifying a resource for a RIPE maintained object', function () {
 
         var originalUrl = browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0-91.208.34.255';
 
-        browser.wait(urlChanged(originalUrl), 5000);
+        urlChanged(originalUrl);
 
         expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
     });
