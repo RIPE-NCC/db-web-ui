@@ -66,6 +66,15 @@
                 });
             };
 
+            webUpdatesCommons.navigateToEdit = function (objectSource, objectType, objectName, operation) {
+                $state.transitionTo(STATE.MODIFY, {
+                    source: objectSource,
+                    objectType: objectType,
+                    name: objectName,
+                    method: operation
+                });
+            };
+
             webUpdatesCommons.navigateToDelete = function (objectSource, objectType, objectName, onCancel) {
                 $state.transitionTo(STATE.DELETE, {
                     source: objectSource,
