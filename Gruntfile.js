@@ -266,27 +266,32 @@ module.exports = function (grunt) {
             dev: {
                 NODE_ENV: 'dev',
                 GTM_ID: 'GTM-WTWTB7',
-                ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/'
+                ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/',
+                PORTAL_URL: 'https://my.prepdev.ripe.net/'
             },
             prepdev: {
                 NODE_ENV: 'prepdev',
                 GTM_ID: 'GTM-WTWTB7',
-                ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/'
+                ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/',
+                PORTAL_URL: 'https://my.prepdev.ripe.net/'
             },
             rc: {
                 NODE_ENV: 'rc',
                 GTM_ID: 'GTM-T5J6RH',
-                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/'
+                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/',
+                PORTAL_URL: 'https://my.ripe.net/'
             },
             test: {
                 NODE_ENV: 'test',
                 GTM_ID: 'GTM-W4MMHJ',
-                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/'
+                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/',
+                PORTAL_URL: 'https://my.ripe.net/'
             },
             prod: {
                 NODE_ENV: 'prod',
                 GTM_ID: 'GTM-TP3SK6',
-                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/'
+                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/',
+                PORTAL_URL: 'https://my.ripe.net/'
             }
         },
         ngconstant: {
@@ -303,7 +308,8 @@ module.exports = function (grunt) {
                     ENV: 'dev',
                     SOURCE: 'RIPE',
                     VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.prepdev.ripe.net/'
+                    LOGIN_URL: 'https://access.prepdev.ripe.net/',
+                    PORTAL_URL: 'https://my.prepdev.ripe.net/'
                 }
             },
             prepdev: {
@@ -314,7 +320,8 @@ module.exports = function (grunt) {
                     ENV: 'prepdev',
                     SOURCE: 'RIPE',
                     VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.prepdev.ripe.net/'
+                    LOGIN_URL: 'https://access.prepdev.ripe.net/',
+                    PORTAL_URL: 'https://my.prepdev.ripe.net/'
                 }
             },
             rc: {
@@ -325,7 +332,8 @@ module.exports = function (grunt) {
                     ENV: 'rc',
                     SOURCE: 'RIPE',
                     VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.ripe.net/'
+                    LOGIN_URL: 'https://access.ripe.net/',
+                    PORTAL_URL: 'https://my.ripe.net/'
                 }
             },
             test: {
@@ -336,7 +344,8 @@ module.exports = function (grunt) {
                     ENV: 'test',
                     SOURCE: 'TEST',
                     VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.ripe.net/'
+                    LOGIN_URL: 'https://access.ripe.net/',
+                    PORTAL_URL: 'https://my.ripe.net/'
                 }
             },
             prod: {
@@ -347,7 +356,8 @@ module.exports = function (grunt) {
                     ENV: 'prod',
                     SOURCE: 'RIPE',
                     VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.ripe.net/'
+                    LOGIN_URL: 'https://access.ripe.net/',
+                    PORTAL_URL: 'https://my.ripe.net/'
                 }
             }
         },
