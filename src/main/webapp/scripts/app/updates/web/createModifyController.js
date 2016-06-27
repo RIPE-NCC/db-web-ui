@@ -64,6 +64,12 @@ angular.module('webUpdates')
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
 
+            _initialisePage();
+
+            /*
+             * Functions / callbacks below...
+             */
+
             var showMoreAttributes = function () {
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
@@ -105,45 +111,44 @@ angular.module('webUpdates')
                         // pop up an auth box
                         var mntByAttrs = parentObject.getAllAttributesOnName('mnt-by');
                         var mntLowerAttrs = parentObject.getAllAttributesOnName('mnt-lower');
-                        console.log('xxxxxx',
-                            'mntByAttrs', mntByAttrs,
-                            'mntLowerAttrs', mntLowerAttrs);
                         $scope.restCallInProgress = true;
 
                         var parentMntners = _.map(mntByAttrs.concat(mntLowerAttrs), function (mntner) {
                             return {key: mntner.value};
                         });
-                        console.log('parentMntners', parentMntners);
+
                         RestService.detailsForMntners(parentMntners).then(
                             function (enrichedMntners) {
                                 $scope.restCallInProgress = false;
-                                WebUpdatesCommons.performAuthentication({
-                                        sso: $scope.maintainers.sso,
-                                        objectOriginal: enrichedMntners,
-                                        object: null
-                                    },
-                                    $scope.operation,
-                                    $scope.source,
-                                    $scope.objectType,
-                                    $scope.name,
-                                    _onSuccessfulAuthentication,
-                                    _navigateAway);
 
-                                // $scope.maintainers.object = enrichedMntners;
-                                // $log.debug('maintainers.object:' + JSON.stringify($scope.maintainers.object));
+                                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, null);
+                                var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, null);
 
+                                ModalService.openAuthenticationModal($scope.operation, $scope.source, $scope.objectType, $scope.name, mntnersWithPasswords, mntnersWithoutPasswords, false).then(
+                                    function (result) {
+                                        AlertService.clearErrors();
+                                        var selectedMntner = result.selectedItem;
+                                        $log.debug('selected mntner: ' + JSON.stringify(selectedMntner));
+                                        if (selectedMntner.mine) {
+                                            // has been successfully associated in authentication modal
+                                            maintainers.sso.push(selectedMntner);
+                                            // mark starred in selected
+                                            maintainers.object = MntnerService.enrichWithMine(maintainers.sso, maintainers.object);
+                                        }
+                                    }, function () {
+                                        AlertService.addGlobalError('FAILED to authenticate for parent maintainer of ' + $scope.objectType);
+                                    }
+                                );
                             },
                             function (error) {
                                 $scope.restCallInProgress = false;
-                                $log.error('Error fetching mntner details' + JSON.stringify(error));
+                                $log.error('Error fetching mntner details: ' + JSON.stringify(error));
                                 AlertService.setGlobalError('Error fetching maintainer details');
-                            });
-
+                            }
+                        );
                     }
                 }
             });
-
-            _initialisePage();
 
             function _initialisePage() {
 
@@ -895,7 +900,7 @@ angular.module('webUpdates')
             }
 
             function isFormValid() {
-                return $scope.attributes.validateWithoutSettingErrors();
+                return !AlertService.hasErrors() && $scope.attributes.validateWithoutSettingErrors();
             }
 
             function hasErrors() {
@@ -928,6 +933,7 @@ angular.module('webUpdates')
             }
 
             function _refreshObjectIfNeeded(associationResp) {
+                console.log('_refreshObjectIfNeeded', associationResp);
                 if ($scope.operation === 'Modify' && $scope.objectType === 'mntner') {
                     if (associationResp) {
                         _wrapAndEnrichResources($scope.objectType, associationResp);

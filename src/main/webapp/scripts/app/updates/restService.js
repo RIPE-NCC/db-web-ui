@@ -100,8 +100,8 @@ angular.module('updates')
                                 return item.key === mntner.key;
                             });
                             if (_.isUndefined(found)) {
-                                // TODO: the  autocomplete service just returns 10 matching records. The exact match could not be part of this set.
-                                // So if this happens, perform best guess and just enrich the xisting mntner with md5.
+                                // TODO: the  autocomplete service just returns 10 matching records. The exact match might not be part of this set.
+                                // So if this happens, perform best guess and just enrich the existing mntner with md5.
                                 mntner.auth = ['MD5-PW'];
                                 found = mntner;
                             } else {
