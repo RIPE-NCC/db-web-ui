@@ -15,12 +15,20 @@
             var nccMntners = [nccHmMntner, nccEndMntner, 'RIPE-NCC-HM-PI-MNT', 'RIPE-GII-MNT', 'RIPE-NCC-MNT', 'RIPE-NCC-RPSL-MNT',
                 'RIPE-DBM-MNT', 'RIPE-NCC-LOCKED-MNT', 'RIPE-DBM-UNREFERENCED-CLEANUP-MNT', 'RIPE-ERX-MNT', 'RIPE-NCC-LEGACY-MNT'];
 
-            mntnerService.isSsoAuthorised = function(object, ssoAccts) {
+            mntnerService.isSsoAuthorised = function(object, maintainers) {
                 var mntBys = object.getAllAttributesOnName('mnt-by');
                 var mntLowers = object.getAllAttributesOnName('mnt-lower');
-                console.log('mntners', mntBys.concat(mntLowers));
-                console.log('ssoAccts', ssoAccts);
-                return false;
+                var ssoAccts = _.filter(maintainers, function(mntner) {
+                    return _.find(mntner.auth, function(auth) {
+                        return auth === 'SSO';
+                    });
+                });
+                var match = _.find(mntBys.concat(mntLowers), function(item) {
+                    return _.find(ssoAccts, function(ssoAcct) {
+                        return ssoAcct.key === item.value;
+                    });
+                });
+                return !!match;
             };
 
             mntnerService.isRemovable = function (mntnerKey) {
