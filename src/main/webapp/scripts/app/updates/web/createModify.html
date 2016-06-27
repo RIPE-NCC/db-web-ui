@@ -181,7 +181,7 @@
         <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
     </span>
     <span ng-show="operation == CREATE_OPERATION">
-        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress" class="blue-button pull-right ga-createobj-create" value="Submit" />
+        <input type="submit" id="btnSubmitCreate" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress" class="blue-button pull-right ga-createobj-create" value="Submit" />
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 

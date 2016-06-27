@@ -1619,6 +1619,250 @@ exports.module = function () {
                     }
 
                 },
+                'api/whois/RIPE/mntner/ERICSSON-MNT?password=ERICSSON-MNT&unfiltered=true': {
+                    data: {
+                        "objects": {
+                            "object": [{
+                                "type": "mntner",
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                                },
+                                "source": {
+                                    "id": "ripe"
+                                },
+                                "primary-key": {
+                                    "attribute": [{
+                                        "name": "mntner",
+                                        "value": "ERICSSON-MNT"
+                                    }]
+                                },
+                                "attributes": {
+                                    "attribute": [{
+                                        "name": "mntner",
+                                        "value": "ERICSSON-MNT"
+                                    }, {
+                                        "name": "auth",
+                                        "value": "MD5-PW $1$DT69FsfS$.mIZP.3D25bvLxSvR/KOW1"
+                                    }, {
+                                        "name": "auth",
+                                        "value": "SSO bad@ripe.net"
+                                    }, {
+                                        "name": "descr",
+                                        "value": "Maintainer for all Ericsson objects"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"
+                                        },
+                                        "name": "admin-c",
+                                        "value": "ELIR1-RIPE",
+                                        "referenced-type": "role"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"
+                                        },
+                                        "name": "tech-c",
+                                        "value": "ELIR1-RIPE",
+                                        "referenced-type": "role"
+                                    }, {
+                                        "name": "upd-to",
+                                        "value": "***@ericsson.com"
+                                    }, {
+                                        "name": "mnt-nfy",
+                                        "value": "***@ericsson.com"
+                                    }, {
+                                        "name": "notify",
+                                        "value": "***@ericsson.com"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                                        },
+                                        "name": "mnt-by",
+                                        "value": "ERICSSON-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "name": "created",
+                                        "value": "2002-08-19T16:53:54Z"
+                                    }, {
+                                        "name": "last-modified",
+                                        "value": "2016-06-14T14:46:26Z"
+                                    }, {
+                                        "name": "source",
+                                        "value": "RIPE"
+                                    }]
+                                }
+                            }]
+                        },
+                        "terms-and-conditions": {
+                            "type": "locator",
+                            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+                        }
+                    }
+//                    data: '<?xml version="1.0" encoding="UTF-8"?>' +
+//                    '<whois-resources xmlns:xlink="http://www.w3.org/1999/xlink">' +
+//                    '<objects>' +
+//                    '<object type="mntner">' +
+//                    '<link xlink:type="locator" xlink:href="http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"/>' +
+//                    '<source id="ripe"/>' +
+//                    '<primary-key>' +
+//                    '<attribute name="mntner" value="ERICSSON-MNT"/>' +
+//                    '</primary-key>' +
+//                    '<attributes>' +
+//                    '<attribute name="mntner" value="ERICSSON-MNT"/>' +
+//                    '<attribute name="auth" value="MD5-PW $1$DT69FsfS$.mIZP.3D25bvLxSvR/KOW1"/>' +
+//                    '<attribute name="auth" value="SSO bad@ripe.net"/>' +
+//                    '<attribute name="descr" value="Maintainer for all Ericsson objects"/>' +
+//                    '<attribute name="admin-c" value="ELIR1-RIPE" referenced-type="role">' +
+//                    '<link xlink:type="locator" xlink:href="http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"/>' +
+//                    '</attribute>' +
+//                    '<attribute name="tech-c" value="ELIR1-RIPE" referenced-type="role">' +
+//                    '<link xlink:type="locator" xlink:href="http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"/>' +
+//                    '</attribute>' +
+//                    '<attribute name="upd-to" value="***@ericsson.com"/>' +
+//                    '<attribute name="mnt-nfy" value="***@ericsson.com"/>' +
+//                    '<attribute name="notify" value="***@ericsson.com"/>' +
+//                    '<attribute name="mnt-by" value="ERICSSON-MNT" referenced-type="mntner">' +
+//                    '<link xlink:type="locator" xlink:href="http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"/>' +
+//                    '</attribute>' +
+//                    '<attribute name="created" value="2002-08-19T16:53:54Z"/>' +
+//                    '<attribute name="last-modified" value="2016-06-14T14:46:26Z"/>' +
+//                    '<attribute name="source" value="RIPE"/>' +
+//                    '</attributes>' +
+//                    '</object>' +
+//                    '</objects>' +
+//                    '<terms-and-conditions xlink:type="locator" xlink:href="http://www.ripe.net/db/support/db-terms-conditions.pdf"/>' +
+//                    '</whois-resources>'
+                },
+                'api/whois/RIPE/mntner/ERICSSON-MNT?password=xxx&unfiltered=true': {
+                    data: {
+                        "objects": {
+                            "object": [{
+                                "type": "mntner",
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                                },
+                                "source": {
+                                    "id": "ripe"
+                                },
+                                "primary-key": {
+                                    "attribute": [{
+                                        "name": "mntner",
+                                        "value": "ERICSSON-MNT"
+                                    }]
+                                },
+                                "attributes": {
+                                    "attribute": [{
+                                        "name": "mntner",
+                                        "value": "ERICSSON-MNT"
+                                    }, {
+                                        "name": "auth",
+                                        "value": "MD5-PW",
+                                        "comment": "Filtered"
+                                    }, {
+                                        "name": "auth",
+                                        "value": "SSO",
+                                        "comment": "Filtered"
+                                    }, {
+                                        "name": "descr",
+                                        "value": "Maintainer for all Ericsson objects"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"
+                                        },
+                                        "name": "admin-c",
+                                        "value": "ELIR1-RIPE",
+                                        "referenced-type": "role"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"
+                                        },
+                                        "name": "tech-c",
+                                        "value": "ELIR1-RIPE",
+                                        "referenced-type": "role"
+                                    }, {
+                                        "name": "upd-to",
+                                        "value": "***@ericsson.com"
+                                    }, {
+                                        "name": "mnt-nfy",
+                                        "value": "***@ericsson.com"
+                                    }, {
+                                        "name": "notify",
+                                        "value": "***@ericsson.com"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
+                                        },
+                                        "name": "mnt-by",
+                                        "value": "ERICSSON-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "name": "created",
+                                        "value": "2002-08-19T16:53:54Z"
+                                    }, {
+                                        "name": "last-modified",
+                                        "value": "2016-06-14T14:46:26Z"
+                                    }, {
+                                        "name": "source",
+                                        "value": "RIPE",
+                                        "comment": "Filtered"
+                                    }]
+                                }
+                            }]
+                        },
+                        "terms-and-conditions": {
+                            "type": "locator",
+                            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+                        }
+                    }
+//                    data: '<?xml version="1.0" encoding="UTF-8"?>' +
+//                    '<whois-resources xmlns:xlink="http://www.w3.org/1999/xlink">' +
+//                    '<objects>' +
+//                    '<object type="mntner">' +
+//                    '<link xlink:type="locator" xlink:href="http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"/>' +
+//                    '<source id="ripe"/>' +
+//                    '<primary-key>' +
+//                    '<attribute name="mntner" value="ERICSSON-MNT"/>' +
+//                    '</primary-key>' +
+//                    '<attributes>' +
+//                    '<attribute name="mntner" value="ERICSSON-MNT"/>' +
+//                    '<attribute name="auth" value="MD5-PW $1$DT69FsfS$.mIZP.3D25bvLxSvR/KOW1"/>' +
+//                    '<attribute name="auth" value="SSO bad@ripe.net"/>' +
+//                    '<attribute name="descr" value="Maintainer for all Ericsson objects"/>' +
+//                    '<attribute name="admin-c" value="ELIR1-RIPE" referenced-type="role">' +
+//                    '<link xlink:type="locator" xlink:href="http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"/>' +
+//                    '</attribute>' +
+//                    '<attribute name="tech-c" value="ELIR1-RIPE" referenced-type="role">' +
+//                    '<link xlink:type="locator" xlink:href="http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE"/>' +
+//                    '</attribute>' +
+//                    '<attribute name="upd-to" value="***@ericsson.com"/>' +
+//                    '<attribute name="mnt-nfy" value="***@ericsson.com"/>' +
+//                    '<attribute name="notify" value="***@ericsson.com"/>' +
+//                    '<attribute name="mnt-by" value="ERICSSON-MNT" referenced-type="mntner">' +
+//                    '<link xlink:type="locator" xlink:href="http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"/>' +
+//                    '</attribute>' +
+//                    '<attribute name="created" value="2002-08-19T16:53:54Z"/>' +
+//                    '<attribute name="last-modified" value="2016-06-14T14:46:26Z"/>' +
+//                    '<attribute name="source" value="RIPE"/>' +
+//                    '</attributes>' +
+//                    '</object>' +
+//                    '</objects>' +
+//                    '<terms-and-conditions xlink:type="locator" xlink:href="http://www.ripe.net/db/support/db-terms-conditions.pdf"/>' +
+//                    '</whois-resources>'
+                },
+                'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=ERICSSON-MNT': {
+                    data: [{
+                        key: 'ERICSSON-MNT',
+                        type: 'mntner',
+                        auth: ['MD5-PW', 'SSO']
+                    }]
+                },
                 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=COGENT-HM-MNT': {
                     data: [{
                         "key": "COGENT-HM-MNT",
@@ -1667,6 +1911,16 @@ exports.module = function () {
                         "key": "NEWNET-MNT",
                         "type": "mntner",
                         "auth": ["MD5-PW"]
+                    }]
+                },
+                'api/whois/autocomplete?from=PERSON&from=ROLE&like=aa1-ripe&select=person&select=nic-hdl&select=role&select=abuse-mailbox&where=person&where=nic-hdl&where=role&where=abuse-mailbox': {
+                    data: [{
+                        "key": "AA1-RIPE",
+                        "type": "person",
+                        "person": "Name Removed",
+                        "nic-hdl": "AA1-RIPE",
+                        "role": null,
+                        "abuse-mailbox": []
                     }]
                 }
             };

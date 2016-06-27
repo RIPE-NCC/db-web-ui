@@ -60,14 +60,22 @@ module.exports = {
     inpStatusLink: element(by.id('createForm')).element(by.name('status')).element(by.css('a')),
     inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('div > ul > li > ul')).all(by.css('li')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
+    inpAdminC: element(by.id('createForm')).element(by.name('admin-c')),
+    inpTechC: element(by.id('createForm')).element(by.name('tech-c')),
+    inpCountry: element(by.id('createForm')).element(by.name('country')),
+    inpCountryList: element(by.id('createForm')).element(by.name('country')).element(by.css('div > ul > li > ul')).all(by.css('li')),
+    btnSubmitForm: element(by.id('btnSubmitCreate')),
 
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
 
     modal: element(by.css('[modal-window]')),
     modalEmail: element(by.css('[modal-window]')).element(by.name('email')),
     modalInpMaintainer: element(by.css('[modal-window]')).element(by.model('selected.item')),
+    modalInpPassword: element(by.css('[modal-window]')).element(by.model('selected.password')),
+    modalInpAssociate: element(by.css('[modal-window]')).element(by.model('selected.associate')),
     modalBtnSubmit: element(by.css('[modal-window]')).element(by.css('input[type=Submit]')),
     modalClose: element(by.css('[modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
+    modalBody: element(by.css('[modal-window]')).element(by.css('.modal-body')),
     modalFooter: element(by.css('[modal-window]')).element(by.css('.modal-footer')),
 
     selectObjectType: function (itemValue) {
