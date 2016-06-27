@@ -148,10 +148,10 @@ angular.module('dbWebApp')
                                 return mntnersWithoutPassword;
                             },
                             allowForcedDelete: function() {
-                                return allowForcedDelete;
+                                return !!allowForcedDelete;
                             },
                             isLirObject: function() {
-                                return isLirObject;
+                                return !!isLirObject;
                             }
                         }
                 });

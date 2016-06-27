@@ -14,7 +14,8 @@
             <span ng-if="isLirObject">
                 The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer <a href="{{PORTAL_URL}}#/account-details">here</a>.
             </span>
-        </span>
+        </div>
+
         <div ng-if="(mntners && mntners.length > 0)">
             <div ng-if="selected.message.length > 0" class="alert-expired alert alert-danger">
                 <p>{{selected.message}}</p>

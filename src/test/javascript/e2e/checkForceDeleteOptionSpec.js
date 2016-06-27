@@ -44,7 +44,7 @@ describe('webupdates', function () {
         page.scrollIntoView(page.btnModify);
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
-        expect(page.modal.getText()).toContain('You cannot modify this object');
+        expect(page.modal.getText()).toContain('The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer here.');
         expect(page.modalFooter.getText()).toBe('');
     });
 
@@ -57,13 +57,13 @@ describe('webupdates', function () {
         expect(page.modalFooter.getText()).toContain('Force delete this object?');
     });
 
-    it('hould NOT show "force delete" for an inet6num if allocated by RIPE and no mntners have a passwd', function () {
+    it('should NOT show "force delete" for an inet6num if allocated by RIPE and no mntners have a passwd', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inet6num/2001%253Aa08%253A%253A%252F32');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
-        expect(page.modal.getText()).toContain('You cannot modify this object');
+        expect(page.modal.getText()).toContain('The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer here.');
         expect(page.modalFooter.getText()).toBe('');
     });
 
