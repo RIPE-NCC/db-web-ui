@@ -118,7 +118,7 @@
                     return MntnerService.isNccMntner(o.key);
                 });
 
-                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete).then(
+                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, false).then(
                     function (result) {
                         AlertService.clearErrors();
 

@@ -118,7 +118,7 @@ angular.module('dbWebApp')
                 return deferredObject.promise;
             };
 
-            this.openAuthenticationModal = function (method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete) {
+            this.openAuthenticationModal = function (method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete, isLirObject) {
                 var deferredObject = $q.defer();
 
                 $log.debug('openAuthenticationModal start for method: '+ method + ' and ' + source + '  mntners:' +  JSON.stringify(mntners));
@@ -148,7 +148,10 @@ angular.module('dbWebApp')
                                 return mntnersWithoutPassword;
                             },
                             allowForcedDelete: function() {
-                                return allowForcedDelete;
+                                return !!allowForcedDelete;
+                            },
+                            isLirObject: function() {
+                                return !!isLirObject;
                             }
                         }
                 });

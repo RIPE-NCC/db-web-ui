@@ -44,7 +44,8 @@ describe('webUpdates: ModalAuthenticationController', function () {
                 $scope: $scope, $log: $log, $modalInstance: modalInstance, WhoisResources:WhoisResources,
                 RestService:RestService, UserInfoService:userInfoService, CredentialsService:credentialsService,
                 method:'PUT', source: source, objectType: 'mntner', objectName: 'someName', mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword,
-                allowForcedDelete: false
+                allowForcedDelete: false,
+                isLirObject: false
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
