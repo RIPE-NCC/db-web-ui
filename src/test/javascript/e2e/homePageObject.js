@@ -64,11 +64,70 @@ module.exports = {
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
 
     modal: element(by.css('[modal-window]')),
+    modalAttributeList:  element(by.css('[modal-window]')).element(by.css('select')),
     modalEmail: element(by.css('[modal-window]')).element(by.name('email')),
     modalInpMaintainer: element(by.css('[modal-window]')).element(by.model('selected.item')),
     modalBtnSubmit: element(by.css('[modal-window]')).element(by.css('input[type=Submit]')),
     modalClose: element(by.css('[modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
     modalFooter: element(by.css('[modal-window]')).element(by.css('.modal-footer')),
+
+    /**
+     * Experimental support for iMacros scripts.
+     *
+     * @see http://wiki.imacros.net/TAG
+     * @param str
+     */
+    iimPlay: function (str) {
+
+        function parseAttr(attr) {
+            var sp = attr.split('&&');
+            var className, textContent, name;
+
+            for (var i = 0; i < sp.length; i++) {
+                if (sp[i].indexOf('CLASS:') > -1) {
+                    // skip chars CLASS:
+                    className = sp[i].substring(6);
+                } else if (sp[i].indexOf('TXT:') > -1) {
+                    textContent = sp[i].substring(4);
+                } else if (sp[i].indexOf('NAME:') > -1) {
+                    name = sp[i].substring(5);
+                }
+            }
+            return {
+                className: className.replace('<SP>', ' '),
+                text: textContent.replace('<SP>', ' '),
+                name: name
+            };
+        }
+
+        function locator(line) {
+            var type = line.match(/TYPE=([^ ]*)/)[1].split(':');
+            var pos = parseInt(line.match(/POS=([^ ]*)/)[1], 10);
+            var attr = parseAttr(line.match(/ATTR=([^ ]*)/)[1]);
+            //var content = line.match(/CONTENT=([^ ]*)/)[1];
+
+            var xpathExpr = ['//', type[0]];
+            if (attr.className) {
+                xpathExpr.push('[@class="', attr.className, '"]');
+            }
+            xpathExpr.push('[position()=', pos, ']');
+
+            var locator = element(by.xpath(xpathExpr.join('')));
+            //console.log('pos', pos, 'type', type, 'attr', attr, 'locator', locator);
+            return locator;
+        }
+
+        function playLine(line) {
+            var target = locator(line);
+            target.click();
+        }
+
+        playLine(str);
+    },
+
+    selectFromList: function (listElement, itemValue) {
+        return listElement.element(by.css('option[label=' + itemValue + ']'));
+    },
 
     selectObjectType: function (itemValue) {
         return element(by.id('objectTypeSelector')).element(by.css('option[label=' + itemValue + ']'));
