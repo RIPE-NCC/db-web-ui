@@ -64,6 +64,8 @@ angular.module('webUpdates')
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
 
+            var inetnumErrorMessageShown = false;
+
             _initialisePage();
 
             /*
@@ -136,7 +138,10 @@ angular.module('webUpdates')
                                             maintainers.object = MntnerService.enrichWithMine(maintainers.sso, maintainers.object);
                                         }
                                     }, function () {
-                                        AlertService.addGlobalError('FAILED to authenticate for parent maintainer of ' + $scope.objectType);
+                                        if (!inetnumErrorMessageShown) {
+                                            AlertService.addGlobalError('FAILED to authenticate for parent maintainer of ' + $scope.objectType);
+                                            inetnumErrorMessageShown = true;
+                                        }
                                     }
                                 );
                             },
