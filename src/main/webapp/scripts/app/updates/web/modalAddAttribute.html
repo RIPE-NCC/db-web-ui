@@ -4,7 +4,7 @@
         <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
     </div>
     <div class="modal-body margin-left">
-        <select ng-options="item.name for item in (items | filter: {name: '!mnt-by'}) | orderBy: 'name'" ng-model="selected.item"
+        <select ng-options="attr.name for attr in items | filter: {name: '!mnt-by'} | filter: {name: '!sponsoring-org'} | orderBy: 'name'" ng-model="selected.item"
                 class="form-control select-height"></select>
     </div>
     <div class="modal-footer">
