@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('updates')
-    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', 'WhoisResources',
-        function ($resource, $q, $http, $templateCache, $log, WhoisResources) {
+    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', 'WhoisResources', 'WebUpdatesCommons',
+        function ($resource, $q, $http, $templateCache, $log, WhoisResources, WebUpdatesCommons) {
 
             function RestService() {
 
@@ -229,7 +229,14 @@ angular.module('updates')
                         .$promise
                         .then(function (result) {
                             $log.debug('fetchObject success:' + JSON.stringify(result));
-                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
+
+                            var primaryKey = WhoisResources.wrapSuccess(result).getPrimaryKey();
+                            if(_.isEqual(objectName, primaryKey)) {
+                                deferredObject.resolve(WhoisResources.wrapSuccess(result));
+                            } else {
+                                WebUpdatesCommons.navigateToEdit(source, objectType, primaryKey);
+                            }
+
                         }, function (error) {
                             $log.error('fetchObject error:' + JSON.stringify(error));
                             deferredObject.reject(WhoisResources.wrapError(error));

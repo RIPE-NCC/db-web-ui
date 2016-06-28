@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance', 'WhoisResources', 'RestService',
-    'UserInfoService', 'CredentialsService', 'MntnerService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword', 'allowForcedDelete',
-    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, MntnerService, method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete) {
+    'UserInfoService', 'CredentialsService', 'MntnerService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword', 'allowForcedDelete', 'isLirObject', 'PORTAL_URL',
+    function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, MntnerService, method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete, isLirObject, PORTAL_URL) {
+
 
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
@@ -15,6 +16,8 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
             associate: true,
             message: undefined
         };
+        $scope.isLirObject = isLirObject;
+        $scope.PORTAL_URL = PORTAL_URL;
 
         $scope.allowForceDelete = function () {
             if (method === 'ForceDelete') {

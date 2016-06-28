@@ -987,6 +987,7 @@ angular.module('webUpdates')
                     $scope.source,
                     $scope.objectType,
                     $scope.name,
+                    isLirObject(),
                     _onSuccessfulAuthentication,
                     _navigateAway);
             }
