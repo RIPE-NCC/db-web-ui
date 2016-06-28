@@ -453,7 +453,7 @@ exports.module = function () {
                     }
 
                 },
-                'api/whois/ripe/inetnum/91.208.34.0-91.208.34.255?unfiltered=true': {
+                'api/whois/ripe/inetnum/91.208.34.0%20-%2091.208.34.255?unfiltered=true': {
                     data: {
                         "objects": {
                             "object": [{
@@ -581,7 +581,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inetnum/185.102.172.0-185.102.175.255?unfiltered=true': {
+                'api/whois/ripe/inetnum/185.102.172.0%20-%20185.102.175.255?unfiltered=true': {
                     data: {
                         objects: {
                             'object': [{

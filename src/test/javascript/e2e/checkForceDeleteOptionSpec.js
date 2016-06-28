@@ -30,7 +30,7 @@ describe('webupdates', function () {
     });
 
     it('should NOT show "force delete" for an inetnum if allocated by RIPE', function () {
-        browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/91.208.34.0-91.208.34.255');
+        browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
         page.btnModify.click();
@@ -39,7 +39,7 @@ describe('webupdates', function () {
     });
 
     it('should NOT show "force delete" for an inetnum if allocated by RIPE and no mntners have a passwd', function () {
-        browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/185.102.172.0-185.102.175.255');
+        browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/185.102.172.0%20-%20185.102.175.255');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
         page.btnModify.click();
