@@ -126,3 +126,13 @@ div.portlet.navigation {
         }
     }
 }
+
+a.api-button {
+  &:before {
+	font-family: FontAwesome;
+	margin-right: 10px;
+	content: "\f085";
+	font-size: 1.2em;
+  }
+}
+
