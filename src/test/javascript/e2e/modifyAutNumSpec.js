@@ -19,7 +19,7 @@ describe('Modifying an aut-num', function () {
         it('should show sponsoring-org as read-only', function () {
             expect(page.inpSponsoringOrg.isPresent()).toEqual(true);
             expect(page.inpSponsoringOrg.getAttribute('disabled')).toBeFalsy();
-        });git s
+        });
 
     });
 
