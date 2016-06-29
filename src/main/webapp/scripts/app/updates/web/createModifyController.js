@@ -123,19 +123,18 @@ angular.module('webUpdates')
                             function (enrichedMntners) {
                                 $scope.restCallInProgress = false;
 
-                                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, null);
-                                var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, null);
+                                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, []);
+                                var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, []);
 
                                 ModalService.openAuthenticationModal($scope.operation, $scope.source, $scope.objectType, $scope.name, mntnersWithPasswords, mntnersWithoutPasswords, false).then(
                                     function (result) {
                                         AlertService.clearErrors();
                                         var selectedMntner = result.selectedItem;
                                         $log.debug('selected mntner: ' + JSON.stringify(selectedMntner));
-                                        if (selectedMntner.mine) {
-                                            // has been successfully associated in authentication modal
-                                            maintainers.sso.push(selectedMntner);
-                                            // mark starred in selected
-                                            maintainers.object = MntnerService.enrichWithMine(maintainers.sso, maintainers.object);
+                                        if (!selectedMntner.mine) {
+                                            // Add password for this mntner
+                                            var passwords = _getPasswordsForRestCall();
+                                            console.log('passwords', passwords);
                                         }
                                     }, function () {
                                         if (!inetnumErrorMessageShown) {

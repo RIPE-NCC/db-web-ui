@@ -52,10 +52,9 @@
             };
 
             mntnerService.isMntnerOnlist = function (list, mntner) {
-                var status = _.any(list, function (item) {
+                return _.any(list, function (item) {
                     return item.key.toUpperCase() === mntner.key.toUpperCase();
                 });
-                return status;
             };
 
             mntnerService.hasMd5 = function (mntner) {
@@ -172,10 +171,8 @@
                         return false;
                     } else if (CredentialsService.hasCredentials() && CredentialsService.getCredentials().mntner === mntner.key) {
                         return false;
-                    } else if (mntnerService.hasMd5(mntner)) {
-                        return true;
                     } else {
-                        return false;
+                        return mntnerService.hasMd5(mntner);
                     }
                 });
             };
@@ -196,10 +193,8 @@
                     } else if (mntnerService.isNccMntner(mntner.key)) {
                         // prevent customers contacting us about RIPE-NCC mntners
                         return false;
-                    } else if (mntnerService.hasMd5(mntner)) {
-                        return false;
                     } else {
-                        return true;
+                        return !mntnerService.hasMd5(mntner);
                     }
                 });
             };
