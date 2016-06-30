@@ -38,6 +38,7 @@ angular.module('webUpdates')
             $scope.getAttributeSyntax = getAttributeSyntax;
 
             $scope.hasMntners = hasMntners;
+
             $scope.canAttributeBeDuplicated = canAttributeBeDuplicated;
             $scope.duplicateAttribute = duplicateAttribute;
             $scope.canAttributeBeRemoved = canAttributeBeRemoved;
@@ -55,6 +56,7 @@ angular.module('webUpdates')
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
             $scope.isLirObject = isLirObject;
+            $scope.isResourceWithNccMntner = isResourceWithNccMntner;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
@@ -293,7 +295,7 @@ angular.module('webUpdates')
                 if (item.key === item.value) {
                     return item.key;
                 }
-                return item.value + ' [' + item.key.toUpperCase() + ']';
+                return item.value + ' [' + item.key.toUpperCa + ']';
             }
 
             function _isServerLookupKey(refs) {
@@ -444,6 +446,15 @@ angular.module('webUpdates')
 
             function isLirObject() {
                 return _isAllocation() || !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
+            }
+
+            function isResourceWithNccMntner() {
+                if($scope.objectType === 'inetnum' || $scope.objectType === 'inet6num') {
+                    var mnterKeyList = _.map($scope.maintainers, 'key');
+
+                    return MntnerService.hasNccMntner($scope.maintainers);
+                }
+                return false;
             }
 
             function deleteObject() {

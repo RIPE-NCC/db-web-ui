@@ -42,6 +42,12 @@
                 return status;
             };
 
+           mntnerService.hasNccMntner = function(mntnerList) {
+                return _.any(mntnerList, function (mntner) {
+                    return mntnerService.isNccMntner(mntner);
+                });
+            }
+
             mntnerService.hasMd5 = function (mntner) {
                 if (_.isUndefined(mntner.auth)) {
                     return false;

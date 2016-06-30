@@ -185,7 +185,7 @@
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 
-    <span ng-show="operation == MODIFY_OPERATION && !isLirObject()">
+    <span ng-show="operation == MODIFY_OPERATION && !isLirObject() && !isResourceWithNccMntner()">
         <button ng-click="deleteObject()" ng-disabled="restCalInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
     </span>
     </section>
