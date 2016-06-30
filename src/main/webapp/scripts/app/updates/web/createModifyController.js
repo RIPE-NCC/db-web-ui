@@ -450,9 +450,9 @@ angular.module('webUpdates')
 
             function isResourceWithNccMntner() {
                 if($scope.objectType === 'inetnum' || $scope.objectType === 'inet6num') {
-                    var mnterKeyList = _.map($scope.maintainers, 'key');
+                    var mnterKeyList = _.pluck($scope.maintainers, 'key');
 
-                    return MntnerService.hasNccMntner($scope.maintainers);
+                    return MntnerService.hasNccMntner(mnterKeyList);
                 }
                 return false;
             }
