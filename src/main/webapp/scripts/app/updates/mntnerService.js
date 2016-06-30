@@ -217,7 +217,7 @@
             mntnerService.stripNccMntners = function (mntners, allowEmptyResult) {
                 //remove NCC mntners and dupes
                 var stripped = _.reject(mntners, function (mntner) {
-                    return (mntnerService.PIisNccMntner(mntner.key));
+                    return (mntnerService.isNccMntner(mntner.key));
                 });
                 //if we are left with no mntners, return mntners array untouched
                 if (_.isEmpty(stripped) && !allowEmptyResult) {
