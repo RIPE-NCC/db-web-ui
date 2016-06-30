@@ -109,54 +109,24 @@ angular.module('webUpdates')
                 // first check if the user needs some auth...
                 if (parent.attributes) {
                     var parentObject = WhoisResources.wrapAttributes(parent.attributes.attribute);
-                    if (!MntnerService.isSsoAuthorised(parentObject, $scope.maintainers.sso)) {
-                        // pop up an auth box
-                        var mntByAttrs = parentObject.getAllAttributesOnName('mnt-by');
-                        var mntLowerAttrs = parentObject.getAllAttributesOnName('mnt-lower');
-                        $scope.restCallInProgress = true;
-
-                        var parentMntners = _.map(mntByAttrs.concat(mntLowerAttrs), function (mntner) {
-                            return {key: mntner.value};
-                        });
-
-                        RestService.detailsForMntners(parentMntners).then(
-                            function (enrichedMntners) {
+                    $scope.restCallInProgress = true;
+                    MntnerService.getAuthForObjectIfNeeded(parentObject, $scope.maintainers.sso, $scope.operation, $scope.source, $scope.objectType, $scope.name)
+                        .then(
+                            function () {
                                 $scope.restCallInProgress = false;
-
-                                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, []);
-                                var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication($scope.maintainers.sso, enrichedMntners, []);
-
-                                ModalService.openAuthenticationModal($scope.operation, $scope.source, $scope.objectType, $scope.name, mntnersWithPasswords, mntnersWithoutPasswords, false).then(
-                                    function (result) {
-                                        AlertService.clearErrors();
-                                        var selectedMntner = result.selectedItem;
-                                        $log.debug('selected mntner: ' + JSON.stringify(selectedMntner));
-                                        if (!selectedMntner.mine) {
-                                            // Add password for this mntner
-                                            var passwords = _getPasswordsForRestCall();
-                                            console.log('passwords', passwords);
-                                        }
-                                    }, function () {
-                                        if (!inetnumErrorMessageShown) {
-                                            AlertService.addGlobalError('FAILED to authenticate for parent maintainer of ' + $scope.objectType);
-                                            inetnumErrorMessageShown = true;
-                                        }
-                                    }
-                                );
                             },
                             function (error) {
                                 $scope.restCallInProgress = false;
-                                $log.error('Error fetching mntner details: ' + JSON.stringify(error));
-                                AlertService.setGlobalError('Error fetching maintainer details');
+                                $log.error('MntnerService.getAuthForObjectIfNeeded rejected authorisation: ', error);
+                                AlertService.addGlobalError('Failed to authenticate parent resource');
                             }
                         );
-                    }
                 }
             });
 
             function _initialisePage() {
 
-                $scope.restCalInProgress = false;
+                $scope.restCallInProgress = false;
 
                 AlertService.clearErrors();
 
@@ -507,7 +477,7 @@ angular.module('webUpdates')
             function submit() {
 
                 function _onSubmitSuccess(resp) {
-                    $scope.restCalInProgress = false;
+                    $scope.restCallInProgress = false;
 
                     var whoisResources = resp;
 
@@ -532,7 +502,7 @@ angular.module('webUpdates')
                     var warningMessages = [];
                     var infoMessages = [];
 
-                    $scope.restCalInProgress = false;
+                    $scope.restCallInProgress = false;
                     $scope.attributes = whoisResources.getAttributes();
 
                     //This interceptor allows us to convert error into success
@@ -572,7 +542,7 @@ angular.module('webUpdates')
 
                     var passwords = _getPasswordsForRestCall();
 
-                    $scope.restCalInProgress = true;
+                    $scope.restCallInProgress = true;
 
                     if (!$scope.name) {
 
@@ -659,11 +629,11 @@ angular.module('webUpdates')
             }
 
             function _fetchDataForCreate() {
-                $scope.restCalInProgress = true;
+                $scope.restCallInProgress = true;
                 RestService.fetchMntnersForSSOAccount().then(
                     function (results) {
                         var attributes;
-                        $scope.restCalInProgress = false;
+                        $scope.restCallInProgress = false;
                         $scope.maintainers.sso = results;
                         if ($scope.maintainers.sso.length > 0) {
 
@@ -691,7 +661,7 @@ angular.module('webUpdates')
                             $scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
                         }
                     }, function (error) {
-                        $scope.restCalInProgress = false;
+                        $scope.restCallInProgress = false;
                         $log.error('Error fetching mntners for SSO:' + JSON.stringify(error));
                         AlertService.setGlobalError('Error fetching maintainers associated with this SSO account');
                     }
@@ -758,13 +728,13 @@ angular.module('webUpdates')
                     password = CredentialsService.getCredentials().successfulPassword;
                 }
                 // wait until both have completed
-                $scope.restCalInProgress = true;
+                $scope.restCallInProgress = true;
                 $q.all({
                     mntners: RestService.fetchMntnersForSSOAccount(),
                     objectToModify: RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password)
                 }).then(
                     function (results) {
-                        $scope.restCalInProgress = false;
+                        $scope.restCallInProgress = false;
 
                         $log.debug('object to modify:' + JSON.stringify(results.objectToModify));
 
@@ -794,10 +764,10 @@ angular.module('webUpdates')
                         $scope.attributes = _interceptBeforeEdit($scope.MODIFY_OPERATION, $scope.attributes);
 
                         // fetch details of all selected maintainers concurrently
-                        $scope.restCalInProgress = true;
+                        $scope.restCallInProgress = true;
                         RestService.detailsForMntners($scope.maintainers.object).then(
                             function (result) {
-                                $scope.restCalInProgress = false;
+                                $scope.restCallInProgress = false;
 
                                 // result returns an array for each mntner
 
@@ -813,7 +783,7 @@ angular.module('webUpdates')
                                     return;
                                 }
                             }, function (error) {
-                                $scope.restCalInProgress = false;
+                                $scope.restCallInProgress = false;
                                 $log.error('Error fetching sso-mntners details' + JSON.stringify(error));
                                 AlertService.setGlobalError('Error fetching maintainer details');
                             });
@@ -826,7 +796,7 @@ angular.module('webUpdates')
                     }
                 ).catch(
                     function (error) {
-                        $scope.restCalInProgress = false;
+                        $scope.restCallInProgress = false;
                         try {
                             var whoisResources = error.data;
                             $scope.attributes = _wrapAndEnrichResources($scope.objectType, error.data);
@@ -937,7 +907,6 @@ angular.module('webUpdates')
             }
 
             function _refreshObjectIfNeeded(associationResp) {
-                console.log('_refreshObjectIfNeeded', associationResp);
                 if ($scope.operation === 'Modify' && $scope.objectType === 'mntner') {
                     if (associationResp) {
                         _wrapAndEnrichResources($scope.objectType, associationResp);
@@ -946,10 +915,10 @@ angular.module('webUpdates')
                         if (CredentialsService.hasCredentials()) {
                             password = CredentialsService.getCredentials().successfulPassword;
                         }
-                        $scope.restCalInProgress = true;
+                        $scope.restCallInProgress = true;
                         RestService.fetchObject($scope.source, $scope.objectType, $scope.name, password).then(
                             function (result) {
-                                $scope.restCalInProgress = false;
+                                $scope.restCallInProgress = false;
 
                                 $scope.attributes = result.getAttributes();
 
@@ -961,7 +930,7 @@ angular.module('webUpdates')
 
                             },
                             function () {
-                                $scope.restCalInProgress = false;
+                                $scope.restCallInProgress = false;
                                 // ignore
                             }
                         );

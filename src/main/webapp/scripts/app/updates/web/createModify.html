@@ -177,16 +177,16 @@
             href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
     </section>
     <span ng-show="operation == MODIFY_OPERATION">
-        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCallInProgress" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
         <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
     </span>
     <span ng-show="operation == CREATE_OPERATION">
-        <input type="submit" id="btnSubmitCreate" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress" class="blue-button pull-right ga-createobj-create" value="Submit" />
+        <input type="submit" id="btnSubmitCreate" ng-click="submit()" ng-disabled="!isFormValid() || restCallInProgress" class="blue-button pull-right ga-createobj-create" value="Submit" />
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 
     <span ng-show="operation == MODIFY_OPERATION && !isLirObject()">
-        <button ng-click="deleteObject()" ng-disabled="restCalInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
+        <button ng-click="deleteObject()" ng-disabled="restCallInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
     </span>
     </section>
 </form>

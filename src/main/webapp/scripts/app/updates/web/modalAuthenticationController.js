@@ -4,7 +4,6 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
     'UserInfoService', 'CredentialsService', 'MntnerService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword', 'allowForcedDelete', 'isLirObject', 'PORTAL_URL',
     function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, MntnerService, method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete, isLirObject, PORTAL_URL) {
 
-
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
         $scope.source = source;
@@ -32,7 +31,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
         $scope.ok = function () {
 
-            if ($scope.selected.password.length === 0) {
+            if ($scope.selected.password.length === 0 && $scope.selected.item) {
                 $scope.selected.message = 'Password for mntner: \'' + $scope.selected.item.key + '\'' + ' too short';
                 return;
             }

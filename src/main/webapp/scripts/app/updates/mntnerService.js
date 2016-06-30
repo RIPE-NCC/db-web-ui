@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('updates').service('MntnerService', ['$log', 'CredentialsService', 'WhoisResources',
+    angular.module('updates').service('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService',
 
-        function ($log, CredentialsService, WhoisResources) {
+        function ($log, $q, CredentialsService, WhoisResources, ModalService, RestService) {
 
             var mntnerService = {};
 
@@ -15,16 +15,43 @@
             var nccMntners = [nccHmMntner, nccEndMntner, 'RIPE-NCC-HM-PI-MNT', 'RIPE-GII-MNT', 'RIPE-NCC-MNT', 'RIPE-NCC-RPSL-MNT',
                 'RIPE-DBM-MNT', 'RIPE-NCC-LOCKED-MNT', 'RIPE-DBM-UNREFERENCED-CLEANUP-MNT', 'RIPE-ERX-MNT', 'RIPE-NCC-LEGACY-MNT'];
 
-            mntnerService.isSsoAuthorised = function(object, maintainers) {
+            mntnerService.getAuthForObjectIfNeeded = function (whoisObject, ssoAccts, operation, source, objectType, name) {
+                var promiseHandler = function (resolve, reject) {
+                    if (!mntnerService.isSsoAuthorised(whoisObject, ssoAccts)) {
+                        // pop up an auth box
+                        var mntByAttrs = whoisObject.getAllAttributesOnName('mnt-by');
+                        var mntLowerAttrs = whoisObject.getAllAttributesOnName('mnt-lower');
+
+                        var parentMntners = _.map(mntByAttrs.concat(mntLowerAttrs), function (mntner) {
+                            return {key: mntner.value};
+                        });
+
+                        RestService.detailsForMntners(parentMntners).then(
+                            function (enrichedMntners) {
+                                var mntnersWithPasswords = mntnerService.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                                var mntnersWithoutPasswords = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                                ModalService.openAuthenticationModal(operation, source, objectType, name, mntnersWithPasswords, mntnersWithoutPasswords, false).then(
+                                    resolve, reject);
+                            },
+                            reject
+                        );
+                    } else {
+                        resolve();
+                    }
+                };
+                return $q(promiseHandler);
+            };
+
+            mntnerService.isSsoAuthorised = function (object, maintainers) {
                 var mntBys = object.getAllAttributesOnName('mnt-by');
                 var mntLowers = object.getAllAttributesOnName('mnt-lower');
-                var ssoAccts = _.filter(maintainers, function(mntner) {
-                    return _.find(mntner.auth, function(auth) {
+                var ssoAccts = _.filter(maintainers, function (mntner) {
+                    return _.find(mntner.auth, function (auth) {
                         return auth === 'SSO';
                     });
                 });
-                var match = _.find(mntBys.concat(mntLowers), function(item) {
-                    return _.find(ssoAccts, function(ssoAcct) {
+                var match = _.find(mntBys.concat(mntLowers), function (item) {
+                    return _.find(ssoAccts, function (ssoAcct) {
                         return ssoAcct.key === item.value;
                     });
                 });
