@@ -11,9 +11,9 @@
 
             var nccEndMntner = 'RIPE-NCC-END-MNT';
             var nccHmMntner = 'RIPE-NCC-HM-MNT';
+            var nccLegacyMntner = 'RIPE-NCC-LEGACY-MNT';
 
-            var nccMntners = [nccHmMntner, nccEndMntner, 'RIPE-NCC-HM-PI-MNT', 'RIPE-GII-MNT', 'RIPE-NCC-MNT', 'RIPE-NCC-RPSL-MNT',
-                'RIPE-DBM-MNT', 'RIPE-NCC-LOCKED-MNT', 'RIPE-DBM-UNREFERENCED-CLEANUP-MNT', 'RIPE-ERX-MNT', 'RIPE-NCC-LEGACY-MNT'];
+            var nccMntners = [nccHmMntner, nccEndMntner, nccLegacyMntner];
 
             mntnerService.isRemovable = function (mntnerKey) {
                 // Should be possible to remove RIPE-NCC-RPSL-MNT, but allowed to add it
@@ -217,7 +217,7 @@
             mntnerService.stripNccMntners = function (mntners, allowEmptyResult) {
                 //remove NCC mntners and dupes
                 var stripped = _.reject(mntners, function (mntner) {
-                    return (mntnerService.isNccMntner(mntner.key));
+                    return (mntnerService.PIisNccMntner(mntner.key));
                 });
                 //if we are left with no mntners, return mntners array untouched
                 if (_.isEmpty(stripped) && !allowEmptyResult) {

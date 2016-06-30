@@ -295,7 +295,7 @@ angular.module('webUpdates')
                 if (item.key === item.value) {
                     return item.key;
                 }
-                return item.value + ' [' + item.key.toUpperCa + ']';
+                return item.value + ' [' + item.key.toUpperCase() + ']';
             }
 
             function _isServerLookupKey(refs) {
@@ -450,8 +450,9 @@ angular.module('webUpdates')
 
             function isResourceWithNccMntner() {
                 if($scope.objectType === 'inetnum' || $scope.objectType === 'inet6num') {
-                    var mnterKeyList = _.pluck($scope.maintainers, 'key');
-
+                    var mnterKeyList = _.map($scope.maintainers.objectOriginal, function(mntner) {
+                        return mntner.key;
+                    });
                     return MntnerService.hasNccMntner(mnterKeyList);
                 }
                 return false;
