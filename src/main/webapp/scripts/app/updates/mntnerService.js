@@ -38,7 +38,7 @@
 
             mntnerService.isNccRpslMntner = function (mntnerKey) {
                 return nccRpslMntner === mntnerKey.toUpperCase();
-            }
+            };
 
             mntnerService.isMntnerOnlist = function (list, mntner) {
                 var status = _.any(list, function (item) {
@@ -51,7 +51,7 @@
                 return _.any(mntnerList, function (mntner) {
                     return mntnerService.isNccMntner(mntner);
                 });
-            }
+            };
 
             mntnerService.hasMd5 = function (mntner) {
                 if (_.isUndefined(mntner.auth)) {
