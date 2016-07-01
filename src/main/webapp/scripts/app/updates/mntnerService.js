@@ -12,12 +12,13 @@
             var nccEndMntner = 'RIPE-NCC-END-MNT';
             var nccHmMntner = 'RIPE-NCC-HM-MNT';
             var nccLegacyMntner = 'RIPE-NCC-LEGACY-MNT';
+            var nccRpslMntner = 'RIPE-NCC-RPSL-MNT';
 
             var nccMntners = [nccHmMntner, nccEndMntner, nccLegacyMntner];
 
             mntnerService.isRemovable = function (mntnerKey) {
                 // Should be possible to remove RIPE-NCC-RPSL-MNT, but allowed to add it
-                if (mntnerKey.toUpperCase() === 'RIPE-NCC-RPSL-MNT') {
+                if (mntnerKey.toUpperCase() === nccRpslMntner) {
                     return true;
                 }
                 return !_.includes(nccMntners, mntnerKey.toUpperCase());
@@ -31,9 +32,13 @@
                 return nccEndMntner === mntnerKey.toUpperCase();
             };
 
-            mntnerService.isNcHmMntner = function (mntnerKey) {
+            mntnerService.isNccHmMntner = function (mntnerKey) {
                 return nccHmMntner === mntnerKey.toUpperCase();
             };
+
+            mntnerService.isNccRpslMntner = function (mntnerKey) {
+                return nccRpslMntner === mntnerKey.toUpperCase();
+            }
 
             mntnerService.isMntnerOnlist = function (list, mntner) {
                 var status = _.any(list, function (item) {
@@ -139,7 +144,7 @@
                 }
 
                 //do not need password if RIPE-NCC-RPSL-MNT is present
-                if (_.some(mntners, {key: 'RIPE-NCC-RPSL-MNT'})) {
+                if (_.some(mntners, {key: nccRpslMntner})) {
                     $log.debug('needsPasswordAuthentication: no: RIPE-NCC-RPSL-MNT is present and do not require authentication');
                     return false;
                 }
@@ -169,7 +174,7 @@
                 return _.filter(_.uniq(mntners, 'key'), function (mntner) {
                     if (mntner.mine === true) {
                         return false;
-                    } else if (mntnerService.isNccMntner(mntner.key)) {
+                    } else if (mntnerService.isNccMntner(mntner.key) || mntnerService.isNccRpslMntner(mntner.key)) {
                         // prevent authenticating against RIPE-NCC mntner
                         return false;
                     } else if (CredentialsService.hasCredentials() && CredentialsService.getCredentials().mntner === mntner.key) {
@@ -233,7 +238,7 @@
                 if (mntners.length !== 1) {
                     return false;
                 }
-                return mntners[0].key.toUpperCase() === 'RIPE-NCC-RPSL-MNT';
+                return mntners[0].key.toUpperCase() === nccRpslMntner;
             };
 
             function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
