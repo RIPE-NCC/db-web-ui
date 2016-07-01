@@ -12,7 +12,14 @@
             </span>
 
             <span ng-if="isLirObject">
-                The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer <a href="{{PORTAL_URL}}#/account-details">here</a>.
+
+                <span ng-if="mntnersWithoutPassword.length > 0">
+                    You cannot modify this object here because none of the maintainers are protected with a password.
+                </span>
+
+                <span ng-if="mntnersWithoutPassword.length == 0">
+                    The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer <a href="{{PORTAL_URL}}#/account-details">here</a>.
+                </span>
             </span>
         </div>
 

@@ -38,13 +38,23 @@ describe('webupdates', function () {
         expect(page.modalFooter.getText()).toBe('');
     });
 
-    it('should NOT show "force delete" for an inetnum if allocated by RIPE and no mntners have a passwd', function () {
+    it('should NOT show "force delete" for an inetnum if allocated by RIPE and no extra mntners', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/185.102.172.0%20-%20185.102.175.255');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
         expect(page.modal.getText()).toContain('The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer here.');
+        expect(page.modalFooter.getText()).toBe('');
+    });
+
+    it('should NOT show "force delete" for an inetnum if allocated by RIPE and no mntners have a passwd', function () {
+        browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/186.102.172.0%20-%20186.102.175.255');
+        expect(page.btnModify.isPresent()).toEqual(true);
+        page.scrollIntoView(page.btnModify);
+        page.btnModify.click();
+        expect(page.modal.isPresent()).toEqual(true);
+        expect(page.modal.getText()).toContain('You cannot modify this object here because none of the maintainers are protected with a password.');
         expect(page.modalFooter.getText()).toBe('');
     });
 
