@@ -1,9 +1,8 @@
 /*global angular*/
-exports.module = function (data) {
+exports.module = function () {
     'use strict';
     angular.module('dbWebAppE2E', ['dbWebApp', 'ngMockE2E'])
-        .run(function ($httpBackend) {
-            var mimeJson = {'Content-type': 'application/json'};
+        .run(function ($httpBackend, $log) {
 
             var mockGet = {
                 'api/user/info': {
@@ -172,7 +171,7 @@ exports.module = function (data) {
                         }
                     }
                 },
-                'api/whois/ripe/aut-num/AS9191?unfiltered=true': {
+                'api/whois/RIPE/aut-num/AS9191?unfiltered=true': {
                     data: {
                         'objects': {
                             'object': [{
@@ -2095,7 +2094,7 @@ exports.module = function (data) {
                         }
                     }
                 },
-                'api/whois/ripe/inetnum/91.208.34.0%20-%2091.208.34.255?unfiltered=true': {
+                'api/whois/RIPE/inetnum/91.208.34.0-91.208.34.255?unfiltered=true': {
                     data: {
                         'objects': {
                             'object': [{
@@ -2344,6 +2343,13 @@ exports.module = function (data) {
                             'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
                         }
                     }
+                },
+                'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=XS4ALL-MNT': {
+                    data: [{
+                        'key': 'XS4ALL-MNT',
+                        'type': 'mntner',
+                        'auth': ['MD5-PW', 'PGPKEY-170757B6', 'PGPKEY-D0F4FFFB', 'PGPKEY-F13D6806', 'PGPKEY-BCA9458C', 'PGPKEY-39E77B48', 'PGPKEY-CA305E30', 'PGPKEY-70F0F10F', 'SSO']
+                    }]
                 },
                 'api/whois/RIPE/inet6num/2001:999:2000::%2F36?unfiltered=true': {
                     data: {
@@ -2880,8 +2886,16 @@ exports.module = function (data) {
             // prepare the mocks
             Object.keys(mockGet).forEach(
                 function (key) {
-                    $httpBackend.whenGET(key).respond(mockGet[key].status || 200, mockGet[key].data, mockGet[key].contentType || mimeJson);
+                    $httpBackend.whenGET(key).respond(
+                        mockGet[key].status || 200,
+                        mockGet[key].data,
+                        {'Content-type': mockGet[key].contentType ? mockGet[key].contentType : 'application/json'}
+                    );
                 });
+            $httpBackend.whenGET(/^api\//).respond(function (method, req) {
+                $log.error('Error caused by missing mock', method, req);
+                return [404, 'Missing mock'];
+            });
             $httpBackend.whenGET(/.*/).passThrough();
 
         });

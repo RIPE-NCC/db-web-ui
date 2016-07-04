@@ -16,6 +16,8 @@ angular.module('updates')
             function sanitizeObjectName(objectType, name) {
                 if (objectType === 'inetnum') {
                     return encodeURIComponent(name.replace(/ */g, ''));
+                } else if (objectType === 'inet6num') {
+                    return name;
                 } else if (objectType === 'route') {
                     return name;
                 } else if (name.indexOf('%') > -1) {

@@ -2,6 +2,7 @@
 var os = require('os');
 
 var baseUrl = function() {
+    'use strict';
     return [
         'http://',
         os.hostname(),

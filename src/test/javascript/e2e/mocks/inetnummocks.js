@@ -453,7 +453,7 @@ exports.module = function () {
                     }
 
                 },
-                'api/whois/ripe/inetnum/91.208.34.0%20-%2091.208.34.255?unfiltered=true': {
+                'api/whois/RIPE/inetnum/91.208.34.0-91.208.34.255?unfiltered=true': {
                     data: {
                         "objects": {
                             "object": [{
@@ -581,7 +581,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inetnum/185.102.172.0%20-%20185.102.175.255?unfiltered=true': {
+                'api/whois/RIPE/inetnum/185.102.172.0-185.102.175.255?unfiltered=true': {
                     data: {
                         objects: {
                             'object': [{
@@ -688,7 +688,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inetnum/186.102.172.0%20-%20186.102.175.255?unfiltered=true': {
+                'api/whois/RIPE/inetnum/186.102.172.0-186.102.175.255?unfiltered=true': {
                     data: {
                         objects: {
                             'object': [{
@@ -803,7 +803,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inetnum/194.219.52.224%20-%20194.219.52.239?unfiltered=true': {
+                'api/whois/RIPE/inetnum/194.219.52.224-194.219.52.239?unfiltered=true': {
                     data: {
                         "objects": {
                             "object": [{
@@ -1285,7 +1285,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inet6num/2001:a08::%2F32?unfiltered=true': {
+                'api/whois/RIPE/inet6num/2001:a08::%2F32?unfiltered=true': {
                     data: {
                         "objects": {
                             "object": [{
@@ -1415,7 +1415,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inet6num/2001:978:ffff:fffe::%2F64?unfiltered=true': {
+                'api/whois/RIPE/inet6num/2001:978:ffff:fffe::%2F64?unfiltered=true': {
                     data: {
                         "objects": {
                             "object": [{
