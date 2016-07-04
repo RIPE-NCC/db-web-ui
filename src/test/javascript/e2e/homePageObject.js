@@ -60,6 +60,7 @@ module.exports = {
     inpStatusLink: element(by.id('createForm')).element(by.name('status')).element(by.css('a')),
     inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('div > ul > li > ul')).all(by.css('li')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
+    btnDeleteObject: element(by.id('deleteObject')),
 
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
 
