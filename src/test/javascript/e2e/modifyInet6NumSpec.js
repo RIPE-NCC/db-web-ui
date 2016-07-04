@@ -37,7 +37,6 @@ describe('Modifying an inet6num', function () {
 
     });
 
-
     describe('which is an end user assignment', function () {
 
         beforeEach(function () {
@@ -46,7 +45,7 @@ describe('Modifying an inet6num', function () {
             browser.addMockModule('dbWebAppE2E', mockModule.module);
         });
 
-        fit('should NOT show delete btn', function () {
+        it('should NOT show delete btn', function () {
             expect(page.btnDeleteObject.isPresent()).toBeFalsy();
         });
 
@@ -72,11 +71,23 @@ describe('Modifying an inet6num', function () {
             expect(page.inpAssignmentSize.getAttribute('disabled')).toBeTruthy();
         });
 
-        it('should show delete btn', function () {
-            expect(page.btnDeleteObject.isPresent()).toBeTruthy();
+        it('should NOT show delete btn', function () {
+            expect(page.btnDeleteObject.isPresent()).toBeFalsy();
         });
 
     });
 
+    describe('which is an allocated by lir', function () {
+
+        beforeEach(function () {
+            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inet6num/2002%3A998%3A2000%3A%3A%2F36');
+            browser.addMockModule('dbWebAppE2E', mockModule.module);
+        });
+
+        it('should show delete btn', function () {
+            expect(page.btnDeleteObject.isPresent()).toEqual(true);;
+        });
+
+    });
 });
 

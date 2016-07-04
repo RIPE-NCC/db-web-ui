@@ -449,11 +449,11 @@ angular.module('webUpdates')
             }
 
             function isResourceWithNccMntner() {
-                //if($scope.objectType === 'inetnum' || $scope.objectType === 'inet6num') {
-                //    return _.some($scope.maintainers.objectOriginal, function(mntner) {
-                //        return MntnerService.isNccMntner(mntner.key)
-                //    });
-                //}
+                if($scope.objectType === 'inetnum' || $scope.objectType === 'inet6num') {
+                    return _.some($scope.maintainers.objectOriginal, function(mntner) {
+                        return MntnerService.isNccMntner(mntner.key)
+                    });
+                }
                 return false;
             }
 
