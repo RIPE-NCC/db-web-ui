@@ -42,11 +42,11 @@ describe('Modifying an inet6num', function () {
 
         beforeEach(function () {
 
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/91.208.34.0-91.208.34.255');
+            browser.get(browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0-91.208.34.255');
             browser.addMockModule('dbWebAppE2E', mockModule.module);
         });
 
-        it('should NOT show delete btn', function () {
+        fit('should NOT show delete btn', function () {
             expect(page.btnDeleteObject.isPresent()).toBeFalsy();
         });
 
