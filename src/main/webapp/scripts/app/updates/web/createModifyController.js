@@ -322,7 +322,6 @@ angular.module('webUpdates')
             function _filterBasedOnAttr(suggestions, attrName) {
                 return _.filter(suggestions, function(item) {
                     if (attrName === 'abuse-c') {
-                        $log.debug('Filter out suggestions without abuse-mailbox');
                         return !_.isEmpty(item['abuse-mailbox']);
                     }
                     return true;
@@ -371,8 +370,6 @@ angular.module('webUpdates')
                     if ($scope.objectType === 'aut-num' && attribute.name === 'aut-num' ||
                         $scope.objectType === 'inetnum' && attribute.name === 'inetnum' ||
                         $scope.objectType === 'inet6num' && attribute.name === 'inet6num') {
-
-                        $log.debug('looking for parent of ' + attribute.value);
                         RestService.fetchParentResource($scope.objectType, attribute.value).get(function (result) {
                             var parent;
                             if (result && result.objects && angular.isArray(result.objects.object)) {
@@ -380,7 +377,6 @@ angular.module('webUpdates')
                             }
                             $scope.$emit('resource-parent-found', parent);
                         }, function() {
-                            $log.debug('not found');
                             $scope.$emit('resource-parent-found', null);
                         });
                     }

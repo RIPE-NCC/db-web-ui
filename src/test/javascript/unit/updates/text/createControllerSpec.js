@@ -333,7 +333,7 @@ describe('textUpdates: TextCreateController', function () {
         expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
     });
 
-    it('should navigate to display after successfull submit', function () {
+    it('should navigate to display after successful submit', function () {
         spyOn(ModalService, 'openAuthenticationModal').and.callFake(function() { return $q.defer().promise; });
 
         doCreateController('person');

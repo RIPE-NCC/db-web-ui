@@ -66,8 +66,7 @@ describe('textUpdates: TextModifyController', function () {
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _$q_,
                          _MessageStore_, _WhoisResources_, _AlertService_, _ModalService_, _PreferenceService_, _CredentialsService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -106,10 +105,10 @@ describe('textUpdates: TextModifyController', function () {
                     $state: $state,
                     $stateParams: $stateParams,
                     AlertService: AlertService,
-                    $log: logger,
+                    $log: logger
                 });
                 initialState = $state.current.name;
-            }
+            };
 
             $httpBackend.whenGET(/.*.html/).respond(200);
             $httpBackend.flush();
@@ -282,6 +281,7 @@ describe('textUpdates: TextModifyController', function () {
             auth: ['SSO'],
             mine: true
         }]);
+        //                    api/whois/RIPE/route/12.235.32.0%252F19AS1680?unfiltered=true&unformatted=true
         $httpBackend.whenGET('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, routeJSON, {}];

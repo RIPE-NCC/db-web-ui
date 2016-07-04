@@ -4,6 +4,27 @@ angular.module('updates')
     .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', 'WhoisResources', 'WebUpdatesCommons',
         function ($resource, $q, $http, $templateCache, $log, WhoisResources, WebUpdatesCommons) {
 
+            /**
+             * Sanitize an object name.
+             *
+             * Strips unnecessary white space and performs encoding of an object name when necessary.
+             *
+             * @param objectType Object type
+             * @param name Name of the object, e.g. AS9191, 193.0.0.0 - 193.0.0.255, etc.
+             * @returns {string} Sanitized object name
+             */
+            function sanitizeObjectName(objectType, name) {
+                if (objectType === 'inetnum') {
+                    return encodeURIComponent(name.replace(/ */g, ''));
+                } else if (objectType === 'route') {
+                    return name;
+                } else if (name.indexOf('%') > -1) {
+                    return name;
+                } else {
+                    return encodeURIComponent(name);
+                }
+            }
+
             function RestService() {
 
                 this.fetchParentResource = function(objectType, qs) {
@@ -29,15 +50,15 @@ angular.module('updates')
                 };
 
                 this.getReferences = function (source, objectType, name, limit) {
+
                     var deferredObject = $q.defer();
 
                     $log.debug('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
-
                     $resource('api/references/:source/:objectType/:name',
                         {
-                            source: source,
+                            source: source.toUpperCase(),
                             objectType: objectType,
-                            name: encodeURIComponent(name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
+                            name: sanitizeObjectName(objectType, name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
                             limit: limit
                         }).get()
                         .$promise.then(
@@ -195,7 +216,7 @@ angular.module('updates')
 
                     $resource('api/whois/:source/:objectType/:objectName',
                         {
-                            source: source,
+                            source: source.toUpperCase(),
                             objectType: objectType,
                             objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
@@ -221,9 +242,9 @@ angular.module('updates')
 
                     $resource('api/whois/:source/:objectType/:name',
                         {
-                            source: source,
+                            source: source.toUpperCase(),
                             objectType: objectType,
-                            name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            name: sanitizeObjectName(objectType, objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
                             password: '@password',
                             unformatted: unformatted
@@ -255,7 +276,7 @@ angular.module('updates')
 
                     $resource('api/whois/:source/:objectType',
                         {
-                            source: source,
+                            source: source.toUpperCase(),
                             objectType: objectType,
                             password: '@password',
                             override: '@override',
@@ -289,9 +310,9 @@ angular.module('updates')
                      */
                     $resource('api/whois/:source/:objectType/:name',
                         {
-                            source: source,
+                            source: source.toUpperCase(),
                             objectType: objectType,
-                            name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            name: sanitizeObjectName(objectType, objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             password: '@password',
                             override: '@override',
                             unformatted: '@unformatted'
@@ -318,9 +339,9 @@ angular.module('updates')
 
                     $resource('api/whois/:source/:objectType/:name?password=:password',
                         {
-                            source: source,
+                            source: source.toUpperCase(),
                             objectType: objectType,
-                            name: objectName,  // only for mntners so no url-decosong applied
+                            name: sanitizeObjectName(objectType, objectName),  // only for mntners so no url-decosong applied
                             password: '@password'
                         },
                         {update: {method: 'PUT'}})
@@ -352,7 +373,7 @@ angular.module('updates')
                         {
                             source: source,
                             objectType: objectType,
-                            name: name, // Note: double encoding not needed for delete
+                            name: sanitizeObjectName(objectType, name), // Note: double encoding not needed for delete
                             password: '@password',
                             'dry-run': dryRun
                         }).delete({password: passwords, reason: reason})
@@ -375,7 +396,7 @@ angular.module('updates')
                     $log.debug('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
 
                     $resource('api/references/:source',
-                        {source: source})
+                        {source: source.toUpperCase()})
                         .save(multipleWhoisObjects)
                         .$promise
                         .then(function (result) {
