@@ -5,7 +5,8 @@ angular.module('dbWebApp')
         serverError: 'server-error-occurred',
         notFound: 'not-found',
         authenticationError: 'authentication-error',
-        stateTransitionError: '$stateChangeError'
+        stateTransitionError: '$stateChangeError',
+        badRequest: 'badRequest'
     })
     .factory('ErrorInterceptor', function ($rootScope, $q, $location, $log, ERROR_EVENTS) {
 
@@ -64,11 +65,12 @@ angular.module('dbWebApp')
                 if (!_mustErrorBeSwallowed(response)) {
                     $rootScope.$broadcast({
                         500: ERROR_EVENTS.serverError,
-                        502: ERROR_EVENTS.serverError,
                         503: ERROR_EVENTS.serverError,
+                        502: ERROR_EVENTS.serverError,
                         404: ERROR_EVENTS.notFound,
+                        403: ERROR_EVENTS.authenticationError,
                         401: ERROR_EVENTS.authenticationError,
-                        403: ERROR_EVENTS.authenticationError
+                        400: ERROR_EVENTS.badRequest
                     }[response.status], response);
                 }
 

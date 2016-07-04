@@ -33,6 +33,9 @@ angular.module('dbWebApp', [
                 .state('notFound', {
                     url: '/public/not-found',
                     templateUrl: 'scripts/app/views/notFound.html'
+                }).state('badRequest', {
+                    url: '/public/bad-request',
+                    templateUrl: 'scripts/app/views/badRequest.html'
                 });
 
             // Always tell server if request was made using ajax
@@ -62,6 +65,10 @@ angular.module('dbWebApp', [
 
             $rootScope.$on(ERROR_EVENTS.notFound, function () {
                 $state.go('notFound');
+            });
+
+            $rootScope.$on(ERROR_EVENTS.badRequest, function () {
+                $state.go('badRequest');
             });
 
             $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
