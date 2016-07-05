@@ -5,8 +5,14 @@ angular.module('dbWebApp')
         serverError: 'server-error-occurred',
         notFound: 'not-found',
         authenticationError: 'authentication-error',
-        stateTransitionError: '$stateChangeError',
-        badRequest: 'badRequest'
+        stateTransitionError: '$stateChangeError'
+    })
+    .factory('$exceptionHandler', function($log, $injector) {
+        return function (exception, cause) {
+            var $state = $injector.get("$state");
+            $log.error(exception, cause);
+            $state.go('oops');
+        };
     })
     .factory('ErrorInterceptor', function ($rootScope, $q, $location, $log, ERROR_EVENTS) {
 
@@ -69,8 +75,7 @@ angular.module('dbWebApp')
                         502: ERROR_EVENTS.serverError,
                         404: ERROR_EVENTS.notFound,
                         403: ERROR_EVENTS.authenticationError,
-                        401: ERROR_EVENTS.authenticationError,
-                        400: ERROR_EVENTS.badRequest
+                        401: ERROR_EVENTS.authenticationError
                     }[response.status], response);
                 }
 
