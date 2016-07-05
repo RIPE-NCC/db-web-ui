@@ -20,7 +20,7 @@
             function _initialisePage() {
                 AlertService.clearErrors();
 
-                $scope.restCalInProgress = false;
+                $scope.restCallInProgress = false;
 
                 // extract parameters from the url
                 $scope.object = {};
@@ -58,13 +58,13 @@
                     $log.debug('Found password in CredentialsService for fetch');
                     $scope.passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
-                $scope.restCalInProgress = true;
+                $scope.restCallInProgress = true;
                 $q.all({
                     mntners: RestService.fetchMntnersForSSOAccount(),
                     objectToModify: RestService.fetchObject($scope.object.source, $scope.object.type, $scope.object.name, $scope.passwords, true)
                 }).then(
                     function (results) {
-                        $scope.restCalInProgress = false;
+                        $scope.restCallInProgress = false;
 
                         var attributes = _handleFetchResponse(results.objectToModify);
 
@@ -73,7 +73,7 @@
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
 
                         TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name,
-                            $scope.mntners.sso, attributes, $scope.psswords, $scope.override).then(
+                            $scope.mntners.sso, attributes, $scope.passwords, $scope.override).then(
                             function () {
                                 $log.debug('Successfully authenticated');
                                 _refreshObjectIfNeeded($scope.object.source, $scope.object.type, $scope.object.name);
@@ -86,7 +86,7 @@
                     }
                 ).catch(
                     function (error) {
-                        $scope.restCalInProgress = false;
+                        $scope.restCallInProgress = false;
                         if (error.data) {
                             AlertService.setErrors(error.data);
                         } else {
@@ -151,11 +151,11 @@
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
-                        $scope.restCalInProgress = true;
+                        $scope.restCallInProgress = true;
                         RestService.modifyObject($scope.object.source, $scope.object.type, $scope.object.name,
                             WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPaswords, $scope.override, true).then(
                             function (result) {
-                                $scope.restCalInProgress = false;
+                                $scope.restCallInProgress = false;
 
                                 var whoisResources = result;
                                 MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
@@ -163,7 +163,7 @@
 
                             },
                             function (error) {
-                                $scope.restCalInProgress = false;
+                                $scope.restCallInProgress = false;
 
                                 var whoisResources = error.data;
                                 AlertService.setAllErrors(whoisResources);
@@ -219,14 +219,14 @@
                         password = CredentialsService.getCredentials().successfulPassword;
                     }
 
-                    $scope.restCalInProgress = true;
+                    $scope.restCallInProgress = true;
                     RestService.fetchObject(objectSource, objectType, objectName, password, true).then(
                         function (result) {
-                            $scope.restCalInProgress = false;
+                            $scope.restCallInProgress = false;
                             _handleFetchResponse(result);
                         },
                         function () {
-                            $scope.restCalInProgress = false;
+                            $scope.restCallInProgress = false;
                             // ignore
                         }
                     );

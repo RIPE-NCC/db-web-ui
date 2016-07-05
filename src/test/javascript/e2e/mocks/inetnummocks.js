@@ -33,11 +33,6 @@ exports.module = function () {
                         'type': 'mntner',
                         'key': 'AARDALSNETT-MNT'
                     }, {
-                        //                            'mine': true,
-                        //                            'auth': ['MD5-PW', 'SSO', 'PGPKEY-8736F482', 'SSO'],
-                        //                            'type': 'mntner',
-                        //                            'key': 'APPELBAUM-MNT'
-                        //                        }, {
                         'mine': true,
                         'auth': ['MD5-PW', 'SSO'],
                         'type': 'mntner',
@@ -1750,6 +1745,16 @@ exports.module = function () {
                         'key': 'NEWNET-MNT',
                         'type': 'mntner',
                         'auth': ['MD5-PW']
+                    }]
+                },
+                'api/whois/autocomplete?from=PERSON&from=ROLE&like=aa1-ripe&select=person&select=nic-hdl&select=role&select=abuse-mailbox&where=person&where=nic-hdl&where=role&where=abuse-mailbox': {
+                    data: [{
+                        'key': 'AA1-RIPE',
+                        'type': 'person',
+                        'person': 'Name Removed',
+                        'nic-hdl': 'AA1-RIPE',
+                        'role': null,
+                        'abuse-mailbox': []
                     }]
                 },
                 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=UHUUUU-MNT': {

@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('updates').service('MntnerService', ['$log', 'CredentialsService', 'WhoisResources',
+    angular.module('updates').service('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService',
 
-        function ($log, CredentialsService, WhoisResources) {
+        function ($log, $q, CredentialsService, WhoisResources, ModalService, RestService) {
 
             var mntnerService = {};
 
@@ -15,6 +15,49 @@
             var nccRpslMntner = 'RIPE-NCC-RPSL-MNT';
 
             var nccMntners = [nccHmMntner, nccEndMntner, nccLegacyMntner];
+
+            mntnerService.getAuthForObjectIfNeeded = function (whoisObject, ssoAccts, operation, source, objectType, name) {
+                var promiseHandler = function (resolve, reject) {
+                    if (!mntnerService.isSsoAuthorised(whoisObject, ssoAccts)) {
+                        // pop up an auth box
+                        var mntByAttrs = whoisObject.getAllAttributesOnName('mnt-by');
+                        var mntLowerAttrs = whoisObject.getAllAttributesOnName('mnt-lower');
+
+                        var parentMntners = _.map(mntByAttrs.concat(mntLowerAttrs), function (mntner) {
+                            return {key: mntner.value};
+                        });
+
+                        RestService.detailsForMntners(parentMntners).then(
+                            function (enrichedMntners) {
+                                var mntnersWithPasswords = mntnerService.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                                var mntnersWithoutPasswords = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
+                                ModalService.openAuthenticationModal(operation, source, objectType, name, mntnersWithPasswords, mntnersWithoutPasswords, false).then(
+                                    resolve, reject);
+                            },
+                            reject
+                        );
+                    } else {
+                        resolve();
+                    }
+                };
+                return $q(promiseHandler);
+            };
+
+            mntnerService.isSsoAuthorised = function (object, maintainers) {
+                var mntBys = object.getAllAttributesOnName('mnt-by');
+                var mntLowers = object.getAllAttributesOnName('mnt-lower');
+                var ssoAccts = _.filter(maintainers, function (mntner) {
+                    return _.find(mntner.auth, function (auth) {
+                        return auth === 'SSO';
+                    });
+                });
+                var match = _.find(mntBys.concat(mntLowers), function (item) {
+                    return _.find(ssoAccts, function (ssoAcct) {
+                        return ssoAcct.key === item.value;
+                    });
+                });
+                return !!match;
+            };
 
             mntnerService.isRemovable = function (mntnerKey) {
                 // Should be possible to remove RIPE-NCC-RPSL-MNT, but allowed to add it
@@ -41,10 +84,9 @@
             };
 
             mntnerService.isMntnerOnlist = function (list, mntner) {
-                var status = _.any(list, function (item) {
+                return _.any(list, function (item) {
                     return item.key.toUpperCase() === mntner.key.toUpperCase();
                 });
-                return status;
             };
 
            mntnerService.hasNccMntner = function(mntnerList) {
@@ -98,22 +140,14 @@
 
             mntnerService.enrichWithSsoStatus = function (ssoMntners, mntners) {
                 return _.map(mntners, function (mntner) {
-                    if (mntnerService.isMntnerOnlist(ssoMntners, mntner)) {
-                        mntner.mine = true;
-                    } else {
-                        mntner.mine = false;
-                    }
+                    mntner.mine = !!mntnerService.isMntnerOnlist(ssoMntners, mntner);
                     return mntner;
                 });
             };
 
             mntnerService.enrichWithNewStatus = function (originalMntners, actualMntners) {
                 return _.map(actualMntners, function (mntner) {
-                    if (mntnerService.isMntnerOnlist(originalMntners, mntner)) {
-                        mntner.isNew = false;
-                    } else {
-                        mntner.isNew = true;
-                    }
+                    mntner.isNew = !mntnerService.isMntnerOnlist(originalMntners, mntner);
                     return mntner;
                 });
             };
@@ -121,11 +155,7 @@
             mntnerService.enrichWithMine = function (ssoMntners, mntners) {
                 return _.map(mntners, function (mntner) {
                     // search in selected list
-                    if (mntnerService.isMntnerOnlist(ssoMntners, mntner)) {
-                        mntner.mine = true;
-                    } else {
-                        mntner.mine = false;
-                    }
+                    mntner.mine = !!mntnerService.isMntnerOnlist(ssoMntners, mntner);
                     return mntner;
                 });
             };
@@ -179,10 +209,8 @@
                         return false;
                     } else if (CredentialsService.hasCredentials() && CredentialsService.getCredentials().mntner === mntner.key) {
                         return false;
-                    } else if (mntnerService.hasMd5(mntner)) {
-                        return true;
                     } else {
-                        return false;
+                        return mntnerService.hasMd5(mntner);
                     }
                 });
             };
@@ -203,10 +231,8 @@
                     } else if (mntnerService.isNccMntner(mntner.key)) {
                         // prevent customers contacting us about RIPE-NCC mntners
                         return false;
-                    } else if (mntnerService.hasMd5(mntner)) {
-                        return false;
                     } else {
-                        return true;
+                        return !mntnerService.hasMd5(mntner);
                     }
                 });
             };

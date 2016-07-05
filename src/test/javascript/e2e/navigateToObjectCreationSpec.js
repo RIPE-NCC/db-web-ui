@@ -65,23 +65,7 @@ describe('webupdates homepage', function() {
         expect(page.inpStatusList.get(0).getText()).toEqual('AGGREGATED-BY-LIR');
         expect(page.inpStatusList.get(1).getText()).toEqual('ASSIGNED');
     });
-
-    it('should show an editor for inetnum', function() {
-        expect(page.selectForm.isPresent()).toEqual(true);
-        page.selectObjectType('inetnum').click();
-        page.btnNavigateToCreate.click();
-        expect(page.createForm.isPresent()).toEqual(true);
-        expect(page.heading.getText()).toEqual('Create "inetnum" object');
-        expect(page.inpStatusLink.getText()).toEqual('Specifies the kind of resource.');
-        page.inpInetnum.sendKeys('213.159.160.0 - 213.159.190.255');
-        page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
-        page.inpStatusLink.click(); // click on dropdown to populate it.
-        expect(page.inpStatusList.count()).toBe(3);
-        expect(page.inpStatusList.get(0).getText()).toEqual('ASSIGNED PA');
-        expect(page.inpStatusList.get(1).getText()).toEqual('LIR-PARTITIONED PA');
-        expect(page.inpStatusList.get(2).getText()).toEqual('SUB-ALLOCATED PA');
-    });
-
+    
     it('should show an editor for inet-rtr', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inet-rtr').click();

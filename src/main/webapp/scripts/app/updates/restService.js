@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('updates')
-    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', 'WhoisResources', 'WebUpdatesCommons',
-        function ($resource, $q, $http, $templateCache, $log, WhoisResources, WebUpdatesCommons) {
+    .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', '$state', 'WhoisResources',
+        function ($resource, $q, $http, $templateCache, $log, $state, WhoisResources) {
 
             /**
              * Sanitize an object name.
@@ -26,34 +26,33 @@ angular.module('updates')
                     return encodeURIComponent(name);
                 }
             }
+            
+            var restService = {};
 
-            function RestService() {
+            restService.fetchParentResource = function (objectType, qs) {
+                // e.g. https://rest.db.ripe.net/search?flags=lr&type-filter=inetnum&query-string=193.0.4.0%20-%20193.0.4.255
+                if (['inetnum', 'inet6num', 'aut-num'].indexOf(objectType) < 0) {
+                    $log.error('Only aut-num, inetnum and inet6num supported');
+                    return;
+                }
+                return $resource('api/whois/search', {
+                    flags: 'lr',
+                    'type-filter': objectType,
+                    'query-string': qs,
+                    ignore404: true
+                });
+            };
 
-                this.fetchParentResource = function(objectType, qs) {
-                    // e.g. https://rest.db.ripe.net/search?flags=lr&type-filter=inetnum&query-string=193.0.4.0%20-%20193.0.4.255
-                    if (['inetnum', 'inet6num', 'aut-num'].indexOf(objectType) < 0) {
-                        $log.error('Only aut-num, inetnum and inet6num supported');
-                        return;
-                    }
-                    return $resource('api/whois/search', {
-                            flags: 'lr',
-                            'type-filter': objectType,
-                            'query-string': qs,
-                            ignore404: true
-                        });
-                };
+            restService.fetchUiSelectResources = function () {
+                return $q.all([
+                    // workaround to cope with order of loading problem
+                    $http.get('selectize/match-multiple.tpl.html', {cache: $templateCache}),
+                    $http.get('selectize/select-multiple.tpl.html', {cache: $templateCache})
+                ]);
+            };
 
-                this.fetchUiSelectResources = function () {
-                    return $q.all([
-                        // workaround to cope with order of loading problem
-                        $http.get('selectize/match-multiple.tpl.html', {cache: $templateCache}),
-                        $http.get('selectize/select-multiple.tpl.html', {cache: $templateCache})
-                    ]);
-                };
-
-                this.getReferences = function (source, objectType, name, limit) {
-
-                    var deferredObject = $q.defer();
+            restService.getReferences = function (source, objectType, name, limit) {
+                var deferredObject = $q.defer();
 
                     $log.debug('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
                     $resource('api/references/:source/:objectType/:name',
@@ -73,18 +72,18 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.fetchMntnersForSSOAccount = function () {
-                    var deferredObject = $q.defer();
+            restService.fetchMntnersForSSOAccount = function () {
+                var deferredObject = $q.defer();
 
-                    $log.debug('fetchMntnersForSSOAccount start');
+                $log.debug('fetchMntnersForSSOAccount start');
 
-                    $resource('api/user/mntners')
-                        .query()
-                        .$promise
-                        .then(function (result) {
+                $resource('api/user/mntners')
+                    .query()
+                    .$promise
+                    .then(function (result) {
                             $log.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
@@ -93,40 +92,38 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.detailsForMntners = function (mntners) {
-                    $log.debug('detailsForMntners start for: ' + JSON.stringify(mntners));
+            restService.detailsForMntners = function (mntners) {
+                var promises = _.map(mntners, function (item) {
+                    return _singleMntnerDetails(item);
+                });
 
-                    var promises = _.map(mntners, function (item) {
-                        return _singleMntnerDetails(item);
-                    });
+                return $q.all(promises);
+            };
 
-                    return $q.all(promises);
-                };
+            function _singleMntnerDetails(mntner) {
+                var deferredObject = $q.defer();
 
-                function _singleMntnerDetails(mntner) {
-                    var deferredObject = $q.defer();
+                $log.debug('_singleMntnerDetails: ' + JSON.stringify(mntner));
 
-                    $log.debug('_singleMntnerDetails start for: ' + JSON.stringify(mntner));
-
-                    $resource('api/whois/autocomplete',
-                        {
-                            query: mntner.key,
-                            field: 'mntner',
-                            attribute: 'auth',
-                            extended: true
-                        })
-                        .query()
-                        .$promise
-                        .then(function (result) {
+                $resource('api/whois/autocomplete',
+                    {
+                        query: mntner.key,
+                        field: 'mntner',
+                        attribute: 'auth',
+                        extended: true
+                    })
+                    .query()
+                    .$promise
+                    .then(function (result) {
                             var found = _.find(result, function (item) {
                                 return item.key === mntner.key;
                             });
                             if (_.isUndefined(found)) {
-                                // TODO: the  autocomplete service just returns 10 matching records. The exact match could not be part of this set.
-                                // So if this happens, perform best guess and just enrich the xisting mntner with md5.
+                                // TODO: the  autocomplete service just returns 10 matching records. The exact match might not be part of this set.
+                                // So if this happens, perform best guess and just enrich the existing mntner with md5.
                                 mntner.auth = ['MD5-PW'];
                                 found = mntner;
                             } else {
@@ -141,27 +138,27 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                }
+                return deferredObject.promise;
+            }
 
-                this.autocomplete = function ( attrName, query, extended, attrsToBeReturned) {
-                    var deferredObject = $q.defer();
+            restService.autocomplete = function (attrName, query, extended, attrsToBeReturned) {
+                var deferredObject = $q.defer();
 
-                    if( _.isUndefined(query) || query.length < 2 ) {
-                        deferredObject.resolve([]);
-                    } else {
-                        $log.debug('autocomplete start for: ' + attrName + ' that is like ' + query );
+                if (_.isUndefined(query) || query.length < 2) {
+                    deferredObject.resolve([]);
+                } else {
+                    $log.debug('autocomplete start for: ' + attrName + ' that is like ' + query);
 
-                        $resource('api/whois/autocomplete',
-                            {
-                                field: attrName,
-                                attribute: attrsToBeReturned,
-                                query: query,
-                                extended: extended
-                            })
-                            .query()
-                            .$promise
-                            .then(function (result) {
+                    $resource('api/whois/autocomplete',
+                        {
+                            field: attrName,
+                            attribute: attrsToBeReturned,
+                            query: query,
+                            extended: extended
+                        })
+                        .query()
+                        .$promise
+                        .then(function (result) {
                                 $log.debug('autocomplete success:' + JSON.stringify(result));
                                 deferredObject.resolve(result);
                             }, function (error) {
@@ -169,36 +166,36 @@ angular.module('updates')
                                 deferredObject.reject(error);
                             }
                         );
-                    }
+                }
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.autocompleteAdvanced = function (query, targetObjectTypes ) {
-                    var deferredObject = $q.defer();
+            restService.autocompleteAdvanced = function (query, targetObjectTypes) {
+                var deferredObject = $q.defer();
 
-                    if( _.isUndefined(query) || query.length < 2 ) {
-                        deferredObject.resolve([]);
-                    } else {
-                        var attrsToFilterOn = WhoisResources.getFilterableAttrsForObjectTypes(targetObjectTypes);
-                        var attrsToReturn = WhoisResources.getViewableAttrsForObjectTypes(targetObjectTypes); //['person', 'role', 'org-name', 'abuse-mailbox'];
+                if (_.isUndefined(query) || query.length < 2) {
+                    deferredObject.resolve([]);
+                } else {
+                    var attrsToFilterOn = WhoisResources.getFilterableAttrsForObjectTypes(targetObjectTypes);
+                    var attrsToReturn = WhoisResources.getViewableAttrsForObjectTypes(targetObjectTypes); //['person', 'role', 'org-name', 'abuse-mailbox'];
 
-                        $log.debug('autocompleteAdvanced start: ' +
-                            ' select: ' + JSON.stringify(attrsToReturn) +
-                            ' from: '   + JSON.stringify(targetObjectTypes) +
-                            ' where: '  + JSON.stringify(attrsToFilterOn) +
-                            ' like:'    + JSON.stringify(query));
+                    $log.debug('autocompleteAdvanced start: ' +
+                        ' select: ' + JSON.stringify(attrsToReturn) +
+                        ' from: ' + JSON.stringify(targetObjectTypes) +
+                        ' where: ' + JSON.stringify(attrsToFilterOn) +
+                        ' like:' + JSON.stringify(query));
 
-                        $resource('api/whois/autocomplete',
-                            {
-                                select: attrsToReturn,
-                                from: targetObjectTypes,
-                                where: attrsToFilterOn,
-                                like: query
-                            })
-                            .query()
-                            .$promise
-                            .then(function (result) {
+                    $resource('api/whois/autocomplete',
+                        {
+                            select: attrsToReturn,
+                            from: targetObjectTypes,
+                            where: attrsToFilterOn,
+                            like: query
+                        })
+                        .query()
+                        .$promise
+                        .then(function (result) {
                                 $log.debug('autocompleteAdvanced success:' + JSON.stringify(result));
                                 deferredObject.resolve(result);
                             }, function (error) {
@@ -206,15 +203,15 @@ angular.module('updates')
                                 deferredObject.reject(error);
                             }
                         );
-                    }
+                }
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.authenticate = function (method, source, objectType, objectName, passwords) {
-                    var deferredObject = $q.defer();
+            restService.authenticate = function (method, source, objectType, objectName, passwords) {
+                var deferredObject = $q.defer();
 
-                    $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:objectName',
                         {
@@ -234,13 +231,13 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.fetchObject = function (source, objectType, objectName, passwords, unformatted) {
-                    var deferredObject = $q.defer();
+            restService.fetchObject = function (source, objectType, objectName, passwords, unformatted) {
+                var deferredObject = $q.defer();
 
-                    $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name',
                         {
@@ -256,10 +253,14 @@ angular.module('updates')
                             $log.debug('fetchObject success:' + JSON.stringify(result));
 
                             var primaryKey = WhoisResources.wrapSuccess(result).getPrimaryKey();
-                            if(_.isEqual(objectName, primaryKey)) {
+                            if (_.isEqual(objectName, primaryKey)) {
                                 deferredObject.resolve(WhoisResources.wrapSuccess(result));
                             } else {
-                                WebUpdatesCommons.navigateToEdit(source, objectType, primaryKey);
+                                $state.transitionTo('webupdates.modify', {
+                                    source: source,
+                                    objectType: objectType,
+                                    name: primaryKey
+                                });
                             }
 
                         }, function (error) {
@@ -268,13 +269,13 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.createObject = function (source, objectType, attributes, passwords, overrides, unformatted) {
-                    var deferredObject = $q.defer();
+            restService.createObject = function (source, objectType, attributes, passwords, overrides, unformatted) {
+                var deferredObject = $q.defer();
 
-                    $log.debug('createObject start for objectType: ' + objectType + ' and payload:' + JSON.stringify(attributes));
+                $log.debug('createObject start for objectType: ' + objectType + ' and payload:' + JSON.stringify(attributes));
 
                     $resource('api/whois/:source/:objectType',
                         {
@@ -295,14 +296,14 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.modifyObject = function (source, objectType, objectName, attributes, passwords, overrides, unformatted) {
-                    var deferredObject = $q.defer();
+            restService.modifyObject = function (source, objectType, objectName, attributes, passwords, overrides, unformatted) {
+                var deferredObject = $q.defer();
 
-                    $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
-                    $log.debug('body: ' + JSON.stringify(attributes));
+                $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                $log.debug('body: ' + JSON.stringify(attributes));
 
                     /*
                      * A url-parameter starting with an '@' has special meaning in angular.
@@ -331,13 +332,13 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.associateSSOMntner = function (source, objectType, objectName, whoisResources, passwords) {
-                    var deferredObject = $q.defer();
+            restService.associateSSOMntner = function (source, objectType, objectName, whoisResources, passwords) {
+                var deferredObject = $q.defer();
 
-                    $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
+                $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
                     $resource('api/whois/:source/:objectType/:name?password=:password',
                         {
@@ -357,19 +358,19 @@ angular.module('updates')
                             deferredObject.reject(WhoisResources.wrapError(error));
                         }
                     );
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.deleteObject = function (source, objectType, name, reason, withReferences, passwords, dryRun) {
-                    var deferredObject = $q.defer();
+            restService.deleteObject = function (source, objectType, name, reason, withReferences, passwords, dryRun) {
+                var deferredObject = $q.defer();
 
-                    var service = withReferences ? 'references' : 'whois';
-                    if(_.isUndefined(dryRun)) {
-                        dryRun = false;
-                    }
+                var service = withReferences ? 'references' : 'whois';
+                if (_.isUndefined(dryRun)) {
+                    dryRun = false;
+                }
 
-                    $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
-                        ' reason:' + reason + ' with-refs:' + withReferences);
+                $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
+                    ' reason:' + reason + ' with-refs:' + withReferences);
 
                     $resource('api/' + service + '/:source/:objectType/:name',
                         {
@@ -389,13 +390,13 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-                this.createPersonMntner = function (source, multipleWhoisObjects) {
-                    var deferredObject = $q.defer();
+            restService.createPersonMntner = function (source, multipleWhoisObjects) {
+                var deferredObject = $q.defer();
 
-                    $log.debug('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
+                $log.debug('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
 
                     $resource('api/references/:source',
                         {source: source.toUpperCase()})
@@ -410,11 +411,10 @@ angular.module('updates')
                         }
                     );
 
-                    return deferredObject.promise;
-                };
+                return deferredObject.promise;
+            };
 
-
-            }
-            return new RestService();
-        }]);
+            return restService;
+        }
+    ]);
 

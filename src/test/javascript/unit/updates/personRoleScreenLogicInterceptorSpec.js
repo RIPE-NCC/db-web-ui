@@ -1,3 +1,4 @@
+/*global beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
 describe('updates: Person/Role ScreenLogicInterceptor', function () {
@@ -11,20 +12,6 @@ describe('updates: Person/Role ScreenLogicInterceptor', function () {
         whoisResources = WhoisResources;
         interceptor = ScreenLogicInterceptor;
     }));
-
-    afterEach(function() {
-    });
-
-
-    function printAttrs( msg, attrs ) {
-        console.log(
-            msg + ':' + JSON.stringify(
-                _.map(attrs, function(attr) {
-                    return {name: attr.name, value: attr.value};
-                }
-                ))
-        );
-    }
 
     it('should set default nic-ndl before-edit person on Create operation', function() {
         var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('person', true));
