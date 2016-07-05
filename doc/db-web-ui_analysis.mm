@@ -34,15 +34,38 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="14"/>
 </node>
-<node COLOR="#990000" CREATED="1463578535561" ID="ID_1049168962" MODIFIED="1465391999564" TEXT="Cannot test ng-app in isolation">
+<node COLOR="#990000" CREATED="1463578535561" ID="ID_1049168962" MODIFIED="1466688646601" TEXT="Cannot test ng-app in isolation">
 <richcontent TYPE="NOTE"><html>
   <head>
     
   </head>
   <body>
-    <p>
-      Ng-app should be able to run with mocks or a live back-end
-    </p>
+    <ul>
+      <li>
+        Ng-app should be able to run with mocks or a live back-end
+      </li>
+      <li>
+        Test configs for both web-app and ng-app are in pom.xml, making independent testing difficult and leads to huge configurations: All combinations of tests need to be coded into the pom to support CD pipelining, e.g.
+
+        <ul>
+          <li>
+            &#160;Production release: Java unit + Java E2E + JS unit + JS E2E
+          </li>
+          <li>
+            &#160;SonarQube Java project: Java unit + Java E2E + no JS
+          </li>
+          <li>
+            &#160;SonarQube JS project: No Java + JS unit + JS E2E
+          </li>
+          <li>
+            and so on...
+          </li>
+        </ul>
+      </li>
+      <li>
+        Even then you can't use ad hoc Grunt commands -- suppose you want the same set of tests but then with a debug flag?
+      </li>
+    </ul>
   </body>
 </html></richcontent>
 <font NAME="SansSerif" SIZE="14"/>
@@ -131,7 +154,7 @@
 </html></richcontent>
 <font NAME="SansSerif" SIZE="14"/>
 </node>
-<node COLOR="#990000" CREATED="1463578480814" ID="ID_1305385878" MODIFIED="1465392169383" TEXT="Split ng-app from web-app">
+<node COLOR="#990000" CREATED="1463578480814" ID="ID_1305385878" MODIFIED="1466688844052" TEXT="Split ng-app from web-app">
 <richcontent TYPE="NOTE"><html>
   <head>
     
@@ -149,7 +172,8 @@
       </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font NAME="SansSerif" SIZE="14"/>
 </node>
 <node COLOR="#990000" CREATED="1464084001528" ID="ID_463966275" MODIFIED="1465391997364" TEXT="Fix JS module versions">
@@ -334,8 +358,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font NAME="SansSerif" SIZE="14"/>
 </node>
 <node COLOR="#990000" CREATED="1464360628592" ID="ID_109801811" MODIFIED="1464360792943" TEXT="Factor the complexity out">

@@ -4,7 +4,6 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
     'UserInfoService', 'CredentialsService', 'MntnerService', 'method', 'source', 'objectType', 'objectName', 'mntners', 'mntnersWithoutPassword', 'allowForcedDelete', 'isLirObject', 'PORTAL_URL',
     function ($scope, $log, $modalInstance, WhoisResources, RestService, UserInfoService, CredentialsService, MntnerService, method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete, isLirObject, PORTAL_URL) {
 
-
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
         $scope.source = source;
@@ -32,7 +31,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
         $scope.ok = function () {
 
-            if ($scope.selected.password.length === 0) {
+            if ($scope.selected.password.length === 0 && $scope.selected.item) {
                 $scope.selected.message = 'Password for mntner: \'' + $scope.selected.item.key + '\'' + ' too short';
                 return;
             }
@@ -63,7 +62,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                             WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.selected.password).then(
                             function (resp) {
                                 $scope.selected.item.mine = true;
-                                CredentialsService.removeCredentials(); //i because ts now an sso mntner
+                                CredentialsService.removeCredentials(); // because it's now an sso mntner
                                 // report success back
                                 $modalInstance.close({selectedItem: $scope.selected.item, response: resp});
 
