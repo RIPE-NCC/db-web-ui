@@ -2095,6 +2095,134 @@ exports.module = function (data) {
                         }
                     }
                 },
+                'api/whois/ripe/inetnum/91.208.34.0-91.208.34.255?unfiltered=true': {
+                    data: {
+                        'objects': {
+                            'object': [{
+                                'type': 'inetnum',
+                                'link': {
+                                    'type': 'locator',
+                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/inetnum/91.208.34.0 - 91.208.34.255'
+                                },
+                                'source': {
+                                    'id': 'ripe'
+                                },
+                                'primary-key': {
+                                    'attribute': [{
+                                        'name': 'inetnum',
+                                        'value': '91.208.34.0 - 91.208.34.255'
+                                    }]
+                                },
+                                'attributes': {
+                                    'attribute': [{
+                                        'name': 'inetnum',
+                                        'value': '91.208.34.0 - 91.208.34.255'
+                                    }, {
+                                        'name': 'netname',
+                                        'value': 'APPELBAUM-NET'
+                                    }, {
+                                        'name': 'country',
+                                        'value': 'AT'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-JA88-RIPE'
+                                        },
+                                        'name': 'org',
+                                        'value': 'ORG-JA88-RIPE',
+                                        'referenced-type': 'organisation'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/person/JA2712-RIPE'
+                                        },
+                                        'name': 'admin-c',
+                                        'value': 'JA2712-RIPE',
+                                        'referenced-type': 'person'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/person/JA2712-RIPE'
+                                        },
+                                        'name': 'tech-c',
+                                        'value': 'JA2712-RIPE',
+                                        'referenced-type': 'person'
+                                    }, {
+                                        'name': 'status',
+                                        'value': 'ASSIGNED PI'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT'
+                                        },
+                                        'name': 'mnt-by',
+                                        'value': 'RIPE-NCC-END-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/APPELBAUM-MNT'
+                                        },
+                                        'name': 'mnt-by',
+                                        'value': 'APPELBAUM-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/APPELBAUM-MNT'
+                                        },
+                                        'name': 'mnt-routes',
+                                        'value': 'APPELBAUM-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT'
+                                        },
+                                        'name': 'mnt-routes',
+                                        'value': 'XS4ALL-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/APPELBAUM-MNT'
+                                        },
+                                        'name': 'mnt-domains',
+                                        'value': 'APPELBAUM-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'name': 'created',
+                                        'value': '2008-07-08T10:39:34Z'
+                                    }, {
+                                        'name': 'last-modified',
+                                        'value': '2015-05-05T01:59:37Z'
+                                    }, {
+                                        'name': 'source',
+                                        'value': 'RIPE'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-XIB1-RIPE'
+                                        },
+                                        'name': 'sponsoring-org',
+                                        'value': 'ORG-XIB1-RIPE',
+                                        'referenced-type': 'organisation'
+                                    }]
+                                },
+                                'tags': {
+                                    'tag': [{
+                                        'id': 'RIPE-REGISTRY-RESOURCE',
+                                        'data': null
+                                    }]
+                                }
+                            }]
+                        },
+                        'terms-and-conditions': {
+                            'type': 'locator',
+                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+                        }
+                    }
+                },
                 'api/whois/ripe/inetnum/91.208.34.0%20-%2091.208.34.255?unfiltered=true': {
                     data: {
                         'objects': {
@@ -2747,6 +2875,132 @@ exports.module = function (data) {
                         'terms-and-conditions': {
                             'type': 'locator',
                             'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+                        }
+                    }
+                },
+                'api/whois/RIPE/inet6num/2002:998:2000::%2F36?unfiltered=true': {
+                    data: {
+                        "service": {
+                            "name": "search"
+                        }
+                        ,
+                        "parameters": {
+                            "inverse-lookup": {}
+                            ,
+                            "type-filters": {
+                                "type-filter": [{
+                                    "id": "inet6num"
+                                }]
+                            }
+                            ,
+                            "flags": {
+                                "flag": [{
+                                    "value": "one-less"
+                                }, {
+                                    "value": "no-referenced"
+                                }]
+                            }
+                            ,
+                            "query-strings": {
+                                "query-string": [{
+                                    "value": "2002:998:2000::/36"
+                                }]
+                            }
+                            ,
+                            "sources": {}
+                        }
+                        ,
+                        "objects": {
+                            "object": [{
+                                "type": "inet6num",
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/2002:998:2000::/36"
+                                },
+                                "source": {
+                                    "id": "ripe"
+                                },
+                                "primary-key": {
+                                    "attribute": [{
+                                        "name": "inet6num",
+                                        "value": "2002:998:2000::/36"
+                                    }]
+                                },
+                                "attributes": {
+                                    "attribute": [{
+                                        "name": "inet6num",
+                                        "value": "2002:998:2000::/36"
+                                    }, {
+                                        "name": "netname",
+                                        "value": "XS4ALL"
+                                    }, {
+                                        "name": "descr",
+                                        "value": "XS4ALL Internet BV"
+                                    }, {
+                                        "name": "descr",
+                                        "value": "Colocation services"
+                                    }, {
+                                        "name": "country",
+                                        "value": "NL"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE"
+                                        },
+                                        "name": "admin-c",
+                                        "value": "XS42-RIPE",
+                                        "referenced-type": "role"
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE"
+                                        },
+                                        "name": "tech-c",
+                                        "value": "XS42-RIPE",
+                                        "referenced-type": "role"
+                                    }, {
+                                        "name": "status",
+                                        "value": "ALLOCATED-BY-LIR"
+                                    }, {
+                                        "name": "assignment-size",
+                                        "value": "48"
+                                    }, {
+                                        "name": "remarks",
+                                        "value": "Please send email to \"abuse@xs4all.nl\" for complaints"
+                                    }, {
+                                        "name": "remarks",
+                                        "value": "regarding portscans, DoS attacks and spam."
+                                    }, {
+                                        "link": {
+                                            "type": "locator",
+                                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT"
+                                        },
+                                        "name": "mnt-by",
+                                        "value": "XS4ALL-MNT",
+                                        "referenced-type": "mntner"
+                                    }, {
+                                        "name": "created",
+                                        "value": "2011-02-16T08:38:25Z"
+                                    }, {
+                                        "name": "last-modified",
+                                        "value": "2011-02-16T14:41:14Z"
+                                    }, {
+                                        "name": "source",
+                                        "value": "RIPE",
+                                        "comment": "Filtered"
+                                    }]
+                                },
+                                "tags": {
+                                    "tag": [{
+                                        "id": "RIPE-USER-RESOURCE"
+                                    }]
+                                }
+                            }]
+                        }
+                        ,
+                        "terms-and-conditions": {
+                            "type": "locator",
+                            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
                         }
                     }
                 },
