@@ -91,10 +91,30 @@ module.exports = function (grunt) {
                                 '/app/styles',
                                 serveStatic('./app/styles')
                             ),
+                            require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic(appConfig.app)
                         ];
                     }
-                }
+                },
+                proxies: [{
+                    host: 'localhost',
+                    context: '/api',
+                    port: 8443,
+                    https: true,
+                    xforward: false,
+                    rewrite: {
+                        '^/api': '/db-web-ui/api'
+                    }
+                }, {
+                    host: 'localhost',
+                    context: '/py',
+                    port: 8000,
+                    https: false,
+                    //xforward: false,
+                    rewrite: {
+                        '^/py': '/mypy/api'
+                    }
+                }]
             },
             test: {
                 options: {
@@ -209,7 +229,7 @@ module.exports = function (grunt) {
             test: {
                 devDependencies: true,
                 src: '<%= karma.unit.configFile %>',
-                ignorePath: /\.\.\//,
+                ignorePath: /\.\.\/\.\.\//,
                 fileTypes: {
                     js: {
                         block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
@@ -456,7 +476,8 @@ module.exports = function (grunt) {
         }
     });
 
-
+    grunt.loadNpmTasks('grunt-connect-proxy');
+    
     grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['build', 'connect:dist:keepalive']);
