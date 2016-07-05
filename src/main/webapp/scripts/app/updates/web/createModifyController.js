@@ -66,7 +66,7 @@ angular.module('webUpdates')
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
 
-            var inetnumErrorMessageShown = false;
+            var inetnumParentAuthError = false;
 
             _initialisePage();
 
@@ -116,11 +116,15 @@ angular.module('webUpdates')
                         .then(
                             function () {
                                 $scope.restCallInProgress = false;
+                                inetnumParentAuthError = false;
                             },
                             function (error) {
                                 $scope.restCallInProgress = false;
                                 $log.error('MntnerService.getAuthForObjectIfNeeded rejected authorisation: ', error);
-                                AlertService.addGlobalError('Failed to authenticate parent resource');
+                                if (!inetnumParentAuthError) {
+                                    AlertService.addGlobalError('Failed to authenticate parent resource');
+                                    inetnumParentAuthError = true;
+                                }
                             }
                         );
                 }
@@ -128,6 +132,7 @@ angular.module('webUpdates')
 
             function _initialisePage() {
 
+                inetnumParentAuthError = false;
                 $scope.restCallInProgress = false;
 
                 AlertService.clearErrors();
@@ -295,8 +300,7 @@ angular.module('webUpdates')
                     } else if (angular.isArray(item.descr)) {
                         name = item.descr.join('');
                     } else if (angular.isArray(item.owner)) {
-                        name = item.owner.join('');
-                    } else {
+                        name = item.owner.join('');                    } else {
                         separator = '';
                     }
                     item.readableName = $sce.trustAsHtml(_escape(item.key + separator + name));
@@ -881,7 +885,7 @@ angular.module('webUpdates')
             }
 
             function isFormValid() {
-                return $scope.attributes.validateWithoutSettingErrors();
+                return !inetnumParentAuthError && $scope.attributes.validateWithoutSettingErrors();
             }
 
             function hasErrors() {
