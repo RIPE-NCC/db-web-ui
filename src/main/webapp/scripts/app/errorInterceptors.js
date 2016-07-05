@@ -7,6 +7,13 @@ angular.module('dbWebApp')
         authenticationError: 'authentication-error',
         stateTransitionError: '$stateChangeError'
     })
+    .factory('$exceptionHandler', function($log, $injector) {
+        return function (exception, cause) {
+            var $state = $injector.get("$state");
+            $log.error(exception, cause);
+            $state.go('oops');
+        };
+    })
     .factory('ErrorInterceptor', function ($rootScope, $q, $location, $log, ERROR_EVENTS) {
 
         function _isServerError(status) {
@@ -64,11 +71,11 @@ angular.module('dbWebApp')
                 if (!_mustErrorBeSwallowed(response)) {
                     $rootScope.$broadcast({
                         500: ERROR_EVENTS.serverError,
-                        502: ERROR_EVENTS.serverError,
                         503: ERROR_EVENTS.serverError,
+                        502: ERROR_EVENTS.serverError,
                         404: ERROR_EVENTS.notFound,
-                        401: ERROR_EVENTS.authenticationError,
-                        403: ERROR_EVENTS.authenticationError
+                        403: ERROR_EVENTS.authenticationError,
+                        401: ERROR_EVENTS.authenticationError
                     }[response.status], response);
                 }
 

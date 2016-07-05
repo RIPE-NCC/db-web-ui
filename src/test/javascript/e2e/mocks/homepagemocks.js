@@ -16,6 +16,10 @@ exports.module = function (data) {
                         active: true
                     }
                 },
+                'api/whois/RIPE/aut-num/response-with-error?unfiltered=true': {
+                    status: 400,
+                    data: []
+                },
                 'api/user/mntners': {
                     status: 200,
                     data: [{
