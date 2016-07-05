@@ -38,6 +38,7 @@ angular.module('webUpdates')
             $scope.getAttributeSyntax = getAttributeSyntax;
 
             $scope.hasMntners = hasMntners;
+
             $scope.canAttributeBeDuplicated = canAttributeBeDuplicated;
             $scope.duplicateAttribute = duplicateAttribute;
             $scope.canAttributeBeRemoved = canAttributeBeRemoved;
@@ -55,6 +56,7 @@ angular.module('webUpdates')
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
             $scope.isLirObject = isLirObject;
+            $scope.isResourceWithNccMntner = isResourceWithNccMntner;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
 
@@ -440,6 +442,15 @@ angular.module('webUpdates')
 
             function isLirObject() {
                 return _isAllocation() || !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
+            }
+
+            function isResourceWithNccMntner() {
+                if($scope.objectType === 'inetnum' || $scope.objectType === 'inet6num') {
+                    return _.some($scope.maintainers.objectOriginal, function(mntner) {
+                        return MntnerService.isNccMntner(mntner.key)
+                    });
+                }
+                return false;
             }
 
             function deleteObject() {

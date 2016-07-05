@@ -57,8 +57,7 @@ describe('updates: MntnerService', function () {
     });
 
     it('should detect RIPE-NCC mntners', function() {
-        var nccMntners = ['ripe-ncc-hm-mnt', 'ripe-ncc-end-mnt','ripe-ncc-hm-pi-mnt','ripe-gii-mnt','ripe-ncc-mnt','ripe-ncc-rpsl-mnt',
-            'RIPE-DBM-MNT','RIPE-NCC-LOCKED-MNT','RIPE-DBM-UNREFERENCED-CLEANUP-MNT','RIPE-ERX-MNT','RIPE-NCC-LEGACY-MNT'];
+        var nccMntners = ['ripe-ncc-hm-mnt', 'ripe-ncc-end-mnt','RIPE-NCC-LEGACY-MNT'];
         var ripeOwned = _.filter(nccMntners, function(mntnerKey) {
             return subject.isNccMntner(mntnerKey);
         });
@@ -85,7 +84,7 @@ describe('updates: MntnerService', function () {
     });
 
     it('should mark other RIPE-NCC mntners as un-removeable', function() {
-        expect(subject.isRemovable('RIPE-DBM-MNT')).toEqual(false);
+        expect(subject.isRemovable('RIPE-NCC-HM-MNT')).toEqual(false);
     });
 
     it('enrich mntners with new status', function() {
