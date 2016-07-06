@@ -2,11 +2,10 @@
 # Project Specific
 ######################
 src/main/webapp/dist
-src/main/webapp/scripts/app/app.constants.js
-src/main/webapp/index.html
 screenshot-*.png
 instrumented
 reports
+dist
 
 ######################
 # Node

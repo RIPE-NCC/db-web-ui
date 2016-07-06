@@ -18,7 +18,9 @@ module.exports = function (grunt) {
     require('jit-grunt')(grunt, {
         useminPrepare: 'grunt-usemin',
         ngtemplates: 'grunt-angular-templates',
-        cdnify: 'grunt-google-cdn'
+        cdnify: 'grunt-google-cdn',
+        configureProxies: 'grunt-connect-proxy',
+        protractor: 'grunt-protractor-runner'
     });
 
     // Configurable paths for the application
@@ -79,42 +81,43 @@ module.exports = function (grunt) {
             },
             livereload: {
                 options: {
-                    open: true,
+                    open: false,
                     middleware: function (connect) {
                         return [
+                            require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic('.tmp'),
                             connect().use(
                                 '/bower_components',
                                 serveStatic('./bower_components')
                             ),
-                            connect().use(
-                                '/app/styles',
-                                serveStatic('./app/styles')
-                            ),
-                            require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic(appConfig.app)
                         ];
                     }
                 },
                 proxies: [{
-                    host: 'localhost',
+                    host: 'localhost.ripe.net',
                     context: '/api',
                     port: 8443,
                     https: true,
-                    xforward: false,
+                    //xforward: true,
                     rewrite: {
                         '^/api': '/db-web-ui/api'
                     }
-                }, {
-                    host: 'localhost',
-                    context: '/py',
-                    port: 8000,
-                    https: false,
-                    //xforward: false,
-                    rewrite: {
-                        '^/py': '/mypy/api'
-                    }
                 }]
+            },
+            e2e: {
+                options: {
+                    port: 9002,
+                    keepalive: false,
+                    //open: true,
+                    middleware: function () {
+                        return [
+                            //require('grunt-connect-proxy/lib/utils').proxyRequest,
+                            //serveStatic('instrumented'),
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                }
             },
             test: {
                 options: {
@@ -154,9 +157,9 @@ module.exports = function (grunt) {
             },
             test: {
                 options: {
-                    jshintrc: 'test/.jshintrc'
+                    jshintrc: 'src/test/javascript/.jshintrc'
                 },
-                src: ['test/spec/{,*/}*.js']
+                src: ['src/test/javascript/{,*/}*.js']
             }
         },
 
@@ -398,7 +401,7 @@ module.exports = function (grunt) {
                     usemin: 'scripts/scripts.js'
                 },
                 cwd: '<%= yeoman.app %>',
-                src: 'views/{,*/}*.html',
+                src: 'scripts/app/views/{,*/}*.html',
                 dest: '.tmp/templateCache.js'
             }
         },
@@ -468,6 +471,25 @@ module.exports = function (grunt) {
         },
 
         // Test settings
+        protractor: {
+            options: {
+                noColor: false, // If true, protractor will not use colors in its output.
+                args: {}
+            },
+            e2e: {
+                options: {
+                    configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
+                    keepAlive: false // If false, the grunt process stops when the test fails.
+                }
+            },
+            noTest: {
+                options: {
+                    configFile: 'src/test/javascript/protractor-no-test.conf.js', // Default config file
+                    keepAlive: true
+                }
+            }
+        },
+
         karma: {
             unit: {
                 configFile: 'src/test/javascript/karma.conf.js',
@@ -476,8 +498,16 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.loadNpmTasks('grunt-connect-proxy');
-    
+    grunt.registerTask('e2e-test', [
+        //'env:dev',
+        'clean:server',
+        'wiredep',
+        //'preprocess:e2e',
+        'concurrent:server',
+        'connect:e2e',
+        'protractor:e2e'
+    ]);
+
     grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
         if (target === 'dist') {
             return grunt.task.run(['build', 'connect:dist:keepalive']);
@@ -488,6 +518,7 @@ module.exports = function (grunt) {
             'wiredep',
             'concurrent:server',
             'postcss:server',
+            'configureProxies:livereload',
             'connect:livereload',
             'watch'
         ]);
