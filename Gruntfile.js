@@ -29,6 +29,44 @@ module.exports = function (grunt) {
         dist: 'dist'
     };
 
+    var environments = {
+        dev: {
+            ENV: 'dev',
+            GTM_ID: 'GTM-WTWTB7',
+            ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.prepdev.ripe.net/',
+            PORTAL_URL: 'https://my.prepdev.ripe.net/'
+        },
+        prepdev: {
+            ENV: 'prepdev',
+            GTM_ID: 'GTM-WTWTB7',
+            ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.prepdev.ripe.net/',
+            PORTAL_URL: 'https://my.prepdev.ripe.net/'
+        },
+        rc: {
+            ENV: 'rc',
+            GTM_ID: 'GTM-T5J6RH',
+            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.ripe.net/',
+            PORTAL_URL: 'https://my.ripe.net/'
+        },
+        test: {
+            ENV: 'test',
+            GTM_ID: 'GTM-W4MMHJ',
+            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.ripe.net/',
+            PORTAL_URL: 'https://my.ripe.net/'
+        },
+        prod: {
+            ENV: 'prod',
+            GTM_ID: 'GTM-TP3SK6',
+            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.ripe.net/',
+            PORTAL_URL: 'https://my.ripe.net/'
+        }
+    };
+
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -49,11 +87,11 @@ module.exports = function (grunt) {
                 }
             },
             jsTest: {
-                files: ['test/spec/{,*/}*.js'],
+                files: ['src/test/javascript/unit/{,*/}*.js'],
                 tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
             },
             compass: {
-                files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+                files: ['<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}'],
                 tasks: ['compass:server', 'postcss:server']
             },
             gruntfile: {
@@ -66,7 +104,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= yeoman.app %>/{,*/}*.html',
                     '.tmp/styles/{,*/}*.css',
-                    '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                    '<%= yeoman.app %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
         },
@@ -199,7 +237,7 @@ module.exports = function (grunt) {
         postcss: {
             options: {
                 processors: [
-                    require('autoprefixer-core')({browsers: ['last 1 version']})
+                    require('autoprefixer')({browsers: ['last 1 version']})
                 ]
             },
             server: {
@@ -246,7 +284,7 @@ module.exports = function (grunt) {
                 }
             },
             sass: {
-                src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+                src: ['<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}'],
                 ignorePath: /(\.\.\/){1,2}bower_components\//
             }
         },
@@ -452,6 +490,17 @@ module.exports = function (grunt) {
                 cwd: '<%= yeoman.app %>/styles',
                 dest: '.tmp/styles/',
                 src: '{,*/}*.css'
+            },
+            gruntReplacements: {
+                files: [{
+                    src: '<%= yeoman.app %>/index.html',
+                    dest: '.tmp/index.html'
+                }],
+                options: {
+                    process: function(content) {
+                        return grunt.template.process(content);
+                    }
+                }
             }
         },
 
@@ -498,6 +547,8 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.config('grunt.environment', environments[process.env.GRUNT_ENV || 'dev'] || environments.dev);
+
     grunt.registerTask('e2e-test', [
         //'env:dev',
         'clean:server',
@@ -542,13 +593,14 @@ module.exports = function (grunt) {
         'clean:dist',
         'wiredep',
         'useminPrepare',
+        'copy:gruntReplacements',
         'concurrent:dist',
         'postcss',
         'ngtemplates',
         'concat',
         'ngAnnotate',
         'copy:dist',
-        'cdnify',
+        //'cdnify',
         'cssmin',
         'uglify',
         'filerev',

@@ -109,7 +109,7 @@
 </node>
 <node COLOR="#00b439" CREATED="1463577275147" ID="ID_1353955829" MODIFIED="1463577279260" TEXT="Solution">
 <font NAME="SansSerif" SIZE="16"/>
-<node COLOR="#990000" CREATED="1463577280400" ID="ID_1716068558" MODIFIED="1465820132472" TEXT="Use Yeoman as a project template">
+<node COLOR="#990000" CREATED="1463577280400" ID="ID_1716068558" MODIFIED="1467889978892" TEXT="Use Yeoman as a project template">
 <richcontent TYPE="NOTE"><html>
   <head>
     
@@ -150,8 +150,12 @@
     <p>
       It does this by leveraging the features of a small number of modules and re-useable configuration items.
     </p>
+    <p>
+      See https://quickleft.com/blog/grunt-js-tips-tricks/
+    </p>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font NAME="SansSerif" SIZE="14"/>
 </node>
 <node COLOR="#990000" CREATED="1463578480814" ID="ID_1305385878" MODIFIED="1466688844052" TEXT="Split ng-app from web-app">
@@ -172,8 +176,7 @@
       </li>
     </ul>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font NAME="SansSerif" SIZE="14"/>
 </node>
 <node COLOR="#990000" CREATED="1464084001528" ID="ID_463966275" MODIFIED="1465391997364" TEXT="Fix JS module versions">
