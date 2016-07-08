@@ -1,6 +1,7 @@
 // Generated on 2016-07-05 using generator-angular 0.15.1
 'use strict';
 
+var fs = require('fs');
 var serveStatic = require('serve-static');
 
 // # Globbing
@@ -151,7 +152,7 @@ module.exports = function (grunt) {
                     middleware: function () {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
-                            //serveStatic('instrumented'),
+                            serveStatic('.tmp'),
                             serveStatic(appConfig.app)
                         ];
                     }
@@ -264,7 +265,7 @@ module.exports = function (grunt) {
         // Automatically inject Bower components into the app
         wiredep: {
             app: {
-                src: ['<%= yeoman.app %>/index.html'],
+                src: ['.tmp/index.html'],
                 ignorePath: /\.\.\//
             },
             test: {
@@ -474,7 +475,8 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>',
                     src: [
                         '*.{ico,png,txt}',
-                        '*.html',
+                        'index.html',
+                        'scripts/{,*/}{,*/}{,*/}*.html',
                         'images/{,*/}*.{webp}',
                         'styles/fonts/{,*/}*.*'
                     ]
@@ -491,13 +493,28 @@ module.exports = function (grunt) {
                 dest: '.tmp/styles/',
                 src: '{,*/}*.css'
             },
-            gruntReplacements: {
+            processtags: {
                 files: [{
-                    src: '<%= yeoman.app %>/index.html',
+                    src: '<%= yeoman.app %>/template.html',
                     dest: '.tmp/index.html'
                 }],
                 options: {
-                    process: function(content) {
+                    process: function (content, path) {
+                        var dir = path.substring(0, path.lastIndexOf('/'));
+                        // First, process the includes such as <!-- @include _index_app_body_start.html -->
+                        content = content.replace(/<!--\s*@include\s+([\S]+)\s*-->/g, function (m, filename) {
+                            return fs.readFileSync(dir + '/' + filename).toString();
+                        });
+                        // Second, process the conditional includes: <!-- @includeif CONDITION fileIfTrue, fileIfFalse -->
+                        content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)\s+([\S]+)\s*-->/g, function (m, condition, trueFile, falseFile) {
+                            var filename = grunt.config(condition) ? trueFile : falseFile;
+                            return fs.readFileSync(dir + '/' + filename).toString();
+                        });
+                        // Third, replace @echo directives with values from environment constants
+                        content = content.replace(/<!--\s*@echo\s+([\S]+)\s*-->/g, function (m, group) {
+                            return grunt.config('grunt.environment')[group] || '';
+                        });
+                        // Then expand Grunt tags, i.e. <%= value %>
                         return grunt.template.process(content);
                     }
                 }
@@ -549,11 +566,16 @@ module.exports = function (grunt) {
 
     grunt.config('grunt.environment', environments[process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
+    grunt.registerTask('e2eapp', 'Sets flag for E2E testing.', function() {
+        grunt.config('grunt.app.e2e', true);
+    });
+
     grunt.registerTask('e2e-test', [
         //'env:dev',
         'clean:server',
+        'e2eapp',
+        'copy:processtags',
         'wiredep',
-        //'preprocess:e2e',
         'concurrent:server',
         'connect:e2e',
         'protractor:e2e'
@@ -591,9 +613,9 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
         'clean:dist',
+        'copy:processtags',
         'wiredep',
         'useminPrepare',
-        'copy:gruntReplacements',
         'concurrent:dist',
         'postcss',
         'ngtemplates',
