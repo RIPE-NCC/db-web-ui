@@ -28,11 +28,11 @@ angular.module('dbWebApp', [
             $stateProvider
                 .state('error', {
                     url: '/public/error',
-                    templateUrl: 'scripts/app/views/error.html'
+                    templateUrl: 'scripts/views/error.html'
                 })
                 .state('notFound', {
                     url: '/public/not-found',
-                    templateUrl: 'scripts/app/views/notFound.html'
+                    templateUrl: 'scripts/views/notFound.html'
                 });
 
             // Always tell server if request was made using ajax

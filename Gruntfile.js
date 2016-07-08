@@ -27,7 +27,7 @@ module.exports = function (grunt) {
     // Configurable paths for the application
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
-        dist: 'dist'
+        dist: require('./bower.json').distPath || 'dist'
     };
 
     var environments = {
@@ -296,10 +296,10 @@ module.exports = function (grunt) {
                 sassDir: '<%= yeoman.app %>/assets/scss',
                 cssDir: '.tmp/styles',
                 generatedImagesDir: '.tmp/images/generated',
-                imagesDir: '<%= yeoman.app %>/images',
+                imagesDir: '<%= yeoman.app %>/assets/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/styles/fonts',
-                importPath: './src/main/webapp/bower_components',
+                fontsDir: '<%= yeoman.app %>/assets/fonts',
+                importPath: './bower_components',
                 httpImagesPath: '/images',
                 httpGeneratedImagesPath: '/images/generated',
                 httpFontsPath: '/styles/fonts',
@@ -371,27 +371,27 @@ module.exports = function (grunt) {
         // By default, your `index.html`'s <!-- Usemin block --> will take care of
         // minification. These next options are pre-configured if you do not wish
         // to use the Usemin blocks.
-        // cssmin: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/styles/main.css': [
-        //         '.tmp/styles/{,*/}*.css'
-        //       ]
-        //     }
-        //   }
-        // },
-        // uglify: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/scripts/scripts.js': [
-        //         '<%= yeoman.dist %>/scripts/scripts.js'
-        //       ]
-        //     }
-        //   }
-        // },
-        // concat: {
-        //   dist: {}
-        // },
+        cssmin: {
+          dist: {
+            files: {
+              '<%= yeoman.dist %>/styles/main.css': [
+                '.tmp/styles/{,*/}*.css'
+              ]
+            }
+          }
+        },
+        uglify: {
+          dist: {
+            files: {
+              '<%= yeoman.dist %>/scripts/scripts.js': [
+                '<%= yeoman.dist %>/scripts/scripts.js'
+              ]
+            }
+          }
+        },
+        concat: {
+            dist: {}
+        },
 
         imagemin: {
             dist: {
@@ -440,7 +440,7 @@ module.exports = function (grunt) {
                     usemin: 'scripts/scripts.js'
                 },
                 cwd: '<%= yeoman.app %>',
-                src: 'scripts/app/views/{,*/}*.html',
+                src: 'scripts/views/{,*/}*.html',
                 dest: '.tmp/templateCache.js'
             }
         },
@@ -474,12 +474,16 @@ module.exports = function (grunt) {
                     cwd: '<%= yeoman.app %>',
                     dest: '<%= yeoman.dist %>',
                     src: [
-                        '*.{ico,png,txt}',
-                        'index.html',
+                        '*.{ico,png,txt,htaccess}',
+                        'scripts/{,*/}{,*/}{,*/}*.js',
                         'scripts/{,*/}{,*/}{,*/}*.html',
+                        'selectize/{,*/}{,*/}{,*/}*.html',
                         'images/{,*/}*.{webp}',
                         'styles/fonts/{,*/}*.*'
                     ]
+                }, {
+                    src: '.tmp/index.html',
+                    dest: '<%= yeoman.dist %>/index.html'
                 }, {
                     expand: true,
                     cwd: '.tmp/images',
@@ -566,7 +570,7 @@ module.exports = function (grunt) {
 
     grunt.config('grunt.environment', environments[process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
-    grunt.registerTask('e2eapp', 'Sets flag for E2E testing.', function() {
+    grunt.registerTask('e2eapp', 'Sets flag for E2E testing.', function () {
         grunt.config('grunt.app.e2e', true);
     });
 
@@ -618,7 +622,7 @@ module.exports = function (grunt) {
         'useminPrepare',
         'concurrent:dist',
         'postcss',
-        'ngtemplates',
+        //'ngtemplates',
         'concat',
         'ngAnnotate',
         'copy:dist',

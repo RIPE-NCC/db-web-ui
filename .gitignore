@@ -1,7 +1,7 @@
 ######################
 # Project Specific
 ######################
-src/main/webapp/dist
+src/main/webapp
 screenshot-*.png
 instrumented
 reports
@@ -16,7 +16,6 @@ node_modules/**
 ######################
 # Bower
 ######################
-src/main/webapp/bower_components/**
 
 ######################
 # SASS
@@ -29,7 +28,6 @@ src/main/webapp/bower_components/**
 *.pydevproject
 .project
 .metadata
-bin/**
 tmp/**
 tmp/**/*
 *.tmp
@@ -71,11 +69,6 @@ log/**
 target/**
 
 ######################
-# Gradle
-######################
-.gradle/**
-
-######################
 # Package Files
 ######################
 *.jar
@@ -106,15 +99,6 @@ Desktop.ini
 .Trashes
 
 ######################
-# Directories
-######################
-build/**
-bin/**
-spring_loaded/**
-deploy/**
-/src/main/webapp/assets/css/**
-
-######################
 # Logs
 ######################
 *.log
@@ -128,7 +112,4 @@ deploy/**
 .merge_file*
 .~*#
 
-######################
-# Gradle Wrapper
-######################
-!gradle/wrapper/gradle-wrapper.jar
+/bower_components/
