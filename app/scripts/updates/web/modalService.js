@@ -7,7 +7,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', func
         modalService.openChoosePoorRichSyncupdates = function () {
             var modalInstance = $modal.open({
                 animation: true,
-                templateUrl: 'scripts/app/updates/text/multiDecisionModal.html',
+                templateUrl: 'scripts/updates/text/multiDecisionModal.html',
                 controller: 'TextMultiDecisionModalController',
                 keyboard: false,
                 resolve: {}
@@ -19,7 +19,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', func
         modalService.openCreateRoleForAbuseCAttribute = function (source, maintainers, passwords) {
             var modalInstance = $modal.open({
                 animation: true,
-                templateUrl: 'scripts/app/updates/web/modalCreateRoleForAbuseC.html',
+                templateUrl: 'scripts/updates/web/modalCreateRoleForAbuseC.html',
                 controller: 'ModalCreateRoleForAbuseCController',
                 keyboard: false,
                 resolve: {
@@ -42,7 +42,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', func
             $log.debug('_openDeleteObjectModal called for ' + objectType + '/' + name);
             var modalInstance = $modal.open({
                 animation: true,
-                templateUrl: 'scripts/app/updates/web/modalDeleteObject.html',
+                templateUrl: 'scripts/updates/web/modalDeleteObject.html',
                 controller: 'ModalDeleteObjectController',
                 keyboard: false,
                 resolve: {
@@ -71,7 +71,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', func
 
             var modalInstance = $modal.open({
                 animation: true,
-                templateUrl: 'scripts/app/updates/web/modalAddAttribute.html',
+                templateUrl: 'scripts/updates/web/modalAddAttribute.html',
                 controller: 'ModalAddAttributeController',
                 size: 'lg',
                 keyboard: false,
@@ -101,7 +101,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', func
 
             var modalInstance = $modal.open({
                 animation: true,
-                templateUrl: 'scripts/app/updates/web/modalMd5Password.html',
+                templateUrl: 'scripts/updates/web/modalMd5Password.html',
                 controller: 'ModalMd5PasswordController',
                 size: 'lg',
                 keyboard: false
@@ -125,7 +125,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', func
 
             var modalInstance = $modal.open({
                 animation: true,
-                templateUrl: 'scripts/app/updates/web/modalAuthentication.html',
+                templateUrl: 'scripts/updates/web/modalAuthentication.html',
                 controller: 'ModalAuthenticationController',
                 keyboard: false,
                 resolve: {

@@ -149,10 +149,14 @@ module.exports = function (grunt) {
                     port: 9002,
                     keepalive: false,
                     //open: true,
-                    middleware: function () {
+                    middleware: function (connect) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic('.tmp'),
+                            connect().use(
+                                '/bower_components',
+                                serveStatic('./bower_components')
+                            ),
                             serveStatic(appConfig.app)
                         ];
                     }
@@ -271,7 +275,7 @@ module.exports = function (grunt) {
             test: {
                 devDependencies: true,
                 src: '<%= karma.unit.configFile %>',
-                ignorePath: /\.\.\/\.\.\//,
+                ignorePath: /\.\.\/\.\.\/\.\.\//,
                 fileTypes: {
                     js: {
                         block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
@@ -372,22 +376,22 @@ module.exports = function (grunt) {
         // minification. These next options are pre-configured if you do not wish
         // to use the Usemin blocks.
         cssmin: {
-          dist: {
-            files: {
-              '<%= yeoman.dist %>/styles/main.css': [
-                '.tmp/styles/{,*/}*.css'
-              ]
+            dist: {
+                files: {
+                    '<%= yeoman.dist %>/assets/css/main.css': [
+                        '.tmp/styles/{,*/}*.css'
+                    ]
+                }
             }
-          }
         },
         uglify: {
-          dist: {
-            files: {
-              '<%= yeoman.dist %>/scripts/scripts.js': [
-                '<%= yeoman.dist %>/scripts/scripts.js'
-              ]
+            dist: {
+                files: {
+                    '<%= yeoman.dist %>/scripts/scripts.js': [
+                        '<%= yeoman.dist %>/scripts/scripts.js'
+                    ]
+                }
             }
-          }
         },
         concat: {
             dist: {}
@@ -397,9 +401,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= yeoman.app %>/images',
+                    cwd: '<%= yeoman.app %>/assets/images',
                     src: '{,*/}*.{png,jpg,jpeg,gif}',
-                    dest: '<%= yeoman.dist %>/images'
+                    dest: '<%= yeoman.dist %>/assets/images'
                 }]
             }
         },
@@ -475,12 +479,17 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>',
                     src: [
                         '*.{ico,png,txt,htaccess}',
-                        'scripts/{,*/}{,*/}{,*/}*.js',
-                        'scripts/{,*/}{,*/}{,*/}*.html',
-                        'selectize/{,*/}{,*/}{,*/}*.html',
+                        'scripts/{,*/}{,*/}*.js',
+                        'scripts/{,*/}{,*/}*.html',
+                        'selectize/{,*/}{,*/}*.html',
                         'images/{,*/}*.{webp}',
                         'styles/fonts/{,*/}*.*'
                     ]
+                }, {
+                    // needed until bower js is minified...
+                    expand: true,
+                    src: 'bower_components/**',
+                    dest: '<%= yeoman.dist %>/'
                 }, {
                     src: '.tmp/index.html',
                     dest: '<%= yeoman.dist %>/index.html'
@@ -575,7 +584,6 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('e2e-test', [
-        //'env:dev',
         'clean:server',
         'e2eapp',
         'copy:processtags',
@@ -628,8 +636,8 @@ module.exports = function (grunt) {
         'copy:dist',
         //'cdnify',
         'cssmin',
-        'uglify',
-        'filerev',
+        //'uglify',
+        //'filerev',
         'usemin',
         'htmlmin'
     ]);

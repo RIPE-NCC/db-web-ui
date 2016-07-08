@@ -44,52 +44,52 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.select', {
                     url: '/select',
-                    templateUrl: 'scripts/app/updates/web/select.html',
+                    templateUrl: 'scripts/updates/web/select.html',
                     controller: 'SelectController'
                 })
                 .state('webupdates.createPersonMntnerPair', {
                     url: '/create/person/self',
-                    templateUrl: 'scripts/app/updates/web/createPersonMntnerPair.html',
+                    templateUrl: 'scripts/updates/web/createPersonMntnerPair.html',
                     controller: 'CreatePersonMntnerPairController'
                 })
                 .state('webupdates.displayPersonMntnerPair', {
                     url: '/display/:source/person/:person/mntner/:mntner',
-                    templateUrl: 'scripts/app/updates/web/displayPersonMntnerPair.html',
+                    templateUrl: 'scripts/updates/web/displayPersonMntnerPair.html',
                     controller: 'DisplayPersonMntnerPairController'
                 })
                 .state('webupdates.createSelfMnt', {
                     url: '/create/:source/mntner/self?admin',
-                    templateUrl: 'scripts/app/updates/web/createSelfMaintainedMaintainer.html',
+                    templateUrl: 'scripts/updates/web/createSelfMaintainedMaintainer.html',
                     controller: 'CreateSelfMaintainedMaintainerController'
                 })
                 .state('webupdates.create', {
                     url: '/create/:source/:objectType?noRedirect',
-                    templateUrl: 'scripts/app/updates/web/createModify.html',
+                    templateUrl: 'scripts/updates/web/createModify.html',
                     controller: 'CreateModifyController'
                 })
                 .state('webupdates.modify', {
                     url: '/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect',
-                    templateUrl: 'scripts/app/updates/web/createModify.html',
+                    templateUrl: 'scripts/updates/web/createModify.html',
                     controller: 'CreateModifyController'
                 })
                 .state('webupdates.display', {
                     url: '/display/:source/:objectType/{name:WhoisObjectName}?method',
-                    templateUrl: 'scripts/app/updates/web/display.html',
+                    templateUrl: 'scripts/updates/web/display.html',
                     controller: 'DisplayController'
                 })
                 .state('webupdates.delete', {
                     url: '/delete/:source/:objectType/{name:WhoisObjectName}?onCancel',
-                    templateUrl: 'scripts/app/updates/web/delete.html',
+                    templateUrl: 'scripts/updates/web/delete.html',
                     controller: 'DeleteController'
                 })
                 .state('webupdates.forceDeleteSelect', {
                     url: '/forceDeleteSelect',
-                    templateUrl: 'scripts/app/updates/web/forceDeleteSelect.html',
+                    templateUrl: 'scripts/updates/web/forceDeleteSelect.html',
                     controller: 'ForceDeleteSelectController'
                 })
                 .state('webupdates.forceDelete', {
                     url: '/forceDelete/:source/:objectType/{name:WhoisObjectName}',
-                    templateUrl: 'scripts/app/updates/web/forceDelete.html',
+                    templateUrl: 'scripts/updates/web/forceDelete.html',
                     controller: 'ForceDeleteController'
                 });
 

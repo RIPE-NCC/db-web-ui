@@ -170,7 +170,7 @@ public class CrowdTokenFilterTest {
 
     @Test
     public void proceed_for_unprotected_select_url() throws Exception {
-        request = new MockHttpServletRequest("GET", "/db-web-ui/scripts/app/updates/web/select.html");
+        request = new MockHttpServletRequest("GET", "/db-web-ui/scripts/updates/web/select.html");
         request.setCookies();
 
         crowdInterceptor.doFilter(request, response, filterChain);
