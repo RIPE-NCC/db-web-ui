@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('dbWebApp')
-    .constant('ENV', '<%= grunt.environment.ENV %>')
-    .constant('SOURCE', 'RIPE')
-    .constant('VERSION', '0.2.1-SNAPSHOT')
-    .constant('LOGIN_URL', '<%= grunt.environment.LOGIN_URL %>')
-    .constant('PORTAL_URL', '<%= grunt.environment.PORTAL_URL %>')
-;
+    .constant('Properties', {
+        ENV: '<%= grunt.environment.ENV %>',
+        SOURCE: 'RIPE',
+        BUILD_TAG: '<%= grunt.build.tag %>',
+        LOGIN_URL: '<%= grunt.environment.LOGIN_URL %>',
+        PORTAL_URL: '<%= grunt.environment.PORTAL_URL %>'
+    });

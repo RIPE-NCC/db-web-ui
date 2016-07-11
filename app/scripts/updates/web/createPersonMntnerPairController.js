@@ -5,9 +5,9 @@
 
 angular.module('webUpdates')
     .controller('CreatePersonMntnerPairController', [
-        '$scope', '$state', '$log', 'SOURCE',
+        '$scope', '$state', '$log', 'Properties',
         'WhoisResources', 'AlertService', 'UserInfoService', 'RestService', 'MessageStore', 'ErrorReporterService', 'LinkService',
-        function ($scope, $state, $log, SOURCE,
+        function ($scope, $state, $log, Properties,
                   WhoisResources, AlertService, UserInfoService, RestService, MessageStore, ErrorReporterService, LinkService) {
 
             $scope.cancel = cancel;
@@ -27,7 +27,7 @@ angular.module('webUpdates')
 
                 $scope.ssoUserName = undefined;
 
-                $scope.source = SOURCE;
+                $scope.source = Properties.SOURCE;
 
                 $scope.personAttributes = WhoisResources.wrapAndEnrichAttributes('person',
                     WhoisResources.getMandatoryAttributesOnObjectType('person'));

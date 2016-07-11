@@ -3,11 +3,11 @@
 (function () {
     'use strict';
 
-    angular.module('fmp').controller('RequireLoginCtrl', ['$scope', '$location', 'LOGIN_URL',
+    angular.module('fmp').controller('RequireLoginCtrl', ['$scope', '$location', 'Properties',
         
-        function ($scope, $location, LOGIN_URL) {
+        function ($scope, $location, Properties) {
             var returnUrl = $location.absUrl().split('#')[0] + '#/fmp/';
-            $scope.loginUrl = LOGIN_URL + '?originalUrl=' + encodeURIComponent(returnUrl);
+            $scope.loginUrl = Properties.LOGIN_URL + '?originalUrl=' + encodeURIComponent(returnUrl);
         }]);
     
 })();

@@ -481,7 +481,7 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt,htaccess}',
                         'scripts/{,*/}{,*/}*.js',
-                        '!scripts/app.constants.js',
+                        '!scripts/app.constants.js', // this needs additional processing so don't copy it from yeoman.app
                         'scripts/{,*/}{,*/}*.html',
                         'selectize/{,*/}{,*/}*.html',
                         'images/{,*/}*.{webp}',
@@ -496,6 +496,7 @@ module.exports = function (grunt) {
                     src: '.tmp/index.html',
                     dest: '<%= yeoman.dist %>/index.html'
                 }, {
+                    // copy processed js files from tmp to dist (incl app.constants.js)
                     expand: true,
                     cwd: '.tmp/scripts',
                     src: '*.js',
@@ -600,6 +601,7 @@ module.exports = function (grunt) {
         }
     });
 
+    grunt.config('grunt.build.tag', grunt.option('buildtag') || '');
     grunt.config('grunt.environment', environments[grunt.option('environment') || process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
     grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function () {

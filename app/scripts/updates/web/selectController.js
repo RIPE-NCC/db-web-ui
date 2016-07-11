@@ -2,9 +2,9 @@
 (function () {
     'use strict';
 
-    angular.module('webUpdates').controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService', 'SOURCE',
+    angular.module('webUpdates').controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService', 'Properties',
 
-        function ($scope, $state, WhoisResources, UserInfoService, source) {
+        function ($scope, $state, WhoisResources, UserInfoService, Properties) {
             
             /*
              * UI initialisation
@@ -12,7 +12,7 @@
             $scope.objectTypes = _filterObjectTypes(WhoisResources.getObjectTypes());
 
             $scope.selected = {
-                source: source,
+                source: Properties.SOURCE,
                 objectType: $scope.objectTypes[0]
             };
 
@@ -39,7 +39,7 @@
             $scope.navigateToCreate = function () {
                 if ($scope.selected.objectType === 'mntner') {
                     $state.transitionTo('webupdates.createSelfMnt', {
-                        source: $scope.selected.source,
+                        source: $scope.selected.source
                     });
                 } else {
                     $state.transitionTo('webupdates.create', {

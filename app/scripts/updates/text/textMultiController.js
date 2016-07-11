@@ -5,11 +5,11 @@
 
     angular.module('textUpdates').controller('TextMultiController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q', '$window',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService',
-        'RpslService', 'TextCommons', 'SerialExecutor', 'AutoKeyLogic', 'SOURCE', 'PreferenceService',
+        'RpslService', 'TextCommons', 'SerialExecutor', 'AutoKeyLogic', 'Properties', 'PreferenceService',
 
         function ($scope, $stateParams, $state, $resource, $log, $q, $window,
                   WhoisResources, RestService, AlertService, ErrorReporterService,
-                  RpslService, TextCommons, SerialExecutor, AutoKeyLogic, SOURCE, PreferenceService) {
+                  RpslService, TextCommons, SerialExecutor, AutoKeyLogic, Properties, PreferenceService) {
 
             $scope.setTextMode = setTextMode;
             $scope.isTextMode = isTextMode;
@@ -31,7 +31,7 @@
 
                 // extract parameters from the url
                 $scope.objects = {};
-                $scope.objects.source = SOURCE;
+                $scope.objects.source = Properties.SOURCE;
                 $scope.objects.rpsl = '';
 
                 $log.debug('TextMultiController: Url params:' +
