@@ -59,6 +59,7 @@ module.exports = function (config) {
             'bower_components/angular-scenario/angular-scenario.js',
             // endbower
             './app/scripts/app.js',
+            './.tmp/scripts/app.constants.js',
             './app/scripts/**/*Module.js',
             './app/scripts/**/*States.js',
             './app/scripts/**/*.js',
