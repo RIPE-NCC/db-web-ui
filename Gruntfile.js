@@ -534,6 +534,19 @@ module.exports = function (grunt) {
             }
         },
 
+        cacheBust: {
+            options: {
+                baseDir: './src/main/webapp',
+                //ignorePatterns: ['index_tmpl.html'],
+                encoding: 'utf8',
+                algorithm: 'md5',
+                length: 16,
+                queryString: true,
+                assets: ['**/*.js', '**/*.css', '**/*.png']
+            },
+            src: ['./src/main/webapp/index.html']
+        },
+
         // Run some tasks in parallel to speed up the build process
         concurrent: {
             server: [
@@ -639,7 +652,8 @@ module.exports = function (grunt) {
         //'uglify',
         //'filerev',
         'usemin',
-        'htmlmin'
+        'htmlmin',
+        'cacheBust'
     ]);
 
     grunt.registerTask('default', [
