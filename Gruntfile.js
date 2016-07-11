@@ -480,6 +480,7 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt,htaccess}',
                         'scripts/{,*/}{,*/}*.js',
+                        '!scripts/app.constants.js',
                         'scripts/{,*/}{,*/}*.html',
                         'selectize/{,*/}{,*/}*.html',
                         'images/{,*/}*.{webp}',
@@ -495,8 +496,13 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>/index.html'
                 }, {
                     expand: true,
-                    cwd: '.tmp/images',
-                    dest: '<%= yeoman.dist %>/images',
+                    cwd: '.tmp/scripts',
+                    src: '*.js',
+                    dest: '<%= yeoman.dist %>/scripts/'
+                }, {
+                    expand: true,
+                    cwd: '.tmp/images/**',
+                    dest: '<%= yeoman.dist %>/images/',
                     src: ['generated/*']
                 }]
             },
@@ -510,6 +516,9 @@ module.exports = function (grunt) {
                 files: [{
                     src: '<%= yeoman.app %>/template.html',
                     dest: '.tmp/index.html'
+                }, {
+                    src: '<%= yeoman.app %>/scripts/app.constants.js',
+                    dest: '.tmp/scripts/app.constants.js'
                 }],
                 options: {
                     process: function (content, path) {
@@ -613,6 +622,7 @@ module.exports = function (grunt) {
 
         grunt.task.run([
             'clean:server',
+            'copy:processtags',
             'wiredep',
             'concurrent:server',
             'postcss:server',
@@ -629,6 +639,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'clean:server',
+        'copy:processtags',
         'wiredep',
         'concurrent:test',
         'postcss',
@@ -651,7 +662,7 @@ module.exports = function (grunt) {
         'cssmin',
         //'uglify',
         //'filerev',
-        'usemin',
+        //'usemin',
         'htmlmin',
         'cacheBust'
     ]);
