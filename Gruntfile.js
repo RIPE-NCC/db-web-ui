@@ -104,7 +104,7 @@ module.exports = function (grunt) {
                 },
                 files: [
                     '<%= yeoman.app %>/{,*/}*.html',
-                    '.tmp/styles/{,*/}*.css',
+                    '.tmp/assets/css/{,*/}*.css',
                     '<%= yeoman.app %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
             }
@@ -298,7 +298,7 @@ module.exports = function (grunt) {
         compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/assets/scss',
-                cssDir: '.tmp/css',
+                cssDir: '.tmp/assets/css',
                 generatedImagesDir: '.tmp/images/generated',
                 imagesDir: '<%= yeoman.app %>/assets/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
@@ -379,7 +379,7 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     '<%= yeoman.dist %>/assets/css/main.css': [
-                        '.tmp/css/{,*/}*.css'
+                        '.tmp/assets/css/{,*/}*.css'
                     ]
                 }
             }
@@ -508,8 +508,8 @@ module.exports = function (grunt) {
             },
             styles: {
                 expand: true,
-                cwd: '<%= yeoman.app %>/styles',
-                dest: '.tmp/styles/',
+                cwd: '<%= yeoman.app %>/assets/css',
+                dest: '.tmp/assets/css/',
                 src: '{,*/}*.css'
             },
             processtags: {
@@ -601,7 +601,7 @@ module.exports = function (grunt) {
 
     grunt.config('grunt.environment', environments[grunt.option('environment') || process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
-    grunt.registerTask('e2eapp', 'Sets flag for E2E testing.', function () {
+    grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function () {
         grunt.config('grunt.app.e2e', true);
     });
 
@@ -613,6 +613,15 @@ module.exports = function (grunt) {
         'concurrent:server',
         'connect:e2e',
         'protractor:e2e'
+    ]);
+
+    grunt.registerTask('e2e-no-test', [
+        'clean:server',
+        'e2eapp',
+        'copy:processtags',
+        'wiredep',
+        'concurrent:server',
+        'connect:e2e:keepalive'
     ]);
 
     grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {

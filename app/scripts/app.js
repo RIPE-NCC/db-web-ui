@@ -32,10 +32,10 @@ angular.module('dbWebApp', [
                 })
                 .state('notFound', {
                     url: '/public/not-found',
-                    templateUrl: 'scripts/app/views/notFound.html'
+                    templateUrl: 'scripts/views/notFound.html'
                 }).state('oops', {
                     url: '/public/oops',
-                    templateUrl: 'scripts/app/views/oops.html'
+                    templateUrl: 'scripts/views/oops.html'
                 });
 
             // Always tell server if request was made using ajax
