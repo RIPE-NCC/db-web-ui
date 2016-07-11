@@ -298,7 +298,7 @@ module.exports = function (grunt) {
         compass: {
             options: {
                 sassDir: '<%= yeoman.app %>/assets/scss',
-                cssDir: '.tmp/styles',
+                cssDir: '.tmp/css',
                 generatedImagesDir: '.tmp/images/generated',
                 imagesDir: '<%= yeoman.app %>/assets/images',
                 javascriptsDir: '<%= yeoman.app %>/scripts',
@@ -309,7 +309,8 @@ module.exports = function (grunt) {
                 httpFontsPath: '/styles/fonts',
                 relativeAssets: false,
                 assetCacheBuster: false,
-                raw: 'Sass::Script::Number.precision = 10\n'
+                raw: 'Sass::Script::Number.precision = 10\n',
+                cacheDir: '.tmp/sass-cache'
             },
             dist: {
                 options: {
@@ -339,7 +340,7 @@ module.exports = function (grunt) {
         // concat, minify and revision files. Creates configurations in memory so
         // additional tasks can operate on them
         useminPrepare: {
-            html: '<%= yeoman.app %>/index.html',
+            html: '.tmp/index.html',
             options: {
                 dest: '<%= yeoman.dist %>',
                 flow: {
@@ -356,14 +357,13 @@ module.exports = function (grunt) {
 
         // Performs rewrites based on filerev and the useminPrepare configuration
         usemin: {
-            html: ['<%= yeoman.dist %>/{,*/}*.html'],
-            css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
-            js: ['<%= yeoman.dist %>/scripts/{,*/}*.js'],
+            html: ['<%= yeoman.dist %>/{,*/}{,*/}*.html'],
+            css: ['<%= yeoman.dist %>/assets/css/{,*/}*.css'],
+            js: ['<%= yeoman.dist %>/scripts/{,*/}{,*/}*.js'],
             options: {
                 assetsDirs: [
-                    '<%= yeoman.dist %>',
-                    '<%= yeoman.dist %>/images',
-                    '<%= yeoman.dist %>/styles'
+                    '<%= yeoman.dist %>/assets/images',
+                    '<%= yeoman.dist %>/assets/css'
                 ],
                 patterns: {
                     js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
@@ -379,7 +379,7 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     '<%= yeoman.dist %>/assets/css/main.css': [
-                        '.tmp/styles/{,*/}*.css'
+                        '.tmp/css/{,*/}*.css'
                     ]
                 }
             }
@@ -412,9 +412,9 @@ module.exports = function (grunt) {
             dist: {
                 files: [{
                     expand: true,
-                    cwd: '<%= yeoman.app %>/images',
+                    cwd: '<%= yeoman.app %>/assets/images',
                     src: '{,*/}*.svg',
-                    dest: '<%= yeoman.dist %>/images'
+                    dest: '<%= yeoman.dist %>/assets/images'
                 }]
             }
         },
@@ -444,7 +444,7 @@ module.exports = function (grunt) {
                     usemin: 'scripts/scripts.js'
                 },
                 cwd: '<%= yeoman.app %>',
-                src: 'scripts/views/{,*/}*.html',
+                src: 'scripts/{,*/}{,*/}*.html',
                 dest: '.tmp/templateCache.js'
             }
         },
@@ -577,7 +577,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.config('grunt.environment', environments[process.env.GRUNT_ENV || 'dev'] || environments.dev);
+    grunt.config('grunt.environment', environments[grunt.option('environment') || process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
     grunt.registerTask('e2eapp', 'Sets flag for E2E testing.', function () {
         grunt.config('grunt.app.e2e', true);
