@@ -7,13 +7,13 @@ angular.module('dbWebApp')
         authenticationError: 'authentication-error',
         stateTransitionError: '$stateChangeError'
     })
-    .factory('$exceptionHandler', function($log, $injector) {
-        return function (exception, cause) {
-            var $state = $injector.get("$state");
-            $log.error(exception, cause);
-            $state.go('oops');
-        };
-    })
+    //.factory('$exceptionHandler', function($log, $injector) {
+    //    return function (exception, cause) {
+    //        var $state = $injector.get("$state");
+    //        $log.error(exception, cause);
+    //        $state.go('oops');
+    //    };
+    //})
     .factory('ErrorInterceptor', function ($rootScope, $q, $location, $log, ERROR_EVENTS) {
 
         function _isServerError(status) {
