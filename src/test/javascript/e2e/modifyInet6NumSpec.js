@@ -12,21 +12,15 @@ describe('Modifying an inet6num', function () {
     describe('which is an allocation', function () {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inet6num/2001%3A999%3A2000%3A%3A%2F36');
+            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inet6num/2001:999:2000::/36');
             browser.addMockModule('dbWebAppE2E', mockModule.module);
         });
 
-        it('should show mntner box as read-only', function() {
+        it('should show input controls in the correct disabled or enabled state', function() {
             expect(page.inpMntnerBox.isPresent()).toEqual(true);
             expect(page.inpMntnerBox.getAttribute('disabled')).toBeTruthy();
-        });
-
-        it('should show netname as read-only', function() {
             expect(page.inpNetname.isPresent()).toEqual(true);
             expect(page.inpNetname.getAttribute('disabled')).toBeTruthy();
-        });
-
-        it('should show assignment-size as read-only', function () {
             expect(page.inpAssignmentSize.isPresent()).toEqual(true);
             expect(page.inpAssignmentSize.getAttribute('disabled')).toBeTruthy();
         });
@@ -54,19 +48,17 @@ describe('Modifying an inet6num', function () {
     describe('which is an assignment', function () {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inet6num/2001%3A998%3A2000%3A%3A%2F36');
+            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inet6num/2001:998:2000::/36');
             browser.addMockModule('dbWebAppE2E', mockModule.module);
         });
-        it('should NOT show mntner box as read-only', function() {
+        it('should show input controls in the correct disabled or enabled state', function() {
+            // maintainer input is enabled
             expect(page.inpMntnerBox.isPresent()).toEqual(true);
             expect(page.inpMntnerBox.getAttribute('disabled')).toBeFalsy();
-        });
-        it('should NOT show netname as read-only', function() {
+            // should NOT show netname as read-only
             expect(page.inpNetname.isPresent()).toEqual(true);
             expect(page.inpNetname.getAttribute('disabled')).toBeFalsy();
-        });
-
-        it('should show assignment-size as read-only', function () {
+            // should show assignment-size as read-only
             expect(page.inpAssignmentSize.isPresent()).toEqual(true);
             expect(page.inpAssignmentSize.getAttribute('disabled')).toBeTruthy();
         });

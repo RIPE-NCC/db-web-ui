@@ -66,7 +66,7 @@ angular.module('webUpdates')
             $scope.nrAttributesToRender = 50; // initial
             $scope.attributesAllRendered = false;
 
-            var inetnumErrorMessageShown = false;
+            var inetnumParentAuthError = false;
 
             _initialisePage();
 
@@ -77,7 +77,7 @@ angular.module('webUpdates')
             var showMoreAttributes = function () {
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
-                    $scope.nrAttributesToRender += 50; // increment
+                    $scope.nrAttributesToRender+= 50; // increment
                     $scope.$apply();
                 } else {
                     $scope.attributesAllRendered = true;
@@ -116,11 +116,15 @@ angular.module('webUpdates')
                         .then(
                             function () {
                                 $scope.restCallInProgress = false;
+                                inetnumParentAuthError = false;
                             },
                             function (error) {
                                 $scope.restCallInProgress = false;
                                 $log.error('MntnerService.getAuthForObjectIfNeeded rejected authorisation: ', error);
-                                AlertService.addGlobalError('Failed to authenticate parent resource');
+                                if (!inetnumParentAuthError) {
+                                    AlertService.addGlobalError('Failed to authenticate parent resource');
+                                    inetnumParentAuthError = true;
+                                }
                             }
                         );
                 }
@@ -128,6 +132,7 @@ angular.module('webUpdates')
 
             function _initialisePage() {
 
+                inetnumParentAuthError = false;
                 $scope.restCallInProgress = false;
 
                 AlertService.clearErrors();
@@ -295,8 +300,7 @@ angular.module('webUpdates')
                     } else if (angular.isArray(item.descr)) {
                         name = item.descr.join('');
                     } else if (angular.isArray(item.owner)) {
-                        name = item.owner.join('');
-                    } else {
+                        name = item.owner.join('');                    } else {
                         separator = '';
                     }
                     item.readableName = $sce.trustAsHtml(_escape(item.key + separator + name));
@@ -348,7 +352,6 @@ angular.module('webUpdates')
             function _filterBasedOnAttr(suggestions, attrName) {
                 return _.filter(suggestions, function (item) {
                     if (attrName === 'abuse-c') {
-                        $log.debug('Filter out suggestions without abuse-mailbox');
                         return !_.isEmpty(item['abuse-mailbox']);
                     }
                     return true;
@@ -397,16 +400,13 @@ angular.module('webUpdates')
                     if ($scope.objectType === 'aut-num' && attribute.name === 'aut-num' ||
                         $scope.objectType === 'inetnum' && attribute.name === 'inetnum' ||
                         $scope.objectType === 'inet6num' && attribute.name === 'inet6num') {
-
-                        $log.debug('looking for parent of ' + attribute.value);
                         RestService.fetchParentResource($scope.objectType, attribute.value).get(function (result) {
                             var parent;
                             if (result && result.objects && angular.isArray(result.objects.object)) {
                                 parent = result.objects.object[0];
                             }
                             $scope.$emit('resource-parent-found', parent);
-                        }, function () {
-                            $log.debug('not found');
+                        }, function() {
                             $scope.$emit('resource-parent-found', null);
                         });
                     }
@@ -885,7 +885,7 @@ angular.module('webUpdates')
             }
 
             function isFormValid() {
-                return !AlertService.hasErrors() && $scope.attributes.validateWithoutSettingErrors();
+                return !inetnumParentAuthError && $scope.attributes.validateWithoutSettingErrors();
             }
 
             function hasErrors() {

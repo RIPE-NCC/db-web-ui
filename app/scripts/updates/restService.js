@@ -4,6 +4,29 @@ angular.module('updates')
     .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', '$state', 'WhoisResources',
         function ($resource, $q, $http, $templateCache, $log, $state, WhoisResources) {
 
+            /**
+             * Sanitize an object name.
+             *
+             * Strips unnecessary white space and performs encoding of an object name when necessary.
+             *
+             * @param objectType Object type
+             * @param name Name of the object, e.g. AS9191, 193.0.0.0 - 193.0.0.255, etc.
+             * @returns {string} Sanitized object name
+             */
+            function sanitizeObjectName(objectType, name) {
+                if (objectType === 'inetnum') {
+                    return encodeURIComponent(name.replace(/ */g, ''));
+                } else if (objectType === 'inet6num') {
+                    return name;
+                } else if (objectType === 'route') {
+                    return name;
+                } else if (name.indexOf('%') > -1) {
+                    return name;
+                } else {
+                    return encodeURIComponent(name);
+                }
+            }
+            
             var restService = {};
 
             restService.fetchParentResource = function (objectType, qs) {
@@ -31,24 +54,23 @@ angular.module('updates')
             restService.getReferences = function (source, objectType, name, limit) {
                 var deferredObject = $q.defer();
 
-                $log.debug('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
-
-                $resource('api/references/:source/:objectType/:name',
-                    {
-                        source: source,
-                        objectType: objectType,
-                        name: encodeURIComponent(name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
-                        limit: limit
-                    }).get()
-                    .$promise.then(
-                    function (result) {
-                        $log.debug('getReferences success:' + JSON.stringify(result));
-                        deferredObject.resolve(result);
-                    }, function (error) {
-                        $log.debug('getReferences error:' + JSON.stringify(error));
-                        deferredObject.reject(error);
-                    }
-                );
+                    $log.debug('getReferences start for objectType: ' + objectType + ' and objectName: ' + name);
+                    $resource('api/references/:source/:objectType/:name',
+                        {
+                            source: source.toUpperCase(),
+                            objectType: objectType,
+                            name: sanitizeObjectName(objectType, name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
+                            limit: limit
+                        }).get()
+                        .$promise.then(
+                        function(result) {
+                            $log.debug('getReferences success:' + JSON.stringify(result));
+                            deferredObject.resolve(result);
+                        }, function(error) {
+                            $log.debug('getReferences error:' + JSON.stringify(error));
+                            deferredObject.reject(error);
+                        }
+                    );
 
                 return deferredObject.promise;
             };
@@ -191,16 +213,16 @@ angular.module('updates')
 
                 $log.debug('authenticate start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                $resource('api/whois/:source/:objectType/:objectName',
-                    {
-                        source: source,
-                        objectType: objectType,
-                        objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                        unfiltered: true,
-                        password: '@password'
-                    }).get({password: passwords})
-                    .$promise
-                    .then(function (result) {
+                    $resource('api/whois/:source/:objectType/:objectName',
+                        {
+                            source: source.toUpperCase(),
+                            objectType: objectType,
+                            objectName: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            unfiltered: true,
+                            password: '@password'
+                        }).get({password: passwords})
+                        .$promise
+                        .then(function (result) {
                             $log.debug('authenticate success:' + JSON.stringify(result));
                             deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
@@ -217,17 +239,17 @@ angular.module('updates')
 
                 $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                $resource('api/whois/:source/:objectType/:name',
-                    {
-                        source: source,
-                        objectType: objectType,
-                        name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                        unfiltered: true,
-                        password: '@password',
-                        unformatted: unformatted
-                    }).get({password: passwords})
-                    .$promise
-                    .then(function (result) {
+                    $resource('api/whois/:source/:objectType/:name',
+                        {
+                            source: source.toUpperCase(),
+                            objectType: objectType,
+                            name: sanitizeObjectName(objectType, objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            unfiltered: true,
+                            password: '@password',
+                            unformatted: unformatted
+                        }).get({password: passwords})
+                        .$promise
+                        .then(function (result) {
                             $log.debug('fetchObject success:' + JSON.stringify(result));
 
                             var primaryKey = WhoisResources.wrapSuccess(result).getPrimaryKey();
@@ -255,17 +277,17 @@ angular.module('updates')
 
                 $log.debug('createObject start for objectType: ' + objectType + ' and payload:' + JSON.stringify(attributes));
 
-                $resource('api/whois/:source/:objectType',
-                    {
-                        source: source,
-                        objectType: objectType,
-                        password: '@password',
-                        override: '@override',
-                        unformatted: '@unformatted'
-                    })
-                    .save({password: passwords, override: overrides, unformatted: unformatted}, attributes)
-                    .$promise
-                    .then(function (result) {
+                    $resource('api/whois/:source/:objectType',
+                        {
+                            source: source.toUpperCase(),
+                            objectType: objectType,
+                            password: '@password',
+                            override: '@override',
+                            unformatted: '@unformatted'
+                        })
+                        .save({password: passwords, override: overrides, unformatted: unformatted}, attributes)
+                        .$promise
+                        .then(function (result) {
                             $log.debug('createObject success:' + JSON.stringify(result));
                             deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
@@ -283,25 +305,25 @@ angular.module('updates')
                 $log.debug('modifyObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
                 $log.debug('body: ' + JSON.stringify(attributes));
 
-                /*
-                 * A url-parameter starting with an '@' has special meaning in angular.
-                 * Since passwords can start with a '@', we need to take special precautions.
-                 * The following '@password'-trick  seems to work.
-                 * TODO This needs more testing.
-                 */
-                $resource('api/whois/:source/:objectType/:name',
-                    {
-                        source: source,
-                        objectType: objectType,
-                        name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                        password: '@password',
-                        override: '@override',
-                        unformatted: '@unformatted'
-                    },
-                    {'update': {method: 'PUT'}})
-                    .update({password: passwords, override: overrides, unformatted: unformatted}, attributes)
-                    .$promise
-                    .then(function (result) {
+                    /*
+                     * A url-parameter starting with an '@' has special meaning in angular.
+                     * Since passwords can start with a '@', we need to take special precautions.
+                     * The following '@password'-trick  seems to work.
+                     * TODO This needs more testing.
+                     */
+                    $resource('api/whois/:source/:objectType/:name',
+                        {
+                            source: source.toUpperCase(),
+                            objectType: objectType,
+                            name: sanitizeObjectName(objectType, objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            password: '@password',
+                            override: '@override',
+                            unformatted: '@unformatted'
+                        },
+                        {'update': {method: 'PUT'}})
+                        .update({password: passwords, override: overrides, unformatted: unformatted}, attributes)
+                        .$promise
+                        .then(function (result) {
                             $log.debug('modifyObject success:' + JSON.stringify(result));
                             deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
@@ -318,17 +340,17 @@ angular.module('updates')
 
                 $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                $resource('api/whois/:source/:objectType/:name?password=:password',
-                    {
-                        source: source,
-                        objectType: objectType,
-                        name: objectName,  // only for mntners so no url-decosong applied
-                        password: '@password'
-                    },
-                    {update: {method: 'PUT'}})
-                    .update({password: passwords}, whoisResources)
-                    .$promise
-                    .then(function (result) {
+                    $resource('api/whois/:source/:objectType/:name?password=:password',
+                        {
+                            source: source.toUpperCase(),
+                            objectType: objectType,
+                            name: sanitizeObjectName(objectType, objectName),  // only for mntners so no url-decosong applied
+                            password: '@password'
+                        },
+                        {update: {method: 'PUT'}})
+                        .update({password: passwords}, whoisResources)
+                        .$promise
+                        .then(function (result) {
                             $log.debug('associateSSOMntner success:' + JSON.stringify(result));
                             deferredObject.resolve(WhoisResources.wrapSuccess(result));
                         }, function (error) {
@@ -350,23 +372,23 @@ angular.module('updates')
                 $log.debug('deleteObject start for service:' + service + ' objectType: ' + objectType + ' and objectName: ' + name +
                     ' reason:' + reason + ' with-refs:' + withReferences);
 
-                $resource('api/' + service + '/:source/:objectType/:name',
-                    {
-                        source: source,
-                        objectType: objectType,
-                        name: name, // Note: double encoding not needed for delete
-                        password: '@password',
-                        'dry-run': dryRun
-                    }).delete({password: passwords, reason: reason})
-                    .$promise.then(
-                    function (result) {
-                        $log.debug('deleteObject success:' + JSON.stringify(result));
-                        deferredObject.resolve(WhoisResources.wrapSuccess(result));
-                    }, function (error) {
-                        $log.error('deleteObject error:' + JSON.stringify(error));
-                        deferredObject.reject(WhoisResources.wrapError(error));
-                    }
-                );
+                    $resource('api/' + service + '/:source/:objectType/:name',
+                        {
+                            source: source,
+                            objectType: objectType,
+                            name: sanitizeObjectName(objectType, name), // Note: double encoding not needed for delete
+                            password: '@password',
+                            'dry-run': dryRun
+                        }).delete({password: passwords, reason: reason})
+                        .$promise.then(
+                        function (result) {
+                            $log.debug('deleteObject success:' + JSON.stringify(result));
+                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
+                        }, function (error) {
+                            $log.error('deleteObject error:' + JSON.stringify(error));
+                            deferredObject.reject(WhoisResources.wrapError(error));
+                        }
+                    );
 
                 return deferredObject.promise;
             };
@@ -376,11 +398,11 @@ angular.module('updates')
 
                 $log.debug('createPersonMntner start for source: ' + source + ' with attrs ' + JSON.stringify(multipleWhoisObjects));
 
-                $resource('api/references/:source',
-                    {source: source})
-                    .save(multipleWhoisObjects)
-                    .$promise
-                    .then(function (result) {
+                    $resource('api/references/:source',
+                        {source: source.toUpperCase()})
+                        .save(multipleWhoisObjects)
+                        .$promise
+                        .then(function (result) {
                             $log.debug('createPersonMntner success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {

@@ -11,7 +11,7 @@ describe('updates: RestService', function () {
         restService = _RestService_;
         $httpBackend = _$httpBackend_;
 
-        $httpBackend.whenGET(/.*.html/).respond(200);
+        $httpBackend.whenGET(/.*\.html/).respond(200);
     }));
 
     afterEach(function() {
