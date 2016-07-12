@@ -18,10 +18,10 @@ exports.module = function () {
                 'api/user/mntners': {
                     status: 200,
                     data: [{
-                        mine: true,
-                        auth: ['SSO'],
-                        type: 'mntner',
-                        key: 'etchells-mnt'
+                        'mine': true,
+                        'auth': ['SSO'],
+                        'type': 'mntner',
+                        'key': 'etchells-mnt'
                     }, {
                         'mine': true,
                         'auth': ['MD5-PW', 'SSO'],
@@ -442,7 +442,7 @@ exports.module = function () {
                     }
 
                 },
-                'api/whois/ripe/inetnum/91.208.34.0%20-%2091.208.34.255?unfiltered=true': {
+                'api/whois/RIPE/inetnum/91.208.34.0-91.208.34.255?unfiltered=true': {
                     data: {
                         'objects': {
                             'object': [{
@@ -569,7 +569,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inetnum/185.102.172.0%20-%20185.102.175.255?unfiltered=true': {
+                'api/whois/RIPE/inetnum/185.102.172.0-185.102.175.255?unfiltered=true': {
                     data: {
                         objects: {
                             'object': [{
@@ -675,7 +675,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inetnum/186.102.172.0%20-%20186.102.175.255?unfiltered=true': {
+                'api/whois/RIPE/inetnum/186.102.172.0-186.102.175.255?unfiltered=true': {
                     data: {
                         objects: {
                             'object': [{
@@ -789,7 +789,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inetnum/194.219.52.224%20-%20194.219.52.239?unfiltered=true': {
+                'api/whois/RIPE/inetnum/194.219.52.224-194.219.52.239?unfiltered=true': {
                     data: {
                         'objects': {
                             'object': [{
@@ -1250,7 +1250,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inet6num/2001:a08::%2F32?unfiltered=true': {
+                'api/whois/RIPE/inet6num/2001:a08::%2F32?unfiltered=true': {
                     data: {
                         'objects': {
                             'object': [{
@@ -1380,7 +1380,7 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/ripe/inet6num/2001:978:ffff:fffe::%2F64?unfiltered=true': {
+                'api/whois/RIPE/inet6num/2001:978:ffff:fffe::%2F64?unfiltered=true': {
                     data: {
                         'objects': {
                             'object': [{
@@ -1724,6 +1724,9 @@ exports.module = function () {
                                         'value': 'MD5-PW $1$DT69FsfS$.mIZP.3D25bvLxSvR/KOW1'
                                     }, {
                                         'name': 'auth',
+                                        'value': 'SSO tdacruzper@ripe.net'
+                                    }, {
+                                        'name': 'auth',
                                         'value': 'SSO bad@ripe.net'
                                     }, {
                                         'name': 'descr',
@@ -1766,7 +1769,7 @@ exports.module = function () {
                                         'value': '2002-08-19T16:53:54Z'
                                     }, {
                                         'name': 'last-modified',
-                                        'value': '2016-06-14T14:46:26Z'
+                                        'value': '2016-07-05T13:15:03Z'
                                     }, {
                                         'name': 'source',
                                         'value': 'RIPE'
@@ -1805,6 +1808,10 @@ exports.module = function () {
                                     }, {
                                         'name': 'auth',
                                         'value': 'MD5-PW',
+                                        'comment': 'Filtered'
+                                    }, {
+                                        'name': 'auth',
+                                        'value': 'SSO',
                                         'comment': 'Filtered'
                                     }, {
                                         'name': 'auth',
@@ -1851,7 +1858,7 @@ exports.module = function () {
                                         'value': '2002-08-19T16:53:54Z'
                                     }, {
                                         'name': 'last-modified',
-                                        'value': '2016-06-14T14:46:26Z'
+                                        'value': '2016-07-05T13:15:03Z'
                                     }, {
                                         'name': 'source',
                                         'value': 'RIPE',
@@ -1868,9 +1875,9 @@ exports.module = function () {
                 },
                 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=ERICSSON-MNT': {
                     data: [{
-                        key: 'ERICSSON-MNT',
-                        type: 'mntner',
-                        auth: ['MD5-PW', 'SSO']
+                        'key': 'ERICSSON-MNT',
+                        'type': 'mntner',
+                        'auth': ['MD5-PW', 'SSO', 'SSO']
                     }]
                 },
                 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=COGENT-HM-MNT': {

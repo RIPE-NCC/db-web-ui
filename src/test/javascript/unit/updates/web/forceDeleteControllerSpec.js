@@ -74,7 +74,7 @@ describe('webUpdates: ForceDeleteController', function () {
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
 
-                $httpBackend.expectGET('api/whois/RIPE/inetnum/111%20-%20255?unfiltered=true').respond(
+                $httpBackend.expectGET('api/whois/RIPE/inetnum/111-255?unfiltered=true').respond(
                     function (method, url) {
                         return [200, objectToDisplay, {}];
                     });
@@ -93,7 +93,7 @@ describe('webUpdates: ForceDeleteController', function () {
                         return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                     });
 
-                $httpBackend.expectDELETE('api/whois/RIPE/inetnum/111%20-%20255?dry-run=true&reason=dry-run').respond(
+                $httpBackend.expectDELETE('api/whois/RIPE/inetnum/111-255?dry-run=true&reason=dry-run').respond(
                     function (method, url) {
                         return [200, {
                             errormessages: {
@@ -157,7 +157,7 @@ describe('webUpdates: ForceDeleteController', function () {
 
         expect($scope.object.type).toBe('inetnum');
         expect($scope.object.source).toBe(SOURCE);
-        expect($scope.object.name).toBe(INETNUM);
+        expect($scope.object.name.replace(/ */g, '')).toBe(INETNUM.replace(/ */g, ''));
     });
 
     it('should populate the ui with attributes', function () {
@@ -248,7 +248,7 @@ describe('webUpdates: ForceDeleteController', function () {
         expect($state.current.name).toBe('webupdates.delete');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe('inetnum');
-        expect($stateParams.name).toBe('111%20-%20255');
+        expect($stateParams.name.replace(/%20/g, '')).toBe('111-255');
         expect($stateParams.onCancel).toBe('webupdates.forceDelete');
 
     });
