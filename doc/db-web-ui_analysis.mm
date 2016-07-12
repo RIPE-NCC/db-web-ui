@@ -154,8 +154,7 @@
       See https://quickleft.com/blog/grunt-js-tips-tricks/
     </p>
   </body>
-</html>
-</richcontent>
+</html></richcontent>
 <font NAME="SansSerif" SIZE="14"/>
 </node>
 <node COLOR="#990000" CREATED="1463578480814" ID="ID_1305385878" MODIFIED="1466688844052" TEXT="Split ng-app from web-app">
@@ -684,7 +683,7 @@
 </node>
 <node COLOR="#660066" CREATED="1465392252047" ID="ID_818642935" MODIFIED="1465396125857" POSITION="right" TEXT="Road map">
 <font BOLD="true" NAME="SansSerif" SIZE="18"/>
-<node COLOR="#00b439" CREATED="1465392533651" ID="ID_143501305" MODIFIED="1465463338667" TEXT="TODO">
+<node COLOR="#00b439" CREATED="1465392533651" ID="ID_143501305" MODIFIED="1468312782425" TEXT="TODO">
 <richcontent TYPE="NOTE"><html>
   <head>
     
@@ -718,9 +717,13 @@
       <li>
         Implement scenarios as E2E tests
       </li>
+      <li>
+        How do we make sure tests are repeatable, i.e. always run against the same set of data
+      </li>
     </ul>
   </body>
-</html></richcontent>
+</html>
+</richcontent>
 <font NAME="SansSerif" SIZE="16"/>
 </node>
 <node COLOR="#00b439" CREATED="1465392568449" ID="ID_1942875080" MODIFIED="1465399095447" TEXT="Future?">
