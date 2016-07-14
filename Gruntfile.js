@@ -601,7 +601,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.config('grunt.build.tag', grunt.option('buildtag') || '');
+    grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
     grunt.config('grunt.environment', environments[grunt.option('environment') || process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
     grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function () {
