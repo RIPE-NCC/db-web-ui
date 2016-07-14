@@ -1,155 +1,284 @@
-// Generated on 2015-05-18 using generator-jhipster 2.11.0
+// Generated on 2016-07-05 using generator-angular 0.15.1
 'use strict';
+
 var fs = require('fs');
 var serveStatic = require('serve-static');
-var os = require('os');
 
-var parseString = require('xml2js').parseString;
-
-// Returns the second occurrence of the version number
-var parseVersionFromPomXml = function () {
-    var version = 0,
-        pomXml = fs.readFileSync('pom.xml', 'utf8');
-    parseString(pomXml, function (err, result) {
-        version = result.project.version[0];
-    });
-    return version;
-};
+// # Globbing
+// for performance reasons we're only matching one level down:
+// 'test/spec/{,*/}*.js'
+// use this if you want to recursively match all subfolders:
+// 'test/spec/**/*.js'
 
 module.exports = function (grunt) {
 
-    require('load-grunt-tasks')(grunt);
+    // Time how long tasks take. Can help when optimizing build times
     require('time-grunt')(grunt);
 
-// Configurable paths for the application
-    var hostname = '0.0.0.0';
+    // Automatically load required Grunt tasks
+    require('jit-grunt')(grunt, {
+        useminPrepare: 'grunt-usemin',
+        ngtemplates: 'grunt-angular-templates',
+        cdnify: 'grunt-google-cdn',
+        configureProxies: 'grunt-connect-proxy',
+        protractor: 'grunt-protractor-runner'
+    });
+
+    // Configurable paths for the application
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
-        dist: 'src/main/webapp/dist'
-    };
-    var proxyMiddleware = function (req, res, next) {
-        console.log('req', req.headers);
-        next();
+        dist: require('./bower.json').distPath || 'dist'
     };
 
+    var environments = {
+        dev: {
+            ENV: 'dev',
+            GTM_ID: 'GTM-WTWTB7',
+            ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.prepdev.ripe.net/',
+            PORTAL_URL: 'https://my.prepdev.ripe.net/'
+        },
+        prepdev: {
+            ENV: 'prepdev',
+            GTM_ID: 'GTM-WTWTB7',
+            ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.prepdev.ripe.net/',
+            PORTAL_URL: 'https://my.prepdev.ripe.net/'
+        },
+        rc: {
+            ENV: 'rc',
+            GTM_ID: 'GTM-T5J6RH',
+            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.ripe.net/',
+            PORTAL_URL: 'https://my.ripe.net/'
+        },
+        test: {
+            ENV: 'test',
+            GTM_ID: 'GTM-W4MMHJ',
+            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.ripe.net/',
+            PORTAL_URL: 'https://my.ripe.net/'
+        },
+        prod: {
+            ENV: 'prod',
+            GTM_ID: 'GTM-TP3SK6',
+            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.ripe.net/',
+            PORTAL_URL: 'https://my.ripe.net/'
+        }
+    };
+
+    // Define the configuration for all the tasks
     grunt.initConfig({
-        // Run some tasks in parallel to speed up the build process
-        concurrent: {
-            server: [
-                'compass:server'
-            ],
-            test: [
-                'compass'
-            ],
-            dist: [
-                //'compass:dist'
-            ]
-        },
 
-        protractor: {
-            options: {
-                noColor: false, // If true, protractor will not use colors in its output.
-                args: {}
-            },
-            e2e: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
-                options: {
-                    configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
-                    keepAlive: false // If false, the grunt process stops when the test fails.
-                }
-            },
-            noTest: {   // Grunt requires at least one target to run so you can simply put 'all: {}' here too.
-                options: {
-                    configFile: 'src/test/javascript/protractor-no-test.conf.js', // Default config file
-                    keepAlive: true
-                }
-            }
-        },
+        // Project settings
+        yeoman: appConfig,
 
-        protractor_coverage: {
-            options: {
-                keepAlive: true,
-                noColor: false,
-                collectorPort: 3001,
-                coverageDir: 'reports/e2e-coverage'
-            },
-            e2eLocal: {
-                options: {
-                    configFile: 'src/test/javascript/protractor-e2e-coverage-local.conf.js'
-                }
-            },
-            e2eRemote: {
-                options: {
-                    configFile: 'src/test/javascript/protractor-e2e-coverage-remote.conf.js'
-                }
-            }
-        },
-
-        instrument: {
-            files: 'scripts/**/*.js',
-            options: {
-                cwd: 'src/main/webapp',
-                lazy: true,
-                basePath: 'instrumented'
-            }
-        },
-
-        makeReport: {
-            src: 'reports/e2e-coverage/*.json',
-            options: {
-                type: 'lcov',
-                dir: 'reports/e2e-coverage',
-                print: 'detail'
-            }
-        },
-
-        yeoman: {
-            // configurable paths
-            app: appConfig.app,
-            dist: appConfig.dist
-        },
+        // Watches files for changes and runs tasks based on the changed files
         watch: {
-            options: {
-                livereload: true
-            },
             bower: {
                 files: ['bower.json'],
                 tasks: ['wiredep']
             },
-            ngconstant: {
-                files: ['Gruntfile.js', 'pom.xml'],
-                tasks: ['ngconstant:dev']
+            js: {
+                files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+                tasks: ['newer:jshint:all', 'newer:jscs:all'],
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                }
             },
-            css: {
-                files: ['**/*.{scss,sass}'],
-                tasks: ['compass']
+            jsTest: {
+                files: ['src/test/javascript/unit/{,*/}*.js'],
+                tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
             },
-            karma: {
-                files: ['src/test/javascript/spec/*.js'],
-                tasks: ['karma:continuous:run']
+            compass: {
+                files: ['<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}'],
+                tasks: ['compass:server', 'postcss:server']
             },
-            protractor: {
-                files: ['src/test/javascript/e2e/*.js'],
-                tasks: ['protractor:e2e']
+            gruntfile: {
+                files: ['Gruntfile.js']
+            },
+            livereload: {
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                },
+                files: [
+                    '<%= yeoman.app %>/{,*/}*.html',
+                    '.tmp/assets/css/{,*/}*.css',
+                    '<%= yeoman.app %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                ]
             }
         },
-        wiredep: {
-            app: {
-                src: ['src/main/webapp/index.html', 'src/main/scss/main.scss'],
-                exclude: [
-                    /angular-i18n/, // localizations are loaded dynamically
-                    /swagger-ui/,
-                    'bower_components/bootstrap/' // Exclude Bootstrap LESS as we use bootstrap-sass
-                ],
-                ignorePath: /\.\.\/webapp\/bower_components\// // remove ../webapp/bower_components/ from paths of injected sass files
+
+        // The actual grunt server settings
+        connect: {
+            options: {
+                port: 9080,
+                // Change this to '0.0.0.0' to access the server from outside.
+                hostname: 'localhost',
+                livereload: 35729
+            },
+            livereload: {
+                options: {
+                    open: false,
+                    middleware: function (connect) {
+                        return [
+                            require('grunt-connect-proxy/lib/utils').proxyRequest,
+                            serveStatic('.tmp'),
+                            connect().use(
+                                '/bower_components',
+                                serveStatic('./bower_components')
+                            ),
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                },
+                proxies: [{
+                    host: 'localhost.ripe.net',
+                    context: '/api',
+                    port: 8443,
+                    https: true,
+                    //xforward: true,
+                    rewrite: {
+                        '^/api': '/db-web-ui/api'
+                    }
+                }]
+            },
+            e2e: {
+                options: {
+                    port: 9004,
+                    keepalive: false,
+                    //open: true,
+                    middleware: function (connect) {
+                        return [
+                            //require('grunt-connect-proxy/lib/utils').proxyRequest,
+                            serveStatic('.tmp'),
+                            connect().use(
+                                '/bower_components',
+                                serveStatic('./bower_components')
+                            ),
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                }
             },
             test: {
-                src: 'src/test/javascript/karma.conf.js',
-                exclude: [/angular-i18n/, /swagger-ui/, /angular-scenario/],
-                ignorePath: /\.\.\/\.\.\//, // remove ../../ from paths of injected javascripts
+                options: {
+                    port: 9002,
+                    middleware: function (connect) {
+                        return [
+                            serveStatic('.tmp'),
+                            serveStatic('test'),
+                            connect().use(
+                                '/bower_components',
+                                serveStatic('./bower_components')
+                            ),
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                }
+            },
+            dist: {
+                options: {
+                    open: true,
+                    base: '<%= yeoman.dist %>'
+                }
+            }
+        },
+
+        // Make sure there are no obvious mistakes
+        jshint: {
+            options: {
+                jshintrc: '.jshintrc',
+                reporter: require('jshint-stylish')
+            },
+            all: {
+                src: [
+                    'Gruntfile.js',
+                    '<%= yeoman.app %>/scripts/{,*/}*.js'
+                ]
+            },
+            test: {
+                options: {
+                    jshintrc: 'src/test/javascript/.jshintrc'
+                },
+                src: ['src/test/javascript/{,*/}*.js']
+            }
+        },
+
+        // Make sure code styles are up to par
+        jscs: {
+            options: {
+                config: '.jscsrc',
+                verbose: true
+            },
+            all: {
+                src: [
+                    'Gruntfile.js',
+                    '<%= yeoman.app %>/scripts/{,*/}*.js'
+                ]
+            },
+            test: {
+                src: ['test/spec/{,*/}*.js']
+            }
+        },
+
+        // Empties folders to start fresh
+        clean: {
+            dist: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        '<%= yeoman.dist %>/{,*/}*',
+                        '!<%= yeoman.dist %>/.git{,*/}*'
+                    ]
+                }]
+            },
+            server: '.tmp'
+        },
+
+        // Add vendor prefixed styles
+        postcss: {
+            options: {
+                processors: [
+                    require('autoprefixer')({browsers: ['last 1 version']})
+                ]
+            },
+            server: {
+                options: {
+                    map: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: '.tmp/styles/',
+                    src: '{,*/}*.css',
+                    dest: '.tmp/styles/'
+                }]
+            },
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '.tmp/styles/',
+                    src: '{,*/}*.css',
+                    dest: '.tmp/styles/'
+                }]
+            }
+        },
+
+        // Automatically inject Bower components into the app
+        wiredep: {
+            app: {
+                src: ['.tmp/index.html'],
+                ignorePath: /\.\.\//
+            },
+            test: {
                 devDependencies: true,
+                src: '<%= karma.unit.configFile %>',
+                ignorePath: /\.\.\/\.\.\/\.\.\//,
                 fileTypes: {
                     js: {
-                        block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
+                        block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
                         detect: {
                             js: /'(.*\.js)'/gi
                         },
@@ -158,86 +287,171 @@ module.exports = function (grunt) {
                         }
                     }
                 }
+            },
+            sass: {
+                src: ['<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}'],
+                ignorePath: /(\.\.\/){1,2}bower_components\//
             }
         },
-        clean: {
-            dist: {
-                files: [{
-                    dot: true,
-                    src: [
-                        '.tmp',
-                        '<%= yeoman.dist %>/*',
-                        '!<%= yeoman.dist %>/.git*',
-                        'src/main/webapp/assets/css'
-                    ]
-                }]
-            },
-            server: '.tmp',
-            e2e: {
-                files: [{
-                    dot: true,
-                    src: [
-                        'instrumented/*',
-                        'reports/e2e-coverage'
-                    ]
-                }]
-            },
-            unittest: {
-                files: [{
-                    dot: true,
-                    src: [
-                        'reports/unittest-coverage'
-                    ]
-                }]
-            }
-        },
-        jshint: {
-            options: {
-                jshintrc: '.jshintrc'
-            },
-            app: [
-                'src/main/webapp/scripts/app/**/*.js'
-            ]
-        },
+
+        // Compiles Sass to CSS and generates necessary files if requested
         compass: {
             options: {
-                sassDir: 'src/main/webapp/assets/scss',
-                cssDir: 'src/main/webapp/assets/css'
+                sassDir: '<%= yeoman.app %>/assets/scss',
+                cssDir: '.tmp/assets/css',
+                generatedImagesDir: '.tmp/images/generated',
+                imagesDir: '<%= yeoman.app %>/assets/images',
+                javascriptsDir: '<%= yeoman.app %>/scripts',
+                fontsDir: '<%= yeoman.app %>/assets/fonts',
+                importPath: './bower_components',
+                httpImagesPath: '/images',
+                httpGeneratedImagesPath: '/images/generated',
+                httpFontsPath: '/styles/fonts',
+                relativeAssets: false,
+                assetCacheBuster: false,
+                raw: 'Sass::Script::Number.precision = 10\n',
+                cacheDir: '.tmp/sass-cache'
+            },
+            dist: {
+                options: {
+                    generatedImagesDir: '<%= yeoman.dist %>/images/generated'
+                }
             },
             server: {
                 options: {
-                    outputStyle: 'compressed'
+                    sourcemap: true
                 }
             }
         },
-        ngtemplates: {
+
+        // Renames files for browser caching purposes
+        filerev: {
             dist: {
-                cwd: 'src/main/webapp',
-                src: ['scripts/app/**/*.html'],
-                dest: '.tmp/templates/templates.js',
-                options: {
-                    module: 'dbWebApp',
-                    usemin: 'scripts/app.js',
-                    htmlmin: {
-                        removeCommentsFromCDATA: true,
-                        // https://github.com/yeoman/grunt-usemin/issues/44
-                        collapseWhitespace: true,
-                        collapseBooleanAttributes: true,
-                        conservativeCollapse: true,
-                        removeAttributeQuotes: true,
-                        removeRedundantAttributes: true,
-                        useShortDoctype: true,
-                        removeEmptyAttributes: true
+                src: [
+                    '<%= yeoman.dist %>/scripts/{,*/}*.js',
+                    '<%= yeoman.dist %>/styles/{,*/}*.css',
+                    '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+                    '<%= yeoman.dist %>/styles/fonts/*'
+                ]
+            }
+        },
+
+        // Reads HTML for usemin blocks to enable smart builds that automatically
+        // concat, minify and revision files. Creates configurations in memory so
+        // additional tasks can operate on them
+        useminPrepare: {
+            html: '.tmp/index.html',
+            options: {
+                dest: '<%= yeoman.dist %>',
+                flow: {
+                    html: {
+                        steps: {
+                            js: ['concat', 'uglifyjs'],
+                            css: ['cssmin']
+                        },
+                        post: {}
                     }
                 }
             }
         },
-        karma: {
-            unit: {
-                configFile: 'src/test/javascript/karma.conf.js',
-                singleRun: true
+
+        // Performs rewrites based on filerev and the useminPrepare configuration
+        usemin: {
+            html: ['<%= yeoman.dist %>/{,*/}{,*/}*.html'],
+            css: ['<%= yeoman.dist %>/assets/css/{,*/}*.css'],
+            js: ['<%= yeoman.dist %>/scripts/{,*/}{,*/}*.js'],
+            options: {
+                assetsDirs: [
+                    '<%= yeoman.dist %>/assets/images',
+                    '<%= yeoman.dist %>/assets/css'
+                ],
+                patterns: {
+                    js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
+                }
             }
         },
+
+        // The following *-min tasks will produce minified files in the dist folder
+        // By default, your `index.html`'s <!-- Usemin block --> will take care of
+        // minification. These next options are pre-configured if you do not wish
+        // to use the Usemin blocks.
+        cssmin: {
+            dist: {
+                files: {
+                    '<%= yeoman.dist %>/assets/css/main.css': [
+                        '.tmp/assets/css/{,*/}*.css'
+                    ]
+                }
+            }
+        },
+        uglify: {
+            dist: {
+                files: {
+                    '<%= yeoman.dist %>/scripts/scripts.js': [
+                        '<%= yeoman.dist %>/scripts/scripts.js'
+                    ]
+                }
+            }
+        },
+        concat: {
+            dist: {}
+        },
+
+        imagemin: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/assets/images',
+                    src: '{,*/}*.{png,jpg,jpeg,gif}',
+                    dest: '<%= yeoman.dist %>/assets/images'
+                }]
+            }
+        },
+
+        svgmin: {
+            dist: {
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/assets/images',
+                    src: '{,*/}*.svg',
+                    dest: '<%= yeoman.dist %>/assets/images'
+                }]
+            }
+        },
+
+        htmlmin: {
+            dist: {
+                options: {
+                    collapseWhitespace: true,
+                    conservativeCollapse: true,
+                    collapseBooleanAttributes: true,
+                    removeCommentsFromCDATA: true,
+                    removeComments: true
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.dist %>',
+                    src: ['{,*/}{,*/}*.html'],
+                    dest: '<%= yeoman.dist %>'
+                }]
+            }
+        },
+
+        ngtemplates: {
+            dist: {
+                options: {
+                    module: 'whoisUiApp',
+                    htmlmin: '<%= htmlmin.dist.options %>',
+                    usemin: 'scripts/scripts.js'
+                },
+                cwd: '<%= yeoman.app %>',
+                src: 'scripts/{,*/}{,*/}*.html',
+                dest: '.tmp/templateCache.js'
+            }
+        },
+
+        // ng-annotate tries to make the code safe for minification automatically
+        // by using the Angular long form for dependency injection.
         ngAnnotate: {
             dist: {
                 files: [{
@@ -248,137 +462,89 @@ module.exports = function (grunt) {
                 }]
             }
         },
-        buildcontrol: {
-            options: {
-                commit: true,
-                push: false,
-                connectCommits: false,
-                message: 'Built %sourceName% from commit %sourceCommit% on branch %sourceBranch%'
+
+        // Replace Google CDN references
+        cdnify: {
+            dist: {
+                html: ['<%= yeoman.dist %>/*.html']
+            }
+        },
+
+        // Copies remaining files to places other tasks can use
+        copy: {
+            dist: {
+                files: [{
+                    expand: true,
+                    dot: true,
+                    cwd: '<%= yeoman.app %>',
+                    dest: '<%= yeoman.dist %>',
+                    src: [
+                        '*.{ico,png,txt,htaccess}',
+                        'scripts/{,*/}{,*/}*.js',
+                        '!scripts/app.constants.js', // this needs additional processing so don't copy it from yeoman.app
+                        'scripts/{,*/}{,*/}*.html',
+                        'selectize/{,*/}{,*/}*.html',
+                        'images/{,*/}*.{webp}',
+                        'styles/fonts/{,*/}*.*'
+                    ]
+                }, {
+                    // needed until bower js is minified...
+                    expand: true,
+                    src: 'bower_components/**',
+                    dest: '<%= yeoman.dist %>/'
+                }, {
+                    src: '.tmp/index.html',
+                    dest: '<%= yeoman.dist %>/index.html'
+                }, {
+                    // copy processed js files from tmp to dist (incl app.constants.js)
+                    expand: true,
+                    cwd: '.tmp/scripts',
+                    src: '*.js',
+                    dest: '<%= yeoman.dist %>/scripts/'
+                }, {
+                    expand: true,
+                    cwd: '.tmp/images/**',
+                    dest: '<%= yeoman.dist %>/images/',
+                    src: ['generated/*']
+                }]
             },
-            openshift: {
+            styles: {
+                expand: true,
+                cwd: '<%= yeoman.app %>/assets/css',
+                dest: '.tmp/assets/css/',
+                src: '{,*/}*.css'
+            },
+            processtags: {
+                files: [{
+                    src: '<%= yeoman.app %>/template.html',
+                    dest: '.tmp/index.html'
+                }, {
+                    src: '<%= yeoman.app %>/scripts/app.constants.js',
+                    dest: '.tmp/scripts/app.constants.js'
+                }],
                 options: {
-                    dir: 'deploy/openshift',
-                    remote: 'openshift',
-                    branch: 'master'
+                    process: function (content, path) {
+                        var dir = path.substring(0, path.lastIndexOf('/'));
+                        // First, process the includes such as <!-- @include _index_app_body_start.html -->
+                        content = content.replace(/<!--\s*@include\s+([\S]+)\s*-->/g, function (m, filename) {
+                            return fs.readFileSync(dir + '/' + filename).toString();
+                        });
+                        // Second, process the conditional includes: <!-- @includeif CONDITION fileIfTrue, fileIfFalse -->
+                        content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)\s+([\S]+)\s*-->/g, function (m, condition, trueFile, falseFile) {
+                            var filename = grunt.config(condition) ? trueFile : falseFile;
+                            return fs.readFileSync(dir + '/' + filename).toString();
+                        });
+                        // Third, replace @echo directives with values from environment constants
+                        content = content.replace(/<!--\s*@echo\s+([\S]+)\s*-->/g, function (m, group) {
+                            return grunt.config('grunt.environment')[group] || '';
+                        });
+                        // Then expand Grunt tags, i.e. <%= value %>
+                        return grunt.template.process(content);
+                    }
                 }
             }
         },
-        env: {
-            dev: {
-                NODE_ENV: 'dev',
-                GTM_ID: 'GTM-WTWTB7',
-                ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/',
-                PORTAL_URL: 'https://my.prepdev.ripe.net/'
-            },
-            prepdev: {
-                NODE_ENV: 'prepdev',
-                GTM_ID: 'GTM-WTWTB7',
-                ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/',
-                PORTAL_URL: 'https://my.prepdev.ripe.net/'
-            },
-            rc: {
-                NODE_ENV: 'rc',
-                GTM_ID: 'GTM-T5J6RH',
-                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/',
-                PORTAL_URL: 'https://my.ripe.net/'
-            },
-            test: {
-                NODE_ENV: 'test',
-                GTM_ID: 'GTM-W4MMHJ',
-                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/',
-                PORTAL_URL: 'https://my.ripe.net/'
-            },
-            prod: {
-                NODE_ENV: 'prod',
-                GTM_ID: 'GTM-TP3SK6',
-                ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/',
-                PORTAL_URL: 'https://my.ripe.net/'
-            }
-        },
-        ngconstant: {
-            options: {
-                name: 'dbWebApp',
-                deps: false,
-                wrap: '\'use strict\';\n// DO NOT EDIT THIS FILE, EDIT THE GRUNT TASK NGCONSTANT SETTINGS INSTEAD WHICH GENERATES THIS FILE\n{%= __ngModule %}'
-            },
-            dev: {
-                options: {
-                    dest: 'src/main/webapp/scripts/app/app.constants.js'
-                },
-                constants: {
-                    ENV: 'dev',
-                    SOURCE: 'RIPE',
-                    VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.prepdev.ripe.net/',
-                    PORTAL_URL: 'https://my.prepdev.ripe.net/'
-                }
-            },
-            prepdev: {
-                options: {
-                    dest: 'src/main/webapp/scripts/app/app.constants.js'
-                },
-                constants: {
-                    ENV: 'prepdev',
-                    SOURCE: 'RIPE',
-                    VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.prepdev.ripe.net/',
-                    PORTAL_URL: 'https://my.prepdev.ripe.net/'
-                }
-            },
-            rc: {
-                options: {
-                    dest: 'src/main/webapp/scripts/app/app.constants.js'
-                },
-                constants: {
-                    ENV: 'rc',
-                    SOURCE: 'RIPE',
-                    VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.ripe.net/',
-                    PORTAL_URL: 'https://my.ripe.net/'
-                }
-            },
-            test: {
-                options: {
-                    dest: 'src/main/webapp/scripts/app/app.constants.js'
-                },
-                constants: {
-                    ENV: 'test',
-                    SOURCE: 'TEST',
-                    VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.ripe.net/',
-                    PORTAL_URL: 'https://my.ripe.net/'
-                }
-            },
-            prod: {
-                options: {
-                    dest: 'src/main/webapp/scripts/app/app.constants.js'
-                },
-                constants: {
-                    ENV: 'prod',
-                    SOURCE: 'RIPE',
-                    VERSION: parseVersionFromPomXml(),
-                    LOGIN_URL: 'https://access.ripe.net/',
-                    PORTAL_URL: 'https://my.ripe.net/'
-                }
-            }
-        },
-        preprocess: {
-            options: {
-                srcDir: 'src/main/webapp'
-            },
-            e2e: {
-                src: 'src/test/javascript/e2e/_index.html',
-                dest: 'src/main/webapp/index.html'
-            },
-            mocks: {
-                src: 'src/test/javascript/e2e/_index-mocks.html',
-                dest: 'src/main/webapp/index.html'
-            },
-            html: {
-                src: 'src/main/webapp/_index.html',
-                dest: 'src/main/webapp/index.html'
-            }
-        },
+
         cacheBust: {
             options: {
                 baseDir: './src/main/webapp',
@@ -391,229 +557,132 @@ module.exports = function (grunt) {
             },
             src: ['./src/main/webapp/index.html']
         },
-        connect: {
+
+        // Run some tasks in parallel to speed up the build process
+        concurrent: {
+            server: [
+                'compass:server'
+            ],
+            test: [
+                'compass'
+            ],
+            dist: [
+                'compass:dist',
+                'imagemin',
+                'svgmin'
+            ]
+        },
+
+        // Test settings
+        protractor: {
             options: {
-                port: 9080,
-                //protocol: 'https',
-                // Change this to '0.0.0.0' to access the server from outside.
-                hostname: hostname
-            },
-            livereload: {
-                options: {
-                    livereload: 35729,
-                    open: true,
-                    middleware: function (connect, options) {
-                        if (!Array.isArray(options.base)) {
-                            options.base = [options.base];
-                        }
-                        return [
-                            //proxyMiddleware,
-                            require('grunt-connect-proxy/lib/utils').proxyRequest,
-                            serveStatic(appConfig.app)
-                        ];
-                    }
-                },
-                proxies: [{
-                    host: 'localhost',
-                    context: '/api',
-                    port: 8443,
-                    https: true,
-                    xforward: false,
-                    rewrite: {
-                        '^/api': '/db-web-ui/api'
-                    }
-                }, {
-                    host: 'localhost',
-                    context: '/db-web-ui/api',
-                    port: 8443,
-                    https: true,
-                    xforward: false
-                }]
+                noColor: false, // If true, protractor will not use colors in its output.
+                args: {}
             },
             e2e: {
                 options: {
-                    port: 9002,
-                    keepalive: false,
-                    //open: true,
-                    middleware: function (connect, options, middlewares) {
-                        return [
-                            //require('grunt-connect-proxy/lib/utils').proxyRequest,
-                            serveStatic('instrumented'),
-                            serveStatic(appConfig.app)
-                        ];
-                    }
+                    configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
+                    keepAlive: false // If false, the grunt process stops when the test fails.
                 }
             },
-            dist: {
+            noTest: {
                 options: {
-                    open: true,
-                    base: '<%= yeoman.dist %>'
+                    configFile: 'src/test/javascript/protractor-no-test.conf.js', // Default config file
+                    keepAlive: true
                 }
+            }
+        },
+
+        karma: {
+            unit: {
+                configFile: 'src/test/javascript/karma.conf.js',
+                singleRun: true
             }
         }
     });
 
-    var e2eLocalOrRemote = function() {
-        return os.hostname().indexOf('db-tools-1.') === 0 ? 'e2eRemote' : 'e2eLocal';
-    };
+    grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
+    grunt.config('grunt.environment', environments[grunt.option('environment') || process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
-    grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function () {
+        grunt.config('grunt.app.e2e', true);
+    });
 
-    grunt.loadNpmTasks('grunt-protractor-runner');
+    grunt.registerTask('e2e-test', [
+        'clean:server',
+        'e2eapp',
+        'copy:processtags',
+        'wiredep',
+        'concurrent:server',
+        'connect:e2e',
+        'protractor:e2e'
+    ]);
 
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-
-    grunt.loadNpmTasks('grunt-env');
-
-    grunt.loadNpmTasks('grunt-preprocess');
+    grunt.registerTask('e2e-no-test', [
+        'clean:server',
+        'e2eapp',
+        'copy:processtags',
+        'wiredep',
+        'concurrent:server',
+        'connect:e2e:keepalive'
+    ]);
 
     grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
-
         if (target === 'dist') {
             return grunt.task.run(['build', 'connect:dist:keepalive']);
         }
 
         grunt.task.run([
             'clean:server',
+            'copy:processtags',
             'wiredep',
-            'preprocess:html',
-            'configureProxies:livereload',
             'concurrent:server',
+            'postcss:server',
+            'configureProxies:livereload',
             'connect:livereload',
             'watch'
         ]);
     });
 
-    grunt.registerTask('e2e-test', [
-        'env:dev',
-        'clean:e2e',
-        'wiredep',
-        'preprocess:e2e',
-        'concurrent:server',
-        'connect:e2e',
-        'protractor:e2e'
-    ]);
+    grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
+        grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
+        grunt.task.run(['serve:' + target]);
+    });
 
-    grunt.registerTask('e2e-coverage', [
-        'env:dev',
-        'clean:e2e',
-        'wiredep',
-        'preprocess:e2e',
-        'instrument',
-        'concurrent:server',
-        'connect:e2e',
-        'protractor_coverage:' + e2eLocalOrRemote(),
-        'makeReport'
-    ]);
-
-    grunt.registerTask('e2e-no-test', [
-        'env:dev',
-        'clean:e2e',
-        'wiredep',
-        'preprocess:mocks',
-        'concurrent:server',
-        'connect:e2e:keepalive'
-    ]);
-
-    grunt.registerTask('default', [
-        'env:dev',
+    grunt.registerTask('test', [
         'clean:server',
+        'copy:processtags',
         'wiredep',
-        'preprocess:html',
-        'ngconstant:dev',
-        'jshint'
-    ]);
-
-    grunt.registerTask('unit-test', [
-        'env:dev',
-        'clean:unittest',
-        'wiredep:test',
-        'preprocess:html',
-        'ngconstant:dev',
+        'concurrent:test',
+        'postcss',
+        'connect:test',
         'karma'
     ]);
 
-    grunt.registerTask('test', [
-        'unit-test'//,
-        //'e2e-coverage'
-    ]);
-
     grunt.registerTask('build', [
-        'env:prod',
         'clean:dist',
-        'wiredep:app',
-        'preprocess:html',
-        'ngconstant:prod',
+        'copy:processtags',
+        'wiredep',
+        'useminPrepare',
+        'concurrent:dist',
+        'postcss',
         //'ngtemplates',
-        'concurrent:dist',
+        'concat',
         'ngAnnotate',
-        'compass:server',
+        'copy:dist',
+        //'cdnify',
+        'cssmin',
+        //'uglify',
+        //'filerev',
+        //'usemin',
+        'htmlmin',
         'cacheBust'
     ]);
 
-    grunt.registerTask('build-dev', [
-        'env:dev',
-        'clean:dist',
-        'wiredep:app',
-        'preprocess:html',
-        'ngconstant:dev',
-        'ngtemplates',
-        'concurrent:dist',
-        'ngAnnotate',
-        'compass:server',
-        'cacheBust'
+    grunt.registerTask('default', [
+        'newer:jshint',
+        'newer:jscs',
+        'test',
+        'build'
     ]);
-
-    grunt.registerTask('build-prepdev', [
-        'env:prepdev',
-        'clean:dist',
-        'wiredep:app',
-        'preprocess:html',
-        'ngconstant:prepdev',
-        'ngtemplates',
-        'concurrent:dist',
-        'ngAnnotate',
-        'compass:server',
-        'cacheBust'
-    ]);
-
-    grunt.registerTask('build-rc', [
-        'env:rc',
-        'clean:dist',
-        'wiredep:app',
-        'preprocess:html',
-        'ngconstant:rc',
-        'ngtemplates',
-        'concurrent:dist',
-        'ngAnnotate',
-        'compass:server',
-        'cacheBust'
-    ]);
-
-    grunt.registerTask('build-test', [
-        'env:test',
-        'clean:dist',
-        'wiredep:app',
-        'preprocess:html',
-        'ngconstant:test',
-        'ngtemplates',
-        'concurrent:dist',
-        'ngAnnotate',
-        'compass:server',
-        'cacheBust'
-    ]);
-
-    grunt.registerTask('build-prod', [
-        'env:prod',
-        'clean:dist',
-        'wiredep:app',
-        'preprocess:html',
-        'ngconstant:prod',
-        'ngtemplates',
-        'concurrent:dist',
-        'ngAnnotate',
-        'compass:server',
-        'cacheBust'
-    ]);
-
 };

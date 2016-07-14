@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('webUpdates').controller('ForceDeleteSelectController', ['$scope', '$stateParams', '$state', 'SOURCE', '$log', 'AlertService', 'STATE',
+    angular.module('webUpdates').controller('ForceDeleteSelectController', ['$scope', '$stateParams', '$state', 'Properties', '$log', 'AlertService', 'STATE',
 
-        function ($scope, $stateParams, $state, SOURCE, $log, AlertService, STATE) {
+        function ($scope, $stateParams, $state, Properties, $log, AlertService, STATE) {
 
             $scope.isFormValid = _isFormValid;
             $scope.navigateToForceDelete = _navigateToForceDelete;
@@ -19,7 +19,7 @@
                 $scope.objectTypes = ['inetnum', 'inet6num', 'route', 'route6', 'domain'];
 
                 $scope.selected = {
-                    source: SOURCE,
+                    source: Properties.SOURCE,
                     objectType: $scope.objectTypes[0],
                     name: undefined
                 };

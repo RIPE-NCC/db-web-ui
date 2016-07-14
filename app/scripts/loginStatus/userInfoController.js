@@ -2,21 +2,21 @@
 (function () {
     'use strict';
 
-    angular.module('loginStatus').controller('UserInfoController', ['$scope', '$log', 'UserInfoService', 'LOGIN_URL',
+    angular.module('loginStatus').controller('UserInfoController', ['$scope', '$log', 'UserInfoService', 'Properties',
 
-        function ($scope, $log, UserInfoService, loginUrl) {
+        function ($scope, $log, UserInfoService, Properties) {
 
             function _initialize() {
-                $log.debug('Using login-url:' + loginUrl);
+                $log.debug('Using login-url:' + Properties.LOGIN_URL);
                 UserInfoService.getUserInfo().then(
                     function (result) {
                         $log.debug('Populate upper right with: ' + JSON.stringify(result));
                         RIPE.username = result.displayName;
                         RIPE.usermail = result.username;
                         RIPE.usermenu = {
-                            'User details': [['Profile', loginUrl + '/profile'], ['Logout', loginUrl + '/logout']]
+                            'User details': [['Profile', Properties.LOGIN_URL + '/profile'], ['Logout', Properties.LOGIN_URL + '/logout']]
                         };
-                        RIPE.userimg = loginUrl + '/picture/' + result.uuid;
+                        RIPE.userimg = Properties.LOGIN_URL + '/picture/' + result.uuid;
                         RIPE.user = {
                             fullName: result.displayName,
                             email: result.username
@@ -26,9 +26,7 @@
                     }
                 );
             }
-
             _initialize();
-
         }
     ]);
 })();

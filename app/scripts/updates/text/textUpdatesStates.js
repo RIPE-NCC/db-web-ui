@@ -4,7 +4,7 @@
     'use strict';
 
     angular.module('textUpdates').config(['$stateProvider',
-        
+
             function ($stateProvider) {
 
                 $stateProvider
@@ -15,22 +15,22 @@
                     })
                     .state('textupdates.create', {
                         url: '/create/:source/:objectType?noRedirect&rpsl',
-                        templateUrl: 'scripts/app/updates/text/create.html',
+                        templateUrl: 'scripts/updates/text/create.html',
                         controller: 'TextCreateController'
                     })
                     .state('textupdates.modify', {
                         url: '/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect&rpsl',
-                        templateUrl: 'scripts/app/updates/text/modify.html',
+                        templateUrl: 'scripts/updates/text/modify.html',
                         controller: 'TextModifyController'
                     })
                     .state('textupdates.multiDecision', {
                         url: '/multiDecision',
-                        templateUrl: 'scripts/app/updates/text/multiDecision.html',
+                        templateUrl: 'scripts/updates/text/multiDecision.html',
                         controller: 'TextMultiDecisionController'
                     })
                     .state('textupdates.multi', {
                         url: '/multi',
-                        templateUrl: 'scripts/app/updates/text/multi.html',
+                        templateUrl: 'scripts/updates/text/multi.html',
                         controller: 'TextMultiController'
                     });
 
