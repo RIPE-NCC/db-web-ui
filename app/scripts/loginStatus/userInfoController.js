@@ -19,7 +19,8 @@
                         RIPE.userimg = Properties.LOGIN_URL + '/picture/' + result.uuid;
                         RIPE.user = {
                             fullName: result.displayName,
-                            email: result.username
+                            email: result.username,
+                            buildTag: Properties.BUILD_TAG
                         };
                         init_user_menu();
                         display_user_menu();
