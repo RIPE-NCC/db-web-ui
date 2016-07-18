@@ -81,14 +81,14 @@ module.exports = function (grunt) {
                 tasks: ['wiredep']
             },
             js: {
-                files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
+                files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
                 tasks: ['newer:jshint:all', 'newer:jscs:all'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
             },
             jsTest: {
-                files: ['src/test/javascript/unit/{,*/}*.js'],
+                files: ['src/test/javascript/unit/{,*/}{,*/}*.js'],
                 tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
             },
             compass: {
@@ -103,7 +103,7 @@ module.exports = function (grunt) {
                     livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                    '<%= yeoman.app %>/{,*/}*.html',
+                    '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html',
                     '.tmp/assets/css/{,*/}*.css',
                     '<%= yeoman.app %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
@@ -123,18 +123,18 @@ module.exports = function (grunt) {
                     open: false,
                     middleware: function (connect) {
                         return [
-                            require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic('.tmp'),
                             connect().use(
                                 '/bower_components',
                                 serveStatic('./bower_components')
                             ),
-                            serveStatic(appConfig.app)
+                            serveStatic(appConfig.app),
+                            require('grunt-connect-proxy/lib/utils').proxyRequest
                         ];
                     }
                 },
                 proxies: [{
-                    host: 'localhost.ripe.net',
+                    host: 'localhost',
                     context: '/api',
                     port: 8443,
                     https: true,
