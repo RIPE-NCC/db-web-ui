@@ -40,8 +40,8 @@ angular.module('dbWebApp', [
 
             // Always tell server if request was made using ajax
             $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-
         }])
+
     .run(['$rootScope', '$state', '$window', '$location', '$log', '$cookies', 'ERROR_EVENTS', 'Properties',
         function ($rootScope, $state, $window, $location, $log, $cookies, ERROR_EVENTS, Properties) {
 

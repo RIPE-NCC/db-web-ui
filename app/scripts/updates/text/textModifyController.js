@@ -15,9 +15,9 @@
             $scope.cancel = cancel;
             $scope.deleteObject = deleteObject;
 
-            _initialisePage();
+            initialisePage();
 
-            function _initialisePage() {
+            function initialisePage() {
                 AlertService.clearErrors();
 
                 $scope.restCallInProgress = false;
@@ -47,11 +47,11 @@
                 }
 
                 if (_.isUndefined($scope.object.rpsl)) {
-                    _fetchAndPopulateObject();
+                    fetchAndPopulateObject();
                 }
             }
 
-            function _fetchAndPopulateObject() {
+            function fetchAndPopulateObject() {
 
                 // see if we have a password from a previous session
                 if (CredentialsService.hasCredentials()) {
@@ -66,7 +66,7 @@
                     function (results) {
                         $scope.restCallInProgress = false;
 
-                        var attributes = _handleFetchResponse(results.objectToModify);
+                        var attributes = handleFetchResponse(results.objectToModify);
 
                         // store mntners for SSO account
                         $scope.mntners.sso = results.mntners;
@@ -96,7 +96,7 @@
                 );
             }
 
-            function _handleFetchResponse(objectToModify) {
+            function handleFetchResponse(objectToModify) {
                 $log.debug('object to modify:' + JSON.stringify(objectToModify));
                 // Extract attributes from response
                 var attributes = objectToModify.getAttributes();
@@ -112,7 +112,6 @@
                     attributes: attributes,
                     passwords: $scope.passwords,
                     override: $scope.override
-                    //deleteReason: deleteReason,
                 };
                 $scope.object.rpsl = RpslService.toRpsl(obj);
                 $log.debug('RPSL:' + $scope.object.rpsl);
@@ -223,7 +222,7 @@
                     RestService.fetchObject(objectSource, objectType, objectName, password, true).then(
                         function (result) {
                             $scope.restCallInProgress = false;
-                            _handleFetchResponse(result);
+                            handleFetchResponse(result);
                         },
                         function () {
                             $scope.restCallInProgress = false;

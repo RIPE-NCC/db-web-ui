@@ -37,7 +37,7 @@
                 $scope.maintainers = {
                     sso: [],
                     object: [],
-                    objectOriginal: [], // needed to make MntnerService.performAuthentication happy
+                    objectOriginal: [] // needed to make MntnerService.performAuthentication happy
                 };
 
                 var hasError = _validateParamsAndShowErrors();

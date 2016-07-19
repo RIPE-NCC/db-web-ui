@@ -9,7 +9,7 @@
             'UPDATE_TEXT_STATE', {
                 CREATE: 'textupdates.create',
                 MODIFY: 'textupdates.modify',
-                MULTI: 'textupdates.multi',
+                MULTI: 'textupdates.multi'
             })
 
         .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
