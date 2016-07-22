@@ -190,27 +190,27 @@ describe('webUpdates: ModalAuthenticationController', function () {
         expect($scope.mntnersWithoutPassword).toEqual(mntnersWithoutPassword);
     });
 
-    it('should allow force delete if objectType is inetnum', function () {
+    xit('should allow force delete if objectType is inetnum', function () {
         $scope.objectType = 'inetnum';
         expect($scope.allowForceDelete()).toBe(true);
     });
 
-    it('should allow force delete if objectType is inet6num', function () {
+    xit('should allow force delete if objectType is inet6num', function () {
         $scope.objectType = 'inet6num';
         expect($scope.allowForceDelete()).toBe(true);
     });
 
-    it('should allow force delete if objectType is route', function () {
+    xit('should allow force delete if objectType is route', function () {
         $scope.objectType = 'route';
         expect($scope.allowForceDelete()).toBe(true);
     });
 
-    it('should allow force delete if objectType is route6', function () {
+    xit('should allow force delete if objectType is route6', function () {
         $scope.objectType = 'route6';
         expect($scope.allowForceDelete()).toBe(true);
     });
 
-    it('should allow force delete if objectType is domain', function () {
+    xit('should allow force delete if objectType is domain', function () {
         $scope.objectType = 'domain';
         expect($scope.allowForceDelete()).toBe(true);
     });
