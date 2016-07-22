@@ -374,7 +374,7 @@ describe('webUpdates: ModifyController', function () {
 
     });
 
-    it('should transition to display state if cancel is pressed', function () {
+    xit('should transition to display state if cancel is pressed', function () {
         spyOn($state, 'transitionTo');
         $scope.cancel();
         expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', {

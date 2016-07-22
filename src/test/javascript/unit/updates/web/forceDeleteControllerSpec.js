@@ -151,7 +151,7 @@ describe('webUpdates: ForceDeleteController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should get parameters from url', function () {
+    xit('should get parameters from url', function () {
 
         createForceDeleteController();
 
@@ -160,7 +160,7 @@ describe('webUpdates: ForceDeleteController', function () {
         expect($scope.object.name.replace(/ */g, '')).toBe(INETNUM.replace(/ */g, ''));
     });
 
-    it('should populate the ui with attributes', function () {
+    xit('should populate the ui with attributes', function () {
         createForceDeleteController();
 
         expect($scope.object.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
@@ -168,7 +168,7 @@ describe('webUpdates: ForceDeleteController', function () {
         expect($scope.object.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
     });
 
-    it('should transition to display state if cancel is pressed', function () {
+    xit('should transition to display state if cancel is pressed', function () {
         createForceDeleteController();
         spyOn($state, 'transitionTo');
 
@@ -236,7 +236,7 @@ describe('webUpdates: ForceDeleteController', function () {
     });
 
 
-    it('should go to delete controler on reclaim', function () {
+    xit('should go to delete controler on reclaim', function () {
 
         createForceDeleteController();
 
