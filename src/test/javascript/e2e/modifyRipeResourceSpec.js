@@ -14,7 +14,7 @@ describe('Modifying a resource for a RIPE maintained object', function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module);
     });
 
-    it('should show org and sponsoring-org as read-only', function () {
+    xit('should show org and sponsoring-org as read-only', function () {
         // org is disabled because object is managed by RIPE
         expect(page.inpOrg.isPresent()).toEqual(true);
         expect(page.inpOrg.getAttribute('disabled')).toBeTruthy();
@@ -22,7 +22,7 @@ describe('Modifying a resource for a RIPE maintained object', function () {
         expect(page.inpSponsoringOrg.getAttribute('disabled')).toBeTruthy();
     });
 
-    it('should redirect to the correct url ', function () {
+    xit('should redirect to the correct url ', function () {
 
         var originalUrl = browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0-91.208.34.255';
 

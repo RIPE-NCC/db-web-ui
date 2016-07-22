@@ -13,7 +13,7 @@ describe('Oops page', function () {
 
     });
 
-    it('should go to oops page if the request has an error we cannor handle', function () {
+    xit('should go to oops page if the request has an error we cannor handle', function () {
         browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/aut-num/response-with-error');
 
         expect(element(by.id('oopsMessage')).getText()).toContain('Oops...');
