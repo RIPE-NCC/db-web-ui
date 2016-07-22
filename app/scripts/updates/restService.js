@@ -15,7 +15,7 @@ angular.module('updates')
              */
             function sanitizeObjectName(objectType, name) {
                 if (objectType === 'inetnum') {
-                    return encodeURIComponent(name.replace(/ */g, ''));
+                    return encodeURIComponent(name);
                 } else if (objectType === 'inet6num') {
                     return name;
                 } else if (objectType === 'route') {
@@ -26,7 +26,7 @@ angular.module('updates')
                     return encodeURIComponent(name);
                 }
             }
-            
+
             var restService = {};
 
             restService.fetchParentResource = function (objectType, qs) {
