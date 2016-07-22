@@ -20,7 +20,7 @@ describe('webupdates', function () {
         // });
     });
 
-    xit('should show "force delete" for an inetnum if NOT allocated by RIPE', function () {
+    it('should show "force delete" for an inetnum if NOT allocated by RIPE', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/194.219.52.224%20-%20194.219.52.239');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
@@ -29,7 +29,7 @@ describe('webupdates', function () {
         expect(page.modalFooter.getText()).toContain('Force delete this object?');
     });
 
-    xit('should NOT show "force delete" for an inetnum if allocated by RIPE', function () {
+    it('should NOT show "force delete" for an inetnum if allocated by RIPE', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
@@ -38,7 +38,7 @@ describe('webupdates', function () {
         expect(page.modalFooter.getText()).toBe('');
     });
 
-    xit('should NOT show "force delete" for an inetnum if allocated by RIPE and no extra mntners', function () {
+    it('should NOT show "force delete" for an inetnum if allocated by RIPE and no extra mntners', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/185.102.172.0%20-%20185.102.175.255');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
@@ -48,7 +48,7 @@ describe('webupdates', function () {
         expect(page.modalFooter.getText()).toBe('');
     });
 
-    xit('should NOT show "force delete" for an inetnum if allocated by RIPE and no mntners have a passwd', function () {
+    it('should NOT show "force delete" for an inetnum if allocated by RIPE and no mntners have a passwd', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inetnum/186.102.172.0%20-%20186.102.175.255');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);
@@ -67,7 +67,7 @@ describe('webupdates', function () {
         expect(page.modalFooter.getText()).toContain('Force delete this object?');
     });
 
-    xit('should NOT show "force delete" for an inet6num if allocated by RIPE and no mntners have a passwd', function () {
+    it('should NOT show "force delete" for an inet6num if allocated by RIPE and no mntners have a passwd', function () {
         browser.get(browser.baseUrl + '/#/webupdates/display/ripe/inet6num/2001%253Aa08%253A%253A%252F32');
         expect(page.btnModify.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnModify);

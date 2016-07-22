@@ -64,12 +64,4 @@ describe('The organisation editor', function () {
         expect(page.btnAbuseCBell.isPresent()).toEqual(true);
     });
 
-    xit('should validate input fields', function () {
-        // TODO: test field validation
-    });
-
-    xit('should work in single line mode', function () {
-        // TODO: create an org in single line mode
-    });
-
 });

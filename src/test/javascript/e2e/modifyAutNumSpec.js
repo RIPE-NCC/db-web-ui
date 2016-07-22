@@ -28,6 +28,7 @@ describe('Modifying an aut-num', function () {
         it('should not allow sponsoring-org to be added', function () {
             expect(page.inpSponsoringOrg.isPresent()).toEqual(true);
             page.iimPlay('TAG POS=1 TYPE=SPAN ATTR=CLASS:fa<SP>fa-plus&&TXT:');
+
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.selectFromList(page.modalAttributeList, 'descr').isPresent()).toEqual(true);
             expect(page.selectFromList(page.modalAttributeList, 'sponsoring-org').isPresent()).toEqual(false);

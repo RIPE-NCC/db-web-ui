@@ -1,9 +1,10 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, jasmine, module*/
 'use strict';
 
 describe('webUpdates: ModalAuthenticationController', function () {
 
-    var $scope, $log, modalInstance, WhoisResources, RestService, userInfoService, credentialsService, $httpBackend ;
-    var source = 'RIPE'
+    var $scope, $log, modalInstance, WhoisResources, RestService, userInfoService, credentialsService, $httpBackend;
+    var source = 'RIPE';
     var mntners, mntnersWithoutPassword;
 
     beforeEach(function () {
@@ -11,8 +12,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
 
         inject(function (_$controller_, _$rootScope_, _$log_,_WhoisResources_,_RestService_, _$httpBackend_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
             $log = _$log_;
             WhoisResources = _WhoisResources_;
             RestService = _RestService_;
@@ -64,7 +64,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
         $scope.selected.associate = false;
 
         $scope.ok();
-        expect($scope.selected.message).toEqual("Password for mntner: 'b-mnt' too short");
+        expect($scope.selected.message).toEqual('Password for mntner: \'b-mnt\' too short');
     });
 
     it('should detect invalid password', function () {
@@ -93,7 +93,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
         $scope.ok();
         $httpBackend.flush();
 
-        expect($scope.selected.message).toEqual("You have not supplied the correct password for mntner: 'b-mnt'");
+        expect($scope.selected.message).toEqual('You have not supplied the correct password for mntner: \'b-mnt\'');
 
     });
 
@@ -183,34 +183,34 @@ describe('webUpdates: ModalAuthenticationController', function () {
 
     it('should close the modal and return error when canceled', function () {
         $scope.cancel();
-        expect(modalInstance.dismiss).toHaveBeenCalledWith("cancel");
+        expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
     });
 
     it('should set mntnersWithoutPassword to the scope', function () {
         expect($scope.mntnersWithoutPassword).toEqual(mntnersWithoutPassword);
     });
 
-    xit('should allow force delete if objectType is inetnum', function () {
+    it('should allow force delete if objectType is inetnum', function () {
         $scope.objectType = 'inetnum';
         expect($scope.allowForceDelete()).toBe(true);
     });
 
-    xit('should allow force delete if objectType is inet6num', function () {
+    it('should allow force delete if objectType is inet6num', function () {
         $scope.objectType = 'inet6num';
         expect($scope.allowForceDelete()).toBe(true);
     });
 
-    xit('should allow force delete if objectType is route', function () {
+    it('should allow force delete if objectType is route', function () {
         $scope.objectType = 'route';
         expect($scope.allowForceDelete()).toBe(true);
     });
 
-    xit('should allow force delete if objectType is route6', function () {
+    it('should allow force delete if objectType is route6', function () {
         $scope.objectType = 'route6';
         expect($scope.allowForceDelete()).toBe(true);
     });
 
-    xit('should allow force delete if objectType is domain', function () {
+    it('should allow force delete if objectType is domain', function () {
         $scope.objectType = 'domain';
         expect($scope.allowForceDelete()).toBe(true);
     });

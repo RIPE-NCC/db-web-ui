@@ -2,18 +2,14 @@
 var mockModule = require('./mocks/homepagemocks');
 var page = require('./homePageObject');
 
-
 describe('Oops page', function () {
-
-
     'use strict';
 
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module);
-
     });
 
-    xit('should go to oops page if the request has an error we cannor handle', function () {
+    xit('should go to oops page if the request has an error we cannot handle', function () {
         browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/aut-num/response-with-error');
 
         expect(element(by.id('oopsMessage')).getText()).toContain('Oops...');

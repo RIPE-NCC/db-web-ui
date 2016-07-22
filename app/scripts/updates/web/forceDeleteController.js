@@ -30,7 +30,7 @@
                     attributes: []
                 };
 
-                $log.debug('ForceDeleteController: Url params: source:' + $scope.object.source + '. type:' + $scope.object.type + ', name:' + $scope.object.name);
+                $log.debug('ForceDeleteController: Url params: source:' + $scope.object.source + '. type:' + $scope.object.type + ', name: ' + $scope.object.name);
 
                 //The maintainers appearing on the horizontal box (not the dropdown area)
                 // are stored to $scope.maintainers.object in the construct below
@@ -50,7 +50,6 @@
                 if (!_.isUndefined($stateParams.name)) {
                     return decodeURIComponent($stateParams.name);
                 }
-                return undefined;
             }
 
             function _isFormValid() {
