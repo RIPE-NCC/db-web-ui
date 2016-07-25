@@ -4,32 +4,6 @@ angular.module('updates')
     .factory('RestService', ['$resource', '$q', '$http', '$templateCache', '$log', '$state', 'WhoisResources',
         function ($resource, $q, $http, $templateCache, $log, $state, WhoisResources) {
 
-            /**
-             * Sanitize an object name.
-             *
-             * Strips unnecessary white space and performs encoding of an object name when necessary.
-             *
-             * @param objectType Object type
-             * @param name Name of the object, e.g. AS9191, 193.0.0.0 - 193.0.0.255, etc.
-             * @returns {string} Sanitized object name
-             */
-            function sanitizeObjectName(objectType, name) {
-                if (objectType === 'inetnum') {
-                    while (name.indexOf('%') > -1) {
-                        name = decodeURIComponent(name);
-                    }
-                    return name;
-                } else if (objectType === 'inet6num') {
-                    return name;
-                } else if (objectType === 'route') {
-                    return name;
-                } else if (name.indexOf('%') > -1) {
-                    return name;
-                } else {
-                    return encodeURIComponent(name);
-                }
-            }
-
             var restService = {};
 
             restService.fetchParentResource = function (objectType, qs) {
@@ -62,7 +36,7 @@ angular.module('updates')
                         {
                             source: source.toUpperCase(),
                             objectType: objectType,
-                            name: sanitizeObjectName(objectType, name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
+                            name: encodeURIComponent(name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
                             limit: limit
                         }).get()
                         .$promise.then(
@@ -246,7 +220,7 @@ angular.module('updates')
                         {
                             source: source.toUpperCase(),
                             objectType: objectType,
-                            name: sanitizeObjectName(objectType, objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             unfiltered: true,
                             password: '@password',
                             unformatted: unformatted
@@ -318,7 +292,7 @@ angular.module('updates')
                         {
                             source: source.toUpperCase(),
                             objectType: objectType,
-                            name: sanitizeObjectName(objectType, objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                            name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
                             password: '@password',
                             override: '@override',
                             unformatted: '@unformatted'
@@ -347,7 +321,7 @@ angular.module('updates')
                         {
                             source: source.toUpperCase(),
                             objectType: objectType,
-                            name: sanitizeObjectName(objectType, objectName),  // only for mntners so no url-decosong applied
+                            name: objectName,  // only for mntners so no url-decosong applied
                             password: '@password'
                         },
                         {update: {method: 'PUT'}})
@@ -379,7 +353,7 @@ angular.module('updates')
                         {
                             source: source,
                             objectType: objectType,
-                            name: sanitizeObjectName(objectType, name), // Note: double encoding not needed for delete
+                            name: name, // Note: double encoding not needed for delete
                             password: '@password',
                             'dry-run': dryRun
                         }).delete({password: passwords, reason: reason})
