@@ -110,6 +110,12 @@
             }
 
             function _performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners) {
+
+                var object = {
+                    source: objectSource,
+                    type: objectType,
+                    name: objectName
+                };
                 var deferredObject = $q.defer();
 
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
@@ -118,7 +124,7 @@
                     return MntnerService.isNccMntner(o.key);
                 });
 
-                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, false).then(
+                ModalService.openAuthenticationModal(method, object, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, false).then(
                     function (result) {
                         AlertService.clearErrors();
 

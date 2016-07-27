@@ -9,15 +9,16 @@
 
             var webUpdatesCommons = {};
 
-            webUpdatesCommons.performAuthentication = function (maintainers, method, objectSource, objectType, objectName, isLirObject, successCloseCallback, cancelCloseCallback) {
-                $log.debug('Perform authentication', maintainers);
-                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
-                var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(maintainers.sso, maintainers.objectOriginal, maintainers.object);
+            webUpdatesCommons.performAuthentication = function (authParams) {
+                // maintainers, method, objectSource, objectType, objectName, isLirObject, successCloseCallback, cancelCloseCallback
+                $log.debug('Perform authentication', authParams.maintainers);
+                var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(authParams.maintainers.sso, authParams.maintainers.objectOriginal, authParams.maintainers.object);
+                var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(authParams.maintainers.sso, authParams.maintainers.objectOriginal, authParams.maintainers.object);
                 // see: https://www.pivotaltracker.com/n/projects/769061
-                var allowForcedDelete = !_.find(maintainers.object, function (o) {
+                var allowForcedDelete = !_.find(authParams.maintainers.object, function (o) {
                     return MntnerService.isNccMntner(o.key);
                 });
-                ModalService.openAuthenticationModal(method, objectSource, objectType, objectName, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, isLirObject).then(
+                ModalService.openAuthenticationModal(authParams.method, authParams.object, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, authParams.isLirObject).then(
                     function (result) {
                         AlertService.clearErrors();
 
@@ -29,19 +30,19 @@
                         if (MntnerService.isMine(selectedMntner)) {
                             // has been successfully associated in authentication modal
 
-                            maintainers.sso.push(selectedMntner);
+                            authParams.maintainers.sso.push(selectedMntner);
                             // mark starred in selected
-                            maintainers.object = MntnerService.enrichWithMine(maintainers.sso, maintainers.object);
+                            authParams.maintainers.object = MntnerService.enrichWithMine(authParams.maintainers.sso, authParams.maintainers.object);
                         }
-                        $log.debug('After auth: maintainers.sso:' + JSON.stringify(maintainers.sso));
-                        $log.debug('After auth: maintainers.object:' + JSON.stringify(maintainers.object));
+                        $log.debug('After auth: maintainers.sso:' + JSON.stringify(authParams.maintainers.sso));
+                        $log.debug('After auth: maintainers.object:' + JSON.stringify(authParams.maintainers.object));
 
-                        if (!_.isUndefined(successCloseCallback)) {
-                            successCloseCallback(associationResp);
+                        if (!_.isUndefined(authParams.successClbk)) {
+                            authParams.successClbk(associationResp);
                         }
                     }, function () {
-                        if (!_.isUndefined(cancelCloseCallback)) {
-                            cancelCloseCallback();
+                        if (!_.isUndefined(authParams.failureClbk)) {
+                            authParams.failureClbk();
                         }
                     }
                 );

@@ -1,4 +1,4 @@
-/*global angular */
+/*global _, angular */
 
 'use strict';
 
@@ -475,7 +475,7 @@ angular.module('webUpdates')
             function isResourceWithNccMntner() {
                 if($scope.objectType === 'inetnum' || $scope.objectType === 'inet6num') {
                     return _.some($scope.maintainers.objectOriginal, function(mntner) {
-                        return MntnerService.isNccMntner(mntner.key)
+                        return MntnerService.isNccMntner(mntner.key);
                     });
                 }
                 return false;
@@ -791,7 +791,6 @@ angular.module('webUpdates')
 
                                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                                     _performAuthentication();
-                                    return;
                                 }
                             }, function (error) {
                                 $scope.restCallInProgress = false;
@@ -960,15 +959,19 @@ angular.module('webUpdates')
             }
 
             function _performAuthentication() {
-                WebUpdatesCommons.performAuthentication(
-                    $scope.maintainers,
-                    $scope.operation,
-                    $scope.source,
-                    $scope.objectType,
-                    $scope.name,
-                    isLirObject(),
-                    _onSuccessfulAuthentication,
-                    _navigateAway);
+                var authParams = {
+                    maintainers: $scope.maintainers,
+                    operation: $scope.operation,
+                    object: {
+                        source: $scope.source,
+                        type: $scope.objectType,
+                        name: $scope.name
+                    },
+                    isLirObject: isLirObject(),
+                    successClbk:_onSuccessfulAuthentication,
+                    failureClbk: _navigateAway
+                };
+                WebUpdatesCommons.performAuthentication(authParams);
             }
 
             function _onSuccessfulAuthentication(associationResp) {

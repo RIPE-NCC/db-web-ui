@@ -36,6 +36,9 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                 return;
             }
 
+            if (!$scope.selected.item || !$scope.selected.item.key) {
+                return;
+            }
             RestService.authenticate(method, source, 'mntner', $scope.selected.item.key, $scope.selected.password).then(
                 function (result) {
                     var whoisResources = result;
@@ -93,6 +96,5 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                 }
             );
         };
-
 
     }]);
