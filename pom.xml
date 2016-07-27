@@ -498,7 +498,7 @@
                                 <configuration>
                                     <skipTests>false</skipTests>
                                     <buildTool>grunt</buildTool>
-                                    <buildArgs>compass:server copy:processtags --environment=${spring.profiles.active} --buildtag=${buildtag} --force</buildArgs>
+                                    <buildArgs>build --environment=${spring.profiles.active} --buildtag=${buildtag}</buildArgs>
                                 </configuration>
                             </execution>
                         </executions>
