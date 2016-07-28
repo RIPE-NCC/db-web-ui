@@ -93,7 +93,7 @@
             }
 
             function handleFetchResponse(objectToModify) {
-                $log.debug('object to modify:' + JSON.stringify(objectToModify));
+                $log.debug('[textModifyController] object to modify: ' + JSON.stringify(objectToModify));
                 // Extract attributes from response
                 var attributes = objectToModify.getAttributes();
 

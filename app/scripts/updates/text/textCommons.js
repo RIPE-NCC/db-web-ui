@@ -83,8 +83,7 @@
                         var objectMntners = _getObjectMntners(attributes);
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
                             needsAuth = true;
-
-                            _performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners).then(
+                            _performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, isLirObject(attributes)).then(
                                 function () {
                                     $log.debug('Authentication succeeded');
                                     deferredObject.resolve(true);
@@ -103,13 +102,26 @@
                 return deferredObject.promise;
             };
 
+            function isLirObject(attributes) {
+                return isAllocation(attributes) || !!_.find(attributes, {name: 'org-type', value: 'LIR'});
+            }
+
+            function isAllocation(attributes) {
+                if (!attributes) {
+                    return false;
+                }
+                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-RIR'];
+                var status = attributes.getSingleAttributeOnName('status');
+                return status && _.includes(allocationStatuses, status.value.trim());
+            }
+
             function _clear(array) {
                 while (array.length) {
                     array.pop();
                 }
             }
 
-            function _performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners) {
+            function _performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners, isLirObject) {
 
                 var object = {
                     source: objectSource,
@@ -124,7 +136,7 @@
                     return MntnerService.isNccMntner(o.key);
                 });
 
-                ModalService.openAuthenticationModal(method, object, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, false).then(
+                ModalService.openAuthenticationModal(method, object, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, isLirObject).then(
                     function (result) {
                         AlertService.clearErrors();
 

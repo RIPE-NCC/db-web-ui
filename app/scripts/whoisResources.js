@@ -95,10 +95,10 @@ angular.module('dbWebApp')
             };
         };
 
-        var readableError = function( errorMessage ) {
-            var idx=0;
-            var readableErrorText = errorMessage.text.replace(/%s/g, function(match) {
-                if( errorMessage.args.length-1 >= idx ) {
+        var readableError = function (errorMessage) {
+            var idx = 0;
+            return errorMessage.text.replace(/%s/g, function (match) {
+                if (errorMessage.args.length - 1 >= idx) {
                     var arg = errorMessage.args[idx].value;
                     idx++;
                     return arg;
@@ -106,7 +106,6 @@ angular.module('dbWebApp')
                     return match;
                 }
             });
-            return readableErrorText;
         };
 
         var getGlobalErrors = function () {

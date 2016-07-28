@@ -1,6 +1,6 @@
-/*global beforeEach, browser, describe, expect, it, require */
+/*global beforeEach, browser, by, describe, element, expect, require */
 var mockModule = require('./mocks/homepagemocks');
-var page = require('./homePageObject');
+//var page = require('./homePageObject');
 
 describe('Oops page', function () {
     'use strict';

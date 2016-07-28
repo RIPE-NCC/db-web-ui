@@ -747,7 +747,7 @@ angular.module('webUpdates')
                     function (results) {
                         $scope.restCallInProgress = false;
 
-                        $log.debug('object to modify:' + JSON.stringify(results.objectToModify));
+                        $log.debug('[createModifyController] object to modify: ' + JSON.stringify(results.objectToModify));
 
                         // store mntners for SSO account
                         $scope.maintainers.sso = results.mntners;
