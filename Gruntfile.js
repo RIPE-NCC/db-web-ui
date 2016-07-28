@@ -59,6 +59,13 @@ module.exports = function (grunt) {
             LOGIN_URL: 'https://access.ripe.net/',
             PORTAL_URL: 'https://my.ripe.net/'
         },
+        training: {
+            ENV: 'rc',
+            GTM_ID: 'GTM-T5J6RH',
+            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://training.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.ripe.net/',
+            PORTAL_URL: 'https://my.ripe.net/'
+        },
         prod: {
             ENV: 'prod',
             GTM_ID: 'GTM-TP3SK6',
