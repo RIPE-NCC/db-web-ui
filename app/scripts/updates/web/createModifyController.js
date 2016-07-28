@@ -163,6 +163,7 @@ angular.module('webUpdates')
                 // switch to text-screen if cookie says so and cookie is not to be ignored
                 if (PreferenceService.isTextMode() && redirect) {
                     switchToTextMode();
+                    return;
                 }
 
                 // initialize data

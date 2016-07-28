@@ -547,10 +547,12 @@ module.exports = function (grunt) {
                         content = content.replace(/<!--\s*@include\s+([\S]+)\s*-->/g, function (m, filename) {
                             return fs.readFileSync(dir + '/' + filename).toString();
                         });
-                        // Second, process the conditional includes: <!-- @includeif CONDITION fileIfTrue, fileIfFalse -->
-                        content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)\s+([\S]+)\s*-->/g, function (m, condition, trueFile, falseFile) {
+                        // Second, process the conditional includes: <!-- @includeif OPTION fileIfTrue fileIfFalse -->
+                        // OPTION is a config value set in this file, e.g. grunt.config("grunt.app.e2e", true);
+                        // fileIfFalse can be empty, in which case includeif is like an on/off switch instead of a toggle
+                        content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)(?:\s+([\S]+))?\s*-->/g, function (m, condition, trueFile, falseFile) {
                             var filename = grunt.config(condition) ? trueFile : falseFile;
-                            return fs.readFileSync(dir + '/' + filename).toString();
+                            return filename ? fs.readFileSync(dir + '/' + filename).toString() : '';
                         });
                         // Third, replace @echo directives with values from environment constants
                         content = content.replace(/<!--\s*@echo\s+([\S]+)\s*-->/g, function (m, group) {
