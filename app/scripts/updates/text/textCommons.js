@@ -76,7 +76,9 @@
 
                 if (!_.isUndefined(override)) {
                     // prefer override over passwords
-                    _clear(passwords);
+                    if (angular.isArray(passwords)) {
+                        passwords.length = 0; // length is writable in JS :)
+                    }
                 } else {
                     if (_.isEmpty(passwords) && _.isUndefined(override)) {
                         // show password popup if needed
@@ -115,12 +117,6 @@
                 return status && _.includes(allocationStatuses, status.value.trim());
             }
 
-            function _clear(array) {
-                while (array.length) {
-                    array.pop();
-                }
-            }
-
             function _performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners, isLirObject) {
 
                 var object = {
@@ -129,30 +125,24 @@
                     name: objectName
                 };
                 var deferredObject = $q.defer();
-
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(ssoMntners, [], objectMntners);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoMntners, [], objectMntners);
                 var allowForcedDelete = !_.find(objectMntners, function (o) {
                     return MntnerService.isNccMntner(o.key);
                 });
-
                 ModalService.openAuthenticationModal(method, object, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, isLirObject).then(
                     function (result) {
                         AlertService.clearErrors();
-
                         var authenticatedMntner = result.selectedItem;
                         if (_isMine(authenticatedMntner)) {
                             // has been successfully associated in authentication modal
                             ssoMntners.push(authenticatedMntner);
-
                         }
                         deferredObject.resolve(true);
-
                     }, function () {
                         deferredObject.reject(false);
                     }
                 );
-
                 return deferredObject.promise;
             }
 
@@ -168,7 +158,7 @@
             function _getObjectMntners(attributes) {
                 return _.map(attributes.getAllAttributesWithValueOnName('mnt-by'), function (objMntner) {
                     // Notes:
-                    // - RPSL attribute values can contain leading and traling spaces, so the must be trimmed
+                    // - RPSL attribute values can contain leading and trailing spaces, so the must be trimmed
                     // - Assume maintainers have md5-password, so prevent unmodifyable error
                     return {type: 'mntner', key: _.trim(objMntner.value), auth: ['MD5-PW']};
                 });

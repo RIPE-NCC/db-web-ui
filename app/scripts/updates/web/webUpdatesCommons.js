@@ -21,22 +21,18 @@
                 ModalService.openAuthenticationModal(authParams.method, authParams.object, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, authParams.isLirObject).then(
                     function (result) {
                         AlertService.clearErrors();
-
                         var selectedMntner = result.selectedItem;
                         $log.debug('selected mntner:' + JSON.stringify(selectedMntner));
                         var associationResp = result.response;
                         $log.debug('associationResp:' + JSON.stringify(associationResp));
-
                         if (MntnerService.isMine(selectedMntner)) {
                             // has been successfully associated in authentication modal
-
                             authParams.maintainers.sso.push(selectedMntner);
                             // mark starred in selected
                             authParams.maintainers.object = MntnerService.enrichWithMine(authParams.maintainers.sso, authParams.maintainers.object);
                         }
                         $log.debug('After auth: maintainers.sso:' + JSON.stringify(authParams.maintainers.sso));
                         $log.debug('After auth: maintainers.object:' + JSON.stringify(authParams.maintainers.object));
-
                         if (!_.isUndefined(authParams.successClbk)) {
                             authParams.successClbk(associationResp);
                         }

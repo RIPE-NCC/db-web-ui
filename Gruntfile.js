@@ -116,7 +116,16 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}',
                     '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html'
                 ],
-                tasks: ['build']
+                tasks: [
+                    'clean:server',
+                    'copy:processtags',
+                    'wiredep',
+                    'compass:dist',
+                    'postcss',
+                    'concat',
+                    'copy:dist',
+                    'cssmin'
+                ]
             }
         },
 
@@ -239,7 +248,6 @@ module.exports = function (grunt) {
                 files: [{
                     dot: true,
                     src: [
-                        '.tmp',
                         '<%= yeoman.dist %>/{,*/}*',
                         '!<%= yeoman.dist %>/.git{,*/}*'
                     ]
@@ -670,7 +678,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('build', [
-        'clean:dist',
+        'clean',
         'copy:processtags',
         'wiredep',
         'useminPrepare',
