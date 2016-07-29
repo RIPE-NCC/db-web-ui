@@ -12,12 +12,13 @@ describe('webUpdates: CreateController', function () {
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
     var userMaintainers;
+    var PreferenceService;
     var $q;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,_MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_, _ModalService_, _$q_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,_MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -31,6 +32,8 @@ describe('webUpdates: CreateController', function () {
             CredentialsService = _CredentialsService_;
             MntnerService = _MntnerService_;
             ModalService = _ModalService_;
+            PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
             $q = _$q_;
 
             userMaintainers = [
@@ -382,13 +385,14 @@ describe('webUpdates: CreateController', function () {
     var OBJECT_TYPE = 'route';
     var SOURCE = 'RIPE';
     var userMaintainers;
+    var PreferenceService;
     var $q;
 
     beforeEach(function () {
         module('webUpdates');
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
-                         _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_) {
+                         _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
 
             $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -402,6 +406,9 @@ describe('webUpdates: CreateController', function () {
             CredentialsService = _CredentialsService_;
             MntnerService = _MntnerService_;
             ModalService = _ModalService_;
+            PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
+
             $q = _$q_;
 
             userMaintainers = [
@@ -528,7 +535,7 @@ describe('webUpdates: CreateModifyController init with failures', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -541,6 +548,8 @@ describe('webUpdates: CreateModifyController init with failures', function () {
             CredentialsService = _CredentialsService_;
             MntnerService = _MntnerService_;
             $window = _$window_;
+            var PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             $httpBackend.whenGET('api/user/mntners').respond(404);
 
@@ -581,13 +590,15 @@ describe('webUpdates: CreateController init with nonexistent obj type', function
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _$window_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _$window_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
             $state =  _$state_;
             $httpBackend = _$httpBackend_;
             $window = _$window_;
+            var PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             var userMaintainers = [
                 {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}

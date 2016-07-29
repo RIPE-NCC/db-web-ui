@@ -56,7 +56,6 @@ module.exports = function (config) {
             'bower_components/angular-loading-bar/build/loading-bar.js',
             'bower_components/moment/moment.js',
             'bower_components/angular-mocks/angular-mocks.js',
-            'bower_components/angular-scenario/angular-scenario.js',
             // endbower
             './app/scripts/app.js',
             './.tmp/scripts/app.constants.js',

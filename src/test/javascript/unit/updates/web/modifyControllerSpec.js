@@ -1,13 +1,14 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, spyOn*/
 'use strict';
 
 var logger = {
-    debug: function (msg) {
+    debug: function () {
         //console.log('info:'+msg);
     },
-    info: function (msg) {
+    info: function () {
         //console.log('info:'+msg);
     },
-    error: function (msg) {
+    error: function () {
         //console.log('error:'+msg);
     }
 };
@@ -120,10 +121,9 @@ describe('webUpdates: ModifyController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, $window, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, $window, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_, _PreferenceService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -137,6 +137,8 @@ describe('webUpdates: ModifyController', function () {
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
             CredentialsService = _CredentialsService_;
+            var PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
@@ -400,7 +402,7 @@ describe('webUpdates: ModifyController init with failures', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -411,6 +413,8 @@ describe('webUpdates: ModifyController init with failures', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
+            var PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
@@ -549,7 +553,7 @@ describe('webUpdates: ModifyController ask for password before modify object wit
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _ModalService_, _$q_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -562,6 +566,8 @@ describe('webUpdates: ModifyController ask for password before modify object wit
             MntnerService = _MntnerService_;
             ModalService = _ModalService_;
             $q = _$q_;
+            var PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
@@ -726,7 +732,7 @@ describe('webUpdates: ModifyController for organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -744,9 +750,11 @@ describe('webUpdates: ModifyController for organisation', function () {
                         then: function (s) {
                             s(ROLE_OBJ);
                         }
-                    }
+                    };
                 }
             };
+            var PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;

@@ -12,11 +12,12 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     var OBJECT_TYPE = 'organisation';
     var SOURCE = 'TEST';
     var NAME = 'ORG-UA300-RIPE';
+    var PreferenceService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_, _PreferenceService_) {
 
             $scope = _$rootScope_.$new();
 
@@ -27,8 +28,9 @@ describe('webUpdates: CreateModifyController for organisation', function () {
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
             OrganisationHelper = _OrganisationHelper_;
-            OrganisationHelper.updateAbuseC = function() {
-            };
+            OrganisationHelper.updateAbuseC = function() {};
+            PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             ModalService = {
                 openCreateRoleForAbuseCAttribute: function () {
