@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
 describe('webUpdates: CreateController', function () {

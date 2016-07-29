@@ -1,3 +1,4 @@
+
 README for db-web-ui
 ====================
 
@@ -112,17 +113,18 @@ Grunt
   Starts a server on port 9080 which connects to a live backend. NOTE: doesn't work yet because Grunt can't
   negotiate with the https server -- partly due to a bug in a bug in a grunt dependency
 * test<br>
-  Shortcut tartget which runs the two test goals:
-  - unit-test
-  - e2e-coverage
-* unit-test<br>
-  Runs the karma unit tests and leaves a coverage report in ```./reports/unittest-coverage/lcov-report/index.html```
+  alias for ```unit-test```
+* watch:dist<br>
+  Use this along with ```mvn spring-boot:run```. It watches the JS and HTML files for changes and redeploys them
+  when they've changed. In detail: the watch task is triggered by changes in the file system. Depending on the
+  change it detects, watch will run the appropriate Grunt task and put the result in the ```webapp``` directory
+  just like a full ```grunt build``` would.
 * e2e-test<br>
   Runs the Protractor tests on port 9002. These are the same tests as the e2e-coverage target but they run without
   coverage so they are quicker.
 * e2e-no-test<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
-  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks (see ```_index_mocks.html```)
+  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks
 * e2e-coverage<br>
   Runs the Protractor tests and shows coverage stats in two ways:
   - a text summary in the console
