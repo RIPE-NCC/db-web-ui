@@ -1,3 +1,4 @@
+/*global beforeEach, describe, expect, inject, it*/
 'use strict';
 
 describe('webUpdates: OrganisationHelper', function () {
