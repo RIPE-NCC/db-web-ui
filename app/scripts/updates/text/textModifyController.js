@@ -44,7 +44,7 @@
 
                 if (PreferenceService.isWebMode() && redirect) {
                     switchToWebMode();
-                    return;
+                    //return;
                 }
 
                 if (_.isUndefined($scope.object.rpsl)) {
