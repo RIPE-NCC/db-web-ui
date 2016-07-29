@@ -1,5 +1,6 @@
 /*global beforeEach, browser, describe, expect, it, require */
-var mockModule = require('./mocks/homepagemocks');
+var mockGet = require('./mocks/homemocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -11,7 +12,7 @@ describe('Modifying an aut-num', function () {
 
     beforeEach(function () {
         browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/aut-num/AS12467');
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
     });
 
     describe('which DOES NOT have status APPROVED PI', function () {

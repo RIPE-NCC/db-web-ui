@@ -1,5 +1,6 @@
 /*global beforeEach, browser, describe, expect, it, require */
-var mockModule = require('./mocks/inetnummocks');
+var mockGet = require('./mocks/mocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 describe('webupdates', function () {
@@ -7,7 +8,8 @@ describe('webupdates', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         //Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function (browserLog) {
         //     //    console.log('LOG ' + require('util').inspect(browserLog));

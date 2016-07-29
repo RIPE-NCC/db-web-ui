@@ -1,5 +1,6 @@
 /*global beforeEach, browser, describe, expect, it*/
-var mockModule = require('./mocks/homepagemocks');
+var mockGet = require('./mocks/homemocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -12,7 +13,7 @@ describe('Modifying an organisation', function () {
 
         beforeEach(function () {
             browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/organisation/ORG-AGNS1-RIPE');
-            browser.addMockModule('dbWebAppE2E', mockModule.module);
+            browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         });
 
         it('should show the mnt-by field as read-only', function () {

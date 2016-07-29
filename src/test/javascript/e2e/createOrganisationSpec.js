@@ -1,7 +1,8 @@
 /*global beforeEach, browser, describe, expect, it, require */
 
 // Local requires
-var mockModule = require('./mocks/homepagemocks');
+var mockGet = require('./mocks/homemocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -9,9 +10,11 @@ var page = require('./homePageObject');
  */
 describe('The organisation editor', function () {
 
+    'use strict';
+
     beforeEach(function () {
         browser.get(browser.baseUrl + '/#/webupdates/create/RIPE/organisation');
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {
         //    console.log('>>>>>> ' + require('util').inspect(browserLog));

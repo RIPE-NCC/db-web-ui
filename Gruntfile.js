@@ -543,17 +543,30 @@ module.exports = function (grunt) {
                 options: {
                     process: function (content, path) {
                         var dir = path.substring(0, path.lastIndexOf('/'));
-                        // First, process the includes such as <!-- @include _index_app_body_start.html -->
-                        content = content.replace(/<!--\s*@include\s+([\S]+)\s*-->/g, function (m, filename) {
+                        var keeplooping;
+
+                        function substituteText(m, filename) {
+                            keeplooping = true;
+                            console.log('lookin for ' + dir + '/' + filename);
                             return fs.readFileSync(dir + '/' + filename).toString();
-                        });
-                        // Second, process the conditional includes: <!-- @includeif OPTION fileIfTrue fileIfFalse -->
-                        // OPTION is a config value set in this file, e.g. grunt.config("grunt.app.e2e", true);
-                        // fileIfFalse can be empty, in which case includeif is like an on/off switch instead of a toggle
-                        content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)(?:\s+([\S]+))?\s*-->/g, function (m, condition, trueFile, falseFile) {
+                        }
+
+                        function maybeSubstituteText(m, condition, trueFile, falseFile) {
+                            keeplooping = true;
                             var filename = grunt.config(condition) ? trueFile : falseFile;
                             return filename ? fs.readFileSync(dir + '/' + filename).toString() : '';
-                        });
+                        }
+
+                        do {
+                            keeplooping = false;
+                            // First, process the includes such as <!-- @include _index_app_body_start.html -->
+                            content = content.replace(/<!--\s*@include\s+([\S]+)\s*-->/g, substituteText);
+                            // Second, process the conditional includes: <!-- @includeif OPTION fileIfTrue fileIfFalse -->
+                            // OPTION is a config value set in this file, e.g. grunt.config("grunt.app.e2e", true);
+                            // fileIfFalse can be empty, in which case includeif is like an on/off switch instead of a toggle
+                            content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)(?:\s+([\S]+))?\s*-->/g, maybeSubstituteText);
+                        } while (keeplooping);
+
                         // Third, replace @echo directives with values from environment constants
                         content = content.replace(/<!--\s*@echo\s+([\S]+)\s*-->/g, function (m, group) {
                             return grunt.config('grunt.environment')[group] || '';
@@ -624,8 +637,11 @@ module.exports = function (grunt) {
     grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
     grunt.config('grunt.environment', environments[grunt.option('environment') || process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
-    grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function () {
+    grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function (target) {
         grunt.config('grunt.app.e2e', true);
+        if (target === 'mocks') {
+            grunt.config('grunt.app.mocks', true);
+        }
     });
 
     grunt.registerTask('e2e-test', [
@@ -640,7 +656,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('e2e-no-test', [
         'clean:server',
-        'e2eapp',
+        'e2eapp:mocks',
         'copy:processtags',
         'wiredep',
         'concurrent:server',

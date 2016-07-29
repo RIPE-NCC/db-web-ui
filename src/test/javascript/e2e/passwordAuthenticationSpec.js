@@ -1,7 +1,8 @@
 /*global beforeEach, browser, describe, expect, it, require */
 
 // Local requires
-var mockModule = require('./mocks/homepagemocks');
+var mockGet = require('./mocks/homemocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -9,8 +10,10 @@ var page = require('./homePageObject');
  */
 describe('The password authentication dialogue', function () {
 
+    'use strict';
+
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         browser.get('/#/webupdates/modify/ripe/aut-num/AS9191');
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {

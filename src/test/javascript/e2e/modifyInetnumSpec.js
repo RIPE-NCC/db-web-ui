@@ -1,13 +1,14 @@
 /*global beforeEach, browser, describe, expect, it, require */
-var mockModule = require('./mocks/inetnummocks');
+var mockGet = require('./mocks/mocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
-fdescribe('Modifying an inetnum', function () {
+describe('Modifying an inetnum', function () {
 
     'use strict';
 
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
     });
 
     it('should prompt for user to add default maintainer in webupdates', function () {
