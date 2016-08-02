@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('textUpdates').service('TextCommons', ['$state', '$log', '$q', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService',
+    angular.module('textUpdates').service('TextCommons', ['$state', '$log', '$q', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'ObjectUtilService',
 
-        function ($state, $log, $q, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService) {
+        function ($state, $log, $q, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, ObjectUtilService) {
 
             this.enrichWithDefaults = function (objectSource, objectType, attributes) {
                 // This does only add value if attribute exist
@@ -85,7 +85,7 @@
                         var objectMntners = _getObjectMntners(attributes);
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
                             needsAuth = true;
-                            _performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, isLirObject(attributes)).then(
+                            _performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, ObjectUtilService.isLirObject(attributes)).then(
                                 function () {
                                     $log.debug('Authentication succeeded');
                                     deferredObject.resolve(true);
@@ -103,19 +103,6 @@
                 }
                 return deferredObject.promise;
             };
-
-            function isLirObject(attributes) {
-                return isAllocation(attributes) || !!_.find(attributes, {name: 'org-type', value: 'LIR'});
-            }
-
-            function isAllocation(attributes) {
-                if (!attributes) {
-                    return false;
-                }
-                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-RIR'];
-                var status = attributes.getSingleAttributeOnName('status');
-                return status && _.includes(allocationStatuses, status.value.trim());
-            }
 
             function _performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners, isLirObject) {
 

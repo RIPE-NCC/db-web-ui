@@ -101,7 +101,7 @@ module.exports = function (config) {
         // optionally, configure the reporter
         coverageReporter: {
             type: 'lcov',
-            dir: '../reports/unittest-coverage',
+            dir: 'reports/unittest-coverage',
             reporters: [
                 { type: 'lcov', subdir: './' }
             ]
