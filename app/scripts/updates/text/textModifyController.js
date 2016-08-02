@@ -1,4 +1,4 @@
-/*global angular*/
+/*global _, angular*/
 
 (function () {
     'use strict';
@@ -44,6 +44,7 @@
 
                 if (PreferenceService.isWebMode() && redirect) {
                     switchToWebMode();
+                    return;
                 }
 
                 if (_.isUndefined($scope.object.rpsl)) {
@@ -65,13 +66,10 @@
                 }).then(
                     function (results) {
                         $scope.restCallInProgress = false;
-
                         var attributes = handleFetchResponse(results.objectToModify);
-
                         // store mntners for SSO account
                         $scope.mntners.sso = results.mntners;
                         $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
-
                         TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name,
                             $scope.mntners.sso, attributes, $scope.passwords, $scope.override).then(
                             function () {
@@ -82,7 +80,6 @@
                                 $log.error('Error authenticating');
                             }
                         );
-
                     }
                 ).catch(
                     function (error) {
@@ -97,7 +94,7 @@
             }
 
             function handleFetchResponse(objectToModify) {
-                $log.debug('object to modify:' + JSON.stringify(objectToModify));
+                $log.debug('[textModifyController] object to modify: ' + JSON.stringify(objectToModify));
                 // Extract attributes from response
                 var attributes = objectToModify.getAttributes();
 
@@ -146,13 +143,13 @@
                         $log.info('Successfully authenticated');
 
                         // combine all passwords
-                        var combinedPaswords = _.union($scope.passwords, TextCommons.getPasswordsForRestCall($scope.object.type));
+                        var combinedPasswords = _.union($scope.passwords, TextCommons.getPasswordsForRestCall($scope.object.type));
 
                         attributes = TextCommons.stripEmptyAttributes(attributes);
 
                         $scope.restCallInProgress = true;
                         RestService.modifyObject($scope.object.source, $scope.object.type, $scope.object.name,
-                            WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPaswords, $scope.override, true).then(
+                            WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPasswords, $scope.override, true).then(
                             function (result) {
                                 $scope.restCallInProgress = false;
 

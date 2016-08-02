@@ -1,4 +1,4 @@
-/*global angular */
+/*global _, angular */
 
 'use strict';
 
@@ -6,11 +6,11 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce', '$document',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', 'ModalService',
         'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'ResourceStatus',
-        'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor',
+        'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor', 'ObjectUtilService',
         function ($scope, $stateParams, $state, $log, $window, $q, $sce, $document,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService, ResourceStatus,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor) {
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor, ObjectUtilService) {
 
             $scope.optionList = {
                 status: []
@@ -55,7 +55,6 @@ angular.module('webUpdates')
             $scope.submit = submit;
             $scope.cancel = cancel;
             $scope.isFormValid = isFormValid;
-            $scope.isLirObject = isLirObject;
             $scope.isResourceWithNccMntner = isResourceWithNccMntner;
             $scope.isBrowserAutoComplete = isBrowserAutoComplete;
             $scope.createRoleForAbuseCAttribute = createRoleForAbuseCAttribute;
@@ -130,6 +129,10 @@ angular.module('webUpdates')
                 }
             });
 
+            $scope.isLirObject = function() {
+                return ObjectUtilService.isLirObject($scope.attributes);
+            };
+
             function _initialisePage() {
 
                 inetnumParentAuthError = false;
@@ -163,6 +166,7 @@ angular.module('webUpdates')
                 // switch to text-screen if cookie says so and cookie is not to be ignored
                 if (PreferenceService.isTextMode() && redirect) {
                     switchToTextMode();
+                    //return;
                 }
 
                 // initialize data
@@ -468,14 +472,10 @@ angular.module('webUpdates')
                 );
             }
 
-            function isLirObject() {
-                return _isAllocation() || !!_.find($scope.attributes, {name: 'org-type', value: 'LIR'});
-            }
-
             function isResourceWithNccMntner() {
                 if($scope.objectType === 'inetnum' || $scope.objectType === 'inet6num') {
                     return _.some($scope.maintainers.objectOriginal, function(mntner) {
-                        return MntnerService.isNccMntner(mntner.key)
+                        return MntnerService.isNccMntner(mntner.key);
                     });
                 }
                 return false;
@@ -597,15 +597,6 @@ angular.module('webUpdates')
             /*
              * private methods
              */
-
-            function _isAllocation() {
-                if (!$scope.attributes) {
-                    return false;
-                }
-                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-RIR'];
-                var status = $scope.attributes.getSingleAttributeOnName('status');
-                return status && _.includes(allocationStatuses, status.value);
-            }
 
             function _warnForNonSubstitutableUtf8(attribute, userInput) {
                 if (!CharsetTools.isLatin1(userInput)) {
@@ -747,7 +738,7 @@ angular.module('webUpdates')
                     function (results) {
                         $scope.restCallInProgress = false;
 
-                        $log.debug('object to modify:' + JSON.stringify(results.objectToModify));
+                        $log.debug('[createModifyController] object to modify: ' + JSON.stringify(results.objectToModify));
 
                         // store mntners for SSO account
                         $scope.maintainers.sso = results.mntners;
@@ -791,7 +782,6 @@ angular.module('webUpdates')
 
                                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                                     _performAuthentication();
-                                    return;
                                 }
                             }, function (error) {
                                 $scope.restCallInProgress = false;
@@ -960,15 +950,19 @@ angular.module('webUpdates')
             }
 
             function _performAuthentication() {
-                WebUpdatesCommons.performAuthentication(
-                    $scope.maintainers,
-                    $scope.operation,
-                    $scope.source,
-                    $scope.objectType,
-                    $scope.name,
-                    isLirObject(),
-                    _onSuccessfulAuthentication,
-                    _navigateAway);
+                var authParams = {
+                    maintainers: $scope.maintainers,
+                    operation: $scope.operation,
+                    object: {
+                        source: $scope.source,
+                        type: $scope.objectType,
+                        name: $scope.name
+                    },
+                    isLirObject: ObjectUtilService.isLirObject($scope.attributes),
+                    successClbk:_onSuccessfulAuthentication,
+                    failureClbk: _navigateAway
+                };
+                WebUpdatesCommons.performAuthentication(authParams);
             }
 
             function _onSuccessfulAuthentication(associationResp) {

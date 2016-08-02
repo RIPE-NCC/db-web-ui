@@ -202,14 +202,19 @@
             }
 
             function _performAuthentication() {
-                WebUpdatesCommons.performAuthentication(
-                    $scope.maintainers,
-                    'ForceDelete',
-                    $scope.object.source,
-                    $scope.object.type,
-                    $scope.object.name,
-                    _onSuccessfulAuthentication,
-                    cancel);
+                var authParams = {
+                    maintainers: $scope.maintainers,
+                    operation: 'ForceDelete',
+                    object: {
+                        source: $scope.object.source,
+                        type: $scope.object.type,
+                        name: $scope.object.name
+                    },
+                    isLirObject: null,
+                    successClbk:_onSuccessfulAuthentication,
+                    failureClbk: cancel
+                };
+                WebUpdatesCommons.performAuthentication(authParams);
             }
 
             function _onSuccessfulAuthentication() {

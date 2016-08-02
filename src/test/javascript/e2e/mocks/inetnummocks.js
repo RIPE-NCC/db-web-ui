@@ -39,143 +39,6 @@ exports.module = function () {
                         'key': 'EU-IBM-NIC-MNT'
                     }]
                 },
-                'api/whois/RIPE/aut-num/AS12467?unfiltered=true': {
-                    status: 200,
-                    data: {
-                        objects: {
-                            object: [{
-                                type: 'aut-num',
-                                link: {
-                                    type: 'locator',
-                                    href: 'http://rest-prepdev.db.ripe.net/ripe/aut-num/AS12467'
-                                },
-                                'source': {
-                                    'id': 'ripe'
-                                },
-                                'primary-key': {
-                                    'attribute': [{
-                                        'name': 'aut-num',
-                                        'value': 'AS12467'
-                                    }]
-                                },
-                                'attributes': {
-                                    'attribute': [{
-                                        'name': 'aut-num',
-                                        'value': 'AS12467'
-                                    }, {
-                                        'name': 'as-name',
-                                        'value': 'UNSPECIFIED'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-SI89-RIPE'
-                                        },
-                                        'name': 'org',
-                                        'value': 'ORG-SI89-RIPE',
-                                        'referenced-type': 'organisation'
-                                    }, {
-                                        'name': 'import',
-                                        'value': 'from AS5400 accept ANY'
-                                    }, {
-                                        'name': 'import',
-                                        'value': 'from AS702 accept ANY'
-                                    }, {
-                                        'name': 'export',
-                                        'value': 'to AS5400 announce AS12467'
-                                    }, {
-                                        'name': 'export',
-                                        'value': 'to AS702 announce AS12467'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/SIG20-RIPE'
-                                        },
-                                        'name': 'admin-c',
-                                        'value': 'SIG20-RIPE',
-                                        'referenced-type': 'role'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/person/MF7462-RIPE'
-                                        },
-                                        'name': 'tech-c',
-                                        'value': 'MF7462-RIPE',
-                                        'referenced-type': 'person'
-                                    }, {
-                                        'name': 'remarks',
-                                        'value': 'For information on \'status:\' attribute read https://www.ripe.net/data-tools/db/faq/faq-status-values-legacy-resources'
-                                    }, {
-                                        'name': 'status',
-                                        'value': 'ASSIGNED'
-                                    }, {
-                                        'name': 'notify',
-                                        'value': '***@aladdin.com'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT'
-                                        },
-                                        'name': 'mnt-by',
-                                        'value': 'RIPE-NCC-END-MNT',
-                                        'referenced-type': 'mntner'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/AS5486-MNT'
-                                        },
-                                        'name': 'mnt-by',
-                                        'value': 'AS5486-MNT',
-                                        'referenced-type': 'mntner'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-ALADDIN'
-                                        },
-                                        'name': 'mnt-routes',
-                                        'value': 'MNT-ALADDIN',
-                                        'referenced-type': 'mntner'
-                                    }, {
-                                        'name': 'created',
-                                        'value': '1970-01-01T00:00:00Z'
-                                    }, {
-                                        'name': 'last-modified',
-                                        'value': '2015-05-05T04:31:55Z'
-                                    }, {
-                                        'name': 'source',
-                                        'value': 'RIPE'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-AGNS1-RIPE'
-                                        },
-                                        'name': 'sponsoring-org',
-                                        'value': 'ORG-AGNS1-RIPE',
-                                        'referenced-type': 'organisation'
-                                    }]
-                                },
-                                'tags': {
-                                    'tag': [{
-                                        'id': 'RIPE-REGISTRY-RESOURCE',
-                                        'data': null
-                                    }]
-                                }
-                            }]
-                        },
-                        'terms-and-conditions': {
-                            'type': 'locator',
-                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
-                        }
-                    }
-                },
-                'api/whois/autocomplete?extended=true&field=inetnum&query=193.0.4.0+-+193.0.4.255': {
-                    data: [{
-                        'key': '193.0.4.0 - 193.0.4.255',
-                        'type': 'inetnum'
-                    }]
-                },
-                'api/whois/autocomplete?extended=true&field=inetnum&query=213.159.160.0+-+213.159.190.255': {
-                    data: []
-                },
                 'api/whois/search?flags=lr&query-string=193.0.4.0+-+193.0.4.255&type-filter=inetnum': {
                     data: {
                         'service': {
@@ -296,6 +159,125 @@ exports.module = function () {
                                     'tag': [{
                                         'id': 'RIPE-USER-RESOURCE',
                                         'data': null
+                                    }]
+                                }
+                            }]
+                        },
+                        'terms-and-conditions': {
+                            'type': 'locator',
+                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+                        }
+                    }
+                },
+                'api/whois/search?flags=lr&ignore404=true&query-string=2001:888:2000::%2F38&type-filter=inet6num': {
+                    data: {
+                        'service': {
+                            'name': 'search'
+                        },
+                        'parameters': {
+                            'inverse-lookup': {},
+                            'type-filters': {
+                                'type-filter': [{
+                                    'id': 'inet6num'
+                                }]
+                            },
+                            'flags': {
+                                'flag': [{
+                                    'value': 'one-less'
+                                }, {
+                                    'value': 'no-referenced'
+                                }]
+                            },
+                            'query-strings': {
+                                'query-string': [{
+                                    'value': '2001:888:2000::/38'
+                                }]
+                            },
+                            'sources': {}
+                        },
+                        'objects': {
+                            'object': [{
+                                'type': 'inet6num',
+                                'link': {
+                                    'type': 'locator',
+                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:888:2000::/36'
+                                },
+                                'source': {
+                                    'id': 'ripe'
+                                },
+                                'primary-key': {
+                                    'attribute': [{
+                                        'name': 'inet6num',
+                                        'value': '2001:888:2000::/36'
+                                    }]
+                                },
+                                'attributes': {
+                                    'attribute': [{
+                                        'name': 'inet6num',
+                                        'value': '2001:888:2000::/36'
+                                    }, {
+                                        'name': 'netname',
+                                        'value': 'XS4ALL'
+                                    }, {
+                                        'name': 'descr',
+                                        'value': 'XS4ALL Internet BV'
+                                    }, {
+                                        'name': 'descr',
+                                        'value': 'Colocation services'
+                                    }, {
+                                        'name': 'country',
+                                        'value': 'NL'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE'
+                                        },
+                                        'name': 'admin-c',
+                                        'value': 'XS42-RIPE',
+                                        'referenced-type': 'role'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE'
+                                        },
+                                        'name': 'tech-c',
+                                        'value': 'XS42-RIPE',
+                                        'referenced-type': 'role'
+                                    }, {
+                                        'name': 'status',
+                                        'value': 'AGGREGATED-BY-LIR'
+                                    }, {
+                                        'name': 'assignment-size',
+                                        'value': '48'
+                                    }, {
+                                        'name': 'remarks',
+                                        'value': 'Please send email to \'abuse@xs4all.nl\' for complaints'
+                                    }, {
+                                        'name': 'remarks',
+                                        'value': 'regarding portscans, DoS attacks and spam.'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT'
+                                        },
+                                        'name': 'mnt-by',
+                                        'value': 'XS4ALL-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'name': 'created',
+                                        'value': '2011-02-16T08:38:25Z'
+                                    }, {
+                                        'name': 'last-modified',
+                                        'value': '2011-02-16T14:41:14Z'
+                                    }, {
+                                        'name': 'source',
+                                        'value': 'RIPE',
+                                        'comment': 'Filtered'
+                                    }]
+                                },
+                                'tags': {
+                                    'tag': [{
+                                        'id': 'RIPE-USER-RESOURCE'
                                     }]
                                 }
                             }]
@@ -442,6 +424,134 @@ exports.module = function () {
                     }
 
                 },
+                'api/whois/RIPE/aut-num/AS12467?unfiltered=true': {
+                    status: 200,
+                    data: {
+                        objects: {
+                            object: [{
+                                type: 'aut-num',
+                                link: {
+                                    type: 'locator',
+                                    href: 'http://rest-prepdev.db.ripe.net/ripe/aut-num/AS12467'
+                                },
+                                'source': {
+                                    'id': 'ripe'
+                                },
+                                'primary-key': {
+                                    'attribute': [{
+                                        'name': 'aut-num',
+                                        'value': 'AS12467'
+                                    }]
+                                },
+                                'attributes': {
+                                    'attribute': [{
+                                        'name': 'aut-num',
+                                        'value': 'AS12467'
+                                    }, {
+                                        'name': 'as-name',
+                                        'value': 'UNSPECIFIED'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-SI89-RIPE'
+                                        },
+                                        'name': 'org',
+                                        'value': 'ORG-SI89-RIPE',
+                                        'referenced-type': 'organisation'
+                                    }, {
+                                        'name': 'import',
+                                        'value': 'from AS5400 accept ANY'
+                                    }, {
+                                        'name': 'import',
+                                        'value': 'from AS702 accept ANY'
+                                    }, {
+                                        'name': 'export',
+                                        'value': 'to AS5400 announce AS12467'
+                                    }, {
+                                        'name': 'export',
+                                        'value': 'to AS702 announce AS12467'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/SIG20-RIPE'
+                                        },
+                                        'name': 'admin-c',
+                                        'value': 'SIG20-RIPE',
+                                        'referenced-type': 'role'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/person/MF7462-RIPE'
+                                        },
+                                        'name': 'tech-c',
+                                        'value': 'MF7462-RIPE',
+                                        'referenced-type': 'person'
+                                    }, {
+                                        'name': 'remarks',
+                                        'value': 'For information on \'status:\' attribute read https://www.ripe.net/data-tools/db/faq/faq-status-values-legacy-resources'
+                                    }, {
+                                        'name': 'status',
+                                        'value': 'ASSIGNED'
+                                    }, {
+                                        'name': 'notify',
+                                        'value': '***@aladdin.com'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT'
+                                        },
+                                        'name': 'mnt-by',
+                                        'value': 'RIPE-NCC-END-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/AS5486-MNT'
+                                        },
+                                        'name': 'mnt-by',
+                                        'value': 'AS5486-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-ALADDIN'
+                                        },
+                                        'name': 'mnt-routes',
+                                        'value': 'MNT-ALADDIN',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'name': 'created',
+                                        'value': '1970-01-01T00:00:00Z'
+                                    }, {
+                                        'name': 'last-modified',
+                                        'value': '2015-05-05T04:31:55Z'
+                                    }, {
+                                        'name': 'source',
+                                        'value': 'RIPE'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-AGNS1-RIPE'
+                                        },
+                                        'name': 'sponsoring-org',
+                                        'value': 'ORG-AGNS1-RIPE',
+                                        'referenced-type': 'organisation'
+                                    }]
+                                },
+                                'tags': {
+                                    'tag': [{
+                                        'id': 'RIPE-REGISTRY-RESOURCE',
+                                        'data': null
+                                    }]
+                                }
+                            }]
+                        },
+                        'terms-and-conditions': {
+                            'type': 'locator',
+                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+                        }
+                    }
+                },
                 'api/whois/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255?unfiltered=true': {
                     data: {
                         'objects': {
@@ -559,6 +669,112 @@ exports.module = function () {
                                 'tags': {
                                     'tag': [{
                                         'id': 'RIPE-REGISTRY-RESOURCE'
+                                    }]
+                                }
+                            }]
+                        },
+                        'terms-and-conditions': {
+                            'type': 'locator',
+                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+                        }
+                    }
+                },
+                'api/whois/RIPE/inetnum/185.102.172.0%20-%20185.102.175.255?unfiltered=true&unformatted=true': {
+                    data: {
+                        'objects': {
+                            'object': [{
+                                'type': 'inetnum',
+                                'link': {
+                                    'type': 'locator',
+                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/inetnum/185.102.172.0 - 185.102.175.255'
+                                },
+                                'source': {
+                                    'id': 'ripe'
+                                },
+                                'primary-key': {
+                                    'attribute': [{
+                                        'name': 'inetnum',
+                                        'value': '185.102.172.0 - 185.102.175.255'
+                                    }]
+                                },
+                                'attributes': {
+                                    'attribute': [{
+                                        'name': 'inetnum',
+                                        'value': '        185.102.172.0 - 185.102.175.255'
+                                    }, {
+                                        'name': 'netname',
+                                        'value': '        NL-A2B-CONNECT-20150601'
+                                    }, {
+                                        'name': 'country',
+                                        'value': '        ES'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-ACB5-RIPE'
+                                        },
+                                        'name': 'org',
+                                        'value': '            ORG-ACB5-RIPE',
+                                        'referenced-type': 'organisation'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/AS51088-RIPE'
+                                        },
+                                        'name': 'admin-c',
+                                        'value': '        AS51088-RIPE',
+                                        'referenced-type': 'role'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/AS51088-RIPE'
+                                        },
+                                        'name': 'tech-c',
+                                        'value': '         AS51088-RIPE',
+                                        'referenced-type': 'role'
+                                    }, {
+                                        'name': 'status',
+                                        'value': '         ALLOCATED PA'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT'
+                                        },
+                                        'name': 'mnt-by',
+                                        'value': '         RIPE-NCC-HM-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/A2B-INTERNET-MNT'
+                                        },
+                                        'name': 'mnt-lower',
+                                        'value': '      A2B-INTERNET-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/MODMC-MNT {185.102.172.0/22}'
+                                        },
+                                        'name': 'mnt-routes',
+                                        'value': '     MODMC-MNT {185.102.172.0/22}',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'name': 'created',
+                                        'value': '        2015-06-01T09:48:00Z'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/MODMC-MNT'
+                                        },
+                                        'name': 'mnt-domains',
+                                        'value': '    MODMC-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'name': 'last-modified',
+                                        'value': '  2015-08-14T10:52:12Z'
+                                    }, {
+                                        'name': 'source',
+                                        'value': '         RIPE'
                                     }]
                                 }
                             }]
@@ -874,41 +1090,14 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/autocomplete?extended=true&field=inet6num&query=2001:888:2000::%2F38': {
-                    data: []
-                },
-                'api/whois/search?flags=lr&ignore404=true&query-string=2001:888:2000::%2F38&type-filter=inet6num': {
+                'api/whois/RIPE/inet6num/2001:978:ffff:fffe::%2F64?unfiltered=true': {
                     data: {
-                        'service': {
-                            'name': 'search'
-                        },
-                        'parameters': {
-                            'inverse-lookup': {},
-                            'type-filters': {
-                                'type-filter': [{
-                                    'id': 'inet6num'
-                                }]
-                            },
-                            'flags': {
-                                'flag': [{
-                                    'value': 'one-less'
-                                }, {
-                                    'value': 'no-referenced'
-                                }]
-                            },
-                            'query-strings': {
-                                'query-string': [{
-                                    'value': '2001:888:2000::/38'
-                                }]
-                            },
-                            'sources': {}
-                        },
                         'objects': {
                             'object': [{
                                 'type': 'inet6num',
                                 'link': {
                                     'type': 'locator',
-                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:888:2000::/36'
+                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:978:ffff:fffe::/64'
                                 },
                                 'source': {
                                     'id': 'ripe'
@@ -916,71 +1105,58 @@ exports.module = function () {
                                 'primary-key': {
                                     'attribute': [{
                                         'name': 'inet6num',
-                                        'value': '2001:888:2000::/36'
+                                        'value': '2001:978:ffff:fffe::/64'
                                     }]
                                 },
                                 'attributes': {
                                     'attribute': [{
                                         'name': 'inet6num',
-                                        'value': '2001:888:2000::/36'
+                                        'value': '2001:978:ffff:fffe::/64'
                                     }, {
                                         'name': 'netname',
-                                        'value': 'XS4ALL'
+                                        'value': 'ITEX-6NET'
                                     }, {
                                         'name': 'descr',
-                                        'value': 'XS4ALL Internet BV'
-                                    }, {
-                                        'name': 'descr',
-                                        'value': 'Colocation services'
+                                        'value': 'ITEX Media GmbH'
                                     }, {
                                         'name': 'country',
-                                        'value': 'NL'
+                                        'value': 'DE'
                                     }, {
                                         'link': {
                                             'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE'
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/person/ITEX-RIPE'
                                         },
                                         'name': 'admin-c',
-                                        'value': 'XS42-RIPE',
-                                        'referenced-type': 'role'
+                                        'value': 'ITEX-RIPE',
+                                        'referenced-type': 'person'
                                     }, {
                                         'link': {
                                             'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE'
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/person/ITEX-RIPE'
                                         },
                                         'name': 'tech-c',
-                                        'value': 'XS42-RIPE',
-                                        'referenced-type': 'role'
+                                        'value': 'ITEX-RIPE',
+                                        'referenced-type': 'person'
                                     }, {
                                         'name': 'status',
-                                        'value': 'AGGREGATED-BY-LIR'
-                                    }, {
-                                        'name': 'assignment-size',
-                                        'value': '48'
-                                    }, {
-                                        'name': 'remarks',
-                                        'value': 'Please send email to \'abuse@xs4all.nl\' for complaints'
-                                    }, {
-                                        'name': 'remarks',
-                                        'value': 'regarding portscans, DoS attacks and spam.'
+                                        'value': 'ALLOCATED-BY-LIR'
                                     }, {
                                         'link': {
                                             'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT'
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/COGENT-HM-MNT'
                                         },
                                         'name': 'mnt-by',
-                                        'value': 'XS4ALL-MNT',
+                                        'value': 'COGENT-HM-MNT',
                                         'referenced-type': 'mntner'
                                     }, {
                                         'name': 'created',
-                                        'value': '2011-02-16T08:38:25Z'
+                                        'value': '2002-11-14T13:31:20Z'
                                     }, {
                                         'name': 'last-modified',
-                                        'value': '2011-02-16T14:41:14Z'
+                                        'value': '2005-01-05T13:52:29Z'
                                     }, {
                                         'name': 'source',
-                                        'value': 'RIPE',
-                                        'comment': 'Filtered'
+                                        'value': 'RIPE'
                                     }]
                                 },
                                 'tags': {
@@ -1097,133 +1273,6 @@ exports.module = function () {
                                         },
                                         'name': 'mnt-by',
                                         'value': 'RIPE-NCC-HM-MNT',
-                                        'referenced-type': 'mntner'
-                                    }, {
-                                        'name': 'created',
-                                        'value': '2011-02-16T08:38:25Z'
-                                    }, {
-                                        'name': 'last-modified',
-                                        'value': '2011-02-16T14:41:14Z'
-                                    }, {
-                                        'name': 'source',
-                                        'value': 'RIPE',
-                                        'comment': 'Filtered'
-                                    }]
-                                },
-                                'tags': {
-                                    'tag': [{
-                                        'id': 'RIPE-USER-RESOURCE'
-                                    }]
-                                }
-                            }]
-                        },
-                        'terms-and-conditions': {
-                            'type': 'locator',
-                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
-                        }
-                    }
-                },
-                'api/whois/RIPE/inet6num/2001:998:2000::%2F36?unfiltered=true': {
-                    data: {
-                        'service': {
-                            'name': 'search'
-                        },
-                        'parameters': {
-                            'inverse-lookup': {},
-                            'type-filters': {
-                                'type-filter': [{
-                                    'id': 'inet6num'
-                                }]
-                            },
-                            'flags': {
-                                'flag': [{
-                                    'value': 'one-less'
-                                }, {
-                                    'value': 'no-referenced'
-                                }]
-                            },
-                            'query-strings': {
-                                'query-string': [{
-                                    'value': '2001:998:2000::/36'
-                                }]
-                            },
-                            'sources': {}
-                        },
-                        'objects': {
-                            'object': [{
-                                'type': 'inet6num',
-                                'link': {
-                                    'type': 'locator',
-                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:998:2000::/36'
-                                },
-                                'source': {
-                                    'id': 'ripe'
-                                },
-                                'primary-key': {
-                                    'attribute': [{
-                                        'name': 'inet6num',
-                                        'value': '2001:998:2000::/36'
-                                    }]
-                                },
-                                'attributes': {
-                                    'attribute': [{
-                                        'name': 'inet6num',
-                                        'value': '2001:998:2000::/36'
-                                    }, {
-                                        'name': 'netname',
-                                        'value': 'XS4ALL'
-                                    }, {
-                                        'name': 'descr',
-                                        'value': 'XS4ALL Internet BV'
-                                    }, {
-                                        'name': 'descr',
-                                        'value': 'Colocation services'
-                                    }, {
-                                        'name': 'country',
-                                        'value': 'NL'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE'
-                                        },
-                                        'name': 'admin-c',
-                                        'value': 'XS42-RIPE',
-                                        'referenced-type': 'role'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/XS42-RIPE'
-                                        },
-                                        'name': 'tech-c',
-                                        'value': 'XS42-RIPE',
-                                        'referenced-type': 'role'
-                                    }, {
-                                        'name': 'status',
-                                        'value': 'ASSIGNED'
-                                    }, {
-                                        'name': 'assignment-size',
-                                        'value': '48'
-                                    }, {
-                                        'name': 'remarks',
-                                        'value': 'Please send email to \'abuse@xs4all.nl\' for complaints'
-                                    }, {
-                                        'name': 'remarks',
-                                        'value': 'regarding portscans, DoS attacks and spam.'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/XS4ALL-MNT'
-                                        },
-                                        'name': 'mnt-by',
-                                        'value': 'XS4ALL-MNT',
-                                        'referenced-type': 'mntner'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT'
-                                        },
-                                        'name': 'mnt-by',
-                                        'value': 'RIPE-NCC-END-MNT',
                                         'referenced-type': 'mntner'
                                     }, {
                                         'name': 'created',
@@ -1380,78 +1429,172 @@ exports.module = function () {
                         }
                     }
                 },
-                'api/whois/RIPE/inet6num/2001:978:ffff:fffe::%2F64?unfiltered=true': {
+                'api/whois/RIPE/mntner/ERICSSON-MNT?password=ERICSSON-MNT&unfiltered=true': {
                     data: {
                         'objects': {
                             'object': [{
-                                'type': 'inet6num',
+                                'type': 'mntner',
                                 'link': {
                                     'type': 'locator',
-                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/inet6num/2001:978:ffff:fffe::/64'
+                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT'
                                 },
                                 'source': {
                                     'id': 'ripe'
                                 },
                                 'primary-key': {
                                     'attribute': [{
-                                        'name': 'inet6num',
-                                        'value': '2001:978:ffff:fffe::/64'
+                                        'name': 'mntner',
+                                        'value': 'ERICSSON-MNT'
                                     }]
                                 },
                                 'attributes': {
                                     'attribute': [{
-                                        'name': 'inet6num',
-                                        'value': '2001:978:ffff:fffe::/64'
+                                        'name': 'mntner',
+                                        'value': 'ERICSSON-MNT'
                                     }, {
-                                        'name': 'netname',
-                                        'value': 'ITEX-6NET'
+                                        'name': 'auth',
+                                        'value': 'MD5-PW $1$DT69FsfS$.mIZP.3D25bvLxSvR/KOW1'
+                                    }, {
+                                        'name': 'auth',
+                                        'value': 'SSO tdacruzper@ripe.net'
+                                    }, {
+                                        'name': 'auth',
+                                        'value': 'SSO bad@ripe.net'
                                     }, {
                                         'name': 'descr',
-                                        'value': 'ITEX Media GmbH'
-                                    }, {
-                                        'name': 'country',
-                                        'value': 'DE'
+                                        'value': 'Maintainer for all Ericsson objects'
                                     }, {
                                         'link': {
                                             'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/person/ITEX-RIPE'
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE'
                                         },
                                         'name': 'admin-c',
-                                        'value': 'ITEX-RIPE',
-                                        'referenced-type': 'person'
+                                        'value': 'ELIR1-RIPE',
+                                        'referenced-type': 'role'
                                     }, {
                                         'link': {
                                             'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/person/ITEX-RIPE'
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE'
                                         },
                                         'name': 'tech-c',
-                                        'value': 'ITEX-RIPE',
-                                        'referenced-type': 'person'
+                                        'value': 'ELIR1-RIPE',
+                                        'referenced-type': 'role'
                                     }, {
-                                        'name': 'status',
-                                        'value': 'ALLOCATED-BY-LIR'
+                                        'name': 'upd-to',
+                                        'value': '***@ericsson.com'
+                                    }, {
+                                        'name': 'mnt-nfy',
+                                        'value': '***@ericsson.com'
+                                    }, {
+                                        'name': 'notify',
+                                        'value': '***@ericsson.com'
                                     }, {
                                         'link': {
                                             'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/COGENT-HM-MNT'
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT'
                                         },
                                         'name': 'mnt-by',
-                                        'value': 'COGENT-HM-MNT',
+                                        'value': 'ERICSSON-MNT',
                                         'referenced-type': 'mntner'
                                     }, {
                                         'name': 'created',
-                                        'value': '2002-11-14T13:31:20Z'
+                                        'value': '2002-08-19T16:53:54Z'
                                     }, {
                                         'name': 'last-modified',
-                                        'value': '2005-01-05T13:52:29Z'
+                                        'value': '2016-07-05T13:15:03Z'
                                     }, {
                                         'name': 'source',
                                         'value': 'RIPE'
                                     }]
+                                }
+                            }]
+                        },
+                        'terms-and-conditions': {
+                            'type': 'locator',
+                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
+                        }
+                    }
+                },
+                'api/whois/RIPE/mntner/ERICSSON-MNT?password=xxx&unfiltered=true': {
+                    data: {
+                        'objects': {
+                            'object': [{
+                                'type': 'mntner',
+                                'link': {
+                                    'type': 'locator',
+                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT'
                                 },
-                                'tags': {
-                                    'tag': [{
-                                        'id': 'RIPE-USER-RESOURCE'
+                                'source': {
+                                    'id': 'ripe'
+                                },
+                                'primary-key': {
+                                    'attribute': [{
+                                        'name': 'mntner',
+                                        'value': 'ERICSSON-MNT'
+                                    }]
+                                },
+                                'attributes': {
+                                    'attribute': [{
+                                        'name': 'mntner',
+                                        'value': 'ERICSSON-MNT'
+                                    }, {
+                                        'name': 'auth',
+                                        'value': 'MD5-PW',
+                                        'comment': 'Filtered'
+                                    }, {
+                                        'name': 'auth',
+                                        'value': 'SSO',
+                                        'comment': 'Filtered'
+                                    }, {
+                                        'name': 'auth',
+                                        'value': 'SSO',
+                                        'comment': 'Filtered'
+                                    }, {
+                                        'name': 'descr',
+                                        'value': 'Maintainer for all Ericsson objects'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE'
+                                        },
+                                        'name': 'admin-c',
+                                        'value': 'ELIR1-RIPE',
+                                        'referenced-type': 'role'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE'
+                                        },
+                                        'name': 'tech-c',
+                                        'value': 'ELIR1-RIPE',
+                                        'referenced-type': 'role'
+                                    }, {
+                                        'name': 'upd-to',
+                                        'value': '***@ericsson.com'
+                                    }, {
+                                        'name': 'mnt-nfy',
+                                        'value': '***@ericsson.com'
+                                    }, {
+                                        'name': 'notify',
+                                        'value': '***@ericsson.com'
+                                    }, {
+                                        'link': {
+                                            'type': 'locator',
+                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT'
+                                        },
+                                        'name': 'mnt-by',
+                                        'value': 'ERICSSON-MNT',
+                                        'referenced-type': 'mntner'
+                                    }, {
+                                        'name': 'created',
+                                        'value': '2002-08-19T16:53:54Z'
+                                    }, {
+                                        'name': 'last-modified',
+                                        'value': '2016-07-05T13:15:03Z'
+                                    }, {
+                                        'name': 'source',
+                                        'value': 'RIPE',
+                                        'comment': 'Filtered'
                                     }]
                                 }
                             }]
@@ -1697,181 +1840,17 @@ exports.module = function () {
                     }
 
                 },
-                'api/whois/RIPE/mntner/ERICSSON-MNT?password=ERICSSON-MNT&unfiltered=true': {
-                    data: {
-                        'objects': {
-                            'object': [{
-                                'type': 'mntner',
-                                'link': {
-                                    'type': 'locator',
-                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT'
-                                },
-                                'source': {
-                                    'id': 'ripe'
-                                },
-                                'primary-key': {
-                                    'attribute': [{
-                                        'name': 'mntner',
-                                        'value': 'ERICSSON-MNT'
-                                    }]
-                                },
-                                'attributes': {
-                                    'attribute': [{
-                                        'name': 'mntner',
-                                        'value': 'ERICSSON-MNT'
-                                    }, {
-                                        'name': 'auth',
-                                        'value': 'MD5-PW $1$DT69FsfS$.mIZP.3D25bvLxSvR/KOW1'
-                                    }, {
-                                        'name': 'auth',
-                                        'value': 'SSO tdacruzper@ripe.net'
-                                    }, {
-                                        'name': 'auth',
-                                        'value': 'SSO bad@ripe.net'
-                                    }, {
-                                        'name': 'descr',
-                                        'value': 'Maintainer for all Ericsson objects'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE'
-                                        },
-                                        'name': 'admin-c',
-                                        'value': 'ELIR1-RIPE',
-                                        'referenced-type': 'role'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE'
-                                        },
-                                        'name': 'tech-c',
-                                        'value': 'ELIR1-RIPE',
-                                        'referenced-type': 'role'
-                                    }, {
-                                        'name': 'upd-to',
-                                        'value': '***@ericsson.com'
-                                    }, {
-                                        'name': 'mnt-nfy',
-                                        'value': '***@ericsson.com'
-                                    }, {
-                                        'name': 'notify',
-                                        'value': '***@ericsson.com'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT'
-                                        },
-                                        'name': 'mnt-by',
-                                        'value': 'ERICSSON-MNT',
-                                        'referenced-type': 'mntner'
-                                    }, {
-                                        'name': 'created',
-                                        'value': '2002-08-19T16:53:54Z'
-                                    }, {
-                                        'name': 'last-modified',
-                                        'value': '2016-07-05T13:15:03Z'
-                                    }, {
-                                        'name': 'source',
-                                        'value': 'RIPE'
-                                    }]
-                                }
-                            }]
-                        },
-                        'terms-and-conditions': {
-                            'type': 'locator',
-                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
-                        }
-                    }
+                'api/whois/autocomplete?extended=true&field=inetnum&query=193.0.4.0+-+193.0.4.255': {
+                    data: [{
+                        'key': '193.0.4.0 - 193.0.4.255',
+                        'type': 'inetnum'
+                    }]
                 },
-                'api/whois/RIPE/mntner/ERICSSON-MNT?password=xxx&unfiltered=true': {
-                    data: {
-                        'objects': {
-                            'object': [{
-                                'type': 'mntner',
-                                'link': {
-                                    'type': 'locator',
-                                    'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT'
-                                },
-                                'source': {
-                                    'id': 'ripe'
-                                },
-                                'primary-key': {
-                                    'attribute': [{
-                                        'name': 'mntner',
-                                        'value': 'ERICSSON-MNT'
-                                    }]
-                                },
-                                'attributes': {
-                                    'attribute': [{
-                                        'name': 'mntner',
-                                        'value': 'ERICSSON-MNT'
-                                    }, {
-                                        'name': 'auth',
-                                        'value': 'MD5-PW',
-                                        'comment': 'Filtered'
-                                    }, {
-                                        'name': 'auth',
-                                        'value': 'SSO',
-                                        'comment': 'Filtered'
-                                    }, {
-                                        'name': 'auth',
-                                        'value': 'SSO',
-                                        'comment': 'Filtered'
-                                    }, {
-                                        'name': 'descr',
-                                        'value': 'Maintainer for all Ericsson objects'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE'
-                                        },
-                                        'name': 'admin-c',
-                                        'value': 'ELIR1-RIPE',
-                                        'referenced-type': 'role'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/role/ELIR1-RIPE'
-                                        },
-                                        'name': 'tech-c',
-                                        'value': 'ELIR1-RIPE',
-                                        'referenced-type': 'role'
-                                    }, {
-                                        'name': 'upd-to',
-                                        'value': '***@ericsson.com'
-                                    }, {
-                                        'name': 'mnt-nfy',
-                                        'value': '***@ericsson.com'
-                                    }, {
-                                        'name': 'notify',
-                                        'value': '***@ericsson.com'
-                                    }, {
-                                        'link': {
-                                            'type': 'locator',
-                                            'href': 'http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT'
-                                        },
-                                        'name': 'mnt-by',
-                                        'value': 'ERICSSON-MNT',
-                                        'referenced-type': 'mntner'
-                                    }, {
-                                        'name': 'created',
-                                        'value': '2002-08-19T16:53:54Z'
-                                    }, {
-                                        'name': 'last-modified',
-                                        'value': '2016-07-05T13:15:03Z'
-                                    }, {
-                                        'name': 'source',
-                                        'value': 'RIPE',
-                                        'comment': 'Filtered'
-                                    }]
-                                }
-                            }]
-                        },
-                        'terms-and-conditions': {
-                            'type': 'locator',
-                            'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'
-                        }
-                    }
+                'api/whois/autocomplete?extended=true&field=inetnum&query=213.159.160.0+-+213.159.190.255': {
+                    data: []
+                },
+                'api/whois/autocomplete?extended=true&field=inet6num&query=2001:888:2000::%2F38': {
+                    data: []
                 },
                 'api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=ERICSSON-MNT': {
                     data: [{

@@ -118,10 +118,10 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', func
             return deferredObject.promise;
         };
 
-        modalService.openAuthenticationModal = function (method, source, objectType, objectName, mntners, mntnersWithoutPassword, allowForcedDelete, isLirObject) {
+        modalService.openAuthenticationModal = function (method, object, mntners, mntnersWithoutPassword, allowForcedDelete, isLirObject) {
             var deferredObject = $q.defer();
 
-            $log.debug('openAuthenticationModal start for method: ' + method + ' and ' + source + '  mntners:' + JSON.stringify(mntners));
+            $log.debug('openAuthenticationModal start for method: ' + method + ' and ' + object.source + '  mntners:' + JSON.stringify(mntners), 'isLirObject', isLirObject);
 
             var modalInstance = $modal.open({
                 animation: true,
@@ -133,13 +133,13 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', func
                         return method;
                     },
                     source: function () {
-                        return source;
+                        return object.source;
                     },
                     objectType: function () {
-                        return objectType;
+                        return object.type;
                     },
                     objectName: function () {
-                        return objectName;
+                        return object.name;
                     },
                     mntners: function () {
                         return mntners;

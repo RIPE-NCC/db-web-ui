@@ -17,6 +17,12 @@
             var nccMntners = [nccHmMntner, nccEndMntner, nccLegacyMntner];
 
             mntnerService.getAuthForObjectIfNeeded = function (whoisObject, ssoAccts, operation, source, objectType, name) {
+
+                var object = {
+                    source: source,
+                    type: objectType,
+                    name: name
+                };
                 var promiseHandler = function (resolve, reject) {
                     if (!mntnerService.isSsoAuthorised(whoisObject, ssoAccts)) {
                         // pop up an auth box
@@ -31,7 +37,7 @@
                             function (enrichedMntners) {
                                 var mntnersWithPasswords = mntnerService.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
                                 var mntnersWithoutPasswords = mntnerService.getMntnersNotEligibleForPasswordAuthentication(ssoAccts, enrichedMntners, []);
-                                ModalService.openAuthenticationModal(operation, source, objectType, name, mntnersWithPasswords, mntnersWithoutPasswords, false).then(
+                                ModalService.openAuthenticationModal(operation, object, mntnersWithPasswords, mntnersWithoutPasswords, false, null).then(
                                     resolve, reject);
                             },
                             reject
@@ -175,7 +181,7 @@
 
                 //do not need password if RIPE-NCC-RPSL-MNT is present
                 if (_.some(mntners, {key: nccRpslMntner})) {
-                    $log.debug('needsPasswordAuthentication: no: RIPE-NCC-RPSL-MNT is present and do not require authentication');
+                    $log.debug('needsPasswordAuthentication: no: RIPE-NCC-RPSL-MNT is present and does not require authentication');
                     return false;
                 }
 
@@ -188,7 +194,7 @@
                     $log.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
                     return false;
                 }
-                $log.debug('needsPasswordAuthentication.yes:');
+                $log.debug('needsPasswordAuthentication: yes');
 
                 return true;
             };
