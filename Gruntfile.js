@@ -2,6 +2,7 @@
 'use strict';
 
 var fs = require('fs');
+var os = require('os');
 var serveStatic = require('serve-static');
 
 // # Globbing
@@ -21,13 +22,19 @@ module.exports = function (grunt) {
         ngtemplates: 'grunt-angular-templates',
         cdnify: 'grunt-google-cdn',
         configureProxies: 'grunt-connect-proxy',
-        protractor: 'grunt-protractor-runner'
+        protractor: 'grunt-protractor-runner',
+        instrument: 'grunt-istanbul'
     });
 
     // Configurable paths for the application
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
         dist: require('./bower.json').distPath || 'dist'
+    };
+
+	// Detect environment for e2e remote process
+    var e2eLocalOrRemote = function() {
+        return os.hostname().indexOf('db-tools-1.') === 0 ? 'e2eRemote' : 'e2eLocal';
     };
 
     var environments = {
@@ -134,7 +141,7 @@ module.exports = function (grunt) {
             options: {
                 port: 9080,
                 // Change this to '0.0.0.0' to access the server from outside.
-                hostname: 'localhost',
+                hostname: '0.0.0.0',
                 livereload: 35729
             },
             livereload: {
@@ -172,6 +179,7 @@ module.exports = function (grunt) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic('.tmp'),
+                            serveStatic('instrumented'),
                             connect().use(
                                 '/bower_components',
                                 serveStatic('./bower_components')
@@ -253,7 +261,15 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '.tmp'
+            server: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        'instrumented'
+                    ]
+                }]
+            }
         },
 
         // Add vendor prefixed styles
@@ -631,6 +647,44 @@ module.exports = function (grunt) {
                 configFile: 'src/test/javascript/karma.conf.js',
                 singleRun: true
             }
+        },
+
+        // E2E config
+        protractor_coverage: {
+            options: {
+                keepAlive: true,
+                noColor: false,
+                collectorPort: 3001,
+                coverageDir: 'reports/e2e-coverage'
+            },
+            e2eLocal: {
+                options: {
+                    configFile: 'src/test/javascript/protractor-e2e-coverage-local.conf.js'
+                }
+            },
+            e2eRemote: {
+                options: {
+                    configFile: '/home/dbase/GRUNT/protractor-e2e-coverage-remote.conf.js'
+                }
+            }
+        },
+
+        instrument: {
+            files: 'scripts/**/*.js',
+            options: {
+                cwd: 'app',
+                lazy: true,
+                basePath: 'instrumented'
+            }
+        },
+
+        makeReport: {
+            src: 'reports/e2e-coverage/*.json',
+            options: {
+                type: 'lcov',
+                dir: 'reports/e2e-coverage',
+                print: 'detail'
+            }
         }
     });
 
@@ -720,5 +774,17 @@ module.exports = function (grunt) {
         'newer:jscs',
         'test',
         'build'
+    ]);
+	grunt.registerTask('e2e-coverage', [
+        'clean:server',
+        'e2eapp',
+        'copy:processtags',
+        'wiredep:sass',
+        'instrument',
+        //'useminPrepare',
+        //'concurrent:dist',
+        'connect:e2e',
+        'protractor_coverage:' + e2eLocalOrRemote(),
+        'makeReport'
     ]);
 };
