@@ -63,6 +63,14 @@ module.exports = function (grunt) {
             PORTAL_URL: 'https://my.ripe.net/',
             BANNER: 'Welcome to the TEST Environment of the RIPE Database. You can use this environment to learn and experiment with RIPE Database. It uses a TEST \'source\' and any changes are reverted at night.'
         },
+        training: {
+            ENV: 'rc',
+            GTM_ID: 'GTM-T5J6RH',
+            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://training.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.ripe.net/',
+            PORTAL_URL: 'https://my.ripe.net/',
+            BANNER: 'Please fill out the template below. If you have any problems completing the RIPE Database activities, please make a screenshot of the filled out template and send it to academy@ripe.net with your questions.'
+        },
         prod: {
             ENV: 'prod',
             GTM_ID: 'GTM-TP3SK6',
