@@ -23,7 +23,8 @@ public class LoggingAspectConfiguration {
         Constants.SPRING_PROFILE_PREPDEV,
         Constants.SPRING_PROFILE_RC,
         Constants.SPRING_PROFILE_TEST,
-        Constants.SPRING_PROFILE_PRD})
+        Constants.SPRING_PROFILE_PRD,
+        Constants.SPRING_PROFILE_TRAINING})
     public LoggingAspect loggingAspect() {
         return loggingAspect;
     }

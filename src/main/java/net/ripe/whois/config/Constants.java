@@ -21,4 +21,6 @@ public final class Constants {
 
     public static final String SPRING_PROFILE_PRD = "prd";
 
+    public static final String SPRING_PROFILE_TRAINING = "training";
+
 }
