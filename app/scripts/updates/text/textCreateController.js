@@ -215,19 +215,6 @@
                 }
             }
 
-            function isLirObject(attributes) {
-                return _isAllocation(attributes) || !!_.find(attributes, {name: 'org-type', value: 'LIR'});
-            }
-
-            function _isAllocation(attributes) {
-                if (!attributes) {
-                    return false;
-                }
-                var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-RIR'];
-                var status = attributes.getSingleAttributeOnName('status');
-                return status && _.includes(allocationStatuses, status.value);
-            }
-
             function cancel() {
                 if ($window.confirm('You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.')) {
                     $state.transitionTo('webupdates.select');

@@ -2,7 +2,7 @@
 var mockModule = require('./mocks/inetnummocks');
 var page = require('./homePageObject');
 
-fdescribe('Modifying an inetnum', function () {
+describe('Modifying an inetnum', function () {
 
     'use strict';
 
