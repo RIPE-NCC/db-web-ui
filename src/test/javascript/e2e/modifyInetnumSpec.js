@@ -22,7 +22,7 @@ describe('Modifying an inetnum', function () {
         expect(page.modalBody.getText()).toContain('The default LIR Maintainer has not yet been set up for this object');
     });
 
-    fit('which is an end user assignment should NOT show delete btn', function () {
+    it('which is an end user assignment should NOT show delete btn', function () {
         browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255');
         expect(page.btnDeleteObject.isPresent()).toBeFalsy();
     });
