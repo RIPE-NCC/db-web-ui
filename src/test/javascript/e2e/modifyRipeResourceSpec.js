@@ -1,7 +1,8 @@
 /*global beforeEach, browser, describe, expect, it, require */
 
 // Local requires
-var mockModule = require('./mocks/homepagemocks');
+var mockGet = require('./mocks/homemocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -9,9 +10,11 @@ var page = require('./homePageObject');
  */
 describe('Modifying a resource for a RIPE maintained object', function () {
 
+    'use strict';
+
     beforeEach(function () {
         browser.get(browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
     });
 
     it('should show org and sponsoring-org as read-only', function () {

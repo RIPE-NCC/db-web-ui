@@ -1,19 +1,20 @@
 /*global beforeEach, browser, describe, expect, it, require */
 
 // Local requires
-var mockModule = require('./mocks/inetnummocks');
+var mockGet = require('./mocks/mocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
  * Tests...
  */
-describe('The inet(6)num editor', function () {
+describe('The inetnum editor', function () {
 
     'use strict';
 
     beforeEach(function () {
         browser.get(browser.baseUrl);
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {
         //    console.log('>>>>>> ' + require('util').inspect(browserLog));

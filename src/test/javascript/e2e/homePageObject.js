@@ -122,9 +122,8 @@ module.exports = {
             }
             xpathExpr.push('[position()=', pos, ']');
 
-            var locator = element(by.xpath(xpathExpr.join('')));
             //console.log('pos', pos, 'type', type, 'attr', attr, 'locator', locator);
-            return locator;
+            return element(by.xpath(xpathExpr.join('')));
         }
 
         function playLine(line) {

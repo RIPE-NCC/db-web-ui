@@ -6,7 +6,7 @@ var baseUrl = function() {
     return [
         'http://',
         os.hostname(),
-        ':9002'
+        ':9004'
     ].join('');
 };
 

@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, module, spyOn*/
 'use strict';
 
 describe('webUpdates: CreateModifyController for organisation', function () {
@@ -11,14 +12,14 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     var OBJECT_TYPE = 'organisation';
     var SOURCE = 'TEST';
     var NAME = 'ORG-UA300-RIPE';
+    var PreferenceService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_, _PreferenceService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
@@ -27,8 +28,9 @@ describe('webUpdates: CreateModifyController for organisation', function () {
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
             OrganisationHelper = _OrganisationHelper_;
-            OrganisationHelper.updateAbuseC = function() {
-            };
+            OrganisationHelper.updateAbuseC = function() {};
+            PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             ModalService = {
                 openCreateRoleForAbuseCAttribute: function () {
@@ -36,7 +38,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
                         then: function (s) {
                             s(ROLE_OBJ);
                         }
-                    }
+                    };
                 }
             };
 
@@ -58,7 +60,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
             $httpBackend.whenGET('api/whois/'+SOURCE+'/'+OBJECT_TYPE+'/'+NAME+'?unfiltered=true').respond(DEFAULT_RESPONSE);
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
-                function(method,url) {
+                function() {
                     return [200, [ {key:'TEST-MNT', type:'mntner', auth:['MD5-PW','SSO']} ], {}];
                 });
 
@@ -127,7 +129,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
                     }];
 
     var DEFAULT_RESPONSE =
-        function(method,url) {
+        function() {
             return [200,
                 {
                     objects: {
