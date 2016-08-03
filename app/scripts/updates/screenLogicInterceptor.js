@@ -323,7 +323,11 @@ angular.module('updates')
 
             function _disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos) {
                 if (method === 'Modify') {
-                    attributes.getSingleAttributeOnName('status').$$meta.$$disable = true;
+                    var statusAttr = attributes.getSingleAttributeOnName('status');
+
+                    if(statusAttr.value !== 'NOT-SET') {
+                        statusAttr.$$meta.$$disable = true;
+                    }
                 }
             }
 
