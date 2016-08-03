@@ -25,7 +25,7 @@
             }
             var allocationStatuses = ['ALLOCATED PA', 'ALLOCATED PI', 'ALLOCATED UNSPECIFIED', 'ALLOCATED-BY-RIR'];
             var status = attributes.getSingleAttributeOnName('status');
-            return status && _.includes(allocationStatuses, status.value);
+            return status && _.includes(allocationStatuses, status.value.trim());
         }
 
     }]);
