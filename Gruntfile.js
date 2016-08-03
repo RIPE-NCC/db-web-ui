@@ -2,6 +2,7 @@
 'use strict';
 
 var fs = require('fs');
+var os = require('os');
 var serveStatic = require('serve-static');
 
 // # Globbing
@@ -21,13 +22,19 @@ module.exports = function (grunt) {
         ngtemplates: 'grunt-angular-templates',
         cdnify: 'grunt-google-cdn',
         configureProxies: 'grunt-connect-proxy',
-        protractor: 'grunt-protractor-runner'
+        protractor: 'grunt-protractor-runner',
+        instrument: 'grunt-istanbul'
     });
 
     // Configurable paths for the application
     var appConfig = {
         app: require('./bower.json').appPath || 'app',
         dist: require('./bower.json').distPath || 'dist'
+    };
+
+	// Detect environment for e2e remote process
+    var e2eLocalOrRemote = function() {
+        return os.hostname().indexOf('db-tools-1.') === 0 ? 'e2eRemote' : 'e2eLocal';
     };
 
     var environments = {
@@ -146,7 +153,7 @@ module.exports = function (grunt) {
             options: {
                 port: 9080,
                 // Change this to '0.0.0.0' to access the server from outside.
-                hostname: 'localhost',
+                hostname: '0.0.0.0',
                 livereload: 35729
             },
             livereload: {
@@ -184,6 +191,7 @@ module.exports = function (grunt) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic('.tmp'),
+                            serveStatic('instrumented'),
                             connect().use(
                                 '/bower_components',
                                 serveStatic('./bower_components')
@@ -265,7 +273,15 @@ module.exports = function (grunt) {
                     ]
                 }]
             },
-            server: '.tmp'
+            server: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tmp',
+                        'instrumented'
+                    ]
+                }]
+            }
         },
 
         // Add vendor prefixed styles
@@ -555,17 +571,30 @@ module.exports = function (grunt) {
                 options: {
                     process: function (content, path) {
                         var dir = path.substring(0, path.lastIndexOf('/'));
-                        // First, process the includes such as <!-- @include _index_app_body_start.html -->
-                        content = content.replace(/<!--\s*@include\s+([\S]+)\s*-->/g, function (m, filename) {
+                        var keeplooping;
+
+                        function substituteText(m, filename) {
+                            keeplooping = true;
+                            console.log('lookin for ' + dir + '/' + filename);
                             return fs.readFileSync(dir + '/' + filename).toString();
-                        });
-                        // Second, process the conditional includes: <!-- @includeif OPTION fileIfTrue fileIfFalse -->
-                        // OPTION is a config value set in this file, e.g. grunt.config("grunt.app.e2e", true);
-                        // fileIfFalse can be empty, in which case includeif is like an on/off switch instead of a toggle
-                        content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)(?:\s+([\S]+))?\s*-->/g, function (m, condition, trueFile, falseFile) {
+                        }
+
+                        function maybeSubstituteText(m, condition, trueFile, falseFile) {
+                            keeplooping = true;
                             var filename = grunt.config(condition) ? trueFile : falseFile;
                             return filename ? fs.readFileSync(dir + '/' + filename).toString() : '';
-                        });
+                        }
+
+                        do {
+                            keeplooping = false;
+                            // First, process the includes such as <!-- @include _index_app_body_start.html -->
+                            content = content.replace(/<!--\s*@include\s+([\S]+)\s*-->/g, substituteText);
+                            // Second, process the conditional includes: <!-- @includeif OPTION fileIfTrue fileIfFalse -->
+                            // OPTION is a config value set in this file, e.g. grunt.config("grunt.app.e2e", true);
+                            // fileIfFalse can be empty, in which case includeif is like an on/off switch instead of a toggle
+                            content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)(?:\s+([\S]+))?\s*-->/g, maybeSubstituteText);
+                        } while (keeplooping);
+
                         // Third, replace @echo directives with values from environment constants
                         content = content.replace(/<!--\s*@echo\s+([\S]+)\s*-->/g, function (m, group) {
                             return grunt.config('grunt.environment')[group] || '';
@@ -630,14 +659,55 @@ module.exports = function (grunt) {
                 configFile: 'src/test/javascript/karma.conf.js',
                 singleRun: true
             }
+        },
+
+        // E2E config
+        protractor_coverage: {
+            options: {
+                keepAlive: true,
+                noColor: false,
+                collectorPort: 3001,
+                coverageDir: 'reports/e2e-coverage'
+            },
+            e2eLocal: {
+                options: {
+                    configFile: 'src/test/javascript/protractor-e2e-coverage-local.conf.js'
+                }
+            },
+            e2eRemote: {
+                options: {
+                    configFile: '/home/dbase/GRUNT/protractor-e2e-coverage-remote.conf.js'
+                }
+            }
+        },
+
+        instrument: {
+            files: 'scripts/**/*.js',
+            options: {
+                cwd: 'app',
+                lazy: true,
+                basePath: 'instrumented'
+            }
+        },
+
+        makeReport: {
+            src: 'reports/e2e-coverage/*.json',
+            options: {
+                type: 'lcov',
+                dir: 'reports/e2e-coverage',
+                print: 'detail'
+            }
         }
     });
 
     grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
     grunt.config('grunt.environment', environments[grunt.option('environment') || process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
-    grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function () {
+    grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function (target) {
         grunt.config('grunt.app.e2e', true);
+        if (target === 'mocks') {
+            grunt.config('grunt.app.mocks', true);
+        }
     });
 
     grunt.registerTask('e2e-test', [
@@ -652,7 +722,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('e2e-no-test', [
         'clean:server',
-        'e2eapp',
+        'e2eapp:mocks',
         'copy:processtags',
         'wiredep',
         'concurrent:server',
@@ -716,5 +786,17 @@ module.exports = function (grunt) {
         'newer:jscs',
         'test',
         'build'
+    ]);
+	grunt.registerTask('e2e-coverage', [
+        'clean:server',
+        'e2eapp',
+        'copy:processtags',
+        'wiredep:sass',
+        'instrument',
+        //'useminPrepare',
+        //'concurrent:dist',
+        'connect:e2e',
+        'protractor_coverage:' + e2eLocalOrRemote(),
+        'makeReport'
     ]);
 };

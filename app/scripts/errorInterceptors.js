@@ -28,7 +28,6 @@ angular.module('dbWebApp')
             return status === 404;
         }
 
-
         function _mustErrorBeSwallowed(response) {
             var toBeSwallowed = false;
 
@@ -42,7 +41,7 @@ angular.module('dbWebApp')
                 }
                 if (_isNotFoundError(response.status) && _.startsWith(response.config.url, 'api/whois-internal/')) {
                     toBeSwallowed = true;
-                    // TODO: here we don't fail on 404s so we can find parents of inet(6)nums
+                    // Don't fail on 404s if 'ignore404' is set so we can look for parents of inet(6)nums without redirecting if they don't exist
                 } else if (_isNotFoundError(response.status) && response.config.params && response.config.params.ignore404 === true) {
                     toBeSwallowed = true;
                 }

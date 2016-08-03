@@ -1,5 +1,6 @@
 /*global beforeEach, browser, describe, expect, it, require */
-var mockModule = require('./mocks/inetnummocks');
+var mockGet = require('./mocks/mocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 describe('Modifying an inetnum', function () {
@@ -7,7 +8,7 @@ describe('Modifying an inetnum', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
     });
 
     it('should prompt for user to add default maintainer in webupdates', function () {
@@ -29,7 +30,7 @@ describe('Modifying an inetnum', function () {
             browser.addMockModule('dbWebAppE2E', mockModule.module);
         });
 
-        it('should have status box enabled', function() {
+        it('should have status box enabled', function () {
             page.modalInpPassword.sendKeys('UUNETDE-I');
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
@@ -42,7 +43,6 @@ describe('Modifying an inetnum', function () {
     });
 
 
-
     describe('which has ASSIGNED PA status', function () {
 
         beforeEach(function () {
@@ -50,7 +50,7 @@ describe('Modifying an inetnum', function () {
             browser.addMockModule('dbWebAppE2E', mockModule.module);
         });
 
-        it('should have status box disabled', function() {
+        it('should have status box disabled', function () {
             page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
@@ -58,6 +58,11 @@ describe('Modifying an inetnum', function () {
             page.scrollIntoView(page.inpStatus);
             expect(page.inpStatus.isPresent()).toBe(true);
             expect(page.inpStatus.getAttribute('disabled')).toBeTruthy();
+        });
+
+        it('which is an end user assignment should NOT show delete btn', function () {
+            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255');
+            expect(page.btnDeleteObject.isPresent()).toBeFalsy();
         });
 
     });

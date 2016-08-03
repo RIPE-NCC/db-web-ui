@@ -1,13 +1,14 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, spyOn*/
 'use strict';
 
 var logger = {
-    debug: function (msg) {
+    debug: function () {
         //console.log('info:'+msg);
     },
-    info: function (msg) {
+    info: function () {
         //console.log('info:'+msg);
     },
-    error: function (msg) {
+    error: function () {
         //console.log('error:'+msg);
     }
 };
@@ -120,10 +121,9 @@ describe('webUpdates: ModifyController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, $window, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, $window, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_, _PreferenceService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -137,6 +137,9 @@ describe('webUpdates: ModifyController', function () {
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
             CredentialsService = _CredentialsService_;
+            _PreferenceService_.isTextMode = function () {
+                return false;
+            };
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
@@ -156,29 +159,25 @@ describe('webUpdates: ModifyController', function () {
             ]);
 
             $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123&unfiltered=true').respond(
-                function (method, url) {
-                    return [200,
-                        {
-                            objects: {
-                                object: [
-                                    {
-                                        'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
-                                        attributes: {
-                                            attribute: [
-                                                {name: 'as-block', value: 'MY-AS-BLOCK'},
-                                                {name: 'mnt-by', value: 'TEST-MNT'},
-                                                {name: 'source', value: 'RIPE'}
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-
-                        }, {}];
+                function () {
+                    return [200, {
+                        objects: {
+                            object: [{
+                                'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                                attributes: {
+                                    attribute: [
+                                        {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                        {name: 'mnt-by', value: 'TEST-MNT'},
+                                        {name: 'source', value: 'RIPE'}
+                                    ]
+                                }
+                            }]
+                        }
+                    }, {}];
                 });
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
-                function (method, url) {
+                function () {
                     return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO']}], {}];
                 });
 
@@ -400,10 +399,9 @@ describe('webUpdates: ModifyController init with failures', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _PreferenceService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -411,6 +409,9 @@ describe('webUpdates: ModifyController init with failures', function () {
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
             MntnerService = _MntnerService_;
+            _PreferenceService_.isTextMode = function () {
+                return false;
+            };
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
@@ -456,14 +457,11 @@ describe('webUpdates: ModifyController init with failures', function () {
 
         getSsoMaintainers();
         getObject();
-
         failToGetMaintainerDetails();
 
         $httpBackend.flush();
-
         expect($scope.hasErrors()).toBe(true);
         expect($scope.errors[0].plainText).toEqual('Error fetching maintainer details');
-
     });
 
     function getSsoMaintainers() {
@@ -479,32 +477,28 @@ describe('webUpdates: ModifyController init with failures', function () {
 
     function getObject() {
         $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
-            function (method, url) {
-                return [200,
-                    {
-                        objects: {
-                            object: [
-                                {
-                                    'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
-                                    attributes: {
-                                        attribute: [
-                                            {name: 'as-block', value: 'MY-AS-BLOCK'},
-                                            {name: 'mnt-by', value: 'TEST3-MNT'},
-                                            {name: 'source', value: 'RIPE'}
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-
-                    }, {}];
+            function () {
+                return [200, {
+                    objects: {
+                        object: [{
+                            'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                            attributes: {
+                                attribute: [
+                                    {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                    {name: 'mnt-by', value: 'TEST3-MNT'},
+                                    {name: 'source', value: 'RIPE'}
+                                ]
+                            }
+                        }]
+                    }
+                }, {}];
             });
     }
 
     function getObjectWithError() {
 
         $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
-            function (method, url) {
+            function () {
                 return [404,
                     {
                         errormessages: {
@@ -516,14 +510,6 @@ describe('webUpdates: ModifyController init with failures', function () {
                             ]
                         }
                     }, {}];
-            });
-
-    }
-
-    function getPgpMaintainerDetails() {
-        $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT').respond(
-            function (method, url) {
-                return [200, [{key: 'TEST3-MNT', type: 'mntner', auth: ['PGP']}], {}];
             });
 
     }
@@ -549,10 +535,9 @@ describe('webUpdates: ModifyController ask for password before modify object wit
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _ModalService_, _$q_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -562,6 +547,9 @@ describe('webUpdates: ModifyController ask for password before modify object wit
             MntnerService = _MntnerService_;
             ModalService = _ModalService_;
             $q = _$q_;
+            _PreferenceService_.isTextMode = function () {
+                return false;
+            };
 
             $stateParams.objectType = OBJECT_TYPE;
             $stateParams.source = SOURCE;
@@ -573,29 +561,25 @@ describe('webUpdates: ModifyController ask for password before modify object wit
 
 
             $httpBackend.whenGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(
-                function (method, url) {
-                    return [200,
-                        {
-                            objects: {
-                                object: [
-                                    {
-                                        'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
-                                        attributes: {
-                                            attribute: [
-                                                {name: 'as-block', value: 'MY-AS-BLOCK'},
-                                                {name: 'mnt-by', value: 'TEST3-MNT'},
-                                                {name: 'source', value: 'RIPE'}
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-
-                        }, {}];
+                function () {
+                    return [200, {
+                        objects: {
+                            object: [{
+                                'primary-key': {attribute: [{name: 'as-block', value: 'MY-AS-BLOCK'}]},
+                                attributes: {
+                                    attribute: [
+                                        {name: 'as-block', value: 'MY-AS-BLOCK'},
+                                        {name: 'mnt-by', value: 'TEST3-MNT'},
+                                        {name: 'source', value: 'RIPE'}
+                                    ]
+                                }
+                            }]
+                        }
+                    }, {}];
                 });
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT').respond(
-                function (method, url) {
+                function () {
                     return [200, [{key: 'TEST3-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                 });
 
@@ -618,11 +602,8 @@ describe('webUpdates: ModifyController ask for password before modify object wit
         spyOn(ModalService, 'openAuthenticationModal').and.callFake(function () {
             return $q.defer().promise;
         });
-
         $httpBackend.flush();
-
         expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
-
     });
 
 });
@@ -633,7 +614,6 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
     var MessageStore;
     var WhoisResources;
     var MntnerService;
-    var ModalService;
     var SOURCE = 'RIPE';
     var OBJECT_TYPE = 'route';
     var NAME = '12.235.32.0%2f19AS1680';
@@ -644,8 +624,7 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _$q_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -664,29 +643,25 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
             ]);
 
             $httpBackend.whenGET('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true').respond(
-                function (method, url) {
-                    return [200,
-                        {
-                            objects: {
-                                object: [
-                                    {
-                                        'primary-key': {attribute: [{name: 'route', value: '12.235.32.0/19AS1680'}]},
-                                        attributes: {
-                                            attribute: [
-                                                {name: 'route', value: '12.235.32.0/19AS1680'},
-                                                {name: 'mnt-by', value: 'TEST-MNT'},
-                                                {name: 'source', value: 'RIPE'}
-                                            ]
-                                        }
-                                    }
-                                ]
-                            }
-
-                        }, {}];
+                function () {
+                    return [200, {
+                        objects: {
+                            object: [{
+                                'primary-key': {attribute: [{name: 'route', value: '12.235.32.0/19AS1680'}]},
+                                attributes: {
+                                    attribute: [
+                                        {name: 'route', value: '12.235.32.0/19AS1680'},
+                                        {name: 'mnt-by', value: 'TEST-MNT'},
+                                        {name: 'source', value: 'RIPE'}
+                                    ]
+                                }
+                            }]
+                        }
+                    }, {}];
                 });
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
-                function (method, url) {
+                function () {
                     return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                 });
 
@@ -703,7 +678,6 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
-
 
     it('Call rest backend with slash-escaped url', function () {
         $httpBackend.flush();
@@ -726,10 +700,9 @@ describe('webUpdates: ModifyController for organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_, _PreferenceService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -744,8 +717,11 @@ describe('webUpdates: ModifyController for organisation', function () {
                         then: function (s) {
                             s(ROLE_OBJ);
                         }
-                    }
+                    };
                 }
+            };
+            _PreferenceService_.isTextMode = function () {
+                return false;
             };
 
             $stateParams.objectType = OBJECT_TYPE;
@@ -764,7 +740,7 @@ describe('webUpdates: ModifyController for organisation', function () {
             ]);
 
             $httpBackend.whenGET('api/whois/RIPE/' + OBJECT_TYPE + '/' + NAME + '?unfiltered=true').respond(
-                function (method, url) {
+                function () {
                     return [200, {
                         'objects': {
                             'object': [orgMock]
@@ -777,7 +753,7 @@ describe('webUpdates: ModifyController for organisation', function () {
                 });
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
-                function (method, url) {
+                function () {
                     return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO']}], {}];
                 });
 
@@ -805,7 +781,7 @@ describe('webUpdates: ModifyController for organisation', function () {
         expect($scope.roleForAbuseC).toBeDefined();
     });
 
-    it('should show LIR orgs with certain attributes disabled', function() {
+    it('should show LIR orgs with certain attributes disabled', function () {
         expect();
     });
 
@@ -828,8 +804,7 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -844,7 +819,7 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
                         then: function (s) {
                             s(ROLE_OBJ);
                         }
-                    }
+                    };
                 }
             };
 
@@ -864,7 +839,7 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
             ]);
 
             $httpBackend.whenGET('api/whois/RIPE/' + OBJECT_TYPE + '/' + NAME + '?unfiltered=true').respond(
-                function (method, url) {
+                function () {
                     // Modify the mock so it looks like an LIR
                     if (orgMock.attributes.attribute[2].name === 'org-type') {
                         orgMock.attributes.attribute[2].value = 'LIR';
@@ -881,12 +856,10 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
                 });
 
             $httpBackend.whenGET('api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT').respond(
-                function (method, url) {
+                function () {
                     return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW', 'SSO']}], {}];
                 });
-
             $httpBackend.flush();
-
         });
     });
 

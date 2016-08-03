@@ -1,12 +1,15 @@
-/*global beforeEach, browser, describe, expect, it, require */
-var mockModule = require('./mocks/homepagemocks');
+/*global beforeEach, browser, describe, element, expect, it, require */
+var mockGet = require('./mocks/homemocks');
+var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 describe('webupdates homepage', function() {
 
+    'use strict';
+
     beforeEach(function() {
         browser.get(browser.baseUrl);
-        browser.addMockModule('dbWebAppE2E', mockModule.module);
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {
         //    console.log('>>>>>> ' + require('util').inspect(browserLog));
@@ -65,7 +68,7 @@ describe('webupdates homepage', function() {
         expect(page.inpStatusList.get(0).getText()).toEqual('AGGREGATED-BY-LIR');
         expect(page.inpStatusList.get(1).getText()).toEqual('ASSIGNED');
     });
-    
+
     it('should show an editor for inet-rtr', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inet-rtr').click();

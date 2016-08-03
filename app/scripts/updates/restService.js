@@ -216,17 +216,17 @@ angular.module('updates')
 
                 $log.debug('fetchObject start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    $resource('api/whois/:source/:objectType/:name',
-                        {
-                            source: source.toUpperCase(),
-                            objectType: objectType,
-                            name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
-                            unfiltered: true,
-                            password: '@password',
-                            unformatted: unformatted
-                        }).get({password: passwords})
-                        .$promise
-                        .then(function (result) {
+                $resource('api/whois/:source/:objectType/:name',
+                    {
+                        source: source.toUpperCase(),
+                        objectType: objectType,
+                        name: decodeURIComponent(objectName), // prevent double encoding of forward slash (%2f ->%252F)
+                        unfiltered: true,
+                        password: '@password',
+                        unformatted: unformatted
+                    }).get({password: passwords})
+                    .$promise
+                    .then(function (result) {
                             $log.debug('fetchObject success:' + JSON.stringify(result));
 
                             var primaryKey = WhoisResources.wrapSuccess(result).getPrimaryKey();

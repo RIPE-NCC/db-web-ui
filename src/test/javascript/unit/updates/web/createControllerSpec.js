@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, module, spyOn*/
 'use strict';
 
 describe('webUpdates: CreateController', function () {
@@ -16,10 +17,9 @@ describe('webUpdates: CreateController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,_MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_, _ModalService_, _$q_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,_MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $scope = _$rootScope_.$new();
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
@@ -30,6 +30,7 @@ describe('webUpdates: CreateController', function () {
             CredentialsService = _CredentialsService_;
             MntnerService = _MntnerService_;
             ModalService = _ModalService_;
+            _PreferenceService_.isTextMode = function() {return false;};
             $q = _$q_;
 
             userMaintainers = [
@@ -173,18 +174,12 @@ describe('webUpdates: CreateController', function () {
     });
 
     it('should reload defaults after error', function () {
-        var stateBefore = $state.current.name;
-
         // api/whois/RIPE/as-block
         $httpBackend.expectPOST('api/whois/RIPE/as-block').respond(400, whoisObjectWithErrors);
-
         $scope.attributes.setSingleAttributeOnName('as-block', 'A');
-
         $scope.submit();
         $httpBackend.flush();
-
         expect($scope.attributes.getSingleAttributeOnName('source').$$meta.$$disable).toEqual(true);
-
     });
 
 
@@ -381,13 +376,14 @@ describe('webUpdates: CreateController', function () {
     var OBJECT_TYPE = 'route';
     var SOURCE = 'RIPE';
     var userMaintainers;
+    var PreferenceService;
     var $q;
 
     beforeEach(function () {
         module('webUpdates');
 
         inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
-                         _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_) {
+                         _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
 
             $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -401,6 +397,9 @@ describe('webUpdates: CreateController', function () {
             CredentialsService = _CredentialsService_;
             MntnerService = _MntnerService_;
             ModalService = _ModalService_;
+            PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
+
             $q = _$q_;
 
             userMaintainers = [
@@ -429,7 +428,7 @@ describe('webUpdates: CreateController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should be posible to create route objects', function() {
+    it('should be possible to create route objects', function() {
         $scope.objectType = 'route';
         // for creation and modiication of route, route6 and aut-num, password for RIPE-NCC-RPSL-MNT is added to
         // the rest-call to allow creation of 'out-of-region'-objects without knowing the details of RPSL-mntner
@@ -458,26 +457,26 @@ describe('webUpdates: CreateController', function () {
             errormessages: {
                 errormessage: [
                     {
-                        severity: "Error",
-                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                        severity: 'Error',
+                        text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                         args: [
                             {value: 'aut-num'}, {value: 'AS1299'}, {value: 'mnt-by'}, {value: 'TELIANET-RR, RIPE-NCC-END-MNT'}
                         ]
                     },
                     {
-                        severity: "Warning",
-                        text: "This update has only passed one of the two required hierarchical authorisations"
+                        severity: 'Warning',
+                        text: 'This update has only passed one of the two required hierarchical authorisations'
                     },
                     {
-                        severity: "Info",
-                        text: "The %s object %s will be saved for one week pending the second authorisation",
+                        severity: 'Info',
+                        text: 'The %s object %s will be saved for one week pending the second authorisation',
                         args: [
-                            {value: "route"},
-                            {value: "193.0.7.231/32AS1299"}
+                            {value: 'route'},
+                            {value: '193.0.7.231/32AS1299'}
                         ]
                     }
                 ]
-            },
+            }
         });
 
         $scope.attributes.setSingleAttributeOnName('route', '193.0.7.231/32');
@@ -527,7 +526,7 @@ describe('webUpdates: CreateModifyController init with failures', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _CredentialsService_,_MntnerService_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -540,6 +539,8 @@ describe('webUpdates: CreateModifyController init with failures', function () {
             CredentialsService = _CredentialsService_;
             MntnerService = _MntnerService_;
             $window = _$window_;
+            var PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             $httpBackend.whenGET('api/user/mntners').respond(404);
 
@@ -580,13 +581,15 @@ describe('webUpdates: CreateController init with nonexistent obj type', function
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _$window_) {
+        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _$window_, _PreferenceService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
             $state =  _$state_;
             $httpBackend = _$httpBackend_;
             $window = _$window_;
+            var PreferenceService = _PreferenceService_;
+            PreferenceService.isTextMode = function() {return false;};
 
             var userMaintainers = [
                 {'mine':true,'type':'mntner','auth':['SSO'],'key':'TEST-MNT'}
