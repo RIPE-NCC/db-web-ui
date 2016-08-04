@@ -19,6 +19,9 @@ import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -34,12 +37,14 @@ public class Application {
     private final Environment environment;
     private final CrowdTokenFilter crowdTokenFilter;
     private final CacheFilter cacheFilter;
+    private final ServletContext servletContext;
 
     @Autowired
-    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CacheFilter cacheFilter) {
+    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CacheFilter cacheFilter, final ServletContext servletContext) {
         this.environment = environment;
         this.crowdTokenFilter = crowdTokenFilter;
         this.cacheFilter = cacheFilter;
+        this.servletContext = servletContext;
     }
 
     /**
@@ -104,6 +109,8 @@ public class Application {
         LOGGER.info("crowd.rest.password:  {}", String.format("%sxxxxx", environment.getProperty("crowd.rest.password").substring(0, 2)));
         LOGGER.info("crowd.login.url:      {}", environment.getProperty("crowd.login.url"));
         LOGGER.info("rest.api.ripeUrl:     {}", environment.getProperty("rest.api.ripeUrl"));
+
+        writeEnvironmentIntoStaticFile();
     }
 
     @Bean
@@ -134,6 +141,31 @@ public class Application {
         cmfb.setCacheManagerName("net.ripe.whois.crowdSessions");
         cmfb.setShared(true);
         return cmfb;
+    }
+
+    /*
+     *  Inject external properties into JS constants file
+     */
+    private void writeEnvironmentIntoStaticFile() {
+        try (FileWriter writer = new FileWriter(new File(servletContext.getRealPath("/scripts/app.constants.js")))) {
+            writer.write(String.format(
+                    "'use strict';\n" +
+                    "angular.module('dbWebApp')\n" +
+                    "    .constant('Properties', {\n" +
+                    "        ENV: '%s',\n" +
+                    "        SOURCE: '%s',\n" +
+                    "        BUILD_TAG: '%s',\n" +
+                    "        LOGIN_URL: '%s',\n" +
+                    "        PORTAL_URL: '%s'\n" +
+                    "});",
+                    environment.getActiveProfiles()[0],
+                    "RIPE",         // TODO: [ES] use property
+                    "buildTag",     // TODO: [ES] use existing value
+                    environment.getProperty("crowd.login.url"),
+                    environment.getProperty("portal.url")));
+        } catch (IOException e) {
+            LOGGER.error("Unable to write to file due to {}", e.getMessage());
+        }
     }
 
 }
