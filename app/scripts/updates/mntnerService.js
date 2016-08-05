@@ -59,7 +59,7 @@
                 });
                 var match = _.find(mntBys.concat(mntLowers), function (item) {
                     return _.find(ssoAccts, function (ssoAcct) {
-                        return ssoAcct.key === item.value;
+                        return ssoAcct.key.toUpperCase() === item.value.toUpperCase();
                     });
                 });
                 return !!match;
