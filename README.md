@@ -9,17 +9,19 @@ grunt
 bower
 compass (ruby)
 
-
-Development Server
-------------------
-
-The normal maven build process should complete without errors:
+Build on Local Machine
+-----------------------
 
     % mvn verify
 
-The server can be started from the command-line:
+Start Full Development Server (Frontend + Backend) on Local Machine
+-------------------------------------------------------------------
 
-    % mvn spring-boot:run
+* first build (see above)
+* execute: ```% mvn spring-boot:run```
+     
+* map ```127.0.0.1``` to ```localhost.ripe.net``` in your local hosts file
+* access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
 Deployment
 -------------------
