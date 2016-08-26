@@ -2,44 +2,7 @@
 
     <h1 title="It's a wizard, though, really">Domain object not-a-wizard</h1>
     <section class="form-fields maintainer-fields">
-        <strong>Please enter the maintainers you would like to use as mnt-by</strong>
-        <article class="maintainer-icons">
-            <span class="fa fa-search maintainer-search-icon"></span>
-            <a ng-click="isMntHelpShown = !isMntHelpShown" class="btn btn-default ga-help-attr maintainer-help">
-                <span class="fa fa-question"></span>
-            </a>
-        </article>
-        <ui-select id="selectMaintainerDropdown"
-                   multiple="true"
-                   theme="selectize"
-                   ng-model="maintainers.object"
-                   close-on-select="true"
-                   on-select="onMntnerAdded($item, $model)"
-                   on-remove="onMntnerRemoved($item, $model)">
-
-            <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !$item.$$isRemovable"
-                             placeholder="Type maintainer name">{{ $item.key }}
-                <span class="fa fa-star" ng-if="$item.$$isMine"></span>
-                <span class="fa fa-lock" ng-if="$item.$$isRemovable"></span>
-            </ui-select-match>
-            <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
-                               refresh="mntnerAutocomplete($select.search)"
-                               refresh-delay="100">
-                <div class="option">
-                    <span class="title">{{ mntner.key }}</span>
-                    <span class="star fa fa-star" ng-if="mntner.$$isMine"></span>
-                    <span class="auth sso" ng-if="mntner.$$hasSso"> SSO </span>
-                    <span class="auth pgp" ng-if="mntner.$$hasPgp"> PGP </span>
-                    <span class="auth md5" ng-if="mntner.$$hasMd5"> MD5 </span>
-                </div>
-            </ui-select-choices>
-        </ui-select>
-        <div collapse="!isMntHelpShown" class="text field-description">
-            <strong>Description</strong><br>
-            <attr-info object-type="mntner" description="mnt-by"></attr-info><br>
-            <strong>Syntax</strong><br>
-            <attr-info object-type="mntner" syntax="mnt-by"></attr-info>
-        </div>
+        <maintainers></maintainers>
     </section>
 
     <section class="visible-field-form">
@@ -47,52 +10,7 @@
         <div class="alert alert-info alert-dismissible" role="alert" ng-if="message.type === 'info'"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ message.text }}</div>
         <ul class="form-fields appeared-fields">
             <li ng-repeat="attribute in attributes" class="form-group input-group">
-
-                <label>{{attribute.name}}</label>
-                <div ng-if="attribute.$$error" class="text-error">
-                    <span ng-bind-html="attribute.$$error"></span>
-                </div>
-                <div ng-if="attribute.$$success" class="text-success">{{ attribute.$$success }}</div>
-
-                <input ng-if="!attribute.$$meta.$$isEnum"
-                       type="text"
-                       name="{{attribute.name}}"
-                       ng-model="attribute.value"
-                       ng-blur="fieldVisited(attribute)"
-                       ng-required="{{attribute.$$meta.$$mandatory}}"
-                       placeholder="{{getAttributeShortDescription(attribute.name)}}"
-                       class="form-control"
-                       attributetransformer
-                       typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
-                       typeahead-min-length="2"
-                       ng-disabled="attribute.$$meta.$$disable || attribute.$$meta.$$isLir"
-                       autocomplete="off"
-                />
-
-                <div class="text field-description" collapse="!isHelpShown">
-                    <strong>Description</strong><br>
-                    <attr-info object-type="domain" description="{{attribute.name}}"></attr-info><br>
-                    <strong>Syntax</strong><br>
-                    <attr-info object-type="domain" syntax="{{attribute.name}}"></attr-info>
-                </div>
-
-                <ul class="input-group-btn">
-                    <li ng-if="attribute.$$meta.$$canBeDuplicated">
-                        <a class="btn btn-default ga-add-dup" title="Add another attribute of this type" ng-click="duplicateAttribute(attribute)">
-                            <span class="fa fa-arrow-down degree-25"></span>
-                        </a>
-                    </li>
-                    <li ng-if="canBeRemoved('prefix', attributes, attribute)">
-                        <a class="btn btn-default ga-del-attr" title="Remove current attribute" ng-click="removeAttribute(attribute)">
-                            <span class="fa fa-trash"></span>
-                        </a>
-                    </li>
-                    <li>
-                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
-                            <span class="fa fa-question"></span>
-                        </a>
-                    </li>
-                </ul>
+                <attribute-renderer object-type="'prefix'" attributes="attributes" attribute="attribute"></attribute-renderer>
             </li>
         </ul>
     </section>
