@@ -1,0 +1,44 @@
+<label>{{attribute.name}}</label>
+<div ng-if="attribute.$$error" class="text-error">
+    <span ng-bind-html="attribute.$$error"></span>
+</div>
+<div ng-if="attribute.$$success" class="text-success">{{ attribute.$$success }}</div>
+
+<input ng-if="!attribute.$$meta.$$isEnum"
+       type="text"
+       name="{{attribute.name}}"
+       ng-model="attribute.value"
+       ng-blur="fieldVisited(attribute)"
+       ng-required="{{attribute.$$meta.$$mandatory}}"
+       placeholder="{{getAttributeShortDescription(attribute.name)}}"
+       class="form-control"
+       attributetransformer
+       typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
+       typeahead-min-length="2"
+       ng-disabled="attribute.$$meta.$$disable || attribute.$$meta.$$isLir"
+       autocomplete="off">
+
+<div class="text field-description" collapse="!isHelpShown">
+    <strong>Description</strong><br>
+    <attr-info object-type="domain" description="{{attribute.name}}"></attr-info><br>
+    <strong>Syntax</strong><br>
+    <attr-info object-type="domain" syntax="{{attribute.name}}"></attr-info>
+</div>
+
+<ul class="input-group-btn">
+    <li ng-if="canBeAdded(attributes, attribute)">
+        <a class="btn btn-default ga-add-dup" title="Add another attribute of this type" ng-click="duplicateAttribute(attributes, attribute)">
+            <span class="fa fa-arrow-down degree-25"></span>
+        </a>
+    </li>
+    <li ng-if="canBeRemoved(attributes, attribute)">
+        <a class="btn btn-default ga-del-attr" title="Remove current attribute" ng-click="removeAttribute(attributes, attribute)">
+            <span class="fa fa-trash"></span>
+        </a>
+    </li>
+    <li>
+        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+            <span class="fa fa-question"></span>
+        </a>
+    </li>
+</ul>

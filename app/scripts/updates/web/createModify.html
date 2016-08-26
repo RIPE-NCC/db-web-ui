@@ -178,7 +178,7 @@
     </section>
 
     <span ng-if="operation == MODIFY_OPERATION">
-        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCallInProgress" class="blue-button pull-right ga-modifyobj-modify" value="Submit"/>
         <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
     </span>
     <span ng-if="operation == CREATE_OPERATION">
