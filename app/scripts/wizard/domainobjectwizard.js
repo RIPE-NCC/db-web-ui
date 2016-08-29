@@ -67,6 +67,11 @@
                 var attrMetadata = constants.ObjectMetadata[objectType][attribute.name];
                 if (attrMetadata.primaryKey) {
                     return true;
+                } else if (attribute.name === 'reverse-zones') {
+                    // ok if prefix is valid
+                    return _.find($scope.attributes, function(o) {
+                        return (o.name === 'prefix') && isValidPrefix(o.value);
+                    });
                 } else {
                     // if primary key has a value, then show all others
                     var pkName = _.findKey(constants.ObjectMetadata[objectType], function(o) {
@@ -91,6 +96,11 @@
                     }
                 });
                 return attributes;
+            }
+
+            var prefixRe = /([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,3}/;
+            function isValidPrefix(prefix) {
+                return prefixRe.test(prefix);
             }
 
         }]
@@ -130,9 +140,9 @@
 
             // should we even show this attribute?
             $scope.showAttribute = false;
-            var attrMetadata = constants.ObjectMetadata[$scope.objectType][$scope.attribute.name];
-            if (!attrMetadata) {
-            }
+            // var attrMetadata = constants.ObjectMetadata[$scope.objectType][$scope.attribute.name];
+            // if (!attrMetadata) {
+            // }
 
             /*
              * Callback functions
