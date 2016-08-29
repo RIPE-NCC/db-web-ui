@@ -1,0 +1,11 @@
+<input ng-if="!attribute.$$meta.$$isEnum"
+       type="text"
+       name="{{attribute.name}}"
+       ng-model="attribute.value"
+       ng-blur="fieldVisited(attribute)"
+       ng-required="{{attribute.$$meta.$$mandatory}}"
+       placeholder="{{getAttributeShortDescription(attribute.name)}}"
+       class="form-control"
+       typeahead-min-length="2"
+       ng-disabled="attribute.$$meta.$$disable"
+       autocomplete="off">
