@@ -6,6 +6,7 @@
        ng-required="{{attribute.$$meta.$$mandatory}}"
        placeholder="{{getAttributeShortDescription(attribute.name)}}"
        class="form-control"
+       typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
        typeahead-min-length="2"
        ng-disabled="attribute.$$meta.$$disable"
        autocomplete="off">
