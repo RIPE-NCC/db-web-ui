@@ -9,7 +9,7 @@
         <div class="alert alert-danger alert-dismissible" role="alert" ng-if="message.type === 'error'"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ message.text }}</div>
         <div class="alert alert-info alert-dismissible" role="alert" ng-if="message.type === 'info'"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ message.text }}</div>
         <ul class="form-fields appeared-fields">
-            <li ng-repeat="attribute in attributes" class="form-group input-group">
+            <li ng-repeat="attribute in attributes" class="form-group input-group" ng-if="showAttribute(attribute)">
                 <attribute-renderer object-type="'prefix'" attributes="attributes" attribute="attribute"></attribute-renderer>
             </li>
         </ul>

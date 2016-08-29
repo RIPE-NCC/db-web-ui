@@ -8,6 +8,7 @@
         function ($scope, RestService, constants) {
 
             var maintainerSso = [];
+            var objectType = 'prefix';
 
             /*
              * Initial scope vars
@@ -20,26 +21,9 @@
             $scope.attributes = {};
 
             /*
-             * Callback handlers
-             */
-            $scope.isModifyWithSingleMntnerRemaining = function () {
-                // ...from createModifyController...
-                // return $scope.operation === 'Modify' && $scope.maintainers.object.length === 1;
-                return false;
-            };
-
-            $scope.onMntnerAdded = function (item, model) {
-                console.log('onMntnerAdded', item, model);
-            };
-
-            $scope.onMntnerRemoved = function (item, model) {
-                console.log('onMntnerRemoved', item, model);
-            };
-
-            /*
              * Main
              */
-            $scope.attributes = determineAttributesForNewObject('prefix');
+            $scope.attributes = determineAttributesForNewObject(objectType);
 
             $scope.restCallInProgress = true;
             RestService.fetchMntnersForSSOAccount().then(
@@ -63,11 +47,42 @@
             );
 
             /*
+             * Callback handlers
+             */
+            $scope.isModifyWithSingleMntnerRemaining = function () {
+                // ...from createModifyController...
+                // return $scope.operation === 'Modify' && $scope.maintainers.object.length === 1;
+                return false;
+            };
+
+            $scope.onMntnerAdded = function (item, model) {
+                console.log('onMntnerAdded', item, model);
+            };
+
+            $scope.onMntnerRemoved = function (item, model) {
+                console.log('onMntnerRemoved', item, model);
+            };
+
+            $scope.showAttribute = function(attribute) {
+                var attrMetadata = constants.ObjectMetadata[objectType][attribute.name];
+                if (attrMetadata.primaryKey) {
+                    return true;
+                } else {
+                    // if primary key has a value, then show all others
+                    var pkName = _.findKey(constants.ObjectMetadata[objectType], function(o) {
+                        return o.primaryKey;
+                    });
+                    return _.find($scope.attributes, function(o) {
+                        return (o.name === pkName) && o.value;
+                    });
+                }
+            };
+
+            /*
              * Local functions
              */
             function determineAttributesForNewObject(objectType) {
                 var i, attributes = [];
-                console.log('constants.ObjectMetadata[objectType]', constants.ObjectMetadata[objectType]);
                 _.forEach(constants.ObjectMetadata[objectType], function (val, key) {
                     if (val.minOccurs) {
                         for (i = 0; i < val.minOccurs; i++) {
@@ -79,7 +94,7 @@
             }
 
         }]
-    ).directive('attrInfo', ['WhoisResources', function (WhoisResources) {
+    ).directive('attrInfo', ['WhoisMetaService', function (WhoisMetaService) {
             return {
                 restrict: 'E',
                 scope: {},
@@ -89,20 +104,36 @@
                         return;
                     }
                     if (attrs.description) {
-                        scope.text = WhoisResources.getAttributeDescription(attrs.objectType, attrs.description);
+                        scope.text = WhoisMetaService.getAttributeDescription(attrs.objectType, attrs.description);
                     } else if (attrs.syntax) {
-                        scope.text = WhoisResources.getAttributeSyntax(attrs.objectType, attrs.syntax);
+                        scope.text = WhoisMetaService.getAttributeSyntax(attrs.objectType, attrs.syntax);
                     }
                 }
             };
         }]
-    ).controller('AttributeCtrl', ['$scope', 'constants',
-        function ($scope, constants) {
+    ).controller('AttributeCtrl', ['$scope', 'constants', 'WhoisMetaService',
+        function ($scope, constants, WhoisMetaService) {
+
+            var isReverseZones = $scope.attribute.name === 'reverse-zones';
 
             /*
              * Initial scope vars
              */
             $scope.isMntHelpShown = false;
+            if (isReverseZones) {
+                // $scope.reverseZones = [{
+                //     name: '42.23.194.in-addr.arpa'
+                // }, {
+                //     name: '43.23.194.in-addr.arpa'
+                // }];
+            }
+
+            // should we even show this attribute?
+            $scope.showAttribute = false;
+            var attrMetadata = constants.ObjectMetadata[$scope.objectType][$scope.attribute.name];
+            if (!attrMetadata) {
+            }
+
             /*
              * Callback functions
              */
@@ -132,10 +163,21 @@
                 }
             };
 
+            $scope.hasHelp = function (attribute) {
+                return attribute.name !== 'reverse-zones';
+            };
+
+            $scope.getAttributeShortDescription = function (name) {
+                return WhoisMetaService.getAttributeShortDescription($scope.objectType, name);
+            };
+
             /*
              * Local functions
              */
             function canBeAdded(attributes, attribute) {
+                if (isReverseZones) {
+                    return false;
+                }
                 // count the attributes which match 'attribute'
                 var attrMetadata = constants.ObjectMetadata[$scope.objectType][attribute.name];
                 if (!attrMetadata) {
@@ -152,6 +194,9 @@
             }
 
             function canBeRemoved(attributes, attribute) {
+                if (isReverseZones) {
+                    return false;
+                }
                 // count the attributes which match 'attribute'
                 var attrMetadata = constants.ObjectMetadata[$scope.objectType][attribute.name];
                 if (!attrMetadata.minOccurs) {
@@ -168,7 +213,15 @@
             restrict: 'E',
             scope: {attributes: '=', attribute: '=', objectType: '='},
             templateUrl: 'scripts/wizard/attribute-renderer.html',
-            controller: 'AttributeCtrl'
+            controller: 'AttributeCtrl',
+            link: function (scope) {
+                // choose the html template dynamically
+                if (scope.attribute.name === 'reverse-zones') {
+                    scope.widgetHtml = 'scripts/wizard/attribute-reverse-zones.html';
+                } else {
+                    scope.widgetHtml = 'scripts/wizard/attribute.html';
+                }
+            }
         };
     }]).directive('maintainers', [function () {
         return {
@@ -177,6 +230,8 @@
         };
     }]).constant('constants', {
         ObjectMetadata: {
+            // minOccurs default: 0
+            // maxOccurs default: -1 (which means 'no maximum')
             domain: {
                 domain: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
                 descr: {minOccurs: 0, maxOccurs: -1},
@@ -197,6 +252,7 @@
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
                 descr: {minOccurs: 0, maxOccurs: -1},
                 nserver: {minOccurs: 2, maxOccurs: -1},
+                'reverse-zones': {minOccurs: 1, maxOccurs: 1},
                 'ds-rdata': {minOccurs: 0, maxOccurs: -1},
                 org: {minOccurs: 0, maxOccurs: -1},
                 'admin-c': {minOccurs: 1, maxOccurs: -1},
