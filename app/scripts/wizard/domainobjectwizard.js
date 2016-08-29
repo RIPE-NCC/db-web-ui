@@ -121,8 +121,8 @@
                 }
             };
         }]
-    ).controller('AttributeCtrl', ['$scope', 'constants', 'WhoisMetaService',
-        function ($scope, constants, WhoisMetaService) {
+    ).controller('AttributeCtrl', ['$scope', '$sce', 'constants', 'WhoisMetaService', 'CharsetTools', 'RestService',
+        function ($scope, $sce, constants, WhoisMetaService, CharsetTools, RestService) {
 
             var isReverseZones = $scope.attribute.name === 'reverse-zones';
 
@@ -138,18 +138,14 @@
                 // }];
             }
 
-            // should we even show this attribute?
-            $scope.showAttribute = false;
-            // var attrMetadata = constants.ObjectMetadata[$scope.objectType][$scope.attribute.name];
-            // if (!attrMetadata) {
-            // }
-
             /*
              * Callback functions
              */
             $scope.canBeAdded = canBeAdded;
 
             $scope.canBeRemoved = canBeRemoved;
+
+            $scope.referenceAutocomplete = referenceAutocomplete;
 
             $scope.duplicateAttribute = function (attributes, attribute) {
                 if (canBeAdded(attributes, attribute)) {
@@ -184,6 +180,88 @@
             /*
              * Local functions
              */
+            function referenceAutocomplete(attribute, userInput) {
+                var attrName = attribute.name;
+                var refs = constants.ObjectMetadata[$scope.objectType][attrName].refs;
+                if (!refs) {
+                    return [];
+                }
+                var utf8Substituted = warnForNonSubstitutableUtf8(attribute, userInput);
+                if (utf8Substituted && isServerLookupKey(refs)) {
+                    return RestService.autocompleteAdvanced(userInput, refs).then(
+                        function (resp) {
+                            return addNiceAutocompleteName(filterBasedOnAttr(resp, attrName), attrName);
+                        },
+                        function () {
+                            // autocomplete error
+                            return [];
+                        });
+                } else {
+                    // No suggestions since not a reference
+                    return [];
+                }
+            }
+
+            function isServerLookupKey(refs) {
+                return !(_.isUndefined(refs) || refs.length === 0 );
+            }
+
+            function warnForNonSubstitutableUtf8(attribute, userInput) {
+                if (!CharsetTools.isLatin1(userInput)) {
+                    // see if any chars can be substituted
+                    var subbedValue = CharsetTools.replaceSubstitutables(userInput);
+                    if (!CharsetTools.isLatin1(subbedValue)) {
+                        attribute.$$error = 'Input contains illegal characters. These will be converted to \'?\'';
+                        return false;
+                    } else {
+                        attribute.$$error = '';
+                        return true;
+                    }
+                }
+                return true;
+            }
+
+            function filterBasedOnAttr(suggestions, attrName) {
+                return _.filter(suggestions, function (item) {
+                    if (attrName === 'abuse-c') {
+                        return !_.isEmpty(item['abuse-mailbox']);
+                    }
+                    return true;
+                });
+            }
+
+            function addNiceAutocompleteName(items, attrName) {
+                return _.map(items, function (item) {
+                    var name = '';
+                    var separator = ' / ';
+                    if (item.type === 'person') {
+                        name = item.person;
+                    } else if (item.type === 'role') {
+                        name = item.role;
+                        if (attrName === 'abuse-c' && typeof item['abuse-mailbox'] === 'string') {
+                            name = name.concat(separator + item['abuse-mailbox']);
+                        }
+                    } else if (item.type === 'aut-num') {
+                        // When we're using an as-name then we'll need 1st descr as well (pivotal#116279723)
+                        if (angular.isArray(item.descr) && item.descr.length) {
+                            name = [item['as-name'], separator, item.descr[0]].join('');
+                        } else {
+                            name = item['as-name'];
+                        }
+                    } else if (typeof item['org-name'] === 'string') {
+                        name = item['org-name'];
+                    } else if (angular.isArray(item.descr)) {
+                        name = item.descr.join('');
+                    } else if (angular.isArray(item.owner)) {
+                        name = item.owner.join('');
+                    } else {
+                        separator = '';
+                    }
+                    item.readableName = $sce.trustAsHtml((item.key + separator + name).replace(/</g, '&lt;').replace(/>/g, '&gt;'));
+                    return item;
+                });
+            }
+
             function canBeAdded(attributes, attribute) {
                 if (isReverseZones) {
                     return false;
@@ -245,15 +323,15 @@
             domain: {
                 domain: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
                 descr: {minOccurs: 0, maxOccurs: -1},
-                org: {minOccurs: 0, maxOccurs: -1},
-                'admin-c': {minOccurs: 1, maxOccurs: -1},
-                'tech-c': {minOccurs: 1, maxOccurs: -1},
-                'zone-c': {minOccurs: 1, maxOccurs: -1},
+                org: {minOccurs: 0, maxOccurs: -1, refs: ['ORGANISATION']},
+                'admin-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
+                'tech-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
+                'zone-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
                 nserver: {minOccurs: 2, maxOccurs: -1},
                 'ds-rdata': {minOccurs: 0, maxOccurs: -1},
                 remarks: {minOccurs: 0, maxOccurs: -1},
                 notify: {minOccurs: 0, maxOccurs: -1},
-                'mnt-by': {minOccurs: 1, maxOccurs: -1},
+                'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['MNTNER']},
                 created: {minOccurs: 0, maxOccurs: 1},
                 'last-modified': {minOccurs: 0, maxOccurs: 1},
                 source: {minOccurs: 1, maxOccurs: 1}
@@ -264,13 +342,13 @@
                 nserver: {minOccurs: 2, maxOccurs: -1},
                 'reverse-zones': {minOccurs: 1, maxOccurs: 1},
                 'ds-rdata': {minOccurs: 0, maxOccurs: -1},
-                org: {minOccurs: 0, maxOccurs: -1},
-                'admin-c': {minOccurs: 1, maxOccurs: -1},
-                'tech-c': {minOccurs: 1, maxOccurs: -1},
-                'zone-c': {minOccurs: 1, maxOccurs: -1},
+                org: {minOccurs: 0, maxOccurs: -1, refs: ['ORGANISATION']},
+                'admin-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
+                'tech-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
+                'zone-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
                 remarks: {minOccurs: 0, maxOccurs: -1},
                 notify: {minOccurs: 0, maxOccurs: -1},
-                'mnt-by': {minOccurs: 1, maxOccurs: -1},
+                'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['MNTNER']},
                 created: {minOccurs: 0, maxOccurs: 1},
                 'last-modified': {minOccurs: 0, maxOccurs: 1},
                 source: {minOccurs: 1, maxOccurs: 1}
