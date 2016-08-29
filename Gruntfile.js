@@ -575,7 +575,6 @@ module.exports = function (grunt) {
 
                         function substituteText(m, filename) {
                             keeplooping = true;
-                            console.log('lookin for ' + dir + '/' + filename);
                             return fs.readFileSync(dir + '/' + filename).toString();
                         }
 

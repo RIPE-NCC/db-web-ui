@@ -23,27 +23,6 @@
 <script src="bower_components/angular-mocks/angular-mocks.js"></script>
 <script type="text/javascript">
 
-    angular.module('dbWebAppE2E', ['dbWebApp', 'ngMockE2E'])
-            .run(function ($httpBackend, $log) {
-
-                var mockGet = {};
-
-                // prepare the mocks
-                Object.keys(mockGet).forEach(
-                        function (key) {
-                            $httpBackend.whenGET(key).respond(
-                                    mockGet[key].status || 200,
-                                    mockGet[key].data,
-                                    {'Content-type': 'application/json'}
-                            );
-                        });
-                $httpBackend.whenGET(/^api\//).respond(function (method, req) {
-                    $log.error('Error caused by missing mock', method, req);
-                    return [404, 'Missing mock'];
-                });
-                $httpBackend.whenGET(/.*/).passThrough();
-            });
-
     angular.element(document).ready(function () {
         angular.bootstrap(document, ['dbWebAppE2E']);
     });
