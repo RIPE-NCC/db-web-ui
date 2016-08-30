@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$scope', 'RestService', 'constants',
-        function ($scope, RestService, constants) {
+    ).controller('DomainObjectController', ['$scope', 'RestService', 'constants', 'PrefixService',
+        function ($scope, RestService, constants, PrefixService) {
 
             var maintainerSso = [];
             var objectType = 'prefix';
@@ -70,7 +70,7 @@
                 } else if (attribute.name === 'reverse-zones') {
                     // ok if prefix is valid
                     return _.find($scope.attributes, function(o) {
-                        return (o.name === 'prefix') && isValidPrefix(o.value);
+                        return (o.name === 'prefix') && PrefixService.validatePrefix(o.value);
                     });
                 } else {
                     // if primary key has a value, then show all others
@@ -98,11 +98,6 @@
                 return attributes;
             }
 
-            var prefixRe = /([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,3}/;
-            function isValidPrefix(prefix) {
-                return prefixRe.test(prefix);
-            }
-
         }]
     ).directive('attrInfo', ['WhoisMetaService', function (WhoisMetaService) {
             return {
@@ -121,21 +116,19 @@
                 }
             };
         }]
-    ).controller('AttributeCtrl', ['$scope', '$sce', 'constants', 'WhoisMetaService', 'CharsetTools', 'RestService',
-        function ($scope, $sce, constants, WhoisMetaService, CharsetTools, RestService) {
-
-            var isReverseZones = $scope.attribute.name === 'reverse-zones';
+    ).controller('AttributeCtrl', ['$scope', '$sce', 'constants', 'WhoisMetaService', 'CharsetTools', 'RestService', 'PrefixService',
+        function ($scope, $sce, constants, WhoisMetaService, CharsetTools, RestService, PrefixService) {
 
             /*
              * Initial scope vars
              */
             $scope.isMntHelpShown = false;
-            if (isReverseZones) {
-                // $scope.reverseZones = [{
-                //     name: '42.23.194.in-addr.arpa'
-                // }, {
-                //     name: '43.23.194.in-addr.arpa'
-                // }];
+
+            if ($scope.attribute.name === 'reverse-zones') {
+                var prefixAttr = _.find($scope.attributes, function(o) {
+                    return o.name === 'prefix';
+                });
+                $scope.reverseZones = PrefixService.getReverseDnsZones(prefixAttr.value);
             }
 
             /*
@@ -263,7 +256,7 @@
             }
 
             function canBeAdded(attributes, attribute) {
-                if (isReverseZones) {
+                if ($scope.attribute.name === 'reverse-zones') {
                     return false;
                 }
                 // count the attributes which match 'attribute'
@@ -282,7 +275,7 @@
             }
 
             function canBeRemoved(attributes, attribute) {
-                if (isReverseZones) {
+                if ($scope.attribute.name === 'reverse-zones') {
                     return false;
                 }
                 // count the attributes which match 'attribute'
