@@ -6,6 +6,8 @@
     angular.module('dbWebApp'
     ).factory('PrefixService', [function () {
 
+        var prefixRe = /([0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,3}/;
+
         /**
          * Validates that a prefix is a valid ipV4 or ipV6 prefix.
          *
@@ -14,7 +16,7 @@
          */
         function validatePrefix(str) {
             // Validate a prefix
-            return !!str;
+            return prefixRe.test(str);
         }
 
         /**
