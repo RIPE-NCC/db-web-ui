@@ -55,8 +55,6 @@ angular.module('updates')
             restService.fetchMntnersForSSOAccount = function () {
                 var deferredObject = $q.defer();
 
-                $log.debug('fetchMntnersForSSOAccount start');
-
                 $resource('api/user/mntners')
                     .query()
                     .$promise
@@ -157,12 +155,6 @@ angular.module('updates')
                     var attrsToFilterOn = WhoisResources.getFilterableAttrsForObjectTypes(targetObjectTypes);
                     var attrsToReturn = WhoisResources.getViewableAttrsForObjectTypes(targetObjectTypes); //['person', 'role', 'org-name', 'abuse-mailbox'];
 
-                    $log.debug('autocompleteAdvanced start: ' +
-                        ' select: ' + JSON.stringify(attrsToReturn) +
-                        ' from: ' + JSON.stringify(targetObjectTypes) +
-                        ' where: ' + JSON.stringify(attrsToFilterOn) +
-                        ' like:' + JSON.stringify(query));
-
                     $resource('api/whois/autocomplete',
                         {
                             select: attrsToReturn,
@@ -228,7 +220,6 @@ angular.module('updates')
                     .$promise
                     .then(function (result) {
                             $log.debug('fetchObject success:' + JSON.stringify(result));
-
                             var primaryKey = WhoisResources.wrapSuccess(result).getPrimaryKey();
                             if (_.isEqual(objectName, primaryKey)) {
                                 deferredObject.resolve(WhoisResources.wrapSuccess(result));
@@ -239,7 +230,6 @@ angular.module('updates')
                                     name: primaryKey
                                 });
                             }
-
                         }, function (error) {
                             $log.error('fetchObject error:' + JSON.stringify(error));
                             deferredObject.reject(WhoisResources.wrapError(error));
@@ -308,7 +298,6 @@ angular.module('updates')
                             deferredObject.reject(WhoisResources.wrapError(error));
                         }
                     );
-
                 return deferredObject.promise;
             };
 
@@ -317,24 +306,23 @@ angular.module('updates')
 
                 $log.debug('associateSSOMntner start for objectType: ' + objectType + ' and objectName: ' + objectName);
 
-                    $resource('api/whois/:source/:objectType/:name?password=:password',
-                        {
-                            source: source.toUpperCase(),
-                            objectType: objectType,
-                            name: objectName,  // only for mntners so no url-decosong applied
-                            password: '@password'
-                        },
-                        {update: {method: 'PUT'}})
-                        .update({password: passwords}, whoisResources)
-                        .$promise
-                        .then(function (result) {
-                            $log.debug('associateSSOMntner success:' + JSON.stringify(result));
-                            deferredObject.resolve(WhoisResources.wrapSuccess(result));
-                        }, function (error) {
-                            $log.error('associateSSOMntner error:' + JSON.stringify(error));
-                            deferredObject.reject(WhoisResources.wrapError(error));
-                        }
-                    );
+                var req = {
+                    method: 'PUT',
+                    url: ['api/whois/', source, '/', objectType, '/', objectName, '?password=', encodeURIComponent(passwords)].join(''),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    data: whoisResources
+                };
+
+                $http(req).then(function (result) {
+                    $log.debug('associateSSOMntner success:' + JSON.stringify(result));
+                    deferredObject.resolve(WhoisResources.wrapSuccess(result));
+                }, function (error) {
+                    $log.error('associateSSOMntner error:' + JSON.stringify(error));
+                    deferredObject.reject(WhoisResources.wrapError(error));
+                });
+
                 return deferredObject.promise;
             };
 
