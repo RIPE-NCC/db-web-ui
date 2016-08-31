@@ -49,6 +49,14 @@
             /*
              * Callback handlers
              */
+            $scope.submit = function () {
+                console.log('form submitted');
+            };
+
+            $scope.cancel = function () {
+                console.log('cancel button was clicked');
+            };
+
             $scope.isModifyWithSingleMntnerRemaining = function () {
                 // ...from createModifyController...
                 // return $scope.operation === 'Modify' && $scope.maintainers.object.length === 1;
@@ -332,13 +340,13 @@
             prefix: {
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
                 descr: {minOccurs: 0, maxOccurs: -1},
-                nserver: {minOccurs: 2, maxOccurs: -1},
-                'reverse-zones': {minOccurs: 1, maxOccurs: 1},
+                nserver: {minOccurs: 2, hidden: { invalid: 'prefix' }},
+                'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: { invalid: 'nserver' }},
                 'ds-rdata': {minOccurs: 0, maxOccurs: -1},
                 org: {minOccurs: 0, maxOccurs: -1, refs: ['ORGANISATION']},
-                'admin-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
-                'tech-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
-                'zone-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
+                'admin-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: { invalid: ['prefix', 'nserver'] }},
+                'tech-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: { invalid: ['prefix', 'nserver'] }},
+                'zone-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: { invalid: ['prefix', 'nserver'] }},
                 remarks: {minOccurs: 0, maxOccurs: -1},
                 notify: {minOccurs: 0, maxOccurs: -1},
                 'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['MNTNER']},
