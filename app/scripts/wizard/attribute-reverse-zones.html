@@ -1,12 +1,12 @@
 <div>
-    <table class="table" ng-if="reverseZones && reverseZones.length">
+    <table class="table" ng-if="attribute.value && attribute.value.length">
         <thead>
         <tr>
             <th>Reverse zone</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="r in reverseZones">
+        <tr ng-repeat="r in attribute.value">
             <td>{{ r.name }}</td>
         </tr>
         </tbody>

@@ -132,16 +132,18 @@
              */
             $scope.isMntHelpShown = false;
 
-            if ($scope.attribute.name === 'reverse-zones') {
-                var prefixAttr = _.find($scope.attributes, function(o) {
-                    return o.name === 'prefix';
-                });
-                $scope.reverseZones = PrefixService.getReverseDnsZones(prefixAttr.value);
-            }
-
             /*
              * Callback functions
              */
+            $scope.fieldChanged = function(objectType, attributes, attribute) {
+                if(objectType === 'prefix' && attribute.name === 'prefix' ) {
+                    var reverseZonesAttr = _.find($scope.attributes, function(o) {
+                        return o.name === 'reverse-zones';
+                    });
+                    reverseZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value)
+                }
+            };
+
             $scope.canBeAdded = canBeAdded;
 
             $scope.canBeRemoved = canBeRemoved;
@@ -341,7 +343,7 @@
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
                 descr: {minOccurs: 0, maxOccurs: -1},
                 nserver: {minOccurs: 2, hidden: { invalid: 'prefix' }},
-                'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: { invalid: 'nserver' }},
+                'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: { invalid: ['prefix', 'nserver'] }},
                 'ds-rdata': {minOccurs: 0, maxOccurs: -1},
                 org: {minOccurs: 0, maxOccurs: -1, refs: ['ORGANISATION']},
                 'admin-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: { invalid: ['prefix', 'nserver'] }},
