@@ -1,4 +1,4 @@
-<form id="createForm" accept-charset="ISO-8859-1">
+<form accept-charset="ISO-8859-1">
 
     <h1 title="It's a wizard, though, really">Domain object not-a-wizard</h1>
     <section class="form-fields maintainer-fields">
@@ -20,5 +20,9 @@
             <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
         </p>
     </section>
+
+    <span class="pull-right">
+        <button type="button" ng-click="submit()" ng-disabled="restCallInProgress" class="blue-button ga-modifyobj-modify">Submit</button>
+    </span>
 
 </form>
