@@ -2,11 +2,12 @@
 
 'use strict';
 
-fdescribe('Domain Wizard', function () {
+fdescribe('The prefix wizard', function () {
 
     var AttributeMetadataService;
     var $scope;
     var constants;
+    var objectType = 'prefix';
 
     beforeEach(function() {
         module('dbWebApp');
@@ -29,10 +30,9 @@ fdescribe('Domain Wizard', function () {
         expect($scope.attributes.length).toBe(9);
     });
 
-    it('should be able to calculate validity of an primary with no metadata', function() {
+    it('should be able to calculate validity of an attribute with no metadata', function() {
         var isValid;
-        var objectType = 'prefix',
-            attributes = $scope.attributes,
+        var attributes = $scope.attributes,
             attribute = $scope.attributes[0],
             attrMetadata = AttributeMetadataService.getMetadata(objectType, attribute.name);
 
@@ -50,8 +50,7 @@ fdescribe('Domain Wizard', function () {
     });
 
     it('should be able to calculate hidden state of an attribute with no dependencies', function() {
-        var objectType = 'prefix',
-            attributes = $scope.attributes,
+        var attributes = $scope.attributes,
             attribute = $scope.attributes[0];
 
         expect(attribute.name).toBe('prefix'); // make sure we've got the right one :$
@@ -60,15 +59,22 @@ fdescribe('Domain Wizard', function () {
     });
 
     it('should be able to calculate hidden state of an attribute with dependencies', function() {
-        var objectType = 'prefix',
+        var isHidden,
             attributes = $scope.attributes,
-            attrDep1 = $scope.attributes[0],
+            attrPrefix = $scope.attributes[0],
             attrToTest = $scope.attributes[4];
 
-        expect(attrDep1.name).toBe('prefix'); // make sure we've got the right one :$
+        expect(attrPrefix.name).toBe('prefix'); // make sure we've got the right one :$
         expect(attrToTest.name).toBe('admin-c'); // make sure we've got the right one :$
-        var isHidden = AttributeMetadataService.isHidden(objectType, attributes, attrToTest);
+
+        attrPrefix.value = '';
+        isHidden = AttributeMetadataService.isHidden(objectType, attributes, attrToTest);
         expect(isHidden).toBe(true);
+
+        attrPrefix.value = '22.22.0/22';
+        isHidden = AttributeMetadataService.isHidden(objectType, attributes, attrToTest);
+        expect(isHidden).toBe(false);
+
     });
 
 });

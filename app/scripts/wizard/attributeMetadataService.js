@@ -4,39 +4,24 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).service('AttributeMetadataService', ['constants',
-        function (constants) {
+    ).service('AttributeMetadataService', ['PrefixService',
+        function (PrefixService) {
+
+            // Defaults:
+            // * attributes are shown
+            // * attribute values are valid -except-
+            // * primary key values are valid when not-empty, otherwise they're invalid
+            // * attribute cardinality is 0..*
+
+            // The flags used in the metadata therefore contradict the defaults, e.g. you have to
+            // set an attribute to 'hidden' if you don't want to show it. This means the metadata
+            // only has to provide overrides and can therefore be pretty small.
 
             this.getMetadata = getMetadata;
             this.isValid = isValid;
             this.isHidden = isHidden;
             this.getReferences = getReferences;
             this.getCardinality = getCardinality;
-
-            function evaluateMetadata(objectType, attributes, attribute, attrMetadata) {
-                //var metadata = getMetadata(objectType, attribute.name);
-                console.log('evaluateMetadataExpression', objectType, attributes, attribute, attrMetadata);
-                var result = true;
-                if (attrMetadata && attrMetadata.invalid) {
-                    // checks a list of attrs to see if any are invalid. each attr has an 'invalid'
-                    // definition in the metadata, or, if not, it's valid by default.
-                    var mustBeValid = [];
-                    if (typeof attrMetadata.invalid === 'string') {
-                        mustBeValid.push(_.find(attributes, function (o) {
-                            return o.name === attrMetadata.invalid;
-                        }));
-                    } else if (angular.isArray(attrMetadata.invalid)) {
-                        _.forEach(attrMetadata.invalid, function (attrName) {
-                            mustBeValid.push(_.find(attributes, function (o) {
-                                return o.name === attrName;
-                            }));
-                        });
-                    }
-                } else {
-                    return false;
-                }
-                return result;
-            }
 
             function isHidden(objectType, attributes, attribute) {
                 var md = getMetadata(objectType, attribute.name).hidden;
@@ -61,10 +46,12 @@
                         return o.name === md.invalid;
                     }));
                 } else if (typeOf(md.invalid) === 'array') {
-                    _.forEach(md.invalid, function (attrName) {
-                        mustBeValid.push(_.find(attributes, function (o) {
-                            return o.name === attrName;
-                        }));
+                    _.forEach(md.invalid, function (mdvalue) {
+                        if (typeOf(mdvalue) === 'string') {
+                            mustBeValid.push(_.find(attributes, function (o) {
+                                return o.name === mdvalue;
+                            }));
+                        }
                     });
                 }
                 // Check every attribute for validity
@@ -74,6 +61,34 @@
                 return !isInvalid(objectType, attributes, attribute);
             }
 
+            function evaluateMetadata(objectType, attributes, attribute, attrMetadata) {
+                if (attrMetadata && attrMetadata.invalid) {
+                    // checks a list of attrs to see if any are invalid. each attr has an 'invalid'
+                    // definition in the metadata, or, if not, it's valid by default.
+                    var mustBeValid = [];
+                    if (typeOf(attrMetadata.invalid) === 'string') {
+                        mustBeValid = mustBeValid.concat(_.filter(attributes, function (o) {
+                            return o.name === attrMetadata.invalid;
+                        }));
+                    } else if (typeOf(attrMetadata.invalid) === 'array') {
+                        _.forEach(attrMetadata.invalid, function (attrName) {
+                            var found = _.filter(attributes, function (o) {
+                                return o.name === attrName;
+                            });
+                            mustBeValid = mustBeValid.concat(found);
+                        });
+                    } else {
+                        console.log('');
+                    }
+                    var invalidAttrs = _.filter(mustBeValid, function (attr) {
+                        return isInvalid(objectType, attributes, attr);
+                    });
+                    return invalidAttrs.length !== 0;
+                } else {
+                    return false;
+                }
+            }
+
             function getReferences(objectType, attributeName) {
                 return getMetadata(objectType, attributeName).refs;
             }
@@ -81,10 +96,10 @@
             function getMetadata(objectType, attributeName) {
                 checkTypes(arguments, ['string', 'string']);
                 if (typeof objectType === 'string' && typeof attributeName === 'string' && objectType && attributeName) {
-                    if (!constants.ObjectMetadata[objectType]) {
+                    if (!objectMetadata[objectType]) {
                         throw Error('There is no metadata for ', objectType);
                     }
-                    return constants.ObjectMetadata[objectType][attributeName];
+                    return objectMetadata[objectType][attributeName];
                 } else {
                     throw Error('AttributeMetadataService.getMetadata takes two non-empty strings');
                 }
@@ -118,6 +133,60 @@
                     }
                 }
             }
+
+            /*
+             * Metadata evaluation functions
+             */
+            function validatePrefix(objectType, attributes, attribute) {
+                return PrefixService.validatePrefix(attribute.value);
+            }
+
+            // notes on metadata structure:
+            // e.g.
+            // 'admin-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},
+            //
+            // should be read: admin-c is a mandatory field which can be added as many times as you like
+            // (minOccurs:1, maxOccurs: -1 [by default]).
+            //
+            // It uses an autocomplete mechanism which refers to 'person' and 'role' objects.
+            //
+            // It should be hidden when EITHER the prefix OR any nserver values are invalid
+            //
+            var objectMetadata = {
+                domain: {
+                    domain: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
+                    descr: {minOccurs: 0, maxOccurs: -1},
+                    org: {minOccurs: 0, maxOccurs: -1, refs: ['organisation']},
+                    'admin-c': {minOccurs: 1, maxOccurs: -1, refs: ['person', 'role']},
+                    'tech-c': {minOccurs: 1, maxOccurs: -1, refs: ['person', 'role']},
+                    'zone-c': {minOccurs: 1, maxOccurs: -1, refs: ['person', 'role']},
+                    nserver: {minOccurs: 2, maxOccurs: -1},
+                    'ds-rdata': {minOccurs: 0, maxOccurs: -1},
+                    remarks: {minOccurs: 0, maxOccurs: -1},
+                    notify: {minOccurs: 0, maxOccurs: -1},
+                    'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['mntner']},
+                    created: {minOccurs: 0, maxOccurs: 1},
+                    'last-modified': {minOccurs: 0, maxOccurs: 1},
+                    source: {minOccurs: 1, maxOccurs: 1}
+                },
+                prefix: {
+                    prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: validatePrefix},
+                    descr: {minOccurs: 0, maxOccurs: -1},
+                    nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}},
+                    'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
+                    'ds-rdata': {minOccurs: 0, maxOccurs: -1},
+                    org: {minOccurs: 0, maxOccurs: -1, refs: ['organisation']},
+                    'admin-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},
+                    'tech-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},
+                    'zone-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},
+                    remarks: {minOccurs: 0, maxOccurs: -1},
+                    notify: {minOccurs: 0, maxOccurs: -1},
+                    'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['mntner']},
+                    created: {minOccurs: 0, maxOccurs: 1},
+                    'last-modified': {minOccurs: 0, maxOccurs: 1},
+                    source: {minOccurs: 1, maxOccurs: 1}
+                }
+            };
 
         }]);
 

@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$scope', 'RestService', 'constants', 'PrefixService',
-        function ($scope, RestService, constants, PrefixService) {
+    ).controller('DomainObjectController', ['$scope', 'RestService', 'constants', 'AttributeMetadataService',
+        function ($scope, RestService, constants, AttributeMetadataService) {
 
             var maintainerSso = [];
             var objectType = 'prefix';
@@ -72,23 +72,7 @@
             };
 
             $scope.showAttribute = function (attribute) {
-                var attrMetadata = constants.ObjectMetadata[objectType][attribute.name];
-                if (attrMetadata.primaryKey) {
-                    return true;
-                } else if (attribute.name === 'reverse-zones') {
-                    // ok if prefix is valid
-                    return _.find($scope.attributes, function (o) {
-                        return (o.name === 'prefix' && o.value) && PrefixService.validatePrefix(o.value);
-                    });
-                } else {
-                    // if primary key has a value, then show all others
-                    var pkName = _.findKey(constants.ObjectMetadata[objectType], function (o) {
-                        return o.primaryKey;
-                    });
-                    return _.find($scope.attributes, function (o) {
-                        return (o.name === pkName) && o.value;
-                    });
-                }
+                return !AttributeMetadataService.isHidden('prefix', $scope.attributes, attribute);
             };
 
             /*
@@ -188,7 +172,7 @@
                 return WhoisMetaService.getAttributeShortDescription($scope.objectType, name);
             };
 
-            $scope.isVisible = function () {
+            $scope.isHidden = function () {
                 return AttributeMetadataService.isHidden($scope.objectType, $scope.attributes, $scope.attribute);
             };
 
@@ -283,7 +267,7 @@
                     return false;
                 }
                 // count the attributes which match 'attribute'
-                var cardinality = AttributeMetadataService.getCardinality();
+                var cardinality = AttributeMetadataService.getCardinality($scope.objectType, attribute.name);
 
                 if (cardinality.maxOccurs < 0) {
                     // undefined or -1 means no limit
@@ -300,7 +284,7 @@
                 if ($scope.attribute.name === 'reverse-zones') {
                     return false;
                 }
-                var cardinality = AttributeMetadataService.getCardinality();
+                var cardinality = AttributeMetadataService.getCardinality($scope.objectType, attribute.name);
                 // check if there's a limit
                 if (cardinality.minOccurs < 1) {
                     return true;
@@ -332,44 +316,6 @@
             restrict: 'E',
             templateUrl: 'scripts/wizard/maintainers.html'
         };
-    }]).constant('constants', {
-        ObjectMetadata: {
-            // minOccurs default: 0
-            // maxOccurs default: -1 (which means 'no maximum')
-            domain: {
-                domain: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
-                descr: {minOccurs: 0, maxOccurs: -1},
-                org: {minOccurs: 0, maxOccurs: -1, refs: ['ORGANISATION']},
-                'admin-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
-                'tech-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
-                'zone-c': {minOccurs: 1, maxOccurs: -1, refs: ['PERSON', 'ROLE']},
-                nserver: {minOccurs: 2, maxOccurs: -1},
-                'ds-rdata': {minOccurs: 0, maxOccurs: -1},
-                remarks: {minOccurs: 0, maxOccurs: -1},
-                notify: {minOccurs: 0, maxOccurs: -1},
-                'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['MNTNER']},
-                created: {minOccurs: 0, maxOccurs: 1},
-                'last-modified': {minOccurs: 0, maxOccurs: 1},
-                source: {minOccurs: 1, maxOccurs: 1}
-            },
-            prefix: {
-                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
-                descr: {minOccurs: 0, maxOccurs: -1},
-                nserver: {minOccurs: 2, hidden: { invalid: 'prefix' }},
-                'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: { invalid: ['prefix', 'nserver'] }},
-                'ds-rdata': {minOccurs: 0, maxOccurs: -1},
-                org: {minOccurs: 0, maxOccurs: -1, refs: ['ORGANISATION']},
-                'admin-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: {invalid: ['prefix', 'nserver']}},
-                'tech-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: {invalid: ['prefix', 'nserver']}},
-                'zone-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: {invalid: ['prefix', 'nserver']}},
-                remarks: {minOccurs: 0, maxOccurs: -1},
-                notify: {minOccurs: 0, maxOccurs: -1},
-                'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['MNTNER']},
-                created: {minOccurs: 0, maxOccurs: 1},
-                'last-modified': {minOccurs: 0, maxOccurs: 1},
-                source: {minOccurs: 1, maxOccurs: 1}
-            }
-        }
-    });
+    }]);
 
 })();
