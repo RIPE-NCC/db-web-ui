@@ -121,7 +121,7 @@ Grunt
   Use this along with ```mvn spring-boot:run```. It watches the JS and HTML files for changes and redeploys them
   when they've changed. In detail: the watch task is triggered by changes in the file system. Depending on the
   change it detects, watch will run the appropriate Grunt task and put the result in the ```webapp``` directory
-  just like a full ```grunt build``` would.
+  just like ```grunt build``` would.
 * e2e-test<br>
   Runs the Protractor tests on port 9002. These are the same tests as the e2e-coverage target but they run without
   coverage so they are quicker.

@@ -18,7 +18,7 @@
             };
 
             $scope.restCallInProgress = false;
-            $scope.attributes = {};
+            $scope.attributes = [];
 
             /*
              * Main
@@ -71,21 +71,21 @@
                 console.log('onMntnerRemoved', item, model);
             };
 
-            $scope.showAttribute = function(attribute) {
+            $scope.showAttribute = function (attribute) {
                 var attrMetadata = constants.ObjectMetadata[objectType][attribute.name];
                 if (attrMetadata.primaryKey) {
                     return true;
                 } else if (attribute.name === 'reverse-zones') {
                     // ok if prefix is valid
-                    return _.find($scope.attributes, function(o) {
-                        return (o.name === 'prefix') && PrefixService.validatePrefix(o.value);
+                    return _.find($scope.attributes, function (o) {
+                        return (o.name === 'prefix' && o.value) && PrefixService.validatePrefix(o.value);
                     });
                 } else {
                     // if primary key has a value, then show all others
-                    var pkName = _.findKey(constants.ObjectMetadata[objectType], function(o) {
+                    var pkName = _.findKey(constants.ObjectMetadata[objectType], function (o) {
                         return o.primaryKey;
                     });
-                    return _.find($scope.attributes, function(o) {
+                    return _.find($scope.attributes, function (o) {
                         return (o.name === pkName) && o.value;
                     });
                 }
@@ -124,8 +124,16 @@
                 }
             };
         }]
-    ).controller('AttributeCtrl', ['$scope', '$sce', 'constants', 'WhoisMetaService', 'CharsetTools', 'RestService', 'PrefixService',
-        function ($scope, $sce, constants, WhoisMetaService, CharsetTools, RestService, PrefixService) {
+    ).controller('AttributeCtrl', ['$scope', '$sce', 'AttributeMetadataService', 'WhoisMetaService', 'CharsetTools', 'RestService', 'PrefixService',
+        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService, PrefixService) {
+
+            /*
+             * $scope variables we can see because they're bound by our directive: attributeRenderer
+             *
+             * objectType : string   -- Can be 'organisation', 'inetnum', whatever....
+             * attributes : object[] -- The array of attributes which make up the object.
+             * attribute  : object   -- The attribute which this controller is responsible for.
+             */
 
             /*
              * Initial scope vars
@@ -180,12 +188,17 @@
                 return WhoisMetaService.getAttributeShortDescription($scope.objectType, name);
             };
 
+            $scope.isVisible = function () {
+                return AttributeMetadataService.isHidden($scope.objectType, $scope.attributes, $scope.attribute);
+            };
+
             /*
              * Local functions
              */
+
             function referenceAutocomplete(attribute, userInput) {
                 var attrName = attribute.name;
-                var refs = constants.ObjectMetadata[$scope.objectType][attrName].refs;
+                var refs = AttributeMetadataService.getReferences($scope.objectType, $scope.attribute.name);
                 if (!refs) {
                     return [];
                 }
@@ -270,33 +283,33 @@
                     return false;
                 }
                 // count the attributes which match 'attribute'
-                var attrMetadata = constants.ObjectMetadata[$scope.objectType][attribute.name];
-                if (!attrMetadata) {
-                    return;
-                }
-                if (typeof attrMetadata.maxOccurs === 'undefined' || attrMetadata.maxOccurs < 0) {
+                var cardinality = AttributeMetadataService.getCardinality();
+
+                if (cardinality.maxOccurs < 0) {
                     // undefined or -1 means no limit
                     return true;
                 }
+                // count attributes which match by name
                 var matches = _.filter(attributes, function (attr) {
                     return attr.name === attribute.name;
                 });
-                return matches.length < attrMetadata.maxOccurs;
+                return matches.length < cardinality.maxOccurs;
             }
 
             function canBeRemoved(attributes, attribute) {
                 if ($scope.attribute.name === 'reverse-zones') {
                     return false;
                 }
-                // count the attributes which match 'attribute'
-                var attrMetadata = constants.ObjectMetadata[$scope.objectType][attribute.name];
-                if (!attrMetadata.minOccurs) {
+                var cardinality = AttributeMetadataService.getCardinality();
+                // check if there's a limit
+                if (cardinality.minOccurs < 1) {
                     return true;
                 }
+                // count the attributes which match 'attribute' name
                 var matches = _.filter(attributes, function (attr) {
                     return attr.name === attribute.name;
                 });
-                return matches.length > attrMetadata.minOccurs;
+                return matches.length > cardinality.minOccurs;
             }
         }
     ]).directive('attributeRenderer', [function () {
@@ -346,9 +359,9 @@
                 'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: { invalid: ['prefix', 'nserver'] }},
                 'ds-rdata': {minOccurs: 0, maxOccurs: -1},
                 org: {minOccurs: 0, maxOccurs: -1, refs: ['ORGANISATION']},
-                'admin-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: { invalid: ['prefix', 'nserver'] }},
-                'tech-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: { invalid: ['prefix', 'nserver'] }},
-                'zone-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: { invalid: ['prefix', 'nserver'] }},
+                'admin-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: {invalid: ['prefix', 'nserver']}},
+                'tech-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: {invalid: ['prefix', 'nserver']}},
+                'zone-c': {minOccurs: 1, refs: ['PERSON', 'ROLE'], hidden: {invalid: ['prefix', 'nserver']}},
                 remarks: {minOccurs: 0, maxOccurs: -1},
                 notify: {minOccurs: 0, maxOccurs: -1},
                 'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['MNTNER']},

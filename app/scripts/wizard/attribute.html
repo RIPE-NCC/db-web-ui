@@ -1,5 +1,7 @@
 <input type="text"
        name="{{attribute.name}}"
+       ng-model="attribute.value"
+       ng-required="{{attribute.$$meta.$$mandatory}}"
        placeholder="{{getAttributeShortDescription(attribute.name)}}"
        class="form-control"
        autocomplete="off"
