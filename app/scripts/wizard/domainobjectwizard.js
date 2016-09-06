@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$scope', 'RestService', 'constants', 'AttributeMetadataService',
-        function ($scope, RestService, constants, AttributeMetadataService) {
+    ).controller('DomainObjectController', ['$scope', 'RestService', 'AttributeMetadataService',
+        function ($scope, RestService, AttributeMetadataService) {
 
             var maintainerSso = [];
             var objectType = 'prefix';
@@ -80,7 +80,7 @@
              */
             function determineAttributesForNewObject(objectType) {
                 var i, attributes = [];
-                _.forEach(constants.ObjectMetadata[objectType], function (val, key) {
+                _.forEach(AttributeMetadataService.getAllMetadata(objectType), function (val, key) {
                     if (val.minOccurs) {
                         for (i = 0; i < val.minOccurs; i++) {
                             attributes.push({name: key});
@@ -119,6 +119,7 @@
              * attribute  : object   -- The attribute which this controller is responsible for.
              */
 
+
             /*
              * Initial scope vars
              */
@@ -127,12 +128,12 @@
             /*
              * Callback functions
              */
-            $scope.fieldChanged = function(objectType, attributes, attribute) {
-                if(objectType === 'prefix' && attribute.name === 'prefix' ) {
-                    var reverseZonesAttr = _.find($scope.attributes, function(o) {
+            $scope.fieldChanged = function (objectType, attributes, attribute) {
+                if (objectType === 'prefix' && attribute.name === 'prefix') {
+                    var reverseZonesAttr = _.find($scope.attributes, function (o) {
                         return o.name === 'reverse-zones';
                     });
-                    reverseZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value)
+                    reverseZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
                 }
             };
 
