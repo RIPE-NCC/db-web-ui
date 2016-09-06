@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$scope', 'RestService', 'AttributeMetadataService',
-        function ($scope, RestService, AttributeMetadataService) {
+    ).controller('DomainObjectController', ['$scope', 'jsUtilService', 'RestService', 'AttributeMetadataService',
+        function ($scope, jsUtils, RestService, AttributeMetadataService) {
 
             var maintainerSso = [];
             var objectType = 'prefix';
@@ -46,6 +46,15 @@
                 }
             );
 
+            // should be the only thing to do, one day...
+            $scope.valueChanged = valueChanged;
+            function valueChanged(attribute, newVal) {
+                console.log('valueChanged: attribute, newVal', attribute, newVal);
+                attribute.value = newVal;
+                enrich($scope.objectType, $scope.attributes);
+            }
+            enrich(objectType, $scope.attributes);
+
             /*
              * Callback handlers
              */
@@ -78,6 +87,17 @@
             /*
              * Local functions
              */
+
+            function enrich(objectType, attributes) {
+                jsUtils.checkTypes(arguments, ['string', 'array']);
+                var i;
+                for (i = 0; i < attributes.length; i++) {
+                    attributes[i].$$invalid = AttributeMetadataService.isInvalid(objectType, attributes, attributes[i]);
+                    attributes[i].$$hidden = AttributeMetadataService.isHidden(objectType, attributes, attributes[i]);
+                    console.log('name', attributes[i].name, '$$invalid', attributes[i].$$invalid, '$$hidden', attributes[i].$$hidden);
+                }
+            }
+
             function determineAttributesForNewObject(objectType) {
                 var i, attributes = [];
                 _.forEach(AttributeMetadataService.getAllMetadata(objectType), function (val, key) {
@@ -119,16 +139,17 @@
              * attribute  : object   -- The attribute which this controller is responsible for.
              */
 
-
             /*
              * Initial scope vars
              */
             $scope.isMntHelpShown = false;
+            $scope.value = $scope.attribute.value;
 
             /*
              * Callback functions
              */
             $scope.fieldChanged = function (objectType, attributes, attribute) {
+                $scope.attribute.value = $scope.value;
                 if (objectType === 'prefix' && attribute.name === 'prefix') {
                     var reverseZonesAttr = _.find($scope.attributes, function (o) {
                         return o.name === 'reverse-zones';
