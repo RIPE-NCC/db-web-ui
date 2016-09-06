@@ -17,12 +17,17 @@
             // set an attribute to 'hidden' if you don't want to show it. This means the metadata
             // only has to provide overrides and can therefore be pretty small.
 
+            this.calculateAllMetadata = calculateAllMetadata;
             this.getAllMetadata = getAllMetadata;
             this.getMetadata = getMetadata;
-            this.isValid = isValid;
+            this.isInvalid = isInvalid;
             this.isHidden = isHidden;
             this.getReferences = getReferences;
             this.getCardinality = getCardinality;
+
+            function calculateAllMetadata(objectType, attributes) {
+
+            }
 
             function isHidden(objectType, attributes, attribute) {
                 jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
@@ -49,7 +54,7 @@
 
             function evaluateMetadata(objectType, attributes, attribute, attrMetadata) {
                 jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
-                var target;
+                var i, target;
                 // checks a list of attrs to see if any are invalid. each attr has an 'invalid'
                 // definition in the metadata, or, if not, it's valid by default.
                 if (jsUtils.typeOf(attrMetadata) === 'function') {
@@ -65,12 +70,13 @@
                     target = _.filter(attributes, function (o) {
                         return o.name === attrMetadata.invalid;
                     });
-                    if (isInvalid(objectType, attributes, target)) {
-                        return true;
+                    for (i = 0; i < target.length; i++) {
+                        if (isInvalid(objectType, attributes, target[i])) {
+                            return true;
+                        }
                     }
                 } else if (jsUtils.typeOf(attrMetadata.invalid) === 'array') {
                     return -1 !== _.findIndex(attrMetadata.invalid, function (attrName) {
-                        var i;
                         // filter takes care of multiple attributes with the same name
                         target = _.filter(attributes, function (o) {
                             return o.name === attrName;
@@ -134,7 +140,7 @@
              * Metadata evaluation functions
              */
             function prefixIsInvalid(objectType, attributes, attribute) {
-                return !PrefixService.validatePrefix(attribute.value);
+                return !attribute.value || !PrefixService.isValidPrefix(attribute.value);
             }
 
             // notes on metadata structure:

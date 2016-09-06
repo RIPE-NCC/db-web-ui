@@ -30,7 +30,7 @@ describe('The prefix wizard', function () {
     });
 
     it('should be able to calculate validity of an attribute', function() {
-        var isValid;
+        var isInvalid;
         var attributes = $scope.attributes,
             attributePk = $scope.attributes[0],
             attribute = $scope.attributes[4];
@@ -40,20 +40,20 @@ describe('The prefix wizard', function () {
 
         //TODO: add object which has primary key with no deps
         attributePk.value = '';
-        isValid = AttributeMetadataService.isValid(objectType, attributes, attributePk);
-        expect(isValid).toBe(false);
+        isInvalid = AttributeMetadataService.isInvalid(objectType, attributes, attributePk);
+        expect(isInvalid).toBe(true);
 
         attributePk.value = VALID_PREFIX;
-        isValid = AttributeMetadataService.isValid(objectType, attributes, attributePk);
-        expect(isValid).toBe(true);
+        isInvalid = AttributeMetadataService.isInvalid(objectType, attributes, attributePk);
+        expect(isInvalid).toBe(false);
 
         attribute.value = '';
-        isValid = AttributeMetadataService.isValid(objectType, attributes, attribute);
-        expect(isValid).toBe(true);
+        isInvalid = AttributeMetadataService.isInvalid(objectType, attributes, attribute);
+        expect(isInvalid).toBe(false);
 
         attribute.value = 'could be anything';
-        isValid = AttributeMetadataService.isValid(objectType, attributes, attribute);
-        expect(isValid).toBe(true);
+        isInvalid = AttributeMetadataService.isInvalid(objectType, attributes, attribute);
+        expect(isInvalid).toBe(false);
     });
 
     it('should be able to calculate hidden state of an attribute with no dependencies', function() {

@@ -23,7 +23,7 @@
          * @param str
          * @returns {boolean}
          */
-        this.validatePrefix = function(str) {
+        this.isValidPrefix = function(str) {
             return this.isValidIp4Cidr(str) || this.isValidIp6Cidr(str);
         };
 
