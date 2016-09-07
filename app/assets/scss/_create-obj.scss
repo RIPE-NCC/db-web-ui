@@ -56,11 +56,6 @@ ul.form-fields {
 				}
 			}
 		}
-		> li:last-child {
-			a {
-				border-radius: 4px;
-			}
-		}
 	}
 }
 
@@ -222,4 +217,7 @@ ul.form-fields {
 }
 .input-group .form-control {
     z-index: auto !important;
+}
+.text-error {
+	float: right;
 }

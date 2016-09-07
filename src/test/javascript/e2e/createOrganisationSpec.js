@@ -1,4 +1,4 @@
-/*global beforeEach, browser, describe, expect, it, require */
+/*global beforeEach, browser, by, describe, element, expect, it, require */
 
 // Local requires
 var mockGet = require('./mocks/homemocks');

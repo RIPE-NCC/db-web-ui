@@ -5,17 +5,12 @@ angular.module('updates')
 
         var linkService = {};
 
-        linkService.getDisplayUrl = function ( source, type, name ) {
-            return '/db-web-ui/#/webupdates/display/'+ source + '/' + type + '/' + name;
-        };
-
         linkService.getLink = function ( source, type, name ) {
-            return '<a target="_blank" href="' + linkService.getDisplayUrl(source, type, name) + '">' + name + '</a>';
+            return '<a target="_blank" href="#/webupdates/display/'+ source + '/' + type + '/' + name + '">' + name + '</a>';
         };
-
 
         linkService.getModifyUrl = function ( source, type, name ) {
-            return '/db-web-ui/#/webupdates/display/'+ source + '/' + type + '/' + name;
+            return '#/webupdates/display/'+ source + '/' + type + '/' + name;
         };
 
         linkService.getModifyLink = function ( source, type, name ) {

@@ -1,0 +1,36 @@
+<form accept-charset="ISO-8859-1">
+
+    <h1 title="It's a wizard, though, really">Domain object not-a-wizard</h1>
+    <section class="form-fields maintainer-fields">
+        <maintainers></maintainers>
+    </section>
+
+    <section class="visible-field-form">
+        <div class="alert alert-danger alert-dismissible" role="alert" ng-if="message.type === 'error'">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ message.text }}
+        </div>
+        <div class="alert alert-info alert-dismissible" role="alert" ng-if="message.type === 'info'">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            {{ message.text }}
+        </div>
+        <ul class="form-fields appeared-fields">
+            <li class="form-group input-group"
+                ng-repeat="attribute in attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'}"
+                ng-if="!attribute.$$hidden">
+                <attribute-renderer object-type="'prefix'" attributes="attributes" attribute="attribute"></attribute-renderer>
+            </li>
+        </ul>
+    </section>
+
+    <section class="supporting-text">
+        <p>By submitting this form you explicitly express your agreement with the
+            <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
+        </p>
+    </section>
+
+    <span class="pull-right">
+        <button type="button" ng-click="submit()" ng-disabled="restCallInProgress" class="blue-button ga-modifyobj-modify">Submit</button>
+    </span>
+
+</form>

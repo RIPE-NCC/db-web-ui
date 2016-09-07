@@ -2,6 +2,8 @@
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
 module.exports = function (config) {
+    'use strict';
+
     config.set({
         // base path, that will be used to resolve files and exclude
         basePath: '../../../',
@@ -55,6 +57,7 @@ module.exports = function (config) {
             'bower_components/angular-diff-match-patch/angular-diff-match-patch.js',
             'bower_components/angular-loading-bar/build/loading-bar.js',
             'bower_components/moment/moment.js',
+            'bower_components/ip-address/dist/ip-address-globals.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
             './app/scripts/app.js',
