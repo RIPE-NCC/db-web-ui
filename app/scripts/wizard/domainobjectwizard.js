@@ -47,13 +47,7 @@
             );
 
             // should be the only thing to do, one day...
-            $scope.valueChanged = valueChanged;
-            function valueChanged(attribute, newVal) {
-                console.log('valueChanged: attribute, newVal', attribute, newVal);
-                attribute.value = newVal;
-                enrich($scope.objectType, $scope.attributes);
-            }
-            enrich(objectType, $scope.attributes);
+            AttributeMetadataService.enrich(objectType, $scope.attributes);
 
             /*
              * Callback handlers
@@ -87,16 +81,6 @@
             /*
              * Local functions
              */
-
-            function enrich(objectType, attributes) {
-                jsUtils.checkTypes(arguments, ['string', 'array']);
-                var i;
-                for (i = 0; i < attributes.length; i++) {
-                    attributes[i].$$invalid = AttributeMetadataService.isInvalid(objectType, attributes, attributes[i]);
-                    attributes[i].$$hidden = AttributeMetadataService.isHidden(objectType, attributes, attributes[i]);
-                    console.log('name', attributes[i].name, '$$invalid', attributes[i].$$invalid, '$$hidden', attributes[i].$$hidden);
-                }
-            }
 
             function determineAttributesForNewObject(objectType) {
                 var i, attributes = [];
@@ -145,18 +129,12 @@
             $scope.isMntHelpShown = false;
             $scope.value = $scope.attribute.value;
 
+            $scope.valueConfirmed = valueConfirmed;
+            $scope.valueChanged = valueChanged;
+
             /*
              * Callback functions
              */
-            $scope.fieldChanged = function (objectType, attributes, attribute) {
-                $scope.attribute.value = $scope.value;
-                if (objectType === 'prefix' && attribute.name === 'prefix') {
-                    var reverseZonesAttr = _.find($scope.attributes, function (o) {
-                        return o.name === 'reverse-zones';
-                    });
-                    reverseZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
-                }
-            };
 
             $scope.canBeAdded = canBeAdded;
 
@@ -194,13 +172,23 @@
                 return WhoisMetaService.getAttributeShortDescription($scope.objectType, name);
             };
 
-            $scope.isHidden = function () {
-                return AttributeMetadataService.isHidden($scope.objectType, $scope.attributes, $scope.attribute);
-            };
-
             /*
              * Local functions
              */
+
+            function valueConfirmed(attribute, newVal, event) {
+                if (event && event.keyCode !== 13) {
+                    return;
+                }
+                attribute.value = newVal;
+                AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
+            }
+
+            function valueChanged(attribute, newVal) {
+                attribute.value = newVal;
+                attribute.$$invalid = AttributeMetadataService.isInvalid($scope.objectType, $scope.attributes, attribute);
+                attribute.$$error = attribute.$$invalid ? 'Invalid input' : '';
+            }
 
             function referenceAutocomplete(attribute, userInput) {
                 var attrName = attribute.name;

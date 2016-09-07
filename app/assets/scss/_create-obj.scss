@@ -218,6 +218,9 @@ ul.form-fields {
 .input-group .form-control {
     z-index: auto !important;
 }
+.text-error {
+	float: right;
+}
 
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
