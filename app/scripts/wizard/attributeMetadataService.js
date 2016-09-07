@@ -17,7 +17,7 @@
             // set an attribute to 'hidden' if you don't want to show it. This means the metadata
             // only has to provide overrides and can therefore be pretty small.
 
-            this.calculateAllMetadata = calculateAllMetadata;
+            this.enrich = enrich;
             this.getAllMetadata = getAllMetadata;
             this.getMetadata = getMetadata;
             this.isInvalid = isInvalid;
@@ -25,8 +25,14 @@
             this.getReferences = getReferences;
             this.getCardinality = getCardinality;
 
-            function calculateAllMetadata(objectType, attributes) {
-
+            function enrich(objectType, attributes) {
+                jsUtils.checkTypes(arguments, ['string', 'array']);
+                var i;
+                for (i = 0; i < attributes.length; i++) {
+                    attributes[i].$$invalid = isInvalid(objectType, attributes, attributes[i]);
+                    attributes[i].$$error = attributes[i].$$invalid ? 'Invalid input' : '';
+                    attributes[i].$$hidden = isHidden(objectType, attributes, attributes[i]);
+                }
             }
 
             function isHidden(objectType, attributes, attribute) {
@@ -48,17 +54,24 @@
                 return evaluateMetadata(objectType, attributes, attribute, md.invalid);
             }
 
-            function isValid(objectType, attributes, attribute) {
-                return !isInvalid(objectType, attributes, attribute);
-            }
-
             function evaluateMetadata(objectType, attributes, attribute, attrMetadata) {
                 jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
                 var i, target;
+                console.log('xxx typeOf attrMetadata: ', jsUtils.typeOf(attrMetadata));
                 // checks a list of attrs to see if any are invalid. each attr has an 'invalid'
                 // definition in the metadata, or, if not, it's valid by default.
                 if (jsUtils.typeOf(attrMetadata) === 'function') {
                     return attrMetadata(objectType, attributes, attribute);
+                }
+                if (jsUtils.typeOf(attrMetadata) === 'regexp') {
+                    if (!attribute.value) {
+                        return true;
+                    }
+                    console.log('xxx tsting regex: ', attrMetadata);
+                    // negate cz test is for IN-valid & regex is for a +ve match
+                    var result = attrMetadata.test(attribute.value);
+                    console.log('xxx result: ', result, 'attribute.value', attribute.value);
+                    return !result;
                 }
                 // Otherwise, go through the 'invalid' and 'hidden' properties and return the first true result
                 // First, check it's valid metadata
@@ -77,16 +90,16 @@
                     }
                 } else if (jsUtils.typeOf(attrMetadata.invalid) === 'array') {
                     return -1 !== _.findIndex(attrMetadata.invalid, function (attrName) {
-                        // filter takes care of multiple attributes with the same name
-                        target = _.filter(attributes, function (o) {
-                            return o.name === attrName;
-                        });
-                        for (i = 0; i < target.length; i++) {
-                            if (isInvalid(objectType, attributes, target[i])) {
-                                return true;
+                            // filter takes care of multiple attributes with the same name
+                            target = _.filter(attributes, function (o) {
+                                return o.name === attrName;
+                            });
+                            for (i = 0; i < target.length; i++) {
+                                if (isInvalid(objectType, attributes, target[i])) {
+                                    return true;
+                                }
                             }
-                        }
-                    });
+                        });
                 }
                 // TODO: 'hidden' -- string and array
                 return false;
@@ -174,7 +187,7 @@
                 prefix: {
                     prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid},
                     descr: {minOccurs: 0, maxOccurs: -1},
-                    nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}},
+                    nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: new RegExp('^[a-z]{2,999}$')},
                     'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
                     'ds-rdata': {minOccurs: 0, maxOccurs: -1},
                     org: {minOccurs: 0, maxOccurs: -1, refs: ['organisation']},

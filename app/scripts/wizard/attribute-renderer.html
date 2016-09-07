@@ -4,7 +4,7 @@
 </div>
 <div class="text-success" ng-if="attribute.$$success">{{ attribute.$$success }}</div>
 
-<ng-include src="widgetHtml"></ng-include>
+<ng-include src="widgetHtml" ng-class="{'has-error':attribute.$$invalid}"></ng-include>
 
 <div class="text field-description" collapse="!isHelpShown">
     <strong>Description</strong><br>
