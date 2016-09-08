@@ -14,10 +14,9 @@
            on-select="onMntnerAdded($item, $model)"
            on-remove="onMntnerRemoved($item, $model)">
 
-    <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !$item.$$isRemovable"
-                     placeholder="Type maintainer name">
+    <ui-select-match ui-lock-choice="$item.modifyable" placeholder="Type maintainer name">
         {{ $item.key }}
-        <span class="fa fa-star" ng-if="$item.$$isMine"></span>
+        <span class="fa fa-star" ng-if="$item.mine"></span>
         <span class="fa fa-lock" ng-if="$item.$$isRemovable"></span>
     </ui-select-match>
     <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
