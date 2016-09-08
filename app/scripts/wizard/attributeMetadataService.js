@@ -30,7 +30,6 @@
                 var i;
                 for (i = 0; i < attributes.length; i++) {
                     attributes[i].$$invalid = isInvalid(objectType, attributes, attributes[i]);
-                    attributes[i].$$error = attributes[i].$$invalid ? 'Invalid input' : '';
                     attributes[i].$$hidden = isHidden(objectType, attributes, attributes[i]);
                 }
             }
@@ -57,7 +56,6 @@
             function evaluateMetadata(objectType, attributes, attribute, attrMetadata) {
                 jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
                 var i, target;
-                console.log('xxx typeOf attrMetadata: ', jsUtils.typeOf(attrMetadata));
                 // checks a list of attrs to see if any are invalid. each attr has an 'invalid'
                 // definition in the metadata, or, if not, it's valid by default.
                 if (jsUtils.typeOf(attrMetadata) === 'function') {
@@ -67,11 +65,8 @@
                     if (!attribute.value) {
                         return true;
                     }
-                    console.log('xxx tsting regex: ', attrMetadata);
                     // negate cz test is for IN-valid & regex is for a +ve match
-                    var result = attrMetadata.test(attribute.value);
-                    console.log('xxx result: ', result, 'attribute.value', attribute.value);
-                    return !result;
+                    return !attrMetadata.test(attribute.value);
                 }
                 // Otherwise, go through the 'invalid' and 'hidden' properties and return the first true result
                 // First, check it's valid metadata

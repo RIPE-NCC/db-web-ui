@@ -4,17 +4,18 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$scope', 'jsUtilService', 'RestService', 'AttributeMetadataService',
-        function ($scope, jsUtils, RestService, AttributeMetadataService) {
+    ).controller('DomainObjectController', ['$scope', 'jsUtilService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
+        function ($scope, jsUtils, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
 
-            var maintainerSso = [];
             var objectType = 'prefix';
 
             /*
              * Initial scope vars
              */
             $scope.maintainers = {
-                object: []
+                sso: [],
+                object: [],
+                objectOriginal: []
             };
 
             $scope.restCallInProgress = false;
@@ -28,23 +29,66 @@
             $scope.restCallInProgress = true;
             RestService.fetchMntnersForSSOAccount().then(
                 function (results) {
-                    var mntner;
-                    for (var i = 0; i < results.length; i++) {
-                        mntner = results[i];
-                        maintainerSso.push(mntner);
-                    }
-                    $scope.maintainers.object = _.cloneDeep(maintainerSso);
-                    $scope.message = {};
+                    var attributes;
                     $scope.restCallInProgress = false;
+                    $scope.maintainers.sso = results;
+                    if ($scope.maintainers.sso.length > 0) {
+
+                        $scope.maintainers.objectOriginal = [];
+                        // populate ui-select box with sso-mntners
+                        $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
+
+                        // copy mntners to attributes (for later submit)
+                        var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
+                            return {name: 'mnt-by', value: i.key};
+                        });
+
+                        attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
+                            $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
+
+                        // Post-process atttributes before showing using screen-logic-interceptor
+                        $scope.attributes = attributes;
+
+                        console.log('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
+                        console.log('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
+                        console.log('mntners-object:' + JSON.stringify($scope.maintainers.object));
+                        _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
+
+                    } else {
+                        attributes = $scope.attributes;
+                        //$scope.attributes = _interceptBeforeEdit($scope.CREATE_OPERATION, attributes);
+                    }
                 }, function (error) {
+
+                    $scope.restCallInProgress = false;
+
                     console.log('Error fetching mntners for SSO:' + JSON.stringify(error));
                     $scope.message = {
                         type: 'error',
                         text: 'Error fetching maintainers associated with this SSO account'
                     };
-                    $scope.restCallInProgress = false;
                 }
             );
+
+            $scope.maintainers.objectOriginal = [];//_extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
+
+            function _extractEnrichMntnersFromObject(attributes, maintainersSso) {
+                // get mntners from response
+                var mntnersInObject = _.filter(attributes, function (attr) {
+                    return attr.name === 'mnt-by';
+                });
+
+                // determine if mntner is mine
+                var selected = _.map(mntnersInObject, function (mntnerAttr) {
+                    return {
+                        type: 'mntner',
+                        key: mntnerAttr.value,
+                        mine: _.contains(_.map(maintainersSso, 'key'), mntnerAttr.value)
+                    };
+                });
+
+                return selected;
+            }
 
             // should be the only thing to do, one day...
             AttributeMetadataService.enrich(objectType, $scope.attributes);
@@ -52,9 +96,7 @@
             /*
              * Callback handlers
              */
-            $scope.submit = function () {
-                console.log('form submitted');
-            };
+            $scope.submitButtonClicked = submitButtonHandler();
 
             $scope.cancel = function () {
                 console.log('cancel button was clicked');
@@ -94,6 +136,109 @@
                 return attributes;
             }
 
+            function submitButtonHandler() {
+
+                var whoisAttributes;
+
+                _.forEach($scope.attributes, function(attr) {
+                    if (!attr.name) {
+                        attr.name = '';
+                    }
+                });
+
+                console.log('$scope.attributes', $scope.attributes);
+                //TODO: check form is valid
+                //     ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes);
+
+                $scope.restCallInProgress = true;
+
+                function _onSubmitSuccess(resp) {
+                    $scope.restCallInProgress = false;
+                    console.log(resp);
+                }
+
+                function _onSubmitError(resp) {
+                    $scope.restCallInProgress = false;
+                    console.log(resp);
+                }
+
+                whoisAttributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
+
+                //AlertService.clearErrors();
+                console.log('$scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object', $scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
+
+                if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
+                    _performAuthentication();
+                    return;
+                }
+
+                var passwords = _getPasswordsForRestCall();
+
+                $scope.restCallInProgress = true;
+
+                if (!$scope.name) {
+
+                    RestService.createObject('RIPE', $scope.objectType,
+                        WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
+                        _onSubmitSuccess,
+                        _onSubmitError);
+
+                } else {
+                    //TODO: Temporary function till RPSL clean up
+                    if (MntnerService.isLoneRpslMntner($scope.maintainers.objectOriginal)) {
+                        passwords.push('RPSL');
+                    }
+
+                    RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
+                        WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
+                        _onSubmitSuccess,
+                        _onSubmitError);
+                }
+                //}
+            }
+
+            function _performAuthentication() {
+                console.log('XXX $scope.maintainers', $scope.maintainers);
+                var authParams = {
+                    maintainers: $scope.maintainers,
+                    operation: $scope.operation,
+                    object: {
+                        source: $scope.source,
+                        type: $scope.objectType,
+                        name: $scope.name
+                    },
+                    isLirObject: false,
+                    successClbk: _onSuccessfulAuthentication,
+                    failureClbk: _navigateAway
+                };
+                WebUpdatesCommons.performAuthentication(authParams);
+            }
+
+            function _onSuccessfulAuthentication() {
+                console.log('_onSuccessfulAuthentication');
+            }
+
+            function _navigateAway() {
+                console.log('_navigateAway');
+            }
+
+            function _getPasswordsForRestCall() {
+                var passwords = [];
+
+                if (CredentialsService.hasCredentials()) {
+                    passwords.push(CredentialsService.getCredentials().successfulPassword);
+                }
+
+                /*
+                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
+                 */
+                if ($scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
+                    passwords.push('RPSL');
+                }
+                return passwords;
+            }
+
         }]
     ).directive('attrInfo', ['WhoisMetaService', function (WhoisMetaService) {
             return {
@@ -112,8 +257,8 @@
                 }
             };
         }]
-    ).controller('AttributeCtrl', ['$scope', '$sce', 'AttributeMetadataService', 'WhoisMetaService', 'CharsetTools', 'RestService', 'PrefixService',
-        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService, PrefixService) {
+    ).controller('AttributeCtrl', ['$scope', '$sce', 'AttributeMetadataService', 'WhoisMetaService', 'CharsetTools', 'RestService',
+        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService) {
 
             /*
              * $scope variables we can see because they're bound by our directive: attributeRenderer
@@ -127,6 +272,13 @@
              * Initial scope vars
              */
             $scope.isMntHelpShown = false;
+            if ($scope.attribute.name === 'source') {
+                $scope.attribute.value = 'RIPE';
+                if (!$scope.attribute.$$meta) {
+                    $scope.attribute.$$meta = {};
+                }
+                $scope.attribute.$$meta.$$disable = true;
+            }
             $scope.value = $scope.attribute.value;
 
             $scope.valueConfirmed = valueConfirmed;
@@ -187,7 +339,6 @@
             function valueChanged(attribute, newVal) {
                 attribute.value = newVal;
                 attribute.$$invalid = AttributeMetadataService.isInvalid($scope.objectType, $scope.attributes, attribute);
-                attribute.$$error = attribute.$$invalid ? 'Invalid input' : '';
             }
 
             function referenceAutocomplete(attribute, userInput) {
