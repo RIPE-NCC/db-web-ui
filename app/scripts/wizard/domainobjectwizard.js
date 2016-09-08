@@ -39,20 +39,28 @@
                         $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
 
                         // copy mntners to attributes (for later submit)
+                        // Etch: hmm, fishy. why not do it later then?
                         var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
-                            return {name: 'mnt-by', value: i.key};
+                            return {
+                                name: 'mnt-by',
+                                value: i.key
+                            };
                         });
+                        console.log('$scope.maintainers.object', $scope.maintainers.object);
+                        mergeMaintainers($scope.attributes, mntnerAttrs);
 
-                        attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType,
-                            $scope.attributes.addAttrsSorted('mnt-by', mntnerAttrs));
+                        var myMntners = _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
 
-                        // Post-process atttributes before showing using screen-logic-interceptor
-                        $scope.attributes = attributes;
+                        console.log('myMntners', myMntners);
+                        console.log('$scope.attributes', $scope.attributes);
+                        //attributes = WhoisResources.wrapAndEnrichAttributes(objectType, attributes);
 
-                        console.log('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
-                        console.log('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
-                        console.log('mntners-object:' + JSON.stringify($scope.maintainers.object));
-                        _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
+                        // Post-process attributes before showing using screen-logic-interceptor
+                        //$scope.attributes = attributes;
+
+                        // console.log('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
+                        // console.log('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
+                        // console.log('mntners-object:' + JSON.stringify($scope.maintainers.object));
 
                     } else {
                         attributes = $scope.attributes;
@@ -90,13 +98,28 @@
                 return selected;
             }
 
+            function mergeMaintainers(attrs, maintainers) {
+                var i;
+                var lastIdxOfType = _.findLastIndex(attrs, function (item) {
+                    return item.name === 'mnt-by';
+                });
+                if (lastIdxOfType < 0) {
+                    lastIdxOfType = attrs.length;
+                } else if (!attrs[lastIdxOfType].value) {
+                    attrs.splice(lastIdxOfType, 1);
+                }
+                for (i = 0; i < maintainers.length; i++) {
+                    attrs.splice(lastIdxOfType + i, 0, maintainers[i]);
+                }
+            }
+
             // should be the only thing to do, one day...
             AttributeMetadataService.enrich(objectType, $scope.attributes);
 
             /*
              * Callback handlers
              */
-            $scope.submitButtonClicked = submitButtonHandler();
+            $scope.submitButtonClicked = submitButtonHandler;
 
             $scope.cancel = function () {
                 console.log('cancel button was clicked');
@@ -117,7 +140,7 @@
             };
 
             $scope.showAttribute = function (attribute) {
-                return !AttributeMetadataService.isHidden('prefix', $scope.attributes, attribute);
+                return !AttributeMetadataService.isHidden(objectType, $scope.attributes, attribute);
             };
 
             /*
@@ -129,7 +152,7 @@
                 _.forEach(AttributeMetadataService.getAllMetadata(objectType), function (val, key) {
                     if (val.minOccurs) {
                         for (i = 0; i < val.minOccurs; i++) {
-                            attributes.push({name: key});
+                            attributes.push({name: key, value: ''});
                         }
                     }
                 });
@@ -138,9 +161,10 @@
 
             function submitButtonHandler() {
 
+                console.log('xxx xxx xxx submitButtonHandler');
                 var whoisAttributes;
 
-                _.forEach($scope.attributes, function(attr) {
+                _.forEach($scope.attributes, function (attr) {
                     if (!attr.name) {
                         attr.name = '';
                     }
@@ -162,7 +186,7 @@
                     console.log(resp);
                 }
 
-                whoisAttributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes);
+                whoisAttributes = WhoisResources.wrapAndEnrichAttributes(objectType, $scope.attributes);
 
                 //AlertService.clearErrors();
                 console.log('$scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object', $scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
@@ -178,7 +202,7 @@
 
                 if (!$scope.name) {
 
-                    RestService.createObject('RIPE', $scope.objectType,
+                    RestService.createObject('RIPE', 'prefix',
                         WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
                         _onSubmitSuccess,
                         _onSubmitError);
@@ -189,7 +213,7 @@
                         passwords.push('RPSL');
                     }
 
-                    RestService.modifyObject($scope.source, $scope.objectType, $scope.name,
+                    RestService.modifyObject($scope.source, objectType, $scope.name,
                         WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
                         _onSubmitSuccess,
                         _onSubmitError);
@@ -204,7 +228,7 @@
                     operation: $scope.operation,
                     object: {
                         source: $scope.source,
-                        type: $scope.objectType,
+                        type: objectType,
                         name: $scope.name
                     },
                     isLirObject: false,
