@@ -69,12 +69,18 @@ describe('The prefix wizard', function () {
         var isHidden,
             attributes = $scope.attributes,
             attrPrefix = $scope.attributes[0],
+            attrNs1 = $scope.attributes[1],
+            attrNs2 = $scope.attributes[2],
             attrToTest = $scope.attributes[4];
 
         expect(attrPrefix.name).toBe('prefix');
+        expect(attrNs1.name).toBe('nserver');
+        expect(attrNs2.name).toBe('nserver');
         expect(attrToTest.name).toBe('admin-c');
 
         attrPrefix.value = '';
+        attrNs1.value = 'ns1.nowhere.com'; // a valid host name
+        attrNs2.value = 'ns2.nowhere.com'; // a valid host name
         isHidden = AttributeMetadataService.isHidden(objectType, attributes, attrToTest);
         expect(isHidden).toBe(true);
 

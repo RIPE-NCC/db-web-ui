@@ -10,7 +10,7 @@
             // Defaults:
             // * attributes are shown
             // * attribute values are valid -except-
-            // * primary key values are valid when not-empty, otherwise they're invalid
+            // * empty primary key values are invalid
             // * attribute cardinality is 0..*
 
             // The flags used in the metadata therefore contradict the defaults, e.g. you have to
@@ -36,17 +36,17 @@
 
             function isHidden(objectType, attributes, attribute) {
                 jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
-                var md = getMetadata(objectType, attribute.name).hidden;
-                if (!md) {
+                var md = getMetadata(objectType, attribute.name);
+                if (!md || !md.hidden) {
                     return false;
                 }
-                return evaluateMetadata(objectType, attributes, attribute, md);
+                return evaluateMetadata(objectType, attributes, attribute, md.hidden);
             }
 
             function isInvalid(objectType, attributes, attribute) {
                 jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
                 var md = getMetadata(objectType, attribute.name);
-                if (!md.invalid) {
+                if (!md || !md.invalid) {
                     // primary keys are invalid if they're empty
                     return md.primaryKey ? !attribute.value : false;
                 }
@@ -131,15 +131,15 @@
             function getCardinality(objectType, attributeName) {
                 jsUtils.checkTypes(arguments, ['string', 'string']);
                 var result = {
-                    minOccurs: 0, // No min
-                    maxOccurs: -1 // No max
+                    minOccurs: 0,
+                    maxOccurs: -1
                 };
                 var md = getMetadata(objectType, attributeName);
-                if (md.minOccurs) {
-                    result.minOccurs = md.minOccurs;
+                if (md.minOccurs > 0) {
+                    result.minOccurs = Math.max(md.minOccurs, 0);
                 }
-                if (md.maxOccurs) {
-                    result.maxOccurs = md.maxOccurs;
+                if (md.maxOccurs > 0) {
+                    result.maxOccurs = Math.max(md.maxOccurs, -1);
                 }
                 return result;
             }
@@ -152,47 +152,62 @@
             }
 
             // notes on metadata structure:
-            // e.g.
+            //
+            // Example 1
+            // ---------
+            //
             // 'admin-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},
             //
             // should be read: admin-c is a mandatory field which can be added as many times as you like
-            // (minOccurs:1, maxOccurs: -1 [by default]).
+            // (minOccurs:1,  [by default]).
             //
             // It uses an autocomplete mechanism which refers to 'person' and 'role' objects.
             //
             // It should be hidden when EITHER the prefix OR any nserver values are invalid
             //
+            // Example 2
+            // ---------
+            // nserver: {..., invalid: new RegExp('^[a-z]{2,999}$'), hidden: testFunction}
+            //
+            // Attribute value is invalid if it does NOT match the RegExp, i.e. the regex should
+            // match a valid value.
+            //
+            // Attribute will be hidden if the function 'testFunction' returns true. The function
+            // will be invoked like this:
+            //
+            //     result = testFunction(objectType, attributes, attribute);
+            //
             var objectMetadata = {
                 domain: {
                     domain: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
-                    descr: {minOccurs: 0, maxOccurs: -1},
-                    org: {minOccurs: 0, maxOccurs: -1, refs: ['organisation']},
-                    'admin-c': {minOccurs: 1, maxOccurs: -1, refs: ['person', 'role']},
-                    'tech-c': {minOccurs: 1, maxOccurs: -1, refs: ['person', 'role']},
-                    'zone-c': {minOccurs: 1, maxOccurs: -1, refs: ['person', 'role']},
-                    nserver: {minOccurs: 2, maxOccurs: -1},
-                    'ds-rdata': {minOccurs: 0, maxOccurs: -1},
-                    remarks: {minOccurs: 0, maxOccurs: -1},
-                    notify: {minOccurs: 0, maxOccurs: -1},
-                    'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['mntner']},
-                    created: {minOccurs: 0, maxOccurs: 1},
+                    descr: {},
+                    org: {refs: ['organisation']},
+                    'admin-c': {minOccurs: 1, refs: ['person', 'role']},
+                    'tech-c': {minOccurs: 1, refs: ['person', 'role']},
+                    'zone-c': {minOccurs: 1, refs: ['person', 'role']},
+                    nserver: {minOccurs: 2},
+                    'ds-rdata': {},
+                    remarks: {},
+                    notify: {},
+                    'mnt-by': {minOccurs: 1, refs: ['mntner']},
+                    created: {maxOccurs: 1},
                     'last-modified': {minOccurs: 0, maxOccurs: 1},
                     source: {minOccurs: 1, maxOccurs: 1}
                 },
                 prefix: {
                     prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid},
-                    descr: {minOccurs: 0, maxOccurs: -1},
-                    nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: new RegExp('^[a-z]{2,999}$')},
+                    descr: {},
+                    nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: new RegExp('^[a-zA-Z0-9]{1,255}(\.[a-zA-Z0-9]{1,255})+$')},
                     'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
-                    'ds-rdata': {minOccurs: 0, maxOccurs: -1},
-                    org: {minOccurs: 0, maxOccurs: -1, refs: ['organisation']},
+                    'ds-rdata': {},
+                    org: {refs: ['organisation']},
                     'admin-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},
                     'tech-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},
                     'zone-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},
-                    remarks: {minOccurs: 0, maxOccurs: -1},
-                    notify: {minOccurs: 0, maxOccurs: -1},
-                    'mnt-by': {minOccurs: 1, maxOccurs: -1, refs: ['mntner']},
-                    created: {minOccurs: 0, maxOccurs: 1},
+                    remarks: {},
+                    notify: {},
+                    'mnt-by': {minOccurs: 1, refs: ['mntner']},
+                    created: {maxOccurs: 1},
                     'last-modified': {minOccurs: 0, maxOccurs: 1},
                     source: {minOccurs: 1, maxOccurs: 1}
                 }
