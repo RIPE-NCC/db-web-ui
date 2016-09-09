@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp').service('PrefixService', function() {
+    angular.module('dbWebApp').service('PrefixService', ['$http', '$q', function($http, $q) {
 
         this.isValidIp4Cidr = function(str) {
             var bigSubnets = ['/9', '/10', '/11', '/12', '/13', '/14', '/15'];
@@ -36,7 +36,7 @@
         this.getReverseDnsZones = function(prefix) {
             var i, zoneName, zones = [];
 
-            if (this.validatePrefix(prefix)) {
+            if (prefix && this.isValidPrefix(prefix)) {
 
                 var ipv4 = new Address4(prefix);
                 if (ipv4.isValid()) {
@@ -69,5 +69,14 @@
             }
             return zones;
         };
-    });
+
+        this.checkNameserverAsync = function(ns) {
+            return $http({
+                method: 'GET',
+                url: 'api/dns/status?ignore404=true&ns=' + ns
+            });
+        };
+
+    }]);
+
 })();

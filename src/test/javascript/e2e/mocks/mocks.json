@@ -1,4 +1,8 @@
 {
+  "api/dns/status?ignore404=true&ns=ns1.e": {
+    "status": 200,
+    "data": {}
+  },
   "api/user/info": {
     "status": 200,
     "data": {
@@ -2375,7 +2379,7 @@
       }
     ]
   },
-    "api/whois/autocomplete?from=PERSON&from=ROLE&like=aa&select=person&select=nic-hdl&select=role&select=abuse-mailbox&where=person&where=nic-hdl&where=role&where=abuse-mailbox": {
+  "api/whois/autocomplete?from=PERSON&from=ROLE&like=aa&select=person&select=nic-hdl&select=role&select=abuse-mailbox&where=person&where=nic-hdl&where=role&where=abuse-mailbox": {
     "data": [
       {
         "key": "AA1-RIPE",
