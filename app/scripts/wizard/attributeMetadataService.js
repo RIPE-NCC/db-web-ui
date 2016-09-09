@@ -62,11 +62,27 @@
                     return attrMetadata(objectType, attributes, attribute);
                 }
                 if (jsUtils.typeOf(attrMetadata) === 'regexp') {
-                    if (!attribute.value) {
+                    if (jsUtils.typeOf(attribute.value) !== 'string') {
                         return true;
                     }
                     // negate cz test is for IN-valid & regex is for a +ve match
                     return !attrMetadata.test(attribute.value);
+                }
+                if (jsUtils.typeOf(attrMetadata) === 'array') {
+                    // handles { ..., invalid: [RegExp, invalid: ['attr1', 'attr2'], Function]}
+                    return -1 !== _.findIndex(attrMetadata, function (item) {
+                            if (jsUtils.typeOf(item) === 'string') {
+                                // must be 'invalid' or 'hidden'
+                                if (attrMetadata[item]) {
+                                    return evaluateMetadata(objectType, attributes, attribute, attrMetadata[item]);
+                                } else {
+                                    // not handled
+                                    return false;
+                                }
+                            } else {
+                                return evaluateMetadata(objectType, attributes, attribute, item);
+                            }
+                        });
                 }
                 // Otherwise, go through the 'invalid' and 'hidden' properties and return the first true result
                 // First, check it's valid metadata
@@ -140,7 +156,32 @@
              * Metadata evaluation functions
              */
             function prefixIsInvalid(objectType, attributes, attribute) {
-                return !attribute.value || !PrefixService.isValidPrefix(attribute.value);
+                var revZonesAttr, invalid = !attribute.value || !PrefixService.isValidPrefix(attribute.value);
+                if (!invalid) {
+                    revZonesAttr = _.find(attributes, function(attr) {
+                        return attr.name === 'reverse-zones';
+                    });
+                    if (revZonesAttr) {
+                        revZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
+                    }
+                }
+                return invalid;
+            }
+
+            var cachedResponses = {};
+            function nserverIsInvalid(objectType, attributes, attribute) {
+                if (cachedResponses[attribute.value]) {
+                    return cachedResponses[attribute.value] !== 'OK';
+                }
+                PrefixService.checkNameserverAsync(attribute.value).then(function() {
+                    // put response in cache
+                    cachedResponses[attribute.value] = 'OK';
+                }, function() {
+                    cachedResponses[attribute.value] = 'FAILED';
+                });
+                // This is a wrapper for an async call, so should return 'true' (invalid). The
+                // async response will set the success/errors.
+                return true;
             }
 
             // Notes on metadata structure:
@@ -189,7 +230,7 @@
                 prefix: {
                     prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid},
                     descr: {},
-                    nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: new RegExp('^[a-zA-Z0-9]{1,255}(\.[a-zA-Z0-9]{1,255})+$')},
+                    nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},
                     'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
                     'ds-rdata': {},
                     org: {refs: ['organisation']},

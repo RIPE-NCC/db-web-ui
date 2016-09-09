@@ -19,7 +19,6 @@
                 alternatives: []
             };
             $scope.restCallInProgress = false;
-            $scope.attributes = [];
 
             /*
              * Main
@@ -63,7 +62,7 @@
 
             $scope.onMntnerRemoved = function (item) {
                 // don't remove if it's the last one -- just empty it
-                var objectMntBys = _.filter($scope.attributes, function(attr) {
+                var objectMntBys = _.filter($scope.attributes, function (attr) {
                     return attr.name === 'mnt-by';
                 });
                 if (objectMntBys.length > 1) {
@@ -243,11 +242,9 @@
                 $scope.restCallInProgress = true;
 
                 if (!$scope.name) {
-
-                    RestService.createObject('RIPE', 'prefix', WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
+                    RestService.createObject('RIPE', 'prefix', $scope.attributes, passwords).then(
                         _onSubmitSuccess,
                         _onSubmitError);
-
                 } else {
                     RestService.modifyObject($scope.source, objectType, $scope.name,
                         WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
@@ -257,7 +254,6 @@
             }
 
             function _performAuthentication() {
-                console.log('XXX $scope.maintainers', $scope.maintainers);
                 var authParams = {
                     maintainers: $scope.maintainers,
                     operation: $scope.operation,
