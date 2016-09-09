@@ -106,26 +106,18 @@
 
             function getAllMetadata(objectType) {
                 jsUtils.checkTypes(arguments, ['string']);
-                if (typeof objectType === 'string' && objectType) {
-                    if (!objectMetadata[objectType]) {
-                        throw Error('There is no metadata for ', objectType);
-                    }
-                    return objectMetadata[objectType];
-                } else {
-                    throw Error('AttributeMetadataService.getMetadata takes two non-empty strings');
+                if (!objectMetadata[objectType]) {
+                    throw Error('There is no metadata for ', objectType);
                 }
+                return objectMetadata[objectType];
             }
 
             function getMetadata(objectType, attributeName) {
                 jsUtils.checkTypes(arguments, ['string', 'string']);
-                if (objectType && attributeName) {
-                    if (!objectMetadata[objectType]) {
-                        throw Error('There is no metadata for ', objectType);
-                    }
-                    return objectMetadata[objectType][attributeName];
-                } else {
-                    throw Error('AttributeMetadataService.getMetadata takes two non-empty strings');
+                if (!objectMetadata[objectType]) {
+                    throw Error('There is no metadata for ', objectType);
                 }
+                return objectMetadata[objectType][attributeName];
             }
 
             function getCardinality(objectType, attributeName) {
@@ -151,7 +143,7 @@
                 return !attribute.value || !PrefixService.isValidPrefix(attribute.value);
             }
 
-            // notes on metadata structure:
+            // Notes on metadata structure:
             //
             // Example 1
             // ---------
