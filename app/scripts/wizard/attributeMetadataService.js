@@ -171,12 +171,15 @@
             var cachedResponses = {};
             function nserverIsInvalid(objectType, attributes, attribute) {
                 if (cachedResponses[attribute.value]) {
+                    console.log('nserverIsInvalid cache hit');
                     return cachedResponses[attribute.value] !== 'OK';
                 }
                 PrefixService.checkNameserverAsync(attribute.value).then(function() {
+                    console.log('nserverIsInvalid response OK');
                     // put response in cache
                     cachedResponses[attribute.value] = 'OK';
                 }, function() {
+                    console.log('nserverIsInvalid response FAILED');
                     cachedResponses[attribute.value] = 'FAILED';
                 });
                 // This is a wrapper for an async call, so should return 'true' (invalid). The

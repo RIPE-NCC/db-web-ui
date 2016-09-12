@@ -219,6 +219,8 @@
                 function _onSubmitSuccess(resp) {
                     $scope.restCallInProgress = false;
                     console.log(resp);
+                    var whoisResources = resp;
+                    WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
                 }
 
                 function _onSubmitError(resp) {
@@ -241,16 +243,9 @@
 
                 $scope.restCallInProgress = true;
 
-                if (!$scope.name) {
-                    RestService.createObject('RIPE', 'prefix', $scope.attributes, passwords).then(
-                        _onSubmitSuccess,
-                        _onSubmitError);
-                } else {
-                    RestService.modifyObject($scope.source, objectType, $scope.name,
-                        WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
-                        _onSubmitSuccess,
-                        _onSubmitError);
-                }
+                RestService.createObject('RIPE', 'prefix', $scope.attributes, passwords).then(
+                    _onSubmitSuccess,
+                    _onSubmitError);
             }
 
             function _performAuthentication() {
