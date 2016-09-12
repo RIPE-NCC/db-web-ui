@@ -2,7 +2,7 @@
 
 'use strict';
 
-describe('The prefix wizard', function () {
+xdescribe('The prefix wizard', function () {
 
     var VALID_PREFIX = '22.22.0.0/22';
 
