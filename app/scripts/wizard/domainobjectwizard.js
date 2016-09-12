@@ -19,6 +19,9 @@
                 alternatives: []
             };
             $scope.restCallInProgress = false;
+            $scope.objectType = objectType;
+            $scope.canSubmit = false;
+            $scope.canContinue = true;
 
             /*
              * Main
@@ -231,10 +234,6 @@
                     console.log(resp);
                 }
 
-                // Doesn't do anything useful....
-                //whoisAttributes = WhoisResources.wrapAndEnrichAttributes(objectType, $scope.attributes);
-
-                //AlertService.clearErrors();
                 console.log('$scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object', $scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
 
                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
@@ -246,7 +245,7 @@
 
                 $scope.restCallInProgress = true;
 
-                var url = 'api/whois/RIPE/prefix/' + prefixAttr.name;
+                var url = 'api/whois/domain-objects/TEST';
                 var data = {
                     objectType: objectType,
                     attributes: $scope.attributes,
