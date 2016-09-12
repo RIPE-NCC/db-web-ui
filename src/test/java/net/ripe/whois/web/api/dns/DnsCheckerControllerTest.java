@@ -1,5 +1,6 @@
 package net.ripe.whois.web.api.dns;
 
+import com.github.tomakehurst.wiremock.client.MappingBuilder;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,18 +26,37 @@ public class DnsCheckerControllerTest {
     private final DnsCheckerController dnsCheckerController = new DnsCheckerController(DNS_CHECKER_URL);
 
     @Test
-    public void itShouldReturnJustOkWhenNsIsCorrect() {
-        final String request = "{'method': 'get_ns_ips', 'params': 'ns1.google.com'}";
+    public void itShouldReturnOkWhenNsIsCorrect() {
 
-        stubFor(post(urlEqualTo("/")).withRequestBody(equalToJson(request))
+        final String request = "{'method': 'get_ns_ips', 'params': 'ns1.google.com'}";
+        final String response = "{'jsonrpc':'2.0','id':null,'result':[{'ns1.google.com':'216.239.32.10'}]}";
+        stubRequest(request, response, HttpStatus.OK);
+
+        final ResponseEntity<String> statusResponse = dnsCheckerController.status("ns1.google.com");
+
+        assertThat(statusResponse.getStatusCode(), is(HttpStatus.OK));
+        assertThat(statusResponse.getBody(), isEmptyOrNullString());
+    }
+
+    @Test
+    public void itShouldReturnNotFoundWhenNsIsIncorrect() {
+
+        final String request = "{'method': 'get_ns_ips', 'params': 'ns1.crazy-eight.com'}";
+        final String response = "{'jsonrpc':'2.0','id':null,'result':[{'ns1.crazy-eight.com':'0.0.0.0'}]}";
+        stubRequest(request, response, HttpStatus.OK);
+
+        final ResponseEntity<String> statusResponse = dnsCheckerController.status("ns1.crazy-eight.com");
+
+        assertThat(statusResponse.getStatusCode(), is(HttpStatus.NOT_FOUND));
+        assertThat(statusResponse.getBody(), isEmptyOrNullString());
+    }
+
+    private void stubRequest(final String requestBody, final String responseBody, final HttpStatus httpStatus) {
+        stubFor((post(urlEqualTo("/")).withRequestBody(equalToJson(requestBody))
             .willReturn(
                 aResponse()
-                    .withStatus(HttpStatus.OK.value())));
-
-        final ResponseEntity<String> response = dnsCheckerController.search("ns1.google.com");
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), isEmptyOrNullString());
+                    .withStatus(httpStatus.value())
+                    .withBody(responseBody))));
     }
 
 }
