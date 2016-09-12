@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$scope', 'jsUtilService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
-        function ($scope, jsUtils, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
+    ).controller('DomainObjectController', ['$http', '$scope', 'jsUtilService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
+        function ($http, $scope, jsUtils, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
 
             var objectType = 'prefix';
 
@@ -112,7 +112,6 @@
                     // console.log('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
                     // console.log('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
                     // console.log('mntners-object:' + JSON.stringify($scope.maintainers.object));
-
                 }
 
             }
@@ -204,9 +203,13 @@
 
             function submitButtonHandler() {
 
+                var prefixAttr = {};
+
                 _.forEach($scope.attributes, function (attr) {
                     if (!attr.name) {
                         attr.name = '';
+                    } else if (attr.name === 'prefix') {
+                        prefixAttr = attr;
                     }
                 });
 
@@ -243,9 +246,13 @@
 
                 $scope.restCallInProgress = true;
 
-                RestService.createObject('RIPE', 'prefix', $scope.attributes, passwords).then(
-                    _onSubmitSuccess,
-                    _onSubmitError);
+                var url = 'api/whois/RIPE/prefix/' + prefixAttr.name;
+                var data = {
+                    objectType: objectType,
+                    attributes: $scope.attributes,
+                    passwords: passwords
+                };
+                $http.post(url, data).then(_onSubmitSuccess, _onSubmitError);
             }
 
             function _performAuthentication() {

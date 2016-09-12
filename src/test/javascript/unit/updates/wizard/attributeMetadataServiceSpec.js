@@ -2,7 +2,7 @@
 
 'use strict';
 
-xdescribe('The prefix wizard', function () {
+describe('The prefix wizard', function () {
 
     var VALID_PREFIX = '22.22.0.0/22';
 
@@ -65,7 +65,7 @@ xdescribe('The prefix wizard', function () {
         expect(isHidden).toBe(false);
     });
 
-    it('should be able to calculate hidden state of an attribute with dependencies', function() {
+    xit('should be able to calculate hidden state of an attribute with dependencies', function() {
         var isHidden,
             attributes = $scope.attributes,
             attrPrefix = $scope.attributes[0],
