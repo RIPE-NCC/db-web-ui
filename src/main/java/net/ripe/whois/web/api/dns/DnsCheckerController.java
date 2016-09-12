@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,16 +27,22 @@ public class DnsCheckerController extends RestClient {
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public ResponseEntity<String> search(@RequestParam(value = "ns", required = true) final String nameserver) {
+    public ResponseEntity status(@RequestParam(value = "ns", required = true) final String nameserver) {
 
         final String request = String.format("{\"method\": \"get_ns_ips\", \"params\": \"%s\"}", nameserver);
         LOGGER.debug("Checking status for " + nameserver);
 
-        return restTemplate.exchange(
+        final ResponseEntity<String> response = restTemplate.exchange(
             dnsCheckerUrl,
             HttpMethod.POST,
             new HttpEntity<>(request),
             String.class);
+
+        if(response.getBody().contains("0.0.0.0")) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
