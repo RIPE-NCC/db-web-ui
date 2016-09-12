@@ -33,17 +33,18 @@ angular.module('dbWebApp')
 
             $log.debug('ui-url:' + $location.path());
             $log.debug('http-status:' + response.status);
-
             if (!_.isUndefined(response.config)) {
                 $log.debug('rest-url:' + response.config.url);
                 if (_isAuthorisationError(response.status) && _.endsWith(response.config.url, 'api/user/info')) {
                     toBeSwallowed = true;
                 }
-                if (_isNotFoundError(response.status) && _.startsWith(response.config.url, 'api/whois-internal/')) {
-                    toBeSwallowed = true;
-                    // Don't fail on 404s if 'ignore404' is set so we can look for parents of inet(6)nums without redirecting if they don't exist
-                } else if (_isNotFoundError(response.status) && response.config.params && response.config.params.ignore404 === true) {
-                    toBeSwallowed = true;
+                if (_isNotFoundError(response.status)) {
+                    if (_.startsWith(response.config.url, 'api/whois-internal/')) {
+                        toBeSwallowed = true;
+                    } else if ((response.config.params && response.config.params.ignore404 === true) ||
+                        (response.config.url && response.config.url.indexOf('ignore404') > -1)) {
+                        toBeSwallowed = true;
+                    }
                 }
                 // TODO - We can remove the following code after WhoIs 1.86 deployment
                 // Code added to prevent 500 exploding to the user during autocomplete.

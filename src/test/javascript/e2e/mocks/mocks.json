@@ -3,6 +3,14 @@
     "status": 200,
     "data": {}
   },
+  "api/dns/status?ignore404=true&ns=ns1.f": {
+    "status": 200,
+    "data": {}
+  },
+  "api/dns/status?ignore404=true&ns=ns1.x": {
+    "status": 404,
+    "data": {}
+  },
   "api/user/info": {
     "status": 200,
     "data": {
