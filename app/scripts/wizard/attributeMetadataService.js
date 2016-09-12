@@ -31,6 +31,7 @@
                 for (i = 0; i < attributes.length; i++) {
                     attributes[i].$$invalid = isInvalid(objectType, attributes, attributes[i]);
                     attributes[i].$$hidden = isHidden(objectType, attributes, attributes[i]);
+                    console.log('' + attributes[i].name, attributes[i].$$invalid, attributes[i].$$hidden);
                 }
             }
 
@@ -178,9 +179,11 @@
                     console.log('nserverIsInvalid response OK');
                     // put response in cache
                     cachedResponses[attribute.value] = 'OK';
+                    attribute.$$invalid = undefined;
                 }, function() {
                     console.log('nserverIsInvalid response FAILED');
                     cachedResponses[attribute.value] = 'FAILED';
+                    attribute.$$invalid = true;
                 });
                 // This is a wrapper for an async call, so should return 'true' (invalid). The
                 // async response will set the success/errors.
