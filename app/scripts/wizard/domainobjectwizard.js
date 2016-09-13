@@ -352,8 +352,8 @@
 
             $scope.referenceAutocomplete = referenceAutocomplete;
 
-            $scope.duplicateAttribute = function (attributes, attribute) {
-                if (canBeAdded(attributes, attribute)) {
+            $scope.duplicateAttribute = function (objectType, attributes, attribute) {
+                if (canBeAdded(objectType, attributes, attribute)) {
                     var foundIdx = _.findIndex(attributes, function (attr) {
                         return attr.name === attribute.name && attr.value === attribute.value;
                     });
