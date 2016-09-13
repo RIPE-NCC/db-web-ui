@@ -43,7 +43,7 @@
             $scope.submitButtonClicked = submitButtonHandler;
 
             $scope.$on('attribute-value-changed', function(newVal, oldVal) {
-                console.log('attribute-value-changed DomainObjectController', newVal, oldVal);
+                AttributeMetadataService.enrich(objectType, $scope.attributes);
             });
 
             $scope.cancel = function () {
@@ -114,8 +114,8 @@
 
                     var myMntners = _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
 
-                    console.log('myMntners', myMntners);
-                    console.log('$scope.attributes', $scope.attributes);
+                    //console.log('myMntners', myMntners);
+                    //console.log('$scope.attributes', $scope.attributes);
                     // console.log('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
                     // console.log('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
                     // console.log('mntners-object:' + JSON.stringify($scope.maintainers.object));
@@ -125,7 +125,7 @@
 
             function handleSsoResponseError(error) {
                 $scope.restCallInProgress = false;
-                console.log('Error fetching mntners for SSO:' + JSON.stringify(error));
+                //console.log('Error fetching mntners for SSO:' + JSON.stringify(error));
                 $scope.message = {
                     type: 'error',
                     text: 'Error fetching maintainers associated with this SSO account'
@@ -385,7 +385,6 @@
             /*
              * Local functions
              */
-
             function valueConfirmed(objectType, attribute, newVal, event) {
                 if (event && event.keyCode !== 13) {
                     return;
