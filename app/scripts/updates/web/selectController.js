@@ -5,7 +5,7 @@
     angular.module('webUpdates').controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService', 'Properties',
 
         function ($scope, $state, WhoisResources, UserInfoService, Properties) {
-            
+
             /*
              * UI initialisation
              */
@@ -40,6 +40,11 @@
                 if ($scope.selected.objectType === 'mntner') {
                     $state.transitionTo('webupdates.createSelfMnt', {
                         source: $scope.selected.source
+                    });
+                } else if ($scope.selected.objectType === 'domain') {
+                    $state.transitionTo('webupdates.domainobjectwizard', {
+                        source: $scope.selected.source,
+                        objectType: $scope.selected.objectType
                     });
                 } else {
                     $state.transitionTo('webupdates.create', {

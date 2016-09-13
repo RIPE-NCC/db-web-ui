@@ -247,10 +247,13 @@
 
                 var url = 'api/whois/domain-objects/TEST';
                 var data = {
-                    objectType: objectType,
-                    attributes: $scope.attributes,
-                    passwords: passwords
+                    dto: {
+                        type: objectType,
+                        attributes: $scope.attributes,
+                        passwords: passwords
+                    }
                 };
+
                 $http.post(url, data).then(_onSubmitSuccess, _onSubmitError);
             }
 
