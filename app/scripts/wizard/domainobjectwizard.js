@@ -20,7 +20,7 @@
             };
             $scope.restCallInProgress = false;
             $scope.objectType = objectType;
-            $scope.canSubmit = false;
+            $scope.canSubmit = true;
             $scope.canContinue = true;
 
             /*
