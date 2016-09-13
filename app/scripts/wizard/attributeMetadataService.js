@@ -31,7 +31,6 @@
             for (i = 0; i < attributes.length; i++) {
                 attributes[i].$$invalid = isInvalid(objectType, attributes, attributes[i]);
                 attributes[i].$$hidden = isHidden(objectType, attributes, attributes[i]);
-                console.log('' + attributes[i].name, attributes[i].$$invalid, attributes[i].$$hidden);
             }
         }
 
@@ -171,32 +170,29 @@
 
         var cachedResponses = {};
 
+        var timeout;
         function nserverIsInvalid(objectType, attributes, attribute) {
-            var callId;
             var doCall = function() {
-                console.log('Calling doCall');
+                timeout = null;
                 if (cachedResponses[attribute.value]) {
-                    console.log('nserverIsInvalid cache hit');
                     return cachedResponses[attribute.value] !== 'OK';
                 }
                 PrefixService.checkNameserverAsync(attribute.value).then(function () {
-                    console.log('nserverIsInvalid response OK');
                     // put response in cache
                     cachedResponses[attribute.value] = 'OK';
-                    attribute.$$invalid = undefined;
-                }, function (status) {
-                    console.log('nserverIsInvalid response FAILED', status);
-                    cachedResponses[attribute.value] = 'FAILED';
+                    attribute.$$invalid = false;
+                }, function (err) {
+                    if (err.status === 404) {
+                        // ignore other errors, service is a bit flakey
+                        cachedResponses[attribute.value] = 'FAILED';
+                    }
                     attribute.$$invalid = true;
                 });
             };
-            if (callId) {
-                clearTimeout(callId);
-                console.log('clear timeout:', callId);
+            if (timeout) {
+                clearTimeout(timeout);
             }
-            callId = setTimeout(doCall, 1000);
-            console.log('callId', callId);
-            //}, 400);
+            setTimeout(doCall, 400);
             // This is a wrapper for an async call, so should return 'true' (invalid). The
             // async response will set the success/errors.
             return jsUtils.typeOf(attribute.$$invalid) === 'boolean' ? attribute.$$invalid : true;

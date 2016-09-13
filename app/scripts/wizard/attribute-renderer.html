@@ -15,17 +15,17 @@
 </div>
 
 <ul class="input-group-btn">
-    <li ng-if="canBeAdded(attributes, attribute)">
+    <li ng-if="canBeAdded(objectType, attributes, attribute)">
         <a class="btn btn-default ga-add-dup"
            title="Add another attribute of this type"
-           ng-click="duplicateAttribute(attributes, attribute)">
+           ng-click="duplicateAttribute(objectType, attributes, attribute)">
             <span class="fa fa-arrow-down degree-25"></span>
         </a>
     </li>
-    <li ng-if="canBeRemoved(attributes, attribute)">
+    <li ng-if="canBeRemoved(objectType, attributes, attribute)">
         <a class="btn btn-default ga-del-attr"
            title="Remove current attribute"
-           ng-click="removeAttribute(attributes, attribute)">
+           ng-click="removeAttribute(objectType, attributes, attribute)">
             <span class="fa fa-trash"></span>
         </a>
     </li>

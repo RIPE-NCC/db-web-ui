@@ -42,6 +42,10 @@
              */
             $scope.submitButtonClicked = submitButtonHandler;
 
+            $scope.$on('attribute-value-changed', function(newVal, oldVal) {
+                console.log('attribute-value-changed DomainObjectController', newVal, oldVal);
+            });
+
             $scope.cancel = function () {
                 console.log('cancel button was clicked');
             };
@@ -216,25 +220,17 @@
                     }
                 });
 
-                console.log('$scope.attributes', $scope.attributes);
-                //TODO: check form is valid
-                //     ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes);
-
                 $scope.restCallInProgress = true;
 
                 function _onSubmitSuccess(resp) {
                     $scope.restCallInProgress = false;
-                    console.log(resp);
                     var whoisResources = resp;
                     WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
                 }
 
-                function _onSubmitError(resp) {
+                function _onSubmitError() {
                     $scope.restCallInProgress = false;
-                    console.log(resp);
                 }
-
-                console.log('$scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object', $scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object);
 
                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                     _performAuthentication();
@@ -339,6 +335,9 @@
                 $scope.attribute.$$meta.$$disable = true;
             }
             $scope.value = $scope.attribute.value;
+            $scope.$watch('attribute', function(newVal, oldVal){
+                $scope.$emit('attribute-value-changed', oldVal);
+            });
 
             $scope.valueConfirmed = valueConfirmed;
             $scope.valueChanged = valueChanged;
@@ -364,8 +363,8 @@
                 }
             };
 
-            $scope.removeAttribute = function (attributes, attribute) {
-                if (canBeRemoved(attributes, attribute)) {
+            $scope.removeAttribute = function (objectType, attributes, attribute) {
+                if (canBeRemoved(objectType, attributes, attribute)) {
                     var foundIdx = _.findIndex(attributes, function (attr) {
                         return attr.name === attribute.name && attr.value === attribute.value;
                     });
@@ -387,7 +386,7 @@
              * Local functions
              */
 
-            function valueConfirmed(attribute, newVal, event) {
+            function valueConfirmed(objectType, attribute, newVal, event) {
                 if (event && event.keyCode !== 13) {
                     return;
                 }
@@ -395,7 +394,7 @@
                 AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
             }
 
-            function valueChanged(attribute, newVal) {
+            function valueChanged(objectType, attribute, newVal) {
                 attribute.value = newVal;
                 attribute.$$invalid = AttributeMetadataService.isInvalid($scope.objectType, $scope.attributes, attribute);
             }
@@ -482,7 +481,7 @@
                 });
             }
 
-            function canBeAdded(attributes, attribute) {
+            function canBeAdded(objectType, attributes, attribute) {
                 if ($scope.attribute.name === 'reverse-zones') {
                     return false;
                 }
@@ -500,7 +499,7 @@
                 return matches.length < cardinality.maxOccurs;
             }
 
-            function canBeRemoved(attributes, attribute) {
+            function canBeRemoved(objectType, attributes, attribute) {
                 if ($scope.attribute.name === 'reverse-zones') {
                     return false;
                 }

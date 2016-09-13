@@ -441,7 +441,7 @@ angular.module('webUpdates')
                 return $scope.attributes.canAttributeBeRemoved(attr) && !attr.$$meta.$$isLir && !attr.$$meta.$$disable;
             }
 
-            function removeAttribute(attr) {
+            function removeAttribute(objectType, attributes, attr) {
                 $scope.attributes = WhoisResources.wrapAndEnrichAttributes($scope.objectType, $scope.attributes.removeAttribute(attr));
             }
 
