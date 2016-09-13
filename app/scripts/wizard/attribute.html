@@ -7,9 +7,9 @@
         ng-if="!attribute.$$meta.$$isEnum"
         ng-required="{{attribute.$$meta.$$mandatory}}"
         ng-disabled="attribute.$$meta.$$disable"
-        ng-change="valueChanged(attribute, value)"
-        ng-blur="valueConfirmed(attribute, value)"
-        ng-keyup="valueConfirmed(attribute, value, $event)"
+        ng-change="valueChanged(objectType, attribute, value)"
+        ng-blur="valueConfirmed(objectType, attribute, value)"
+        ng-keyup="valueConfirmed(objectType, attribute, value, $event)"
         typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
         typeahead-min-length="2"
 >
