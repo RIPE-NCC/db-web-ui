@@ -339,6 +339,7 @@ angular.module('webUpdates')
                 var refs = attribute.$$meta.$$refs;
                 var utf8Substituted = _warnForNonSubstitutableUtf8(attribute, userInput);
                 if (utf8Substituted && _isServerLookupKey(refs)) {
+
                     return RestService.autocompleteAdvanced(userInput, refs).then(
                         function (resp) {
                             return _addNiceAutocompleteName(_filterBasedOnAttr(resp, attrName), attrName);
