@@ -43,7 +43,7 @@ angular.module('webUpdates')
                     template: '<div ui-view></div>'
                 })
                 .state('webupdates.domainobjectwizard', {
-                    url: '/domainobjectwizard',
+                    url: '/wizard/:source/:objectType',
                     templateUrl: 'scripts/wizard/domainobjectwizard.html',
                     controller: 'DomainObjectController'
                 })

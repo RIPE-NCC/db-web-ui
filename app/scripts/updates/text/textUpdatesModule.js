@@ -2,7 +2,7 @@
 
 (function () {
     'use strict';
-    
+
     angular.module('textUpdates', ['updates'])
 
         .constant(
@@ -13,8 +13,6 @@
             })
 
         .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
-
-            $log.info('Starting up text-updates module');
 
             // expand the update section of the menu
             $rootScope.$on('$stateChangeSuccess', function (event, toState) {
