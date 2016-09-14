@@ -1,14 +1,14 @@
 {
-  "api/dns/status?ignore404=true&ns=ns1.e": {
+  "api/dns/status?ignore404=true&ns=ns.xs4all.nl": {
     "status": 200,
     "data": {}
   },
-  "api/dns/status?ignore404=true&ns=ns1.f": {
+  "api/dns/status?ignore404=true&ns=ns1.xs4all.nl": {
     "status": 200,
     "data": {}
   },
-  "api/dns/status?ignore404=true&ns=ns1.x": {
-    "status": 404,
+  "api/dns/status?ignore404=true&ns=ns2.xs4all.nl": {
+    "status": 200,
     "data": {}
   },
   "api/user/info": {

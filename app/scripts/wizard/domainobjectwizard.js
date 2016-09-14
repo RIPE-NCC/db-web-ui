@@ -29,7 +29,6 @@
             $scope.attributes = determineAttributesForNewObject(objectType);
 
             $scope.restCallInProgress = true;
-            RestService.fetchMntnersForSSOAccount().then(handleSsoResponse, handleSsoResponseError);
 
             $scope.maintainers.objectOriginal = [];//_extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
 
@@ -42,7 +41,7 @@
              */
             $scope.submitButtonClicked = submitButtonHandler;
 
-            $scope.$on('attribute-value-changed', function(newVal, oldVal) {
+            $scope.$on('attribute-value-changed', function() {
                 AttributeMetadataService.enrich(objectType, $scope.attributes);
             });
 
@@ -50,151 +49,9 @@
                 console.log('cancel button was clicked');
             };
 
-            $scope.isModifyWithSingleMntnerRemaining = function () {
-                // ...from createModifyController...
-                // return $scope.operation === 'Modify' && $scope.maintainers.object.length === 1;
-                return false;
-            };
-
-            $scope.onMntnerAdded = function (item) {
-                // enrich with new-flag
-                $scope.maintainers.object = MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal, $scope.maintainers.object);
-
-                mergeMaintainers($scope.attributes, {name: 'mnt-by', value: item.key});
-
-                if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
-                    _performAuthentication();
-                }
-            };
-
-            $scope.onMntnerRemoved = function (item) {
-                // don't remove if it's the last one -- just empty it
-                var objectMntBys = _.filter($scope.attributes, function (attr) {
-                    return attr.name === 'mnt-by';
-                });
-                if (objectMntBys.length > 1) {
-                    _.remove($scope.attributes, function (i) {
-                        return i.name === 'mnt-by' && i.value === item.key;
-                    });
-                } else {
-                    objectMntBys[0].value = '';
-                }
-            };
-
-            $scope.showAttribute = function (attribute) {
-                return !AttributeMetadataService.isHidden(objectType, $scope.attributes, attribute);
-            };
-
-            $scope.mntnerAutocomplete = mntnerAutocomplete;
-
-
             /*
              * Local functions
              */
-
-            function handleSsoResponse(results) {
-                $scope.restCallInProgress = false;
-                $scope.maintainers.sso = results;
-                if ($scope.maintainers.sso.length > 0) {
-
-                    $scope.maintainers.objectOriginal = [];
-                    // populate ui-select box with sso-mntners
-                    $scope.maintainers.object = _.cloneDeep($scope.maintainers.sso);
-
-                    // copy mntners to attributes (for later submit)
-                    // Etch: hmm, fishy. why not do it later then?
-                    var mntnerAttrs = _.map($scope.maintainers.sso, function (i) {
-                        return {
-                            name: 'mnt-by',
-                            value: i.key
-                        };
-                    });
-                    console.log('$scope.maintainers.object', $scope.maintainers.object);
-                    mergeMaintainers($scope.attributes, mntnerAttrs);
-
-                    var myMntners = _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
-
-                    //console.log('myMntners', myMntners);
-                    //console.log('$scope.attributes', $scope.attributes);
-                    // console.log('mntners-sso:' + JSON.stringify($scope.maintainers.sso));
-                    // console.log('mntners-object-original:' + JSON.stringify($scope.maintainers.objectOriginal));
-                    // console.log('mntners-object:' + JSON.stringify($scope.maintainers.object));
-                }
-
-            }
-
-            function handleSsoResponseError(error) {
-                $scope.restCallInProgress = false;
-                //console.log('Error fetching mntners for SSO:' + JSON.stringify(error));
-                $scope.message = {
-                    type: 'error',
-                    text: 'Error fetching maintainers associated with this SSO account'
-                };
-            }
-
-            function mntnerAutocomplete(query) {
-                // need to typed characters
-                RestService.autocomplete('mnt-by', query, true, ['auth']).then(
-                    function (data) {
-                        // mark new
-                        $scope.maintainers.alternatives = MntnerService.stripNccMntners(MntnerService.enrichWithNewStatus($scope.maintainers.objectOriginal,
-                            _filterAutocompleteMntners(_enrichWithMine(data))), true);
-                    }
-                );
-            }
-
-            function _enrichWithMine(mntners) {
-                return _.map(mntners, function (mntner) {
-                    // search in selected list
-                    mntner.mine = !!MntnerService.isMntnerOnlist($scope.maintainers.sso, mntner);
-                    return mntner;
-                });
-            }
-
-            function _filterAutocompleteMntners(mntners) {
-                return _.filter(mntners, function (mntner) {
-                    // prevent that RIPE-NCC mntners can be added to an object upon create of modify
-                    // prevent same mntner to be added multiple times
-                    return !MntnerService.isNccMntner(mntner.key) && !MntnerService.isMntnerOnlist($scope.maintainers.object, mntner);
-                });
-            }
-
-            function _extractEnrichMntnersFromObject(attributes, maintainersSso) {
-                // get mntners from response
-                var mntnersInObject = _.filter(attributes, function (attr) {
-                    return attr.name === 'mnt-by';
-                });
-
-                // determine if mntner is mine
-                var selected = _.map(mntnersInObject, function (mntnerAttr) {
-                    return {
-                        type: 'mntner',
-                        key: mntnerAttr.value,
-                        mine: _.contains(_.map(maintainersSso, 'key'), mntnerAttr.value)
-                    };
-                });
-
-                return selected;
-            }
-
-            function mergeMaintainers(attrs, maintainers) {
-                var i;
-                var lastIdxOfType = _.findLastIndex(attrs, function (item) {
-                    return item.name === 'mnt-by';
-                });
-                if (lastIdxOfType < 0) {
-                    lastIdxOfType = attrs.length;
-                } else if (!attrs[lastIdxOfType].value) {
-                    attrs.splice(lastIdxOfType, 1);
-                }
-                if (jsUtils.typeOf(maintainers) === 'object') {
-                    attrs.splice(lastIdxOfType, 0, maintainers);
-                } else {
-                    for (i = 0; i < maintainers.length; i++) {
-                        attrs.splice(lastIdxOfType + i, 0, maintainers[i]);
-                    }
-                }
-            }
 
             function determineAttributesForNewObject(objectType) {
                 var i, attributes = [];
@@ -400,7 +257,7 @@
 
             function referenceAutocomplete(attribute, userInput) {
                 var attrName = attribute.name;
-                var refs = AttributeMetadataService.getReferences($scope.objectType, $scope.attribute.name);
+                var refs = AttributeMetadataService.getMetadata($scope.objectType, $scope.attribute.name).refs;
                 if (!refs) {
                     return [];
                 }
@@ -528,11 +385,6 @@
                     scope.widgetHtml = 'scripts/wizard/attribute.html';
                 }
             }
-        };
-    }]).directive('maintainers', [function () {
-        return {
-            restrict: 'E',
-            templateUrl: 'scripts/wizard/maintainers.html'
         };
     }]);
 
