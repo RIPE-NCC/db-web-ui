@@ -9,7 +9,7 @@
 <ui-select id="selectMaintainerDropdown"
            multiple="true"
            theme="selectize"
-           ng-model="maintainers.object"
+           ng-model="mntners.object"
            close-on-select="true"
            on-select="onMntnerAdded($item, $model)"
            on-remove="onMntnerRemoved($item, $model)">
@@ -19,7 +19,7 @@
         <span class="fa fa-star" ng-if="$item.mine"></span>
         <span class="fa fa-lock" ng-if="$item.$$isRemovable"></span>
     </ui-select-match>
-    <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
+    <ui-select-choices repeat="mntner in mntners.alternatives track by mntner.key"
                        refresh="mntnerAutocomplete($select.search)"
                        refresh-delay="100">
         <div class="option">

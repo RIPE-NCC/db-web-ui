@@ -22,7 +22,6 @@
         this.getMetadata = getMetadata;
         this.isInvalid = isInvalid;
         this.isHidden = isHidden;
-        this.getReferences = getReferences;
         this.getCardinality = getCardinality;
 
         function enrich(objectType, attributes) {
@@ -116,10 +115,6 @@
             return false;
         }
 
-        function getReferences(objectType, attributeName) {
-            return getMetadata(objectType, attributeName).refs;
-        }
-
         function getAllMetadata(objectType) {
             jsUtils.checkTypes(arguments, ['string']);
             if (!objectMetadata[objectType]) {
@@ -173,7 +168,6 @@
         var timeout;
         function nserverIsInvalid(objectType, attributes, attribute) {
             var doCall = function() {
-                timeout = null;
                 if (cachedResponses[attribute.value]) {
                     return cachedResponses[attribute.value] !== 'OK';
                 }
@@ -192,7 +186,7 @@
             if (timeout) {
                 clearTimeout(timeout);
             }
-            setTimeout(doCall, 400);
+            timeout = setTimeout(doCall, 600);
             // This is a wrapper for an async call, so should return 'true' (invalid). The
             // async response will set the success/errors.
             return jsUtils.typeOf(attribute.$$invalid) === 'boolean' ? attribute.$$invalid : true;
