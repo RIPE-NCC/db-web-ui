@@ -167,9 +167,16 @@
 
         var timeout;
         function nserverIsInvalid(objectType, attributes, attribute) {
+            var sameValList = _.filter(attributes, function(attr) {
+                return attr.name === attribute.name && attr.value === attr.value;
+            });
+            if (sameValList.length > 0) {
+                return true;
+            }
             var doCall = function() {
                 if (cachedResponses[attribute.value]) {
-                    return cachedResponses[attribute.value] !== 'OK';
+                    attribute.$$invalid = cachedResponses[attribute.value] !== 'OK';
+                    return;
                 }
                 PrefixService.checkNameserverAsync(attribute.value).then(function () {
                     // put response in cache

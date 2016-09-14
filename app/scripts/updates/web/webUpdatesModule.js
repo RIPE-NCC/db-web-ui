@@ -16,8 +16,6 @@ angular.module('webUpdates', ['updates'])
         })
     .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
 
-        $log.info('Starting up web-updates module');
-
         // expand the update section on the left menu
         $rootScope.$on('$stateChangeSuccess', function (event, toState) {
             if (!_.isUndefined(toState) && !_.isUndefined(toState.name) && _.startsWith(toState.name, 'webupdates.')) {

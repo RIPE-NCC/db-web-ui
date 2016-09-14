@@ -10,18 +10,13 @@ angular.module('updates')
                 var deferredObject = $q.defer();
 
                 if(!_.isUndefined(_userInfo)) {
-                    $log.debug('getUserInfo cached:' + JSON.stringify(_userInfo));
                     deferredObject.resolve(_userInfo);
                 } else {
-                    $log.debug('getUserInfo start');
-
                     $resource('api/user/info').get().$promise.then(
                         function (result) {
                             _userInfo = result;
-                            $log.debug('getUserInfo success:' + JSON.stringify(result));
                             deferredObject.resolve(result);
                         }, function (error) {
-                            $log.error('getUserInfo error:' + JSON.stringify(error));
                             deferredObject.reject(error);
                         }
                     );

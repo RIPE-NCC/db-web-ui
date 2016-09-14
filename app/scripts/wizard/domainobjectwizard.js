@@ -4,10 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$http', '$scope', 'jsUtilService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
-        function ($http, $scope, jsUtils, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
-
-            var objectType = 'prefix';
+    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams', 'jsUtilService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
+        function ($http, $scope, $stateParams,jsUtils, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
 
             /*
              * Initial scope vars
@@ -19,9 +17,12 @@
                 alternatives: []
             };
             $scope.restCallInProgress = false;
-            $scope.objectType = objectType;
+            //$scope.objectType = objectType;
             $scope.canSubmit = true;
             $scope.canContinue = true;
+
+            var objectType = $scope.objectType = $stateParams.objectType === 'domain' ? 'prefix' : $stateParams.objectType;
+            $scope.source = $stateParams.source;
 
             /*
              * Main
@@ -41,7 +42,7 @@
              */
             $scope.submitButtonClicked = submitButtonHandler;
 
-            $scope.$on('attribute-value-changed', function() {
+            $scope.$on('attribute-value-changed', function () {
                 AttributeMetadataService.enrich(objectType, $scope.attributes);
             });
 
@@ -191,12 +192,7 @@
                 }
                 $scope.attribute.$$meta.$$disable = true;
             }
-            $scope.value = $scope.attribute.value;
-            $scope.$watch('attribute', function(newVal, oldVal){
-                $scope.$emit('attribute-value-changed', oldVal);
-            });
 
-            $scope.valueConfirmed = valueConfirmed;
             $scope.valueChanged = valueChanged;
 
             /*
@@ -242,17 +238,10 @@
             /*
              * Local functions
              */
-            function valueConfirmed(objectType, attribute, newVal, event) {
-                if (event && event.keyCode !== 13) {
-                    return;
-                }
-                attribute.value = newVal;
-                AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
-            }
+            function valueChanged(objectType, attributes, attribute) {
+                //attribute.$$invalid = AttributeMetadataService.isInvalid(objectType, attributes, attribute);
+                AttributeMetadataService.enrich(objectType, attributes, attribute);
 
-            function valueChanged(objectType, attribute, newVal) {
-                attribute.value = newVal;
-                attribute.$$invalid = AttributeMetadataService.isInvalid($scope.objectType, $scope.attributes, attribute);
             }
 
             function referenceAutocomplete(attribute, userInput) {
