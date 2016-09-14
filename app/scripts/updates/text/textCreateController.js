@@ -199,6 +199,8 @@
                                 }
                             }
                         }, function () {
+                            $scope.restCallInProgress = false;
+                            AlertService.addGlobalError('Unable to find parent for resource ' + inetnumAttr.value);
                             $log.debug('no parent found');
                         });
                     }
