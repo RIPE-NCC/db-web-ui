@@ -4,6 +4,7 @@
 </div>
 <div class="text-success" ng-if="attribute.$$success">{{ attribute.$$success }}</div><input
         type="text"
+        name="{{attribute.name + '$' + idx}}"
         class="form-control"
         placeholder="{{getAttributeShortDescription(attribute.name)}}"
         autocomplete="off"

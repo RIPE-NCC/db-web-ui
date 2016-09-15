@@ -42,13 +42,28 @@
              */
             $scope.submitButtonClicked = submitButtonHandler;
 
+            $scope.containsInvalidValues = function () {
+                return containsInvalidValues($scope.attributes);
+            };
+
             $scope.cancel = function () {
                 console.log('cancel button was clicked');
             };
 
+            $scope.$on('attribute-state-changed', function () {
+                AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
+            });
+
             /*
              * Local functions
              */
+            function containsInvalidValues(attributes) {
+                console.log('whoisObjectForm', $scope.whoisObjectForm);
+                var idx = _.findIndex(attributes, function (attr) {
+                    return attr.$$invalid;
+                });
+                return idx !== -1;
+            }
 
             function determineAttributesForNewObject(objectType) {
                 var i, attributes = [];
@@ -187,6 +202,7 @@
                     $scope.attribute.$$meta = {};
                 }
                 $scope.attribute.$$meta.$$disable = true;
+                $scope.attribute.$$invalid = false;
             }
 
             $scope.valueChanged = valueChanged;
@@ -194,10 +210,6 @@
             /*
              * Callback functions
              */
-            $scope.$on('attribute-state-changed', function () {
-                AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
-            });
-
             $scope.canBeAdded = canBeAdded;
 
             $scope.canBeRemoved = canBeRemoved;
@@ -357,7 +369,7 @@
     ]).directive('attributeRenderer', [function () {
         return {
             restrict: 'E',
-            scope: {attributes: '=', attribute: '=', objectType: '='},
+            scope: {attributes: '=', attribute: '=', objectType: '=', idx: '='},
             templateUrl: 'scripts/wizard/attribute-renderer.html',
             controller: 'AttributeCtrl',
             link: function (scope) {
