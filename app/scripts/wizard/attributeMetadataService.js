@@ -4,8 +4,7 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).service('AttributeMetadataService', ['jsUtilService', 'PrefixService',
-        function (jsUtils, PrefixService) {
+    ).service('AttributeMetadataService', ['$rootScope', 'jsUtilService', 'PrefixService', function ($rootScope, jsUtils, PrefixService) {
 
         // Defaults:
         // * attributes are shown
@@ -31,7 +30,6 @@
                 attributes[i].$$invalid = isInvalid(objectType, attributes, attributes[i]);
                 attributes[i].$$hidden = isHidden(objectType, attributes, attributes[i]);
             }
-            console.log('attributes', attributes);
         }
 
         function isHidden(objectType, attributes, attribute) {
@@ -65,7 +63,7 @@
                 if (jsUtils.typeOf(attribute.value) !== 'string') {
                     return true;
                 }
-                // negate cz test is for IN-valid & regex is for a +ve match
+                // negate cz test is for IN-valid or UN-hidden (i.e. 'visible') & regex is for a +ve match
                 return !attrMetadata.test(attribute.value);
             }
             if (jsUtils.typeOf(attrMetadata) === 'array') {
@@ -95,7 +93,8 @@
                     return o.name === attrMetadata.invalid;
                 });
                 for (i = 0; i < target.length; i++) {
-                    if (isInvalid(objectType, attributes, target[i])) {
+                    target[i].$$invalid = isInvalid(objectType, attributes, target[i]);
+                    if (target[i].$$invalid) {
                         return true;
                     }
                 }
@@ -106,7 +105,8 @@
                             return o.name === attrName;
                         });
                         for (i = 0; i < target.length; i++) {
-                            if (isInvalid(objectType, attributes, target[i])) {
+                            target[i].$$invalid = isInvalid(objectType, attributes, target[i])
+                            if (target[i].$$invalid) {
                                 return true;
                             }
                         }
@@ -167,8 +167,9 @@
         var cachedResponses = {};
 
         var timeout;
+
         function nserverIsInvalid(objectType, attributes, attribute) {
-            var sameValList = _.filter(attributes, function(attr) {
+            var sameValList = _.filter(attributes, function (attr) {
                 return attribute.name === attr.name && attribute.value === attr.value;
             });
             if (sameValList.length > 1) {
@@ -179,17 +180,17 @@
                 attribute.$$invalid = cachedResponses[attribute.value] !== 'OK';
                 return attribute.$$invalid;
             }
-            var doCall = function() {
+            var doCall = function () {
                 PrefixService.checkNameserverAsync(attribute.value).then(function () {
                     // put response in cache
                     cachedResponses[attribute.value] = 'OK';
-                    //attribute.$$invalid = false;
+                    $rootScope.$broadcast('attribute-state-changed', attribute);
                 }, function (err) {
                     if (err.status === 404) {
                         // ignore other errors, service is a bit flakey
                         cachedResponses[attribute.value] = 'FAILED';
                     }
-                    //attribute.$$invalid = true;
+                    $rootScope.$emit('attribute-state-changed', attribute);
                 });
             };
             if (timeout) {
