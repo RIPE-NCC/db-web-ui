@@ -42,10 +42,6 @@
              */
             $scope.submitButtonClicked = submitButtonHandler;
 
-            $scope.$on('attribute-value-changed', function () {
-                AttributeMetadataService.enrich(objectType, $scope.attributes);
-            });
-
             $scope.cancel = function () {
                 console.log('cancel button was clicked');
             };
@@ -198,6 +194,9 @@
             /*
              * Callback functions
              */
+            $scope.$on('attribute-state-changed', function () {
+                AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
+            });
 
             $scope.canBeAdded = canBeAdded;
 
@@ -238,8 +237,8 @@
             /*
              * Local functions
              */
-            function valueChanged(objectType, attributes, attribute) {
-                AttributeMetadataService.enrich(objectType, attributes, attribute);
+            function valueChanged(objectType, attributes) {
+                AttributeMetadataService.enrich(objectType, attributes);
             }
 
             function referenceAutocomplete(attribute, userInput) {
