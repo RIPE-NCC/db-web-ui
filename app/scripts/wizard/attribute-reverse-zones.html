@@ -2,12 +2,12 @@
     <table class="table" ng-if="attribute.value && attribute.value.length">
         <thead>
         <tr>
-            <th>Reverse zone</th>
+            <th>Reverse zones</th>
         </tr>
         </thead>
         <tbody>
         <tr ng-repeat="r in attribute.value">
-            <td>{{ r.name }}</td>
+            <td>{{ r.value }}</td>
         </tr>
         </tbody>
     </table>

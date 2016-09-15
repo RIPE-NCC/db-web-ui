@@ -46,7 +46,7 @@
 
                     for (i = startThirdOctet; i <= endThirdOctet; i++) {
                         zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
-                        zones.push({ name: zoneName });
+                        zones.push({ name: 'reverse-zone', value: zoneName });
                     }
                 } else {
                     var ipv6 = new Address6(prefix);
@@ -62,7 +62,7 @@
                         var endNibble = parseInt(endZone[0], 16);
                         for (i = startNibble; i <= endNibble; i++) {
                             zoneName = i.toString(16) + '.' + commonNibbles;
-                            zones.push({ name: zoneName });
+                            zones.push({ name: 'reverse-zone', value: zoneName });
                         }
                     }
                 }
