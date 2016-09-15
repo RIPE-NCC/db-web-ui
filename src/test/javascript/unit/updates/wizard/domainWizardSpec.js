@@ -2,7 +2,7 @@
 
 'use strict';
 
-describe('The domain wizard', function () {
+xdescribe('The domain wizard', function () {
 
     var $scope, $state, $stateParams, $httpBackend, $window;
     var MessageStore;
