@@ -154,7 +154,7 @@
             var revZonesAttr, invalid = !attribute.value || !PrefixService.isValidPrefix(attribute.value);
             if (!invalid) {
                 revZonesAttr = _.find(attributes, function (attr) {
-                    return attr.name === 'reverse-zones';
+                    return attr.name === 'reverse-zone';
                 });
                 if (revZonesAttr) {
                     revZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
@@ -246,7 +246,7 @@
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid},
                 descr: {},
                 nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},
-                'reverse-zones': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
+                'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
                 'ds-rdata': {},
                 org: {refs: ['organisation']},
                 'admin-c': {minOccurs: 1, refs: ['person', 'role'], hidden: {invalid: ['prefix', 'nserver']}},

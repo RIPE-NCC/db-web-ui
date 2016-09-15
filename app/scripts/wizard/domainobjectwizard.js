@@ -81,11 +81,9 @@
 
                 var url = 'api/whois/domain-objects/TEST';
                 var data = {
-                    dto: {
-                        type: objectType,
-                        attributes: flattenedAttributes,
-                        passwords: passwords
-                    }
+                    type: objectType,
+                    attributes: flattenedAttributes,
+                    passwords: passwords
                 };
                 $http.post(url, data).then(_onSubmitSuccess, _onSubmitError);
             }
@@ -230,7 +228,7 @@
             };
 
             $scope.hasHelp = function (attribute) {
-                return attribute.name !== 'reverse-zones';
+                return attribute.name !== 'reverse-zone';
             };
 
             $scope.getAttributeShortDescription = function (name) {
@@ -329,7 +327,7 @@
             }
 
             function canBeAdded(objectType, attributes, attribute) {
-                if ($scope.attribute.name === 'reverse-zones') {
+                if ($scope.attribute.name === 'reverse-zone') {
                     return false;
                 }
                 // count the attributes which match 'attribute'
@@ -347,9 +345,6 @@
             }
 
             function canBeRemoved(objectType, attributes, attribute) {
-                if ($scope.attribute.name === 'reverse-zones') {
-                    return false;
-                }
                 var cardinality = AttributeMetadataService.getCardinality($scope.objectType, attribute.name);
                 // check if there's a limit
                 if (cardinality.minOccurs < 1) {
@@ -370,7 +365,7 @@
             controller: 'AttributeCtrl',
             link: function (scope) {
                 // choose the html template dynamically
-                if (scope.attribute.name === 'reverse-zones') {
+                if (scope.attribute.name === 'reverse-zone') {
                     scope.widgetHtml = 'scripts/wizard/attribute-reverse-zones.html';
                 } else {
                     scope.widgetHtml = 'scripts/wizard/attribute.html';
