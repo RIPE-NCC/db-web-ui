@@ -44,11 +44,18 @@
         function isInvalid(objectType, attributes, attribute) {
             jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
             var md = getMetadata(objectType, attribute.name);
-            if (!md || !md.invalid) {
-                // primary keys are invalid if they're empty
-                return md.primaryKey ? !attribute.value : false;
+            if (md) {
+                if (md.invalid) {
+                    // use invalid to check it
+                    return evaluateMetadata(objectType, attributes, attribute, md.invalid);
+                } else if (md.primaryKey || md.minOccurs > 0) {
+                    // pks and mandatory must have value
+                    return !attribute.value;
+                } else {
+                    return false;
+                }
             }
-            return evaluateMetadata(objectType, attributes, attribute, md.invalid);
+            return false;
         }
 
         function evaluateMetadata(objectType, attributes, attribute, attrMetadata) {
