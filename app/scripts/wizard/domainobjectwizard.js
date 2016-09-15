@@ -239,9 +239,7 @@
              * Local functions
              */
             function valueChanged(objectType, attributes, attribute) {
-                //attribute.$$invalid = AttributeMetadataService.isInvalid(objectType, attributes, attribute);
                 AttributeMetadataService.enrich(objectType, attributes, attribute);
-
             }
 
             function referenceAutocomplete(attribute, userInput) {

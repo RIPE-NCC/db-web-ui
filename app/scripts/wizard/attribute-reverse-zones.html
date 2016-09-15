@@ -1,5 +1,9 @@
-<div>
-    <table class="table" ng-if="attribute.value && attribute.value.length">
+<div class="text-error" ng-if="attribute.$$error">
+    <span ng-bind-html="attribute.$$error"></span>
+</div>
+
+<div class="panel panel-default">
+    <table class="table table-hover" ng-if="attribute.value && attribute.value.length">
         <thead>
         <tr>
             <th>Reverse zones</th>
@@ -7,7 +11,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="r in attribute.value">
-            <td>{{ r.value }}</td>
+            <td><small>{{ r.value }}</small></td>
         </tr>
         </tbody>
     </table>
