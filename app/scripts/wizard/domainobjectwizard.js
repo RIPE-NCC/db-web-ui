@@ -5,7 +5,7 @@
 
     angular.module('dbWebApp'
     ).controller('DomainObjectController', ['$http', '$scope', '$stateParams', 'jsUtilService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
-        function ($http, $scope, $stateParams,jsUtils, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
+        function ($http, $scope, $stateParams, jsUtils, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
 
             /*
              * Initial scope vars
@@ -68,27 +68,7 @@
 
             function submitButtonHandler() {
 
-                var prefixAttr = {};
-
-                _.forEach($scope.attributes, function (attr) {
-                    if (!attr.name) {
-                        attr.name = '';
-                    } else if (attr.name === 'prefix') {
-                        prefixAttr = attr;
-                    }
-                });
-
-                $scope.restCallInProgress = true;
-
-                function _onSubmitSuccess(resp) {
-                    $scope.restCallInProgress = false;
-                    var whoisResources = resp;
-                    WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.operation);
-                }
-
-                function _onSubmitError() {
-                    $scope.restCallInProgress = false;
-                }
+                var flattenedAttributes = flattenStructure($scope.attributes);
 
                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                     _performAuthentication();
@@ -103,12 +83,25 @@
                 var data = {
                     dto: {
                         type: objectType,
-                        attributes: $scope.attributes,
+                        attributes: flattenedAttributes,
                         passwords: passwords
                     }
                 };
-
                 $http.post(url, data).then(_onSubmitSuccess, _onSubmitError);
+            }
+
+            function flattenStructure(attributes) {
+                var flattenedAttributes = [];
+                _.forEach(attributes, function (attr) {
+                    if (jsUtils.typeOf(attr.value) === 'array') {
+                        _.forEach(attr.value, function (atr) {
+                            flattenedAttributes.push({name: atr.name, value: atr.value || ''});
+                        });
+                    } else {
+                        flattenedAttributes.push({name: attr.name, value: attr.value || ''});
+                    }
+                });
+                return flattenedAttributes;
             }
 
             function _performAuthentication() {
@@ -125,6 +118,15 @@
                     failureClbk: _navigateAway
                 };
                 WebUpdatesCommons.performAuthentication(authParams);
+            }
+
+            function _onSubmitSuccess(resp) {
+                $scope.restCallInProgress = false;
+                WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, resp.getPrimaryKey(), $scope.operation);
+            }
+
+            function _onSubmitError() {
+                $scope.restCallInProgress = false;
             }
 
             function _onSuccessfulAuthentication() {
