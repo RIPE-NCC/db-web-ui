@@ -31,6 +31,7 @@
                 attributes[i].$$invalid = isInvalid(objectType, attributes, attributes[i]);
                 attributes[i].$$hidden = isHidden(objectType, attributes, attributes[i]);
             }
+            console.log('attributes', attributes);
         }
 
         function isHidden(objectType, attributes, attribute) {
@@ -168,26 +169,27 @@
         var timeout;
         function nserverIsInvalid(objectType, attributes, attribute) {
             var sameValList = _.filter(attributes, function(attr) {
-                return attr.name === attribute.name && attr.value === attr.value;
+                return attribute.name === attr.name && attribute.value === attr.value;
             });
-            if (sameValList.length > 0) {
+            if (sameValList.length > 1) {
+                // should have found itself once
                 return true;
             }
+            if (cachedResponses[attribute.value]) {
+                attribute.$$invalid = cachedResponses[attribute.value] !== 'OK';
+                return attribute.$$invalid;
+            }
             var doCall = function() {
-                if (cachedResponses[attribute.value]) {
-                    attribute.$$invalid = cachedResponses[attribute.value] !== 'OK';
-                    return;
-                }
                 PrefixService.checkNameserverAsync(attribute.value).then(function () {
                     // put response in cache
                     cachedResponses[attribute.value] = 'OK';
-                    attribute.$$invalid = false;
+                    //attribute.$$invalid = false;
                 }, function (err) {
                     if (err.status === 404) {
                         // ignore other errors, service is a bit flakey
                         cachedResponses[attribute.value] = 'FAILED';
                     }
-                    attribute.$$invalid = true;
+                    //attribute.$$invalid = true;
                 });
             };
             if (timeout) {

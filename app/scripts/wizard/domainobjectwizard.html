@@ -15,7 +15,7 @@
             {{ message.text }}
         </div>
         <ul class="form-fields appeared-fields">
-            <li class="form-group input-group"
+            <li class="form-group"
                 ng-repeat="attribute in attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'}"
                 ng-if="!attribute.$$hidden">
                 <attribute-renderer object-type="objectType" attributes="attributes" attribute="attribute"></attribute-renderer>

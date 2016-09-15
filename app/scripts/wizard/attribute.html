@@ -1,4 +1,8 @@
-<input
+<label>{{attribute.name}}</label>
+<div class="text-error" ng-if="attribute.$$error">
+    <span ng-bind-html="attribute.$$error"></span>
+</div>
+<div class="text-success" ng-if="attribute.$$success">{{ attribute.$$success }}</div><input
         type="text"
         class="form-control"
         placeholder="{{getAttributeShortDescription(attribute.name)}}"
