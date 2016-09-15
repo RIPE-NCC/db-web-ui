@@ -9,6 +9,12 @@ import javax.xml.bind.annotation.XmlElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NameValuePair {
 
+    public static final String NAME_REVERSE_ZONE = "reverse-zone";
+
+    public static final String NAME_PREFIX = "prefix";
+
+    public static final String NAME_DOMAIN = "domain";
+
     @XmlElement
     public String name;
 

@@ -5,6 +5,7 @@ import net.ripe.db.whois.api.rest.domain.Attribute;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.whois.services.WhoisDomainObjectService;
 import net.ripe.whois.web.api.ApiController;
+import net.ripe.whois.web.api.whois.domain.NameValuePair;
 import net.ripe.whois.web.api.whois.domain.WhoisWebDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,13 +40,13 @@ public class WhoisDomainObjectController extends ApiController {
 
         final List<WhoisObject> domainObjects = Lists.newArrayList();
 
-        for (String zone: dto.getValuesForName("reverse-zone")) {
+        for (String zone: dto.getValuesForName(NameValuePair.NAME_REVERSE_ZONE)) {
 
             WhoisObject domainObject = new WhoisObject();
 
             List<Attribute> attributes = Lists.newArrayList();
-            attributes.add(new Attribute("domain", zone));
-            attributes.addAll(dto.extractWhoisAttributesExcludeNames("reverse-zone", "prefix"));
+            attributes.add(new Attribute(NameValuePair.NAME_DOMAIN, zone));
+            attributes.addAll(dto.extractWhoisAttributesExcludeNames(NameValuePair.NAME_REVERSE_ZONE, NameValuePair.NAME_PREFIX));
 
             domainObject.setAttributes(attributes);
             domainObjects.add(domainObject);
