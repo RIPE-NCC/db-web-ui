@@ -66,7 +66,7 @@ public class WhoisWebDTO {
     }
 
     /**
-     * @return list of Whois Attributes for each NameValuePair in this.attributes who's name matches any specified by includedNames.
+     * @return list of Whois Attribute derived from this.attributes where NameValuePair.name exists in includeNames.
      */
     public List<Attribute> extractWhoisAttributes(String... includeNames) {
 
