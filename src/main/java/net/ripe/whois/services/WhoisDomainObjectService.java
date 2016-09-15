@@ -1,6 +1,9 @@
 package net.ripe.whois.services;
 
 import com.google.common.collect.Maps;
+import net.ripe.db.whois.api.rest.domain.WhoisObject;
+import net.ripe.db.whois.api.rest.domain.WhoisObjects;
+import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.rest.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,7 @@ import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class WhoisDomainObjectService extends RestClient {
@@ -27,7 +31,7 @@ public class WhoisDomainObjectService extends RestClient {
         this.domainObjectApiUrl = ripeUrl + "/domain-objects";
     }
 
-    public ResponseEntity<String> createDomainObjects(final String source, final String body, final HttpHeaders headers) {
+    public ResponseEntity<String> createDomainObjects(final String source, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
         final String url = "{url}/{source}";
 
         final HashMap<String, Object> variables = Maps.newHashMap();
@@ -36,11 +40,14 @@ public class WhoisDomainObjectService extends RestClient {
 
         URI uri = new UriTemplate(url).expand(variables);
 
+        WhoisResources whoisResources = new WhoisResources();
+        whoisResources.setWhoisObjects(domainObjects);
+
         LOGGER.debug("Performing create {}", uri.toString() );
 
         return restTemplate.exchange(uri,
                 HttpMethod.POST,
-                new HttpEntity<>(body, headers),
+                new HttpEntity<>(whoisResources, headers),
                 String.class);
     }
 

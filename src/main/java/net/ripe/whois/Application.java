@@ -1,5 +1,7 @@
 package net.ripe.whois;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,17 +13,20 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @ComponentScan(basePackages = "net.ripe.whois")
@@ -91,6 +96,19 @@ public class Application {
         LOGGER.info("crowd.rest.password:  {}", String.format("%sxxxxx", environment.getProperty("crowd.rest.password").substring(0, 2)));
         LOGGER.info("crowd.login.url:      {}", environment.getProperty("crowd.login.url"));
         LOGGER.info("dns.checker.url:     {}", environment.getProperty("dns.checker.url"));
+    }
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    @Bean
+    public Jackson2ObjectMapperBuilder objectMapperBuilder() {
+        return Jackson2ObjectMapperBuilder
+                .json()
+                .applicationContext(applicationContext)
+                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+                /*.featuresToEnable(SerializationFeature.WRAP_ROOT_VALUE)*/
+                .serializationInclusion(JsonInclude.Include.NON_NULL)
+                .failOnUnknownProperties(false);
     }
 
     @Bean
