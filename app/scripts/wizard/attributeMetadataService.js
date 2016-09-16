@@ -112,7 +112,7 @@
                             return o.name === attrName;
                         });
                         for (i = 0; i < target.length; i++) {
-                            target[i].$$invalid = isInvalid(objectType, attributes, target[i])
+                            target[i].$$invalid = isInvalid(objectType, attributes, target[i]);
                             if (target[i].$$invalid) {
                                 return true;
                             }
