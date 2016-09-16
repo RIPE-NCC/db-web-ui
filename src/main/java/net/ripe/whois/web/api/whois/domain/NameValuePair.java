@@ -15,6 +15,8 @@ public class NameValuePair {
 
     public static final String NAME_DOMAIN = "domain";
 
+    public static final String NAME_DESCRIPTION = "descr";
+
     @XmlElement
     public String name;
 
@@ -32,5 +34,6 @@ public class NameValuePair {
         this.name = name;
         this.value = value;
     }
+
 }
 
