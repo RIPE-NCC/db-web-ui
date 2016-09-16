@@ -27,7 +27,7 @@ describe('Modifying an inetnum', function () {
 
         beforeEach(function () {
             browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/193.96.3.0%20-%20193.96.3.255');
-            browser.addMockModule('dbWebAppE2E', mockModule.module);
+            browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         });
 
         it('should have status box enabled', function () {
@@ -47,7 +47,7 @@ describe('Modifying an inetnum', function () {
 
         beforeEach(function () {
             browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/194.219.52.224%20-%20194.219.52.239');
-            browser.addMockModule('dbWebAppE2E', mockModule.module);
+            browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         });
 
         it('should have status box disabled', function () {
