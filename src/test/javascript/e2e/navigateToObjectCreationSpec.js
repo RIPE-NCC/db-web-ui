@@ -3,7 +3,7 @@ var mockGet = require('./mocks/homemocks');
 var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
-fdescribe('webupdates homepage', function() {
+describe('webupdates homepage', function() {
 
     'use strict';
 
@@ -43,8 +43,8 @@ fdescribe('webupdates homepage', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('domain').click();
         page.btnNavigateToCreate.click();
-        expect(page.createForm.isPresent()).toEqual(true);
-        expect(page.heading.getText()).toEqual('Create "domain" object');
+        // Domain object wizard
+        expect(browser.getCurrentUrl()).toContain('/webupdates/wizard/RIPE/domain');
     });
 
     it('should show an editor for filter-set', function() {
