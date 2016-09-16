@@ -30,7 +30,7 @@ public class WhoisDomainObjectController extends ApiController {
     @Autowired
     private WhoisDomainObjectService whoisDomainObjectService;
 
-    @RequestMapping(value = "/{source}", method = RequestMethod.POST) /*, consumes = MediaType.APPLICATION_JSON_VALUE*/
+    @RequestMapping(value = "/{source}", method = RequestMethod.POST)
     public ResponseEntity<String> create(
             @RequestBody final WhoisWebDTO dto,
             @PathVariable final String source,
@@ -40,12 +40,13 @@ public class WhoisDomainObjectController extends ApiController {
 
         final List<WhoisObject> domainObjects = Lists.newArrayList();
 
-        for (String zone: dto.getValuesForName(NameValuePair.NAME_REVERSE_ZONE)) {
+        for (String zone: dto.getValues(NameValuePair.NAME_REVERSE_ZONE)) {
 
             WhoisObject domainObject = new WhoisObject();
 
             List<Attribute> attributes = Lists.newArrayList();
             attributes.add(new Attribute(NameValuePair.NAME_DOMAIN, zone));
+            attributes.add(new Attribute(NameValuePair.NAME_DESCRIPTION, String.format("Reverse delegation for %s", dto.getValue("prefix"))));
             attributes.addAll(dto.extractWhoisAttributesExcludeNames(NameValuePair.NAME_REVERSE_ZONE, NameValuePair.NAME_PREFIX));
 
             domainObject.setAttributes(attributes);
