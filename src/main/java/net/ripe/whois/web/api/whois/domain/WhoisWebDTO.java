@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonRootName;
 import com.google.common.collect.Lists;
 import net.ripe.db.whois.api.rest.domain.Attribute;
 
+import javax.ws.rs.BadRequestException;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -53,16 +54,28 @@ public class WhoisWebDTO {
      * }
      * }</pre>
      * <p>
-     * getValuesForName("nserver") returns ["ns.xs4all.nl", "ns1.xs4all.nl"]
+     * getValues("nserver") returns ["ns.xs4all.nl", "ns1.xs4all.nl"]
      *
      * @return all values of NameValuePairs with the given name.
      */
-    public List<String> getValuesForName(String name) {
+    public List<String> getValues(String name) {
 
         return attributes.stream()
                 .filter(nvp -> nvp.name.equals(name))
                 .map(nvp -> nvp.value)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * @return value of the matching NameValuePair
+     * @throws BadRequestException when either no attribute or more than one attribute with name is found
+     */
+    public String getValue(String name) {
+        final List<String> values = getValues(name);
+        if (values.size() != 1)
+            throw new BadRequestException(String.format("Missing attribute '%s'", name));
+        else
+            return values.get(0);
     }
 
     /**
