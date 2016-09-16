@@ -59,6 +59,10 @@ module.exports = {
     inpStatus: element(by.id('createForm')).element(by.name('status')),
     inpStatusLink: element(by.id('createForm')).element(by.name('status')).element(by.css('a')),
     inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('div > ul > li > ul')).all(by.css('li')),
+    inpPrefix: element(by.id('createForm')).element(by.name('prefix$0')),
+    inpNserver1: element(by.id('createForm')).element(by.name('nserver$1')),
+    inpNserver2: element(by.id('createForm')).element(by.name('nserver$2')),
+    inpAdminC4: element(by.id('createForm')).element(by.name('admin-c$4')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
 
     inpAdminC: element(by.id('createForm')).element(by.name('admin-c')),

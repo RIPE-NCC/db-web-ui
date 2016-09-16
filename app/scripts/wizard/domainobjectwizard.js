@@ -58,7 +58,6 @@
              * Local functions
              */
             function containsInvalidValues(attributes) {
-                console.log('whoisObjectForm', $scope.whoisObjectForm);
                 var idx = _.findIndex(attributes, function (attr) {
                     return attr.$$invalid;
                 });
