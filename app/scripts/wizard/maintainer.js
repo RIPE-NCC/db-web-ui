@@ -27,6 +27,7 @@
         };
 
         $scope.onMntnerRemoved = function (item) {
+
             // don't remove if it's the last one -- just empty it
             var objectMntBys = _.filter($scope.attributes, function (attr) {
                 return attr.name === 'mnt-by';

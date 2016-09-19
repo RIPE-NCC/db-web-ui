@@ -41,8 +41,8 @@ angular.module('dbWebApp', [
             $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         }])
 
-    .run(['$rootScope', '$state', '$window', '$location', '$log', '$cookies', 'ERROR_EVENTS', 'Properties',
-        function ($rootScope, $state, $window, $location, $log, $cookies, ERROR_EVENTS, Properties) {
+    .run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'Properties',
+        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, Properties) {
 
             $rootScope.$on(ERROR_EVENTS.stateTransitionError, function (event, toState, toParams, fromState, fromParams, err) {
                 $log.error('Error transitioning to state:' + JSON.stringify(toState) + ' due to error ' + JSON.stringify(err));

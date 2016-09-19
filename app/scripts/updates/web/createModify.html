@@ -64,7 +64,7 @@
 	</section>
     <section class="visible-field-form" ng-if="hasMntners()">
         <ul class="form-fields appeared-fields">
-            <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" class="form-group input-group" ng-if="$index < nrAttributesToRender">
+            <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" ng-if="$index < nrAttributesToRender">
 
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">
@@ -134,7 +134,7 @@
                 </li>
                 <li ng-if="canAttributeBeRemoved(attribute)">
                     <a id="removeAttribute" class="btn btn-default ga-del-attr" title="Remove current attribute"
-                             ng-click="removeAttribute(objectType, attributes, attribute)">
+                             ng-click="removeAttribute(attribute)">
                         <span class="fa fa-trash" ></span>
                     </a>
                 </li>

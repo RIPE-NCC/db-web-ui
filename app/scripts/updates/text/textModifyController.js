@@ -3,10 +3,10 @@
 (function () {
     'use strict';
 
-    angular.module('textUpdates').controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$cookies', '$q', '$window',
+    angular.module('textUpdates').controller('TextModifyController', ['$scope', '$stateParams', '$state', '$resource', '$log', '$q', '$window',
         'WhoisResources', 'RestService', 'AlertService', 'ErrorReporterService', 'MessageStore', 'RpslService', 'TextCommons',
         'CredentialsService', 'PreferenceService',
-        function ($scope, $stateParams, $state, $resource, $log, $cookies, $q, $window,
+        function ($scope, $stateParams, $state, $resource, $log, $q, $window,
                   WhoisResources, RestService, AlertService, ErrorReporterService, MessageStore, RpslService,
                   TextCommons, CredentialsService, PreferenceService) {
 
@@ -69,7 +69,6 @@
                         var attributes = handleFetchResponse(results.objectToModify);
                         // store mntners for SSO account
                         $scope.mntners.sso = results.mntners;
-                        $log.debug('maintainers.sso:' + JSON.stringify($scope.mntners.sso));
                         TextCommons.authenticate('Modify', $scope.object.source, $scope.object.type, $scope.object.name,
                             $scope.mntners.sso, attributes, $scope.passwords, $scope.override).then(
                             function () {
