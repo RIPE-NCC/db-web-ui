@@ -15,6 +15,8 @@ public class NameValuePair {
 
     public static final String NAME_DOMAIN = "domain";
 
+    public static final String NAME_SOURCE = "source";
+
     public static final String NAME_DESCRIPTION = "descr";
 
     @XmlElement

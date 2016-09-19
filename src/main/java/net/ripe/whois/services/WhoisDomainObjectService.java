@@ -2,16 +2,14 @@ package net.ripe.whois.services;
 
 import com.google.common.collect.Maps;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
-import net.ripe.db.whois.api.rest.domain.WhoisObjects;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.rest.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriTemplate;
@@ -28,10 +26,10 @@ public class WhoisDomainObjectService extends RestClient {
 
     @Autowired
     public WhoisDomainObjectService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
-        this.domainObjectApiUrl = ripeUrl + "/domain-objects";
+        this.domainObjectApiUrl = ripeUrl + "/whois/domain-objects";
     }
 
-    public ResponseEntity<String> createDomainObjects(final String source, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
+    public ResponseEntity<WhoisResources> createDomainObjects(final String source, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
         final String url = "{url}/{source}";
 
         final HashMap<String, Object> variables = Maps.newHashMap();
@@ -45,10 +43,9 @@ public class WhoisDomainObjectService extends RestClient {
 
         LOGGER.debug("Performing create {}", uri.toString() );
 
-        return restTemplate.exchange(uri,
-                HttpMethod.POST,
-                new HttpEntity<>(whoisResources, headers),
-                String.class);
+        WhoisResources result = restTemplate.postForObject(uri + "?password=test", whoisResources, WhoisResources.class);
+
+        return  new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
 }
