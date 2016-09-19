@@ -17,7 +17,7 @@
         <ul class="form-fields appeared-fields">
             <li ng-repeat="attribute in attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'}"
                 ng-if="!attribute.$$hidden">
-                <attribute-renderer object-type="objectType" attributes="attributes" attribute="attribute" idx="$index"></attribute-renderer>
+                <attribute-renderer source="source" object-type="objectType" attributes="attributes" attribute="attribute" idx="$index"></attribute-renderer>
             </li>
         </ul>
     </section>

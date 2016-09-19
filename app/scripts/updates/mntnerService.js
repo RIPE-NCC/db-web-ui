@@ -95,7 +95,7 @@
                 });
             };
 
-           mntnerService.hasNccMntner = function(mntnerList) {
+            mntnerService.hasNccMntner = function (mntnerList) {
                 return _.any(mntnerList, function (mntner) {
                     return mntnerService.isNccMntner(mntner);
                 });
@@ -185,12 +185,12 @@
                     return false;
                 }
 
-                if (_oneOfOriginalMntnersIsMine(mntners)) {
+                if (oneOfOriginalMntnersIsMine(mntners)) {
                     $log.debug('needsPasswordAuthentication: no: One of selected mntners is mine');
                     return false;
                 }
 
-                if (_oneOfOriginalMntnersHasCredential(mntners)) {
+                if (oneOfOriginalMntnersHasCredential(mntners)) {
                     $log.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
                     return false;
                 }
@@ -273,13 +273,13 @@
                 return mntners[0].key.toUpperCase() === nccRpslMntner;
             };
 
-            function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
+            function oneOfOriginalMntnersIsMine(originalObjectMntners) {
                 return _.any(originalObjectMntners, function (mntner) {
                     return mntner.mine === true;
                 });
             }
 
-            function _oneOfOriginalMntnersHasCredential(originalObjectMntners) {
+            function oneOfOriginalMntnersHasCredential(originalObjectMntners) {
                 if (CredentialsService.hasCredentials()) {
                     var trustedMtnerName = CredentialsService.getCredentials().mntner;
                     return _.any(originalObjectMntners, function (mntner) {
