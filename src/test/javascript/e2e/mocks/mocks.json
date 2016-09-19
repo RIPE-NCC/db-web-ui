@@ -2059,7 +2059,7 @@
       }
     }
   },
-  "api/whois/RIPE/mntner/ERICSSON-MNT?password=ERICSSON-MNT&unfiltered=true": {
+  "api/whois/TEST/mntner/ERICSSON-MNT?password=ERICSSON-MNT&unfiltered=true": {
     "data": {
       "objects": {
         "object": [
@@ -2164,7 +2164,7 @@
       }
     }
   },
-  "api/whois/RIPE/mntner/ERICSSON-MNT?password=xxx&unfiltered=true": {
+  "api/whois/TEST/mntner/ERICSSON-MNT?password=xxx&unfiltered=true": {
     "data": {
       "objects": {
         "object": [

@@ -560,7 +560,7 @@
                                 </goals>
                                 <configuration>
                                     <buildTool>grunt</buildTool>
-                                    <buildArgs>build --force --no-color</buildArgs>
+                                    <buildArgs>build --environment=${spring.profiles.active} --force --no-color</buildArgs>
                                 </configuration>
                             </execution>
                         </executions>
@@ -574,7 +574,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>src/main/webapp/dist</directory>
+                                    <directory>src/main/webapp</directory>
                                 </fileset>
                                 <fileset>
                                     <directory>.tmp</directory>
@@ -638,7 +638,7 @@
                         <configuration>
                             <filesets>
                                 <fileset>
-                                    <directory>src/main/webapp/dist</directory>
+                                    <directory>src/main/webapp</directory>
                                 </fileset>
                                 <fileset>
                                     <directory>.tmp</directory>

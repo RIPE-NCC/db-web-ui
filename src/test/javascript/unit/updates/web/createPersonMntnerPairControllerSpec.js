@@ -9,7 +9,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
     var RestService;
     var UserInfoService;
 
-    var SOURCE = 'RIPE';
+    var SOURCE = 'TEST';
     var PERSON_NAME = 'Titus Tester';
     var PERSON_UID = 'tt-ripe';
     var MNTNER_NAME = 'aardvark-mnt';
@@ -178,7 +178,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         expect($scope.mntnerAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        $httpBackend.expectPOST('api/references/RIPE').respond(function(method,url) {
+        $httpBackend.expectPOST('api/references/TEST').respond(function(method,url) {
             return [200, personMntnerPair, {}];
         });
         $httpBackend.flush();
@@ -227,7 +227,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         expect($scope.mntnerAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        $httpBackend.expectPOST('api/references/RIPE').respond(function(method,url) {
+        $httpBackend.expectPOST('api/references/TEST').respond(function(method,url) {
             return [400, whoisObjectWithErrors, {}];
         });
         $httpBackend.flush();

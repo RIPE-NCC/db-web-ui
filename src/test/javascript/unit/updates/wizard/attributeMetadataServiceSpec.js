@@ -23,7 +23,7 @@ xdescribe('The prefix wizard', function () {
         });
     });
 
-    xit('controller should not crash', function () {
+    it('controller should not crash', function () {
         //$scope.objectType = 'prefix';
         expect(!!$scope.attributes).toBe(true);
         expect($scope.attributes.length).toBe(9);
@@ -65,7 +65,7 @@ xdescribe('The prefix wizard', function () {
         expect(isHidden).toBe(false);
     });
 
-    xit('should be able to calculate hidden state of an attribute with dependencies', function() {
+    it('should be able to calculate hidden state of an attribute with dependencies', function() {
         var isHidden,
             attributes = $scope.attributes,
             attrPrefix = $scope.attributes[0],

@@ -9,7 +9,7 @@
             /*
              * UI initialisation
              */
-            $scope.objectTypes = _filterObjectTypes(WhoisResources.getObjectTypes());
+            $scope.objectTypes = filterObjectTypes(WhoisResources.getObjectTypes());
 
             $scope.selected = {
                 source: Properties.SOURCE,
@@ -17,17 +17,12 @@
             };
 
             $scope.loggedIn = undefined;
+
             UserInfoService.getUserInfo().then(
                 function () {
                     $scope.loggedIn = true;
                 }
             );
-
-            function _filterObjectTypes(unfiltered) {
-                return _.filter(unfiltered, function (item) {
-                    return item !== 'as-block' && item !== 'poem' && item !== 'poetic-form';
-                });
-            }
 
             /*
              * Methods called from the html-teplate
@@ -53,6 +48,12 @@
                     });
                 }
             };
+
+            function filterObjectTypes(unfiltered) {
+                return _.filter(unfiltered, function (item) {
+                    return item !== 'as-block' && item !== 'poem' && item !== 'poetic-form';
+                });
+            }
 
         }]);
 })();

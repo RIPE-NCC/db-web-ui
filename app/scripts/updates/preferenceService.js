@@ -67,7 +67,6 @@
 
             function setCookie(name, value, path) {
                 $log.debug('Setting cookie:' + name + ' to value ' + value);
-                console.log('>>> >>> >>> Setting cookie:' + name + ' to value ' + value);
                 $cookies.put(name, value, {
                     expires: EXPIRY,
                     path: path

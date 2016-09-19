@@ -41,10 +41,11 @@ module.exports = function (grunt) {
         dev: {
             ENV: 'dev',
             GTM_ID: 'GTM-WTWTB7',
-            ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/',
-            LOGIN_URL: 'https://access.prepdev.ripe.net/',
-            PORTAL_URL: 'https://my.prepdev.ripe.net/',
-            BANNER: 'Welcome to the DEV Environment of the RIPE Database.'
+            ACCESS_URL: 'https://access.dev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/',
+            LOGIN_URL: 'https://access.dev.ripe.net/',
+            PORTAL_URL: 'https://my.dev.ripe.net/',
+            BANNER: 'Welcome to the DEV Environment of the RIPE Database.',
+            SOURCE: 'TEST'
         },
         prepdev: {
             ENV: 'prepdev',
@@ -52,7 +53,8 @@ module.exports = function (grunt) {
             ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/',
             LOGIN_URL: 'https://access.prepdev.ripe.net/',
             PORTAL_URL: 'https://my.prepdev.ripe.net/',
-            BANNER: 'This is the pre-production (PREPDEV) environment for acceptance testing. All imported data has been dummified.'
+            BANNER: 'This is the pre-production (PREPDEV) environment for acceptance testing. All imported data has been dummified.',
+            SOURCE: 'RIPE'
         },
         rc: {
             ENV: 'rc',
@@ -60,7 +62,8 @@ module.exports = function (grunt) {
             ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/',
             LOGIN_URL: 'https://access.ripe.net/',
             PORTAL_URL: 'https://my.ripe.net/',
-            BANNER: 'Welcome to the Release Candidate Environment (RC) of the RIPE Database. This environment contains the upcoming release of the database software with a dummified snapshot of the production data. The dummification is only applied to personal data. This environment makes it possible for you to test your software with your own data.'
+            BANNER: 'Welcome to the Release Candidate Environment (RC) of the RIPE Database. This environment contains the upcoming release of the database software with a dummified snapshot of the production data. The dummification is only applied to personal data. This environment makes it possible for you to test your software with your own data.',
+            SOURCE: 'RIPE'
         },
         test: {
             ENV: 'test',
@@ -68,7 +71,8 @@ module.exports = function (grunt) {
             ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/',
             LOGIN_URL: 'https://access.ripe.net/',
             PORTAL_URL: 'https://my.ripe.net/',
-            BANNER: 'Welcome to the TEST Environment of the RIPE Database. You can use this environment to learn and experiment with RIPE Database. It uses a TEST \'source\' and any changes are reverted at night.'
+            BANNER: 'Welcome to the TEST Environment of the RIPE Database. You can use this environment to learn and experiment with RIPE Database. It uses a TEST \'source\' and any changes are reverted at night.',
+            SOURCE: 'RIPE'
         },
         training: {
             ENV: 'training',
@@ -76,14 +80,16 @@ module.exports = function (grunt) {
             ACCESS_URL: 'https://access.ripe.net?originalUrl=https://training.db.ripe.net/db-web-ui/',
             LOGIN_URL: 'https://access.ripe.net/',
             PORTAL_URL: 'https://my.ripe.net/',
-            BANNER: 'Please fill out the template below. If you have any problems completing the RIPE Database activities, please make a screenshot of the filled out template and send it to academy@ripe.net with your questions.'
+            BANNER: 'Please fill out the template below. If you have any problems completing the RIPE Database activities, please make a screenshot of the filled out template and send it to academy@ripe.net with your questions.',
+            SOURCE: 'RIPE'
         },
         prod: {
             ENV: 'prod',
             GTM_ID: 'GTM-TP3SK6',
             ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/',
             LOGIN_URL: 'https://access.ripe.net/',
-            PORTAL_URL: 'https://my.ripe.net/'
+            PORTAL_URL: 'https://my.ripe.net/',
+            SOURCE: 'RIPE'
         }
     };
 
