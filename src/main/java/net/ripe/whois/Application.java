@@ -106,7 +106,6 @@ public class Application {
                 .json()
                 .applicationContext(applicationContext)
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .featuresToEnable(SerializationFeature.WRAP_ROOT_VALUE)
                 .serializationInclusion(JsonInclude.Include.NON_NULL)
                 .failOnUnknownProperties(false);
     }
