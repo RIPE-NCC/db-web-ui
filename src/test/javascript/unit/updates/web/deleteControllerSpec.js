@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, module, spyOn*/
 'use strict';
 
 describe('webUpdates: DeleteController', function () {
@@ -114,13 +115,13 @@ describe('webUpdates: DeleteController', function () {
             };
 
             $log = {
-                debug: function(msg) {
+                debug: function() {
                     //console.log('debug:'+msg);
                 },
-                info: function(msg) {
+                info: function() {
                     //console.log('info:'+msg);
                 },
-                error: function(msg) {
+                error: function() {
                     //console.log('error:'+msg);
                 }
             };
@@ -154,7 +155,7 @@ describe('webUpdates: DeleteController', function () {
 
 
     it('should display delete object modal', function() {
-        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then:function(a,b){}});
+        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then:function(){}});
 
         createDeleteController();
 
@@ -191,7 +192,7 @@ describe('webUpdates: DeleteController', function () {
     });
 
     it('should populate the ui after delete with 1 object', function () {
-        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { a(objectToDisplay); }})
+        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a) { a(objectToDisplay); }});
 
         createDeleteController();
 
@@ -204,7 +205,7 @@ describe('webUpdates: DeleteController', function () {
     });
 
     it('should populate the ui from message-store - Multiple objects', function () {
-        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a, b) { a(multipleObjectsToDisplay); }})
+        spyOn(ModalService, 'openDeleteObjectModal').and.returnValue({then: function(a) { a(multipleObjectsToDisplay); }});
 
         createDeleteController();
 

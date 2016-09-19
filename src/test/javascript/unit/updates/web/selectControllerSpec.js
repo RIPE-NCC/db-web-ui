@@ -1,3 +1,4 @@
+/*globals afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
 describe('webUpdates: SelectController', function () {
@@ -27,7 +28,7 @@ describe('webUpdates: SelectController', function () {
                 _$controller_('SelectController', {
                     $scope: $scope, $state: $state, $stateParams: $stateParams, UserInfoService:UserInfoService
                 });
-            }
+            };
 
             $httpBackend.whenGET(/.*.html/).respond(200);
             $httpBackend.flush();
@@ -43,8 +44,8 @@ describe('webUpdates: SelectController', function () {
     it('should navigate to crowd if currently logged out', function () {
         selectController();
 
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
-            return [401, "", {}];
+        $httpBackend.expectGET('api/user/info').respond(function() {
+            return [401, '', {}];
         });
         $httpBackend.flush();
         expect($scope.loggedIn).toBeUndefined();
@@ -62,12 +63,12 @@ describe('webUpdates: SelectController', function () {
     it('should navigate to create screen when logged in', function () {
         selectController();
 
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function() {
             return [200, {
-                username:"test@ripe.net",
-                displayName:"Test User",
+                username:'test@ripe.net',
+                displayName:'Test User',
                 expiryDate:[2015,9,9,14,9,27,863],
-                uuid:"aaaa-bbbb-cccc-dddd",
+                uuid:'aaaa-bbbb-cccc-dddd',
                 active:true
             }, {}];
         });
@@ -87,12 +88,12 @@ describe('webUpdates: SelectController', function () {
     it('should navigate to create self maintained mntner screen when logged in', function () {
         selectController();
 
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function() {
             return [200, {
-                username:"test@ripe.net",
-                displayName:"Test User",
+                username:'test@ripe.net',
+                displayName:'Test User',
                 expiryDate:[2015,9,9,14,9,27,863],
-                uuid:"aaaa-bbbb-cccc-dddd",
+                uuid:'aaaa-bbbb-cccc-dddd',
                 active:true
             }, {}];
         });
@@ -102,7 +103,7 @@ describe('webUpdates: SelectController', function () {
 
         $scope.selected = {
             source: SOURCE,
-            objectType: "mntner"
+            objectType: 'mntner'
         };
 
         $scope.navigateToCreate();

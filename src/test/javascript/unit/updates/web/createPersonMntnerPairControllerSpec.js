@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
 describe('webUpdates: CreatePersonMntnerPairController', function () {
@@ -21,12 +22,12 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$log_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_, _MessageStore_, _WhoisResources_, _AlertService_,_RestService_) {
+        inject(function (_$controller_, _$rootScope_, _$log_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_, _MessageStore_, _WhoisResources_, _AlertService_, _RestService_) {
 
             $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
             $log = _$log_;
-            $state =  _$state_;
+            $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             MessageStore = _MessageStore_;
@@ -36,19 +37,19 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
             UserInfoService = _UserInfoService_;
 
             personMntnerPair = WhoisResources.wrapWhoisResources({
-               objects: {
-                   object: [
-                       {
-                           'primary-key': {attribute: [{name: 'person', value: PERSON_UID}]},
-                           attributes: {
-                               attribute: [
-                                   {name: 'person', value: PERSON_NAME},
-                                   {name: 'mnt-by', value: MNTNER_NAME},
-                                   {name: 'nic-hdl', value: PERSON_UID},
-                                   {name: 'source', value: SOURCE}
-                               ]
-                           }
-                       },
+                objects: {
+                    object: [
+                        {
+                            'primary-key': {attribute: [{name: 'person', value: PERSON_UID}]},
+                            attributes: {
+                                attribute: [
+                                    {name: 'person', value: PERSON_NAME},
+                                    {name: 'mnt-by', value: MNTNER_NAME},
+                                    {name: 'nic-hdl', value: PERSON_UID},
+                                    {name: 'source', value: SOURCE}
+                                ]
+                            }
+                        },
                         {
                             'primary-key': {attribute: [{name: 'mntner', value: MNTNER_NAME}]},
                             attributes: {
@@ -65,23 +66,23 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
             });
 
             userInfoData = {
-                "username":SSO_EMAIL,
-                "displayName":"Tester X",
-                "expiryDate":[2015,8,27,18,2,35,606],
-                "uuid":"93efb5ac-81f7-40b1-aac7-f2ff497b00e7",
-                "active":true
+                'username': SSO_EMAIL,
+                'displayName': 'Tester X',
+                'expiryDate': [2015, 8, 27, 18, 2, 35, 606],
+                'uuid': '93efb5ac-81f7-40b1-aac7-f2ff497b00e7',
+                'active': true
             };
 
             UserInfoService.clear();
 
-            createController = function() {
+            createController = function () {
 
                 $stateParams.source = SOURCE;
 
                 _$controller_('CreatePersonMntnerPairController', {
-                    $scope: $scope, $state: $state, $log:$log, $stateParams: $stateParams,
-                    WhoisResources:WhoisResources, AlertService:AlertService, UserInfoService:UserInfoService,
-                    RestService:RestService,MessageStore:MessageStore
+                    $scope: $scope, $state: $state, $log: $log, $stateParams: $stateParams,
+                    WhoisResources: WhoisResources, AlertService: AlertService, UserInfoService: UserInfoService,
+                    RestService: RestService, MessageStore: MessageStore
                 });
             };
 
@@ -91,7 +92,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         });
     });
 
-    afterEach(function() {
+    afterEach(function () {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
     });
@@ -99,7 +100,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
     it('should extract data from url', function () {
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
         $httpBackend.flush();
@@ -112,7 +113,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function () {
             return [403, whoisObjectWithErrors, {}];
         });
         $httpBackend.flush();
@@ -131,7 +132,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
         $httpBackend.flush();
@@ -148,11 +149,10 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
     });
 
     it('should pre-populate and submit ok', function () {
-        var stateBefore = $state.current.name;
 
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
         $httpBackend.flush();
@@ -173,12 +173,12 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('AUTO-1');
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO '+ SSO_EMAIL);
+        expect($scope.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO ' + SSO_EMAIL);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('upd-to').value).toEqual(SSO_EMAIL);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        $httpBackend.expectPOST('api/references/TEST').respond(function(method,url) {
+        $httpBackend.expectPOST('api/references/TEST').respond(function () {
             return [200, personMntnerPair, {}];
         });
         $httpBackend.flush();
@@ -188,7 +188,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         expect(personAttrs.getSingleAttributeOnName('person').value).toEqual(PERSON_NAME);
         expect(personAttrs.getSingleAttributeOnName('nic-hdl').value).toEqual(PERSON_UID);
 
-        var cachedMntner =  WhoisResources.wrapWhoisResources(MessageStore.get(MNTNER_NAME));
+        var cachedMntner = WhoisResources.wrapWhoisResources(MessageStore.get(MNTNER_NAME));
         var mntnerAttrs = WhoisResources.wrapAttributes(cachedMntner.getAttributes());
         expect(mntnerAttrs.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
 
@@ -203,7 +203,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
         $httpBackend.flush();
@@ -221,20 +221,20 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         expect($scope.personAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
         expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO '+ SSO_EMAIL);
+        expect($scope.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO ' + SSO_EMAIL);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('AUTO-1');
         expect($scope.mntnerAttributes.getSingleAttributeOnName('upd-to').value).toEqual(SSO_EMAIL);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        $httpBackend.expectPOST('api/references/TEST').respond(function(method,url) {
+        $httpBackend.expectPOST('api/references/TEST').respond(function () {
             return [400, whoisObjectWithErrors, {}];
         });
         $httpBackend.flush();
 
         expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
         expect($scope.warnings[0].plainText).toEqual('Not authenticated');
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual("\'" + MNTNER_NAME + "\' is not valid for this object type");
+        expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual('\'' + MNTNER_NAME + '\' is not valid for this object type');
 
         expect($state.current.name).toBe(stateBefore);
 
@@ -242,51 +242,44 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
     var whoisObjectWithErrors = {
         objects: {
-            object: [
-                {
-                    attributes: {
-                        attribute: [
-                            {name: 'person', value: PERSON_NAME},
-                            {name: 'mnt-by', value: MNTNER_NAME},
-                            {name: 'source', value: SOURCE}
-                        ]
-                    }
-                },
-                {
-                    attributes: {
-                        attribute: [
-                            {name: 'mntner', value: MNTNER_NAME},
-                            {name: 'admin-c', value: PERSON_UID},
-                            {name: 'mnt-by', value: MNTNER_NAME},
-                            {name: 'source', value: SOURCE}
-                        ]
-                    }
+            object: [{
+                attributes: {
+                    attribute: [
+                        {name: 'person', value: PERSON_NAME},
+                        {name: 'mnt-by', value: MNTNER_NAME},
+                        {name: 'source', value: SOURCE}
+                    ]
                 }
-            ]
+            }, {
+                attributes: {
+                    attribute: [
+                        {name: 'mntner', value: MNTNER_NAME},
+                        {name: 'admin-c', value: PERSON_UID},
+                        {name: 'mnt-by', value: MNTNER_NAME},
+                        {name: 'source', value: SOURCE}
+                    ]
+                }
+            }]
         },
         errormessages: {
-            errormessage: [
-                {
-                    severity: 'Error',
-                    text: 'Unrecognized source: %s',
-                    'args': [{value: 'INVALID_SOURCE'}]
+            errormessage: [{
+                severity: 'Error',
+                text: 'Unrecognized source: %s',
+                'args': [{value: 'INVALID_SOURCE'}]
+            }, {
+                severity: 'Warning',
+                text: 'Not authenticated'
+            }, {
+                severity: 'Error',
+                attribute: {
+                    name: 'mntner',
+                    value: MNTNER_NAME
                 },
-                {
-                    severity: 'Warning',
-                    text: 'Not authenticated'
-                }, {
-                    severity: 'Error',
-                    attribute: {
-                        name: 'mntner',
-                        value: MNTNER_NAME
-                    },
-                    text: '\'%s\' is not valid for this object type',
-                    args: [{value: MNTNER_NAME}]
-                }
-            ]
+                text: '\'%s\' is not valid for this object type',
+                args: [{value: MNTNER_NAME}]
+            }]
         }
     };
-
 
 
 });

@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
 describe('webUpdates: DisplayController', function () {
@@ -69,12 +70,12 @@ describe('webUpdates: DisplayController', function () {
     });
 
     function expectUserInfo(withFlush) {
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function() {
             return [200, {
-                username:"test@ripe.net",
-                displayName:"Test User",
+                username:'test@ripe.net',
+                displayName:'Test User',
                 expiryDate:[2015,9,9,14,9,27,863],
-                uuid:"aaaa-bbbb-cccc-dddd",
+                uuid:'aaaa-bbbb-cccc-dddd',
                 active:true
             }, {}];
         });
@@ -143,7 +144,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(false);
 
-        $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function() {
             return [200, objectToDisplay, {}];
         });
         $httpBackend.flush();
@@ -164,7 +165,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(false);
 
-        $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function() {
             return [403, {
                 errormessages: {
                     errormessage: [
@@ -290,12 +291,12 @@ describe('webUpdates: DisplayController with object containing slash', function 
     });
 
     function expectUserInfo(withFlush) {
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/user/info').respond(function() {
             return [200, {
-                username:"test@ripe.net",
-                displayName:"Test User",
+                username:'test@ripe.net',
+                displayName:'Test User',
                 expiryDate:[2015,9,9,14,9,27,863],
-                uuid:"aaaa-bbbb-cccc-dddd",
+                uuid:'aaaa-bbbb-cccc-dddd',
                 active:true
             }, {}];
         });
@@ -305,14 +306,13 @@ describe('webUpdates: DisplayController with object containing slash', function 
     }
 
     it('should populate the ui from rest ok', function () {
-        var stateBefore = $state.current.name;
 
         // no objects in message store
         createDisplayController();
 
         expectUserInfo(false);
 
-        $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function() {
             return [200, objectToDisplay, {}];
         });
         $httpBackend.flush();
@@ -329,7 +329,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         expectUserInfo(false);
 
-        $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function() {
             return [200, objectToDisplay, {}];
         });
         $httpBackend.flush();
@@ -351,7 +351,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         expectUserInfo(false);
 
-        $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function() {
             return [200, objectToDisplay, {}];
         });
         $httpBackend.flush();

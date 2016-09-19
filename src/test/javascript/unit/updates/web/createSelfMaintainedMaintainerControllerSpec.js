@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, module, spyOn*/
 'use strict';
 
 describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
@@ -6,19 +7,19 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     var SOURCE = 'TEST';
 
     var RestService = {
-        createObject: function (source, objectType, attributes, passwords) {
+        createObject: function () {
             return {
                 then: function (s) {
                     s(WhoisResources.wrapSuccess(CREATE_RESPONSE));
                 }
-            }
+            };
         },
         fetchUiSelectResources: function () {
             return {
                 then: function (s) {
                     s();
                 }
-            }
+            };
         }
     };
 
@@ -50,13 +51,13 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
             UserInfoService.clear();
 
             $log = {
-                debug: function (msg) {
+                debug: function () {
                     //console.log('info:'+msg);
                 },
-                info: function (msg) {
+                info: function () {
                     //console.log('info:'+msg);
                 },
-                error: function (msg) {
+                error: function () {
                     //console.log('error:'+msg);
                 }
             };
@@ -72,7 +73,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
-            $httpBackend.expectGET('api/user/info').respond(function (method, url) {
+            $httpBackend.expectGET('api/user/info').respond(function () {
                 return [200, userInfoData, {}];
             });
 
