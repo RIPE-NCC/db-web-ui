@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it*/
 'use strict';
 
 describe('textUpdates: TextMultiController', function () {
@@ -30,13 +31,13 @@ describe('textUpdates: TextMultiController', function () {
             $q = _$q_;
 
             var logger = {
-                debug: function (msg) {
+                debug: function () {
                     //console.log('info:' + msg);
                 },
-                info: function (msg) {
+                info: function () {
                     //console.log('info:' + msg);
                 },
-                error: function (msg) {
+                error: function () {
                     //console.log('error:' + msg);
                 }
             };
@@ -49,7 +50,7 @@ describe('textUpdates: TextMultiController', function () {
                     $scope: $scope, $state: $state, $log: logger, $stateParams: $stateParams
                 });
                 initialState = $state.current.name;
-            }
+            };
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
@@ -131,7 +132,7 @@ describe('textUpdates: TextMultiController', function () {
         $scope.setWebMode();
 
         expect($scope.objects.objects.length).toBe(1);
-        expect($scope.objects.objects[0].type).toBe('person')
+        expect($scope.objects.objects[0].type).toBe('person');
         expect($scope.objects.objects[0].name).toBeUndefined();
         expect($scope.objects.objects[0].status).toBe('Invalid syntax');
         expect($scope.objects.objects[0].success).toBe(false);
@@ -174,7 +175,6 @@ describe('textUpdates: TextMultiController', function () {
             'nic-hdl: AUTO-1\n' +
             'mnt-by: TEST-MMT\n' +
             'source: RIPE\n';
-        ;
 
         $scope.setWebMode();
 
@@ -205,7 +205,6 @@ describe('textUpdates: TextMultiController', function () {
             'nic-hdl: MM1-RIPE\n' +
             'mnt-by: TEST-MMT\n' +
             'source: RIPE\n';
-        ;
 
         $scope.setWebMode();
 
@@ -239,7 +238,6 @@ describe('textUpdates: TextMultiController', function () {
             'nic-hdl: MM1-RIPE\n' +
             'mnt-by: TEST-MMT\n' +
             'source: RIPE\n';
-        ;
 
         $scope.setWebMode();
 
@@ -275,7 +273,6 @@ describe('textUpdates: TextMultiController', function () {
             'nic-hdl: MM1-RIPE\n' +
             'mnt-by: TEST-MMT\n' +
             'source: RIPE\n';
-        ;
 
         $scope.setWebMode();
 
@@ -530,5 +527,5 @@ describe('textUpdates: TextMultiController', function () {
                 }
             ]
         }
-    }
+    };
 });

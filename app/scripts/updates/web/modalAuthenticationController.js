@@ -1,3 +1,5 @@
+/*global angular*/
+(function() {
 'use strict';
 
 angular.module('webUpdates').controller('ModalAuthenticationController', ['$scope', '$log', '$modalInstance', 'WhoisResources', 'RestService',
@@ -98,3 +100,4 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
         };
 
     }]);
+})();
