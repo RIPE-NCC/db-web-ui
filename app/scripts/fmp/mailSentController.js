@@ -7,5 +7,5 @@
         function ($scope, $stateParams) {
             $scope.email = $stateParams.email;
         }]);
-    
+
 })();

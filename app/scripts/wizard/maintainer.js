@@ -22,7 +22,7 @@
             mergeMaintainers($scope.attributes, {name: 'mnt-by', value: item.key});
 
             if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, $scope.mntners.objectOriginal, $scope.mntners.object)) {
-                _performAuthentication();
+                performAuthentication();
             }
         };
 
@@ -49,12 +49,12 @@
                 function (data) {
                     // mark new
                     $scope.mntners.alternatives = MntnerService.stripNccMntners(MntnerService.enrichWithNewStatus($scope.mntners.objectOriginal,
-                        _filterAutocompleteMntners(_enrichWithMine(data))), true);
+                        filterAutocompleteMntners(enrichWithMine(data))), true);
                 }
             );
         }
 
-        function _performAuthentication() {
+        function performAuthentication() {
             var authParams = {
                 maintainers: $scope.mntners,
                 operation: $scope.operation,
@@ -64,17 +64,17 @@
                     name: $scope.name
                 },
                 isLirObject: false,
-                successClbk: _onSuccessfulAuthentication,
-                failureClbk: _navigateAway
+                successClbk: onSuccessfulAuthentication,
+                failureClbk: navigateAway
             };
             WebUpdatesCommons.performAuthentication(authParams);
         }
 
-        function _onSuccessfulAuthentication() {
+        function onSuccessfulAuthentication() {
             console.log('_onSuccessfulAuthentication');
         }
 
-        function _navigateAway() {
+        function navigateAway() {
             console.log('_navigateAway');
         }
 
@@ -106,7 +106,7 @@
             }
         }
 
-        function _enrichWithMine(mntners) {
+        function enrichWithMine(mntners) {
             return _.map(mntners, function (mntner) {
                 // search in selected list
                 mntner.mine = !!MntnerService.isMntnerOnlist($scope.mntners.sso, mntner);
@@ -114,7 +114,7 @@
             });
         }
 
-        function _filterAutocompleteMntners(mntners) {
+        function filterAutocompleteMntners(mntners) {
             return _.filter(mntners, function (mntner) {
                 // prevent that RIPE-NCC mntners can be added to an object upon create of modify
                 // prevent same mntner to be added multiple times
@@ -146,7 +146,7 @@
             }
         }
 
-        function _extractEnrichMntnersFromObject(attributes, maintainersSso) {
+        function extractEnrichMntnersFromObject(attributes, maintainersSso) {
             // get mntners from response
             var mntnersInObject = _.filter(attributes, function (attr) {
                 return attr.name === 'mnt-by';

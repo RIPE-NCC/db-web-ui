@@ -31,8 +31,8 @@ module.exports = function (grunt) {
         dist: require('./bower.json').distPath || 'dist'
     };
 
-	// Detect environment for e2e remote process
-    var e2eLocalOrRemote = function() {
+    // Detect environment for e2e remote process
+    var e2eLocalOrRemote = function () {
         return os.hostname().indexOf('db-tools-1.') === 0 ? 'e2eRemote' : 'e2eLocal';
     };
 
@@ -736,7 +736,7 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
-	grunt.registerTask('e2e-coverage', [
+    grunt.registerTask('e2e-coverage', [
         'clean:server',
         'e2eapp',
         'copy:processtags',

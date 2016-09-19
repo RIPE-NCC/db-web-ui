@@ -103,6 +103,7 @@
                 var timeoutA;
                 restService.autocomplete = function (attrName, query, extended, attrsToBeReturned) {
                     var deferredObject = $q.defer();
+
                     function debounce() {
                         if (_.isUndefined(query) || query.length < 2) {
                             deferredObject.resolve([]);
@@ -121,6 +122,7 @@
                             });
                         }
                     }
+
                     if (timeoutA) {
                         clearTimeout(timeoutA);
                     }
@@ -153,6 +155,7 @@
                             });
                         }
                     }
+
                     if (timeoutAA) {
                         clearTimeout(timeoutAA);
                     }
