@@ -363,7 +363,7 @@ describe('textUpdates: TextModifyController', function () {
         setupController();
 
         $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
-            function (method, url) {
+            function () {
                 return [200, testPersonObject, {}];
             });
 
@@ -385,7 +385,7 @@ describe('textUpdates: TextModifyController', function () {
         setupController();
 
         $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
-            function (method, url) {
+            function () {
                 return [200, testPersonObject, {}];
             });
         $httpBackend.whenGET('api/user/mntners').respond([{

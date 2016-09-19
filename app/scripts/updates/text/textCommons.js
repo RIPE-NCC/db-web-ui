@@ -1,4 +1,4 @@
-/*global angular*/
+/*global _, angular*/
 
 (function () {
     'use strict';
@@ -82,10 +82,10 @@
                 } else {
                     if (_.isEmpty(passwords) && _.isUndefined(override)) {
                         // show password popup if needed
-                        var objectMntners = _getObjectMntners(attributes);
+                        var objectMntners = getObjectMntners(attributes);
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
                             needsAuth = true;
-                            _performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, ObjectUtilService.isLirObject(attributes)).then(
+                            performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, ObjectUtilService.isLirObject(attributes)).then(
                                 function () {
                                     $log.debug('Authentication succeeded');
                                     deferredObject.resolve(true);
@@ -104,7 +104,7 @@
                 return deferredObject.promise;
             };
 
-            function _performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners, isLirObject) {
+            function performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners, isLirObject) {
 
                 var object = {
                     source: objectSource,
@@ -142,7 +142,7 @@
             }
 
 
-            function _getObjectMntners(attributes) {
+            function getObjectMntners(attributes) {
                 return _.map(attributes.getAllAttributesWithValueOnName('mnt-by'), function (objMntner) {
                     // Notes:
                     // - RPSL attribute values can contain leading and trailing spaces, so the must be trimmed

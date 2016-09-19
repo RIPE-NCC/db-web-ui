@@ -4,7 +4,7 @@
     'use strict';
 
     angular.module('dbWebApp').service('AlertService', ['$log', '$rootScope',
-        
+
         function ($log, $rootScope) {
             var alertService = {};
 

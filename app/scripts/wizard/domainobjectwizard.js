@@ -81,21 +81,21 @@
                 var flattenedAttributes = flattenStructure($scope.attributes);
 
                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
-                    _performAuthentication();
+                    performAuthentication();
                     return;
                 }
 
-                var passwords = _getPasswordsForRestCall();
+                var passwords = getPasswordsForRestCall();
 
                 $scope.restCallInProgress = true;
 
-                var url = 'api/whois/domain-objects/TEST';
+                var url = 'api/whois/domain-objects/' + $scope.source;
                 var data = {
                     type: objectType,
                     attributes: flattenedAttributes,
                     passwords: passwords
                 };
-                $http.post(url, data).then(_onSubmitSuccess, _onSubmitError);
+                $http.post(url, data).then(onSubmitSuccess, onSubmitError);
             }
 
             function flattenStructure(attributes) {
@@ -112,7 +112,7 @@
                 return flattenedAttributes;
             }
 
-            function _performAuthentication() {
+            function performAuthentication() {
                 var authParams = {
                     maintainers: $scope.maintainers,
                     operation: $scope.operation,
@@ -122,30 +122,30 @@
                         name: $scope.name
                     },
                     isLirObject: false,
-                    successClbk: _onSuccessfulAuthentication,
-                    failureClbk: _navigateAway
+                    successClbk: onSuccessfulAuthentication,
+                    failureClbk: navigateAway
                 };
                 WebUpdatesCommons.performAuthentication(authParams);
             }
 
-            function _onSubmitSuccess(resp) {
+            function onSubmitSuccess(resp) {
                 $scope.restCallInProgress = false;
                 WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, resp.getPrimaryKey(), $scope.operation);
             }
 
-            function _onSubmitError() {
+            function onSubmitError() {
                 $scope.restCallInProgress = false;
             }
 
-            function _onSuccessfulAuthentication() {
+            function onSuccessfulAuthentication() {
                 console.log('_onSuccessfulAuthentication');
             }
 
-            function _navigateAway() {
+            function navigateAway() {
                 console.log('_navigateAway');
             }
 
-            function _getPasswordsForRestCall() {
+            function getPasswordsForRestCall() {
                 var passwords = [];
 
                 if (CredentialsService.hasCredentials()) {
