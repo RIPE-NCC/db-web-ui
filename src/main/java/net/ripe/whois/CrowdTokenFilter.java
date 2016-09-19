@@ -71,6 +71,7 @@ public class CrowdTokenFilter implements Filter {
     private boolean isStaticResource(HttpServletRequest request) {
         if (request.getRequestURI().endsWith(".css") ||
             request.getRequestURI().endsWith(".js") ||
+            request.getRequestURI().endsWith(".html") ||
             request.getRequestURI().endsWith(".png")) {
             return true;
         }
@@ -99,7 +100,7 @@ public class CrowdTokenFilter implements Filter {
     }
 
     private void reportAuthorisationError( final HttpServletRequest request, final HttpServletResponse response ) {
-        boolean isAjax = "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With")) ? true : false;
+        boolean isAjax = "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
         if( isAjax ) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } else {
