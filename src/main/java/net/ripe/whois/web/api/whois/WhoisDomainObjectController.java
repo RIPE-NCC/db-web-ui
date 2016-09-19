@@ -3,6 +3,7 @@ package net.ripe.whois.web.api.whois;
 import com.google.common.collect.Lists;
 import net.ripe.db.whois.api.rest.domain.Attribute;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
+import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.whois.services.WhoisDomainObjectService;
 import net.ripe.whois.web.api.ApiController;
 import net.ripe.whois.web.api.whois.domain.NameValuePair;
@@ -31,7 +32,7 @@ public class WhoisDomainObjectController extends ApiController {
     private WhoisDomainObjectService whoisDomainObjectService;
 
     @RequestMapping(value = "/{source}", method = RequestMethod.POST)
-    public ResponseEntity<String> create(
+    public ResponseEntity<WhoisResources> create(
             @RequestBody final WhoisWebDTO dto,
             @PathVariable final String source,
             @RequestHeader final HttpHeaders headers) throws URISyntaxException {
@@ -43,11 +44,13 @@ public class WhoisDomainObjectController extends ApiController {
         for (String zone: dto.getValues(NameValuePair.NAME_REVERSE_ZONE)) {
 
             WhoisObject domainObject = new WhoisObject();
+            domainObject.setType(NameValuePair.NAME_DOMAIN);
 
             List<Attribute> attributes = Lists.newArrayList();
             attributes.add(new Attribute(NameValuePair.NAME_DOMAIN, zone));
             attributes.add(new Attribute(NameValuePair.NAME_DESCRIPTION, String.format("Reverse delegation for %s", dto.getValue("prefix"))));
             attributes.addAll(dto.extractWhoisAttributesExcludeNames(NameValuePair.NAME_REVERSE_ZONE, NameValuePair.NAME_PREFIX));
+            attributes.add(new Attribute(NameValuePair.NAME_SOURCE, source));
 
             domainObject.setAttributes(attributes);
             domainObjects.add(domainObject);
