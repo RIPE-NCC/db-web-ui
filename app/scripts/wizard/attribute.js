@@ -20,7 +20,7 @@
              */
             $scope.isMntHelpShown = false;
             if ($scope.attribute.name === 'source') {
-                $scope.attribute.value = 'RIPE';
+                $scope.attribute.value = $scope.source;
                 if (!$scope.attribute.$$meta) {
                     $scope.attribute.$$meta = {};
                 }
@@ -192,7 +192,7 @@
     ]).directive('attributeRenderer', [function () {
         return {
             restrict: 'E',
-            scope: {attributes: '=', attribute: '=', objectType: '=', idx: '='},
+            scope: {attributes: '=', attribute: '=', objectType: '=', source: '=', idx: '='},
             templateUrl: 'scripts/wizard/attribute-renderer.html',
             controller: 'AttributeCtrl',
             link: function (scope) {
