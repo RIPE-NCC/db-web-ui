@@ -574,6 +574,13 @@ module.exports = function (grunt) {
             }
         },
 
+        karma: {
+            unit: {
+                configFile: 'src/test/javascript/karma.conf.js',
+                singleRun: true
+            }
+        },
+
         // E2E config
         protractor_coverage: {
             options: {
