@@ -199,7 +199,7 @@
                                 }
                             }
                         }, function () {
-                            // if we cannot find a parent, just send the object and let whois report the error
+                            // if we cannot find a parent, do not show the auth popup
                             doCreate(attributes, inetnumAttr.name);
                         });
                     }
