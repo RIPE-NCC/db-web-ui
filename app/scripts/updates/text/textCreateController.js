@@ -199,9 +199,8 @@
                                 }
                             }
                         }, function () {
-                            $scope.restCallInProgress = false;
-                            AlertService.addGlobalError('Unable to find parent for resource ' + inetnumAttr.value);
-                            $log.debug('no parent found');
+                            // if we cannot find a parent, just send the object and let whois report the error
+                            doCreate(attributes, inetnumAttr.name);
                         });
                     }
                 } else {
