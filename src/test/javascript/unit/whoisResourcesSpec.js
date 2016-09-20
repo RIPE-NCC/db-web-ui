@@ -279,28 +279,28 @@ describe('dbWebApp: WhoisResources', function () {
         var errorResponse = $whoisResources.wrapWhoisResources({
             errormessages: {
                 errormessage: [
-                    { severity: "Error",
-                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    { severity: 'Error',
+                        text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                         args: [
-                            {value: "inetnum"  }, {value: "194.219.52.240 - 194.219.52.243"},
-                            {value: "mnt-by" },{value: "TPOLYCHNIA4-MNT"}
+                            {value: 'inetnum'  }, {value: '194.219.52.240 - 194.219.52.243'},
+                            {value: 'mnt-by' },{value: 'TPOLYCHNIA4-MNT'}
                         ]
                     },
-                    {  severity: "Error",
-                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    {  severity: 'Error',
+                        text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                         args: [
-                            { value: "inetnum" }, {  value: "194.219.0.0 - 194.219.255.255" },
-                            { value: "mnt-lower" }, { value: "FORTHNETGR-MNT" }
+                            { value: 'inetnum' }, {  value: '194.219.0.0 - 194.219.255.255' },
+                            { value: 'mnt-lower' }, { value: 'FORTHNETGR-MNT' }
                         ]
                     },
-                    {  severity: "Error",
-                        text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
-                        args: [  { value: "inetnum"  }, {  value: "194.219.0.0 - 194.219.255.255" },
-                            { value: "mnt-by"  }, { value: "RIPE-NCC-HM-MNT, AARDVARK-MNT"  }
+                    {  severity: 'Error',
+                        text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
+                        args: [  { value: 'inetnum'  }, {  value: '194.219.0.0 - 194.219.255.255' },
+                            { value: 'mnt-by'  }, { value: 'RIPE-NCC-HM-MNT, AARDVARK-MNT'  }
                         ]
                     },
-                    { severity: "Info",
-                        text: "Dry-run performed, no changes to the database have been made" }
+                    { severity: 'Info',
+                        text: 'Dry-run performed, no changes to the database have been made' }
                 ]
             }
         });
