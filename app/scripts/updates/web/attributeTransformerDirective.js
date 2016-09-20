@@ -12,7 +12,7 @@
 
                     function doTransform(viewValue) {
                         var transformed = viewValue;
-                        $log.info('name:' + attrs.name + ' with value ' + viewValue);
+                        // $log.info('name:' + attrs.name + ' with value ' + viewValue);
 
                         // TODO we could also uniformize inetnum with slash notation and inet6nums
                         if (attrs.name === 'inetnum' && viewValue) {

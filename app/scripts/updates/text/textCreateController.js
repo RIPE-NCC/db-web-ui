@@ -43,6 +43,7 @@
 
                 if (PreferenceService.isWebMode() && redirect) {
                     switchToWebMode();
+                    return;
                 }
 
                 if (_.isUndefined($scope.object.rpsl)) {
@@ -198,7 +199,8 @@
                                 }
                             }
                         }, function () {
-                            $log.debug('no parent found');
+                            // if we cannot find a parent, do not show the auth popup
+                            doCreate(attributes, inetnumAttr.name);
                         });
                     }
                 } else {

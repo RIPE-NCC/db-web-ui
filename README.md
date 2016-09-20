@@ -7,31 +7,34 @@ Pre-requisites
 npm
 grunt
 bower
+compass (ruby)
 
-
-Development Server
-------------------
-
-The normal maven build process should complete without errors:
+Build on Local Machine
+-----------------------
 
     % mvn verify
 
-The server can be started from the command-line:
+Start Full Development Server (Frontend + Backend) on Local Machine
+-------------------------------------------------------------------
 
-    % mvn spring-boot:run
+* first build (see above)
+* execute: ```% mvn spring-boot:run```
+     
+* map ```127.0.0.1``` to ```localhost.ripe.net``` in your local hosts file
+* access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
 Deployment
 -------------------
 To deploy to any environment (dev/prepdev/rc/prod), create a war using:
 
-    % mvn -Pdeploy package -Dspring.profiles.active=<ENV> 
+    % mvn -Pdeploy package -Dspring.profiles.active=<ENV>
 
-e.g. to deploy to RC: 
+e.g. to deploy to RC:
 
     % mvn -Pdeploy package -Dspring.profiles.active=rc
-      
-    
-this will create a war for the specific environment by calling 
+
+
+this will create a war for the specific environment by calling
 the appropriate grunt task for that environment. The grunt task will
 generate the appropriate scripts/app/app.constants.js file.
 
@@ -51,7 +54,7 @@ IntelliJ Preferences
         * Project Settings
                 * Project
                         * Project SDK: 1.8
-                        * Language level: 1.8	
+                        * Language level: 1.8
 
 Architecture
 ------------
@@ -79,10 +82,10 @@ Responsibilities of java-proxy: Non functionals only
 Things every db-web-ui developer should know
 --------------------------------------------
 
-* Must read: https://github.com/johnpapa/angular-styleguide/tree/master/a1 
+* Must read: https://github.com/johnpapa/angular-styleguide/tree/master/a1
 * This chap knows a thing or two about Angular: Ben Nadel www.bennadel.com
-* Use the Mozilla Developer Network (MDN) for JS specs — NOT W3Schools 
-* https://www.airpair.com/angularjs/posts/top-10-mistakes-angularjs-developers-make 
+* Use the Mozilla Developer Network (MDN) for JS specs — NOT W3Schools
+* https://www.airpair.com/angularjs/posts/top-10-mistakes-angularjs-developers-make
 
 HOWTOs
 ------
@@ -100,7 +103,7 @@ version. The best tool for this is `js-beautify` -- you can install it with:
 ##### Example: download, format and diff the latest version of the template
 
 Open a terminal and cd into the `src/main/webapp` directory, then type these commands:
- 
+
     curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" |js-beautify --type html |sed -e "/^\s*$/d" > template.html
     diff _index.html template.html
 
