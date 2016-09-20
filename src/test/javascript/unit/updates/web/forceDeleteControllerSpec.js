@@ -99,21 +99,21 @@ describe('webUpdates: ForceDeleteController', function () {
                             errormessages: {
                                 errormessage: [{
                                     severity: 'Error',
-                                    text: 'Authorisation for [%s] %s failed\nusing \'%s:\'\nnot authenticated by: %s',
+                                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                                     args: [
                                         {value: 'inetnum'}, {value: '194.219.52.240 - 194.219.52.243'},
                                         {value: 'mnt-by'}, {value: 'TESTSSO-MNT'}
                                     ]
                                 }, {
                                     severity: 'Error',
-                                    text: 'Authorisation for [%s] %s failed\nusing \'%s:\'\nnot authenticated by: %s',
+                                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                                     args: [
                                         {value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
                                         {value: 'mnt-lower'}, {value: 'TEST1-MNT'}
                                     ]
                                 }, {
                                     severity: 'Error',
-                                    text: 'Authorisation for [%s] %s failed\nusing \'%s:\'\nnot authenticated by: %s',
+                                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                                     args: [{value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
                                         {value: 'mnt-by'}, {value: 'RIPE-NCC-HM-MNT, TEST2-MNT'}
                                     ]
@@ -409,7 +409,7 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
             errormessage: [
                 {
                     severity: 'Error',
-                    text: 'Authorisation for [%s] %s failed\nusing \'%s:\'\nnot authenticated by: %s',
+                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                     args: [
                         {value: 'inetnum'}, {value: '194.219.52.240 - 194.219.52.243'},
                         {value: 'mnt-by'}, {value: 'TEST-MNT'}
@@ -417,7 +417,7 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
                 },
                 {
                     severity: 'Error',
-                    text: 'Authorisation for [%s] %s failed\nusing \'%s:\'\nnot authenticated by: %s',
+                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                     args: [
                         {value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
                         {value: 'mnt-lower'}, {value: 'TEST1-MNT'}
@@ -425,7 +425,7 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
                 },
                 {
                     severity: 'Error',
-                    text: 'Authorisation for [%s] %s failed\nusing \'%s:\'\nnot authenticated by: %s',
+                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                     args: [{value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
                         {value: 'mnt-by'}, {value: 'RIPE-NCC-HM-MNT, TEST2-MNT'}
                     ]
