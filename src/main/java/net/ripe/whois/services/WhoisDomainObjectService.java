@@ -8,10 +8,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
@@ -41,11 +43,15 @@ public class WhoisDomainObjectService extends RestClient {
         WhoisResources whoisResources = new WhoisResources();
         whoisResources.setWhoisObjects(domainObjects);
 
-        LOGGER.debug("Performing create {}", uri.toString() );
+        LOGGER.debug("Performing create {}", uri.toString());
 
-        WhoisResources result = restTemplate.postForObject(uri + "?password=test", whoisResources, WhoisResources.class);
-
-        return new ResponseEntity<>(result, HttpStatus.CREATED);
+        WhoisResources result = null;
+        try {
+            result = restTemplate.postForObject(uri + "?password=test", new HttpEntity<>(whoisResources, headers), WhoisResources.class);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (HttpClientErrorException e) {
+            return new ResponseEntity<>(result, e.getStatusCode());
+        }
     }
 
 }
