@@ -26,7 +26,6 @@ import javax.servlet.Filter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 @ComponentScan(basePackages = "net.ripe.whois")
