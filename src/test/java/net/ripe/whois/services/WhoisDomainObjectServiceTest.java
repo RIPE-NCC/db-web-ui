@@ -2,6 +2,7 @@ package net.ripe.whois.services;
 
 import net.ripe.whois.Application;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.IntegrationTest;
@@ -13,6 +14,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @SpringApplicationConfiguration(classes = Application.class)
 @WebAppConfiguration
 @IntegrationTest("server.port:0")
+@Ignore
 public class WhoisDomainObjectServiceTest {
 
     @Before
@@ -21,7 +23,6 @@ public class WhoisDomainObjectServiceTest {
 
     @Test
     public void createMultipleDomainObjectsSuccessfully() {
-
     }
 
 }
