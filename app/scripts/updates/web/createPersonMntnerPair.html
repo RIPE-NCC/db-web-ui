@@ -6,8 +6,7 @@
 
         <ul class="form-fields appeared-fields">
 
-            <li ng-repeat="attribute in (mntnerAttributes| filter: {name:'!descr'}  | filter: {name:'!admin-c'}  | filter: {name:'!upd-to'} | filter:  {name:'!auth'} | filter: {name:'!mnt-by'} | filter: {name: '!source'} )"
-                class="form-group input-group">
+            <li ng-repeat="attribute in (mntnerAttributes| filter: {name:'!descr'}  | filter: {name:'!admin-c'}  | filter: {name:'!upd-to'} | filter:  {name:'!auth'} | filter: {name:'!mnt-by'} | filter: {name: '!source'} )">
                 <label>{{attribute.name}}</label>
                 <span ng-if="attribute.$$error" class="text-error">
                     <span ng-bind-html="attribute.$$error"></span>
@@ -28,15 +27,14 @@
                 </div>
                 <ul class="input-group-btn">
                     <li>
-                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                        <a class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
                             <span class="fa fa-question" ></span>
                         </a>
                     </li>
                 </ul>
             </li>
 
-           <li ng-repeat="attribute in (personAttributes  | filter: {name:'!nic-hdl'}  | filter: {name:'!mnt-by'} | filter: {name: '!source'})"
-                class="form-group input-group">
+           <li ng-repeat="attribute in (personAttributes  | filter: {name:'!nic-hdl'}  | filter: {name:'!mnt-by'} | filter: {name: '!source'})">
                 <label>{{attribute.name}}</label>
                 <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
                 <input type="text"
@@ -55,7 +53,7 @@
                </div>
                 <ul class="input-group-btn">
                     <li>
-                        <a id="help" class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                        <a class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
                             <span class="fa fa-question" ></span>
                         </a>
                     </li>
