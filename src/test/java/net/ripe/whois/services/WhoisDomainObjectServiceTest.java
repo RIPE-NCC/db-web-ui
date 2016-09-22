@@ -23,4 +23,5 @@ public class WhoisDomainObjectServiceTest {
     public void createMultipleDomainObjectsSuccessfully() {
 
     }
+
 }

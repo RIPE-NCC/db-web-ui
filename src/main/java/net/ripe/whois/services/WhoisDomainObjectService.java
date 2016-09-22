@@ -45,7 +45,7 @@ public class WhoisDomainObjectService extends RestClient {
 
         WhoisResources result = restTemplate.postForObject(uri + "?password=test", whoisResources, WhoisResources.class);
 
-        return  new ResponseEntity<>(result, HttpStatus.CREATED);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
 }

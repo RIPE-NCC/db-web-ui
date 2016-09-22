@@ -71,7 +71,7 @@ public class CrowdTokenFilter implements Filter {
     private boolean isStaticResource(HttpServletRequest request) {
         if (request.getRequestURI().endsWith(".css") ||
             request.getRequestURI().endsWith(".js") ||
-            request.getRequestURI().endsWith(".html") ||
+            //request.getRequestURI().endsWith(".html") ||
             request.getRequestURI().endsWith(".png")) {
             return true;
         }
