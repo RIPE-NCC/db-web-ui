@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +46,7 @@ public class WhoisDomainObjectService extends RestClient {
 
         WhoisResources result = null;
         try {
-            result = restTemplate.postForObject(uri + "?password=test", new HttpEntity<>(whoisResources, headers), WhoisResources.class);
+            result = restTemplate.postForObject(uri + "?password=XS4ALL", whoisResources, WhoisResources.class);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (HttpClientErrorException e) {
             return new ResponseEntity<>(result, e.getStatusCode());

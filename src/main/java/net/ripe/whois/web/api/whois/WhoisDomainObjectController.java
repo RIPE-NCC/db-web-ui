@@ -54,7 +54,7 @@ public class WhoisDomainObjectController extends ApiController {
             domainObject.setAttributes(attributes);
             domainObjects.add(domainObject);
         }
-
+        headers.remove(com.google.common.net.HttpHeaders.HOST);
         return whoisDomainObjectService.createDomainObjects(source, domainObjects, headers);
     }
 }
