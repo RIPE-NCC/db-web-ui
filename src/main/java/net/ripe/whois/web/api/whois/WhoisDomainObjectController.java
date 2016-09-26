@@ -13,18 +13,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.QueryParam;
 import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/whois/domain-objects")
+@SuppressWarnings("UnusedDeclaration")
 public class WhoisDomainObjectController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectController.class);
 
@@ -35,6 +32,7 @@ public class WhoisDomainObjectController extends ApiController {
     public ResponseEntity<WhoisResources> create(
             @RequestBody final WhoisWebDTO dto,
             @PathVariable final String source,
+            @QueryParam("password") final String[] passwords,
             @RequestHeader final HttpHeaders headers) throws URISyntaxException {
 
         LOGGER.debug("create domain objects {}", source);
@@ -55,6 +53,6 @@ public class WhoisDomainObjectController extends ApiController {
             domainObjects.add(domainObject);
         }
         headers.remove(com.google.common.net.HttpHeaders.HOST);
-        return whoisDomainObjectService.createDomainObjects(source, domainObjects, headers);
+        return whoisDomainObjectService.createDomainObjects(source, passwords, domainObjects, headers);
     }
 }
