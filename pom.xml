@@ -496,7 +496,7 @@
                                     <goal>build</goal>
                                 </goals>
                                 <configuration>
-                                    <skipTests>false</skipTests>
+                                    <skipTests>true</skipTests>
                                     <buildTool>grunt</buildTool>
                                     <buildArgs>build --environment=${spring.profiles.active} --buildtag=${buildtag}</buildArgs>
                                 </configuration>
