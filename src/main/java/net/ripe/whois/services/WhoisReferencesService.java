@@ -39,16 +39,16 @@ public class WhoisReferencesService extends RestClient {
 
         URI uri = new UriTemplate("{url}/{source}/{object-type}/{name}?limit={limit}").expand(variables);
 
-        LOGGER.debug("Performing fetch {}", uri.toString() );
+        LOGGER.debug("Performing fetch {}", uri.toString());
 
         return restTemplate.exchange(uri,
-            HttpMethod.GET,
-            new HttpEntity<String>(headers),
-            String.class);
+                HttpMethod.GET,
+                new HttpEntity<String>(headers),
+                String.class);
     }
 
 
-    public ResponseEntity<String> createReferencedObjects( final String source, final String body, final HttpHeaders headers) {
+    public ResponseEntity<String> createReferencedObjects(final String source, final String body, final HttpHeaders headers) {
         final String url = "{url}/{source}";
 
         final HashMap<String, Object> variables = Maps.newHashMap();
@@ -57,12 +57,12 @@ public class WhoisReferencesService extends RestClient {
 
         URI uri = new UriTemplate(url).expand(variables);
 
-        LOGGER.debug("Performing create {}", uri.toString() );
+        LOGGER.debug("Performing create {}", uri.toString());
 
         return restTemplate.exchange(uri,
-            HttpMethod.POST,
-            new HttpEntity<>(body, headers),
-            String.class);
+                HttpMethod.POST,
+                new HttpEntity<>(body, headers),
+                String.class);
     }
 
     public ResponseEntity<String> deleteObjectAndReferences(final String source, final String objectType, final String name, final String reason, final String password, final HttpHeaders headers) {
@@ -84,9 +84,9 @@ public class WhoisReferencesService extends RestClient {
         LOGGER.debug("Performing delete {}", uri.toString());
 
         return restTemplate.exchange(uri,
-            HttpMethod.DELETE,
-            new HttpEntity<String>(headers),
-            String.class);
+                HttpMethod.DELETE,
+                new HttpEntity<String>(headers),
+                String.class);
     }
 }
 
