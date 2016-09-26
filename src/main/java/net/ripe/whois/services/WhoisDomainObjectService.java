@@ -25,7 +25,8 @@ import java.util.List;
 public class WhoisDomainObjectService {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectService.class);
 
-    private String domainObjectApiUrl;
+    private final String domainObjectApiUrl;
+    private final String whoisBulkDomainCreatePath;
 
     private static final Client client;
 
@@ -41,8 +42,10 @@ public class WhoisDomainObjectService {
     }
 
     @Autowired
-    public WhoisDomainObjectService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
+    public WhoisDomainObjectService(@Value("${rest.api.ripeUrl}") final String ripeUrl,
+                                    @Value("${whois.bulk.domain.create.path}") final String whoisBulkDomainCreatePath) {
         this.domainObjectApiUrl = ripeUrl;
+        this.whoisBulkDomainCreatePath = whoisBulkDomainCreatePath;
     }
 
     public ResponseEntity<WhoisResources> createDomainObjects(final String source, String[] passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
@@ -54,7 +57,7 @@ public class WhoisDomainObjectService {
         if (passwords != null && passwords.length > 0) {
             passwdQueryString = "?password=" + String.join("&password=", Arrays.asList(passwords));
         }
-        WebTarget target = client.target(domainObjectApiUrl).path("/whois/domain-objects/" + source + passwdQueryString);
+        WebTarget target = client.target(domainObjectApiUrl).path(whoisBulkDomainCreatePath + "/" + source + passwdQueryString);
         Invocation.Builder builder = target.request();
         builder.header(HttpHeaders.COOKIE, headers.get(HttpHeaders.COOKIE));
         builder.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE);
