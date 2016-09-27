@@ -225,3 +225,13 @@ ul.form-fields {
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
+tbody.reverse-zone-table {
+  display: block;
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
+.reverse-zone-table tr, td {
+  display: block;
+  width: 100%;
+}

@@ -1062,7 +1062,7 @@ angular.module('dbWebApp')
             'nserver': {
                 short: 'Specifies the nameserver of the domain. Include this attribute at least twice.',
                 description: 'Specifies the nameservers of the domain.',
-                syntax: 'Nameserver name in the format \"nameserver.example.net\" with or without trailing dot. The nameserver name may be optionally followed by IPv4 address in decimal dotted quad form (e.g. 192.0.2.1) or IPv6 address in lowercase canonical form (e.g. 2001:db8::8:800:200c:417a). The nameserver name may be followed by an IP address only when the name is inside of the domain being delegated.'
+                syntax: 'Nameserver name in the format "nameserver.example.net" with or without trailing dot. The nameserver name may be optionally followed by IPv4 address in decimal dotted quad form (e.g. 192.0.2.1) or IPv6 address in lowercase canonical form (e.g. 2001:db8::8:800:200c:417a). The nameserver name may be followed by an IP address only when the name is inside of the domain being delegated.'
             },
             'org': {
                 short: 'Reference to an organisation object representing the holder of the resource.',
@@ -1154,6 +1154,11 @@ angular.module('dbWebApp')
                 short: undefined,
                 description: 'Specifies the poem type.',
                 syntax: _shared.poeticForm.syntax
+            },
+            'prefix': {
+              short: 'Specifies an IPv4 or IPv6 prefix for which Reverse DNS is requested.',
+                description: 'Specifies an IPv4 or IPv6 prefix for which Reverse DNS is requested. One or multiple reverse domains will be created automatically.',
+                syntax: 'Specify a prefix in Classless Inter-Domain Routing (CIDR) notation, e.g. 192.168.2.0/24 or 2001:db8::/32'
             },
             'ref-nfy': {
                 short: 'Notification email address when a reference to the organisation object is added or removed.',
