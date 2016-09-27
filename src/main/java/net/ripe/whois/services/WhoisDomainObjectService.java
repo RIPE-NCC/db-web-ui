@@ -16,9 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.ProcessingException;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -27,7 +29,7 @@ public class WhoisDomainObjectService {
 
     private final String domainObjectApiUrl;
     private final String whoisBulkDomainCreatePath;
-
+    private final String contextPath;
     private static final Client client;
 
     static {
@@ -42,10 +44,14 @@ public class WhoisDomainObjectService {
     }
 
     @Autowired
-    public WhoisDomainObjectService(@Value("${rest.api.ripeUrl}") final String ripeUrl,
-                                    @Value("${whois.bulk.domain.create.path}") final String whoisBulkDomainCreatePath) {
+    public WhoisDomainObjectService(
+            @Value("${rest.api.ripeUrl}") final String ripeUrl,
+            @Value("${whois.bulk.domain.create.path}") final String whoisBulkDomainCreatePath,
+            @Value("${server.contextPath}") final String contextPath) {
+
         this.domainObjectApiUrl = ripeUrl;
         this.whoisBulkDomainCreatePath = whoisBulkDomainCreatePath;
+        this.contextPath = contextPath;
     }
 
     public ResponseEntity<WhoisResources> createDomainObjects(final String source, String[] passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
@@ -53,17 +59,25 @@ public class WhoisDomainObjectService {
         WhoisResources whoisResources = new WhoisResources();
         whoisResources.setWhoisObjects(domainObjects);
 
-        String passwdQueryString = "";
+        WebTarget target = client.target(domainObjectApiUrl).path(whoisBulkDomainCreatePath + "/" + source);
         if (passwords != null && passwords.length > 0) {
-            passwdQueryString = "?password=" + String.join("&password=", Arrays.asList(passwords));
+            target.queryParam("password", passwords);
         }
-        WebTarget target = client.target(domainObjectApiUrl).path(whoisBulkDomainCreatePath + "/" + source + passwdQueryString);
         Invocation.Builder builder = target.request();
         builder.header(HttpHeaders.COOKIE, headers.get(HttpHeaders.COOKIE));
         builder.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE);
-        ClientResponse response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), ClientResponse.class);
-        LOGGER.info("Whois responded with status: " + response.getStatus());
-        return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.CREATED);
+        ClientResponse response = null;
+        try {
+            response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), ClientResponse.class);
+            return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.CREATED);
+        } catch (BadRequestException e) {
+            return new ResponseEntity<>((WhoisResources) null, HttpStatus.BAD_REQUEST);
+        } catch (WebApplicationException | ProcessingException e) {
+            if (response != null) {
+                return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.valueOf(response.getStatus()));
+            }
+        }
+        return null;
     }
 
 }

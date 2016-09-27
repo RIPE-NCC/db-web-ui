@@ -22,17 +22,13 @@
         </ul>
     </section>
 
-    <section class="supporting-text" ng-if="canSubmit">
+    <section class="supporting-text" ng-if="!containsInvalidValues()">
         <p>By submitting this form you explicitly express your agreement with the
             <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
         </p>
     </section>
 
     <span class="pull-right">
-        <button class="green-button ga-modifyobj-modify"
-                type="button"
-                ng-disabled="restCallInProgress"
-                ng-if="containsInvalidValues()">Continue</button>
         <button class="blue-button ga-modifyobj-modify"
                 type="button"
                 ng-click="submitButtonClicked()"
