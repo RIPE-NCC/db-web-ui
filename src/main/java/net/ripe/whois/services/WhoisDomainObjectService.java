@@ -16,9 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.BadRequestException;
-import javax.ws.rs.ProcessingException;
-import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -28,8 +26,6 @@ public class WhoisDomainObjectService {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectService.class);
 
     private final String domainObjectApiUrl;
-    private final String whoisBulkDomainCreatePath;
-    private final String contextPath;
     private static final Client client;
 
     static {
@@ -44,14 +40,8 @@ public class WhoisDomainObjectService {
     }
 
     @Autowired
-    public WhoisDomainObjectService(
-            @Value("${rest.api.ripeUrl}") final String ripeUrl,
-            @Value("${whois.bulk.domain.create.path}") final String whoisBulkDomainCreatePath,
-            @Value("${server.contextPath}") final String contextPath) {
-
+    public WhoisDomainObjectService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
         this.domainObjectApiUrl = ripeUrl;
-        this.whoisBulkDomainCreatePath = whoisBulkDomainCreatePath;
-        this.contextPath = contextPath;
     }
 
     public ResponseEntity<WhoisResources> createDomainObjects(final String source, String[] passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
@@ -59,23 +49,20 @@ public class WhoisDomainObjectService {
         WhoisResources whoisResources = new WhoisResources();
         whoisResources.setWhoisObjects(domainObjects);
 
-        WebTarget target = client.target(domainObjectApiUrl).path(whoisBulkDomainCreatePath + "/" + source);
+        WebTarget target = client.target(domainObjectApiUrl).path("/domain-objects/" + source);
         if (passwords != null && passwords.length > 0) {
             target.queryParam("password", passwords);
         }
         Invocation.Builder builder = target.request();
         builder.header(HttpHeaders.COOKIE, headers.get(HttpHeaders.COOKIE));
         builder.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE);
-        ClientResponse response = null;
         try {
-            response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), ClientResponse.class);
+            ClientResponse response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), ClientResponse.class);
             return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.CREATED);
-        } catch (BadRequestException e) {
+        } catch (ClientErrorException e) {
             return new ResponseEntity<>(e.getResponse().readEntity(WhoisResources.class), HttpStatus.valueOf(e.getResponse().getStatus()));
-        } catch (WebApplicationException | ProcessingException e) {
-            if (response != null) {
-                return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.valueOf(response.getStatus()));
-            }
+        } catch (Exception e) {
+            LOGGER.info("Exception not handled by createDomainObjects", e);
         }
         return null;
     }

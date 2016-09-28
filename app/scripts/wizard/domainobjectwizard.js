@@ -127,6 +127,7 @@
                 $scope.restCallInProgress = false;
                 $scope.errors = [];
                 $scope.successMessages = [{text:'domains created'}];
+                console.log('onSubmitSuccess resp', resp);
                 WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, resp.getPrimaryKey(), $scope.operation);
             }
 
