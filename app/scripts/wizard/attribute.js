@@ -18,6 +18,7 @@
             /*
              * Initial scope vars
              */
+            $scope.isHelpShown = false;
             $scope.isMntHelpShown = false;
             if ($scope.attribute.name === 'source') {
                 $scope.attribute.value = $scope.source;
@@ -61,8 +62,8 @@
                 }
             };
 
-            $scope.hasHelp = function (attribute) {
-                return attribute.name !== 'reverse-zone';
+            $scope.toggleHelp = function() {
+                $scope.isHelpShown = !$scope.isHelpShown;
             };
 
             $scope.getAttributeShortDescription = function (name) {
