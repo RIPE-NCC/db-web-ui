@@ -11,7 +11,7 @@
         ng-model="attribute.value"
         ng-if="!attribute.$$meta.$$isEnum"
         ng-required="{{attribute.$$meta.$$mandatory}}"
-        ng-disabled="attribute.$$meta.$$disable"
+        ng-disabled="attribute.$$meta.$$disable || restCallInProgress"
         ng-change="valueChanged(objectType, attributes, attribute)"
         typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
         typeahead-min-length="2"
