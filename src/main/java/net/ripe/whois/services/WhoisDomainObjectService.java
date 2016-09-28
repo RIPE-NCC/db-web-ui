@@ -71,7 +71,7 @@ public class WhoisDomainObjectService {
             response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), ClientResponse.class);
             return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.CREATED);
         } catch (BadRequestException e) {
-            return new ResponseEntity<>((WhoisResources) null, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(e.getResponse().readEntity(WhoisResources.class), HttpStatus.valueOf(e.getResponse().getStatus()));
         } catch (WebApplicationException | ProcessingException e) {
             if (response != null) {
                 return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.valueOf(response.getStatus()));
