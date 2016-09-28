@@ -4,9 +4,115 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams', 'jsUtilService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
-        function ($http, $scope, $stateParams, jsUtils, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
+    ).controller('DomainObjectController', ['$http', '$rootScope', '$scope', '$stateParams', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
+        function ($http, $rootScope, $scope, $stateParams, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
 
+            //
+            var fakeresp = {
+                "link": {"type": "locator", "href": "http://hereford.prepdev.ripe.net:1080/domain-objects/RIPE"},
+                "errorMessages": [{
+                    "severity": "Error",
+                    "text": "No name servers found at child.\n\nNo name servers could be found at the child. This usually means that the child is not configured to answer queries about the zone."
+                }, {
+                    "severity": "Error",
+                    "text": "Fatal error in delegation for zone 32.33.33.in-addr.arpa.\n\nNo name servers found at child or at parent. No further testing can be performed."
+                }, {
+                    "severity": "Error",
+                    "text": "No name servers found at child.\n\nNo name servers could be found at the child. This usually means that the child is not configured to answer queries about the zone."
+                }, {
+                    "severity": "Error",
+                    "text": "Fatal error in delegation for zone 33.33.33.in-addr.arpa.\n\nNo name servers found at child or at parent. No further testing can be performed."
+                }, {
+                    "severity": "Error",
+                    "text": "No name servers found at child.\n\nNo name servers could be found at the child. This usually means that the child is not configured to answer queries about the zone."
+                }, {
+                    "severity": "Error",
+                    "text": "Fatal error in delegation for zone 34.33.33.in-addr.arpa.\n\nNo name servers found at child or at parent. No further testing can be performed."
+                }, {
+                    "severity": "Error",
+                    "text": "No name servers found at child.\n\nNo name servers could be found at the child. This usually means that the child is not configured to answer queries about the zone."
+                }, {"severity": "Error", "text": "Fatal error in delegation for zone 35.33.33.in-addr.arpa.\n\nNo name servers found at child or at parent. No further testing can be performed."}],
+                "termsAndConditions": {"type": "locator", "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"},
+                "whoisObjects": [{
+                    "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/domain/32.33.33.in-addr.arpa"},
+                    "source": {"id": "ripe"},
+                    "primaryKey": [{"value": "32.33.33.in-addr.arpa", "name": "domain"}],
+                    "attributes": [{"value": "32.33.33.in-addr.arpa", "name": "domain"}, {"value": "Reverse delegation for 33.33.33.0/22", "name": "descr"}, {
+                        "value": "ns1.xs4all.nl",
+                        "name": "nserver"
+                    }, {"value": "ns2.xs4all.nl", "name": "nserver"}, {
+                        "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/person/aa1-ripe"},
+                        "value": "aa1-ripe",
+                        "referencedType": "person",
+                        "name": "admin-c"
+                    }, {
+                        "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/person/aa1-ripe"},
+                        "value": "aa1-ripe",
+                        "referencedType": "person",
+                        "name": "tech-c"
+                    }, {
+                        "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/person/aa1-ripe"},
+                        "value": "aa1-ripe",
+                        "referencedType": "person",
+                        "name": "zone-c"
+                    }, {
+                        "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/APPELBAUM-MNT"},
+                        "value": "APPELBAUM-MNT",
+                        "referencedType": "mntner",
+                        "name": "mnt-by"
+                    }, {
+                        "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/etchells-mnt"},
+                        "value": "etchells-mnt",
+                        "referencedType": "mntner",
+                        "name": "mnt-by"
+                    }, {"link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/xxx"}, "value": "xxx", "referencedType": "mntner", "name": "mnt-by"}, {
+                        "value": "RIPE",
+                        "name": "source"
+                    }],
+                    "type": "domain"
+                }],
+                "objects": {
+                    "whoisObjects": [{
+                        "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/domain/32.33.33.in-addr.arpa"},
+                        "source": {"id": "ripe"},
+                        "primaryKey": [{"value": "32.33.33.in-addr.arpa", "name": "domain"}],
+                        "attributes": [{"value": "32.33.33.in-addr.arpa", "name": "domain"}, {"value": "Reverse delegation for 33.33.33.0/22", "name": "descr"}, {
+                            "value": "ns1.xs4all.nl",
+                            "name": "nserver"
+                        }, {"value": "ns2.xs4all.nl", "name": "nserver"}, {
+                            "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/person/aa1-ripe"},
+                            "value": "aa1-ripe",
+                            "referencedType": "person",
+                            "name": "admin-c"
+                        }, {
+                            "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/person/aa1-ripe"},
+                            "value": "aa1-ripe",
+                            "referencedType": "person",
+                            "name": "tech-c"
+                        }, {
+                            "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/person/aa1-ripe"},
+                            "value": "aa1-ripe",
+                            "referencedType": "person",
+                            "name": "zone-c"
+                        }, {
+                            "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/APPELBAUM-MNT"},
+                            "value": "APPELBAUM-MNT",
+                            "referencedType": "mntner",
+                            "name": "mnt-by"
+                        }, {
+                            "link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/etchells-mnt"},
+                            "value": "etchells-mnt",
+                            "referencedType": "mntner",
+                            "name": "mnt-by"
+                        }, {"link": {"type": "locator", "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/xxx"}, "value": "xxx", "referencedType": "mntner", "name": "mnt-by"}, {
+                            "value": "RIPE",
+                            "name": "source"
+                        }],
+                        "type": "domain"
+                    }]
+                }
+            };
+            //$scope.errors = fakeresp.errorMessages;
             /*
              * Initial scope vars
              */
@@ -130,12 +236,33 @@
 
             function onSubmitSuccess(resp) {
                 $scope.restCallInProgress = false;
+                $scope.errors = [];
+                $scope.successMessages = [{text:'domains created'}];
                 WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, resp.getPrimaryKey(), $scope.operation);
             }
 
-            function onSubmitError() {
+            function onSubmitError(response) {
                 $scope.restCallInProgress = false;
+                $scope.errors = _.filter(response.data.errorMessages,
+                    function (errorMessage) {
+                        errorMessage.plainText = readableError(errorMessage);
+                        return errorMessage.severity === 'Error';
+                    });
+                console.log('$scope.errors', $scope.errors);
             }
+
+            var readableError = function (errorMessage) {
+                var idx = 0;
+                return errorMessage.text.replace(/%s/g, function (match) {
+                    if (errorMessage.args.length - 1 >= idx) {
+                        var arg = errorMessage.args[idx].value;
+                        idx++;
+                        return arg;
+                    } else {
+                        return match;
+                    }
+                });
+            };
 
             function onSuccessfulAuthentication() {
                 console.log('_onSuccessfulAuthentication');
