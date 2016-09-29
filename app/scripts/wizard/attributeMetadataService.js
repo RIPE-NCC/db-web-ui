@@ -274,7 +274,7 @@
                 source: {minOccurs: 1, maxOccurs: 1}
             },
             prefix: {
-                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid},
+                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid, hidden: {invalid:['mnt-by']}},
                 descr: {},
                 nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
@@ -288,7 +288,7 @@
                 'mnt-by': {minOccurs: 1, refs: ['mntner']},
                 created: {maxOccurs: 1},
                 'last-modified': {minOccurs: 0, maxOccurs: 1},
-                source: {minOccurs: 1, maxOccurs: 1}
+                source: {minOccurs: 1, maxOccurs: 1, hidden: {invalid:['mnt-by']}}
             }
         };
 

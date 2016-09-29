@@ -11,7 +11,7 @@
             templateUrl: 'scripts/wizard/maintainers.html',
             controller: 'MaintainerController'
         };
-    }]).controller('MaintainerController', ['$scope', 'jsUtilService', 'MntnerService', 'RestService', 'WebUpdatesCommons', function ($scope, jsUtils, MntnerService, RestService, WebUpdatesCommons) {
+    }]).controller('MaintainerController', ['$scope', 'jsUtilService', 'AttributeMetadataService', 'MntnerService', 'RestService', 'WebUpdatesCommons', function ($scope, jsUtils, AttributeMetadataService, MntnerService, RestService, WebUpdatesCommons) {
 
         $scope.mntnerAutocomplete = mntnerAutocomplete;
 
@@ -24,6 +24,7 @@
             if (MntnerService.needsPasswordAuthentication($scope.mntners.sso, $scope.mntners.objectOriginal, $scope.mntners.object)) {
                 performAuthentication();
             }
+            AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
         };
 
         $scope.onMntnerRemoved = function (item) {
@@ -39,6 +40,7 @@
             } else {
                 objectMntBys[0].value = '';
             }
+            AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
         };
 
         RestService.fetchMntnersForSSOAccount().then(handleSsoResponse, handleSsoResponseError);
@@ -143,6 +145,7 @@
                 mergeMaintainers($scope.attributes, mntnerAttrs);
 
                 //var myMntners = _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
+                AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
             }
         }
 
