@@ -15,9 +15,9 @@
             $scope.switchToWebMode = switchToWebMode;
             $scope.cancel = cancel;
 
-            initialisePage();
+            _initialisePage();
 
-            function initialisePage() {
+            function _initialisePage() {
 
                 $scope.restCallInProgress = false;
 
@@ -47,11 +47,11 @@
                 }
 
                 if (_.isUndefined($scope.object.rpsl)) {
-                    prepopulateRpsl();
+                    _prepopulateRpsl();
                 }
             }
 
-            function prepopulateRpsl() {
+            function _prepopulateRpsl() {
                 var attributesOnObjectType = WhoisResources.getAllAttributesOnObjectType($scope.object.type);
                 if (_.isEmpty(attributesOnObjectType)) {
                     $log.error('Object type ' + $scope.object.type + ' was not found');
@@ -59,15 +59,15 @@
                     return;
                 }
 
-                enrichAttributes(
+                _enrichAttributes(
                     WhoisResources.wrapAndEnrichAttributes($scope.object.type, attributesOnObjectType)
                 );
             }
 
-            function enrichAttributes(attributes) {
+            function _enrichAttributes(attributes) {
                 TextCommons.enrichWithDefaults($scope.object.source, $scope.object.type, attributes);
 
-                enrichAttributesWithSsoMntners(attributes).then(
+                _enrichAttributesWithSsoMntners(attributes).then(
                     function (attributes) {
                         TextCommons.capitaliseMandatory(attributes);
                         var obj = {
@@ -82,7 +82,7 @@
                 return attributes;
             }
 
-            function enrichAttributesWithSsoMntners(attributes) {
+            function _enrichAttributesWithSsoMntners(attributes) {
                 var deferredObject = $q.defer();
 
                 $scope.restCallInProgress = true;
@@ -92,7 +92,7 @@
 
                         $scope.mntners.sso = ssoMntners;
 
-                        var enrichedAttrs = addSsoMntnersAsMntBy(attributes, ssoMntners);
+                        var enrichedAttrs = _addSsoMntnersAsMntBy(attributes, ssoMntners);
                         deferredObject.resolve(enrichedAttrs);
 
                     },
@@ -109,7 +109,7 @@
                 return deferredObject.promise;
             }
 
-            function addSsoMntnersAsMntBy(attributes, mntners) {
+            function _addSsoMntnersAsMntBy(attributes, mntners) {
                 // keep existing
                 if (mntners.length === 0) {
                     return attributes;

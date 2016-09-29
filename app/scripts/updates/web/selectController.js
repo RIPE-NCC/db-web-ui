@@ -9,7 +9,7 @@
             /*
              * UI initialisation
              */
-            $scope.objectTypes = filterObjectTypes(WhoisResources.getObjectTypes());
+            $scope.objectTypes = _filterObjectTypes(WhoisResources.getObjectTypes());
 
             $scope.selected = {
                 source: Properties.SOURCE,
@@ -23,6 +23,12 @@
                     $scope.loggedIn = true;
                 }
             );
+
+            function _filterObjectTypes(unfiltered) {
+                return _.filter(unfiltered, function (item) {
+                    return item !== 'as-block' && item !== 'poem' && item !== 'poetic-form';
+                });
+            }
 
             /*
              * Methods called from the html-teplate

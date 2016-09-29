@@ -185,12 +185,12 @@
                     return false;
                 }
 
-                if (oneOfOriginalMntnersIsMine(mntners)) {
+                if (_oneOfOriginalMntnersIsMine(mntners)) {
                     $log.debug('needsPasswordAuthentication: no: One of selected mntners is mine');
                     return false;
                 }
 
-                if (oneOfOriginalMntnersHasCredential(mntners)) {
+                if (_oneOfOriginalMntnersHasCredential(mntners)) {
                     $log.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
                     return false;
                 }
@@ -273,13 +273,13 @@
                 return mntners[0].key.toUpperCase() === nccRpslMntner;
             };
 
-            function oneOfOriginalMntnersIsMine(originalObjectMntners) {
+            function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
                 return _.any(originalObjectMntners, function (mntner) {
                     return mntner.mine === true;
                 });
             }
 
-            function oneOfOriginalMntnersHasCredential(originalObjectMntners) {
+            function _oneOfOriginalMntnersHasCredential(originalObjectMntners) {
                 if (CredentialsService.hasCredentials()) {
                     var trustedMtnerName = CredentialsService.getCredentials().mntner;
                     return _.any(originalObjectMntners, function (mntner) {

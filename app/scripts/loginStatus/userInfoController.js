@@ -6,7 +6,8 @@
 
         function ($scope, $log, UserInfoService, Properties) {
 
-            function initialize() {
+            function _initialize() {
+                $log.debug('Using login-url:' + Properties.LOGIN_URL);
                 UserInfoService.getUserInfo().then(
                     function (result) {
                         RIPE.username = result.displayName;
@@ -25,7 +26,7 @@
                     }
                 );
             }
-            initialize();
+            _initialize();
         }
     ]);
 })();
