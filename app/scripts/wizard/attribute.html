@@ -5,7 +5,8 @@
 <div class="text-info" ng-if="attribute.$$info">
     <span ng-bind-html="attribute.$$info"></span>
 </div>
-<div class="text-success" ng-if="attribute.$$success">{{ attribute.$$success }}</div><input
+<div class="text-success" ng-if="attribute.$$success">{{ attribute.$$success }}</div>
+<input
         type="text"
         name="{{attribute.name + '$' + idx}}"
         class="form-control"
