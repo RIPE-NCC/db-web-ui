@@ -175,33 +175,49 @@
 
         var timeout;
 
+        function setNsAttributeMessage(attribute) {
+            if (attribute.$$invalid) {
+                attribute.$$info = '';
+                attribute.$$error = 'Name server check failed';
+            } else {
+                attribute.$$info = 'Server looks OK';
+                attribute.$$error = '';
+            }
+        }
+
         function nserverIsInvalid(objectType, attributes, attribute) {
+            var keepTrying = 3;
             var sameValList = _.filter(attributes, function (attr) {
                 return attribute.name === attr.name && attribute.value === attr.value;
             });
             if (sameValList.length > 1) {
-                // should have found itself once
+                // should have found itself once, otherwise it's a dupe
+                attribute.$$info = '';
+                attribute.$$error = 'Duplicate value';
                 return true;
             }
             if (cachedResponses[attribute.value]) {
                 attribute.$$invalid = cachedResponses[attribute.value] !== 'OK';
+                setNsAttributeMessage(attribute);
                 return attribute.$$invalid;
             }
             var doCall = function () {
+                attribute.$$info = 'Checking name server...';
+                attribute.$$error = '';
+
                 PrefixService.checkNameserverAsync(attribute.value).then(function () {
                     // put response in cache
                     cachedResponses[attribute.value] = 'OK';
                     $rootScope.$broadcast('attribute-state-changed', attribute);
                 }, function (err) {
                     if (err.status === 404) {
-                        // ignore other errors, service is a bit flakey
                         cachedResponses[attribute.value] = 'FAILED';
-                        $rootScope.$emit('attribute-state-changed', attribute);
-                    } else {
+                        $rootScope.$broadcast('attribute-state-changed', attribute);
+                    } else if (keepTrying--) {
                         if (timeout) {
                             clearTimeout(timeout);
                         }
-                        timeout = setTimeout(doCall, 600);
+                        timeout = setTimeout(doCall, 1000);
                     }
                 });
             };
