@@ -196,8 +196,13 @@
                     if (err.status === 404) {
                         // ignore other errors, service is a bit flakey
                         cachedResponses[attribute.value] = 'FAILED';
+                        $rootScope.$emit('attribute-state-changed', attribute);
+                    } else {
+                        if (timeout) {
+                            clearTimeout(timeout);
+                        }
+                        timeout = setTimeout(doCall, 600);
                     }
-                    $rootScope.$emit('attribute-state-changed', attribute);
                 });
             };
             if (timeout) {

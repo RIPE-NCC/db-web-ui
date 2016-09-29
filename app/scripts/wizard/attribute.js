@@ -47,6 +47,7 @@
                     });
                     if (foundIdx > -1) {
                         attributes.splice(foundIdx + 1, 0, {name: attribute.name});
+                        AttributeMetadataService.enrich(objectType, attributes);
                     }
                 }
             };
@@ -58,6 +59,7 @@
                     });
                     if (foundIdx > -1) {
                         attributes.splice(foundIdx, 1);
+                        AttributeMetadataService.enrich(objectType, attributes);
                     }
                 }
             };
