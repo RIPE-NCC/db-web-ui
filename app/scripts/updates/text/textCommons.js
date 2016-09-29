@@ -82,10 +82,10 @@
                 } else {
                     if (_.isEmpty(passwords) && _.isUndefined(override)) {
                         // show password popup if needed
-                        var objectMntners = getObjectMntners(attributes);
+                        var objectMntners = _getObjectMntners(attributes);
                         if (MntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
                             needsAuth = true;
-                            performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, ObjectUtilService.isLirObject(attributes)).then(
+                            _performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, ObjectUtilService.isLirObject(attributes)).then(
                                 function () {
                                     $log.debug('Authentication succeeded');
                                     deferredObject.resolve(true);
@@ -104,7 +104,7 @@
                 return deferredObject.promise;
             };
 
-            function performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners, isLirObject) {
+            function _performAuthentication(method, objectSource, objectType, objectName, ssoMntners, objectMntners, isLirObject) {
 
                 var object = {
                     source: objectSource,
@@ -142,7 +142,7 @@
             }
 
 
-            function getObjectMntners(attributes) {
+            function _getObjectMntners(attributes) {
                 return _.map(attributes.getAllAttributesWithValueOnName('mnt-by'), function (objMntner) {
                     // Notes:
                     // - RPSL attribute values can contain leading and trailing spaces, so the must be trimmed
