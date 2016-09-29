@@ -1,3 +1,4 @@
+/*global _, angular*/
 'use strict';
 
 angular.module('dbWebApp')
@@ -52,6 +53,9 @@ angular.module('dbWebApp')
                 // NOTE..........
                 // Added code to stop parent lookups from forcing nav to 404.html if they aren't found.
                 if ((isServerError(response.status) || isNotFoundError(response.status)) && _.startsWith(response.config.url, 'api/whois/autocomplete')) {
+                    toBeSwallowed = true;
+                }
+                if (isServerError(response.status) && _.startsWith(response.config.url, 'api/dns/status')) {
                     toBeSwallowed = true;
                 }
             }

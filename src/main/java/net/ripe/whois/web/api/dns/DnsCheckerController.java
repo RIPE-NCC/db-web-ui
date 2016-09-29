@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.ws.rs.ClientErrorException;
+
 @RestController
 @RequestMapping("/api/dns")
 public class DnsCheckerController extends RestClient {
@@ -32,17 +34,23 @@ public class DnsCheckerController extends RestClient {
         final String request = String.format("{\"method\": \"get_ns_ips\", \"params\": \"%s\"}", nameserver);
         LOGGER.debug("Checking status for " + nameserver);
 
-        final ResponseEntity<String> response = restTemplate.exchange(
-            dnsCheckerUrl,
-            HttpMethod.POST,
-            new HttpEntity<>(request),
-            String.class);
+        try {
+            final ResponseEntity<String> response = restTemplate.exchange(
+                    dnsCheckerUrl,
+                    HttpMethod.POST,
+                    new HttpEntity<>(request),
+                    String.class);
 
-        if(response.getBody().contains("0.0.0.0")) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            if (response.getBody().contains("0.0.0.0")) {
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (ClientErrorException e) {
+            return new ResponseEntity<>(HttpStatus.valueOf(e.getResponse().getStatus()));
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-        return new ResponseEntity(HttpStatus.OK);
     }
 
 }
