@@ -3,6 +3,7 @@
 angular.module('dbWebApp', [
         'ui.router',
         'angular-loading-bar',
+        'ngAnimate',
         'ngResource',
         'ngSanitize',
         'angulartics',

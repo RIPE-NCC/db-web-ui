@@ -29,23 +29,23 @@
             {{ message.text }}
         </div>
         <ul class="form-fields appeared-fields">
-            <li ng-repeat="attribute in attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'}"
-                ng-if="!attribute.$$hidden">
+            <li class="faded"
+                ng-repeat="attribute in attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'}"
+                ng-show="!attribute.$$hidden">
                 <attribute-renderer source="source" object-type="objectType" attributes="attributes" attribute="attribute" idx="$index"></attribute-renderer>
             </li>
         </ul>
     </section>
 
-    <section class="supporting-text" ng-if="!containsInvalidValues()">
+    <section class="faded supporting-text" ng-show="!containsInvalidValues()">
         <p>By submitting this form you explicitly express your agreement with the
             <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
         </p>
+        <p class="pull-right">
+            <button class="blue-button ga-modifyobj-modify"
+                    type="button"
+                    ng-click="submitButtonClicked()">Submit</button>
+        </p>
     </section>
 
-    <span class="pull-right">
-        <button class="blue-button ga-modifyobj-modify"
-                type="button"
-                ng-click="submitButtonClicked()"
-                ng-if="!containsInvalidValues()">Submit</button>
-    </span>
 </form>

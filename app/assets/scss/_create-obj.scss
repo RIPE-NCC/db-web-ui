@@ -235,3 +235,19 @@ tbody.reverse-zone-table {
   display: block;
   width: 100%;
 }
+
+.faded {
+	transition: all linear .8s;
+	opacity: 1;
+}
+
+.faded.ng-hide {
+	opacity: 0;
+}
+.notransition * {
+	-webkit-transition: none !important;
+	-moz-transition: none !important;
+	-o-transition: none !important;
+	-ms-transition: none !important;
+	transition: none !important;
+}
