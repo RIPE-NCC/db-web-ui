@@ -63,6 +63,8 @@ module.exports = {
     inpNserver1: element(by.id('createForm')).element(by.name('nserver$1')),
     inpNserver2: element(by.id('createForm')).element(by.name('nserver$2')),
     inpAdminC4: element(by.id('createForm')).element(by.name('admin-c$4')),
+    inpTechC5: element(by.id('createForm')).element(by.name('tech-c$5')),
+    inpZoneC6: element(by.id('createForm')).element(by.name('zone-c$6')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
 
     inpAdminC: element(by.id('createForm')).element(by.name('admin-c')),

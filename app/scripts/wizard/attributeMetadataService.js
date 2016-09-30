@@ -10,11 +10,11 @@
         // * attributes are shown
         // * attribute values are valid -except-
         // * empty primary key values are invalid
-        // * attribute cardinality is 0..*
+        // * when attribute cardinality is 1..* and it's not on the form, or value is empty
 
-        // The flags used in the metadata therefore contradict the defaults, e.g. you have to
-        // set an attribute to 'hidden' if you don't want to show it. This means the metadata
-        // only has to provide overrides and can therefore be pretty small.
+        // The flags used in the metadata contradict the defaults, e.g. you have to set an
+        // attribute to 'hidden' if you don't want to show it. This means the metadata only
+        // has to provide overrides and can therefore be pretty small
 
         this.enrich = enrich;
         this.getAllMetadata = getAllMetadata;
@@ -274,7 +274,7 @@
                 source: {minOccurs: 1, maxOccurs: 1}
             },
             prefix: {
-                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid, hidden: {invalid:['mnt-by']}},
+                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid, hidden: {invalid: ['mnt-by']}},
                 descr: {},
                 nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
@@ -288,7 +288,7 @@
                 'mnt-by': {minOccurs: 1, refs: ['mntner']},
                 created: {maxOccurs: 1},
                 'last-modified': {minOccurs: 0, maxOccurs: 1},
-                source: {minOccurs: 1, maxOccurs: 1, hidden: {invalid:['mnt-by']}}
+                source: {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['mnt-by']}}
             }
         };
 

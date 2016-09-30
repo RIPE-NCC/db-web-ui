@@ -11,6 +11,10 @@
     "status": 200,
     "data": {}
   },
+  "api/dns/status?ignore404=true&ns=nsXXX.xs4all.nl": {
+    "status": 404,
+    "data": {}
+  },
   "api/user/info": {
     "status": 200,
     "data": {

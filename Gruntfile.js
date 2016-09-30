@@ -145,7 +145,7 @@ module.exports = function (grunt) {
                     'clean:server',
                     'copy:processtags',
                     'wiredep',
-                    'compass:dist',
+					'concurrent:dist',
                     'postcss',
                     'concat',
                     'copy:dist',
