@@ -23,7 +23,6 @@ import java.util.List;
 
 @Service
 public class WhoisDomainObjectService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectService.class);
 
     private final String domainObjectApiUrl;
     private static final Client client;
@@ -42,6 +41,7 @@ public class WhoisDomainObjectService {
     @Autowired
     public WhoisDomainObjectService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
         this.domainObjectApiUrl = ripeUrl;
+        LOGGER.debug("Set domainObjectApiUrl to " + this.domainObjectApiUrl);
     }
 
     public ResponseEntity<WhoisResources> createDomainObjects(final String source, String[] passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
@@ -53,18 +53,23 @@ public class WhoisDomainObjectService {
         if (passwords != null && passwords.length > 0) {
             target.queryParam("password", passwords);
         }
+        LOGGER.debug("createDomainObjects() url: " + target.getUri().toString());
         Invocation.Builder builder = target.request();
         builder.header(HttpHeaders.COOKIE, headers.get(HttpHeaders.COOKIE));
         builder.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE);
         try {
             ClientResponse response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), ClientResponse.class);
+            LOGGER.debug("createDomainObjects() successful post. Response: " + response.getStatus());
             return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.CREATED);
         } catch (ClientErrorException e) {
+            LOGGER.debug("createDomainObjects() caught ClientErrorException during post.");
             return new ResponseEntity<>(e.getResponse().readEntity(WhoisResources.class), HttpStatus.valueOf(e.getResponse().getStatus()));
         } catch (Exception e) {
-            LOGGER.info("Exception not handled by createDomainObjects", e);
+            LOGGER.info("createDomainObjects() Exception not handled", e);
         }
         return null;
     }
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectService.class);
 
 }
