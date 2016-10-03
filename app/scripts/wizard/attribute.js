@@ -162,11 +162,11 @@
             }
 
             function canBeAdded(objectType, attributes, attribute) {
-                if ($scope.attribute.name === 'reverse-zone') {
+                if (attribute.name === 'reverse-zone') {
                     return false;
                 }
                 // count the attributes which match 'attribute'
-                var cardinality = AttributeMetadataService.getCardinality($scope.objectType, attribute.name);
+                var cardinality = AttributeMetadataService.getCardinality(objectType, attribute.name);
 
                 if (cardinality.maxOccurs < 0) {
                     // undefined or -1 means no limit
@@ -180,7 +180,7 @@
             }
 
             function canBeRemoved(objectType, attributes, attribute) {
-                var cardinality = AttributeMetadataService.getCardinality($scope.objectType, attribute.name);
+                var cardinality = AttributeMetadataService.getCardinality(objectType, attribute.name);
                 // check if there's a limit
                 if (cardinality.minOccurs < 1) {
                     return true;
