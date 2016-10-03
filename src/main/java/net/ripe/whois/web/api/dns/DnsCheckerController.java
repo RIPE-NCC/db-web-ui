@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 import javax.ws.rs.ClientErrorException;
 
@@ -48,6 +49,8 @@ public class DnsCheckerController extends RestClient {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ClientErrorException e) {
             return new ResponseEntity<>(HttpStatus.valueOf(e.getResponse().getStatus()));
+        } catch (HttpClientErrorException e) {
+            return new ResponseEntity<>(e.getStatusCode());
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
