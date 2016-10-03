@@ -2,6 +2,8 @@ package net.ripe.whois.web.api.dns;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import net.ripe.whois.services.crowd.CrowdClient;
+import net.ripe.whois.services.crowd.CrowdClientException;
+import net.ripe.whois.services.crowd.UserSession;
 import org.junit.Rule;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -19,10 +21,15 @@ public class DnsCheckerControllerTest {
 
     private static final String DNS_CHECKER_URL = "http://localhost:8089";
 
-    private static final CrowdClient crowdClient = null;
+    private static final CrowdClient everyoneIsActiveCrowdClient = new CrowdClient(null, null, null) {
+        @Override
+        public UserSession getUserSession(String token) throws CrowdClientException {
+            UserSession us = new UserSession(null, null, true, null);
+            return us;
+        }
+    };
 
-
-    private final DnsCheckerController dnsCheckerController = new DnsCheckerController(DNS_CHECKER_URL, crowdClient);
+    private final DnsCheckerController dnsCheckerController = new DnsCheckerController(DNS_CHECKER_URL, everyoneIsActiveCrowdClient);
 
     @Test
     public void itShouldReturnOkWhenNsIsCorrect() {
@@ -55,7 +62,7 @@ public class DnsCheckerControllerTest {
     }
 
     private void stubRequest(final String requestBody, final String responseBody, final HttpStatus httpStatus) {
-        stubFor((post(urlEqualTo("/")).withRequestBody(equalToJson(requestBody)).withHeader("Cookie", equalTo("crowd.token_key: whatever"))
+        stubFor((post(urlEqualTo("/")).withRequestBody(equalToJson(requestBody))
             .willReturn(
                 aResponse()
                     .withStatus(httpStatus.value())
