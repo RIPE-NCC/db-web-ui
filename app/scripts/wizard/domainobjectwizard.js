@@ -19,6 +19,7 @@
             $scope.restCallInProgress = false;
             $scope.canSubmit = true;
             $scope.canContinue = true;
+            $scope.isValidatingDomains = false;
 
             var objectType = $scope.objectType = $stateParams.objectType === 'domain' ? 'prefix' : $stateParams.objectType;
             $scope.source = $stateParams.source;
@@ -46,7 +47,7 @@
             };
 
             $scope.$on('attribute-state-changed', function () {
-                AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
+                AttributeMetadataService.enrich(objectType, $scope.attributes);
             });
 
             /*
@@ -83,6 +84,7 @@
                 var passwords = getPasswordsForRestCall();
 
                 $scope.restCallInProgress = true;
+                $scope.isValidatingDomains = true;
 
                 var url = 'api/whois/domain-objects/' + $scope.source;
                 var data = {
@@ -127,6 +129,7 @@
                 $scope.restCallInProgress = false;
                 $scope.errors = [];
                 $scope.successMessages = [{text:'domains created'}];
+                $scope.isValidatingDomains = false;
                 console.log('onSubmitSuccess resp', resp);
                 WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, resp.getPrimaryKey(), $scope.operation);
             }
@@ -134,6 +137,7 @@
             function onSubmitError(response) {
                 $scope.restCallInProgress = false;
                 $scope.successMessages = [];
+                $scope.isValidatingDomains = false;
                 $scope.errors = _.filter(response.data.errorMessages,
                     function (errorMessage) {
                         errorMessage.plainText = readableError(errorMessage);
