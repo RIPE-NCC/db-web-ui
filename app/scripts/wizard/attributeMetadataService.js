@@ -64,7 +64,13 @@
             // checks a list of attrs to see if any are invalid. each attr has an 'invalid'
             // definition in the metadata, or, if not, it's valid by default.
             if (jsUtils.typeOf(attrMetadata) === 'function') {
-                return attrMetadata(objectType, attributes, attribute);
+                try {
+                    attribute.$$error = '';
+                    return attrMetadata(objectType, attributes, attribute);
+                } catch(e) {
+                    attribute.$$error = e;
+                    return false;
+                }
             }
             if (jsUtils.typeOf(attrMetadata) === 'regexp') {
                 if (jsUtils.typeOf(attribute.value) !== 'string') {
@@ -159,6 +165,7 @@
          * Metadata evaluation functions
          */
         function prefixIsInvalid(objectType, attributes, attribute) {
+            console.log('objectType, attributes, attribute', objectType, attributes, attribute);
             var revZonesAttr, invalid = !attribute.value || !PrefixService.isValidPrefix(attribute.value);
             if (!invalid) {
                 revZonesAttr = _.find(attributes, function (attr) {
