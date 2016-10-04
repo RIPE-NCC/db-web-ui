@@ -141,7 +141,6 @@
                         value: i.key
                     };
                 });
-                console.log('$scope.mntners.object', $scope.mntners.object);
                 mergeMaintainers($scope.attributes, mntnerAttrs);
 
                 //var myMntners = _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);

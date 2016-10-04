@@ -3,13 +3,26 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp').service('PrefixService', ['$http', function($http) {
+    angular.module('dbWebApp').service('PrefixService', ['$http', function ($http) {
 
-        this.isValidIp4Cidr = function(str) {
+        this.isValidIp4Cidr = function (str) {
+            // check the subnet mask is in range
+            var slashpos = str.indexOf('/');
+            if (slashpos < 0) {
+                return false;
+            }
+            var mask = parseInt(str.substr(slashpos + 1), 10);
+            if (mask < 17 || mask > 24) {
+                return false;
+            }
+
+            // check it looks like a valid ipv4 address
             var ip4 = new Address4(str);
             if (!ip4.isValid()) {
                 return false;
             }
+
+            // check that subnet mask covers all address bits
             var bits = ip4.getBitsBase2();
             var last1 = bits.lastIndexOf('1');
             if (last1 >= ip4.subnetMask) {
@@ -18,10 +31,30 @@
             return last1 < ip4.subnetMask;
         };
 
-        this.isValidIp6Cidr = function(str) {
-            var userManagedSubnets = ['/12', '/16', '/20', '/24', '/28', '/32', '/48', '/64'];
+        this.isValidIp6Cidr = function (str) {
+            // check the subnet mask is in range
+            var slashpos = str.indexOf('/');
+            if (slashpos < 0 || !str.substr(slashpos + 1)) {
+                return false;
+            }
+            var mask = parseInt(str.substr(slashpos + 1), 10);
+            if (mask >= 32) {
+                return false;
+            }
+
+            // check it looks like a valid ipv4 address
             var ip6 = new Address6(str);
-            return !ip6.error && userManagedSubnets.indexOf(ip6.subnet) === -1;
+            if (!ip6.isValid()) {
+                return false;
+            }
+
+            // check that subnet mask covers all address bits
+            var bits = ip6.getBitsBase2();
+            var last1 = bits.lastIndexOf('1');
+            if (last1 >= ip6.subnetMask) {
+                throw 'Address out of range for subnet mask';
+            }
+            return last1 < ip6.subnetMask;
         };
 
         /**
@@ -30,7 +63,7 @@
          * @param str
          * @returns {boolean}
          */
-        this.isValidPrefix = function(str) {
+        this.isValidPrefix = function (str) {
             // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
             // * Must support /17 to /24
             //   - if > 17 show: "Please provide a more specific prefix"
@@ -47,14 +80,18 @@
                 // empty or missing netmask
                 return false;
             }
-            var mask = parseInt(str.substr(slashpos + 1), 10);
-            if (mask < 17 || mask > 24) {
-                return false;
+            // here we have a string with a subnet mask, but dno if it's v4 or v6 yet, so check...
+            var ip4 = new Address4(str);
+            if (ip4.isValid()) {
+                return this.isValidIp4Cidr(str);
+            } else {
+                var ip6 = new Address6(str);
+                if (ip6.isValid()) {
+                    return this.isValidIp6Cidr(str);
+                }
             }
-            if (this.isValidIp4Cidr(str)) {
-                return true;
-            }
-            return this.isValidIp6Cidr(str);
+            // fall through. god know what this is...
+            return false;
         };
 
         /**
@@ -63,7 +100,7 @@
          * @param prefix
          * @returns {*} Array of strings which are the rDNS names for the prefix
          */
-        this.getReverseDnsZones = function(prefix) {
+        this.getReverseDnsZones = function (prefix) {
             var i, zoneName, zones = [];
 
             if (prefix && this.isValidPrefix(prefix)) {
@@ -76,7 +113,7 @@
 
                     for (i = startThirdOctet; i <= endThirdOctet; i++) {
                         zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
-                        zones.push({ name: 'reverse-zone', value: zoneName });
+                        zones.push({name: 'reverse-zone', value: zoneName});
                     }
                 } else {
                     var ipv6 = new Address6(prefix);
@@ -92,7 +129,7 @@
                         var endNibble = parseInt(endZone[0], 16);
                         for (i = startNibble; i <= endNibble; i++) {
                             zoneName = i.toString(16) + '.' + commonNibbles;
-                            zones.push({ name: 'reverse-zone', value: zoneName });
+                            zones.push({name: 'reverse-zone', value: zoneName});
                         }
                     }
                 }
@@ -100,7 +137,7 @@
             return zones;
         };
 
-        this.checkNameserverAsync = function(ns) {
+        this.checkNameserverAsync = function (ns) {
             return $http({
                 method: 'GET',
                 url: 'api/dns/status?ignore404=true&ns=' + ns
