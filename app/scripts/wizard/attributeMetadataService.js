@@ -69,7 +69,7 @@
                     return attrMetadata(objectType, attributes, attribute);
                 } catch(e) {
                     attribute.$$error = e;
-                    return false;
+                    return true;
                 }
             }
             if (jsUtils.typeOf(attrMetadata) === 'regexp') {
@@ -165,7 +165,6 @@
          * Metadata evaluation functions
          */
         function prefixIsInvalid(objectType, attributes, attribute) {
-            console.log('objectType, attributes, attribute', objectType, attributes, attribute);
             var revZonesAttr, invalid = !attribute.value || !PrefixService.isValidPrefix(attribute.value);
             if (!invalid) {
                 revZonesAttr = _.find(attributes, function (attr) {
