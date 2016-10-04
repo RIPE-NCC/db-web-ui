@@ -6,9 +6,13 @@
     angular.module('dbWebApp').service('PrefixService', ['$http', '$q', function($http, $q) {
 
         this.isValidIp4Cidr = function(str) {
-            var bigSubnets = ['/9', '/10', '/11', '/12', '/13', '/14', '/15'];
             var ip4 = new Address4(str);
-            return ip4.isValid() && bigSubnets.indexOf(ip4.subnet) === -1;
+            if (!ip4.isValid()) {
+                return false;
+            }
+            var bits = ip4.getBitsBase2();
+            var last1 = bits.lastIndexOf('1');
+            return last1 < ip4.subnetMask;
         };
 
         this.isValidIp6Cidr = function(str) {
@@ -24,7 +28,30 @@
          * @returns {boolean}
          */
         this.isValidPrefix = function(str) {
-            return this.isValidIp4Cidr(str) || this.isValidIp6Cidr(str);
+            // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
+            // * Must support /17 to /24
+            //   - if > 17 show: "Please provide a more specific prefix"
+            //   - if < 24 show: "Use syncupdates"
+            // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
+            // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
+            //
+            if (!str) {
+                // no string
+                return false;
+            }
+            var slashpos = str.indexOf('/');
+            if (slashpos < 0 || !str.substr(slashpos + 1)) {
+                // empty or missing netmask
+                return false;
+            }
+            var mask = parseInt(str.substr(slashpos + 1), 10);
+            if (mask < 17 || mask > 24) {
+                return false;
+            }
+            if (this.isValidIp4Cidr(str)) {
+                return true;
+            }
+            return this.isValidIp6Cidr(str);
         };
 
         /**

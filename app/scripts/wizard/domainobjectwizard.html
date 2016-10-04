@@ -1,14 +1,18 @@
 <div ng-if="errors.length">
     <div class="alert alert-danger" role="alert">
         <ul>
-            <li ng-repeat="error in errors"><div>{{error.plainText}}</div></li>
+            <li ng-repeat="error in errors">
+                <div>{{error.plainText}}</div>
+            </li>
         </ul>
     </div>
 </div>
 <div ng-if="successMessages.length">
     <div class="alert alert-success" role="alert">
         <ul>
-            <li ng-repeat="msg in successMessages"><div>{{msg.text}}</div></li>
+            <li ng-repeat="msg in successMessages">
+                <div>{{msg.text}}</div>
+            </li>
         </ul>
     </div>
 </div>
@@ -37,14 +41,21 @@
         </ul>
     </section>
 
-    <section class="faded supporting-text" ng-show="!containsInvalidValues()">
+    <section class="faded supporting-text" ng-show="!containsInvalidValues() && isValidatingDomains">
+        <div class="alert alert-info" role="alert">
+            <p>Validating reverse zones for your servers and creating domain object(s). This can take a few minutes. Please wait.</p>
+        </div>
+    </section>
+
+    <section class="faded supporting-text" ng-show="!containsInvalidValues() && !isValidatingDomains">
         <p>By submitting this form you explicitly express your agreement with the
             <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
         </p>
         <p class="pull-right">
             <button class="blue-button ga-modifyobj-modify"
                     type="button"
-                    ng-click="submitButtonClicked()">Submit</button>
+                    ng-click="submitButtonClicked()">Submit
+            </button>
         </p>
     </section>
 

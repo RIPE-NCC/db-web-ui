@@ -1,8 +1,8 @@
-/*global beforeEach, describe, expect, inject, it*/
+/*global beforeEach, describe, expect, inject, it, module*/
 
 'use strict';
 
-xdescribe('The prefix wizard', function () {
+xdescribe('The attributeMetadataService', function () {
 
     var VALID_PREFIX = '22.22.0.0/22';
 
