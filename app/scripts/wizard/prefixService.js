@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp').service('PrefixService', ['$http', '$q', function($http, $q) {
+    angular.module('dbWebApp').service('PrefixService', ['$http', function($http) {
 
         this.isValidIp4Cidr = function(str) {
             var ip4 = new Address4(str);
@@ -12,6 +12,9 @@
             }
             var bits = ip4.getBitsBase2();
             var last1 = bits.lastIndexOf('1');
+            if (last1 >= ip4.subnetMask) {
+                throw 'Address out of range for subnet mask';
+            }
             return last1 < ip4.subnetMask;
         };
 
