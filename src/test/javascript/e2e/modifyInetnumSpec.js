@@ -3,7 +3,7 @@ var mockGet = require('./mocks/mocks');
 var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
-describe('Modifying an inetnum', function () {
+fdescribe('Modifying an inetnum', function () {
 
     'use strict';
 
@@ -24,7 +24,6 @@ describe('Modifying an inetnum', function () {
     });
 
     describe('which has NOT-SET status', function () {
-
         beforeEach(function () {
             browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/193.96.3.0%20-%20193.96.3.255');
             browser.addMockModule('dbWebAppE2E', mockModule.module);
@@ -42,7 +41,6 @@ describe('Modifying an inetnum', function () {
 
     });
 
-
     describe('which has ASSIGNED PA status', function () {
 
         beforeEach(function () {
@@ -50,7 +48,7 @@ describe('Modifying an inetnum', function () {
             browser.addMockModule('dbWebAppE2E', mockModule.module);
         });
 
-        it('should have status box disabled', function () {
+        fit('should have status box disabled', function () {
             page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
@@ -60,7 +58,7 @@ describe('Modifying an inetnum', function () {
             expect(page.inpStatus.getAttribute('disabled')).toBeTruthy();
         });
 
-        it('which is an end user assignment should NOT show delete btn', function () {
+        fit('which is an end user assignment should NOT show delete btn', function () {
             browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255');
             expect(page.btnDeleteObject.isPresent()).toBeFalsy();
         });

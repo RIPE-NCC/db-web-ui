@@ -15,10 +15,6 @@ describe('The inetnum editor', function () {
     beforeEach(function () {
         browser.get(browser.baseUrl);
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        // Noisy logs enabled here...
-        // browser.manage().logs().get('browser').then(function(browserLog) {
-        //    console.log('>>>>>> ' + require('util').inspect(browserLog));
-        // });
     });
 
     /*

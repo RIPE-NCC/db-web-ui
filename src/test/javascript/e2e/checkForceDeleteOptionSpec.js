@@ -56,7 +56,7 @@ describe('webupdates', function () {
         page.scrollIntoView(page.btnModify);
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
-        expect(page.modal.getText()).toContain('You cannot modify this object here because none of the maintainers are protected with a password.');
+        expect(page.modal.getText()).toContain('You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password');
         expect(page.modalFooter.getText()).toBe('');
     });
 
