@@ -33,11 +33,9 @@
 
                             $scope.mntnerFound = true;
                             $scope.selectedMaintainer = result.objects.object[0];
-                            $scope.email = _.chain($scope.selectedMaintainer.attributes.attribute)
-                                .filter(function (elm) {
-                                    return (elm.name === 'upd-to');
-                                })
-                                .first().value().value;
+                            $scope.email = _.find($scope.selectedMaintainer.attributes.attribute, function (elm) {
+                                    return elm.name === 'upd-to';
+                                }).value;
 
                             if (validationResult.expired === false) {
                                 AlertService.addGlobalWarning(
@@ -47,7 +45,6 @@
                         },
                         function (error) {
                             $log.error('Error validating mntner ' + $scope.maintainerKey + ':' + JSON.stringify(error));
-
                             _navigateToLegacy($scope.maintainerKey);
                         });
                 }, function (error) {
