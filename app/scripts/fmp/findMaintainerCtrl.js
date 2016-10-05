@@ -33,11 +33,11 @@
 
                             $scope.mntnerFound = true;
                             $scope.selectedMaintainer = result.objects.object[0];
-                            _.each($scope.selectedMaintainer.attributes.attribute, function (elm) {
-                                if (elm.name === 'upd-to') {
-                                    $scope.email = elm.value;
-                                }
-                            });
+                            $scope.email = _.chain($scope.selectedMaintainer.attributes.attribute)
+                                .filter(function (elm) {
+                                    return (elm.name === 'upd-to');
+                                })
+                                .first().value().value;
 
                             if (validationResult.expired === false) {
                                 AlertService.addGlobalWarning(

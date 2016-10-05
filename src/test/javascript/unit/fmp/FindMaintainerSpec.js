@@ -74,6 +74,39 @@ describe('FindMaintainer', function () {
 
     });
 
+    it('should choose first upd-to address if multiple found', function () {
+        $scope.maintainerKey = 'I-AM-MNT';
+        $scope.selectMaintainer();
+
+        $httpBackend.whenGET('api/whois-internal/api/fmp-pub/mntner/I-AM-MNT').respond({
+            objects: {
+                object: [{
+                    'name': 'world',
+                    attributes: {
+                        attribute: [
+                            {name: 'mntner', value: 'I-AM-MNT'},
+                            {name: 'upd-to', value: 'first@ripe.net'},
+                            {name: 'upd-to', value: 'second@ripe.net'}
+                        ]
+                    }
+                }]
+            }
+        });
+        $httpBackend.whenGET('api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/validate').respond();
+        $httpBackend.flush();
+
+        expect($scope.mntnerFound).toBe(true);
+        expect($scope.selectedMaintainer.name).toBe('world');
+        expect($scope.email).toBe('first@ripe.net');
+
+        expect(AlertService.getErrors().length).toBe(0);
+        expect(AlertService.getWarnings().length).toBe(0);
+        expect(AlertService.getInfos().length).toBe(0);
+    })
+
+
+
+
     it('should not set a maintainer on not found', function () {
         $scope.maintainerKey = 'I-AM-NO-MNT';
         $scope.selectMaintainer();
@@ -91,7 +124,7 @@ describe('FindMaintainer', function () {
         expect(AlertService.getInfos().length).toBe(0);
     });
 
-    it('should go to legacy when error validating enail', function () {
+    it('should go to legacy when error validating email', function () {
         $scope.maintainerKey = 'I-AM-MNT';
         $scope.selectMaintainer();
 
