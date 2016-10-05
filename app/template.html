@@ -767,37 +767,22 @@
 </nav>
 <main class="container-fluid">
     <div id="portal-columns" class="container box-shadow clearfix">
-        <!-- @include _index_app_banner.html -->
+        <!-- @includeif grunt.environment.BANNER _index_app_banner.html -->
         <div id="portal-breadcrumbs">
                 <span id="breadcrumbs-you-are-here">You are here:</span>
                 <span id="breadcrumbs-home">
-            <a href="https://www.ripe.net">Home</a>
-            <span class="breadcrumbSeparator">
-                >
-
-            </span>
+                <a href="https://www.ripe.net">Home</a>
+                <span class="breadcrumbSeparator">&gt;</span>
                 </span>
                 <span id="breadcrumbs-1" dir="ltr">
-
                 <a href="https://www.ripe.net/manage-ips-and-asns">Manage IPs and ASNs</a>
-
-                <span class="breadcrumbSeparator">
-                    >
-
-                </span>
+                <span class="breadcrumbSeparator">&gt;</span>
                 </span>
                 <span id="breadcrumbs-2" dir="ltr">
-
                 <a href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
-
-                <span class="breadcrumbSeparator">
-                    >
-
-                </span>
+                <span class="breadcrumbSeparator">&gt;</span>
                 </span>
                 <span id="breadcrumbs-3" dir="ltr">
-
-
                 <span id="pathbar_here">Webupdates</span>
                 </span>
         </div>
