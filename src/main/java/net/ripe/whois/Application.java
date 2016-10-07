@@ -1,6 +1,5 @@
 package net.ripe.whois;
 
-import com.google.common.io.CharStreams;
 import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,15 +20,10 @@ import org.springframework.core.io.ClassPathResource;
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
 import javax.servlet.ServletContext;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @ComponentScan(basePackages = "net.ripe.whois")
 @EnableAutoConfiguration
@@ -38,19 +32,15 @@ public class Application {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
 
-    private static final String JAVASCRIPT_CONSTANTS_FILE = "/scripts/app.constants.js";
-
     private final Environment environment;
     private final CrowdTokenFilter crowdTokenFilter;
     private final CacheFilter cacheFilter;
-    private final ServletContext servletContext;
 
     @Autowired
     public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CacheFilter cacheFilter, final ServletContext servletContext) {
         this.environment = environment;
         this.crowdTokenFilter = crowdTokenFilter;
         this.cacheFilter = cacheFilter;
-        this.servletContext = servletContext;
     }
 
     /**
@@ -66,11 +56,11 @@ public class Application {
 
         final Environment environment = app.run(args).getEnvironment();
         LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
-                "Local: \t\thttps://127.0.0.1:{}\n\t" +
-                "External: \thttps://{}:{}\n----------------------------------------------------------",
-            environment.getProperty("server.port"),
-            InetAddress.getLocalHost().getHostAddress(),
-            environment.getProperty("server.port"));
+                        "Local: \t\thttps://127.0.0.1:{}\n\t" +
+                        "External: \thttps://{}:{}\n----------------------------------------------------------",
+                environment.getProperty("server.port"),
+                InetAddress.getLocalHost().getHostAddress(),
+                environment.getProperty("server.port"));
     }
 
     /**
@@ -78,7 +68,7 @@ public class Application {
      */
     private static void addDefaultProfile(final SpringApplication application, final SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active") &&
-            !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
+                !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
 
             application.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
         }
@@ -115,8 +105,6 @@ public class Application {
         LOGGER.info("crowd.rest.password:  {}", String.format("%sxxxxx", environment.getProperty("crowd.rest.password").substring(0, 2)));
         LOGGER.info("crowd.login.url:      {}", environment.getProperty("crowd.login.url"));
         LOGGER.info("rest.api.ripeUrl:     {}", environment.getProperty("rest.api.ripeUrl"));
-
-        writeEnvironmentIntoJavaScriptConstantsFile();
     }
 
     @Bean
@@ -147,48 +135,6 @@ public class Application {
         cmfb.setCacheManagerName("net.ripe.whois.crowdSessions");
         cmfb.setShared(true);
         return cmfb;
-    }
-
-    /*
-     *  Inject external properties into JS constants file
-     */
-    private void writeEnvironmentIntoJavaScriptConstantsFile() {
-        try (FileWriter writer = new FileWriter(servletContext.getRealPath(JAVASCRIPT_CONSTANTS_FILE))) {
-            final Properties properties = readPropertiesFromJavaScriptConstantsFile();
-            writer.write(String.format(
-                    "'use strict';\n" +
-                    "angular.module('dbWebApp')\n" +
-                    "    .constant('Properties', {\n" +
-                    "        ENV: '%s',\n" +
-                    "        SOURCE: '%s',\n" +
-                    "        BUILD_TAG: '%s',\n" +
-                    "        LOGIN_URL: '%s',\n" +
-                    "        PORTAL_URL: '%s'\n" +
-                    "});",
-                    environment.getActiveProfiles()[0],
-                    "RIPE",         // TODO: [ES] use property for source
-                    properties.getProperty("BUILD_TAG"),
-                    environment.getProperty("crowd.login.url"),
-                    environment.getProperty("portal.url")));
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to write to " + JAVASCRIPT_CONSTANTS_FILE, e);
-        }
-    }
-
-    private Properties readPropertiesFromJavaScriptConstantsFile() {
-        final Properties properties = new Properties();
-
-        try (final FileReader reader = new FileReader(servletContext.getRealPath(JAVASCRIPT_CONSTANTS_FILE))) {
-            final String contents = CharStreams.toString(reader);
-            final Pattern pattern = Pattern.compile("(?m)^\\s+(.*):\\s+'(.*)'\\s*,?$");
-            for (final Matcher matcher = pattern.matcher(contents); matcher.find(); ) {
-                properties.put(matcher.group(1), matcher.group(2));
-            }
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to read from " + JAVASCRIPT_CONSTANTS_FILE, e);
-        }
-
-        return properties;
     }
 
 }

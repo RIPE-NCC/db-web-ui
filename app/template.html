@@ -35,7 +35,10 @@
     <meta name="generator" content="Plone - http://plone.org" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color" dir="ltr">
+<body class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates userrole-anonymous color"
+      dir="ltr"
+      data-ng-controller="PageCtrl as pageCtrl" data-ng-init="init()">
+
 <!-- @include _index_app_body_start.html -->
 <header class="header-gradient container-fluid">
     <div id="site-header" class="container">
@@ -767,7 +770,7 @@
 </nav>
 <main class="container-fluid">
     <div id="portal-columns" class="container box-shadow clearfix">
-        <!-- @includeif grunt.environment.BANNER _index_app_banner.html -->
+        <!-- @include _index_app_banner.html -->
         <div id="portal-breadcrumbs">
                 <span id="breadcrumbs-you-are-here">You are here:</span>
                 <span id="breadcrumbs-home">
