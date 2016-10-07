@@ -46,7 +46,6 @@ public class WhoisDomainObjectController extends ApiController {
 
             List<Attribute> attributes = Lists.newArrayList();
             attributes.add(new Attribute(NameValuePair.NAME_DOMAIN, zone));
-            attributes.add(new Attribute(NameValuePair.NAME_DESCRIPTION, String.format("Reverse delegation for %s", dto.getValue("prefix"))));
             attributes.addAll(dto.extractWhoisAttributesExcludeNames(NameValuePair.NAME_REVERSE_ZONE, NameValuePair.NAME_PREFIX));
 
             domainObject.setAttributes(attributes);
