@@ -71,44 +71,41 @@ describe('PrefixService', function () {
 
     describe('IPv6', function () {
         it('should be able to validate a bunch of good prefixes', function () {
-            expect(PrefixService.isValidPrefix('2001:db8::1/17')).toBe(true);
-            expect(PrefixService.isValidPrefix('2001:db8::1/18')).toBe(true);
-            expect(PrefixService.isValidPrefix('2001:db8::1/19')).toBe(true);
-            expect(PrefixService.isValidPrefix('2001:db8::1/20')).toBe(true);
-            expect(PrefixService.isValidPrefix('2001:db8::1/21')).toBe(true);
-            expect(PrefixService.isValidPrefix('2001:db8::1/22')).toBe(true);
-            expect(PrefixService.isValidPrefix('2001:db8::1/23')).toBe(true);
-            expect(PrefixService.isValidPrefix('2001:db8::1/24')).toBe(true);
+            expect(PrefixService.isValidPrefix('2001:db8::/48')).toBe(true);
+            expect(PrefixService.isValidPrefix('2001:db8::/64')).toBe(true);
+            // expect(PrefixService.isValidPrefix('2001:db8::1/19')).toBe(true);
+            // expect(PrefixService.isValidPrefix('2001:db8::1/20')).toBe(true);
+            // expect(PrefixService.isValidPrefix('2001:db8::1/21')).toBe(true);
+            // expect(PrefixService.isValidPrefix('2001:db8::1/22')).toBe(true);
+            // expect(PrefixService.isValidPrefix('2001:db8::1/23')).toBe(true);
+            // expect(PrefixService.isValidPrefix('2001:db8::1/24')).toBe(true);
         });
 
         it('should fail on out-of-range subnet mask', function () {
-            expect(PrefixService.isValidPrefix('2001:db8::1/15')).toBe(false);
-            expect(PrefixService.isValidPrefix('2001:db8::1/16')).toBe(false);
-            expect(PrefixService.isValidPrefix('2001:db8::1/25')).toBe(false);
+            expect(PrefixService.isValidPrefix('2001:db8::/0')).toBe(false);
+            //expect(PrefixService.isValidPrefix('2001:db8::/128')).toBe(false);
         });
 
         it('should fail when address bits are masked', function () {
             try {
-                PrefixService.isValidPrefix('2001:db8::1/17');
-                expect(true).toBe('should never get here');
+                PrefixService.isValidPrefix('2001:db8::1/48');
+                expect(true).toBe('should never get here 1');
             } catch (e) {
                 expect(e).toBe('Address out of range for subnet mask');
             }
             try {
-                PrefixService.isValidPrefix('2001:db8::1/24');
-                expect(true).toBe('should never get here');
+                PrefixService.isValidPrefix('2001:db8::/28');
+                expect(true).toBe('should never get here 2');
             } catch (e) {
                 expect(e).toBe('Address out of range for subnet mask');
             }
         });
 
-        it('should fail when address is not complete', function () {
-            expect(PrefixService.isValidPrefix('2001:db8::1/17')).toBe(false);
-        });
-
         it('should fail when subnet mask is missing', function () {
-            expect(PrefixService.isValidPrefix('2001:db8::1')).toBe(false);
-            expect(PrefixService.isValidPrefix('2001:db8::1/')).toBe(false);
+            expect(PrefixService.isValidPrefix('2001:db8::')).toBe(false);
+            expect(PrefixService.isValidPrefix('2001:db8::/')).toBe(false);
+            expect(PrefixService.isValidPrefix('2001:db8::/0')).toBe(false);
+            expect(PrefixService.isValidPrefix('2001:db8::/00')).toBe(false);
         });
     });
 

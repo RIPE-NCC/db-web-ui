@@ -38,7 +38,7 @@
                 return false;
             }
             var mask = parseInt(str.substr(slashpos + 1), 10);
-            if (mask >= 32) {
+            if (!mask || mask >= 127) {
                 return false;
             }
 
