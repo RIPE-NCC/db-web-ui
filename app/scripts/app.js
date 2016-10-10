@@ -73,4 +73,8 @@ angular.module('dbWebApp', [
                 $log.error('Authentication error');
             });
 
-        }]);
+        }])
+    .controller('PageCtrl', ['Properties', function(Properties) {
+        this.Properties = Properties;
+    }])
+;

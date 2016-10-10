@@ -1,4 +1,4 @@
-        <p id="envbanner" class="envbanner alert orangebackground" style="text-align: center">
-            <span id="envBannerId" style="text-transform: uppercase"><!-- @echo ENV --></span><br>
-            <!-- @echo BANNER -->
-        </p>
+<p id="envbanner" class="envbanner alert orangebackground" style="text-align: center" ng-if="pageCtrl.Properties.BANNER">
+            <span id="envBannerId" style="text-transform: uppercase">{{ pageCtrl.Properties.ENV }}</span><br>
+            {{ pageCtrl.Properties.BANNER }}
+</p>

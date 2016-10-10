@@ -55,11 +55,11 @@ public class Application {
 
         final Environment environment = app.run(args).getEnvironment();
         LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
-                "Local: \t\thttps://127.0.0.1:{}\n\t" +
-                "External: \thttps://{}:{}\n----------------------------------------------------------",
-            environment.getProperty("server.port"),
-            InetAddress.getLocalHost().getHostAddress(),
-            environment.getProperty("server.port"));
+                        "Local: \t\thttps://127.0.0.1:{}\n\t" +
+                        "External: \thttps://{}:{}\n----------------------------------------------------------",
+                environment.getProperty("server.port"),
+                InetAddress.getLocalHost().getHostAddress(),
+                environment.getProperty("server.port"));
     }
 
     /**
@@ -67,7 +67,7 @@ public class Application {
      */
     private static void addDefaultProfile(final SpringApplication application, final SimpleCommandLinePropertySource source) {
         if (!source.containsProperty("spring.profiles.active") &&
-            !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
+                !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
 
             application.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
         }

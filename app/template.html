@@ -47,7 +47,11 @@
     <!-- your custom javascripts here JSMARKER -->
     <meta name="generator" content="Plone - http://plone.com" />
 </head>
-<body id="visual-portal-wrapper" class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates icons-on thumbs-on frontend viewpermission-view userrole-anonymous" dir="ltr">
+<body id="visual-portal-wrapper"
+      class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates icons-on thumbs-on frontend viewpermission-view userrole-anonymous"
+      dir="ltr"
+      data-ng-controller="PageCtrl as pageCtrl">
+
 <!-- @include _index_app_body_start.html -->
 <header class="header-gradient container-fluid">
     <div id="site-header" class="container">
@@ -772,7 +776,7 @@
 </nav>
 <main class="container-fluid">
     <div class="container box-shadow clearfix" id="portal-columns">
-        <!-- @includeif grunt.environment.BANNER _index_app_banner.html -->
+        <!-- @include _index_app_banner.html -->
         <div id="portal-breadcrumbs">
                 <span id="breadcrumbs-you-are-here">You are here:</span>
                 <span id="breadcrumbs-home">
