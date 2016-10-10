@@ -103,7 +103,6 @@ public class Application {
         LOGGER.info("crowd.rest.user:      {}", environment.getProperty("crowd.rest.user"));
         LOGGER.info("crowd.rest.password:  {}", String.format("%sxxxxx", environment.getProperty("crowd.rest.password").substring(0, 2)));
         LOGGER.info("crowd.login.url:      {}", environment.getProperty("crowd.login.url"));
-        LOGGER.info("rest.api.ripeUrl:     {}", environment.getProperty("rest.api.ripeUrl"));
     }
 
     @Bean
