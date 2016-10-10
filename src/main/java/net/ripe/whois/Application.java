@@ -19,7 +19,6 @@ import org.springframework.core.io.ClassPathResource;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
-import javax.servlet.ServletContext;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -37,7 +36,7 @@ public class Application {
     private final CacheFilter cacheFilter;
 
     @Autowired
-    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CacheFilter cacheFilter, final ServletContext servletContext) {
+    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CacheFilter cacheFilter) {
         this.environment = environment;
         this.crowdTokenFilter = crowdTokenFilter;
         this.cacheFilter = cacheFilter;
