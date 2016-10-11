@@ -37,62 +37,6 @@ module.exports = function (grunt) {
         return os.hostname().indexOf('db-tools-1.') === 0 ? 'e2eRemote' : 'e2eLocal';
     };
 
-    var environments = {
-        dev: {
-            ENV: 'dev',
-            GTM_ID: 'GTM-WTWTB7',
-            ACCESS_URL: 'https://access.dev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/',
-            LOGIN_URL: 'https://access.dev.ripe.net/',
-            PORTAL_URL: 'https://my.dev.ripe.net/',
-            BANNER: 'Welcome to the DEV Environment of the RIPE Database.',
-            SOURCE: 'TEST'
-        },
-        prepdev: {
-            ENV: 'prepdev',
-            GTM_ID: 'GTM-WTWTB7',
-            ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://prepdev.db.ripe.net/db-web-ui/',
-            LOGIN_URL: 'https://access.prepdev.ripe.net/',
-            PORTAL_URL: 'https://my.prepdev.ripe.net/',
-            BANNER: 'This is the pre-production (PREPDEV) environment for acceptance testing. All imported data has been dummified.',
-            SOURCE: 'RIPE'
-        },
-        rc: {
-            ENV: 'rc',
-            GTM_ID: 'GTM-T5J6RH',
-            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://rc.db.ripe.net/db-web-ui/',
-            LOGIN_URL: 'https://access.ripe.net/',
-            PORTAL_URL: 'https://my.ripe.net/',
-            BANNER: 'Welcome to the Release Candidate Environment (RC) of the RIPE Database. This environment contains the upcoming release of the database software with a dummified snapshot of the production data. The dummification is only applied to personal data. This environment makes it possible for you to test your software with your own data.',
-            SOURCE: 'RIPE'
-        },
-        test: {
-            ENV: 'test',
-            GTM_ID: 'GTM-W4MMHJ',
-            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps-test.db.ripe.net/db-web-ui/',
-            LOGIN_URL: 'https://access.ripe.net/',
-            PORTAL_URL: 'https://my.ripe.net/',
-            BANNER: 'Welcome to the TEST Environment of the RIPE Database. You can use this environment to learn and experiment with RIPE Database. It uses a TEST \'source\' and any changes are reverted at night.',
-            SOURCE: 'RIPE'
-        },
-        training: {
-            ENV: 'training',
-            GTM_ID: 'GTM-T5J6RH',
-            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://training.db.ripe.net/db-web-ui/',
-            LOGIN_URL: 'https://access.ripe.net/',
-            PORTAL_URL: 'https://my.ripe.net/',
-            BANNER: 'Please fill out the template below. If you have any problems completing the RIPE Database activities, please make a screenshot of the filled out template and send it to academy@ripe.net with your questions.',
-            SOURCE: 'RIPE'
-        },
-        prod: {
-            ENV: 'prod',
-            GTM_ID: 'GTM-TP3SK6',
-            ACCESS_URL: 'https://access.ripe.net?originalUrl=https://apps.db.ripe.net/db-web-ui/',
-            LOGIN_URL: 'https://access.ripe.net/',
-            PORTAL_URL: 'https://my.ripe.net/',
-            SOURCE: 'RIPE'
-        }
-    };
-
     // Define the configuration for all the tasks
     grunt.initConfig({
 
@@ -533,7 +477,6 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt,htaccess}',
                         'scripts/{,*/}{,*/}*.js',
-                        '!scripts/app.constants.js', // this needs additional processing so don't copy it from yeoman.app
                         'scripts/{,*/}{,*/}*.html',
                         'selectize/{,*/}{,*/}*.html',
                         'images/{,*/}*.{webp}',
@@ -547,12 +490,6 @@ module.exports = function (grunt) {
                 }, {
                     src: '.tmp/index.html',
                     dest: '<%= yeoman.dist %>/index.html'
-                }, {
-                    // copy processed js files from tmp to dist (incl app.constants.js)
-                    expand: true,
-                    cwd: '.tmp/scripts',
-                    src: '*.js',
-                    dest: '<%= yeoman.dist %>/scripts/'
                 }, {
                     expand: true,
                     cwd: '.tmp/images/**',
@@ -570,9 +507,6 @@ module.exports = function (grunt) {
                 files: [{
                     src: '<%= yeoman.app %>/template.html',
                     dest: '.tmp/index.html'
-                }, {
-                    src: '<%= yeoman.app %>/scripts/app.constants.js',
-                    dest: '.tmp/scripts/app.constants.js'
                 }],
                 options: {
                     process: function (content, path) {
@@ -600,10 +534,6 @@ module.exports = function (grunt) {
                             content = content.replace(/<!--\s*@includeif\s+([\S]+)\s+([\S]+)(?:\s+([\S]+))?\s*-->/g, maybeSubstituteText);
                         } while (keeplooping);
 
-                        // Third, replace @echo directives with values from environment constants
-                        content = content.replace(/<!--\s*@echo\s+([\S]+)\s*-->/g, function (m, group) {
-                            return grunt.config('grunt.environment')[group] || '';
-                        });
                         // Then expand Grunt tags, i.e. <%= value %>
                         return grunt.template.process(content);
                     }
@@ -613,7 +543,7 @@ module.exports = function (grunt) {
 
         cacheBust: {
             options: {
-                baseDir: './src/main/webapp',
+                baseDir: './<%= yeoman.dist %>',
                 //ignorePatterns: ['index_tmpl.html'],
                 encoding: 'utf8',
                 algorithm: 'md5',
@@ -621,7 +551,7 @@ module.exports = function (grunt) {
                 queryString: true,
                 assets: ['**/*.js', '**/*.css', '**/*.png']
             },
-            src: ['./src/main/webapp/index.html']
+            src: ['./<%= yeoman.dist %>/index.html']
         },
 
         // Run some tasks in parallel to speed up the build process
@@ -706,7 +636,6 @@ module.exports = function (grunt) {
     });
 
     grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
-    grunt.config('grunt.environment', environments[grunt.option('environment') || process.env.GRUNT_ENV || 'dev'] || environments.dev);
 
     grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function (target) {
         grunt.config('grunt.app.e2e', true);

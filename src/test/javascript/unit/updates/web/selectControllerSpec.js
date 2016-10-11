@@ -6,7 +6,7 @@ describe('webUpdates: SelectController', function () {
 
     var $scope, $rootScope, $state, $stateParams, $window, $httpBackend, UserInfoService;
     var OBJECT_TYPE = 'as-set';
-    var SOURCE = 'TEST';
+    var SOURCE = 'RIPE';
 
     beforeEach(function () {
         module('webUpdates');

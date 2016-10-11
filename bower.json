@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "appPath": "app",
   "testPath": "src/test/javascript/unit",
-  "distPath": "src/main/webapp",
+  "distPath": "dist",
   "dependencies": {
     "bootstrap-sass": "3.3.4",
     "modernizr": "2.8.3",
@@ -18,7 +18,6 @@
     "angular-i18n": "1.4.8",
     "angular-dynamic-locale": "0.1.27",
     "angular-local-storage": "0.2.0",
-    "swagger-ui": "2.0.24",
     "angular-cache-buster": "0.4.3",
     "ngInfiniteScroll": "1.2.0",
     "lodash": "3.10.1",

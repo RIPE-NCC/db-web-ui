@@ -13,8 +13,8 @@ describe('Modifying a resource for a RIPE maintained object', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
+        browser.get(browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
     });
 
     it('should show org and sponsoring-org as read-only', function () {

@@ -24,7 +24,6 @@ describe('Modifying an inetnum', function () {
     });
 
     describe('which has NOT-SET status', function () {
-
         beforeEach(function () {
             browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/193.96.3.0%20-%20193.96.3.255');
             browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
@@ -41,7 +40,6 @@ describe('Modifying an inetnum', function () {
         });
 
     });
-
 
     describe('which has ASSIGNED PA status', function () {
 

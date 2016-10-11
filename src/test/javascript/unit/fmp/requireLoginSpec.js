@@ -16,8 +16,7 @@ describe('RequireLoginCtrl', function() {
         $controller('RequireLoginCtrl', {
             $scope:$scope
         });
-
-        expect($scope.loginUrl).toBe('https://access.dev.ripe.net/?originalUrl=http%3A%2F%2Fserver%2F%23%2Ffmp%2F');
+        expect($scope.loginUrl).toBe('https://access.prepdev.ripe.net/?originalUrl=http%3A%2F%2Fserver%2F%23%2Ffmp%2F');
 
     });
 });
