@@ -3,8 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp'
-    ).directive('maintainers', [function () {
+    angular.module('dbWebApp').directive('maintainers', [function () {
         return {
             restrict: 'E',
             scope: {mntners: '=', objectType: '=', attributes: '='},
@@ -73,11 +72,11 @@
         }
 
         function onSuccessfulAuthentication() {
-            console.log('_onSuccessfulAuthentication');
+            console.log('_onSuccessfulAuthentication', arguments);
         }
 
         function navigateAway() {
-            console.log('_navigateAway');
+            console.log('_navigateAway', arguments);
         }
 
         function handleSsoResponseError() {
@@ -148,23 +147,23 @@
             }
         }
 
-        function extractEnrichMntnersFromObject(attributes, maintainersSso) {
-            // get mntners from response
-            var mntnersInObject = _.filter(attributes, function (attr) {
-                return attr.name === 'mnt-by';
-            });
-
-            // determine if mntner is mine
-            var selected = _.map(mntnersInObject, function (mntnerAttr) {
-                return {
-                    type: 'mntner',
-                    key: mntnerAttr.value,
-                    mine: _.contains(_.map(maintainersSso, 'key'), mntnerAttr.value)
-                };
-            });
-
-            return selected;
-        }
+        // function extractEnrichMntnersFromObject(attributes, maintainersSso) {
+        //     // get mntners from response
+        //     var mntnersInObject = _.filter(attributes, function (attr) {
+        //         return attr.name === 'mnt-by';
+        //     });
+        //
+        //     // determine if mntner is mine
+        //     var selected = _.map(mntnersInObject, function (mntnerAttr) {
+        //         return {
+        //             type: 'mntner',
+        //             key: mntnerAttr.value,
+        //             mine: _.contains(_.map(maintainersSso, 'key'), mntnerAttr.value)
+        //         };
+        //     });
+        //
+        //     return selected;
+        // }
 
     }]);
 
