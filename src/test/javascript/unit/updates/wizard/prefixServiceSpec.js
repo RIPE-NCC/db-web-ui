@@ -107,6 +107,15 @@ describe('PrefixService', function () {
             expect(PrefixService.isValidPrefix('2001:db8::/0')).toBe(false);
             expect(PrefixService.isValidPrefix('2001:db8::/00')).toBe(false);
         });
+
+        it('should generate some lovely reverse zone records', function () {
+            expect(PrefixService.getReverseDnsZones('2001:db8::/48').length).toBe(1);
+            expect(PrefixService.getReverseDnsZones('2001:db8::/47').length).toBe(2);
+            expect(PrefixService.getReverseDnsZones('2001:db8::/46').length).toBe(4);
+            expect(PrefixService.getReverseDnsZones('2001:db8::/45').length).toBe(8);
+            expect(PrefixService.getReverseDnsZones('2001:db8::/44').length).toBe(1);
+        });
+
     });
 
 });
