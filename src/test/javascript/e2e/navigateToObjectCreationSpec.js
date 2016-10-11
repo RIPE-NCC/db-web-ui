@@ -44,7 +44,7 @@ describe('webupdates homepage', function() {
         page.selectObjectType('domain').click();
         page.btnNavigateToCreate.click();
         // Domain object wizard
-        expect(browser.getCurrentUrl()).toContain('/webupdates/wizard/TEST/domain');
+        expect(browser.getCurrentUrl()).toContain('/webupdates/wizard/RIPE/domain');
     });
 
     it('should show an editor for filter-set', function() {
