@@ -13,9 +13,9 @@ describe('The domain wizard', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '/#/webupdates/wizard/RIPE/domain');
-        //browser.executeScript("document.body.className += ' notransition';");
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
+        //browser.executeScript("document.body.className += ' notransition';");
+        browser.get(browser.baseUrl + '/#/webupdates/wizard/RIPE/domain');
     });
 
     it('should show an editor for domain', function() {
@@ -27,7 +27,7 @@ describe('The domain wizard', function () {
     });
 
     it('should show an editor for domain which accepts a prefix and nameservers', function() {
-        page.inpPrefix.sendKeys('33.33.33.0/8');
+        page.inpPrefix.sendKeys('33.33.0.0/17');
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('ns2.xs4all.nl');
         var liContainer = page.inpNserver2.element(by.xpath('..'));
@@ -43,7 +43,7 @@ describe('The domain wizard', function () {
     });
 
     it('should show an editor for domain which rejects invalid nameservers', function() {
-        page.inpPrefix.sendKeys('33.33.33.0/8');
+        page.inpPrefix.sendKeys('33.33.0.0/17');
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
         var liContainer = page.inpNserver2.element(by.xpath('..'));
