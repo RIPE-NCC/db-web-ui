@@ -1,3 +1,4 @@
+// Generated on 2016-07-05 using generator-angular 0.15.1
 'use strict';
 
 var fs = require('fs');
@@ -42,41 +43,44 @@ module.exports = function (grunt) {
         // Project settings
         yeoman: appConfig,
 
+        focus: {
+            livereloadServer: {
+                exclude: ['dist']
+            }
+        },
         // Watches files for changes and runs tasks based on the changed files
         watch: {
-            dev: {
-                bower: {
-                    files: ['bower.json'],
-                    tasks: ['wiredep']
-                },
-                js: {
-                    files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
-                    tasks: ['newer:jshint:all', 'newer:jscs:all'],
-                    options: {
-                        livereload: '<%= connect.options.livereload.livereload %>'
-                    }
-                },
-                jsTest: {
-                    files: ['src/test/javascript/unit/{,*/}{,*/}*.js'],
-                    tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
-                },
-                compass: {
-                    files: ['<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}'],
-                    tasks: ['compass:server', 'postcss:server']
-                },
-                gruntfile: {
-                    files: ['Gruntfile.js']
-                },
-                livereload: {
-                    options: {
-                        livereload: '<%= connect.options.livereload.livereload %>'
-                    },
-                    files: [
-                        '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html',
-                        '.tmp/assets/css/{,*/}*.css',
-                        '<%= yeoman.app %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-                    ]
+            bower: {
+                files: ['bower.json'],
+                tasks: ['wiredep']
+            },
+            js: {
+                files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
+                tasks: ['newer:jshint:all', 'newer:jscs:all'],
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
                 }
+            },
+            jsTest: {
+                files: ['src/test/javascript/unit/{,*/}{,*/}*.js'],
+                tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
+            },
+            compass: {
+                files: ['<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}'],
+                tasks: ['compass:server', 'postcss:server']
+            },
+            gruntfile: {
+                files: ['Gruntfile.js']
+            },
+            livereload: {
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                },
+                files: [
+                    '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html',
+                    '.tmp/assets/css/{,*/}*.css',
+                    '<%= yeoman.app %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                ]
             },
             dist: {
                 files: [
@@ -107,7 +111,6 @@ module.exports = function (grunt) {
             livereload: {
                 options: {
                     open: false,
-                    livereload: 35729,
                     middleware: function (connect) {
                         return [
                             serveStatic('.tmp'),
@@ -133,7 +136,7 @@ module.exports = function (grunt) {
             },
             e2e: {
                 options: {
-                    port: 0,
+                    port: 9004,
                     keepalive: false,
                     //open: true,
                     middleware: function (connect) {
@@ -141,6 +144,22 @@ module.exports = function (grunt) {
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic('.tmp'),
                             serveStatic('instrumented'),
+                            connect().use(
+                                '/bower_components',
+                                serveStatic('./bower_components')
+                            ),
+                            serveStatic(appConfig.app)
+                        ];
+                    }
+                }
+            },
+            test: {
+                options: {
+                    port: 9002,
+                    middleware: function (connect) {
+                        return [
+                            serveStatic('.tmp'),
+                            serveStatic('test'),
                             connect().use(
                                 '/bower_components',
                                 serveStatic('./bower_components')
@@ -556,9 +575,7 @@ module.exports = function (grunt) {
         protractor: {
             options: {
                 noColor: false, // If true, protractor will not use colors in its output.
-                args: {
-                    baseUrl: 'http://localhost:0'
-                }
+                args: {}
             },
             e2e: {
                 options: {
@@ -587,10 +604,7 @@ module.exports = function (grunt) {
                 keepAlive: true,
                 noColor: false,
                 collectorPort: 3001,
-                coverageDir: 'reports/e2e-coverage',
-                args: {
-                    baseUrl: 'http://' + os.hostname() + ':0'
-                }
+                coverageDir: 'reports/e2e-coverage'
             },
             e2eLocal: {
                 options: {
@@ -620,39 +634,7 @@ module.exports = function (grunt) {
                 dir: 'reports/e2e-coverage',
                 print: 'detail'
             }
-        },
-
-        // Range from 9000 - 9099 available through msw7 / db-tools-2 firewall
-        // 9080 reserved for grunt serve and grunt e2e-no-test
-        portPick: {
-            options: {
-                port: 9002,
-                limit: 76
-            },
-            protractor: {
-                targets: [
-                    'connect.e2e.options.port',
-                    'protractor.options.args.baseUrl',
-                    'protractor_coverage.options.args.baseUrl'
-                ]
-            },
-            karma: {
-                targets: [
-                    'karma.options.port'
-                ]
-            }
-        },
-
-        karma: {
-            options: {
-                port: 0
-            },
-            unit: {
-                configFile: 'src/test/javascript/karma.conf.js',
-                singleRun: true
-            }
         }
-
     });
 
     grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
@@ -669,7 +651,6 @@ module.exports = function (grunt) {
         'e2eapp',
         'copy:processtags',
         'wiredep',
-        'portPick:protractor',
         'concurrent:server',
         'connect:e2e',
         'protractor:e2e'
@@ -680,7 +661,6 @@ module.exports = function (grunt) {
         'e2eapp:mocks',
         'copy:processtags',
         'wiredep',
-        'portPick:protractor',
         'concurrent:server',
         'connect:e2e:keepalive'
     ]);
@@ -713,7 +693,7 @@ module.exports = function (grunt) {
         'wiredep',
         'concurrent:test',
         'postcss',
-        'portPick:karma',
+        'connect:test',
         'karma'
     ]);
 
@@ -749,8 +729,6 @@ module.exports = function (grunt) {
         'copy:processtags',
         'wiredep:sass',
         'instrument',
-        'compass',
-        'portPick:protractor',
         //'useminPrepare',
         //'concurrent:dist',
         'connect:e2e',

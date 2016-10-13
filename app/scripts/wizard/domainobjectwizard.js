@@ -74,17 +74,20 @@
 
             function submitButtonHandler() {
 
-                var flattenedAttributes = flattenStructure($scope.attributes);
-
                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
                     performAuthentication();
                     return;
                 }
 
+                var flattenedAttributes = flattenStructure($scope.attributes);
                 var passwords = getPasswordsForRestCall();
 
                 $scope.restCallInProgress = true;
                 $scope.isValidatingDomains = true;
+
+                // close the alert message
+                $scope.errors = [];
+                $scope.successMessages = [];
 
                 var url = 'api/whois/domain-objects/' + $scope.source;
                 var data = {
