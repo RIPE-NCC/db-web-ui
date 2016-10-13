@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import static org.hamcrest.Matchers.is;
@@ -28,7 +29,7 @@ public class WhoisInternalServiceTestIntegration extends AbstractTestIntegration
     }
 
     @Test
-    public void get_maintainers() {
+    public void get_maintainers_success() {
         mock("/api/user/fd2ca42b-b997-475a-886b-ae410d1c5969/maintainers",
             "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
             "<whois-resources xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
@@ -61,6 +62,7 @@ public class WhoisInternalServiceTestIntegration extends AbstractTestIntegration
 
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners", HttpMethod.GET, requestEntity, String.class);
 
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(
             "[{" +
             "\"mine\":true," +
@@ -69,4 +71,16 @@ public class WhoisInternalServiceTestIntegration extends AbstractTestIntegration
             "\"key\":\"BAD-MNT\"" +
             "}]"));
     }
+
+    @Test
+    public void get_maintainers_invalid_cookie() {
+        final HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Cookie", "crowd.token_key=invalid");
+        final HttpEntity requestEntity = new HttpEntity(null, requestHeaders);
+
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners", HttpMethod.GET, requestEntity, String.class);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
+    }
+
 }
