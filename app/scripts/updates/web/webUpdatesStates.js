@@ -50,7 +50,7 @@ angular.module('webUpdates')
                 .state('webupdates.displayDomainobjects', {
                     url: '/wizard/:source/:objectType/success',
                     templateUrl: 'scripts/wizard/displayDomainobjects.html',
-                    controller: 'DomainObjectController'
+                    controller: 'DisplayDomainObjectsController'
                 })
                 .state('webupdates.select', {
                     url: '/select',

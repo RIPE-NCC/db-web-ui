@@ -9,7 +9,7 @@ angular.module('updates').service('MessageStore', [ function( ) {
 
     messages.get = function(key){
         var value = messages[key];
-        delete messages[key];
+        //delete messages[key];
         return value;
     };
 
