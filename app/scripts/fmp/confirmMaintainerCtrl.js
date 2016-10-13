@@ -38,7 +38,7 @@
                     if (link.currentUserAlreadyManagesMntner === true) {
                         AlertService.addGlobalWarning(
                             'Your RIPE NCC Access account is already associated with this mntner. ' +
-                            'You can modify this mntner <a href="' + _makeModificationUrl($scope.key) + '">here</a>.');
+                            'You can modify this mntner <a href="' + makeModificationUrl($scope.key) + '">here</a>.');
                         return;
                     }
 
@@ -56,12 +56,12 @@
                 });
 
                 $scope.associate = function () {
-                    
+
                     EmailLink.update({hash: $scope.localHash}, {hash: $scope.localHash}, function (resp) {
 
                         $log.error('Successfully associated email-link:' + resp);
 
-                        _navigateToSsoAdded($scope.key, $scope.user, $scope.key);
+                        navigateToSsoAdded($scope.key, $scope.user, $scope.key);
 
                     }, function (error) {
 
@@ -90,22 +90,16 @@
                         '</ol>');
                 };
 
-                function _makeModificationUrl(key) {
+                function makeModificationUrl(key) {
                     return '/db-web-ui/#/webupdates/modify/RIPE/mntner/' + key;
                 }
 
-                function _navigateToSsoAdded(mntnerKey, user) {
+                function navigateToSsoAdded(mntnerKey, user) {
                     $state.transitionTo('fmp.ssoAdded', {
                         mntnerKey: mntnerKey,
                         user: user
                     });
                 }
-
-                // function _navigateToLegacy(maintainerKey) {
-                //     $state.transitionTo('fmp.legacy', {
-                //         maintainerKey: maintainerKey
-                //     });
-                // }
             }
         ]
     );

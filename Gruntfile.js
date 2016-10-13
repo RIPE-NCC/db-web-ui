@@ -43,41 +43,44 @@ module.exports = function (grunt) {
         // Project settings
         yeoman: appConfig,
 
+        focus: {
+            livereloadServer: {
+                exclude: ['dist']
+            }
+        },
         // Watches files for changes and runs tasks based on the changed files
         watch: {
-            dev: {
-                bower: {
-                    files: ['bower.json'],
-                    tasks: ['wiredep']
-                },
-                js: {
-                    files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
-                    tasks: ['newer:jshint:all', 'newer:jscs:all'],
-                    options: {
-                        livereload: '<%= connect.options.livereload %>'
-                    }
-                },
-                jsTest: {
-                    files: ['src/test/javascript/unit/{,*/}{,*/}*.js'],
-                    tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
-                },
-                compass: {
-                    files: ['<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}'],
-                    tasks: ['compass:server', 'postcss:server']
-                },
-                gruntfile: {
-                    files: ['Gruntfile.js']
-                },
-                livereload: {
-                    options: {
-                        livereload: '<%= connect.options.livereload %>'
-                    },
-                    files: [
-                        '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html',
-                        '.tmp/assets/css/{,*/}*.css',
-                        '<%= yeoman.app %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-                    ]
+            bower: {
+                files: ['bower.json'],
+                tasks: ['wiredep']
+            },
+            js: {
+                files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
+                tasks: ['newer:jshint:all', 'newer:jscs:all'],
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
                 }
+            },
+            jsTest: {
+                files: ['src/test/javascript/unit/{,*/}{,*/}*.js'],
+                tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
+            },
+            compass: {
+                files: ['<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}'],
+                tasks: ['compass:server', 'postcss:server']
+            },
+            gruntfile: {
+                files: ['Gruntfile.js']
+            },
+            livereload: {
+                options: {
+                    livereload: '<%= connect.options.livereload %>'
+                },
+                files: [
+                    '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html',
+                    '.tmp/assets/css/{,*/}*.css',
+                    '<%= yeoman.app %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+                ]
             },
             dist: {
                 files: [
@@ -676,7 +679,7 @@ module.exports = function (grunt) {
             'postcss:server',
             'configureProxies:livereload',
             'connect:livereload',
-            'watch:dev'
+            'focus:livereloadServer'
         ]);
     });
 
