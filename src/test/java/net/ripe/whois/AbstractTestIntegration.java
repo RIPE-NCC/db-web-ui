@@ -12,7 +12,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
@@ -31,7 +30,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(profiles = "test")
 @SpringApplicationConfiguration(classes = {Application.class, AbstractTestIntegration.ContextConfiguration.class})
-@ComponentScan(basePackages = {"net.ripe.whois"}, excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX, pattern = {"\\*TestConfiguration"}))
+@ComponentScan(basePackages = {"net.ripe.whois"})
 @TestExecutionListeners(inheritListeners = false, listeners = {DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class})
 @IntegrationTest("server.port:0")
 @WebAppConfiguration
