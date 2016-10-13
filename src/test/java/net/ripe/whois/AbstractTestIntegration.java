@@ -69,6 +69,8 @@ public class AbstractTestIntegration extends AbstractJUnit4SpringContextTests {
 
     @BeforeClass
     public static void beforeClass() {
+        System.setProperty("portal.url", getMockServerUrl());
+        System.setProperty("crowd.access.url", getMockServerUrl());
         System.setProperty("crowd.login.url", getMockServerUrl());
         System.setProperty("crowd.rest.url", getMockServerUrl());
         System.setProperty("rest.api.ripeUrl", getMockServerUrl());
