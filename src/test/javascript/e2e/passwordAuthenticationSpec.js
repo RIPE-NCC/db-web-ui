@@ -14,11 +14,7 @@ describe('The password authentication dialogue', function () {
 
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.get('/#/webupdates/modify/ripe/aut-num/AS9191');
-        // Noisy logs enabled here...
-        // browser.manage().logs().get('browser').then(function(browserLog) {
-        //    console.log('>>>>>> ' + require('util').inspect(browserLog));
-        // });
+        browser.get('#/webupdates/modify/ripe/aut-num/AS9191');
     });
 
     it('should show a single modal which asks for a password', function () {

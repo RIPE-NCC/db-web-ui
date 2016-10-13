@@ -30,6 +30,7 @@
     "grunt-karma": "^2.0.0",
     "grunt-newer": "^1.2.0",
     "grunt-ng-annotate": "2.0.1",
+    "grunt-port-pick": "^1.5.3",
     "grunt-postcss": "^0.8.0",
     "grunt-protractor-coverage": "^0.2.17",
     "grunt-protractor-runner": "2.1.2",

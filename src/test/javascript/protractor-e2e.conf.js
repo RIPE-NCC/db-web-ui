@@ -20,10 +20,6 @@ exports.config = {
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
 
-    // A base URL for your application under test. Calls to protractor.get()
-    // with relative paths will be prepended with this.
-    baseUrl: 'http://localhost:9004',
-
     jasmineNodeOpts: {
         onComplete: null,
         isVerbose: false,

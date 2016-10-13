@@ -2,6 +2,8 @@
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
 module.exports = function (config) {
+    'use strict';
+
     config.set({
         // base path, that will be used to resolve files and exclude
         basePath: '../../../',
@@ -68,9 +70,6 @@ module.exports = function (config) {
 
         // list of files / patterns to exclude
         exclude: [],
-
-        // web server port
-        port: 9876,
 
         // level of logging
         // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
