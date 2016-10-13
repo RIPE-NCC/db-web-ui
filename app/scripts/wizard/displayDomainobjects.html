@@ -1,1 +1,47 @@
-<h1>Success</h1>
+<div class="alert alert-success">
+    <p>Your objects have been successfully created</p>
+</div>
+
+<alerts></alerts>
+
+
+<section class="inner-container">
+
+    <span ng-repeat="object in objects">
+        <table class="success-fields grey">
+            <tr ng-repeat="attribute in object.attributes">
+                <td width="20%">
+                    <label>{{attribute.name}}:</label>
+                </td>
+                <td>
+                    <p>{{attribute.value}}</p>
+                    <div ng-show="attribute.$$error" class="modify-feedback">
+                        <span>{{attribute.$$error}}</span>
+                        <i class="fa fa-info-circle"></i>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </span>
+
+    <p>Do we need a message here?!</p>
+    <p>Do we need a message here?!</p>
+    <p>Do we need a message here?!</p>
+    <p>Do we need a message here?!</p>
+    <p><a target="_blank"
+          href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers#personal-vs-shared">Learn
+        more...??</a></p>
+    <p><a target="_blank"
+          href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers#personal-vs-shared">Learn
+        more...??</a></p>
+    <p><a target="_blank"
+          href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers#personal-vs-shared">Learn
+        more...??</a></p>
+    <p><a target="_blank"
+          href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers#personal-vs-shared">Learn
+        more...??</a></p>
+
+    <button ng-click="navigateToSelect()" class="blue-button pull-right ga-createobj-modifyobj">Back to Create Object
+    </button>
+
+</section>
