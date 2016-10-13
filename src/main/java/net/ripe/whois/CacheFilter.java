@@ -42,7 +42,6 @@ public class CacheFilter implements Filter {
             LOGGER.debug("Not adding cache control to '{}'", request.getRequestURL());
             response.setHeader("Cache-Control", "no-cache");
         }
-
         chain.doFilter(req, res);
     }
 

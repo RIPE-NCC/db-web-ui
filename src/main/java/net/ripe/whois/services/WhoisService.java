@@ -35,18 +35,27 @@ public class WhoisService {
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
         final URI uri = composeWhoisUrl(request);
 
-        if (body == null) {
-            return restTemplate.exchange(
-                uri,
-                HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                new HttpEntity<>(headers),
-                String.class);
-        } else {
-            return restTemplate.exchange(
-                uri,
-                HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                new HttpEntity<>(body, headers),
-                String.class);
+        // Do not accept compressed response, as it's not handled properly (by whois)
+        headers.remove(HttpHeaders.ACCEPT_ENCODING);
+        headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
+
+        try {
+            if (body == null) {
+                return restTemplate.exchange(
+                    uri,
+                    HttpMethod.valueOf(request.getMethod().toUpperCase()),
+                    new HttpEntity<>(headers),
+                    String.class);
+            } else {
+                return restTemplate.exchange(
+                    uri,
+                    HttpMethod.valueOf(request.getMethod().toUpperCase()),
+                    new HttpEntity<>(body, headers),
+                    String.class);
+            }
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw e;
         }
     }
 

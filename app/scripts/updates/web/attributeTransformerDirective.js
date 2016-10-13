@@ -3,8 +3,6 @@
 (function () {
     'use strict';
 
-    //Testing **The Amazing deployment** v2
-    
     angular.module('webUpdates')
         .directive('attributetransformer', ['$log', function ($log) {
             return {
