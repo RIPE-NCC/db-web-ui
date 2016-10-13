@@ -23,6 +23,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/user")
+@SuppressWarnings("UnusedDeclaration")
 public class UserController {
 
     @Autowired

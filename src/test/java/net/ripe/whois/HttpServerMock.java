@@ -9,6 +9,7 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpMethod;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -92,14 +93,34 @@ public class HttpServerMock {
 
         @Override
         protected void doGet(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+            handleResponse(HttpMethod.GET, request, response);
+        }
+
+        @Override
+        protected void doPost(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+            handleResponse(HttpMethod.POST, request, response);
+        }
+
+        @Override
+        protected void doPut(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+            handleResponse(HttpMethod.PUT, request, response);
+        }
+
+        @Override
+        protected void doDelete(final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
+            handleResponse(HttpMethod.DELETE, request, response);
+        }
+
+        private void handleResponse(final HttpMethod method, final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
             final String mockResponse = responseMap.remove(request.getRequestURI());
             if (mockResponse != null) {
                 response.setHeader(HttpHeaders.CONTENT_TYPE, "application/xml;charset=UTF-8");
                 response.getWriter().write(mockResponse);
             } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.format("no mocked response found for path: %s", request.getRequestURI()));
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.format("no mocked response found for %s: %s", method, request.getRequestURI()));
             }
         }
+
 
         public void mock(final String uri, final String response) {
             responseMap.put(uri, response);
