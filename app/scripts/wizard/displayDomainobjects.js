@@ -4,11 +4,13 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DisplayDomainObjectsController', ['$scope', '$state', 'MessageStore', 'WhoisResources',
-        function ($scope, $state, MessageStore, WhoisResources) {
+    ).controller('DisplayDomainObjectsController', ['$scope', '$state', 'MessageStore', 'WhoisResources', 'AlertService',
+        function ($scope, $state, MessageStore, WhoisResources, AlertService) {
 
-            $scope.objects = WhoisResources.wrapWhoisResources(MessageStore.get('domains')).objects.whoisObjects;
+            var whoisResources = WhoisResources.wrapWhoisResources(MessageStore.get('domains'));
+            $scope.objects = whoisResources.objects.object;
 
+            AlertService.addErrors(whoisResources);
 
             $scope.navigateToSelect = function () {
                 $state.transitionTo('webupdates.select');
