@@ -2,6 +2,8 @@ package net.ripe.whois;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -106,7 +108,8 @@ public class Application {
                 .applicationContext(applicationContext)
                 .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                 .serializationInclusion(JsonInclude.Include.NON_NULL)
-                .failOnUnknownProperties(false);
+                .failOnUnknownProperties(false)
+                .annotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
     }
 
     @Bean
