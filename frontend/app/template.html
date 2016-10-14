@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="summary" name="twitter:card" />
+    <meta content="Webupdates" name="twitter:title" />
+    <meta content="RIPE Network Coordination Centre" property="og:site_name" />
+    <meta content="Webupdates" property="og:title" />
+    <meta content="website" property="og:type" />
+    <meta name="description" content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" />
+    <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" name="twitter:description" />
+    <meta content="https://www.ripe.net/manage-ips-and-asns/db/webupdates" name="twitter:url" />
+    <meta content="Tool that allows to add new objects and edit or delete existing objects in the RIPE Database" property="og:description" />
+    <meta content="https://www.ripe.net/manage-ips-and-asns/db/webupdates" property="og:url" />
+    <meta content="https://www.ripe.net/logo.png" name="twitter:image" />
+    <meta content="https://www.ripe.net/logo.png" property="og:image" />
+    <meta content="image/png" property="og:image:type" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webupdates &mdash; RIPE Network Coordination Centre</title>
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www-static.ripe.net/static/common/fonts/open-sans.css" />
+    <link rel="stylesheet" type="text/css" media="print" href="https://www.ripe.net/portal_css/Ripe/print.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.33/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.33/bootstrap-theme.min.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.33/template.css" />
+    <link href="https://www-static.ripe.net/static/common/font-awesome/css/font-awesome.min.css" media="screen" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" media="print" href="https://www.ripe.net/print.css" />
+    <!--[if lte IE 8]>
+    <link rel="stylesheet" type="text/css" media="screen" href="https://www.ripe.net/++resource++ripe.plonetheme.stylesheets/versions/1.33/ie-template.css" />
+    <![endif]-->
+    <!-- your custom styles here CSSMARKER -->
+    <!-- @include _index_app_css.html -->
+    <link rel="shortcut icon" type="image/x-icon" href="https://www.ripe.net/favicon.ico" />
+    <link rel="apple-touch-icon" href="https://www.ripe.net/touch_icon.png" />
+    <link rel="search" href="https://www.ripe.net/search" title="Search this site" />
+    <!-- JQuery JavaScript placeholder here -->
+    <script type="text/javascript" src="https://www.ripe.net/jquery.js"></script>
+    <!-- END JQuery JavaScript placeholder here -->
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.33/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.33/template.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.33/browser-update.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/modernizr.js"></script>
+    <!--[if lte IE 8]>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.33/html5.js"></script>
+    <script type="text/javascript" src="https://www.ripe.net/++resource++ripe.plonetheme.javascripts/versions/1.33/respond.js"></script>
+    <![endif]-->
+    <!-- your custom javascripts here JSMARKER -->
+    <meta name="generator" content="Plone - http://plone.com" />
+</head>
+<body id="visual-portal-wrapper"
+      class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates icons-on thumbs-on frontend viewpermission-view userrole-anonymous"
+      dir="ltr"
+      data-ng-controller="PageCtrl as pageCtrl">
+
+<!-- @include _index_app_body_start.html -->
+<header class="header-gradient container-fluid">
+    <div id="site-header" class="container">
+        <div id="portal-header">
+            <!-- @include _index_app_login.html -->
+            <div class="header-item">
+                <a id="portal-logo" title="Home" accesskey="1" href="https://www.ripe.net">
+                    <img id="logo" alt="RIPE NCC Network Coordination" src="https://www.ripe.net/++resource++ripe.plonetheme.images/RIPE_NCC_logo.png" /></a>
+            </div>
+            <div class="header-item">
+                <div id="tabs">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a data-toggle="tab" data-target="#whois-search">RIPE Database (Whois)</a></li>
+                        <li><a data-toggle="tab" data-target="#website-search">Website</a></li>
+                    </ul>
+                    <div class="tab-content box-shadow clearfix">
+                        <div class="tab-pane active" id="whois-search">
+                            <form method="get" action="https://apps.db.ripe.net/search/query.html">
+                                <input type="text" size="15" class="searchField terms-popover" id="searchtext" name="searchtext" data-toggle="popover" data-placement="bottom" placeholder="Search IP Address or ASN" data-content="<span id='terms-condition-close' class='close fa fa-close margin-left'></span> By clicking the search button you explicitly express your agreement with the RIPE Database <a href='https://www.ripe.net/data-tools/db/support/terms'>Terms &amp; Conditions</a>" />
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="website-search">
+                            <form id="searchGadget_form" action="https://www.ripe.net/@@search">
+                                <div class="LSBox">
+                                    <label class="hiddenStructure" for="searchGadget">Search Site</label>
+                                    <input name="SearchableText" type="text" title="Search the content of this website" accesskey="4" class="searchField" id="searchGadget" placeholder="Search the content of this website" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                    </div>
+                                    <div class="LSResult box-shadow" id="LSResult" style="">
+                                        <div class="LSShadow" id="LSShadow"></div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div id="search-info" class="clearfix">
+                            <div id="termandconditions">
+                                By searching you explicitly express your agreement with the RIPE Database terms and conditions
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="bmenu">
+                    <i class="fa fa-bars btn btn-default"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<nav class="container-fluid">
+    <div id="nav" class="container clearfix">
+        <ul class="nav navbar-nav">
+            <li class="manage-ips-and-asns">
+                <a class="megatitle" href="https://www.ripe.net/manage-ips-and-asns">
+                    Manage IPs and ASNs
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <div class="megamenu subnav container clearfix box-shadow">
+                    <div class="row">
+                        <div class="col-md-2 description">
+                            <p>We distribute Internet number resources to our members and provide tools to help them manage their allocations and assignments. </p>
+                            <div class="mega-more">
+                                <p>More information about
+                                    <a href="https://www.ripe.net/manage-ips-and-asns">
+                                        Manage IPs and ASNs <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/ipv4">IPv4</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/ipv4/request-an-ipv4-22-from-the-last-8">Request an IPv4 /22</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6/ipv4-exhaustion">IPv4 Exhaustion</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/ipv6">IPv6</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/ipv6/request-ipv6">Request IPv6</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre">IPv6 Info Centre</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/as-numbers">AS Numbers</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/request-an-as-number">Request an AS Number</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/as-numbers/reassigning-as-numbers">Reassigning Referenced AS Numbers</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/tools">Related Software and Tools</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/webupdates">Webupdates</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/numbered-work-items">Numbered Work Items</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/release-notes">Release Notes</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/support">Database Support</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/dns">DNS</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/dns/reverse-dns">Reverse DNS</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/dns/dnssec">DNSSEC</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/lir-portal">LIR Portal</a>
+                            <ul>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/resource-management">Documentation for Resource Management</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/number-resources">Number Resources</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/certification">Resource Certification (RPKI)</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/policy-implementation-status">Policy Implementation Status</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/assisted-registry-check">Assisted Registry Check</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers">Resource Transfers and Mergers</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/transfers">Transfers</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/mergers-and-acquisitions">Mergers and Acquisitions</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-transfers-and-mergers/required-documents-for-registry-updates">Required Documents</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/legacy-resources">Legacy Internet Resources</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-internet-resources-faqs">FAQ: Legacy Internet Resources</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-space-in-the-ripe-registry">Legacy space in the RIPE Registry </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/legacy-resources/legacy-internet-resources-documentation">Documentation</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/manage-ips-and-asns/contact">Contact Registration Services</a>
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="analyse">
+                <a class="megatitle" href="https://www.ripe.net/analyse">
+                    Analyse
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <div class="megamenu subnav container clearfix box-shadow">
+                    <div class="row">
+                        <div class="col-md-2 description">
+                            <p>We collect a wide range of Internet data and provide statistics and tools that our members and the wider Internet community can use for their own operations and analyses.</p>
+                            <div class="mega-more">
+                                <p>More information about
+                                    <a href="https://www.ripe.net/analyse">
+                                        Analyse <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/analyse/statistics">Statistics</a>
+                            <ul>
+                                <li>
+                                    <a href="https://labs.ripe.net/statistics/number-of-lirs">Total Number of LIRs</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6/ipv4-exhaustion/ipv4-available-pool-graph">Remaining IPv4 Addresses</a>
+                                </li>
+                                <li>
+                                    <a href="https://labs.ripe.net/statistics/ipv6-ripeness-summary">IPv6 RIPEness</a>
+                                </li>
+                                <li>
+                                    <a href="https://labs.ripe.net/statistics?az=true">Other RIPE NCC Statistics</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/analyse/statistics/ripestat">RIPEstat</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/analyse/internet-measurements">Internet Measurements</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/analyse/internet-measurements/atlas">RIPE Atlas</a>
+                                </li>
+                                <li>
+                                    <a href="https://atlas.ripe.net/results/maps/">Internet Traffic Maps</a>
+                                </li>
+                                <li>
+                                    <a href="https://labs.ripe.net/atlas/user-experiences">Analyses and Use Cases</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/analyse/internet-measurements/routing-information-service-ris">Routing Information Service (RIS)</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/analyse/dns">DNS</a>
+                            <ul>
+                                <li>
+                                        <a href="https://www.ripe.net/analyse/dns/k-root">K-root</a>
+                                </li>
+                                <li>
+                                        <a href="https://www.ripe.net/analyse/dns/dnsmon">DNSMON</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/analyse/dns/reverse-delegation-dns-zonecheck">Reverse DNS Zonecheck</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/analyse/raw-data-sets">Raw Datasets</a>
+                            <ul>
+                                <li>
+                                    <a href="https://atlas.ripe.net/docs/data_struct/">RIPE Atlas Raw Data</a>
+                                </li>
+                                <li>
+                                    <a href="https://labs.ripe.net/datarepository/data-sets/routing-information-service-ris-raw-data-set">RIS Raw Data</a>
+                                </li>
+                                <li>
+                                    <a href="https://labs.ripe.net/datarepository/conditions/basic">Terms and Conditions</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/analyse/archived-projects">Archived Projects</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/analyse/archived-projects/former-dnsmon">Former DNSMON</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/analyse/archived-projects/ris-tools-web-interfaces">RIS Tools and Web Interfaces</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/analyse/archived-projects/ttm">Test Traffic Measurement Service (TTM)</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="participate">
+                <a class="megatitle" href="https://www.ripe.net/participate">
+                    Participate
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <div class="megamenu subnav container clearfix box-shadow">
+                    <div class="row">
+                        <div class="col-md-2 description">
+                            <p>The smooth running of the Internet depends on the involvement of those who give their input on membership and policy issues. And there are many ways to get involved, online and in person.
+                            </p>
+                            <div class="mega-more">
+                                <p>More information about
+                                    <a href="https://www.ripe.net/participate">
+                                        Participate <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/participate/member-support">RIPE NCC Membership </a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/member-support/info">Membership Information</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/member-support/become-a-member">Become a Member</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/member-support/new-member">Information for New Members</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/member-support/ripe-ncc-access">RIPE NCC Access</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/member-support/surveys">RIPE NCC Surveys</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/member-support/member-lunches">Member Lunches</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/participate/ripe">RIPE Community</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/ripe/wg">Working Groups</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/ripe/tf">Task Forces</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/ripe/raci">Academic Cooperation (RACI)</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/ripe/ripe-chair">RIPE Chair</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/participate/meetings">Meetings and Events</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/meetings/ripe-meetings">RIPE Meetings</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/meetings/regional-meetings">Regional Meetings</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/meetings/gm">General Meetings</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/meetings/roundtable">Roundtable Meetings</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/meetings/calendar">Upcoming Events</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/participate/policies">Policy Development</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/policies/current-proposals">Current Policy Proposals</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/policy-implementation-status">Policy Implementation Status</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/participate/mail">Join a Discussion</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/mail/ripe-ncc-mailing-lists">Membership Mailing Lists</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/mail/ripe-mailing-lists">RIPE Mailing Lists</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/mail/ripe-forum">RIPE Forum</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/participate/internet-governance">Internet Governance</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/internet-governance/internet-technical-community/iana/iana-stewardship-transition">IANA Stewardship Transition</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/internet-governance/internet-technical-community">Internet Technical Community</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/internet-governance/multi-stakeholder-engagement">Multi-stakeholder Engagement</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/internet-governance/internet-governance-news">Internet Governance News</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="support">
+                <a class="megatitle" href="https://www.ripe.net/support">
+                    Get Support
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <div class="megamenu subnav container clearfix box-shadow">
+                    <div class="row">
+                        <div class="col-md-2 description">
+                            <p>We support members and the RIPE community through several channels to offer timely and efficient help – whether it’s a ticket, a tweet or a training course.</p>
+                            <div class="mega-more">
+                                <p>More information about
+                                    <a href="https://www.ripe.net/support">
+                                        Get Support <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/support/contact">Contact Us</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/support/contact/office-information">Office Information</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/support/contact/report-form">RIPE NCC Report Form</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/support/contact/technical-emergency-hotline">Report Technical Emergency</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/support/training">Training and Education</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/support/training/courses">Training Courses</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/support/training/ripe-ncc-academy">RIPE NCC Academy</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/support/training/learn-online/webinars">Webinars</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/support/training/learn-online">Learn Online</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/support/training/material">Training Material</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/support/documentation">Documentation</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/support/documentation/developer-documentation">Developer Documentation</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation">RIPE Database Documentation</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/support/documentation/faqs">FAQs</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/support/abuse">Spam, Hacking and Phishing</a>
+                            <ul>
+                                <li>
+                                    <a href="https://apps.db.ripe.net/search/abuse-finder.html">RIPE Database Abuse Finder</a>
+                                </li>
+                                <li>
+                                    <a href="https://stat.ripe.net/specials/abuse">RIPEstat Abuse Contact Finder</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/support/service-announcements">Service &amp; Security Announcements</a>
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="publications">
+                <a class="megatitle" href="https://www.ripe.net/publications">
+                    Publications
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <div class="megamenu subnav container clearfix box-shadow">
+                    <div class="row">
+                        <div class="col-md-2 description">
+                            <p>Stay informed about everything Internet-related, from RIPE Policy and RIPE NCC member information to RIPE Labs blog posts and the latest Internet news.</p>
+                            <div class="mega-more">
+                                <p>More information about
+                                    <a href="https://www.ripe.net/publications">
+                                        Publications <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/publications/docs">RIPE Document Store</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/docs/all-ripe-documents-by-number">RIPE Documents by Number</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/docs/ripe-documents">RIPE Documents by Category </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/docs/ripe-policies">RIPE Policies</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/publications/ripe-ncc-organisational-documents">RIPE NCC Organisational Documents</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/budgets">Activity Plan and Budget</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/reports">Annual Reports</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ripe-ncc-organisational-documents/charging-schemes">Charging Schemes</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/publications/ipv6-info-centre">IPv6 Info Centre</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/about-ipv6">About IPv6</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/deployment-planning">Deploy IPv6 Now</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/statistics-and-tools">Statistics and Tools</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/training-and-materials">Training and Materials</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/ipv6-documents">Documents</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre/ipv6-community">Community</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/publications/ripe-labs">RIPE Labs</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/support/documentation/ripe-labs-documentation/contributing-to-ripe-labs"> Contributing to RIPE Labs</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/publications/news">News</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/news/latest-news">News and Announcements</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/news/feeds">RSS News Feeds</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li class="about-us">
+                <a class="megatitle" href="https://www.ripe.net/about-us">
+                    About Us
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <div class="megamenu subnav container clearfix box-shadow">
+                    <div class="row">
+                        <div class="col-md-2 description">
+                            <p>We're a not-for-profit membership association, a Regional Internet Registry and the secretariat for the RIPE community supporting the Internet through technical coordination.</p>
+                            <div class="mega-more">
+                                <p>More information about
+                                    <a href="https://www.ripe.net/about-us">
+                                        About Us <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/about-us/what-we-do">What We Do</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/what-we-do/regional-internet-registry">Regional Internet Registry</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/what-we-do/coordination-function">Coordination Function</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/analyse/statistics">Statistics</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/ipv6-info-centre">Transition to IPv6</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/what-we-do/list-of-ripe-ncc-services">List of RIPE NCC Services</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/about-us/staff">Staff</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/staff/structure">RIPE NCC Staff Structure</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/staff/working-at-the-ripe-ncc">Working at the RIPE NCC</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/about-us/executive-board">Executive Board</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/executive-board/ripe-ncc-executive-board-functions-and-expectations">Functions and Expectations </a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/executive-board/minutes">Minutes from Executive Board Meetings</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/about-us/financial-information">Financial Information</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/publications/docs/charging">Current Charging Scheme</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/participate/billing/procedure">Current Billing Procedure</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/about-us/press-centre">Press Centre</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/press-centre/ripe-ncc-in-the-news">RIPE NCC in the News</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/press-centre/press-releases">Press Releases</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/press-centre/publications">Publications and Presentations</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/press-centre/press-photos">Press Quality Photos</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/about-us/legal">Legal</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/legal/corporate-governance-documents">Corporate Governance</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/legal/internet-number-resources">Internet Number Resources</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/legal/arbitration-documents">Arbitration</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/legal/other-ripe-ncc-services-documents">Other RIPE NCC Services</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/legal/information-for-law-enforcement-agencies">Information for Law Enforcement Agencies</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/about-us/corporate-governance">Corporate Governance</a>
+                            <ul>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/corporate-governance/treasury-statute">Treasury Statute</a>
+                                </li>
+                                <li>
+                                    <a href="https://www.ripe.net/about-us/corporate-governance/ripe-ncc-articles-of-association">RIPE NCC Articles of Association</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="h6" href="https://www.ripe.net/about-us/contact">Contact</a>
+                            <ul>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div id="close-menu">
+            <i class="fa fa-close"></i>
+        </div>
+    </div>
+</nav>
+<main class="container-fluid">
+    <div class="container box-shadow clearfix" id="portal-columns">
+        <!-- @include _index_app_banner.html -->
+        <div id="portal-breadcrumbs">
+                <span id="breadcrumbs-you-are-here">You are here:</span>
+                <span id="breadcrumbs-home">
+                <a href="https://www.ripe.net">Home</a>
+                <span class="breadcrumbSeparator">&gt;</span>
+                </span>
+                <span id="breadcrumbs-1" dir="ltr">
+                <a href="https://www.ripe.net/manage-ips-and-asns">Manage IPs and ASNs</a>
+                <span class="breadcrumbSeparator">&gt;</span>
+                </span>
+                <span id="breadcrumbs-2" dir="ltr">
+                <a href="https://www.ripe.net/manage-ips-and-asns/db">RIPE Database</a>
+                <span class="breadcrumbSeparator">&gt;</span>
+                </span>
+                <span id="breadcrumbs-3" dir="ltr">
+                <span id="pathbar_here">Webupdates</span>
+                </span>
+        </div>
+        <div id="global_statusmessage">
+            <div>
+            </div>
+        </div>
+        <div id="portal-column-one" class="col-md-3">
+            <!-- Insert your navigation here NAVIGATIONMARKER -->
+            <!-- @include _index_app_menu.html -->
+        </div>
+        <div id="portal-column-content" class="sl col-md-9">
+            <noscript>
+                <meta HTTP-EQUIV="REFRESH" content="5; url=https://www.ripe.net/about-us/legal/supported-browsers">
+                <h1 style="text-align: center; margin-top: 20px; background-color: #eee; padding: 20px;">
+                    Javascript is disabled.<br/>You will be redirected to <a
+                    href="https://www.ripe.net/about-us/legal/supported-browsers">Supported Browsers</a> page.
+                </h1>
+            </noscript>
+            <div id="viewlet-above-content"></div>
+            <div id="content">
+                <div>
+                    <div id="external">
+                        <!-- End of header ENDHEADERMARKER -->
+                        <!-- Insert your content here CONTENTMARKER -->
+                        <!-- @include _index_app_content.html -->
+                        <!-- Start of footer STARTFOOTERMARKER -->
+                    </div>
+                </div>
+            </div>
+            <div id="viewlet-below-content">
+            </div>
+        </div>
+    </div>
+</main>
+<footer class="container-fluid">
+    <a href="#" id="scrollToTop"></a>
+    <div class="container box-shadow">
+        <div class="col-lg-2">
+                <span id="social-icons" title="RIPE NCC - Social Media">
+                    <a href="https://www.ripe.net/lir-services/ncc/contact/social-networking">
+                        <i class="fa fa-sl-f"></i>
+                        <i class="fa fa-sl-t"></i>
+                        <i class="fa fa-sl-l"></i>
+                        <i class="fa fa-sl-y"></i>
+                        <i class="fa fa-sl-g"></i>
+                    </a>
+                </span>
+        </div>
+        <div class="col-lg-10" id="footer-links">
+            <a href="/">Home</a>
+            <a href="https://www.ripe.net/sitemap">Sitemap</a>
+            <a href="https://www.ripe.net/support/contact">Contact Us</a>
+            <a href="https://www.ripe.net/support/service-announcements/service-and-security-announcements">Service Announcements</a>
+            <a href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement">Privacy Statement</a>
+            <a href="https://www.ripe.net/about-us/legal">Legal</a>
+            <a href="https://www.ripe.net/about-us/legal/cookies">Cookies</a>
+            <a href="https://www.ripe.net/about-us/legal/copyright-statement">Copyright Statement</a>
+        </div>
+    </div>
+    <div id="cookiepopup">
+        <div id="cookie-close"><i class="fa fa-close"></i></div>
+        <div class="cookie-content">
+            <p><span>The RIPE NCC uses cookies. Some of these cookies may have been set already. More information about our cookies can be found in our </span><a title="" href="https://www.ripe.net/about-us/legal/ripe-ncc-privacy-statement#cookies" class="external-link" target="_self">privacy policy</a><span>. You can accept our cookies either by </span><span id="cookie-close-span">clicking here</span><span> or by continuing to use the site.</span></p>
+        </div>
+    </div>
+</footer>
+<!-- @include _index_app_javascript.html -->
+<!-- Footer JavaScript placeholder FOOTERMARKER -->
+<!-- @includeif grunt.app.e2e _index_app_body_end_e2e.html _index_app_body_end.html -->
+</body>
+</html>

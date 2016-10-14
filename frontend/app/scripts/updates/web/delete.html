@@ -1,0 +1,26 @@
+<div ng-show="!modalInProgress">
+
+    <alerts></alerts>
+
+    <section ng-repeat="object in deletedObjects" class="inner-container">
+        <table class="success-fields grey">
+            <tr ng-repeat="attribute in object.attributes.attribute">
+                <td width="20%">
+                    <label>{{attribute.name}}:</label>
+                </td>
+                <td>
+                    <p>{{attribute.value}}</p>
+                    <div ng-show="attribute.$$error" class="modify-feedback">
+                        <span>{{attribute.$$error}}</span>
+                        <i class="fa fa-info-circle"></i>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </section>
+    <section>
+        <br/>
+        <a href="/db-web-ui/#/" class="blue-button">Create a new object</a>
+        <a href="/search" class="blue-button">Search for an object</a>
+    </section>
+</div>

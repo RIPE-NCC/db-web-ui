@@ -1,0 +1,182 @@
+{
+  "api/whois/ripe/mntner/INROMA-MNT?password=INROMA-MNT": {
+    "data": {
+      "link": {
+        "type": "locator",
+        "href": "http://127.0.0.1:1080/ripe/mntner/INROMA-MNT"
+      },
+      "objects": {
+        "object": [
+          {
+            "type": "mntner",
+            "link": {
+              "type": "locator",
+              "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/INROMA-MNT"
+            },
+            "source": {
+              "id": "ripe"
+            },
+            "primary-key": {
+              "attribute": [
+                {
+                  "name": "mntner",
+                  "value": "INROMA-MNT"
+                }
+              ]
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "name": "mntner",
+                  "value": "INROMA-MNT"
+                },
+                {
+                  "name": "auth",
+                  "value": "MD5-PW $1$hHzU6aY/$/wYMdRNyaowsgMA8ie0Eb/"
+                },
+                {
+                  "name": "auth",
+                  "value": "SSO petchells@ripe.net"
+                },
+                {
+                  "name": "auth",
+                  "value": "SSO eshryane@ripe.net"
+                },
+                {
+                  "name": "descr",
+                  "value": "CASPUR"
+                },
+                {
+                  "name": "descr",
+                  "value": "Consorzio interuniversitario per le Applicazioni di"
+                },
+                {
+                  "name": "descr",
+                  "value": "Supercalcolo Per l'Universita' e la Ricerca"
+                },
+                {
+                  "name": "descr",
+                  "value": "http://www.caspur.it"
+                },
+                {
+                  "name": "descr",
+                  "value": "Via dei Tizii, 6/b"
+                },
+                {
+                  "name": "descr",
+                  "value": "00185 Rome - ITALY"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/FP43-RIPE"
+                  },
+                  "name": "admin-c",
+                  "value": "FP43-RIPE",
+                  "referenced-type": "person"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/MG914-RIPE"
+                  },
+                  "name": "tech-c",
+                  "value": "MG914-RIPE",
+                  "referenced-type": "person"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/LV1766-RIPE"
+                  },
+                  "name": "tech-c",
+                  "value": "LV1766-RIPE",
+                  "referenced-type": "person"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/person/GB2654-RIPE"
+                  },
+                  "name": "tech-c",
+                  "value": "GB2654-RIPE",
+                  "referenced-type": "person"
+                },
+                {
+                  "name": "remarks",
+                  "value": "+-----------------------------------------------------+"
+                },
+                {
+                  "name": "remarks",
+                  "value": "| Operational and Peering issues ---> reti.roma@cineca.it |"
+                },
+                {
+                  "name": "remarks",
+                  "value": "| Abuse and SPAM -------------------> abuse.roma@cineca.it |"
+                },
+                {
+                  "name": "remarks",
+                  "value": "+-----------------------------------------------------+"
+                },
+                {
+                  "name": "upd-to",
+                  "value": "***@cineca.it"
+                },
+                {
+                  "name": "mnt-nfy",
+                  "value": "***@cineca.it"
+                },
+                {
+                  "name": "notify",
+                  "value": "***@cineca.it"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/INROMA-MNT"
+                  },
+                  "name": "mnt-by",
+                  "value": "INROMA-MNT",
+                  "referenced-type": "mntner"
+                },
+                {
+                  "name": "created",
+                  "value": "2002-08-19T15:35:49Z"
+                },
+                {
+                  "name": "last-modified",
+                  "value": "2016-10-05T08:38:13Z"
+                },
+                {
+                  "name": "source",
+                  "value": "RIPE"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "errormessages": {
+        "errormessage": [
+          {
+            "severity": "Warning",
+            "attribute": {
+              "name": "last-modified",
+              "value": "2016-10-05T08:38:13Z"
+            },
+            "text": "Supplied attribute '%s' has been replaced with a generated value",
+            "args": [
+              {
+                "value": "last-modified"
+              }
+            ]
+          }
+        ]
+      },
+      "terms-and-conditions": {
+        "type": "locator",
+        "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+    }
+  }
+}

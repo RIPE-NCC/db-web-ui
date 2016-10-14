@@ -1,0 +1,140 @@
+.inner-container {
+	@extend %float-l;
+	width: 100%;
+}
+.form-fields {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	li {
+		margin-bottom: 15px !important;
+	}
+}
+.blue-button {
+	border:0;
+}
+input[disabled="disabled"].blue-button {
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+    pointer-events: none;
+}
+ul.success-fields {
+	list-style: none;
+	padding: 20px !important;
+	border: 1px #ccc dashed;
+	font {
+		family: menlo !important;
+	}
+	li {
+		display: inline-block !important;
+	    width: 50%;
+	}
+}
+.modal.portlet .modal-content i.fa-close {
+	padding: 6px 17px;
+}
+.modal-content {
+	div.modal-body {
+		ul {
+			li {
+				@extend %width-100;
+				margin-bottom: 15px;
+			}
+		}
+	}
+}
+
+.not-found {
+    text-align: center;
+    i.fa {
+        font: {
+            size: 150px;
+        }
+        color: #00abab;
+    }
+    h1 {
+        font: {
+            size: 60px;
+        }
+    }
+}
+
+.modal-body {
+    ul {
+        list-style: none;
+        padding-left: 0;
+        &.bullets {
+            list-style: disc;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    }
+    a.more-reference {
+        padding: inherit 30px;
+    }
+}
+
+.fivehunder-error {
+    text-align: center;
+    h1 {
+        font: {
+            size: 6em;
+        }
+        color: #00abab;
+    }
+}
+ul.radio {
+    list-style: none;
+    li {
+        label {
+            padding-left: 0;
+        }
+    }
+}
+.modal-content {
+    border: none !important;
+    div.modal-header {
+        background-color: #080037;
+        color: #fff;
+        h5, i {
+            color: #fff;
+        }
+        .close {
+            margin-top: 2px;
+        }
+    }
+}
+
+#portal-columns.no-pad-top {
+    @extend %no-pad-top;
+}
+
+/* Side menu **/
+div.portlet.navigation {
+    ul.toplevel {
+        > li.child {
+            > ul.level2 {
+                display: none;
+            }
+            &.active {
+                > ul.level2 {
+                    display: block !important;
+                }
+            }
+        }
+    }
+}
+
+div#button-container {
+  a.api-button {
+    background: #00A0B0;
+    &:before {
+      font-family: FontAwesome;
+      margin-right: 10px;
+      content: "\f085";
+      font-size: 1.2em;
+    }
+  }
+}

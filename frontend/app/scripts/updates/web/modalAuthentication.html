@@ -1,0 +1,73 @@
+<div class="modal-content no-rounded">
+<form ng-submit="ok()">
+    <div class="modal-header">
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"></i>
+        <h5 class="modal-title">Password authentication</h5>
+    </div>
+
+    <div class="modal-body">
+        <div ng-if="mntners.length === 0" class="alert-expired alert alert-danger">
+            <span ng-if="!isLirObject">
+                You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password.
+            </span>
+
+            <span ng-if="isLirObject">
+
+                <span ng-if="mntnersWithoutPassword.length > 0">
+                    You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password.
+                </span>
+
+                <span ng-if="mntnersWithoutPassword.length == 0">
+                    The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer <a href="{{PORTAL_URL}}#/account-details">here</a>.
+                </span>
+            </span>
+        </div>
+
+        <div ng-if="(mntners && mntners.length > 0)">
+            <div ng-if="selected.message.length > 0" class="alert-expired alert alert-danger">
+                <p>{{selected.message}}</p>
+            </div>
+            <ul>
+                <li>
+                    <label>Select a maintainer to authenticate the update operation.</label>
+                    <select ng-model="selected.item"
+                            ng-required="true"
+                            ng-options="item.key for item in mntners | orderBy:key" class="form-control select-height"></select>
+                </li>
+                <li>
+                    <label>Provide the password for the selected maintainer</label>
+                    <input type="password" class="form-control" ng-model="selected.password" ng-required="true" />
+                </li>
+                <li>
+                    <input type="checkbox" ng-model="selected.associate" id="associate" class="ga-associate-checkbox" />
+                    <label for="associate">Also authorise my RIPE NCC Access account for this maintainer.  <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data" target="_blank">Learn more.</a></label>
+                </li>
+            </ul>
+        </div>
+        <div ng-if="(mntnersWithoutPassword && mntnersWithoutPassword.length > 0)">
+            <hr>
+            The following maintainers are used to protect this object, but are not eligible to be used here:
+            <br>
+            <span ng-repeat="mnt in mntnersWithoutPassword">
+                <a href="#/webupdates/display/{{source}}/mntner/{{mnt.key}}" target="_blank">
+                    {{mnt.key}}
+                </a> <span ng-if="$middle">,</span>
+            </span>
+            <br/>
+            <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data#solving-authentication-problems" taget="_blank">Learn more.</a>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div style="float:left;" ng-if="::allowForceDelete()">
+            <a href="#/webupdates/forceDelete/{{::source}}/{{::objectType}}/{{::objectName}}" ng-click="cancel()">Force delete</a> this object? <a href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/10-authorisation/10-13-force-delete-functionality" target="_blank">Learn More.</a>
+        </div>
+        <div ng-if="mntners.length === 0">
+            <input type="button" class="blue-button ga-auth-popup-btn" data-dismiss="modal"  value="Cancel" ng-click="cancel()" />
+        </div>
+        <div ng-if="mntners.length > 0">
+            <input type="submit" class="blue-button ga-auth-popup-btn" value="Submit" />
+        </div>
+    </div>
+</form>
+</div>
