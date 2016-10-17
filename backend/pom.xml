@@ -11,6 +11,7 @@
 
     <artifactId>whois-webui-backend</artifactId>
     <packaging>war</packaging>
+    <name>whois_webui</name>
 
     <properties>
         <apache-httpclient>4.4.1</apache-httpclient>
@@ -254,7 +255,11 @@
                     <archive>
                         <manifestEntries>
                             <version>${project.version}</version>
+                            <!--<Implementation-Title>whois-webui</Implementation-Title>-->
                             <Implementation-Version>${implementation-version}</Implementation-Version>
+                            <Spring-Boot-Version>${spring-boot.version}</Spring-Boot-Version>
+                            <Main-Class>org.springframework.boot.loader.WarLauncher</Main-Class>
+                            <Start-Class>net.ripe.whois.Application</Start-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>
