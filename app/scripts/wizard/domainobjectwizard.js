@@ -139,7 +139,7 @@
 
                 MessageStore.add('result', {prefix: prefix.value, whoisResources: resp.data});
 
-                $state.transitionTo('webupdates.displayDomainobjects', {
+                $state.transitionTo('webupdates.displayDomainObjects', {
                     source: $scope.source,
                     objectType: $scope.objectType
                 });
