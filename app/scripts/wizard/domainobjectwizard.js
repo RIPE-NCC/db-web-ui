@@ -133,7 +133,11 @@
                 $scope.isValidatingDomains = false;
                 console.log('onSubmitSuccess resp', resp);
 
-                MessageStore.add('domains', resp.data);
+                var prefix = _.find($scope.attributes, function(attr) {
+                    return attr.name === 'prefix';
+                });
+
+                MessageStore.add('result', {prefix: prefix.value, whoisResources: resp.data});
 
                 $state.transitionTo('webupdates.displayDomainobjects', {
                     source: $scope.source,

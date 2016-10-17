@@ -4,10 +4,15 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DisplayDomainObjectsController', ['$scope', '$state', 'MessageStore', 'WhoisResources', 'AlertService',
-        function ($scope, $state, MessageStore, WhoisResources, AlertService) {
+    ).controller('DisplayDomainObjectsController', ['$scope', '$state', '$stateParams', 'MessageStore', 'WhoisResources', 'AlertService',
+        function ($scope, $state, $stateParams, MessageStore, WhoisResources, AlertService) {
 
-            var whoisResources = WhoisResources.wrapWhoisResources(MessageStore.get('domains'));
+            $scope.source = $stateParams.source;
+
+            var result = MessageStore.get('result');
+            $scope.prefix = result.prefix;
+
+            var whoisResources = WhoisResources.wrapWhoisResources(result.whoisResources);
             $scope.objects = whoisResources.objects.object;
 
             AlertService.addErrors(whoisResources);
