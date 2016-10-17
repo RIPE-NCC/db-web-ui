@@ -583,7 +583,7 @@ module.exports = function (grunt) {
                 collectorPort: 3001,
                 coverageDir: 'reports/e2e-coverage',
                 args: {
-                    baseUrl: 'http://localhost:0'
+                    baseUrl: 'http://' + os.hostname() + ':0'
                 }
             },
             e2eLocal: {
@@ -627,7 +627,7 @@ module.exports = function (grunt) {
                 targets: [
                     'connect.e2e.options.port',
                     'protractor.options.args.baseUrl',
-                    'protractor_coverage.options.args.baseUrl',
+                    'protractor_coverage.options.args.baseUrl'
                 ]
             },
             karma: {
