@@ -62,7 +62,7 @@ module.exports = function (grunt) {
                 }
             },
             jsTest: {
-                files: ['src/test/javascript/unit/{,*/}{,*/}*.js'],
+                files: ['test/javascript/unit/{,*/}{,*/}*.js'],
                 tasks: ['newer:jshint:test', 'newer:jscs:test', 'karma']
             },
             compass: {
@@ -580,13 +580,13 @@ module.exports = function (grunt) {
             },
             e2e: {
                 options: {
-                    configFile: 'src/test/javascript/protractor-e2e.conf.js', // Default config file
+                    configFile: 'test/javascript/protractor-e2e.conf.js', // Default config file
                     keepAlive: false // If false, the grunt process stops when the test fails.
                 }
             },
             noTest: {
                 options: {
-                    configFile: 'src/test/javascript/protractor-no-test.conf.js', // Default config file
+                    configFile: 'test/javascript/protractor-no-test.conf.js', // Default config file
                     keepAlive: true
                 }
             }
@@ -594,7 +594,7 @@ module.exports = function (grunt) {
 
         karma: {
             unit: {
-                configFile: 'src/test/javascript/karma.conf.js',
+                configFile: 'test/javascript/karma.conf.js',
                 singleRun: true
             }
         },
@@ -609,7 +609,7 @@ module.exports = function (grunt) {
             },
             e2eLocal: {
                 options: {
-                    configFile: 'src/test/javascript/protractor-e2e-coverage-local.conf.js'
+                    configFile: 'test/javascript/protractor-e2e-coverage-local.conf.js'
                 }
             },
             e2eRemote: {
