@@ -1,4 +1,4 @@
-/*global beforeEach, browser, describe, element, expect, it, require */
+/*global beforeEach, browser, by, describe, element, expect, it, require */
 var mockGet = require('./mocks/homemocks');
 var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
@@ -43,8 +43,8 @@ describe('webupdates homepage', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('domain').click();
         page.btnNavigateToCreate.click();
-        expect(page.createForm.isPresent()).toEqual(true);
-        expect(page.heading.getText()).toEqual('Create "domain" object');
+        // Domain object wizard
+        expect(browser.getCurrentUrl()).toContain('/webupdates/wizard/RIPE/domain');
     });
 
     it('should show an editor for filter-set', function() {

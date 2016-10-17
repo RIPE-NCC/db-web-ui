@@ -138,7 +138,7 @@ angular.module('dbWebApp')
             }
             var myMsgs =  _.filter(this.errormessages.errormessage, function (msg) {
                 if (msg.severity === 'Error' &&
-                    msg.text === 'Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s') {
+                    msg.text === 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s') {
                     return true;
                 }
                 return false;

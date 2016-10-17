@@ -10,7 +10,6 @@
                 $log.debug('Using login-url:' + Properties.LOGIN_URL);
                 UserInfoService.getUserInfo().then(
                     function (result) {
-                        $log.debug('Populate upper right with: ' + JSON.stringify(result));
                         RIPE.username = result.displayName;
                         RIPE.usermail = result.username;
                         RIPE.usermenu = {

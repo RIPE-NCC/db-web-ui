@@ -100,51 +100,66 @@
                     return deferredObject.promise;
                 }
 
+                var timeoutA;
                 restService.autocomplete = function (attrName, query, extended, attrsToBeReturned) {
                     var deferredObject = $q.defer();
 
-                    if (_.isUndefined(query) || query.length < 2) {
-                        deferredObject.resolve([]);
-                    } else {
-                        $resource('api/whois/autocomplete', {
-                            field: attrName,
-                            attribute: attrsToBeReturned,
-                            query: query,
-                            extended: extended
-                        }).query().$promise.then(function (result) {
-                            $log.debug('autocomplete success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function (error) {
-                            $log.error('autocomplete error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        });
+                    function debounce() {
+                        if (_.isUndefined(query) || query.length < 2) {
+                            deferredObject.resolve([]);
+                        } else {
+                            $resource('api/whois/autocomplete', {
+                                field: attrName,
+                                attribute: attrsToBeReturned,
+                                query: query,
+                                extended: extended
+                            }).query().$promise.then(function (result) {
+                                $log.debug('autocomplete success:' + JSON.stringify(result));
+                                deferredObject.resolve(result);
+                            }, function (error) {
+                                $log.error('autocomplete error:' + JSON.stringify(error));
+                                deferredObject.reject(error);
+                            });
+                        }
                     }
 
+                    if (timeoutA) {
+                        clearTimeout(timeoutA);
+                    }
+                    timeoutA = setTimeout(debounce, 600);
                     return deferredObject.promise;
                 };
 
+                var timeoutAA;
                 restService.autocompleteAdvanced = function (query, targetObjectTypes) {
                     var deferredObject = $q.defer();
 
-                    if (_.isUndefined(query) || query.length < 2) {
-                        deferredObject.resolve([]);
-                    } else {
-                        var attrsToFilterOn = WhoisResources.getFilterableAttrsForObjectTypes(targetObjectTypes);
-                        var attrsToReturn = WhoisResources.getViewableAttrsForObjectTypes(targetObjectTypes); //['person', 'role', 'org-name', 'abuse-mailbox'];
+                    function debounce() {
+                        if (_.isUndefined(query) || query.length < 2) {
+                            deferredObject.resolve([]);
+                        } else {
+                            var attrsToFilterOn = WhoisResources.getFilterableAttrsForObjectTypes(targetObjectTypes);
+                            var attrsToReturn = WhoisResources.getViewableAttrsForObjectTypes(targetObjectTypes); //['person', 'role', 'org-name', 'abuse-mailbox'];
 
-                        $resource('api/whois/autocomplete', {
-                            select: attrsToReturn,
-                            from: targetObjectTypes,
-                            where: attrsToFilterOn,
-                            like: query
-                        }).query().$promise.then(function (result) {
-                            $log.debug('autocompleteAdvanced success:' + JSON.stringify(result));
-                            deferredObject.resolve(result);
-                        }, function (error) {
-                            $log.error('autocompleteAdvanced error:' + JSON.stringify(error));
-                            deferredObject.reject(error);
-                        });
+                            $resource('api/whois/autocomplete', {
+                                select: attrsToReturn,
+                                from: targetObjectTypes,
+                                where: attrsToFilterOn,
+                                like: query
+                            }).query().$promise.then(function (result) {
+                                $log.debug('autocompleteAdvanced success:' + JSON.stringify(result));
+                                deferredObject.resolve(result);
+                            }, function (error) {
+                                $log.error('autocompleteAdvanced error:' + JSON.stringify(error));
+                                deferredObject.reject(error);
+                            });
+                        }
                     }
+
+                    if (timeoutAA) {
+                        clearTimeout(timeoutAA);
+                    }
+                    timeoutAA = setTimeout(debounce, 600);
 
                     return deferredObject.promise;
                 };

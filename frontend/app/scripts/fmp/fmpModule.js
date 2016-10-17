@@ -16,8 +16,6 @@
             })
         .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
 
-            $log.info('Starting up fmp-module');
-
             // expand the forgot-mntner-password section of the menu
             $rootScope.$on('$stateChangeSuccess', function (event, toState) {
                 if (!_.isUndefined(toState) && !_.isUndefined(toState.name) && _.startsWith(toState.name, 'fmp.')) {

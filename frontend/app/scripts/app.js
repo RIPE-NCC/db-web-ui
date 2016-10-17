@@ -3,6 +3,7 @@
 angular.module('dbWebApp', [
         'ui.router',
         'angular-loading-bar',
+        'ngAnimate',
         'ngResource',
         'ngSanitize',
         'angulartics',
@@ -24,7 +25,6 @@ angular.module('dbWebApp', [
 
             // conditional log-level
             $logProvider.debugEnabled(Properties.ENV === 'dev' || Properties.ENV === 'prepdev');
-
             $stateProvider
                 .state('error', {
                     url: '/public/error',
@@ -42,11 +42,8 @@ angular.module('dbWebApp', [
             $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         }])
 
-    .run(['$rootScope', '$state', '$window', '$location', '$log', '$cookies', 'ERROR_EVENTS', 'Properties',
-        function ($rootScope, $state, $window, $location, $log, $cookies, ERROR_EVENTS, Properties) {
-
-            $log.info('Starting up for env', Properties.ENV);
-            $log.info('Starting up for LOGIN_URL', Properties.LOGIN_URL);
+    .run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'Properties',
+        function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, Properties) {
 
             $rootScope.$on(ERROR_EVENTS.stateTransitionError, function (event, toState, toParams, fromState, fromParams, err) {
                 $log.error('Error transitioning to state:' + JSON.stringify(toState) + ' due to error ' + JSON.stringify(err));

@@ -62,7 +62,7 @@ describe('Modifying an inet6num', function () {
         });
 
         it('should show delete btn', function () {
-            expect(page.btnDeleteObject.isPresent()).toEqual(true);;
+            expect(page.btnDeleteObject.isPresent()).toEqual(true);
         });
 
     });

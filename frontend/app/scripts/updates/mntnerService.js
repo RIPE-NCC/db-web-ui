@@ -1,4 +1,4 @@
-/*global angular*/
+/*global _, angular*/
 
 (function () {
     'use strict';
@@ -95,7 +95,7 @@
                 });
             };
 
-           mntnerService.hasNccMntner = function(mntnerList) {
+            mntnerService.hasNccMntner = function (mntnerList) {
                 return _.any(mntnerList, function (mntner) {
                     return mntnerService.isNccMntner(mntner);
                 });

@@ -499,10 +499,10 @@ describe('webUpdates: CreateController', function () {
         expect(resp.errormessages.errormessage[0].severity).toEqual('Info');
         expect(resp.errormessages.errormessage[0].text).toEqual(
             'Your object is still pending authorisation by a maintainer of the <strong>aut-num</strong> object ' +
-            '<a target="_blank" href="/db-web-ui/#/webupdates/display/RIPE/aut-num/AS1299">AS1299</a>. ' +
+            '<a target="_blank" href="#/webupdates/display/RIPE/aut-num/AS1299">AS1299</a>. ' +
             'Please ask them to confirm, by submitting the same object as outlined below using syncupdates or mail updates, ' +
             'and authenticate it using the maintainer ' +
-            '<a target="_blank" href="/db-web-ui/#/webupdates/display/RIPE/mntner/TELIANET-RR">TELIANET-RR</a>. ' +
+            '<a target="_blank" href="#/webupdates/display/RIPE/mntner/TELIANET-RR">TELIANET-RR</a>. ' +
             '<a target="_blank" href="https://www.ripe.net/manage-ips-and-asns/db/support/managing-route-objects-in-the-irr#2--creating-route-objects-referring-to-resources-you-do-not-manage">' +
             'Click here for more information</a>.');
 

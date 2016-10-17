@@ -1,3 +1,4 @@
+/*global _, angular*/
 'use strict';
 
 angular.module('dbWebApp')
@@ -16,46 +17,50 @@ angular.module('dbWebApp')
     //})
     .factory('ErrorInterceptor', function ($rootScope, $q, $location, $log, ERROR_EVENTS) {
 
-        function _isServerError(status) {
+        function isServerError(status) {
             return status === 500;
         }
 
-        function _isAuthorisationError(status) {
+        function isAuthorisationError(status) {
             return status === 401 || status === 403;
         }
 
-        function _isNotFoundError(status) {
+        function isNotFoundError(status) {
             return status === 404;
         }
 
-        function _mustErrorBeSwallowed(response) {
+        function mustErrorBeSwallowed(response) {
             var toBeSwallowed = false;
 
             $log.debug('ui-url:' + $location.path());
             $log.debug('http-status:' + response.status);
-
             if (!_.isUndefined(response.config)) {
                 $log.debug('rest-url:' + response.config.url);
-                if (_isAuthorisationError(response.status) && _.endsWith(response.config.url, 'api/user/info')) {
+                if (isAuthorisationError(response.status) && _.endsWith(response.config.url, 'api/user/info')) {
                     toBeSwallowed = true;
                 }
-                if (_isNotFoundError(response.status) && _.startsWith(response.config.url, 'api/whois-internal/')) {
-                    toBeSwallowed = true;
-                    // Don't fail on 404s if 'ignore404' is set so we can look for parents of inet(6)nums without redirecting if they don't exist
-                } else if (_isNotFoundError(response.status) && response.config.params && response.config.params.ignore404 === true) {
-                    toBeSwallowed = true;
+                if (isNotFoundError(response.status)) {
+                    if (_.startsWith(response.config.url, 'api/whois-internal/')) {
+                        toBeSwallowed = true;
+                    } else if ((response.config.params && response.config.params.ignore404 === true) ||
+                        (response.config.url && response.config.url.indexOf('ignore404') > -1)) {
+                        toBeSwallowed = true;
+                    }
                 }
                 // TODO - We can remove the following code after WhoIs 1.86 deployment
                 // Code added to prevent 500 exploding to the user during autocomplete.
                 // The real way to fix it is in Whois, but we're waiting it to be deployed.
                 // NOTE..........
                 // Added code to stop parent lookups from forcing nav to 404.html if they aren't found.
-                if ((_isServerError(response.status) || _isNotFoundError(response.status)) && _.startsWith(response.config.url, 'api/whois/autocomplete')) {
+                if ((isServerError(response.status) || isNotFoundError(response.status)) && _.startsWith(response.config.url, 'api/whois/autocomplete')) {
+                    toBeSwallowed = true;
+                }
+                if (isServerError(response.status) && _.startsWith(response.config.url, 'api/dns/status')) {
                     toBeSwallowed = true;
                 }
             }
 
-            if (_isNotFoundError(response.status) && _.startsWith($location.path(), '/textupdates/multi')) {
+            if (isNotFoundError(response.status) && _.startsWith($location.path(), '/textupdates/multi')) {
                 toBeSwallowed = true;
             }
 
@@ -66,8 +71,8 @@ angular.module('dbWebApp')
 
         return {
             responseError: function (response) {
-                $log.info('resp:' + JSON.stringify(response));
-                if (!_mustErrorBeSwallowed(response)) {
+                $log.info('responseError: ' + JSON.stringify(response));
+                if (!mustErrorBeSwallowed(response)) {
                     $rootScope.$broadcast({
                         500: ERROR_EVENTS.serverError,
                         503: ERROR_EVENTS.serverError,

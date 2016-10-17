@@ -1,10 +1,10 @@
-/*global angular*/
+/*global _, angular*/
 
 (function () {
     'use strict';
 
     angular.module('dbWebApp').service('AlertService', ['$log', '$rootScope',
-        
+
         function ($log, $rootScope) {
             var alertService = {};
 

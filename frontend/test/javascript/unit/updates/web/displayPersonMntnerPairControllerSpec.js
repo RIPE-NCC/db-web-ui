@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
 describe('webUpdates: DisplayPersonMntnerPairController', function () {
@@ -128,10 +129,10 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         // no objects in message store
         createController();
 
-        $httpBackend.expectGET('api/whois/RIPE/person/dw-ripe?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/person/dw-ripe?unfiltered=true').respond(function() {
             return [200, personToDisplay, {}];
         });
-        $httpBackend.expectGET('api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true').respond(function() {
             return [200, mntnerToDisplay, {}];
         });
         $httpBackend.flush();
@@ -155,7 +156,7 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         // no objects in message store
         createController();
 
-        $httpBackend.expectGET('api/whois/RIPE/person/dw-ripe?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/person/dw-ripe?unfiltered=true').respond(function() {
             return [403, {
                 errormessages: {
                     errormessage: [
@@ -172,7 +173,7 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
                 }
             }, {}];
         });
-        $httpBackend.expectGET('api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true').respond(function() {
             return [200, mntnerToDisplay, {}];
         });
         $httpBackend.flush();

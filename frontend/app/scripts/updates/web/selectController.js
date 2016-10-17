@@ -5,7 +5,7 @@
     angular.module('webUpdates').controller('SelectController', ['$scope', '$state', 'WhoisResources', 'UserInfoService', 'Properties',
 
         function ($scope, $state, WhoisResources, UserInfoService, Properties) {
-            
+
             /*
              * UI initialisation
              */
@@ -17,6 +17,7 @@
             };
 
             $scope.loggedIn = undefined;
+
             UserInfoService.getUserInfo().then(
                 function () {
                     $scope.loggedIn = true;
@@ -41,6 +42,11 @@
                     $state.transitionTo('webupdates.createSelfMnt', {
                         source: $scope.selected.source
                     });
+                } else if ($scope.selected.objectType === 'domain') {
+                    $state.transitionTo('webupdates.domainobjectwizard', {
+                        source: $scope.selected.source,
+                        objectType: $scope.selected.objectType
+                    });
                 } else {
                     $state.transitionTo('webupdates.create', {
                         source: $scope.selected.source,
@@ -48,6 +54,12 @@
                     });
                 }
             };
+
+            function filterObjectTypes(unfiltered) {
+                return _.filter(unfiltered, function (item) {
+                    return item !== 'as-block' && item !== 'poem' && item !== 'poetic-form';
+                });
+            }
 
         }]);
 })();

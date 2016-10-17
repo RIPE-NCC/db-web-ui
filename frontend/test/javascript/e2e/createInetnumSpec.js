@@ -13,8 +13,8 @@ describe('The inetnum editor', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl);
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
+        browser.get(browser.baseUrl);
     });
 
     /*

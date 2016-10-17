@@ -7,11 +7,12 @@
 // prepare the mocks
                 Object.keys(mockGet).forEach(
                         function (key) {
-                            $httpBackend.whenGET(key).respond(
-                                    mockGet[key].status || 200,
+                            $httpBackend.whenGET(key).respond(function (method, req) {
+                                $log.info('Mock response for request', method, req);
+                                return [mockGet[key].status || 200,
                                     mockGet[key].data,
-                                    {'Content-type': 'application/json'}
-                            );
+                                    {'Content-type': 'application/json'}];
+                            });
                         });
                 $httpBackend.whenGET(/^api\//).respond(function (method, req) {
                     $log.error('Error caused by missing mock', method, req);

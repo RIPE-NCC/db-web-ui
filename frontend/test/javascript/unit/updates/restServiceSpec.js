@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, inject, it*/
 'use strict';
 
 describe('updates: RestService', function () {
