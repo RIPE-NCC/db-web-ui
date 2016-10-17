@@ -1,8 +1,8 @@
 /* global exports*/
 
 exports.config = {
-    chromeDriver: '../lib/chromedriver',
-    seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
+    chromeDriver: '../lib/chromedriver_2.22',
+    seleniumServerJar: '../lib/selenium-server-standalone-2.53.1.jar',
 
     // Spec patterns are relative to the location of this config.
     specs: [

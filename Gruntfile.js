@@ -1,4 +1,3 @@
-// Generated on 2016-07-05 using generator-angular 0.15.1
 'use strict';
 
 var fs = require('fs');
@@ -54,7 +53,7 @@ module.exports = function (grunt) {
                     files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
                     tasks: ['newer:jshint:all', 'newer:jscs:all'],
                     options: {
-                        livereload: '<%= connect.options.livereload %>'
+                        livereload: '<%= connect.options.livereload.livereload %>'
                     }
                 },
                 jsTest: {
@@ -70,7 +69,7 @@ module.exports = function (grunt) {
                 },
                 livereload: {
                     options: {
-                        livereload: '<%= connect.options.livereload %>'
+                        livereload: '<%= connect.options.livereload.livereload %>'
                     },
                     files: [
                         '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html',
@@ -103,12 +102,12 @@ module.exports = function (grunt) {
             options: {
                 port: 9080,
                 // Change this to '0.0.0.0' to access the server from outside.
-                hostname: '0.0.0.0',
-                livereload: 35729
+                hostname: '0.0.0.0'
             },
             livereload: {
                 options: {
                     open: false,
+                    livereload: 35729,
                     middleware: function (connect) {
                         return [
                             serveStatic('.tmp'),
@@ -744,6 +743,8 @@ module.exports = function (grunt) {
         'copy:processtags',
         'wiredep:sass',
         'instrument',
+        'compass',
+        'portPick:protractor',
         //'useminPrepare',
         //'concurrent:dist',
         'connect:e2e',
