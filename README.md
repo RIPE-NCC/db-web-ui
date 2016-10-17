@@ -18,31 +18,54 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 -------------------------------------------------------------------
 
 * first build (see above)
+
 * execute: ```% mvn jetty:run -Dspring.profiles.active=dev```
      
 * map ```127.0.0.1``` to ```localhost.ripe.net``` in your local hosts file
+
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
-Deployment
--------------------
-To deploy to any environment (dev/prepdev/rc/prod), create a war using:
 
-    % mvn -Pdeploy package -Dspring.profiles.active=<ENV>
+Setup Grunt
+-----------
+* CD to {projectRoot}/frontend
 
-e.g. to deploy to RC:
+* Run ```npm install``` 
 
-    % mvn -Pdeploy package -Dspring.profiles.active=rc
+* Run ```bower install```
 
-
-this will create a war for the specific environment by calling
-the appropriate grunt task for that environment. The grunt task will
-generate the appropriate scripts/app/app.constants.js file.
-
-Also add the "-Dspring.profiles.active=<ENV>" to the JVM args of the application server.
+Use Grunt
+---------
+* \<no args\><br>
+  Does a JSHint report for on all the JS files in the app
+* serve<br>
+  Starts a server on port 9080 which connects to a live backend. NOTE: doesn't work yet because Grunt can't
+  negotiate with the https server -- partly due to a bug in a bug in a grunt dependency
+* test<br>
+  alias for ```unit-test```
+* watch:dist<br>
+  Use this along with ```mvn spring-boot:run```. It watches the JS and HTML files for changes and redeploys them
+  when they've changed. In detail: the watch task is triggered by changes in the file system. Depending on the
+  change it detects, watch will run the appropriate Grunt task and put the result in the ```webapp``` directory
+  just like ```grunt build``` would.
+* e2e-test<br>
+  Runs the Protractor tests on port 9002. These are the same tests as the e2e-coverage target but they run without
+  coverage so they are quicker.
+* e2e-no-test<br>
+  Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
+  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks
+* e2e-coverage<br>
+  Runs the Protractor tests and shows coverage stats in two ways:
+  - a text summary in the console
+  - a detailed html report at ```./reports/e2e-coverage/lcov-report/index.html```
+  - N.B. this task is designed to run on db-tools-1 only -- it won't work locally unless you change the line
+   containing the reference to db-tools-1 in protractor-e2e-coverage.conf.js
+  - [see the coverage results on SonarQube](http://db-tools-1:8088/view/db-web-ui/job/db-web-ui-coverage-ng/11/console)
 
 Testing
 -------------------
 Login to the DEV or PREPDEV environments using the SSO username db-staff@ripe.net / password dbstaffsso.
+
 
 IntelliJ Preferences
 --------------------
@@ -79,6 +102,7 @@ Responsibilities of java-proxy: Non functionals only
 * Caching
 * Flexibilty: fix whois problems temporarily
 
+
 Things every db-web-ui developer should know
 --------------------------------------------
 
@@ -87,10 +111,11 @@ Things every db-web-ui developer should know
 * Use the Mozilla Developer Network (MDN) for JS specs — NOT W3Schools
 * https://www.airpair.com/angularjs/posts/top-10-mistakes-angularjs-developers-make
 
+
 HOWTOs
 ------
 
-### Update the web site template
+### Update the Ripe global web site template
 
 Download the [latest template from here]
 (https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true)
@@ -106,35 +131,6 @@ Open a terminal and cd into the `src/main/webapp` directory, then type these com
 
     curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" |js-beautify --type html |sed -e "/^\s*$/d" > template.html
     diff _index.html template.html
-
-Grunt
------
-
-* \<no args\><br>
-  Does a JSHint report for on all the JS files in the app
-* serve<br>
-  Starts a server on port 9080 which connects to a live backend. NOTE: doesn't work yet because Grunt can't
-  negotiate with the https server -- partly due to a bug in a bug in a grunt dependency
-* test<br>
-  alias for ```unit-test```
-* watch:dist<br>
-  Use this along with ```mvn spring-boot:run```. It watches the JS and HTML files for changes and redeploys them
-  when they've changed. In detail: the watch task is triggered by changes in the file system. Depending on the
-  change it detects, watch will run the appropriate Grunt task and put the result in the ```webapp``` directory
-  just like ```grunt build``` would.
-* e2e-test<br>
-  Runs the Protractor tests on port 9002. These are the same tests as the e2e-coverage target but they run without
-  coverage so they are quicker.
-* e2e-no-test<br>
-  Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
-  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks
-* e2e-coverage<br>
-  Runs the Protractor tests and shows coverage stats in two ways:
-  - a text summary in the console
-  - a detailed html report at ```./reports/e2e-coverage/lcov-report/index.html```
-  - N.B. this task is designed to run on db-tools-1 only -- it won't work locally unless you change the line
-   containing the reference to db-tools-1 in protractor-e2e-coverage.conf.js
-  - [see the coverage results on SonarQube](http://db-tools-1:8088/view/db-web-ui/job/db-web-ui-coverage-ng/11/console)
 
 Protractor
 ----------
