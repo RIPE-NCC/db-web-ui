@@ -14,7 +14,7 @@ describe('Modifying an inet6num', function () {
     describe('which is an allocation', function () {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inet6num/2001:999:2000::/36');
+            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inet6num/2001:999:2000::/36');
         });
 
         it('should show input controls in the correct disabled or enabled state', function() {
@@ -35,7 +35,7 @@ describe('Modifying an inet6num', function () {
     describe('which is an assignment', function () {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inet6num/2001:998:2000::/36');
+            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inet6num/2001:998:2000::/36');
         });
         it('should show input controls in the correct disabled or enabled state', function() {
             // maintainer input is enabled
@@ -58,7 +58,7 @@ describe('Modifying an inet6num', function () {
     describe('which is an allocated by lir', function () {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inet6num/2002:998:2000::%2F36');
+            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inet6num/2002:998:2000::%2F36');
         });
 
         it('should show delete btn', function () {

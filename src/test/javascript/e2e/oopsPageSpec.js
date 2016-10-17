@@ -9,7 +9,7 @@ describe('Oops page', function () {
     });
 
     xit('should go to oops page if the request has an error we cannot handle', function () {
-        browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/aut-num/response-with-error');
+        browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/aut-num/response-with-error');
 
         expect(element(by.id('oopsMessage')).getText()).toContain('Oops...');
         expect(element(by.id('oopsMessage')).getText()).toContain('We\'re sorry, it looks like something went wrong.');

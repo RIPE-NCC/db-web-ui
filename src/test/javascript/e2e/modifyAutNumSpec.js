@@ -11,7 +11,7 @@ describe('Modifying an aut-num', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/aut-num/AS12467');
+        browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/aut-num/AS12467');
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
     });
 

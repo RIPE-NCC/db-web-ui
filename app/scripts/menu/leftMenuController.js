@@ -12,29 +12,29 @@
             $rootScope.$on('dbWebApp.moduleActive', function (event, data) {
                 $log.info('Got ' + event.name + ' event with value ' + data);
                 if (data === 'search') {
-                    _expandSearchMenu();
+                    expandSearchMenu();
                 } else if (data === 'passwords') {
-                    _expandPasswordsMenu();
+                    expandPasswordsMenu();
                 } else if (data === 'updates') {
-                    _expandWebUpdatesMenu();
+                    expandWebUpdatesMenu();
                 } else {
                     $log.error('LeftMenuController: Received unrecognized value ' + data + ' for event ' + event.name);
                 }
             });
 
-            function _expandSearchMenu() {
+            function expandSearchMenu() {
                 $scope.menu = {
                     searchExpanded: true
                 };
             }
 
-            function _expandWebUpdatesMenu() {
+            function expandWebUpdatesMenu() {
                 $scope.menu = {
                     webUpdatesExpanded: true
                 };
             }
 
-            function _expandPasswordsMenu() {
+            function expandPasswordsMenu() {
                 $scope.menu = {
                     passwordsExpanded: true
                 };
