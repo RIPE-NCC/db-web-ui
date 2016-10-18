@@ -15,6 +15,7 @@
             var whoisResources = WhoisResources.wrapWhoisResources(result.whoisResources);
             $scope.objects = whoisResources.objects.object;
 
+            AlertService.clearErrors();
             AlertService.addErrors(whoisResources);
 
             $scope.navigateToSelect = function () {
