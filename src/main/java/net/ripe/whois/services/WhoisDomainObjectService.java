@@ -5,7 +5,6 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
-import org.glassfish.jersey.client.ClientResponse;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.client.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Service
@@ -46,28 +46,25 @@ public class WhoisDomainObjectService {
 
     public ResponseEntity<WhoisResources> createDomainObjects(final String source, String[] passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
 
-        WhoisResources whoisResources = new WhoisResources();
+        final WhoisResources whoisResources = new WhoisResources();
         whoisResources.setWhoisObjects(domainObjects);
 
-        WebTarget target = client.target(domainObjectApiUrl).path("/domain-objects/" + source);
+        final WebTarget target = client.target(domainObjectApiUrl).path("/domain-objects/" + source);
         if (passwords != null && passwords.length > 0) {
             target.queryParam("password", passwords);
         }
         LOGGER.debug("createDomainObjects() url: " + target.getUri().toString());
-        Invocation.Builder builder = target.request();
+        final Invocation.Builder builder = target.request();
         builder.header(HttpHeaders.COOKIE, headers.get(HttpHeaders.COOKIE));
         builder.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE);
         try {
-            ClientResponse response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), ClientResponse.class);
+            final Response response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), Response.class);
             LOGGER.debug("createDomainObjects() successful post. Response: " + response.getStatus());
-            return new ResponseEntity<>((WhoisResources) response.getEntity(), HttpStatus.CREATED);
+            return new ResponseEntity<>(response.readEntity(WhoisResources.class), HttpStatus.valueOf(response.getStatus()));
         } catch (ClientErrorException e) {
             LOGGER.debug("createDomainObjects() caught ClientErrorException during post.");
             return new ResponseEntity<>(e.getResponse().readEntity(WhoisResources.class), HttpStatus.valueOf(e.getResponse().getStatus()));
-        } catch (Exception e) {
-            LOGGER.info("createDomainObjects() Exception not handled", e);
         }
-        return null;
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectService.class);

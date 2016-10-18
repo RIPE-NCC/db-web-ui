@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$http', '$rootScope', '$scope', '$stateParams', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService',
-        function ($http, $rootScope, $scope, $stateParams, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService) {
+    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams',  '$state', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore',
+        function ($http, $scope, $stateParams, $state, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore) {
 
             /*
              * Initial scope vars
@@ -87,7 +87,6 @@
 
                 // close the alert message
                 $scope.errors = [];
-                $scope.successMessages = [];
 
                 var url = 'api/whois/domain-objects/' + $scope.source;
                 var data = {
@@ -131,17 +130,26 @@
             function onSubmitSuccess(resp) {
                 $scope.restCallInProgress = false;
                 $scope.errors = [];
-                $scope.successMessages = [{text:'domains created'}];
                 $scope.isValidatingDomains = false;
                 console.log('onSubmitSuccess resp', resp);
-                WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, resp.getPrimaryKey(), $scope.operation);
+
+                var prefix = _.find($scope.attributes, function(attr) {
+                    return attr.name === 'prefix';
+                });
+
+                MessageStore.add('result', {prefix: prefix.value, whoisResources: resp.data});
+
+                $state.transitionTo('webupdates.displayDomainObjects', {
+                    source: $scope.source,
+                    objectType: $scope.objectType
+                });
+
             }
 
             function onSubmitError(response) {
                 $scope.restCallInProgress = false;
-                $scope.successMessages = [];
                 $scope.isValidatingDomains = false;
-                $scope.errors = _.filter(response.data.errorMessages,
+                $scope.errors = _.filter(response.data.errormessages.errormessage,
                     function (errorMessage) {
                         errorMessage.plainText = readableError(errorMessage);
                         return errorMessage.severity === 'Error';
