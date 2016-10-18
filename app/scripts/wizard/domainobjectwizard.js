@@ -149,7 +149,7 @@
             function onSubmitError(response) {
                 $scope.restCallInProgress = false;
                 $scope.isValidatingDomains = false;
-                $scope.errors = _.filter(response.data.errorMessages,
+                $scope.errors = _.filter(response.data.errormessages.errormessage,
                     function (errorMessage) {
                         errorMessage.plainText = readableError(errorMessage);
                         return errorMessage.severity === 'Error';
