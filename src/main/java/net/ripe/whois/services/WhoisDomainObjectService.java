@@ -60,7 +60,7 @@ public class WhoisDomainObjectService {
         try {
             final Response response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), Response.class);
             LOGGER.debug("createDomainObjects() successful post. Response: " + response.getStatus());
-            return new ResponseEntity<>(response.readEntity(WhoisResources.class), HttpStatus.CREATED);
+            return new ResponseEntity<>(response.readEntity(WhoisResources.class), HttpStatus.valueOf(response.getStatus()));
         } catch (ClientErrorException e) {
             LOGGER.debug("createDomainObjects() caught ClientErrorException during post.");
             return new ResponseEntity<>(e.getResponse().readEntity(WhoisResources.class), HttpStatus.valueOf(e.getResponse().getStatus()));
