@@ -2,21 +2,24 @@
 # Project Specific
 ######################
 backend/src/main/webapp
+backend/target/
 screenshot-*.png
 instrumented
 reports
 frontend/reports
 frontend/dist
+.idea/
 
 ######################
 # Node
 ######################
-frontend/node/**
-frontend/node_modules/**
+frontend/node/
+frontend/node_modules/
 
 ######################
 # Bower
 ######################
+frontend/bower_components/
 
 ######################
 # SASS
@@ -113,4 +116,3 @@ Desktop.ini
 .merge_file*
 .~*#
 
-frontend/bower_components/
