@@ -4,7 +4,7 @@
 describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
     var $scope, $state, $stateParams, $httpBackend, $log, WhoisResources, MessageStore, AlertService, UserInfoService;
-    var SOURCE = 'TEST';
+    var SOURCE = 'RIPE';
 
     var RestService = {
         createObject: function () {
@@ -92,7 +92,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
         expect($scope.maintainerAttributes.getSingleAttributeOnName('upd-to').value).toEqual('tdacruzper@ripe.net');
         expect($scope.maintainerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO tdacruzper@ripe.net');
-        expect($scope.maintainerAttributes.getSingleAttributeOnName('source').value).toEqual('TEST');
+        expect($scope.maintainerAttributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
     });
 

@@ -429,48 +429,6 @@
         </pluginManagement>
         <plugins>
             <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
-                <configuration>
-                    <jvmArgs>-Xmx2g</jvmArgs>
-                    <jettyXml>src/test/resources/jetty/jetty.xml,src/test/resources/jetty/jetty-http.xml,src/test/resources/jetty/jetty-ssl.xml,src/test/resources/jetty/jetty-https.xml</jettyXml>
-                    <systemProperties>
-                        <!-- These properties are set only when running jetty from mvn.-->
-                        <systemProperty>
-                            <name>org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH</name><value>true</value>
-                            <name>org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH</name><value>true</value>
-                            <name>org.eclipse.jetty.LEVEL</name><value>DEBUG</value>
-                            <name>jsse.enableSNIExtension</name><value>false</value>
-                            <name>jetty.ssl.sniHostCheck</name><value>false</value>
-                        </systemProperty>
-                    </systemProperties>
-                    <reload>manual</reload>
-                    <contextXml>${basedir}/src/test/resources/jetty/jetty-context.xml</contextXml>
-
-                    <webAppConfig>
-                        <contextPath>/db-web-ui</contextPath>
-                        <jettyEnvXml>${basedir}/src/test/resources/jetty/jetty-env.xml</jettyEnvXml>
-                        <resourceBases>
-                            <resourceBase>${project.basedir}/dist</resourceBase>
-                        </resourceBases>
-                    </webAppConfig>
-                </configuration>
-                <dependencies>
-                    <!-- app server dependencies -->
-                    <dependency>
-                        <groupId>log4j</groupId>
-                        <artifactId>log4j</artifactId>
-                        <version>1.2.16</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>javax.mail</groupId>
-                        <artifactId>mail</artifactId>
-                        <version>1.4.1</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
                 <groupId>com.github.trecloux</groupId>
                 <artifactId>yeoman-maven-plugin</artifactId>
                 <version>0.4</version>
@@ -573,6 +531,53 @@
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>${sonar-maven-plugin.version}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>${jetty.version}</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>javax.mail</groupId>
+                        <artifactId>mail</artifactId>
+                        <version>1.4.1</version>
+                    </dependency>
+                    <!-- app server dependencies -->
+                    <dependency>
+                        <groupId>log4j</groupId>
+                        <artifactId>log4j</artifactId>
+                        <version>1.2.16</version>
+                    </dependency>
+                </dependencies>
+                <configuration>
+                    <jvmArgs>-Xmx2g</jvmArgs>
+                    <jettyXml>src/test/resources/jetty/jetty.xml,src/test/resources/jetty/jetty-http.xml,src/test/resources/jetty/jetty-ssl.xml,src/test/resources/jetty/jetty-https.xml</jettyXml>
+                    <systemProperties>
+                        <!-- These properties are set only when running jetty from mvn.-->
+                        <systemProperty>
+                            <name>org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH</name>
+                            <value>true</value>
+                            <name>org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH</name>
+                            <value>true</value>
+                            <name>org.eclipse.jetty.LEVEL</name>
+                            <value>DEBUG</value>
+                            <name>jsse.enableSNIExtension</name>
+                            <value>false</value>
+                            <name>jetty.ssl.sniHostCheck</name>
+                            <value>false</value>
+                        </systemProperty>
+                    </systemProperties>
+                    <reload>manual</reload>
+                    <contextXml>${basedir}/src/test/resources/jetty/jetty-context.xml</contextXml>
+
+                    <webAppConfig>
+                        <contextPath>/db-web-ui</contextPath>
+                        <jettyEnvXml>${basedir}/src/test/resources/jetty/jetty-env.xml</jettyEnvXml>
+                        <resourceBases>
+                            <resourceBase>${project.basedir}/dist</resourceBase>
+                        </resourceBases>
+                    </webAppConfig>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

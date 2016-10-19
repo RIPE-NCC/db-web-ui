@@ -190,7 +190,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Object does not yet exist');
         expect($scope.objects.objects[0].action).toBe('create');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
-        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/create/TEST/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20AUTO-1%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
+        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20AUTO-1%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
 
     });
 
@@ -215,14 +215,14 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].errors.length).toBe(0);
 
         // expect fetch returning 404
-        $httpBackend.whenGET('api/whois/TEST/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(successResponse);
+        $httpBackend.whenGET('api/whois/RIPE/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(successResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].rpslOriginal).toBeDefined();
         expect($scope.objects.objects[0].success).toBeUndefined();
         expect($scope.objects.objects[0].action).toBe('modify');
-        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/TEST/person/MM1-RIPE');
-        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/modify/TEST/person/MM1-RIPE?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
+        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
+        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/modify/RIPE/person/MM1-RIPE?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
         expect($scope.objects.objects[0].status).toBe('Object exists');
 
     });
@@ -248,7 +248,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].errors.length).toBe(0);
 
         // Non 404
-        $httpBackend.whenGET('api/whois/TEST/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(400, errorResponse);
+        $httpBackend.whenGET('api/whois/RIPE/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(400, errorResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].rpslOriginal).toBeUndefined();
@@ -282,14 +282,14 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Fetching');
         expect($scope.objects.objects[0].errors.length).toBe(0);
 
-        $httpBackend.whenGET('api/whois/TEST/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(404, errorResponse);
+        $httpBackend.whenGET('api/whois/RIPE/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(404, errorResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].rpslOriginal).toBeUndefined();
         expect($scope.objects.objects[0].success).toBeUndefined();
         expect($scope.objects.objects[0].action).toBe('create');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
-        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/create/TEST/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20Amsterdam%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
+        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20Amsterdam%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
         expect($scope.objects.objects[0].status).toBe('Object does not yet exist');
     });
 
@@ -327,11 +327,11 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPOST('api/whois/TEST/person?unformatted=true').respond(successResponse);
+        $httpBackend.expectPOST('api/whois/RIPE/person?unformatted=true').respond(successResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].status).toBe('Create success');
-        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/TEST/person/MM1-RIPE');
+        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
         // verify RPSL is rewritten to prevent second create
         expect($scope.objects.objects[0].rpsl).toBe(
@@ -363,7 +363,7 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPOST('api/whois/TEST/person?unformatted=true').respond(400, errorResponse);
+        $httpBackend.expectPOST('api/whois/RIPE/person?unformatted=true').respond(400, errorResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].status).toBe('Create error');
@@ -390,11 +390,11 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPUT('api/whois/TEST/person/MM1-RIPE?unformatted=true').respond(successResponse);
+        $httpBackend.expectPUT('api/whois/RIPE/person/MM1-RIPE?unformatted=true').respond(successResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].status).toBe('Modify success');
-        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/TEST/person/MM1-RIPE');
+        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect($scope.objects.objects[0].showDiff).toBe(true);
         expect($scope.objects.objects[0].rpsl).toBe(
@@ -423,7 +423,7 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectPUT('api/whois/TEST/person/MM1-RIPE?unformatted=true').respond(403,errorResponse);
+        $httpBackend.expectPUT('api/whois/RIPE/person/MM1-RIPE?unformatted=true').respond(403,errorResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].status).toBe('Modify error');
@@ -451,7 +451,7 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectDELETE('api/whois/TEST/person/MM1-RIPE?dry-run=false&password=secret&reason=just+because').respond(successResponse);
+        $httpBackend.expectDELETE('api/whois/RIPE/person/MM1-RIPE?dry-run=false&password=secret&reason=just+because').respond(successResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].status).toBe('Delete success');
@@ -488,7 +488,7 @@ describe('textUpdates: TextMultiController', function () {
 
         $scope.submit();
 
-        $httpBackend.expectDELETE('api/whois/TEST/person/MM1-RIPE?dry-run=false&password=secret&reason=just+because').respond(403,errorResponse);
+        $httpBackend.expectDELETE('api/whois/RIPE/person/MM1-RIPE?dry-run=false&password=secret&reason=just+because').respond(403,errorResponse);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].status).toBe('Delete error');

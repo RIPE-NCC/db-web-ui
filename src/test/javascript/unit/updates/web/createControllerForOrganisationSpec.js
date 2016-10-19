@@ -10,7 +10,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     var OrganisationHelper;
     var ModalService;
     var OBJECT_TYPE = 'organisation';
-    var SOURCE = 'TEST';
+    var SOURCE = 'RIPE';
     var NAME = 'ORG-UA300-RIPE';
     var PreferenceService;
 
@@ -94,7 +94,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
             WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes )
         );
 
-        $httpBackend.whenPUT('api/whois/TEST/organisation/ORG-UA300-RIPE').respond(DEFAULT_RESPONSE); // I don' care about this call
+        $httpBackend.whenPUT('api/whois/RIPE/organisation/ORG-UA300-RIPE').respond(DEFAULT_RESPONSE); // I don' care about this call
         spyOn(OrganisationHelper, 'updateAbuseC');
 
         $scope.submit();
@@ -125,7 +125,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
                         value : 'MNT-THINK'
                     }, {
                         name : 'source',
-                        value : 'TEST'
+                        value : 'RIPE'
                     }];
 
     var DEFAULT_RESPONSE =
@@ -160,7 +160,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
                                         value : 'TEST-MNT'
                                     }, {
                                         name : 'source',
-                                        value: 'TEST'
+                                        value: 'RIPE'
                                     }
                                     ]
                                 }
