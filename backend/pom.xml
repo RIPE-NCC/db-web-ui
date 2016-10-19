@@ -9,9 +9,8 @@
         <version>1.0.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>whois-webui-backend</artifactId>
+    <artifactId>backend</artifactId>
     <packaging>war</packaging>
-    <name>whois_webui</name>
 
     <properties>
         <apache-httpclient>4.4.1</apache-httpclient>
