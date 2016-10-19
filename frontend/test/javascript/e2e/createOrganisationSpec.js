@@ -13,7 +13,7 @@ describe('The organisation editor', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '/#/webupdates/create/RIPE/organisation');
+        browser.get(browser.baseUrl + '#/webupdates/create/RIPE/organisation');
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {

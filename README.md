@@ -26,6 +26,21 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
 
+Deployment
+-------------------
+To create a war use:
+
+    % mvn package
+
+Runtime
+-------------------
+Add the "-Dspring.profiles.active=<ENV>" to the JVM args of the application server.
+
+Valid profile names are dev, prepdev, rc and prod.
+
+Properties are read from the /config/application-<ENV>.properties file on the classpath.
+
+
 Setup Grunt
 -----------
 * CD to {projectRoot}/frontend

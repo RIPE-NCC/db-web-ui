@@ -1,14 +1,4 @@
-/* global exports, require*/
-var os = require('os');
-
-var baseUrl = function() {
-    'use strict';
-    return [
-        'http://',
-        os.hostname(),
-        ':9004'
-    ].join('');
-};
+/* global exports*/
 
 exports.config = {
 
@@ -26,10 +16,6 @@ exports.config = {
 
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
-
-    // A base URL for your application under test. Calls to protractor.get()
-    // with relative paths will be prepended with this.
-    baseUrl: baseUrl(),
 
     jasmineNodeOpts: {
         onComplete: null,
