@@ -678,7 +678,7 @@ module.exports = function (grunt) {
             'postcss:server',
             'configureProxies:livereload',
             'connect:livereload',
-            'watch:dev'
+            'focus:livereloadServer'
         ]);
     });
 

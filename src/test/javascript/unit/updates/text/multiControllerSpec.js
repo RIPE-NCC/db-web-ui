@@ -358,7 +358,7 @@ describe('textUpdates: TextMultiController', function () {
             name: 'AUTO-1',
             attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
             success: undefined,
-            errors:[],
+            errors:[]
         });
 
         $scope.submit();
@@ -385,7 +385,7 @@ describe('textUpdates: TextMultiController', function () {
             name: 'MM1-RIPE',
             attributes: WhoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
             success: undefined,
-            errors:[],
+            errors:[]
         });
 
         $scope.submit();

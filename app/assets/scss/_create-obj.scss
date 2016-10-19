@@ -222,9 +222,6 @@ ul.form-fields {
 	float: right;
 }
 
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-    display: none !important;
-}
 tbody.reverse-zone-table {
   display: block;
   max-height: 300px;
@@ -250,4 +247,8 @@ tbody.reverse-zone-table {
 	-o-transition: none !important;
 	-ms-transition: none !important;
 	transition: none !important;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
 }
