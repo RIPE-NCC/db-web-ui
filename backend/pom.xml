@@ -249,7 +249,7 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <configuration>
-                    <packagingExcludes>WEB-INF/lib/tomcat-*.jar,WEB-INF/classes/config/application-dev.properties
+                    <packagingExcludes>WEB-INF/lib/tomcat-*.jar,WEB-INF/classes/config/application-*.properties
                     </packagingExcludes>
                     <archive>
                         <manifestEntries>
@@ -301,6 +301,7 @@
                             <name>org.eclipse.jetty.LEVEL</name><value>DEBUG</value>
                             <name>jsse.enableSNIExtension</name><value>false</value>
                             <name>jetty.ssl.sniHostCheck</name><value>false</value>
+                            <name>spring.profiles.active</name><value>local</value>
                         </systemProperty>
                     </systemProperties>
                     <reload>manual</reload>
