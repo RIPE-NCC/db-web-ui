@@ -870,14 +870,9 @@ describe('dbWebApp: WhoisResources', function () {
                 ]
             }});
 
-        expect(resources.getAttributesForObjectWithIndex(0)).toEqual( personAttrs);
-        expect(resources.getAttributesForObjectWithIndex(1)).toEqual( mntnerAttrs);
-        expect(resources.getAttributesForObjectWithIndex(2)).toEqual( []);
-
         expect($whoisResources.getAttributesForObjectOfType(resources, 'person')).toEqual( personAttrs);
         expect($whoisResources.getAttributesForObjectOfType(resources,'mntner')).toEqual( mntnerAttrs);
         expect($whoisResources.getAttributesForObjectOfType(resources,'inetnum')).toEqual( []);
-
     });
 
 

@@ -297,16 +297,6 @@ angular.module('dbWebApp')
             return object.attributes.attribute;
         };
 
-        var getAttributesForObjectWithIndex = function (idx) {
-            if(_.isUndefined(this.objects) ) {
-                return [];
-            }
-            if( idx >= this.objects.object.length ) {
-                return [];
-            }
-            return this.objects.object[idx].attributes.attribute;
-        };
-
         function isValidWhoisResources( whoisResources) {
             if(_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
                 $log.error('isValidWhoisResources: Null input:' + JSON.stringify(whoisResources));
@@ -345,7 +335,6 @@ angular.module('dbWebApp')
             whoisResources.getGlobalInfos = getGlobalInfos;
             whoisResources.getErrorsOnAttribute = getErrorsOnAttribute;
             whoisResources.getAttributes = getAttributes;
-            whoisResources.getAttributesForObjectWithIndex = getAttributesForObjectWithIndex;
             whoisResources.getPrimaryKey = getPrimaryKey;
             whoisResources.getSource = getSource;
             whoisResources.getObjectType = getObjectType;
