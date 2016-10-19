@@ -2,7 +2,7 @@
   "name": "db-web-ui",
   "version": "0.0.0",
   "appPath": "app",
-  "testPath": "src/test/javascript/unit",
+  "testPath": "test/javascript/unit",
   "distPath": "dist",
   "dependencies": {
     "bootstrap-sass": "3.3.4",

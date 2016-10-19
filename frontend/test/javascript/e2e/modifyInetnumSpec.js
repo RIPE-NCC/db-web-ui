@@ -43,7 +43,7 @@ describe('Modifying an inetnum', function () {
     describe('which has ASSIGNED PA status', function () {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/194.219.52.224%20-%20194.219.52.239');
+            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inetnum/194.219.52.224%20-%20194.219.52.239');
         });
 
         it('should have status box disabled', function () {
@@ -57,7 +57,7 @@ describe('Modifying an inetnum', function () {
         });
 
         it('which is an end user assignment should NOT show delete btn', function () {
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255');
+            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255');
             expect(page.btnDeleteObject.isPresent()).toBeFalsy();
         });
 

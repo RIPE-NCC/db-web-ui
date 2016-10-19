@@ -1,15 +1,16 @@
 /* global exports*/
 
 exports.config = {
+    chromeDriver: '../lib/chromedriver',
+    seleniumServerJar: '../lib/selenium-server-standalone-2.53.1.jar',
 
     // Spec patterns are relative to the location of this config.
     specs: [
-        './src/test/javascript/e2e/*Spec.js'
+        './test/javascript/e2e/*Spec.js'
     ],
 
     capabilities: {
         'browserName': 'chrome',
-        'seleniumAddress': 'http://193.0.2.222:4444/wd/hub',
         //'browserName': 'phantomjs',
         'chromeOptions': {'args': ['--disable-extensions']}
     },
@@ -20,7 +21,7 @@ exports.config = {
     jasmineNodeOpts: {
         onComplete: null,
         isVerbose: false,
-        showColors: false,
+        showColors: true,
         includeStackTrace: true,
         defaultTimeoutInterval: 10000
     }

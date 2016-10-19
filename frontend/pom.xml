@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>net.ripe.whois</groupId>
+        <artifactId>whois-webui</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>whois-webui-frontend</artifactId>
+    <packaging>pom</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.trecloux</groupId>
+                <artifactId>yeoman-maven-plugin</artifactId>
+                <version>0.4</version>
+                <executions>
+                    <execution>
+                        <id>run-frontend-build</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                        <configuration>
+                            <buildTool>grunt</buildTool>
+                            <buildArgs>build --force --no-color</buildArgs>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <yeomanProjectDirectory>${project.basedir}</yeomanProjectDirectory>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -6,7 +6,7 @@ module.exports = function (config) {
 
     config.set({
         // base path, that will be used to resolve files and exclude
-        basePath: '../../../',
+        basePath: '../../',
 
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['jasmine'],
@@ -61,12 +61,12 @@ module.exports = function (config) {
             'bower_components/ip-address/dist/ip-address-globals.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
-            './app/scripts/app.js',
-            './.tmp/scripts/app.constants.js',
-            './app/scripts/**/*Module.js',
-            './app/scripts/**/*States.js',
-            './app/scripts/**/*.js',
-            'src/test/javascript/unit/**/*.js'
+            'app/scripts/app.js',
+            '.tmp/scripts/app.constants.js',
+            'app/scripts/**/*Module.js',
+            'app/scripts/**/*States.js',
+            'app/scripts/**/*.js',
+            'test/javascript/unit/**/*.js'
         ],
 
 
