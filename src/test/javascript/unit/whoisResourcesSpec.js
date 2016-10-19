@@ -629,27 +629,6 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
     });
 
-    it('should convert mntnrs to mnt-by attrs', function () {
-        var mntnerForSsoResponse = $whoisResources.wrapWhoisResources({
-            objects: {
-                object: [
-                    { 'primary-key': { attribute: [ { name: 'mntner', value: 'TEST-MNT'    } ] }  },
-                    { 'primary-key': { attribute: [ { name: 'mntner', value: 'TESTSSO-MNT' } ]  } }
-                ]
-            }
-        });
-
-        expect(mntnerForSsoResponse).toBeDefined();
-
-        expect(mntnerForSsoResponse.objectNamesAsAttributes('mnt-by')).toEqual(
-            [
-                {name:'mnt-by', value:'TEST-MNT'},
-                {name:'mnt-by', value:'TESTSSO-MNT'}
-            ]
-        );
-
-    });
-
     it('detact if an attribute can be added', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'person',        value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},

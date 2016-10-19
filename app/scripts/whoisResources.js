@@ -311,12 +311,6 @@ angular.module('dbWebApp')
             return true;
         }
 
-        var objectNamesAsAttributes = function( attributeType) {
-            return _.map(this.objects.object,  function (obj) {
-                return { name: attributeType, value:obj['primary-key'].attribute[0].value };
-            });
-        };
-
         this.wrapWhoisResources = function( whoisResources ) {
             if ( !  isValidWhoisResources(whoisResources) ) {
                 return undefined;
@@ -339,7 +333,6 @@ angular.module('dbWebApp')
             whoisResources.getSource = getSource;
             whoisResources.getObjectType = getObjectType;
             whoisResources.isFiltered = isFiltered;
-            whoisResources.objectNamesAsAttributes = objectNamesAsAttributes;
 
             return whoisResources;
         };
