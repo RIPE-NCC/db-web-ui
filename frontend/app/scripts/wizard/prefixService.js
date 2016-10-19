@@ -5,29 +5,21 @@
 
     angular.module('dbWebApp').service('PrefixService', ['$http', function ($http) {
 
-        this.isValidIp4Cidr = function (str) {
-            // check the subnet mask is in range
-            var slashpos = str.indexOf('/');
-            if (slashpos < 0) {
-                return false;
-            }
-            var mask = parseInt(str.substr(slashpos + 1), 10);
-            if (mask < 17 || mask > 24) {
+        this.isValidIp4Cidr = function (ip4) {
+            // check the subnet mask was provided
+            if (!ip4.parsedSubnet) {
                 return false;
             }
 
-            // check it looks like a valid ipv4 address
-            var ip4 = new Address4(str);
-            if (!ip4.isValid()) {
+            // check the subnet mask is in range
+            if (ip4.parsedSubnet < 17 || ip4.parsedSubnet > 24) {
                 return false;
             }
 
             // check that subnet mask covers all address bits
             var bits = ip4.getBitsBase2();
             var last1 = bits.lastIndexOf('1');
-            if (last1 >= ip4.subnetMask) {
-                throw 'Address out of range for subnet mask';
-            }
+
             return last1 < ip4.subnetMask;
         };
 
@@ -52,7 +44,7 @@
             var bits = ip6.getBitsBase2();
             var last1 = bits.lastIndexOf('1');
             if (last1 >= ip6.subnetMask) {
-                throw 'Address out of range for subnet mask';
+                return false;
             }
             return last1 < ip6.subnetMask;
         };
@@ -71,19 +63,11 @@
             // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
             // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
             //
-            if (!str) {
-                // no string
-                return false;
-            }
-            var slashpos = str.indexOf('/');
-            if (slashpos < 0 || !str.substr(slashpos + 1)) {
-                // empty or missing netmask
-                return false;
-            }
+
             // here we have a string with a subnet mask, but dno if it's v4 or v6 yet, so check...
             var ip4 = new Address4(str);
             if (ip4.isValid()) {
-                return this.isValidIp4Cidr(str);
+                return this.isValidIp4Cidr(ip4);
             } else {
                 var ip6 = new Address6(str);
                 if (ip6.isValid()) {
