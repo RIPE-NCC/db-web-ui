@@ -57,6 +57,9 @@
                             <directory>${basedir}/frontend/.tmp</directory>
                         </fileset>
                         <fileset>
+                            <directory>${basedir}/frontend/bower_components</directory>
+                        </fileset>
+                        <fileset>
                             <directory>${basedir}/frontend/dist</directory>
                         </fileset>
                         <fileset>
