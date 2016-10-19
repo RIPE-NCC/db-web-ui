@@ -1,6 +1,6 @@
 exports.config = {
     chromeDriver: '../lib/chromedriver',
-    seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
+    seleniumServerJar: '../lib/selenium-server-standalone-2.53.1.jar',
 
     // Spec patterns are relative to the location of this config.
     specs: [
@@ -19,10 +19,6 @@ exports.config = {
     directConnect: true,
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
-
-    // A base URL for your application under test. Calls to protractor.get()
-    // with relative paths will be prepended with this.
-    baseUrl: 'http://localhost:9004',
 
     jasmineNodeOpts: {
         onComplete: null,

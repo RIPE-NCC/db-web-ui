@@ -18,27 +18,26 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 -------------------------------------------------------------------
 
 * first build (see above)
-* execute: ```% mvn spring-boot:run```
+* execute: ```% mvn jetty:run -Dspring.profiles.active=dev```
      
 * map ```127.0.0.1``` to ```localhost.ripe.net``` in your local hosts file
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
 Deployment
 -------------------
-To deploy to any environment (dev/prepdev/rc/prod), create a war using:
+To create a war use:
 
-    % mvn -Pdeploy package -Dspring.profiles.active=<ENV>
+    % mvn package
 
-e.g. to deploy to RC:
+Runtime
+-------------------
+Add the "-Dspring.profiles.active=<ENV>" to the JVM args of the application server.
 
-    % mvn -Pdeploy package -Dspring.profiles.active=rc
+Valid profile names are dev, prepdev, rc and prod.
 
+The dev profile is active by default, if no profile is specified.
 
-this will create a war for the specific environment by calling
-the appropriate grunt task for that environment. The grunt task will
-generate the appropriate scripts/app/app.constants.js file.
-
-Also add the "-Dspring.profiles.active=<ENV>" to the JVM args of the application server.
+Properties are read from the /config/application-<ENV>.properties file on the classpath.
 
 Testing
 -------------------

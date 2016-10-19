@@ -52,8 +52,6 @@ public class Application {
         app.setShowBanner(false);
         final SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
 
-        addDefaultProfile(app, source);
-
         final Environment environment = app.run(args).getEnvironment();
         LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
                         "Local: \t\thttps://127.0.0.1:{}\n\t" +
@@ -61,17 +59,6 @@ public class Application {
                 environment.getProperty("server.port"),
                 InetAddress.getLocalHost().getHostAddress(),
                 environment.getProperty("server.port"));
-    }
-
-    /**
-     * If no profile has been configured, set by default the "dev" profile.
-     */
-    private static void addDefaultProfile(final SpringApplication application, final SimpleCommandLinePropertySource source) {
-        if (!source.containsProperty("spring.profiles.active") &&
-                !System.getenv().containsKey("SPRING_PROFILES_ACTIVE")) {
-
-            application.setAdditionalProfiles(Constants.SPRING_PROFILE_DEVELOPMENT);
-        }
     }
 
     /**

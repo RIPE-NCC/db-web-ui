@@ -37,7 +37,7 @@ public class AngularConstantsController {
     @Value("${portal.url}")
     private String portalUrl;
 
-    @Value("${frontend.banner}")
+    @Value("${frontend.banner:}")
     private String frontendBanner;
 
     @Value("${frontend.gtm.id}")

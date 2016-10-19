@@ -13,7 +13,7 @@ describe('Modifying an organisation', function () {
 
         beforeEach(function () {
             browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-            browser.get(browser.baseUrl + '/#/webupdates/modify/RIPE/organisation/ORG-AGNS1-RIPE');
+            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/organisation/ORG-AGNS1-RIPE');
         });
 
         it('should show the mnt-by field as read-only', function () {

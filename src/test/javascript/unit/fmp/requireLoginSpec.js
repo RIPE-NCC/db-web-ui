@@ -1,3 +1,4 @@
+/*global beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
 describe('RequireLoginCtrl', function() {

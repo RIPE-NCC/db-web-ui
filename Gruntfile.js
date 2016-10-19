@@ -1,4 +1,3 @@
-// Generated on 2016-07-05 using generator-angular 0.15.1
 'use strict';
 
 var fs = require('fs');
@@ -54,7 +53,7 @@ module.exports = function (grunt) {
                     files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
                     tasks: ['newer:jshint:all', 'newer:jscs:all'],
                     options: {
-                        livereload: '<%= connect.options.livereload %>'
+                        livereload: '<%= connect.livereload.livereload %>'
                     }
                 },
                 jsTest: {
@@ -70,7 +69,7 @@ module.exports = function (grunt) {
                 },
                 livereload: {
                     options: {
-                        livereload: '<%= connect.options.livereload %>'
+                        livereload: '<%= connect.livereload.livereload %>'
                     },
                     files: [
                         '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html',
@@ -103,12 +102,12 @@ module.exports = function (grunt) {
             options: {
                 port: 9080,
                 // Change this to '0.0.0.0' to access the server from outside.
-                hostname: '0.0.0.0',
-                livereload: 35729
+                hostname: '0.0.0.0'
             },
             livereload: {
                 options: {
                     open: false,
+                    livereload: 35729,
                     middleware: function (connect) {
                         return [
                             serveStatic('.tmp'),
@@ -134,7 +133,7 @@ module.exports = function (grunt) {
             },
             e2e: {
                 options: {
-                    port: 9004,
+                    port: 0,
                     keepalive: false,
                     //open: true,
                     middleware: function (connect) {
@@ -142,22 +141,6 @@ module.exports = function (grunt) {
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic('.tmp'),
                             serveStatic('instrumented'),
-                            connect().use(
-                                '/bower_components',
-                                serveStatic('./bower_components')
-                            ),
-                            serveStatic(appConfig.app)
-                        ];
-                    }
-                }
-            },
-            test: {
-                options: {
-                    port: 9002,
-                    middleware: function (connect) {
-                        return [
-                            serveStatic('.tmp'),
-                            serveStatic('test'),
                             connect().use(
                                 '/bower_components',
                                 serveStatic('./bower_components')
@@ -574,7 +557,9 @@ module.exports = function (grunt) {
         protractor: {
             options: {
                 noColor: false, // If true, protractor will not use colors in its output.
-                args: {}
+                args: {
+                    baseUrl: 'http://localhost:0'
+                }
             },
             e2e: {
                 options: {
@@ -590,20 +575,16 @@ module.exports = function (grunt) {
             }
         },
 
-        karma: {
-            unit: {
-                configFile: 'src/test/javascript/karma.conf.js',
-                singleRun: true
-            }
-        },
-
         // E2E config
         protractor_coverage: {
             options: {
                 keepAlive: true,
                 noColor: false,
                 collectorPort: 3001,
-                coverageDir: 'reports/e2e-coverage'
+                coverageDir: 'reports/e2e-coverage',
+                args: {
+                    baseUrl: 'http://' + os.hostname() + ':0'
+                }
             },
             e2eLocal: {
                 options: {
@@ -633,7 +614,39 @@ module.exports = function (grunt) {
                 dir: 'reports/e2e-coverage',
                 print: 'detail'
             }
+        },
+
+        // Range from 9000 - 9099 available through msw7 / db-tools-2 firewall
+        // 9080 reserved for grunt serve and grunt e2e-no-test
+        portPick: {
+            options: {
+                port: 9002,
+                limit: 76
+            },
+            protractor: {
+                targets: [
+                    'connect.e2e.options.port',
+                    'protractor.options.args.baseUrl',
+                    'protractor_coverage.options.args.baseUrl'
+                ]
+            },
+            karma: {
+                targets: [
+                    'karma.options.port'
+                ]
+            }
+        },
+
+        karma: {
+            options: {
+                port: 0
+            },
+            unit: {
+                configFile: 'src/test/javascript/karma.conf.js',
+                singleRun: true
+            }
         }
+
     });
 
     grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
@@ -650,6 +663,7 @@ module.exports = function (grunt) {
         'e2eapp',
         'copy:processtags',
         'wiredep',
+        'portPick:protractor',
         'concurrent:server',
         'connect:e2e',
         'protractor:e2e'
@@ -660,6 +674,7 @@ module.exports = function (grunt) {
         'e2eapp:mocks',
         'copy:processtags',
         'wiredep',
+        'portPick:protractor',
         'concurrent:server',
         'connect:e2e:keepalive'
     ]);
@@ -692,7 +707,7 @@ module.exports = function (grunt) {
         'wiredep',
         'concurrent:test',
         'postcss',
-        'connect:test',
+        'portPick:karma',
         'karma'
     ]);
 
@@ -728,6 +743,8 @@ module.exports = function (grunt) {
         'copy:processtags',
         'wiredep:sass',
         'instrument',
+        'compass',
+        'portPick:protractor',
         //'useminPrepare',
         //'concurrent:dist',
         'connect:e2e',

@@ -14,7 +14,7 @@ describe('Modifying a resource for a RIPE maintained object', function () {
 
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.get(browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
+        browser.get(browser.baseUrl + '#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
     });
 
     it('should show org and sponsoring-org as read-only', function () {
@@ -26,9 +26,9 @@ describe('Modifying a resource for a RIPE maintained object', function () {
     });
 
     it('should redirect to the correct url ', function () {
-        var originalUrl = browser.baseUrl + '/#/webupdates/modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255';
+        var originalUrl = browser.baseUrl + '#/webupdates/modify/RIPE/inetnum/91.208.34.0%20-%2091.208.34.255';
         urlChanged(originalUrl);
-        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + '/#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
+        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + '#/webupdates/modify/ripe/inetnum/91.208.34.0%20-%2091.208.34.255');
     });
 
 
