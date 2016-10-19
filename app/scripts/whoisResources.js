@@ -448,12 +448,6 @@ angular.module('dbWebApp')
             });
         };
 
-        var removeAttributeWithType = function(attrName) {
-            return _.filter(this, function(next) {
-                return next.name !== attrName;
-            });
-        };
-
         var removeAttributeWithName = function(attrName) {
             return _.remove(this, function(next) {
                 return next.name === attrName;
@@ -630,7 +624,6 @@ angular.module('dbWebApp')
             attrs.clearErrors = clearErrors;
             attrs.getAddableAttributes = getAddableAttributes;
 
-            attrs.removeAttributeWithType = removeAttributeWithType;
             attrs.removeAttributeWithName = removeAttributeWithName; // mutates array
             attrs.removeAttribute = removeAttribute;
             attrs.duplicateAttribute = duplicateAttribute;
