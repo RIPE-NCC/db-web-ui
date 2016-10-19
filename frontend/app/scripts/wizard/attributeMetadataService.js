@@ -185,7 +185,7 @@
                 attribute.$$error = '';
                 return false;
             }
-            prefixService.js
+
             attribute.$$info = '';
             attribute.$$error = 'Invalid prefix notation';
             return true;

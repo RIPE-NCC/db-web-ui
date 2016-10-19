@@ -31,18 +31,8 @@ describe('PrefixService', function () {
         });
 
         it('should fail when address bits are masked', function () {
-            try {
-                PrefixService.isValidPrefix('192.168.64.0/17');
-                expect(true).toBe('should never get here');
-            } catch (e) {
-                expect(e).toBe('Address out of range for subnet mask');
-            }
-            try {
-                PrefixService.isValidPrefix('192.168.0.1/24');
-                expect(true).toBe('should never get here');
-            } catch (e) {
-                expect(e).toBe('Address out of range for subnet mask');
-            }
+            expect(PrefixService.isValidPrefix('192.168.64.0/17')).toBe(false);
+            expect(PrefixService.isValidPrefix('192.168.0.1/24')).toBe(false);
         });
 
         it('should fail when address is not complete', function () {
@@ -87,18 +77,8 @@ describe('PrefixService', function () {
         });
 
         it('should fail when address bits are masked', function () {
-            try {
-                PrefixService.isValidPrefix('2001:db8::1/48');
-                expect(true).toBe('should never get here 1');
-            } catch (e) {
-                expect(e).toBe('Address out of range for subnet mask');
-            }
-            try {
-                PrefixService.isValidPrefix('2001:db8::/28');
-                expect(true).toBe('should never get here 2');
-            } catch (e) {
-                expect(e).toBe('Address out of range for subnet mask');
-            }
+            expect(PrefixService.isValidPrefix('2001:db8::1/48')).toBe(false);
+            expect(PrefixService.isValidPrefix('2001:db8::/28')).toBe(false);
         });
 
         it('should fail when subnet mask is missing', function () {

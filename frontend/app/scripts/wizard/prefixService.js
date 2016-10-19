@@ -5,48 +5,39 @@
 
     angular.module('dbWebApp').service('PrefixService', ['$http', function ($http) {
 
-        this.isValidIp4Cidr = function (ip4) {
+        this.isValidIp4Cidr = function (address) {
             // check the subnet mask was provided
-            if (!ip4.parsedSubnet) {
+            if (!address.parsedSubnet) {
                 return false;
             }
 
             // check the subnet mask is in range
-            if (ip4.parsedSubnet < 17 || ip4.parsedSubnet > 24) {
+            if (address.parsedSubnet < 17 || address.parsedSubnet > 24) {
                 return false;
             }
 
             // check that subnet mask covers all address bits
-            var bits = ip4.getBitsBase2();
+            var bits = address.getBitsBase2();
             var last1 = bits.lastIndexOf('1');
 
-            return last1 < ip4.subnetMask;
+            return last1 < address.subnetMask;
         };
 
-        this.isValidIp6Cidr = function (str) {
+        this.isValidIp6Cidr = function (address) {
             // check the subnet mask is in range
-            var slashpos = str.indexOf('/');
-            if (slashpos < 0 || !str.substr(slashpos + 1)) {
-                return false;
-            }
-            var mask = parseInt(str.substr(slashpos + 1), 10);
-            if (!mask || mask >= 127) {
+            if (!address.parsedSubnet) {
                 return false;
             }
 
-            // check it looks like a valid ipv4 address
-            var ip6 = new Address6(str);
-            if (!ip6.isValid()) {
+            if (address.parsedSubnet  >= 127) {
                 return false;
             }
 
             // check that subnet mask covers all address bits
-            var bits = ip6.getBitsBase2();
+            var bits = address.getBitsBase2();
             var last1 = bits.lastIndexOf('1');
-            if (last1 >= ip6.subnetMask) {
-                return false;
-            }
-            return last1 < ip6.subnetMask;
+
+            return last1 < address.subnetMask;
         };
 
         /**
@@ -71,7 +62,7 @@
             } else {
                 var ip6 = new Address6(str);
                 if (ip6.isValid()) {
-                    return this.isValidIp6Cidr(str);
+                    return this.isValidIp6Cidr(ip6);
                 }
             }
             // fall through. god know what this is...
