@@ -403,11 +403,6 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'mnt-by', value: 'c'}
         ]);
 
-        expect(whoisAttributes.getAllAttributesNotOnName('mnt-by')).toEqual([
-            {name: 'as-block', value: 'a'},
-            {name: 'source', value: 'd'}
-        ]);
-
         expect(whoisAttributes.getAllAttributesOnName('non-existing')).toEqual([]);
 
         expect(whoisAttributes.getAllAttributesWithValueOnName('mnt-by')).toEqual([

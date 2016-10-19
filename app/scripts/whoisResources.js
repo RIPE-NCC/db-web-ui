@@ -361,14 +361,6 @@ angular.module('dbWebApp')
             });
         };
 
-       var getAllAttributesNotOnName = function (attributeName) {
-            return _.filter(this,
-                function (attribute) {
-                    return attribute.name !== attributeName;
-                });
-        };
-
-
         var getAllAttributesOnName = function (attributeName) {
             return _.filter(this,
                 function (attribute) {
@@ -629,7 +621,6 @@ angular.module('dbWebApp')
             attrs.toString = toString;
             attrs.toPlaintext = toPlaintext;
             attrs.getAllAttributesOnName = getAllAttributesOnName;
-            attrs.getAllAttributesNotOnName = getAllAttributesNotOnName;
             attrs.getAllAttributesWithValueOnName = getAllAttributesWithValueOnName;
             attrs.getSingleAttributeOnName = getSingleAttributeOnName;
             attrs.setSingleAttributeOnName = setSingleAttributeOnName;
