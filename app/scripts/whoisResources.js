@@ -46,7 +46,6 @@ angular.module('dbWebApp')
                     }
                 });
             });
-            $log.info('attrsToFilterOn:'+attrsToFilterOn);
             return attrsToFilterOn;
         };
 
