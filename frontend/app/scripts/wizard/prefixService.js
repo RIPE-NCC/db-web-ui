@@ -12,7 +12,7 @@
             }
 
             // check the subnet mask is in range
-            if (address.subnetMask < 9 || address.subnetMask > 24) {
+            if (address.subnetMask < 0 || address.subnetMask > 24) {
                 return false;
             }
 
@@ -88,7 +88,7 @@
 
                     var startOctet = ipv4.startAddress().address.split('.')[fixedOctet];
                     var endOctet = ipv4.endAddress().address.split('.')[fixedOctet];
-                    var reverseBNet = ipv4.addressMinusSuffix.split('.').reverse().slice(4-fixedOctet).join('.');
+                    var reverseBNet = ipv4.addressMinusSuffix.split('.').slice(0,fixedOctet).reverse().join('.');
 
                     for (i = startOctet; i <= endOctet; i++) {
                         zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
