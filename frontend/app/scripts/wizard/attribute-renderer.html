@@ -1,4 +1,4 @@
-<div ng-include="widgetHtml" ng-class="{'has-error':attribute.$$invalid}"></div>
+<div ng-include="widgetHtml" ng-class="{'has-error':(attribute.$$invalid && attribute.value)}"></div>
 
 <div class="text field-description" collapse="!isHelpShown">
     <strong>Description</strong><br>

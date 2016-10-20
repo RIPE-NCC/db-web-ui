@@ -5,56 +5,39 @@
 
     angular.module('dbWebApp').service('PrefixService', ['$http', function ($http) {
 
-        this.isValidIp4Cidr = function (str) {
-            // check the subnet mask is in range
-            var slashpos = str.indexOf('/');
-            if (slashpos < 0) {
-                return false;
-            }
-            var mask = parseInt(str.substr(slashpos + 1), 10);
-            if (mask < 17 || mask > 24) {
+        this.isValidIp4Cidr = function (address) {
+            // check the subnet mask was provided
+            if (!address.parsedSubnet) {
                 return false;
             }
 
-            // check it looks like a valid ipv4 address
-            var ip4 = new Address4(str);
-            if (!ip4.isValid()) {
+            // check the subnet mask is in range
+            if (address.subnetMask < 9 || address.subnetMask > 24) {
                 return false;
             }
 
             // check that subnet mask covers all address bits
-            var bits = ip4.getBitsBase2();
+            var bits = address.getBitsBase2();
             var last1 = bits.lastIndexOf('1');
-            if (last1 >= ip4.subnetMask) {
-                throw 'Address out of range for subnet mask';
-            }
-            return last1 < ip4.subnetMask;
+
+            return last1 < address.subnetMask;
         };
 
-        this.isValidIp6Cidr = function (str) {
+        this.isValidIp6Cidr = function (address) {
             // check the subnet mask is in range
-            var slashpos = str.indexOf('/');
-            if (slashpos < 0 || !str.substr(slashpos + 1)) {
-                return false;
-            }
-            var mask = parseInt(str.substr(slashpos + 1), 10);
-            if (!mask || mask >= 127) {
+            if (!address.parsedSubnet) {
                 return false;
             }
 
-            // check it looks like a valid ipv4 address
-            var ip6 = new Address6(str);
-            if (!ip6.isValid()) {
+            if (address.parsedSubnet  >= 127) {
                 return false;
             }
 
             // check that subnet mask covers all address bits
-            var bits = ip6.getBitsBase2();
+            var bits = address.getBitsBase2();
             var last1 = bits.lastIndexOf('1');
-            if (last1 >= ip6.subnetMask) {
-                throw 'Address out of range for subnet mask';
-            }
-            return last1 < ip6.subnetMask;
+
+            return last1 < address.subnetMask;
         };
 
         /**
@@ -71,23 +54,15 @@
             // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
             // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
             //
-            if (!str) {
-                // no string
-                return false;
-            }
-            var slashpos = str.indexOf('/');
-            if (slashpos < 0 || !str.substr(slashpos + 1)) {
-                // empty or missing netmask
-                return false;
-            }
+
             // here we have a string with a subnet mask, but dno if it's v4 or v6 yet, so check...
             var ip4 = new Address4(str);
             if (ip4.isValid()) {
-                return this.isValidIp4Cidr(str);
+                return this.isValidIp4Cidr(ip4);
             } else {
                 var ip6 = new Address6(str);
                 if (ip6.isValid()) {
-                    return this.isValidIp6Cidr(str);
+                    return this.isValidIp6Cidr(ip6);
                 }
             }
             // fall through. god know what this is...
@@ -107,14 +82,19 @@
 
                 var ipv4 = new Address4(prefix);
                 if (ipv4.isValid()) {
-                    var startThirdOctet = ipv4.startAddress().address.split('.').slice(2, 3);
-                    var endThirdOctet = ipv4.endAddress().address.split('.').slice(2, 3);
-                    var reverseBNet = ipv4.addressMinusSuffix.split('.').reverse().slice(2).join('.');
 
-                    for (i = startThirdOctet; i <= endThirdOctet; i++) {
+                    //It' used to find the array position that starts with 0. That's why -1.
+                    var fixedOctet = Math.ceil(ipv4.subnetMask/8) - 1;
+
+                    var startOctet = ipv4.startAddress().address.split('.')[fixedOctet];
+                    var endOctet = ipv4.endAddress().address.split('.')[fixedOctet];
+                    var reverseBNet = ipv4.addressMinusSuffix.split('.').slice(0,fixedOctet).reverse().join('.');
+
+                    for (i = startOctet; i <= endOctet; i++) {
                         zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
                         zones.push({name: 'reverse-zone', value: zoneName});
                     }
+
                 } else {
                     var ipv6 = new Address6(prefix);
                     if (!ipv6.error) {

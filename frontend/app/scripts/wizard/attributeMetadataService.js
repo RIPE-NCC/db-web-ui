@@ -165,16 +165,29 @@
          * Metadata evaluation functions
          */
         function prefixIsInvalid(objectType, attributes, attribute) {
-            var revZonesAttr, invalid = !attribute.value || !PrefixService.isValidPrefix(attribute.value);
-            if (!invalid) {
-                revZonesAttr = _.find(attributes, function (attr) {
+
+            if (!attribute.value) {
+                attribute.$$info = '';
+                attribute.$$error = '';
+                return true;
+            }
+
+            if (PrefixService.isValidPrefix(attribute.value)) {
+                var revZonesAttr = _.find(attributes, function (attr) {
                     return attr.name === 'reverse-zone';
                 });
                 if (revZonesAttr) {
                     revZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
                 }
+
+                attribute.$$info = 'Prefix looks OK';
+                attribute.$$error = '';
+                return false;
             }
-            return invalid;
+
+            attribute.$$info = '';
+            attribute.$$error = 'Invalid prefix notation';
+            return true;
         }
 
         var cachedResponses = {};

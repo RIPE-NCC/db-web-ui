@@ -25,24 +25,13 @@ describe('PrefixService', function () {
         });
 
         it('should fail on out-of-range subnet mask', function () {
-            expect(PrefixService.isValidPrefix('22.22.0.0/15')).toBe(false);
-            expect(PrefixService.isValidPrefix('22.22.0.0/16')).toBe(false);
+            expect(PrefixService.isValidPrefix('22.22.0.0/8')).toBe(false);
             expect(PrefixService.isValidPrefix('22.22.0.0/25')).toBe(false);
         });
 
         it('should fail when address bits are masked', function () {
-            try {
-                PrefixService.isValidPrefix('192.168.64.0/17');
-                expect(true).toBe('should never get here');
-            } catch (e) {
-                expect(e).toBe('Address out of range for subnet mask');
-            }
-            try {
-                PrefixService.isValidPrefix('192.168.0.1/24');
-                expect(true).toBe('should never get here');
-            } catch (e) {
-                expect(e).toBe('Address out of range for subnet mask');
-            }
+            expect(PrefixService.isValidPrefix('192.168.64.0/17')).toBe(false);
+            expect(PrefixService.isValidPrefix('192.168.0.1/24')).toBe(false);
         });
 
         it('should fail when address is not complete', function () {
@@ -57,6 +46,14 @@ describe('PrefixService', function () {
         });
 
         it('should generate some lovely reverse zone records', function () {
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/9').length).toBe(128);
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/10').length).toBe(64);
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/11').length).toBe(32);
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/12').length).toBe(16);
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/13').length).toBe(8);
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/14').length).toBe(4);
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/15').length).toBe(2);
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/16').length).toBe(1);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/17').length).toBe(128);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/18').length).toBe(64);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/19').length).toBe(32);
@@ -87,18 +84,8 @@ describe('PrefixService', function () {
         });
 
         it('should fail when address bits are masked', function () {
-            try {
-                PrefixService.isValidPrefix('2001:db8::1/48');
-                expect(true).toBe('should never get here 1');
-            } catch (e) {
-                expect(e).toBe('Address out of range for subnet mask');
-            }
-            try {
-                PrefixService.isValidPrefix('2001:db8::/28');
-                expect(true).toBe('should never get here 2');
-            } catch (e) {
-                expect(e).toBe('Address out of range for subnet mask');
-            }
+            expect(PrefixService.isValidPrefix('2001:db8::1/48')).toBe(false);
+            expect(PrefixService.isValidPrefix('2001:db8::/28')).toBe(false);
         });
 
         it('should fail when subnet mask is missing', function () {
