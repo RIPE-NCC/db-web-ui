@@ -177,8 +177,7 @@
                     return attr.name === 'reverse-zone';
                 });
                 if (revZonesAttr) {
-                    revZonesAttr.value = PrefixService.
-                    getReverseDnsZones(attribute.value);
+                    revZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
                 }
 
                 attribute.$$info = 'Prefix looks OK';
