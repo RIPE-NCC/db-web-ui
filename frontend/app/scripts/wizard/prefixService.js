@@ -12,7 +12,7 @@
             }
 
             // check the subnet mask is in range
-            if (address.subnetMask < 0 || address.subnetMask > 24) {
+            if (address.subnetMask < 9 || address.subnetMask > 24) {
                 return false;
             }
 
