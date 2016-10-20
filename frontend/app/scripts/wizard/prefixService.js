@@ -12,7 +12,7 @@
             }
 
             // check the subnet mask is in range
-            if (address.parsedSubnet < 17 || address.parsedSubnet > 24) {
+            if (address.subnetMask < 16 || address.subnetMask > 24) {
                 return false;
             }
 
@@ -82,14 +82,19 @@
 
                 var ipv4 = new Address4(prefix);
                 if (ipv4.isValid()) {
-                    var startThirdOctet = ipv4.startAddress().address.split('.').slice(2, 3);
-                    var endThirdOctet = ipv4.endAddress().address.split('.').slice(2, 3);
-                    var reverseBNet = ipv4.addressMinusSuffix.split('.').reverse().slice(2).join('.');
 
-                    for (i = startThirdOctet; i <= endThirdOctet; i++) {
+                    //It' used to find the array position that starts with 0. That's why -1.
+                    var fixedOctet = Math.ceil(ipv4.subnetMask/8) - 1;
+
+                    var startOctet = ipv4.startAddress().address.split('.')[fixedOctet];
+                    var endOctet = ipv4.endAddress().address.split('.')[fixedOctet];
+                    var reverseBNet = ipv4.addressMinusSuffix.split('.').reverse().slice(4-fixedOctet).join('.');
+
+                    for (i = startOctet; i <= endOctet; i++) {
                         zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
                         zones.push({name: 'reverse-zone', value: zoneName});
                     }
+
                 } else {
                     var ipv6 = new Address6(prefix);
                     if (!ipv6.error) {

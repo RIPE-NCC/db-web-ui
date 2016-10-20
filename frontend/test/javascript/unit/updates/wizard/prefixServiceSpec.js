@@ -26,7 +26,6 @@ describe('PrefixService', function () {
 
         it('should fail on out-of-range subnet mask', function () {
             expect(PrefixService.isValidPrefix('22.22.0.0/15')).toBe(false);
-            expect(PrefixService.isValidPrefix('22.22.0.0/16')).toBe(false);
             expect(PrefixService.isValidPrefix('22.22.0.0/25')).toBe(false);
         });
 
@@ -47,6 +46,7 @@ describe('PrefixService', function () {
         });
 
         it('should generate some lovely reverse zone records', function () {
+            expect(PrefixService.getReverseDnsZones('22.22.0.0/16').length).toBe(1);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/17').length).toBe(128);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/18').length).toBe(64);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/19').length).toBe(32);
