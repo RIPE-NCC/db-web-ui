@@ -38,10 +38,14 @@ public class WhoisInternalService {
     private final RestTemplate restTemplate;
     private final String apiUrl;
     private final String apiKey;
-    private String contextPath;
+    private final String contextPath;
 
     @Autowired
-    public WhoisInternalService(final RestTemplate restTemplate, @Value("${internal.api.url}") final String apiUrl, @Value("${internal.api.key}") final String apiKey, @Value("${server.contextPath}") final String contextPath) {
+    public WhoisInternalService(
+            final RestTemplate restTemplate,
+            @Value("${internal.api.url}") final String apiUrl,
+            @Value("${internal.api.key}") final String apiKey,
+            @Value("${server.contextPath}") final String contextPath) {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;

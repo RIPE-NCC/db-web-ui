@@ -8,12 +8,12 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
-// TODO: [ES] constructor autowiring doesn't work here
 @Configuration
 @EnableAspectJAutoProxy
 @Component
 public class LoggingAspectConfiguration {
 
+    // TODO: [ES] constructor autowiring doesn't work here
     @Autowired
     private LoggingAspect loggingAspect;
 

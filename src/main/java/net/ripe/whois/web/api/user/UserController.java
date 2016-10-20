@@ -26,11 +26,14 @@ import java.util.UUID;
 @SuppressWarnings("UnusedDeclaration")
 public class UserController {
 
-    @Autowired
-    private CrowdClient crowdClient;
+    private final CrowdClient crowdClient;
+    private final WhoisInternalService whoisInternalService;
 
     @Autowired
-    private WhoisInternalService whoisInternalService;
+    public UserController(final CrowdClient crowdClient, final WhoisInternalService whoisInternalService) {
+        this.crowdClient = crowdClient;
+        this.whoisInternalService = whoisInternalService;
+    }
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getMaintainersCompact(@CookieValue(value = "crowd.token_key", required = true) final String crowdToken) {
