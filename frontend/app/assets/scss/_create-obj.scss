@@ -76,7 +76,7 @@ ul.form-fields {
         right: 15px;
         top: 38px;
     	a.maintainer-help {
-    	    padding: 5px 11px;
+    	    padding: 4px 11px;
             color: #00abab;
             border-radius: 0 3px 3px 0;
             display: inline-block;
@@ -218,19 +218,21 @@ ul.form-fields {
 .input-group .form-control {
     z-index: auto !important;
 }
-.text-error, .text-info {
-	float: right;
+.text-error {
+	@extend %float-r;
 }
 
-tbody.reverse-zone-table {
-  display: block;
-  max-height: 300px;
-  overflow-y: scroll;
-}
-
-.reverse-zone-table tr, td {
-  display: block;
-  width: 100%;
+/* Scroll table for Reverse Zone */
+table.table {
+	tbody.reverse-zone-table {
+		display: block;
+		max-height: 317px;
+		overflow-y: scroll;
+		tr, td {
+			@extend %width-100;
+			display: block;
+		}
+	}
 }
 
 .faded {
