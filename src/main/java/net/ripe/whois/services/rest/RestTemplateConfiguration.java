@@ -2,6 +2,8 @@ package net.ripe.whois.services.rest;
 
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -9,9 +11,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.Charset;
 
-public abstract class RestClient {
+@Configuration
+@SuppressWarnings("UnusedDeclaration")
+public class RestTemplateConfiguration {
 
-    protected final RestTemplate restTemplate = createRestTemplate();
+    @Bean
+    public RestTemplate restTemplate() {
+        return createRestTemplate();
+    }
 
     private RestTemplate createRestTemplate() {
         final CloseableHttpClient httpClient = HttpClientBuilder.create().build();

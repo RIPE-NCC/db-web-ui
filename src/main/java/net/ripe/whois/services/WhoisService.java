@@ -1,6 +1,5 @@
 package net.ripe.whois.services;
 
-import net.ripe.whois.services.rest.RestClient;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,21 +10,24 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 @Service
-public class WhoisService extends RestClient {
+public class WhoisService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisService.class);
 
+    private final RestTemplate restTemplate;
     private final String apiUrl;
     private final String contextPath;
 
     @Autowired
-    public WhoisService(@Value("${rest.api.ripeUrl}") final String apiUrl, @Value("${server.contextPath}") final String contextPath) {
+    public WhoisService(final RestTemplate restTemplate, @Value("${rest.api.ripeUrl}") final String apiUrl, @Value("${server.contextPath}") final String contextPath) {
+        this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.contextPath = contextPath;
     }

@@ -13,6 +13,7 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.core.io.ClassPathResource;
@@ -109,6 +110,7 @@ public class Application {
     }
 
     @Bean
+    @Primary
     public CacheManager cacheEhCachManager() {
         return new EhCacheCacheManager(ehCacheCacheManager().getObject());
     }

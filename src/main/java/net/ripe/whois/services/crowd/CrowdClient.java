@@ -31,8 +31,8 @@ public class CrowdClient {
     private static final int CLIENT_CONNECT_TIMEOUT = 10_000;
     private static final int CLIENT_READ_TIMEOUT = 10_000;
 
-    private String restUrl;
-    private Client client;
+    private final String restUrl;
+    private final Client client;
 
     @Autowired
     public CrowdClient(@Value("${crowd.rest.url}") final String translatorUrl,

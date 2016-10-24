@@ -6,7 +6,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
         <!-- TODO: [ES] upgrade Spring Boot to latest RELEASE -->
-        <version>1.2.7.RELEASE</version>
+        <version>1.2.8.RELEASE</version>
         <relativePath />
     </parent>
 
@@ -89,65 +89,6 @@
             <artifactId>jackson-datatype-json-org</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
-            <version>1.56</version>
-            <!-- Include everything below here if you have dependency conflicts -->
-            <classifier>standalone</classifier>
-            <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <artifactId>jetty</artifactId>
-                    <groupId>org.mortbay.jetty</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>guava</artifactId>
-                    <groupId>com.google.guava</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-core</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-annotations</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jackson-databind</artifactId>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>httpclient</artifactId>
-                    <groupId>org.apache.httpcomponents</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jsonassert</artifactId>
-                    <groupId>org.skyscreamer</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>xmlunit</artifactId>
-                    <groupId>xmlunit</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>json-path</artifactId>
-                    <groupId>com.jayway.jsonpath</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jopt-simple</artifactId>
-                    <groupId>net.sf.jopt-simple</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.3.1</version>
-            <scope>compile</scope>
-        </dependency>
-        -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -207,7 +148,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
         <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache</artifactId>
@@ -229,12 +169,22 @@
             <artifactId>jetty-jmx</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -313,6 +263,7 @@
             <url>http://nexus.ripe.net/nexus/content/repositories/snapshots</url>
         </repository>
     </repositories>
+
     <build>
         <resources>
             <resource>
@@ -535,13 +486,11 @@
                 <configuration>
                     <rules>
                         <requireMavenVersion>
-                            <message>You are running an older version of Maven. This project requires at least Maven
-                                3.0</message>
+                            <message>You are running an older version of Maven. This project requires at least Maven 3.0</message>
                             <version>[3.0.0,)</version>
                         </requireMavenVersion>
                         <requireJavaVersion>
-                            <message>You are running an older version of Java. This project requires at least JDK
-                                ${java.version}</message>
+                            <message>You are running an older version of Java. This project requires at least JDK ${java.version}</message>
                             <version>[${java.version}.0,)</version>
                         </requireJavaVersion>
                     </rules>
@@ -549,11 +498,36 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <redirectTestOutputToFile>${test.redirectOutput}</redirectTestOutputToFile>
+                    <includes>
+                        <include>${test.files.integration}</include>
+                    </includes>
+                    <excludes>**/Abstract*</excludes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
                 <configuration>
                     <argLine>-Xmx256m</argLine>
                     <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
+                    <redirectTestOutputToFile>${test.redirectOutput}</redirectTestOutputToFile>
+                    <includes>
+                        <include>${test.files.unit}</include>
+                    </includes>
                 </configuration>
             </plugin>
             <plugin>
@@ -583,4 +557,25 @@
             </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>junit</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <test.files.integration>None</test.files.integration>
+                <test.files.unit>**/*Test.class</test.files.unit>
+                <test.redirectOutput>true</test.redirectOutput>
+            </properties>
+        </profile>
+        <profile>
+            <id>integration</id>
+            <properties>
+                <test.files.integration>**/*TestIntegration.class</test.files.integration>
+                <test.files.unit>None</test.files.unit>
+                <test.redirectOutput>true</test.redirectOutput>
+            </properties>
+        </profile>
+    </profiles>
 </project>
