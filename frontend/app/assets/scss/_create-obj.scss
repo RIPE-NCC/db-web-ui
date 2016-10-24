@@ -218,7 +218,7 @@ ul.form-fields {
 .input-group .form-control {
     z-index: auto !important;
 }
-.text-error {
+.text-error, .text-info {
 	@extend %float-r;
 }
 
@@ -233,24 +233,4 @@ table.table {
 			display: block;
 		}
 	}
-}
-
-.faded {
-	transition: all linear .8s;
-	opacity: 1;
-}
-
-.faded.ng-hide {
-	opacity: 0;
-}
-.notransition * {
-	-webkit-transition: none !important;
-	-moz-transition: none !important;
-	-o-transition: none !important;
-	-ms-transition: none !important;
-	transition: none !important;
-}
-
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-    display: none !important;
 }
