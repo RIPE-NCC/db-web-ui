@@ -559,21 +559,13 @@
     </build>
     <profiles>
         <profile>
-            <id>junit</id>
+            <id>tests</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <test.files.integration>None</test.files.integration>
-                <test.files.unit>**/*Test.class</test.files.unit>
-                <test.redirectOutput>true</test.redirectOutput>
-            </properties>
-        </profile>
-        <profile>
-            <id>integration</id>
-            <properties>
                 <test.files.integration>**/*TestIntegration.class</test.files.integration>
-                <test.files.unit>None</test.files.unit>
+                <test.files.unit>**/*Test.class</test.files.unit>
                 <test.redirectOutput>true</test.redirectOutput>
             </properties>
         </profile>
