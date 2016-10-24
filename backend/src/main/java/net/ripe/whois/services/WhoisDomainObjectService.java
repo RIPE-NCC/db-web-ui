@@ -57,13 +57,20 @@ public class WhoisDomainObjectService {
         final Invocation.Builder builder = target.request();
         builder.header(HttpHeaders.COOKIE, headers.get(HttpHeaders.COOKIE));
         builder.header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE);
+
+        // Do not accept compressed response, as it's not handled properly (by whois)
+        builder.header(HttpHeaders.ACCEPT_ENCODING, "identity");
+
         try {
             final Response response = builder.post(Entity.entity(whoisResources, MediaType.APPLICATION_JSON_TYPE), Response.class);
             LOGGER.debug("createDomainObjects() successful post. Response: " + response.getStatus());
             return new ResponseEntity<>(response.readEntity(WhoisResources.class), HttpStatus.valueOf(response.getStatus()));
         } catch (ClientErrorException e) {
-            LOGGER.debug("createDomainObjects() caught ClientErrorException during post.");
+            LOGGER.error("createDomainObjects() caught ClientErrorException during post.", e);
             return new ResponseEntity<>(e.getResponse().readEntity(WhoisResources.class), HttpStatus.valueOf(e.getResponse().getStatus()));
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage(), e);
+            throw e;
         }
     }
 
