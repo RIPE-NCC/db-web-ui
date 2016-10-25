@@ -6,7 +6,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
         <!-- TODO: [ES] upgrade Spring Boot to latest RELEASE -->
-        <version>1.2.7.RELEASE</version>
+        <version>1.2.8.RELEASE</version>
         <relativePath />
     </parent>
 

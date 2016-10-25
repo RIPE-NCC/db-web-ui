@@ -1,7 +1,6 @@
 package net.ripe.whois.services;
 
 import com.google.common.collect.Maps;
-import net.ripe.whois.services.rest.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +10,24 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
 import java.util.HashMap;
 
 @Service
-public class WhoisReferencesService extends RestClient {
+public class WhoisReferencesService {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisReferencesService.class);
-    private int MAX_RESULT_NUMBER = 5;
 
-    private String referencesApiUrl;
+    private static final int MAX_RESULT_NUMBER = 5;
 
+    private final RestTemplate restTemplate;
+    private final String referencesApiUrl;
 
     @Autowired
-    public WhoisReferencesService(@Value("${rest.api.ripeUrl}") final String ripeUrl) {
+    public WhoisReferencesService(final RestTemplate restTemplate, @Value("${rest.api.ripeUrl}") final String ripeUrl) {
+        this.restTemplate = restTemplate;
         this.referencesApiUrl = ripeUrl + "/references";
     }
 

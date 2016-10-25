@@ -20,15 +20,19 @@ import javax.servlet.http.HttpServletRequest;
 public class WhoisInternalProxyController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalProxyController.class);
 
+    private final WhoisInternalService whoisInternalService;
+
     @Autowired
-    private WhoisInternalService whoisInternalService;
+    public WhoisInternalProxyController(final WhoisInternalService whoisInternalService) {
+        this.whoisInternalService = whoisInternalService;
+    }
 
     @RequestMapping(value = "/**")
     public ResponseEntity<String> proxyRestCalls(final HttpServletRequest request,
                                                  @Nullable @RequestBody(required = false) final String body,
                                                  @RequestHeader final HttpHeaders headers) throws Exception {
 
-        LOGGER.info("whois-internal request: {}", request.toString());
+        LOGGER.debug("whois-internal request: {}", request.toString());
 
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);

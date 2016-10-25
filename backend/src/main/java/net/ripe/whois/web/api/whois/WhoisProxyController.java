@@ -20,8 +20,12 @@ import javax.servlet.http.HttpServletRequest;
 public class WhoisProxyController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
 
+    private final WhoisService whoisService;
+
     @Autowired
-    private WhoisService whoisService;
+    public WhoisProxyController(final WhoisService whoisService) {
+        this.whoisService = whoisService;
+    }
 
     @RequestMapping(value = "/**")
     public ResponseEntity<String> proxyRestCalls(

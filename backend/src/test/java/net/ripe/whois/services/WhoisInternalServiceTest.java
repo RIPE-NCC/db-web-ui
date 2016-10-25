@@ -1,26 +1,22 @@
 package net.ripe.whois.services;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import net.ripe.db.whois.api.rest.client.RestClientException;
-import org.junit.Rule;
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.matching;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 
 public class WhoisInternalServiceTest {
@@ -87,36 +83,36 @@ public class WhoisInternalServiceTest {
     private static final String API_KEY = "DB-WHOIS-d5395e7fbf8d";
     public static final String URL = "/api/user/" + USER_UUID + "/maintainers?apiKey=" + API_KEY;
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule(8089);
 
-    private final WhoisInternalService whoisInternalService = new WhoisInternalService(MOCK_WHOIS_INTERNAL_URL, API_KEY, "/");
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    private final WhoisInternalService whoisInternalService = new WhoisInternalService(restTemplate, MOCK_WHOIS_INTERNAL_URL, API_KEY, "/");
+
+    private MockRestServiceServer mockServer;
+
+    @Before
+    public void setUp() {
+        mockServer = MockRestServiceServer.createServer(restTemplate);
+    }
 
     @Test
-    public void shouldFetchMantainersForCookieWithXm() {
-
-        stubFor(get(urlEqualTo(URL))
-            .willReturn(aResponse()
-                .withStatus(HttpStatus.OK.value())
-                .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE)
-                .withBody(VALID_XML_RESPONSE)));
+    public void shouldFetchMantainersForCookieWithXml() {
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL))
+            .andRespond(withSuccess(VALID_XML_RESPONSE, MediaType.APPLICATION_XML));
 
         whoisInternalService.getMaintainers(USER_UUID);
 
-        verify(getRequestedFor(urlEqualTo(URL))
-            .withHeader("Accept", matching("application/xml"))
-            .withQueryParam("apiKey", matching("DB-WHOIS-d5395e7fbf8d")));
+        mockServer.verify();
     }
 
     @Test
     public void shouldReturnSuccessResponse() {
-        stubFor(get(urlEqualTo(URL))
-            .willReturn(aResponse()
-                .withStatus(HttpStatus.OK.value())
-                .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE)
-                .withBody(VALID_XML_RESPONSE)));
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL))
+                .andRespond(withSuccess(VALID_XML_RESPONSE, MediaType.APPLICATION_XML));
 
         List<Map<String, Object>> response = whoisInternalService.getMaintainers(USER_UUID);
+
+        mockServer.verify();
 
         assertEquals(3, response.size());
         assertEquals("mntner", response.get(0).get("type"));
@@ -132,16 +128,13 @@ public class WhoisInternalServiceTest {
         assertEquals("[SSO]", response.get(2).get("auth").toString());
 
         assertEquals(3, response.size());
-
     }
 
     @Test
     public void shouldReturnErrorResponse() {
-        stubFor(get(urlEqualTo(URL))
-            .willReturn(aResponse()
-                .withStatus(HttpStatus.NOT_FOUND.value())
-                .withHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML_VALUE)
-                .withBody(ERROR_XML_RESPONSE)));
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL))
+                .andRespond(withStatus(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_XML).body(ERROR_XML_RESPONSE));
+
         try {
             whoisInternalService.getMaintainers(USER_UUID);
             fail("Should not be reached");

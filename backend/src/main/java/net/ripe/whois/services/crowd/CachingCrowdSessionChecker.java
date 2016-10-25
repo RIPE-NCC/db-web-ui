@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @CacheConfig
 public class CachingCrowdSessionChecker {
     private static final Logger LOGGER = LoggerFactory.getLogger(CachingCrowdSessionChecker.class);
+
     private final CrowdClient crowdClient;
 
     @Autowired
