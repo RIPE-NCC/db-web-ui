@@ -28,13 +28,17 @@ import java.net.URLDecoder;
 public class WhoisReferencesController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisReferencesController.class);
 
+    private final WhoisReferencesService whoisReferencesService;
+    private final String queryUrl;
+
     @Autowired
-    private WhoisReferencesService whoisReferencesService;
+    public WhoisReferencesController(
+        final WhoisReferencesService whoisReferencesService,
+        @Value("${ripe.search.queryUrl}") final String queryUrl) {
+        this.whoisReferencesService = whoisReferencesService;
+        this.queryUrl = queryUrl;
+    }
 
-    @Value("${ripe.search.queryUrl}")
-    private String queryUrl;
-
-    private int MAX_RESULT_NUMBER = 5;
 
     @RequestMapping(value = "/{source}/{objectType}/{name:.*}", method = RequestMethod.GET)
     public ResponseEntity<String> search(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,

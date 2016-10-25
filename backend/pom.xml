@@ -292,16 +292,24 @@
                 <version>${jetty.version}</version>
                 <configuration>
                     <jvmArgs>-Xmx2g</jvmArgs>
-                    <jettyXml>src/test/resources/jetty/jetty.xml,src/test/resources/jetty/jetty-http.xml,src/test/resources/jetty/jetty-ssl.xml,src/test/resources/jetty/jetty-https.xml</jettyXml>
+                    <jettyXml>
+                        src/test/resources/jetty/jetty.xml,src/test/resources/jetty/jetty-http.xml,src/test/resources/jetty/jetty-ssl.xml,src/test/resources/jetty/jetty-https.xml
+                    </jettyXml>
                     <systemProperties>
                         <!-- These properties are set only when running jetty from mvn.-->
                         <systemProperty>
-                            <name>org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH</name><value>true</value>
-                            <name>org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH</name><value>true</value>
-                            <name>org.eclipse.jetty.LEVEL</name><value>DEBUG</value>
-                            <name>jsse.enableSNIExtension</name><value>false</value>
-                            <name>jetty.ssl.sniHostCheck</name><value>false</value>
-                            <name>spring.profiles.active</name><value>local</value>
+                            <name>org.apache.tomcat.util.buf.UDecoder.ALLOW_ENCODED_SLASH</name>
+                            <value>true</value>
+                            <name>org.apache.catalina.connector.CoyoteAdapter.ALLOW_BACKSLASH</name>
+                            <value>true</value>
+                            <name>org.eclipse.jetty.LEVEL</name>
+                            <value>DEBUG</value>
+                            <name>jsse.enableSNIExtension</name>
+                            <value>false</value>
+                            <name>jetty.ssl.sniHostCheck</name>
+                            <value>false</value>
+                            <name>spring.profiles.active</name>
+                            <value>local</value>
                         </systemProperty>
                     </systemProperties>
                     <reload>manual</reload>
@@ -329,6 +337,57 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.18.1</version>
+                <configuration>
+                    <argLine>-Xmx256m</argLine>
+                    <!-- Force alphabetical order to have a reproducible build -->
+                    <runOrder>alphabetical</runOrder>
+                    <redirectTestOutputToFile>${test.redirectOutput}</redirectTestOutputToFile>
+                    <includes>
+                        <include>${test.files.unit}</include>
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.18.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <redirectTestOutputToFile>${test.redirectOutput}</redirectTestOutputToFile>
+                    <includes>
+                        <include>${test.files.integration}</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/Abstract*</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>tests</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <test.files.integration>**/*TestIntegration.class</test.files.integration>
+                <test.files.unit>**/*Test.class</test.files.unit>
+                <test.redirectOutput>true</test.redirectOutput>
+            </properties>
+        </profile>
+    </profiles>
+
 </project>

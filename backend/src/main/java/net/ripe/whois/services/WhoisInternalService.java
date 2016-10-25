@@ -7,7 +7,6 @@ import net.ripe.db.whois.api.rest.domain.Attribute;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.rpsl.AttributeType;
-import net.ripe.whois.services.rest.RestClient;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -31,16 +31,22 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-public class WhoisInternalService extends RestClient {
+public class WhoisInternalService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalService.class);
 
+    private final RestTemplate restTemplate;
     private final String apiUrl;
     private final String apiKey;
-    private String contextPath;
+    private final String contextPath;
 
     @Autowired
-    public WhoisInternalService(@Value("${internal.api.url}") final String apiUrl, @Value("${internal.api.key}") final String apiKey, @Value("${server.contextPath}") final String contextPath) {
+    public WhoisInternalService(
+            final RestTemplate restTemplate,
+            @Value("${internal.api.url}") final String apiUrl,
+            @Value("${internal.api.key}") final String apiKey,
+            @Value("${server.contextPath}") final String contextPath) {
+        this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;
         this.contextPath = contextPath;
