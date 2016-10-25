@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -55,13 +55,16 @@ public class Application {
      */
     public static void main(String[] args) throws UnknownHostException {
         final SpringApplication app = new SpringApplication(Application.class);
-        app.setShowBanner(false);
+        app.setBannerMode(Banner.Mode.OFF);
         final SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
 
         final Environment environment = app.run(args).getEnvironment();
-        LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
-                        "Local: \t\thttps://127.0.0.1:{}\n\t" +
-                        "External: \thttps://{}:{}\n----------------------------------------------------------",
+        LOGGER.info(
+                "Access URLs:\n" +
+                "----------------------------------------------------------\n" +
+                "\tLocal: \t\thttps://127.0.0.1:{}\n" +
+                "\tExternal: \thttps://{}:{}\n" +
+                "----------------------------------------------------------",
                 environment.getProperty("server.port"),
                 InetAddress.getLocalHost().getHostAddress(),
                 environment.getProperty("server.port"));
