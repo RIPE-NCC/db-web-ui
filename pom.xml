@@ -5,8 +5,8 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <!-- TODO: [ES] upgrade Spring Boot to latest RELEASE -->
-        <version>1.2.8.RELEASE</version>
+        <!-- keep version in sync with spring-boot.version below -->
+        <version>1.4.1.RELEASE</version>
         <relativePath />
     </parent>
 
@@ -68,6 +68,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
+        <!-- keep spring-boot.version in sync with parent version above -->
+        <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
