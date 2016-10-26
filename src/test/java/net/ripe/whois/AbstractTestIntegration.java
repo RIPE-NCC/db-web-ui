@@ -4,8 +4,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +15,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
-//import org.springframework.boot.test.web.client.TestRestTemplate;
 
 /**
  * Base integration testing class for db-web-ui.
@@ -40,10 +40,6 @@ public class AbstractTestIntegration {
         @Bean
         public TestRestTemplate testRestTemplate() {
             return new TestRestTemplate();
-        }
-        @Bean
-        public CacheFilter cacheFilter() {
-            return new CacheFilter();
         }
     }
 
