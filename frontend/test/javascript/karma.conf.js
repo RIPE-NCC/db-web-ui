@@ -14,7 +14,6 @@ module.exports = function (config) {
         // list of files / patterns to load in the browser
         files: [
             // bower:js
-            'bower_components/modernizr/modernizr.js',
             'bower_components/jquery/dist/jquery.js',
             'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js',
             'bower_components/json3/lib/json3.js',
@@ -51,14 +50,14 @@ module.exports = function (config) {
             'bower_components/sifter/sifter.js',
             'bower_components/microplugin/src/microplugin.js',
             'bower_components/selectize/dist/js/selectize.js',
-            'bower_components/angular-selectize2/dist/selectize.js',
+            'bower_components/angular-selectize2/dist/angular-selectize.js',
             'bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'bower_components/angular-ui-select/dist/select.js',
             'bower_components/google-diff-match-patch/diff_match_patch.js',
             'bower_components/angular-diff-match-patch/angular-diff-match-patch.js',
             'bower_components/angular-loading-bar/build/loading-bar.js',
-            'bower_components/moment/moment.js',
             'bower_components/ip-address/dist/ip-address-globals.js',
+            'bower_components/moment/moment.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'app/scripts/app.js',

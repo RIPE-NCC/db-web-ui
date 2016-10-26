@@ -18,7 +18,7 @@
                 }
                 // escape encodes extended ISO-8859-1 characters (UTF code points U+0080-U+00ff) as %xx (two-digit hex)
                 // whereas it encodes UTF codepoints U+0100 and above as %uxxxx (%u followed by four-digit hex.)
-                return !_.contains(escape(value), '%u');
+                return !_.includes(escape(value), '%u');
             };
 
             // compare string against array of substitutable values and replace if found
