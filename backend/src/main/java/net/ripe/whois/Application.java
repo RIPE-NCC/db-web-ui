@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
@@ -17,7 +17,6 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
@@ -39,10 +38,10 @@ public class Application {
 
     private final Environment environment;
     private final CrowdTokenFilter crowdTokenFilter;
-    private final CacheFilter cacheFilter;
+    private final CustomCacheFilter cacheFilter;
 
     @Autowired
-    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CacheFilter cacheFilter) {
+    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CustomCacheFilter cacheFilter) {
         this.environment = environment;
         this.crowdTokenFilter = crowdTokenFilter;
         this.cacheFilter = cacheFilter;

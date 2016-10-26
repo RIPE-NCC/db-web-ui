@@ -2,6 +2,7 @@ package net.ripe.whois;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.Filter;
@@ -16,8 +17,9 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class CacheFilter implements Filter {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CacheFilter.class);
+@Primary
+public class CustomCacheFilter implements Filter {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CustomCacheFilter.class);
 
     private final long MAX_AGE_IN_SECONDS = TimeUnit.SECONDS.convert(365, TimeUnit.DAYS);
 
