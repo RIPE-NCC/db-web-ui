@@ -53,7 +53,7 @@ public class CrowdClient {
             final CrowdSession session = client.target(restUrl)
                     .path(CROWD_SESSION_PATH)
                     .request()
-                    .post(Entity.entity(crowdAuth, MediaType.APPLICATION_XML), CrowdSession.class);
+                    .post(Entity.entity(crowdAuth, MediaType.APPLICATION_XML_TYPE), CrowdSession.class);
             return session.getToken();
         } catch (WebApplicationException | ProcessingException e) {
             throw new CrowdClientException(e);
