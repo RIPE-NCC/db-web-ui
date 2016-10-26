@@ -206,8 +206,8 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-jsp</artifactId>
+                    <groupId>org.eclipse.jetty</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -219,6 +219,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring-boot.version}</version>
+        </dependency>
+        <!-- TODO: hardcoded version different from spring-boot -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.23.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
