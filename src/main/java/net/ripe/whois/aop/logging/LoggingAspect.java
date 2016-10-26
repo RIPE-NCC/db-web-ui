@@ -9,9 +9,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
@@ -19,14 +17,12 @@ import java.util.Arrays;
  * Aspect for logging execution of service and repository Spring components.
  */
 @Aspect
-@Component
 public class LoggingAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggingAspect.class);
 
     private final Environment environment;
 
-    @Autowired
     public LoggingAspect(final Environment environment) {
         this.environment = environment;
     }

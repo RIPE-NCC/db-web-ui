@@ -1,8 +1,8 @@
 package net.ripe.whois.config;
 
 import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.datatype.joda.cfg.JacksonJodaDateFormat;
 import com.fasterxml.jackson.datatype.joda.ser.DateTimeSerializer;
-import com.fasterxml.jackson.datatype.joda.ser.JacksonJodaFormat;
 import org.joda.time.DateTime;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,9 +17,11 @@ public class JacksonConfiguration {
         final JodaModule module = new JodaModule();
         final DateTimeFormatterFactory formatterFactory = new DateTimeFormatterFactory();
         formatterFactory.setIso(DateTimeFormat.ISO.DATE);
-        module.addSerializer(DateTime.class, new DateTimeSerializer(
-                new JacksonJodaFormat(formatterFactory.createDateTimeFormatter()
-                        .withZoneUTC())));
+        module.addSerializer(
+                DateTime.class,
+                new DateTimeSerializer(
+                    new JacksonJodaDateFormat(
+                        formatterFactory.createDateTimeFormatter().withZoneUTC())));
         return module;
     }
 }

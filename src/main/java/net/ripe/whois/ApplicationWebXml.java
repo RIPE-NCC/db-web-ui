@@ -3,6 +3,7 @@ package net.ripe.whois;
 import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.Banner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
@@ -16,7 +17,7 @@ public class ApplicationWebXml extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(final SpringApplicationBuilder application) {
         return application.profiles(addProfileOrExit())
-                .showBanner(false)
+                .bannerMode(Banner.Mode.OFF)
                 .sources(Application.class);
     }
 

@@ -5,8 +5,8 @@
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
-        <!-- TODO: [ES] upgrade Spring Boot to latest RELEASE -->
-        <version>1.2.8.RELEASE</version>
+        <!-- keep version in sync with spring-boot.version below -->
+        <version>1.4.1.RELEASE</version>
         <relativePath />
     </parent>
 
@@ -68,6 +68,8 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
+        <!-- keep spring-boot.version in sync with parent version above -->
+        <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
@@ -182,11 +184,6 @@
             <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-actuator</artifactId>
         </dependency>
@@ -209,8 +206,8 @@
             <artifactId>spring-boot-starter-jetty</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>org.eclipse.jetty</groupId>
                     <artifactId>jetty-jsp</artifactId>
+                    <groupId>org.eclipse.jetty</groupId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -222,6 +219,16 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
             <version>${spring-boot.version}</version>
+        </dependency>
+        <!-- TODO: hardcoded version different from spring-boot -->
+        <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.23.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jersey</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -238,6 +245,11 @@
                     <groupId>org.springframework.boot</groupId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-test-autoconfigure</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -1,18 +1,17 @@
 package net.ripe.whois;
 
-import net.ripe.whois.config.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.context.embedded.FilterRegistrationBean;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
@@ -25,8 +24,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
-@ComponentScan(basePackages = "net.ripe.whois")
-@EnableAutoConfiguration
+@SpringBootApplication(scanBasePackages = {"net.ripe.whois"})
 @EnableCaching
 public class Application {
 
@@ -34,10 +32,10 @@ public class Application {
 
     private final Environment environment;
     private final CrowdTokenFilter crowdTokenFilter;
-    private final CacheFilter cacheFilter;
+    private final CustomCacheFilter cacheFilter;
 
     @Autowired
-    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CacheFilter cacheFilter) {
+    public Application(final Environment environment, final CrowdTokenFilter crowdTokenFilter, final CustomCacheFilter cacheFilter) {
         this.environment = environment;
         this.crowdTokenFilter = crowdTokenFilter;
         this.cacheFilter = cacheFilter;
@@ -49,13 +47,16 @@ public class Application {
      */
     public static void main(String[] args) throws UnknownHostException {
         final SpringApplication app = new SpringApplication(Application.class);
-        app.setShowBanner(false);
+        app.setBannerMode(Banner.Mode.OFF);
         final SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
 
         final Environment environment = app.run(args).getEnvironment();
-        LOGGER.info("Access URLs:\n----------------------------------------------------------\n\t" +
-                        "Local: \t\thttps://127.0.0.1:{}\n\t" +
-                        "External: \thttps://{}:{}\n----------------------------------------------------------",
+        LOGGER.info(
+                "Access URLs:\n" +
+                "----------------------------------------------------------\n" +
+                "\tLocal: \t\thttps://127.0.0.1:{}\n" +
+                "\tExternal: \thttps://{}:{}\n" +
+                "----------------------------------------------------------",
                 environment.getProperty("server.port"),
                 InetAddress.getLocalHost().getHostAddress(),
                 environment.getProperty("server.port"));
