@@ -31,8 +31,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 
-@ComponentScan(basePackages = "net.ripe.whois")
-@EnableAutoConfiguration
+@SpringBootApplication(scanBasePackages = {"net.ripe.whois"})
 @EnableCaching
 public class Application {
 
