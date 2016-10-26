@@ -3,7 +3,6 @@ package net.ripe.whois.services;
 import net.ripe.whois.AbstractTestIntegration;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
-@Ignore("TODO: [ES] wiring errors when starting app with SpringBootTest")
 public class WhoisInternalServiceTestIntegration extends AbstractTestIntegration {
 
     @BeforeClass
