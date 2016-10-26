@@ -27,7 +27,7 @@
                 </div>
             </ui-select-choices>
         </ui-select>
-        <div collapse="!isAdminCHelpShown" class="text field-description">
+        <div uib-collapse="!isAdminCHelpShown" class="text field-description">
             <strong>Description</strong><br>
             {{admincDescription}}<br>
             <strong>Syntax</strong><br>
@@ -57,7 +57,7 @@
                        ng-required="{{attribute.$$meta.$$mandatory}}"
                        class="form-control"
                        autocomplete="off"/>
-                <div class="text field-description" collapse="!isHelpShown" ng-if="isHelpShown">
+                <div class="text field-description" uib-collapse="!isHelpShown" ng-if="isHelpShown">
                     <strong>Description</strong><br>
                     <span ng-bind-html="attribute.$$meta.$$description"></span><br>
                     <strong>Syntax</strong><br>

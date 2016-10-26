@@ -1,4 +1,4 @@
-/*global afterEach, beforeEach, describe, expect, inject, it, jasmine, spyOn*/
+/*global afterEach, beforeEach, describe, expect, inject, it, jasmine, module, spyOn*/
 'use strict';
 
 var objectType = 'mntner';
@@ -41,7 +41,7 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
             };
 
             _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state: $state, $log: logger, $modalInstance: {}, RestService: restService,
+                $scope: $scope, $state: $state, $log: logger, $uibModalInstance: {}, RestService: restService,
                 source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
             });
 
@@ -178,7 +178,7 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
                 }
             };
             _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state: $state, $log: logger, $modalInstance: modalInstance, RestService: RestService, CredentialsService: CredentialsService,
+                $scope: $scope, $state: $state, $log: logger, $uibModalInstance: modalInstance, RestService: RestService, CredentialsService: CredentialsService,
                 source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
             });
 
@@ -295,7 +295,7 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
             };
 
             _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state: $state, $log: logger, $modalInstance: modalInstance, RestService: RestService, CredentialService: CredentialsService,
+                $scope: $scope, $state: $state, $log: logger, $uibModalInstance: modalInstance, RestService: RestService, CredentialService: CredentialsService,
                 source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
             });
 
@@ -413,7 +413,7 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
             $scope.source = 'RIPE';
 
             _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state: $state, $modalInstance: modalInstance, RestService: RestService, CredentialsService: CredentialsService,
+                $scope: $scope, $state: $state, $uibModalInstance: modalInstance, RestService: RestService, CredentialsService: CredentialsService,
                 source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
             });
 

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalAddAttributeController', [ '$scope', '$modalInstance', 'items',
+angular.module('webUpdates').controller('ModalAddAttributeController', [ '$scope', '$uibModalInstance', 'items',
     function ($scope, $modalInstance, items) {
 
         $scope.items = items;

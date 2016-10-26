@@ -1,3 +1,4 @@
+/*global beforeEach, describe, expect, inject, it, jasmine, module*/
 'use strict';
 
 describe('webUpdates: ModalAddAttributeController', function () {
@@ -23,13 +24,10 @@ describe('webUpdates: ModalAddAttributeController', function () {
             items = [ {name:'a'}, {name:'b'} ];
 
             _$controller_('ModalAddAttributeController', {
-                $scope: $scope, $modalInstance: modalInstance, items: function() { return items; }
+                $scope: $scope, $uibModalInstance: modalInstance, items: function() { return items; }
             });
 
         });
-    });
-
-    afterEach(function() {
     });
 
     it('should close the modal and return selected item when ok', function () {

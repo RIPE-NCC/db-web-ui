@@ -41,7 +41,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
             mntnersWithoutPassword = [ {type:'mntner', key:'z-mnt', auth:['SSO']} ];
 
             _$controller_('ModalAuthenticationController', {
-                $scope: $scope, $log: $log, $modalInstance: modalInstance, WhoisResources:WhoisResources,
+                $scope: $scope, $log: $log, $uibModalInstance: modalInstance, WhoisResources:WhoisResources,
                 RestService:RestService, UserInfoService:userInfoService, CredentialsService:credentialsService,
                 method:'PUT', source: source, objectType: 'mntner', objectName: 'someName', mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword,
                 allowForcedDelete: false,

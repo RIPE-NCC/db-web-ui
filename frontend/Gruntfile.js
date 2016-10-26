@@ -564,7 +564,7 @@ module.exports = function (grunt) {
             },
             e2e: {
                 options: {
-                    configFile: 'test/javascript/protractor-e2e.conf.js', // Default config file
+                    configFile: './test/javascript/protractor-e2e.conf.js', // Default config file
                     keepAlive: false // If false, the grunt process stops when the test fails.
                 }
             },

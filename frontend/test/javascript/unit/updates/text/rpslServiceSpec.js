@@ -1,3 +1,4 @@
+/*globals afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
 describe('textUpdates: RpslService', function () {
@@ -40,7 +41,7 @@ describe('textUpdates: RpslService', function () {
                 {name: 'phone', value: '        +316'},
                 {name: 'address', value: '        Singel', comment: 'My comment'}
             ],
-            deleteReason: "because",
+            deleteReason: 'because',
             passwords:['a','b','c'],
             override:'a,b,c'
         };
@@ -84,7 +85,7 @@ describe('textUpdates: RpslService', function () {
                 ],
                 deleteReason: undefined,
                 passwords:[],
-                override:undefined,
+                override:undefined
             }
         ]);
     });
