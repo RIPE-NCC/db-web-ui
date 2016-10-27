@@ -1,7 +1,6 @@
 package net.ripe.whois.web.api.dns;
 
 import net.ripe.whois.services.crowd.CrowdClient;
-import net.ripe.whois.services.rest.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +9,30 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import javax.ws.rs.ClientErrorException;
 
 @RestController
 @RequestMapping("/api/dns")
-public class DnsCheckerController extends RestClient {
+public class DnsCheckerController {
+
+    private final RestTemplate restTemplate;
 
     @Autowired
-    public DnsCheckerController(@Value("${dns.checker.url}") final String dnsCheckerUrl, final CrowdClient crowdClient) {
+    public DnsCheckerController(
+            @Value("${dns.checker.url}") final String dnsCheckerUrl,
+            final CrowdClient crowdClient,
+            final RestTemplate restTemplate) {
         this.dnsCheckerUrl = dnsCheckerUrl;
         this.crowdClient = crowdClient;
+        this.restTemplate = restTemplate;
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
