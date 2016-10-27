@@ -14,14 +14,14 @@
            on-select="onMntnerAdded($item, $model)"
            on-remove="onMntnerRemoved($item, $model)">
 
-    <ui-select-match ui-lock-choice="$item.modifyable" placeholder="Type maintainer name" class="ui-select-match">
+    <ui-select-match ui-lock-choice="$item.modifyable" placeholder="Type maintainer name">
         {{ $item.key }}
         <span class="fa fa-star" ng-if="$item.mine"></span>
         <span class="fa fa-lock" ng-if="$item.$$isRemovable"></span>
     </ui-select-match>
     <ui-select-choices repeat="mntner in mntners.alternatives track by mntner.key"
                        refresh="mntnerAutocomplete($select.search)"
-                       refresh-delay="100" class="ui-select-choices">
+                       refresh-delay="100">
         <div class="option">
             <span class="title">{{ mntner.key }}</span>
             <span class="star fa fa-star" ng-if="mntner.$$isMine"></span>

@@ -39,13 +39,13 @@
                ng-if="uiSelectTemplateReady">
 
         <ui-select-match ui-lock-choice="isModifyWithSingleMntnerRemaining() || !isRemovable($item.key) || isLirObject()"
-                         placeholder="Type maintainer name" class="ui-select-match">{{$item.key}}
+                         placeholder="Type maintainer name">{{$item.key}}
             <span class="fa fa-star" ng-if="isMine($item)"></span>
             <span class="fa fa-lock" ng-if="!isRemovable($item.key) || isLirObject()"></span>
         </ui-select-match>
         <ui-select-choices repeat="mntner in maintainers.alternatives track by mntner.key"
                            refresh="mntnerAutocomplete($select.search)"
-                           refresh-delay="100" class="ui-select-choices">
+                           refresh-delay="100">
             <div class="option">
                 <span class="title">{{mntner.key}}</span>
                 <span class="star fa fa-star" ng-if="isMine(mntner)"></span>
