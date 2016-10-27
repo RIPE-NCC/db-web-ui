@@ -29,7 +29,7 @@ public class WhoisDomainObjectController extends ApiController {
     private WhoisDomainObjectService whoisDomainObjectService;
 
     @RequestMapping(value = "/{source}", method = RequestMethod.POST)
-    public ResponseEntity<WhoisResources> create(
+    public ResponseEntity create(
             @RequestBody final WhoisWebDTO dto,
             @PathVariable final String source,
             @QueryParam("password") final String[] passwords,
