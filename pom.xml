@@ -39,6 +39,13 @@
         <developerConnection>scm:git:ssh://git@stash.ripe.net:7999/swe/db-web-ui.git</developerConnection>
     </scm>
 
+    <repositories>
+        <repository>
+            <id>ripe-releases</id>
+            <url>http://nexus.ripe.net/nexus/content/repositories/releases</url>
+        </repository>
+    </repositories>
+
     <modules>
         <module>frontend</module>
         <module>backend</module>
