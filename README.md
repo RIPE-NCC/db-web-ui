@@ -26,7 +26,7 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 * cd into the ```backend``` sub folder
 
 * execute  (using the Jetty Maven Plugin): ```mvn jetty:run```
- * or (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Drun.profiles=dev```     
+ * or (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Drun.profiles=local```     
 
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
