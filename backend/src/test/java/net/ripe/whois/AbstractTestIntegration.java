@@ -5,36 +5,29 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.IntegrationTest;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.TestRestTemplate;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestExecutionListeners;
-import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
+
 
 /**
  * Base integration testing class for db-web-ui.
  *
- * Ref: http://docs.spring.io/spring-boot/docs/1.2.7.RELEASE/reference/html/boot-features-testing.html
+ * Ref:
+ *  https://spring.io/blog/2016/04/15/testing-improvements-in-spring-boot-1-4
+ *  http://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-testing.html
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @ActiveProfiles(profiles = "test")
-@SpringApplicationConfiguration(classes = {Application.class, AbstractTestIntegration.ContextConfiguration.class})
-@ComponentScan(basePackages = {"net.ripe.whois"})
-@TestExecutionListeners(inheritListeners = false, listeners = {DependencyInjectionTestExecutionListener.class, DirtiesContextTestExecutionListener.class})
-@IntegrationTest("server.port:0")
-@WebAppConfiguration
-public class AbstractTestIntegration extends AbstractJUnit4SpringContextTests {
+@SpringBootTest(classes = {Application.class, AbstractTestIntegration.ContextConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class AbstractTestIntegration {
 
     protected static final String CROWD_COOKIE_NAME = "crowd.token_key";
     protected static final String CROWD_COOKIE_VALUE = "aabbccdd";
@@ -42,6 +35,7 @@ public class AbstractTestIntegration extends AbstractJUnit4SpringContextTests {
     protected static final String CROWD_USER_ATTRIBUTE_PATH = "/rest/usermanagement/1/user/attribute";
 
     @Configuration
+    @EnableAutoConfiguration
     static class ContextConfiguration {
         @Bean
         public TestRestTemplate testRestTemplate() {
