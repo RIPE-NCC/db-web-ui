@@ -16,14 +16,14 @@ describe('webupdates homepage', function() {
         // });
     });
 
-    fit('should not crash when showing index page', function() {
+    it('should not crash when showing index page', function() {
         expect(page.searchTextInput.isPresent()).toEqual(true);
         // test that we're detecting failures properly -- ptor gets confused by bad configs so make sure we're not using
         // one of those :S
         expect(element(by.id('nosuchelement')).isPresent()).toEqual(false);
     });
 
-    fit('should show an editor for as-set', function() {
+    it('should show an editor for as-set', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('as-set').click();
         page.btnNavigateToCreate.click();

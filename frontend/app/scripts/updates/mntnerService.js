@@ -90,13 +90,13 @@
             };
 
             mntnerService.isMntnerOnlist = function (list, mntner) {
-                return _.any(list, function (item) {
+                return _.some(list, function (item) {
                     return item.key.toUpperCase() === mntner.key.toUpperCase();
                 });
             };
 
             mntnerService.hasNccMntner = function (mntnerList) {
-                return _.any(mntnerList, function (mntner) {
+                return _.some(mntnerList, function (mntner) {
                     return mntnerService.isNccMntner(mntner);
                 });
             };
@@ -106,7 +106,7 @@
                     return false;
                 }
 
-                return _.any(mntner.auth, function (i) {
+                return _.some(mntner.auth, function (i) {
                     return _.startsWith(i, 'MD5');
                 });
             };
@@ -123,7 +123,7 @@
                 if (_.isUndefined(mntner.auth)) {
                     return false;
                 }
-                return _.any(mntner.auth, function (i) {
+                return _.some(mntner.auth, function (i) {
                     return _.startsWith(i, 'SSO');
                 });
             };
@@ -132,7 +132,7 @@
                 if (_.isUndefined(mntner.auth)) {
                     return false;
                 }
-                return _.any(mntner.auth, function (i) {
+                return _.some(mntner.auth, function (i) {
                     return _.startsWith(i, 'PGP');
                 });
             };
@@ -274,7 +274,7 @@
             };
 
             function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
-                return _.any(originalObjectMntners, function (mntner) {
+                return _.some(originalObjectMntners, function (mntner) {
                     return mntner.mine === true;
                 });
             }
@@ -282,7 +282,7 @@
             function _oneOfOriginalMntnersHasCredential(originalObjectMntners) {
                 if (CredentialsService.hasCredentials()) {
                     var trustedMtnerName = CredentialsService.getCredentials().mntner;
-                    return _.any(originalObjectMntners, function (mntner) {
+                    return _.some(originalObjectMntners, function (mntner) {
                         return mntner.key.toUpperCase() === trustedMtnerName.toUpperCase();
                     });
                 }

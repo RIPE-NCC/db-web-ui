@@ -77,16 +77,16 @@ module.exports = {
 
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
 
-    modal: element(by.css('[modal-window]')),
-    modalAttributeList:  element(by.css('[modal-window]')).element(by.css('select')),
-    modalEmail: element(by.css('[modal-window]')).element(by.name('email')),
-    modalInpMaintainer: element(by.css('[modal-window]')).element(by.model('selected.item')),
-    modalInpPassword: element(by.css('[modal-window]')).element(by.model('selected.password')),
-    modalInpAssociate: element(by.css('[modal-window]')).element(by.model('selected.associate')),
-    modalBtnSubmit: element(by.css('[modal-window]')).element(by.css('input[type=Submit]')),
-    modalClose: element(by.css('[modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
-    modalBody: element(by.css('[modal-window]')).element(by.css('.modal-body')),
-    modalFooter: element(by.css('[modal-window]')).element(by.css('.modal-footer')),
+    modal: element(by.css('[uib-modal-window]')),
+    modalAttributeList:  element(by.css('[uib-modal-window]')).element(by.css('select')),
+    modalEmail: element(by.css('[uib-modal-window]')).element(by.name('email')),
+    modalInpMaintainer: element(by.css('[uib-modal-window]')).element(by.model('selected.item')),
+    modalInpPassword: element(by.css('[uib-modal-window]')).element(by.model('selected.password')),
+    modalInpAssociate: element(by.css('[uib-modal-window]')).element(by.model('selected.associate')),
+    modalBtnSubmit: element(by.css('[uib-modal-window]')).element(by.css('input[type=Submit]')),
+    modalClose: element(by.css('[uib-modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
+    modalBody: element(by.css('[uib-modal-window]')).element(by.css('.modal-body')),
+    modalFooter: element(by.css('[uib-modal-window]')).element(by.css('.modal-footer')),
 
     /**
      * Experimental support for iMacros scripts.

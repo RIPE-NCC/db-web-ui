@@ -1,3 +1,4 @@
+/*globals beforeEach, describe, expect, inject, it, module */
 'use strict';
 
 describe('ConfirmMaintainerCtrl', function() {
@@ -23,7 +24,7 @@ describe('ConfirmMaintainerCtrl', function() {
                 EmailLink: EmailLink
             });
             $httpBackend.whenGET(/.*.html/).respond(200);
-        }
+        };
 
     }));
 

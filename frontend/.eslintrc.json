@@ -1,20 +1,27 @@
 {
-    "env": {
-        "browser": true
-    },
-    "extends": ["angular", "eslint:recommended"],
-    "rules": {
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ]
-    }
+  "env": {
+    "browser": true
+  },
+  "extends": [
+    "angular",
+    "eslint:recommended"
+  ],
+  "globals": {
+    "_": true,
+    "angular": true
+  },
+  "rules": {
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ]
+  }
 }

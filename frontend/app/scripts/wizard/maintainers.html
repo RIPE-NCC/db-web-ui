@@ -7,21 +7,21 @@
     </a>
 </article>
 <ui-select id="selectMaintainerDropdown"
-           multiple="true"
-           theme="selectize"
+           multiple
+           theme="bootstrap"
            ng-model="mntners.object"
            close-on-select="true"
            on-select="onMntnerAdded($item, $model)"
            on-remove="onMntnerRemoved($item, $model)">
 
-    <ui-select-match ui-lock-choice="$item.modifyable" placeholder="Type maintainer name" class="ui-select-match">
+    <ui-select-match ui-lock-choice="$item.modifyable" placeholder="Type maintainer name">
         {{ $item.key }}
         <span class="fa fa-star" ng-if="$item.mine"></span>
         <span class="fa fa-lock" ng-if="$item.$$isRemovable"></span>
     </ui-select-match>
     <ui-select-choices repeat="mntner in mntners.alternatives track by mntner.key"
                        refresh="mntnerAutocomplete($select.search)"
-                       refresh-delay="100" class="ui-select-choices">
+                       refresh-delay="100">
         <div class="option">
             <span class="title">{{ mntner.key }}</span>
             <span class="star fa fa-star" ng-if="mntner.$$isMine"></span>
@@ -31,7 +31,7 @@
         </div>
     </ui-select-choices>
 </ui-select>
-<div collapse="!isMntHelpShown" class="text field-description">
+<div uib-collapse="!isMntHelpShown" class="text field-description">
     <strong>Description</strong><br>
     <attr-info object-type="mntner" description="mnt-by"></attr-info><br>
     <strong>Syntax</strong><br>
