@@ -91,7 +91,7 @@ module.exports = function (grunt) {
                     'clean:server',
                     'copy:processtags',
                     'wiredep',
-                    'compass:dist',
+                    'compass',
                     'postcss',
                     'concat',
                     'copy:dist',

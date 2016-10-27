@@ -30,7 +30,7 @@
     </article>
     <ui-select id="selectMaintainerDropdown"
                multiple="true"
-               theme="selectize"
+               theme="bootstrap"
                ng-model="maintainers.object"
                close-on-select="true"
                on-select="onMntnerAdded($item, $model)"
@@ -93,7 +93,7 @@
                             style="min-width: 300px;"
                             ng-model="attribute.value"
                             ng-disabled="attribute.$$meta.$$disable"
-                            theme="select2">
+                            theme="bootstrap">
                      <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
                      <ui-select-choices repeat="item.key as item in enumAutocomplete(attribute) | filter: $select.search">
                          <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
