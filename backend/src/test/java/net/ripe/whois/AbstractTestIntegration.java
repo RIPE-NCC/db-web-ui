@@ -69,6 +69,7 @@ public class AbstractTestIntegration {
         System.setProperty("crowd.rest.url", getMockServerUrl());
         System.setProperty("rest.api.ripeUrl", getMockServerUrl());
         System.setProperty("ripe.search.queryUrl", getMockServerUrl());
+        System.setProperty("dns.checker.url", getMockServerUrl());
         System.setProperty("crowd.rest.user", "username");
         System.setProperty("crowd.rest.password", "password");
         System.setProperty("server.contextPath", "/db-web-ui");
