@@ -30,7 +30,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
-        <!-- keep spring-boot.version in sync with parent version above -->
+        <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
