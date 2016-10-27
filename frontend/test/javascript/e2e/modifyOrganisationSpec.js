@@ -1,4 +1,4 @@
-/*global beforeEach, browser, describe, expect, it*/
+/*global beforeEach, browser, describe, expect, it, require*/
 var mockGet = require('./mocks/homemocks');
 var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');

@@ -1,6 +1,7 @@
 exports.config = {
     chromeDriver: '../lib/chromedriver',
-    seleniumServerJar: '../lib/selenium-server-standalone-2.47.1.jar',
+
+    seleniumServerJar: '../lib/client-combined-3.0.1-nodeps.jar',
 
     // Spec patterns are relative to the location of this config.
     specs: [

@@ -19,7 +19,7 @@
                        ng-required="{{attribute.$$meta.$$mandatory}}"
                        class="form-control"
                        autocomplete="off"/>
-                <div class="text field-description" collapse="!isHelpShown">
+                <div class="text field-description" uib-collapse="!isHelpShown">
                     <strong>Description</strong><br>
                     <span ng-bind-html="getAttributeDescription('mnt-by')"></span><br>
                     <strong>Syntax</strong><br>
@@ -45,7 +45,7 @@
                        ng-required="{{attribute.$$meta.$$mandatory}}"
                        class="form-control"
                        autocomplete="off"/>
-               <div class="text field-description" collapse="!isHelpShown">
+               <div class="text field-description" uib-collapse="!isHelpShown">
                    <strong>Description</strong><br>
                    <span ng-bind-html="getAttributeDescription(attribute.name)"></span><br>
                    <strong>Syntax</strong><br>

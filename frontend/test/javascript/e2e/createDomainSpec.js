@@ -1,4 +1,4 @@
-/*global beforeEach, browser, by, describe, expect, inject, it, require */
+/*global beforeEach, browser, by, describe, expect, it, require */
 
 // Local requires
 var mockGet = require('./mocks/mocks');
@@ -14,8 +14,8 @@ describe('The domain wizard', function () {
 
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.executeScript("document.body.className += ' notransition';");
-        browser.get(browser.baseUrl + '/#/webupdates/wizard/RIPE/domain');
+        browser.executeScript('document.body.className += \' notransition\';');
+        browser.get(browser.baseUrl + '#/webupdates/wizard/RIPE/domain');
     });
 
     it('should show an editor for domain', function() {

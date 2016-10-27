@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalMd5PasswordController', [ '$scope', '$modalInstance', 'CryptService',
+angular.module('webUpdates').controller('ModalMd5PasswordController', [ '$scope', '$uibModalInstance', 'CryptService',
     function ($scope, $modalInstance, CryptService) {
 
         $scope.password = '';

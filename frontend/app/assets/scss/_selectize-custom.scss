@@ -11,18 +11,17 @@
 		background-color: #F5FFFF !important;
 	}
 }
-.selectize-dropdown-content {
+.ui-select-choices-group {
     max-height: none !important;
     overflow-x: auto !important;
-    div.ui-select-choices-row {
+    .ui-select-choices-row {
 		border-bottom: 1px solid #EAEAEA !important;
-		div.ui-select-choices-row-inner {
+		.ui-select-choices-row-inner {
 			padding: 10px 8px !important;
 			div.option {
 				span.auth {
 					float: right;
 					color: #fff;
-					padding: 3px 6px;
 					margin-left: 5px;
 					min-width: 35px;
 				    padding: 0 4px;
@@ -58,7 +57,7 @@
 		box-shadow: none;
 		text-shadow: none;
 		border: 1px solid #1E8D8D;
-		margin: 0 0 3px !important;
+		margin: 0 1px 3px !important;
 		.close {
 			color: #fff;
 			opacity: 1;

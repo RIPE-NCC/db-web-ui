@@ -1,5 +1,3 @@
-/*global angular*/
-
 (function () {
     'use strict';
 
@@ -90,7 +88,7 @@
 
         function _stripDuplicates(array) {
 
-            var uniqued = _.unique(_.clone(array));
+            var uniqued = _.uniq(_.clone(array));
             // don't copy into a new pointer, but leave existibg pointer in tact
             while (array.length) {
                 array.pop();
