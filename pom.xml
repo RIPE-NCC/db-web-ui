@@ -229,6 +229,13 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
+            <exclusions>
+                <exclusion>
+                    <!-- do not use tomcat -->
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                    <groupId>org.springframework.boot</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
