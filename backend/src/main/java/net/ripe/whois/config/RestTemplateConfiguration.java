@@ -1,4 +1,4 @@
-package net.ripe.whois.services.rest;
+package net.ripe.whois.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
