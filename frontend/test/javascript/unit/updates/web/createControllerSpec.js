@@ -1,7 +1,7 @@
 /*global afterEach, beforeEach, describe, expect, inject, it, module, spyOn*/
 'use strict';
 
-describe('webUpdates: CreateController v2', function () {
+describe('webUpdates: CreateController', function () {
 
     var $scope, $state, $stateParams, $httpBackend, $window;
     var MessageStore;
@@ -620,7 +620,7 @@ describe('webUpdates: CreateController init with nonexistent obj type', function
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    xit('should redirect to 404 page', function() {
+    it('should redirect to 404 page', function() {
         expect($state.transitionTo).toHaveBeenCalledWith('notFound');
     });
 
