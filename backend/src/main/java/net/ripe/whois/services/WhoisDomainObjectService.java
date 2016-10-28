@@ -40,6 +40,22 @@ public class WhoisDomainObjectService {
         final WhoisResources whoisResources = new WhoisResources();
         whoisResources.setWhoisObjects(domainObjects);
 
+        headers.remove(HttpHeaders.ACCEPT_ENCODING);
+        headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
+        headers.remove(HttpHeaders.ACCEPT);
+        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE.toString());
+
+        try {
+            return restTemplate.postForEntity(getUri(source, passwords), new HttpEntity(whoisResources, headers), String.class);
+        } catch (HttpClientErrorException e) {
+            LOGGER.error("Fail to create domain object(s): " +e.getMessage());
+            LOGGER.error(e.getResponseBodyAsString());
+            LOGGER.error(e.getStatusCode() +":", e);
+            return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
+        }
+    }
+
+    private URI getUri(String source, String[] passwords) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", domainObjectApiUrl);
         variables.put("source", source);
@@ -50,17 +66,7 @@ public class WhoisDomainObjectService {
         if (passwords != null && passwords.length > 0) {
             uriComponentsBuilder.queryParam("password", passwords);
         }
-
-        headers.remove(HttpHeaders.ACCEPT_ENCODING);
-        headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
-        headers.remove(HttpHeaders.ACCEPT);
-        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE.toString());
-
-        try {
-            return restTemplate.exchange(uriComponentsBuilder.build().encode().toUri(), HttpMethod.POST, new HttpEntity(whoisResources, headers), String.class);
-        } catch (HttpClientErrorException e) {
-            return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
-        }
+        return uriComponentsBuilder.build().encode().toUri();
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectService.class);
