@@ -30,7 +30,7 @@
     </article>
     <ui-select id="selectMaintainerDropdown"
                multiple="true"
-               theme="selectize"
+               theme="bootstrap"
                ng-model="maintainers.object"
                close-on-select="true"
                on-select="onMntnerAdded($item, $model)"
@@ -55,7 +55,7 @@
             </div>
         </ui-select-choices>
     </ui-select>
-    <div collapse="!isMntHelpShown" class="text field-description">
+    <div uib-collapse="!isMntHelpShown" class="text field-description">
         <strong>Description</strong><br>
         <span ng-bind-html="getAttributeDescription('mnt-by')"></span><br>
         <strong>Syntax</strong><br>
@@ -81,7 +81,7 @@
                        placeholder="{{getAttributeShortDescription(attribute.name)}}"
                        class="form-control"
                        attributetransformer
-                       typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
+                       uib-typeahead="value.key as value.readableName for value in referenceAutocomplete(attribute, $viewValue)"
                        typeahead-min-length="2"
                        ng-disabled="attribute.$$meta.$$disable || attribute.$$meta.$$isLir"
                        autocomplete="off"
@@ -93,7 +93,7 @@
                             style="min-width: 300px;"
                             ng-model="attribute.value"
                             ng-disabled="attribute.$$meta.$$disable"
-                            theme="select2">
+                            theme="bootstrap">
                      <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
                      <ui-select-choices repeat="item.key as item in enumAutocomplete(attribute) | filter: $select.search">
                          <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
@@ -113,7 +113,7 @@
                      </ui-select-choices>
                  </ui-select>
             </span>
-            <div class="text field-description" collapse="!isHelpShown">
+            <div class="text field-description" uib-collapse="!isHelpShown">
                 <strong>Description</strong><br>
                 <span ng-bind-html="getAttributeDescription(attribute.name)"></span><br>
                 <strong>Syntax</strong><br>

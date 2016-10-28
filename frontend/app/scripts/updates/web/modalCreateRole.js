@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('webUpdates').controller('ModalCreateRoleController', [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'WhoisResources', 'MessageStore', 'source', 'objectType', 'name',
+angular.module('webUpdates').controller('ModalCreateRoleController', [ '$scope', '$state', '$log', '$uibModalInstance', 'RestService', 'CredentialsService', 'WhoisResources', 'MessageStore', 'source', 'objectType', 'name',
     function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, WhoisResources, MessageStore, source, objectType, name) {
 
         $scope.MAX_REFS_TO_SHOW = 5;

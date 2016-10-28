@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('webUpdates').controller('ModalDeleteObjectController',
-    [ '$scope', '$state', '$log', '$modalInstance', 'RestService', 'CredentialsService', 'WhoisResources',
+    [ '$scope', '$state', '$log', '$uibModalInstance', 'RestService', 'CredentialsService', 'WhoisResources',
             'MessageStore', 'source', 'objectType', 'name', 'onCancel',
     function ($scope, $state, $log, $modalInstance, RestService, CredentialsService, WhoisResources,
               MessageStore, source, objectType, name, onCancel) {

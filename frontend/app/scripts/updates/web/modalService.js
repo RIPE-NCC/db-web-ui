@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('dbWebApp').factory('ModalService', ['$q', '$modal', '$log', function ($q, $modal, $log) {
+angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', function ($q, $modal, $log) {
 
         var modalService = {};
 

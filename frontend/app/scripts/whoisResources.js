@@ -521,7 +521,7 @@ angular.module('dbWebApp')
                 } else if( attr.$$meta.$$multiple === true ) {
                     return true;
                 } else if( attr.$$meta.$$mandatory === false ) {
-                    if( !_.any(attributes,
+                    if( !_.some(attributes,
                         function (a) {
                             return a.name === attr.name;
                         })) {

@@ -15,10 +15,6 @@ describe('The organisation editor', function () {
     beforeEach(function () {
         browser.get(browser.baseUrl + '#/webupdates/create/RIPE/organisation');
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        // Noisy logs enabled here...
-        // browser.manage().logs().get('browser').then(function(browserLog) {
-        //    console.log('>>>>>> ' + require('util').inspect(browserLog));
-        // });
     });
 
     it('should not crash when showing the single line editor', function () {

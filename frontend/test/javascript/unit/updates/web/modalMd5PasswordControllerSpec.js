@@ -1,4 +1,4 @@
-/*global afterEach, beforeEach, describe, expect, inject, it, jasmine*/
+/*global afterEach, beforeEach, describe, expect, inject, it, jasmine, module*/
 'use strict';
 
 describe('webUpdates: ModalMd5PasswordController', function () {
@@ -21,7 +21,7 @@ describe('webUpdates: ModalMd5PasswordController', function () {
                 }
             };
             _$controller_('ModalMd5PasswordController', {
-                $scope: $scope, $modalInstance: modalInstance, CryptService: cryptService
+                $scope: $scope, $uibModalInstance: modalInstance, CryptService: cryptService
             });
 
         });
