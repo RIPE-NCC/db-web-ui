@@ -102,7 +102,8 @@ module.exports = function (config) {
             type: 'lcov',
             dir: 'reports/unittest-coverage',
             reporters: [
-                { type: 'lcov', subdir: './' }
+                { type: 'lcov', subdir: './' },
+                { type: 'clover', dir: 'reports/clover', subdir: '.', file: 'clover.xml' }
             ]
         }
     });
