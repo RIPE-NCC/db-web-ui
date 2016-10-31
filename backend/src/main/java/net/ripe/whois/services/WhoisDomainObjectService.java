@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
@@ -25,14 +24,14 @@ import java.util.List;
 @Service
 public class WhoisDomainObjectService {
 
-    private final String domainObjectApiUrl;
+    private final String restApiUrl;
     private final RestTemplate restTemplate;
 
     @Autowired
     public WhoisDomainObjectService(final RestTemplate restTemplate, @Value("${rest.api.ripeUrl}") final String ripeUrl) {
-        this.domainObjectApiUrl = ripeUrl;
+        this.restApiUrl = ripeUrl;
         this.restTemplate = restTemplate;
-        LOGGER.debug("Set domainObjectApiUrl to " + this.domainObjectApiUrl);
+        LOGGER.debug("Set restApiUrl to " + this.restApiUrl);
     }
 
     public ResponseEntity createDomainObjects(final String source, String[] passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
@@ -46,7 +45,7 @@ public class WhoisDomainObjectService {
         headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_TYPE.toString());
 
         try {
-            return restTemplate.postForEntity(getUri(source, passwords), new HttpEntity(whoisResources, headers), String.class);
+            return restTemplate.postForEntity(getCreateDomainUri(source, passwords), new HttpEntity(whoisResources, headers), String.class);
         } catch (HttpClientErrorException e) {
             LOGGER.error("Fail to create domain object(s): " +e.getMessage());
             LOGGER.error(e.getResponseBodyAsString());
@@ -55,9 +54,9 @@ public class WhoisDomainObjectService {
         }
     }
 
-    private URI getUri(String source, String[] passwords) {
+    private URI getCreateDomainUri(final String source, final String[] passwords) {
         final HashMap<String, Object> variables = Maps.newHashMap();
-        variables.put("url", domainObjectApiUrl);
+        variables.put("url", restApiUrl);
         variables.put("source", source);
 
         final URI uri = new UriTemplate("{url}/domain-objects/{source}").expand(variables);
@@ -70,5 +69,38 @@ public class WhoisDomainObjectService {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectService.class);
+
+    public Boolean sameOrMoreSpecificExists(final String prefix) {
+        try {
+            restTemplate.getForEntity(getSameExistsUri(prefix), String.class);
+            restTemplate.getForEntity(getMoreSpecificExistsUri(prefix), String.class);
+            return true;
+        } catch (HttpClientErrorException e) {
+            LOGGER.error("Fail to create domain object(s): " +e.getMessage());
+            LOGGER.error(e.getResponseBodyAsString());
+            LOGGER.error(e.getStatusCode() +":", e);
+            return false;
+        }
+
+    }
+
+
+    private URI getSameExistsUri(final String prefix) {
+        return buildDomainExistsUri("{url}/search.json?query-string={prefix}&type-filter=domain&flags=all-more&flags=reverse-domain&flags=no-filtering&flags=no-referenced", prefix);
+    }
+
+    //TODO - get correct query
+    private URI getMoreSpecificExistsUri(final String prefix) {
+        return buildDomainExistsUri("{url}/search.json?query-string={prefix}&type-filter=domain&flags=all-more&flags=reverse-domain&flags=no-filtering&flags=no-referenced", prefix);
+    }
+
+    private URI buildDomainExistsUri(String uri, String prefix) {
+        final HashMap<String, Object> variables = Maps.newHashMap();
+        variables.put("url", restApiUrl);
+        variables.put("prefix", prefix);
+
+        return new UriTemplate(uri).expand(variables);
+    }
+
 
 }
