@@ -100,7 +100,7 @@ public class AngularConstantsController {
 
         try {
             // iterate over all MANIFEST.MF files to find our own (silly but safe)
-            Enumeration<URL> resources = getClass().getClassLoader().getResources(JarFile.MANIFEST_NAME);
+            Enumeration<URL> resources = getClass().getClassLoader().getResources("/META-INF/MANIFEST.MF");
             while (resources.hasMoreElements()) {
                 try (InputStream inputStream = resources.nextElement().openStream()) {
                     Manifest manifest = new Manifest(inputStream);
