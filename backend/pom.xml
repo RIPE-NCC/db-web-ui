@@ -234,7 +234,7 @@
                         <manifestEntries>
                             <version>${project.version}</version>
                             <!--<Implementation-Title>whois-webui</Implementation-Title>-->
-                            <Ripe-Implementation-Version>${implementation-version}</Ripe-Implementation-Version>
+                            <Implementation-Version>${implementation-version}</Implementation-Version>
                             <Spring-Boot-Version>${spring-boot.version}</Spring-Boot-Version>
                             <Main-Class>org.springframework.boot.loader.WarLauncher</Main-Class>
                             <Start-Class>net.ripe.whois.Application</Start-Class>

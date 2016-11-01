@@ -100,13 +100,16 @@ public class AngularConstantsController {
 
         try {
             // iterate over all MANIFEST.MF files to find our own (silly but safe)
-            Enumeration<URL> resources = getClass().getClassLoader().getResources("/META-INF/MANIFEST.MF");
+            Enumeration<URL> resources = getClass().getClassLoader().getResources(JarFile.MANIFEST_NAME);
             while (resources.hasMoreElements()) {
                 try (InputStream inputStream = resources.nextElement().openStream()) {
                     Manifest manifest = new Manifest(inputStream);
                     Attributes attribs = manifest.getMainAttributes();
-                    String implVersion = attribs.getValue("Ripe-Implementation-Version");
-                    if (implVersion != null) return implVersion;
+                    String vendor = attribs.getValue("Implementation-Vendor-Id");
+                    if (StringUtils.equals(vendor, "net.ripe.whois")) {
+                        String implVersion = attribs.getValue("Implementation-Version");
+                        if (implVersion != null) return implVersion;
+                    }
                 }
             }
         } catch (java.io.IOException e) {
