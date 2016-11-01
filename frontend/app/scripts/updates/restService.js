@@ -22,6 +22,19 @@
                     });
                 };
 
+                restService.fetchResource = function (objectType, qs) {
+                    if (['inetnum', 'inet6num', 'aut-num'].indexOf(objectType) < 0) {
+                        $log.error('Only aut-num, inetnum and inet6num supported');
+                        return;
+                    }
+                    return $resource('api/whois/search', {
+                        flags: 'r',
+                        'type-filter': objectType,
+                        'query-string': qs,
+                        ignore404: true
+                    });
+                };
+
                 restService.fetchUiSelectResources = function () {
                     return $q.all([
                         // workaround to cope with order of loading problem

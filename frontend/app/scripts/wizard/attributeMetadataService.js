@@ -176,6 +176,11 @@
                 var revZonesAttr = _.find(attributes, function (attr) {
                     return attr.name === 'reverse-zone';
                 });
+
+                $rootScope.$broadcast('prefix-ok', attribute);
+
+                // TODO: move this function out of prefix validation
+
                 if (revZonesAttr) {
                     revZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
                 }
@@ -293,6 +298,7 @@
                 source: {minOccurs: 1, maxOccurs: 1}
             },
             prefix: {
+                // TODO: prefix check for domain objects
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid, hidden: {invalid: ['mnt-by']}},
                 descr: {},
                 nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},

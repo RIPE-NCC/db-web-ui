@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams',  '$state', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore',
-        function ($http, $scope, $stateParams, $state, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore) {
+    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams',  '$state', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore','PrefixService',
+        function ($http, $scope, $stateParams, $state, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService) {
 
             /*
              * Initial scope vars
@@ -48,6 +48,46 @@
 
             $scope.$on('attribute-state-changed', function () {
                 AttributeMetadataService.enrich(objectType, $scope.attributes);
+            });
+
+            $scope.$on('prefix-ok', function(event, attribute) {
+                // console.log('prefix-ok: ' + attribute.value);
+
+                var objectType = PrefixService.isValidIpv4Prefix(attribute.value) ? 'inetnum' : 'inet6num';
+
+                RestService.fetchResource(objectType, attribute.value).get(function (result) {
+                    console.log('SUCCESS: ' + JSON.stringify(result));
+
+                    if (result && result.objects && angular.isArray(result.objects.object)) {
+                        var resource = result.objects.object[0];
+                        if (resource.attributes && angular.isArray(resource.attributes.attribute)) {
+                            var wrappedResource = WhoisResources.wrapWhoisResources(resource);
+                            console.log('resource = ' + wrappedResource.getPrimaryKey());
+
+                            // Find exact or most specific matching inet(num), and collect the following mntners:
+                            //     (1) mnt-domains
+
+                            var mntDomains = wrappedResource.getAttributes().getAllAttributesOnName('mnt-domains');
+                            console.log('mnt-domains = ' + mntDomains.size);
+
+                            // (2) if NOT exact match, then also mnt-lower
+
+                            var resourceAddress = PrefixService.getAddress(wrappedResource.getPrimaryKey());
+
+                            var prefixAddress = PrefixService.getAddress(attribute.value);
+
+
+
+                            // (3) mnt-by
+
+
+                        }
+                    }
+
+                }, function(error) {
+                    // TODO: error handling
+                    console.log('ERROR: ' + JSON.stringify(error));
+                });
             });
 
             /*

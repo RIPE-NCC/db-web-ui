@@ -5,7 +5,7 @@
 
     angular.module('dbWebApp').service('PrefixService', ['$http', function ($http) {
 
-        this.isValidIp4Cidr = function (address) {
+        var _isValidIp4Cidr = function (address) {
             // check the subnet mask was provided
             if (!address.parsedSubnet) {
                 return false;
@@ -24,7 +24,7 @@
             return last1 < address.subnetMask;
         };
 
-        this.isValidIp6Cidr = function (address) {
+        var _isValidIp6Cidr = function (address) {
             // check the subnet mask is in range
             if (!address.parsedSubnet) {
                 return false;
@@ -48,26 +48,44 @@
          * @returns {boolean}
          */
         this.isValidPrefix = function (str) {
-            // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
-            // * Must support /17 to /24
-            //   - if > 17 show: "Please provide a more specific prefix"
-            //   - if < 24 show: "Use syncupdates"
-            // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
-            // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
-            //
-
             // here we have a string with a subnet mask, but dno if it's v4 or v6 yet, so check...
+            return this.isValidIpv4Prefix(str) || this.isValidIpv6Prefix(str);
+        };
+
+        // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
+        // * Must support /17 to /24
+        //   - if > 17 show: "Please provide a more specific prefix"
+        //   - if < 24 show: "Use syncupdates"
+        // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
+        // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
+        //
+        this.isValidIpv4Prefix = function(str) {
             var ip4 = new Address4(str);
             if (ip4.isValid()) {
-                return this.isValidIp4Cidr(ip4);
+                return _isValidIp4Cidr(ip4);
+            }
+            return false;
+        };
+
+        this.isValidIpv6Prefix = function(str) {
+            var ip6 = new Address6(str);
+            if (ip6.isValid()) {
+                return _isValidIp6Cidr(ip6);
+            }
+            return false;
+        };
+
+        this.getAddress = function(str) {
+            var ip4 = new Address4(str);
+            if (ip4.isValid()) {
+                return ip4;
             } else {
                 var ip6 = new Address6(str);
                 if (ip6.isValid()) {
-                    return this.isValidIp6Cidr(ip6);
+                    return ip6;
                 }
             }
-            // fall through. god know what this is...
-            return false;
+            return null;
         };
 
         /**
