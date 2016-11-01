@@ -105,11 +105,8 @@ public class AngularConstantsController {
                 try (InputStream inputStream = resources.nextElement().openStream()) {
                     Manifest manifest = new Manifest(inputStream);
                     Attributes attribs = manifest.getMainAttributes();
-                    String vendor = attribs.getValue("Implementation-Vendor-Id");
-                    if (StringUtils.equals(vendor, "net.ripe.whois")) {
-                        String implVersion = attribs.getValue("Implementation-Version");
-                        if (implVersion != null) return implVersion;
-                    }
+                    String implVersion = attribs.getValue("Ripe-Implementation-Version");
+                    if (implVersion != null) return implVersion;
                 }
             }
         } catch (java.io.IOException e) {
