@@ -59,29 +59,34 @@
                     console.log('SUCCESS: ' + JSON.stringify(result));
 
                     if (result && result.objects && angular.isArray(result.objects.object)) {
-                        var resource = result.objects.object[0];
-                        if (resource.attributes && angular.isArray(resource.attributes.attribute)) {
-                            var wrappedResource = WhoisResources.wrapWhoisResources(resource);
-                            console.log('resource = ' + wrappedResource.getPrimaryKey());
-
-                            // Find exact or most specific matching inet(num), and collect the following mntners:
-                            //     (1) mnt-domains
-
-                            var mntDomains = wrappedResource.getAttributes().getAllAttributesOnName('mnt-domains');
-                            console.log('mnt-domains = ' + mntDomains.size);
-
-                            // (2) if NOT exact match, then also mnt-lower
-
-                            var resourceAddress = PrefixService.getAddress(wrappedResource.getPrimaryKey());
-
-                            var prefixAddress = PrefixService.getAddress(attribute.value);
+                        var wrappedResource = WhoisResources.wrapWhoisResources(result);
 
 
+                        console.log('resource = ' + wrappedResource.getPrimaryKey());
 
-                            // (3) mnt-by
+                        // Find exact or most specific matching inet(num), and collect the following mntners:
+                        //     (1) mnt-domains
 
 
+                        var resourceAttributes = WhoisResources.wrapAttributes(wrappedResource.getAttributes());
+
+                        var mntDomains = resourceAttributes.getAllAttributesOnName('mnt-domains');
+                        console.log('mnt-domains = ' + mntDomains.size);
+
+                        // (2) if NOT exact match, then also mnt-lower
+
+                        var primaryKey = wrappedResource.getPrimaryKey();
+                        if(PrefixService.isExactMatch(attribute.value, primaryKey)) {
+                            //TODO - get mnt lower
+                            console.log('now you get mnt lower!!');
                         }
+
+
+                        //var resourceAddress = PrefixService.getAddress(wrappedResource.getPrimaryKey());
+
+                        // (3) mnt-by
+
+
                     }
 
                 }, function(error) {

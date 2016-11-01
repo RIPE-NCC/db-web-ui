@@ -143,6 +143,24 @@
             });
         };
 
+        this.isExactMatch = function (prefixInCidrNotation, whoisResourcesPrimaryKey) {
+
+            if(this.isValidIpv4Prefix(prefixInCidrNotation)) {
+                var prefixAddress = this.getAddress(prefixInCidrNotation);
+                var prefixInRangeNotation = prefixAddress.startAddress().address + ' - ' + prefixAddress.endAddress().address;
+
+                return prefixInRangeNotation === whoisResourcesPrimaryKey;
+
+            } else {
+                var resourceAddress = this.getAddress(whoisResourcesPrimaryKey);
+                var prefixAddress = this.getAddress(prefixInCidrNotation);
+
+                return ((resourceAddress.endAddress().address ===  prefixAddress.endAddress().address) &&
+                    (resourceAddress.startAddress().address ===  prefixAddress.startAddress().address));
+
+            }
+        }
+
     }]);
 
 })();
