@@ -610,8 +610,6 @@ describe('webUpdates: CreateController init with nonexistent obj type', function
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
-            $httpBackend.flush();
-
         });
     });
 
