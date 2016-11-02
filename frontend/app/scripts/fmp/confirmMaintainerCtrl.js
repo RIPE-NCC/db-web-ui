@@ -91,7 +91,7 @@
                 };
 
                 function makeModificationUrl(key) {
-                    return '/db-web-ui/#/webupdates/modify/RIPE/mntner/' + key;
+                    return '#/webupdates/modify/RIPE/mntner/' + key;
                 }
 
                 function navigateToSsoAdded(mntnerKey, user) {

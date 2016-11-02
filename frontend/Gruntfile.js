@@ -251,6 +251,7 @@ module.exports = function (grunt) {
         wiredep: {
             app: {
                 src: ['.tmp/index.html'],
+                //src: ['app/_index_app_javascript.html'],
                 ignorePath: /\.\.\//
             },
             test: {

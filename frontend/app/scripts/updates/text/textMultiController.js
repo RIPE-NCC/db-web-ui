@@ -372,7 +372,7 @@
                 if (_.isUndefined(object.name)) {
                     return undefined;
                 }
-                return '/db-web-ui/#/webupdates/display/' + source + '/' + object.type + '/' + object.name;
+                return '#/webupdates/display/' + source + '/' + object.type + '/' + object.name;
             }
 
             function _asTextUpdatesLink(source, object) {
@@ -381,9 +381,9 @@
                     suffix = suffix.concat('&rpsl=' + encodeURIComponent(object.rpsl));
                 }
                 if (object.exists === true) {
-                    return '/db-web-ui/#/textupdates/modify/' + source + '/' + object.type + '/' + object.name + suffix;
+                    return '#/textupdates/modify/' + source + '/' + object.type + '/' + object.name + suffix;
                 } else {
-                    return '/db-web-ui/#/textupdates/create/' + source + '/' + object.type + suffix;
+                    return '#/textupdates/create/' + source + '/' + object.type + suffix;
                 }
             }
 

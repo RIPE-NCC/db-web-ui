@@ -6,7 +6,7 @@
 
         function ($scope, $log, UserInfoService, Properties) {
 
-            function _initialize() {
+            function initialize() {
                 $log.debug('Using login-url:' + Properties.LOGIN_URL);
                 UserInfoService.getUserInfo().then(
                     function (result) {
@@ -26,7 +26,7 @@
                     }
                 );
             }
-            _initialize();
+            initialize();
         }
     ]);
 })();

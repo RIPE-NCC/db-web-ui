@@ -134,7 +134,7 @@ describe('ConfirmMaintainerCtrl', function() {
         expect($scope.user).toBe('user');
 
         expect(AlertService.getErrors().length).toBe(0);
-        expect(AlertService.getWarnings()[0].plainText).toBe('Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner <a href="/db-web-ui/#/webupdates/modify/RIPE/mntner/maintainer">here</a>.');
+        expect(AlertService.getWarnings()[0].plainText).toBe('Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner <a href="#/webupdates/modify/RIPE/mntner/maintainer">here</a>.');
         expect(AlertService.getInfos().length).toBe(0);
     });
 
