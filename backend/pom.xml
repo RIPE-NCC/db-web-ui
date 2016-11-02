@@ -233,13 +233,20 @@
                     <archive>
                         <manifestEntries>
                             <version>${project.version}</version>
-                            <!--<Implementation-Title>whois-webui</Implementation-Title>-->
+                            <Implementation-Title>whois-webui</Implementation-Title>
                             <Implementation-Version>${implementation-version}</Implementation-Version>
                             <Spring-Boot-Version>${spring-boot.version}</Spring-Boot-Version>
                             <Main-Class>org.springframework.boot.loader.WarLauncher</Main-Class>
                             <Start-Class>net.ripe.whois.Application</Start-Class>
                         </manifestEntries>
                     </archive>
+                    <webResources>
+                        <resource>
+                            <directory>src/main/resources-filtered</directory>
+                            <filtering>true</filtering>
+                            <targetPath>WEB-INF/classes</targetPath>
+                        </resource>
+                    </webResources>
                 </configuration>
             </plugin>
             <plugin>

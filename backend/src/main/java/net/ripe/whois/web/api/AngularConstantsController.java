@@ -1,6 +1,7 @@
 package net.ripe.whois.web.api;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.URL;
@@ -23,7 +25,7 @@ import static org.terracotta.modules.ehcache.ToolkitInstanceFactoryImpl.LOGGER;
 
 /**
  * This class serves up a configuration file (/scripts/app.constants.js) to the Angular web front end.
- *
+ * <p>
  * It parses an inline template (below) and resolves properties from the active Spring profile.
  */
 @RestController
@@ -53,6 +55,9 @@ public class AngularConstantsController {
 
     private String appConstantsJsContents;
 
+    @Autowired
+    private ServletContext servletContext;
+
     @PostConstruct
     private void init() {
         appConstantsJsContents = String.format("'use strict';\n\n" +
@@ -77,7 +82,7 @@ public class AngularConstantsController {
                 frontendGtmId);
     }
 
-    @RequestMapping(value="/scripts/app.constants.js", method=RequestMethod.GET, produces="application/javascript")
+    @RequestMapping(value = "/scripts/app.constants.js", method = RequestMethod.GET, produces = "application/javascript")
     @ResponseBody
     public ResponseEntity<String> getAppConstantsJs(HttpServletResponse response) {
         response.setHeader(CACHE_CONTROL, "no-cache"); // deliberately overrides CacheFilter
@@ -86,16 +91,16 @@ public class AngularConstantsController {
         return new ResponseEntity<>(appConstantsJsContents, HttpStatus.OK);
     }
 
-   /**
-    * Returns the implementation version stored in [WAR]/META-INF/MANIFEST.MF
-    *
-    * Note: only if the app is running off a WAR built by the CD server an actual
-    * version is returned, the WAR is considered a SNAPSHOT otherwise (intended).
-    *
-    * The maven-war-plugin saves the version under 'Implementation-Version' in the
-    * MANIFEST.MF file. The CD server specifies the version as a parameter on the
-    * Maven command line: '-Dversion=${some-variable-from-cd-server}
-    */
+    /**
+     * Returns the implementation version stored in [WAR]/META-INF/MANIFEST.MF
+     * <p>
+     * Note: only if the app is running off a WAR built by the CD server an actual
+     * version is returned, the WAR is considered a SNAPSHOT otherwise (intended).
+     * <p>
+     * The maven-war-plugin saves the version under 'Implementation-Version' in the
+     * MANIFEST.MF file. The CD server specifies the version as a parameter on the
+     * Maven command line: '-Dversion=${some-variable-from-cd-server}
+     */
     private String getImplementationVersion() {
 
         try {
@@ -105,10 +110,11 @@ public class AngularConstantsController {
                 try (InputStream inputStream = resources.nextElement().openStream()) {
                     Manifest manifest = new Manifest(inputStream);
                     Attributes attribs = manifest.getMainAttributes();
-                    String vendor = attribs.getValue("Implementation-Vendor-Id");
+                    String vendor = attribs.getValue("Implementation-Vendor");
                     if (StringUtils.equals(vendor, "net.ripe.whois")) {
                         String implVersion = attribs.getValue("Implementation-Version");
-                        if (implVersion != null) return implVersion;
+                        if (implVersion != null)
+                            return implVersion;
                     }
                 }
             }
@@ -118,6 +124,4 @@ public class AngularConstantsController {
         }
         return "SNAPSHOT";
     }
-
-
 }
