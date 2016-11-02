@@ -1,5 +1,6 @@
 package net.ripe.whois.web.api;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +11,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 import static javax.ws.rs.core.HttpHeaders.CACHE_CONTROL;
+import static org.terracotta.modules.ehcache.ToolkitInstanceFactoryImpl.LOGGER;
 
 /**
  * This class serves up a configuration file (/scripts/app.constants.js) to the Angular web front end.
@@ -89,7 +97,27 @@ public class AngularConstantsController {
     * Maven command line: '-Dversion=${some-variable-from-cd-server}
     */
     private String getImplementationVersion() {
-        String implVersion = getClass().getPackage().getImplementationVersion();
-        return implVersion == null ? "SNAPSHOT" : implVersion;
+
+        try {
+            // iterate over all MANIFEST.MF files to find our own (silly but safe)
+            Enumeration<URL> resources = getClass().getClassLoader().getResources(JarFile.MANIFEST_NAME);
+            while (resources.hasMoreElements()) {
+                try (InputStream inputStream = resources.nextElement().openStream()) {
+                    Manifest manifest = new Manifest(inputStream);
+                    Attributes attribs = manifest.getMainAttributes();
+                    String vendor = attribs.getValue("Implementation-Vendor-Id");
+                    if (StringUtils.equals(vendor, "net.ripe.whois")) {
+                        String implVersion = attribs.getValue("Implementation-Version");
+                        if (implVersion != null) return implVersion;
+                    }
+                }
+            }
+        } catch (java.io.IOException e) {
+            // META-INF is available only in JAR, ignore otherwise
+            LOGGER.warn("Could not read MANIFEST.MF"); // considered not fatal
+        }
+        return "SNAPSHOT";
     }
+
+
 }
