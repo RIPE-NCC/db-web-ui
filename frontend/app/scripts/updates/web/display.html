@@ -1,0 +1,37 @@
+<div ng-if="isCreateOrModify()" class="alert alert-success">
+    <p>Your object has been successfully {{getOperationName()}}</p>
+</div>
+
+<alerts></alerts>
+
+<h1>{{objectType}} &quot;{{objectName}}&quot;</h1>
+
+<section class="inner-container">
+    <table class="success-fields grey" ng-if="!isDiff()">
+        <tr ng-repeat="attribute in attributes">
+            <td width="20%">
+                <label>{{attribute.name}}:</label>
+            </td>
+            <td>
+                <p ng-show="!attribute.link">
+                        {{attribute.value}}
+                </p>
+                <p ng-show="attribute.link">
+                        <a ng-href="{{attribute.link.uiHref}}">{{attribute.value}}</a>
+                </p>
+                <div ng-show="attribute.$$error" class="modify-feedback">
+    	            <span>{{attribute.$$error}}</span>
+    	            <i class="fa fa-info-circle"></i>
+    	        </div>
+            </td>
+        </tr>
+    </table>
+
+    <pre class="textdiff" line-diff left-obj="before" right-obj="after" ng-if="isDiff()"></pre>
+
+    <button ng-click="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
+    <span ng-show="modifyButtonToBeShown()">
+        <button ng-click="navigateToModify()"  class="blue-button pull-right ga-createobj-modifyobj">{{loggedIn ? 'Modify' : 'Login to modify'}}</button>
+    </span>
+
+</section>

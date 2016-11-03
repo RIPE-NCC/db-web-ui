@@ -1,21 +1,25 @@
 ######################
 # Project Specific
 ######################
-src/main/webapp
+backend/src/main/webapp
+backend/target/
 screenshot-*.png
 instrumented
 reports
-dist
+frontend/reports
+frontend/dist
+.idea/
 
 ######################
 # Node
 ######################
-node/**
-node_modules/**
+frontend/node/
+frontend/node_modules/
 
 ######################
 # Bower
 ######################
+frontend/bower_components/
 
 ######################
 # SASS
@@ -38,7 +42,7 @@ local.properties
 .classpath
 .settings/**
 .loadpath
-src/main/resources/rebel.xml
+backend/src/main/resources/rebel.xml
 
 # External tool builders
 .externalToolBuilders/**
@@ -112,4 +116,3 @@ Desktop.ini
 .merge_file*
 .~*#
 
-/bower_components/

@@ -1,0 +1,45 @@
+<div class="faded" ng-if="errors.length">
+    <div class="alert alert-danger" role="alert">
+        <ul>
+            <li ng-repeat="error in errors">
+                <div>{{error.plainText}}</div>
+            </li>
+        </ul>
+    </div>
+</div>
+<form id="createForm" name="whoisObjectForm" accept-charset="ISO-8859-1">
+
+    <h1 title="Create domain objects">Create "domain" objects</h1>
+    <section class="form-fields maintainer-fields">
+        <maintainers mntners="maintainers" object-type="objectType" attributes="attributes"></maintainers>
+    </section>
+
+    <section class="visible-field-form">
+        <ul class="form-fields appeared-fields">
+            <li class="faded"
+                ng-repeat="attribute in attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'}"
+                ng-show="!attribute.$$hidden">
+                <attribute-renderer source="source" object-type="objectType" attributes="attributes" attribute="attribute" idx="$index"></attribute-renderer>
+            </li>
+        </ul>
+    </section>
+
+    <section class="supporting-text" ng-show="!containsInvalidValues() && isValidatingDomains">
+        <div class="alert alert-info" role="alert">
+            <p>Validating reverse zones for your servers and creating domain object(s). This can take a few minutes. Please wait.</p>
+        </div>
+    </section>
+
+    <section class="supporting-text" ng-show="!containsInvalidValues() && !isValidatingDomains">
+        <p>By submitting this form you explicitly express your agreement with the
+            <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
+        </p>
+        <p class="pull-right">
+            <button class="blue-button ga-modifyobj-modify"
+                    type="button"
+                    ng-click="submitButtonClicked()">Submit
+            </button>
+        </p>
+    </section>
+
+</form>

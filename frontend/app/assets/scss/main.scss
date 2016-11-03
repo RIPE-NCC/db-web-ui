@@ -1,0 +1,13 @@
+/* Extended CSS */
+@import 'extend.scss';
+
+/* Generic CSS */
+@import 'general.scss';
+
+/* View based CSS */
+@import 'create-obj.scss';
+@import 'display.scss';
+@import 'multisync.scss';
+
+/* Module based CSS */
+@import 'selectize-custom.scss';

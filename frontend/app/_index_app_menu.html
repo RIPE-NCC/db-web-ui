@@ -1,0 +1,74 @@
+<!--  Webupdates specific menu start -->
+<div ng-controller="LeftMenuController">
+    <div class="portlet navigation margin-bottom">
+        <div class="Title">
+            <i title="Show/Hide navigation" class="fa fa-angle-double-left"></i>
+            <a href="/search/query.html" class="h5">RIPE Database</a>
+        </div>
+        <ul class="toplevel">
+            <li class="child" ng-class="{active: menu.searchExpanded}">
+                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                <a href="/search/query.html">Query and Update</a>
+                <ul class="level2">
+                    <li>
+                        <a class="menuItem current" href="/search/query.html">Query the RIPE Database</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="/search/full-text.html">Full Text Search</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="/syncupdates/simple-rpsl.html">Syncupdates</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="/search/abuse-finder.html">Abuse Finder</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="/search/geolocation-finder.html">Geolocation Finder</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child" ng-class="{active: menu.webUpdatesExpanded}">
+                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                <a href="#/">Create</a>
+                <ul class="level2">
+                    <li>
+                        <a class="menuItem current" href="#/">Create an object</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="#/webupdates/create/person/self">Create maintainer and
+                            person pair</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child" ng-class="{active: menu.passwordsExpanded}">
+                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
+                <a href="#/fmp/">Passwords</a>
+                <ul class="level2">
+                    <li>
+                        <a class="menuItem current" href="#/fmp/">Forgotten MNTNER password?</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="/crypt/crypt.html">Password Generator</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div>
+    <div class="portlet margin-bottom grey grey-border">
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('.menuItem').on('click', function(){
+            $('.menuItem').removeClass('current');
+            $(this).addClass(function(n){
+                return 'current';
+            });
+        });
+    });
+</script>
+
+<!--  Webupdates specific menu end -->

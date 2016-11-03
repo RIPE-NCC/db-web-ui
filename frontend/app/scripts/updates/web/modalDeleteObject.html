@@ -1,0 +1,46 @@
+<div class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="doCancel()"></i>
+        <h5 class="modal-title" id="commonModalLabel">
+            <span ng-if="canBeDeleted">Please provide the reason for delete</span>
+            <span ng-if="!canBeDeleted">This object cannot be deleted</span>
+        </h5>
+    </div>
+
+    <div class="modal-body margin-left">
+
+        <div ng-if="restCallInProgress">
+            <p>Retrieving information. Please wait.</p>
+        </div>
+
+        <div ng-if="canBeDeleted">
+            <label for="reason">Reason</label><br/>
+            <input class="form-control" type="text" name="reason" id="reason" ng-model="$parent.reason" autocomplete="off">
+        </div>
+
+        <div ng-if="hasNonSelfIncomingRefs( objectType, name, incomingReferences)">
+            <p ng-if="!canBeDeleted">You can only delete unreferenced objects. Please remove the references from these objects first:</p>
+            <p ng-if="canBeDeleted">Please note that this will also delete the following objects:</p>
+
+            <ul class="bullets">
+                <li ng-repeat="ref in incomingReferences|limitTo:MAX_REFS_TO_SHOW" ng-if="!isEqualTo( objectType, name, ref )">
+                    <div>
+                        {{ref.objectType}} - <a target="_blank" href="{{displayUrl(ref)}}">{{ref.primaryKey}}</a>
+                    </div>
+                </li>
+            </ul>
+            <p ng-if="incomingReferences.length > MAX_REFS_TO_SHOW">There are {{incomingReferences.length-MAX_REFS_TO_SHOW}} more objects referring to {{objectType}} {{name}}</p>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div ng-if="canBeDeleted">
+            <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="doDelete()" value="Confirm delete"/>
+        </div>
+        <div ng-if="!canBeDeleted">
+            <input type="submit" class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="doCancel()" value="Return to object"/>
+        </div>
+    </div>
+
+</div>
+
