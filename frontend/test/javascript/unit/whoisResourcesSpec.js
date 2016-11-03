@@ -403,11 +403,6 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'mnt-by', value: 'c'}
         ]);
 
-        expect(whoisAttributes.getAllAttributesNotOnName('mnt-by')).toEqual([
-            {name: 'as-block', value: 'a'},
-            {name: 'source', value: 'd'}
-        ]);
-
         expect(whoisAttributes.getAllAttributesOnName('non-existing')).toEqual([]);
 
         expect(whoisAttributes.getAllAttributesWithValueOnName('mnt-by')).toEqual([
@@ -634,27 +629,6 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs.getSingleAttributeOnName('source').$$error).toEqual(undefined);
     });
 
-    it('should convert mntnrs to mnt-by attrs', function () {
-        var mntnerForSsoResponse = $whoisResources.wrapWhoisResources({
-            objects: {
-                object: [
-                    { 'primary-key': { attribute: [ { name: 'mntner', value: 'TEST-MNT'    } ] }  },
-                    { 'primary-key': { attribute: [ { name: 'mntner', value: 'TESTSSO-MNT' } ]  } }
-                ]
-            }
-        });
-
-        expect(mntnerForSsoResponse).toBeDefined();
-
-        expect(mntnerForSsoResponse.objectNamesAsAttributes('mnt-by')).toEqual(
-            [
-                {name:'mnt-by', value:'TEST-MNT'},
-                {name:'mnt-by', value:'TESTSSO-MNT'}
-            ]
-        );
-
-    });
-
     it('detact if an attribute can be added', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'person',        value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},
@@ -875,14 +849,9 @@ describe('dbWebApp: WhoisResources', function () {
                 ]
             }});
 
-        expect(resources.getAttributesForObjectWithIndex(0)).toEqual( personAttrs);
-        expect(resources.getAttributesForObjectWithIndex(1)).toEqual( mntnerAttrs);
-        expect(resources.getAttributesForObjectWithIndex(2)).toEqual( []);
-
         expect($whoisResources.getAttributesForObjectOfType(resources, 'person')).toEqual( personAttrs);
         expect($whoisResources.getAttributesForObjectOfType(resources,'mntner')).toEqual( mntnerAttrs);
         expect($whoisResources.getAttributesForObjectOfType(resources,'inetnum')).toEqual( []);
-
     });
 
 
