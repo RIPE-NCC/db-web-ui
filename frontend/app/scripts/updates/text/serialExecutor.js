@@ -13,10 +13,10 @@
                 };
             });
 
-            _serial(tasks);
+            serial(tasks);
         };
 
-        function _serial(tasks) {
+        function serial(tasks) {
             if (tasks.length === 0) {
                 // return right away
                 var deferred = $q.defer();
