@@ -42,11 +42,14 @@
                     $state.transitionTo('webupdates.createSelfMnt', {
                         source: $scope.selected.source
                     });
-                } else if ($scope.selected.objectType === 'domain') {
-                    $state.transitionTo('webupdates.domainobjectwizard', {
-                        source: $scope.selected.source,
-                        objectType: $scope.selected.objectType
-                    });
+
+
+                //TODO (TCP) - Add it back when domains wizard is completed     
+                //} else if ($scope.selected.objectType === 'domain') {
+                //    $state.transitionTo('webupdates.domainobjectwizard', {
+                //        source: $scope.selected.source,
+                //        objectType: $scope.selected.objectType
+                //    });
                 } else {
                     $state.transitionTo('webupdates.create', {
                         source: $scope.selected.source,

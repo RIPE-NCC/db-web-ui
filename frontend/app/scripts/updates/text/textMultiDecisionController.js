@@ -41,7 +41,7 @@
 
             function _navigateToNew() {
                 PreferenceService.setRichSyncupdatesMode();
-                $window.location.href = '/db-web-ui/#/textupdates/multi';
+                $window.location.href = '#/textupdates/multi';
             }
 
             function _navigateToOld() {

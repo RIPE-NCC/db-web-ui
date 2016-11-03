@@ -190,7 +190,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].status).toBe('Object does not yet exist');
         expect($scope.objects.objects[0].action).toBe('create');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
-        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20AUTO-1%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
+        expect($scope.objects.objects[0].textupdatesUrl).toBe('#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20AUTO-1%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
 
     });
 
@@ -221,8 +221,8 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].rpslOriginal).toBeDefined();
         expect($scope.objects.objects[0].success).toBeUndefined();
         expect($scope.objects.objects[0].action).toBe('modify');
-        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
-        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/modify/RIPE/person/MM1-RIPE?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
+        expect($scope.objects.objects[0].displayUrl).toBe('#/webupdates/display/RIPE/person/MM1-RIPE');
+        expect($scope.objects.objects[0].textupdatesUrl).toBe('#/textupdates/modify/RIPE/person/MM1-RIPE?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
         expect($scope.objects.objects[0].status).toBe('Object exists');
 
     });
@@ -289,7 +289,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].success).toBeUndefined();
         expect($scope.objects.objects[0].action).toBe('create');
         expect($scope.objects.objects[0].displayUrl).toBeUndefined();
-        expect($scope.objects.objects[0].textupdatesUrl).toBe('/db-web-ui/#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20Amsterdam%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
+        expect($scope.objects.objects[0].textupdatesUrl).toBe('#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20Amsterdam%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
         expect($scope.objects.objects[0].status).toBe('Object does not yet exist');
     });
 
@@ -331,7 +331,7 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].status).toBe('Create success');
-        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
+        expect($scope.objects.objects[0].displayUrl).toBe('#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
         // verify RPSL is rewritten to prevent second create
         expect($scope.objects.objects[0].rpsl).toBe(
@@ -394,7 +394,7 @@ describe('textUpdates: TextMultiController', function () {
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].status).toBe('Modify success');
-        expect($scope.objects.objects[0].displayUrl).toBe('/db-web-ui/#/webupdates/display/RIPE/person/MM1-RIPE');
+        expect($scope.objects.objects[0].displayUrl).toBe('#/webupdates/display/RIPE/person/MM1-RIPE');
         expect($scope.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect($scope.objects.objects[0].showDiff).toBe(true);
         expect($scope.objects.objects[0].rpsl).toBe(

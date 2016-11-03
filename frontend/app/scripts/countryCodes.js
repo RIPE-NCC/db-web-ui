@@ -4,7 +4,7 @@
     'use strict';
 
 // all ISO3166 'officially assigned' country codes, also 'exceptionally reserved' EU, from http://www.iso.org/iso/country_codes
-    angular.module('dbWebApp').service('CountryCodes', function () {
+    angular.module('dbWebApp').factory('CountryCodes', function () {
 
         var countryCodes = [
             {key: 'AD', value: 'Andorra'},
@@ -259,8 +259,10 @@
             {key: 'ZW', value: 'Zimbabwe'}
         ];
 
-        this.get = function () {
-            return countryCodes;
+        return {
+            get: function () {
+                return countryCodes;
+            }
         };
 
     });

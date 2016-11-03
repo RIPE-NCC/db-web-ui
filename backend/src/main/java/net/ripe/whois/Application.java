@@ -1,9 +1,5 @@
 package net.ripe.whois;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +11,11 @@ import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
@@ -58,14 +52,14 @@ public class Application {
 
         final Environment environment = app.run(args).getEnvironment();
         LOGGER.info(
-                "Access URLs:\n" +
+            "Access URLs:\n" +
                 "----------------------------------------------------------\n" +
                 "\tLocal: \t\thttps://127.0.0.1:{}\n" +
                 "\tExternal: \thttps://{}:{}\n" +
                 "----------------------------------------------------------",
-                environment.getProperty("server.port"),
-                InetAddress.getLocalHost().getHostAddress(),
-                environment.getProperty("server.port"));
+            environment.getProperty("server.port"),
+            InetAddress.getLocalHost().getHostAddress(),
+            environment.getProperty("server.port"));
     }
 
     /**
@@ -98,20 +92,6 @@ public class Application {
         LOGGER.info("crowd.rest.user:      {}", environment.getProperty("crowd.rest.user"));
         LOGGER.info("crowd.rest.password:  {}", String.format("%sxxxxx", environment.getProperty("crowd.rest.password").substring(0, 2)));
         LOGGER.info("crowd.login.url:      {}", environment.getProperty("crowd.login.url"));
-        LOGGER.info("dns.checker.url:     {}", environment.getProperty("dns.checker.url"));
-    }
-    @Autowired
-    private ApplicationContext applicationContext;
-
-    @Bean
-    public Jackson2ObjectMapperBuilder objectMapperBuilder() {
-        return Jackson2ObjectMapperBuilder
-                .json()
-                .applicationContext(applicationContext)
-                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .serializationInclusion(JsonInclude.Include.NON_NULL)
-                .failOnUnknownProperties(false)
-                .annotationIntrospector(new JaxbAnnotationIntrospector(TypeFactory.defaultInstance()));
     }
 
     @Bean

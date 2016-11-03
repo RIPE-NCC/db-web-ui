@@ -2,8 +2,8 @@
 
     'use strict';
 
-    angular.module('dbWebApp').service('ResourceStatus', [function () {
-        
+    angular.module('dbWebApp').factory('ResourceStatus', function () {
+
             var statuses = {
                 'aut-num': {
                     default: [
@@ -102,18 +102,20 @@
                 }
             };
 
-            this.get = function (objectType, parentState) {
-                if (!objectType || !statuses[objectType]) {
-                    return [];
+            return {
+                get: function (objectType, parentState) {
+                    if (!objectType || !statuses[objectType]) {
+                        return [];
+                    }
+                    var list = statuses[objectType][parentState || 'default'];
+                    if (!list) {
+                        // if no match on parentState then return default
+                        list = statuses[objectType]['default'] || [];
+                    }
+                    return list;
                 }
-                var list = statuses[objectType][parentState || 'default'];
-                if (!list) {
-                    // if no match on parentState then return default
-                    list = statuses[objectType]['default'] || [];
-                }
-                return list;
             };
 
-        }]);
+        });
 
 })();

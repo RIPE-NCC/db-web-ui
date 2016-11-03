@@ -71,7 +71,7 @@ angular.module('dbWebApp')
 
         return {
             responseError: function (response) {
-                $log.info('responseError: ' + JSON.stringify(response));
+                $log.info('responseError: ' + angular.toJson(response));
                 if (!mustErrorBeSwallowed(response)) {
                     $rootScope.$broadcast({
                         500: ERROR_EVENTS.serverError,
