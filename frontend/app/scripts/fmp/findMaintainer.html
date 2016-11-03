@@ -1,0 +1,69 @@
+
+<h1>Forgot maintainer password</h1>
+
+<alerts></alerts>
+
+<div>
+    <form class="padding grey ga-forgotpass-findmnt-form">
+        <label>Please enter your <span class="mntner">MNTNER</span> name:</label>
+        <div class="input-group">
+            <input type="text" class="searchField form-control" ng-model="maintainerKey" autofocus="true">
+            <span class="input-group-btn">
+              <input class="btn blue-button ga-forgotpass-findmnt-search" type="submit" ng-click="selectMaintainer()"
+                     value="Search">
+            </span>
+        </div>
+    </form>
+
+    <div ng-if="mntnerFound === true">
+        <div class="alert alert-warning">Please check that this is the correct object before proceeding.</div>
+
+        <section class="inner-container">
+            <h2>Maintainer Object</h2>
+            <div class="margin-top grey padding">
+
+                <table class="success-fields grey">
+                    <tr ng-repeat="attribute in selectedMaintainer.attributes.attribute">
+                        <td width="20%"><label>{{attribute.name}}:</label></td>
+                        <td> {{attribute.value}}</td>
+                    </tr>
+                </table>
+        </section>
+
+        <div class="grey-border margin-bottom margin-top"></div>
+
+        <div>
+            <div class="alert alert-info">An email containing further instructions will be sent to the address
+                {{email}}.
+            </div>
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="goThrough" class="col-sm-7 control-label">I have access to {{email}}. Take me to
+                        the
+                        automated recovery process</label>
+                    <div class="col-sm-3">
+                        <input id="goThrough" type="button" name="hasAccessButton" value="GO"
+                               ng-click="validateEmail()" class="blue-button"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="manual" class="col-sm-7 control-label">I do not have access to {{email}}. Take
+                        me to
+                        the manual recovery process</label>
+                    <div class="col-sm-3">
+                        <input id="manual" type="button" name="hasAccessButton" value="GO"
+                               ng-click="switchToManualResetProcess()" class="blue-button"/>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="margin-top clearfix">
+        <a href="/change-auth/" class="blue-button pull-right" id="cancel"
+           name="cancelButton">Cancel</a>
+    </div>
+</div>
+
+

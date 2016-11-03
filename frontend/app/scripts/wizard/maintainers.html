@@ -1,0 +1,39 @@
+<strong>Please enter the maintainers you would like to use as mnt-by</strong>
+<article class="maintainer-icons">
+    <span class="fa fa-search maintainer-search-icon"></span>
+    <a class="btn btn-default ga-help-attr maintainer-help"
+       ng-click="isMntHelpShown = !isMntHelpShown">
+        <span class="fa fa-question"></span>
+    </a>
+</article>
+<ui-select id="selectMaintainerDropdown"
+           multiple
+           theme="bootstrap"
+           ng-model="mntners.object"
+           close-on-select="true"
+           on-select="onMntnerAdded($item, $model)"
+           on-remove="onMntnerRemoved($item, $model)">
+
+    <ui-select-match ui-lock-choice="$item.modifyable" placeholder="Type maintainer name">
+        {{ $item.key }}
+        <span class="fa fa-star" ng-if="$item.mine"></span>
+        <span class="fa fa-lock" ng-if="$item.$$isRemovable"></span>
+    </ui-select-match>
+    <ui-select-choices repeat="mntner in mntners.alternatives track by mntner.key"
+                       refresh="mntnerAutocomplete($select.search)"
+                       refresh-delay="100">
+        <div class="option">
+            <span class="title">{{ mntner.key }}</span>
+            <span class="star fa fa-star" ng-if="mntner.$$isMine"></span>
+            <span class="auth sso" ng-if="mntner.$$hasSso"> SSO </span>
+            <span class="auth pgp" ng-if="mntner.$$hasPgp"> PGP </span>
+            <span class="auth md5" ng-if="mntner.$$hasMd5"> MD5 </span>
+        </div>
+    </ui-select-choices>
+</ui-select>
+<div uib-collapse="!isMntHelpShown" class="text field-description">
+    <strong>Description</strong><br>
+    <attr-info object-type="mntner" description="mnt-by"></attr-info><br>
+    <strong>Syntax</strong><br>
+    <attr-info object-type="mntner" syntax="mnt-by"></attr-info>
+</div>

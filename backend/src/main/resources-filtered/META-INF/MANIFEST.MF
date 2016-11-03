@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Implementation-Title: whois-webui
+Implementation-Version: ${implementation-version}
+Implementation-Vendor: net.ripe.whois

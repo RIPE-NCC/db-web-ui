@@ -1,0 +1,74 @@
+<alerts></alerts>
+
+<form id="createForm">
+    <section class="visible-field-form">
+        <h1>Create maintainer and person pair</h1>
+
+        <ul class="form-fields appeared-fields">
+
+            <li ng-repeat="attribute in (mntnerAttributes| filter: {name:'!descr'}  | filter: {name:'!admin-c'}  | filter: {name:'!upd-to'} | filter:  {name:'!auth'} | filter: {name:'!mnt-by'} | filter: {name: '!source'} )">
+                <label>{{attribute.name}}</label>
+                <span ng-if="attribute.$$error" class="text-error">
+                    <span ng-bind-html="attribute.$$error"></span>
+                </span>
+                <input type="text"
+                       name="{{attribute.name}}"
+                       ng-model="attribute.value"
+                       placeholder="{{attribute.$$meta.$$short}}"
+                       ng-blur="fieldVisited('mntner', attribute)"
+                       ng-required="{{attribute.$$meta.$$mandatory}}"
+                       class="form-control"
+                       autocomplete="off"/>
+                <div class="text field-description" uib-collapse="!isHelpShown">
+                    <strong>Description</strong><br>
+                    <span ng-bind-html="getAttributeDescription('mnt-by')"></span><br>
+                    <strong>Syntax</strong><br>
+                    <span ng-bind-html="getAttributeSyntax('mnt-by')"></span>
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+           <li ng-repeat="attribute in (personAttributes  | filter: {name:'!nic-hdl'}  | filter: {name:'!mnt-by'} | filter: {name: '!source'})">
+                <label>{{attribute.name}}</label>
+                <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
+                <input type="text"
+                       name="{{attribute.name}}"
+                       ng-model="attribute.value"
+                       placeholder="{{attribute.$$meta.$$short}}"
+                       ng-blur="fieldVisited('person', attribute)"
+                       ng-required="{{attribute.$$meta.$$mandatory}}"
+                       class="form-control"
+                       autocomplete="off"/>
+               <div class="text field-description" uib-collapse="!isHelpShown">
+                   <strong>Description</strong><br>
+                   <span ng-bind-html="getAttributeDescription(attribute.name)"></span><br>
+                   <strong>Syntax</strong><br>
+                   <span ng-bind-html="getAttributeSyntax(attribute.name)"></span>
+               </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        </ul>
+        <section class="supporting-text">
+            <p>By submitting this form you explicitly express your agreement with the <a
+                href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+        </section>
+
+        <input type="submit" ng-click="submit()" ng-disabled="!isFormValid() || submitInProgress" class="blue-button pull-right ga-createobj-create" value="Submit"/>
+        <button ng-click="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
+    </section>
+
+
+</form>
