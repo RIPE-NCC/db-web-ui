@@ -22,6 +22,19 @@
         this.isInvalid = isInvalid;
         this.isHidden = isHidden;
         this.getCardinality = getCardinality;
+        this.determineAttributesForNewObject = determineAttributesForNewObject;
+
+        function determineAttributesForNewObject(objectType) {
+            var i, attributes = [];
+            _.forEach(getAllMetadata(objectType), function (val, key) {
+                if (val.minOccurs) {
+                    for (i = 0; i < val.minOccurs; i++) {
+                        attributes.push({name: key, value: ''});
+                    }
+                }
+            });
+            return attributes;
+        }
 
         function enrich(objectType, attributes) {
             jsUtils.checkTypes(arguments, ['string', 'array']);

@@ -27,7 +27,7 @@
             /*
              * Main
              */
-            $scope.attributes = determineAttributesForNewObject(objectType);
+            $scope.attributes = AttributeMetadataService.determineAttributesForNewObject(objectType);
 
             $scope.restCallInProgress = true;
 
@@ -78,18 +78,6 @@
                     return attr.$$invalid;
                 });
                 return idx !== -1;
-            }
-
-            function determineAttributesForNewObject(objectType) {
-                var i, attributes = [];
-                _.forEach(AttributeMetadataService.getAllMetadata(objectType), function (val, key) {
-                    if (val.minOccurs) {
-                        for (i = 0; i < val.minOccurs; i++) {
-                            attributes.push({name: key, value: ''});
-                        }
-                    }
-                });
-                return attributes;
             }
 
             function submitButtonHandler() {
