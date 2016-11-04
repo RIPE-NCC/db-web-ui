@@ -4,8 +4,11 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams',  '$state', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore',
-        function ($http, $scope, $stateParams, $state, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore) {
+    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams',  '$state', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'ModalService',
+        function ($http, $scope, $stateParams, $state, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, ModalService) {
+
+            // show splash screen
+            ModalService.openDomainWizardSplash();
 
             /*
              * Initial scope vars
