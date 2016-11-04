@@ -56,15 +56,17 @@
                 });
                 revZonesAttr.value = PrefixService.getReverseDnsZones(prefixValue);
 
-                var mntners = MntnerService.getMntsToAuthenticateUsingParent(prefixValue);
+                MntnerService.getMntsToAuthenticateUsingParent(prefixValue, function (mntners) {
 
-                console.log('*********************');
-                console.log('*********************');
-                console.log('*********************');
-                console.log(JSON.stringify(mntners));
-                console.log('*********************');
-                console.log('*********************');
-                console.log('*********************');
+                    //TODO (TCP) - find a better way to have the correct format for the mntners
+                  var hackFromHell = _.map(mntners, function(m){ return {key: m.value}; });
+                    RestService.detailsForMntners(hackFromHell).then(function (enrichedMntners) {
+                        $scope.maintainers.objectOriginal = enrichedMntners;
+                        //TODO (TCP) - I don' know if the  performAuthentication is the correct way to do it. 
+                        performAuthentication($scope.maintainers);
+                    });
+
+                });
 
             });
 
@@ -93,7 +95,7 @@
             function submitButtonHandler() {
 
                 if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
-                    performAuthentication();
+                    performAuthentication($scope.maintainers);
                     return;
                 }
 
@@ -129,9 +131,9 @@
                 return flattenedAttributes;
             }
 
-            function performAuthentication(mnts) {
+            function performAuthentication(maintainers) {
                 var authParams = {
-                    maintainers: $scope.maintainers,
+                    maintainers: maintainers,
                     operation: $scope.operation,
                     object: {
                         source: $scope.source,

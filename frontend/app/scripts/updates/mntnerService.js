@@ -289,7 +289,7 @@
                 return false;
             }
 
-            mntnerService.getMntsToAuthenticateUsingParent = function(prefix) {
+            mntnerService.getMntsToAuthenticateUsingParent = function(prefix, mntHandler) {
                 var objectType = PrefixService.isValidIpv4Prefix(prefix) ? 'inetnum' : 'inet6num';
 
                 RestService.fetchResource(objectType, prefix).get(function (result) {
@@ -305,7 +305,7 @@
 
                         var mntDomains = resourceAttributes.getAllAttributesOnName('mnt-domains');
                         if(mntDomains.size > 0) {
-                            return mntDomains;
+                            mntHandler(mntDomains);
                         }
 
                         // (2) if NOT exact match, then check for mnt-lower
@@ -315,18 +315,19 @@
                             var mntLowers = resourceAttributes.getAllAttributesOnName('mnt-lower');
 
                             if(mntLowers.size >0) {
-                                return mntLowers;
+                                mntHandler(mntLowers);
                             }
                         }
 
                         // (3) mnt-by
                         var mntBys = resourceAttributes.getAllAttributesOnName('mnt-by');
-                        return mntBys;
+                        mntHandler(mntBys);
                     }
 
                 }, function(error) {
                     // TODO: error handling
                     console.log('ERROR: ' + JSON.stringify(error));
+                    mntHandler([]);
                 });
             }
 
