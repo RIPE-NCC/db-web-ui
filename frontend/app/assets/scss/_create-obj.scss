@@ -215,9 +215,11 @@ ul.form-fields {
         }
     }
 }
+
 .input-group .form-control {
     z-index: auto !important;
 }
+
 .text-error, .text-info {
 	@extend %float-r;
 }
@@ -227,7 +229,7 @@ table.table {
 	tbody.reverse-zone-table {
 		display: block;
 		max-height: 317px;
-		overflow-y: scroll;
+		overflow-y: auto;
 		tr, td {
 			@extend %width-100;
 			display: block;

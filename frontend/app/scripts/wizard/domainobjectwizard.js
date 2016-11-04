@@ -98,7 +98,7 @@
                 }
 
                 var flattenedAttributes = flattenStructure($scope.attributes);
-                var passwords = getPasswordsForRestCall();
+                var passwords = CredentialsService.getPasswordsForRestCall();
 
                 $scope.restCallInProgress = true;
                 $scope.isValidatingDomains = true;
@@ -193,23 +193,6 @@
 
             function navigateAway() {
                 console.log('_navigateAway');
-            }
-
-            function getPasswordsForRestCall() {
-                var passwords = [];
-
-                if (CredentialsService.hasCredentials()) {
-                    passwords.push(CredentialsService.getCredentials().successfulPassword);
-                }
-
-                /*
-                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-                 */
-                if ($scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
-                    passwords.push('RPSL');
-                }
-                return passwords;
             }
 
         }]
