@@ -51,52 +51,21 @@
             });
 
             $scope.$on('prefix-ok', function(event, prefixValue) {
-
                 var revZonesAttr = _.find($scope.attributes, function (attr) {
                     return attr.name === 'reverse-zone';
                 });
                 revZonesAttr.value = PrefixService.getReverseDnsZones(prefixValue);
 
-                var objectType = PrefixService.isValidIpv4Prefix(prefixValue) ? 'inetnum' : 'inet6num';
+                var mntners = MntnerService.getMntsToAuthenticateUsingParent(prefixValue);
 
-                RestService.fetchResource(objectType, prefixValue).get(function (result) {
-                    //console.log('SUCCESS: ' + angular.toJson(result));
+                console.log('*********************');
+                console.log('*********************');
+                console.log('*********************');
+                console.log(JSON.stringify(mntners));
+                console.log('*********************');
+                console.log('*********************');
+                console.log('*********************');
 
-                    if (result && result.objects && angular.isArray(result.objects.object)) {
-                        var wrappedResource = WhoisResources.wrapWhoisResources(result);
-
-
-                        //console.log('resource = ' + wrappedResource.getPrimaryKey());
-
-                        // Find exact or most specific matching inet(num), and collect the following mntners:
-                        //     (1) mnt-domains
-
-
-                        var resourceAttributes = WhoisResources.wrapAttributes(wrappedResource.getAttributes());
-
-                        var mntDomains = resourceAttributes.getAllAttributesOnName('mnt-domains');
-                        //console.log('mnt-domains = ' + mntDomains.size);
-
-                        // (2) if NOT exact match, then also mnt-lower
-
-                        var primaryKey = wrappedResource.getPrimaryKey();
-                        if(PrefixService.isExactMatch(prefixValue, primaryKey)) {
-                            //TODO - get mnt lower
-                            //console.log('now you get mnt lower!!');
-                        }
-
-
-                        //var resourceAddress = PrefixService.getAddress(wrappedResource.getPrimaryKey());
-
-                        // (3) mnt-by
-
-
-                    }
-
-                }, function(error) {
-                    // TODO: error handling
-                    console.log('ERROR: ' + angular.toJson(error));
-                });
             });
 
             /*
@@ -160,7 +129,7 @@
                 return flattenedAttributes;
             }
 
-            function performAuthentication() {
+            function performAuthentication(mnts) {
                 var authParams = {
                     maintainers: $scope.maintainers,
                     operation: $scope.operation,

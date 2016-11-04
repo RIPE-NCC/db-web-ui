@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('updates').service('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService',
+    angular.module('updates').service('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService', 'PrefixService',
 
-        function ($log, $q, CredentialsService, WhoisResources, ModalService, RestService) {
+        function ($log, $q, CredentialsService, WhoisResources, ModalService, RestService, PrefixService) {
 
             var mntnerService = {};
 
@@ -287,6 +287,47 @@
                     });
                 }
                 return false;
+            }
+
+            mntnerService.getMntsToAuthenticateUsingParent = function(prefix) {
+                var objectType = PrefixService.isValidIpv4Prefix(prefix) ? 'inetnum' : 'inet6num';
+
+                RestService.fetchResource(objectType, prefix).get(function (result) {
+                    console.log('SUCCESS: ' + JSON.stringify(result));
+
+                    if (result && result.objects && angular.isArray(result.objects.object)) {
+                        var wrappedResource = WhoisResources.wrapWhoisResources(result);
+                        console.log('resource = ' + wrappedResource.getPrimaryKey());
+
+                        // Find exact or most specific matching inet(num), and collect the following mntners:
+                        //     (1) mnt-domains
+                        var resourceAttributes = WhoisResources.wrapAttributes(wrappedResource.getAttributes());
+
+                        var mntDomains = resourceAttributes.getAllAttributesOnName('mnt-domains');
+                        if(mntDomains.size > 0) {
+                            return mntDomains;
+                        }
+
+                        // (2) if NOT exact match, then check for mnt-lower
+                        var primaryKey = wrappedResource.getPrimaryKey();
+                        if(!PrefixService.isExactMatch(prefix, primaryKey)) {
+                            //TODO - get mnt lower
+                            var mntLowers = resourceAttributes.getAllAttributesOnName('mnt-lower');
+
+                            if(mntLowers.size >0) {
+                                return mntLowers;
+                            }
+                        }
+
+                        // (3) mnt-by
+                        var mntBys = resourceAttributes.getAllAttributesOnName('mnt-by');
+                        return mntBys;
+                    }
+
+                }, function(error) {
+                    // TODO: error handling
+                    console.log('ERROR: ' + JSON.stringify(error));
+                });
             }
 
             return mntnerService;
