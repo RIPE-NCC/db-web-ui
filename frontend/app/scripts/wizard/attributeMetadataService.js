@@ -173,18 +173,7 @@
             }
 
             if (PrefixService.isValidPrefix(attribute.value)) {
-                var revZonesAttr = _.find(attributes, function (attr) {
-                    return attr.name === 'reverse-zone';
-                });
-
-                $rootScope.$broadcast('prefix-ok', attribute);
-
-                // TODO: move this function out of prefix validation
-
-                if (revZonesAttr) {
-                    revZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
-                }
-
+                $rootScope.$broadcast('prefix-ok', attribute.value);
                 attribute.$$info = 'Prefix looks OK';
                 attribute.$$error = '';
                 return false;

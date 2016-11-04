@@ -58,7 +58,7 @@ angular.module('dbWebApp')
         };
 
         var toString = function() {
-            return JSON.stringify(this);
+            return angular.toJson(this);
         };
 
         this.wrapAndEnrichAttributes = function (objectType, attrs) {

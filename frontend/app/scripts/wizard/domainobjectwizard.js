@@ -50,19 +50,23 @@
                 AttributeMetadataService.enrich(objectType, $scope.attributes);
             });
 
-            $scope.$on('prefix-ok', function(event, attribute) {
-                // console.log('prefix-ok: ' + attribute.value);
+            $scope.$on('prefix-ok', function(event, prefixValue) {
 
-                var objectType = PrefixService.isValidIpv4Prefix(attribute.value) ? 'inetnum' : 'inet6num';
+                var revZonesAttr = _.find($scope.attributes, function (attr) {
+                    return attr.name === 'reverse-zone';
+                });
+                revZonesAttr.value = PrefixService.getReverseDnsZones(prefixValue);
 
-                RestService.fetchResource(objectType, attribute.value).get(function (result) {
-                    console.log('SUCCESS: ' + JSON.stringify(result));
+                var objectType = PrefixService.isValidIpv4Prefix(prefixValue) ? 'inetnum' : 'inet6num';
+
+                RestService.fetchResource(objectType, prefixValue).get(function (result) {
+                    //console.log('SUCCESS: ' + angular.toJson(result));
 
                     if (result && result.objects && angular.isArray(result.objects.object)) {
                         var wrappedResource = WhoisResources.wrapWhoisResources(result);
 
 
-                        console.log('resource = ' + wrappedResource.getPrimaryKey());
+                        //console.log('resource = ' + wrappedResource.getPrimaryKey());
 
                         // Find exact or most specific matching inet(num), and collect the following mntners:
                         //     (1) mnt-domains
@@ -71,14 +75,14 @@
                         var resourceAttributes = WhoisResources.wrapAttributes(wrappedResource.getAttributes());
 
                         var mntDomains = resourceAttributes.getAllAttributesOnName('mnt-domains');
-                        console.log('mnt-domains = ' + mntDomains.size);
+                        //console.log('mnt-domains = ' + mntDomains.size);
 
                         // (2) if NOT exact match, then also mnt-lower
 
                         var primaryKey = wrappedResource.getPrimaryKey();
-                        if(PrefixService.isExactMatch(attribute.value, primaryKey)) {
+                        if(PrefixService.isExactMatch(prefixValue, primaryKey)) {
                             //TODO - get mnt lower
-                            console.log('now you get mnt lower!!');
+                            //console.log('now you get mnt lower!!');
                         }
 
 
@@ -91,7 +95,7 @@
 
                 }, function(error) {
                     // TODO: error handling
-                    console.log('ERROR: ' + JSON.stringify(error));
+                    console.log('ERROR: ' + angular.toJson(error));
                 });
             });
 
