@@ -13,7 +13,7 @@
 
             // TODO - fix the subnetMask min and max values
             // check the subnet mask is in range
-            if (address.subnetMask < 18 || address.subnetMask > 24) {
+            if (address.subnetMask < 17 || address.subnetMask > 24) {
                 return false;
             }
 
