@@ -2,6 +2,15 @@
 README for db-web-ui
 ====================
 
+Links
+-----
+* [Bamboo](http://bamboo.ripe.net/browse/DB-WUI)
+* [BitBucket](https://bitbucket.ripe.net/projects/SWE/repos/db-web-ui/browse)
+* [Environments (Marvin)](https://marvin.ripe.net/display/db/DB+Environments)
+* [Sonar](http://db-tools-1:9000/dashboard/index/15937)
+* [Kibana](http://db-tools-1:8000/)
+* [Jenkins (deprecated)](http://db-tools-1:8088/view/db-web-ui/)
+
 Pre-requisites
 -----------------
 npm
