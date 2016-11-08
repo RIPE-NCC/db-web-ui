@@ -45,7 +45,7 @@ angular.module('webUpdates')
                 .state('webupdates.domainobjectwizard', {
                     url: '/wizard/:source/:objectType',
                     templateUrl: 'scripts/wizard/domainobjectwizard.html',
-                    controller: 'DomainObjectController'
+                    controller: 'DomainObjectController as domain'
                 })
                 .state('webupdates.displayDomainObjects', {
                     url: '/wizard/:source/:objectType/success',

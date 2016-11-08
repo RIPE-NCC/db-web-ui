@@ -3,14 +3,13 @@
 (function () {
     'use strict';
 
-    angular.module('webUpdates').service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
+    angular.module('webUpdates').service('WebUpdatesCommons', ['$state', '$document', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
 
-        function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, STATE) {
+        function ($state, $document, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, STATE) {
 
             var webUpdatesCommons = {};
 
             webUpdatesCommons.performAuthentication = function (authParams) {
-                // maintainers, method, objectSource, objectType, objectName, isLirObject, successCloseCallback, cancelCloseCallback
                 $log.debug('Perform authentication', authParams.maintainers);
                 var mntnersWithPasswords = MntnerService.getMntnersForPasswordAuthentication(authParams.maintainers.sso, authParams.maintainers.objectOriginal, authParams.maintainers.object);
                 var mntnersWithoutPasswords = MntnerService.getMntnersNotEligibleForPasswordAuthentication(authParams.maintainers.sso, authParams.maintainers.objectOriginal, authParams.maintainers.object);
@@ -18,21 +17,21 @@
                 var allowForcedDelete = !_.find(authParams.maintainers.object, function (o) {
                     return MntnerService.isNccMntner(o.key);
                 });
-                ModalService.openAuthenticationModal(authParams.method, authParams.object, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, authParams.isLirObject).then(
+                ModalService.openAuthenticationModal(null, authParams.object, mntnersWithPasswords, mntnersWithoutPasswords, allowForcedDelete, authParams.isLirObject).then(
                     function (result) {
                         AlertService.clearErrors();
                         var selectedMntner = result.selectedItem;
-                        $log.debug('selected mntner:' + JSON.stringify(selectedMntner));
+                        $log.debug('selected mntner:' + angular.toJson(selectedMntner));
                         var associationResp = result.response;
-                        $log.debug('associationResp:' + JSON.stringify(associationResp));
+                        $log.debug('associationResp:' + angular.toJson(associationResp));
                         if (MntnerService.isMine(selectedMntner)) {
                             // has been successfully associated in authentication modal
                             authParams.maintainers.sso.push(selectedMntner);
                             // mark starred in selected
                             authParams.maintainers.object = MntnerService.enrichWithMine(authParams.maintainers.sso, authParams.maintainers.object);
                         }
-                        $log.debug('After auth: maintainers.sso:' + JSON.stringify(authParams.maintainers.sso));
-                        $log.debug('After auth: maintainers.object:' + JSON.stringify(authParams.maintainers.object));
+                        $log.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
+                        $log.debug('After auth: maintainers.object:', authParams.maintainers.object);
                         if (!_.isUndefined(authParams.successClbk)) {
                             authParams.successClbk(associationResp);
                         }
@@ -45,7 +44,7 @@
             };
 
             webUpdatesCommons.addLinkToReferenceAttributes = function (attributes, objectSource) {
-                var parser = document.createElement('a');
+                var parser = $document.createElement('a');
                 return _.map(attributes, function (attribute) {
                     if (!_.isUndefined(attribute.link)) {
                         attribute.link.uiHref = _displayUrl(parser, attribute, objectSource);

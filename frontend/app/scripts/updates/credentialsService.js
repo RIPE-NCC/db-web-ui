@@ -29,7 +29,7 @@ angular.module('updates').factory('CredentialsService', function () {
         var passwords = [];
 
         if (CredentialsService.hasCredentials()) {
-            passwords.push(CredentialsService.getCredentials().successfulPassword);
+            passwords.push(credentials.successfulPassword);
         }
 
         /*

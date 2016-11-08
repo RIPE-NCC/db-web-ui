@@ -103,10 +103,10 @@
                             found.mine = mntner.mine;
                         }
 
-                        $log.debug('_singleMntnerDetails success:' + JSON.stringify(found));
+                        $log.debug('_singleMntnerDetails success:' + angular.toJson(found));
                         deferredObject.resolve(found);
                     }, function (error) {
-                        $log.error('_singleMntnerDetails error:' + JSON.stringify(error));
+                        $log.error('_singleMntnerDetails error:' + angular.toJson(error));
                         deferredObject.reject(error);
                     });
 

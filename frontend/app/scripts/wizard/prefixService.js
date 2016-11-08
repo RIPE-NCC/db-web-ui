@@ -53,12 +53,9 @@
         };
 
         // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
-        // * Must support /17 to /24
-        //   - if > 17 show: "Please provide a more specific prefix"
-        //   - if < 24 show: "Use syncupdates"
         // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
         // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
-        //
+
         this.isValidIpv4Prefix = function(str) {
             var ip4 = new Address4(str);
             if (ip4.isValid()) {
@@ -145,21 +142,21 @@
 
         this.isExactMatch = function (prefixInCidrNotation, whoisResourcesPrimaryKey) {
 
+            var prefixAddress;
             if(this.isValidIpv4Prefix(prefixInCidrNotation)) {
-                var prefixAddress = this.getAddress(prefixInCidrNotation);
+                prefixAddress = this.getAddress(prefixInCidrNotation);
                 var prefixInRangeNotation = prefixAddress.startAddress().address + ' - ' + prefixAddress.endAddress().address;
 
                 return prefixInRangeNotation === whoisResourcesPrimaryKey;
 
             } else {
                 var resourceAddress = this.getAddress(whoisResourcesPrimaryKey);
-                var prefixAddress = this.getAddress(prefixInCidrNotation);
+                prefixAddress = this.getAddress(prefixInCidrNotation);
 
                 return ((resourceAddress.endAddress().address ===  prefixAddress.endAddress().address) &&
                     (resourceAddress.startAddress().address ===  prefixAddress.startAddress().address));
-
             }
-        }
+        };
 
     }]);
 
