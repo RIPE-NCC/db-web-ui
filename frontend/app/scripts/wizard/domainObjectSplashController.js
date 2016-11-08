@@ -7,8 +7,4 @@ angular.module('webUpdates').controller('DomainObjectSplashController', [ '$scop
             $modalInstance.close('ok');
         };
 
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-
     }]);
