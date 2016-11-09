@@ -179,20 +179,6 @@ ul.form-fields {
 	color: #DEDEDE;
 	font-size: 20px;
 }
-.selectize-control.multi .selectize-input > div.item {
-	font-size: 12px;
-	margin-bottom: 0 !important;
-	padding: 0 6px;
-}
-.selectize-control.multi .selectize-input > div.item > span.star {
-	font-size: 10px;
-    margin-left: 5px;
-    position: relative;
-    top: -1px;
-}
-.selectize-control.multi .selectize-input > div.item > a.remove {
-	padding: 1px 0 0;
-}
 .field-description {
 	@extend %clear-b;
 	@extend %width-100;

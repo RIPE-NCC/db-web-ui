@@ -24,7 +24,7 @@
     <strong>Please enter the maintainers you would like to use as mnt-by</strong>
     <article class="maintainer-icons">
         <span class="fa fa-search maintainer-search-icon"></span>
-        <a ng-click="isMntHelpShown= !isMntHelpShown" class="btn btn-default ga-help-attr maintainer-help" id="mntnerHelp">
+        <a ng-click="isMntHelpShown=!isMntHelpShown" class="btn btn-default ga-help-attr maintainer-help" id="mntnerHelp">
               <span class="fa fa-question"></span>
         </a>
     </article>
@@ -62,7 +62,7 @@
         <span ng-bind-html="getAttributeSyntax('mnt-by')"></span>
     </div>
 	</section>
-    <section class="visible-field-form" ng-if="hasMntners()">
+    <section class="visible-field-form" ng-if="maintainers.object.length">
         <ul class="form-fields appeared-fields">
             <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" ng-if="$index < nrAttributesToRender">
 
@@ -89,8 +89,6 @@
 
             <span ng-if="attribute.$$meta.$$isEnum && attribute.name !== 'status'">
                  <ui-select name="{{attribute.name}}"
-                            class="form-control"
-                            style="min-width: 300px;"
                             ng-model="attribute.value"
                             ng-disabled="attribute.$$meta.$$disable"
                             theme="bootstrap">
@@ -102,11 +100,9 @@
             </span>
             <span ng-if="attribute.$$meta.$$isEnum && attribute.name === 'status'">
                  <ui-select name="{{attribute.name}}"
-                            class="form-control"
-                            style="min-width: 300px;"
                             ng-model="attribute.value"
                             ng-disabled="attribute.$$meta.$$disable"
-                            theme="select2">
+                            theme="bootstrap">
                      <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
                      <ui-select-choices repeat="item.key as item in optionList[attribute.name] | filter: $select.search">
                          <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
