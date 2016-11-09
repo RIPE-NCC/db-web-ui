@@ -10,10 +10,10 @@
     <span ng-repeat="object in objects | limitTo: 4">
         <table class="success-fields grey">
             <tr ng-repeat="attribute in object.attributes.attribute">
-                <td width="20%">
+                <td class="col-md-3">
                     <label>{{attribute.name}}:</label>
                 </td>
-                <td>
+                <td class="col-md-9">
                     <p>{{attribute.value}}</p>
                     <div ng-show="attribute.$$error" class="modify-feedback">
                         <span>{{attribute.$$error}}</span>
