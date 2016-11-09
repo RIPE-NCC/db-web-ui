@@ -1,0 +1,125 @@
+// Maintainer selection
+.ui-select-choices-group {
+    max-height: none !important;
+    overflow-x: auto !important;
+    .ui-select-choices-row {
+		border-bottom: 1px solid #EAEAEA !important;
+		.ui-select-choices-row-inner {
+			padding: 10px 8px !important;
+			div.option {
+				span.auth {
+					float: right;
+					color: #fff;
+					margin-left: 5px;
+					min-width: 35px;
+				    padding: 0 4px;
+				    text-align: center;
+				    font-size: 10px;
+				}
+				span.auth.md5 {
+					background-color: #E4BF3C;
+					border: 1px solid #BFAA42;
+				}
+				span.auth.sso {
+					background-color: #7FE43C;
+					border: 1px solid #63BF42;
+				}
+				span.auth.pgp {
+					background-color: #E78CF8;
+					border: 1px solid #BC5CEC;
+				}
+				span.star {
+					color: #E2CC5A;
+					margin-left: 5px;
+				}
+			}
+		}
+	}
+}
+
+// Selected maintainer items
+.ui-select-match {
+	.ui-select-match-item {
+		background: #3BBFC0;
+		color: #fff;
+		border-radius: 3px;
+		background-image: none;
+		box-shadow: none;
+		text-shadow: none;
+		border: 1px solid #1E8D8D;
+		margin: 0 1px 3px !important;
+		.close {
+			color: #fff;
+			opacity: 1;
+			text-shadow: none;
+			padding: 2px;
+			border-left: 1px solid #1E8D8D;
+			margin-left: 5px;
+		}
+        .fa-lock {
+            color: #fff;
+            opacity: 1;
+            text-shadow: none;
+            padding: 2px;
+            border-left: 1px solid #777;
+            padding-left: 5px;
+        }
+		&.existing {
+    		background-color: #26A6A7;
+		}
+		&.select-locked {
+		    background-color: grey;
+		    border: 1px solid #777;
+		}
+	}
+	.btn-primary {
+		background: #2EB1B2;
+	}
+}
+
+// UI Select Dropdown
+div.ui-select-container {
+	@extend %float-l;
+	@extend %width-100;
+	outline: none;
+	> input {
+		@extend %width-100;
+	}
+	> div.ui-select-match {
+		outline: none;
+		box-shadow: none;
+		> span.ui-select-toggle {
+			text-shadow: none;
+			background: #fff !important;
+			box-shadow: none;
+			transition: none;
+			i.caret {
+				right: 130px;
+			}
+		}
+		> ul.ui-select-choices {
+			border-radius: 0;
+		}
+	}
+}
+
+// Dropdown list
+.ui-select-container {
+	> ul.ui-select-choices {
+		border-radius: 0;
+		> li.ui-select-choices-group {
+			margin: 0;
+			div.ui-select-choices-row {
+				span.ui-select-choices-row-inner:hover {
+					background-color: #F5FFFF;
+				}
+				&.active {
+					span.ui-select-choices-row-inner {
+						background-color: #F5FFFF;
+						color: #333;
+					}
+				}
+			}
+		}
+	}
+}
