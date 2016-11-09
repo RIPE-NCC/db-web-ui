@@ -44,7 +44,7 @@
             };
 
             webUpdatesCommons.addLinkToReferenceAttributes = function (attributes, objectSource) {
-                var parser = $document.createElement('a');
+                var parser = document.createElement('a');
                 return _.map(attributes, function (attribute) {
                     if (!_.isUndefined(attribute.link)) {
                         attribute.link.uiHref = _displayUrl(parser, attribute, objectSource);
