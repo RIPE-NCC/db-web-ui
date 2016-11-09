@@ -18,7 +18,12 @@ describe('The domain wizard', function () {
         browser.get(browser.baseUrl + '#/webupdates/wizard/RIPE/domain');
     });
 
+    it('should display a splash screen', function() {
+        expect(page.modalSplashText.getText()).toEqual('Creating DOMAIN Objects for Reverse DNS');
+    });
+
     it('should show an editor for domain', function() {
+        page.modalSplashBtn.click();
         expect(page.heading.getText()).toEqual('Create "domain" objects');
         expect(page.inpPrefix.isDisplayed()).toEqual(true);
         expect(page.inpNserver1.isDisplayed()).toEqual(false);
@@ -27,6 +32,7 @@ describe('The domain wizard', function () {
     });
 
     it('should show a domain creation form for IPv4 which rejects invalid nameservers', function() {
+        page.modalSplashBtn.click();
         page.inpPrefix.sendKeys('33.33.0.0/17');
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
@@ -56,6 +62,7 @@ describe('The domain wizard', function () {
 
 
     it('should show a domain creation form for IPv6 which rejects invalid nameservers', function() {
+        page.modalSplashBtn.click();
         page.inpPrefix.sendKeys('2001:db8::/48');
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
