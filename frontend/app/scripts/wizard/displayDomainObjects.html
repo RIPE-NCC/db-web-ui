@@ -4,25 +4,22 @@
 
 <alerts></alerts>
 
-
 <section class="inner-container">
 
-    <span ng-repeat="object in objects | limitTo: 4">
-        <table class="success-fields grey">
-            <tr ng-repeat="attribute in object.attributes.attribute">
-                <td width="20%">
-                    <label>{{attribute.name}}:</label>
-                </td>
-                <td>
-                    <p>{{attribute.value}}</p>
-                    <div ng-show="attribute.$$error" class="modify-feedback">
-                        <span>{{attribute.$$error}}</span>
-                        <i class="fa fa-info-circle"></i>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </span>
+    <table class="success-fields grey" ng-repeat="object in objects | limitTo: 4">
+        <tr ng-repeat="attribute in object.attributes.attribute">
+            <td width="20%">
+                <label>{{attribute.name}}:</label>
+            </td>
+            <td>
+                <p>{{attribute.value}}</p>
+                <div ng-show="attribute.$$error" class="modify-feedback">
+                    <span>{{attribute.$$error}}</span>
+                    <i class="fa fa-info-circle"></i>
+                </div>
+            </td>
+        </tr>
+    </table>
 
     <p ng-if="objects.length > 4">
         <a target="_blank" href="/search/query.html?searchtext=%20-M%20-rd%20-T%20domain%20{{prefix}}&bflag=true&source={{source}}">

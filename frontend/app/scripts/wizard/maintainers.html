@@ -25,9 +25,9 @@
         <div class="option">
             <span class="title">{{ mntner.key }}</span>
             <span class="star fa fa-star" ng-if="mntner.$$isMine"></span>
-            <span class="auth sso" ng-if="mntner.$$hasSso"> SSO </span>
-            <span class="auth pgp" ng-if="mntner.$$hasPgp"> PGP </span>
-            <span class="auth md5" ng-if="mntner.$$hasMd5"> MD5 </span>
+            <span class="auth sso" ng-if="hasSSo(mntner)"> SSO </span>
+            <span class="auth pgp" ng-if="hasPgp(mntner)"> PGP </span>
+            <span class="auth md5" ng-if="hasMd5(mntner)"> MD5 </span>
         </div>
     </ui-select-choices>
 </ui-select>

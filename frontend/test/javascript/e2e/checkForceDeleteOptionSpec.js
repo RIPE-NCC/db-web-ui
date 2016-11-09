@@ -37,7 +37,7 @@ describe('webupdates', function () {
         page.scrollIntoView(page.btnModify);
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
-        expect(page.modalFooter.getText()).toBe('');
+        expect(page.modalFooter.getText()).toBe('Submit'); // cz only the button is shewn
     });
 
     it('should NOT show "force delete" for an inetnum if allocated by RIPE and no extra mntners', function () {
@@ -47,7 +47,7 @@ describe('webupdates', function () {
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
         expect(page.modal.getText()).toContain('The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer here.');
-        expect(page.modalFooter.getText()).toBe('');
+        expect(page.modalFooter.getText()).toBe('Cancel'); // cz only the cancel button is shewn
     });
 
     it('should NOT show "force delete" for an inetnum if allocated by RIPE and no mntners have a passwd', function () {
@@ -57,7 +57,7 @@ describe('webupdates', function () {
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
         expect(page.modal.getText()).toContain('You cannot modify this object here because your SSO account is not associated with any of the maintainers and none of the maintainers are protected with an MD5 password');
-        expect(page.modalFooter.getText()).toBe('');
+        expect(page.modalFooter.getText()).toBe('Cancel');
     });
 
     it('should show "force delete" for an inet6num if NOT allocated by RIPE', function () {
@@ -76,7 +76,7 @@ describe('webupdates', function () {
         page.btnModify.click();
         expect(page.modal.isPresent()).toEqual(true);
         expect(page.modal.getText()).toContain('The default LIR Maintainer has not yet been set up for this object. If you are the holder of this object, please set up your LIR Default maintainer here.');
-        expect(page.modalFooter.getText()).toBe('');
+        expect(page.modalFooter.getText()).toBe('Cancel');
     });
 
 });
