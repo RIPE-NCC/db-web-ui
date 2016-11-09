@@ -83,7 +83,7 @@ module.exports = {
     modalInpMaintainer: element(by.css('[uib-modal-window]')).element(by.model('selected.item')),
     modalInpPassword: element(by.css('[uib-modal-window]')).element(by.model('selected.password')),
     modalInpAssociate: element(by.css('[uib-modal-window]')).element(by.model('selected.associate')),
-    modalBtnSubmit: element(by.css('[uib-modal-window]')).element(by.css('input[type=Submit]')),
+    modalBtnSubmit: element(by.css('[uib-modal-window]')).element(by.css('button[type=submit]')),
     modalClose: element(by.css('[uib-modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
     modalBody: element(by.css('[uib-modal-window]')).element(by.css('.modal-body')),
     modalFooter: element(by.css('[uib-modal-window]')).element(by.css('.modal-footer')),
