@@ -195,31 +195,40 @@
             if (!attribute.value) {
                 attribute.$$info = '';
                 attribute.$$error = '';
-                return false;
+                return true;
             }
             var existing = existingDomains[attribute.value];
-            if (angular.isArray(existing)) {
+            if (angular.isNumber(existing)) {
+                if (existing) {
+                    attribute.$$info = '';
+                    attribute.$$error = 'Domains already exist under this prefix';
+                } else {
+                    attribute.$$info = 'Prefix looks OK';
+                    attribute.$$error = '';
+                }
                 return existing;
             }
             var doCall = function() {
                 // otherwise find the domains and put them in the cache
-                PrefixService.findExistingDomainsForPrefix(attribute.value).then(function (domains) {
-                    console.log('>>> >>>', domains);
-                    if (domains.length) {
-                        attribute.$$error = 'Domains already exist';
-                    } else {
-                        attribute.$$error = '';
-                    }
-                    existingDomains[attribute.value] = domains;
+                PrefixService.findExistingDomainsForPrefix(attribute.value).then(function (results) {
+                    var domainsInTheWay = 0;
+                    _.forEach(results, function(result) {
+                        if (result && result.data && result.data.objects) {
+                            domainsInTheWay += result.data.objects.object.length;
+                        }
+                    });
+                    existingDomains[attribute.value] = domainsInTheWay;
                     // let the evaluation engine know that we've got a new value
                     $rootScope.$broadcast('attribute-state-changed', attribute);
+                }, function() {
+                    existingDomains[attribute.value] = 0;
                 });
             };
             if (existingDomainTo) {
                 clearTimeout(existingDomainTo);
             }
             existingDomainTo = setTimeout(doCall, 600);
-            return false;
+            return true;
         }
 
         function prefixIsInvalid(objectType, attributes, attribute) {

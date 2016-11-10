@@ -172,7 +172,7 @@
         function findExistingDomainsForPrefix(prefixStr) {
             // convert prefix -- is that necessary?
             return $q.all([
-                $http.get('api/whois/search', {
+                $http.get('api/rest/search', {
                     params: {
                         flags: 'drx',
                         'type-filter': 'domain',
@@ -180,7 +180,7 @@
                         ignore404: true
                     }
                 }),
-                $http.get('api/whois/search', {
+                $http.get('api/rest/search', {
                     params: {
                         flags: 'drM',
                         'type-filter': 'domain',
