@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp').service('PrefixService', ['$http', function ($http) {
+    angular.module('dbWebApp').factory('PrefixService', ['$http', '$q', function ($http, $q) {
 
         var _isValidIp4Cidr = function (address) {
             // check the subnet mask was provided
@@ -30,7 +30,7 @@
                 return false;
             }
 
-            if (address.parsedSubnet  >= 127) {
+            if (address.parsedSubnet >= 127) {
                 return false;
             }
 
@@ -41,38 +41,48 @@
             return last1 < address.subnetMask;
         };
 
+        return {
+            isValidPrefix: isValidPrefix,
+            getReverseDnsZones: getReverseDnsZones,
+            checkNameserverAsync: checkNameserverAsync,
+            isExactMatch: isExactMatch,
+            findExistingDomainsForPrefix: findExistingDomainsForPrefix
+        };
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         /**
          * Validates that a prefix is a valid ipV4 or ipV6 prefix.
          *
          * @param str
          * @returns {boolean}
          */
-        this.isValidPrefix = function (str) {
+        function isValidPrefix(str) {
             // here we have a string with a subnet mask, but dno if it's v4 or v6 yet, so check...
-            return this.isValidIpv4Prefix(str) || this.isValidIpv6Prefix(str);
-        };
+            return isValidIpv4Prefix(str) || isValidIpv6Prefix(str);
+        }
 
         // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
         // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
         // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
 
-        this.isValidIpv4Prefix = function(str) {
+        function isValidIpv4Prefix(str) {
             var ip4 = new Address4(str);
             if (ip4.isValid()) {
                 return _isValidIp4Cidr(ip4);
             }
             return false;
-        };
+        }
 
-        this.isValidIpv6Prefix = function(str) {
+        function isValidIpv6Prefix(str) {
             var ip6 = new Address6(str);
             if (ip6.isValid()) {
                 return _isValidIp6Cidr(ip6);
             }
             return false;
-        };
+        }
 
-        this.getAddress = function(str) {
+        function getAddress(str) {
             var ip4 = new Address4(str);
             if (ip4.isValid()) {
                 return ip4;
@@ -83,7 +93,7 @@
                 }
             }
             return null;
-        };
+        }
 
         /**
          * Calculate the list of rDNS names for a prefix.
@@ -91,20 +101,20 @@
          * @param prefix
          * @returns {*} Array of strings which are the rDNS names for the prefix
          */
-        this.getReverseDnsZones = function (prefix) {
+        function getReverseDnsZones(prefix) {
             var i, zoneName, zones = [];
 
-            if (prefix && this.isValidPrefix(prefix)) {
+            if (prefix && isValidPrefix(prefix)) {
 
                 var ipv4 = new Address4(prefix);
                 if (ipv4.isValid()) {
 
                     //It' used to find the array position that starts with 0. That's why -1.
-                    var fixedOctet = Math.ceil(ipv4.subnetMask/8) - 1;
+                    var fixedOctet = Math.ceil(ipv4.subnetMask / 8) - 1;
 
                     var startOctet = ipv4.startAddress().address.split('.')[fixedOctet];
                     var endOctet = ipv4.endAddress().address.split('.')[fixedOctet];
-                    var reverseBNet = ipv4.addressMinusSuffix.split('.').slice(0,fixedOctet).reverse().join('.');
+                    var reverseBNet = ipv4.addressMinusSuffix.split('.').slice(0, fixedOctet).reverse().join('.');
 
                     for (i = startOctet; i <= endOctet; i++) {
                         zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
@@ -131,32 +141,61 @@
                 }
             }
             return zones;
-        };
+        }
 
-        this.checkNameserverAsync = function (ns) {
+        function checkNameserverAsync(ns) {
             return $http({
                 method: 'GET',
                 url: 'api/dns/status?ignore404=true&ns=' + ns
             });
-        };
+        }
 
-        this.isExactMatch = function (prefixInCidrNotation, whoisResourcesPrimaryKey) {
+        function isExactMatch(prefixInCidrNotation, whoisResourcesPrimaryKey) {
 
             var prefixAddress;
-            if(this.isValidIpv4Prefix(prefixInCidrNotation)) {
-                prefixAddress = this.getAddress(prefixInCidrNotation);
+            if (isValidIpv4Prefix(prefixInCidrNotation)) {
+                prefixAddress = getAddress(prefixInCidrNotation);
                 var prefixInRangeNotation = prefixAddress.startAddress().address + ' - ' + prefixAddress.endAddress().address;
 
                 return prefixInRangeNotation === whoisResourcesPrimaryKey;
 
             } else {
-                var resourceAddress = this.getAddress(whoisResourcesPrimaryKey);
-                prefixAddress = this.getAddress(prefixInCidrNotation);
+                var resourceAddress = getAddress(whoisResourcesPrimaryKey);
+                prefixAddress = getAddress(prefixInCidrNotation);
 
-                return ((resourceAddress.endAddress().address ===  prefixAddress.endAddress().address) &&
-                    (resourceAddress.startAddress().address ===  prefixAddress.startAddress().address));
+                return ((resourceAddress.endAddress().address === prefixAddress.endAddress().address) &&
+                (resourceAddress.startAddress().address === prefixAddress.startAddress().address));
             }
-        };
+        }
+
+        function findExistingDomainsForPrefix(prefixStr) {
+            // convert prefix -- is that necessary?
+            return $q.all([
+                $http.get('api/whois/search', {
+                    params: {
+                        flags: 'r',
+                        'type-filter': 'domain',
+                        qs: prefixStr,
+                        exact: true,
+                        ignore404: true
+                    }
+                }),
+                $http.get('api/whois/search', {
+                    params: {
+                        flags: 'r',
+                        'type-filter': 'domain',
+                        qs: prefixStr,
+                        'all-more': true,
+                        ignore404: true
+                    }
+                })
+            ]).then(function (results) {
+                var result = [];
+                console.log(results[0]);
+                console.log(results[1]);
+                return result;
+            });
+        }
 
     }]);
 

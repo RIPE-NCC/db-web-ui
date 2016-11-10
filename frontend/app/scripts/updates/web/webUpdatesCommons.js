@@ -1,11 +1,11 @@
-/*global angular, document*/
+/*global angular*/
 
 (function () {
     'use strict';
 
-    angular.module('webUpdates').service('WebUpdatesCommons', ['$state', '$document', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
+    angular.module('webUpdates').service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
 
-        function ($state, $document, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, STATE) {
+        function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, STATE) {
 
             var webUpdatesCommons = {};
 
@@ -44,7 +44,7 @@
             };
 
             webUpdatesCommons.addLinkToReferenceAttributes = function (attributes, objectSource) {
-                var parser = $document.createElement('a');
+                var parser = document.createElement('a');
                 return _.map(attributes, function (attribute) {
                     if (!_.isUndefined(attribute.link)) {
                         attribute.link.uiHref = _displayUrl(parser, attribute, objectSource);
