@@ -43,6 +43,7 @@
 
         return {
             isValidPrefix: isValidPrefix,
+            isValidIpv4Prefix: isValidIpv4Prefix,
             getReverseDnsZones: getReverseDnsZones,
             checkNameserverAsync: checkNameserverAsync,
             isExactMatch: isExactMatch,
@@ -173,28 +174,21 @@
             return $q.all([
                 $http.get('api/whois/search', {
                     params: {
-                        flags: 'r',
+                        flags: 'drx',
                         'type-filter': 'domain',
-                        qs: prefixStr,
-                        exact: true,
+                        'query-string': prefixStr,
                         ignore404: true
                     }
                 }),
                 $http.get('api/whois/search', {
                     params: {
-                        flags: 'r',
+                        flags: 'drM',
                         'type-filter': 'domain',
-                        qs: prefixStr,
-                        'all-more': true,
+                        'query-string': prefixStr,
                         ignore404: true
                     }
                 })
-            ]).then(function (results) {
-                var result = [];
-                console.log(results[0]);
-                console.log(results[1]);
-                return result;
-            });
+            ]);
         }
 
     }]);
