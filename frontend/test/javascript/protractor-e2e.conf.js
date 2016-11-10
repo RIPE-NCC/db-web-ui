@@ -1,5 +1,7 @@
 /*global browser, document, exports*/
 
+'use strict';
+
 exports.config = {
     chromeDriver: '../lib/chromedriver',
     seleniumServerJar: '../lib/client-combined-3.0.1-nodeps.jar',
@@ -27,7 +29,6 @@ exports.config = {
     },
 
     onPrepare: function() {
-        'use strict';
 
         var disableNgAnimate = function() {
             angular

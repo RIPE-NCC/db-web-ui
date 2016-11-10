@@ -176,7 +176,41 @@
 
         /*
          * Metadata evaluation functions
+         *
+         * https://jira.ripe.net/browse/DB-220
+         *
+         * If there is an existing domain within the specified prefix, display an error.
+         * Find any domain objects for a given prefix, using TWO queries (I think?):
+         * (1) exact match: -d --exact -T domain -r 193.193.200.0 - 193.193.200.255
+         * (2) ALL more specific (excluding exact match) : -d --all-more -T domain -r ...
+         * If any domain objects are returned from either query, then display an error.
          */
+        var existingDomains = {};
+        function domainsAlreadyExist(objectType, attributes, attribute) {
+            if (!attribute.value) {
+                attribute.$$info = '';
+                attribute.$$error = '';
+                return false;
+            }
+            var existing = existingDomains[attribute.value];
+            if (angular.isArray(existing)) {
+                return existing;
+            }
+            // otherwise find the domains and put them in the cache
+            PrefixService.findExistingDomainsForPrefix(attribute.value).then(function(domains) {
+                console.log('found some domains in the way.', domains);
+                if (domains.length) {
+                    attribute.$$error = 'Domains already exist';
+                } else {
+                    attribute.$$error = '';
+                }
+                existingDomains[attribute.value] = domains;
+                // let the evaluation engine know that we've got a new value
+                $rootScope.$broadcast('attribute-state-changed', attribute);
+            });
+            return false;
+        }
+
         function prefixIsInvalid(objectType, attributes, attribute) {
 
             if (!attribute.value) {
@@ -301,7 +335,7 @@
             },
             prefix: {
                 // TODO: prefix check for domain objects
-                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid, hidden: {invalid: ['mnt-by']}},
+                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [prefixIsInvalid, domainsAlreadyExist], hidden: {invalid: ['mnt-by']}},
                 descr: {},
                 nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
