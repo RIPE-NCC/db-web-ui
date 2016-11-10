@@ -27,7 +27,10 @@ describe('The domain wizard', function () {
     });
 
     it('should show a domain creation form for IPv4 which rejects invalid nameservers', function() {
-        page.inpPrefix.sendKeys('33.33.0.0/17');
+        page.inpPrefix.sendKeys('33.33.0.0/18');
+        browser.wait(function() {
+            return browser.isElementPresent(page.inpNserver1);
+        }, 5000);
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
         var liContainer = page.inpNserver2.element(by.xpath('..'));

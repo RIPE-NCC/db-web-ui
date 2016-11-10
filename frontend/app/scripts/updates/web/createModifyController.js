@@ -211,7 +211,7 @@ angular.module('webUpdates')
             }
 
             /*
-             * Methods called from the html-teplate
+             * Methods called from the html-template
              */
 
             function createRoleForAbuseCAttribute() {
@@ -299,7 +299,7 @@ angular.module('webUpdates')
                         } else {
                             name = item['as-name'];
                         }
-                    } else if (typeof item['org-name'] === 'string') {
+                    } else if (angular.isString(item['org-name'])) {
                         name = item['org-name'];
                     } else if (angular.isArray(item.descr)) {
                         name = item.descr.join('');

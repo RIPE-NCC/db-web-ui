@@ -13,6 +13,9 @@
     }]).controller('MaintainerController', ['$scope', 'jsUtilService', 'AttributeMetadataService', 'MntnerService', 'RestService', 'WebUpdatesCommons', function ($scope, jsUtils, AttributeMetadataService, MntnerService, RestService, WebUpdatesCommons) {
 
         $scope.mntnerAutocomplete = mntnerAutocomplete;
+        $scope.hasSSo = MntnerService.hasSSo;
+        $scope.hasPgp = MntnerService.hasPgp;
+        $scope.hasMd5 = MntnerService.hasMd5;
 
         $scope.onMntnerAdded = function (item) {
             // enrich with new-flag

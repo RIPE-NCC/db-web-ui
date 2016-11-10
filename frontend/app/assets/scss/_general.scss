@@ -138,3 +138,9 @@ div#button-container {
     }
   }
 }
+
+.form-control:focus {
+  border-color: #adadad;
+  box-shadow: none;
+  transition: none;
+}

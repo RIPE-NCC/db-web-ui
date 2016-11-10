@@ -1,4 +1,4 @@
-/* global exports*/
+/*global exports*/
 
 exports.config = {
     chromeDriver: '../lib/chromedriver',
@@ -14,7 +14,7 @@ exports.config = {
         //'browserName': 'phantomjs',
         'chromeOptions': {'args': ['--disable-extensions']}
     },
-
+    directConnect: true,
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
 

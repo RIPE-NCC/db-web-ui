@@ -1,15 +1,12 @@
+/*global browser, document, exports*/
+
 exports.config = {
     chromeDriver: '../lib/chromedriver',
-
     seleniumServerJar: '../lib/client-combined-3.0.1-nodeps.jar',
 
     // Spec patterns are relative to the location of this config.
     specs: [
         'e2e/*Spec.js'
-        //'e2e/createOrganisationSpec.js'
-        //'e2e/modifyAutNumSpec.js',
-        //'e2e/modifyRipeResourceSpec.js'
-        //'e2e/navigateToObjectCreationSpec.js'
     ],
 
     capabilities: {
@@ -21,10 +18,6 @@ exports.config = {
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
 
-    // A base URL for your application under test. Calls to protractor.get()
-    // with relative paths will be prepended with this.
-    baseUrl: 'http://localhost:9004',
-
     jasmineNodeOpts: {
         onComplete: null,
         isVerbose: false,
@@ -34,6 +27,8 @@ exports.config = {
     },
 
     onPrepare: function() {
+        'use strict';
+
         var disableNgAnimate = function() {
             angular
                 .module('disableNgAnimate', [])
