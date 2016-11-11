@@ -6,7 +6,7 @@
     angular.module('dbWebApp').directive('maintainers', [function () {
         return {
             restrict: 'E',
-            scope: {mntners: '=', objectType: '=', attributes: '='},
+            scope: {mntners: '=', objectType: '=', attributes: '=', objectSource: '=', objectName: '='},
             templateUrl: 'scripts/wizard/maintainers.html',
             controller: 'MaintainerController'
         };
@@ -63,9 +63,9 @@
                 maintainers: $scope.mntners,
                 operation: $scope.operation,
                 object: {
-                    source: $scope.source,
+                    source: $scope.objectSource,
                     type: $scope.objectType,
-                    name: $scope.name
+                    name: $scope.objectName
                 },
                 isLirObject: false,
                 successClbk: onSuccessfulAuthentication,

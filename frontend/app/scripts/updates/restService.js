@@ -179,7 +179,9 @@
 
                 restService.authenticate = function (method, source, objectType, objectName, passwords) {
                     var deferredObject = $q.defer();
-
+                    if (!source) {
+                        throw new TypeError('restService.authenticate source must have a value');
+                    }
                     $resource('api/whois/:source/:objectType/:objectName', {
                         source: source.toUpperCase(),
                         objectType: objectType,
@@ -189,10 +191,10 @@
                     }).get({
                         password: passwords
                     }).$promise.then(function (result) {
-                        $log.debug('authenticate success:' + JSON.stringify(result));
+                        $log.debug('authenticate success:' + angular.toJson(result));
                         deferredObject.resolve(WhoisResources.wrapSuccess(result));
                     }, function (error) {
-                        $log.error('authenticate error:' + JSON.stringify(error));
+                        $log.error('authenticate error:' + angular.toJson(error));
                         deferredObject.reject(WhoisResources.wrapError(error));
                     });
 
