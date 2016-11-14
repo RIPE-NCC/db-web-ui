@@ -19,6 +19,5 @@ exports.module = function (mockGet) {
                 return [404, 'Missing mock'];
             });
             $httpBackend.whenGET(/.*/).passThrough();
-
         });
 };

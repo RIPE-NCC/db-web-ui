@@ -52,10 +52,10 @@
                         name: encodeURIComponent(name), // NOTE: we perform double encoding of forward slash (%2F ->%252F) to make spring MVC happy
                         limit: limit
                     }).get().$promise.then(function (result) {
-                        $log.debug('getReferences success:' + JSON.stringify(result));
+                        $log.debug('getReferences success:' + angular.toJson(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        $log.debug('getReferences error:' + JSON.stringify(error));
+                        $log.debug('getReferences error:' + angular.toJson(error));
                         deferredObject.reject(error);
                     });
                     return deferredObject.promise;
@@ -66,10 +66,10 @@
 
                     $resource('api/user/mntners')
                         .query().$promise.then(function (result) {
-                        $log.debug('fetchMntnersForSSOAccount success:' + JSON.stringify(result));
+                        $log.debug('fetchMntnersForSSOAccount success:' + angular.toJson(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        $log.error('fetchMntnersForSSOAccount error:' + JSON.stringify(error));
+                        $log.error('fetchMntnersForSSOAccount error:' + angular.toJson(error));
                         deferredObject.reject(error);
                     });
                     return deferredObject.promise;
@@ -127,10 +127,10 @@
                                 query: query,
                                 extended: extended
                             }).query().$promise.then(function (result) {
-                                $log.debug('autocomplete success:' + JSON.stringify(result));
+                                $log.debug('autocomplete success:' + angular.toJson(result));
                                 deferredObject.resolve(result);
                             }, function (error) {
-                                $log.error('autocomplete error:' + JSON.stringify(error));
+                                $log.error('autocomplete error:' + angular.toJson(error));
                                 deferredObject.reject(error);
                             });
                         }
@@ -160,10 +160,10 @@
                                 where: attrsToFilterOn,
                                 like: query
                             }).query().$promise.then(function (result) {
-                                $log.debug('autocompleteAdvanced success:' + JSON.stringify(result));
+                                $log.debug('autocompleteAdvanced success:' + angular.toJson(result));
                                 deferredObject.resolve(result);
                             }, function (error) {
-                                $log.error('autocompleteAdvanced error:' + JSON.stringify(error));
+                                $log.error('autocompleteAdvanced error:' + angular.toJson(error));
                                 deferredObject.reject(error);
                             });
                         }
@@ -214,7 +214,7 @@
                     }).get({
                         password: passwords
                     }).$promise.then(function (result) {
-                        $log.debug('fetchObject success:' + JSON.stringify(result));
+                        $log.debug('fetchObject success:' + angular.toJson(result));
                         var primaryKey = WhoisResources.wrapSuccess(result).getPrimaryKey();
                         if (_.isEqual(objectName, primaryKey)) {
                             deferredObject.resolve(WhoisResources.wrapSuccess(result));
@@ -226,7 +226,7 @@
                             });
                         }
                     }, function (error) {
-                        $log.error('fetchObject error:' + JSON.stringify(error));
+                        $log.error('fetchObject error:' + angular.toJson(error));
                         deferredObject.reject(WhoisResources.wrapError(error));
                     });
 
@@ -247,10 +247,10 @@
                         override: overrides,
                         unformatted: unformatted
                     }, attributes).$promise.then(function (result) {
-                        $log.debug('createObject success:' + JSON.stringify(result));
+                        $log.debug('createObject success:' + angular.toJson(result));
                         deferredObject.resolve(WhoisResources.wrapSuccess(result));
                     }, function (error) {
-                        $log.error('createObject error:' + JSON.stringify(error));
+                        $log.error('createObject error:' + angular.toJson(error));
                         deferredObject.reject(WhoisResources.wrapError(error));
                     });
 
@@ -280,10 +280,10 @@
                         override: overrides,
                         unformatted: unformatted
                     }, attributes).$promise.then(function (result) {
-                        $log.debug('modifyObject success:' + JSON.stringify(result));
+                        $log.debug('modifyObject success:' + angular.toJson(result));
                         deferredObject.resolve(WhoisResources.wrapSuccess(result));
                     }, function (error) {
-                        $log.error('modifyObject error:' + JSON.stringify(error));
+                        $log.error('modifyObject error:' + angular.toJson(error));
                         deferredObject.reject(WhoisResources.wrapError(error));
                     });
 
@@ -303,10 +303,10 @@
                     };
 
                     $http(req).then(function (result) {
-                        $log.debug('associateSSOMntner success:' + JSON.stringify(result));
+                        $log.debug('associateSSOMntner success:' + angular.toJson(result));
                         deferredObject.resolve(WhoisResources.wrapSuccess(result));
                     }, function (error) {
-                        $log.error('associateSSOMntner error:' + JSON.stringify(error));
+                        $log.error('associateSSOMntner error:' + angular.toJson(error));
                         deferredObject.reject(WhoisResources.wrapError(error));
                     });
 
@@ -328,10 +328,10 @@
                         password: passwords,
                         reason: reason
                     }).$promise.then(function (result) {
-                        $log.debug('deleteObject success:' + JSON.stringify(result));
+                        $log.debug('deleteObject success:' + angular.toJson(result));
                         deferredObject.resolve(WhoisResources.wrapSuccess(result));
                     }, function (error) {
-                        $log.error('deleteObject error:' + JSON.stringify(error));
+                        $log.error('deleteObject error:' + angular.toJson(error));
                         deferredObject.reject(WhoisResources.wrapError(error));
                     });
 
@@ -344,10 +344,10 @@
                     $resource('api/references/:source', {
                         source: source.toUpperCase()
                     }).save(multipleWhoisObjects).$promise.then(function (result) {
-                        $log.debug('createPersonMntner success:' + JSON.stringify(result));
+                        $log.debug('createPersonMntner success:' + angular.toJson(result));
                         deferredObject.resolve(result);
                     }, function (error) {
-                        $log.error('createPersonMntner error:' + JSON.stringify(error));
+                        $log.error('createPersonMntner error:' + angular.toJson(error));
                         deferredObject.reject(WhoisResources.wrapError(error));
                     });
 

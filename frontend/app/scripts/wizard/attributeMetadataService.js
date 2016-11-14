@@ -231,6 +231,8 @@
             return true;
         }
 
+        var lastPrefix;
+
         function prefixIsInvalid(objectType, attributes, attribute) {
 
             if (!attribute.value) {
@@ -240,6 +242,11 @@
             }
 
             if (PrefixService.isValidPrefix(attribute.value)) {
+                if (lastPrefix === attribute.value) {
+                    // don't bother. it's just an extraneous evaluation of the prefix
+                    return;
+                }
+                lastPrefix = attribute.value;
                 $rootScope.$broadcast('prefix-ok', attribute.value);
                 attribute.$$info = 'Prefix looks OK';
                 attribute.$$error = '';
