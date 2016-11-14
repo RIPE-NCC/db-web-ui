@@ -16,6 +16,18 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
             return modalInstance.result;
         };
 
+        modalService.openDomainWizardSplash = function (ctrl) {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'scripts/wizard/domainObjectSplash.html',
+                controller: ctrl,
+                controllerAs: '$ctrl',
+                keyboard: false,
+                resolve: {}
+            });
+            return modalInstance.result;
+        };
+
         modalService.openCreateRoleForAbuseCAttribute = function (source, maintainers, passwords) {
             var modalInstance = $modal.open({
                 animation: true,
