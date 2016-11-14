@@ -8,7 +8,7 @@ var page = require('./homePageObject');
 /*
  * Tests...
  */
-fdescribe('The domain wizard', function () {
+describe('The domain wizard', function () {
 
     'use strict';
 
