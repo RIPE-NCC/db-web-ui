@@ -107,6 +107,10 @@ IntelliJ Preferences
                 * Project
                         * Project SDK: 1.8
                         * Language level: 1.8
+* Languages & Frameworks
+	* JavaScript
+		* Code Quality Tools
+			* ESLint: Enable
 
 Architecture
 ------------
