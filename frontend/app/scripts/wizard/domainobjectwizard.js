@@ -3,8 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService',
+    angular.module('dbWebApp').controller('DomainObjectController', ['$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService',
         function ($http, $scope, $stateParams, $location, $anchorScroll, $state, jsUtils, AlertService, ModalService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService) {
 
             // show splash screen
@@ -211,7 +210,7 @@
                 vm.errors = [];
                 vm.isValidatingDomains = false;
 
-                var prefix = _.find(vm.attributes, function (attr) {
+                var prefix = _.find(vm.attributes, function(attr) {
                     return attr.name === 'prefix';
                 });
 

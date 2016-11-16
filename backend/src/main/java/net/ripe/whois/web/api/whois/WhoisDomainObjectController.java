@@ -145,4 +145,5 @@ public class WhoisDomainObjectController extends ApiController {
             return ResponseEntity.ok().build();
         }
     }
+
 }
