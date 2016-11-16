@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams',  '$state', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'ModalService',
-        function ($http, $scope, $stateParams, $state, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, ModalService) {
+    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService',
+        function ($http, $scope, $stateParams, $location, $anchorScroll, $state, jsUtils, AlertService, ModalService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService) {
 
             // show splash screen
             ModalService.openDomainWizardSplash(function ($uibModalInstance) {
@@ -15,52 +15,79 @@
                 };
             });
 
+            var vm = this;
             /*
              * Initial scope vars
              */
-            $scope.maintainers = {
+            vm.maintainers = {
                 sso: [],
                 object: [],
                 objectOriginal: [],
                 alternatives: []
             };
-            $scope.restCallInProgress = false;
-            $scope.canSubmit = true;
-            $scope.canContinue = true;
-            $scope.isValidatingDomains = false;
+            vm.restCallInProgress = false;
+            vm.canSubmit = true;
+            vm.canContinue = true;
+            vm.isValidatingDomains = false;
 
-            var objectType = $scope.objectType = $stateParams.objectType === 'domain' ? 'prefix' : $stateParams.objectType;
-            $scope.source = $stateParams.source;
+            var objectType = vm.objectType = $stateParams.objectType === 'domain' ? 'prefix' : $stateParams.objectType;
+            var source = vm.source = $stateParams.source;
 
             /*
              * Main
              */
-            $scope.attributes = determineAttributesForNewObject(objectType);
+            vm.attributes = AttributeMetadataService.determineAttributesForNewObject(objectType);
 
-            $scope.restCallInProgress = true;
-
-            $scope.maintainers.objectOriginal = [];//_extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
-
+            vm.restCallInProgress = true;
 
             // should be the only thing to do, one day...
-            AttributeMetadataService.enrich(objectType, $scope.attributes);
+            AttributeMetadataService.enrich(objectType, vm.attributes);
 
             /*
              * Callback handlers
              */
-            $scope.submitButtonClicked = submitButtonHandler;
+            vm.submitButtonClicked = submitForm;
 
-            $scope.containsInvalidValues = function () {
-                return containsInvalidValues($scope.attributes);
+            vm.containsInvalidValues = function () {
+                return containsInvalidValues(vm.attributes);
             };
 
             $scope.$on('attribute-state-changed', function () {
-                AttributeMetadataService.enrich(objectType, $scope.attributes);
+                AttributeMetadataService.enrich(objectType, vm.attributes);
             });
+
+            $scope.$on('prefix-ok', _.debounce(onValidPrefix, 600));
 
             /*
              * Local functions
              */
+            function onValidPrefix(event, prefixValue) {
+                var revZonesAttr = _.find(vm.attributes, function (attr) {
+                    return attr.name === 'reverse-zone';
+                });
+                revZonesAttr.value = PrefixService.getReverseDnsZones(prefixValue);
+
+                MntnerService.getMntsToAuthenticateUsingParent(prefixValue, function (mntners) {
+
+                    var mySsos = _.map(vm.maintainers.sso, 'key');
+
+                    // NB don't use the stupid enrichWithSso call cz it's lame
+                    var enriched = _.map(mntners, function (mntnerAttr) {
+                        return {
+                            type: 'mntner',
+                            key: mntnerAttr.value,
+                            mine: _.contains(mySsos, mntnerAttr.value)
+                        };
+                    });
+
+                    RestService.detailsForMntners(enriched).then(function (enrichedMntners) {
+                        vm.maintainers.objectOriginal = enrichedMntners;
+                        if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
+                            performAuthentication(vm.maintainers);
+                        }
+                    });
+                });
+            }
 
             function containsInvalidValues(attributes) {
                 var idx = _.findIndex(attributes, function (attr) {
@@ -69,41 +96,84 @@
                 return idx !== -1;
             }
 
-            function determineAttributesForNewObject(objectType) {
-                var i, attributes = [];
-                _.forEach(AttributeMetadataService.getAllMetadata(objectType), function (val, key) {
-                    if (val.minOccurs) {
-                        for (i = 0; i < val.minOccurs; i++) {
-                            attributes.push({name: key, value: ''});
-                        }
-                    }
-                });
-                return attributes;
-            }
+            function submitForm() {
 
-            function submitButtonHandler() {
-
-                if (MntnerService.needsPasswordAuthentication($scope.maintainers.sso, $scope.maintainers.objectOriginal, $scope.maintainers.object)) {
-                    performAuthentication();
+                if (containsInvalidValues(vm.attributes)) {
                     return;
                 }
 
-                var flattenedAttributes = flattenStructure($scope.attributes);
-                var passwords = getPasswordsForRestCall();
+                if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
+                    performAuthentication(vm.maintainers);
+                    return;
+                }
 
-                $scope.restCallInProgress = true;
-                $scope.isValidatingDomains = true;
+                var flattenedAttributes = flattenStructure(vm.attributes);
+                var passwords = CredentialsService.getPasswordsForRestCall();
+
+                vm.restCallInProgress = true;
+                vm.isValidatingDomains = true;
 
                 // close the alert message
-                $scope.errors = [];
+                vm.errors = [];
 
-                var url = 'api/whois/domain-objects/' + $scope.source;
+                var url = 'api/whois/domain-objects/' + vm.source;
                 var data = {
                     type: objectType,
                     attributes: flattenedAttributes,
                     passwords: passwords
                 };
-                $http.post(url, data).then(onSubmitSuccess, onSubmitError);
+
+                $http.post(url, data).then(function () {
+                    ModalService.openDomainCreationModal(function ($uibModalInstance, $interval) {
+                        var vm = this;
+                        vm.done = 100;
+                        // there's probably a better way to get the number of domains we'll create
+                        vm.todo = _.filter(data.attributes, function(attr) {
+                            return attr.name === 'reverse-zone';
+                        }).length;
+
+                        var backendPinger = $interval(function () {
+                            PrefixService.getDomainCreationStatus(source).then(
+                                function (response) {
+                                    console.log('response', response);
+                                    if (response.status === 200) {
+                                        $interval.cancel(backendPinger);
+                                        $uibModalInstance.close();
+                                        return showCreatedDomains(response);
+                                    } else if (response.status === 204) {
+                                        // nothing happening in the backend
+                                        $uibModalInstance.close();
+                                        $interval.cancel(backendPinger);
+                                    }
+                                    // ok then just wait and keep on pinging...
+                                }, function (failResponse) {
+                                    console.log('response', failResponse);
+                                    $interval.cancel(backendPinger);
+                                    $uibModalInstance.close();
+                                    return createDomainsFailed(failResponse);
+                                });
+                        }, 2000);
+
+                        vm.goAway = function () {
+                            console.log('Leave clicked!');
+                            $interval.cancel(backendPinger);
+                            $uibModalInstance.close();
+                        };
+
+                        vm.cancel = function () {
+                            console.log('Cancel clicked');
+                            $interval.cancel(backendPinger);
+                            $uibModalInstance.close();
+                        };
+
+                    }).then(
+                        function () {
+                            console.log('Modal closed');
+                        });
+                }, function(err) {
+                    console.log('Could not post domains', err);
+                });
+
             }
 
             function flattenStructure(attributes) {
@@ -120,14 +190,14 @@
                 return flattenedAttributes;
             }
 
-            function performAuthentication() {
+            function performAuthentication(maintainers) {
                 var authParams = {
-                    maintainers: $scope.maintainers,
-                    operation: $scope.operation,
+                    maintainers: maintainers,
+                    operation: vm.operation,
                     object: {
-                        source: $scope.source,
+                        source: vm.source,
                         type: objectType,
-                        name: $scope.name
+                        name: vm.name
                     },
                     isLirObject: false,
                     successClbk: onSuccessfulAuthentication,
@@ -136,33 +206,34 @@
                 WebUpdatesCommons.performAuthentication(authParams);
             }
 
-            function onSubmitSuccess(resp) {
-                $scope.restCallInProgress = false;
-                $scope.errors = [];
-                $scope.isValidatingDomains = false;
-                console.log('onSubmitSuccess resp', resp);
+            function showCreatedDomains(resp) {
+                vm.restCallInProgress = false;
+                vm.errors = [];
+                vm.isValidatingDomains = false;
 
-                var prefix = _.find($scope.attributes, function(attr) {
+                var prefix = _.find(vm.attributes, function (attr) {
                     return attr.name === 'prefix';
                 });
 
                 MessageStore.add('result', {prefix: prefix.value, whoisResources: resp.data});
 
                 $state.transitionTo('webupdates.displayDomainObjects', {
-                    source: $scope.source,
-                    objectType: $scope.objectType
+                    source: vm.source,
+                    objectType: vm.objectType
                 });
 
             }
 
-            function onSubmitError(response) {
-                $scope.restCallInProgress = false;
-                $scope.isValidatingDomains = false;
-                $scope.errors = _.filter(response.data.errormessages.errormessage,
+            function createDomainsFailed(response) {
+                vm.restCallInProgress = false;
+                vm.isValidatingDomains = false;
+                vm.errors = _.filter(response.data.errormessages.errormessage,
                     function (errorMessage) {
                         errorMessage.plainText = readableError(errorMessage);
                         return errorMessage.severity === 'Error';
                     });
+                $location.hash('errors');
+                $anchorScroll();
             }
 
             var readableError = function (errorMessage) {
@@ -184,23 +255,6 @@
 
             function navigateAway() {
                 console.log('_navigateAway');
-            }
-
-            function getPasswordsForRestCall() {
-                var passwords = [];
-
-                if (CredentialsService.hasCredentials()) {
-                    passwords.push(CredentialsService.getCredentials().successfulPassword);
-                }
-
-                /*
-                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-                 */
-                if ($scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
-                    passwords.push('RPSL');
-                }
-                return passwords;
             }
 
         }]

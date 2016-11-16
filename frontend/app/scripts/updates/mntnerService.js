@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('updates').service('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService',
+    angular.module('updates').service('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService', 'PrefixService',
 
-        function ($log, $q, CredentialsService, WhoisResources, ModalService, RestService) {
+        function ($log, $q, CredentialsService, WhoisResources, ModalService, RestService, PrefixService) {
 
             var mntnerService = {};
 
@@ -24,7 +24,7 @@
                     name: name
                 };
                 var promiseHandler = function (resolve, reject) {
-                    if (!mntnerService.isSsoAuthorised(whoisObject, ssoAccts)) {
+                    if (!mntnerService.isSsoAuthorisedForMntByOrLower(whoisObject, ssoAccts)) {
                         // pop up an auth box
                         var mntByAttrs = whoisObject.getAllAttributesOnName('mnt-by');
                         var mntLowerAttrs = whoisObject.getAllAttributesOnName('mnt-lower');
@@ -49,7 +49,7 @@
                 return $q(promiseHandler);
             };
 
-            mntnerService.isSsoAuthorised = function (object, maintainers) {
+            mntnerService.isSsoAuthorisedForMntByOrLower = function (object, maintainers) {
                 var mntBys = object.getAllAttributesOnName('mnt-by');
                 var mntLowers = object.getAllAttributesOnName('mnt-lower');
                 var ssoAccts = _.filter(maintainers, function (mntner) {
@@ -158,13 +158,7 @@
                 });
             };
 
-            mntnerService.enrichWithMine = function (ssoMntners, mntners) {
-                return _.map(mntners, function (mntner) {
-                    // search in selected list
-                    mntner.mine = !!mntnerService.isMntnerOnlist(ssoMntners, mntner);
-                    return mntner;
-                });
-            };
+            mntnerService.enrichWithMine = mntnerService.enrichWithSsoStatus;
 
             mntnerService.needsPasswordAuthentication = function (ssoMntners, originalObjectMntners, objectMntners) {
                 var input = originalObjectMntners;
@@ -185,12 +179,12 @@
                     return false;
                 }
 
-                if (_oneOfOriginalMntnersIsMine(mntners)) {
+                if (oneOfOriginalMntnersIsMine(mntners)) {
                     $log.debug('needsPasswordAuthentication: no: One of selected mntners is mine');
                     return false;
                 }
 
-                if (_oneOfOriginalMntnersHasCredential(mntners)) {
+                if (oneOfOriginalMntnersHasCredential(mntners)) {
                     $log.debug('needsPasswordAuthentication: no: One of selected mntners has credentials');
                     return false;
                 }
@@ -273,13 +267,13 @@
                 return mntners[0].key.toUpperCase() === nccRpslMntner;
             };
 
-            function _oneOfOriginalMntnersIsMine(originalObjectMntners) {
+            function oneOfOriginalMntnersIsMine(originalObjectMntners) {
                 return _.some(originalObjectMntners, function (mntner) {
                     return mntner.mine === true;
                 });
             }
 
-            function _oneOfOriginalMntnersHasCredential(originalObjectMntners) {
+            function oneOfOriginalMntnersHasCredential(originalObjectMntners) {
                 if (CredentialsService.hasCredentials()) {
                     var trustedMtnerName = CredentialsService.getCredentials().mntner;
                     return _.some(originalObjectMntners, function (mntner) {
@@ -288,6 +282,48 @@
                 }
                 return false;
             }
+
+            mntnerService.getMntsToAuthenticateUsingParent = function (prefix, mntHandler) {
+                var objectType = PrefixService.isValidIpv4Prefix(prefix) ? 'inetnum' : 'inet6num';
+
+                RestService.fetchResource(objectType, prefix).get(function (result) {
+                    //console.log('SUCCESS: ' + angular.toJson(result));
+
+                    if (result && result.objects && angular.isArray(result.objects.object)) {
+                        var wrappedResource = WhoisResources.wrapWhoisResources(result);
+                        //console.log('resource = ' + wrappedResource.getPrimaryKey());
+
+                        // Find exact or most specific matching inet(num), and collect the following mntners:
+                        //     (1) mnt-domains
+                        var resourceAttributes = WhoisResources.wrapAttributes(wrappedResource.getAttributes());
+
+                        var mntDomains = resourceAttributes.getAllAttributesOnName('mnt-domains');
+                        if (mntDomains.length > 0) {
+                            mntHandler(mntDomains);
+                        }
+
+                        // (2) if NOT exact match, then check for mnt-lower
+                        var primaryKey = wrappedResource.getPrimaryKey();
+                        if (!PrefixService.isExactMatch(prefix, primaryKey)) {
+                            //TODO - get mnt lower
+                            var mntLowers = resourceAttributes.getAllAttributesOnName('mnt-lower');
+
+                            if (mntLowers.length > 0) {
+                                mntHandler(mntLowers);
+                            }
+                        }
+
+                        // (3) mnt-by
+                        var mntBys = resourceAttributes.getAllAttributesOnName('mnt-by');
+                        mntHandler(mntBys);
+                    }
+
+                }, function (error) {
+                    // TODO: error handling
+                    //console.log('ERROR: ' + angular.toJson(error));
+                    mntHandler([]);
+                });
+            };
 
             return mntnerService;
 

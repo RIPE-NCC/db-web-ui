@@ -15,6 +15,14 @@
     "status": 404,
     "data": {}
   },
+  "api/dns/status?ignore404=true&ns=rns1.upc.biz": {
+    "status": 200,
+    "data": {}
+  },
+  "api/dns/status?ignore404=true&ns=rns2.upc.biz": {
+    "status": 200,
+    "data": {}
+  },
   "api/user/info": {
     "status": 200,
     "data": {
@@ -75,6 +83,362 @@
         "key": "EU-IBM-NIC-MNT"
       }
     ]
+  },
+  "api/whois/search?flags=r&ignore404=true&query-string=212.17.110.0%2F23&type-filter=inetnum": {
+    "data": {
+      "service": {
+        "name": "search"
+      },
+      "parameters": {
+        "inverse-lookup": {},
+        "type-filters": {
+          "type-filter": [
+            {
+              "id": "inetnum"
+            }
+          ]
+        },
+        "flags": {
+          "flag": [
+            {
+              "value": "no-referenced"
+            }
+          ]
+        },
+        "query-strings": {
+          "query-string": [
+            {
+              "value": "212.17.110.0/23"
+            }
+          ]
+        },
+        "sources": {}
+      },
+      "objects": {
+        "object": [
+          {
+            "type": "inetnum",
+            "link": {
+              "type": "locator",
+              "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/212.17.110.0 - 212.17.111.255"
+            },
+            "source": {
+              "id": "ripe"
+            },
+            "primary-key": {
+              "attribute": [
+                {
+                  "name": "inetnum",
+                  "value": "212.17.110.0 - 212.17.111.255"
+                }
+              ]
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "name": "inetnum",
+                  "value": "212.17.110.0 - 212.17.111.255"
+                },
+                {
+                  "name": "netname",
+                  "value": "UPC"
+                },
+                {
+                  "name": "descr",
+                  "value": "UPC Telekabel"
+                },
+                {
+                  "name": "descr",
+                  "value": "DHCP Range"
+                },
+                {
+                  "name": "country",
+                  "value": "AT"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                  },
+                  "name": "admin-c",
+                  "value": "LGI-RIPE",
+                  "referenced-type": "role"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                  },
+                  "name": "tech-c",
+                  "value": "LGI-RIPE",
+                  "referenced-type": "role"
+                },
+                {
+                  "name": "remarks",
+                  "value": "Contact abuse@chello.at concerning criminal"
+                },
+                {
+                  "name": "remarks",
+                  "value": "activities like spam, hacks, portscans"
+                },
+                {
+                  "name": "status",
+                  "value": "ASSIGNED PA"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ETCHELLS-MNT"
+                  },
+                  "name": "mnt-by",
+                  "value": "ETCHELLS-MNT",
+                  "referenced-type": "mntner"
+                },
+                {
+                  "name": "created",
+                  "value": "2015-02-13T10:31:14Z"
+                },
+                {
+                  "name": "last-modified",
+                  "value": "2015-02-13T10:31:14Z"
+                },
+                {
+                  "name": "source",
+                  "value": "RIPE",
+                  "comment": "Filtered"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "terms-and-conditions": {
+        "type": "locator",
+        "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+    }
+  },
+  "api/whois/search?flags=r&ignore404=true&query-string=2001:db8::%2F48&type-filter=inet6num": {
+    "data": {
+      "service": {
+        "name": "search"
+      },
+      "parameters": {
+        "inverse-lookup": {},
+        "type-filters": {
+          "type-filter": [
+            {
+              "id": "inet6num"
+            }
+          ]
+        },
+        "flags": {
+          "flag": [
+            {
+              "value": "no-referenced"
+            }
+          ]
+        },
+        "query-strings": {
+          "query-string": [
+            {
+              "value": "2001:db8::/48"
+            }
+          ]
+        },
+        "sources": {}
+      },
+      "objects": {
+        "object": [
+          {
+            "type": "inet6num",
+            "link": {
+              "type": "locator",
+              "href": "http://rest-prepdev.db.ripe.net/ripe/inet6num/::/0"
+            },
+            "source": {
+              "id": "ripe"
+            },
+            "primary-key": {
+              "attribute": [
+                {
+                  "name": "inet6num",
+                  "value": "::/0"
+                }
+              ]
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "name": "inet6num",
+                  "value": "::/0"
+                },
+                {
+                  "name": "netname",
+                  "value": "IANA-BLK"
+                },
+                {
+                  "name": "descr",
+                  "value": "The whole IPv6 address space"
+                },
+                {
+                  "name": "country",
+                  "value": "EU",
+                  "comment": "Country is really world wide"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-IANA1-RIPE"
+                  },
+                  "name": "org",
+                  "value": "ORG-IANA1-RIPE",
+                  "referenced-type": "organisation"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/IANA1-RIPE"
+                  },
+                  "name": "admin-c",
+                  "value": "IANA1-RIPE",
+                  "referenced-type": "role"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/CREW-RIPE"
+                  },
+                  "name": "tech-c",
+                  "value": "CREW-RIPE",
+                  "referenced-type": "role"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/OPS4-RIPE"
+                  },
+                  "name": "tech-c",
+                  "value": "OPS4-RIPE",
+                  "referenced-type": "role"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ETCHELLS-MNT"
+                  },
+                  "name": "mnt-by",
+                  "value": "ETCHELLS-MNT",
+                  "referenced-type": "mntner"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                  },
+                  "name": "mnt-by",
+                  "value": "RIPE-NCC-HM-MNT",
+                  "referenced-type": "mntner"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                  },
+                  "name": "mnt-lower",
+                  "value": "RIPE-NCC-HM-MNT",
+                  "referenced-type": "mntner"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-RPSL-MNT"
+                  },
+                  "name": "mnt-routes",
+                  "value": "RIPE-NCC-RPSL-MNT",
+                  "referenced-type": "mntner"
+                },
+                {
+                  "name": "status",
+                  "value": "ALLOCATED-BY-RIR"
+                },
+                {
+                  "name": "remarks",
+                  "value": "This network in not allocated. This object is here for Database consistency and to allow hierarchical authorisation checks."
+                },
+                {
+                  "name": "created",
+                  "value": "2002-08-05T10:21:17Z"
+                },
+                {
+                  "name": "last-modified",
+                  "value": "2011-05-20T07:22:53Z"
+                },
+                {
+                  "name": "source",
+                  "value": "RIPE",
+                  "comment": "Filtered"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "terms-and-conditions": {
+        "type": "locator",
+        "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+    }
+  },
+  "api/rest/search?flags=drx&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain": {
+    "data": {
+      "link": {
+        "type": "locator",
+        "href": "http://127.0.0.1:1080/search?flags=drx&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain"
+      },
+      "errormessages": {
+        "errormessage": [
+          {
+            "severity": "Error",
+            "text": "ERROR:101: no entries found\n\nNo entries found in source %s.\n",
+            "args": [
+              {
+                "value": "RIPE"
+              }
+            ]
+          }
+        ]
+      },
+      "terms-and-conditions": {
+        "type": "locator",
+        "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+    }
+  },
+  "api/rest/search?flags=drM&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain": {
+    "data": {
+      "link": {
+        "type": "locator",
+        "href": "http://127.0.0.1:1080/search?flags=drM&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain"
+      },
+      "errormessages": {
+        "errormessage": [
+          {
+            "severity": "Error",
+            "text": "ERROR:101: no entries found\n\nNo entries found in source %s.\n",
+            "args": [
+              {
+                "value": "RIPE"
+              }
+            ]
+          }
+        ]
+      },
+      "terms-and-conditions": {
+        "type": "locator",
+        "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+    }
   },
   "api/whois/search?flags=lr&query-string=193.0.4.0+-+193.0.4.255&type-filter=inetnum": {
     "data": {
@@ -1862,6 +2226,107 @@
       }
     }
   },
+  "api/whois/RIPE/mntner/MNT-LGI?password=MNT-LGI&unfiltered=true": {
+    "data": {
+      "objects": {
+        "object": [
+          {
+            "type": "mntner",
+            "link": {
+              "type": "locator",
+              "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-LGI"
+            },
+            "source": {
+              "id": "ripe"
+            },
+            "primary-key": {
+              "attribute": [
+                {
+                  "name": "mntner",
+                  "value": "MNT-LGI"
+                }
+              ]
+            },
+            "attributes": {
+              "attribute": [
+                {
+                  "name": "mntner",
+                  "value": "MNT-LGI"
+                },
+                {
+                  "name": "auth",
+                  "value": "MD5-PW $1$PzPNvtrT$p6WpK/TPcX3fv5MZ23q0h0"
+                },
+                {
+                  "name": "auth",
+                  "value": "SSO bad@ripe.net"
+                },
+                {
+                  "name": "descr",
+                  "value": "Liberty Global Maintainer"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                  },
+                  "name": "admin-c",
+                  "value": "LGI-RIPE",
+                  "referenced-type": "role"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                  },
+                  "name": "tech-c",
+                  "value": "LGI-RIPE",
+                  "referenced-type": "role"
+                },
+                {
+                  "name": "upd-to",
+                  "value": "***@libertyglobal.com"
+                },
+                {
+                  "name": "mnt-nfy",
+                  "value": "***@libertyglobal.com"
+                },
+                {
+                  "name": "notify",
+                  "value": "***@libertyglobal.com"
+                },
+                {
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-LGI"
+                  },
+                  "name": "mnt-by",
+                  "value": "MNT-LGI",
+                  "referenced-type": "mntner"
+                },
+                {
+                  "name": "created",
+                  "value": "2012-07-03T07:43:36Z"
+                },
+                {
+                  "name": "last-modified",
+                  "value": "2016-11-04T14:36:09Z"
+                },
+                {
+                  "name": "source",
+                  "value": "RIPE"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "terms-and-conditions": {
+        "type": "locator",
+        "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+    }
+  },
   "api/whois/RIPE/mntner/TPOLYCHNIA4-MNT?password=TPOLYCHNIA4-MNT&unfiltered=true": {
     "data": {
       "objects": {
@@ -2654,6 +3119,32 @@
         "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
       }
     }
+  },
+  "api/whois/autocomplete?from=person&from=role&like=LG1-RIPE&select=person&select=nic-hdl&select=role&select=abuse-mailbox&where=person&where=nic-hdl&where=role&where=abuse-mailbox": {
+    "data": [
+      {
+        "key": "LG1-RIPE",
+        "type": "person",
+        "nic-hdl": "LG1-RIPE",
+        "role": null,
+        "abuse-mailbox": [],
+        "person": "Name Removed"
+      }
+    ]
+  },
+  "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=ETCHELLS-MNT": {
+    "data": [
+      {
+        "key": "MNT-LGI",
+        "type": "mntner",
+        "auth": [
+          "SSO",
+          "SSO",
+          "MD5-PW",
+          "SSO"
+        ]
+      }
+    ]
   },
   "api/whois/autocomplete?extended=true&field=inetnum&query=193.0.4.0+-+193.0.4.255": {
     "data": [

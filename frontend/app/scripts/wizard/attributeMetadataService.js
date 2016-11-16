@@ -22,6 +22,19 @@
         this.isInvalid = isInvalid;
         this.isHidden = isHidden;
         this.getCardinality = getCardinality;
+        this.determineAttributesForNewObject = determineAttributesForNewObject;
+
+        function determineAttributesForNewObject(objectType) {
+            var i, attributes = [];
+            _.forEach(getAllMetadata(objectType), function (val, key) {
+                if (val.minOccurs) {
+                    for (i = 0; i < val.minOccurs; i++) {
+                        attributes.push({name: key, value: ''});
+                    }
+                }
+            });
+            return attributes;
+        }
 
         function enrich(objectType, attributes) {
             jsUtils.checkTypes(arguments, ['string', 'array']);
@@ -163,7 +176,63 @@
 
         /*
          * Metadata evaluation functions
+         *
+         * https://jira.ripe.net/browse/DB-220
+         *
+         * If there is an existing domain within the specified prefix, display an error.
+         * Find any domain objects for a given prefix, using TWO queries (I think?):
+         *
+         * (1) exact match: -d --exact -T domain -r 193.193.200.0 - 193.193.200.255
+         *
+         * (2) ALL more specific (excluding exact match) : -d --all-more -T domain -r ...
+         *
+         * If any domain objects are returned from either query, then display an error.
          */
+        var existingDomains = {};
+        var existingDomainTo;
+
+        function domainsAlreadyExist(objectType, attributes, attribute) {
+            if (!attribute.value) {
+                attribute.$$info = '';
+                attribute.$$error = '';
+                return true;
+            }
+            var existing = existingDomains[attribute.value];
+            if (angular.isNumber(existing)) {
+                if (existing) {
+                    attribute.$$info = '';
+                    attribute.$$error = 'Domains already exist under this prefix';
+                } else {
+                    attribute.$$info = 'Prefix looks OK';
+                    attribute.$$error = '';
+                }
+                return existing;
+            }
+            var doCall = function() {
+                // otherwise find the domains and put them in the cache
+                PrefixService.findExistingDomainsForPrefix(attribute.value).then(function (results) {
+                    var domainsInTheWay = 0;
+                    _.forEach(results, function(result) {
+                        if (result && result.data && result.data.objects) {
+                            domainsInTheWay += result.data.objects.object.length;
+                        }
+                    });
+                    existingDomains[attribute.value] = domainsInTheWay;
+                    // let the evaluation engine know that we've got a new value
+                    $rootScope.$broadcast('attribute-state-changed', attribute);
+                }, function() {
+                    existingDomains[attribute.value] = 0;
+                });
+            };
+            if (existingDomainTo) {
+                clearTimeout(existingDomainTo);
+            }
+            existingDomainTo = setTimeout(doCall, 600);
+            return true;
+        }
+
+        var lastPrefix;
+
         function prefixIsInvalid(objectType, attributes, attribute) {
 
             if (!attribute.value) {
@@ -173,13 +242,12 @@
             }
 
             if (PrefixService.isValidPrefix(attribute.value)) {
-                var revZonesAttr = _.find(attributes, function (attr) {
-                    return attr.name === 'reverse-zone';
-                });
-                if (revZonesAttr) {
-                    revZonesAttr.value = PrefixService.getReverseDnsZones(attribute.value);
+                if (lastPrefix === attribute.value) {
+                    // don't bother. it's just an extraneous evaluation of the prefix
+                    return;
                 }
-
+                lastPrefix = attribute.value;
+                $rootScope.$broadcast('prefix-ok', attribute.value);
                 attribute.$$info = 'Prefix looks OK';
                 attribute.$$error = '';
                 return false;
@@ -293,7 +361,8 @@
                 source: {minOccurs: 1, maxOccurs: 1}
             },
             prefix: {
-                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: prefixIsInvalid, hidden: {invalid: ['mnt-by']}},
+                // TODO: prefix check for domain objects
+                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [prefixIsInvalid, domainsAlreadyExist], hidden: {invalid: ['mnt-by']}},
                 descr: {},
                 nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},

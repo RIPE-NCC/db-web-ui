@@ -1,6 +1,6 @@
-package net.ripe.whois.web.api.whois;
+package net.ripe.whois.web.api.rest;
 
-import net.ripe.whois.services.WhoisService;
+import net.ripe.whois.services.WhoisRestService;
 import net.ripe.whois.web.api.ApiController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,15 +16,15 @@ import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("/api/whois")
-public class WhoisProxyController extends ApiController {
+@RequestMapping("/api/rest")
+public class WhoisRestController extends ApiController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisProxyController.class);
-    private final WhoisService whoisService;
+    private final WhoisRestService WhoisRestService;
+    private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestController.class);
 
     @Autowired
-    public WhoisProxyController(final WhoisService whoisService) {
-        this.whoisService = whoisService;
+    public WhoisRestController(final WhoisRestService WhoisRestService) {
+        this.WhoisRestService = WhoisRestService;
     }
 
     @RequestMapping(value = "/**")
@@ -33,11 +33,9 @@ public class WhoisProxyController extends ApiController {
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) throws Exception {
 
-        LOGGER.info("whois-request: {}", request.toString());
-
+        LOGGER.info("rest-request: {}", request.toString());
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
-
-        return whoisService.bypass(request, body, headers);
+        return WhoisRestService.bypass(request, body, headers);
     }
 }

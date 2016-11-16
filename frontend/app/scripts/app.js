@@ -24,7 +24,7 @@ angular.module('dbWebApp', [
         function ($stateProvider, $logProvider, $httpProvider, Properties) {
 
             // conditional log-level
-            $logProvider.debugEnabled(Properties.ENV === 'dev' || Properties.ENV === 'prepdev');
+            $logProvider.debugEnabled(['local', 'dev', 'prepdev'].indexOf(Properties.ENV) > -1);
             $stateProvider
                 .state('error', {
                     url: '/public/error',
@@ -45,8 +45,10 @@ angular.module('dbWebApp', [
     .run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'Properties',
         function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, Properties) {
 
-            $rootScope.$on(ERROR_EVENTS.stateTransitionError, function (event, toState, toParams, fromState, fromParams, err) {
-                $log.error('Error transitioning to state:' + JSON.stringify(toState) + ' due to error ' + JSON.stringify(err));
+            var destroyable = {}; // Hold listeners in this var so they get destroyed by ng
+
+            destroyable.one = $rootScope.$on(ERROR_EVENTS.stateTransitionError, function (event, toState, toParams, fromState, fromParams, err) {
+                $log.error('Error transitioning to state:' + angular.toJson(toState) + ' due to error ' + angular.toJson(err));
 
                 if (err.status === 403) {
                     // redirect to crowd login screen
@@ -57,21 +59,22 @@ angular.module('dbWebApp', [
                 }
             });
 
-            $rootScope.$on(ERROR_EVENTS.serverError, function () {
+            destroyable.two = $rootScope.$on(ERROR_EVENTS.serverError, function () {
                 $state.go('error');
             });
 
-            $rootScope.$on(ERROR_EVENTS.notFound, function () {
+            destroyable.three = $rootScope.$on(ERROR_EVENTS.notFound, function () {
                 $state.go('notFound');
             });
 
-            $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
+            destroyable.four = $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
                 // do not act; authorisation errors during transition are handled by stateTransitionError-handler above
                 $log.error('Authentication error');
             });
 
         }])
-    .controller('PageCtrl', ['Properties', function(Properties) {
-        this.Properties = Properties;
+    .controller('PageController', ['Properties', function(Properties) {
+        var vm = this;
+        vm.Properties = Properties;
     }])
 ;

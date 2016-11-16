@@ -4,6 +4,20 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
 
         var modalService = {};
 
+        modalService.openDomainCreationModal = function (ctrl) {
+            //var deferredObject = $q.defer();
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'scripts/wizard/domainCreationWaitModal.html',
+                controller: ctrl,
+                controllerAs: '$ctrl',
+                keyboard: false,
+                resolve: {
+                }
+            });
+            return modalInstance.result;
+        };
+
         modalService.openChoosePoorRichSyncupdates = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -79,7 +93,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
         modalService.openAddAttributeModal = function (items) {
             var deferredObject = $q.defer();
 
-            $log.debug('openAddAttributeModal for items ' + JSON.stringify(items));
+            $log.debug('openAddAttributeModal for items', items);
 
             var modalInstance = $modal.open({
                 animation: true,
@@ -96,7 +110,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
 
             modalInstance.result.then(
                 function (selectedItem) {
-                    $log.debug('openAddAttributeModal completed with: ' + JSON.stringify(selectedItem));
+                    $log.debug('openAddAttributeModal completed with:', selectedItem);
                     deferredObject.resolve(selectedItem);
                 }, function (reason) {
                     $log.debug('openAddAttributeModal cancelled because: ' + reason);
@@ -120,7 +134,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
             });
 
             modalInstance.result.then(function (md5Value) {
-                $log.debug('openMd5Modal completed with: ' + JSON.stringify(md5Value));
+                $log.debug('openMd5Modal completed with:', md5Value);
                 deferredObject.resolve(md5Value);
             }, function (reason) {
                 $log.debug('openMd5Modal cancelled because: ' + reason);
@@ -130,10 +144,20 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
             return deferredObject.promise;
         };
 
+        /**
+         *
+         * @param method Only used when method === 'ForceDelete'
+         * @param object
+         * @param mntners
+         * @param mntnersWithoutPassword
+         * @param allowForcedDelete
+         * @param isLirObject
+         * @returns {Function} A Promise
+         */
         modalService.openAuthenticationModal = function (method, object, mntners, mntnersWithoutPassword, allowForcedDelete, isLirObject) {
             var deferredObject = $q.defer();
 
-            $log.debug('openAuthenticationModal start for method: ' + method + ' and ' + object.source + '  mntners:' + JSON.stringify(mntners), 'isLirObject', isLirObject);
+            $log.debug('openAuthenticationModal start for method: ' + method + ' and ' + object.source + '  mntners:' + angular.toJson(mntners), 'isLirObject', isLirObject);
 
             var modalInstance = $modal.open({
                 animation: true,
@@ -169,10 +193,10 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
             });
 
             modalInstance.result.then(function (result) {
-                $log.debug('openAuthenticationModal completed with: ' + JSON.stringify(result));
+                $log.debug('openAuthenticationModal completed with:', result);
                 deferredObject.resolve(result);
             }, function (reason) {
-                $log.debug('openAuthenticationModal cancelled because: ' + reason);
+                $log.debug('openAuthenticationModal cancelled because:', reason);
                 deferredObject.reject(reason);
             });
 

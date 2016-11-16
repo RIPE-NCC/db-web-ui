@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp').service('PrefixService', ['$http', function ($http) {
+    angular.module('dbWebApp').factory('PrefixService', ['$http', '$q', function ($http, $q) {
 
-        this.isValidIp4Cidr = function (address) {
+        var _isValidIp4Cidr = function (address) {
             // check the subnet mask was provided
             if (!address.parsedSubnet) {
                 return false;
@@ -13,7 +13,7 @@
 
             // TODO - fix the subnetMask min and max values
             // check the subnet mask is in range
-            if (address.subnetMask < 18 || address.subnetMask > 24) {
+            if (address.subnetMask < 17 || address.subnetMask > 24) {
                 return false;
             }
 
@@ -24,13 +24,13 @@
             return last1 < address.subnetMask;
         };
 
-        this.isValidIp6Cidr = function (address) {
+        var _isValidIp6Cidr = function (address) {
             // check the subnet mask is in range
             if (!address.parsedSubnet) {
                 return false;
             }
 
-            if (address.parsedSubnet  >= 127) {
+            if (address.parsedSubnet >= 127) {
                 return false;
             }
 
@@ -40,6 +40,18 @@
 
             return last1 < address.subnetMask;
         };
+
+        return {
+            isValidPrefix: isValidPrefix,
+            isValidIpv4Prefix: isValidIpv4Prefix,
+            getReverseDnsZones: getReverseDnsZones,
+            checkNameserverAsync: checkNameserverAsync,
+            isExactMatch: isExactMatch,
+            findExistingDomainsForPrefix: findExistingDomainsForPrefix,
+            getDomainCreationStatus: getDomainCreationStatus
+        };
+
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         /**
          * Validates that a prefix is a valid ipV4 or ipV6 prefix.
@@ -47,28 +59,43 @@
          * @param str
          * @returns {boolean}
          */
-        this.isValidPrefix = function (str) {
-            // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
-            // * Must support /17 to /24
-            //   - if > 17 show: "Please provide a more specific prefix"
-            //   - if < 24 show: "Use syncupdates"
-            // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
-            // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
-            //
-
+        function isValidPrefix(str) {
             // here we have a string with a subnet mask, but dno if it's v4 or v6 yet, so check...
+            return isValidIpv4Prefix(str) || isValidIpv6Prefix(str);
+        }
+
+        // Validation rules to be implemented (after a chat with Tim 3 Oct 2016
+        // * For v4, accept 4 octets (3 is widely accepted shorthand but not supported)
+        // * Ensure provided address bit are not masked (i.e. 129.168.0.1/24 is not valid cz '.1' is not covered by mask)
+
+        function isValidIpv4Prefix(str) {
             var ip4 = new Address4(str);
             if (ip4.isValid()) {
-                return this.isValidIp4Cidr(ip4);
+                return _isValidIp4Cidr(ip4);
+            }
+            return false;
+        }
+
+        function isValidIpv6Prefix(str) {
+            var ip6 = new Address6(str);
+            if (ip6.isValid()) {
+                return _isValidIp6Cidr(ip6);
+            }
+            return false;
+        }
+
+        function getAddress(str) {
+            var ip4 = new Address4(str);
+            if (ip4.isValid()) {
+                return ip4;
             } else {
                 var ip6 = new Address6(str);
                 if (ip6.isValid()) {
-                    return this.isValidIp6Cidr(ip6);
+                    return ip6;
                 }
             }
-            // fall through. god know what this is...
-            return false;
-        };
+            return null;
+        }
 
         /**
          * Calculate the list of rDNS names for a prefix.
@@ -76,20 +103,20 @@
          * @param prefix
          * @returns {*} Array of strings which are the rDNS names for the prefix
          */
-        this.getReverseDnsZones = function (prefix) {
+        function getReverseDnsZones(prefix) {
             var i, zoneName, zones = [];
 
-            if (prefix && this.isValidPrefix(prefix)) {
+            if (prefix && isValidPrefix(prefix)) {
 
                 var ipv4 = new Address4(prefix);
                 if (ipv4.isValid()) {
 
                     //It' used to find the array position that starts with 0. That's why -1.
-                    var fixedOctet = Math.ceil(ipv4.subnetMask/8) - 1;
+                    var fixedOctet = Math.ceil(ipv4.subnetMask / 8) - 1;
 
                     var startOctet = ipv4.startAddress().address.split('.')[fixedOctet];
                     var endOctet = ipv4.endAddress().address.split('.')[fixedOctet];
-                    var reverseBNet = ipv4.addressMinusSuffix.split('.').slice(0,fixedOctet).reverse().join('.');
+                    var reverseBNet = ipv4.addressMinusSuffix.split('.').slice(0, fixedOctet).reverse().join('.');
 
                     for (i = startOctet; i <= endOctet; i++) {
                         zoneName = i + '.' + reverseBNet + '.in-addr.arpa';
@@ -116,14 +143,58 @@
                 }
             }
             return zones;
-        };
+        }
 
-        this.checkNameserverAsync = function (ns) {
+        function checkNameserverAsync(ns) {
             return $http({
                 method: 'GET',
                 url: 'api/dns/status?ignore404=true&ns=' + ns
             });
-        };
+        }
+
+        function isExactMatch(prefixInCidrNotation, whoisResourcesPrimaryKey) {
+
+            var prefixAddress;
+            if (isValidIpv4Prefix(prefixInCidrNotation)) {
+                prefixAddress = getAddress(prefixInCidrNotation);
+                var prefixInRangeNotation = prefixAddress.startAddress().address + ' - ' + prefixAddress.endAddress().address;
+
+                return prefixInRangeNotation === whoisResourcesPrimaryKey;
+
+            } else {
+                var resourceAddress = getAddress(whoisResourcesPrimaryKey);
+                prefixAddress = getAddress(prefixInCidrNotation);
+
+                return ((resourceAddress.endAddress().address === prefixAddress.endAddress().address) &&
+                (resourceAddress.startAddress().address === prefixAddress.startAddress().address));
+            }
+        }
+
+        function findExistingDomainsForPrefix(prefixStr) {
+            // convert prefix -- is that necessary?
+            return $q.all([
+                $http.get('api/rest/search', {
+                    params: {
+                        flags: 'drx',
+                        'type-filter': 'domain',
+                        'query-string': prefixStr,
+                        ignore404: true
+                    }
+                }),
+                $http.get('api/rest/search', {
+                    params: {
+                        flags: 'drM',
+                        'type-filter': 'domain',
+                        'query-string': prefixStr,
+                        ignore404: true
+                    }
+                })
+            ]);
+        }
+
+        function getDomainCreationStatus(source) {
+            return $http.get('api/whois/domain-objects/' + source + '/status');
+        }
 
     }]);
 
