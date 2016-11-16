@@ -3,9 +3,16 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp'
-    ).controller('DomainObjectController', ['$http', '$scope', '$stateParams',  '$state', 'jsUtilService', 'AlertService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore','PrefixService',
-        function ($http, $scope, $stateParams, $state, jsUtils, AlertService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService) {
+    angular.module('dbWebApp').controller('DomainObjectController', ['$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService',
+        function ($http, $scope, $stateParams, $location, $anchorScroll, $state, jsUtils, AlertService, ModalService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService) {
+
+            // show splash screen
+            ModalService.openDomainWizardSplash(function ($uibModalInstance) {
+                var vm = this;
+                vm.ok = function() {
+                    $uibModalInstance.close('ok');
+                };
+            });
 
             var vm = this;
             /*
@@ -23,7 +30,7 @@
             vm.isValidatingDomains = false;
 
             var objectType = vm.objectType = $stateParams.objectType === 'domain' ? 'prefix' : $stateParams.objectType;
-            vm.source = $stateParams.source;
+            var source = vm.source = $stateParams.source;
 
             /*
              * Main
@@ -38,7 +45,7 @@
             /*
              * Callback handlers
              */
-            vm.submitButtonClicked = submitButtonHandler;
+            vm.submitButtonClicked = submitForm;
 
             vm.containsInvalidValues = function () {
                 return containsInvalidValues(vm.attributes);
@@ -88,7 +95,11 @@
                 return idx !== -1;
             }
 
-            function submitButtonHandler() {
+            function submitForm() {
+
+                if (containsInvalidValues(vm.attributes)) {
+                    return;
+                }
 
                 if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
                     performAuthentication(vm.maintainers);
@@ -110,7 +121,58 @@
                     attributes: flattenedAttributes,
                     passwords: passwords
                 };
-                $http.post(url, data).then(onSubmitSuccess, onSubmitError);
+
+                $http.post(url, data).then(function () {
+                    ModalService.openDomainCreationModal(function ($uibModalInstance, $interval) {
+                        var vm = this;
+                        vm.done = 100;
+                        // there's probably a better way to get the number of domains we'll create
+                        vm.todo = _.filter(data.attributes, function(attr) {
+                            return attr.name === 'reverse-zone';
+                        }).length;
+
+                        var backendPinger = $interval(function () {
+                            PrefixService.getDomainCreationStatus(source).then(
+                                function (response) {
+                                    console.log('response', response);
+                                    if (response.status === 200) {
+                                        $interval.cancel(backendPinger);
+                                        $uibModalInstance.close();
+                                        return showCreatedDomains(response);
+                                    } else if (response.status === 204) {
+                                        // nothing happening in the backend
+                                        $uibModalInstance.close();
+                                        $interval.cancel(backendPinger);
+                                    }
+                                    // ok then just wait and keep on pinging...
+                                }, function (failResponse) {
+                                    console.log('response', failResponse);
+                                    $interval.cancel(backendPinger);
+                                    $uibModalInstance.close();
+                                    return createDomainsFailed(failResponse);
+                                });
+                        }, 2000);
+
+                        vm.goAway = function () {
+                            console.log('Leave clicked!');
+                            $interval.cancel(backendPinger);
+                            $uibModalInstance.close();
+                        };
+
+                        vm.cancel = function () {
+                            console.log('Cancel clicked');
+                            $interval.cancel(backendPinger);
+                            $uibModalInstance.close();
+                        };
+
+                    }).then(
+                        function () {
+                            console.log('Modal closed');
+                        });
+                }, function(err) {
+                    console.log('Could not post domains', err);
+                });
+
             }
 
             function flattenStructure(attributes) {
@@ -143,7 +205,7 @@
                 WebUpdatesCommons.performAuthentication(authParams);
             }
 
-            function onSubmitSuccess(resp) {
+            function showCreatedDomains(resp) {
                 vm.restCallInProgress = false;
                 vm.errors = [];
                 vm.isValidatingDomains = false;
@@ -161,7 +223,7 @@
 
             }
 
-            function onSubmitError(response) {
+            function createDomainsFailed(response) {
                 vm.restCallInProgress = false;
                 vm.isValidatingDomains = false;
                 vm.errors = _.filter(response.data.errormessages.errormessage,
@@ -169,6 +231,8 @@
                         errorMessage.plainText = readableError(errorMessage);
                         return errorMessage.severity === 'Error';
                     });
+                $location.hash('errors');
+                $anchorScroll();
             }
 
             var readableError = function (errorMessage) {

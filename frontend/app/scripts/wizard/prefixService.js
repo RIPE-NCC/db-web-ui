@@ -47,7 +47,8 @@
             getReverseDnsZones: getReverseDnsZones,
             checkNameserverAsync: checkNameserverAsync,
             isExactMatch: isExactMatch,
-            findExistingDomainsForPrefix: findExistingDomainsForPrefix
+            findExistingDomainsForPrefix: findExistingDomainsForPrefix,
+            getDomainCreationStatus: getDomainCreationStatus
         };
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -189,6 +190,10 @@
                     }
                 })
             ]);
+        }
+
+        function getDomainCreationStatus(source) {
+            return $http.get('api/whois/domain-objects/' + source + '/status');
         }
 
     }]);

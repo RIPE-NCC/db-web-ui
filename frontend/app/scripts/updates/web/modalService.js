@@ -4,6 +4,20 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
 
         var modalService = {};
 
+        modalService.openDomainCreationModal = function (ctrl) {
+            //var deferredObject = $q.defer();
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'scripts/wizard/domainCreationWaitModal.html',
+                controller: ctrl,
+                controllerAs: '$ctrl',
+                keyboard: false,
+                resolve: {
+                }
+            });
+            return modalInstance.result;
+        };
+
         modalService.openChoosePoorRichSyncupdates = function () {
             var modalInstance = $modal.open({
                 animation: true,
@@ -13,6 +27,18 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
                 resolve: {}
             });
 
+            return modalInstance.result;
+        };
+
+        modalService.openDomainWizardSplash = function (ctrl) {
+            var modalInstance = $modal.open({
+                animation: true,
+                templateUrl: 'scripts/wizard/domainObjectSplash.html',
+                controller: ctrl,
+                controllerAs: '$ctrl',
+                keyboard: false,
+                resolve: {}
+            });
             return modalInstance.result;
         };
 

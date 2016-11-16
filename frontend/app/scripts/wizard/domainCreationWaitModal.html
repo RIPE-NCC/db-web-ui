@@ -1,0 +1,13 @@
+<div class="modal-content no-rounded">
+    <div class="modal-header">
+        <h5 class="modal-title">Processing your domain objects</h5>
+    </div>
+    <div class="modal-body">
+        <div class="panel-body">
+            <p class="orangebackground">Please do not close this window.</p>
+            <br/>
+            <p>Validating reverse zones for your servers and creating domain object(s). This can take a few minutes. Please wait.</p>
+            <uib-progressbar class="progress-striped active" value="$ctrl.done" max="$ctrl.todo">Creating {{ $ctrl.todo }} domain objects</uib-progressbar>
+        </div>
+    </div>
+</div>

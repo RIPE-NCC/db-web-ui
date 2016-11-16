@@ -230,3 +230,31 @@ table.table {
 	-ms-transition: none !important;
 	transition: none !important;
 }
+
+/* Domain object */
+div.rdns-modal {
+	width: 630px;
+	div.modal-body {
+		position: relative;
+		padding: 30px;
+		span.ico-internet-world {
+			background: url("../images/internet-world.svg") left top no-repeat;
+			display: block;
+			width: 165.06px;
+			height: 157.2px;
+			position: absolute;
+			left: 20px;
+		}
+		div.indent {
+			padding-left: 190px;
+			> ul {
+				list-style: disc;
+				padding-left: 20px;
+			}
+			> button {
+				padding: 10px 30px;
+				margin: 10px 0 0 0;
+			}
+		}
+	}
+}

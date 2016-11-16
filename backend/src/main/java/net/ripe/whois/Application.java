@@ -2,11 +2,14 @@ package net.ripe.whois;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.aop.interceptor.SimpleAsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -14,8 +17,10 @@ import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
-import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.scheduling.annotation.AsyncConfigurer;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
@@ -23,12 +28,15 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.concurrent.Executor;
 
 @SpringBootApplication(scanBasePackages = {"net.ripe.whois"})
 @EnableCaching
-public class Application {
+@EnableAsync
+public class Application implements AsyncConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
+    private static final String WEB_SESSION_ID_NAME = "sessionid-db-web-ui";
 
     private final Environment environment;
     private final CrowdTokenFilter crowdTokenFilter;
@@ -48,7 +56,6 @@ public class Application {
     public static void main(String[] args) throws UnknownHostException {
         final SpringApplication app = new SpringApplication(Application.class);
         app.setBannerMode(Banner.Mode.OFF);
-        final SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
 
         final Environment environment = app.run(args).getEnvironment();
         LOGGER.info(
@@ -125,4 +132,25 @@ public class Application {
         return cmfb;
     }
 
+    @Override
+    public Executor getAsyncExecutor() {
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setMaxPoolSize(10);
+        taskExecutor.setThreadNamePrefix("DbWebUI-Executor-");
+        taskExecutor.initialize();
+        return taskExecutor;
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return new SimpleAsyncUncaughtExceptionHandler();
+    }
+
+    @Bean
+    public ServletContextInitializer initializer() {
+        return servletContext -> {
+            servletContext.setInitParameter("org.eclipse.jetty.servlet.SessionCookie", WEB_SESSION_ID_NAME);
+            servletContext.setInitParameter("org.eclipse.jetty.servlet.SessionIdPathParameterName", WEB_SESSION_ID_NAME);
+        };
+    }
 }

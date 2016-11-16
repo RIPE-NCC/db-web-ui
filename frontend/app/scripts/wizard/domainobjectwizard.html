@@ -1,6 +1,6 @@
- <div class="alert alert-danger" role="alert" ng-if="errors.length">
+<div id="errors" class="alert alert-danger" role="alert" ng-if="domain.errors.length">
     <ul>
-        <li ng-repeat="error in errors">
+        <li ng-repeat="error in domain.errors">
             <div>{{error.plainText}}</div>
         </li>
     </ul>
@@ -21,6 +21,7 @@
             </li>
         </ul>
     </section>
+
 
     <section class="supporting-text" ng-show="!domain.containsInvalidValues() && domain.isValidatingDomains">
         <div class="alert alert-info" role="alert">

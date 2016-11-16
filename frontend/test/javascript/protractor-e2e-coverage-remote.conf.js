@@ -11,7 +11,7 @@ exports.config = {
 
     capabilities: {
         'browserName': 'chrome',
-        'seleniumAddress': 'http://193.0.2.222:4444/wd/hub',
+        'seleniumAddress': 'http://193.0.2.219:4444/wd/hub',
         //'browserName': 'phantomjs',
         'chromeOptions': {'args': ['--disable-extensions']}
     },
