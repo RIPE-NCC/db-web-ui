@@ -35,6 +35,13 @@ public class DnsCheckerController {
         this.restTemplate = restTemplate;
     }
 
+    /**
+     * This controller calls the Zonemaster service to validate a nameserver address.
+     *
+     * The get_ns_ips check returns all IP addresses for a given name.
+     *
+     * Ref: https://github.com/dotse/zonemaster-backend/blob/master/docs/API.md#json-rpc-call-2-get_ns_ips
+     */
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<String> status(
             @CookieValue(value = "crowd.token_key") final String crowdToken,
