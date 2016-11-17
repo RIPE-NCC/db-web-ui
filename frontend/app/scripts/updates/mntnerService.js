@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('updates').service('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService', 'PrefixService',
+    angular.module('updates').factory('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService', 'PrefixService',
 
         function ($log, $q, CredentialsService, WhoisResources, ModalService, RestService, PrefixService) {
 
@@ -299,7 +299,7 @@
 
                         var mntDomains = resourceAttributes.getAllAttributesOnName('mnt-domains');
                         if (mntDomains.length > 0) {
-                            mntHandler(mntDomains);
+                            return mntHandler(mntDomains);
                         }
 
                         // (2) if NOT exact match, then check for mnt-lower
@@ -309,19 +309,19 @@
                             var mntLowers = resourceAttributes.getAllAttributesOnName('mnt-lower');
 
                             if (mntLowers.length > 0) {
-                                mntHandler(mntLowers);
+                                return mntHandler(mntLowers);
                             }
                         }
 
                         // (3) mnt-by
                         var mntBys = resourceAttributes.getAllAttributesOnName('mnt-by');
-                        mntHandler(mntBys);
+                        return mntHandler(mntBys);
                     }
 
-                }, function (error) {
+                }, function () {
                     // TODO: error handling
                     //console.log('ERROR: ' + angular.toJson(error));
-                    mntHandler([]);
+                    return mntHandler([]);
                 });
             };
 
