@@ -559,7 +559,7 @@ module.exports = function (grunt) {
                 noColor: false, // If true, protractor will not use colors in its output.
                 args: {
                     baseUrl: 'http://localhost:0',
-                    chromeDriver: './test/lib/selenium-drivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
+                    chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
                     seleniumServerJar: '../lib/client-combined-3.0.1-nodeps.jar'
                 }
             },
