@@ -560,7 +560,7 @@ module.exports = function (grunt) {
                 args: {
                     baseUrl: 'http://localhost:0',
                     chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
-                    seleniumServerJar: '../lib/client-combined-3.0.1-nodeps.jar'
+                    seleniumServerJar: './test/lib/client-combined-3.0.1-nodeps.jar'
                 }
             },
             e2e: {
