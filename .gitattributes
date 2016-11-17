@@ -1,9 +1,9 @@
 
 # All text files should have the "lf" (Unix) line endings
 * text eol=lf
-frontend/test/lib/webdrivers/linux/darwin/* binary
-frontend/test/lib/webdrivers/linux/win32/* binary
-frontend/test/lib/webdrivers/linux/linux/* binary
+frontend/test/lib/webdrivers/darwin/* binary
+frontend/test/lib/webdrivers/win32/* binary
+frontend/test/lib/webdrivers/linux/* binary
 
 # Explicitly declare text files you want to always be normalized and converted
 # to native line endings on checkout.
