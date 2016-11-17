@@ -88,6 +88,9 @@ div.ui-select-container {
 	> div.ui-select-match {
 		outline: none;
 		box-shadow: none;
+		> input {
+			@extend %width-100;
+		}
 		> span.ui-select-toggle {
 			text-shadow: none;
 			background: #fff !important;
@@ -119,6 +122,31 @@ div.ui-select-container {
 						color: #333;
 					}
 				}
+			}
+		}
+	}
+}
+
+// Typeahead customisation
+ul.dropdown-menu {
+	@extend %width-100;
+	box-shadow: none !important;
+	border-radius: 0;
+	overflow: scroll;
+	height: 300px;
+	> li {
+		margin-bottom: 0 !important;
+		a {
+			border-bottom: 1px solid #EAEAEA !important;
+			background-color: #FFF;
+			color: #333;
+			padding: 12px;
+		}
+		&.active, &:focus {
+			a, a:hover {
+				background: none !important;
+				background-color: #F5FFFF !important;
+				color: #333;
 			}
 		}
 	}
