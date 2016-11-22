@@ -29,14 +29,13 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 
 * first build (see above)
 
-=======
-
 * map ```127.0.0.1``` to ```localhost.ripe.net``` in your local hosts file
 
 * cd into the ```backend``` sub folder
 
 * execute  (using the Jetty Maven Plugin): ```mvn jetty:run```
- * or (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Drun.profiles=local```     
+
+* or (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Drun.profiles=local```     
 
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
@@ -151,8 +150,7 @@ HOWTOs
 
 ### Update the Ripe global web site template
 
-Download the [latest template from here]
-(https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true)
+Download the [latest template from here](https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true)
 
 It's always a good idea to format the file in a consistent way so it's easier to see the changes with the previous
 version. The best tool for this is `js-beautify` -- you can install it with:
