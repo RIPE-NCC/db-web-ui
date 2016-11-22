@@ -3,8 +3,8 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp').controller('DomainObjectController', ['$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService',
-        function ($http, $scope, $stateParams, $location, $anchorScroll, $state, jsUtils, AlertService, ModalService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService) {
+    angular.module('dbWebApp').controller('DomainObjectController', ['$rootScope', '$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService',
+        function ($rootScope, $http, $scope, $stateParams, $location, $anchorScroll, $state, jsUtils, AlertService, ModalService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService) {
 
             // show splash screen
             ModalService.openDomainWizardSplash(function ($uibModalInstance) {
@@ -82,7 +82,14 @@
                     RestService.detailsForMntners(enriched).then(function (enrichedMntners) {
                         vm.maintainers.objectOriginal = enrichedMntners;
                         if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
-                            performAuthentication(vm.maintainers);
+                            performAuthentication(vm.maintainers, function () {
+                              var prefix = _.find(vm.attributes, {'name':'prefix'});
+                                prefix.value = '';
+                                prefix.$$invalid = true;
+                                prefix.$$info = '';
+                                AttributeMetadataService.clearLastPrefix();
+                                $rootScope.$broadcast('attribute-state-changed');
+                            });
                         }
                     });
                 });
@@ -102,7 +109,7 @@
                 }
 
                 if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
-                    performAuthentication(vm.maintainers);
+                    performAuthentication(vm.maintainers, navigateAway);
                     return;
                 }
 
@@ -189,7 +196,7 @@
                 return flattenedAttributes;
             }
 
-            function performAuthentication(maintainers) {
+            function performAuthentication(maintainers, onNavigateAway) {
                 var authParams = {
                     maintainers: maintainers,
                     operation: vm.operation,
@@ -200,7 +207,7 @@
                     },
                     isLirObject: false,
                     successClbk: onSuccessfulAuthentication,
-                    failureClbk: navigateAway
+                    failureClbk: onNavigateAway
                 };
                 WebUpdatesCommons.performAuthentication(authParams);
             }
@@ -209,11 +216,10 @@
                 vm.restCallInProgress = false;
                 vm.errors = [];
                 vm.isValidatingDomains = false;
-
                 var prefix = _.find(vm.attributes, function(attr) {
                     return attr.name === 'prefix';
                 });
-
+                AttributeMetadataService.resetDomainLookups(prefix.value);
                 MessageStore.add('result', {prefix: prefix.value, whoisResources: resp.data});
 
                 $state.transitionTo('webupdates.displayDomainObjects', {

@@ -80,37 +80,4 @@ public class WhoisDomainObjectService {
         return uriComponentsBuilder.build().encode().toUri();
     }
 
-    public Boolean sameOrMoreSpecificExists(final String prefix) {
-        try {
-            restTemplate.getForEntity(getSameExistsUri(prefix), String.class);
-            restTemplate.getForEntity(getMoreSpecificExistsUri(prefix), String.class);
-            return true;
-        } catch (HttpClientErrorException e) {
-            LOGGER.error("Fail to create domain object(s): " +e.getMessage());
-            LOGGER.error(e.getResponseBodyAsString());
-            LOGGER.error(e.getStatusCode() +":", e);
-            return false;
-        }
-
-    }
-
-
-    private URI getSameExistsUri(final String prefix) {
-        return buildDomainExistsUri("{url}/search.json?query-string={prefix}&type-filter=domain&flags=all-more&flags=reverse-domain&flags=no-filtering&flags=no-referenced", prefix);
-    }
-
-    //TODO - get correct query
-    private URI getMoreSpecificExistsUri(final String prefix) {
-        return buildDomainExistsUri("{url}/search.json?query-string={prefix}&type-filter=domain&flags=all-more&flags=reverse-domain&flags=no-filtering&flags=no-referenced", prefix);
-    }
-
-    private URI buildDomainExistsUri(String uri, String prefix) {
-        final HashMap<String, Object> variables = Maps.newHashMap();
-        variables.put("url", restApiUrl);
-        variables.put("prefix", prefix);
-
-        return new UriTemplate(uri).expand(variables);
-    }
-
-
 }

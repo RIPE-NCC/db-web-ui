@@ -13,9 +13,10 @@ Links
 
 Pre-requisites
 -----------------
+maven (v3.0+)
 npm
-grunt
-bower
+grunt (install with ```npm install -g grunt```)
+bower (install with ```npm install -g bower```)
 compass (ruby)
 
 Build on Local Machine
@@ -68,8 +69,8 @@ Use Grunt
 * \<no args\><br>
   Does a JSHint report for on all the JS files in the app
 * serve<br>
-  Starts a server on port 9080 which connects to a live backend. NOTE: doesn't work yet because Grunt can't
-  negotiate with the https server -- partly due to a bug in a bug in a grunt dependency
+  NOTE: doesn't work yet because Grunt can't negotiate with the https server -- partly due to a bug in a bug in
+  a grunt dependency. Starts a server on port 9080 which connects to a live backend. 
 * test<br>
   alias for ```unit-test```
 * watch:dist<br>
@@ -122,11 +123,11 @@ Rules of thumb:
     So when searching for maintainers of sso-user, we return a regular search result. What todo with the star?
     For the service that delivers info for the upper-right-sso-info, we use a dedicated protocol.
 * When designing new urls for the java-proxy, stick to the whois conventions
-* UI should be as simple as possibly: So fetching or pushing information should be done with a single call. The java proxy can aggregate to achieve this.
+* UI should be as simple as possible: So fetching or pushing information should be done with a single call. The java proxy can aggregate to achieve this.
 * Always try to solve problem in backend. if not possible in java-proxy, as last resort in angular UI. We could promote functions from java-proxy to backend over time, so others can also profit.
 * All services a provided by the java-proxy shall be protected by sso. If not logged in, a 403 shall be returned. The angular UI shall redirect to access.ripe.net on a REST 403
 
-Responsibilities of java-proxy: Non functionals only
+Responsibilities of java-proxy: Non-functionals only
 
 * Security
 * Aggregation
@@ -160,10 +161,9 @@ version. The best tool for this is `js-beautify` -- you can install it with:
 
 ##### Example: download, format and diff the latest version of the template
 
-Open a terminal and cd into the `src/main/webapp` directory, then type these commands:
+Open a terminal and cd into the `frontend/app` directory, then type these commands:
 
     curl "https://www.ripe.net/manage-ips-and-asns/db/webupdates/@@template?versions=true&show_left_column=true&database_includes=true" |js-beautify --type html |sed -e "/^\s*$/d" > template.html
-    diff _index.html template.html
 
 Protractor
 ----------

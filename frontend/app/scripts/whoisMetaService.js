@@ -1063,7 +1063,7 @@
                 'nserver': {
                     short: 'Specifies the nameserver of the domain. Include this attribute at least twice.',
                     description: 'Specifies the nameservers of the domain.',
-                    syntax: 'Nameserver name in the format "nameserver.example.net" with or without trailing dot. The nameserver name may be optionally followed by IPv4 address in decimal dotted quad form (e.g. 192.0.2.1) or IPv6 address in lowercase canonical form (e.g. 2001:db8::8:800:200c:417a). The nameserver name may be followed by an IP address only when the name is inside of the domain being delegated.'
+                    syntax: 'Name server name in the format "nameserver.example.net", without a trailing dot. Specifying an IP address after the name server name is not supported.'
                 },
                 'org': {
                     short: 'Reference to an organisation object representing the holder of the resource.',

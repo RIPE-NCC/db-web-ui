@@ -87,7 +87,7 @@ module.exports = {
     modalClose: element(by.css('[uib-modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
     modalBody: element(by.css('[uib-modal-window]')).element(by.css('.modal-body')),
     modalFooter: element(by.css('[uib-modal-window]')).element(by.css('.modal-footer')),
-    modalSplashBtn: element(by.css('[uib-modal-window]')).element(by.id('modal-splash')),
+    modalSplashBtn: element(by.id('modal-splash-button')),
     modalSplashText: element(by.css('[uib-modal-window]')).element(by.css('h1')),
 
     /**

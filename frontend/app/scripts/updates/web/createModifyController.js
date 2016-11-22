@@ -898,12 +898,7 @@ angular.module('webUpdates')
             function _enrichWithMine(mntners) {
                 return _.map(mntners, function (mntner) {
                     // search in selected list
-                    if (MntnerService.isMntnerOnlist($scope.maintainers.sso, mntner)) {
-                        mntner.mine = true;
-                    } else {
-                        mntner.mine = false;
-
-                    }
+                    mntner.mine = !!MntnerService.isMntnerOnlist($scope.maintainers.sso, mntner);
                     return mntner;
                 });
             }

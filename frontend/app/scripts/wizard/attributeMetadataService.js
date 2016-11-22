@@ -17,12 +17,14 @@
         // has to provide overrides and can therefore be pretty small
 
         this.enrich = enrich;
+        this.clearLastPrefix = clearLastPrefix;
         this.getAllMetadata = getAllMetadata;
         this.getMetadata = getMetadata;
         this.isInvalid = isInvalid;
         this.isHidden = isHidden;
         this.getCardinality = getCardinality;
         this.determineAttributesForNewObject = determineAttributesForNewObject;
+        this.resetDomainLookups = resetDomainLookups;
 
         function determineAttributesForNewObject(objectType) {
             var i, attributes = [];
@@ -64,8 +66,6 @@
                 } else if (md.primaryKey || md.minOccurs > 0) {
                     // pks and mandatory must have value
                     return !attribute.value;
-                } else {
-                    return false;
                 }
             }
             return false;
@@ -191,6 +191,12 @@
         var existingDomains = {};
         var existingDomainTo;
 
+        function resetDomainLookups(prefix) {
+            if (jsUtils.typeOf(prefix) === 'string') {
+                delete existingDomains[prefix];
+            }
+        }
+
         function domainsAlreadyExist(objectType, attributes, attribute) {
             if (!attribute.value) {
                 attribute.$$info = '';
@@ -232,6 +238,9 @@
         }
 
         var lastPrefix;
+        function clearLastPrefix() {
+            lastPrefix = '';
+        }
 
         function prefixIsInvalid(objectType, attributes, attribute) {
 
@@ -300,7 +309,8 @@
                     if (err.status === 404) {
                         cachedResponses[attribute.value] = 'FAILED';
                         $rootScope.$broadcast('attribute-state-changed', attribute);
-                    } else if (keepTrying--) {
+                    } else if (keepTrying) {
+                        keepTrying -= 1;
                         if (timeout) {
                             clearTimeout(timeout);
                         }
@@ -309,6 +319,7 @@
                 });
             };
             if (timeout) {
+                keepTrying = 0; // turn retries off and evaluate new call
                 clearTimeout(timeout);
             }
             timeout = setTimeout(doCall, 600);
@@ -364,7 +375,7 @@
                 // TODO: prefix check for domain objects
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [prefixIsInvalid, domainsAlreadyExist], hidden: {invalid: ['mnt-by']}},
                 descr: {},
-                nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},
+                nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\S{1,255})+$'), nserverIsInvalid]},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
                 'ds-rdata': {},
                 org: {refs: ['organisation']},

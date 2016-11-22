@@ -132,18 +132,4 @@ public class WhoisDomainObjectController extends ApiController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    //We don't need the source. But I'll keep it there just to make the API consistent
-    @RequestMapping(value = "/validate/{source}", method = RequestMethod.GET)
-    public ResponseEntity sameOrMoreSpecificExists(
-        @QueryParam(value = "prefix") final String prefix,
-        @PathVariable final String source) throws URISyntaxException {
-
-        final Boolean sameOrMoreSpecificExists = whoisDomainObjectService.sameOrMoreSpecificExists(prefix);
-        if(sameOrMoreSpecificExists) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            return ResponseEntity.ok().build();
-        }
-    }
-
 }

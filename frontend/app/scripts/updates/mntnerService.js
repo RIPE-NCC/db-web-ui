@@ -25,14 +25,20 @@
                 };
                 var promiseHandler = function (resolve, reject) {
                     if (!mntnerService.isSsoAuthorisedForMntByOrLower(whoisObject, ssoAccts)) {
-                        // pop up an auth box
                         var mntByAttrs = whoisObject.getAllAttributesOnName('mnt-by');
                         var mntLowerAttrs = whoisObject.getAllAttributesOnName('mnt-lower');
-
                         var parentMntners = _.map(mntByAttrs.concat(mntLowerAttrs), function (mntner) {
                             return {key: mntner.value};
                         });
 
+                        // check if we've already got a passwd
+                        var alreadyAuthed = _.findIndex(parentMntners, function(parentMnt) {
+                            return CredentialsService.getCredentials() && CredentialsService.getCredentials().mntner === parentMnt.key;
+                        });
+                        if (alreadyAuthed > -1) {
+                            return resolve();
+                        }
+                        // pop up an auth box
                         RestService.detailsForMntners(parentMntners).then(
                             function (enrichedMntners) {
                                 var mntnersWithPasswords = mntnerService.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);

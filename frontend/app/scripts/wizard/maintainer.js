@@ -79,7 +79,10 @@
         }
 
         function navigateAway() {
-            console.log('_navigateAway', arguments);
+            _.each($scope.mntners.object, function(mnt) {
+                $scope.onMntnerRemoved(mnt);
+            });
+            $scope.mntners.object = [];
         }
 
         function handleSsoResponseError() {
