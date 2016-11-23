@@ -65,11 +65,17 @@ public class DnsCheckerController {
             }
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ClientErrorException e) {
-            return new ResponseEntity<>(HttpStatus.valueOf(e.getResponse().getStatus()));
+            LOGGER.error(e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.OK);
+//            return new ResponseEntity<>(HttpStatus.valueOf(e.getResponse().getStatus()));
         } catch (HttpClientErrorException e) {
-            return new ResponseEntity<>(e.getStatusCode());
+            LOGGER.error(e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.OK);
+//            return new ResponseEntity<>(e.getStatusCode());
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            LOGGER.error(e.getMessage(), e);
+            return new ResponseEntity<>(HttpStatus.OK);
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
