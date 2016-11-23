@@ -1,13 +1,14 @@
 {
   "env": {
-    "browser": false
+    "browser": true
   },
   "extends": [
+    "angular",
     "eslint:recommended"
   ],
   "globals": {
-    "module": true,
-    "require": true
+    "_": true,
+    "angular": true
   },
   "rules": {
     "linebreak-style": [

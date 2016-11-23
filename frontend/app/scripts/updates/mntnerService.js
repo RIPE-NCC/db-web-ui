@@ -293,11 +293,9 @@
                 var objectType = PrefixService.isValidIpv4Prefix(prefix) ? 'inetnum' : 'inet6num';
 
                 RestService.fetchResource(objectType, prefix).get(function (result) {
-                    //console.log('SUCCESS: ' + angular.toJson(result));
 
                     if (result && result.objects && angular.isArray(result.objects.object)) {
                         var wrappedResource = WhoisResources.wrapWhoisResources(result);
-                        //console.log('resource = ' + wrappedResource.getPrimaryKey());
 
                         // Find exact or most specific matching inet(num), and collect the following mntners:
                         //     (1) mnt-domains
@@ -311,7 +309,6 @@
                         // (2) if NOT exact match, then check for mnt-lower
                         var primaryKey = wrappedResource.getPrimaryKey();
                         if (!PrefixService.isExactMatch(prefix, primaryKey)) {
-                            //TODO - get mnt lower
                             var mntLowers = resourceAttributes.getAllAttributesOnName('mnt-lower');
 
                             if (mntLowers.length > 0) {

@@ -463,8 +463,7 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt,htaccess}',
                         'scripts/{,*/}{,*/}*.js',
-                        'scripts/{,*/}{,*/}*.html',
-                        'selectize/{,*/}{,*/}*.html'
+                        'scripts/{,*/}{,*/}*.html'
                     ]
                 }, {
                     // needed until bower js is minified...
