@@ -319,7 +319,6 @@
                 });
             };
             if (timeout) {
-                keepTrying = 0; // turn retries off and evaluate new call
                 clearTimeout(timeout);
             }
             timeout = setTimeout(doCall, 600);
