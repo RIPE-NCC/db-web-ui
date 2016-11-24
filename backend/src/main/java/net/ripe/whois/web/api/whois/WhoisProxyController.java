@@ -28,7 +28,7 @@ public class WhoisProxyController extends ApiController {
     }
 
     @RequestMapping(value = "/**")
-    public ResponseEntity<String> proxyRestCalls(
+    public String proxyRestCalls(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) throws Exception {
@@ -38,6 +38,6 @@ public class WhoisProxyController extends ApiController {
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
 
-        return whoisService.bypass(request, body, headers);
+        return whoisService.bypass(request, body, headers).getBody();
     }
 }
