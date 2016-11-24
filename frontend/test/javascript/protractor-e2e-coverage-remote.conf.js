@@ -10,10 +10,10 @@ exports.config = {
     ],
 
     capabilities: {
-        'browserName': 'internet explorer',
+        'browserName': 'chrome',
         'seleniumAddress': 'http://193.0.2.219:4444/wd/hub',
         //'browserName': 'phantomjs',
- //       'chromeOptions': {'args': ['--disable-extensions']}
+        'chromeOptions': {'args': ['--disable-extensions']}
     },
 
     framework: 'jasmine2',
