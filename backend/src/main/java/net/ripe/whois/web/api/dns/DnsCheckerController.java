@@ -66,16 +66,13 @@ public class DnsCheckerController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ClientErrorException e) {
             LOGGER.error(e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.OK);
-//            return new ResponseEntity<>(HttpStatus.valueOf(e.getResponse().getStatus()));
+            return new ResponseEntity<>(HttpStatus.valueOf(e.getResponse().getStatus()));
         } catch (HttpClientErrorException e) {
             LOGGER.error(e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.OK);
-//            return new ResponseEntity<>(e.getStatusCode());
+            return new ResponseEntity<>(e.getStatusCode());
         } catch (RuntimeException e) {
             LOGGER.error(e.getMessage(), e);
-            return new ResponseEntity<>(HttpStatus.OK);
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
