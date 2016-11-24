@@ -10,10 +10,10 @@ exports.config = {
     ],
 
     capabilities: {
-        'browserName': 'chrome',
+        'browserName': 'internet explorer',
         'seleniumAddress': 'http://193.0.2.219:4444/wd/hub',
         //'browserName': 'phantomjs',
-        'chromeOptions': {'args': ['--disable-extensions']}
+ //       'chromeOptions': {'args': ['--disable-extensions']}
     },
 
     framework: 'jasmine2',
@@ -21,7 +21,7 @@ exports.config = {
 
     jasmineNodeOpts: {
         onComplete: null,
-        isVerbose: false,
+        isVerbose: true,
         showColors: false,
         includeStackTrace: true,
         defaultTimeoutInterval: 10000
