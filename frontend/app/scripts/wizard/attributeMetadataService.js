@@ -315,6 +315,9 @@
                             clearTimeout(timeout);
                         }
                         timeout = setTimeout(doCall, 1000);
+                    } else {
+                        cachedResponses[attribute.value] = 'OK';
+                        $rootScope.$broadcast('attribute-state-changed', attribute);
                     }
                 });
             };
