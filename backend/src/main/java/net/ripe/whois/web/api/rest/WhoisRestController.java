@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/api/rest")
 public class WhoisRestController extends ApiController {
 
-    private final WhoisRestService WhoisRestService;
+    private final WhoisRestService whoisRestService;
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestController.class);
 
     @Autowired
     public WhoisRestController(final WhoisRestService WhoisRestService) {
-        this.WhoisRestService = WhoisRestService;
+        this.whoisRestService = WhoisRestService;
     }
 
     @RequestMapping(value = "/**")
@@ -36,6 +36,6 @@ public class WhoisRestController extends ApiController {
         LOGGER.info("rest-request: {}", request.toString());
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
-        return WhoisRestService.bypass(request, body, headers);
+        return whoisRestService.bypass(request, body, headers);
     }
 }

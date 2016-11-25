@@ -10,7 +10,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Service
-public class WhoisService {
+public class WhoisService extends ExchangeErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisService.class);
 
@@ -40,7 +39,7 @@ public class WhoisService {
         headers.remove(HttpHeaders.ACCEPT_ENCODING);
         headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
 
-        try {
+        return execute(() -> {
             if (body == null) {
                 return restTemplate.exchange(
                     uri,
@@ -54,12 +53,7 @@ public class WhoisService {
                     new HttpEntity<>(body, headers),
                     String.class);
             }
-        } catch (HttpClientErrorException e) {
-            return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
-            throw e;
-        }
+        });
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
