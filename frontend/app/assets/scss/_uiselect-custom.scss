@@ -133,7 +133,7 @@ ul.dropdown-menu {
 	box-shadow: none !important;
 	border-radius: 0;
 	overflow: scroll;
-	height: 300px;
+	max-height: 300px;
 	> li {
 		margin-bottom: 0 !important;
 		a {
