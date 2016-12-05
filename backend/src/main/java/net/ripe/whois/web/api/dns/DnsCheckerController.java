@@ -51,29 +51,29 @@ public class DnsCheckerController {
 
                 final Resolver udpResolver = getResolver(address, port, false, 5);
                 final Lookup udpLookup = executeQuery(record, udpResolver);
-                if (udpLookup.getAnswers() == null || udpLookup.getAnswers().length == 0){
-                    return new ResponseEntity(getErrorMessage(address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
+                if (udpLookup.getAnswers() == null || udpLookup.getAnswers().length == 0) {
+                    return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
                 }
 
                 final Resolver tcpResolver = getResolver(address, port, true, 10);
                 final Lookup tcpLookup = executeQuery(record, tcpResolver);
-                if (tcpLookup.getAnswers() == null || tcpLookup.getAnswers().length == 0){
-                    return new ResponseEntity(getErrorMessage(address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
+                if (tcpLookup.getAnswers() == null || tcpLookup.getAnswers().length == 0) {
+                    return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
                 }
 
             }
         } catch (Exception e) {
-            LOGGER.info("Could not test DNS for "+ns+" "+record );
+            LOGGER.info("Could not test DNS for " + ns + " " + record);
             LOGGER.info(e.getMessage(), e);
-            return new ResponseEntity("{\"code\": -1, \"message\":\"Could not query "+ns+"\"}", HttpStatus.OK);
+            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not query " + ns + "\"}", HttpStatus.OK);
         }
 
-        return new ResponseEntity("{\"code\": 0, \"message\":\"Name server looks ok\"}", HttpStatus.OK);
+        return new ResponseEntity<>("{\"code\": 0, \"message\":\"Name server looks ok\"}", HttpStatus.OK);
 
     }
 
     private String getErrorMessage(final String address, final int port, final int lookupResult, final String protocol) {
-        return "{\"code\": \""+lookupResult+"\", \"message\":\"Could not query "+address+" using "+protocol+" on port "+port+"\"}";
+        return "{\"code\": " + lookupResult + ", \"message\":\"Could not query " + address + " using " + protocol + " on port " + port + "\"}";
     }
 
     private Lookup executeQuery(final String record, final Resolver resolver) throws TextParseException {

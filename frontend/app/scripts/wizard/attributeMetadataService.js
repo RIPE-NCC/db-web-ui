@@ -274,7 +274,6 @@
         function setNsAttributeMessage(attribute) {
             if (attribute.$$invalid) {
                 attribute.$$info = '';
-                attribute.$$error = 'Name server check failed';
             } else {
                 attribute.$$info = 'Server looks OK';
                 attribute.$$error = '';
@@ -282,7 +281,7 @@
         }
 
         function nserverIsInvalid(objectType, attributes, attribute) {
-            var keepTrying = 3;
+            var keepTrying = 4;
             var sameValList = _.filter(attributes, function (attr) {
                 return attribute.name === attr.name && attribute.value === attr.value;
             });
@@ -292,8 +291,9 @@
                 attribute.$$error = 'Duplicate value';
                 return true;
             }
-            if (cachedResponses[attribute.value]) {
-                attribute.$$invalid = cachedResponses[attribute.value] !== 'OK';
+            if (angular.isString(cachedResponses[attribute.value])) {
+                attribute.$$error = cachedResponses[attribute.value];
+                attribute.$$invalid = attribute.$$error !== '';
                 setNsAttributeMessage(attribute);
                 return attribute.$$invalid;
             }
@@ -311,9 +311,17 @@
                 attribute.$$error = '';
 
                 // any reverse zone will do
-                PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function () {
+                PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function (nserverResult) {
+                    if (angular.isNumber(nserverResult.data.code )) {
+                        if (!nserverResult.data.code) {
+                            cachedResponses[attribute.value] = '';
+                        } else {
+                            cachedResponses[attribute.value] = nserverResult.data.message;
+                        }
+                    } else {
+                        cachedResponses[attribute.value] = 'No response during check';
+                    }
                     // put response in cache
-                    cachedResponses[attribute.value] = 'OK';
                     $rootScope.$broadcast('attribute-state-changed', attribute);
                 }, function (err) {
                     if (err.status === 404) {
@@ -326,7 +334,7 @@
                         }
                         timeout = setTimeout(doCall, 1000);
                     } else {
-                        cachedResponses[attribute.value] = 'OK';
+                        cachedResponses[attribute.value] = '';
                         $rootScope.$broadcast('attribute-state-changed', attribute);
                     }
                 });
