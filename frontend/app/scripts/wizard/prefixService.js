@@ -145,10 +145,16 @@
             return zones;
         }
 
-        function checkNameserverAsync(ns) {
+        function checkNameserverAsync(ns, rDnsZone) {
+            if (!ns) {
+                throw new TypeError('checkNameserverAsync called without ns');
+            }
+            if (!rDnsZone) {
+                throw new TypeError('checkNameserverAsync called without rDnsZone');
+            }
             return $http({
                 method: 'GET',
-                url: 'api/dns/status?ignore404=true&ns=' + ns
+                url: 'api/dns/status?ignore404=true&ns=' + ns + '&record=' + rDnsZone
             });
         }
 

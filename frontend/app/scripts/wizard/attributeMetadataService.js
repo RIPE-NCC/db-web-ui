@@ -297,11 +297,21 @@
                 setNsAttributeMessage(attribute);
                 return attribute.$$invalid;
             }
+            var reverseZone = _.find(attributes, function(item) {
+                return item.name === 'reverse-zone';
+            });
+            if (!reverseZone || !reverseZone.value.length) {
+                // no zones?
+                attribute.$$info = '';
+                attribute.$$error = 'No reverse zones';
+                return true;
+            }
             var doCall = function () {
                 attribute.$$info = 'Checking name server...';
                 attribute.$$error = '';
 
-                PrefixService.checkNameserverAsync(attribute.value).then(function () {
+                // any reverse zone will do
+                PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function () {
                     // put response in cache
                     cachedResponses[attribute.value] = 'OK';
                     $rootScope.$broadcast('attribute-state-changed', attribute);
@@ -324,10 +334,7 @@
             if (timeout) {
                 clearTimeout(timeout);
             }
-            attribute.$$info = '';
-            attribute.$$error = '';
-            attribute.$$invalid = false;
-            //timeout = setTimeout(doCall, 600);
+            timeout = setTimeout(doCall, 600);
             // This is a wrapper for an async call, so should return 'true' (invalid). The
             // async response will set the success/errors.
             return jsUtils.typeOf(attribute.$$invalid) === 'boolean' ? attribute.$$invalid : true;
