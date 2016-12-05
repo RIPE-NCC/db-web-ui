@@ -52,13 +52,13 @@ public class DnsCheckerController {
                 final Resolver udpResolver = getResolver(address, port, false, 5);
                 final Lookup udpLookup = executeQuery(record, udpResolver);
                 if (udpLookup.getAnswers() == null || udpLookup.getAnswers().length == 0){
-                    return new ResponseEntity(getErrorMessage(ns, address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
+                    return new ResponseEntity(getErrorMessage(address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
                 }
 
                 final Resolver tcpResolver = getResolver(address, port, true, 10);
                 final Lookup tcpLookup = executeQuery(record, tcpResolver);
                 if (tcpLookup.getAnswers() == null || tcpLookup.getAnswers().length == 0){
-                    return new ResponseEntity(getErrorMessage(ns, address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
+                    return new ResponseEntity(getErrorMessage(address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
                 }
 
             }
@@ -72,7 +72,7 @@ public class DnsCheckerController {
 
     }
 
-    private String getErrorMessage(final String ns, final String address, final int port, final int lookupResult, final String protocol) {
+    private String getErrorMessage(final String address, final int port, final int lookupResult, final String protocol) {
         return "{\"code\": \""+lookupResult+"\", \"message\":\"Could not query "+address+" using "+protocol+" on port "+port+"\"}";
     }
 
