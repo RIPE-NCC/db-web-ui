@@ -65,15 +65,15 @@ public class DnsCheckerController {
         } catch (Exception e) {
             LOGGER.info("Could not test DNS for "+ns+" "+record );
             LOGGER.info(e.getMessage(), e);
-            return new ResponseEntity("{code: -1, message:'Could not query "+ns+"'}", HttpStatus.OK);
+            return new ResponseEntity("{\"code\": -1, \"message\":\"Could not query "+ns+"\"}", HttpStatus.OK);
         }
 
-        return new ResponseEntity("{code: 0, message:'Name server looks ok'}", HttpStatus.OK);
+        return new ResponseEntity("{\"code\": 0, \"message\":\"Name server looks ok\"}", HttpStatus.OK);
 
     }
 
     private String getErrorMessage(final String ns, final String address, final int port, final int lookupResult, final String protocol) {
-        return "{code: "+lookupResult+", message:'Could not query "+address+" using "+protocol+" on port "+port+"'}";
+        return "{\"code\": \""+lookupResult+"\", \"message\":\"Could not query "+address+" using "+protocol+" on port "+port+"\"}";
     }
 
     private Lookup executeQuery(final String record, final Resolver resolver) throws TextParseException {
