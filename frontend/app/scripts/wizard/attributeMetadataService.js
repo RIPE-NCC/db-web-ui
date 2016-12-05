@@ -324,7 +324,10 @@
             if (timeout) {
                 clearTimeout(timeout);
             }
-            timeout = setTimeout(doCall, 600);
+            attribute.$$info = '';
+            attribute.$$error = '';
+            attribute.$$invalid = false;
+            //timeout = setTimeout(doCall, 600);
             // This is a wrapper for an async call, so should return 'true' (invalid). The
             // async response will set the success/errors.
             return jsUtils.typeOf(attribute.$$invalid) === 'boolean' ? attribute.$$invalid : true;
