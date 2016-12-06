@@ -37,8 +37,7 @@ public class DnsCheckerController {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<String> status(@CookieValue(value = "crowd.token_key") final String crowdToken,
-                                         @RequestParam(value = "ns") final String ns,
-                                         @RequestParam(value = "record") final String record) {
+                                         @RequestParam(value = "ns") final String ns) {
 
         if (crowdToken == null || !crowdClient.getUserSession(crowdToken).isActive()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -50,20 +49,20 @@ public class DnsCheckerController {
             for (InetAddress address : addresses) {
 
                 final Resolver udpResolver = getResolver(address, port, false, 5);
-                final Lookup udpLookup = executeQuery(record, udpResolver);
-                if (udpLookup.getAnswers() == null || udpLookup.getAnswers().length == 0) {
+                final Lookup udpLookup = executeQuery(udpResolver);
+                if (udpLookup.getErrorString() == "timed out") {
                     return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
                 }
 
                 final Resolver tcpResolver = getResolver(address, port, true, 10);
-                final Lookup tcpLookup = executeQuery(record, tcpResolver);
-                if (tcpLookup.getAnswers() == null || tcpLookup.getAnswers().length == 0) {
+                final Lookup tcpLookup = executeQuery(tcpResolver);
+                if (udpLookup.getErrorString() == "timed out") {
                     return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
                 }
 
             }
         } catch (Exception e) {
-            LOGGER.info("Could not test DNS for " + ns + " " + record);
+            LOGGER.info("Could not test DNS for " + ns);
             LOGGER.info(e.getMessage(), e);
             return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not query " + ns + "\"}", HttpStatus.OK);
         }
@@ -76,16 +75,16 @@ public class DnsCheckerController {
         return "{\"code\": " + lookupResult + ", \"message\":\"Could not query " + address + " using " + protocol + " on port " + port + "\"}";
     }
 
-    private Lookup executeQuery(final String record, final Resolver resolver) throws TextParseException {
-        final Lookup lookup = new Lookup(record, Type.SOA);
+    private Lookup executeQuery(final Resolver resolver) throws TextParseException {
+        final Lookup lookup = new Lookup("simple_dns_check", Type.SOA);
         lookup.setResolver(resolver);
         lookup.run();
-
         return lookup;
     }
 
     private Resolver getResolver(final InetAddress address, final int port, final boolean useTCP, final int timeOut) throws UnknownHostException {
-        final SimpleResolver resolver = new SimpleResolver(address.getHostAddress());
+        final SimpleResolver resolver = new SimpleResolver();
+        resolver.setAddress(address);
         resolver.setTCP(useTCP);
         resolver.setPort(port);
         resolver.setTimeout(timeOut);
