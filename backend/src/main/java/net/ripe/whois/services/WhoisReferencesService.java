@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.HashMap;
 
 @Service
-public class WhoisReferencesService extends ExchangeErrorHandler {
+public class WhoisReferencesService implements ExchangeErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisReferencesService.class);
 
     private static final int MAX_RESULT_NUMBER = 5;
@@ -43,10 +43,10 @@ public class WhoisReferencesService extends ExchangeErrorHandler {
 
         LOGGER.debug("Performing fetch {}", uri.toString());
 
-        return execute(() -> restTemplate.exchange(uri,
+        return handleErrors(() -> restTemplate.exchange(uri,
                 HttpMethod.GET,
                 new HttpEntity<String>(headers),
-                String.class));
+                String.class), LOGGER);
     }
 
 
@@ -61,10 +61,10 @@ public class WhoisReferencesService extends ExchangeErrorHandler {
 
         LOGGER.debug("Performing create {}", uri.toString());
 
-        return execute(() -> restTemplate.exchange(uri,
+        return handleErrors(() -> restTemplate.exchange(uri,
                 HttpMethod.POST,
                 new HttpEntity<>(body, headers),
-                String.class));
+                String.class), LOGGER);
 
     }
 
@@ -86,10 +86,10 @@ public class WhoisReferencesService extends ExchangeErrorHandler {
 
         LOGGER.debug("Performing delete {}", uri.toString());
 
-        return execute(() -> restTemplate.exchange(uri,
+        return handleErrors(() -> restTemplate.exchange(uri,
                 HttpMethod.DELETE,
                 new HttpEntity<String>(headers),
-                String.class));
+                String.class), LOGGER);
     }
 }
 

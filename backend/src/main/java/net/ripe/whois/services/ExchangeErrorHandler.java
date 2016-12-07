@@ -1,34 +1,33 @@
 package net.ripe.whois.services;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 
-public class ExchangeErrorHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExchangeErrorHandler.class);
+public interface ExchangeErrorHandler {
 
-    ResponseEntity execute(ExchangeCall exchangeCall) {
-        return execute(exchangeCall, (HttpClientErrorException e) -> new ResponseEntity(e.getResponseBodyAsString(), e.getStatusCode()));
+    default ResponseEntity<String> handleErrors(ExchangeCall exchangeCall, Logger logger) {
+        return handleErrors(exchangeCall, (HttpStatusCodeException e) -> new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode()), logger);
     }
 
-    ResponseEntity execute(ExchangeCall exchangeCall, ErrorHandler errorHandler) {
+    default ResponseEntity<String> handleErrors(ExchangeCall exchangeCall, ErrorHandler errorHandler, Logger logger) {
         try {
             return exchangeCall.call();
-        } catch (HttpClientErrorException e) {
+        } catch (HttpStatusCodeException  e) {
             return errorHandler.handle(e);
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            logger.error(e.getMessage(), e);
             throw e;
         }
     }
-
 }
 
+@FunctionalInterface
 interface ExchangeCall {
-    ResponseEntity call() throws HttpClientErrorException;
+    ResponseEntity<String> call() throws HttpStatusCodeException;
 }
 
+@FunctionalInterface
 interface ErrorHandler {
-    ResponseEntity handle(HttpClientErrorException e) throws HttpClientErrorException;
+    ResponseEntity<String> handle(HttpStatusCodeException e);
 }
