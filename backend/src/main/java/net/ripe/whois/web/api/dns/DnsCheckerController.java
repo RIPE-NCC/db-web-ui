@@ -52,7 +52,7 @@ public class DnsCheckerController {
                 final Resolver udpResolver = getResolver(address, port, false, 5);
                 final Lookup udpLookup = executeQuery(udpResolver);
                 LOGGER.info("Response message for "+ns+" ("+ address +"):"+ udpLookup.getErrorString());
-                if (udpLookup.getErrorString() == "timed out") {
+                if (udpLookup.getErrorString() == "timed out" || udpLookup.getErrorString() == "network error") {
                     return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
                 }
 
@@ -60,7 +60,7 @@ public class DnsCheckerController {
                 final Resolver tcpResolver = getResolver(address, port, true, 10);
                 final Lookup tcpLookup = executeQuery(tcpResolver);
                 LOGGER.info("Response message for "+ns+" ("+ address +"):"+ tcpLookup.getErrorString());
-                if (udpLookup.getErrorString() == "timed out") {
+                if (tcpLookup.getErrorString() == "timed out" || tcpLookup.getErrorString() == "network error") {
                     return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
                 }
 
