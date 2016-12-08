@@ -81,8 +81,6 @@ public class DnsCheckerController {
     }
 
     private Lookup executeQuery(final Resolver resolver) throws TextParseException {
-
-
         final Lookup lookup = new Lookup("simple_dns_check", Type.SOA);
         lookup.setResolver(resolver);
         lookup.run();
