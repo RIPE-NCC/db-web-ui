@@ -48,14 +48,18 @@ public class DnsCheckerController {
 
             for (InetAddress address : addresses) {
 
+                LOGGER.info("Querying "+ns+" ("+ address +") using UDP");
                 final Resolver udpResolver = getResolver(address, port, false, 5);
                 final Lookup udpLookup = executeQuery(udpResolver);
+                LOGGER.info("Response message for "+ns+" ("+ address +"):"+ udpLookup.getErrorString());
                 if (udpLookup.getErrorString() == "timed out") {
                     return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
                 }
 
+                LOGGER.info("Querying "+ns+" ("+ address +") using TCP");
                 final Resolver tcpResolver = getResolver(address, port, true, 10);
                 final Lookup tcpLookup = executeQuery(tcpResolver);
+                LOGGER.info("Response message for "+ns+" ("+ address +"):"+ tcpLookup.getErrorString());
                 if (udpLookup.getErrorString() == "timed out") {
                     return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
                 }
@@ -67,6 +71,7 @@ public class DnsCheckerController {
             return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not query " + ns + "\"}", HttpStatus.OK);
         }
 
+        LOGGER.info("Success DNS check for " + ns);
         return new ResponseEntity<>("{\"code\": 0, \"message\":\"Name server looks ok\"}", HttpStatus.OK);
 
     }
@@ -76,6 +81,8 @@ public class DnsCheckerController {
     }
 
     private Lookup executeQuery(final Resolver resolver) throws TextParseException {
+
+
         final Lookup lookup = new Lookup("simple_dns_check", Type.SOA);
         lookup.setResolver(resolver);
         lookup.run();
