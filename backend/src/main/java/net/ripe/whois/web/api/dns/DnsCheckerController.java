@@ -68,7 +68,7 @@ public class DnsCheckerController {
         } catch (Exception e) {
             LOGGER.info("Could not test DNS for " + ns);
             LOGGER.info(e.getMessage(), e);
-            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not query " + ns + "\"}", HttpStatus.OK);
+            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not find any addresses for" + ns + "\"}", HttpStatus.OK);
         }
 
         LOGGER.info("Success DNS check for " + ns);
@@ -81,7 +81,7 @@ public class DnsCheckerController {
     }
 
     private Lookup executeQuery(final Resolver resolver) throws TextParseException {
-        final Lookup lookup = new Lookup("simple_dns_check", Type.SOA);
+        final Lookup lookup = new Lookup("dnsping.ripe.net", Type.SOA);
         lookup.setResolver(resolver);
         lookup.run();
         return lookup;
