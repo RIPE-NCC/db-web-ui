@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('updates').service('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService', 'PrefixService',
+    angular.module('updates').factory('MntnerService', ['$log', '$q', 'CredentialsService', 'WhoisResources', 'ModalService', 'RestService', 'PrefixService',
 
         function ($log, $q, CredentialsService, WhoisResources, ModalService, RestService, PrefixService) {
 
@@ -25,14 +25,20 @@
                 };
                 var promiseHandler = function (resolve, reject) {
                     if (!mntnerService.isSsoAuthorisedForMntByOrLower(whoisObject, ssoAccts)) {
-                        // pop up an auth box
                         var mntByAttrs = whoisObject.getAllAttributesOnName('mnt-by');
                         var mntLowerAttrs = whoisObject.getAllAttributesOnName('mnt-lower');
-
                         var parentMntners = _.map(mntByAttrs.concat(mntLowerAttrs), function (mntner) {
                             return {key: mntner.value};
                         });
 
+                        // check if we've already got a passwd
+                        var alreadyAuthed = _.findIndex(parentMntners, function(parentMnt) {
+                            return CredentialsService.getCredentials() && CredentialsService.getCredentials().mntner === parentMnt.key;
+                        });
+                        if (alreadyAuthed > -1) {
+                            return resolve();
+                        }
+                        // pop up an auth box
                         RestService.detailsForMntners(parentMntners).then(
                             function (enrichedMntners) {
                                 var mntnersWithPasswords = mntnerService.getMntnersForPasswordAuthentication(ssoAccts, enrichedMntners, []);
@@ -287,11 +293,9 @@
                 var objectType = PrefixService.isValidIpv4Prefix(prefix) ? 'inetnum' : 'inet6num';
 
                 RestService.fetchResource(objectType, prefix).get(function (result) {
-                    //console.log('SUCCESS: ' + angular.toJson(result));
 
                     if (result && result.objects && angular.isArray(result.objects.object)) {
                         var wrappedResource = WhoisResources.wrapWhoisResources(result);
-                        //console.log('resource = ' + wrappedResource.getPrimaryKey());
 
                         // Find exact or most specific matching inet(num), and collect the following mntners:
                         //     (1) mnt-domains
@@ -299,29 +303,28 @@
 
                         var mntDomains = resourceAttributes.getAllAttributesOnName('mnt-domains');
                         if (mntDomains.length > 0) {
-                            mntHandler(mntDomains);
+                            return mntHandler(mntDomains);
                         }
 
                         // (2) if NOT exact match, then check for mnt-lower
                         var primaryKey = wrappedResource.getPrimaryKey();
                         if (!PrefixService.isExactMatch(prefix, primaryKey)) {
-                            //TODO - get mnt lower
                             var mntLowers = resourceAttributes.getAllAttributesOnName('mnt-lower');
 
                             if (mntLowers.length > 0) {
-                                mntHandler(mntLowers);
+                                return mntHandler(mntLowers);
                             }
                         }
 
                         // (3) mnt-by
                         var mntBys = resourceAttributes.getAllAttributesOnName('mnt-by');
-                        mntHandler(mntBys);
+                        return mntHandler(mntBys);
                     }
 
-                }, function (error) {
+                }, function () {
                     // TODO: error handling
                     //console.log('ERROR: ' + angular.toJson(error));
-                    mntHandler([]);
+                    return mntHandler([]);
                 });
             };
 

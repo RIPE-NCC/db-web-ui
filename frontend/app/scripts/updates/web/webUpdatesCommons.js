@@ -32,11 +32,11 @@
                         }
                         $log.debug('After auth: maintainers.sso:', authParams.maintainers.sso);
                         $log.debug('After auth: maintainers.object:', authParams.maintainers.object);
-                        if (!_.isUndefined(authParams.successClbk)) {
+                        if (angular.isFunction(authParams.successClbk)) {
                             authParams.successClbk(associationResp);
                         }
                     }, function () {
-                        if (!_.isUndefined(authParams.failureClbk)) {
+                        if (angular.isFunction(authParams.failureClbk)) {
                             authParams.failureClbk();
                         }
                     }

@@ -7,7 +7,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
         modalService.openDomainCreationModal = function (ctrl) {
             //var deferredObject = $q.defer();
             var modalInstance = $modal.open({
-                animation: true,
+                animation: false,
                 templateUrl: 'scripts/wizard/domainCreationWaitModal.html',
                 controller: ctrl,
                 controllerAs: '$ctrl',
@@ -20,7 +20,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
 
         modalService.openChoosePoorRichSyncupdates = function () {
             var modalInstance = $modal.open({
-                animation: true,
+                animation: false,
                 templateUrl: 'scripts/updates/text/multiDecisionModal.html',
                 controller: 'TextMultiDecisionModalController',
                 keyboard: false,
@@ -32,11 +32,12 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
 
         modalService.openDomainWizardSplash = function (ctrl) {
             var modalInstance = $modal.open({
-                animation: true,
+                animation: false,
                 templateUrl: 'scripts/wizard/domainObjectSplash.html',
                 controller: ctrl,
                 controllerAs: '$ctrl',
                 keyboard: false,
+                backdrop  : 'static',
                 resolve: {}
             });
             return modalInstance.result;
@@ -44,7 +45,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
 
         modalService.openCreateRoleForAbuseCAttribute = function (source, maintainers, passwords) {
             var modalInstance = $modal.open({
-                animation: true,
+                animation: false,
                 templateUrl: 'scripts/updates/web/modalCreateRoleForAbuseC.html',
                 controller: 'ModalCreateRoleForAbuseCController',
                 keyboard: false,
@@ -67,7 +68,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
         modalService.openDeleteObjectModal = function (source, objectType, name, onCancel) {
             $log.debug('_openDeleteObjectModal called for ' + objectType + '/' + name);
             var modalInstance = $modal.open({
-                animation: true,
+                animation: false,
                 templateUrl: 'scripts/updates/web/modalDeleteObject.html',
                 controller: 'ModalDeleteObjectController',
                 keyboard: false,
@@ -96,7 +97,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
             $log.debug('openAddAttributeModal for items', items);
 
             var modalInstance = $modal.open({
-                animation: true,
+                animation: false,
                 templateUrl: 'scripts/updates/web/modalAddAttribute.html',
                 controller: 'ModalAddAttributeController',
                 size: 'lg',
@@ -126,7 +127,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
             $log.debug('openMd5Modal');
 
             var modalInstance = $modal.open({
-                animation: true,
+                animation: false,
                 templateUrl: 'scripts/updates/web/modalMd5Password.html',
                 controller: 'ModalMd5PasswordController',
                 size: 'lg',
@@ -160,7 +161,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
             $log.debug('openAuthenticationModal start for method: ' + method + ' and ' + object.source + '  mntners:' + angular.toJson(mntners), 'isLirObject', isLirObject);
 
             var modalInstance = $modal.open({
-                animation: true,
+                animation: false,
                 templateUrl: 'scripts/updates/web/modalAuthentication.html',
                 controller: 'ModalAuthenticationController',
                 keyboard: false,

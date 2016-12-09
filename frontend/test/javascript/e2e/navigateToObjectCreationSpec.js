@@ -39,14 +39,6 @@ describe('webupdates homepage', function() {
         expect(page.heading.getText()).toEqual('Create "aut-num" object');
     });
 
-    it('should show an editor for domain', function() {
-        expect(page.selectForm.isPresent()).toEqual(true);
-        page.selectObjectType('domain').click();
-        page.btnNavigateToCreate.click();
-        // Domain object wizard
-        expect(browser.getCurrentUrl()).toContain('/webupdates/create/RIPE/domain');
-    });
-
     it('should show an editor for filter-set', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('filter-set').click();

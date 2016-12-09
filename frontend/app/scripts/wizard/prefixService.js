@@ -13,7 +13,7 @@
 
             // TODO - fix the subnetMask min and max values
             // check the subnet mask is in range
-            if (address.subnetMask < 17 || address.subnetMask > 24) {
+            if (address.subnetMask < 16 || address.subnetMask > 24) {
                 return false;
             }
 
@@ -146,6 +146,10 @@
         }
 
         function checkNameserverAsync(ns) {
+            if (!ns) {
+                throw new TypeError('checkNameserverAsync called without ns');
+            }
+
             return $http({
                 method: 'GET',
                 url: 'api/dns/status?ignore404=true&ns=' + ns

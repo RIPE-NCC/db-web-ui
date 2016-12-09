@@ -14,7 +14,8 @@ describe('PrefixService', function () {
 
     describe('IPv4', function () {
         it('should be able to validate a bunch of good prefixes', function () {
-            //expect(PrefixService.isValidPrefix('22.22.0.0/17')).toBe(true);
+            expect(PrefixService.isValidPrefix('22.22.0.0/16')).toBe(true);
+            expect(PrefixService.isValidPrefix('22.22.0.0/17')).toBe(true);
             expect(PrefixService.isValidPrefix('22.22.0.0/18')).toBe(true);
             expect(PrefixService.isValidPrefix('22.22.0.0/19')).toBe(true);
             expect(PrefixService.isValidPrefix('22.22.0.0/20')).toBe(true);
@@ -30,7 +31,7 @@ describe('PrefixService', function () {
         });
 
         it('should fail when address bits are masked', function () {
-            //expect(PrefixService.isValidPrefix('192.168.64.0/17')).toBe(false);
+            expect(PrefixService.isValidPrefix('192.168.64.0/17')).toBe(false);
             expect(PrefixService.isValidPrefix('192.168.255.0/18')).toBe(false);
             expect(PrefixService.isValidPrefix('192.168.0.1/24')).toBe(false);
         });
@@ -54,8 +55,8 @@ describe('PrefixService', function () {
             //expect(PrefixService.getReverseDnsZones('22.0.0.0/13').length).toBe(8);
             //expect(PrefixService.getReverseDnsZones('22.0.0.0/14').length).toBe(4);
             //expect(PrefixService.getReverseDnsZones('22.0.0.0/15').length).toBe(2);
-            //expect(PrefixService.getReverseDnsZones('22.0.0.0/16').length).toBe(1);
-            //expect(PrefixService.getReverseDnsZones('22.22.0.0/17').length).toBe(128);
+            expect(PrefixService.getReverseDnsZones('22.0.0.0/16').length).toBe(1);
+            expect(PrefixService.getReverseDnsZones('22.22.0.0/17').length).toBe(128);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/18').length).toBe(64);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/19').length).toBe(32);
             expect(PrefixService.getReverseDnsZones('22.22.0.0/20').length).toBe(16);

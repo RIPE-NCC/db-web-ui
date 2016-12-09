@@ -17,12 +17,14 @@
         // has to provide overrides and can therefore be pretty small
 
         this.enrich = enrich;
+        this.clearLastPrefix = clearLastPrefix;
         this.getAllMetadata = getAllMetadata;
         this.getMetadata = getMetadata;
         this.isInvalid = isInvalid;
         this.isHidden = isHidden;
         this.getCardinality = getCardinality;
         this.determineAttributesForNewObject = determineAttributesForNewObject;
+        this.resetDomainLookups = resetDomainLookups;
 
         function determineAttributesForNewObject(objectType) {
             var i, attributes = [];
@@ -64,8 +66,6 @@
                 } else if (md.primaryKey || md.minOccurs > 0) {
                     // pks and mandatory must have value
                     return !attribute.value;
-                } else {
-                    return false;
                 }
             }
             return false;
@@ -191,6 +191,12 @@
         var existingDomains = {};
         var existingDomainTo;
 
+        function resetDomainLookups(prefix) {
+            if (jsUtils.typeOf(prefix) === 'string') {
+                delete existingDomains[prefix];
+            }
+        }
+
         function domainsAlreadyExist(objectType, attributes, attribute) {
             if (!attribute.value) {
                 attribute.$$info = '';
@@ -232,6 +238,9 @@
         }
 
         var lastPrefix;
+        function clearLastPrefix() {
+            lastPrefix = '';
+        }
 
         function prefixIsInvalid(objectType, attributes, attribute) {
 
@@ -265,7 +274,6 @@
         function setNsAttributeMessage(attribute) {
             if (attribute.$$invalid) {
                 attribute.$$info = '';
-                attribute.$$error = 'Name server check failed';
             } else {
                 attribute.$$info = 'Server looks OK';
                 attribute.$$error = '';
@@ -273,7 +281,7 @@
         }
 
         function nserverIsInvalid(objectType, attributes, attribute) {
-            var keepTrying = 3;
+            var keepTrying = 4;
             var sameValList = _.filter(attributes, function (attr) {
                 return attribute.name === attr.name && attribute.value === attr.value;
             });
@@ -283,28 +291,43 @@
                 attribute.$$error = 'Duplicate value';
                 return true;
             }
-            if (cachedResponses[attribute.value]) {
-                attribute.$$invalid = cachedResponses[attribute.value] !== 'OK';
+            if (angular.isString(cachedResponses[attribute.value])) {
+                attribute.$$error = cachedResponses[attribute.value];
+                attribute.$$invalid = attribute.$$error !== '';
                 setNsAttributeMessage(attribute);
                 return attribute.$$invalid;
             }
+
             var doCall = function () {
                 attribute.$$info = 'Checking name server...';
                 attribute.$$error = '';
 
-                PrefixService.checkNameserverAsync(attribute.value).then(function () {
+                // any reverse zone will do
+                PrefixService.checkNameserverAsync(attribute.value).then(function (nserverResult) {
+                    if (angular.isNumber(nserverResult.data.code )) {
+                        if (!nserverResult.data.code) {
+                            cachedResponses[attribute.value] = '';
+                        } else {
+                            cachedResponses[attribute.value] = nserverResult.data.message;
+                        }
+                    } else {
+                        cachedResponses[attribute.value] = 'No response during check';
+                    }
                     // put response in cache
-                    cachedResponses[attribute.value] = 'OK';
                     $rootScope.$broadcast('attribute-state-changed', attribute);
                 }, function (err) {
                     if (err.status === 404) {
                         cachedResponses[attribute.value] = 'FAILED';
                         $rootScope.$broadcast('attribute-state-changed', attribute);
-                    } else if (keepTrying--) {
+                    } else if (keepTrying) {
+                        keepTrying -= 1;
                         if (timeout) {
                             clearTimeout(timeout);
                         }
                         timeout = setTimeout(doCall, 1000);
+                    } else {
+                        cachedResponses[attribute.value] = '';
+                        $rootScope.$broadcast('attribute-state-changed', attribute);
                     }
                 });
             };
@@ -361,10 +384,9 @@
                 source: {minOccurs: 1, maxOccurs: 1}
             },
             prefix: {
-                // TODO: prefix check for domain objects
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [prefixIsInvalid, domainsAlreadyExist], hidden: {invalid: ['mnt-by']}},
                 descr: {},
-                nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\w{1,255}(\\.\\w{1,255})+$'), nserverIsInvalid]},
+                nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\S{1,255}(\\.\\S{1,255})+$'), nserverIsInvalid]},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
                 'ds-rdata': {},
                 org: {refs: ['organisation']},

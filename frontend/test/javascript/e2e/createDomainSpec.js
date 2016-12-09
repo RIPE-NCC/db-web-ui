@@ -101,6 +101,7 @@ describe('The domain wizard', function () {
 
     it('should show a popup when a prefix is submitted', function() {
 
+        page.modalSplashBtn.click();
         page.inpPrefix.sendKeys('212.17.110.0/23');
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
 
