@@ -65,10 +65,14 @@ public class DnsCheckerController {
                 }
 
             }
+        } catch (UnknownHostException e) {
+            LOGGER.info("Could not test DNS for " + ns);
+            LOGGER.info(e.getMessage(), e);
+            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not find any addresses for " + ns + "\"}", HttpStatus.OK);
         } catch (Exception e) {
             LOGGER.info("Could not test DNS for " + ns);
             LOGGER.info(e.getMessage(), e);
-            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not find any addresses for" + ns + "\"}", HttpStatus.OK);
+            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not check " + ns + "\"}", HttpStatus.OK);
         }
 
         LOGGER.info("Success DNS check for " + ns);
