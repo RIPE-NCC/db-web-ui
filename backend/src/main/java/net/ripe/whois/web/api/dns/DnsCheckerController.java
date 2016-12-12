@@ -48,19 +48,19 @@ public class DnsCheckerController {
 
             for (InetAddress address : addresses) {
 
-                LOGGER.info("Querying "+ns+" ("+ address +") using UDP");
+                LOGGER.info("Querying " + ns + " (" + address + ") using UDP");
                 final Resolver udpResolver = getResolver(address, port, false, 5);
                 final Lookup udpLookup = executeQuery(udpResolver);
-                LOGGER.info("Response message for "+ns+" ("+ address +"):"+ udpLookup.getErrorString());
-                if (udpLookup.getErrorString() == "timed out" || udpLookup.getErrorString() == "network error") {
+                LOGGER.info("Response message for " + ns + " (" + address + "):" + udpLookup.getErrorString());
+                if ("timed out".equalsIgnoreCase(udpLookup.getErrorString()) || "network error".equalsIgnoreCase(udpLookup.getErrorString())) {
                     return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
                 }
 
-                LOGGER.info("Querying "+ns+" ("+ address +") using TCP");
+                LOGGER.info("Querying " + ns + " (" + address + ") using TCP");
                 final Resolver tcpResolver = getResolver(address, port, true, 10);
                 final Lookup tcpLookup = executeQuery(tcpResolver);
-                LOGGER.info("Response message for "+ns+" ("+ address +"):"+ tcpLookup.getErrorString());
-                if (tcpLookup.getErrorString() == "timed out" || tcpLookup.getErrorString() == "network error") {
+                LOGGER.info("Response message for " + ns + " (" + address + "):" + tcpLookup.getErrorString());
+                if ("timed out".equalsIgnoreCase(tcpLookup.getErrorString()) || "network error".equalsIgnoreCase(tcpLookup.getErrorString())) {
                     return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
                 }
 
