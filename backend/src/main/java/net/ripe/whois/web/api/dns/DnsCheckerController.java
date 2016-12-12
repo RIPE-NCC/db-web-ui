@@ -76,7 +76,7 @@ public class DnsCheckerController {
         }
 
         LOGGER.info("Success DNS check for " + ns);
-        return new ResponseEntity<>("{\"code\": 0, \"message\":\"Name server looks ok\"}", HttpStatus.OK);
+        return new ResponseEntity<>("{\"code\": 0, \"message\":\"Server responds on port 53\"}", HttpStatus.OK);
 
     }
 
