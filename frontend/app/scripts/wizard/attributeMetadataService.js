@@ -275,7 +275,7 @@
             if (attribute.$$invalid) {
                 attribute.$$info = '';
             } else {
-                attribute.$$info = 'Server looks OK';
+                attribute.$$info = 'Server responds on port 53';
                 attribute.$$error = '';
             }
         }
