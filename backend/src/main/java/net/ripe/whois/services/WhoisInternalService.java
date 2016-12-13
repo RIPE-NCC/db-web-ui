@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Service
-public class WhoisInternalService extends ExchangeErrorHandler {
+public class WhoisInternalService implements ExchangeErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalService.class);
 
@@ -138,7 +138,7 @@ public class WhoisInternalService extends ExchangeErrorHandler {
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
         final URI uri = composeWhoisUrl(request);
 
-        return execute(() -> {
+        return handleErrors(() -> {
             if (body == null) {
                 return restTemplate.exchange(
                     uri,
@@ -152,7 +152,7 @@ public class WhoisInternalService extends ExchangeErrorHandler {
                     new HttpEntity<>(body, headers),
                     String.class);
             }
-        });
+        }, LOGGER);
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {

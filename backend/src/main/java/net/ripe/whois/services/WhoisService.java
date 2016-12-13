@@ -17,7 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Service
-public class WhoisService extends ExchangeErrorHandler {
+public class WhoisService implements ExchangeErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisService.class);
 
@@ -39,7 +39,7 @@ public class WhoisService extends ExchangeErrorHandler {
         headers.remove(HttpHeaders.ACCEPT_ENCODING);
         headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
 
-        return execute(() -> {
+        return handleErrors(() -> {
             if (body == null) {
                 return restTemplate.exchange(
                     uri,
@@ -53,7 +53,7 @@ public class WhoisService extends ExchangeErrorHandler {
                     new HttpEntity<>(body, headers),
                     String.class);
             }
-        });
+        }, LOGGER);
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {

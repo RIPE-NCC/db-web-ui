@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Service
-public class WhoisRestService extends ExchangeErrorHandler {
+public class WhoisRestService implements ExchangeErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestService.class);
 
@@ -44,7 +45,7 @@ public class WhoisRestService extends ExchangeErrorHandler {
         headers.remove(HttpHeaders.ACCEPT_ENCODING);
         headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
 
-        return execute(() -> {
+        return handleErrors(() -> {
                 if (body == null) {
                     return restTemplate.exchange(
                         uri,
@@ -59,14 +60,14 @@ public class WhoisRestService extends ExchangeErrorHandler {
                         String.class);
                 }
             },
-            (HttpClientErrorException e) -> {
-                if (e.getStatusCode().is4xxClientError()) {
+            (HttpStatusCodeException e) -> {
+                if (e instanceof HttpClientErrorException) {
                     LOGGER.warn("Whois HTTP status {} will be returned as 200", e.getStatusCode());
                     return new ResponseEntity<>(e.getResponseBodyAsString(), HttpStatus.OK);
                 }
+                // e instanceof HttpServerErrorException
                 return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
-            }
-        );
+            }, LOGGER);
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
