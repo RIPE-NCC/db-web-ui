@@ -7,8 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,11 +26,19 @@ public class Recording01 {
     @Value("${baseUrl}")
     private String baseUrl;
 
+    private void navigateToDomainCreationWizard() {
+        driver.get(baseUrl);
+        driver.findElement(By.linkText("Create")).click();
+        new Select(driver.findElement(By.id("objectTypeSelector"))).selectByVisibleText("domain");
+        driver.findElement(By.cssSelector("option[value=\"string:domain\"]")).click();
+        driver.findElement(By.id("btnNavigateToCreate")).click();
+    }
+
     @Before
     public void setUp() throws Exception {
         driver = driverManager.getWebDriver();
         driver.manage().window().maximize();
-        driver.get(baseUrl + "/db-web-ui/#/webupdates/wizard/RIPE/domain");
+        navigateToDomainCreationWizard();
 
         // log in if necessary
         Cookie crowdTokenCookie = driver.manage().getCookieNamed("crowd.token_key");
@@ -42,7 +49,7 @@ public class Recording01 {
             driver.findElement(By.id("password")).sendKeys("lsatyd");
             driver.findElement(By.id("sign_in_submit")).click();
 
-            driver.get(baseUrl + "/db-web-ui/#/webupdates/wizard/RIPE/domain");
+            navigateToDomainCreationWizard();
         }
         driver.findElement(By.id("modal-splash-button")).click();
     }
@@ -57,6 +64,7 @@ public class Recording01 {
         driver.findElement(By.name("admin-c$4")).sendKeys("LG1-RIPE");
         driver.findElement(By.name("tech-c$5")).sendKeys("LG1-RIPE");
         driver.findElement(By.name("zone-c$6")).sendKeys("LG1-RIPE");
+
         driver.findElement(By.id("btnSubmitCreate")).click();
         synchronized (driver) { driver.wait(12000); }
 
@@ -75,6 +83,7 @@ public class Recording01 {
         ((JavascriptExecutor)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
         driver.findElement(By.id("deleteObject")).click();
         synchronized (driver) { driver.wait(2000); }
+        driver.findElement(By.id("reason")).clear();
         driver.findElement(By.id("reason")).sendKeys("deleting as part of an integration test");
         synchronized (driver) { driver.wait(2000); }
         driver.findElement(By.cssSelector("input.red-button.ga-attr-popup-btn")).click();
@@ -95,10 +104,12 @@ public class Recording01 {
         ((JavascriptExecutor)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
         driver.findElement(By.id("deleteObject")).click();
         synchronized (driver) { driver.wait(2000); }
+        driver.findElement(By.id("reason")).clear();
         driver.findElement(By.id("reason")).sendKeys("deleting as part of an integration test");
         synchronized (driver) { driver.wait(2000); }
         driver.findElement(By.cssSelector("input.red-button.ga-attr-popup-btn")).click();
         synchronized (driver) { driver.wait(2000); }
+
 
     }
 }
