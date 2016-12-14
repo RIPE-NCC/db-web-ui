@@ -1,63 +1,104 @@
 package net.ripe.whois.sit;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes=SitSpringContext.class)
+@ContextConfiguration(classes = SitSpringContext.class)
 public class Recording01 {
 
 
-  @Autowired
-  private WebDriverManager driverManager;
+    @Autowired
+    private WebDriverManager driverManager;
 
-  private WebDriver driver;
+    private WebDriver driver;
 
-  @Value("${baseUrl}")
-  private String baseUrl;
+    @Value("${baseUrl}")
+    private String baseUrl;
 
-  @Before
-  public void setUp() throws Exception {
-    driver = driverManager.getWebDriver();
-    driver.get(baseUrl + "/db-web-ui/#/webupdates/wizard/RIPE/domain");
+    @Before
+    public void setUp() throws Exception {
+        driver = driverManager.getWebDriver();
+        driver.manage().window().maximize();
+        driver.get(baseUrl + "/db-web-ui/#/webupdates/wizard/RIPE/domain");
 
-    // log in if necessary
-    Cookie crowdTokenCookie = driver.manage().getCookieNamed("crowd.token_key");
-    if (crowdTokenCookie == null) {
-      driver.findElement(By.id("email")).clear();
-      driver.findElement(By.id("email")).sendKeys("tkalmijn@ripe.net");
-      driver.findElement(By.id("password")).clear();
-      driver.findElement(By.id("password")).sendKeys("Banderol11");
-      driver.findElement(By.id("sign_in_submit")).click();
+        // log in if necessary
+        Cookie crowdTokenCookie = driver.manage().getCookieNamed("crowd.token_key");
+        if (crowdTokenCookie == null) {
+            driver.findElement(By.id("email")).clear();
+            driver.findElement(By.id("email")).sendKeys("bad@ripe.net");
+            driver.findElement(By.id("password")).clear();
+            driver.findElement(By.id("password")).sendKeys("lsatyd");
+            driver.findElement(By.id("sign_in_submit")).click();
 
-      driver.get(baseUrl + "/db-web-ui/#/webupdates/wizard/RIPE/domain");
+            driver.get(baseUrl + "/db-web-ui/#/webupdates/wizard/RIPE/domain");
+        }
+        driver.findElement(By.id("modal-splash-button")).click();
     }
-    driver.findElement(By.id("modal-splash-button")).click();
-  }
 
-  @Test
-  public void testRecording01() throws Exception {
-    driver.findElement(By.name("prefix$0")).clear();
-    driver.findElement(By.name("prefix$0")).sendKeys("110.110.110.0/24");
-  }
+    @Test
+    public void useDomainObjectWizardToCreateTwoObjectsAndDeleteThem() throws Exception {
 
-  @Test
-  public void testRecording02() throws Exception {
-    driver.findElement(By.name("prefix$0")).clear();
-    driver.findElement(By.name("prefix$0")).sendKeys("110.110.110.0/24");
-  }
+        // let's create some reverse domain objects
+        driver.findElement(By.name("prefix$0")).sendKeys("212.17.110.0/23");
+        driver.findElement(By.name("nserver$1")).sendKeys("rns1.upc.biz");
+        driver.findElement(By.name("nserver$2")).sendKeys("rns2.upc.biz");
+        driver.findElement(By.name("admin-c$4")).sendKeys("LG1-RIPE");
+        driver.findElement(By.name("tech-c$5")).sendKeys("LG1-RIPE");
+        driver.findElement(By.name("zone-c$6")).sendKeys("LG1-RIPE");
+        driver.findElement(By.id("btnSubmitCreate")).click();
+        synchronized (driver) { driver.wait(12000); }
 
-  @After
-  public void tearDown() throws Exception {
-    System.out.println("wow");
-  }
+        // search object 1
+        driver.findElement(By.linkText("Query and Update")).click();
+        driver.findElement(By.id("search:queryString")).sendKeys("110.17.212.in-addr.arpa");
+        synchronized (driver) { driver.wait(2000); }
+
+        driver.findElement(By.id("search:doSearch")).click();
+        driver.findElement(By.className("result"));
+        synchronized (driver) { driver.wait(2000); }
+
+        // delete object 1
+        driver.findElement(By.id("result:0:LoginToUpdateText")).click();
+        synchronized (driver) { driver.wait(2000); }
+        ((JavascriptExecutor)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        driver.findElement(By.id("deleteObject")).click();
+        synchronized (driver) { driver.wait(2000); }
+        driver.findElement(By.id("reason")).sendKeys("deleting as part of an integration test");
+        synchronized (driver) { driver.wait(2000); }
+        driver.findElement(By.cssSelector("input.red-button.ga-attr-popup-btn")).click();
+        synchronized (driver) { driver.wait(2000); }
+
+        // search object 2
+        driver.findElement(By.linkText("Query and Update")).click();
+        driver.findElement(By.id("search:queryString")).sendKeys("111.17.212.in-addr.arpa");
+        synchronized (driver) { driver.wait(2000); }
+
+        driver.findElement(By.id("search:doSearch")).click();
+        driver.findElement(By.className("result"));
+        synchronized (driver) { driver.wait(2000); }
+
+        // delete object 1
+        driver.findElement(By.id("result:0:LoginToUpdateText")).click();
+        synchronized (driver) { driver.wait(2000); }
+        ((JavascriptExecutor)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
+        driver.findElement(By.id("deleteObject")).click();
+        synchronized (driver) { driver.wait(2000); }
+        driver.findElement(By.id("reason")).sendKeys("deleting as part of an integration test");
+        synchronized (driver) { driver.wait(2000); }
+        driver.findElement(By.cssSelector("input.red-button.ga-attr-popup-btn")).click();
+        synchronized (driver) { driver.wait(2000); }
+
+    }
 }
