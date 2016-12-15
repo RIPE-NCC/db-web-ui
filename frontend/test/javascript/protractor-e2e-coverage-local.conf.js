@@ -3,8 +3,6 @@
 'use strict';
 
 exports.config = {
-    chromeDriver: '../lib/chromedriver',
-    seleniumServerJar: '../lib/client-combined-3.0.1-nodeps.jar',
 
     // Spec patterns are relative to the location of this config.
     specs: [
@@ -13,7 +11,6 @@ exports.config = {
 
     capabilities: {
         'browserName': 'chrome',
-        //'browserName': 'phantomjs',
         'chromeOptions': {'args': ['--disable-extensions']}
     },
     directConnect: true,
