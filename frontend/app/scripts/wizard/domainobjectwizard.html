@@ -1,7 +1,9 @@
 <div id="errors" class="alert alert-danger" role="alert" ng-if="domain.errors.length">
-    <p ng-repeat="error in domain.errors">
-        <span ng-bind-html="error.plainText"></span>
-    </p>
+    <ul>
+        <li ng-repeat="error in domain.errors">
+            <div>{{error.plainText}}</div>
+        </li>
+    </ul>
  </div>
 
 <form id="createForm" name="whoisObjectForm" accept-charset="ISO-8859-1">
