@@ -3,8 +3,8 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp').controller('DomainObjectController', ['$rootScope', '$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService',
-        function ($rootScope, $http, $scope, $stateParams, $location, $anchorScroll, $state, jsUtils, AlertService, ModalService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService) {
+    angular.module('dbWebApp').controller('DomainObjectController', ['$rootScope', '$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService', 'ErrorReporterService',
+        function ($rootScope, $http, $scope, $stateParams, $location, $anchorScroll, $state, jsUtils, AlertService, ModalService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService, ErrorReporterService) {
 
             // show splash screen
             ModalService.openDomainWizardSplash(function ($uibModalInstance) {
@@ -237,6 +237,11 @@
                         errorMessage.plainText = readableError(errorMessage);
                         return errorMessage.severity === 'Error';
                     });
+
+                if (!_.isEmpty(vm.errors)) {
+                    ErrorReporterService.log('DomainWizard', 'domain', vm.errors);
+                }
+
                 $location.hash('errors');
                 $anchorScroll();
             }
