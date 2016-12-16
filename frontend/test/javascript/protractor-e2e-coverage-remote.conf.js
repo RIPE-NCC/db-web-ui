@@ -17,13 +17,14 @@ exports.config = {
 
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
+    getPageTimeout: 30000,
 
     jasmineNodeOpts: {
         onComplete: null,
         isVerbose: true,
         showColors: false,
         includeStackTrace: true,
-        defaultTimeoutInterval: 10000
+        defaultTimeoutInterval: 30000
     },
 
     onPrepare: function() {
