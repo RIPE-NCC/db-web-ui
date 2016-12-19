@@ -589,7 +589,11 @@ module.exports = function (grunt) {
             },
             e2eLocal: {
                 options: {
-                    configFile: 'test/javascript/protractor-e2e-coverage-local.conf.js'
+                    configFile: 'test/javascript/protractor-e2e-coverage-local.conf.js',
+                    args: {
+                        chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
+                        seleniumServerJar: './test/lib/client-combined-3.0.1-nodeps.jar'
+                    }
                 }
             },
             e2eRemote: {
@@ -660,7 +664,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('e2e-test', [
         'clean:server',
-        'e2eapp',
+        'e2eapp:mocks',
         'copy:processtags',
         'wiredep',
         'portPick:protractor',
@@ -739,7 +743,7 @@ module.exports = function (grunt) {
     ]);
     grunt.registerTask('e2e-coverage', [
         'clean:server',
-        'e2eapp',
+        'e2eapp:mocks',
         'copy:processtags',
         'wiredep:sass',
         'instrument',
