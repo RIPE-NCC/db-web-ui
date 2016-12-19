@@ -1,3 +1,4 @@
+/*global process*/
 'use strict';
 
 var fs = require('fs');
@@ -591,6 +592,7 @@ module.exports = function (grunt) {
                 options: {
                     configFile: 'test/javascript/protractor-e2e-coverage-local.conf.js',
                     args: {
+                        baseUrl: 'http://localhost:0',
                         chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
                         seleniumServerJar: './test/lib/client-combined-3.0.1-nodeps.jar'
                     }
@@ -632,7 +634,8 @@ module.exports = function (grunt) {
                 targets: [
                     'connect.e2e.options.port',
                     'protractor.options.args.baseUrl',
-                    'protractor_coverage.options.args.baseUrl'
+                    'protractor_coverage.options.args.baseUrl',
+                    'protractor_coverage.e2eLocal.options.args.baseUrl'
                 ]
             },
             karma: {
@@ -671,6 +674,21 @@ module.exports = function (grunt) {
         'concurrent:server',
         'connect:e2e',
         'protractor:e2e'
+    ]);
+
+    grunt.registerTask('e2e-coverage', [
+        'clean:server',
+        'e2eapp',
+        'copy:processtags',
+        'wiredep:sass',
+        'instrument',
+        'compass',
+        'portPick:protractor',
+        //'useminPrepare',
+        //'concurrent:dist',
+        'connect:e2e',
+        'protractor_coverage:' + e2eLocalOrRemote(),
+        'makeReport'
     ]);
 
     grunt.registerTask('e2e-no-test', [
@@ -741,18 +759,5 @@ module.exports = function (grunt) {
         'test',
         'build'
     ]);
-    grunt.registerTask('e2e-coverage', [
-        'clean:server',
-        'e2eapp:mocks',
-        'copy:processtags',
-        'wiredep:sass',
-        'instrument',
-        'compass',
-        'portPick:protractor',
-        //'useminPrepare',
-        //'concurrent:dist',
-        'connect:e2e',
-        'protractor_coverage:' + e2eLocalOrRemote(),
-        'makeReport'
-    ]);
+
 };

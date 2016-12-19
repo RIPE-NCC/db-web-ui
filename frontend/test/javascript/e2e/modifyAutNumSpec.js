@@ -11,8 +11,8 @@ describe('Modifying an aut-num', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/aut-num/AS12467');
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
+        browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/aut-num/AS12467');
     });
 
     describe('which DOES NOT have status APPROVED PI', function () {

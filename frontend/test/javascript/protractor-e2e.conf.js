@@ -1,5 +1,4 @@
-/*global browser, document, exports*/
-
+/*global angular, browser, document, exports*/
 'use strict';
 
 exports.config = {

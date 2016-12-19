@@ -13,8 +13,8 @@ describe('The organisation editor', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '#/webupdates/create/RIPE/organisation');
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
+        browser.get(browser.baseUrl + '#/webupdates/create/RIPE/organisation');
     });
 
     it('should not crash when showing the single line editor', function () {
