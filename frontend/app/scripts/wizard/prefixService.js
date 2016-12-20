@@ -145,15 +145,16 @@
             return zones;
         }
 
-        function checkNameserverAsync(ns) {
+        function checkNameserverAsync(ns, rDnsZone) {
             if (!ns) {
                 throw new TypeError('checkNameserverAsync called without ns');
             }
 
-            return $http({
-                method: 'GET',
-                url: 'api/dns/status?ignore404=true&ns=' + ns
-            });
+            if (!rDnsZone) {
+                throw new TypeError('checkNameserverAsync called without rDnsZone');
+            }
+
+            return $http.get('api/dns/status?ignore404=true&ns=' + ns + '&record=' + rDnsZone);
         }
 
         function isExactMatch(prefixInCidrNotation, whoisResourcesPrimaryKey) {

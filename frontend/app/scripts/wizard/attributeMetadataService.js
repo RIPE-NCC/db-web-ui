@@ -298,12 +298,23 @@
                 return attribute.$$invalid;
             }
 
+            var reverseZone = _.find(attributes, function(item) {
+                return item.name === 'reverse-zone';
+            });
+
+            if (!reverseZone || !reverseZone.value.length) {
+                // no zones?
+                attribute.$$info = '';
+                attribute.$$error = 'No reverse zones';
+                return true;
+            }
+
             var doCall = function () {
                 attribute.$$info = 'Checking name server...';
                 attribute.$$error = '';
 
                 // any reverse zone will do
-                PrefixService.checkNameserverAsync(attribute.value).then(function (nserverResult) {
+                PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function (nserverResult) {
                     if (angular.isNumber(nserverResult.data.code )) {
                         if (!nserverResult.data.code) {
                             cachedResponses[attribute.value] = '';
