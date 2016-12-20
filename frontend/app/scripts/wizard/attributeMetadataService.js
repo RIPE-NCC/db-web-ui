@@ -315,7 +315,7 @@
 
                 // any reverse zone will do
                 PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function (nserverResult) {
-                    if (angular.isNumber(nserverResult.data.code )) {
+                    if (angular.isNumber(nserverResult.data.code)) {
                         if (!nserverResult.data.code) {
                             cachedResponses[attribute.value] = '';
                         } else {

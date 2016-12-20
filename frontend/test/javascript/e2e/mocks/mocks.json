@@ -1,27 +1,42 @@
 {
-  "api/dns/status?ignore404=true&ns=ns.xs4all.nl": {
+  "api/dns/status?ignore404=true&ns=ns.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 200,
-    "data": {}
+    "data": {
+      "code": 0,
+      "message": ""
+    }
   },
-  "api/dns/status?ignore404=true&ns=ns1.xs4all.nl": {
+  "api/dns/status?ignore404=true&ns=ns1.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 200,
-    "data": {}
+    "data": {
+      "code": 0,
+      "message": ""
+    }
   },
-  "api/dns/status?ignore404=true&ns=ns2.xs4all.nl": {
+  "api/dns/status?ignore404=true&ns=ns2.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 200,
-    "data": {}
+    "data": {
+      "code": 0,
+      "message": ""
+    }
   },
-  "api/dns/status?ignore404=true&ns=nsXXX.xs4all.nl": {
+  "api/dns/status?ignore404=true&ns=nsXXX.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 404,
     "data": {}
   },
-  "api/dns/status?ignore404=true&ns=rns1.upc.biz": {
+  "api/dns/status?ignore404=true&ns=rns1.upc.biz&record=110.17.212.in-addr.arpa": {
     "status": 200,
-    "data": {}
+    "data": {
+      "code": 0,
+      "message": ""
+    }
   },
-  "api/dns/status?ignore404=true&ns=rns2.upc.biz": {
+  "api/dns/status?ignore404=true&ns=rns2.upc.biz&record=110.17.212.in-addr.arpa": {
     "status": 200,
-    "data": {}
+    "data": {
+      "code": 0,
+      "message": ""
+    }
   },
   "api/user/info": {
     "status": 200,
