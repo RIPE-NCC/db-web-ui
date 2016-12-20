@@ -271,16 +271,29 @@
 
         var timeout;
 
-        function setNsAttributeMessage(attribute) {
+        function setNsAttributeMessage(attribute, zone) {
             if (attribute.$$invalid) {
                 attribute.$$info = '';
             } else {
-                attribute.$$info = 'Server responds on port 53';
+                attribute.$$info = 'SOA record '+ zone + ' found';
                 attribute.$$error = '';
             }
         }
 
         function nserverIsInvalid(objectType, attributes, attribute) {
+
+
+            var reverseZone = _.find(attributes, function(item) {
+                return item.name === 'reverse-zone';
+            });
+
+            if (!reverseZone || !reverseZone.value.length) {
+                // no zones?
+                attribute.$$info = '';
+                attribute.$$error = 'No reverse zones';
+                return true;
+            }
+
             var keepTrying = 4;
             var sameValList = _.filter(attributes, function (attr) {
                 return attribute.name === attr.name && attribute.value === attr.value;
@@ -294,20 +307,10 @@
             if (angular.isString(cachedResponses[attribute.value])) {
                 attribute.$$error = cachedResponses[attribute.value];
                 attribute.$$invalid = attribute.$$error !== '';
-                setNsAttributeMessage(attribute);
+                setNsAttributeMessage(attribute, reverseZone.value[0].value);
                 return attribute.$$invalid;
             }
 
-            var reverseZone = _.find(attributes, function(item) {
-                return item.name === 'reverse-zone';
-            });
-
-            if (!reverseZone || !reverseZone.value.length) {
-                // no zones?
-                attribute.$$info = '';
-                attribute.$$error = 'No reverse zones';
-                return true;
-            }
 
             var doCall = function () {
                 attribute.$$info = 'Checking name server...';
