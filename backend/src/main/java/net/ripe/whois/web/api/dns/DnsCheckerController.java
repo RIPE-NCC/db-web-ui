@@ -20,6 +20,9 @@ import org.xbill.DNS.Type;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/dns")
@@ -37,66 +40,86 @@ public class DnsCheckerController {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<String> status(@CookieValue(value = "crowd.token_key") final String crowdToken,
-                                         @RequestParam(value = "ns") final String ns) {
+                                         @RequestParam(value = "ns") final String ns,
+                                         @RequestParam(value = "record") final String record) {
 
         if (crowdToken == null || !crowdClient.getUserSession(crowdToken).isActive()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        try {
-            final InetAddress[] addresses = InetAddress.getAllByName(ns);
+        final List<InetAddress> addresses = getAddresses(ns);
+        if(addresses.isEmpty()) {
+            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not resolve " + ns + "\"}", HttpStatus.OK);
+        }
 
-            for (InetAddress address : addresses) {
-
-                LOGGER.info("Querying " + ns + " (" + address + ") using UDP");
-                final Resolver udpResolver = getResolver(address, port, false, 5);
-                final Lookup udpLookup = executeQuery(udpResolver);
-                LOGGER.info("Response message for " + ns + " (" + address + "):" + udpLookup.getErrorString());
-                if ("timed out".equalsIgnoreCase(udpLookup.getErrorString()) || "network error".equalsIgnoreCase(udpLookup.getErrorString())) {
-                    return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, udpLookup.getResult(), "UDP"), HttpStatus.OK);
+        for (InetAddress address : addresses) {
+            for(TransportProtocol protocol : TransportProtocol.values()) {
+                final Optional<String> errorMessage = checkDnsConfig(ns, record, address, protocol);
+                if(errorMessage.isPresent()) {
+                    return new ResponseEntity<>(errorMessage.get(), HttpStatus.OK);
                 }
-
-                LOGGER.info("Querying " + ns + " (" + address + ") using TCP");
-                final Resolver tcpResolver = getResolver(address, port, true, 10);
-                final Lookup tcpLookup = executeQuery(tcpResolver);
-                LOGGER.info("Response message for " + ns + " (" + address + "):" + tcpLookup.getErrorString());
-                if ("timed out".equalsIgnoreCase(tcpLookup.getErrorString()) || "network error".equalsIgnoreCase(tcpLookup.getErrorString())) {
-                    return new ResponseEntity<>(getErrorMessage(address.getHostAddress(), port, tcpLookup.getResult(), "TCP"), HttpStatus.OK);
-                }
-
             }
-        } catch (UnknownHostException e) {
-            LOGGER.info("Could not test DNS for " + ns);
-            LOGGER.info(e.getMessage(), e);
-            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not find any addresses for " + ns + "\"}", HttpStatus.OK);
-        } catch (Exception e) {
-            LOGGER.info("Could not test DNS for " + ns);
-            LOGGER.info(e.getMessage(), e);
-            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not check " + ns + "\"}", HttpStatus.OK);
         }
 
         LOGGER.info("Success DNS check for " + ns);
         return new ResponseEntity<>("{\"code\": 0, \"message\":\"Server responds on port 53\"}", HttpStatus.OK);
-
     }
 
-    private String getErrorMessage(final String address, final int port, final int lookupResult, final String protocol) {
-        return "{\"code\": " + lookupResult + ", \"message\":\"Could not query " + address + " using " + protocol + " on port " + port + "\"}";
+    private Optional<String> checkDnsConfig(final String ns, final String record, final InetAddress address, final TransportProtocol protocol) {
+        try {
+            LOGGER.info("Querying " + ns + " (" + address + ") using " + protocol);
+            final Resolver resolver = getResolver(address, port, protocol);
+            final Lookup lookup = executeQuery(record, resolver);
+            LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
+            if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
+                return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"Could not query " + address.getHostAddress() + " using " + protocol + " on port " + port + "\"}");
+            }
+
+            if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
+                return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"SOA record " + record + " not found \"}");
+            }
+
+            return Optional.empty();
+
+        } catch (Exception e) {
+            LOGGER.info("Could not test DNS for " + ns);
+            LOGGER.info(e.getMessage(), e);
+            return Optional.of("{\"code\": -1, \"message\":\"Could not check " + ns + "\"}");
+        }
     }
 
-    private Lookup executeQuery(final Resolver resolver) throws TextParseException {
-        final Lookup lookup = new Lookup("dnsping.ripe.net", Type.SOA);
+    private Lookup executeQuery(final String record, final Resolver resolver) throws TextParseException {
+        final Lookup lookup = new Lookup(record, Type.SOA);
         lookup.setResolver(resolver);
         lookup.run();
         return lookup;
     }
 
-    private Resolver getResolver(final InetAddress address, final int port, final boolean useTCP, final int timeOut) throws UnknownHostException {
+    private Resolver getResolver(final InetAddress address, final int port, final TransportProtocol transportProtocol) throws UnknownHostException {
         final SimpleResolver resolver = new SimpleResolver();
         resolver.setAddress(address);
-        resolver.setTCP(useTCP);
+        resolver.setTCP(transportProtocol == TransportProtocol.TCP);
         resolver.setPort(port);
-        resolver.setTimeout(timeOut);
+        resolver.setTimeout(transportProtocol.timeout);
         return resolver;
+    }
+
+    private List<InetAddress> getAddresses(final String ns) {
+        try {
+            return Arrays.asList(InetAddress.getAllByName(ns));
+        } catch (UnknownHostException e) {
+            LOGGER.info("Could not resolve " + ns, e);
+            return Arrays.asList();
+        }
+    }
+}
+
+enum TransportProtocol {
+    TCP(10), UDP(5);
+
+    final int timeout;
+
+    TransportProtocol(final int timeout) {
+        this.timeout = timeout;
     }
 }
