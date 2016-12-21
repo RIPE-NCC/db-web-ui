@@ -7,17 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.xbill.DNS.Lookup;
-import org.xbill.DNS.Resolver;
-import org.xbill.DNS.SimpleResolver;
-import org.xbill.DNS.TextParseException;
-import org.xbill.DNS.Type;
+import org.springframework.web.bind.annotation.*;
+import org.xbill.DNS.*;
 
+import javax.ws.rs.HEAD;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -72,12 +65,12 @@ public class DnsCheckerController {
             final Lookup lookup = executeQuery(record, resolver);
             LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
             if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
-                return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"Could not query " + address.getHostAddress() + " using " + protocol + " on port " + port + "\"}");
+                return Optional.of("{\"code\": -1, \"message\":\"Could not query " + address.getHostAddress() + " using " + protocol + " on port " + port + "\"}");
             }
 
             if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
                 String msgString = "SOA record " + record + " not found. <a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
-                return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"" + msgString + "\"}");
+                return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
             }
 
             return Optional.empty();
