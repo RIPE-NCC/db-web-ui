@@ -15,6 +15,8 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/dns")
@@ -24,6 +26,9 @@ public class DnsCheckerController {
     private final CrowdClient crowdClient;
     private final int port;
 
+    private static final String LEARN_MORE_MSG = "<a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
+    private static final Pattern INVALID_INPUT = Pattern.compile("[^a-zA-Z0-9\\\\.:-]");
+
     @Autowired
     public DnsCheckerController(final CrowdClient crowdClient, @Value("${dns.check.port:53}") final int port) {
         this.crowdClient = crowdClient;
@@ -32,31 +37,59 @@ public class DnsCheckerController {
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
     public ResponseEntity<String> status(@CookieValue(value = "crowd.token_key") final String crowdToken,
-                                         @RequestParam(value = "ns") final String ns,
-                                         @RequestParam(value = "record") final String record) {
+                                         @RequestParam(value = "ns") final String inNs,
+                                         @RequestParam(value = "record") final String inRecord) {
 
 
         if (crowdToken == null || !crowdClient.getUserSession(crowdToken).isActive()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-        // TODO: sanitize the ns and record strings -- we use them in JSON messages which will break if they contain a dbl quote, for example
+        // tidy up a bit
+        String ns = inNs.trim();
+        String record = inRecord.trim();
+
+        if (sanityCheckFailed(ns) || sanityCheckFailed(inRecord)) {
+            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Invalid characters in input\"}", HttpStatus.OK);
+        }
+
+        if (!nameserverChecksOut(ns)) {
+            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not resolve " + ns + "\"}", HttpStatus.OK);
+        }
 
         final List<InetAddress> addresses = getAddresses(ns);
-        if(addresses.isEmpty()) {
+        if (addresses.isEmpty()) {
             return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not resolve " + ns + "\"}", HttpStatus.OK);
         }
 
         for (InetAddress address : addresses) {
-            for(TransportProtocol protocol : TransportProtocol.values()) {
+            for (TransportProtocol protocol : TransportProtocol.values()) {
                 final Optional<String> errorMessage = checkDnsConfig(ns, record, address, protocol);
-                if(errorMessage.isPresent()) {
+                if (errorMessage.isPresent()) {
                     return new ResponseEntity<>(errorMessage.get(), HttpStatus.OK);
                 }
             }
         }
 
         LOGGER.info("Success DNS check for " + ns);
-        return new ResponseEntity<>("{\"code\": 0, \"message\":\"Server responds on port 53\"}", HttpStatus.OK);
+        return new ResponseEntity<>("{\"code\": 0, \"message\":\"Server is authoritative for " + record + "}", HttpStatus.OK);
+    }
+
+    private boolean sanityCheckFailed(String inString) {
+        Matcher matcher = INVALID_INPUT.matcher(inString);
+        return matcher.find();
+    }
+
+    private boolean nameserverChecksOut(String ns) {
+        try {
+            InetAddress nsAddress = InetAddress.getByName(ns);
+            // TODO: this detection doesn't work. try 8.8
+            if (nsAddress != null && !nsAddress.getHostAddress().equals(ns)) {
+                return true;
+            }
+        } catch (UnknownHostException e) {
+            return false;
+        }
+        return false;
     }
 
     private Optional<String> checkDnsConfig(final String ns, final String record, final InetAddress address, final TransportProtocol protocol) {
@@ -66,12 +99,12 @@ public class DnsCheckerController {
             final Lookup lookup = executeQuery(record, resolver);
             LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
             if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
-                String msgString = "Could not query " + address.getHostAddress() + " using " + protocol + " on port " + port + ". <a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
+                String msgString = "No reply from " + address.getHostAddress() + " on port " + port + "/" + protocol + ". " + LEARN_MORE_MSG;
                 return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
             }
 
             if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
-                String msgString = "SOA record " + record + " not found. <a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
+                String msgString = "Server is not authoritative for " + record + ". " + LEARN_MORE_MSG;
                 return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
             }
 
@@ -80,7 +113,7 @@ public class DnsCheckerController {
         } catch (Exception e) {
             LOGGER.info("Could not test DNS for " + ns);
             LOGGER.info(e.getMessage(), e);
-            String msgString = "Could not check " + ns + ". <a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
+            String msgString = "Could not check " + ns + ". " + LEARN_MORE_MSG;
             return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
         }
     }
@@ -106,7 +139,7 @@ public class DnsCheckerController {
         try {
             return Arrays.asList(InetAddress.getAllByName(ns));
         } catch (UnknownHostException e) {
-            LOGGER.info("Could not resolve '" + ns + "' message was: " + e.getClass().getName());
+            LOGGER.info("Could not resolve '" + ns + "' " + e.getClass().getName() + " " + e.getMessage());
             return Arrays.asList();
         }
     }

@@ -282,7 +282,6 @@
 
         function nserverIsInvalid(objectType, attributes, attribute) {
 
-
             var reverseZone = _.find(attributes, function(item) {
                 return item.name === 'reverse-zone';
             });
@@ -294,6 +293,11 @@
                 return true;
             }
 
+            if (attribute.value && PrefixService.getAddress(attribute.value)) {
+                attribute.$$info = '';
+                attribute.$$error = 'IP notation not supported. Use the hostname';
+                return true;
+            }
             var keepTrying = 4;
             var sameValList = _.filter(attributes, function (attr) {
                 return attribute.name === attr.name && attribute.value === attr.value;
@@ -310,7 +314,6 @@
                 setNsAttributeMessage(attribute, reverseZone.value[0].value);
                 return attribute.$$invalid;
             }
-
 
             var doCall = function () {
                 attribute.$$info = 'Checking name server...';

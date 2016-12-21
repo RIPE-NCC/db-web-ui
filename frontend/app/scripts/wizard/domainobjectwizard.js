@@ -141,7 +141,6 @@
                         var backendPinger = $interval(function () {
                             PrefixService.getDomainCreationStatus(source).then(
                                 function (response) {
-                                    console.log('response', response);
                                     if (response.status === 200) {
                                         $interval.cancel(backendPinger);
                                         $uibModalInstance.close();
@@ -153,7 +152,6 @@
                                     }
                                     // ok then just wait and keep on pinging...
                                 }, function (failResponse) {
-                                    console.log('response', failResponse);
                                     $interval.cancel(backendPinger);
                                     $uibModalInstance.close();
                                     return createDomainsFailed(failResponse);
@@ -161,23 +159,16 @@
                         }, 2000);
 
                         vm.goAway = function () {
-                            console.log('Leave clicked!');
                             $interval.cancel(backendPinger);
                             $uibModalInstance.close();
                         };
 
                         vm.cancel = function () {
-                            console.log('Cancel clicked');
                             $interval.cancel(backendPinger);
                             $uibModalInstance.close();
                         };
 
-                    }).then(
-                        function () {
-                            console.log('Modal closed');
-                        });
-                }, function(err) {
-                    console.log('Could not post domains', err);
+                    });
                 });
 
             }
@@ -260,11 +251,9 @@
             };
 
             function onSuccessfulAuthentication() {
-                console.log('_onSuccessfulAuthentication');
             }
 
             function navigateAway() {
-                console.log('_navigateAway');
             }
 
         }]
