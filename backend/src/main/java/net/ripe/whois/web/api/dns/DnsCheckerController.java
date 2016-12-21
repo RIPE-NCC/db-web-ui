@@ -76,7 +76,7 @@ public class DnsCheckerController {
             }
 
             if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
-                String msgString = "SOA record " + record + " not found. <a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\">Learn More</a>";
+                String msgString = "SOA record " + record + " not found. <a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
                 return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"" + msgString + "\"}");
             }
 
