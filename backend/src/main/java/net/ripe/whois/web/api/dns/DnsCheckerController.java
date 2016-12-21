@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.xbill.DNS.*;
 
-import javax.ws.rs.HEAD;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -36,9 +35,11 @@ public class DnsCheckerController {
                                          @RequestParam(value = "ns") final String ns,
                                          @RequestParam(value = "record") final String record) {
 
+
         if (crowdToken == null || !crowdClient.getUserSession(crowdToken).isActive()) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+        // TODO: sanitize the ns and record strings -- we use them in JSON messages which will break if they contain a dbl quote, for example
 
         final List<InetAddress> addresses = getAddresses(ns);
         if(addresses.isEmpty()) {
@@ -65,7 +66,8 @@ public class DnsCheckerController {
             final Lookup lookup = executeQuery(record, resolver);
             LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
             if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
-                return Optional.of("{\"code\": -1, \"message\":\"Could not query " + address.getHostAddress() + " using " + protocol + " on port " + port + "\"}");
+                String msgString = "Could not query " + address.getHostAddress() + " using " + protocol + " on port " + port + ". <a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
+                return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
             }
 
             if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
@@ -78,7 +80,8 @@ public class DnsCheckerController {
         } catch (Exception e) {
             LOGGER.info("Could not test DNS for " + ns);
             LOGGER.info(e.getMessage(), e);
-            return Optional.of("{\"code\": -1, \"message\":\"Could not check " + ns + "\"}");
+            String msgString = "Could not check " + ns + ". <a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
+            return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
         }
     }
 
