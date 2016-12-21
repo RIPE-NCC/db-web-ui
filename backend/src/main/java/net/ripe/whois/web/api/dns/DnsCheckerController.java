@@ -76,7 +76,8 @@ public class DnsCheckerController {
             }
 
             if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
-                return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"SOA record " + record + " not found \"}");
+                String msgString = "SOA record " + record + " not found. <a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\">Learn More</a>";
+                return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"" + msgString + "\"}");
             }
 
             return Optional.empty();
@@ -109,7 +110,7 @@ public class DnsCheckerController {
         try {
             return Arrays.asList(InetAddress.getAllByName(ns));
         } catch (UnknownHostException e) {
-            LOGGER.info("Could not resolve " + ns, e);
+            LOGGER.info("Could not resolve '" + ns + "' message was: " + e.getClass().getName());
             return Arrays.asList();
         }
     }
