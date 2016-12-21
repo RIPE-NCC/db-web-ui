@@ -72,12 +72,12 @@ public class DnsCheckerController {
             final Lookup lookup = executeQuery(record, resolver);
             LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
             if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
-                return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"Could not query " + address.getHostAddress() + " using " + protocol + " on port " + port + "\"}");
+                return Optional.of("{\"code\": -1, \"message\":\"Could not query " + address.getHostAddress() + " using " + protocol + " on port " + port + "\"}");
             }
 
             if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
                 String msgString = "SOA record " + record + " not found. <a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\">Learn More</a>";
-                return Optional.of("{\"code\": " + lookup.getResult() + ", \"message\":\"" + msgString + "\"}");
+                return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
             }
 
             return Optional.empty();
