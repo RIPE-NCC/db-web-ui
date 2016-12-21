@@ -90,6 +90,7 @@ public class DnsCheckerController {
 
     private Lookup executeQuery(final String record, final Resolver resolver) throws TextParseException {
         final Lookup lookup = new Lookup(record, Type.SOA);
+        lookup.setCache(null);
         lookup.setResolver(resolver);
         lookup.run();
         return lookup;
