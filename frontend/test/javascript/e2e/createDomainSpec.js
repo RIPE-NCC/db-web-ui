@@ -115,6 +115,8 @@ describe('The domain wizard', function () {
         expect(page.inpTechC5.sendKeys('LG1-RIPE'));
         expect(page.inpZoneC6.sendKeys('LG1-RIPE'));
 
+        page.scrollIntoView(page.btnSubmitForm);
+
         page.btnSubmitForm.click();
     });
 
