@@ -72,7 +72,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                                 $modalInstance.close({selectedItem: $scope.selected.item, response: resp});
 
                             }, function (error) {
-                                $log.error('Association error:' + JSON.stringify(error));
+                                $log.error('Association error:' + angular.toJson(error));
                                 // remove modal anyway
                                 $modalInstance.close({selectedItem: $scope.selected.item});
                             });
@@ -84,7 +84,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
 
                 }, function (error) {
-                    $log.error('Authentication error:' + JSON.stringify(error));
+                    $log.error('Authentication error:' + angular.toJson(error));
 
                     var whoisResources = WhoisResources.wrapWhoisResources(error.data);
                     if (!_.isUndefined(whoisResources)) {

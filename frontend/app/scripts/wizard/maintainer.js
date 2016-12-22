@@ -153,24 +153,6 @@
             }
         }
 
-        // function extractEnrichMntnersFromObject(attributes, maintainersSso) {
-        //     // get mntners from response
-        //     var mntnersInObject = _.filter(attributes, function (attr) {
-        //         return attr.name === 'mnt-by';
-        //     });
-        //
-        //     // determine if mntner is mine
-        //     var selected = _.map(mntnersInObject, function (mntnerAttr) {
-        //         return {
-        //             type: 'mntner',
-        //             key: mntnerAttr.value,
-        //             mine: _.contains(_.map(maintainersSso, 'key'), mntnerAttr.value)
-        //         };
-        //     });
-        //
-        //     return selected;
-        // }
-
     }]);
 
 })();

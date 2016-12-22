@@ -3,6 +3,8 @@ package net.ripe.whois.web.api.dns;
 import com.github.jgonian.ipmath.Ipv4;
 import com.github.jgonian.ipmath.Ipv6;
 import net.ripe.whois.services.crowd.CrowdClient;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +53,16 @@ public class DnsCheckerController {
         String record = inRecord.trim();
 
         if (sanityCheckFailed(ns) || sanityCheckFailed(inRecord)) {
-            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Invalid characters in input\"}", HttpStatus.OK);
+            return new ResponseEntity<>(jsonResponse(-1, "Invalid characters in input"), HttpStatus.OK);
         }
 
         if (!nameserverChecksOut(ns)) {
-            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not resolve " + ns + "\"}", HttpStatus.OK);
+            return new ResponseEntity<>(jsonResponse(-1, "Could not resolve " + ns), HttpStatus.OK);
         }
 
         final List<InetAddress> addresses = getAddresses(ns);
         if (addresses.isEmpty()) {
-            return new ResponseEntity<>("{\"code\": -1, \"message\":\"Could not resolve " + ns + "\"}", HttpStatus.OK);
+            return new ResponseEntity<>(jsonResponse(-1, "Could not resolve " + ns), HttpStatus.OK);
         }
 
         for (InetAddress address : addresses) {
@@ -73,7 +75,7 @@ public class DnsCheckerController {
         }
 
         LOGGER.info("Success DNS check for " + ns);
-        return new ResponseEntity<>("{\"code\": 0, \"message\":\"Server is authoritative for " + record + "\"}", HttpStatus.OK);
+        return new ResponseEntity<>(jsonResponse(-1, "Server is authoritative for " + record), HttpStatus.OK);
     }
 
     private boolean sanityCheckFailed(String inString) {
@@ -158,6 +160,17 @@ public class DnsCheckerController {
         } catch (UnknownHostException e) {
             LOGGER.info("Could not resolve '" + ns + "' " + e.getClass().getName() + " " + e.getMessage());
             return Arrays.asList();
+        }
+    }
+
+    private static String jsonResponse(int code, String message) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("code", -1);
+            json.put("message", "invalid chars in input");
+            return json.toString();
+        } catch (JSONException e) {
+            return "{}";
         }
     }
 }
