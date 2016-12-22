@@ -76,7 +76,7 @@ public class DnsCheckerController {
         }
 
         LOGGER.info("Success DNS check for " + ns);
-        return new ResponseEntity<>(jsonResponse(-1, "Server is authoritative for " + record), HttpStatus.OK);
+        return new ResponseEntity<>(jsonResponse(0, "Server is authoritative for " + record), HttpStatus.OK);
     }
 
     private boolean sanityCheckFailed(final String inString) {
