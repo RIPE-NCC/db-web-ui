@@ -319,7 +319,7 @@
                 attribute.$$error = 'Duplicate value';
                 return true;
             }
-            if (!angular.isObject(cachedResponses[attribute.value])) {
+            if (angular.isObject(cachedResponses[attribute.value])) {
                 var result = cachedResponses[attribute.value];
                 if (result.code === 0) {
                     attribute.$$info = result.message;
