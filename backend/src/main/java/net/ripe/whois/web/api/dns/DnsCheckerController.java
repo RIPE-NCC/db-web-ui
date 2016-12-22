@@ -54,16 +54,16 @@ public class DnsCheckerController {
         String record = inRecord.trim();
 
         if (sanityCheckFailed(ns) || sanityCheckFailed(inRecord)) {
-            return new ResponseEntity<>(jsonResponse(-1, "Invalid characters in input"), HttpStatus.OK);
+            return new ResponseEntity<>(jsonResponse(ns, -1, "Invalid characters in input"), HttpStatus.OK);
         }
 
         if (!nameserverChecksOut(ns)) {
-            return new ResponseEntity<>(jsonResponse(-1, "Could not resolve " + ns), HttpStatus.OK);
+            return new ResponseEntity<>(jsonResponse(ns, -1, "Could not resolve " + ns), HttpStatus.OK);
         }
 
         final List<InetAddress> addresses = getAddresses(ns);
         if (addresses.isEmpty()) {
-            return new ResponseEntity<>(jsonResponse(-1, "Could not resolve " + ns), HttpStatus.OK);
+            return new ResponseEntity<>(jsonResponse(ns, -1, "Could not resolve " + ns), HttpStatus.OK);
         }
 
         for (InetAddress address : addresses) {
@@ -76,7 +76,7 @@ public class DnsCheckerController {
         }
 
         LOGGER.info("Success DNS check for " + ns);
-        return new ResponseEntity<>(jsonResponse(0, "Server is authoritative for " + record), HttpStatus.OK);
+        return new ResponseEntity<>(jsonResponse(ns, 0, "Server is authoritative for " + record), HttpStatus.OK);
     }
 
     private boolean sanityCheckFailed(final String inString) {
@@ -120,12 +120,12 @@ public class DnsCheckerController {
             LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
             if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
                 String msgString = "No reply from " + address.getHostAddress() + " on port " + port + "/" + protocol + ". " + LEARN_MORE_MESSAGE;
-                return Optional.of(jsonResponse(-1, msgString));
+                return Optional.of(jsonResponse(ns, -1, msgString));
             }
 
             if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
                 String msgString = "Server is not authoritative for " + record + ". " + LEARN_MORE_MESSAGE;
-                return Optional.of(jsonResponse(-1, msgString));
+                return Optional.of(jsonResponse(ns, -1, msgString));
             }
 
             return Optional.empty();
@@ -134,7 +134,7 @@ public class DnsCheckerController {
             LOGGER.info("Could not test DNS for " + ns);
             LOGGER.info(e.getMessage(), e);
             String msgString = "Could not check " + ns + ". " + LEARN_MORE_MESSAGE;
-            return Optional.of(jsonResponse(-1, msgString));
+            return Optional.of(jsonResponse(ns, -1, msgString));
         }
     }
 
@@ -164,9 +164,10 @@ public class DnsCheckerController {
         }
     }
 
-    private static String jsonResponse(final int code, final String message) {
+    private static String jsonResponse(final String ns, final int code, final String message) {
         JSONObject json = new JSONObject();
         try {
+            json.put("ns", ns);
             json.put("code", code);
             json.put("message", message);
             return json.toString();

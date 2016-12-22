@@ -80,7 +80,7 @@
                 try {
                     attribute.$$error = '';
                     return attrMetadata(objectType, attributes, attribute);
-                } catch(e) {
+                } catch (e) {
                     attribute.$$error = e;
                     return true;
                 }
@@ -214,11 +214,11 @@
                 }
                 return existing;
             }
-            var doCall = function() {
+            var doCall = function () {
                 // otherwise find the domains and put them in the cache
                 PrefixService.findExistingDomainsForPrefix(attribute.value).then(function (results) {
                     var domainsInTheWay = 0;
-                    _.forEach(results, function(result) {
+                    _.forEach(results, function (result) {
                         if (result && result.data && result.data.objects) {
                             domainsInTheWay += result.data.objects.object.length;
                         }
@@ -226,7 +226,7 @@
                     existingDomains[attribute.value] = domainsInTheWay;
                     // let the evaluation engine know that we've got a new value
                     $rootScope.$broadcast('attribute-state-changed', attribute);
-                }, function() {
+                }, function () {
                     existingDomains[attribute.value] = 0;
                 });
             };
@@ -238,6 +238,7 @@
         }
 
         var lastPrefix;
+
         function clearLastPrefix() {
             lastPrefix = '';
         }
@@ -267,22 +268,26 @@
             return true;
         }
 
+        var hostnameRe = /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/;
         var cachedResponses = {};
-
         var timeout;
 
         function setNsAttributeMessage(attribute, zone) {
             if (attribute.$$invalid) {
                 attribute.$$info = '';
             } else {
-                attribute.$$info = 'SOA record '+ zone + ' found';
+                attribute.$$info = 'SOA record ' + zone + ' found';
                 attribute.$$error = '';
             }
         }
 
         function nserverIsInvalid(objectType, attributes, attribute) {
 
-            var reverseZone = _.find(attributes, function(item) {
+            if (!attribute.value) {
+                return true;
+            }
+
+            var reverseZone = _.find(attributes, function (item) {
                 return item.name === 'reverse-zone';
             });
 
@@ -295,7 +300,13 @@
 
             if (attribute.value && PrefixService.getAddress(attribute.value)) {
                 attribute.$$info = '';
-                attribute.$$error = 'IP notation not supported. Use the hostname';
+                attribute.$$error = 'IP notation not allowed, use a fully qualified domain name';
+                return true;
+            }
+            // check it looks sth like a hostname
+            if (!hostnameRe.exec(attribute.value)) {
+                attribute.$$info = '';
+                attribute.$$error = '';
                 return true;
             }
             var keepTrying = 4;
@@ -321,6 +332,11 @@
 
                 // any reverse zone will do
                 PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function (nserverResult) {
+                    if (nserverResult.data.ns !== attribute.value) {
+                        console.log('skipping result', nserverResult.data.ns, attribute.value);
+                        // ignore this result. input has changed since req was fired
+                        return;
+                    }
                     if (angular.isNumber(nserverResult.data.code)) {
                         if (!nserverResult.data.code) {
                             cachedResponses[attribute.value] = '';
@@ -403,7 +419,7 @@
             prefix: {
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [prefixIsInvalid, domainsAlreadyExist], hidden: {invalid: ['mnt-by']}},
                 descr: {},
-                nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\S{1,255}(\\.\\S{1,255})+$'), nserverIsInvalid]},
+                nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: nserverIsInvalid},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
                 'ds-rdata': {},
                 org: {refs: ['organisation']},
