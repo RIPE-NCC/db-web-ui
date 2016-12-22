@@ -272,15 +272,6 @@
         var cachedResponses = {};
         var timeout;
 
-        function setNsAttributeMessage(attribute, zone) {
-            if (attribute.$$invalid) {
-                attribute.$$info = '';
-            } else {
-                attribute.$$info = 'Server is authoritative for ' + zone;
-                attribute.$$error = '';
-            }
-        }
-
         function nserverIsInvalid(objectType, attributes, attribute) {
 
             if (!attribute.value) {
@@ -330,7 +321,6 @@
                     attribute.$$error = result.message;
                     attribute.$$invalid = true;
                 }
-                setNsAttributeMessage(attribute, reverseZone.value[0].value);
                 return attribute.$$invalid;
             }
 

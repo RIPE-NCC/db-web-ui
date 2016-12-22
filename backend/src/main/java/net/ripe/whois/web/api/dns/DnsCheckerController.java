@@ -30,7 +30,6 @@ public class DnsCheckerController {
     private final CrowdClient crowdClient;
     private final int port;
 
-    private static final String LEARN_MORE_MSG = "<a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
     private static final String LEARN_MORE_MESSAGE = "<a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\" target=\"_blank\">Learn More</a>";
     private static final Pattern INVALID_INPUT = Pattern.compile("[^a-zA-Z0-9\\\\.:-]");
 
