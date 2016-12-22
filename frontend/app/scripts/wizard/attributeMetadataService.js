@@ -80,7 +80,7 @@
                 try {
                     attribute.$$error = '';
                     return attrMetadata(objectType, attributes, attribute);
-                } catch(e) {
+                } catch (e) {
                     attribute.$$error = e;
                     return true;
                 }
@@ -214,11 +214,11 @@
                 }
                 return existing;
             }
-            var doCall = function() {
+            var doCall = function () {
                 // otherwise find the domains and put them in the cache
                 PrefixService.findExistingDomainsForPrefix(attribute.value).then(function (results) {
                     var domainsInTheWay = 0;
-                    _.forEach(results, function(result) {
+                    _.forEach(results, function (result) {
                         if (result && result.data && result.data.objects) {
                             domainsInTheWay += result.data.objects.object.length;
                         }
@@ -226,7 +226,7 @@
                     existingDomains[attribute.value] = domainsInTheWay;
                     // let the evaluation engine know that we've got a new value
                     $rootScope.$broadcast('attribute-state-changed', attribute);
-                }, function() {
+                }, function () {
                     existingDomains[attribute.value] = 0;
                 });
             };
@@ -238,6 +238,7 @@
         }
 
         var lastPrefix;
+
         function clearLastPrefix() {
             lastPrefix = '';
         }
@@ -267,23 +268,17 @@
             return true;
         }
 
+        var hostnameRe = /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/;
         var cachedResponses = {};
-
         var timeout;
-
-        function setNsAttributeMessage(attribute, zone) {
-            if (attribute.$$invalid) {
-                attribute.$$info = '';
-            } else {
-                attribute.$$info = 'SOA record '+ zone + ' found';
-                attribute.$$error = '';
-            }
-        }
 
         function nserverIsInvalid(objectType, attributes, attribute) {
 
+            if (!attribute.value) {
+                return true;
+            }
 
-            var reverseZone = _.find(attributes, function(item) {
+            var reverseZone = _.find(attributes, function (item) {
                 return item.name === 'reverse-zone';
             });
 
@@ -294,6 +289,17 @@
                 return true;
             }
 
+            if (attribute.value && PrefixService.getAddress(attribute.value)) {
+                attribute.$$info = '';
+                attribute.$$error = 'IP notation not allowed, use a fully qualified domain name';
+                return true;
+            }
+            // check it looks sth like a hostname
+            if (!hostnameRe.exec(attribute.value)) {
+                attribute.$$info = '';
+                attribute.$$error = '';
+                return true;
+            }
             var keepTrying = 4;
             var sameValList = _.filter(attributes, function (attr) {
                 return attribute.name === attr.name && attribute.value === attr.value;
@@ -304,34 +310,42 @@
                 attribute.$$error = 'Duplicate value';
                 return true;
             }
-            if (angular.isString(cachedResponses[attribute.value])) {
-                attribute.$$error = cachedResponses[attribute.value];
-                attribute.$$invalid = attribute.$$error !== '';
-                setNsAttributeMessage(attribute, reverseZone.value[0].value);
+            if (angular.isObject(cachedResponses[attribute.value])) {
+                var result = cachedResponses[attribute.value];
+                if (result.code === 0) {
+                    attribute.$$info = result.message;
+                    attribute.$$error = '';
+                    attribute.$$invalid = false;
+                } else {
+                    attribute.$$info = '';
+                    attribute.$$error = result.message;
+                    attribute.$$invalid = true;
+                }
                 return attribute.$$invalid;
             }
-
 
             var doCall = function () {
                 attribute.$$info = 'Checking name server...';
                 attribute.$$error = '';
 
                 // any reverse zone will do
-                PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function (nserverResult) {
-                    if (angular.isNumber(nserverResult.data.code)) {
-                        if (!nserverResult.data.code) {
-                            cachedResponses[attribute.value] = '';
-                        } else {
-                            cachedResponses[attribute.value] = nserverResult.data.message;
-                        }
-                    } else {
-                        cachedResponses[attribute.value] = 'No response during check';
+                PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function (resp) {
+
+                    if (!resp || !resp.data || !angular.isNumber(resp.data.code)) {
+                        cachedResponses[attribute.value] = {code: -1, message: 'No response during check'};
+                        return;
                     }
+                    var nserverResult = resp.data;
+                    if (nserverResult.ns !== attribute.value) {
+                        // ignore this result. input has changed since req was fired
+                        return;
+                    }
+                    cachedResponses[attribute.value] = nserverResult;
                     // put response in cache
                     $rootScope.$broadcast('attribute-state-changed', attribute);
                 }, function (err) {
                     if (err.status === 404) {
-                        cachedResponses[attribute.value] = 'FAILED';
+                        cachedResponses[attribute.value] = {code: -1, message: 'FAILED'};
                         $rootScope.$broadcast('attribute-state-changed', attribute);
                     } else if (keepTrying) {
                         keepTrying -= 1;
@@ -340,7 +354,7 @@
                         }
                         timeout = setTimeout(doCall, 1000);
                     } else {
-                        cachedResponses[attribute.value] = '';
+                        cachedResponses[attribute.value] = {code: -1, message: 'FAILED'};
                         $rootScope.$broadcast('attribute-state-changed', attribute);
                     }
                 });
@@ -400,7 +414,7 @@
             prefix: {
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [prefixIsInvalid, domainsAlreadyExist], hidden: {invalid: ['mnt-by']}},
                 descr: {},
-                nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: [new RegExp('^\\S{1,255}(\\.\\S{1,255})+$'), nserverIsInvalid]},
+                nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: nserverIsInvalid},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
                 'ds-rdata': {},
                 org: {refs: ['organisation']},

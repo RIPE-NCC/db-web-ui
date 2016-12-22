@@ -48,6 +48,7 @@
             checkNameserverAsync: checkNameserverAsync,
             isExactMatch: isExactMatch,
             findExistingDomainsForPrefix: findExistingDomainsForPrefix,
+            getAddress: getAddress,
             getDomainCreationStatus: getDomainCreationStatus
         };
 
