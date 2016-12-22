@@ -1,5 +1,7 @@
 package net.ripe.whois.web.api.dns;
 
+import com.github.jgonian.ipmath.Ipv4;
+import com.github.jgonian.ipmath.Ipv6;
 import net.ripe.whois.services.crowd.CrowdClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +73,7 @@ public class DnsCheckerController {
         }
 
         LOGGER.info("Success DNS check for " + ns);
-        return new ResponseEntity<>("{\"code\": 0, \"message\":\"Server is authoritative for " + record + "}", HttpStatus.OK);
+        return new ResponseEntity<>("{\"code\": 0, \"message\":\"Server is authoritative for " + record + "\"}", HttpStatus.OK);
     }
 
     private boolean sanityCheckFailed(String inString) {
@@ -81,15 +83,30 @@ public class DnsCheckerController {
 
     private boolean nameserverChecksOut(String ns) {
         try {
-            InetAddress nsAddress = InetAddress.getByName(ns);
-            // TODO: this detection doesn't work. try 8.8
-            if (nsAddress != null && !nsAddress.getHostAddress().equals(ns)) {
-                return true;
-            }
-        } catch (UnknownHostException e) {
+            final String[] split = ns.split("\\.");
+            String tld = split[split.length - 1];
+
+            Integer.parseInt(tld);
             return false;
+        } catch (NumberFormatException e) {
+            //It should not be a valid integer
         }
-        return false;
+
+        try {
+            Ipv4.parse(ns);
+            return false;
+        } catch (IllegalArgumentException e) {
+            //It should not be a valid ipv4
+        }
+
+        try {
+            Ipv6.parse(ns);
+            return false;
+        } catch (IllegalArgumentException e) {
+            //It should not be a valid ipv6
+        }
+
+        return true;
     }
 
     private Optional<String> checkDnsConfig(final String ns, final String record, final InetAddress address, final TransportProtocol protocol) {
