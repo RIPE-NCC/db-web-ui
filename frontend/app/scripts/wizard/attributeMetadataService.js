@@ -276,7 +276,7 @@
             if (attribute.$$invalid) {
                 attribute.$$info = '';
             } else {
-                attribute.$$info = 'SOA record ' + zone + ' found';
+                attribute.$$info = 'Server is authoritative for ' + zone;
                 attribute.$$error = '';
             }
         }
