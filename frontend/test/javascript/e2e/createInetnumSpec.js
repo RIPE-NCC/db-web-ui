@@ -37,7 +37,7 @@ describe('The inetnum editor', function () {
      TAG POS=2 TYPE=DIV ATTR=TXT:Netherlands<SP>[NL]
 
      */
-    it('should ask for authentication of parent inetnum', function () {
+    fit('should ask for authentication of parent inetnum', function () {
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys('213.159.160.0-213.159.190.255');
@@ -58,12 +58,13 @@ describe('The inetnum editor', function () {
         expect(page.inpStatusList.get(0).getText()).toEqual('ASSIGNED PA');
         expect(page.inpStatusList.get(1).getText()).toEqual('LIR-PARTITIONED PA');
         expect(page.inpStatusList.get(2).getText()).toEqual('SUB-ALLOCATED PA');
+        page.scrollIntoView(page.inpStatusList.get(0));
         expect(page.inpStatusList.get(0).click());
         // submit button should be available
         expect(page.btnSubmitForm.getAttribute('disabled')).toBeFalsy();
     });
 
-    it('should ask for authentication of parent inetnum and handle a bad password properly', function () {
+    fit('should ask for authentication of parent inetnum and handle a bad password properly', function () {
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys('213.159.160.0-213.159.190.255');
@@ -86,6 +87,7 @@ describe('The inetnum editor', function () {
         expect(page.inpStatusList.get(0).getText()).toEqual('ASSIGNED PA');
         expect(page.inpStatusList.get(1).getText()).toEqual('LIR-PARTITIONED PA');
         expect(page.inpStatusList.get(2).getText()).toEqual('SUB-ALLOCATED PA');
+        page.scrollIntoView(page.inpStatusList.get(0));
         expect(page.inpStatusList.get(0).click());
         // submit button should NOT be available
         expect(page.btnSubmitForm.getAttribute('disabled')).toBeTruthy();
