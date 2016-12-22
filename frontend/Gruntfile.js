@@ -598,6 +598,11 @@ module.exports = function (grunt) {
                     }
                 }
             },
+            e2eHeadless: {
+                options: {
+                    configFile: '/home/dbase/GRUNT/protractor-e2e-coverage-headless.conf.js'
+                }
+            },
             e2eRemote: {
                 options: {
                     configFile: '/home/dbase/GRUNT/protractor-e2e-coverage-remote.conf.js'
@@ -689,6 +694,20 @@ module.exports = function (grunt) {
         'connect:e2e',
         'protractor_coverage:' + e2eLocalOrRemote(),
         'makeReport'
+    ]);
+
+    grunt.registerTask('e2e-coverage-headless', [
+        'clean:server',
+        'e2eapp',
+        'copy:processtags',
+        'wiredep:sass',
+        'instrument',
+        'compass',
+        'portPick:protractor',
+        'connect:e2e',
+        'protractor_coverage:e2eHeadless',
+        'makeReport'
+
     ]);
 
     grunt.registerTask('e2e-no-test', [
