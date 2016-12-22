@@ -31,6 +31,7 @@ public class DnsCheckerController {
     private final int port;
 
     private static final String LEARN_MORE_MSG = "<a href=\\\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\\\" target=\\\"_blank\\\">Learn More</a>";
+    private static final String LEARN_MORE_MESSAGE = "<a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\" target=\"_blank\">Learn More</a>";
     private static final Pattern INVALID_INPUT = Pattern.compile("[^a-zA-Z0-9\\\\.:-]");
 
     @Autowired
@@ -78,12 +79,12 @@ public class DnsCheckerController {
         return new ResponseEntity<>(jsonResponse(-1, "Server is authoritative for " + record), HttpStatus.OK);
     }
 
-    private boolean sanityCheckFailed(String inString) {
+    private boolean sanityCheckFailed(final String inString) {
         Matcher matcher = INVALID_INPUT.matcher(inString);
         return matcher.find();
     }
 
-    private boolean nameserverChecksOut(String ns) {
+    private boolean nameserverChecksOut(final String ns) {
         try {
             final String[] split = ns.split("\\.");
             String tld = split[split.length - 1];
@@ -118,13 +119,13 @@ public class DnsCheckerController {
             final Lookup lookup = executeQuery(record, resolver);
             LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
             if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
-                String msgString = "No reply from " + address.getHostAddress() + " on port " + port + "/" + protocol + ". " + LEARN_MORE_MSG;
-                return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
+                String msgString = "No reply from " + address.getHostAddress() + " on port " + port + "/" + protocol + ". " + LEARN_MORE_MESSAGE;
+                return Optional.of(jsonResponse(-1, msgString));
             }
 
             if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
-                String msgString = "Server is not authoritative for " + record + ". " + LEARN_MORE_MSG;
-                return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
+                String msgString = "Server is not authoritative for " + record + ". " + LEARN_MORE_MESSAGE;
+                return Optional.of(jsonResponse(-1, msgString));
             }
 
             return Optional.empty();
@@ -132,8 +133,8 @@ public class DnsCheckerController {
         } catch (Exception e) {
             LOGGER.info("Could not test DNS for " + ns);
             LOGGER.info(e.getMessage(), e);
-            String msgString = "Could not check " + ns + ". " + LEARN_MORE_MSG;
-            return Optional.of("{\"code\": -1, \"message\":\"" + msgString + "\"}");
+            String msgString = "Could not check " + ns + ". " + LEARN_MORE_MESSAGE;
+            return Optional.of(jsonResponse(-1, msgString));
         }
     }
 
@@ -163,11 +164,11 @@ public class DnsCheckerController {
         }
     }
 
-    private static String jsonResponse(int code, String message) {
+    private static String jsonResponse(final int code, final String message) {
         JSONObject json = new JSONObject();
         try {
-            json.put("code", -1);
-            json.put("message", "invalid chars in input");
+            json.put("code", code);
+            json.put("message", message);
             return json.toString();
         } catch (JSONException e) {
             return "{}";
