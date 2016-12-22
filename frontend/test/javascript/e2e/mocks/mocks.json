@@ -28,6 +28,7 @@
     "status": 200,
     "data": {
       "code": 0,
+      "ns": "rns1.upc.biz",
       "message": ""
     }
   },
@@ -35,6 +36,7 @@
     "status": 200,
     "data": {
       "code": 0,
+      "ns": "rns2.upc.biz",
       "message": ""
     }
   },
