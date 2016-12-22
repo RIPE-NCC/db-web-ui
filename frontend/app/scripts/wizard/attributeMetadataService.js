@@ -319,9 +319,17 @@
                 attribute.$$error = 'Duplicate value';
                 return true;
             }
-            if (angular.isString(cachedResponses[attribute.value])) {
-                attribute.$$error = cachedResponses[attribute.value];
-                attribute.$$invalid = attribute.$$error !== '';
+            if (!angular.isObject(cachedResponses[attribute.value])) {
+                var result = cachedResponses[attribute.value];
+                if (result.code === 0) {
+                    attribute.$$info = result.message;
+                    attribute.$$error = '';
+                    attribute.$$invalid = false;
+                } else {
+                    attribute.$$info = '';
+                    attribute.$$error = result.message;
+                    attribute.$$invalid = true;
+                }
                 setNsAttributeMessage(attribute, reverseZone.value[0].value);
                 return attribute.$$invalid;
             }
@@ -331,26 +339,23 @@
                 attribute.$$error = '';
 
                 // any reverse zone will do
-                PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function (nserverResult) {
-                    if (nserverResult.data.ns !== attribute.value) {
-                        console.log('skipping result', nserverResult.data.ns, attribute.value);
+                PrefixService.checkNameserverAsync(attribute.value, reverseZone.value[0].value).then(function (resp) {
+
+                    if (!resp || !resp.data || !angular.isNumber(resp.data.code)) {
+                        cachedResponses[attribute.value] = {code: -1, message: 'No response during check'};
+                        return;
+                    }
+                    var nserverResult = resp.data;
+                    if (nserverResult.ns !== attribute.value) {
                         // ignore this result. input has changed since req was fired
                         return;
                     }
-                    if (angular.isNumber(nserverResult.data.code)) {
-                        if (!nserverResult.data.code) {
-                            cachedResponses[attribute.value] = '';
-                        } else {
-                            cachedResponses[attribute.value] = nserverResult.data.message;
-                        }
-                    } else {
-                        cachedResponses[attribute.value] = 'No response during check';
-                    }
+                    cachedResponses[attribute.value] = nserverResult;
                     // put response in cache
                     $rootScope.$broadcast('attribute-state-changed', attribute);
                 }, function (err) {
                     if (err.status === 404) {
-                        cachedResponses[attribute.value] = 'FAILED';
+                        cachedResponses[attribute.value] = {code: -1, message: 'FAILED'};
                         $rootScope.$broadcast('attribute-state-changed', attribute);
                     } else if (keepTrying) {
                         keepTrying -= 1;
@@ -359,7 +364,7 @@
                         }
                         timeout = setTimeout(doCall, 1000);
                     } else {
-                        cachedResponses[attribute.value] = '';
+                        cachedResponses[attribute.value] = {code: -1, message: 'FAILED'};
                         $rootScope.$broadcast('attribute-state-changed', attribute);
                     }
                 });
