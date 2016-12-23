@@ -37,7 +37,7 @@ describe('The inetnum editor', function () {
      TAG POS=2 TYPE=DIV ATTR=TXT:Netherlands<SP>[NL]
 
      */
-    fit('should ask for authentication of parent inetnum', function () {
+    it('should ask for authentication of parent inetnum', function () {
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys('213.159.160.0-213.159.190.255');
@@ -64,7 +64,7 @@ describe('The inetnum editor', function () {
         expect(page.btnSubmitForm.getAttribute('disabled')).toBeFalsy();
     });
 
-    fit('should ask for authentication of parent inetnum and handle a bad password properly', function () {
+    it('should ask for authentication of parent inetnum and handle a bad password properly', function () {
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys('213.159.160.0-213.159.190.255');
