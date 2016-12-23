@@ -66,50 +66,50 @@ public class Recording01 {
         driver.findElement(By.name("zone-c$6")).sendKeys("LG1-RIPE");
 
         driver.findElement(By.id("btnSubmitCreate")).click();
-        synchronized (driver) { driver.wait(12000); }
+        pause(12);
 
         // search object 1
         driver.findElement(By.linkText("Query and Update")).click();
         driver.findElement(By.id("search:queryString")).sendKeys("110.17.212.in-addr.arpa");
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
 
         driver.findElement(By.id("search:doSearch")).click();
         driver.findElement(By.className("result"));
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
 
         // delete object 1
         driver.findElement(By.id("result:0:LoginToUpdateText")).click();
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
         ((JavascriptExecutor)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
         driver.findElement(By.id("deleteObject")).click();
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
         driver.findElement(By.id("reason")).clear();
         driver.findElement(By.id("reason")).sendKeys("deleting as part of an integration test");
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
         driver.findElement(By.cssSelector("input.red-button.ga-attr-popup-btn")).click();
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
 
         // search object 2
         driver.findElement(By.linkText("Query and Update")).click();
         driver.findElement(By.id("search:queryString")).sendKeys("111.17.212.in-addr.arpa");
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
 
         driver.findElement(By.id("search:doSearch")).click();
         driver.findElement(By.className("result"));
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
 
         // delete object 1
         driver.findElement(By.id("result:0:LoginToUpdateText")).click();
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
         ((JavascriptExecutor)driver).executeScript("window.scrollTo(0, document.body.scrollHeight)");
         driver.findElement(By.id("deleteObject")).click();
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
         driver.findElement(By.id("reason")).clear();
         driver.findElement(By.id("reason")).sendKeys("deleting as part of an integration test");
-        synchronized (driver) { driver.wait(2000); }
+        pause(2);
         driver.findElement(By.cssSelector("input.red-button.ga-attr-popup-btn")).click();
-        synchronized (driver) { driver.wait(2000); }
-
-
+        pause(2);
     }
+
+    private void pause(int seconds) throws InterruptedException { synchronized (driver) { driver.wait(seconds * 1000); } }
 }
