@@ -17,6 +17,11 @@
         $scope.hasPgp = MntnerService.hasPgp;
         $scope.hasMd5 = MntnerService.hasMd5;
 
+        RestService.fetchMntnersForSSOAccount().then(handleSsoResponse, handleSsoResponseError);
+        $scope.$on('maintainters-changed', function() {
+            RestService.fetchMntnersForSSOAccount().then(handleSsoResponse, handleSsoResponseError);
+        });
+
         $scope.onMntnerAdded = function (item) {
             // enrich with new-flag
             $scope.mntners.object = MntnerService.enrichWithNewStatus($scope.mntners.objectOriginal, $scope.mntners.object);
@@ -44,8 +49,6 @@
             }
             AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
         };
-
-        RestService.fetchMntnersForSSOAccount().then(handleSsoResponse, handleSsoResponseError);
 
         function mntnerAutocomplete(query) {
             // need to typed characters

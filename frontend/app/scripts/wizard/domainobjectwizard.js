@@ -250,7 +250,12 @@
                 });
             };
 
-            function onSuccessfulAuthentication() {
+            function onSuccessfulAuthentication(addedToSso) {
+                var pk = addedToSso.data.objects.object[0]['primary-key'].attribute[0];
+                if (pk) {
+                    vm.attributes.push({name: 'mnt-by', value: pk.value});
+                }
+                $scope.$emit('maintainters-changed');
             }
 
             function navigateAway() {

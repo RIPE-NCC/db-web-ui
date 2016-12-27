@@ -31,7 +31,7 @@ describe('The domain wizard', function () {
         expect(page.inpAdminC4.isDisplayed()).toEqual(false);
     });
 
-    xit('should show a domain creation form for IPv4 which rejects invalid nameservers', function() {
+    it('should show a domain creation form for IPv4 which rejects invalid nameservers', function() {
         page.modalSplashBtn.click();
         page.inpPrefix.sendKeys('212.17.110.0/23');
 
@@ -43,7 +43,7 @@ describe('The domain wizard', function () {
 
         browser.wait(function() {
             return browser.isElementPresent(liContainer.element(by.css('.text-error')));
-        }, 500);
+        }, 5000);
 
         expect(liContainer.getAttribute('class')).toContain('has-error');
         expect(page.inpAdminC4.isDisplayed()).toEqual(false);
@@ -54,10 +54,10 @@ describe('The domain wizard', function () {
         page.inpNserver2.sendKeys('ns2.xs4all.nl');
         browser.wait(function() {
             return browser.isElementPresent(liContainer.element(by.css('.text-info')));
-        }, 500);
+        }, 5000);
 
         expect(liContainer.getAttribute('class')).not.toContain('has-error');
-        expect(page.inpReverseZoneTable.all(by.css('tbody tr')).count()).toEqual(128);
+        expect(page.inpReverseZoneTable.all(by.css('tbody tr')).count()).toEqual(2);
         expect(page.inpAdminC4.isDisplayed()).toEqual(true);
         expect(page.inpTechC5.isDisplayed()).toEqual(true);
         expect(page.inpZoneC6.isDisplayed()).toEqual(true);

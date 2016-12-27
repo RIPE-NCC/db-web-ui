@@ -2,34 +2,41 @@
   "api/dns/status?ignore404=true&ns=ns.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 200,
     "data": {
+      "ns": "ns.xs4all.nl",
       "code": 0,
-      "message": ""
+      "message": "Server is authoritative"
     }
   },
   "api/dns/status?ignore404=true&ns=ns1.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 200,
     "data": {
+      "ns": "ns1.xs4all.nl",
       "code": 0,
-      "message": ""
+      "message": "Server is authoritative"
     }
   },
   "api/dns/status?ignore404=true&ns=ns2.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 200,
     "data": {
+      "ns": "ns2.xs4all.nl",
       "code": 0,
-      "message": ""
+      "message": "Server is authoritative"
     }
   },
   "api/dns/status?ignore404=true&ns=nsXXX.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 404,
-    "data": {}
+    "data": {
+      "ns": "nsXXX.xs4all.nl",
+      "code": -1,
+      "message": "Server does not rock"
+    }
   },
   "api/dns/status?ignore404=true&ns=rns1.upc.biz&record=110.17.212.in-addr.arpa": {
     "status": 200,
     "data": {
       "code": 0,
       "ns": "rns1.upc.biz",
-      "message": ""
+      "message": "Server is authoritative"
     }
   },
   "api/dns/status?ignore404=true&ns=rns2.upc.biz&record=110.17.212.in-addr.arpa": {
@@ -37,7 +44,7 @@
     "data": {
       "code": 0,
       "ns": "rns2.upc.biz",
-      "message": ""
+      "message": "Server is authoritative"
     }
   },
   "api/user/info": {
