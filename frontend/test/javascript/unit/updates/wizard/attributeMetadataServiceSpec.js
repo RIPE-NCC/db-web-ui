@@ -2,7 +2,7 @@
 
 'use strict';
 
-fdescribe('The attributeMetadataService', function () {
+describe('The attributeMetadataService', function () {
 
     var VALID_PREFIX = '22.22.0.0/22';
 
