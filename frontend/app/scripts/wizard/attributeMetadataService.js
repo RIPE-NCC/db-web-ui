@@ -18,7 +18,6 @@
 
         this.enrich = enrich;
         this.clearLastPrefix = clearLastPrefix;
-        this.getAllMetadata = getAllMetadata;
         this.getMetadata = getMetadata;
         this.isInvalid = isInvalid;
         this.isHidden = isHidden;

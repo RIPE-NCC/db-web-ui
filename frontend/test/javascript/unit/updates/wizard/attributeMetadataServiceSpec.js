@@ -2,20 +2,23 @@
 
 'use strict';
 
-xdescribe('The attributeMetadataService', function () {
+fdescribe('The attributeMetadataService', function () {
 
     var VALID_PREFIX = '22.22.0.0/22';
 
     var AttributeMetadataService;
     var $scope;
     var objectType = 'prefix';
+    var vm;
 
     beforeEach(function() {
         module('dbWebApp');
-        inject(function (_$rootScope_, _$controller_, _RestService_, _PrefixService_, _AttributeMetadataService_) {
+        inject(function (_$rootScope_, _$controller_, _$stateParams_, _RestService_, _PrefixService_, _AttributeMetadataService_) {
             $scope = _$rootScope_.$new();
-            _$controller_('DomainObjectController', {
+            _$stateParams_.objectType = 'prefix';
+            vm = _$controller_('DomainObjectController', {
                 $scope: $scope,
+                $stateParams: _$stateParams_,
                 RestService: _RestService_,
                 PrefixService: _PrefixService_
             });
@@ -23,17 +26,17 @@ xdescribe('The attributeMetadataService', function () {
         });
     });
 
-    it('controller should not crash', function () {
-        //$scope.objectType = 'prefix';
-        expect(!!$scope.attributes).toBe(true);
-        expect($scope.attributes.length).toBe(9);
+    it('should not crash', function () {
+        $scope.objectType = 'prefix';
+        expect(!!vm.attributes).toBe(true);
+        expect(vm.attributes.length).toBe(9);
     });
 
-    it('should be able to calculate validity of an attribute', function() {
+    xit('should be able to calculate validity of an attribute', function() {
         var isInvalid;
-        var attributes = $scope.attributes,
-            attributePk = $scope.attributes[0],
-            attribute = $scope.attributes[4];
+        var attributes = vm.attributes,
+            attributePk = vm.attributes[0],
+            attribute = vm.attributes[4];
 
         expect(attributePk.name).toBe('prefix');
         expect(attribute.name).toBe('admin-c');
@@ -56,22 +59,22 @@ xdescribe('The attributeMetadataService', function () {
         expect(isInvalid).toBe(false);
     });
 
-    it('should be able to calculate hidden state of an attribute with no dependencies', function() {
-        var attributes = $scope.attributes,
-            attribute = $scope.attributes[0];
+    xit('should be able to calculate hidden state of an attribute with no dependencies', function() {
+        var attributes = vm.attributes,
+            attribute = vm.attributes[0];
 
         expect(attribute.name).toBe('prefix');
         var isHidden = AttributeMetadataService.isHidden(objectType, attributes, attribute);
         expect(isHidden).toBe(false);
     });
 
-    it('should be able to calculate hidden state of an attribute with dependencies', function() {
+    xit('should be able to calculate hidden state of an attribute with dependencies', function() {
         var isHidden,
-            attributes = $scope.attributes,
-            attrPrefix = $scope.attributes[0],
-            attrNs1 = $scope.attributes[1],
-            attrNs2 = $scope.attributes[2],
-            attrToTest = $scope.attributes[4];
+            attributes = vm.attributes,
+            attrPrefix = vm.attributes[0],
+            attrNs1 = vm.attributes[1],
+            attrNs2 = vm.attributes[2],
+            attrToTest = vm.attributes[4];
 
         expect(attrPrefix.name).toBe('prefix');
         expect(attrNs1.name).toBe('nserver');
