@@ -262,23 +262,6 @@
             }
 
         }]
-    ).directive('attrInfo', ['WhoisMetaService', function (WhoisMetaService) {
-            return {
-                restrict: 'E',
-                scope: {},
-                template: '<span data-ng-bind-html="text"></span>',
-                link: function (scope, element, attrs) {
-                    if (!attrs.objectType) {
-                        return;
-                    }
-                    if (attrs.description) {
-                        scope.text = WhoisMetaService.getAttributeDescription(attrs.objectType, attrs.description);
-                    } else if (attrs.syntax) {
-                        scope.text = WhoisMetaService.getAttributeSyntax(attrs.objectType, attrs.syntax);
-                    }
-                }
-            };
-        }]
     );
 
 })();
