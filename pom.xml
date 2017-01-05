@@ -39,6 +39,12 @@
         <developerConnection>scm:git:ssh://git@stash.ripe.net:7999/swe/db-web-ui.git</developerConnection>
     </scm>
 
+    <properties>
+        <java.version>1.8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+    </properties>
+
     <repositories>
         <repository>
             <id>ripe-releases</id>
@@ -49,6 +55,7 @@
     <modules>
         <module>frontend</module>
         <module>backend</module>
+        <module>sit</module>
     </modules>
 
     <build>
