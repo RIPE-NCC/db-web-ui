@@ -13,11 +13,11 @@ Links
 
 Pre-requisites
 -----------------
-maven (v3.0+)
-npm
-grunt (install with ```npm install -g grunt```)
-bower (install with ```npm install -g bower```)
-compass (ruby)
+* maven (v3.0+)
+* npm
+* grunt (install with ```npm install -g grunt```)
+* bower (install with ```npm install -g bower```)
+* compass (ruby, install with ```gem install compass```)
 
 Build on Local Machine
 -----------------------
