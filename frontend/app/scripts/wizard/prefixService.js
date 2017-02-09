@@ -115,8 +115,8 @@
                     //It' used to find the array position that starts with 0. That's why -1.
                     var fixedOctet = Math.ceil(ipv4.subnetMask / 8) - 1;
 
-                    var startOctet = ipv4.startAddress().address.split('.')[fixedOctet];
-                    var endOctet = ipv4.endAddress().address.split('.')[fixedOctet];
+                    var startOctet = parseInt(ipv4.startAddress().address.split('.')[fixedOctet]);
+                    var endOctet = parseInt(ipv4.endAddress().address.split('.')[fixedOctet]);
                     var reverseBNet = ipv4.addressMinusSuffix.split('.').slice(0, fixedOctet).reverse().join('.');
 
                     for (i = startOctet; i <= endOctet; i++) {
