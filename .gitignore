@@ -3,6 +3,7 @@
 ######################
 backend/src/main/webapp
 backend/target/
+sit/target/
 screenshot-*.png
 instrumented
 reports
