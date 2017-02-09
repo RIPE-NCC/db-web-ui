@@ -109,7 +109,7 @@
                 }
 
                 if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
-                    performAuthentication(vm.maintainers, navigateAway);
+                    performAuthentication(vm.maintainers);
                     return;
                 }
 
@@ -187,7 +187,7 @@
                 return flattenedAttributes;
             }
 
-            function performAuthentication(maintainers, onNavigateAway) {
+            function performAuthentication(maintainers) {
                 var authParams = {
                     maintainers: maintainers,
                     operation: vm.operation,
@@ -196,9 +196,7 @@
                         type: objectType,
                         name: vm.name
                     },
-                    isLirObject: false,
-                    successClbk: onSuccessfulAuthentication,
-                    failureClbk: onNavigateAway
+                    isLirObject: false
                 };
                 WebUpdatesCommons.performAuthentication(authParams);
             }
@@ -249,17 +247,6 @@
                     }
                 });
             };
-
-            function onSuccessfulAuthentication(addedToSso) {
-                var pk = addedToSso.data.objects.object[0]['primary-key'].attribute[0];
-                if (pk) {
-                    vm.attributes.push({name: 'mnt-by', value: pk.value});
-                }
-                $scope.$emit('maintainters-changed');
-            }
-
-            function navigateAway() {
-            }
 
         }]
     );
