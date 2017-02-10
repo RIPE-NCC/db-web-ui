@@ -7,6 +7,7 @@
     "preprocess": "^3.0.2"
   },
   "devDependencies": {
+    "@types/angular-ui-router": "^1.1.36",
     "autoprefixer": "^6.5.1",
     "eslint": "^3.8.1",
     "eslint-config-angular": "^0.5.0",
