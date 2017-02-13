@@ -7,6 +7,8 @@
     "preprocess": "^3.0.2"
   },
   "devDependencies": {
+    "@types/angular": "^1.6.5",
+    "@types/lodash": "^4.14.52",
     "autoprefixer": "^6.5.1",
     "eslint": "^3.8.1",
     "eslint-config-angular": "^0.5.0",

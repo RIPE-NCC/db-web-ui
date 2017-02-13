@@ -1,1 +1,4 @@
+.baseDir.js
+.baseDir.ts
+.tscache/
 app/scripts/wizard/attrInfo.js

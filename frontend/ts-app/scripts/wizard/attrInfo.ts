@@ -1,10 +1,6 @@
-
-angular.module('dbWebApp').directive('attrInfo', ['WhoisMetaService', function (WhoisMetaService:any) {
+angular.module("dbWebApp").directive("attrInfo", ["WhoisMetaService", (WhoisMetaService: any) => {
         return {
-            restrict: 'E',
-            scope: {},
-            template: '<span data-ng-bind-html="text"></span>',
-            link: function (scope:any, element:any, attrs:any) {
+            link: (scope: any, element: any, attrs: any) => {
                 if (!attrs.objectType) {
                     return;
                 }
@@ -13,7 +9,9 @@ angular.module('dbWebApp').directive('attrInfo', ['WhoisMetaService', function (
                 } else if (attrs.syntax) {
                     scope.text = WhoisMetaService.getAttributeSyntax(attrs.objectType, attrs.syntax);
                 }
-            }
+            },
+            restrict: "E",
+            scope: {},
+            template: "<span data-ng-bind-html=\"text\"></span>",
         };
-    }]
-);
+    }]);
