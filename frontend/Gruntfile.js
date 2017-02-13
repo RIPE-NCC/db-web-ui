@@ -32,8 +32,8 @@ module.exports = function (grunt) {
         dist: require('./bower.json').distPath || 'dist'
     };
 
-	// Detect environment for e2e remote process
-    var e2eLocalOrRemote = function() {
+    // Detect environment for e2e remote process
+    var e2eLocalOrRemote = function () {
         return os.hostname().indexOf('db-tools-1.') === 0 ? 'e2eRemote' : 'e2eLocal';
     };
 
@@ -43,6 +43,26 @@ module.exports = function (grunt) {
         // Project settings
         yeoman: appConfig,
 
+        ts: {
+            default: {
+                options: {
+                    verbose: true,
+                    rootDir: './ts-app',
+                },
+                src: ['ts-app/**/*.ts', '!node_modules/**', '!bower_components/**'],
+                outDir: './.tmp',
+                // specifying tsconfig as a boolean will use the 'tsconfig.json' in same folder as Gruntfile.js
+                tsconfig: {
+                    //tsconfig: './tsconfig.json',
+                    //ignoreFiles: false,
+                    //ignoreSettings: false,
+                    //overwriteFilesGlob: false,
+                    //updateFiles: true,
+                    //passThrough: false,
+                    sourceRoot: './ts-app'
+                }
+            }
+        },
         focus: {
             livereloadServer: {
                 exclude: ['dist']
@@ -91,6 +111,7 @@ module.exports = function (grunt) {
                 tasks: [
                     'clean:server',
                     'copy:processtags',
+                    'ts',
                     'wiredep',
                     'compass',
                     'postcss',
@@ -674,6 +695,7 @@ module.exports = function (grunt) {
         'clean:server',
         'e2eapp:mocks',
         'copy:processtags',
+        'ts',
         'wiredep',
         'portPick:protractor',
         'concurrent:server',
@@ -685,6 +707,7 @@ module.exports = function (grunt) {
         'clean:server',
         'e2eapp',
         'copy:processtags',
+        'ts',
         'wiredep:sass',
         'instrument',
         'compass',
@@ -700,6 +723,7 @@ module.exports = function (grunt) {
         'clean:server',
         'e2eapp',
         'copy:processtags',
+        'ts',
         'wiredep:sass',
         'instrument',
         'compass',
@@ -755,6 +779,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean',
         'copy:processtags',
+        'ts',
         'wiredep',
         'useminPrepare',
         'concurrent:dist',

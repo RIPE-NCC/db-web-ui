@@ -2,6 +2,8 @@
 <h1>My Resources - IPv4</h1>
 
 <h2>Allocations Made by RIPE NCC to nl.io <sup>?</sup></h2>
+    <p>{{ resources.ipv4Resources }}</p>
+    <p>{{ resources.fish }}</p>
 <table class="table">
     <thead>
     <tr>
@@ -14,6 +16,13 @@
     </thead>
 
     <tbody>
+    <tr ng-repeat="res in resources.ipv4Resources">
+        <td>{{ res.date }}</td>
+        <td>{{ res.prefix }}</td>
+        <td><span class="pull-right">{{ res.size }}</span></td>
+        <td><code>{{ res.status }}</code></td>
+        <td><a target="_blank" href="{{ res.link }}">Edit</a></td>
+    </tr>
     <tr>
         <td>20030210</td>
         <td>62.221.192.0/18</td>

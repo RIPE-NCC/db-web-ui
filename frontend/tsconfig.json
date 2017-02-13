@@ -12,8 +12,8 @@
     ],
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "rootDir": "./ts-app",
-    "outDir": "./app"
+    "rootDir": "./ts-app/",
+    "outDir": "./.tmp"
   },
   "typeRoots": [
     "./node_modules/@types"
@@ -24,6 +24,7 @@
   ],
   "compileOnSave": true,
   "exclude": [
+    "./bower_components/*",
     "./node_modules/*",
     "**/*-aot.ts"
   ]
