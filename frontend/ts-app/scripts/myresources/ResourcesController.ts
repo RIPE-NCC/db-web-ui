@@ -7,12 +7,12 @@ const mockData = ["20030210  62.221.192.0/18 16384   ALLOCATED_PA    https://app
 class ResourcesController {
     public static $inject = ["$log", "MyResourcesDataService"];
     public ipv4Resources: Ipv4Resource[];
-    public fish = "shows the size of the fish";
+    public fish = "shows the size in units";
 
     constructor(private $log: angular.ILogService,
                 private resourcesDataService: MyResourcesDataService) {
 
-        this.$log.debug(">>>>", "hey joe");
+        this.$log.debug(">>>>", "hey jack");
         for (const str of mockData) {
             const splits = str.split("\t");
             const resource = new Ipv4Resource();
@@ -21,6 +21,7 @@ class ResourcesController {
             resource.size = parseInt(splits[2], 10);
             resource.status = splits[4];
             resource.editLink = splits[5];
+            this.ipv4Resources = [];
             this.ipv4Resources.push(resource);
             this.$log.debug(">>>>", str);
         }

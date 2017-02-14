@@ -44,8 +44,6 @@ local.properties
 .settings/**
 .loadpath
 frontend/**/*.map
-frontend/app/scripts/bogusService.js
-backend/src/main/resources/rebel.xml
 
 # External tool builders
 .externalToolBuilders/**

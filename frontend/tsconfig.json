@@ -13,7 +13,7 @@
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "rootDir": "./ts-app/",
-    "outDir": "./.tmp"
+    "outDir": "./app"
   },
   "typeRoots": [
     "./node_modules/@types"
