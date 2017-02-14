@@ -44,7 +44,7 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.myresources', {
                     url: '/myresources/show',
-                    templateUrl: 'scripts/myresources/show.html',
+                    templateUrl: 'scripts/myresources/overview.html',
                     controller: 'ResourcesController',
                     controllerAs: 'resources'
                 })

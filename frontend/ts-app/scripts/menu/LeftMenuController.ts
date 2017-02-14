@@ -1,5 +1,3 @@
-/*global angular*/
-
 class LeftMenuController {
     public static $inject = ["$log", "$rootScope"];
     public searchExpanded: boolean;
@@ -11,7 +9,6 @@ class LeftMenuController {
                 private $rootScope: angular.IRootScopeService) {
 
         $rootScope.$on("$stateChangeSuccess", (event, toState: {name: string, url: string}) => {
-            $log.debug("LeftMenuController " + toState.name);
             this.activeUrl = toState.url;
             if (toState.name.indexOf("webupdates.myresources") === 0) {
                 this.searchExpanded = true;

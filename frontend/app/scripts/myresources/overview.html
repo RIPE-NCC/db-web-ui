@@ -14,12 +14,12 @@
         </thead>
 
         <tbody>
-        <tr ng-repeat="res in resources.ipv4Resources">
-            <td>{{ res.date }}</td>
-            <td>{{ res.prefix }}</td>
-            <td><span class="pull-right">{{ res.size }}</span></td>
-            <td><code>{{ res.status }}</code></td>
-            <td><a target="_blank" href="{{ res.editLink }}">Edit</a></td>
+        <tr ng-repeat="alloc in resources.ipv4Allocations">
+            <td>{{ alloc.date }}</td>
+            <td>{{ alloc.prefix }}</td>
+            <td><span class="pull-right">{{ alloc.size }}</span></td>
+            <td><code>{{ alloc.status }}</code></td>
+            <td><a target="_blank" href="{{ alloc.editLink }}">Edit</a></td>
         </tr>
         </tbody>
     </table>
@@ -38,13 +38,13 @@
         </thead>
 
         <tbody>
-        <tr>
-            <td>19980108</td>
-            <td>193.0.32.0-193.0.55.255</td>
-            <td>ASSIGNED_PI</td>
-            <td>Integrated Internet Services B.V.</td>
-            <td>LIR infrastructure</td>
-            <td><a href="https://apps.db.ripe.net/db-web-ui/#/webupdates/modify/ripe/inetnum/193.0.32.0 - 193.0.55.255" target="_blank">Edit</a></td>
+        <tr ng-repeat="ass in resources.ipv4Assignments">
+            <td>{{ ass.date }}</td>
+            <td>{{ ass.prefix }}</td>
+            <td>{{ ass.status }}</td>
+            <td>{{ ass.organization }}</td>
+            <td>{{ ass.indResInfo }}</td>
+            <td><a href="{{ ass.editLink }}" target="_blank">Edit</a></td>
         </tr>
         </tbody>
 
