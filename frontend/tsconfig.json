@@ -23,9 +23,7 @@
     "lodash"
   ],
   "compileOnSave": true,
-  "exclude": [
-    "./bower_components/*",
-    "./node_modules/*",
-    "**/*-aot.ts"
+  "include": [
+    "./ts-app/**/*.ts"
   ]
 }

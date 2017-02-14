@@ -45,18 +45,17 @@ module.exports = function (grunt) {
 
         ts: {
             default: {
-                tsconfig: true,
-                module: 'commmonjs',
-                src: ['ts-app/**/*.ts', '!node_modules/**', '!bower_components/**'],
+                tsconfig: true
             },
             // default: {
             options: {
-                verbose: true,
+                verbose: true
             }
         },
         focus: {
             livereloadServer: {
                 exclude: ['dist']
+
             }
         },
         // Watches files for changes and runs tasks based on the changed files
