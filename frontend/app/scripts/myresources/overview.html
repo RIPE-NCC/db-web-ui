@@ -19,7 +19,7 @@
             <td>{{ alloc.prefix }}</td>
             <td><span class="pull-right">{{ alloc.size }}</span></td>
             <td><code>{{ alloc.status }}</code></td>
-            <td><a target="_blank" href="{{ alloc.editLink }}">Edit</a></td>
+            <td><a target="_blank" href="{{ alloc.whoisQueryUrl }}">Edit</a></td>
         </tr>
         </tbody>
     </table>
@@ -41,10 +41,10 @@
         <tr ng-repeat="ass in resources.ipv4Assignments">
             <td>{{ ass.date }}</td>
             <td>{{ ass.prefix }}</td>
-            <td>{{ ass.status }}</td>
+            <td><code>{{ ass.status }}</code></td>
             <td>{{ ass.organization }}</td>
             <td>{{ ass.indResInfo }}</td>
-            <td><a href="{{ ass.editLink }}" target="_blank">Edit</a></td>
+            <td><a href="{{ ass.whoisQueryUrl }}" target="_blank">Edit</a></td>
         </tr>
         </tbody>
 
@@ -56,6 +56,4 @@
         No Legacy IPv4 resources.
     </div>
 
-    <h2>IPv4 Archived Properties <sup>?</sup></h2>
-    <a href="#/myresources/show/archive">Click here to view the archived properties</a>
 </section>

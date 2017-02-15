@@ -3,7 +3,7 @@ interface Ipv4Allocation {
     prefix: string;
     size: number;
     status: string;
-    editLink: string;
+    whoisQueryUrl: string;
 }
 
 interface Ipv4Assignment {
@@ -12,6 +12,10 @@ interface Ipv4Assignment {
     status: string;
     organization: string;
     indResInfo: string;
-    editLink: string;
+    whoisQueryUrl: string;
 }
 
+interface IMyResourcesDataService {
+    getIpv4Allocations(): Ipv4Allocation[];
+    getIpv4Assignments(): Ipv4Assignment[];
+}
