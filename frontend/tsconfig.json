@@ -23,8 +23,7 @@
     "lodash"
   ],
   "compileOnSave": true,
-  "exclude": [
-    "./node_modules/*",
-    "**/*-aot.ts"
+  "include": [
+    "./ts-app/**/*.ts"
   ]
 }
