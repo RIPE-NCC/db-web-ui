@@ -64,7 +64,7 @@ describe('The domain wizard', function () {
     });
 
 
-    xit('should show a domain creation form for IPv6 which rejects invalid nameservers', function() {
+    fit('should show a domain creation form for IPv6 which rejects invalid nameservers', function() {
         page.modalSplashBtn.click();
 
         page.inpPrefix.sendKeys('2001:db8::/48');
@@ -76,7 +76,7 @@ describe('The domain wizard', function () {
 
         browser.wait(function() {
             return browser.isElementPresent(liContainer.element(by.css('.text-error')));
-        }, 500);
+        }, 5000);
 
         expect(liContainer.getAttribute('class')).toContain('has-error');
         expect(page.inpAdminC4.isDisplayed()).toEqual(false);
@@ -87,16 +87,22 @@ describe('The domain wizard', function () {
         page.inpNserver2.sendKeys('ns2.xs4all.nl');
         browser.wait(function() {
             return browser.isElementPresent(liContainer.element(by.css('.text-info')));
-        }, 500);
+        }, 5000);
 
-        browser.wait(function() {
-            return browser.findElement(page.inpReverseZoneTable);
-        }, 500);
-
+        expect(liContainer.getText()).toContain('0.8.b.d.0.1.0.0.2.ip6.arpa');
+        expect(liContainer.getAttribute('class')).not.toContain('has-error');
         expect(page.inpReverseZoneTable.all(by.css('tbody tr')).count()).toEqual(1);
         expect(page.inpAdminC4.isDisplayed()).toEqual(true);
         expect(page.inpTechC5.isDisplayed()).toEqual(true);
         expect(page.inpZoneC6.isDisplayed()).toEqual(true);
+
+        // User changes his mind!
+        page.inpPrefix.sendKeys('212.17.110.0/23');
+        browser.wait(function() {
+            return browser.isElementPresent(liContainer.element(by.css('.text-info')));
+        }, 5000);
+        expect(liContainer.getText()).not.toContain('0.8.b.d.0.1.0.0.2.ip6.arpa');
+
     });
 
     it('should show a popup when a prefix is submitted', function() {
