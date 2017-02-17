@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class WhoisInternalService implements ExchangeErrorHandler {
@@ -108,31 +109,17 @@ public class WhoisInternalService implements ExchangeErrorHandler {
     }
 
     private String getObjectKey(final WhoisObject obj) {
-        List<Attribute> keyAttrs = obj.getPrimaryKey();
-        if (!keyAttrs.isEmpty()) {
-            return keyAttrs.get(0).getValue();
-        }
-
-        return null;
+        return obj.getPrimaryKey().stream().findFirst().map(Attribute::getValue).orElse(null);
     }
 
     private String getObjectType(final WhoisObject obj) {
-        List<Attribute> keyAttrs = obj.getPrimaryKey();
-        if (!keyAttrs.isEmpty()) {
-            return keyAttrs.get(0).getName();
-        }
-
-        return null;
+        return obj.getPrimaryKey().stream().findFirst().map(Attribute::getName).orElse(null);
     }
 
     private List<String> getValuesForAttribute(final WhoisObject obj, final AttributeType type) {
-        List<String> values = Lists.newArrayList();
-        for (Attribute attr : obj.getAttributes()) {
-            if (attr.getName().equals(type.getName())) {
-                values.add(attr.getValue());
-            }
-        }
-        return values;
+        return obj.getAttributes().stream().
+            filter(a -> a.getName().equals(type.getName())).
+            map(Attribute::getValue).collect(Collectors.toList());
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
