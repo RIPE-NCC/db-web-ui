@@ -1,0 +1,10 @@
+<div id="org-dropdown" style="text-align: right; float: right;">
+    <ui-select id="select_profile" name="select_profile"  ng-model="selectedProfile" theme="select2" on-select="updateProfile($item)">
+        <ui-select-match placeholder="-- Select an organisation --">{{$select.selected.name}}</ui-select-match>
+
+        <ui-select-choices repeat="org in organisations | limitTo: 500">
+            <div class="org-name" ng-bind-html="profile.name | highlight: $select.search"></div>
+            <div class="org-regid" ng-bind-html="profile.label | highlight: $select.search"></div>
+        </ui-select-choices>
+    </ui-select>
+</div>
