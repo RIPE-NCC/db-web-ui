@@ -13,7 +13,8 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 public class WhoisInternalResourcesServiceTest {
 
-    private static final String MOCK_HOST = "http://int-dev.db.ripe.net";
+    // dummy test data
+    private static final String MOCK_HOST = "http://localhost:8089";
 
     private static final String API_KEY = "DB-WHOIS-fe91223ec3a27c24";
 
