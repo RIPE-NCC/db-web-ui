@@ -4,7 +4,7 @@
     "data": {
       "ns": "ns.xs4all.nl",
       "code": 0,
-      "message": "Server is authoritative"
+      "message": "Server is authoritative for 110.17.212.in-addr.arpa"
     }
   },
   "api/dns/status?ignore404=true&ns=ns1.xs4all.nl&record=110.17.212.in-addr.arpa": {
@@ -12,7 +12,7 @@
     "data": {
       "ns": "ns1.xs4all.nl",
       "code": 0,
-      "message": "Server is authoritative"
+      "message": "Server is authoritative for 110.17.212.in-addr.arpa"
     }
   },
   "api/dns/status?ignore404=true&ns=ns2.xs4all.nl&record=110.17.212.in-addr.arpa": {
@@ -20,7 +20,23 @@
     "data": {
       "ns": "ns2.xs4all.nl",
       "code": 0,
-      "message": "Server is authoritative"
+      "message": "Server is authoritative for 110.17.212.in-addr.arpa"
+    }
+  },
+  "api/dns/status?ignore404=true&ns=ns1.xs4all.nl&record=0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa.": {
+    "status": 200,
+    "data": {
+      "ns": "ns1.xs4all.nl",
+      "code": 0,
+      "message": "Server is authoritative for 0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa"
+    }
+  },
+  "api/dns/status?ignore404=true&ns=ns2.xs4all.nl&record=0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa.": {
+    "status": 200,
+    "data": {
+      "ns": "ns2.xs4all.nl",
+      "code": 0,
+      "message": "Server is authoritative for 0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa"
     }
   },
   "api/dns/status?ignore404=true&ns=nsXXX.xs4all.nl&record=110.17.212.in-addr.arpa": {
@@ -36,7 +52,7 @@
     "data": {
       "code": 0,
       "ns": "rns1.upc.biz",
-      "message": "Server is authoritative"
+      "message": "Server is authoritative for 110.17.212.in-addr.arpa"
     }
   },
   "api/dns/status?ignore404=true&ns=rns2.upc.biz&record=110.17.212.in-addr.arpa": {
@@ -44,7 +60,7 @@
     "data": {
       "code": 0,
       "ns": "rns2.upc.biz",
-      "message": "Server is authoritative"
+      "message": "Server is authoritative for 110.17.212.in-addr.arpa"
     }
   },
   "api/user/info": {
@@ -242,6 +258,56 @@
       }
     }
   },
+  "api/rest/search?flags=drx&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain": {
+    "data": {
+      "link": {
+        "type": "locator",
+        "href": "http://127.0.0.1:1080/search?flags=drx&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain"
+      },
+      "errormessages": {
+        "errormessage": [
+          {
+            "severity": "Error",
+            "text": "ERROR:101: no entries found\n\nNo entries found in source %s.\n",
+            "args": [
+              {
+                "value": "RIPE"
+              }
+            ]
+          }
+        ]
+      },
+      "terms-and-conditions": {
+        "type": "locator",
+        "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+    }
+  },
+  "api/rest/search?flags=drM&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain": {
+    "data": {
+      "link": {
+        "type": "locator",
+        "href": "http://127.0.0.1:1080/search?flags=drM&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain"
+      },
+      "errormessages": {
+        "errormessage": [
+          {
+            "severity": "Error",
+            "text": "ERROR:101: no entries found\n\nNo entries found in source %s.\n",
+            "args": [
+              {
+                "value": "RIPE"
+              }
+            ]
+          }
+        ]
+      },
+      "terms-and-conditions": {
+        "type": "locator",
+        "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+    }
+  },
   "api/whois/search?flags=r&ignore404=true&query-string=2001:db8::%2F48&type-filter=inet6num": {
     "data": {
       "service": {
@@ -367,15 +433,6 @@
                 {
                   "link": {
                     "type": "locator",
-                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
-                  },
-                  "name": "mnt-lower",
-                  "value": "RIPE-NCC-HM-MNT",
-                  "referenced-type": "mntner"
-                },
-                {
-                  "link": {
-                    "type": "locator",
                     "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-RPSL-MNT"
                   },
                   "name": "mnt-routes",
@@ -414,11 +471,11 @@
       }
     }
   },
-  "api/rest/search?flags=drx&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain": {
+  "api/rest/search?flags=drx&ignore404=true&query-string=2001:db8::%2F48&type-filter=domain": {
     "data": {
       "link": {
         "type": "locator",
-        "href": "http://127.0.0.1:1080/search?flags=drx&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain"
+        "href": "http://127.0.0.1:1080/search?flags=drx&ignore404=true&query-string=2001:db8::%2F48&type-filter=domain"
       },
       "errormessages": {
         "errormessage": [
@@ -439,11 +496,11 @@
       }
     }
   },
-  "api/rest/search?flags=drM&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain": {
+  "api/rest/search?flags=drM&ignore404=true&query-string=2001:db8::%2F48&type-filter=domain": {
     "data": {
       "link": {
         "type": "locator",
-        "href": "http://127.0.0.1:1080/search?flags=drM&ignore404=true&query-string=212.17.110.0%2F23&type-filter=domain"
+        "href": "http://127.0.0.1:1080/search?flags=drM&ignore404=true&query-string=2001:db8::%2F48&type-filter=domain"
       },
       "errormessages": {
         "errormessage": [

@@ -154,8 +154,8 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
-                            serveStatic('.tmp'),
                             serveStatic('instrumented'),
+                            serveStatic('.tmp'),
                             connect().use(
                                 '/bower_components',
                                 serveStatic('./bower_components')
