@@ -30,8 +30,6 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
 
     private final String apiKey;
 
-    private final String contextPath;
-
     @Autowired
     public WhoisInternalResourcesService(
         final RestTemplate restTemplate,
@@ -41,7 +39,6 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;
-        this.contextPath = contextPath;
     }
 
     public ResponseEntity<String> getIpv4Resources(String orgId) {
