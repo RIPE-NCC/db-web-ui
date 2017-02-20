@@ -64,7 +64,7 @@ describe('The domain wizard', function () {
     });
 
 
-    fit('should show a domain creation form for IPv6 which rejects invalid nameservers', function() {
+    it('should show a domain creation form for IPv6 which rejects invalid nameservers', function() {
         page.modalSplashBtn.click();
 
         page.inpPrefix.sendKeys('2001:db8::/48');
