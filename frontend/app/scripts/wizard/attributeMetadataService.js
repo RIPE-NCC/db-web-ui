@@ -179,7 +179,7 @@
          * https://jira.ripe.net/browse/DB-220
          *
          * If there is an existing domain within the specified prefix, display an error.
-         * Find any domain objects for a given prefix, using TWO queries (I think?):
+         * Find any domain objects for a given prefix, using TWO queries:
          *
          * (1) exact match: -d --exact -T domain -r 193.193.200.0 - 193.193.200.255
          *
@@ -237,6 +237,7 @@
         }
 
         var lastPrefix;
+        var cachedResponses = {};
 
         function clearLastPrefix() {
             lastPrefix = '';
@@ -250,11 +251,13 @@
                 return true;
             }
 
+            if (lastPrefix === attribute.value) {
+                // don't bother. it's just an extraneous evaluation of the prefix
+                return;
+            }
+
+            cachedResponses = {}; // prefix changed, so empty the cache
             if (PrefixService.isValidPrefix(attribute.value)) {
-                if (lastPrefix === attribute.value) {
-                    // don't bother. it's just an extraneous evaluation of the prefix
-                    return;
-                }
                 lastPrefix = attribute.value;
                 $rootScope.$broadcast('prefix-ok', attribute.value);
                 attribute.$$info = 'Prefix looks OK';
@@ -268,7 +271,6 @@
         }
 
         var hostnameRe = /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/;
-        var cachedResponses = {};
         var timeout;
 
         function nserverIsInvalid(objectType, attributes, attribute) {
