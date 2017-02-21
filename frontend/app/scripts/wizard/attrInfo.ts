@@ -1,6 +1,6 @@
 angular.module("dbWebApp").directive("attrInfo", ["WhoisMetaService", (WhoisMetaService: any) => {
         return {
-            link: (scope: any, element: any, attrs: any) => {
+            link: (scope: any, element: any, attrs: { objectType: string, description?: string, syntax?: string}) => {
                 if (!attrs.objectType) {
                     return;
                 }

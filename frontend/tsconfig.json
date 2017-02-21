@@ -6,13 +6,14 @@
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowJs": true,
     "lib": [
       "es2015",
       "dom"
     ],
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "rootDir": "./ts-app/",
+    "rootDir": "./app",
     "outDir": "./.tstmp"
   },
   "typeRoots": [
@@ -21,10 +22,12 @@
   "types": [
     "angular",
     "angular-cookies",
+    "angular-ui-router",
     "lodash"
   ],
   "compileOnSave": true,
   "include": [
-    "./ts-app/**/*.ts"
+    "./app/**/*.js",
+    "./app/**/*.ts"
   ]
 }
