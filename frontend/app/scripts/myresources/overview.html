@@ -1,0 +1,19 @@
+<section>
+    <h1>My Resources - IPv4</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>IP / Prefix</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="resource in resources.ipv4Resources">
+            <td>{{ resource.prefix }}</td>
+            <td><code>{{ resource.status }}</code></td>
+            <td><a target="_blank" href="{{ resource.whoisQueryUrl }}">Edit</a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>

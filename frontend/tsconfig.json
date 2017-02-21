@@ -12,7 +12,7 @@
     ],
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
-    "rootDir": "./ts-app",
+    "rootDir": "./ts-app/",
     "outDir": "./app"
   },
   "typeRoots": [

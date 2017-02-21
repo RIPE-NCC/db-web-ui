@@ -32,8 +32,8 @@ module.exports = function (grunt) {
         dist: require('./bower.json').distPath || 'dist'
     };
 
-	// Detect environment for e2e remote process
-    var e2eLocalOrRemote = function() {
+    // Detect environment for e2e remote process
+    var e2eLocalOrRemote = function () {
         return os.hostname().indexOf('db-tools-1.') === 0 ? 'e2eRemote' : 'e2eLocal';
     };
 
@@ -45,18 +45,17 @@ module.exports = function (grunt) {
 
         ts: {
             default: {
-                options: {
-                    verbose: true,
-                    rootDir: './ts-app',
-                },
-                src: ['ts-app/**/*.ts', '!node_modules/**', '!bower_components/**'],
-                outDir: './app',
-                // specifying tsconfig as a boolean will use the 'tsconfig.json' in same folder as Gruntfile.js
+                tsconfig: true
+            },
+            // default: {
+            options: {
+                verbose: true
             }
         },
         focus: {
             livereloadServer: {
                 exclude: ['dist']
+
             }
         },
         // Watches files for changes and runs tasks based on the changed files

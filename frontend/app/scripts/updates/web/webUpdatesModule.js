@@ -13,16 +13,5 @@ angular.module('webUpdates', ['updates'])
             DISPLAY:             'webupdates.display',
             FORCE_DELETE:        'webupdates.forceDelete',
             FORCE_DELETE_SELECT: 'webupdates.forceDeleteSelect'
-        })
-    .run(['$rootScope', '$state', '$log', function ($rootScope, $state, $log) {
-
-        // expand the update section on the left menu
-        $rootScope.$on('$stateChangeSuccess', function (event, toState) {
-            if (!_.isUndefined(toState) && !_.isUndefined(toState.name) && _.startsWith(toState.name, 'webupdates.')) {
-                $log.debug('updates: Incoming transition to state: ' + toState.name);
-                $rootScope.$emit('dbWebApp.moduleActive', 'updates');
-            }
         });
-
-    }]);
 })();
