@@ -95,7 +95,6 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: [
-                    './ts-app/scripts/{,*/}{,*/}*.ts',
                     '<%= yeoman.app %>/scripts/{,*/}{,*/}*.js',
                     '<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}',
                     '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html'
@@ -103,7 +102,6 @@ module.exports = function (grunt) {
                 tasks: [
                     'clean:server',
                     'copy:processtags',
-                    'ts',
                     'wiredep',
                     'compass',
                     'postcss',
