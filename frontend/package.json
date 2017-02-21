@@ -8,6 +8,8 @@
   },
   "devDependencies": {
     "@types/angular": "^1.6.5",
+    "@types/angular-cookies": "^1.4.3",
+    "@types/angular-ui-router": "^1.1.36",
     "@types/lodash": "^4.14.52",
     "autoprefixer": "^6.5.1",
     "eslint": "^3.8.1",

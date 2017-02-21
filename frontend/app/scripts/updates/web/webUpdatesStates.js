@@ -42,6 +42,12 @@ angular.module('webUpdates')
                     url: '/webupdates',
                     template: '<div ui-view></div>'
                 })
+                .state('webupdates.myresources', {
+                    url: '/myresources/overview',
+                    templateUrl: 'scripts/myresources/overview.html',
+                    controller: 'ResourcesController',
+                    controllerAs: 'resources'
+                })
                 .state('webupdates.domainobjectwizard', {
                     url: '/wizard/:source/:objectType',
                     templateUrl: 'scripts/wizard/domainobjectwizard.html',
