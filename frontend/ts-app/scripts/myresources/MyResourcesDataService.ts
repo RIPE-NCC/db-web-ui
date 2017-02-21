@@ -1,50 +1,28 @@
-const mockAlloc = ["20030210 | 62.221.192.0/18 | 16384 | ALLOCATED_PA | " +
-    "https://apps.db.ripe.net/db-web-ui/#/webupdates/modify/ripe/inetnum/62.221.192.0 - 62.221.255.255",
-    "20080915 | 94.126.32.0/21 | 2048 | ALLOCATED_PA | " +
-    "https://apps.db.ripe.net/db-web-ui/#/webupdates/modify/ripe/inetnum/94.126.32.0 - 94.126.39.255",
-    "20150902 | 185.115.144.0/22 | 1024 | ALLOCATED_PA | " +
-    "https://apps.db.ripe.net/db-web-ui/#/webupdates/modify/ripe/inetnum/185.115.144.0 - 185.115.147.255"];
-
-const mockAss = "19980108 | 193.0.32.0-193.0.55.255 | ASSIGNED_PI | Integrated Internet Services B.V. | " +
-    "LIR infrastructure | " +
-    "https://apps.db.ripe.net/db-web-ui/#/webupdates/modify/ripe/inetnum/193.0.32.0 - 193.0.55.255";
+const mockResources = [
+    "62.221.192.0/18 | ALLOCATED_PA | /db-web-ui/#/webupdates/modify/ripe/inetnum/62.221.192.0 - 62.221.255.255",
+    "94.126.32.0/21 | ALLOCATED_PA | /db-web-ui/#/webupdates/modify/ripe/inetnum/94.126.32.0 - 94.126.39.255",
+    "185.115.144.0/22 | ALLOCATED_PA | /db-web-ui/#/webupdates/modify/ripe/inetnum/185.115.144.0 - 185.115.147.255",
+    "193.0.32.0-193.0.55.255 | ASSIGNED_PI | /db-web-ui/#/webupdates/modify/ripe/inetnum/193.0.32.0 - 193.0.55.255"];
 
 class MyResourcesDataServiceMockImpl implements IMyResourcesDataService {
     public static $inject = ["$log"];
-    private ipv4Allocations: Ipv4Allocation[];
-    private ipv4Assignments: Ipv4Assignment[];
+    private ipv4Resources: Ipv4Resource[];
 
     constructor(private $log: angular.ILogService) {
-        this.ipv4Allocations = [];
-        for (const str of mockAlloc) {
+        this.ipv4Resources = [];
+        for (const str of mockResources) {
             const splits = str.split("|");
-            const resource: Ipv4Allocation = {
-                date: splits[0].trim(),
-                prefix: splits[1].trim(),
-                size: parseInt(splits[2], 10),
-                status: splits[3].trim(),
-                whoisQueryUrl: splits[4].trim(),
+            const resource: Ipv4Resource = {
+                prefix: splits[0].trim(),
+                status: splits[1].trim(),
+                whoisQueryUrl: splits[2].trim(),
             };
-            this.ipv4Allocations.push(resource);
+            this.ipv4Resources.push(resource);
         }
-        const splits = mockAss.split("|");
-        const ass: Ipv4Assignment = {
-            date: splits[0].trim(),
-            indResInfo: splits[4].trim(),
-            organization: splits[3].trim(),
-            prefix: splits[1].trim(),
-            status: splits[2].trim(),
-            whoisQueryUrl: splits[5].trim(),
-        };
-        this.ipv4Assignments = [ass];
     }
 
-    public getIpv4Allocations(): Ipv4Allocation[] {
-        return this.ipv4Allocations;
-    }
-
-    public getIpv4Assignments() {
-        return this.ipv4Assignments;
+    public getIpv4Resources(): Ipv4Resource[] {
+        return this.ipv4Resources;
     }
 }
 
