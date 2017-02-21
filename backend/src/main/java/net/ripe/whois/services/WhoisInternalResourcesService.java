@@ -47,7 +47,7 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
         try {
             response = restTemplate.exchange("{apiUrl}/{path}/{orgId}.json?apiKey={apiKey}",
                 HttpMethod.GET,
-                new HttpEntity<String>(withHeaders(MediaType.APPLICATION_XML_VALUE)),
+                new HttpEntity<String>(withHeaders(MediaType.APPLICATION_JSON_VALUE)),
                 String.class,
                 withParams(orgId));
 
@@ -63,7 +63,7 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
             LOGGER.warn(FAILED_TO_RETRIEVE_RESOURCES_FOR_ORG, orgId, e.getMessage());
             throw new RestClientException(e);
         }
-        return response;
+        return new ResponseEntity<>(response.getBody(), HttpStatus.OK);
     }
 
     private HashMap<String, Object> withParams(final String orgId) {

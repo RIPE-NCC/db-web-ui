@@ -5,10 +5,7 @@ import net.ripe.whois.services.WhoisInternalResourcesService;
 import net.ripe.whois.services.crowd.CrowdClient;
 import net.ripe.whois.services.crowd.CrowdClientException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -34,13 +31,7 @@ public class ResourcesController {
     public ResponseEntity getIpv4Resources(@RequestParam(value = "orgid") final String orgId) {
 
         try {
-            final ResponseEntity response = whoisInternalResourcesService.getIpv4Resources(orgId);
-
-            // Make sure essentials content-type is set
-            final MultiValueMap<String, String> headers = new HttpHeaders();
-            headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-
-            return new ResponseEntity<>(response, headers, HttpStatus.OK);
+            return whoisInternalResourcesService.getIpv4Resources(orgId);
 
         } catch (CrowdClientException e) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
