@@ -1,0 +1,59 @@
+<section>
+    <h1>My Resources - IPv4</h1>
+
+    <h2>Allocations Made by RIPE NCC to nl.io <sup>?</sup></h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Date</th>
+            <th>IP / Prefix</th>
+            <th><span class="pull-right">Size</span></th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr ng-repeat="alloc in resources.ipv4Allocations">
+            <td>{{ alloc.date }}</td>
+            <td>{{ alloc.prefix }}</td>
+            <td><span class="pull-right">{{ alloc.size }}</span></td>
+            <td><code>{{ alloc.status }}</code></td>
+            <td><a target="_blank" href="{{ alloc.whoisQueryUrl }}">Edit</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>Assignments Made by RIPE NCC <sup>?</sup></h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th aria-label="Date: activate to sort column descending">Date</th>
+            <th aria-label="IP / Prefix: activate to sort column ascending">IP / Prefix</th>
+            <th aria-label="Type: activate to sort column ascending">Type</th>
+            <th aria-label="Organisation: activate to sort column ascending">Organisation</th>
+            <th aria-label="Ind. res. info: activate to sort column ascending">Ind. res. info</th>
+            <th aria-label=": activate to sort column ascending"></th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr ng-repeat="ass in resources.ipv4Assignments">
+            <td>{{ ass.date }}</td>
+            <td>{{ ass.prefix }}</td>
+            <td><code>{{ ass.status }}</code></td>
+            <td>{{ ass.organization }}</td>
+            <td>{{ ass.indResInfo }}</td>
+            <td><a href="{{ ass.whoisQueryUrl }}" target="_blank">Edit</a></td>
+        </tr>
+        </tbody>
+
+    </table>
+
+
+    <h2>Legacy address space <sup>?</sup></h2>
+    <div>
+        No Legacy IPv4 resources.
+    </div>
+
+</section>

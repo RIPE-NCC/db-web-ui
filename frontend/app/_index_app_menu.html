@@ -1,5 +1,5 @@
 <!--  Webupdates specific menu start -->
-<div ng-controller="LeftMenuController">
+<div ng-controller="LeftMenuController as menu">
     <div class="portlet navigation margin-bottom">
         <div class="Title">
             <i title="Show/Hide navigation" class="fa fa-angle-double-left"></i>
@@ -11,7 +11,7 @@
                 <a href="/search/query.html">Query and Update</a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem current" href="/search/query.html">Query the RIPE Database</a>
+                        <a class="menuItem" href="/search/query.html">Query the RIPE Database</a>
                     </li>
                     <li>
                         <a class="menuItem" href="/search/full-text.html">Full Text Search</a>
@@ -27,15 +27,19 @@
                     </li>
                 </ul>
             </li>
+            <li class="child" ng-if="menu.isLirUser()" ng-class="{active: menu.myResourcesChosen}">
+                <i title="Expand sub navigation" class="fa"></i>
+                <a href="#/webupdates/myresources/overview">My resources</a>
+            </li>
             <li class="child" ng-class="{active: menu.webUpdatesExpanded}">
                 <i title="Expand sub navigation" class="fa fa-angle-right"></i>
                 <a href="#/">Create</a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem current" href="#/">Create an object</a>
+                        <a class="menuItem" ng-class="{current: menu.activeUrl === '/select'}" href="#/">Create an object</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="#/webupdates/create/person/self">Create maintainer and
+                        <a class="menuItem" ng-class="{current: menu.activeUrl === '/create/person/self'}" href="#/webupdates/create/person/self">Create maintainer and
                             person pair</a>
                     </li>
                 </ul>
@@ -45,7 +49,7 @@
                 <a href="#/fmp/">Passwords</a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem current" href="#/fmp/">Forgotten MNTNER password?</a>
+                        <a class="menuItem" ng-class="{current: menu.activeUrl === '/'}" href="#/fmp/">Forgotten MNTNER password?</a>
                     </li>
                     <li>
                         <a class="menuItem" href="/crypt/crypt.html">Password Generator</a>
@@ -56,8 +60,7 @@
     </div>
 </div>
 <div>
-    <div class="portlet margin-bottom grey grey-border">
-    </div>
+    <div class="portlet margin-bottom grey grey-border"></div>
 </div>
 
 <script type="text/javascript">

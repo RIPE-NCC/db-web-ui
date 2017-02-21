@@ -1,4 +1,6 @@
+/app/scripts/wizard/attrInfo.js
+/app/scripts/menu/*.js
+/app/scripts/myresources/*.js
 .baseDir.js
 .baseDir.ts
 .tscache/
-app/scripts/wizard/attrInfo.js
