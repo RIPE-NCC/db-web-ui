@@ -14,9 +14,6 @@
                         <a class="menuItem" href="/search/query.html">Query the RIPE Database</a>
                     </li>
                     <li>
-                        <a class="menuItem" ng-class="{current: menu.activeUrl === '/myresources/show'}" href="#/webupdates/myresources/show">Show my resources</a>
-                    </li>
-                    <li>
                         <a class="menuItem" href="/search/full-text.html">Full Text Search</a>
                     </li>
                     <li>
@@ -29,6 +26,10 @@
                         <a class="menuItem" href="/search/geolocation-finder.html">Geolocation Finder</a>
                     </li>
                 </ul>
+            </li>
+            <li class="child" ng-if="menu.isLirUser()" ng-class="{active: menu.myResourcesChosen}">
+                <i title="Expand sub navigation" class="fa"></i>
+                <a href="#/webupdates/myresources/overview">My resources</a>
             </li>
             <li class="child" ng-class="{active: menu.webUpdatesExpanded}">
                 <i title="Expand sub navigation" class="fa fa-angle-right"></i>
