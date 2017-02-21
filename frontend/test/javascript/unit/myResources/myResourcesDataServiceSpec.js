@@ -28,6 +28,8 @@ describe('testing MyResourcesDataService', function() {
             }, {}];
         });
 
-        service.populateIpv4Resources('ORG-IOB1-RIPE');
+        service.getIpv4Resources('ORG-IOB1-RIPE', new function(response) {
+            // TODO: test response
+        });
     });
 });

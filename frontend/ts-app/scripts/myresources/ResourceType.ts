@@ -1,9 +1,3 @@
-interface Ipv4Resource {
-    prefix: string;
-    status: string;
-    whoisQueryUrl: string;
-}
-
 interface IPv4ResourcesResponse {
     orgid: string;
     details: IPv4ResourceDetails[];
@@ -22,5 +16,5 @@ interface IPv4ResourceRange {
 }
 
 interface IMyResourcesDataService {
-    getIpv4Resources(): Ipv4Resource[];
+    getIpv4Resources(orgid: string, callback: {(response: IPv4ResourcesResponse): void}): void;
 }

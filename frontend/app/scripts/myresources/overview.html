@@ -10,9 +10,9 @@
         </thead>
         <tbody>
         <tr ng-repeat="resource in resources.ipv4Resources">
-            <td>{{ resource.prefix }}</td>
+            <td>{{ resource.range.slash }}</td>
             <td><code>{{ resource.status }}</code></td>
-            <td><a target="_blank" href="{{ resource.whoisQueryUrl }}">Edit</a></td>
+            <td><a target="_blank" href="/db-web-ui/#/webupdates/modify/ripe/inetnum/{{ resource.range.string }}">Edit</a></td>
         </tr>
         </tbody>
     </table>
