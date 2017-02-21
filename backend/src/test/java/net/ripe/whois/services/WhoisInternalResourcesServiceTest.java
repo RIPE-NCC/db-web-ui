@@ -24,7 +24,7 @@ public class WhoisInternalResourcesServiceTest {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    private final WhoisInternalResourcesService whoisInternalResourcesService = new WhoisInternalResourcesService(restTemplate, MOCK_HOST, API_KEY, "/");
+    private final WhoisInternalResourcesService whoisInternalResourcesService = new WhoisInternalResourcesService(restTemplate, MOCK_HOST, API_KEY);
 
     private MockRestServiceServer mockServer;
 
