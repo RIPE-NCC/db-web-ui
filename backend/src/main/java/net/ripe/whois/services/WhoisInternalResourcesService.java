@@ -34,8 +34,7 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
     public WhoisInternalResourcesService(
         final RestTemplate restTemplate,
         @Value("${internal.resources.api.url}") final String apiUrl,
-        @Value("${internal.resources.api.key}") final String apiKey,
-        @Value("${server.contextPath}") final String contextPath) {
+        @Value("${internal.resources.api.key}") final String apiKey) {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;
