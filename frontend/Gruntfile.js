@@ -47,7 +47,6 @@ module.exports = function (grunt) {
             default: {
                 tsconfig: true
             },
-            // default: {
             options: {
                 verbose: true
             }
@@ -55,7 +54,6 @@ module.exports = function (grunt) {
         focus: {
             livereloadServer: {
                 exclude: ['dist']
-
             }
         },
         // Watches files for changes and runs tasks based on the changed files
@@ -94,6 +92,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: [
+                    '.tstmp/**/*.{js,map}',
                     '<%= yeoman.app %>/scripts/{,*/}{,*/}*.js',
                     '<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}',
                     '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html'
@@ -486,6 +485,11 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>/index.html'
                 }, {
                     expand: true,
+                    cwd: '.tstmp',
+                    src: 'scripts/**/*.{js,map}',
+                    dest: '<%= yeoman.dist %>/'
+                }, {
+                    expand: true,
                     cwd: '.tmp/images/**',
                     dest: '<%= yeoman.dist %>/images/',
                     src: ['generated/*']
@@ -538,7 +542,6 @@ module.exports = function (grunt) {
         cacheBust: {
             options: {
                 baseDir: './<%= yeoman.dist %>',
-                //ignorePatterns: ['index_tmpl.html'],
                 encoding: 'utf8',
                 algorithm: 'md5',
                 length: 16,

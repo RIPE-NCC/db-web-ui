@@ -1,7 +1,8 @@
-/app/scripts/wizard/attrInfo.js
-/app/scripts/menu/*.js
-/app/scripts/myresources/*.js
-/app/scripts/dropdown/*.js
+.tmp/
+.tscache/
+.tstmp/
+node_modules/
+bower_components/
+dist/
 .baseDir.js
 .baseDir.ts
-.tscache/

@@ -13,13 +13,14 @@
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "rootDir": "./ts-app/",
-    "outDir": "./app"
+    "outDir": "./.tstmp"
   },
   "typeRoots": [
     "./node_modules/@types"
   ],
   "types": [
     "angular",
+    "angular-cookies",
     "lodash"
   ],
   "compileOnSave": true,
