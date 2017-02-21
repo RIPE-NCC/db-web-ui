@@ -1,0 +1,19 @@
+<section>
+    <h1>My Resources - IPv4</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>IP / Prefix</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="resource in resources.ipv4Resources">
+            <td>{{ resource.range.slash }}</td>
+            <td><code>{{ resource.status }}</code></td>
+            <td><a target="_blank" href="/db-web-ui/#/webupdates/modify/ripe/inetnum/{{ resource.range.string }}">Edit</a></td>
+        </tr>
+        </tbody>
+    </table>
+</section>

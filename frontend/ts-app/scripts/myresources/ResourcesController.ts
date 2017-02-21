@@ -1,10 +1,13 @@
 class ResourcesController {
-    public static $inject = ["$log", "IMyResourcesDataService"];
-    public ipv4Resources: Ipv4Resource[];
+    public static $inject = ["$log", "MyResourcesDataService"];
+    public ipv4Resources: IPv4ResourceDetails[];
 
     constructor(private $log: angular.ILogService,
-                private resourcesDataService: IMyResourcesDataService) {
-        this.ipv4Resources = this.resourcesDataService.getIpv4Resources();
+                private resourcesDataService: MyResourcesDataService) {
+        this.ipv4Resources = [];
+        this.resourcesDataService.getIpv4Resources('ORG-IOB1-RIPE', (response) => {
+            this.ipv4Resources = response.details;
+        });
     }
 }
 
