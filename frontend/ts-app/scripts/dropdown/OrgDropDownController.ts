@@ -1,16 +1,18 @@
-
 class OrgDropDownController {
-    public static $inject = ["$log", "$rootScope"];
-    public searchExpanded: boolean;
-    public webUpdatesExpanded: boolean;
-    public passwordsExpanded: boolean;
-    public activeUrl: string;
+    public static $inject = ["$log", "OrgDropDownDataService"];
+
+    public organisations: Organisation[];
 
     constructor(private $log: angular.ILogService,
-                private $rootScope: angular.IRootScopeService) {
+                private orgDropDownDataService: OrgDropDownDataService) {
+        let lirs = this.orgDropDownDataService.getLirs();
+        let orgs = this.orgDropDownDataService.getOrganisation();
 
+        let lirOrgs = lirs.map((lir) => {
+            return { id: lir.orgId, name: lir.regId + ", " + lir.organisationName } as Organisation;
+        });
 
-
+        this.organisations = lirOrgs.concat(orgs);
     }
 }
 

@@ -1,9 +1,9 @@
-interface Lir {
+interface Organisation {
     id: string;
     name: string;
 }
 
-interface Organisation {
+interface Lir {
     membershipId: number;
     regId: string;
     organisationName: string;
@@ -12,6 +12,6 @@ interface Organisation {
 }
 
 interface OrgDropDownDataService {
-    getOrganisations(): Organisation[];
     getLirs(): Lir[];
+    getOrganisation(): Organisation[];
 }
