@@ -29,14 +29,9 @@ public class ResourcesController {
 
     @RequestMapping(value = "/ipv4")
     public ResponseEntity getIpv4Resources(@RequestParam(value = "orgid") final String orgId) {
-
         try {
             return whoisInternalResourcesService.getIpv4Resources(orgId);
-
-        } catch (CrowdClientException e) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }  catch (RestClientException e) {
-            // No error message in response
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
