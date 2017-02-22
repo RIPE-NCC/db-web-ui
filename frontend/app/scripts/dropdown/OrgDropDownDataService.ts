@@ -18,7 +18,9 @@ class OrgDropDownDataServiceImpl implements OrgDropDownDataService {
             });
             let orgs: Organisation[] = lirOrgs.concat(o[1].data);
             callback(orgs);
-        })
+        }).catch((e) => {
+            console.error("Couldn't load organisations", e);
+        });
     }
 
     constructor(private $log: angular.ILogService,
