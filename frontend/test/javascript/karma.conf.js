@@ -54,10 +54,10 @@ module.exports = function (config) {
             'bower_components/moment/moment.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
-            'app/scripts/app.js',
-            'app/scripts/**/*Module.js',
-            'app/scripts/**/*States.js',
-            'app/scripts/**/*.js',
+            '.tstmp/scripts/app.js',
+            '.tstmp/scripts/**/*Module.js',
+            '.tstmp/scripts/**/*States.js',
+            '.tstmp/scripts/**/*.js',
             'test/javascript/unit/**/*.js'
         ],
 
