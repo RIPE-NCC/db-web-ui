@@ -2,7 +2,7 @@
 
 'use strict';
 
-describe('updates: MntnerService', function () {
+fdescribe('updates: MntnerService', function () {
     var subject, credentialServiceMock;
 
     beforeEach(module('updates'));
