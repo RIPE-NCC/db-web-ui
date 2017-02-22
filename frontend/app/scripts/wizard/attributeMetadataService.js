@@ -137,7 +137,7 @@
                         }
                     });
             }
-            // TODO: 'hidden' -- string and array
+            // TODO: 'hidden' - string and array
             return false;
         }
 

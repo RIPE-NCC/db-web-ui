@@ -4,5 +4,7 @@
 node_modules/
 bower_components/
 dist/
+instrumented/
+reports/
 .baseDir.js
 .baseDir.ts

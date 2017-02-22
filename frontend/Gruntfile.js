@@ -152,6 +152,7 @@ module.exports = function (grunt) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
                             serveStatic('instrumented'),
+                            serveStatic('.tstmp'),
                             serveStatic('.tmp'),
                             connect().use(
                                 '/bower_components',
@@ -472,7 +473,6 @@ module.exports = function (grunt) {
                     dest: '<%= yeoman.dist %>',
                     src: [
                         '*.{ico,png,txt,htaccess}',
-                        'scripts/{,*/}{,*/}*.js',
                         'scripts/{,*/}{,*/}*.html'
                     ]
                 }, {
@@ -626,7 +626,7 @@ module.exports = function (grunt) {
         instrument: {
             files: 'scripts/**/*.js',
             options: {
-                cwd: 'app',
+                cwd: '.tstmp',
                 lazy: true,
                 basePath: 'instrumented'
             }
