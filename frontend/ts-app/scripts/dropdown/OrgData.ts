@@ -12,6 +12,5 @@ interface Lir {
 }
 
 interface OrgDropDownDataService {
-    getLirs(): Lir[];
-    getOrganisation(): Organisation[];
+    loadOrgs(callback: (x: Organisation[]) => void): void;
 }

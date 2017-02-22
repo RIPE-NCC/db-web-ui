@@ -5,14 +5,11 @@ class OrgDropDownController {
 
     constructor(private $log: angular.ILogService,
                 private orgDropDownDataService: OrgDropDownDataService) {
-        let lirs = this.orgDropDownDataService.getLirs();
-        let orgs = this.orgDropDownDataService.getOrganisation();
 
-        let lirOrgs = lirs.map((lir) => {
-            return { id: lir.orgId, name: lir.regId + ", " + lir.organisationName } as Organisation;
+        let self = this;
+        this.orgDropDownDataService.loadOrgs(function (o: Organisation[]) {
+            self.organisations = o;
         });
-
-        this.organisations = lirOrgs.concat(orgs);
     }
 }
 

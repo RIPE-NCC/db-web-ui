@@ -1,42 +1,27 @@
+const CONTEXT_PATH: string = "/db-web-ui";
+
 class OrgDropDownDataServiceImpl implements OrgDropDownDataService {
 
-    getLirs(): Lir[] {
-        return [
-            {
-                membershipId: 3629,
-                regId: "nl.surfnet",
-                organisationName: "SURFnet bv",
-                serviceLevel: "NORMAL",
-                orgId: "ORG-Sb3-RIPE"
-            },
-            {
-                membershipId: 7347,
-                regId: "zz.example",
-                organisationName: "Internet Provider BV",
-                serviceLevel: "NORMAL",
-                orgId: "ORG-EIP1-RIPE"
-            }
-        ];
+    static $inject = ['$log', '$resource', '$q'];
+
+    loadOrgs(callback: (x: Organisation[]) => void): void {
+        let ls = this.$resource(CONTEXT_PATH + "/api/ba-apps/lirs").get();
+        let os = this.$resource(CONTEXT_PATH + "/api/ba-apps/organisations").query();
+
+        this.$q.all([ls.$promise, os.$promise]).then(function (o) {
+            let lirs: Lir[] = o[0].response.results;
+            let lirOrgs: Organisation[] = lirs.map((lir) => {
+                return {id: lir.orgId, name: lir.organisationName + " " + lir.regId} as Organisation;
+            });
+            let orgs: Organisation[] = lirOrgs.concat(o[1]);
+            callback(orgs);
+        })
     }
 
-    getOrganisation(): Organisation[] {
-        return [
-            {
-                id: "ORG-LW32-RIPE",
-                name: "Leo Woodward"
-            },
-            {
-                id: "ORG-AA802-RIPE",
-                name: "AOT-HOSTING"
-            }];
+    constructor(private $log: angular.ILogService,
+                private $resource: ng.resource.IResource,
+                private $q: ng.IQService) {
     }
-
-    public static $inject = ["$log"];
-
-    constructor(private $log: angular.ILogService) {
-
-    }
-
 }
 
 angular.module("dbWebApp").service("OrgDropDownDataService", OrgDropDownDataServiceImpl);
