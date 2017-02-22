@@ -6,7 +6,7 @@ var page = require('./homePageObject');
 /*
  * Tests...
  */
-describe('Modifying an organisation', function () {
+fdescribe('Modifying an organisation', function () {
     'use strict';
 
     describe('which is an LIR', function () {
