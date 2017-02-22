@@ -7,9 +7,7 @@ class OrgDropDownController {
                 private orgDropDownDataService: OrgDropDownDataService) {
 
         let self = this;
-        this.orgDropDownDataService.loadOrgs(function (o: Organisation[]) {
-            self.organisations = o;
-        });
+        this.orgDropDownDataService.loadOrgs((o: Organisation[]) => self.organisations = o);
     }
 }
 
