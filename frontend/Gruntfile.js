@@ -48,7 +48,7 @@ module.exports = function (grunt) {
                 tsconfig: true
             },
             options: {
-                verbose: true
+                verbose: false
             }
         },
         focus: {

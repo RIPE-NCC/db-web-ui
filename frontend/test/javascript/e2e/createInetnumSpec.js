@@ -41,6 +41,7 @@ describe('The inetnum editor', function () {
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys('213.159.160.0-213.159.190.255');
+        page.scrollIntoView(page.inpNetname);
         page.inpNetname.click();
         page.modalInpPassword.sendKeys('ERICSSON-MNT');
         page.modalInpAssociate.click();
@@ -68,6 +69,7 @@ describe('The inetnum editor', function () {
         page.selectObjectType('inetnum').click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys('213.159.160.0-213.159.190.255');
+        page.scrollIntoView(page.inpNetname);
         page.inpNetname.click();
         page.modalInpPassword.sendKeys('xxx');
         page.modalInpAssociate.click();
