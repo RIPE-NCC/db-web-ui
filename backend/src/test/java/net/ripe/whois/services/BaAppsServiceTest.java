@@ -1,6 +1,5 @@
 package net.ripe.whois.services;
 
-import net.ripe.db.whois.api.rest.client.RestClient;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,28 +31,28 @@ public class BaAppsServiceTest {
 
     @Test
     public void shouldReturnLirsForMembers() {
-        String json = checkJsonForSpecificReqType("member");
+        String json = "{ \"id\": \"ORG-BLA\"}";
+
+        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/authorisation-service/v2/notification/account/" + crowdToken + "/member?service-level=NORMAL,PENDING_CLOSURE"))
+            .andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
+
         assertEquals(json, baAppsService.getLirs(crowdToken));
     }
 
     @Test
     public void shouldReturnLirsForRipeDbOrgs() {
-        String json = checkJsonForSpecificReqType("ripe-db-orgs");
+        String json = "{ \"id\": \"ORG-BLA\"}";
+
+        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/authorisation-service/v2/notification/account/" + crowdToken + "/ripe-db-orgs"))
+            .andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
+
         assertEquals(json, baAppsService.getOrganisations(crowdToken));
     }
 
-    private String checkJsonForSpecificReqType(String type) {
-        String json = "{ \"id\": \"ORG-BLA\"}";
-
-        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/authorisation-service/v2/notification/account/" + crowdToken + "/" + type))
-            .andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
-
-        return json;
-    }
 
     @Test(expected = RestClientException.class)
     public void shouldCrashToReturnLirsForMembers() {
-        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/authorisation-service/v2/notification/account/" + crowdToken + "/member"))
+        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/authorisation-service/v2/notification/account/" + crowdToken + "/member?service-level=NORMAL,PENDING_CLOSURE"))
             .andRespond(withServerError());
 
         baAppsService.getLirs(crowdToken);
