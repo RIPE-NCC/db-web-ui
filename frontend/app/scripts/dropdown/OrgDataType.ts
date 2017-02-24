@@ -12,5 +12,5 @@ interface Lir {
 }
 
 interface OrgDropDownDataService {
-    loadOrgs(callback: (x: Organisation[]) => void): void;
+    getOrgs(): IPromise<Organisation[]>;
 }

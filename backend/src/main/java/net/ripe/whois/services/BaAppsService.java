@@ -18,6 +18,9 @@ public class BaAppsService implements ExchangeErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestService.class);
 
+    private static final String MEMBER = "member";
+    private static final String RIPE_DB_ORGS = "ripe-db-orgs";
+
     private final RestTemplate restTemplate;
     private final String baAppsUrl;
 
@@ -33,18 +36,18 @@ public class BaAppsService implements ExchangeErrorHandler {
     /**
      * @return JSON with the LIRs for a given user determined through the token passed.
      */
-    public String getLirs(String crowdToken) {
-        return getAccountData(crowdToken, "member");
+    public String getLirs(final String crowdToken) {
+        return getAccountData(crowdToken, MEMBER);
     }
 
     /**
      * @return JSON with the organisations for a given user determined through the token passed.
      */
-    public String getOrganisations(String crowdToken) {
-        return getAccountData(crowdToken, "ripe-db-orgs");
+    public String getOrganisations(final String crowdToken) {
+        return getAccountData(crowdToken, RIPE_DB_ORGS);
     }
 
-    private String getAccountData(String crowdToken, String type) {
+    private String getAccountData(final String crowdToken, final String type) {
         try {
             final ResponseEntity<String> response = restTemplate.exchange(
                 "{baAppsUrl}/authorisation-service/v2/notification/account/{crowdToken}/{type}",

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
+
 
 @RestController
 @RequestMapping("/api/ba-apps")
@@ -26,7 +28,7 @@ public class BaAppsController {
     }
 
     @RequestMapping(value = "/lirs", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getLirs(@CookieValue(value = "crowd.token_key") final String crowdToken) {
+    public ResponseEntity getLirs(@CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken) {
         try {
             final String json = baAppsService.getLirs(crowdToken);
 
@@ -42,7 +44,7 @@ public class BaAppsController {
     }
 
     @RequestMapping(value = "/organisations", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getOrganisations(@CookieValue(value = "crowd.token_key") final String crowdToken) {
+    public ResponseEntity getOrganisations(@CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken) {
         try {
             final String json = baAppsService.getOrganisations(crowdToken);
 

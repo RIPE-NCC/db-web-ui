@@ -7,7 +7,7 @@ class OrgDropDownController {
                 private orgDropDownDataService: OrgDropDownDataService) {
 
         let self = this;
-        this.orgDropDownDataService.loadOrgs((o: Organisation[]) => self.organisations = o);
+        this.orgDropDownDataService.getOrgs().then((o: Organisation[]) => self.organisations = o)
     }
 }
 
