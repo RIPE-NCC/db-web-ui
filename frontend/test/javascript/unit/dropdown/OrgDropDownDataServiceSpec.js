@@ -24,7 +24,7 @@ fdescribe('OrgDropDownDataService', function () {
         $httpBackend.whenGET('/db-web-ui/api/ba-apps/organisations').respond(function () {
             return [200, [{id: 'ORG-Sb3-RIPE', name: 'SURFnet bv nl.surfnet'}], {}];
         });
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs').respond(function () {
+        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs?service-level=NORMAL,PENDING_CLOSURE').respond(function () {
             return [200, {}, {}];
         });
 
@@ -39,7 +39,7 @@ fdescribe('OrgDropDownDataService', function () {
         $httpBackend.whenGET('/db-web-ui/api/ba-apps/organisations').respond(function () {
             return [200, [], {}];
         });
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs').respond(function () {
+        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs?service-level=NORMAL,PENDING_CLOSURE').respond(function () {
             return [200, {
                 response: {
                     status: 200,
@@ -64,7 +64,7 @@ fdescribe('OrgDropDownDataService', function () {
         $httpBackend.whenGET('/db-web-ui/api/ba-apps/organisations').respond(function () {
             return [200, {id: 'ORG-BLA1-RIPE', name: 'Some provider'}, {}];
         });
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs').respond(function () {
+        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs?service-level=NORMAL,PENDING_CLOSURE').respond(function () {
             return [200, {
                 response: {
                     status: 200,

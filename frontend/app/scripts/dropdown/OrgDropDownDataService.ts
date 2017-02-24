@@ -9,7 +9,10 @@ class OrgDropDownDataServiceImpl implements OrgDropDownDataService {
 
     getOrgs(): IPromise<Organisation[]> {
         // request LIR and organisation data in parallel
-        const ls: IHttpPromise<{data: any}> = this.$http.get(CONTEXT_PATH + "/api/ba-apps/lirs");
+        const ls: IHttpPromise<{data: any}> = this.$http.get(
+            CONTEXT_PATH + "/api/ba-apps/lirs",
+            {params: {"service-level": "NORMAL,PENDING_CLOSURE"}}
+        );
         const os: IHttpPromise<{data: any}> = this.$http.get(CONTEXT_PATH + "/api/ba-apps/organisations");
 
         const combined: IHttpPromise<{data: any}[]> = this.$q.all([ls, os]);
