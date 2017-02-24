@@ -18,8 +18,7 @@ public class BaAppsService implements ExchangeErrorHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestService.class);
 
-    private static final String MEMBER = "member";
-    private static final String RIPE_DB_ORGS = "ripe-db-orgs";
+    private static final String URL_PREFIX = "{baAppsUrl}/authorisation-service/v2/notification/account/{crowdToken}";
 
     private final RestTemplate restTemplate;
     private final String baAppsUrl;
@@ -37,24 +36,26 @@ public class BaAppsService implements ExchangeErrorHandler {
      * @return JSON with the LIRs for a given user determined through the token passed.
      */
     public String getLirs(final String crowdToken) {
-        return getAccountData(crowdToken, MEMBER);
+        final String url = URL_PREFIX + "/member?service-level=NORMAL,PENDING_CLOSURE";
+        return getAccountData(crowdToken, url);
     }
 
     /**
      * @return JSON with the organisations for a given user determined through the token passed.
      */
     public String getOrganisations(final String crowdToken) {
-        return getAccountData(crowdToken, RIPE_DB_ORGS);
+        final String url = URL_PREFIX + "/ripe-db-orgs";
+        return getAccountData(crowdToken, url);
     }
 
-    private String getAccountData(final String crowdToken, final String type) {
+    private String getAccountData(final String crowdToken, final String url) {
         try {
             final ResponseEntity<String> response = restTemplate.exchange(
-                "{baAppsUrl}/authorisation-service/v2/notification/account/{crowdToken}/{type}",
+                url,
                 HttpMethod.GET,
                 new HttpEntity<String>(withHeaders(MediaType.APPLICATION_JSON_VALUE)),
                 String.class,
-                withParams(crowdToken, type));
+                withParams(crowdToken));
 
             final String body = response.getBody();
             if (response.getStatusCode() != HttpStatus.OK) {
@@ -71,11 +72,10 @@ public class BaAppsService implements ExchangeErrorHandler {
         }
     }
 
-    private HashMap<String, Object> withParams(final String crowdToken, String type) {
+    private HashMap<String, Object> withParams(final String crowdToken) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("baAppsUrl", baAppsUrl);
         variables.put("crowdToken", crowdToken);
-        variables.put("type", type);
         return variables;
     }
 
