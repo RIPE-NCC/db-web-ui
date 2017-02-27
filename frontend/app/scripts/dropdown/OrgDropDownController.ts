@@ -2,7 +2,6 @@ class OrgDropDownController {
     public static $inject = ["$log", "OrgDropDownStateService", "$cookies"];
 
     public organisations: Organisation[];
-    public selectedOrg: {name: string, value: string};
     public modelOrgs: {name: string, value: string}[];
     private cookies: angular.cookies.ICookiesService;
 
@@ -22,25 +21,23 @@ class OrgDropDownController {
                 if (angular.isString(activeOrganisation) && activeOrganisation.length > 0) {
                     const found = this.modelOrgs.find((_o) => _o.value === activeOrganisation);
                     if (found) {
-                        this.selectedOrg = found;
+                        orgDropDownStateService.setSelectedOrg(found);
                     } else {
-                        this.selectedOrg = this.modelOrgs[0];
+                        orgDropDownStateService.setSelectedOrg(this.modelOrgs[0]);
                     }
                 } else {
-                    this.selectedOrg = this.modelOrgs[0];
+                    orgDropDownStateService.setSelectedOrg(this.modelOrgs[0]);
                 }
             }
 
             this.updateOrganisation();
         });
-
     }
 
-
     public updateOrganisation() {
-        if (this.selectedOrg) {
+        if (this.getSelectedOrg()) {
             this.cookies.put("activeMembershipId",
-                this.selectedOrg.value,
+                this.getSelectedOrg().value,
                 {path: "/", domain: ".ripe.net", secure: true});
         }
         //
