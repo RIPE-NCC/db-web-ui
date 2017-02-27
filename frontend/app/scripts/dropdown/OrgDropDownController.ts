@@ -17,14 +17,20 @@ class OrgDropDownController {
             self.modelOrgs = self.organisations.map((org) => {
                 return { name: org.name, value: org.activeOrg};
             });
+            self.modelOrgs = [];
 
-            const org = self.getSelectedOrganisation();
-            if (angular.isString(org) && org.length) {
-                self.selectedOrg = self.modelOrgs.find((_o) => _o.value === org);
-            } else if (self.modelOrgs.length > 0) {
-                self.selectedOrg = self.modelOrgs[0];
-            } else {
-                self.selectedOrg = undefined;
+            if (self.modelOrgs.length > 0) {
+                const activeOrganisation = self.getSelectedOrganisation();
+                if (angular.isString(activeOrganisation) && activeOrganisation.length > 0) {
+                    const found = self.modelOrgs.find((_o) => _o.value === activeOrganisation);
+                    if (found) {
+                        self.selectedOrg = found;
+                    } else {
+                        self.selectedOrg = self.modelOrgs[0];
+                    }
+                } else {
+                    self.selectedOrg = self.modelOrgs[0];
+                }
             }
 
             self.updateOrganisation();
