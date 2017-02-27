@@ -6,7 +6,7 @@ interface DbOrg {
 interface Organisation {
     orgId: string;
     name: string;
-    activeOrg: string;
+    activeOrg: string;      // TODO: [ES] rename to activeMembershipId or memberId
 }
 
 interface Lir {
