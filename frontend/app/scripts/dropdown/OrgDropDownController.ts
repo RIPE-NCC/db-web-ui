@@ -16,7 +16,6 @@ class OrgDropDownController {
             this.modelOrgs = this.organisations.map((org) => {
                 return { name: org.name, value: org.activeOrg};
             });
-            this.modelOrgs = [];
 
             if (this.modelOrgs.length > 0) {
                 const activeOrganisation = this.getSelectedOrganisation();
