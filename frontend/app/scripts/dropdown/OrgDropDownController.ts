@@ -38,6 +38,7 @@ class OrgDropDownController {
                 this.selectedOrg.value,
                 {path: "/", domain: ".ripe.net", secure: true});
         }
+        //
     }
 
     public getSelectedOrganisation(): string {

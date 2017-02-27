@@ -1,9 +1,8 @@
-<div id="org-dropdown" ng-controller="OrgDropDownController as dropdown" style="text-align: right; float: right;">
+<div ng-controller="OrgDropDownController as dropdown" class="pull-right">
     <label for="orgSelector">Select an organisation: </label>
     <select name="orgSelector" id="orgSelector"
             ng-change="dropdown.updateOrganisation()"
             ng-options="o.name for o in dropdown.modelOrgs"
             ng-model="dropdown.selectedOrg">
     </select>
-
 </div>
