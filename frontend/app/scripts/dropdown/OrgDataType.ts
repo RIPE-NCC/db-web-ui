@@ -20,3 +20,11 @@ interface Lir {
 interface OrgDropDownDataService {
     getOrgs(): IPromise<Organisation[]>;
 }
+
+interface OrgDropDownStateService {
+    getOrgs(): IPromise<Organisation[]>;
+
+    //getOrg(): Organisation;
+
+    //setOrg(orgId: Organisation|string): void;
+}
