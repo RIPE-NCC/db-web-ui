@@ -1,18 +1,9 @@
 <div id="org-dropdown" ng-controller="OrgDropDownController as dropdown" style="text-align: right; float: right;">
     <label for="orgSelector">Select an organisation: </label>
-    <!--<select name="orgSelector" id="orgSelector">-->
-        <!--<option ng-repeat="org in dropdown.organisations" value="{{org.id}}">{{org.name}}</option>-->
-    <!--</select>-->
-
-    <!--<select name="orgSelector" id="orgSelector" ng-change="dropdown.selectOrganisation">-->
-        <!--<option ng-selected="{{org.orgId === dropdown.selectedOrg.orgId}}"-->
-                <!--ng-repeat="org in dropdown.organisations"-->
-                <!--value="{{org.orgId}}">-->
-            <!--{{org.name}}-->
-        <!--</option>-->
-    <!--</select>-->
-
-    <select name="orgSelector" id="orgSelector" ng-change="dropdown.updateOrganisation()" ng-options="o.name for o in dropdown.modelOrgs" ng-model="dropdown.selectedOrgId">
+    <select name="orgSelector" id="orgSelector"
+            ng-change="dropdown.updateOrganisation()"
+            ng-options="o.name for o in dropdown.modelOrgs"
+            ng-model="dropdown.selectedOrg">
     </select>
 
 </div>

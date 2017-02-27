@@ -12,6 +12,7 @@ class OrgDropDownDataServiceImpl implements OrgDropDownDataService {
         const ls: IHttpPromise<{data: any}> = this.$http.get(CONTEXT_PATH + "/api/ba-apps/lirs");
         const os: IHttpPromise<{data: any}> = this.$http.get(CONTEXT_PATH + "/api/ba-apps/organisations");
 
+        const notEmpty = (s: string) => angular.isString(s) && s.length > 0;
         const combined: IHttpPromise<{data: any}[]> = this.$q.all([ls, os]);
 
         return combined.then((o) => {
@@ -24,9 +25,15 @@ class OrgDropDownDataServiceImpl implements OrgDropDownDataService {
             // LIR response has different structure and contains more data
             // than we need, so we map it here
             const lirOrgs: Organisation[] = lirs.map((lir) => {
-                return {orgId: lir.orgId,
-                    name: lir.organisationName + " " + lir.regId,
-                    activeOrg: lir.membershipId.toString()} as Organisation;
+                let orgName = notEmpty(lir.organisationName) ?
+                    (lir.organisationName + " " + lir.regId) :
+                    lir.regId;
+
+                return {
+                    orgId: lir.orgId,
+                    name: orgName,
+                    activeOrg: lir.membershipId.toString()
+                } as Organisation;
             });
             let organisations: Organisation[] = [];
             try {
