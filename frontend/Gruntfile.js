@@ -92,8 +92,8 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: [
-                    '.tstmp/**/*.{js,map}',
-                    '<%= yeoman.app %>/scripts/{,*/}{,*/}*.js',
+                    '.tstmp/scripts/{,*/}{,*/}*.js',
+                    // '<%= yeoman.app %>/scripts/{,*/}{,*/}*.js',
                     '<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}',
                     '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html'
                 ],
@@ -122,6 +122,7 @@ module.exports = function (grunt) {
                     open: false,
                     middleware: function (connect) {
                         return [
+                            serveStatic('.tstmp'),
                             serveStatic('.tmp'),
                             connect().use(
                                 '/bower_components',
