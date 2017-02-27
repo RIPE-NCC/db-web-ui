@@ -35,9 +35,9 @@ class OrgDropDownController {
     }
 
     public updateOrganisation() {
-        if (this.getSelectedOrg()) {
+        if (this.orgDropDownStateService.getSelectedOrg()) {
             this.cookies.put("activeMembershipId",
-                this.getSelectedOrg().value,
+                this.orgDropDownStateService.getSelectedOrg().value,
                 {path: "/", domain: ".ripe.net", secure: true});
         }
         //
