@@ -5,8 +5,10 @@ interface DbOrg {
 
 interface Organisation {
     orgId: string;
-    name: string;
-    activeOrg: string;      // TODO: [ES] rename to activeMembershipId or memberId
+    orgName: string;
+    memberId: number;
+    regId: string;
+    displayName: string; // Name shown in dropdown
 }
 
 interface Lir {
@@ -24,7 +26,7 @@ interface IOrgDropDownDataService {
 interface IOrgDropDownStateService {
     getOrgs(): IPromise<Organisation[]>;
 
-    getSelectedOrg(): {name: string, value: string};
+    getSelectedOrg(): Organisation;
 
-    setSelectedOrg(org: {name: string, value: string}): void;
+    setSelectedOrg(org: Organisation): void;
 }

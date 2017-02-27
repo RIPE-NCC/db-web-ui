@@ -30,6 +30,7 @@ class LeftMenuController {
     }
 
     public isLirUser()  {
+        // TODO: move this behind a service!
         return /^\d+$/.test(this.cookies.get("activeMembershipId"));
     }
 

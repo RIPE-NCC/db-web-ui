@@ -1,23 +1,28 @@
-
 class OrgDropDownStateService implements IOrgDropDownStateService {
 
-    static $inject = ["$log", "OrgDropDownDataService"];
+    public static $inject = ["$log", "OrgDropDownDataService"];
 
-    private selectedOrg: {name: string, value: string};
+    private organisations: Organisation[];
+    private selectedOrg: Organisation;
 
     constructor(private $log: angular.ILogService,
                 private orgDropDownDataService: IOrgDropDownDataService) {
     }
 
     public getOrgs(): IPromise<Organisation[]> {
-        return this.orgDropDownDataService.getOrgs();
+
+        return this.orgDropDownDataService.getOrgs().then((o: Organisation[]) => {
+            this.organisations = o;
+            return this.organisations;
+        });
     }
 
-    public getSelectedOrg(): {name: string, value: string} {
+    public getSelectedOrg(): Organisation {
+        // TODO: set the selected organization based on the cookie, otherwise choose the first one in the list
         return this.selectedOrg;
     }
 
-    public setSelectedOrg(org: {name: string, value: string}) {
+    public setSelectedOrg(org: Organisation) {
         this.selectedOrg = org;
     }
 }
