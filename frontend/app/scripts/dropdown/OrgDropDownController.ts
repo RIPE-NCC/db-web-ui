@@ -1,15 +1,15 @@
 class OrgDropDownController {
-    public static $inject = ["$log", "OrgDropDownStateService", "$cookies"];
+    public static $inject = ["$cookies", "$log", "$scope", "OrgDropDownStateService"];
 
     public organisations: Organisation[];
-    public modelOrgs: {name: string, value: string}[];
-    private cookies: angular.cookies.ICookiesService;
+    public selectedOrg: {name: string, value: string};
+    public modelOrgs: Array<{name: string, value: string}>;
 
-    constructor(private $log: angular.ILogService,
+    constructor(private $cookies: angular.cookies.ICookiesService,
+                private $log: angular.ILogService,
+                private $scope: angular.IScope,
                 private orgDropDownStateService: OrgDropDownStateService,
-                private $cookies: angular.cookies.ICookiesService) {
-
-        this.cookies = $cookies;
+                ) {
         this.orgDropDownStateService.getOrgs().then((o: Organisation[]) => {
             this.organisations = o;
             this.modelOrgs = this.organisations.map((org) => {
@@ -21,11 +21,14 @@ class OrgDropDownController {
                 if (angular.isString(activeOrganisation) && activeOrganisation.length > 0) {
                     const found = this.modelOrgs.find((_o) => _o.value === activeOrganisation);
                     if (found) {
+                        this.selectedOrg = found;
                         orgDropDownStateService.setSelectedOrg(found);
                     } else {
+                        this.selectedOrg = this.modelOrgs[0];
                         orgDropDownStateService.setSelectedOrg(this.modelOrgs[0]);
                     }
                 } else {
+                    this.selectedOrg = this.modelOrgs[0];
                     orgDropDownStateService.setSelectedOrg(this.modelOrgs[0]);
                 }
             }
@@ -35,16 +38,18 @@ class OrgDropDownController {
     }
 
     public updateOrganisation() {
-        if (this.orgDropDownStateService.getSelectedOrg()) {
-            this.cookies.put("activeMembershipId",
-                this.orgDropDownStateService.getSelectedOrg().value,
+        // TODO: [ES] move down to StateService, and also ALWAYS update the cookie
+        if (this.selectedOrg) {
+            this.orgDropDownStateService.setSelectedOrg(this.selectedOrg);
+            this.$cookies.put("activeMembershipId",
+                this.selectedOrg.value,
                 {path: "/", domain: ".ripe.net", secure: true});
+            this.$scope.$emit("organisation-changed-event", this.selectedOrg.value);
         }
-        //
     }
 
     public getSelectedOrganisation(): string {
-        return this.cookies.get("activeMembershipId");
+        return this.$cookies.get("activeMembershipId");
     }
 }
 
