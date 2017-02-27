@@ -3,7 +3,7 @@ import IPromise = angular.IPromise;
 
 const CONTEXT_PATH: string = "/db-web-ui";
 
-class OrgDropDownDataServiceImpl implements OrgDropDownDataService {
+class OrgDropDownDataService implements IOrgDropDownDataService {
 
     static $inject = ['$log', '$http', '$q'];
 
@@ -54,4 +54,4 @@ class OrgDropDownDataServiceImpl implements OrgDropDownDataService {
     }
 }
 
-angular.module("dbWebApp").service("OrgDropDownDataService", OrgDropDownDataServiceImpl);
+angular.module("dbWebApp").service("OrgDropDownDataService", OrgDropDownDataService);

@@ -1,12 +1,12 @@
 
-class OrgDropDownStateServiceImpl implements OrgDropDownStateService {
+class OrgDropDownStateService implements IOrgDropDownStateService {
 
-    static $inject = ['$log', 'OrgDropDownDataService'];
+    static $inject = ["$log", "OrgDropDownDataService"];
 
     private selectedOrg: {name: string, value: string};
 
     constructor(private $log: angular.ILogService,
-                private orgDropDownDataService: OrgDropDownDataService) {
+                private orgDropDownDataService: IOrgDropDownDataService) {
     }
 
     public getOrgs(): IPromise<Organisation[]> {
@@ -22,4 +22,4 @@ class OrgDropDownStateServiceImpl implements OrgDropDownStateService {
     }
 }
 
-angular.module("dbWebApp").service("OrgDropDownStateService", OrgDropDownStateServiceImpl);
+angular.module("dbWebApp").service("OrgDropDownStateService", OrgDropDownStateService);

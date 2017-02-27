@@ -1,26 +1,30 @@
 
 class MyResourcesDataService implements IMyResourcesDataService {
-    public static $inject = ["$log", "$http"];
+    public static $inject = ["$http", "$log", "$rootScope", "OrgDropDownStateService"];
 
-    constructor(private $log: angular.ILogService, private $http: ng.IHttpService) {
+    constructor(private $http: ng.IHttpService,
+                private $log: angular.ILogService,
+                private $rootScope: angular.IRootScopeService,
+                private orgDropDownStateService: IOrgDropDownStateService) {
+        $rootScope.$on("organisation-changed-event", (event: IAngularEvent, org: string) : void  => {
+            this.$log.info("MyResourcesDataService: event " + org);
+        });
     }
 
     public getIpv4Resources(orgid: string, callback: {(response: IPv4ResourcesResponse): void} ): void {
         this.$http({
-            method: 'GET',
-            url: 'api/resources/ipv4',
-            params: {
-                orgid: orgid
-            },
-            timeout: 10000
+            method: "GET",
+            params: { orgid },
+            timeout: 10000,
+            url: "api/resources/ipv4",
         })
         .then(
             (response: ng.IHttpPromiseCallbackArg<IPv4ResourcesResponse>) : void => {
-                console.log('success ipv4resources: ' + response.data.orgid);
+                this.$log.info("success ipv4resources: " + response.data.orgid);
                 callback(response.data);
             },
             (response: any) : void => {
-                console.log('get IPv4 Resources call failed: ' + response.statusText);
+                this.$log.info("get IPv4 Resources call failed: " + response.statusText);
             });
     }
 }

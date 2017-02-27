@@ -17,11 +17,11 @@ interface Lir {
     orgId: string;
 }
 
-interface OrgDropDownDataService {
+interface IOrgDropDownDataService {
     getOrgs(): IPromise<Organisation[]>;
 }
 
-interface OrgDropDownStateService {
+interface IOrgDropDownStateService {
     getOrgs(): IPromise<Organisation[]>;
 
     getSelectedOrg(): {name: string, value: string};

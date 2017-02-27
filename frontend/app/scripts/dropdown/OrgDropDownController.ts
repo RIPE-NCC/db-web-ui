@@ -1,5 +1,5 @@
 class OrgDropDownController {
-    public static $inject = ["$cookies", "$log", "$scope", "OrgDropDownStateService"];
+    public static $inject = ["$cookies", "$log", "$rootScope", "OrgDropDownStateService"];
 
     public organisations: Organisation[];
     public selectedOrg: {name: string, value: string};
@@ -7,7 +7,7 @@ class OrgDropDownController {
 
     constructor(private $cookies: angular.cookies.ICookiesService,
                 private $log: angular.ILogService,
-                private $scope: angular.IScope,
+                private $rootScope: angular.IRootScopeService,
                 private orgDropDownStateService: OrgDropDownStateService,
                 ) {
         this.orgDropDownStateService.getOrgs().then((o: Organisation[]) => {
@@ -44,7 +44,7 @@ class OrgDropDownController {
             this.$cookies.put("activeMembershipId",
                 this.selectedOrg.value,
                 {path: "/", domain: ".ripe.net", secure: true});
-            this.$scope.$emit("organisation-changed-event", this.selectedOrg.value);
+            this.$rootScope.$broadcast("organisation-changed-event", this.selectedOrg.value);
         }
     }
 
