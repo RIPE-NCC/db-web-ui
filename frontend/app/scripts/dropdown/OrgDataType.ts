@@ -1,6 +1,12 @@
-interface Organisation {
+interface DbOrg {
     id: string;
     name: string;
+}
+
+interface Organisation {
+    orgId: string;
+    name: string;
+    activeOrg: string;
 }
 
 interface Lir {

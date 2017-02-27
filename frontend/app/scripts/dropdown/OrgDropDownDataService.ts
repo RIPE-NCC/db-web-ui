@@ -24,15 +24,20 @@ class OrgDropDownDataServiceImpl implements OrgDropDownDataService {
             // LIR response has different structure and contains more data
             // than we need, so we map it here
             const lirOrgs: Organisation[] = lirs.map((lir) => {
-                return {id: lir.orgId, name: lir.organisationName + " " + lir.regId} as Organisation;
+                return {orgId: lir.orgId,
+                    name: lir.organisationName + " " + lir.regId,
+                    activeOrg: lir.membershipId.toString()} as Organisation;
             });
-            let dbOrgs = [];
+            let organisations: Organisation[] = [];
             try {
-                dbOrgs = o[1].data;
+                const dbOrgs: DbOrg[] = o[1].data;
+                organisations = dbOrgs.map((org) => {
+                    return {orgId: org.id, name: org.name, activeOrg: "org:" + org.id} as Organisation;
+                });
             } catch (e) {
             }
 
-            return lirOrgs.concat(dbOrgs);
+            return lirOrgs.concat(organisations);
         });
     }
 
