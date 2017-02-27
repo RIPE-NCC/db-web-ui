@@ -12,7 +12,7 @@
         <!--</option>-->
     <!--</select>-->
 
-    <select name="orgSelector" id="orgSelector" ng-change="dropdown.selectOrganisation" ng-options="dropdown.modelOrgs" ng-model="dropdown.selectedOrgId">
+    <select name="orgSelector" id="orgSelector" ng-change="dropdown.updateOrganisation()" ng-options="o.name for o in dropdown.modelOrgs" ng-model="dropdown.selectedOrgId">
     </select>
 
 </div>

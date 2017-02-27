@@ -26,12 +26,12 @@ class OrgDropDownController {
             self.modelOrgs = self.organisations.map((org) => {
                 return { name: org.name, value: org.activeOrg};
             });
-            self.selectOrganisation();
+            self.updateOrganisation();
         });
 
     }
 
-    public selectOrganisation() {
+    public updateOrganisation() {
         this.cookies.put("activeMembershipId",
             this.selectedOrgId,
             {domain: ".ripe.net", secure: true});
