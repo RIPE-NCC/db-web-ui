@@ -31,7 +31,7 @@ class OrgDropDownStateService implements IOrgDropDownStateService {
         } else if (/^\d+$/.test(activeMembershipId)) {
             // Cookie contains reg ID for an LIR
             this.selectedOrg = _.find(this.organisations, (org: Organisation) => {
-                return activeMembershipId === org.regId;
+                return activeMembershipId === org.memberId;
             });
         } else {
             // Cookie contains and end-user org id
@@ -48,7 +48,7 @@ class OrgDropDownStateService implements IOrgDropDownStateService {
     public setSelectedOrg(org: Organisation) {
         this.selectedOrg = org;
         this.$cookies.put("activeMembershipId",
-            org.regId ? org.regId : "org:" + org.orgId,
+            org.regId ? org.memberId : "org:" + org.orgId,
             {path: "/", domain: ".ripe.net", secure: true});
 
     }
