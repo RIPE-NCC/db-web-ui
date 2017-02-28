@@ -1,7 +1,7 @@
 /*global beforeEach,describe,expect,inject,it*/
 'use strict';
 
-fdescribe('LeftMenuController', function () {
+describe('LeftMenuController', function () {
 
     var controller;
     var returnCode = '123';
