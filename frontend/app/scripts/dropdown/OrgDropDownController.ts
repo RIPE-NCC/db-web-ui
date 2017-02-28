@@ -11,13 +11,13 @@ class OrgDropDownController {
             this.orgDropDownStateService.getOrgs().then((o: Organisation[]) => {
                 this.organisations = o;
                 this.selectedOrg = this.orgDropDownStateService.getSelectedOrg();
+                this.$rootScope.$broadcast("organisation-changed-event", this.selectedOrg);
             });
     }
 
     public updateOrganisation() {
         this.orgDropDownStateService.setSelectedOrg(this.selectedOrg);
         this.$rootScope.$broadcast("organisation-changed-event", this.selectedOrg);
-
     }
 
 }

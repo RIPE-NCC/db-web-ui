@@ -3,10 +3,14 @@ class ResourcesController {
     public ipv4Resources: IPv4ResourceDetails[];
 
     constructor(private $log: angular.ILogService,
+                private $rootScope: angular.IRootScopeService,
                 private resourcesDataService: MyResourcesDataService) {
+
         this.ipv4Resources = [];
-        this.resourcesDataService.getIpv4Resources('ORG-IOB1-RIPE', (response) => {
-            this.ipv4Resources = response.details;
+        $rootScope.$on("organisation-changed-event", (event: IAngularEvent, selectedOrg: Organisation) => {
+            this.resourcesDataService.getIpv4Resources(selectedOrg.orgId, (response) => {
+                this.ipv4Resources = response.details;
+            });
         });
     }
 }
