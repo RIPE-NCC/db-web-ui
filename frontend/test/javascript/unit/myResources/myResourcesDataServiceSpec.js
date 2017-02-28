@@ -1,3 +1,4 @@
+/*global beforeEach,describe,inject,it*/
 'use strict';
 
 describe('testing MyResourcesDataService', function() {
@@ -28,7 +29,7 @@ describe('testing MyResourcesDataService', function() {
             }, {}];
         });
 
-        service.getIpv4Resources('ORG-IOB1-RIPE', new function(response) {
+        service.getIpv4Resources('ORG-IOB1-RIPE').then(function(response) {
             // TODO: test response
         });
     });
