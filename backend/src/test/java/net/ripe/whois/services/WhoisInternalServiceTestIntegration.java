@@ -19,6 +19,7 @@ public class WhoisInternalServiceTestIntegration extends AbstractTestIntegration
     public static void beforeClass() {
         AbstractTestIntegration.beforeClass();
         System.setProperty("internal.api.url", getMockServerUrl());
+        System.setProperty("ba-apps.api.url", getMockServerUrl());
         System.setProperty("internal.api.key", "123");
         System.setProperty("internal.resources.api.url", getMockServerUrl());
         System.setProperty("internal.resources.api.key", "123");

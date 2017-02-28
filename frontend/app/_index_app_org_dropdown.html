@@ -1,0 +1,13 @@
+<div ng-controller="OrgDropDownController as dropdown" class="pull-right">
+    <div ng-show="dropdown.organisations.length == 1">
+        You are viewing organisation: {{dropdown.selectedOrg.displayName}}
+    </div>
+    <div ng-show="dropdown.organisations.length > 1">
+        <label for="orgSelector">Select an organisation: </label>
+        <select name="orgSelector" id="orgSelector"
+                ng-change="dropdown.updateOrganisation()"
+                ng-options="o.displayName for o in dropdown.organisations"
+                ng-model="dropdown.selectedOrg">
+        </select>
+    </div>
+</div>

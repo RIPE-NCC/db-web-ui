@@ -46,19 +46,14 @@ public class WhoisRestService implements ExchangeErrorHandler {
         headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
 
         return handleErrors(() -> {
-                if (body == null) {
-                    return restTemplate.exchange(
-                        uri,
-                        HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                        new HttpEntity<>(headers),
-                        String.class);
-                } else {
-                    return restTemplate.exchange(
-                        uri,
-                        HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                        new HttpEntity<>(body, headers),
-                        String.class);
-                }
+                HttpEntity entity = body != null ?
+                    new HttpEntity<>(body, headers) :
+                    new HttpEntity<>(headers);
+                return restTemplate.exchange(
+                    uri,
+                    HttpMethod.valueOf(request.getMethod().toUpperCase()),
+                    entity,
+                    String.class);
             },
             (HttpStatusCodeException e) -> {
                 if (e instanceof HttpClientErrorException) {

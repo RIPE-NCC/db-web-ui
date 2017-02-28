@@ -1,27 +1,19 @@
-
+import IHttpPromiseCallback = angular.IHttpPromiseCallback;
 class MyResourcesDataService implements IMyResourcesDataService {
-    public static $inject = ["$log", "$http"];
+    public static $inject = ["$http", "$log", "$rootScope", "OrgDropDownStateService"];
 
-    constructor(private $log: angular.ILogService, private $http: ng.IHttpService) {
+    constructor(private $http: ng.IHttpService,
+                private $log: angular.ILogService,
+                private $rootScope: angular.IRootScopeService) {
     }
 
-    public getIpv4Resources(orgid: string, callback: {(response: IPv4ResourcesResponse): void} ): void {
-        this.$http({
-            method: 'GET',
-            url: 'api/resources/ipv4',
-            params: {
-                orgid: orgid
-            },
-            timeout: 10000
-        })
-        .then(
-            (response: ng.IHttpPromiseCallbackArg<IPv4ResourcesResponse>) : void => {
-                console.log('success ipv4resources: ' + response.data.orgid);
-                callback(response.data);
-            },
-            (response: any) : void => {
-                console.log('get IPv4 Resources call failed: ' + response.statusText);
-            });
+    public getIpv4Resources(orgid: string): IPromise<IPv4ResourcesResponse> {
+        return this.$http({
+            method: "GET",
+            params: {orgid},
+            timeout: 10000,
+            url: "api/resources/ipv4",
+        });
     }
 }
 
