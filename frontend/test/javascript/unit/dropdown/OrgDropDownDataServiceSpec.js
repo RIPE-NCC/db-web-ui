@@ -1,6 +1,7 @@
+/*global afterEach,beforeEach,describe,expect,it*/
 'use strict';
 
-fdescribe('OrgDropDownDataService', function () {
+describe('OrgDropDownDataService', function () {
 
     beforeEach(module('dbWebApp'));
 

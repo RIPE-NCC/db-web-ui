@@ -1,3 +1,5 @@
+import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
+
 class ResourcesController {
     public static $inject = ["$log", "$scope", "MyResourcesDataService"];
     public ipv4Resources: IPv4ResourceDetails[];
@@ -8,9 +10,10 @@ class ResourcesController {
 
         this.ipv4Resources = [];
         $scope.$on("organisation-changed-event", (event: IAngularEvent, selectedOrg: Organisation) => {
-            this.resourcesDataService.getIpv4Resources(selectedOrg.orgId, (response) => {
-                this.ipv4Resources = response.details;
-            });
+            this.resourcesDataService.getIpv4Resources(selectedOrg.orgId)
+                .then((response: IHttpPromiseCallbackArg<IPv4ResourcesResponse>) => {
+                    this.ipv4Resources = response.data.details;
+                });
         });
     }
 }

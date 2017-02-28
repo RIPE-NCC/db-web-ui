@@ -1,8 +1,8 @@
 import IAngularEvent = angular.IAngularEvent;
 
 class LeftMenuController {
-    public static $inject = ["$log", "$rootScope", "OrgDropDownStateService", "$cookies"];
-    public searchExpanded: boolean;
+    public static $inject = ["$log", "$rootScope", "OrgDropDownStateService"];
+    // public searchExpanded: boolean;
     public webUpdatesExpanded: boolean;
     public myResourcesChosen: boolean;
     public passwordsExpanded: boolean;
@@ -12,10 +12,9 @@ class LeftMenuController {
 
     constructor(private $log: angular.ILogService,
                 private $rootScope: angular.IRootScopeService,
-                private orgDropDownStateService: OrgDropDownStateService,
-                private cookies: angular.cookies.ICookiesService) {
+                private orgDropDownStateService: OrgDropDownStateService) {
 
-        $rootScope.$on("$stateChangeSuccess", (event: IAngularEvent, toState: {name: string, url: string}) => {
+        $rootScope.$on("$stateChangeSuccess", (event: IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
             this.clearStates();
             if (toState.name.indexOf("webupdates.myresources") === 0) {
