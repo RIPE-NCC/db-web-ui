@@ -1,6 +1,6 @@
 <div ng-controller="OrgDropDownController as dropdown" class="pull-right">
     <div ng-show="dropdown.organisations.length == 1">
-        You are viewing organisation: {{dropdown.selectedOrg.orgName}}
+        You are viewing organisation: {{dropdown.selectedOrg.displayName}}
     </div>
     <div ng-show="dropdown.organisations.length > 1">
         <label for="orgSelector">Select an organisation: </label>
