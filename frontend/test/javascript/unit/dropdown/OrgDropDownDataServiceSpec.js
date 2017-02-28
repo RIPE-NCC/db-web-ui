@@ -22,14 +22,14 @@ fdescribe('OrgDropDownDataService', function () {
 
     it('Populate organisations from only Whois', function () {
         $httpBackend.whenGET('/db-web-ui/api/ba-apps/organisations').respond(function () {
-            return [200, [{id: 'ORG-Sb3-RIPE', name: 'SURFnet bv nl.surfnet'}], {}];
+            return [200, [{displayName: 'SURFnet bv nl.surfnet', memberId: 'org:ORG-Sb3-RIPE', orgId: 'ORG-Sb3-RIPE', orgName: 'SURFnet bv nl.surfnet', regId: null}], {}];
         });
         $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs').respond(function () {
             return [200, {}, {}];
         });
 
         service.getOrgs().then(function (data) {
-            expect(data).toEqual([{id: 'ORG-Sb3-RIPE', name: 'SURFnet bv nl.surfnet'}]);
+            expect(data).toEqual([{displayName: undefined, memberId: 'org:undefined', orgId: undefined, orgName: undefined, regId: null}]);
         });
 
         $httpBackend.flush();
@@ -54,9 +54,9 @@ fdescribe('OrgDropDownDataService', function () {
         });
 
         service.getOrgs().then(function (data) {
-            expect(data).toEqual([{id: 'ORG-Sb3-RIPE', name: 'SURFnet bv nl.surfnet'}]);
-        });
+            expect(data).toEqual([{displayName: 'SURFnet bv nl.surfnet', memberId: '3629', orgId: 'ORG-Sb3-RIPE', orgName: 'SURFnet bv', regId: 'nl.surfnet'}]);
 
+        });
         $httpBackend.flush();
     });
 
@@ -89,9 +89,8 @@ fdescribe('OrgDropDownDataService', function () {
 
         service.getOrgs().then(function (data) {
             expect(data).toEqual([
-                {id: 'ORG-Sb3-RIPE', name: 'SURFnet bv nl.surfnet'},
-                {id: 'ORG-EIP1-RIPE', name: 'Internet Provider BV zz.example'},
-                {id: 'ORG-BLA1-RIPE', name: 'Some provider'}
+                {displayName: 'SURFnet bv nl.surfnet', memberId: '3629', orgId: 'ORG-Sb3-RIPE', orgName: 'SURFnet bv', regId: 'nl.surfnet'},
+                {displayName: 'Internet Provider BV zz.example', memberId: '7347', orgId: 'ORG-EIP1-RIPE', orgName: 'Internet Provider BV', regId: 'zz.example'},
             ]);
         });
 

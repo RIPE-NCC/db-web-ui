@@ -1,7 +1,7 @@
 import IAngularEvent = angular.IAngularEvent;
 
 class LeftMenuController {
-    public static $inject = ["$log", "$rootScope", "$cookies"];
+    public static $inject = ["$log", "$rootScope", "OrgDropDownStateService", "$cookies"];
     public searchExpanded: boolean;
     public webUpdatesExpanded: boolean;
     public myResourcesChosen: boolean;
@@ -9,11 +9,11 @@ class LeftMenuController {
     public activeUrl: string;
     // has an id just of digit in case of LIR, otherwise contain letters too
     public activeMembershipId: string;
-    public cookies: angular.cookies.ICookiesService;
 
     constructor(private $log: angular.ILogService,
                 private $rootScope: angular.IRootScopeService,
-                private $cookies: angular.cookies.ICookiesService) {
+                private orgDropDownStateService: OrgDropDownStateService,
+                private cookies: angular.cookies.ICookiesService) {
 
         $rootScope.$on("$stateChangeSuccess", (event: IAngularEvent, toState: {name: string, url: string}) => {
             this.activeUrl = toState.url;
@@ -26,12 +26,11 @@ class LeftMenuController {
                 this.passwordsExpanded = true;
             }
         });
-        this.cookies = $cookies;
     }
 
     public isLirUser()  {
-        // TODO: move this behind a service!
-        return /^\d+$/.test(this.cookies.get("activeMembershipId"));
+        const org = this.orgDropDownStateService.getSelectedOrg();
+        return org ? /^\d+$/.test(org.memberId.toString()) : false;
     }
 
     private clearStates() {

@@ -6,7 +6,7 @@ interface DbOrg {
 interface Organisation {
     orgId: string;
     orgName: string;
-    memberId: number;
+    memberId: string;
     regId: string;
     displayName: string; // Name shown in dropdown
 }

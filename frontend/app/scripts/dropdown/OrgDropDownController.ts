@@ -7,21 +7,36 @@ class OrgDropDownController {
     constructor(private $cookies: angular.cookies.ICookiesService,
                 private $log: angular.ILogService,
                 private $rootScope: angular.IRootScopeService,
-                private orgDropDownStateService: OrgDropDownStateService,) {
-        this.orgDropDownStateService.getOrgs().then((o: Organisation[]) => {
-            this.organisations = o;
+                private orgDropDownStateService: OrgDropDownStateService) {
 
-            // TODO : read the selected organization based on the cookie
-            this.selectedOrg = o && o.length ? o[0] : null;
-        });
+            this.orgDropDownStateService.getOrgs().then((o: Organisation[]) => {
+                this.organisations = o;
+
+                const activeMembershipId = this.$cookies.get("activeMembershipId");
+
+                if (activeMembershipId) {
+                    // select organisation from cookie
+                    const finded = o.find((org) => org.memberId.toString() === activeMembershipId);
+                    this.$log.info("finded " + finded);
+                    this.selectedOrg = finded;
+                    this.orgDropDownStateService.setSelectedOrg(finded);
+                } else {
+                    this.selectedOrg = o && o.length ? o[0] : null;
+                    this.orgDropDownStateService.setSelectedOrg(this.selectedOrg);
+                    // update cookies
+                    this.$cookies.put("activeMembershipId",
+                        this.selectedOrg.memberId.toString(),
+                        {path: "/", domain: ".ripe.net", secure: true});
+
+                }
+            });
     }
 
     public updateOrganisation() {
-        // TODO: [ES] move down to StateService, and also ALWAYS up date the cookie
         this.orgDropDownStateService.setSelectedOrg(this.selectedOrg);
-        // this.$cookies.put("activeMembershipId",
-        //     selectedOrg.value,
-        //     {path: "/", domain: ".ripe.net", secure: true});
+        this.$cookies.put("activeMembershipId",
+            this.selectedOrg.memberId.toString(),
+            {path: "/", domain: ".ripe.net", secure: true});
         this.$rootScope.$broadcast("organisation-changed-event", this.selectedOrg);
 
     }

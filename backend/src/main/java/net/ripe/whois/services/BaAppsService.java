@@ -45,7 +45,7 @@ public class BaAppsService implements ExchangeErrorHandler {
      */
     public String getOrganisations(final String crowdToken) {
         final String url = URL_PREFIX + "/ripe-db-orgs";
-        return "[]"; //;getAccountData(crowdToken, url);
+        return getAccountData(crowdToken, url);
     }
 
     private String getAccountData(final String crowdToken, final String url) {

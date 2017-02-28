@@ -1,6 +1,6 @@
 class OrgDropDownStateService implements IOrgDropDownStateService {
 
-    public static $inject = ["$log", "OrgDropDownDataService"];
+    public static $inject = ["$log", "OrgDropDownDataService", "$cookies"];
 
     private organisations: Organisation[];
     private selectedOrg: Organisation;
@@ -18,7 +18,6 @@ class OrgDropDownStateService implements IOrgDropDownStateService {
     }
 
     public getSelectedOrg(): Organisation {
-        // TODO: set the selected organization based on the cookie, otherwise choose the first one in the list
         return this.selectedOrg;
     }
 

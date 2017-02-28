@@ -26,7 +26,7 @@ class OrgDropDownDataService implements IOrgDropDownDataService {
             const lirOrgs: Organisation[] = lirs.map((lir) => {
                 return {
                     displayName: (lir.organisationName ? lir.organisationName + " " + lir.regId : lir.regId),
-                    memberId: lir.membershipId,
+                    memberId: lir.membershipId.toString(),
                     orgId: lir.orgId,
                     orgName: lir.organisationName,
                     regId: lir.regId,
@@ -38,7 +38,7 @@ class OrgDropDownDataService implements IOrgDropDownDataService {
                 organisations = dbOrgs.map((org) => {
                     return {
                         displayName: org.name,
-                        memberId: null,
+                        memberId: "org:" + org.id,
                         orgId: org.id,
                         orgName: org.name,
                         regId: null,
