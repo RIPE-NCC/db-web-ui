@@ -1,4 +1,4 @@
-/*global afterEach,beforeEach,describe,expect,it*/
+/*global afterEach,beforeEach,describe,expect,inject,it*/
 'use strict';
 
 describe('OrgDropDownDataService', function () {
@@ -46,9 +46,9 @@ describe('OrgDropDownDataService', function () {
                     status: 200,
                     results: [{
                         membershipId: 3629,
-                        regId: "nl.surfnet",
-                        organisationName: "SURFnet bv",
-                        orgId: "ORG-Sb3-RIPE"
+                        regId: 'nl.surfnet',
+                        organisationName: 'SURFnet bv',
+                        orgId: 'ORG-Sb3-RIPE'
                     }]
                 }
             }, {}];
@@ -71,17 +71,17 @@ describe('OrgDropDownDataService', function () {
                     status: 200,
                     results: [{
                         membershipId: 3629,
-                        regId: "nl.surfnet",
-                        organisationName: "SURFnet bv",
-                        serviceLevel: "NORMAL",
-                        orgId: "ORG-Sb3-RIPE",
+                        regId: 'nl.surfnet',
+                        organisationName: 'SURFnet bv',
+                        serviceLevel: 'NORMAL',
+                        orgId: 'ORG-Sb3-RIPE',
                         billingPhase: 0
                     }, {
                         membershipId: 7347,
-                        regId: "zz.example",
-                        organisationName: "Internet Provider BV",
-                        serviceLevel: "NORMAL",
-                        orgId: "ORG-EIP1-RIPE",
+                        regId: 'zz.example',
+                        organisationName: 'Internet Provider BV',
+                        serviceLevel: 'NORMAL',
+                        orgId: 'ORG-EIP1-RIPE',
                         billingPhase: 0
                     }]
                 }

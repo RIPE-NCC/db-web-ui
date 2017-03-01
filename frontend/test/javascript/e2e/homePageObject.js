@@ -90,6 +90,9 @@ module.exports = {
     modalSplashBtn: element(by.id('modal-splash-button')),
     modalSplashText: element(by.css('[uib-modal-window]')).element(by.css('h1')),
 
+    orgSelector: element(by.id('orgSelector')),
+    orgSelectorOptions: element(by.id('orgSelector')).all(by.css('option')),
+
     /**
      * Experimental support for iMacros scripts.
      *
