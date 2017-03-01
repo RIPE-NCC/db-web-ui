@@ -1,20 +1,23 @@
 import IHttpPromise = angular.IHttpPromise;
 import IPromise = angular.IPromise;
 
-const CONTEXT_PATH: string = "/db-web-ui";
-
 class OrgDropDownDataService implements IOrgDropDownDataService {
 
     public static $inject = ["$log", "$http", "$q"];
 
+    constructor(private $log: angular.ILogService,
+                private $http: ng.IHttpService,
+                private $q: ng.IQService) {
+    }
+
     public getOrgs(): IPromise<Organisation[]> {
         // request LIR and organisation data in parallel
-        const ls: IHttpPromise<{data: any}> = this.$http.get(CONTEXT_PATH + "/api/ba-apps/lirs");
-        const os: IHttpPromise<{data: any}> = this.$http.get(CONTEXT_PATH + "/api/ba-apps/organisations");
+        const ls: IHttpPromise<{data: any}> = this.$http.get("api/ba-apps/lirs");
+        const os: IHttpPromise<{data: any}> = this.$http.get("api/ba-apps/organisations");
 
-        const combined: IHttpPromise<{data: any}[]> = this.$q.all([ls, os]);
+        const combined: IHttpPromise<Array<{data: any}>> = this.$q.all([ls, os]);
 
-        return combined.then((o) => {
+        return combined.then((o: Array<{data: any}>) => {
             let lirs: Lir[] = [];
             try {
                 lirs = o[0].data.response.results;
@@ -47,16 +50,11 @@ class OrgDropDownDataService implements IOrgDropDownDataService {
             } catch (e) {
                 // todo
             }
-
             // TODO: sort the list now that's it's concatenated
             return lirOrgs.concat(organisations);
         });
     }
 
-    constructor(private $log: angular.ILogService,
-                private $http: ng.IHttpService,
-                private $q: ng.IQService) {
-    }
 }
 
 angular.module("dbWebApp").service("OrgDropDownDataService", OrgDropDownDataService);

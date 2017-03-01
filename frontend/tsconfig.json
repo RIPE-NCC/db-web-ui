@@ -1,20 +1,21 @@
 {
+  "compileOnSave": true,
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
+    "allowJs": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowJs": true,
     "lib": [
       "es2015",
       "dom"
     ],
+    "module": "commonjs",
+    "moduleResolution": "node",
     "noImplicitAny": true,
-    "suppressImplicitAnyIndexErrors": true,
+    "outDir": "./.tstmp",
     "rootDir": "./app",
-    "outDir": "./.tstmp"
+    "sourceMap": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "target": "es5"
   },
   "typeRoots": [
     "./node_modules/@types"
@@ -25,7 +26,6 @@
     "angular-ui-router",
     "lodash"
   ],
-  "compileOnSave": true,
   "include": [
     "./app/**/*.js",
     "./app/**/*.ts"
