@@ -22,10 +22,10 @@ describe('OrgDropDownDataService', function () {
     });
 
     it('Populate organisations from only Whois', function () {
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/organisations').respond(function () {
+        $httpBackend.whenGET('api/ba-apps/organisations').respond(function () {
             return [200, [{displayName: 'SURFnet bv nl.surfnet', memberId: 'org:ORG-Sb3-RIPE', orgId: 'ORG-Sb3-RIPE', orgName: 'SURFnet bv nl.surfnet', regId: null}], {}];
         });
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs').respond(function () {
+        $httpBackend.whenGET('api/ba-apps/lirs').respond(function () {
             return [200, {}, {}];
         });
 
@@ -37,10 +37,10 @@ describe('OrgDropDownDataService', function () {
     });
 
     it('Populate organisations from only LIRs', function () {
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/organisations').respond(function () {
+        $httpBackend.whenGET('api/ba-apps/organisations').respond(function () {
             return [200, [], {}];
         });
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs').respond(function () {
+        $httpBackend.whenGET('api/ba-apps/lirs').respond(function () {
             return [200, {
                 response: {
                     status: 200,
@@ -62,10 +62,10 @@ describe('OrgDropDownDataService', function () {
     });
 
     it('Populate organisations from both sources', function () {
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/organisations').respond(function () {
+        $httpBackend.whenGET('api/ba-apps/organisations').respond(function () {
             return [200, {id: 'ORG-BLA1-RIPE', name: 'Some provider'}, {}];
         });
-        $httpBackend.whenGET('/db-web-ui/api/ba-apps/lirs').respond(function () {
+        $httpBackend.whenGET('api/ba-apps/lirs').respond(function () {
             return [200, {
                 response: {
                     status: 200,
