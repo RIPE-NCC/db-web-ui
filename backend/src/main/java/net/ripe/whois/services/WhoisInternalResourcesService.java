@@ -1,7 +1,5 @@
 package net.ripe.whois.services;
 
-// proxy for e.g. http://int-dev.db.ripe.net/api/resources/ipv4/ORG-IOB1-RIPE.json?apiKey=DB-WHOIS-fe91223ec3a27c24
-
 import com.google.common.collect.Maps;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import org.slf4j.Logger;
