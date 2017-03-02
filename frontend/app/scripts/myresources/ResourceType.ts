@@ -6,13 +6,12 @@ interface IPv4ResourcesResponse {
 interface IPv4ResourceDetails {
     range: IPv4ResourceRange;
     status: string;
+    netname: string;
 }
 
 interface IPv4ResourceRange {
     string: string;
     slash: string;
-    start: number;
-    end: number;
 }
 
 interface IMyResourcesDataService {
