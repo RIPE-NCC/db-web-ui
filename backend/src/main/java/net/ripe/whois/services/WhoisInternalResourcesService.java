@@ -39,10 +39,10 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
     }
 
     public ResponseEntity<String> getIpv4Resources(String orgId) {
-        // fetch as xml
+
         final ResponseEntity<String> response;
         try {
-            response = restTemplate.exchange("{apiUrl}/{path}/{orgId}.json?apiKey={apiKey}",
+            response = restTemplate.exchange("{apiUrl}/{path}/{orgId}?apiKey={apiKey}",
                 HttpMethod.GET,
                 new HttpEntity<String>(withHeaders(MediaType.APPLICATION_JSON_VALUE)),
                 String.class,
