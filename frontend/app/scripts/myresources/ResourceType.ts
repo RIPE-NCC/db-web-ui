@@ -15,5 +15,5 @@ interface IPv4ResourceRange {
 }
 
 interface IMyResourcesDataService {
-    getIpv4Resources(orgid: string, callback: {(response: IPv4ResourcesResponse): void}): void;
+    getIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
 }

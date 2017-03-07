@@ -26,7 +26,7 @@ interface IOrgDropDownDataService {
 interface IOrgDropDownStateService {
     getOrgs(): IPromise<Organisation[]>;
 
-    getSelectedOrg(): Organisation;
+    getSelectedOrg(): IPromise<Organisation>;
 
     setSelectedOrg(org: Organisation): void;
 }

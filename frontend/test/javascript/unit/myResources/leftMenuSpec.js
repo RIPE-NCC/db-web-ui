@@ -4,6 +4,7 @@
 describe('LeftMenuController', function () {
 
     var controller;
+    var rootScope;
     var returnCode = '123';
     var orgDropDownStateService = {
         getSelectedOrg: function () {
@@ -16,6 +17,7 @@ describe('LeftMenuController', function () {
     beforeEach(module('dbWebApp'));
 
     beforeEach(inject(function (_$rootScope_, $controller) {
+        rootScope = _$rootScope_;
         controller = $controller('LeftMenuController', {
             $log: null,
             $rootScope: _$rootScope_
@@ -24,15 +26,10 @@ describe('LeftMenuController', function () {
     }));
 
     it('should check if is LIR user in cookie', function () {
-        expect(controller.isLirUser()).toBe(true);
-        returnCode = 'org:123123';
-        expect(controller.isLirUser()).toBe(false);
+        rootScope.$broadcast('organisation-changed-event', { memberId: '123'});
+        expect(controller.isLirSelected).toBe(true);
+        rootScope.$broadcast('organisation-changed-event', { memberId: 'org:123123'});
+        expect(controller.isLirSelected).toBe(false);
     });
 
-    it('should initialized all menu items', function () {
-        controller.clearStates();
-        expect(controller.myResourcesChosen).toBe(false);
-        expect(controller.webUpdatesExpanded).toBe(false);
-        expect(controller.passwordsExpanded).toBe(false);
-    });
 });

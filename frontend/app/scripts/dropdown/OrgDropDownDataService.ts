@@ -50,8 +50,9 @@ class OrgDropDownDataService implements IOrgDropDownDataService {
             } catch (e) {
                 // todo
             }
-            // TODO: sort the list now that's it's concatenated
-            return lirOrgs.concat(organisations);
+            return lirOrgs.concat(organisations).sort((a: Organisation, b: Organisation): number => {
+                return a.displayName.localeCompare(b.displayName);
+            });
         });
     }
 

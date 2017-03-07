@@ -5,8 +5,8 @@
     <div ng-show="dropdown.organisations.length > 1">
         <label for="orgSelector">Select an organisation: </label>
         <select name="orgSelector" id="orgSelector"
-                ng-change="dropdown.updateOrganisation()"
-                ng-options="o.displayName for o in dropdown.organisations"
+                ng-change="dropdown.organisationSelected()"
+                ng-options="org.displayName for org in dropdown.organisations track by org.id"
                 ng-model="dropdown.selectedOrg">
         </select>
     </div>
