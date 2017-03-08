@@ -29,7 +29,7 @@ public class WhoisInternalResourcesServiceTest {
     private MockRestServiceServer mockServer;
 
     public String testURL(String orgId) {
-        return String.format("%s/%s/%s.json?apiKey=%s", MOCK_HOST, IPV4_RESOURCES_PATH, orgId, API_KEY);
+        return String.format("%s/%s/%s?apiKey=%s", MOCK_HOST, IPV4_RESOURCES_PATH, orgId, API_KEY);
     }
 
     @Before
