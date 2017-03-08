@@ -41,6 +41,7 @@ public class WhoisInternalService implements ExchangeErrorHandler {
     private final String apiKey;
     private final String contextPath;
 
+    // TODO: [ES] replace internal.api properties with separate key per API path
     @Autowired
     public WhoisInternalService(
             final RestTemplate restTemplate,
