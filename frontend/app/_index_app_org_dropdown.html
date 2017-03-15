@@ -1,12 +1,12 @@
-<div ng-controller="OrgDropDownController as dropdown" class="pull-right">
+<div ng-controller="OrgDropDownController as dropdown" class="pull-right" ng-cloak>
     <div ng-show="dropdown.organisations.length == 1">
         You are viewing organisation: {{dropdown.selectedOrg.displayName}}
     </div>
     <div ng-show="dropdown.organisations.length > 1">
-        <label for="orgSelector">Select an organisation: </label>
-        <select name="orgSelector" id="orgSelector"
+        <label for="organisation-selector">Select an organisation: </label>
+        <select name="orgSelector" id="organisation-selector"
                 ng-change="dropdown.organisationSelected()"
-                ng-options="org.displayName for org in dropdown.organisations track by org.id"
+                ng-options="org.displayName for org in dropdown.organisations track by org.displayName"
                 ng-model="dropdown.selectedOrg">
         </select>
     </div>

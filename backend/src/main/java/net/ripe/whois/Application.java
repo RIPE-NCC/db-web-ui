@@ -95,8 +95,6 @@ public class Application implements AsyncConfigurer {
         LOGGER.info("ripe.search.queryUrl:       {}", environment.getProperty("ripe.search.queryUrl"));
         LOGGER.info("internal.api.url:           {}", environment.getProperty("internal.api.url"));
         LOGGER.info("internal.api.key:           {}", environment.getProperty("internal.api.key"));
-        LOGGER.info("internal.resources.api.url: {}", environment.getProperty("internal.resources.api.url"));
-        LOGGER.info("internal.resources.api.key: {}", environment.getProperty("internal.resources.api.key"));
         LOGGER.info("crowd.rest.url:             {}", environment.getProperty("crowd.rest.url"));
         LOGGER.info("crowd.rest.user:            {}", environment.getProperty("crowd.rest.user"));
         LOGGER.info("crowd.rest.password:        {}", String.format("%sxxxxx", environment.getProperty("crowd.rest.password").substring(0, 2)));

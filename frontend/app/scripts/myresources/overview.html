@@ -1,19 +1,35 @@
-<section>
-    <h1>My Resources - IPv4</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>IP / Prefix</th>
-            <th>Status</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="resource in resources.ipv4Resources">
-            <td>{{ resource.range.slash }}</td>
-            <td><code>{{ resource.status }}</code></td>
-            <td><a target="_blank" href="/db-web-ui/#/webupdates/modify/ripe/inetnum/{{ resource.range.string }}">Edit</a></td>
-        </tr>
-        </tbody>
-    </table>
+<section class="my-resources">
+    <div class="row">
+        <div class="col-md-4">
+            <h4>{{ resources.isShowingSponsored ? "Sponsored" : "My"}} Resources</h4>
+        </div>
+        <div class="col-md-8" ng-show="resources.hasSponsoredResources">
+            <button
+                    id="btn-toggle-sponsored"
+                    class="blue-button pull-right"
+                    ng-click="resources.sponsoredResourcesClicked()">
+                Switch to {{ resources.isShowingSponsored ? "My" : "Sponsored" }} Resources
+            </button>
+        </div>
+    </div>
+
+    <section>
+        <uib-tabset class="nav-tabs">
+            <uib-tab name="ipv4Tab" index="0" heading="IPv4">
+                <div class="resource-list" ng-repeat="resource in resources.ipv4Resources">
+                    <resource-item item="resource"></resource-item>
+                </div>
+            </uib-tab>
+            <uib-tab name="ipv6Tab" index="1" heading="IPv6">
+                <div class="resource-list" ng-repeat="resource in resources.ipv6Resources">
+                    <resource-item item="resource"></resource-item>
+                </div>
+            </uib-tab>
+            <uib-tab name="asnTab" index="2" heading="ASN">
+                <div class="resource-list" ng-repeat="resource in resources.asnResources">
+                    <resource-item item="resource"></resource-item>
+                </div>
+            </uib-tab>
+        </uib-tabset>
+    </section>
 </section>

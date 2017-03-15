@@ -1,4 +1,416 @@
 {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=inetnum": {
+    "data": {
+      "sponsoringOrgId": "ORG-Sb3-RIPE",
+      "resources": [
+        {
+          "type": "INETNUM",
+          "resource": "129.125.0.0 - 129.125.255.255",
+          "status": "LEGACY",
+          "netname": "RUGNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "130.112.0.0 - 130.112.255.255",
+          "status": "LEGACY",
+          "netname": "ECN-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "130.161.0.0 - 130.161.255.255",
+          "status": "LEGACY",
+          "netname": "DUNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "137.120.0.0 - 137.120.255.255",
+          "status": "LEGACY",
+          "netname": "MAASNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "137.224.0.0 - 137.224.255.255",
+          "status": "LEGACY",
+          "netname": "WUR-net"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "156.83.0.0 - 156.83.255.255",
+          "status": "LEGACY",
+          "netname": "ERASMUCMC-LAN"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.16.193.0 - 192.16.193.255",
+          "status": "LEGACY",
+          "netname": "CWI-NET-193"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.16.198.0 - 192.16.198.255",
+          "status": "LEGACY",
+          "netname": "CWI-NET-198"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "193.176.235.0 - 193.176.235.255",
+          "status": "ASSIGNED PI",
+          "netname": "KNAWNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.13.16.0 - 194.13.31.255",
+          "status": "ASSIGNED PI",
+          "netname": "INSPECTIEOW"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "134.221.0.0 - 134.221.255.255",
+          "status": "LEGACY",
+          "netname": "TNO-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "193.177.167.0 - 193.177.167.255",
+          "status": "ASSIGNED PI",
+          "netname": "OUH-JANUS"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.13.88.0 - 194.13.103.255",
+          "status": "ASSIGNED PI",
+          "netname": "RYNSTATE"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "131.155.0.0 - 131.155.255.255",
+          "status": "LEGACY",
+          "netname": "TUENET1"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.104.124.0 - 194.104.125.255",
+          "status": "ASSIGNED PI",
+          "netname": "AMPHIA-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.26.8.0 - 194.26.15.255",
+          "status": "ASSIGNED PI",
+          "netname": "PTH-NL"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.43.212.0 - 192.43.212.255",
+          "status": "LEGACY",
+          "netname": "TNO-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.55.105.0 - 192.55.105.255",
+          "status": "LEGACY",
+          "netname": "TNO-FEL"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.79.224.0 - 194.79.239.255",
+          "status": "ASSIGNED PI",
+          "netname": "KMR-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.42.114.0 - 192.42.114.255",
+          "status": "LEGACY",
+          "netname": "NKI"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "146.50.0.0 - 146.50.255.255",
+          "status": "LEGACY",
+          "netname": "UVANET2"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.53.0.0 - 194.53.0.255",
+          "status": "ASSIGNED PI",
+          "netname": "METEONET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.16.183.0 - 192.16.183.255",
+          "status": "LEGACY",
+          "netname": "WCW-LAN"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.104.224.0 - 194.104.239.255",
+          "status": "ASSIGNED PI",
+          "netname": "SWETS01"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.53.88.0 - 194.53.95.255",
+          "status": "ASSIGNED PI",
+          "netname": "ELISABETH"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "132.229.0.0 - 132.229.255.255",
+          "status": "LEGACY",
+          "netname": "RUL-NL"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.104.240.0 - 194.104.255.255",
+          "status": "ASSIGNED PI",
+          "netname": "HM-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "136.231.0.0 - 136.231.255.255",
+          "status": "LEGACY",
+          "netname": "DELTARES-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "131.211.0.0 - 131.211.255.255",
+          "status": "LEGACY",
+          "netname": "SOLIS-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "141.252.0.0 - 141.252.255.255",
+          "status": "LEGACY",
+          "netname": "NHLNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "131.174.0.0 - 131.174.255.255",
+          "status": "LEGACY",
+          "netname": "NUNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "137.56.0.0 - 137.56.255.255",
+          "status": "LEGACY",
+          "netname": "UVTNET-B"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "131.224.0.0 - 131.224.255.255",
+          "status": "LEGACY",
+          "netname": "RIVMNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "130.89.0.0 - 130.89.255.255",
+          "status": "LEGACY",
+          "netname": "UTNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "134.203.0.0 - 134.203.255.255",
+          "status": "LEGACY",
+          "netname": "TNO-NET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "131.180.0.0 - 131.180.255.255",
+          "status": "LEGACY",
+          "netname": "DUNET"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.31.171.0 - 192.31.171.255",
+          "status": "LEGACY",
+          "netname": "EUTEX"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.42.124.0 - 192.42.124.255",
+          "status": "LEGACY",
+          "netname": "DIFFER"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.42.126.0 - 192.42.126.255",
+          "status": "LEGACY",
+          "netname": "DIFFER"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.42.127.0 - 192.42.127.255",
+          "status": "LEGACY",
+          "netname": "DIFFER"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "91.223.21.0 - 91.223.21.255",
+          "status": "ASSIGNED PI",
+          "netname": "NCIA"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.13.112.0 - 194.13.119.255",
+          "status": "ASSIGNED PI",
+          "netname": "AZN-NET"
+        }
+      ]
+    }
+  },
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=inet6num": {
+    "data": {
+      "sponsoringOrgId": "ORG-Sb3-RIPE",
+      "resources": [
+        {
+          "type": "INET6NUM",
+          "resource": "2001:67c:2c::/48",
+          "status": "ASSIGNED PI",
+          "netname": "METEOCONNET-IPv6"
+        },
+        {
+          "type": "INET6NUM",
+          "resource": "2001:67c:1a00::/42",
+          "status": "ASSIGNED PI",
+          "netname": "NC3A-NET"
+        },
+        {
+          "type": "INET6NUM",
+          "resource": "2001:67c:3d0::/48",
+          "status": "ASSIGNED PI",
+          "netname": "ZNB-NET"
+        },
+        {
+          "type": "INET6NUM",
+          "resource": "2001:67c:2564::/48",
+          "status": "ASSIGNED PI",
+          "netname": "UTNET-IPv6"
+        },
+        {
+          "type": "INET6NUM",
+          "resource": "2001:67c:262c::/48",
+          "status": "ASSIGNED PI",
+          "netname": "DUO-NET"
+        }
+      ]
+    }
+  },
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=aut-num": {
+    "data": {
+      "sponsoringOrgId": "ORG-Sb3-RIPE",
+      "resources": [
+        {
+          "type": "AUT_NUM",
+          "resource": "AS3317",
+          "status": "ASSIGNED",
+          "netname": "UNSPECIFIED"
+        },
+        {
+          "type": "AUT_NUM",
+          "resource": "AS1888",
+          "status": "ASSIGNED",
+          "netname": "CWI-NL"
+        }
+      ]
+    }
+  },
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inetnum": {
+    "data": {
+      "orgId": "ORG-Sb3-RIPE",
+      "resources": [
+        {
+          "type": "INETNUM",
+          "resource": "194.104.0.0 - 194.104.0.255",
+          "status": "ASSIGNED PI",
+          "netname": "SN-IP"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "194.171.0.0 - 194.171.255.255",
+          "status": "ALLOCATED PA",
+          "netname": "NL-SURFNET-950612"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "195.169.0.0 - 195.169.255.255",
+          "status": "ALLOCATED PA",
+          "netname": "NL-SURFNET-970616"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "192.87.0.0 - 192.87.255.255",
+          "status": "LEGACY",
+          "netname": "NL-SURFNET-20030715"
+        }
+      ]
+    }
+  },
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inet6num": {
+    "data": {
+      "orgId": "ORG-Sb3-RIPE",
+      "resources": [
+        {
+          "type": "INET6NUM",
+          "resource": "2001:610::/32",
+          "status": "ALLOCATED-BY-RIR",
+          "netname": "NL-SURFNET-19990819"
+        },
+        {
+          "type": "INET6NUM",
+          "resource": "2001:67c:6ec::/48",
+          "status": "ASSIGNED PI",
+          "netname": "onweer6"
+        }
+      ]
+    }
+  },
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=aut-num": {
+    "data": {
+      "orgId": "ORG-Sb3-RIPE",
+      "resources": [
+        {
+          "type": "AUT_NUM",
+          "resource": "AS196613",
+          "status": "ASSIGNED",
+          "netname": "SURFNET-NL"
+        }
+      ]
+    }
+  },
+  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&type=inetnum": {
+    "data": {
+      "orgId": "ORG-WA56-RIPE",
+      "resources": [
+        {
+          "type": "INETNUM",
+          "resource": "193.58.0.48 - 193.58.0.55",
+          "status": "ASSIGNED PI",
+          "netname": "WHAT-A-MESH-ANYCAST-DNS"
+        },
+        {
+          "type": "INETNUM",
+          "resource": "185.169.96.0 - 185.169.99.255",
+          "status": "ALLOCATED PA",
+          "netname": "PT-HOMEHOST-20160923"
+        }
+      ]
+    }
+  },
+  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&type=inet6num": {
+    "data": {}
+  },
+  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&type=aut-num": {
+    "data": {}
+  },
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=inetnum": {
+    "data":[]
+  },
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=inet6num": {
+    "data":[]
+  },
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=aut-num": {
+    "data":[]
+  },
   "api/ba-apps/lirs": {
     "data": {
       "response": {
@@ -40,116 +452,8 @@
       {
         "id": "ORG-WA56-RIPE",
         "name": "Rop Gonggrijp"
-      },
-      {
-        "id": "ORG-SA1838-RIPE",
-        "name": "Stoyda Anton"
-      },
-      {
-        "id": "ORG-JA88-RIPE",
-        "name": "Jacob Appelbaum"
-      },
-      {
-        "id": "ORG-QCEG2-RIPE",
-        "name": "Quality Communications Ettlingen GmbH"
-      },
-      {
-        "id": "ORG-SN249-RIPE",
-        "name": "Some name"
-      },
-      {
-        "id": "ORG-JF16-RIPE",
-        "name": "jhgdhs fjhgsdf"
-      },
-      {
-        "id": "ORG-QCEG3-RIPE",
-        "name": "Quality Communications Ettlingen GmbH"
-      },
-      {
-        "id": "ORG-ABC11-RIPE",
-        "name": "Stoyda Anton"
-      },
-      {
-        "id": "ORG-UA302-RIPE",
-        "name": "UHuuuu"
-      },
-      {
-        "id": "ORG-SO73-RIPE",
-        "name": "some org"
-      },
-      {
-        "id": "ORG-NT18-RIPE",
-        "name": "Netco Technology BV"
-      },
-      {
-        "id": "ORG-QCEG1-RIPE",
-        "name": "Quality Communications Ettlingen GmbH"
       }
     ]
-  },
-  "api/resources/ipv4?orgid=ORG-JA88-RIPE": {
-    "data": {
-      "orgid": "ORG-JA88-RIPE",
-      "details": [
-        {
-          "range": {
-            "string": "91.208.34.0 - 91.208.34.255",
-            "slash": "91.208.34.0/24",
-            "start": 1540366848,
-            "end": 1540367103
-          },
-          "status": "ASSIGNED PI"
-        }
-      ]
-    }
-  },
-  "api/resources/ipv4?orgid=ORG-SN249-RIPE": {
-    "data": {
-      "orgid": "ORG-JA88-RIPE",
-      "details": [
-        {
-          "range": {
-            "string": "91.208.34.0 - 91.208.34.255",
-            "slash": "91.208.34.0/24",
-            "start": 1540366848,
-            "end": 1540367103
-          },
-          "status": "ASSIGNED PI"
-        }
-      ]
-    }
-  },
-  "api/resources/ipv4?orgid=ORG-EIP1-RIPE": {
-    "data": {
-      "orgid": "ORG-JA88-RIPE",
-      "details": [
-        {
-          "range": {
-            "string": "91.208.34.0 - 91.208.34.255",
-            "slash": "91.208.34.0/24",
-            "start": 1540366848,
-            "end": 1540367103
-          },
-          "status": "ASSIGNED PI"
-        }
-      ]
-    }
-  },
-  "api/resources/ipv4?orgid=ORG-Sb3-RIPE": {
-    "data": {
-      "orgid": "ORG-JA88-RIPE",
-      "details": [
-        {
-          "range": {
-            "string": "91.208.34.0 - 91.208.34.255",
-            "slash": "91.208.34.0/24",
-            "start": 1540366848,
-            "end": 1540367103
-          },
-          "status": "ASSIGNED PI"
-        }
-      ]
-    }
   },
   "api/dns/status?ignore404=true&ns=ns.xs4all.nl&record=110.17.212.in-addr.arpa": {
     "status": 200,

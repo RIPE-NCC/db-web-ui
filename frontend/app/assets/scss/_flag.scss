@@ -1,0 +1,53 @@
+//NOT DUPLICATED COLORS - this are colors for flags
+%grey-flag {
+    background-color: $grey;
+    border-color: $dark-grey;
+    color: $dark-grey-cr;
+}
+%green-flag {
+    background-color: $lighter-green;
+    border-color: $light-green;
+    color: $dark-green;
+}
+%orange-flag {
+    background-color: $orange-lighter;
+    border-color: $orange-light;
+    color: $orange;
+}
+%red-flag {
+    background-color: $lighter-red;
+    border-color: $light-red;
+    color: $dark-red;
+}
+// Flags
+flag {
+    span {
+        @extend %float-l;
+        margin-right: 5px;
+        background-color: #fff;
+        display: inline-block;
+        padding: 0px 5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 13px;
+        border: 1px solid;
+    }
+}
+flag.grey {
+    span {
+        @extend %grey-flag;
+        width: fit-content;
+        width: fit-content;
+        max-width: 150px;
+    }
+}
+flag.green {
+    span {
+        @extend %green-flag;
+        width: fit-content;
+        width: fit-content;
+        max-width: 150px;
+    }
+}

@@ -20,7 +20,7 @@ describe('The organisation drop-down box', function () {
     it('should be shown when a user has an LIR', function () {
         expect(page.orgSelector.isPresent()).toEqual(true);
         page.orgSelector.click();
-        expect (page.orgSelectorOptions.count()).toBe(15);
+        expect (page.orgSelectorOptions.count()).toBe(4);
     });
 
 });

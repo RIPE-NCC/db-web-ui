@@ -1,3 +1,26 @@
+//Variables
+$brd-color: #E0E0E0;
+
+$grey: #f1f1f1;
+$dark-grey: #e6e6e6;
+$dark-grey-cr:#777;
+
+$dark-red: #A94442;
+$light-red: #DCA7A7;
+$lighter-red: #F2DEDE;
+
+$dark-green: #5EA942;
+$light-green: #B2E5A3;
+$lighter-green: #E5F2DE;
+
+$orange: #ECA911;
+$orange-light: #E5D1A3;
+$orange-lighter: #FFF3D8;
+
+$white: #FFF;
+$black: #000;
+$link: #00ABAB;
+
 %float-l {
 	float: left;
 }
@@ -19,6 +42,24 @@
 %no-pad-top {
     padding-top: 0 !important;
 }
+%no-pad {
+    padding: 0 !important;
+}
 %mar-top-10 {
     margin-top: 10px;
+}
+%green {
+	background-color: $lighter-green;
+	border-color: $light-green;
+	color: $dark-green;
+}
+%orange {
+	background-color: $orange-lighter;
+	border-color: $orange-light;
+	color: $orange;
+}
+%red {
+	background-color: $lighter-red;
+	border-color: $light-red;
+	color: $dark-red;
 }

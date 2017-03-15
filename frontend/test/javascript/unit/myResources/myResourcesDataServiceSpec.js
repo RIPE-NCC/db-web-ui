@@ -14,7 +14,7 @@ describe('testing MyResourcesDataService', function() {
     }));
 
     it('Populate IPv4 Resources', function() {
-        $httpBackend.expectGET('api/resources/ipv4?orgid=ORG-IOB1-RIPE').respond(function() {
+        $httpBackend.expectGET('api/whois-internal/api/resources/ipv4?orgid=ORG-IOB1-RIPE').respond(function() {
             return [200, {
                 orgid:'ORG-IOB1-RIPE',
                 details:[{
@@ -27,10 +27,6 @@ describe('testing MyResourcesDataService', function() {
                     status:'ALLOCATED PA'
                 }]
             }, {}];
-        });
-
-        service.getIpv4Resources('ORG-IOB1-RIPE').then(function(response) {
-            // TODO: test response
         });
     });
 });

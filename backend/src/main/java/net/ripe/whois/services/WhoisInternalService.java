@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -144,21 +145,13 @@ public class WhoisInternalService implements ExchangeErrorHandler {
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
-        final StringBuilder builder = new StringBuilder(apiUrl)
-            .append(request.getRequestURI()
+        return UriComponentsBuilder.fromHttpUrl(apiUrl)
+            .path(request.getRequestURI()
                 .replace("/api/whois-internal", "")
                 .replace(contextPath, ""))
-            .append("?apiKey=").append(apiKey);
-
-        if (StringUtils.isNotBlank(request.getQueryString())) {
-            builder
-                .append('?')
-                .append(request.getQueryString());
-        }
-
-        LOGGER.debug("uri = {}", builder.toString());
-
-        return new URI(builder.toString());
+            .replaceQuery(request.getQueryString())
+            .queryParam("apiKey", apiKey)
+            .build().toUri();
     }
 
 }

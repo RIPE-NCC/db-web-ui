@@ -90,8 +90,15 @@ module.exports = {
     modalSplashBtn: element(by.id('modal-splash-button')),
     modalSplashText: element(by.css('[uib-modal-window]')).element(by.css('h1')),
 
-    orgSelector: element(by.id('orgSelector')),
-    orgSelectorOptions: element(by.id('orgSelector')).all(by.css('option')),
+    orgSelector: element(by.id('organisation-selector')),
+    orgSelectorOptions: element(by.id('organisation-selector')).all(by.css('option')),
+
+    //My resources
+    myResources: element(by.css('.my-resources')),
+    myResourcesActiveTabLabel: element(by.css('.my-resources')).element(by.css('.nav-item.active')),
+    myResourcesActiveTabContent: element(by.css('.my-resources')).element(by.css('.tab-pane.active')),
+    myResourcesActiveTabRows: element(by.css('.my-resources')).element(by.css('.tab-pane.active')).all(by.css('resource-item')),
+    btnToggleSponsoredResources: element(by.css('#btn-toggle-sponsored')),
 
     /**
      * Experimental support for iMacros scripts.
@@ -147,11 +154,11 @@ module.exports = {
     },
 
     selectFromList: function (listElement, itemValue) {
-        return listElement.element(by.css('option[label=' + itemValue + ']'));
+        return listElement.element(by.css('option[label="' + itemValue + '"]'));
     },
 
     selectObjectType: function (itemValue) {
-        return element(by.id('objectTypeSelector')).element(by.css('option[label=' + itemValue + ']'));
+        return element(by.id('objectTypeSelector')).element(by.css('option[label="' + itemValue + '"]'));
     },
 
     takeScreenshot: function (/*optional string*/ imageName) {

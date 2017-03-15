@@ -19,37 +19,37 @@ class OrgDropDownStateService implements IOrgDropDownStateService {
 
     public getSelectedOrg(): IPromise<Organisation> {
         return this.getOrgs().then((organisations: Organisation[]) => {
-            if (this.selectedOrg) {
-                return this.selectedOrg;
-            }
+
             const activeMembershipId = this.$cookies.get("activeMembershipId");
-            if (!activeMembershipId) {
-                // If there's not cookie, use the first one in the list
-                this.selectedOrg = this.organisations && this.organisations.length && this.organisations[0];
-                if (this.selectedOrg) {
-                    this.setSelectedOrg(this.selectedOrg);
-                }
-            } else if (/^\d+$/.test(activeMembershipId)) {
-                // Cookie contains reg ID for an LIR
-                this.selectedOrg = _.find(this.organisations, (org: Organisation) => {
-                    return activeMembershipId === org.memberId;
-                });
-            } else {
-                // Cookie contains and end-user org id
-                const splitOrgId = activeMembershipId.split(":");
-                if (splitOrgId.length === 2 && splitOrgId[0] === "org") {
+            if (activeMembershipId) {
+                if (/^\d+$/.test(activeMembershipId)) {
+                    // Cookie contains reg ID for an LIR
                     this.selectedOrg = _.find(this.organisations, (org: Organisation) => {
-                        return splitOrgId[1] === org.orgId;
+                        return activeMembershipId === org.memberId;
                     });
+                } else {
+                    // Cookie contains and end-user org id
+                    const splitOrgId = activeMembershipId.split(":");
+                    if (splitOrgId.length === 2 && splitOrgId[0] === "org") {
+                        this.selectedOrg = _.find(this.organisations, (org: Organisation) => {
+                            return splitOrgId[1] === org.orgId;
+                        });
+                    }
                 }
             }
+            if (!this.selectedOrg) {
+                this.selectedOrg = this.organisations && this.organisations.length && this.organisations[0];
+            }
+            this.setSelectedOrg(this.selectedOrg);
             return this.selectedOrg;
         });
 
     }
 
     public setSelectedOrg(org: Organisation) {
-        this.selectedOrg = org;
+        if (!org) {
+            return;
+        }
         this.$cookies.put("activeMembershipId",
             org.regId ? org.memberId : "org:" + org.orgId,
             {path: "/", domain: ".ripe.net", secure: true});

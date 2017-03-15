@@ -48,6 +48,24 @@ angular.module('webUpdates')
                     controller: 'ResourcesController',
                     controllerAs: 'resources'
                 })
+                .state('webupdates.myresourcesIpv4', {
+                    url: '/myresources/overview/ipv4',
+                    templateUrl: 'scripts/myresources/overview.html',
+                    controller: 'ResourcesController',
+                    controllerAs: 'resources'
+                })
+                .state('webupdates.myresourcesIpv6', {
+                    url: '/myresources/overview/ipv6',
+                    templateUrl: 'scripts/myresources/overview.html',
+                    controller: 'ResourcesController',
+                    controllerAs: 'resources'
+                })
+                .state('webupdates.myresourcesAsn', {
+                    url: '/myresources/overview/asn',
+                    templateUrl: 'scripts/myresources/overview.html',
+                    controller: 'ResourcesController',
+                    controllerAs: 'resources'
+                })
                 .state('webupdates.domainobjectwizard', {
                     url: '/wizard/:source/:objectType',
                     templateUrl: 'scripts/wizard/domainobjectwizard.html',

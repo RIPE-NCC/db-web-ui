@@ -2,48 +2,71 @@ package net.ripe.whois.services;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import static net.ripe.whois.services.WhoisInternalResourcesService.IPV4_RESOURCES_PATH;
+import javax.servlet.http.HttpServletRequest;
+
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withServerError;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
+@RunWith(MockitoJUnitRunner.class)
 public class WhoisInternalResourcesServiceTest {
 
     // dummy test data
-    private static final String MOCK_HOST = "http://localhost:8089";
-
+    private static final String API_URL = "http://localhost";
     private static final String API_KEY = "DB-WHOIS-fe91223ec3a27c24";
+    private static final String CONTEXT_PATH = "/db-web-ui";
 
-    private static final String ORG_ID = "ORG-IOB1-RIPE";
-
-    private static final String VALID_JSON_RESPONSE = "{\"orgid\":\"ORG-IOB1-RIPE\",\"details\":[{\"range\":{\"string\":\"62.221.192.0 - 62.221.255.255\",\"slash\":\"62.221.192.0/18\",\"start\":1054720000,\"end\":1054736383},\"status\":\"ALLOCATED PA\"},{\"range\":{\"string\":\"94.126.32.0 - 94.126.39.255\",\"slash\":\"94.126.32.0/21\",\"start\":1585324032,\"end\":1585326079},\"status\":\"ALLOCATED PA\"},{\"range\":{\"string\":\"185.115.144.0 - 185.115.147.255\",\"slash\":\"185.115.144.0/22\",\"start\":3111358464,\"end\":3111359487},\"status\":\"ALLOCATED PA\"}]}";
-
-    private final RestTemplate restTemplate = new RestTemplate();
-
-    private final WhoisInternalResourcesService whoisInternalResourcesService = new WhoisInternalResourcesService(restTemplate, MOCK_HOST, API_KEY);
-
+    private HttpServletRequest request;
+    private HttpHeaders httpHeaders;
+    private RestTemplate restTemplate;
+    private WhoisInternalResourcesService subject;
     private MockRestServiceServer mockServer;
-
-    public String testURL(String orgId) {
-        return String.format("%s/%s/%s?apiKey=%s", MOCK_HOST, IPV4_RESOURCES_PATH, orgId, API_KEY);
-    }
 
     @Before
     public void setUp() {
+        request = mock(HttpServletRequest.class);
+        httpHeaders = new HttpHeaders();
+        restTemplate = new RestTemplate();
         mockServer = MockRestServiceServer.createServer(restTemplate);
+        subject = new WhoisInternalResourcesService(restTemplate, API_URL, API_KEY, CONTEXT_PATH);
     }
 
     @Test
-    public void shouldReturnSuccessResponse() {
+    public void success_response() throws Exception {
+        when(request.getRequestURI()).thenReturn(CONTEXT_PATH + "/api/random");
+        when(request.getMethod()).thenReturn(HttpMethod.GET.name());
+        mockServer.expect(
+                requestTo(String.format("%s/api/random?apiKey=%s", API_URL, API_KEY)))
+            .andRespond(
+                withSuccess("{}", MediaType.APPLICATION_JSON));
 
-        mockServer.expect(requestTo(testURL(ORG_ID))).andRespond(withSuccess(VALID_JSON_RESPONSE, MediaType.APPLICATION_JSON));
-
-        ResponseEntity response = whoisInternalResourcesService.getIpv4Resources(ORG_ID);
+        subject.bypass(request, null, httpHeaders);
 
         mockServer.verify();
     }
+
+    @Test
+    public void error_response() throws Exception {
+        when(request.getRequestURI()).thenReturn(CONTEXT_PATH + "/api/random");
+        when(request.getMethod()).thenReturn(HttpMethod.GET.name());
+        mockServer.expect(
+                requestTo(String.format("%s/api/random?apiKey=%s", API_URL, API_KEY)))
+                .andRespond(
+                        withServerError());
+
+        subject.bypass(request, null, httpHeaders);
+
+        mockServer.verify();
+    }
+
 }
