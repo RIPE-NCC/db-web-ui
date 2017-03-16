@@ -1,9 +1,6 @@
-import * as angular from "angular";
-import IHttpPromise = angular.IHttpPromise;
-
 declare const _: _.LoDashStatic;
 
-export interface IQueryParametersService {
+interface IQueryParametersService {
     fireQuery(queryString: string,
               source: string,
               types: {},
@@ -29,8 +26,8 @@ class QueryParametersService implements IQueryParametersService {
         // this.$log.debug("QueryParametersService flags:", flags);
         // this.$log.debug("QueryParametersService inverse:", inverse);
 
-        const typeFilter = _.filter(Object.keys(types), (type) => types[type]).join(",");
-        const inverseFilter = _.filter(Object.keys(inverse), (inv) => inverse[inv]).join(",");
+        const typeFilter = _.filter(Object.keys(types), (type: string) => types[type]).join(",");
+        const inverseFilter = _.filter(Object.keys(inverse), (inv: string) => inverse[inv]).join(",");
         const config: angular.IRequestShortcutConfig = {};
         config.params = {
             "ignore404": true,

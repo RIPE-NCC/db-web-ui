@@ -1,6 +1,3 @@
-import * as angular from "angular";
-import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
-import {IQueryParametersService} from "./QueryParametersService";
 
 class QueryController {
     public static $inject = ["$log", "QueryParametersService"];

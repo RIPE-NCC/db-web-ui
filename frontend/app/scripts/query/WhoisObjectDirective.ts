@@ -1,11 +1,9 @@
-import * as angular from "angular";
-import IScope = angular.IScope;
-
 // any advance on 'sponsoring-org' & 'last-modified' (include colon)?
+
 const MAX_ATTR_NAME_LENGTH = 14;
 const MAX_ATTR_NAME_MASK = "              ";
 
-interface IWhoisObjectScope extends IScope {
+interface IWhoisObjectScope extends angular.IScope {
     ngModel: IWhoisObjectModel;
     padding: Function;
 }
