@@ -23,16 +23,16 @@ class ResourcesController {
         });
     }
 
+    public sponsoredResourcesClicked() {
+        this.isShowingSponsored = !this.isShowingSponsored;
+        this.fetchResourcesAndPopulatePage();
+    }
+
     private refreshPage(org: Organisation) {
         this.selectedOrg = org;
         this.isShowingSponsored = false;
         this.fetchResourcesAndPopulatePage();
         this.checkIfSponsor();
-    }
-
-    public sponsoredResourcesClicked() {
-        this.isShowingSponsored = !this.isShowingSponsored;
-        this.fetchResourcesAndPopulatePage();
     }
 
     private fetchResourcesAndPopulatePage() {

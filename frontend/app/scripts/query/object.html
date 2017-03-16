@@ -1,0 +1,10 @@
+<div style="position: relative" class="result">
+    <div class="more-info">
+        <a href="#/webupdates/modify/ripe/role/OPS4-RIPE" class="tag-link ga-dbresult-update">
+            <span id="result:0:LoginToUpdateText">Update</span>
+        <i class="fa fa-database"></i></a>
+    </div>
+    <pre class="db-pre db-pre-results"><ul class="attrblock"><li ng-repeat="attr in ngModel.attributes.attribute">{{ attr.name }}:{{ padding(attr) }} <a
+            ng-if="attr.link.type === 'locator'" href="/search/lookup.html?source=ripe&key={{ attr.value }}&type={{ attr.name }}">{{ attr.value }}</a><span
+            ng-if="attr.link.type !== 'locator'">{{ attr.value }}</span></li></ul></pre>
+</div>

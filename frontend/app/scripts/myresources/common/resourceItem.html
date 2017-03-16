@@ -1,9 +1,9 @@
-<a class="resource-item" target="_blank" href="#/webupdates/display/ripe/{{ item.type }}/{{ item.resource }}">
-    <p class="title">{{ item.resource }} <span class="fa fa-angle-right pull-right"></span></p>
+<div class="resource-item">
+    <a class="title" ng-click="showDetail(item)">{{ item.resource }} <span class="fa fa-angle-right pull-right"></span></a>
     <p class="org-name" ng-if="item.orgName">{{item.orgName}}</p>
     <div class="flags-container">
         <flag class="grey" text="item.status" tooltip="Status"></flag>
         <flag class="grey" text="item.netname" tooltip="Netname"></flag>
         <flag class="grey" text="item.asname" tooltip="Asname"></flag>
     </div>
-</a>
+</div>

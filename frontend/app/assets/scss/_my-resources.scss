@@ -6,18 +6,18 @@
 }
 
 .nav-tabs {
-    border-bottom: 0px;
+    border-bottom: 0;
     ul {
         @extend %width-100;
-        border: 0px;
+        border: 0;
         li {
             a {
-                border: 0px;
+                border: 0;
                 padding: 8px 40px;
                 color: #9d9d9d;
                 cursor: pointer;
                 &:hover {
-                    border: 0px;
+                    border: 0;
                     background: $white;
                 }
             }
@@ -33,11 +33,14 @@
 div.resource-list {
     @extend %width-100;
     @extend %float-l;
-    a.resource-item {
+    .resource-item {
         @extend %width-100;
         @extend %float-l;
         padding-top: 30px;
         margin-top: 5px;
+        a {
+            font-weight: bold;
+        }
         p.title {
             font: {
                 size: 16px;
@@ -55,10 +58,6 @@ div.resource-list {
         div.flags-container {
             @extend %width-100;
             @extend %float-l;
-        }
-        &:hover {
-            text-decoration: none;
-            background-color: $grey;
         }
     }
 }

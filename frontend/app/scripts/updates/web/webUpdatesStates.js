@@ -48,28 +48,17 @@ angular.module('webUpdates')
                     controller: 'ResourcesController',
                     controllerAs: 'resources'
                 })
-                .state('webupdates.myresourcesIpv4', {
-                    url: '/myresources/overview/ipv4',
-                    templateUrl: 'scripts/myresources/overview.html',
-                    controller: 'ResourcesController',
-                    controllerAs: 'resources'
-                })
-                .state('webupdates.myresourcesIpv6', {
-                    url: '/myresources/overview/ipv6',
-                    templateUrl: 'scripts/myresources/overview.html',
-                    controller: 'ResourcesController',
-                    controllerAs: 'resources'
-                })
-                .state('webupdates.myresourcesAsn', {
-                    url: '/myresources/overview/asn',
-                    templateUrl: 'scripts/myresources/overview.html',
-                    controller: 'ResourcesController',
-                    controllerAs: 'resources'
+                .state('webupdates.myresourcesdetail', {
+                    url: '/myresources/detail/:objectType/:objectName',
+                    templateUrl: 'scripts/myresources/detail.html',
+                    controller: 'ResourceItemController',
+                    controllerAs: 'resourceItem'
                 })
                 .state('webupdates.domainobjectwizard', {
                     url: '/wizard/:source/:objectType',
                     templateUrl: 'scripts/wizard/domainobjectwizard.html',
-                    controller: 'DomainObjectController as domain'
+                    controller: 'DomainObjectController',
+                    controllerAs: 'domain'
                 })
                 .state('webupdates.displayDomainObjects', {
                     url: '/wizard/:source/:objectType/success',
