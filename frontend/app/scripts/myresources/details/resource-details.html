@@ -1,0 +1,16 @@
+<h1></h1>
+<whois-object ng-model="resourceItem.details"></whois-object>
+<table>
+    <thead>
+    <th>Internet number resource</th>
+    <th>Type</th>
+    <th>Netname</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="resource in moreSpecifics">
+        <td>{{ resource.resource }}</td>
+        <td>{{ resource.type }}</td>
+        <td>{{ resource.netname }}</td>
+    </tr>
+    </tbody>
+</table>

@@ -2,17 +2,27 @@ interface IResourceItemControllerState extends ng.ui.IStateService {
     objectName: string;
 }
 
-class ResourceItemController {
+class ResourceDetailsController {
 
-    public static $inject = ["$log", "$state", "QueryParametersService"];
+    public static $inject = ["$log", "$state", "QueryParametersService", "MoreSpecificsService"];
     public whoisResponse: IWhoisResponseModel;
     public results: IWhoisObjectModel[];
     public details: IWhoisObjectModel;
+    public moreSpecifics: IMoreSpecificResource[];
 
     constructor(private $log: angular.ILogService,
                 private $state: IResourceItemControllerState,
-                private queryParametersService: IQueryParametersService) {
-        // $log.info("ResourceItemController", $state.params.objectName);
+                private queryParametersService: IQueryParametersService,
+                private moreSpecificsService: IMoreSpecificsService) {
+
+        moreSpecificsService.getSpecifics($state.objectName).then(
+            (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
+                this.moreSpecifics = response.data.resources;
+                $log.info("more specifics: " + this.moreSpecifics);
+            }
+        );
+
+        // $log.info("ResourceDetailsController", $state.params.objectName);
         this.queryParametersService.fireQuery($state.objectName, "RIPE", {}, "", {}).then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
@@ -31,4 +41,4 @@ class ResourceItemController {
 
 angular
     .module("dbWebApp")
-    .controller("ResourceItemController", ResourceItemController);
+    .controller("ResourceDetailsController", ResourceDetailsController);
