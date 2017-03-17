@@ -1,9 +1,9 @@
-<div class="resource-item">
-    <a class="title" ng-click="showDetail(item)">{{ item.resource }} <span class="fa fa-angle-right pull-right"></span></a>
+<a class="resource-item" ng-click="showDetail(item)">
+    <p class="title">{{ item.resource }} <span class="fa fa-angle-right pull-right"></span></p>
     <p class="org-name" ng-if="item.orgName">{{item.orgName}}</p>
     <div class="flags-container">
         <flag class="grey" text="item.status" tooltip="Status"></flag>
         <flag class="grey" text="item.netname" tooltip="Netname"></flag>
         <flag class="grey" text="item.asname" tooltip="Asname"></flag>
     </div>
-</div>
+</a>
