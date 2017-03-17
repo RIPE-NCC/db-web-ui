@@ -1,5 +1,3 @@
-declare const _: _.LoDashStatic;
-
 interface IQueryParametersService {
     fireQuery(queryString: string,
               source: string,

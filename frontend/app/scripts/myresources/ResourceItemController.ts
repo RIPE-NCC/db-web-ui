@@ -13,7 +13,7 @@ class ResourceItemController {
                 private $state: IResourceItemControllerState,
                 private queryParametersService: IQueryParametersService) {
         // $log.info("ResourceItemController", $state.params.objectName);
-        this.queryParametersService.fireQuery($state.params.objectName, "RIPE", {}, "", {}).then(
+        this.queryParametersService.fireQuery($state.objectName, "RIPE", {}, "", {}).then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
                 this.results = response.data.objects.object;
