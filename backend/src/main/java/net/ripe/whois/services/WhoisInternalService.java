@@ -128,19 +128,12 @@ public class WhoisInternalService implements ExchangeErrorHandler {
         final URI uri = composeWhoisUrl(request);
 
         return handleErrors(() -> {
-            if (body == null) {
-                return restTemplate.exchange(
-                    uri,
-                    HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                    new HttpEntity<>(headers),
-                    String.class);
-            } else {
-                return restTemplate.exchange(
-                    uri,
-                    HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                    new HttpEntity<>(body, headers),
-                    String.class);
-            }
+            final HttpEntity entity = body == null ? new HttpEntity<>(headers) : new HttpEntity<>(body, headers);
+            return restTemplate.exchange(
+                uri,
+                HttpMethod.valueOf(request.getMethod().toUpperCase()),
+                entity,
+                String.class);
         }, LOGGER);
     }
 
