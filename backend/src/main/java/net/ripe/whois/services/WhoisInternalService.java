@@ -144,7 +144,7 @@ public class WhoisInternalService implements ExchangeErrorHandler {
                 .replace(contextPath, ""))
             .replaceQuery(request.getQueryString())
             .queryParam("apiKey", apiKey)
-            .build().toUri();
+            .build(true).toUri();
     }
 
 }
