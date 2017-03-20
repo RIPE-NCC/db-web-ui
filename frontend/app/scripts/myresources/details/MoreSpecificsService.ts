@@ -22,7 +22,7 @@ class MoreSpecificsService implements IMoreSpecificsService {
     }
 
     public getSpecifics(objectName: String): IHttpPromise<IMoreSpecificsApiResult> {
-        return this.$http.get("api/whois-internal/api/inetnum/" + objectName + "/more-specifics.json");
+        return this.$http.get("api/whois-internal/api/resources/inetnum/" + objectName + "/more-specifics.json");
     }
 }
 

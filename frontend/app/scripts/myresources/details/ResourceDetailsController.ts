@@ -15,15 +15,15 @@ class ResourceDetailsController {
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
-        moreSpecificsService.getSpecifics($state.objectName).then(
+        moreSpecificsService.getSpecifics($state.params['objectName']).then(
             (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                 this.moreSpecifics = response.data.resources;
-                $log.info("more specifics: " + this.moreSpecifics);
+                $log.info("more specifics: ", this.moreSpecifics);
             }
         );
 
-        // $log.info("ResourceDetailsController", $state.params.objectName);
-        this.queryParametersService.fireQuery($state.objectName, "RIPE", {}, "", {}).then(
+        $log.info("ResourceDetailsController", $state.params['objectName']);
+        this.queryParametersService.fireQuery($state.params['objectName'], "RIPE", {}, "", {}).then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
                 this.results = response.data.objects.object;
