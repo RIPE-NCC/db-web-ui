@@ -25,19 +25,19 @@ class ResourceDetailsController {
             }
         );
 
-        const types = {};
-        types[$state.params['objectType']] = true;
-        this.queryParametersService.fireQuery($state.params['objectName'], "RIPE", types, "r", {}).then(
-            (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
-                this.whoisResponse = response.data;
-                this.results = response.data.objects.object;
-                if (this.results.length >= 1) {
-                    this.details = this.results[0];
-                }
-            }, () => {
-                this.whoisResponse = null;
-                this.results = [];
-            });
+        // const types = {};
+        // types[$state.params['objectType']] = true;
+        // this.queryParametersService.fireQuery($state.params['objectName'], "RIPE", types, "r", {}).then(
+        //     (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+        //         this.whoisResponse = response.data;
+        //         this.results = response.data.objects.object;
+        //         if (this.results.length >= 1) {
+        //             this.details = this.results[0];
+        //         }
+        //     }, () => {
+        //         this.whoisResponse = null;
+        //         this.results = [];
+        //     });
     }
 
 }
