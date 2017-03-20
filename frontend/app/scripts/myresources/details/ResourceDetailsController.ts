@@ -19,11 +19,11 @@ class ResourceDetailsController {
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
-        moreSpecificsService.getSpecifics($state.params['objectName']).then(
+        moreSpecificsService.getSpecifics($state.params.objectName).then(
             (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                 this.moreSpecifics = response.data.resources;
                 $log.info("more specifics: ", this.moreSpecifics);
-            }
+            },
         );
 
         const types = {};
@@ -45,6 +45,11 @@ class ResourceDetailsController {
                 this.whoisResponse = null;
             });
     }
+
+    public backToMyResources(): void {
+        this.$state.transitionTo("webupdates.myresources");
+    }
+
 }
 
 angular
