@@ -9,30 +9,27 @@ angular.module('webUpdates')
              * This is to prevent that display and modify controller were started twice for objects with slash (route, inet6num).
              * This object-type is used within the configuration of the state-provider.
              */
-            $urlMatcherFactory.type('WhoisObjectName',
-                {
-                    name: 'WhoisObjectName',
-                    decode: function (val) {
-                        return decodeURIComponent(val);
-                    },
-                    encode: function (val) {
-                        return encodeURIComponent(val);
-                    },
-                    equals: function (decodedA, decodedB) {
-                        if (decodedA.indexOf('/') > -1 || decodedA.indexOf(' ') > -1) {
-                            decodedA = encodeURIComponent(decodedA);
-                        }
-
-                        if (decodedB.indexOf('/') > -1 || decodedB.indexOf(' ') > -1) {
-                            decodedB = encodeURIComponent(decodedB);
-                        }
-
-                        return decodedA === decodedB;
-                    },
-                    is: function () {
-                        return true;
+            $urlMatcherFactory.type('WhoisObjectName', {
+                name: 'WhoisObjectName',
+                decode: function (val) {
+                    return decodeURIComponent(val);
+                },
+                encode: function (val) {
+                    return encodeURIComponent(val);
+                },
+                equals: function (decodedA, decodedB) {
+                    if (decodedA.indexOf('/') > -1 || decodedA.indexOf(' ') > -1) {
+                        decodedA = encodeURIComponent(decodedA);
                     }
-                });
+                    if (decodedB.indexOf('/') > -1 || decodedB.indexOf(' ') > -1) {
+                        decodedB = encodeURIComponent(decodedB);
+                    }
+                    return decodedA === decodedB;
+                },
+                is: function () {
+                    return true;
+                }
+            });
 
             $urlRouterProvider.otherwise('webupdates/select');
 
@@ -49,7 +46,7 @@ angular.module('webUpdates')
                     controllerAs: 'resources'
                 })
                 .state('webupdates.myresourcesdetail', {
-                    url: '/myresources/detail/:objectType/:objectName',
+                    url: '/myresources/detail/:objectType/{objectName:WhoisObjectName}',
                     templateUrl: 'scripts/myresources/detail.html',
                     controller: 'ResourceItemController',
                     controllerAs: 'resourceItem'

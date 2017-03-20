@@ -1,7 +1,7 @@
 // any advance on 'sponsoring-org' & 'last-modified' (include colon)?
 
-const MAX_ATTR_NAME_LENGTH = 14;
-const MAX_ATTR_NAME_MASK = "              ";
+const MAX_ATTR_NAME_LENGTH = 15;
+const MAX_ATTR_NAME_MASK = "                ";
 
 interface IWhoisObjectScope extends angular.IScope {
     ngModel: IWhoisObjectModel;

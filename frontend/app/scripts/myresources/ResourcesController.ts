@@ -7,7 +7,7 @@ class ResourcesController {
     public asnResources: AsnResourceDetails[] = [];
     private selectedOrg: Organisation;
     private hasSponsoredResources = false;
-    private isShowingSponsored: boolean = false;
+    private isShowingSponsored = false;
 
     constructor(private $log: angular.ILogService,
                 private $scope: angular.IScope,

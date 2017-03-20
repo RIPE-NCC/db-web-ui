@@ -27,8 +27,9 @@ class ResourceItemController {
                     this.details = this.results[0];
                     this.resource = {
                         orgName: "WDE (not always present)",
-                        resource: "some kind of resource",
-                        status: "status".length,
+                        resource: this.details["primary-key"].attribute[0].value,
+                        status: "OK",
+                        type: this.details.type,
                     };
                 }
             }, () => {
