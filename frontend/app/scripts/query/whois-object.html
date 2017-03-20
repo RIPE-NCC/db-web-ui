@@ -1,7 +1,7 @@
 <div style="position: relative" class="result">
-    <div class="more-info">
+    <div class="more-info" ng-if="showMoreInfo">
         <a href="#/webupdates/modify/ripe/role/OPS4-RIPE" class="tag-link ga-dbresult-update">
-            <span id="result:0:LoginToUpdateText">Update</span>
+            <span>Update</span>
         <i class="fa fa-database"></i></a>
     </div>
     <pre class="db-pre db-pre-results"><ul class="attrblock"><li ng-repeat="attr in ngModel.attributes.attribute" ng-if="$index < nrLinesToShow">{{ attr.name }}:{{ padding(attr) }} <a
