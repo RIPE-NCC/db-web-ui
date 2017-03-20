@@ -9,18 +9,17 @@ interface IWhoisObjectScope extends angular.IScope {
     nrLinesToShow: number;
     showMoreButton: boolean;
     clickShowMoreLines: () => void;
+    showMoreInfo: boolean;
 }
 
 function WhoisObjectDirective(): angular.IDirective {
 
     return {
         link: (scope: IWhoisObjectScope) => {
-            if (!scope.ngModel) {
-                return;
-            }
             const objLength = scope.ngModel.attributes.attribute.length;
             scope.nrLinesToShow = objLength >= 30 ? 25 : 9999999;
             scope.showMoreButton = objLength > scope.nrLinesToShow;
+            scope.showMoreInfo = false;
 
             scope.padding = (attr: IWhoisObjectModel): string => {
                 const numLeftPads = attr.name.length - MAX_ATTR_NAME_LENGTH;
