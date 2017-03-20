@@ -1,5 +1,8 @@
 interface IResourceItemControllerState extends ng.ui.IStateService {
-    objectName: string;
+    params: {
+        objectName: string;
+        objectType: string;
+    };
 }
 
 class ResourceDetailsController {
@@ -22,12 +25,12 @@ class ResourceDetailsController {
             }
         );
 
-        $log.info("ResourceDetailsController", $state.params['objectName']);
-        this.queryParametersService.fireQuery($state.params['objectName'], "RIPE", {}, "", {}).then(
+        const types = {};
+        types[$state.params['objectType']] = true;
+        this.queryParametersService.fireQuery($state.params['objectName'], "RIPE", types, "r", {}).then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
                 this.results = response.data.objects.object;
-                this.$log.debug("Set results: ", this.results);
                 if (this.results.length >= 1) {
                     this.details = this.results[0];
                 }
