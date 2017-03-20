@@ -21,6 +21,8 @@ class ResourceDetailsController {
         moreSpecificsService.getSpecifics($state.params['objectName']).then(
             (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                 this.moreSpecifics = response.data.resources;
+
+
                 $log.info("more specifics: ", this.moreSpecifics);
             }
         );
