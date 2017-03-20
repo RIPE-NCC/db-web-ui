@@ -33,14 +33,11 @@
 div.resource-list {
     @extend %width-100;
     @extend %float-l;
-    .resource-item {
+    a.resource-item {
         @extend %width-100;
         @extend %float-l;
         padding-top: 30px;
         margin-top: 5px;
-        a {
-            font-weight: bold;
-        }
         p.title {
             font: {
                 size: 16px;
@@ -58,6 +55,10 @@ div.resource-list {
         div.flags-container {
             @extend %width-100;
             @extend %float-l;
+        }
+        &:hover {
+            text-decoration: none;
+            background-color: $grey;
         }
     }
 }
