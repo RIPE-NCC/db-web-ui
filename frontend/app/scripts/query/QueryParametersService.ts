@@ -18,11 +18,6 @@ class QueryParametersService implements IQueryParametersService {
                      types: {},
                      flags: string,
                      inverse: {}): IHttpPromise<IWhoisResponseModel> {
-        // this.$log.debug("QueryParametersService queryString:", queryString);
-        // this.$log.debug("QueryParametersService source:", source);
-        // this.$log.debug("QueryParametersService types:", types);
-        // this.$log.debug("QueryParametersService flags:", flags);
-        // this.$log.debug("QueryParametersService inverse:", inverse);
 
         const typeFilter = _.filter(Object.keys(types), (type: string) => types[type]).join(",");
         const inverseFilter = _.filter(Object.keys(inverse), (inv: string) => inverse[inv]).join(",");

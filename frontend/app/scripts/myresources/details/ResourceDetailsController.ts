@@ -35,9 +35,10 @@ class ResourceDetailsController {
                 if (results.length >= 1) {
                     this.details = results[0];
                     this.resource = {
-                        orgName: "ORG-TODO",
-                        resource: $state.params.objectName,
-                        status: "status".length,
+                        orgName: "WDE (not always present)",
+                        resource: this.details["primary-key"].attribute[0].value,
+                        status: "OK",
+                        type: this.details.type,
                     };
                 }
             }, () => {
