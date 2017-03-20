@@ -11,6 +11,7 @@ class ResourceItemController {
     public whoisResponse: IWhoisResponseModel;
     public results: IWhoisObjectModel[];
     public details: IWhoisObjectModel;
+    public resource: any;
 
     constructor(private $log: angular.ILogService,
                 private $state: IResourceItemControllerState,
@@ -24,6 +25,11 @@ class ResourceItemController {
                 this.results = response.data.objects.object;
                 if (this.results.length >= 1) {
                     this.details = this.results[0];
+                    this.resource = {
+                        orgName: "WDE (not always present)",
+                        resource: "some kind of resource",
+                        status: "status".length,
+                    };
                 }
             }, () => {
                 this.whoisResponse = null;

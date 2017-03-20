@@ -10,11 +10,11 @@ class ResourceItemDirective implements angular.IDirective {
         return directive;
     }
 
-    public restrict: string = "E";
-    public scope: any = {
+    public restrict = "E";
+    public scope = {
         item: "=",
     };
-    public templateUrl: string = "scripts/myresources/common/resourceItem.html";
+    public templateUrl: string = "scripts/myresources/resourceItem.html";
 
     constructor(private $state: ng.ui.IStateService) {
     }
@@ -23,8 +23,8 @@ class ResourceItemDirective implements angular.IDirective {
 
         scope.showDetail = (item: IResourceModel) => {
             this.$state.transitionTo("webupdates.myresourcesdetail", {
-                    objectName: item.resource,
-                    objectType: item.type,
+                objectName: item.resource,
+                objectType: item.type,
             });
         };
     }

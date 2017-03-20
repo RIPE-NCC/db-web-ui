@@ -33,33 +33,37 @@
 div.resource-list {
     @extend %width-100;
     @extend %float-l;
-    a.resource-item {
+}
+
+div.resource-item {
+    @extend %width-100;
+    @extend %float-l;
+    padding-top: 30px;
+    margin-top: 5px;
+    cursor: pointer;
+    overflow: auto;
+    p.title {
+        font: {
+            size: 16px;
+            weight: bold;
+        }
+        margin-bottom: 5px;
+        color: $black;
+    }
+    p.org-name {
+        font-size: 12px;
+        font-weight: bold;
+        margin: 0;
+        color: $black;
+    }
+    div.flags-container {
         @extend %width-100;
         @extend %float-l;
-        padding-top: 30px;
-        margin-top: 5px;
-        p.title {
-            font: {
-                size: 16px;
-                weight: bold;
-            }
-            margin-bottom: 5px;
-            color: $black;
-        }
-        p.org-name {
-            font-size: 12px;
-            font-weight: bold;
-            margin: 0;
-            color: $black;
-        }
-        div.flags-container {
-            @extend %width-100;
-            @extend %float-l;
-        }
-        &:hover {
-            text-decoration: none;
-            background-color: $grey;
-        }
+    }
+    &:hover {
+        text-decoration: none;
+        background-color: $grey;
     }
 }
+
 
