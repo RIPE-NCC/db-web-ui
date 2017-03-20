@@ -52,7 +52,7 @@ angular.module('webUpdates')
                     url: '/myresources/detail/:objectType/:objectName',
                     templateUrl: 'scripts/myresources/details/resource-details.html',
                     controller: 'ResourceDetailsController',
-                    controllerAs: 'resourceDetail'
+                    controllerAs: 'resourceDetails'
                 })
                 .state('webupdates.domainobjectwizard', {
                     url: '/wizard/:source/:objectType',

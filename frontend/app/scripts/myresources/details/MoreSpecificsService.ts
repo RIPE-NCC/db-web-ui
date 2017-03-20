@@ -1,6 +1,6 @@
 
 interface IMoreSpecificsService {
-    getSpecifics(objectName: String): IHttpPromise<IMoreSpecificsApiResult>;
+    getSpecifics(objectName: string): IHttpPromise<IMoreSpecificsApiResult>;
 }
 
 interface IMoreSpecificsApiResult {
@@ -8,10 +8,10 @@ interface IMoreSpecificsApiResult {
 }
 
 interface IMoreSpecificResource {
-    resource: String,
-    status: String,
-    type: String,
-    netname: String
+    resource: string,
+    status: string,
+    type: string,
+    netname: string
 }
 
 class MoreSpecificsService implements IMoreSpecificsService {
