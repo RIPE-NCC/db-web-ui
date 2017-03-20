@@ -7,10 +7,10 @@
         <tr ng-repeat="resource in resourceDetail.moreSpecifics">
             <td data-title="'Internet number resource'">{{ resource.resource }}</td>
             <td data-title="'Type'">{{ resource.type }}</td>
-            <td data-title="'Netname'">{{ resource.netname }}
-        </td>
+            <td data-title="'Netname'">{{ resource.netname }}</td>
+        </tr>
         <tr class="noresults" ng-if="($resourceDetail.moreSpecifics).length === 0">
-            <td colspan="8">No results found</td>
+            <td colspan="3">No results found</td>
         </tr>
         </tbody>
     </table>
