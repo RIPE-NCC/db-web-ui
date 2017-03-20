@@ -1,4 +1,4 @@
-table.ng-table {
+table.whois-table {
   /*@extend %brd-t;
   @extend %brd-b;
   @extend %brd-l;*/
@@ -125,7 +125,7 @@ section.head {
   }
 }
 
-div.ng-table-pager {
+div.whois-table-pager {
   margin-top: 20px;
   padding-bottom: 30px;
   ul.pagination {
@@ -166,7 +166,7 @@ div.ng-table-pager {
       }
     }
   }
-  div.ng-table-counts {
+  div.whois-table-counts {
     display: none;
   }
 }

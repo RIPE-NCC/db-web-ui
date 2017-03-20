@@ -1,5 +1,3 @@
-import * as angular from 'angular';
-import {NgTableParams} from "ng-table/src/core/ngTableParams";
 
 interface IResourceItemControllerState extends ng.ui.IStateService {
     params: {
@@ -14,8 +12,7 @@ class ResourceDetailsController {
     public whoisResponse: IWhoisResponseModel;
     public results: IWhoisObjectModel[];
     public details: IWhoisObjectModel;
-    public moreSpecificsData: IMoreSpecificResource[];
-    public moreSpecifics: NgTableParams<IMoreSpecificResource>;
+    public moreSpecifics: IMoreSpecificResource[];
 
     constructor(private $log: angular.ILogService,
                 private $state: IResourceItemControllerState,
@@ -25,13 +22,8 @@ class ResourceDetailsController {
         const self = this;
         moreSpecificsService.getSpecifics($state.params['objectName']).then(
             (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
-                self.moreSpecificsData = response.data.resources;
-                self.moreSpecifics = new NgTableParams<IMoreSpecificResource>({}, {
-                    dataset: self.moreSpecificsData,
-                    total: self.moreSpecificsData.length
-                });
-
-                $log.info("more specifics: ", this.moreSpecificsData);
+                self.moreSpecifics = response.data.resources;
+                $log.info("more specifics: ", this.moreSpecifics);
             }
         );
 
