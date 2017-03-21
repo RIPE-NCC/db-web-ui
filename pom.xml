@@ -68,9 +68,6 @@
                             <directory>${basedir}/backend/src/main/webapp</directory>
                         </fileset>
                         <fileset>
-                            <directory>${basedir}/frontend/.tmp</directory>
-                        </fileset>
-                        <fileset>
                             <directory>${basedir}/frontend/bower_components</directory>
                         </fileset>
                         <fileset>
@@ -85,7 +82,7 @@
                         <fileset>
                             <directory>${basedir}/frontend</directory>
                             <includes>
-                                <include>**/.t*/</include>
+                                <include>.t*/</include>
                             </includes>
                         </fileset>
                     </filesets>
