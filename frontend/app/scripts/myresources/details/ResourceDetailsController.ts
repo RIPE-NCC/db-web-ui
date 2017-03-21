@@ -20,16 +20,22 @@ class ResourceDetailsController {
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
-        moreSpecificsService.getSpecifics($state.params.objectName).then(
-            (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
-                this.moreSpecifics = response.data.resources;
-                $log.info("more specifics: ", this.moreSpecifics);
-            },
-        );
+        const objectKey = ResourceDetailsController.objectKey($state);
+        const objectType = $state.params.objectType;
+
+        this.hasMoreSpecifics = objectType === "inetnum" || objectType === "inet6num";
+        if (this.hasMoreSpecifics) {
+            moreSpecificsService.getSpecifics(objectKey, objectType).then(
+                (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
+                    this.moreSpecifics = response.data.resources;
+                },
+            );
+        }
 
         const types = {};
-        types[$state.params.objectType] = true;
-        this.queryParametersService.fireQuery($state.params.objectName, "RIPE", types, "r", {}).then(
+        types[objectType] = true;
+        $log.info("objectKey = ", objectKey);
+        this.queryParametersService.fireQuery(objectKey, "RIPE", types, "r", {}).then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
                 const results = response.data.objects.object;
@@ -46,7 +52,10 @@ class ResourceDetailsController {
                 this.whoisResponse = null;
             });
 
-        this.hasMoreSpecifics = $state.params.objectType === "inetnum" || $state.params.objectType === "inet6num";
+    }
+
+    private static objectKey(state: IResourceDetailsControllerState) : string {
+        return state.params.objectName;
     }
 
     public backToMyResources(): void {
