@@ -100,6 +100,14 @@ module.exports = {
     myResourcesActiveTabRows: element(by.css('.my-resources')).element(by.css('.tab-pane.active')).all(by.css('resource-item')),
     btnToggleSponsoredResources: element(by.css('#btn-toggle-sponsored')),
 
+    //More specifics page
+    moreSpecificsTable: element(by.css('.table')),
+    moreSpecificsTableRows: element(by.css('.table')).element(by.css('tbody')).all(by.css('tr')),
+
+    getTableCell: function (tableElement, rowIndex, colIndex) {
+        return tableElement.element(by.css('tbody')).all(by.css('tr')).get(rowIndex).all(by.css('td')).get(colIndex);
+    },
+
     /**
      * Experimental support for iMacros scripts.
      *
