@@ -6397,5 +6397,23 @@
         }
       ]
     }
+  },
+  "api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json": {
+    "data": {
+      "resources": [
+        {
+          "resource": "2001:7f8::/48",
+          "status": "ASSIGNED PI",
+          "type": "inet6num",
+          "netname": "DE-CIX-IXP-20010913"
+        },
+        {
+          "resource": "2001:7f8:1::/48",
+          "status": "ASSIGNED PI",
+          "type": "inet6num",
+          "netname": "AMS-IX-20010913"
+        }
+      ]
+    }
   }
 }

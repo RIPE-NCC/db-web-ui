@@ -31,3 +31,29 @@ describe('My Resources detail for inetnum', function () {
     });
 
 });
+
+describe('My Resources detail for inet6num', function () {
+
+    'use strict';
+
+    beforeEach(function () {
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
+        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inet6num/2001:7f8::/29');
+
+    });
+
+    it('should list all the more specific resources', function () {
+        expect(page.moreSpecificsTable.isPresent()).toEqual(true);
+        expect(page.moreSpecificsTableRows.count()).toEqual(2);
+
+        expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toBe('2001:7f8::/48');
+        expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toBe('inet6num');
+        expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toBe('DE-CIX-IXP-20010913');
+
+        expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toBe('2001:7f8:1::/48');
+        expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toBe('inet6num');
+        expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toBe('AMS-IX-20010913');
+
+    });
+
+});
