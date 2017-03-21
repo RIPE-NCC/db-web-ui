@@ -403,13 +403,13 @@
     "data": {}
   },
   "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=inetnum": {
-    "data":[]
+    "data": []
   },
   "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=inet6num": {
-    "data":[]
+    "data": []
   },
   "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=aut-num": {
-    "data":[]
+    "data": []
   },
   "api/ba-apps/lirs": {
     "data": {
@@ -6379,5 +6379,1157 @@
         "nic-hdl": "AA1000-RIPE"
       }
     ]
+  },
+  "api/whois-internal/api/resources/inetnum/192.87.0.0%20-%20192.87.255.255/more-specifics.json": {
+    "data": {
+      "resources": [
+        {
+          "resource": "192.87.0.0 - 192.87.0.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SNET-HOMELAN"
+        },
+        {
+          "resource": "192.87.1.0 - 192.87.1.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NFRA"
+        },
+        {
+          "resource": "192.87.2.0 - 192.87.2.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "EUCE-NET"
+        },
+        {
+          "resource": "192.87.3.0 - 192.87.3.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SN-POPCO-NET"
+        },
+        {
+          "resource": "192.87.4.0 - 192.87.4.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SN-CIDR-PART-IV"
+        },
+        {
+          "resource": "192.87.5.0 - 192.87.5.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SNET-AT-RU"
+        },
+        {
+          "resource": "192.87.6.0 - 192.87.6.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "Regio-NET"
+        },
+        {
+          "resource": "192.87.7.0 - 192.87.7.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KEMPEL-NET"
+        },
+        {
+          "resource": "192.87.8.0 - 192.87.8.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "Lo0-UMCU"
+        },
+        {
+          "resource": "192.87.9.0 - 192.87.9.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "Lo0-HOME"
+        },
+        {
+          "resource": "192.87.10.0 - 192.87.11.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NIN"
+        },
+        {
+          "resource": "192.87.12.0 - 192.87.12.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "AKZOSBNET"
+        },
+        {
+          "resource": "192.87.13.0 - 192.87.13.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "AI-GIG"
+        },
+        {
+          "resource": "192.87.14.0 - 192.87.14.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "BS-GIG"
+        },
+        {
+          "resource": "192.87.15.0 - 192.87.15.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "FAC-GIG"
+        },
+        {
+          "resource": "192.87.16.0 - 192.87.16.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ITC-IPNET"
+        },
+        {
+          "resource": "192.87.17.0 - 192.87.17.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "UTLEEUWARDEN"
+        },
+        {
+          "resource": "192.87.18.0 - 192.87.18.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ELAN-NET"
+        },
+        {
+          "resource": "192.87.19.0 - 192.87.19.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SURFNET-SIPLAN-NET"
+        },
+        {
+          "resource": "192.87.21.0 - 192.87.21.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "BSOAT"
+        },
+        {
+          "resource": "192.87.22.0 - 192.87.22.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "BULKNET"
+        },
+        {
+          "resource": "192.87.23.0 - 192.87.23.7",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ELISABETH"
+        },
+        {
+          "resource": "192.87.23.8 - 192.87.23.15",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SURFnet-NET"
+        },
+        {
+          "resource": "192.87.23.16 - 192.87.23.31",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ONDERZOEKS-NET"
+        },
+        {
+          "resource": "192.87.23.32 - 192.87.23.47",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "PBL-LAN"
+        },
+        {
+          "resource": "192.87.23.48 - 192.87.23.63",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SURFids"
+        },
+        {
+          "resource": "192.87.23.64 - 192.87.23.127",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "AZG-NET"
+        },
+        {
+          "resource": "192.87.23.128 - 192.87.23.143",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ELAN-NET"
+        },
+        {
+          "resource": "192.87.23.144 - 192.87.23.159",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "CHWNET"
+        },
+        {
+          "resource": "192.87.23.160 - 192.87.23.175",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SN-Eduroam-as-a-service-NET"
+        },
+        {
+          "resource": "192.87.23.192 - 192.87.23.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "UMCG-NET"
+        },
+        {
+          "resource": "192.87.24.0 - 192.87.24.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "MART-NET"
+        },
+        {
+          "resource": "192.87.25.0 - 192.87.25.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "CMGIT-NET1"
+        },
+        {
+          "resource": "192.87.26.0 - 192.87.26.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "CMGIT-NET2"
+        },
+        {
+          "resource": "192.87.27.0 - 192.87.27.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "CMGIT-NET3"
+        },
+        {
+          "resource": "192.87.28.0 - 192.87.28.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RECLAIMED-SURFNET-CIDR-IV"
+        },
+        {
+          "resource": "192.87.29.0 - 192.87.29.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "BIPUBLIC"
+        },
+        {
+          "resource": "192.87.30.0 - 192.87.30.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "TERENA-SEC-LAN"
+        },
+        {
+          "resource": "192.87.31.0 - 192.87.31.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KONBIB"
+        },
+        {
+          "resource": "192.87.32.0 - 192.87.32.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SN-TEST-NET"
+        },
+        {
+          "resource": "192.87.33.0 - 192.87.33.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NKIRTCLIN"
+        },
+        {
+          "resource": "192.87.34.0 - 192.87.34.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NKIRT"
+        },
+        {
+          "resource": "192.87.35.0 - 192.87.35.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "DELTARES-NET"
+        },
+        {
+          "resource": "192.87.36.0 - 192.87.36.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SNET-AT-UvT"
+        },
+        {
+          "resource": "192.87.37.0 - 192.87.37.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "HUBRECHT"
+        },
+        {
+          "resource": "192.87.38.0 - 192.87.38.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "TERENA-GUEST-LAN"
+        },
+        {
+          "resource": "192.87.39.0 - 192.87.39.31",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "GILDEOPLEIDINGEN-NET"
+        },
+        {
+          "resource": "192.87.39.32 - 192.87.39.39",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "HCKW"
+        },
+        {
+          "resource": "192.87.39.40 - 192.87.39.47",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NWO"
+        },
+        {
+          "resource": "192.87.39.48 - 192.87.39.63",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "UMCG-NET"
+        },
+        {
+          "resource": "192.87.39.64 - 192.87.39.79",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "COG-NET"
+        },
+        {
+          "resource": "192.87.39.96 - 192.87.39.127",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KMA-NET"
+        },
+        {
+          "resource": "192.87.39.128 - 192.87.39.135",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NFRA"
+        },
+        {
+          "resource": "192.87.39.136 - 192.87.39.143",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "DUO-NET"
+        },
+        {
+          "resource": "192.87.39.144 - 192.87.39.151",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SURFnet"
+        },
+        {
+          "resource": "192.87.39.192 - 192.87.39.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NYENRODE-NET"
+        },
+        {
+          "resource": "192.87.40.0 - 192.87.40.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SN-NIKHEF-STORAGE-LAN"
+        },
+        {
+          "resource": "192.87.41.0 - 192.87.41.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KBNLB-IP"
+        },
+        {
+          "resource": "192.87.42.0 - 192.87.42.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "OBRANETWERK"
+        },
+        {
+          "resource": "192.87.43.0 - 192.87.43.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "COMPUTERY"
+        },
+        {
+          "resource": "192.87.44.0 - 192.87.44.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "PICA-IP-NET"
+        },
+        {
+          "resource": "192.87.45.0 - 192.87.45.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "OCLC-NET"
+        },
+        {
+          "resource": "192.87.46.0 - 192.87.46.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SURFnet-office-NET"
+        },
+        {
+          "resource": "192.87.47.0 - 192.87.47.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SIE"
+        },
+        {
+          "resource": "192.87.48.0 - 192.87.48.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ECHO-REQUEST"
+        },
+        {
+          "resource": "192.87.49.0 - 192.87.49.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "rijc"
+        },
+        {
+          "resource": "192.87.51.0 - 192.87.51.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RUGNET"
+        },
+        {
+          "resource": "192.87.52.0 - 192.87.52.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "GROUP-NET"
+        },
+        {
+          "resource": "192.87.53.0 - 192.87.53.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "TRANSFER-NL"
+        },
+        {
+          "resource": "192.87.54.0 - 192.87.54.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "introweb-net"
+        },
+        {
+          "resource": "192.87.55.0 - 192.87.55.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "GEM-LEIDEN"
+        },
+        {
+          "resource": "192.87.56.0 - 192.87.56.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ATC-NET2"
+        },
+        {
+          "resource": "192.87.57.0 - 192.87.57.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KPRT"
+        },
+        {
+          "resource": "192.87.58.0 - 192.87.58.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "POWPACKEUR"
+        },
+        {
+          "resource": "192.87.59.0 - 192.87.59.63",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "LOFAR-NET"
+        },
+        {
+          "resource": "192.87.59.64 - 192.87.59.127",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "LOFAR-NET"
+        },
+        {
+          "resource": "192.87.59.192 - 192.87.59.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SWOV-NET"
+        },
+        {
+          "resource": "192.87.60.0 - 192.87.61.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "IDL-NET"
+        },
+        {
+          "resource": "192.87.62.0 - 192.87.62.127",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RIJKSMUSEUM-LAN"
+        },
+        {
+          "resource": "192.87.63.0 - 192.87.63.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NOORDERPOORTCOLLEGE-NET"
+        },
+        {
+          "resource": "192.87.64.0 - 192.87.64.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "MCL-NET"
+        },
+        {
+          "resource": "192.87.65.0 - 192.87.65.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "TUE-SPACELABS-NET"
+        },
+        {
+          "resource": "192.87.66.0 - 192.87.66.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SN-SNET-LAN-TC2"
+        },
+        {
+          "resource": "192.87.67.0 - 192.87.67.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "FEICO-NET"
+        },
+        {
+          "resource": "192.87.68.0 - 192.87.68.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SCPIPNET"
+        },
+        {
+          "resource": "192.87.69.0 - 192.87.69.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NKI-RT-CLIN"
+        },
+        {
+          "resource": "192.87.70.0 - 192.87.70.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RAET-SS2-NL"
+        },
+        {
+          "resource": "192.87.71.0 - 192.87.71.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RAET-SS-NL"
+        },
+        {
+          "resource": "192.87.72.0 - 192.87.72.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NWO"
+        },
+        {
+          "resource": "192.87.73.0 - 192.87.73.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "WCCUNIX1"
+        },
+        {
+          "resource": "192.87.74.0 - 192.87.75.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "VUMC-LAN"
+        },
+        {
+          "resource": "192.87.76.0 - 192.87.76.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NBBS"
+        },
+        {
+          "resource": "192.87.77.0 - 192.87.77.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NCGV"
+        },
+        {
+          "resource": "192.87.78.0 - 192.87.78.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ZBNET"
+        },
+        {
+          "resource": "192.87.79.0 - 192.87.79.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "MPI-NET"
+        },
+        {
+          "resource": "192.87.80.0 - 192.87.80.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "LCGVO1"
+        },
+        {
+          "resource": "192.87.81.0 - 192.87.81.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "LCGVO2"
+        },
+        {
+          "resource": "192.87.82.0 - 192.87.82.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ZOVU"
+        },
+        {
+          "resource": "192.87.83.0 - 192.87.83.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KNMI-MOS-NET"
+        },
+        {
+          "resource": "192.87.84.0 - 192.87.84.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "DATAD-IP-NET"
+        },
+        {
+          "resource": "192.87.85.0 - 192.87.85.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RCC-SNAP"
+        },
+        {
+          "resource": "192.87.86.0 - 192.87.86.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "LCS"
+        },
+        {
+          "resource": "192.87.87.0 - 192.87.87.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ZBNET"
+        },
+        {
+          "resource": "192.87.88.0 - 192.87.88.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RECLAIMED-SURFNET-CIDR-IV"
+        },
+        {
+          "resource": "192.87.89.0 - 192.87.89.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "HKU-NET2"
+        },
+        {
+          "resource": "192.87.90.0 - 192.87.90.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "WKAPNET"
+        },
+        {
+          "resource": "192.87.91.0 - 192.87.91.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RCC-X500"
+        },
+        {
+          "resource": "192.87.92.0 - 192.87.92.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "HundredG-NET"
+        },
+        {
+          "resource": "192.87.93.0 - 192.87.93.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KENNISNET-OFFICE-NET"
+        },
+        {
+          "resource": "192.87.94.0 - 192.87.94.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KENNISNET-OFFICE-NET"
+        },
+        {
+          "resource": "192.87.95.0 - 192.87.95.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "DESIGNACADEMY-NET"
+        },
+        {
+          "resource": "192.87.96.0 - 192.87.96.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "TNO-PUB"
+        },
+        {
+          "resource": "192.87.97.0 - 192.87.97.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NKI2"
+        },
+        {
+          "resource": "192.87.99.0 - 192.87.99.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RCC-IVEV-LAN"
+        },
+        {
+          "resource": "192.87.100.0 - 192.87.100.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "introweb-net"
+        },
+        {
+          "resource": "192.87.101.0 - 192.87.101.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "PICA-PROD-NET"
+        },
+        {
+          "resource": "192.87.102.0 - 192.87.102.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SNET-AT-SARA"
+        },
+        {
+          "resource": "192.87.103.0 - 192.87.103.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SNET-AT-SARA"
+        },
+        {
+          "resource": "192.87.104.0 - 192.87.104.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "PICA-PROD-NET"
+        },
+        {
+          "resource": "192.87.105.0 - 192.87.105.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "METEONET"
+        },
+        {
+          "resource": "192.87.106.0 - 192.87.106.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SNET-AT-SARA"
+        },
+        {
+          "resource": "192.87.107.0 - 192.87.107.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KNAWNET"
+        },
+        {
+          "resource": "192.87.108.0 - 192.87.111.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SURFNET-SIPLAN-NET"
+        },
+        {
+          "resource": "192.87.112.0 - 192.87.113.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NYENRODE-NET"
+        },
+        {
+          "resource": "192.87.114.0 - 192.87.115.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NNI-NET"
+        },
+        {
+          "resource": "192.87.116.0 - 192.87.118.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SNET-LAN"
+        },
+        {
+          "resource": "192.87.119.0 - 192.87.119.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RECLAIMED-SURFNET-CIDR-IV"
+        },
+        {
+          "resource": "192.87.120.0 - 192.87.120.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "WAAG"
+        },
+        {
+          "resource": "192.87.121.0 - 192.87.121.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "Roosevelt-NET"
+        },
+        {
+          "resource": "192.87.122.0 - 192.87.122.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SNET-AT-SARA"
+        },
+        {
+          "resource": "192.87.123.0 - 192.87.123.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KONBIB"
+        },
+        {
+          "resource": "192.87.124.0 - 192.87.125.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NYENRODE-NET"
+        },
+        {
+          "resource": "192.87.126.0 - 192.87.126.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RIJKSMUSEUM-LAN"
+        },
+        {
+          "resource": "192.87.127.0 - 192.87.127.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "WKAPNET"
+        },
+        {
+          "resource": "192.87.128.0 - 192.87.131.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "AVANS-NET"
+        },
+        {
+          "resource": "192.87.132.0 - 192.87.132.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ECT-01"
+        },
+        {
+          "resource": "192.87.133.0 - 192.87.133.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ECT-02"
+        },
+        {
+          "resource": "192.87.134.0 - 192.87.134.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ECT-03"
+        },
+        {
+          "resource": "192.87.135.0 - 192.87.135.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ECT-04"
+        },
+        {
+          "resource": "192.87.136.0 - 192.87.136.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NIAS"
+        },
+        {
+          "resource": "192.87.137.0 - 192.87.137.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KNAWNET"
+        },
+        {
+          "resource": "192.87.138.0 - 192.87.138.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "HUBRECHT"
+        },
+        {
+          "resource": "192.87.139.0 - 192.87.139.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KNAWNET"
+        },
+        {
+          "resource": "192.87.140.0 - 192.87.140.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "GLU-NET"
+        },
+        {
+          "resource": "192.87.141.0 - 192.87.141.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NLDA-NET"
+        },
+        {
+          "resource": "192.87.142.0 - 192.87.142.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NLDA-NET"
+        },
+        {
+          "resource": "192.87.143.0 - 192.87.143.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "UNUINTECH-NET"
+        },
+        {
+          "resource": "192.87.144.0 - 192.87.146.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SHELL-NET-192-87-144"
+        },
+        {
+          "resource": "192.87.147.0 - 192.87.147.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SHELL-NET-192-87-147"
+        },
+        {
+          "resource": "192.87.148.0 - 192.87.149.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NNI-NET"
+        },
+        {
+          "resource": "192.87.151.0 - 192.87.151.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NNI-NET"
+        },
+        {
+          "resource": "192.87.152.0 - 192.87.152.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NBD_Biblion"
+        },
+        {
+          "resource": "192.87.153.0 - 192.87.154.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "AMOLF-WWW"
+        },
+        {
+          "resource": "192.87.155.0 - 192.87.155.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "FOM-BUREAU-NET"
+        },
+        {
+          "resource": "192.87.156.0 - 192.87.156.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ST-FIBER-OVERAL-NET"
+        },
+        {
+          "resource": "192.87.157.0 - 192.87.157.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "Teleplaza-NET"
+        },
+        {
+          "resource": "192.87.158.0 - 192.87.158.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "WKAPNET"
+        },
+        {
+          "resource": "192.87.159.0 - 192.87.159.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "Roosevelt-NET"
+        },
+        {
+          "resource": "192.87.160.0 - 192.87.163.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ISSNET"
+        },
+        {
+          "resource": "192.87.164.0 - 192.87.164.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RIJKSMUSEUM-LAN"
+        },
+        {
+          "resource": "192.87.165.0 - 192.87.165.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KBSEG4"
+        },
+        {
+          "resource": "192.87.166.0 - 192.87.166.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "HundredG-NET"
+        },
+        {
+          "resource": "192.87.167.0 - 192.87.167.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "AMOLF-NET"
+        },
+        {
+          "resource": "192.87.168.0 - 192.87.168.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "TNO-PG-PUB"
+        },
+        {
+          "resource": "192.87.169.0 - 192.87.169.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "MAASNET-ext2"
+        },
+        {
+          "resource": "192.87.170.0 - 192.87.170.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "UVTNET-C"
+        },
+        {
+          "resource": "192.87.171.0 - 192.87.171.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NBD_Biblion"
+        },
+        {
+          "resource": "192.87.172.0 - 192.87.174.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ITC-IPNET2"
+        },
+        {
+          "resource": "192.87.175.0 - 192.87.175.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SURFnet-TC2-NET"
+        },
+        {
+          "resource": "192.87.176.0 - 192.87.176.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "OWGTILBURG-NET"
+        },
+        {
+          "resource": "192.87.177.0 - 192.87.177.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "MAASNET-ext3"
+        },
+        {
+          "resource": "192.87.178.0 - 192.87.180.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "WUR-NET"
+        },
+        {
+          "resource": "192.87.181.0 - 192.87.181.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "Driestar-net"
+        },
+        {
+          "resource": "192.87.182.0 - 192.87.182.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SAXION-NET"
+        },
+        {
+          "resource": "192.87.183.0 - 192.87.183.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "DIFFER"
+        },
+        {
+          "resource": "192.87.184.0 - 192.87.187.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "VHL-NET"
+        },
+        {
+          "resource": "192.87.188.0 - 192.87.191.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "VHL-NET"
+        },
+        {
+          "resource": "192.87.196.0 - 192.87.196.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "ALBEDA-NET"
+        },
+        {
+          "resource": "192.87.198.0 - 192.87.198.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KMA-NET"
+        },
+        {
+          "resource": "192.87.199.0 - 192.87.199.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KNAWNET"
+        },
+        {
+          "resource": "192.87.200.0 - 192.87.207.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "POLFLEVO-NET"
+        },
+        {
+          "resource": "192.87.208.0 - 192.87.211.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "LSOP-NET"
+        },
+        {
+          "resource": "192.87.212.0 - 192.87.212.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "HKU-NET"
+        },
+        {
+          "resource": "192.87.213.0 - 192.87.213.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SRON-NET"
+        },
+        {
+          "resource": "192.87.214.0 - 192.87.219.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "HKU-NET"
+        },
+        {
+          "resource": "192.87.220.0 - 192.87.221.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "NNI-NET"
+        },
+        {
+          "resource": "192.87.222.0 - 192.87.222.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "REDEPLOYMENT-SURFNET-CIDR-IV"
+        },
+        {
+          "resource": "192.87.223.0 - 192.87.223.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "KMA-NET"
+        },
+        {
+          "resource": "192.87.224.0 - 192.87.227.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "SSHN"
+        },
+        {
+          "resource": "192.87.232.0 - 192.87.239.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RECLAIMED-SURFNET-CIDR-IV"
+        },
+        {
+          "resource": "192.87.240.0 - 192.87.255.255",
+          "status": "LEGACY",
+          "type": "inetnum",
+          "netname": "RECLAIMED-SURFNET-CIDR-IV"
+        }
+      ]
+    }
   }
 }

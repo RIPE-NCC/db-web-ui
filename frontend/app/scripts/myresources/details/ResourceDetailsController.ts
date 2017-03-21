@@ -1,5 +1,5 @@
 
-interface IResourceItemControllerState extends ng.ui.IStateService {
+interface IResourceDetailsControllerState extends ng.ui.IStateService {
     params: {
         objectName: string;
         objectType: string;
@@ -15,7 +15,7 @@ class ResourceDetailsController {
     public resource: any;
 
     constructor(private $log: angular.ILogService,
-                private $state: IResourceItemControllerState,
+                private $state: IResourceDetailsControllerState,
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
