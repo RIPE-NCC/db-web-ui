@@ -13,6 +13,7 @@ class ResourceDetailsController {
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificResource[];
     public resource: any;
+    public hasMoreSpecifics: boolean;
 
     constructor(private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
@@ -44,6 +45,8 @@ class ResourceDetailsController {
             }, () => {
                 this.whoisResponse = null;
             });
+
+        this.hasMoreSpecifics = $state.params.objectType === "inetnum" || $state.params.objectType === "inet6num";
     }
 
     public backToMyResources(): void {

@@ -2,25 +2,27 @@
 <resource-item item="resourceDetails.resource"></resource-item>
 <h1>Object in RIPE Database</h1>
 <whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
-<section>
-    <h3>More specfic resources</h3>
-    <table class="table table-bordered table-striped hover" show-filter="true">
-        <thead>
-        <tr>
-            <th>Internet number resource</th>
-            <th>Type</th>
-            <th>Netname</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="resource in resourceDetails.moreSpecifics">
-            <td>{{ resource.resource }}</td>
-            <td>{{ resource.type }}</td>
-            <td>{{ resource.netname }}</td>
-        </tr>
-        <tr class="noresults" ng-if="($resourceDetail.moreSpecifics).length === 0">
-            <td colspan="3">No results found</td>
-        </tr>
-        </tbody>
-    </table>
-</section>
+<div ng-if="resourceDetails.hasMoreSpecifics">
+    <section>
+        <h3>More specfic resources</h3>
+        <table class="table table-bordered table-striped hover" show-filter="true">
+            <thead>
+            <tr>
+                <th>Internet number resource</th>
+                <th>Type</th>
+                <th>Netname</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="resource in resourceDetails.moreSpecifics">
+                <td>{{ resource.resource }}</td>
+                <td>{{ resource.type }}</td>
+                <td>{{ resource.netname }}</td>
+            </tr>
+            <tr class="noresults" ng-if="($resourceDetail.moreSpecifics).length === 0">
+                <td colspan="3">No results found</td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
