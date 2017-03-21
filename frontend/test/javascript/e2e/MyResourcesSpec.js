@@ -38,4 +38,5 @@ describe('My resources', function () {
         page.selectFromList(page.orgSelector, 'Rop Gonggrijp').click();
         expect(page.myResourcesActiveTabRows.count()).toBe(2);
     });
+
 });

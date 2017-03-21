@@ -6,7 +6,7 @@ var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 
-describe('My Resources detail for inetnum', function () {
+fdescribe('My Resources detail for inetnum', function () {
 
     'use strict';
 
@@ -14,6 +14,10 @@ describe('My Resources detail for inetnum', function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255');
 
+    });
+
+    it('should show whois object attributes', function() {
+        expect(page.whoisObject.isPresent()).toEqual(true);
     });
 
     it('should list all the more specific resources', function () {
@@ -55,5 +59,4 @@ describe('My Resources detail for inet6num', function () {
         expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toBe('AMS-IX-20010913');
 
     });
-
 });

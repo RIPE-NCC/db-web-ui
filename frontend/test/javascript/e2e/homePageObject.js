@@ -103,6 +103,7 @@ module.exports = {
     //More specifics page
     moreSpecificsTable: element(by.css('.table')),
     moreSpecificsTableRows: element(by.css('.table')).element(by.css('tbody')).all(by.css('tr')),
+    whoisObject: element(by.css('whois-object')),
 
     getTableCell: function (tableElement, rowIndex, colIndex) {
         return tableElement.element(by.css('tbody')).all(by.css('tr')).get(rowIndex).all(by.css('td')).get(colIndex);
