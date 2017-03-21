@@ -15,13 +15,14 @@ exports.config = {
     directConnect: true,
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
+    allScriptsTimeout: 200000,
 
     jasmineNodeOpts: {
         onComplete: null,
         isVerbose: false,
         showColors: true,
         includeStackTrace: true,
-        defaultTimeoutInterval: 10000
+        defaultTimeoutInterval: 30000
     },
 
     onPrepare: function() {
@@ -42,10 +43,10 @@ exports.config = {
                     style.type = 'text/css';
                     style.innerHTML = '* {' +
                         '-webkit-transition: none !important;' +
-                        '-moz-transition: none !important' +
-                        '-o-transition: none !important' +
-                        '-ms-transition: none !important' +
-                        'transition: none !important' +
+                        '-moz-transition: none !important;' +
+                        '-o-transition: none !important;' +
+                        '-ms-transition: none !important;' +
+                        'transition: none !important;' +
                         '}';
                     document.getElementsByTagName('head')[0].appendChild(style);
                 });
