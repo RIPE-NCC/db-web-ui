@@ -82,6 +82,12 @@
                         <fileset>
                             <directory>${basedir}/frontend/node_modules</directory>
                         </fileset>
+                        <fileset>
+                            <directory>${basedir}/frontend</directory>
+                            <includes>
+                                <include>**/.t*/</include>
+                            </includes>
+                        </fileset>
                     </filesets>
                 </configuration>
             </plugin>
