@@ -13,25 +13,28 @@ describe('My Resources detail for inetnum', function () {
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255');
-
     });
 
     it('should show whois object attributes', function() {
-        expect(page.whoisObject.isPresent()).toEqual(true);
-        expect(page.whoisObjectAttrList.all(by.css('li')).count()).toEqual(13);
-        expect(page.getListItem(page.whoisObjectAttrList, 0).getText()).toEqual('inetnum:         185.1.76.0 - 185.1.79.255');
-        expect(page.getListItem(page.whoisObjectAttrList, 1).getText()).toEqual('netname:         RU-1C-20160322');
-        expect(page.getListItem(page.whoisObjectAttrList, 2).getText()).toEqual('country:         FI');
-        expect(page.getListItem(page.whoisObjectAttrList, 3).getText()).toEqual('org:             ORG-EIP1-RIPE');
-        expect(page.getListItem(page.whoisObjectAttrList, 4).getText()).toEqual('sponsoring-org:  ORG-LA538-RIPE');
-        expect(page.getListItem(page.whoisObjectAttrList, 5).getText()).toEqual('admin-c:         MV10039-RIPE');
-        expect(page.getListItem(page.whoisObjectAttrList, 6).getText()).toEqual('tech-c:          inty1-ripe');
-        expect(page.getListItem(page.whoisObjectAttrList, 7).getText()).toEqual('status:          ASSIGNED PI');
-        expect(page.getListItem(page.whoisObjectAttrList, 8).getText()).toEqual('mnt-by:          TPOL888-MNT');
-        expect(page.getListItem(page.whoisObjectAttrList, 9).getText()).toEqual('mnt-by:          TPOL888-MNT');
-        expect(page.getListItem(page.whoisObjectAttrList, 10).getText()).toEqual('created:         2016-03-22T13:48:02Z');
-        expect(page.getListItem(page.whoisObjectAttrList, 11).getText()).toEqual('last-modified:   2016-04-26T14:28:28Z');
-        expect(page.getListItem(page.whoisObjectAttrList, 12).getText()).toEqual('source:          RIPE');
+
+        var whoisObject = page.getWhoisObject();
+        var attributes = whoisObject.attributes();
+
+        expect(whoisObject.isPresent()).toEqual(true);
+        expect(attributes.count()).toEqual(13);
+        expect(attributes.get(0).getText()).toEqual('inetnum:         192.87.0.0 - 192.87.255.255');
+        expect(attributes.get(1).getText()).toEqual('netname:         RU-1C-20160322');
+        expect(attributes.get(2).getText()).toEqual('country:         FI');
+        expect(attributes.get(3).getText()).toEqual('org:             ORG-EIP1-RIPE');
+        expect(attributes.get(4).getText()).toEqual('sponsoring-org:  ORG-LA538-RIPE');
+        expect(attributes.get(5).getText()).toEqual('admin-c:         MV10039-RIPE');
+        expect(attributes.get(6).getText()).toEqual('tech-c:          inty1-ripe');
+        expect(attributes.get(7).getText()).toEqual('status:          ASSIGNED PI');
+        expect(attributes.get(8).getText()).toEqual('mnt-by:          TPOL888-MNT');
+        expect(attributes.get(9).getText()).toEqual('mnt-by:          TPOL888-MNT');
+        expect(attributes.get(10).getText()).toEqual('created:         2016-03-22T13:48:02Z');
+        expect(attributes.get(11).getText()).toEqual('last-modified:   2016-04-26T14:28:28Z');
+        expect(attributes.get(12).getText()).toEqual('source:          RIPE');
     });
 
     it('should list all the more specific resources', function () {
@@ -45,7 +48,6 @@ describe('My Resources detail for inetnum', function () {
         expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('192.87.1.0 - 192.87.1.255');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('inetnum');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('NFRA');
-
     });
 
 });
@@ -58,6 +60,22 @@ describe('My Resources detail for inet6num', function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inet6num/2001:7f8::/29');
 
+    });
+
+    it('should show whois object attributes', function() {
+
+        var whoisObject = page.getWhoisObject();
+        var attributes = whoisObject.attributes();
+
+        expect(whoisObject.isPresent()).toEqual(true);
+        expect(attributes.count()).toEqual(15);
+        expect(attributes.get(0).getText()).toEqual('inet6num:        2001:7f8::/29');
+        expect(attributes.get(1).getText()).toEqual('netname:         EU-ZZ-2001-07F8');
+        expect(attributes.get(2).getText()).toEqual('org:             ORG-NCC1-RIPE');
+        expect(attributes.get(3).getText()).toEqual('descr:           RIPE Network Coordination Centre');
+        expect(attributes.get(4).getText()).toEqual('descr:           block for RIR assignments');
+        expect(attributes.get(13).getText()).toEqual('last-modified:   2011-12-30T07:49:39Z');
+        expect(attributes.get(14).getText()).toEqual('source:          RIPE');
     });
 
     it('should list all the more specific resources', function () {
