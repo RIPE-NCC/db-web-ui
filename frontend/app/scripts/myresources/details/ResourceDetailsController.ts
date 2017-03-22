@@ -33,7 +33,6 @@ class ResourceDetailsController {
             );
         }
 
-        $log.info("objectKey = ", objectKey);
         this.queryParametersService.getResource(objectKey, "RIPE", objectType).then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
@@ -47,13 +46,9 @@ class ResourceDetailsController {
                         type: this.details.type,
                     };
                 }
-                $log.info("this.details =", this.details);
             }, () => {
                 this.whoisResponse = null;
             });
-
-
-        $log.info("controller=", this);
     }
 
     public backToMyResources(): void {
