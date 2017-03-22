@@ -18,6 +18,7 @@ describe('My Resources detail for inetnum', function () {
 
     it('should show whois object attributes', function() {
         expect(page.whoisObject.isPresent()).toEqual(true);
+        expect(page.whoisObjectAttrList.count()).toEqual(13);
     });
 
     it('should list all the more specific resources', function () {
