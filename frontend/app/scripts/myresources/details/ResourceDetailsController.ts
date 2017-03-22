@@ -28,7 +28,7 @@ class ResourceDetailsController {
             moreSpecificsService.getSpecifics(objectKey, objectType).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                     this.moreSpecifics = response.data.resources;
-                },
+                }
             );
         }
 
