@@ -6,7 +6,7 @@ var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 
-fdescribe('My Resources detail for inetnum', function () {
+describe('My Resources detail for inetnum', function () {
 
     'use strict';
 

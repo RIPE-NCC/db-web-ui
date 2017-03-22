@@ -104,6 +104,7 @@ module.exports = {
     moreSpecificsTable: element(by.css('.table')),
     moreSpecificsTableRows: element(by.css('.table')).element(by.css('tbody')).all(by.css('tr')),
     whoisObject: element(by.css('whois-object')),
+    whoisObjectAttrList: element(by.css('.db-pre-results')).element(by.css('li')),
 
     getTableCell: function (tableElement, rowIndex, colIndex) {
         return tableElement.element(by.css('tbody')).all(by.css('tr')).get(rowIndex).all(by.css('td')).get(colIndex);
