@@ -20,14 +20,15 @@ class ResourceDetailsController {
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
-        const objectKey = ResourceDetailsController.objectKey($state);
+        const objectKey = $state.params.objectName;
         const objectType = $state.params.objectType;
 
-        this.hasMoreSpecifics = objectType === "inetnum" || objectType === "inet6num";
-        if (this.hasMoreSpecifics) {
+        this.hasMoreSpecifics = false;
+        if (objectType === "inetnum" || objectType === "inet6num") {
             moreSpecificsService.getSpecifics(objectKey, objectType).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                     this.moreSpecifics = response.data.resources;
+                    this.hasMoreSpecifics = this.moreSpecifics.length > 0;
                 }
             );
         }
@@ -46,18 +47,24 @@ class ResourceDetailsController {
                         type: this.details.type,
                     };
                 }
+                $log.info("this.details =", this.details);
             }, () => {
                 this.whoisResponse = null;
             });
 
-    }
 
-    private static objectKey(state: IResourceDetailsControllerState) : string {
-        return state.params.objectName;
+        $log.info("controller=", this);
     }
 
     public backToMyResources(): void {
         this.$state.transitionTo("webupdates.myresources");
+    }
+
+    public showDetail(resource: IResourceModel): void {
+        this.$state.transitionTo("webupdates.myresourcesdetail", {
+            objectName: resource.resource,
+            objectType: resource.type,
+        });
     }
 
 }

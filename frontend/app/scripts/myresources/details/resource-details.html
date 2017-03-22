@@ -15,14 +15,15 @@
             </thead>
             <tbody>
             <tr ng-repeat="resource in resourceDetails.moreSpecifics">
-                <td>{{ resource.resource }}</td>
+                <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
                 <td>{{ resource.type }}</td>
                 <td>{{ resource.netname }}</td>
-            </tr>
-            <tr class="noresults" ng-if="($resourceDetail.moreSpecifics).length === 0">
-                <td colspan="3">No results found</td>
             </tr>
             </tbody>
         </table>
     </section>
+</div>
+
+<div ng-if="!resourceDetails.hasMoreSpecifics">
+    <h3>No more specific objects exist.</h3>
 </div>
