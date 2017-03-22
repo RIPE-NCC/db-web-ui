@@ -6416,7 +6416,7 @@
       ]
     }
   },
-    "api/whois/search?flags=r&ignore404=true&query-string=192.87.0.0+-+192.87.255.255&type-filter=inetnum": {
+    "api/whois/RIPE/inetnum/192.87.0.0 - 192.87.255.255": {
         "data": {
             "service": {
                 "name": "search"

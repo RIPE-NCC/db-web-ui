@@ -32,10 +32,8 @@ class ResourceDetailsController {
             );
         }
 
-        const types = {};
-        types[objectType] = true;
         $log.info("objectKey = ", objectKey);
-        this.queryParametersService.fireQuery(objectKey, "RIPE", types, "r", {}).then(
+        this.queryParametersService.getResource(objectKey, "RIPE", objectType).then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
                 const results = response.data.objects.object;
