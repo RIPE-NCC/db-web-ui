@@ -13,7 +13,6 @@ class ResourceDetailsController {
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificResource[];
     public resource: any;
-    public hasMoreSpecifics: boolean;
 
     constructor(private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
@@ -23,12 +22,10 @@ class ResourceDetailsController {
         const objectKey = $state.params.objectName;
         const objectType = $state.params.objectType;
 
-        this.hasMoreSpecifics = false;
         if (objectType === "inetnum" || objectType === "inet6num") {
             moreSpecificsService.getSpecifics(objectKey, objectType).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                     this.moreSpecifics = response.data.resources;
-                    this.hasMoreSpecifics = this.moreSpecifics.length > 0;
                 }
             );
         }
