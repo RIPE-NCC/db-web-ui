@@ -13,7 +13,6 @@ class ResourceDetailsController {
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificResource[];
     public resource: any;
-    public hasMoreSpecifics: boolean;
 
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
@@ -21,11 +20,10 @@ class ResourceDetailsController {
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
-        const objectKey = ResourceDetailsController.objectKey($state);
+        const objectKey = $state.params.objectName;
         const objectType = $state.params.objectType.toLowerCase();
 
-        this.hasMoreSpecifics = objectType === "inetnum" || objectType === "inet6num";
-        if (this.hasMoreSpecifics) {
+        if (objectType === "inetnum" || objectType === "inet6num") {
             moreSpecificsService.getSpecifics(objectKey, objectType).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                     this.moreSpecifics = response.data.resources;
@@ -48,15 +46,17 @@ class ResourceDetailsController {
             }, () => {
                 this.whoisResponse = null;
             });
-
-    }
-
-    private static objectKey(state: IResourceDetailsControllerState) : string {
-        return state.params.objectName;
     }
 
     public backToMyResources(): void {
         this.$state.transitionTo("webupdates.myresources");
+    }
+
+    public showDetail(resource: IResourceModel): void {
+        this.$state.transitionTo("webupdates.myresourcesdetail", {
+            objectName: resource.resource,
+            objectType: resource.type,
+        });
     }
 
 }

@@ -3,7 +3,7 @@
 
 <h2>Object in RIPE Database</h2>
 <whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
-<div ng-if="resourceDetails.hasMoreSpecifics">
+<div ng-if="resourceDetails.moreSpecifics.length">
     <section>
         <h2>More specific resources</h2>
         <table class="table table-bordered table-striped hover" show-filter="true">
@@ -16,14 +16,15 @@
             </thead>
             <tbody>
             <tr ng-repeat="resource in resourceDetails.moreSpecifics">
-                <td>{{ resource.resource }}</td>
+                <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
                 <td>{{ resource.type }}</td>
                 <td>{{ resource.netname }}</td>
-            </tr>
-            <tr class="noresults" ng-if="($resourceDetail.moreSpecifics).length === 0">
-                <td colspan="3">No results found</td>
             </tr>
             </tbody>
         </table>
     </section>
+</div>
+
+<div class="alert alert-info" ng-if="!resourceDetails.moreSpecifics.length">
+    No more specific objects exist.
 </div>
