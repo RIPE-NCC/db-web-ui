@@ -2,7 +2,7 @@
 <resource-item item="resourceDetails.resource"></resource-item>
 <h1>Object in RIPE Database</h1>
 <whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
-<div ng-if="resourceDetails.hasMoreSpecifics">
+<div ng-if="resourceDetails.moreSpecifics.length">
     <section>
         <h3>More specfic resources</h3>
         <table class="table table-bordered table-striped hover" show-filter="true">
@@ -24,6 +24,6 @@
     </section>
 </div>
 
-<div ng-if="!resourceDetails.hasMoreSpecifics">
-    <h3>No more specific objects exist.</h3>
+<div class="alert alert-info" ng-if="!resourceDetails.moreSpecifics.length">
+    No more specific objects exist.
 </div>
