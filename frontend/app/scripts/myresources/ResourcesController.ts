@@ -36,6 +36,7 @@ class ResourcesController {
     }
 
     private fetchResourcesAndPopulatePage() {
+        this.ipv4Resources = this.ipv6Resources = this.asnResources = [];
         if (!this.selectedOrg) {
             return;
         }

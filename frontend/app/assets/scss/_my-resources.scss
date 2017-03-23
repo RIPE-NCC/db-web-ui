@@ -35,11 +35,10 @@ div.resource-list {
     @extend %float-l;
 }
 
-div.resource-item {
+resource-item {
     @extend %width-100;
     @extend %float-l;
-    padding-top: 30px;
-    margin-top: 5px;
+    padding: 16px 10px 12px;
     cursor: pointer;
     overflow: auto;
     p.title {

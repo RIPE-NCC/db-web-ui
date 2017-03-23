@@ -6,8 +6,8 @@ interface IResourceModel {
 interface ResourceRange {
     string: string;
     slash: string;
-    start: number; // TODO: Cannot use number for ipv6, JS numbers only go to 2^53
-    end: number; // TODO: Cannot use number for ipv6, JS numbers only go to 2^53
+    start: number;
+    end: number;
 }
 
 interface Ipv4ResourceRange extends ResourceRange { }
