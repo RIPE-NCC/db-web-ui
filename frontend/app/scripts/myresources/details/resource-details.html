@@ -1,10 +1,11 @@
 <button type="button" class="blue-button pull-right" ng-click="resourceDetails.backToMyResources()">Back to my resources</button>
-<resource-item item="resourceDetails.resource"></resource-item>
-<h1>Object in RIPE Database</h1>
+<h1>{{ resourceDetails.resource.resource }}</h1>
+
+<h2>Object in RIPE Database</h2>
 <whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
 <div ng-if="resourceDetails.moreSpecifics.length">
     <section>
-        <h3>More specfic resources</h3>
+        <h2>More specific resources</h2>
         <table class="table table-bordered table-striped hover" show-filter="true">
             <thead>
             <tr>

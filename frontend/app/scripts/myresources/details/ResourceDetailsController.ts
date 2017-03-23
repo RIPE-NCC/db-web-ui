@@ -8,26 +8,26 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
 
 class ResourceDetailsController {
 
-    public static $inject = ["$log", "$state", "QueryParametersService", "MoreSpecificsService"];
+    public static $inject = ["$scope", "$log", "$state", "QueryParametersService", "MoreSpecificsService"];
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificResource[];
     public resource: any;
 
-    constructor(private $log: angular.ILogService,
+    constructor(private $scope: angular.IScope,
+                private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
         const objectKey = $state.params.objectName;
-        const objectType = $state.params.objectType;
+        const objectType = $state.params.objectType.toLowerCase();
 
         if (objectType === "inetnum" || objectType === "inet6num") {
             moreSpecificsService.getSpecifics(objectKey, objectType).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                     this.moreSpecifics = response.data.resources;
-                }
-            );
+                });
         }
 
         this.queryParametersService.getResource(objectKey, "RIPE", objectType).then(
@@ -37,10 +37,10 @@ class ResourceDetailsController {
                 if (results.length >= 1) {
                     this.details = results[0];
                     this.resource = {
-                        orgName: "WDE (not always present)",
+                        orgName: "",
                         resource: this.details["primary-key"].attribute[0].value,
-                        status: "OK",
-                        type: this.details.type,
+                        // status: "OK",
+                        type: objectType,
                     };
                 }
             }, () => {

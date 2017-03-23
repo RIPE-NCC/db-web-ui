@@ -14,13 +14,13 @@ class ResourceItemDirective implements angular.IDirective {
     public scope = {
         item: "=",
     };
-    public templateUrl: string = "scripts/myresources/resourceItem.html";
+    public templateUrl: string = "scripts/myresources/resource-item.html";
 
     constructor(private $state: ng.ui.IStateService) {
     }
 
-    public link: angular.IDirectiveLinkFn = (scope: IResourceItemDirectiveScope) => {
-
+    public link: angular.IDirectiveLinkFn = (scope: IResourceItemDirectiveScope, element: JQuery) => {
+        element.addClass("resource-item");
         scope.showDetail = (item: IResourceModel) => {
             this.$state.transitionTo("webupdates.myresourcesdetail", {
                 objectName: item.resource,
