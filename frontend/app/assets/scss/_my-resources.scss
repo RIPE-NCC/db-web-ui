@@ -65,6 +65,15 @@ resource-item {
     }
 }
 
+table.resources > thead > tr {
+    background-color: #eee;
+}
+
+table.table-body-borderless > tbody > tr > td,
+table.table-body-borderless > thead > tr > th {
+    border: 0;
+}
+
 ul.attrblock {
     list-style-type: none;
 }

@@ -13,6 +13,7 @@ class ResourceDetailsController {
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificResource[];
     public resource: any;
+    public canHaveMoreSpecifics: boolean;
 
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
@@ -23,14 +24,16 @@ class ResourceDetailsController {
         const objectKey = $state.params.objectName;
         const objectType = $state.params.objectType.toLowerCase();
 
+        this.canHaveMoreSpecifics = false;
         if (objectType === "inetnum" || objectType === "inet6num") {
             moreSpecificsService.getSpecifics(objectKey, objectType).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
                     this.moreSpecifics = response.data.resources;
+                    this.canHaveMoreSpecifics = true;
                 });
         }
 
-        this.queryParametersService.getResource(objectKey, "RIPE", objectType).then(
+        this.queryParametersService.getResource(objectKey, objectType, "RIPE").then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
                 const results = response.data.objects.object;
@@ -49,11 +52,11 @@ class ResourceDetailsController {
     }
 
     public backToMyResources(): void {
-        this.$state.transitionTo("webupdates.myresources");
+        this.$state.go("webupdates.myresources");
     }
 
     public showDetail(resource: IResourceModel): void {
-        this.$state.transitionTo("webupdates.myresourcesdetail", {
+        this.$state.go("webupdates.myresourcesdetail", {
             objectName: resource.resource,
             objectType: resource.type,
         });

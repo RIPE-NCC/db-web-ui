@@ -6,8 +6,8 @@ interface IQueryParametersService {
               inverse: {}): IHttpPromise<IWhoisResponseModel>;
 
     getResource(key: string,
-              source: string,
-              type: string): IHttpPromise<IWhoisResponseModel>;
+                type: string,
+                source: string): IHttpPromise<IWhoisResponseModel>;
 }
 
 class QueryParametersService implements IQueryParametersService {
@@ -43,9 +43,9 @@ class QueryParametersService implements IQueryParametersService {
     }
 
     public getResource(key: string,
-                       source: string,
-                       type: string): IHttpPromise<IWhoisResponseModel> {
-        return this.$http.get("api/whois/"+source+"/"+type+"/"+key);
+                       type: string,
+                       source: string): IHttpPromise<IWhoisResponseModel> {
+        return this.$http.get("api/whois/" + source + "/" + type + "/" + key);
     }
 }
 

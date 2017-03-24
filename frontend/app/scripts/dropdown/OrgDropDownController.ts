@@ -12,7 +12,6 @@ class OrgDropDownController {
             this.organisations = organisations;
             this.orgDropDownStateService.getSelectedOrg().then((organisation: Organisation) => {
                 this.selectedOrg = organisation;
-                this.notifyOrganisationChange(this.selectedOrg);
             });
         });
     }

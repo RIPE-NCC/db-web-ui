@@ -1,10 +1,9 @@
 import IHttpPromiseCallback = angular.IHttpPromiseCallback;
 class MyResourcesDataService implements IMyResourcesDataService {
-    public static $inject = ["$http", "$log", "$rootScope", "OrgDropDownStateService"];
+    public static $inject = ["$http", "$log"];
 
     constructor(private $http: ng.IHttpService,
-                private $log: angular.ILogService,
-                private $rootScope: angular.IRootScopeService) {
+                private $log: angular.ILogService) {
     }
 
     public fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse> {

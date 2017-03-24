@@ -22,7 +22,7 @@ class ResourceItemDirective implements angular.IDirective {
     public link: angular.IDirectiveLinkFn = (scope: IResourceItemDirectiveScope, element: JQuery) => {
         element.addClass("resource-item");
         scope.showDetail = (item: IResourceModel) => {
-            this.$state.transitionTo("webupdates.myresourcesdetail", {
+            this.$state.go("webupdates.myresourcesdetail", {
                 objectName: item.resource,
                 objectType: item.type,
             });
