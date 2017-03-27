@@ -20,6 +20,9 @@ describe('My Resources detail for inetnum', function () {
         var whoisObject = page.getWhoisObject();
         var attributes = whoisObject.attributes();
 
+        var showMoreButton = whoisObject.showMoreButton();
+        expect(showMoreButton.isPresent()).toEqual(false);
+
         expect(whoisObject.isPresent()).toEqual(true);
         expect(attributes.count()).toEqual(13);
         expect(attributes.get(0).getText()).toMatch(/inetnum: *192\.87\.0\.0 - 192\.87\.255\.255/);
@@ -41,11 +44,11 @@ describe('My Resources detail for inetnum', function () {
         expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
         expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('192.87.0.0 - 192.87.0.255');
-        expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('inetnum');
+        expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('LEGACY');
         expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual('SNET-HOMELAN');
 
         expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('192.87.1.0 - 192.87.1.255');
-        expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('inetnum');
+        expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('LEGACY');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('NFRA');
     });
 
@@ -66,15 +69,19 @@ describe('My Resources detail for inet6num', function () {
         var whoisObject = page.getWhoisObject();
         var attributes = whoisObject.attributes();
 
+        var showMoreButton = whoisObject.showMoreButton();
+        expect(showMoreButton.isPresent()).toEqual(false);
+
+
         expect(whoisObject.isPresent()).toEqual(true);
         expect(attributes.count()).toEqual(15);
-        expect(attributes.get(0).getText()).toEqual('inet6num:        2001:7f8::/29');
-        expect(attributes.get(1).getText()).toEqual('netname:         EU-ZZ-2001-07F8');
-        expect(attributes.get(2).getText()).toEqual('org:             ORG-NCC1-RIPE');
-        expect(attributes.get(3).getText()).toEqual('descr:           RIPE Network Coordination Centre');
-        expect(attributes.get(4).getText()).toEqual('descr:           block for RIR assignments');
-        expect(attributes.get(13).getText()).toEqual('last-modified:   2011-12-30T07:49:39Z');
-        expect(attributes.get(14).getText()).toEqual('source:          RIPE');
+        expect(attributes.get(0).getText()).toMatch(/inet6num: *2001:7f8::\/29/);
+        expect(attributes.get(1).getText()).toMatch(/netname: *EU-ZZ-2001-07F8/);
+        expect(attributes.get(2).getText()).toMatch(/org: *ORG-NCC1-RIPE/);
+        expect(attributes.get(3).getText()).toMatch(/descr: *RIPE Network Coordination Centre/);
+        expect(attributes.get(4).getText()).toMatch(/descr: *block for RIR assignments/);
+        expect(attributes.get(13).getText()).toMatch(/last-modified: *2011-12-30T07:49:39Z/);
+        expect(attributes.get(14).getText()).toMatch(/source: *RIPE/);
     });
 
     it('should list all the more specific resources', function () {
@@ -82,12 +89,110 @@ describe('My Resources detail for inet6num', function () {
         expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
         expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('2001:7f8::/48');
-        expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('inet6num');
+        expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('ASSIGNED PI');
         expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual('DE-CIX-IXP-20010913');
 
         expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('2001:7f8:1::/48');
-        expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('inet6num');
+        expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('ASSIGNED PI');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('AMS-IX-20010913');
 
     });
 });
+
+
+//describe('My Resources detail for aut-num', function () {
+//
+//    'use strict';
+//
+//    beforeEach(function () {
+//        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
+//        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/aut-num/AS204056');
+//
+//    });
+//
+//    it('should show partial whois object attributes', function() {
+//
+//        var whoisObject = page.getWhoisObject();
+//        var attributes = whoisObject.attributes();
+//
+//        var showMoreButton = whoisObject.showMoreButton();
+//        expect(showMoreButton.isPresent()).toEqual(true);
+//
+//        expect(whoisObject.isPresent()).toEqual(true);
+//        expect(attributes.count()).toEqual(25);
+//        expect(attributes.get(0).getText()).toMatch(/aut-num: *AS204056/);
+//        expect(attributes.get(1).getText()).toMatch(/as-name: *asnametest/);
+//        expect(attributes.get(2).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
+//        expect(attributes.get(3).getText()).toMatch(/import: *from AS3254 accept ANY/);
+//        expect(attributes.get(4).getText()).toMatch(/export: *to AS3254 announce AS204056/);
+//        expect(attributes.get(5).getText()).toMatch(/import: *from as3333 accept ANY/);
+//        expect(attributes.get(6).getText()).toMatch(/export: *to as3333 announce AS204056/);
+//        expect(attributes.get(7).getText()).toMatch(/admin-c: *MV10039-RIPE/);
+//        expect(attributes.get(8).getText()).toMatch(/tech-c: *inty1-ripe/);
+//        expect(attributes.get(9).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(10).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(11).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(12).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(13).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(14).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(15).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(16).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(17).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(18).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(19).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(20).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(21).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(22).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(23).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(24).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//
+//    });
+//
+//    fit('should show full whois object attributes', function() {
+//
+//        expect(page.getWhoisObject().isPresent()).toEqual(true);
+//        expect(page.getWhoisObject().showMoreButton().isPresent()).toEqual(true);
+//        expect(page.getWhoisObject().attributes().count()).toEqual(25);
+//
+//        page.getWhoisObject().showMoreButton().click();
+//        expect(page.getWhoisObject().isPresent()).toEqual(true);
+//        expect(page.getWhoisObject().showMoreButton().isPresent()).toEqual(true);
+//        expect(page.getWhoisObject().attributes().count()).toEqual(25);
+//
+//        page.getWhoisObject().showMoreButton().click();
+//        expect(page.getWhoisObject().isPresent()).toEqual(true);
+//        expect(page.getWhoisObject().showMoreButton().isPresent()).toEqual(false);
+//        expect(page.getWhoisObject().attributes().count()).toEqual(25);
+//
+//        expect(attributes.get(0).getText()).toMatch(/aut-num: *AS204056/);
+//        expect(attributes.get(1).getText()).toMatch(/as-name: *asnametest/);
+//        expect(attributes.get(2).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
+//        expect(attributes.get(3).getText()).toMatch(/import: *from AS3254 accept ANY/);
+//        expect(attributes.get(4).getText()).toMatch(/export: *to AS3254 announce AS204056/);
+//        expect(attributes.get(5).getText()).toMatch(/import: *from as3333 accept ANY/);
+//        expect(attributes.get(6).getText()).toMatch(/export: *to as3333 announce AS204056/);
+//        expect(attributes.get(7).getText()).toMatch(/admin-c: *MV10039-RIPE/);
+//        expect(attributes.get(8).getText()).toMatch(/tech-c: *inty1-ripe/);
+//        expect(attributes.get(9).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(10).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(11).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(12).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(13).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(14).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(15).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(16).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(17).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(18).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(19).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(20).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(21).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(22).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(23).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//        expect(attributes.get(24).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+//
+//    });
+//
+//    it('should NOT list the more specific resources', function () {
+//        expect(page.moreSpecificsTable.isPresent()).toEqual(false);
+//    });
+//});

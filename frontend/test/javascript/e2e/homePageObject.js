@@ -38,11 +38,15 @@ function GetWhoisObject(parent) {
     };
 
     this.attributes = function() {
-        return _this.directive().element(by.css('.db-pre-results')).element(by.css('ul')).all(by.css('li'));
+        return _this.directive().element(by.css('section')).element(by.css('div')).element(by.css('pre')).element(by.css('ul')).all(by.css('li'));
     };
 
     this.isPresent = function() {
         return _this.directive().isPresent()
+    };
+
+    this.showMoreButton = function() {
+        return _this.directive().element(by.css('section')).element(by.css('div')).element(by.css('.show-more'));
     };
 }
 
