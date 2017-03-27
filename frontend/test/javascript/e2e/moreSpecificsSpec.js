@@ -100,99 +100,101 @@ describe('My Resources detail for inet6num', function () {
 });
 
 
-//describe('My Resources detail for aut-num', function () {
-//
-//    'use strict';
-//
-//    beforeEach(function () {
-//        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-//        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/aut-num/AS204056');
-//
-//    });
-//
-//    it('should show partial whois object attributes', function() {
-//
-//        var whoisObject = page.getWhoisObject();
-//        var attributes = whoisObject.attributes();
-//
-//        var showMoreButton = whoisObject.showMoreButton();
-//        expect(showMoreButton.isPresent()).toEqual(true);
-//
-//        expect(whoisObject.isPresent()).toEqual(true);
-//        expect(attributes.count()).toEqual(25);
-//        expect(attributes.get(0).getText()).toMatch(/aut-num: *AS204056/);
-//        expect(attributes.get(1).getText()).toMatch(/as-name: *asnametest/);
-//        expect(attributes.get(2).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
-//        expect(attributes.get(3).getText()).toMatch(/import: *from AS3254 accept ANY/);
-//        expect(attributes.get(4).getText()).toMatch(/export: *to AS3254 announce AS204056/);
-//        expect(attributes.get(5).getText()).toMatch(/import: *from as3333 accept ANY/);
-//        expect(attributes.get(6).getText()).toMatch(/export: *to as3333 announce AS204056/);
-//        expect(attributes.get(7).getText()).toMatch(/admin-c: *MV10039-RIPE/);
-//        expect(attributes.get(8).getText()).toMatch(/tech-c: *inty1-ripe/);
-//        expect(attributes.get(9).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(10).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(11).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(12).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(13).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(14).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(15).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(16).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(17).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(18).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(19).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(20).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(21).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(22).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(23).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(24).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//
-//    });
-//
-//    fit('should show full whois object attributes', function() {
-//
-//        expect(page.getWhoisObject().isPresent()).toEqual(true);
-//        expect(page.getWhoisObject().showMoreButton().isPresent()).toEqual(true);
-//        expect(page.getWhoisObject().attributes().count()).toEqual(25);
-//
-//        page.getWhoisObject().showMoreButton().click();
-//        expect(page.getWhoisObject().isPresent()).toEqual(true);
-//        expect(page.getWhoisObject().showMoreButton().isPresent()).toEqual(true);
-//        expect(page.getWhoisObject().attributes().count()).toEqual(25);
-//
-//        page.getWhoisObject().showMoreButton().click();
-//        expect(page.getWhoisObject().isPresent()).toEqual(true);
-//        expect(page.getWhoisObject().showMoreButton().isPresent()).toEqual(false);
-//        expect(page.getWhoisObject().attributes().count()).toEqual(25);
-//
-//        expect(attributes.get(0).getText()).toMatch(/aut-num: *AS204056/);
-//        expect(attributes.get(1).getText()).toMatch(/as-name: *asnametest/);
-//        expect(attributes.get(2).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
-//        expect(attributes.get(3).getText()).toMatch(/import: *from AS3254 accept ANY/);
-//        expect(attributes.get(4).getText()).toMatch(/export: *to AS3254 announce AS204056/);
-//        expect(attributes.get(5).getText()).toMatch(/import: *from as3333 accept ANY/);
-//        expect(attributes.get(6).getText()).toMatch(/export: *to as3333 announce AS204056/);
-//        expect(attributes.get(7).getText()).toMatch(/admin-c: *MV10039-RIPE/);
-//        expect(attributes.get(8).getText()).toMatch(/tech-c: *inty1-ripe/);
-//        expect(attributes.get(9).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(10).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(11).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(12).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(13).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(14).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(15).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(16).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(17).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(18).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(19).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(20).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(21).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(22).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(23).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//        expect(attributes.get(24).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
-//
-//    });
-//
-//    it('should NOT list the more specific resources', function () {
-//        expect(page.moreSpecificsTable.isPresent()).toEqual(false);
-//    });
-//});
+describe('My Resources detail for aut-num', function () {
+
+    'use strict';
+
+    beforeEach(function () {
+        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
+        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/aut-num/AS204056');
+
+    });
+
+    it('should show partial whois object attributes', function() {
+
+        var whoisObject = page.getWhoisObject();
+        var attributes = whoisObject.attributes();
+
+        var showMoreButton = whoisObject.showMoreButton();
+        expect(showMoreButton.isPresent()).toEqual(true);
+
+        expect(whoisObject.isPresent()).toEqual(true);
+        expect(attributes.count()).toEqual(25);
+        expect(attributes.get(0).getText()).toMatch(/aut-num: *AS204056/);
+        expect(attributes.get(1).getText()).toMatch(/as-name: *asnametest/);
+        expect(attributes.get(2).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
+        expect(attributes.get(3).getText()).toMatch(/import: *from AS3254 accept ANY/);
+        expect(attributes.get(4).getText()).toMatch(/export: *to AS3254 announce AS204056/);
+        expect(attributes.get(5).getText()).toMatch(/import: *from as3333 accept ANY/);
+        expect(attributes.get(6).getText()).toMatch(/export: *to as3333 announce AS204056/);
+        expect(attributes.get(7).getText()).toMatch(/admin-c: *MV10039-RIPE/);
+        expect(attributes.get(8).getText()).toMatch(/tech-c: *inty1-ripe/);
+        expect(attributes.get(9).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(10).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(11).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(12).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(13).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(14).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(15).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(16).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(17).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(18).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(19).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(20).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(21).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(22).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(23).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(24).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+
+    });
+
+    it('should show full whois object attributes', function() {
+
+        var whoisObject = page.getWhoisObject();
+        expect(whoisObject.isPresent()).toEqual(true);
+        expect(whoisObject.showMoreButton().isPresent()).toEqual(true);
+
+        var attributes = whoisObject.attributes();
+        expect(attributes.count()).toEqual(25);
+
+        page.scrollIntoView(whoisObject.showMoreButton());
+        whoisObject.showMoreButton().click();
+        expect(whoisObject.isPresent()).toEqual(true);
+        expect(whoisObject.showMoreButton().isPresent()).toEqual(true);
+        expect(attributes.count()).toEqual(50);
+
+        page.scrollIntoView(whoisObject.showMoreButton());
+        whoisObject.showMoreButton().click();
+        expect(whoisObject.isPresent()).toEqual(true);
+        expect(whoisObject.showMoreButton().isPresent()).toEqual(false);
+        expect(attributes.count()).toEqual(62);
+
+        expect(attributes.get(0).getText()).toMatch(/aut-num: *AS204056/);
+        expect(attributes.get(1).getText()).toMatch(/as-name: *asnametest/);
+        expect(attributes.get(2).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
+        expect(attributes.get(3).getText()).toMatch(/import: *from AS3254 accept ANY/);
+        expect(attributes.get(4).getText()).toMatch(/export: *to AS3254 announce AS204056/);
+        expect(attributes.get(5).getText()).toMatch(/import: *from as3333 accept ANY/);
+        expect(attributes.get(6).getText()).toMatch(/export: *to as3333 announce AS204056/);
+        expect(attributes.get(7).getText()).toMatch(/admin-c: *MV10039-RIPE/);
+        expect(attributes.get(8).getText()).toMatch(/tech-c: *inty1-ripe/);
+        expect(attributes.get(9).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(10).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(11).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        //Same... :/
+        expect(attributes.get(53).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(54).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
+        expect(attributes.get(55).getText()).toMatch(/status: *ASSIGNED/);
+        expect(attributes.get(56).getText()).toMatch(/mnt-by: *RIPE-NCC-END-MNT/);
+        expect(attributes.get(57).getText()).toMatch(/mnt-by: *RU1C-MNT/);
+        expect(attributes.get(58).getText()).toMatch(/mnt-routes: *RU1C-MNT/);
+        expect(attributes.get(59).getText()).toMatch(/created: *2016-03-22T13:43:48Z/);
+        expect(attributes.get(60).getText()).toMatch(/last-modified: *2017-03-23T12:08:46Z/);
+        expect(attributes.get(61).getText()).toMatch(/source: *RIPE/);
+
+    });
+
+    it('should NOT list the more specific resources', function () {
+        expect(page.moreSpecificsTable.isPresent()).toEqual(false);
+    });
+});

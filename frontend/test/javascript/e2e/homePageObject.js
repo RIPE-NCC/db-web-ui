@@ -38,7 +38,7 @@ function GetWhoisObject(parent) {
     };
 
     this.attributes = function() {
-        return _this.directive().element(by.css('section')).element(by.css('div')).element(by.css('pre')).element(by.css('ul')).all(by.css('li'));
+        return _this.directive().element(by.css('section')).element(by.css('pre')).element(by.css('ul')).all(by.css('li'));
     };
 
     this.isPresent = function() {
@@ -46,7 +46,7 @@ function GetWhoisObject(parent) {
     };
 
     this.showMoreButton = function() {
-        return _this.directive().element(by.css('section')).element(by.css('div')).element(by.css('.show-more'));
+        return _this.directive().element(by.css('.show-more'));
     };
 }
 
