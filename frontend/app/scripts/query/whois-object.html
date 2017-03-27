@@ -1,10 +1,13 @@
+<section id="results">
 <div style="position: relative" class="result">
-    <div class="more-info" ng-if="showMoreInfo">
-        <a href="#/webupdates/modify/ripe/role/OPS4-RIPE" class="tag-link ga-dbresult-update">
-            <span>Update</span>
-        <i class="fa fa-database"></i></a>
+    <div class="more-info" style="position: absolute; top: 0; right: 0;">
+        <a id="result:1:loginToUpdate" name="result:1:loginToUpdate"
+           ng-href="/db-web-ui/#/webupdates/modify/ripe/{{ ngModel.type }}/{{ ngModel['primary-key'].attribute[0].value }}"
+           class="tag-link"><span id="result:1:LoginToUpdateText" class="blue-button" style="display: block; float: right;">Update object</span></i></a>
     </div>
-    <pre class="db-pre db-pre-results"><ul class="attrblock"><li ng-repeat="attr in ngModel.attributes.attribute" ng-if="$index < nrLinesToShow">{{ attr.name }}:{{ padding(attr) }} <a
-            ng-if="attr.link.type === 'locator'" href="/search/lookup.html?source=ripe&key={{ attr.value }}&type={{ attr.name }}">{{ attr.value }}</a><span
-            ng-if="attr.link.type !== 'locator'">{{ attr.value }}</span></li></ul></pre><button class="blue-button" ng-if="showMoreButton" ng-click="clickShowMoreLines()">Show more lines</button>
+    <pre style="border: 0; padding: 0; margin: 0;"><ul class="attrblock" style="background: white; margin: 0;padding: 0; border: 0;"><li
+        ng-repeat="attr in ngModel.attributes.attribute" ng-if="$index < nrLinesToShow">{{ attr.name }}:{{ padding(attr) }} <a
+            ng-if="attr.link.type === 'locator'" href="/search/lookup.html?source=ripe&key={{ attr.value }}&type={{ attr['referenced-type'] }}">{{ attr.value }}</a><span
+            ng-if="attr.link.type !== 'locator'">{{ attr.value }}</span></li></ul></pre>
 </div>
+</section>
