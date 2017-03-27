@@ -1,9 +1,8 @@
 <button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
 <h1>{{ resourceDetails.resource.resource }}</h1>
-<div class="flags-container">
+<div class="flags-container" style="margin-bottom: 2em">
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
 </div>
-
 <h2>Object in RIPE Database</h2>
 <whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
 <section ng-if="resourceDetails.canHaveMoreSpecifics">

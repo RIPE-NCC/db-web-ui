@@ -49,8 +49,7 @@ class ResourceDetailsController {
                     for (const attr of this.details.attributes.attribute) {
                         if (attr.name === "status") {
                             this.flags.unshift(attr.value);
-                        }
-                        if (attr.name === "netname" || attr.name === "as-name") {
+                        } else if (attr.name === "netname" || attr.name === "as-name") {
                             this.flags.push(attr.value);
                         }
                     }
