@@ -1,6 +1,6 @@
 whois-object {
   background: green;
-  .blue-button {
+  span.blue-button {
     float: right;
   }
   pre {
@@ -13,5 +13,9 @@ whois-object {
       padding: 0;
       margin: 0;
     }
+  }
+  .show-more {
+    margin-left: auto;
+    margin-right: auto;
   }
 }

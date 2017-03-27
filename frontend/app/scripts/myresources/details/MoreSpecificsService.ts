@@ -4,14 +4,14 @@ interface IMoreSpecificsService {
 }
 
 interface IMoreSpecificsApiResult {
-    resources: IMoreSpecificResource[]
+    resources: IMoreSpecificResource[];
 }
 
 interface IMoreSpecificResource {
-    resource: string,
-    status: string,
-    type: string,
-    netname: string
+    resource: string;
+    status: string;
+    type: string;
+    netname: string;
 }
 
 class MoreSpecificsService implements IMoreSpecificsService {

@@ -72,13 +72,19 @@ table.resources > thead > tr {
 table.table-body-borderless > tbody > tr > td,
 table.table-body-borderless > thead > tr > th {
     border: 0;
+    a {
+        cursor: pointer;
+    }
 }
 
 ul.attrblock {
     list-style-type: none;
 }
 
-.back-to-my-resources {
+.back-to-my-resources.blue-button {
     background-color: #eee;
     color: black;
+    &:hover {
+        background-color: #ddd;
+    }
 }

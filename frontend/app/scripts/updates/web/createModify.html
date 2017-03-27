@@ -178,12 +178,12 @@
         <button ng-click="cancel()" class="blue-button pull-right ga-modifyobj-cancel" style="border:0;">Cancel</button>
     </span>
     <span ng-if="operation == CREATE_OPERATION">
-        <input id="btnSubmitCreate" type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCalInProgress" class="blue-button pull-right ga-createobj-create" value="Submit" />
+        <input id="btnSubmitCreate" type="submit" ng-click="submit()" ng-disabled="!isFormValid() || restCallInProgress" class="blue-button pull-right ga-createobj-create" value="Submit" />
         <button ng-click="cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
 
     <span ng-if="operation == MODIFY_OPERATION && !isLirObject() && !isResourceWithNccMntner()">
-        <button id="deleteObject" ng-click="deleteObject()" ng-disabled="restCalInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
+        <button id="deleteObject" ng-click="deleteObject()" ng-disabled="restCallInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
     </span>
     </section>
 </form>
