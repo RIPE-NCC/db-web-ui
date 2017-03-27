@@ -1,10 +1,8 @@
 <section>
-<div>
     <a class="blue-button pull-right" ng-href="#/webupdates/modify/ripe/{{ ngModel.type }}/{{ ngModel['primary-key'].attribute[0].value }}">Update object</a>
     <pre><ul><li
-        ng-repeat="attr in ngModel.attributes.attribute" ng-if="$index < nrLinesToShow">{{ attr.name }}:{{ padding(attr) }} <a
+            ng-repeat="attr in ngModel.attributes.attribute" ng-if="$index < nrLinesToShow">{{ attr.name }}:{{ padding(attr) }}<a
             ng-if="attr.link.type === 'locator'" href="/search/lookup.html?source=ripe&key={{ attr.value }}&type={{ attr['referenced-type'] }}">{{ attr.value }}</a><span
             ng-if="attr.link.type !== 'locator'">{{ attr.value }}</span></li></ul></pre>
     <div class="blue-button show-more" ng-click="clickShowMoreLines()" ng-if="showMoreButton">Show more</div>
-</div>
 </section>
