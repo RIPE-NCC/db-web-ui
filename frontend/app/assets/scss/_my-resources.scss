@@ -55,14 +55,15 @@ resource-item {
         margin: 0;
         color: $black;
     }
-    div.flags-container {
-        @extend %width-100;
-        @extend %float-l;
-    }
     &:hover {
         text-decoration: none;
         background-color: $grey;
     }
+}
+
+div.flags-container {
+    @extend %width-100;
+    @extend %float-l;
 }
 
 table.resources > thead > tr {
@@ -92,3 +93,4 @@ ul.attrblock {
 whois-object > section {
     margin-bottom: 41px;
 }
+

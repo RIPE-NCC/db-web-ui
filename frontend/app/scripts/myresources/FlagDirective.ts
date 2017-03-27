@@ -3,7 +3,7 @@ const flagDirective = () => ({
         text: "=",
         tooltip: "@",
     },
-     templateUrl: "scripts/myresources/flags.html",
+     templateUrl: "scripts/myresources/flag.html",
 });
 
 angular.module("dbWebApp").directive("flag", flagDirective);
