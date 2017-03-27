@@ -13,7 +13,7 @@ class ResourceDetailsController {
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificResource[];
     public resource: any;
-    public flags: string[];
+    public flags: string[] = [];
     public canHaveMoreSpecifics: boolean;
 
     constructor(private $scope: angular.IScope,
@@ -38,7 +38,6 @@ class ResourceDetailsController {
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
                 const results = response.data.objects.object;
-                let statusAttr;
                 if (results.length >= 1) {
                     this.details = results[0];
                     this.resource = {
@@ -49,11 +48,12 @@ class ResourceDetailsController {
                     };
                     for (const attr of this.details.attributes.attribute) {
                         if (attr.name === "status") {
-                            statusAttr = attr;
-                            break;
+                            this.flags.unshift(attr.value);
+                        }
+                        if (attr.name === "netname" || attr.name === "as-name") {
+                            this.flags.push(attr.value);
                         }
                     }
-                    this.flags = [statusAttr.value];
                 }
             }, () => {
                 this.whoisResponse = null;
