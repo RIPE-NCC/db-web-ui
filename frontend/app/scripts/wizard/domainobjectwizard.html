@@ -14,12 +14,7 @@
     </section>
 
     <section class="visible-field-form">
-        <ul class="form-fields appeared-fields">
-            <li ng-repeat="attribute in domain.attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'}"
-                ng-show="!attribute.$$hidden">
-                <attribute-renderer source="domain.source" object-type="domain.objectType" attributes="domain.attributes" attribute="attribute" idx="$index"></attribute-renderer>
-            </li>
-        </ul>
+        <whois-object-editor object-type="domain.objectType" attributes="domain.attributes.attribute" object-source="domain.source" object-name="domain.name"></whois-object-editor>
     </section>
 
     <section class="supporting-text" ng-show="!domain.containsInvalidValues() && !domain.isValidatingDomains">

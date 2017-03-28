@@ -1,13 +1,13 @@
-// any advance on 'sponsoring-org' & 'last-modified' (include colon)?
-
 const MAX_ATTR_NAME_MASK = "                ";
 
 interface IWhoisObjectScope extends angular.IScope {
     ngModel: IWhoisObjectModel;
     padding: (attr: IWhoisObjectModel) => string;
+    mode: string;
     nrLinesToShow: number;
     showMoreButton: boolean;
     clickShowMoreLines: () => void;
+    goToUpdate: () => void;
     showMoreInfo: boolean;
 }
 
@@ -19,6 +19,7 @@ function WhoisObjectDirective(): angular.IDirective {
             scope.nrLinesToShow = objLength >= 30 ? 25 : 30;
             scope.showMoreButton = objLength > scope.nrLinesToShow;
             scope.showMoreInfo = true;
+            scope.mode = "view";
 
             scope.padding = (attr: IWhoisObjectModel): string => {
                 const numLeftPads = attr.name.length - MAX_ATTR_NAME_MASK.length;
@@ -29,12 +30,16 @@ function WhoisObjectDirective(): angular.IDirective {
                 scope.nrLinesToShow += 25;
                 scope.showMoreButton = objLength > scope.nrLinesToShow;
             };
+
+            scope.goToUpdate = () => {
+                scope.mode = "edit";
+            };
         },
         restrict: "E",
         scope: {
             ngModel: "=",
         },
-        templateUrl: "scripts/query/whois-object.html",
+        templateUrl: "scripts/whoisObject/whois-object.html",
     };
 }
 
