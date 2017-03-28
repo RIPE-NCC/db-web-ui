@@ -428,6 +428,30 @@
                 created: {maxOccurs: 1},
                 'last-modified': {minOccurs: 0, maxOccurs: 1},
                 source: {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['mnt-by']}}
+            },
+            inetnum: {
+                inetnum: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [], hidden: {invalid: ['mnt-by']}},
+                netname: {minOccurs: 1, maxOccurs: 1},
+                descr: {},
+                country: {minOccurs: 1},
+                geoloc: {maxOccurs: 1},
+                language: {},
+                org: {maxOccurs: 1, refs: ['ORGANISATION']},
+                'sponsoring-org': {maxOccurs: 1, refs: ['ORGANISATION']},
+                'admin-c': {minOccurs: 1, refs: ['PERSON', 'ROLE']},
+                'tech-c': {minOccurs: 1, refs: ['PERSON', 'ROLE']},
+                status: {minOccurs: 1, maxOccurs: 1},
+                remarks: {},
+                notify: {},
+                'mnt-by': {minOccurs: 1, refs: ['MNTNER']},
+                'mnt-lower': {refs: ['MNTNER']},
+                'mnt-domains': {refs: ['MNTNER']},
+                'mnt-routes': {refs: ['MNTNER']},
+                'mnt-irt': {refs: ['IRT']},
+                created: {maxOccurs: 1},
+                'last-modified': {maxOccurs: 1},
+                source: {minOccurs: 1, maxOccurs: 1}
+
             }
         };
 

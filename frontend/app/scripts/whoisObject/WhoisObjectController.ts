@@ -1,5 +1,5 @@
 interface IWhoisObjectControllerScope extends angular.IScope {
-    attributes: IAttributeModel[],
+    attributes: IAttributeModel[];
     objectName: string;
     objectSource: string;
     objectType: string;
@@ -14,10 +14,6 @@ class WhoisObjectController {
 
     constructor(private $log: angular.ILogService,
                 private $scope: IWhoisObjectControllerScope) {
-        // $log.info("name", $scope.objectName);
-        // $log.info("type", $scope.objectType);
-        // $log.info("sauce", $scope.objectSource);
-        $log.info("attributes", $scope.attributes);
 
         this.objectName = $scope.objectName;
         this.objectSource = $scope.objectSource;

@@ -1,4 +1,4 @@
-<section ng-if="mode === 'view'">
+<section uib-collapse="mode !== 'view'">
     <a class="blue-button pull-right" ng-click="goToUpdate()">Update object</a>
     <pre><ul><li
             ng-repeat="attr in ngModel.attributes.attribute" ng-if="$index < nrLinesToShow">{{ attr.name }}:{{ padding(attr) }}<a
@@ -6,6 +6,6 @@
             ng-if="attr.link.type !== 'locator'">{{ attr.value }}</span></li></ul></pre>
     <div class="blue-button show-more" ng-click="clickShowMoreLines()" ng-if="showMoreButton">Show more</div>
 </section>
-<section ng-if="mode === 'edit'">
+<section uib-collapse="mode !== 'edit'">
     <whois-object-editor object-type="ngModel.type" attributes="ngModel.attributes.attribute" object-source="ngModel.source" object-name="ngModel.name"></whois-object-editor>
 </section>
