@@ -99,6 +99,7 @@ module.exports = {
     btnDeleteObject: element(by.id('deleteObject')),
 
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
+    btnAddAttribute: element(by.id('createForm')).element(by.css('.attr-0')).element(by.css('.fa.fa-plus')),
 
     modal: element(by.css('[uib-modal-window]')),
     modalAttributeList: element(by.css('[uib-modal-window]')).element(by.css('select')),

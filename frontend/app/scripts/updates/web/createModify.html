@@ -64,7 +64,7 @@
 	</section>
     <section class="visible-field-form" ng-if="maintainers.object.length">
         <ul class="form-fields appeared-fields">
-            <li ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" ng-if="$index < nrAttributesToRender">
+            <li class="attr-{{$index}}" ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" ng-if="$index < nrAttributesToRender">
 
             <label>{{attribute.name}}</label>
             <span ng-if="attribute.$$error" class="text-error">
