@@ -18,6 +18,7 @@ exports.config = {
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
     getPageTimeout: 30000,
+    allScriptsTimeout: 200000,
 
     jasmineNodeOpts: {
         onComplete: null,
@@ -44,10 +45,10 @@ exports.config = {
                     style.type = 'text/css';
                     style.innerHTML = '* {' +
                         '-webkit-transition: none !important;' +
-                        '-moz-transition: none !important' +
-                        '-o-transition: none !important' +
-                        '-ms-transition: none !important' +
-                        'transition: none !important' +
+                        '-moz-transition: none !important;' +
+                        '-o-transition: none !important;' +
+                        '-ms-transition: none !important;' +
+                        'transition: none !important;' +
                         '}';
                     document.getElementsByTagName('head')[0].appendChild(style);
                 });

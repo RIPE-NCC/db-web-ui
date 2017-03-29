@@ -7,7 +7,7 @@ class ResourcesController {
     public asnResources: AsnResourceDetails[] = [];
     private selectedOrg: Organisation;
     private hasSponsoredResources = false;
-    private isShowingSponsored: boolean = false;
+    private isShowingSponsored = false;
 
     constructor(private $log: angular.ILogService,
                 private $scope: angular.IScope,
@@ -23,6 +23,11 @@ class ResourcesController {
         });
     }
 
+    public sponsoredResourcesClicked() {
+        this.isShowingSponsored = !this.isShowingSponsored;
+        this.fetchResourcesAndPopulatePage();
+    }
+
     private refreshPage(org: Organisation) {
         this.selectedOrg = org;
         this.isShowingSponsored = false;
@@ -30,12 +35,8 @@ class ResourcesController {
         this.checkIfSponsor();
     }
 
-    public sponsoredResourcesClicked() {
-        this.isShowingSponsored = !this.isShowingSponsored;
-        this.fetchResourcesAndPopulatePage();
-    }
-
     private fetchResourcesAndPopulatePage() {
+        this.ipv4Resources = this.ipv6Resources = this.asnResources = [];
         if (!this.selectedOrg) {
             return;
         }

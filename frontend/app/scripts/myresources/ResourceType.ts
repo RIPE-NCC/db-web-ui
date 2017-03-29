@@ -1,10 +1,14 @@
+interface IResourceModel {
+    resource: string;
+    type: string;
+}
+
 interface ResourceRange {
     string: string;
     slash: string;
     start: number;
     end: number;
 }
-
 
 interface Ipv4ResourceRange extends ResourceRange { }
 
@@ -31,7 +35,6 @@ interface IPv6ResourceDetails {
     status: string;
 }
 
-
 interface AsnResourcesResponse {
     orgid: string;
     resources: AsnResourceDetails[];
@@ -44,8 +47,8 @@ interface AsnResourceDetails {
 interface IMyResourcesDataService {
     fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
     fetchIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
-    fetchAsnResources(orgid: string): IPromise<AsnResourcesResponse>;
+    fetchAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
     fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
     fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
-    fetchSponsoredAsnResources(orgid: string): IPromise<AsnResourcesResponse>;
+    fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
 }

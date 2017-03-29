@@ -1,0 +1,24 @@
+whois-object {
+  background: green;
+  span.blue-button {
+    float: right;
+  }
+  pre {
+    border: 0;
+    background: white;
+    padding: 0;
+    margin: 0;
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .show-more {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+.blue-button {
+  cursor:pointer;
+}

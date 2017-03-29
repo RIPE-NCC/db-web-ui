@@ -5,6 +5,7 @@ describe('LeftMenuController', function () {
 
     var controller;
     var rootScope;
+    var scope;
     var returnCode = '123';
     var orgDropDownStateService = {
         getSelectedOrg: function () {
@@ -18,9 +19,11 @@ describe('LeftMenuController', function () {
 
     beforeEach(inject(function (_$rootScope_, $controller) {
         rootScope = _$rootScope_;
+        scope = _$rootScope_.$new();
         controller = $controller('LeftMenuController', {
             $log: null,
-            $rootScope: _$rootScope_
+            $rootScope: _$rootScope_,
+            $scope: scope
         });
         controller.orgDropDownStateService = orgDropDownStateService;
     }));

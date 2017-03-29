@@ -1,0 +1,29 @@
+<button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
+<h1>{{ resourceDetails.resource.resource }}</h1>
+<div class="flags-container" style="margin-bottom: 2em">
+    <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
+</div>
+<h2>Object in RIPE Database</h2>
+<whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
+<section ng-if="resourceDetails.canHaveMoreSpecifics">
+    <h2>More specifics</h2>
+    <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.length">
+        <thead>
+        <tr>
+            <th>Internet number resource</th>
+            <th>Status</th>
+            <th>Netname</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="resource in resourceDetails.moreSpecifics">
+            <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
+            <td>{{ resource.status }}</td>
+            <td>{{ resource.netname }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.length === 0">
+        No more specific objects exist.
+    </div>
+</section>

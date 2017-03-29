@@ -28,6 +28,29 @@ function timestamp() {
     ].join('');
 }
 
+function GetWhoisObject(parent) {
+
+    var _this = this;
+    this.parent = parent;
+
+    this.directive = function() {
+        return (typeof _this.parent !== 'undefined') ? parent.element(by.css('whois-object')) : element(by.css('whois-object'));
+    };
+
+    this.attributes = function() {
+        return _this.directive().element(by.css('section')).element(by.css('pre')).element(by.css('ul')).all(by.css('li'));
+    };
+
+    this.isPresent = function() {
+        return _this.directive().isPresent()
+    };
+
+    this.showMoreButton = function() {
+        return _this.directive().element(by.css('.show-more'));
+    };
+}
+
+
 module.exports = {
     selectForm: element(by.id('selectForm')),
     createForm: element(by.id('createForm')),
@@ -78,7 +101,7 @@ module.exports = {
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
 
     modal: element(by.css('[uib-modal-window]')),
-    modalAttributeList:  element(by.css('[uib-modal-window]')).element(by.css('select')),
+    modalAttributeList: element(by.css('[uib-modal-window]')).element(by.css('select')),
     modalEmail: element(by.css('[uib-modal-window]')).element(by.name('email')),
     modalInpMaintainer: element(by.css('[uib-modal-window]')).element(by.model('selected.item')),
     modalInpPassword: element(by.css('[uib-modal-window]')).element(by.model('selected.password')),
@@ -99,6 +122,17 @@ module.exports = {
     myResourcesActiveTabContent: element(by.css('.my-resources')).element(by.css('.tab-pane.active')),
     myResourcesActiveTabRows: element(by.css('.my-resources')).element(by.css('.tab-pane.active')).all(by.css('resource-item')),
     btnToggleSponsoredResources: element(by.css('#btn-toggle-sponsored')),
+
+    //More specifics page
+    moreSpecificsTable: element(by.css('.table')),
+    moreSpecificsTableRows: element(by.css('.table')).element(by.css('tbody')).all(by.css('tr')),
+
+    getTableCell: function (tableElement, rowIndex, colIndex) {
+        return tableElement.element(by.css('tbody')).all(by.css('tr')).get(rowIndex).all(by.css('td')).get(colIndex);
+    },
+    getListItem: function (list, index) {
+        return list.all(by.css('li')).get(index);
+    },
 
     /**
      * Experimental support for iMacros scripts.
@@ -173,6 +207,6 @@ module.exports = {
         browser.executeScript(function (el) {
             el.scrollIntoView();
         }, el.getWebElement());
-    }
-
+    },
+    getWhoisObject: function(parent) { return new GetWhoisObject(parent); }
 };

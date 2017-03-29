@@ -618,7 +618,7 @@ module.exports = function (grunt) {
             },
             e2eRemote: {
                 options: {
-                    configFile: '/home/dbase/GRUNT/protractor-e2e-coverage-remote.conf.js'
+                    configFile: 'test/javascript/protractor-e2e-coverage-remote.conf.js'
                 }
             }
         },

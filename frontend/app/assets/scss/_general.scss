@@ -10,8 +10,24 @@
 		margin-bottom: 15px !important;
 	}
 }
+
+// Buttons
+%btn {
+    padding: .5em 1em;
+    margin: 0 0 0 .3em;
+    border: 0;
+}
 .blue-button {
-	border:0;
+    @extend %btn;
+}
+.grey-button {
+    @extend %btn;
+    background-color: $grey;
+    color: #333;
+    &:hover {
+        background-color: $dark-grey;
+        color: #333;
+    }
 }
 input[disabled="disabled"].blue-button {
     box-shadow: none;

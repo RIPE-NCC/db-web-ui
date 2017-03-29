@@ -1,7 +1,7 @@
 import IAngularEvent = angular.IAngularEvent;
 
 class LeftMenuController {
-    public static $inject = ["$log", "$rootScope"];
+    public static $inject = ["$log", "$rootScope", "$scope", "$state", "OrgDropDownStateService"];
     // public searchExpanded: boolean;
     public webUpdatesExpanded: boolean;
     public myResourcesChosen: boolean;
@@ -11,7 +11,10 @@ class LeftMenuController {
     public isLirSelected: boolean;
 
     constructor(private $log: angular.ILogService,
-                private $rootScope: angular.IRootScopeService) {
+                private $rootScope: angular.IRootScopeService,
+                private $scope: angular.IScope,
+                private $state: ng.ui.IStateService,
+                private dropdownService: OrgDropDownStateService) {
 
         this.isLirSelected = false;
         $rootScope.$on("$stateChangeSuccess", (event: IAngularEvent, toState: any) => {
@@ -25,8 +28,12 @@ class LeftMenuController {
                 this.passwordsExpanded = true;
             }
         });
-        $rootScope.$on("organisation-changed-event", (event: IAngularEvent, org: Organisation) => {
+        $scope.$on("organisation-changed-event", (event: IAngularEvent, org: Organisation) => {
             this.isLirSelected = org ? /^\d+$/.test(org.memberId.toString()) : false;
+            // In case user changes selection in drop-down, make sure we're on overview page
+            this.dropdownService.getSelectedOrg().then((o: Organisation) => {
+                $state.go("webupdates.myresources");
+            });
         });
     }
 
