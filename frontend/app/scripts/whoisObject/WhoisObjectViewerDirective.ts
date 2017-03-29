@@ -11,7 +11,7 @@ interface IWhoisObjectScope extends angular.IScope {
     showMoreInfo: boolean;
 }
 
-function WhoisObjectDirective(): angular.IDirective {
+function WhoisObjectViewerDirective(): angular.IDirective {
 
     return {
         link: (scope: IWhoisObjectScope) => {
@@ -39,10 +39,10 @@ function WhoisObjectDirective(): angular.IDirective {
         scope: {
             ngModel: "=",
         },
-        templateUrl: "scripts/whoisObject/whois-object.html",
+        templateUrl: "scripts/whoisObject/whois-object-viewer.html",
     };
 }
 
 angular
     .module("dbWebApp")
-    .directive("whoisObject", WhoisObjectDirective);
+    .directive("whoisObjectViewer", WhoisObjectViewerDirective);
