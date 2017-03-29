@@ -192,21 +192,6 @@
                 return matches.length > cardinality.minOccurs;
             }
         }
-    ]).directive('attributeRenderer', [function () {
-        return {
-            restrict: 'E',
-            scope: {attributes: '=', attribute: '=', objectType: '=', source: '=', idx: '='},
-            templateUrl: 'scripts/wizard/attribute-renderer.html',
-            controller: 'AttributeCtrl',
-            link: function (scope) {
-                // choose the html template dynamically
-                if (scope.attribute.name === 'reverse-zone') {
-                    scope.widgetHtml = 'scripts/wizard/attribute-reverse-zones.html';
-                } else {
-                    scope.widgetHtml = 'scripts/wizard/attribute.html';
-                }
-            }
-        };
-    }]);
+    ]);
 
 })();
