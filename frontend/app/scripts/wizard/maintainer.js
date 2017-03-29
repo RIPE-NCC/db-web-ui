@@ -18,7 +18,7 @@
         $scope.hasMd5 = MntnerService.hasMd5;
 
         RestService.fetchMntnersForSSOAccount().then(handleSsoResponse, handleSsoResponseError);
-        
+
         $scope.onMntnerAdded = function (item) {
             // enrich with new-flag
             $scope.mntners.object = MntnerService.enrichWithNewStatus($scope.mntners.objectOriginal, $scope.mntners.object);
@@ -95,6 +95,9 @@
         }
 
         function mergeMaintainers(attrs, maintainers) {
+            if (jsUtils.typeOf(attrs) !== 'array') {
+                throw new TypeError('attrs must be an array in mergeMaintainers');
+            }
             var i;
             var lastIdxOfType = _.findLastIndex(attrs, function (item) {
                 return item.name === 'mnt-by';
@@ -148,7 +151,6 @@
                 });
                 mergeMaintainers($scope.attributes, mntnerAttrs);
 
-                //var myMntners = _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
                 AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
             }
         }
