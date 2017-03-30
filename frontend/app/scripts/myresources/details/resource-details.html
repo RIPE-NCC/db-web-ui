@@ -3,8 +3,32 @@
 <div class="flags-container" style="margin-bottom: 2em">
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
 </div>
-<h2>Object in RIPE Database</h2>
-<whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
+
+<section>
+    <h2>Object in RIPE Database</h2>
+    <div uib-collapse="!resourceDetails.show.viewer">
+        <whois-object-viewer
+                ng-model="resourceDetails.details"
+                ng-if="resourceDetails.details"
+                update-clicked="resourceDetails.updateButtonClicked(whoisObject)">
+        </whois-object-viewer>
+    </div>
+    <div uib-collapse="!resourceDetails.show.editor">
+        <maintainers
+                class="maintainer-fields"
+                mntners="{sso: [], object: [], objectOriginal: [], alternatives: []}"
+                object-type="resourceDetails.details.type"
+                object-source="resourceDetails.details.source.id"
+                object-name="resourceDetails.details['primary-key'].attribute[0].value"
+                attributes="resourceDetails.details.attributes.attribute"></maintainers>
+        <whois-object-editor
+                object-type="resourceDetails.details.type"
+                object-source="resourceDetails.details.source.id"
+                object-name="resourceDetails.details['primary-key'].attribute[0].value"
+                attributes="resourceDetails.details.attributes.attribute"></whois-object-editor>
+    </div>
+</section>
+
 <section ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>More specifics</h2>
     <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.length">

@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('dbWebApp')
-        .service('WhoisMetaService', [function () {
+        .service('WhoisMetaService', ['$log', function ($log) {
 
             this._getDocumentationForAttribute = function (objectType, attrName, docKind) {
                 var doc;
@@ -17,8 +17,12 @@
                     doc = this._attrDocumentation[attrName];
                 }
 
-                if (!_.isUndefined(doc)) {
+                if (doc === null) {
+                    $log.info('objectType, attrName, docKind', objectType, attrName, docKind);
+                } else if (!_.isUndefined(doc)) {
                     return doc[docKind];
+                } else {
+                    $log.warn('No documentation for objectType:', objectType, 'attrName:', attrName);
                 }
                 return doc;
             };
@@ -1284,6 +1288,11 @@
                     short: 'References a mntner used in determining authorisation for the creation of route(6) objects.',
                     description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects.  This entry is for the mnt-routes attribute of aut-num class.  After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                     syntax: '&lt;mnt-name&gt; [ { list of (&lt;ipv4-address&gt;/&lt;prefix&gt; or &lt;ipv6-address&gt;/&lt;prefix&gt;) } | ANY ]'
+                },
+                domain: {
+                    short: '',
+                    description: '',
+                    syntax: ''
                 },
                 'inet6num': {
                     short: 'References a mntner used in determining authorisation for the creation of route6 objects.',

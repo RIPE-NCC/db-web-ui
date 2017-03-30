@@ -15,6 +15,10 @@ class ResourceDetailsController {
     public resource: any;
     public flags: string[] = [];
     public canHaveMoreSpecifics: boolean;
+    public show: {
+        editor: boolean;
+        viewer: boolean;
+    };
 
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
@@ -22,6 +26,10 @@ class ResourceDetailsController {
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
+        this.show = {
+            editor: false,
+            viewer: true,
+        };
         const objectKey = $state.params.objectName;
         const objectType = $state.params.objectType.toLowerCase();
 
@@ -57,6 +65,11 @@ class ResourceDetailsController {
             }, () => {
                 this.whoisResponse = null;
             });
+    }
+
+    public updateButtonClicked(o: any): void {
+        this.show.viewer = !this.show.viewer;
+        this.show.editor = !this.show.editor;
     }
 
     public backToMyResources(): void {

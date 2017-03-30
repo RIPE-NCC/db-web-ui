@@ -12,13 +12,16 @@
         };
     }]).controller('MaintainerController', ['$scope', 'jsUtilService', 'AttributeMetadataService', 'MntnerService', 'RestService', 'WebUpdatesCommons', function ($scope, jsUtils, AttributeMetadataService, MntnerService, RestService, WebUpdatesCommons) {
 
+        // if (!$scope.mntners) {
+        //     $scope.mntners = {sso: [], object: [], objectOriginal: [], alternatives: []};
+        // }
         $scope.mntnerAutocomplete = mntnerAutocomplete;
         $scope.hasSSo = MntnerService.hasSSo;
         $scope.hasPgp = MntnerService.hasPgp;
         $scope.hasMd5 = MntnerService.hasMd5;
 
         RestService.fetchMntnersForSSOAccount().then(handleSsoResponse, handleSsoResponseError);
-        
+
         $scope.onMntnerAdded = function (item) {
             // enrich with new-flag
             $scope.mntners.object = MntnerService.enrichWithNewStatus($scope.mntners.objectOriginal, $scope.mntners.object);
@@ -79,7 +82,7 @@
         }
 
         function navigateAway() {
-            _.each($scope.mntners.object, function(mnt) {
+            _.each($scope.mntners.object, function (mnt) {
                 $scope.onMntnerRemoved(mnt);
             });
             $scope.mntners.object = [];
@@ -95,6 +98,9 @@
         }
 
         function mergeMaintainers(attrs, maintainers) {
+            if (jsUtils.typeOf(attrs) !== 'array') {
+                throw new TypeError('attrs must be an array in mergeMaintainers');
+            }
             var i;
             var lastIdxOfType = _.findLastIndex(attrs, function (item) {
                 return item.name === 'mnt-by';
@@ -133,13 +139,10 @@
             $scope.restCallInProgress = false;
             $scope.mntners.sso = results;
             if ($scope.mntners.sso.length > 0) {
-
                 $scope.mntners.objectOriginal = [];
                 // populate ui-select box with sso-mntners
                 $scope.mntners.object = _.cloneDeep($scope.mntners.sso);
-
                 // copy mntners to attributes (for later submit)
-                // Etch: hmm, fishy. why not do it later then?
                 var mntnerAttrs = _.map($scope.mntners.sso, function (i) {
                     return {
                         name: 'mnt-by',
@@ -147,8 +150,6 @@
                     };
                 });
                 mergeMaintainers($scope.attributes, mntnerAttrs);
-
-                //var myMntners = _extractEnrichMntnersFromObject($scope.attributes, $scope.maintainers.sso);
                 AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
             }
         }

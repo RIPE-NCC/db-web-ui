@@ -1,0 +1,11 @@
+<ul class="form-fields">
+    <li ng-repeat="attribute in whoisObject.attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'}"
+        ng-show="!attribute.$$hidden">
+        <attribute-renderer
+                source="whoisObject.objectSource"
+                object-type="whoisObject.objectType"
+                attributes="whoisObject.attributes"
+                attribute="attribute"
+                idx="$index"></attribute-renderer>
+    </li>
+</ul>

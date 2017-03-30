@@ -1,43 +1,48 @@
-// any advance on 'sponsoring-org' & 'last-modified' (include colon)?
-
 const MAX_ATTR_NAME_MASK = "                ";
 
 interface IWhoisObjectScope extends angular.IScope {
     ngModel: IWhoisObjectModel;
+    updateObjectButtonClicked: (o: any) => void;
+
     padding: (attr: IWhoisObjectModel) => string;
-    nrLinesToShow: number;
-    showMoreButton: boolean;
     clickShowMoreLines: () => void;
-    showMoreInfo: boolean;
+    show: {
+        moreInfo: boolean;
+        showMoreButton: boolean;
+        nrVisibleAttributes: number;
+    };
 }
 
-function WhoisObjectDirective(): angular.IDirective {
+function WhoisObjectViewerDirective(): angular.IDirective {
 
     return {
         link: (scope: IWhoisObjectScope) => {
             const objLength = scope.ngModel.attributes.attribute.length;
-            scope.nrLinesToShow = objLength >= 30 ? 25 : 30;
-            scope.showMoreButton = objLength > scope.nrLinesToShow;
-            scope.showMoreInfo = true;
-
+            scope.show = {
+                moreInfo: true,
+                nrVisibleAttributes: (objLength >= 30 ? 25 : 30),
+                showMoreButton: (objLength > 30),
+            };
             scope.padding = (attr: IWhoisObjectModel): string => {
                 const numLeftPads = attr.name.length - MAX_ATTR_NAME_MASK.length;
                 return MAX_ATTR_NAME_MASK.slice(numLeftPads);
             };
 
             scope.clickShowMoreLines = () => {
-                scope.nrLinesToShow += 25;
-                scope.showMoreButton = objLength > scope.nrLinesToShow;
+                scope.show.nrVisibleAttributes += 25;
+                scope.show.showMoreButton = objLength > scope.show.nrVisibleAttributes;
             };
+
         },
         restrict: "E",
         scope: {
             ngModel: "=",
+            updateObjectButtonClicked: "&updateClicked",
         },
-        templateUrl: "scripts/query/whois-object.html",
+        templateUrl: "scripts/whoisObject/whois-object-viewer.html",
     };
 }
 
 angular
     .module("dbWebApp")
-    .directive("whoisObject", WhoisObjectDirective);
+    .directive("whoisObjectViewer", WhoisObjectViewerDirective);
