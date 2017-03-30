@@ -29,14 +29,11 @@ public class WhoisReferencesController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisReferencesController.class);
 
     private final WhoisReferencesService whoisReferencesService;
-    private final String queryUrl;
 
     @Autowired
     public WhoisReferencesController(
-        final WhoisReferencesService whoisReferencesService,
-        @Value("${ripe.search.queryUrl}") final String queryUrl) {
+        final WhoisReferencesService whoisReferencesService) {
         this.whoisReferencesService = whoisReferencesService;
-        this.queryUrl = queryUrl;
     }
 
 

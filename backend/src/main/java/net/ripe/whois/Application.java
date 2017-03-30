@@ -92,7 +92,6 @@ public class Application implements AsyncConfigurer {
 
         LOGGER.info("\n\nRunning with Spring profile : {}\n\n", environment.getActiveProfiles()[0]);
         LOGGER.info("rest.api.ripeUrl:           {}", environment.getProperty("rest.api.ripeUrl"));
-        LOGGER.info("ripe.search.queryUrl:       {}", environment.getProperty("ripe.search.queryUrl"));
         LOGGER.info("internal.api.url:           {}", environment.getProperty("internal.api.url"));
         LOGGER.info("internal.api.key:           {}", environment.getProperty("internal.api.key"));
         LOGGER.info("crowd.rest.url:             {}", environment.getProperty("crowd.rest.url"));
