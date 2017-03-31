@@ -1,13 +1,9 @@
 package net.ripe.whois.services;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.ripe.db.whois.api.rest.client.RestClientException;
-import net.ripe.db.whois.api.rest.domain.Attribute;
-import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.rpsl.AttributeType;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +12,6 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -26,6 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +29,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
-public class WhoisInternalService implements ExchangeErrorHandler {
+public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceBase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalService.class);
 
@@ -62,7 +58,7 @@ public class WhoisInternalService implements ExchangeErrorHandler {
         try {
             response = restTemplate.exchange("{apiUrl}/api/user/{uuid}/maintainers?apiKey={apiKey}",
                 HttpMethod.GET,
-                new HttpEntity<String>(withHeaders(MediaType.APPLICATION_XML_VALUE)),
+                getRequestEntity(),
                 WhoisResources.class,
                 withParams(uuid));
 
@@ -81,19 +77,19 @@ public class WhoisInternalService implements ExchangeErrorHandler {
         }
 
         // use big whois-resources-resp to compose small compact response that looks like autocomplete-service
-        final List<Map<String, Object>> summaries = Lists.newArrayList();
-        if (response.getStatusCode() == HttpStatus.OK && response.hasBody()) {
-            for (WhoisObject obj : response.getBody().getWhoisObjects()) {
-                Map<String, Object> objectSummary = Maps.newHashMap();
-                objectSummary.put("key", getObjectKey(obj));
-                objectSummary.put("type", getObjectType(obj));
-                objectSummary.put(AttributeType.AUTH.getName(), getValuesForAttribute(obj, AttributeType.AUTH));
-                objectSummary.put("mine", true);
-                summaries.add(objectSummary);
-            }
+        if (response.getStatusCode() != HttpStatus.OK || !response.hasBody()) {
+            return Collections.emptyList();
         }
 
-        return summaries;
+        return response.getBody().getWhoisObjects().stream().map(obj -> {
+            Map<String, Object> objectSummary = Maps.newHashMap();
+            objectSummary.put("key", getObjectSinglePrimaryKey(obj));
+            objectSummary.put("type", getObjectType(obj));
+            objectSummary.put(AttributeType.AUTH.getName(), getValuesForAttribute(obj, AttributeType.AUTH));
+            objectSummary.put("mine", true);
+            return objectSummary;
+        }).collect(Collectors.toList());
+
     }
 
     private HashMap<String, Object> withParams(final UUID uuid) {
@@ -110,31 +106,15 @@ public class WhoisInternalService implements ExchangeErrorHandler {
         return headers;
     }
 
-    private String getObjectKey(final WhoisObject obj) {
-        return obj.getPrimaryKey().stream().findFirst().map(Attribute::getValue).orElse(null);
-    }
-
-    private String getObjectType(final WhoisObject obj) {
-        return obj.getPrimaryKey().stream().findFirst().map(Attribute::getName).orElse(null);
-    }
-
-    private List<String> getValuesForAttribute(final WhoisObject obj, final AttributeType type) {
-        return obj.getAttributes().stream().
-            filter(a -> a.getName().equals(type.getName())).
-            map(Attribute::getValue).collect(Collectors.toList());
-    }
-
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
         final URI uri = composeWhoisUrl(request);
 
-        return handleErrors(() -> {
-            final HttpEntity entity = body == null ? new HttpEntity<>(headers) : new HttpEntity<>(body, headers);
-            return restTemplate.exchange(
+        return handleErrors(() ->
+            restTemplate.exchange(
                 uri,
                 HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                entity,
-                String.class);
-        }, LOGGER);
+                new HttpEntity<>(body, headers),
+                String.class), LOGGER);
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {

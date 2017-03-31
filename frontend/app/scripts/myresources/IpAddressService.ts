@@ -1,5 +1,6 @@
 declare const Address4: any;       // http://ip-address.js.org/#address4
 declare const Address6: any;       // http://ip-address.js.org/#address6
+declare const BigInteger: any;     // https://github.com/andyperlitch/jsbn
 
 class IpAddressService {
 

@@ -45,16 +45,13 @@ public class WhoisRestService implements ExchangeErrorHandler {
         headers.remove(HttpHeaders.ACCEPT_ENCODING);
         headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
 
-        return handleErrors(() -> {
-                HttpEntity entity = body != null ?
-                    new HttpEntity<>(body, headers) :
-                    new HttpEntity<>(headers);
-                return restTemplate.exchange(
+        return handleErrors(() ->
+                restTemplate.exchange(
                     uri,
                     HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                    entity,
-                    String.class);
-            },
+                    new HttpEntity<>(body, headers),
+                    String.class),
+
             (HttpStatusCodeException e) -> {
                 if (e instanceof HttpClientErrorException) {
                     LOGGER.warn("Whois HTTP status {} will be returned as 200", e.getStatusCode());
@@ -67,7 +64,10 @@ public class WhoisRestService implements ExchangeErrorHandler {
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
         final StringBuilder builder = new StringBuilder(apiUrl)
-                .append(request.getRequestURI().replace("/api/rest", "").replace(contextPath, ""));
+                .append(request.getRequestURI()
+                    .replace("/api/rest", "")
+                    .replace(contextPath, ""));
+
         if (StringUtils.isNotBlank(request.getQueryString())) {
             builder.append('?')
                     .append(request.getQueryString());
