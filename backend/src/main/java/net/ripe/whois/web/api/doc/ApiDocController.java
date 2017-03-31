@@ -8,7 +8,6 @@ import net.ripe.db.whois.api.rest.client.RestClientException;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
-import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
