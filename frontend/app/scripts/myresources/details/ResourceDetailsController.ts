@@ -1,4 +1,3 @@
-
 interface IResourceDetailsControllerState extends ng.ui.IStateService {
     params: {
         objectName: string;
@@ -18,6 +17,7 @@ class ResourceDetailsController {
     public nrMoreSpecificsToShow: number = 10;
     public show: {
         editor: boolean;
+        transition: boolean;
         viewer: boolean;
     };
 
@@ -29,6 +29,7 @@ class ResourceDetailsController {
 
         this.show = {
             editor: false,
+            transition: false,
             viewer: true,
         };
         const objectKey = $state.params.objectName;
@@ -52,7 +53,6 @@ class ResourceDetailsController {
                     this.resource = {
                         orgName: "",
                         resource: this.details["primary-key"].attribute[0].value,
-                        // status: "OK",
                         type: objectType,
                     };
                     for (const attr of this.details.attributes.attribute) {
@@ -69,8 +69,12 @@ class ResourceDetailsController {
     }
 
     public updateButtonClicked(o: any): void {
-        this.show.viewer = !this.show.viewer;
-        this.show.editor = !this.show.editor;
+        this.show.transition = true;
+        setTimeout(() => {
+            this.show.viewer = !this.show.viewer;
+            this.show.editor = !this.show.editor;
+            this.$scope.$apply();
+        }, 1000);
     }
 
     public backToMyResources(): void {
@@ -90,6 +94,7 @@ class ResourceDetailsController {
             this.$scope.$apply();
         }
     }
+
 }
 
 angular

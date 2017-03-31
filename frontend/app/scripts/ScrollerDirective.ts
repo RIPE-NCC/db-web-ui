@@ -16,7 +16,6 @@ class ScrollerDirective implements angular.IDirective {
     public templateUrl = "scripts/myresources/resource-item.html";
 
     constructor(private $document: angular.IDocumentService) {
-        this.scope = {almostOnScreen: "&scroller"};
     }
 
     public link: angular.IDirectiveLinkFn = (scope: IScrollerDirectiveScope, element: JQuery) => {
