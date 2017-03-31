@@ -6,14 +6,14 @@
 
 <section>
     <h2>Object in RIPE Database</h2>
-    <div uib-collapse="!resourceDetails.show.viewer">
+    <div ng-if="resourceDetails.show.viewer">
         <whois-object-viewer
                 ng-model="resourceDetails.details"
                 ng-if="resourceDetails.details"
                 update-clicked="resourceDetails.updateButtonClicked(whoisObject)">
         </whois-object-viewer>
     </div>
-    <div uib-collapse="!resourceDetails.show.editor">
+    <div ng-if="resourceDetails.show.editor">
         <maintainers
                 class="maintainer-fields"
                 mntners="{sso: [], object: [], objectOriginal: [], alternatives: []}"
@@ -40,13 +40,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="resource in resourceDetails.moreSpecifics">
+        <tr ng-repeat="resource in resourceDetails.moreSpecifics" ng-if="$index < resourceDetails.nrMoreSpecificsToShow">
             <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
             <td>{{ resource.status }}</td>
             <td>{{ resource.netname }}</td>
         </tr>
         </tbody>
     </table>
+    <p scroller="resourceDetails.almostOnScreen()"></p>
     <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.length === 0">
         No more specific objects exist.
     </div>

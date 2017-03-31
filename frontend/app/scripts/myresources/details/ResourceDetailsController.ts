@@ -15,6 +15,7 @@ class ResourceDetailsController {
     public resource: any;
     public flags: string[] = [];
     public canHaveMoreSpecifics: boolean;
+    public nrMoreSpecificsToShow: number = 10;
     public show: {
         editor: boolean;
         viewer: boolean;
@@ -83,6 +84,12 @@ class ResourceDetailsController {
         });
     }
 
+    public almostOnScreen() {
+        if (this.nrMoreSpecificsToShow < this.moreSpecifics.length) {
+            this.nrMoreSpecificsToShow += 10;
+            this.$scope.$apply();
+        }
+    }
 }
 
 angular
