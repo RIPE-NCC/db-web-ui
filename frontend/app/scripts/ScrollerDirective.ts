@@ -20,7 +20,7 @@ class ScrollerDirective implements angular.IDirective {
      * @type {{almostOnScreen: string}}
      */
     public scope = {almostOnScreen: "&scroller"};
-    public template = "<div class=\"alert alert-info\">Loading more results...</div>";
+    public templateUrl = "scripts/scroller-directive.html";
 
     constructor(private $document: angular.IDocumentService) {
     }
@@ -44,13 +44,19 @@ class ScrollerDirective implements angular.IDirective {
                         keepScrolling = false;
                         element.addClass("hide");
                     }
-                }, 400);
+                }, 200);
             }
         };
         if (typeof scope.almostOnScreen === "function") {
             angular.element(this.$document).on("scroll", handleScroll);
         }
-    }
+        const raw = element[0];
+        const nearly = raw.getBoundingClientRect().top
+            < document.documentElement.clientHeight + document.body.scrollTop;
+        if (nearly) {
+            handleScroll();
+        }
+    };
 }
 
 angular.module("dbWebApp").directive("scroller", ScrollerDirective.factory());

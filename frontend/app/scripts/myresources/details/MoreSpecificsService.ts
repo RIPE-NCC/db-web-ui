@@ -1,10 +1,11 @@
 
-interface IMoreSpecificsService {
-    getSpecifics(objectName: string, objectType: string): IHttpPromise<IMoreSpecificsApiResult>;
+interface IMoreSpecificsDataService {
+    getSpecifics(objectName: string, objectType: string, pageNr: number): IHttpPromise<IMoreSpecificsApiResult>;
 }
 
 interface IMoreSpecificsApiResult {
     resources: IMoreSpecificResource[];
+    resourcesSize: number;
 }
 
 interface IMoreSpecificResource {
@@ -14,18 +15,22 @@ interface IMoreSpecificResource {
     netname: string;
 }
 
-class MoreSpecificsService implements IMoreSpecificsService {
+class MoreSpecificsDataService implements IMoreSpecificsDataService {
 
     public static $inject = ["$log", "$http"];
 
     constructor(private $log: angular.ILogService, private $http: angular.IHttpService) {
     }
 
-    public getSpecifics(objectName: string, objectType: string): IHttpPromise<IMoreSpecificsApiResult> {
-        return this.$http.get("api/whois-internal/api/resources/" + objectType + "/" + objectName + "/more-specifics.json");
+    public getSpecifics(objectName: string, objectType: string, pageNr: number): IHttpPromise<IMoreSpecificsApiResult> {
+        return this.$http.get(
+            "api/whois-internal/api/resources/" +
+            objectType + "/" +
+            objectName + "/more-specifics.json?page=" +
+            pageNr);
     }
 }
 
 angular
     .module("dbWebApp")
-    .service("MoreSpecificsService", MoreSpecificsService);
+    .service("MoreSpecificsService", MoreSpecificsDataService);

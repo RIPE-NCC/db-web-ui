@@ -10,7 +10,7 @@ class ResourceDetailsController {
     public static $inject = ["$scope", "$log", "$state", "QueryParametersService", "MoreSpecificsService"];
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
-    public moreSpecifics: IMoreSpecificResource[];
+    public moreSpecifics: IMoreSpecificsApiResult;
     public resource: any;
     public flags: string[] = [];
     public canHaveMoreSpecifics: boolean;
@@ -21,30 +21,28 @@ class ResourceDetailsController {
         viewer: boolean;
     };
 
+    private objectKey: string;
+    private objectType: string;
+    private MAGIC = 100; // number of items per page on server
+
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
                 private queryParametersService: IQueryParametersService,
-                private moreSpecificsService: IMoreSpecificsService) {
+                private moreSpecificsService: IMoreSpecificsDataService) {
 
         this.show = {
             editor: false,
             transition: false,
             viewer: true,
         };
-        const objectKey = $state.params.objectName;
-        const objectType = $state.params.objectType.toLowerCase();
+        this.objectKey = $state.params.objectName;
+        this.objectType = $state.params.objectType.toLowerCase();
 
         this.canHaveMoreSpecifics = false;
-        if (objectType === "inetnum" || objectType === "inet6num") {
-            moreSpecificsService.getSpecifics(objectKey, objectType).then(
-                (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
-                    this.moreSpecifics = response.data.resources;
-                    this.canHaveMoreSpecifics = true;
-                });
-        }
+        this.getResourcesFromBackEnd(0);
 
-        this.queryParametersService.getWhoisObject(objectKey, objectType, "RIPE").then(
+        this.queryParametersService.getWhoisObject(this.objectKey, this.objectType, "RIPE").then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
                 const results = response.data.objects.object;
@@ -53,7 +51,7 @@ class ResourceDetailsController {
                     this.resource = {
                         orgName: "",
                         resource: this.details["primary-key"].attribute[0].value,
-                        type: objectType,
+                        type: this.objectType,
                     };
                     for (const attr of this.details.attributes.attribute) {
                         if (attr.name === "status") {
@@ -94,14 +92,38 @@ class ResourceDetailsController {
      * @returns {boolean}
      */
     public almostOnScreen() {
-        if (this.nrMoreSpecificsToShow < this.moreSpecifics.length) {
+        if (this.nrMoreSpecificsToShow < this.moreSpecifics.resources.length) {
             this.nrMoreSpecificsToShow += 50;
             this.$scope.$apply();
+        } else if (this.moreSpecifics.resources.length < this.moreSpecifics.resourcesSize) {
+            // resources still left on server? Use some magic!!!
+            const pageNr = Math.ceil(this.moreSpecifics.resources.length / this.MAGIC);
+            this.getResourcesFromBackEnd(pageNr);
         } else {
             return true;
         }
     }
 
+    private getResourcesFromBackEnd(pageNr: number) {
+        // console.log('PAGE >>> ', pageNr);
+        if (typeof pageNr !== "number") {
+            pageNr = 0;
+        }
+        if (this.objectType === "inetnum" || this.objectType === "inet6num") {
+            this.moreSpecificsService.getSpecifics(this.objectKey, this.objectType, pageNr).then(
+                (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
+
+                    // More MAGIC! assume the next result follow the earlier ones
+                    if (pageNr === 0) {
+                        this.moreSpecifics = response.data;
+                    } else {
+                        this.moreSpecifics.resources = this.moreSpecifics.resources.concat(response.data.resources);
+                    }
+                    this.canHaveMoreSpecifics = true;
+                });
+        }
+
+    }
 }
 
 angular

@@ -44,11 +44,11 @@ interface AsnResourceDetails {
     value: number;
 }
 
-interface IMyResourcesDataService {
-    fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
-    fetchIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
-    fetchAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
-    fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
-    fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
-    fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
+interface IResourcesDataService {
+    fetchIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse>;
+    fetchIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse>;
+    fetchAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse>;
+    fetchSponsoredIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse>;
+    fetchSponsoredIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse>;
+    fetchSponsoredAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse>;
 }
