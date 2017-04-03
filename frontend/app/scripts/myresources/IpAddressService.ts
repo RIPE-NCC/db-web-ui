@@ -22,51 +22,46 @@ class IpAddressService {
         return new Address4(match[2]).bigInteger().intValue();
     }
 
-    public range2cidrlist(startIp: string, endIp: string) {
-
+    public range2CidrList(startIp: string, endIp: string) {
         let start = IpAddressService.ipToLong(startIp);
-        let end = IpAddressService.ipToLong(endIp);
-        let cidrs = [];
+        const end = IpAddressService.ipToLong(endIp);
+        const cidrs = [];
 
         while (end >= start) {
             let maxsize = 32;
             while (maxsize > 0) {
-                let mask = IpAddressService.CIDR2MASK[maxsize -1];
-                let maskedBase = start & mask;
-                if (maskedBase != start) {
+                const mask = IpAddressService.CIDR2MASK[maxsize - 1];
+                const maskedBase = start & mask;
+                if (maskedBase !== start) {
                     break;
                 }
                 maxsize--;
             }
-            let diff = Math.log(end - start + 1) / Math.log(2);
-            let maxdiff = (32 - Math.floor(diff));
-            if (maxsize < maxdiff) maxsize = maxdiff;
-
-            let ip = IpAddressService.longToIP(start);
+            const diff = Math.log(end - start + 1) / Math.log(2);
+            const maxdiff = (32 - Math.floor(diff));
+            if (maxsize < maxdiff) {
+              maxsize = maxdiff;
+            }
+            const ip = IpAddressService.longToIP(start);
             cidrs.push(ip + "/" + maxsize);
             start += Math.pow(2, (32 - maxsize));
         }
         return cidrs;
     }
 
-    private static ipToLong(strIP: string) {
+    private static ipToLong(strIP: string): number {
+      const parts = strIP.split(".");
+      return (parseInt(parts[0], 10) << 24) +
+             (parseInt(parts[1], 10) << 16) +
+             (parseInt(parts[2], 10) << 8) +
+             (parseInt(parts[3], 10));
+     }
 
-        let parts = strIP.split(".");
-        let ip = 0;
-        ip += parseInt(parts[0], 10) << 24;
-        ip += parseInt(parts[1], 10) << 16;
-        ip += parseInt(parts[2], 10) << 8;
-        ip += parseInt(parts[3], 10);
-        return ip;
-    }
-
-    private static longToIP(ip: number) {
-
-        let part1 = ip & 255;
-        let part2 = ((ip >> 8) & 255);
-        let part3 = ((ip >> 16) & 255);
-        let part4 = ((ip >> 24) & 255);
-        return part4 + "." + part3 + "." + part2 + "." + part1;
+    private static longToIP(ip: number): string {
+        return ((ip >> 24) & 255) + "." +
+               ((ip >> 16) & 255) + "." +
+               ((ip >> 8) & 255) + "." +
+               (ip & 255);
     }
 }
 
