@@ -22,7 +22,8 @@ class MoreSpecificsService implements IMoreSpecificsService {
     }
 
     public getSpecifics(objectName: string, objectType: string): IHttpPromise<IMoreSpecificsApiResult> {
-        return this.$http.get("api/whois-internal/api/resources/" + objectType + "/" + objectName + "/more-specifics.json");
+        return this.$http.get("api/whois-internal/api/resources/" +
+                               objectType + "/" + objectName + "/more-specifics.json");
     }
 }
 
