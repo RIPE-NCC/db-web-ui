@@ -75,11 +75,9 @@ class ResourceDetailsController {
     }
 
     public applyFilter(): void {
-      if (!this.ipFilter) {
-        this.loadMoreSpecifics();
-      } else if (this.isValidPrefix(this.ipFilter)) {
-        this.loadMoreSpecifics();
-      }
+        if (!this.ipFilter || this.isValidPrefix(this.ipFilter)) {
+            this.loadMoreSpecifics();
+        }
     }
 
     public isValidPrefix(maybePrefix: string): boolean {
@@ -93,14 +91,14 @@ class ResourceDetailsController {
     }
 
     private loadMoreSpecifics(): void {
-      this.$log.info("Reloading more specifics with the filter", this.ipFilter);
-      const objectKey = this.$state.params.objectName;
-      const objectType = this.$state.params.objectType.toLowerCase();
-      this.moreSpecificsService.getSpecifics(objectKey, objectType, this.ipFilter).then(
-          (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
-              this.moreSpecifics = response.data.resources;
-              this.canHaveMoreSpecifics = true;
-          });
+        this.$log.info("Reloading more specifics with the filter", this.ipFilter);
+        const objectKey = this.$state.params.objectName;
+        const objectType = this.$state.params.objectType.toLowerCase();
+        this.moreSpecificsService.getSpecifics(objectKey, objectType, this.ipFilter).then(
+            (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
+                this.moreSpecifics = response.data.resources;
+                this.canHaveMoreSpecifics = true;
+            });
     }
 }
 
