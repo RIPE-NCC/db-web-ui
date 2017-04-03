@@ -88,10 +88,17 @@ class ResourceDetailsController {
         });
     }
 
+    /**
+     * Called by 'scroller' directive. Return true to indicate there are no more rows to show.
+     *
+     * @returns {boolean}
+     */
     public almostOnScreen() {
         if (this.nrMoreSpecificsToShow < this.moreSpecifics.length) {
             this.nrMoreSpecificsToShow += 10;
             this.$scope.$apply();
+        } else {
+            return true;
         }
     }
 
