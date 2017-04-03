@@ -14,7 +14,7 @@ class ResourceDetailsController {
     public resource: any;
     public flags: string[] = [];
     public canHaveMoreSpecifics: boolean;
-    public nrMoreSpecificsToShow: number = 10;
+    public nrMoreSpecificsToShow: number = 50;
     public show: {
         editor: boolean;
         transition: boolean;
@@ -95,7 +95,7 @@ class ResourceDetailsController {
      */
     public almostOnScreen() {
         if (this.nrMoreSpecificsToShow < this.moreSpecifics.length) {
-            this.nrMoreSpecificsToShow += 10;
+            this.nrMoreSpecificsToShow += 50;
             this.$scope.$apply();
         } else {
             return true;
