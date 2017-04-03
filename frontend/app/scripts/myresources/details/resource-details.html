@@ -7,6 +7,14 @@
 <whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
 <section ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>More specifics</h2>
+    <div>
+      <input type="text" name="ipFilter"
+            placeholder="Search for prefix"
+            ng-model="resourceDetails.ipFilter"
+            ng-change="resourceDetails.applyFilter()" />
+      <br/>
+    </br/>
+    </div>
     <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.length">
         <thead>
         <tr>

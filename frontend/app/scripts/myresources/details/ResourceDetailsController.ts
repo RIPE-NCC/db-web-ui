@@ -6,32 +6,36 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
     };
 }
 
+interface IPrefixService {
+  isValidPrefix(maybePrefix: string): boolean;
+}
+
 class ResourceDetailsController {
 
-    public static $inject = ["$scope", "$log", "$state", "QueryParametersService", "MoreSpecificsService"];
+    public static $inject = ["$scope", "$log", "$state",
+                             "QueryParametersService", "MoreSpecificsService", "PrefixService"];
+
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificResource[];
     public resource: any;
     public flags: string[] = [];
     public canHaveMoreSpecifics: boolean;
+    public ipFilter: string = null;
 
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
                 private queryParametersService: IQueryParametersService,
-                private moreSpecificsService: IMoreSpecificsService) {
+                private moreSpecificsService: IMoreSpecificsService,
+                private prefixService: IPrefixService) {
 
         const objectKey = $state.params.objectName;
         const objectType = $state.params.objectType.toLowerCase();
 
         this.canHaveMoreSpecifics = false;
         if (objectType === "inetnum" || objectType === "inet6num") {
-            moreSpecificsService.getSpecifics(objectKey, objectType).then(
-                (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
-                    this.moreSpecifics = response.data.resources;
-                    this.canHaveMoreSpecifics = true;
-                });
+            this.loadMoreSpecifics();
         }
 
         this.queryParametersService.getWhoisObject(objectKey, objectType, "RIPE").then(
@@ -70,6 +74,26 @@ class ResourceDetailsController {
         });
     }
 
+    public applyFilter(): void {
+      if (this.ipFilter && this.isValidPrefix(this.ipFilter) || !this.ipFilter) {
+        this.loadMoreSpecifics();
+      }
+    }
+
+    public isValidPrefix(maybePrefix: string): boolean {
+      return this.prefixService.isValidPrefix(maybePrefix);
+    }
+
+    private loadMoreSpecifics(): void {
+      this.$log.info("Reloading more specifics with the filter", this.ipFilter);
+      const objectKey = this.$state.params.objectName;
+      const objectType = this.$state.params.objectType.toLowerCase();
+      this.moreSpecificsService.getSpecifics(objectKey, objectType, this.ipFilter).then(
+          (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
+              this.moreSpecifics = response.data.resources;
+              this.canHaveMoreSpecifics = true;
+          });
+    }
 }
 
 angular
