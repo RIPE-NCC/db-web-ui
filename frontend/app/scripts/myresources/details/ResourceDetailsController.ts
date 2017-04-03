@@ -75,13 +75,21 @@ class ResourceDetailsController {
     }
 
     public applyFilter(): void {
-      if (this.ipFilter && this.isValidPrefix(this.ipFilter) || !this.ipFilter) {
+      if (!this.ipFilter) {
+        this.loadMoreSpecifics();
+      } else if (this.isValidPrefix(this.ipFilter)) {
         this.loadMoreSpecifics();
       }
     }
 
     public isValidPrefix(maybePrefix: string): boolean {
-      return this.prefixService.isValidPrefix(maybePrefix);
+        if (!maybePrefix) {
+            return false;
+        }
+        if (new Address4(maybePrefix).isValid()) {
+            return true;
+        }
+        return new Address6(maybePrefix).isValid();
     }
 
     private loadMoreSpecifics(): void {

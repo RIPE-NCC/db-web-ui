@@ -1,3 +1,10 @@
+<style>
+.invalid-prefix {    
+    color:indianred;    
+}
+.valid-prefix {    
+}
+</style>
 <button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
 <h1>{{ resourceDetails.resource.resource }}</h1>
 <div class="flags-container" style="margin-bottom: 2em">
@@ -10,6 +17,8 @@
     <div>
       <input type="text" name="ipFilter"
             placeholder="Search for prefix"
+            ng-class="{ 'invalid-prefix': !resourceDetails.isValidPrefix(resourceDetails.ipFilter), 
+                        'valid-prefix' :   resourceDetails.isValidPrefix(resourceDetails.ipFilter) }"
             ng-model="resourceDetails.ipFilter"
             ng-change="resourceDetails.applyFilter()" />
       <br/>
