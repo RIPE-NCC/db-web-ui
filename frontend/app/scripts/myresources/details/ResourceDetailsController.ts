@@ -96,7 +96,7 @@ class ResourceDetailsController {
         if (this.nrMoreSpecificsToShow < this.moreSpecifics.resources.length) {
             this.nrMoreSpecificsToShow += 50;
             this.$scope.$apply();
-        } else if (this.moreSpecifics.resources.length < this.moreSpecifics.resourcesSize) {
+        } else if (this.moreSpecifics.resources.length < this.moreSpecifics.totalNumberOfResources) {
             // resources still left on server? Use some magic!!!
             const pageNr = Math.ceil(this.moreSpecifics.resources.length / this.MAGIC);
             this.getResourcesFromBackEnd(pageNr);
