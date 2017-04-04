@@ -12,6 +12,17 @@ class IpAddressService {
 
     private ipv4RangeRegex = new RegExp(/([\d.]+) - ([\d.]+)/);
 
+    public formatAsPrefix(ip: string): string {
+        if (this.ipv4RangeRegex.test(ip)) {
+            const match = this.ipv4RangeRegex.exec(ip);
+            const prefixes = this.range2CidrList(match[1], match[2]);
+            if (prefixes.length === 1) {
+                return prefixes[0];
+            }
+        }
+        return ip;
+    }
+
     public getIpv4Start(range: ResourceRange): number {
         const match = this.ipv4RangeRegex.exec(range.string);
         return new Address4(match[1]).bigInteger().intValue();
@@ -22,7 +33,7 @@ class IpAddressService {
         return new Address4(match[2]).bigInteger().intValue();
     }
 
-    public range2CidrList(startIp: string, endIp: string) {
+    public range2CidrList(startIp: string, endIp: string): string[] {
         let start = IpAddressService.ipToLong(startIp);
         const end = IpAddressService.ipToLong(endIp);
         const cidrs = [];
