@@ -48,6 +48,10 @@ function GetWhoisObject(parent) {
     this.showMoreButton = function() {
         return _this.directive().element(by.css('.show-more'));
     };
+
+    this.showRipeStatButton = function() {
+        return _this.directive().element(by.id('ripeStatButton'));
+    };
 }
 
 

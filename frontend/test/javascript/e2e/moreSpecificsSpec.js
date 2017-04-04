@@ -39,6 +39,11 @@ describe('My Resources detail for inetnum', function () {
         expect(attributes.get(12).getText()).toMatch(/source:( *)RIPE/);
     });
 
+    it('should show RIPEstat link on whois object page', function() {
+        var ripeStateButton = page.getWhoisObject().showRipeStatButton();
+        expect(ripeStateButton.isPresent()).toEqual(true);
+    });
+
     it('should list all the more specific resources', function () {
         expect(page.moreSpecificsTable.isPresent()).toEqual(true);
         expect(page.moreSpecificsTableRows.count()).toEqual(2);
