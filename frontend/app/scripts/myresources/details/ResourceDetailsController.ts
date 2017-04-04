@@ -6,14 +6,9 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
     };
 }
 
-interface IPrefixService {
-  isValidPrefix(maybePrefix: string): boolean;
-}
-
 class ResourceDetailsController {
 
-    public static $inject = ["$scope", "$log", "$state",
-                             "QueryParametersService", "MoreSpecificsService", "PrefixService"];
+    public static $inject = ["$scope", "$log", "$state", "QueryParametersService", "MoreSpecificsService"];
 
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
@@ -22,13 +17,13 @@ class ResourceDetailsController {
     public flags: string[] = [];
     public canHaveMoreSpecifics: boolean;
     public ipFilter: string = null;
+    private ipAddressService = new IpAddressService();
 
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
                 private queryParametersService: IQueryParametersService,
-                private moreSpecificsService: IMoreSpecificsService,
-                private prefixService: IPrefixService) {
+                private moreSpecificsService: IMoreSpecificsService) {
 
         const objectKey = $state.params.objectName;
         const objectType = $state.params.objectType.toLowerCase();
@@ -88,6 +83,10 @@ class ResourceDetailsController {
             return true;
         }
         return new Address6(maybePrefix).isValid();
+    }
+
+    public formatAsPrefix(range: string): string {
+        return this.ipAddressService.formatAsPrefix(range);
     }
 
     private loadMoreSpecifics(): void {

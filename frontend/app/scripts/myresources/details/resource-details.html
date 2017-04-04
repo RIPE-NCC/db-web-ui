@@ -1,5 +1,5 @@
 <button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
-<h1>{{ resourceDetails.resource.resource }}</h1>
+<h1>{{ resourceDetails.formatAsPrefix(resourceDetails.resource.resource) }}</h1>
 <div class="flags-container" style="margin-bottom: 2em">
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
 </div>
@@ -25,7 +25,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="resource in resourceDetails.moreSpecifics">
-                <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
+                <td><a ng-click="resourceDetails.showDetail(resource)">{{ resourceDetails.formatAsPrefix(resource.resource) }}</a></td>
                 <td>{{ resource.status }}</td>
                 <td>{{ resource.netname }}</td>
             </tr>
