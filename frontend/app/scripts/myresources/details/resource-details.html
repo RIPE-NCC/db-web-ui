@@ -34,7 +34,7 @@
         </thead>
         <tbody>
         <tr ng-repeat="resource in resourceDetails.moreSpecifics">
-            <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
+            <td><a ng-click="resourceDetails.showDetail(resource)">{{ resourceDetails.formatAsPrefix(resource.resource) }}</a></td>
             <td>{{ resource.status }}</td>
             <td>{{ resource.netname }}</td>
         </tr>
