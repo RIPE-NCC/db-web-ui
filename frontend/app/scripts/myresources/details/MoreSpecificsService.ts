@@ -23,11 +23,15 @@ class MoreSpecificsDataService implements IMoreSpecificsDataService {
     }
 
     public getSpecifics(objectName: string, objectType: string, pageNr: number): IHttpPromise<IMoreSpecificsApiResult> {
-        return this.$http.get(
-            "api/whois-internal/api/resources/" +
-            objectType + "/" +
-            objectName + "/more-specifics.json?page=" +
-            pageNr);
+        const url = "api/whois-internal/api/resources/" + objectType + "/" + objectName + "/more-specifics.json";
+        const params = {
+            page: pageNr,
+        };
+        return this.$http({
+            method: "GET",
+            params,
+            url,
+        });
     }
 }
 

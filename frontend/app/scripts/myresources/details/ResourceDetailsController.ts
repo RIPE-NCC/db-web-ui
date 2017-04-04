@@ -87,7 +87,8 @@ class ResourceDetailsController {
     }
 
     /**
-     * Called by 'scroller' directive. Return true to indicate there are no more rows to show.
+     * Called by 'scroller' directive. Return true to indicate there are no more rows to show then the scroller
+     * will stop calling.
      *
      * @returns {boolean}
      */
@@ -105,7 +106,6 @@ class ResourceDetailsController {
     }
 
     private getResourcesFromBackEnd(pageNr: number) {
-        // console.log('PAGE >>> ', pageNr);
         if (typeof pageNr !== "number") {
             pageNr = 0;
         }
@@ -113,7 +113,8 @@ class ResourceDetailsController {
             this.moreSpecificsService.getSpecifics(this.objectKey, this.objectType, pageNr).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
 
-                    // More MAGIC! assume the next result follow the earlier ones
+                    // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
+                    // response sizes and work out how they fit with this lot.
                     if (pageNr === 0) {
                         this.moreSpecifics = response.data;
                     } else {

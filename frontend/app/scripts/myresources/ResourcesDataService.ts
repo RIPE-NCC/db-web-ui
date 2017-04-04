@@ -18,15 +18,23 @@ class MyResourcesDataService implements IResourcesDataService {
     }
 
     public fetchIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse> {
+        if (typeof pageNr !== "number") {
+            pageNr = 0;
+        }
         return this.fetchResources({
             "org-id": orgId,
+            "page": pageNr,
             "type": "inet6num",
         });
     }
 
     public fetchAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse> {
+        if (typeof pageNr !== "number") {
+            pageNr = 0;
+        }
         return this.fetchResources({
             "org-id": orgId,
+            "page": pageNr,
             "type": "aut-num",
         });
     }
@@ -43,14 +51,22 @@ class MyResourcesDataService implements IResourcesDataService {
     }
 
     public fetchSponsoredIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse> {
+        if (typeof pageNr !== "number") {
+            pageNr = 0;
+        }
         return this.fetchResources({
+            "page": pageNr,
             "sponsoring-org-id": orgId,
             "type": "inet6num",
         });
     }
 
     public fetchSponsoredAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse> {
+        if (typeof pageNr !== "number") {
+            pageNr = 0;
+        }
         return this.fetchResources({
+            "page": pageNr,
             "sponsoring-org-id": orgId,
             "type": "aut-num",
         });
