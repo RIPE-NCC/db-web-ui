@@ -6,7 +6,7 @@
 }
 </style>
 <button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
-<h1>{{ resourceDetails.resource.resource }}</h1>
+<h1>{{ resourceDetails.formatAsPrefix(resourceDetails.resource.resource) }}</h1>
 <div class="flags-container" style="margin-bottom: 2em">
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
 </div>
