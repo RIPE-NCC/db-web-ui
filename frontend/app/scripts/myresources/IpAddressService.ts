@@ -12,15 +12,15 @@ class IpAddressService {
 
     private ipv4RangeRegex = new RegExp(/([\d.]+) - ([\d.]+)/);
 
-    public formatAsPrefix(ip: string): string {
-        if (this.ipv4RangeRegex.test(ip)) {
-            const match = this.ipv4RangeRegex.exec(ip);
+    public formatAsPrefix(range: string): string {
+        if (this.ipv4RangeRegex.test(range)) {
+            const match = this.ipv4RangeRegex.exec(range);
             const prefixes = this.range2CidrList(match[1], match[2]);
             if (prefixes.length === 1) {
                 return prefixes[0];
             }
         }
-        return ip;
+        return range;
     }
 
     public getIpv4Start(range: ResourceRange): number {

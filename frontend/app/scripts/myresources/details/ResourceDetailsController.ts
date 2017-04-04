@@ -85,8 +85,8 @@ class ResourceDetailsController {
         return new Address6(maybePrefix).isValid();
     }
 
-    public formatAsPrefix(s: string): string {
-        return this.ipAddressService.formatAsPrefix(s);
+    public formatAsPrefix(range: string): string {
+        return this.ipAddressService.formatAsPrefix(range);
     }
 
     private loadMoreSpecifics(): void {
