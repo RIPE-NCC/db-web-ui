@@ -22,11 +22,11 @@ class MoreSpecificsService implements IMoreSpecificsService {
     }
 
     public getSpecifics(objectName: string, objectType: string, filter: string): IHttpPromise<IMoreSpecificsApiResult> {
-        let ps = {};
+        let ps = "";
         if (filter) {
-          ps = { params: { filter } };
+          ps = "?filter="+filter;
         }
-        return this.$http.get("api/whois-internal/api/resources/" + objectType + "/" + objectName + "/more-specifics.json", ps);
+        return this.$http.get("api/whois-internal/api/resources/" + objectType + "/" + objectName + "/more-specifics.json"+ps);
     }
 }
 

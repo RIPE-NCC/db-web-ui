@@ -10,10 +10,10 @@ class IpAddressService {
         0xFFFFC000, 0xFFFFE000, 0xFFFFF000, 0xFFFFF800, 0xFFFFFC00, 0xFFFFFE00, 0xFFFFFF00, 0xFFFFFF80, 0xFFFFFFC0,
         0xFFFFFFE0, 0xFFFFFFF0, 0xFFFFFFF8, 0xFFFFFFFC, 0xFFFFFFFE, 0xFFFFFFFF];
 
-    private ipv4RangeRegex = new RegExp(/([\d.]+) - ([\d.]+)/);
+    private ipv4RangeRegex = new RegExp(/([\d.]+)\s?-\s?([\d.]+)/);
 
     public formatAsPrefix(range: string): string {
-        if (this.ipv4RangeRegex.test(range)) {
+        if (this.isValidRange(range)) {
             const match = this.ipv4RangeRegex.exec(range);
             const prefixes = this.range2CidrList(match[1], match[2]);
             if (prefixes.length === 1) {
@@ -21,6 +21,18 @@ class IpAddressService {
             }
         }
         return range;
+    }
+
+    public isValidRange(range: string): boolean {
+        return this.ipv4RangeRegex.test(range) && this.isValidV4(range.split('-')[0].trim()) && this.isValidV4(range.split('-')[1].trim());
+    }
+
+    public isValidV4(v4: string): boolean {
+        return new Address4(v4).isValid();
+    }
+
+    public isValidV6(v6: string): boolean {
+        return new Address6(v6).isValid();
     }
 
     public getIpv4Start(range: ResourceRange): number {
