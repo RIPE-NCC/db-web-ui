@@ -120,9 +120,9 @@ class ResourceDetailsController {
         if (!maybePrefix) {
             return false;
         }
-        return this.ipAddressService.isValidV4(maybePrefix)
-            || this.ipAddressService.isValidRange(maybePrefix)
-            || this.ipAddressService.isValidV6(maybePrefix);
+        return IpAddressService.isValidV4(maybePrefix)
+            || IpAddressService.isValidRange(maybePrefix)
+            || IpAddressService.isValidV6(maybePrefix);
     }
 
     public formatAsPrefix(range: string): string {

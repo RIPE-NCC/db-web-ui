@@ -67,17 +67,17 @@ class ResourcesController {
         const v6Res = this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgId, 0);
         const asnRes = this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgId, 0);
         v4Res.then((response: IHttpPromiseCallbackArg<IPv4ResourcesResponse>) => {
-            if (response.data.resources) {
+            if (response.data.resources && response.data.resources.length) {
                 this.hasSponsoredResources = true;
             }
         });
         v6Res.then((response: IHttpPromiseCallbackArg<IPv6ResourcesResponse>) => {
-            if (response.data.resources) {
+            if (response.data.resources && response.data.resources.length) {
                 this.hasSponsoredResources = true;
             }
         });
         asnRes.then((response: IHttpPromiseCallbackArg<AsnResourcesResponse>) => {
-            if (response.data.resources) {
+            if (response.data.resources && response.data.resources.length) {
                 this.hasSponsoredResources = true;
             }
         });

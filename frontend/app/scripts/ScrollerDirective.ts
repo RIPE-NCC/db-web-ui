@@ -56,7 +56,7 @@ class ScrollerDirective implements angular.IDirective {
         if (nearly) {
             handleScroll();
         }
-    };
+    }
 }
 
 angular.module("dbWebApp").directive("scroller", ScrollerDirective.factory());
