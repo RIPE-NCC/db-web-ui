@@ -34,11 +34,11 @@ function GetWhoisObject(parent) {
     this.parent = parent;
 
     this.directive = function() {
-        return (typeof _this.parent !== 'undefined') ? parent.element(by.css('whois-object')) : element(by.css('whois-object'));
+        return (typeof _this.parent !== 'undefined') ? parent.element(by.css('whois-object-viewer')) : element(by.css('whois-object-viewer'));
     };
 
     this.attributes = function() {
-        return _this.directive().element(by.css('section')).element(by.css('pre')).element(by.css('ul')).all(by.css('li'));
+        return _this.directive().element(by.css('pre')).element(by.css('ul')).all(by.css('li'));
     };
 
     this.isPresent = function() {

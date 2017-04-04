@@ -6380,7 +6380,7 @@
       }
     ]
   },
-  "api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255/more-specifics.json": {
+  "api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255/more-specifics.json?page=0": {
     "data": {
       "resources": [
         {
@@ -6398,7 +6398,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json": {
+  "api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json?page=0": {
     "data": {
       "resources": [
         {
