@@ -1,10 +1,3 @@
-<style>
-.invalid-prefix {    
-    color:indianred;    
-}
-.valid-prefix {    
-}
-</style>
 <button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
 <h1>{{ resourceDetails.resource.resource }}</h1>
 <div class="flags-container" style="margin-bottom: 2em">
@@ -14,33 +7,32 @@
 <whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
 <section ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>More specifics</h2>
-    <div>
+    <div class="prefix_filter col-xs-3" ng-class="{ 'has-error': resourceDetails.ipFilter && !resourceDetails.isValidPrefix(resourceDetails.ipFilter)}">
       <input type="text" name="ipFilter"
+            class="form-control"
             placeholder="Search for prefix"
-            ng-class="{ 'invalid-prefix': !resourceDetails.isValidPrefix(resourceDetails.ipFilter), 
-                        'valid-prefix' :   resourceDetails.isValidPrefix(resourceDetails.ipFilter) }"
             ng-model="resourceDetails.ipFilter"
             ng-change="resourceDetails.applyFilter()" />
-      <br/>
-    </br/>
     </div>
-    <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.length">
-        <thead>
-        <tr>
-            <th>Internet number resource</th>
-            <th>Status</th>
-            <th>Netname</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="resource in resourceDetails.moreSpecifics">
-            <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
-            <td>{{ resource.status }}</td>
-            <td>{{ resource.netname }}</td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.length === 0">
-        No more specific objects exist.
+    <div class="more-specifics">
+        <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.length">
+            <thead>
+            <tr>
+                <th>Internet number resource</th>
+                <th>Status</th>
+                <th>Netname</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="resource in resourceDetails.moreSpecifics">
+                <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
+                <td>{{ resource.status }}</td>
+                <td>{{ resource.netname }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.length === 0">
+            No more specific objects exist.
+        </div>
     </div>
 </section>

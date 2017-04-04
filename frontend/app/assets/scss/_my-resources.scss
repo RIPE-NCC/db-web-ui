@@ -66,6 +66,10 @@ div.flags-container {
     @extend %float-l;
 }
 
+div.more-specifics {
+    padding-top: 50px;
+}
+
 table.resources > thead > tr {
     background-color: #eee;
 }
@@ -88,6 +92,10 @@ ul.attrblock {
     &:hover {
         background-color: #ddd;
     }
+}
+
+.prefix_filter {
+    padding-left: 0px;
 }
 
 whois-object > section {
