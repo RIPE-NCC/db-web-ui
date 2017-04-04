@@ -33,7 +33,7 @@ interface IWhoisObjectModel {
     };
 }
 
- interface IWhoisResponseModel {
+interface IWhoisResponseModel {
     link?: IWhoisLinkModel;
     errormessages: {
         errormessage: IErrorMessageModel[],

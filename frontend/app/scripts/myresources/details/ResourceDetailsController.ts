@@ -8,6 +8,7 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
 class ResourceDetailsController {
 
     public static $inject = ["$scope", "$log", "$state", "QueryParametersService", "MoreSpecificsService"];
+
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificsApiResult;
@@ -21,9 +22,12 @@ class ResourceDetailsController {
         viewer: boolean;
     };
 
+    public ipFilter: string = null;
+
     private objectKey: string;
     private objectType: string;
     private MAGIC = 100; // number of items per page on server
+    private ipAddressService = new IpAddressService();
 
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
@@ -40,7 +44,8 @@ class ResourceDetailsController {
         this.objectType = $state.params.objectType.toLowerCase();
 
         this.canHaveMoreSpecifics = false;
-        this.getResourcesFromBackEnd(0);
+
+        this.getResourcesFromBackEnd(0, "");
 
         this.queryParametersService.getWhoisObject(this.objectKey, this.objectType, "RIPE").then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
@@ -99,18 +104,37 @@ class ResourceDetailsController {
         } else if (this.moreSpecifics.resources.length < this.moreSpecifics.totalNumberOfResources) {
             // resources still left on server? Use some magic!!!
             const pageNr = Math.ceil(this.moreSpecifics.resources.length / this.MAGIC);
-            this.getResourcesFromBackEnd(pageNr);
+            this.getResourcesFromBackEnd(pageNr, this.ipFilter);
         } else {
             return true;
         }
     }
 
-    private getResourcesFromBackEnd(pageNr: number) {
+    public applyFilter(): void {
+        if (!this.ipFilter || this.isValidPrefix(this.ipFilter)) {
+            this.getResourcesFromBackEnd(0, this.ipFilter);
+        }
+    }
+
+    public isValidPrefix(maybePrefix: string): boolean {
+        if (!maybePrefix) {
+            return false;
+        }
+        return this.ipAddressService.isValidV4(maybePrefix)
+            || this.ipAddressService.isValidRange(maybePrefix)
+            || this.ipAddressService.isValidV6(maybePrefix);
+    }
+
+    public formatAsPrefix(range: string): string {
+        return this.ipAddressService.formatAsPrefix(range);
+    }
+
+    private getResourcesFromBackEnd(pageNr: number, ipFilter: string) {
         if (typeof pageNr !== "number") {
             pageNr = 0;
         }
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
-            this.moreSpecificsService.getSpecifics(this.objectKey, this.objectType, pageNr).then(
+            this.moreSpecificsService.getSpecifics(this.objectKey, this.objectType, pageNr, ipFilter).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
 
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
@@ -123,7 +147,6 @@ class ResourceDetailsController {
                     this.canHaveMoreSpecifics = true;
                 });
         }
-
     }
 }
 

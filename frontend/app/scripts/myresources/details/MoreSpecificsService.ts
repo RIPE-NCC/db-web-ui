@@ -1,6 +1,6 @@
-
 interface IMoreSpecificsDataService {
-    getSpecifics(objectName: string, objectType: string, pageNr: number): IHttpPromise<IMoreSpecificsApiResult>;
+    getSpecifics(objectName: string,
+                 objectType: string, pageNr: number, filter: string): IHttpPromise<IMoreSpecificsApiResult>;
 }
 
 interface IMoreSpecificsApiResult {
@@ -21,11 +21,18 @@ class MoreSpecificsDataService implements IMoreSpecificsDataService {
 
     constructor(private $log: angular.ILogService, private $http: angular.IHttpService) {
     }
+    public getSpecifics(objectName: string,
+                        objectType: string,
+                        page: number,
+                        filter: string): IHttpPromise<IMoreSpecificsApiResult> {
 
-    public getSpecifics(objectName: string, objectType: string, pageNr: number): IHttpPromise<IMoreSpecificsApiResult> {
-        const url = "api/whois-internal/api/resources/" + objectType + "/" + objectName + "/more-specifics.json";
+        const url = "api/whois-internal/api/resources/" + objectType
+            + "/" + objectName + "/more-specifics.json";
+
+        filter = filter.replace(/\s/g, "");
         const params = {
-            page: pageNr,
+            filter,
+            page,
         };
         return this.$http({
             method: "GET",
