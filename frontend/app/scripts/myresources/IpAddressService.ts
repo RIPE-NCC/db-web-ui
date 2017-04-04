@@ -10,6 +10,21 @@ class IpAddressService {
         0xFFFFC000, 0xFFFFE000, 0xFFFFF000, 0xFFFFF800, 0xFFFFFC00, 0xFFFFFE00, 0xFFFFFF00, 0xFFFFFF80, 0xFFFFFFC0,
         0xFFFFFFE0, 0xFFFFFFF0, 0xFFFFFFF8, 0xFFFFFFFC, 0xFFFFFFFE, 0xFFFFFFFF];
 
+    private static ipToLong(strIP: string): number {
+      const parts = strIP.split(".");
+      return (parseInt(parts[0], 10) << 24) +
+             (parseInt(parts[1], 10) << 16) +
+             (parseInt(parts[2], 10) << 8) +
+             (parseInt(parts[3], 10));
+     }
+
+    private static longToIP(ip: number): string {
+        return ((ip >> 24) & 255) + "." +
+               ((ip >> 16) & 255) + "." +
+               ((ip >> 8) & 255) + "." +
+               (ip & 255);
+    }
+
     private ipv4RangeRegex = new RegExp(/([\d.]+)\s?-\s?([\d.]+)/);
 
     public formatAsPrefix(range: string): string {
@@ -70,21 +85,6 @@ class IpAddressService {
             start += Math.pow(2, (32 - maxsize));
         }
         return cidrs;
-    }
-
-    private static ipToLong(strIP: string): number {
-      const parts = strIP.split(".");
-      return (parseInt(parts[0], 10) << 24) +
-             (parseInt(parts[1], 10) << 16) +
-             (parseInt(parts[2], 10) << 8) +
-             (parseInt(parts[3], 10));
-     }
-
-    private static longToIP(ip: number): string {
-        return ((ip >> 24) & 255) + "." +
-               ((ip >> 16) & 255) + "." +
-               ((ip >> 8) & 255) + "." +
-               (ip & 255);
     }
 }
 
