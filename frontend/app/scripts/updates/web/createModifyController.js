@@ -73,19 +73,21 @@ angular.module('webUpdates')
              * Functions / callbacks below...
              */
 
-            var showMoreAttributes = function () {
+            /**
+             * Callback from ScrollerDirective. Return true when all attributes are on the screen -- it turns the scroller off.
+             *
+             * @returns {boolean}
+             */
+            $scope.showMoreAttributes = function () {
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
                     $scope.nrAttributesToRender+= 50; // increment
                     $scope.$apply();
                 } else {
                     $scope.attributesAllRendered = true;
+                    return true;
                 }
             };
-
-            $scope.$on('scrollmarker-event', function () {
-                showMoreAttributes();
-            });
 
             /*
              * Select status list for resources based on parent's status.

@@ -1,5 +1,5 @@
 {
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=inetnum": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&page=0&type=inetnum": {
     "data": {
       "sponsoringOrgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -258,7 +258,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=inet6num": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&page=0&type=inet6num": {
     "data": {
       "sponsoringOrgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -295,7 +295,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=aut-num": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&page=0&type=aut-num": {
     "data": {
       "sponsoringOrgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -314,7 +314,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inetnum": {
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&page=0&type=inetnum": {
     "data": {
       "orgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -345,7 +345,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inet6num": {
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&page=0&type=inet6num": {
     "data": {
       "orgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -364,7 +364,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=aut-num": {
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&page=0&type=aut-num": {
     "data": {
       "orgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -377,7 +377,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&type=inetnum": {
+  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&page=0&type=inetnum": {
     "data": {
       "orgId": "ORG-WA56-RIPE",
       "resources": [
@@ -396,19 +396,19 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&type=inet6num": {
+  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&page=0&type=inet6num": {
     "data": {}
   },
-  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&type=aut-num": {
+  "api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&page=0&type=aut-num": {
     "data": {}
   },
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=inetnum": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&page=0&type=inetnum": {
     "data": []
   },
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=inet6num": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&page=0&type=inet6num": {
     "data": []
   },
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=aut-num": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&page=0&type=aut-num": {
     "data": []
   },
   "api/ba-apps/lirs": {
@@ -6380,7 +6380,7 @@
       }
     ]
   },
-  "api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255/more-specifics.json": {
+  "api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255/more-specifics.json?page=0": {
     "data": {
       "resources": [
         {
@@ -6398,7 +6398,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json": {
+  "api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json?page=0": {
     "data": {
       "resources": [
         {

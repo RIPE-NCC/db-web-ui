@@ -25,27 +25,27 @@ class ResourcesController {
 
     public sponsoredResourcesClicked() {
         this.isShowingSponsored = !this.isShowingSponsored;
-        this.fetchResourcesAndPopulatePage();
+        this.fetchResourcesAndPopulatePage(0);
     }
 
     private refreshPage(org: Organisation) {
         this.selectedOrg = org;
         this.isShowingSponsored = false;
-        this.fetchResourcesAndPopulatePage();
+        this.fetchResourcesAndPopulatePage(0);
         this.checkIfSponsor();
     }
 
-    private fetchResourcesAndPopulatePage() {
+    private fetchResourcesAndPopulatePage(pageNr: number) {
         this.ipv4Resources = this.ipv6Resources = this.asnResources = [];
         if (!this.selectedOrg) {
             return;
         }
-        const v4Res = this.resourcesDataService
-            [this.isShowingSponsored ? "fetchSponsoredIpv4Resources" : "fetchIpv4Resources"](this.selectedOrg.orgId);
-        const v6Res = this.resourcesDataService
-            [this.isShowingSponsored ? "fetchSponsoredIpv6Resources" : "fetchIpv6Resources"](this.selectedOrg.orgId);
-        const asnRes = this.resourcesDataService
-            [this.isShowingSponsored ? "fetchSponsoredAsnResources" : "fetchAsnResources"](this.selectedOrg.orgId);
+        const v4Res = this.resourcesDataService[this.isShowingSponsored ?
+            "fetchSponsoredIpv4Resources" : "fetchIpv4Resources"](this.selectedOrg.orgId, pageNr);
+        const v6Res = this.resourcesDataService[this.isShowingSponsored ?
+            "fetchSponsoredIpv6Resources" : "fetchIpv6Resources"](this.selectedOrg.orgId, pageNr);
+        const asnRes = this.resourcesDataService[this.isShowingSponsored ?
+            "fetchSponsoredAsnResources" : "fetchAsnResources"](this.selectedOrg.orgId, pageNr);
 
         v4Res.then((response: IHttpPromiseCallbackArg<IPv4ResourcesResponse>) => {
             this.ipv4Resources = response.data.resources;
@@ -63,21 +63,21 @@ class ResourcesController {
         if (!this.selectedOrg) {
             return;
         }
-        const v4Res = this.resourcesDataService.fetchSponsoredIpv4Resources(this.selectedOrg.orgId);
-        const v6Res = this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgId);
-        const asnRes = this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgId);
+        const v4Res = this.resourcesDataService.fetchSponsoredIpv4Resources(this.selectedOrg.orgId, 0);
+        const v6Res = this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgId, 0);
+        const asnRes = this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgId, 0);
         v4Res.then((response: IHttpPromiseCallbackArg<IPv4ResourcesResponse>) => {
-            if (response.data.resources) {
+            if (response.data.resources && response.data.resources.length) {
                 this.hasSponsoredResources = true;
             }
         });
         v6Res.then((response: IHttpPromiseCallbackArg<IPv6ResourcesResponse>) => {
-            if (response.data.resources) {
+            if (response.data.resources && response.data.resources.length) {
                 this.hasSponsoredResources = true;
             }
         });
         asnRes.then((response: IHttpPromiseCallbackArg<AsnResourcesResponse>) => {
-            if (response.data.resources) {
+            if (response.data.resources && response.data.resources.length) {
                 this.hasSponsoredResources = true;
             }
         });

@@ -6,6 +6,7 @@ const WhoisObjectEditorDirective = () => ({
         objectName: "=",
         objectSource: "=",
         objectType: "=",
+        updateClicked: "&",
     },
     templateUrl: "scripts/whoisObject/whois-attributes-editor.html",
 });

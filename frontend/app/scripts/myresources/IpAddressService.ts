@@ -1,28 +1,21 @@
+/* tslint:disable:no-bitwise*/
 declare const Address4: any;       // http://ip-address.js.org/#address4
 declare const Address6: any;       // http://ip-address.js.org/#address6
 declare const BigInteger: any;     // https://github.com/andyperlitch/jsbn
 
+const ipv4RangeRegex = new RegExp(/([\d.]+)\s?-\s?([\d.]+)/);
+
 class IpAddressService {
 
-    private static CIDR2MASK = [
-        0x00000000, 0x80000000, 0xC0000000, 0xE0000000, 0xF0000000, 0xF8000000, 0xFC000000, 0xFE000000, 0xFF000000,
-        0xFF800000, 0xFFC00000, 0xFFE00000, 0xFFF00000, 0xFFF80000, 0xFFFC0000, 0xFFFE0000, 0xFFFF0000, 0xFFFF8000,
-        0xFFFFC000, 0xFFFFE000, 0xFFFFF000, 0xFFFFF800, 0xFFFFFC00, 0xFFFFFE00, 0xFFFFFF00, 0xFFFFFF80, 0xFFFFFFC0,
-        0xFFFFFFE0, 0xFFFFFFF0, 0xFFFFFFF8, 0xFFFFFFFC, 0xFFFFFFFE, 0xFFFFFFFF];
-
-    private ipv4RangeRegex = new RegExp(/([\d.]+) - ([\d.]+)/);
-
-    public getIpv4Start(range: ResourceRange): number {
-        const match = this.ipv4RangeRegex.exec(range.string);
-        return new Address4(match[1]).bigInteger().intValue();
+    public static isValidV4(v4: string): boolean {
+        return new Address4(v4).isValid();
     }
 
-    public getIpv4End(range: ResourceRange): number {
-        const match = this.ipv4RangeRegex.exec(range.string);
-        return new Address4(match[2]).bigInteger().intValue();
+    public static isValidV6(v6: string): boolean {
+        return new Address6(v6).isValid();
     }
 
-    public range2CidrList(startIp: string, endIp: string) {
+    public static range2CidrList(startIp: string, endIp: string): string[] {
         let start = IpAddressService.ipToLong(startIp);
         const end = IpAddressService.ipToLong(endIp);
         const cidrs = [];
@@ -40,7 +33,7 @@ class IpAddressService {
             const diff = Math.log(end - start + 1) / Math.log(2);
             const maxdiff = (32 - Math.floor(diff));
             if (maxsize < maxdiff) {
-              maxsize = maxdiff;
+                maxsize = maxdiff;
             }
             const ip = IpAddressService.longToIP(start);
             cidrs.push(ip + "/" + maxsize);
@@ -48,6 +41,18 @@ class IpAddressService {
         }
         return cidrs;
     }
+
+    public static isValidRange(range: string): boolean {
+        return ipv4RangeRegex.test(range)
+            && IpAddressService.isValidV4(range.split("-")[0].trim())
+            && IpAddressService.isValidV4(range.split("-")[1].trim());
+    }
+
+    private static CIDR2MASK = [
+        0x00000000, 0x80000000, 0xC0000000, 0xE0000000, 0xF0000000, 0xF8000000, 0xFC000000, 0xFE000000, 0xFF000000,
+        0xFF800000, 0xFFC00000, 0xFFE00000, 0xFFF00000, 0xFFF80000, 0xFFFC0000, 0xFFFE0000, 0xFFFF0000, 0xFFFF8000,
+        0xFFFFC000, 0xFFFFE000, 0xFFFFF000, 0xFFFFF800, 0xFFFFFC00, 0xFFFFFE00, 0xFFFFFF00, 0xFFFFFF80, 0xFFFFFFC0,
+        0xFFFFFFE0, 0xFFFFFFF0, 0xFFFFFFF8, 0xFFFFFFFC, 0xFFFFFFFE, 0xFFFFFFFF];
 
     private static ipToLong(strIP: string): number {
       const parts = strIP.split(".");
@@ -63,6 +68,28 @@ class IpAddressService {
                ((ip >> 8) & 255) + "." +
                (ip & 255);
     }
+
+    public formatAsPrefix(range: string): string {
+        if (IpAddressService.isValidRange(range)) {
+            const match = ipv4RangeRegex.exec(range);
+            const prefixes = IpAddressService.range2CidrList(match[1], match[2]);
+            if (prefixes.length === 1) {
+                return prefixes[0];
+            }
+        }
+        return range;
+    }
+
+    public getIpv4Start(range: IResourceRangeModel): number {
+        const match = ipv4RangeRegex.exec(range.string);
+        return new Address4(match[1]).bigInteger().intValue();
+    }
+
+    public getIpv4End(range: IResourceRangeModel): number {
+        const match = ipv4RangeRegex.exec(range.string);
+        return new Address4(match[2]).bigInteger().intValue();
+    }
+
 }
 
 angular

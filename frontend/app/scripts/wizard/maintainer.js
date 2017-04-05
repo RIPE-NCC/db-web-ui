@@ -12,6 +12,9 @@
         };
     }]).controller('MaintainerController', ['$scope', 'jsUtilService', 'AttributeMetadataService', 'MntnerService', 'RestService', 'WebUpdatesCommons', function ($scope, jsUtils, AttributeMetadataService, MntnerService, RestService, WebUpdatesCommons) {
 
+        // if (!$scope.mntners) {
+        //     $scope.mntners = {sso: [], object: [], objectOriginal: [], alternatives: []};
+        // }
         $scope.mntnerAutocomplete = mntnerAutocomplete;
         $scope.hasSSo = MntnerService.hasSSo;
         $scope.hasPgp = MntnerService.hasPgp;
@@ -79,7 +82,7 @@
         }
 
         function navigateAway() {
-            _.each($scope.mntners.object, function(mnt) {
+            _.each($scope.mntners.object, function (mnt) {
                 $scope.onMntnerRemoved(mnt);
             });
             $scope.mntners.object = [];
@@ -136,13 +139,10 @@
             $scope.restCallInProgress = false;
             $scope.mntners.sso = results;
             if ($scope.mntners.sso.length > 0) {
-
                 $scope.mntners.objectOriginal = [];
                 // populate ui-select box with sso-mntners
                 $scope.mntners.object = _.cloneDeep($scope.mntners.sso);
-
                 // copy mntners to attributes (for later submit)
-                // Etch: hmm, fishy. why not do it later then?
                 var mntnerAttrs = _.map($scope.mntners.sso, function (i) {
                     return {
                         name: 'mnt-by',
@@ -150,7 +150,6 @@
                     };
                 });
                 mergeMaintainers($scope.attributes, mntnerAttrs);
-
                 AttributeMetadataService.enrich($scope.objectType, $scope.attributes);
             }
         }
