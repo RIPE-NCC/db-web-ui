@@ -36,25 +36,21 @@ class ScrollerDirective implements angular.IDirective {
             const nearly = raw.getBoundingClientRect().top <
                 document.documentElement.clientHeight + document.body.scrollTop;
             if (nearly) {
+                element.removeClass("hide");
                 if (to) {
                     clearTimeout(to);
                 }
                 to = setTimeout(() => {
+                    element.addClass("hide");
                     if (scope.almostOnScreen()) {
                         keepScrolling = false;
-                        element.addClass("hide");
                     }
                 }, 200);
             }
         };
         if (typeof scope.almostOnScreen === "function") {
             angular.element(this.$document).on("scroll", handleScroll);
-        }
-        const raw = element[0];
-        const nearly = raw.getBoundingClientRect().top
-            < document.documentElement.clientHeight + document.body.scrollTop;
-        if (nearly) {
-            handleScroll();
+            handleScroll(); // for shits and giggles
         }
     }
 }

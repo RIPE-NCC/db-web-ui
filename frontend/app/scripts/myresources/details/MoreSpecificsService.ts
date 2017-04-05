@@ -21,6 +21,7 @@ class MoreSpecificsDataService implements IMoreSpecificsDataService {
 
     constructor(private $log: angular.ILogService, private $http: angular.IHttpService) {
     }
+
     public getSpecifics(objectName: string,
                         objectType: string,
                         page: number,
@@ -29,7 +30,7 @@ class MoreSpecificsDataService implements IMoreSpecificsDataService {
         const url = "api/whois-internal/api/resources/" + objectType
             + "/" + objectName + "/more-specifics.json";
 
-        filter = filter.replace(/\s/g, "");
+        filter = filter ? filter.replace(/\s/g, "") : "";
         const params = {
             filter,
             page,
