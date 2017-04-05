@@ -1,4 +1,3 @@
-
 interface IResourceDetailsControllerState extends ng.ui.IStateService {
     params: {
         objectName: string;
@@ -8,7 +7,7 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
 
 class ResourceDetailsController {
 
-    public static $inject = ["$scope", "$log", "$state", "QueryParametersService", "MoreSpecificsService"];
+    public static $inject = ["$scope", "$log", "$state", "$location", "QueryParametersService", "MoreSpecificsService"];
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificResource[];
@@ -19,6 +18,7 @@ class ResourceDetailsController {
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
+                private $location: angular.ILocationService,
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsService) {
 
@@ -61,6 +61,15 @@ class ResourceDetailsController {
 
     public backToMyResources(): void {
         this.$state.go("webupdates.myresources");
+    }
+
+    public showObjectEditor(): void {
+        const params = {
+            name: this.resource.resource,
+            objectType: this.resource.type,
+            source: "RIPE",
+        };
+        this.$state.go("webupdates.modify", params);
     }
 
     public showDetail(resource: IResourceModel): void {

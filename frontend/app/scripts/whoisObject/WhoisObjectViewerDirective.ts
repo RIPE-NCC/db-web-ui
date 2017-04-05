@@ -2,12 +2,15 @@ const MAX_ATTR_NAME_MASK = "                ";
 
 interface IWhoisObjectScope extends angular.IScope {
     ngModel: IWhoisObjectModel;
+    updateClicked: () => void;
+
+    // local callbacks
     padding: (attr: IWhoisObjectModel) => string;
-    mode: string;
+    goToUpdate: () => void;
+
     nrLinesToShow: number;
     showMoreButton: boolean;
     clickShowMoreLines: () => void;
-    goToUpdate: () => void;
     showMoreInfo: boolean;
 }
 
@@ -19,7 +22,6 @@ function WhoisObjectViewerDirective(): angular.IDirective {
             scope.nrLinesToShow = objLength >= 30 ? 25 : 30;
             scope.showMoreButton = objLength > scope.nrLinesToShow;
             scope.showMoreInfo = true;
-            scope.mode = "view";
 
             scope.padding = (attr: IWhoisObjectModel): string => {
                 const numLeftPads = attr.name.length - MAX_ATTR_NAME_MASK.length;
@@ -32,12 +34,13 @@ function WhoisObjectViewerDirective(): angular.IDirective {
             };
 
             scope.goToUpdate = () => {
-                scope.mode = "edit";
+                scope.updateClicked();
             };
         },
         restrict: "E",
         scope: {
             ngModel: "=",
+            updateClicked: "&",
         },
         templateUrl: "scripts/whoisObject/whois-object-viewer.html",
     };
