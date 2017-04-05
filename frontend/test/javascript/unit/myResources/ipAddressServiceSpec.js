@@ -24,4 +24,8 @@ describe('testing IpAddressService', function () {
             slash: '10.0.128.0/22'
         })).toEqual(167805951);
     });
+
+    it('Convert ipv4 address range to list of CIDR', function () {
+        expect(service.range2CidrList('10.0.128.0', '10.0.131.255')).toEqual(['10.0.128.0/22']);
+    });
 });
