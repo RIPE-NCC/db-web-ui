@@ -15,33 +15,6 @@ class IpAddressService {
         return new Address6(v6).isValid();
     }
 
-    public static range2CidrList(startIp: string, endIp: string): string[] {
-        let start = IpAddressService.ipToLong(startIp);
-        const end = IpAddressService.ipToLong(endIp);
-        const cidrs = [];
-
-        while (end >= start) {
-            let maxsize = 32;
-            while (maxsize > 0) {
-                const mask = IpAddressService.CIDR2MASK[maxsize - 1];
-                const maskedBase = start & mask;
-                if (maskedBase !== start) {
-                    break;
-                }
-                maxsize--;
-            }
-            const diff = Math.log(end - start + 1) / Math.log(2);
-            const maxdiff = (32 - Math.floor(diff));
-            if (maxsize < maxdiff) {
-                maxsize = maxdiff;
-            }
-            const ip = IpAddressService.longToIP(start);
-            cidrs.push(ip + "/" + maxsize);
-            start += Math.pow(2, (32 - maxsize));
-        }
-        return cidrs;
-    }
-
     public static isValidRange(range: string): boolean {
         return ipv4RangeRegex.test(range)
             && IpAddressService.isValidV4(range.split("-")[0].trim())
@@ -69,10 +42,37 @@ class IpAddressService {
                (ip & 255);
     }
 
+    public range2CidrList(startIp: string, endIp: string): string[] {
+        let start = IpAddressService.ipToLong(startIp);
+        const end = IpAddressService.ipToLong(endIp);
+        const cidrs = [];
+
+        while (end >= start) {
+            let maxsize = 32;
+            while (maxsize > 0) {
+                const mask = IpAddressService.CIDR2MASK[maxsize - 1];
+                const maskedBase = start & mask;
+                if (maskedBase !== start) {
+                    break;
+                }
+                maxsize--;
+            }
+            const diff = Math.log(end - start + 1) / Math.log(2);
+            const maxdiff = (32 - Math.floor(diff));
+            if (maxsize < maxdiff) {
+                maxsize = maxdiff;
+            }
+            const ip = IpAddressService.longToIP(start);
+            cidrs.push(ip + "/" + maxsize);
+            start += Math.pow(2, (32 - maxsize));
+        }
+        return cidrs;
+    }
+
     public formatAsPrefix(range: string): string {
         if (IpAddressService.isValidRange(range)) {
             const match = ipv4RangeRegex.exec(range);
-            const prefixes = IpAddressService.range2CidrList(match[1], match[2]);
+            const prefixes = this.range2CidrList(match[1], match[2]);
             if (prefixes.length === 1) {
                 return prefixes[0];
             }
