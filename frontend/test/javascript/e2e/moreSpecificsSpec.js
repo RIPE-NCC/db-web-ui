@@ -39,6 +39,13 @@ describe('My Resources detail for inetnum', function () {
         expect(attributes.get(12).getText()).toMatch(/source:( *)RIPE/);
     });
 
+    it('should show RIPEstat link on whois object page', function() {
+        var ripeStateButton = page.getWhoisObject().showRipeStatButton();
+        expect(ripeStateButton.isPresent()).toEqual(true);
+        var url = ripeStateButton.getAttribute("href");
+        expect(url).toEqual("https://stat.ripe.net/192.87.0.0%20-%20192.87.255.255?sourceapp=ripedb#tabId=at-a-glance");
+    });
+
     it('should list all the more specific resources', function () {
         expect(page.moreSpecificsTable.isPresent()).toEqual(true);
         expect(page.moreSpecificsTableRows.count()).toEqual(2);
