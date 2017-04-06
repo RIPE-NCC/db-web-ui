@@ -50,7 +50,7 @@ function GetWhoisObject(parent) {
     };
 
     this.showRipeStatButton = function() {
-        return _this.directive().element(by.id('ripeStatButton'));
+        return _this.directive().element(by.css('.ripe-stat-button'));
     };
 }
 

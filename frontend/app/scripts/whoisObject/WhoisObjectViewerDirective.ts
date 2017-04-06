@@ -10,6 +10,8 @@ interface IWhoisObjectScope extends angular.IScope {
 
     nrLinesToShow: number;
     showMoreButton: boolean;
+    showRipeStatsButton: boolean;
+    objectPrimaryKey: string;
     clickShowMoreLines: () => void;
     showMoreInfo: boolean;
 }
@@ -22,12 +24,19 @@ function WhoisObjectViewerDirective(): angular.IDirective {
             scope.nrLinesToShow = objLength >= 30 ? 25 : 30;
             scope.showMoreButton = objLength > scope.nrLinesToShow;
             scope.showMoreInfo = true;
+            scope.showRipeStatsButton = scope.ngModel.type.toLowerCase() === "aut-num" ||
+                scope.ngModel.type.toLowerCase() === "route" ||
+                scope.ngModel.type.toLowerCase() === "route6" ||
+                scope.ngModel.type.toLowerCase() === "inetnum" ||
+                scope.ngModel.type.toLowerCase() === "inet6num";
+
 
             scope.padding = (attr: IWhoisObjectModel): string => {
                 const numLeftPads = attr.name.length - MAX_ATTR_NAME_MASK.length;
                 return MAX_ATTR_NAME_MASK.slice(numLeftPads);
             };
 
+            scope.objectPrimaryKey = scope.ngModel["primary-key"].attribute.map((attr) => attr.value).join("");
             scope.clickShowMoreLines = () => {
                 scope.nrLinesToShow += 25;
                 scope.showMoreButton = objLength > scope.nrLinesToShow;
