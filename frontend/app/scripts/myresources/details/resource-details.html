@@ -9,7 +9,7 @@
 
 <section ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>More specifics</h2>
-    <div class="prefix-filter col-xs-3" ng-class="{ 'has-error': resourceDetails.ipFilter && !resourceDetails.isValidPrefix(resourceDetails.ipFilter)}">
+    <div class="prefix-filter col-xs-3" ng-class="{ 'has-error': resourceDetails.ipFilter && !resourceDetails.isValidPrefix(resourceDetails.ipFilter)}" ng-if="::resourceDetails.moreSpecifics.resources.length">
       <input type="text" name="ipFilter"
             class="form-control"
             placeholder="Search for prefix"
