@@ -9,8 +9,8 @@
 
 <section ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>
-        <span ng-if="resourceDetails.moreSpecifics.filteredSize != resourceDetails.moreSpecifics.totalNumberOfResources"> {{resourceDetails.moreSpecifics.filteredSize }} out of </span>
-        {{resourceDetails.moreSpecifics.totalNumberOfResources}} More specifics</h2>
+        <span ng-if="resourceDetails.moreSpecifics.filteredSize < resourceDetails.moreSpecifics.totalNumberOfResources"> {{resourceDetails.moreSpecifics.filteredSize }} out of </span>
+        <span ng-if="::resourceDetails.moreSpecifics.resources.length">{{resourceDetails.moreSpecifics.totalNumberOfResources}}</span> More specifics</h2>
     <div class="prefix-filter col-xs-3" ng-class="{ 'has-error': resourceDetails.ipFilter && !resourceDetails.isValidPrefix(resourceDetails.ipFilter)}" ng-if="::resourceDetails.moreSpecifics.resources.length">
       <input type="text" name="ipFilter"
             class="form-control"
