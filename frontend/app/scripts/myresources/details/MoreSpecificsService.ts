@@ -6,6 +6,7 @@ interface IMoreSpecificsDataService {
 interface IMoreSpecificsApiResult {
     resources: IMoreSpecificResource[];
     totalNumberOfResources: number;
+    filteredSize: number;
 }
 
 interface IMoreSpecificResource {
