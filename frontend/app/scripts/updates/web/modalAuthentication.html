@@ -35,7 +35,10 @@
                             ng-options="item.key for item in mntners | orderBy:key" class="form-control select-height"></select>
                 </li>
                 <li>
-                    <label>Provide the password for the selected maintainer</label>
+                    <div>
+                        <label class="pull-left">Provide the password for the selected maintainer</label>
+                        <a class="forgot-password pull-right" ng-href="/db-web-ui/#/fmp/" ng-click="cancel()">Forgotten MNTNER password?</a>
+                    </div>
                     <input type="password" class="form-control" ng-model="selected.password" ng-required="true" />
                 </li>
                 <li>
