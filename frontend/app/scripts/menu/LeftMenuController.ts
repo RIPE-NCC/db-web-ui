@@ -24,7 +24,7 @@ class LeftMenuController {
                 this.myResourcesChosen = true;
             } else if (toState.name.startsWith("webupdates") || toState.name.startsWith("textupdates")) {
                 this.webUpdatesExpanded = true;
-            } else if (toState.name.startsWith("crypt")) {
+            } else if (toState.name.startsWith("fmp")) {
                 this.passwordsExpanded = true;
             }
         });
