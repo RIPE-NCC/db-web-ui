@@ -3,7 +3,7 @@ interface IResourceItemDirectiveScope extends angular.IScope {
     formatAsPrefix(range: string): string;
 }
 
-class ResourceItemDirective implements angular.IDirective {    
+class ResourceItemDirective implements angular.IDirective {
 
     public static factory(): ng.IDirectiveFactory {
         const directive: ng.IDirectiveFactory = ($state: ng.ui.IStateService) => new ResourceItemDirective($state);

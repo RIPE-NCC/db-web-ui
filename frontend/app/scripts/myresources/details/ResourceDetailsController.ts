@@ -21,8 +21,10 @@ class ResourceDetailsController {
         transition: boolean;
         viewer: boolean;
     };
+    public showScroller = true;
 
     public ipFilter: string = null;
+    public serverSideForcedValidFilter: boolean = true;
 
     private objectKey: string;
     private objectType: string;
@@ -110,22 +112,27 @@ class ResourceDetailsController {
         if (this.nrMoreSpecificsToShow < this.moreSpecifics.resources.length) {
             this.nrMoreSpecificsToShow += 50;
             this.$scope.$apply();
-        } else if (this.moreSpecifics.resources.length < this.moreSpecifics.totalNumberOfResources) {
-            // resources still left on server? Use some magic!!!
+        } else if (this.moreSpecifics.resources.length < this.moreSpecifics.filteredSize) {
+            // resources still left on server? which ones? Use some magic!!!
             const pageNr = Math.ceil(this.moreSpecifics.resources.length / this.MAGIC);
             this.getResourcesFromBackEnd(pageNr, this.ipFilter);
-        } else {
-            return true;
+            this.nrMoreSpecificsToShow += 50;
+            this.$scope.$apply();
         }
+        this.calcScroller();
     }
 
     public applyFilter(): void {
+        this.serverSideForcedValidFilter = true;
         if (!this.ipFilter || this.isValidPrefix(this.ipFilter)) {
             this.getResourcesFromBackEnd(0, this.ipFilter);
         }
     }
 
     public isValidPrefix(maybePrefix: string): boolean {
+        if (!this.serverSideForcedValidFilter) {
+            return false;
+        }
         if (!maybePrefix) {
             return false;
         }
@@ -154,8 +161,14 @@ class ResourceDetailsController {
                         this.moreSpecifics.resources = this.moreSpecifics.resources.concat(response.data.resources);
                     }
                     this.canHaveMoreSpecifics = true;
+                    this.calcScroller();
+                }, () => {
+                    this.serverSideForcedValidFilter = false;
                 });
         }
+    }
+    private calcScroller() {
+        this.showScroller = this.nrMoreSpecificsToShow < this.moreSpecifics.filteredSize;
     }
 }
 

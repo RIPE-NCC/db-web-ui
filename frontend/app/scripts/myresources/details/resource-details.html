@@ -1,4 +1,5 @@
 <button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
+<hierarchy-selector name="resourceDetails.resource.resource"></hierarchy-selector>
 <h1>{{ resourceDetails.formatAsPrefix(resourceDetails.resource.resource) }}</h1>
 <div class="flags-container" style="margin-bottom: 2em">
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
@@ -29,13 +30,15 @@
             </thead>
             <tbody>
             <tr ng-repeat="resource in resourceDetails.moreSpecifics.resources" ng-if="$index < resourceDetails.nrMoreSpecificsToShow">
-                <td><a ng-click="resourceDetails.showDetail(resource)">{{ resourceDetails.formatAsPrefix(resource.resource) }}</a></td>
+                <td><a ng-click="resourceDetails.showDetail(resource)">
+                    <name-formatter name="resource.resource" type="resource.type"></name-formatter>
+                </a></td>
                 <td>{{ resource.status }}</td>
                 <td>{{ resource.netname }}</td>
             </tr>
             </tbody>
         </table>
-        <p scroller="resourceDetails.almostOnScreen()"></p>
+        <p scroller="resourceDetails.almostOnScreen()" ng-show="resourceDetails.showScroller"></p>
         <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.resources.length === 0">
             No more specific objects exist.
         </div>
