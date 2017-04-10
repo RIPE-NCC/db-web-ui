@@ -1,9 +1,9 @@
 interface IQueryParametersService {
-    fireQuery(queryString: string,
-              source: string,
-              types: {},
-              flags: string,
-              inverse: {}): IHttpPromise<IWhoisResponseModel>;
+    searchWhoisObjects(queryString: string,
+                       source: string,
+                       types: {},
+                       flags: string,
+                       inverse: {}): IHttpPromise<IWhoisResponseModel>;
 
     getWhoisObject(key: string,
                    type: string,
@@ -17,11 +17,11 @@ class QueryParametersService implements IQueryParametersService {
                 private $http: angular.IHttpService) {
     }
 
-    public fireQuery(queryString: string,
-                     source: string,
-                     types: {},
-                     flags: string,
-                     inverse: {}): IHttpPromise<IWhoisResponseModel> {
+    public searchWhoisObjects(queryString: string,
+                              source: string,
+                              types: {},
+                              flags: string,
+                              inverse: {}): IHttpPromise<IWhoisResponseModel> {
 
         const typeFilter = _.filter(Object.keys(types), (type: string) => types[type]).join(",");
         const inverseFilter = _.filter(Object.keys(inverse), (inv: string) => inverse[inv]).join(",");

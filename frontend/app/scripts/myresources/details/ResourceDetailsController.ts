@@ -47,7 +47,7 @@ class ResourceDetailsController {
 
         this.canHaveMoreSpecifics = false;
 
-        this.getResourcesFromBackEnd(0, "");
+        this.getResourcesFromBackEnd();
 
         this.queryParametersService.getWhoisObject(this.objectKey, this.objectType, "RIPE").then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
@@ -103,12 +103,11 @@ class ResourceDetailsController {
     }
 
     /**
-     * Called by 'scroller' directive. Return true to indicate there are no more rows to show then the scroller
-     * will stop calling.
+     * Called by 'scroller' directive.
      *
      * @returns {boolean}
      */
-    public almostOnScreen() {
+    public almostOnScreen(): void {
         if (this.nrMoreSpecificsToShow < this.moreSpecifics.resources.length) {
             this.nrMoreSpecificsToShow += 50;
             this.$scope.$apply();
@@ -145,10 +144,7 @@ class ResourceDetailsController {
         return this.ipAddressService.formatAsPrefix(range);
     }
 
-    private getResourcesFromBackEnd(pageNr: number, ipFilter: string) {
-        if (typeof pageNr !== "number") {
-            pageNr = 0;
-        }
+    private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): void {
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
             this.moreSpecificsService.getSpecifics(this.objectKey, this.objectType, pageNr, ipFilter).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
@@ -167,7 +163,8 @@ class ResourceDetailsController {
                 });
         }
     }
-    private calcScroller() {
+
+    private calcScroller(): void {
         this.showScroller = this.nrMoreSpecificsToShow < this.moreSpecifics.filteredSize;
     }
 }

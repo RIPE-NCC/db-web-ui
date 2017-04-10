@@ -50,7 +50,7 @@ class QueryController {
         if (this.doNotRetrieveRelatedObjects) {
             flags += "r";
         }
-        this.queryParametersService.fireQuery(
+        this.queryParametersService.searchWhoisObjects(
             this.queryString,
             this.source,
             this.types,

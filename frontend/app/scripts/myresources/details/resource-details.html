@@ -18,7 +18,8 @@
             ng-change="resourceDetails.applyFilter()" />
     </div>
     <p class="pull-right">Showing <span>{{resourceDetails.moreSpecifics.filteredSize }} out of </span>
-        <span ng-if="::resourceDetails.moreSpecifics.resources.length">{{resourceDetails.moreSpecifics.totalNumberOfResources}}</span></p>
+        <span ng-if="::resourceDetails.moreSpecifics.resources.length">{{resourceDetails.moreSpecifics.totalNumberOfResources}}</span>
+	    <span ng-if="::!resourceDetails.moreSpecifics.resources.length">0</span></p>
     <div class="more-specifics">
         <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
             <thead>

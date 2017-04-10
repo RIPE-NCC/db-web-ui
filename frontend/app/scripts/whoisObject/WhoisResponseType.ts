@@ -19,7 +19,6 @@ interface IAttributeModel {
 }
 
 interface IWhoisObjectModel {
-    name: string;
     type: string;
     link: IWhoisLinkModel;
     source: {

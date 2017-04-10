@@ -5,7 +5,7 @@ interface IWhoisObjectScope extends angular.IScope {
     updateClicked: () => void;
 
     // local callbacks
-    padding: (attr: IWhoisObjectModel) => string;
+    padding: (attr: IAttributeModel) => string;
     goToUpdate: () => void;
 
     nrLinesToShow: number;
@@ -30,8 +30,7 @@ function WhoisObjectViewerDirective(): angular.IDirective {
                 scope.ngModel.type.toLowerCase() === "inetnum" ||
                 scope.ngModel.type.toLowerCase() === "inet6num";
 
-
-            scope.padding = (attr: IWhoisObjectModel): string => {
+            scope.padding = (attr: IAttributeModel): string => {
                 const numLeftPads = attr.name.length - MAX_ATTR_NAME_MASK.length;
                 return MAX_ATTR_NAME_MASK.slice(numLeftPads);
             };
