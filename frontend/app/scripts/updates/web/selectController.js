@@ -13,7 +13,7 @@
 
             $scope.selected = {
                 source: Properties.SOURCE,
-                objectType: $scope.objectTypes[0]
+                objectType: "person-mntnr"
             };
 
             $scope.loggedIn = undefined;
@@ -42,14 +42,13 @@
                     $state.transitionTo('webupdates.createSelfMnt', {
                         source: $scope.selected.source
                     });
-
-
-                //TODO enable new create domain wizard
                 } else if ($scope.selected.objectType === 'domain') {
                    $state.transitionTo('webupdates.domainobjectwizard', {
                        source: $scope.selected.source,
                        objectType: $scope.selected.objectType
                    });
+                } else if ($scope.selected.objectType === 'person-mntnr') {
+                    $state.transitionTo('webupdates.createPersonMntnerPair');
                 } else {
                     $state.transitionTo('webupdates.create', {
                         source: $scope.selected.source,

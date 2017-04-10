@@ -50,6 +50,8 @@ describe('webUpdates: SelectController', function () {
         $httpBackend.flush();
         expect($scope.loggedIn).toBeUndefined();
 
+        $scope.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
+
         $scope.navigateToCreate();
 
         $httpBackend.flush();
@@ -76,6 +78,8 @@ describe('webUpdates: SelectController', function () {
 
         expect($scope.loggedIn).toBe(true);
 
+        $scope.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
+
         $scope.navigateToCreate();
 
         $httpBackend.flush();
@@ -83,6 +87,30 @@ describe('webUpdates: SelectController', function () {
         expect($state.current.name).toBe('webupdates.create');
         expect($stateParams.source).toBe(SOURCE);
         expect($stateParams.objectType).toBe(OBJECT_TYPE);
+    });
+
+    it('should navigate to create person maintainer screen when logged in and selected', function () {
+        selectController();
+
+        $httpBackend.expectGET('api/user/info').respond(function() {
+            return [200, {
+                username:'test@ripe.net',
+                displayName:'Test User',
+                expiryDate:[2015,9,9,14,9,27,863],
+                uuid:'aaaa-bbbb-cccc-dddd',
+                active:true
+            }, {}];
+        });
+        $httpBackend.flush();
+
+        expect($scope.loggedIn).toBe(true);
+
+        // person-mntnr pair is default selection (top of the drop down list)
+        $scope.navigateToCreate();
+
+        $httpBackend.flush();
+
+        expect($state.current.name).toBe('webupdates.createPersonMntnerPair');
     });
 
     it('should navigate to create self maintained mntner screen when logged in', function () {
