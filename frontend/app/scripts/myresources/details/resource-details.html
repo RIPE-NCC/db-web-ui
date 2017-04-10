@@ -17,9 +17,7 @@
             ng-model="resourceDetails.ipFilter"
             ng-change="resourceDetails.applyFilter()" />
     </div>
-    <p class="pull-right">Showing <span>{{resourceDetails.moreSpecifics.filteredSize }} out of </span>
-        <span ng-if="::resourceDetails.moreSpecifics.resources.length">{{resourceDetails.moreSpecifics.totalNumberOfResources}}</span>
-	    <span ng-if="::!resourceDetails.moreSpecifics.resources.length">0</span></p>
+    <p class="pull-right" ng-if="::resourceDetails.moreSpecifics.resources.length">Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}</p>
     <div class="more-specifics">
         <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
             <thead>
