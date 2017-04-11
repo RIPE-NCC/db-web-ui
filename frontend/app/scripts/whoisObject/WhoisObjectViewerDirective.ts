@@ -24,11 +24,13 @@ function WhoisObjectViewerDirective(): angular.IDirective {
             scope.nrLinesToShow = objLength >= 30 ? 25 : 30;
             scope.showMoreButton = objLength > scope.nrLinesToShow;
             scope.showMoreInfo = true;
-            scope.showRipeStatsButton = scope.ngModel.type.toLowerCase() === "aut-num" ||
-                scope.ngModel.type.toLowerCase() === "route" ||
-                scope.ngModel.type.toLowerCase() === "route6" ||
-                scope.ngModel.type.toLowerCase() === "inetnum" ||
-                scope.ngModel.type.toLowerCase() === "inet6num";
+            scope.showRipeStatsButton = [
+                "aut-num",
+                "route",
+                "route6",
+                "inetnum",
+                "inet6num",
+            ].indexOf(scope.ngModel.type.toLowerCase()) > -1;
 
             scope.padding = (attr: IAttributeModel): string => {
                 const numLeftPads = attr.name.length - MAX_ATTR_NAME_MASK.length;
