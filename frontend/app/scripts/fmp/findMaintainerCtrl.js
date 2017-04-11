@@ -52,11 +52,7 @@
                     if (error.status === 404) {
                         AlertService.setGlobalError('The Maintainer could not be found.');
                     } else {
-                        if (error.data) {
-                            AlertService.setGlobalError('Error fetching maintainer: ' + error.data);
-                        } else {
-                            AlertService.setGlobalError('Error fetching maintainer');
-                        }
+                        AlertService.setGlobalError('Error fetching maintainer');
                     }
                 });
             };
