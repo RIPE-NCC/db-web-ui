@@ -48,13 +48,15 @@
                             _navigateToLegacy($scope.maintainerKey);
                         });
                 }, function (error) {
-
                     $log.error('Error searching mntner ' + $scope.maintainerKey + ':' + JSON.stringify(error));
-
                     if (error.status === 404) {
                         AlertService.setGlobalError('The Maintainer could not be found.');
                     } else {
-                        AlertService.setGlobalError('Eror fetching maintainer: ' + error.data);
+                        if (error.data) {
+                            AlertService.setGlobalError('Error fetching maintainer: ' + error.data);
+                        } else {
+                            AlertService.setGlobalError('Error fetching maintainer');
+                        }
                     }
                 });
             };
