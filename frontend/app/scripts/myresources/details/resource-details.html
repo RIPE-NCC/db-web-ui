@@ -10,14 +10,14 @@
 
 <section ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>More specifics</h2>
-    <div class="prefix-filter col-xs-3" ng-class="{ 'has-error': resourceDetails.ipFilter && !resourceDetails.isValidPrefix(resourceDetails.ipFilter)}" ng-if="::resourceDetails.moreSpecifics.resources.length">
+    <div class="prefix-filter" ng-class="{ 'has-error': resourceDetails.ipFilter && !resourceDetails.isValidPrefix(resourceDetails.ipFilter)}" ng-if="::resourceDetails.moreSpecifics.resources.length">
       <input type="text" name="ipFilter"
             class="form-control"
             placeholder="Search for prefix"
             ng-model="resourceDetails.ipFilter"
             ng-change="resourceDetails.applyFilter()" />
+        <p class="pull-right" ng-if="::resourceDetails.moreSpecifics.resources.length">Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}</p>
     </div>
-    <p class="pull-right" ng-if="::resourceDetails.moreSpecifics.resources.length">Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}</p>
     <div class="more-specifics">
         <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
             <thead>

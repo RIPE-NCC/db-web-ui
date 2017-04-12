@@ -66,10 +66,6 @@ div.flags-container {
     @extend %float-l;
 }
 
-div.more-specifics {
-    padding-top: 50px;
-}
-
 table.resources > thead > tr {
     background-color: #eee;
 }
@@ -95,7 +91,13 @@ ul.attrblock {
 }
 
 .prefix-filter {
-    padding-left: 0;
+    input {
+        width: 300px;
+        float: left;
+    }
+    p {
+        line-height: 3em;
+    }
 }
 
 whois-object > section {

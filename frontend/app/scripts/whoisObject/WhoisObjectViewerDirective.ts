@@ -16,15 +16,14 @@ interface IWhoisObjectScope extends angular.IScope {
     showMoreInfo: boolean;
 }
 
-function WhoisObjectViewerDirective(): angular.IDirective {
+const WhoisObjectViewerDirective = () => ({
 
-    return {
-        link: (scope: IWhoisObjectScope) => {
-            const objLength = scope.ngModel.attributes.attribute.length;
-            scope.nrLinesToShow = objLength >= 30 ? 25 : 30;
-            scope.showMoreButton = objLength > scope.nrLinesToShow;
-            scope.showMoreInfo = true;
-            scope.showRipeStatsButton = [
+    link: (scope: IWhoisObjectScope) => {
+        const objLength = scope.ngModel.attributes.attribute.length;
+        scope.nrLinesToShow = objLength >= 30 ? 25 : 30;
+        scope.showMoreButton = objLength > scope.nrLinesToShow;
+        scope.showMoreInfo = true;
+        scope.showRipeStatsButton = [
                 "aut-num",
                 "route",
                 "route6",
@@ -32,29 +31,29 @@ function WhoisObjectViewerDirective(): angular.IDirective {
                 "inet6num",
             ].indexOf(scope.ngModel.type.toLowerCase()) > -1;
 
-            scope.padding = (attr: IAttributeModel): string => {
-                const numLeftPads = attr.name.length - MAX_ATTR_NAME_MASK.length;
-                return MAX_ATTR_NAME_MASK.slice(numLeftPads);
-            };
+        scope.padding = (attr: IAttributeModel): string => {
+            const numLeftPads = attr.name.length - MAX_ATTR_NAME_MASK.length;
+            return MAX_ATTR_NAME_MASK.slice(numLeftPads);
+        };
 
-            scope.objectPrimaryKey = scope.ngModel["primary-key"].attribute.map((attr) => attr.value).join("");
-            scope.clickShowMoreLines = () => {
-                scope.nrLinesToShow += 25;
-                scope.showMoreButton = objLength > scope.nrLinesToShow;
-            };
+        scope.objectPrimaryKey = scope.ngModel["primary-key"].attribute.map((attr) => attr.value).join("");
+        scope.clickShowMoreLines = () => {
+            scope.nrLinesToShow += 25;
+            scope.showMoreButton = objLength > scope.nrLinesToShow;
+        };
 
-            scope.goToUpdate = () => {
-                scope.updateClicked();
-            };
-        },
-        restrict: "E",
-        scope: {
-            ngModel: "=",
-            updateClicked: "&",
-        },
-        templateUrl: "scripts/whoisObject/whois-object-viewer.html",
-    };
-}
+        scope.goToUpdate = () => {
+            scope.updateClicked();
+        };
+    },
+    restrict: "E",
+    scope: {
+        ngModel: "=",
+        updateClicked: "&",
+    },
+    templateUrl: "scripts/whoisObject/whois-object-viewer.html",
+
+});
 
 angular
     .module("dbWebApp")
