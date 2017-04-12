@@ -1,13 +1,24 @@
 <button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
-<h1>{{ resourceDetails.resource.resource }}</h1>
+<hierarchy-selector name="resourceDetails.resource.resource"></hierarchy-selector>
+<h1>{{ resourceDetails.formatAsPrefix(resourceDetails.resource.resource) }}</h1>
 <div class="flags-container" style="margin-bottom: 2em">
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
 </div>
+
 <h2>Object in RIPE Database</h2>
-<whois-object ng-model="resourceDetails.details" ng-if="resourceDetails.details"></whois-object>
+<whois-object-viewer ng-model="resourceDetails.details" ng-if="resourceDetails.details" update-clicked="resourceDetails.showObjectEditor()"></whois-object-viewer>
+
 <section ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>More specifics</h2>
-    <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.length">
+    <div class="prefix-filter" ng-class="{ 'has-error': resourceDetails.ipFilter && !resourceDetails.isValidPrefix(resourceDetails.ipFilter)}" ng-if="::resourceDetails.moreSpecifics.resources.length">
+      <input type="text" name="ipFilter"
+            class="form-control"
+            placeholder="Search for prefix"
+            ng-model="resourceDetails.ipFilter"
+            ng-change="resourceDetails.applyFilter()" />
+        <p class="pull-right" ng-if="::resourceDetails.moreSpecifics.resources.length">Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}</p>
+    </div>
+    <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
         <thead>
         <tr>
             <th>Internet number resource</th>
@@ -16,14 +27,17 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="resource in resourceDetails.moreSpecifics">
-            <td><a ng-click="resourceDetails.showDetail(resource)">{{ resource.resource }}</a></td>
+        <tr ng-repeat="resource in resourceDetails.moreSpecifics.resources" ng-if="$index < resourceDetails.nrMoreSpecificsToShow">
+            <td><a ng-click="resourceDetails.showDetail(resource)">
+                <name-formatter name="resource.resource" type="resource.type"></name-formatter>
+            </a></td>
             <td>{{ resource.status }}</td>
             <td>{{ resource.netname }}</td>
         </tr>
         </tbody>
     </table>
-    <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.length === 0">
+    <p scroller="resourceDetails.almostOnScreen()" ng-show="resourceDetails.showScroller"></p>
+    <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.resources.length === 0">
         No more specific objects exist.
     </div>
 </section>

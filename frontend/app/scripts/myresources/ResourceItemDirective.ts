@@ -1,5 +1,6 @@
 interface IResourceItemDirectiveScope extends angular.IScope {
     showDetail(item: IResourceModel): void;
+    formatAsPrefix(range: string): string;
 }
 
 class ResourceItemDirective implements angular.IDirective {
@@ -16,6 +17,8 @@ class ResourceItemDirective implements angular.IDirective {
     };
     public templateUrl: string = "scripts/myresources/resource-item.html";
 
+    private ipAddressService = new IpAddressService();
+
     constructor(private $state: ng.ui.IStateService) {
     }
 
@@ -26,6 +29,9 @@ class ResourceItemDirective implements angular.IDirective {
                 objectName: item.resource,
                 objectType: item.type,
             });
+        };
+        scope.formatAsPrefix = (range: string) => {
+            return this.ipAddressService.formatAsPrefix(range);
         };
     }
 }

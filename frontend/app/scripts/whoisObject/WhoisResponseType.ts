@@ -19,7 +19,6 @@ interface IAttributeModel {
 }
 
 interface IWhoisObjectModel {
-    name: string;
     type: string;
     link: IWhoisLinkModel;
     source: {
@@ -33,7 +32,7 @@ interface IWhoisObjectModel {
     };
 }
 
- interface IWhoisResponseModel {
+interface IWhoisResponseModel {
     link?: IWhoisLinkModel;
     errormessages: {
         errormessage: IErrorMessageModel[],

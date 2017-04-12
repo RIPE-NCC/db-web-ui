@@ -1,5 +1,5 @@
 %active-state {
-    border: 0px;
+    border: 0;
     border-bottom: 2px solid #1AABAA;
     color: $black;
     background: $white;
@@ -87,6 +87,16 @@ ul.attrblock {
     color: black;
     &:hover {
         background-color: #ddd;
+    }
+}
+
+.prefix-filter {
+    input {
+        width: 24em;
+        float: left;
+    }
+    p {
+        line-height: 2;
     }
 }
 

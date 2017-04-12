@@ -33,20 +33,24 @@ function GetWhoisObject(parent) {
     var _this = this;
     this.parent = parent;
 
-    this.directive = function() {
-        return (typeof _this.parent !== 'undefined') ? parent.element(by.css('whois-object')) : element(by.css('whois-object'));
+    this.directive = function () {
+        return (typeof _this.parent !== 'undefined') ? parent.element(by.css('whois-object-viewer')) : element(by.css('whois-object-viewer'));
     };
 
-    this.attributes = function() {
-        return _this.directive().element(by.css('section')).element(by.css('pre')).element(by.css('ul')).all(by.css('li'));
+    this.attributes = function () {
+        return _this.directive().element(by.css('pre')).element(by.css('ul')).all(by.css('li'));
     };
 
-    this.isPresent = function() {
-        return _this.directive().isPresent()
+    this.isPresent = function () {
+        return _this.directive().isPresent();
     };
 
-    this.showMoreButton = function() {
+    this.showMoreButton = function () {
         return _this.directive().element(by.css('.show-more'));
+    };
+
+    this.showRipeStatButton = function () {
+        return _this.directive().element(by.css('.ripe-stat-button'));
     };
 }
 
@@ -99,6 +103,8 @@ module.exports = {
     btnDeleteObject: element(by.id('deleteObject')),
 
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
+    btnAddAttribute: element(by.id('createForm')).element(by.css('.attr-0')).element(by.css('.fa.fa-plus')),
+    allObjectRows: element(by.id('createForm')).element(by.css('section.visible-field-form')).element(by.css('ul.appeared-fields')).all(by.css('li')),
 
     modal: element(by.css('[uib-modal-window]')),
     modalAttributeList: element(by.css('[uib-modal-window]')).element(by.css('select')),
@@ -208,5 +214,7 @@ module.exports = {
             el.scrollIntoView();
         }, el.getWebElement());
     },
-    getWhoisObject: function(parent) { return new GetWhoisObject(parent); }
+    getWhoisObject: function (parent) {
+        return new GetWhoisObject(parent);
+    }
 };

@@ -7,7 +7,10 @@
 	    <select id="objectTypeSelector"
             ng-model="selected.objectType"
 	            ng-required="true"
-	            ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
+	            class="form-control select-height">
+            <option value="person-mntnr" label="person and maintainer pair">person and maintainer pair</option>
+            <option ng-repeat="objectType in objectTypes" label="{{objectType}}" value="{{objectType}}">{{objectType}}</option>
+        </select>
 	</div>
     <br/>
 

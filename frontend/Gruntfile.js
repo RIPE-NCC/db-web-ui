@@ -53,7 +53,6 @@ module.exports = function (grunt) {
         },
         focus: {
             livereloadServer: {
-                exclude: ['dist']
             }
         },
         // Watches files for changes and runs tasks based on the changed files
@@ -743,15 +742,17 @@ module.exports = function (grunt) {
         }
 
         grunt.task.run([
-            'clean:server',
-            'copy:processtags',
-            'ts',
-            'wiredep',
-            'concurrent:server',
-            'postcss:server',
-            'configureProxies:livereload',
-            'connect:livereload',
-            'focus:livereloadServer'
+          'clean',
+          'copy:processtags',
+          'wiredep',
+          'useminPrepare',
+          'concurrent:dist',
+          'concat',
+          'copy:dist',
+          'cssmin',
+          'configureProxies:livereload',
+          'connect:livereload',
+          'focus:livereloadServer'
         ]);
     });
 
