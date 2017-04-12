@@ -18,28 +18,26 @@
             ng-change="resourceDetails.applyFilter()" />
         <p class="pull-right" ng-if="::resourceDetails.moreSpecifics.resources.length">Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}</p>
     </div>
-    <div class="more-specifics">
-        <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
-            <thead>
-            <tr>
-                <th>Internet number resource</th>
-                <th>Status</th>
-                <th>Netname</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="resource in resourceDetails.moreSpecifics.resources" ng-if="$index < resourceDetails.nrMoreSpecificsToShow">
-                <td><a ng-click="resourceDetails.showDetail(resource)">
-                    <name-formatter name="resource.resource" type="resource.type"></name-formatter>
-                </a></td>
-                <td>{{ resource.status }}</td>
-                <td>{{ resource.netname }}</td>
-            </tr>
-            </tbody>
-        </table>
-        <p scroller="resourceDetails.almostOnScreen()" ng-show="resourceDetails.showScroller"></p>
-        <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.resources.length === 0">
-            No more specific objects exist.
-        </div>
+    <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
+        <thead>
+        <tr>
+            <th>Internet number resource</th>
+            <th>Status</th>
+            <th>Netname</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="resource in resourceDetails.moreSpecifics.resources" ng-if="$index < resourceDetails.nrMoreSpecificsToShow">
+            <td><a ng-click="resourceDetails.showDetail(resource)">
+                <name-formatter name="resource.resource" type="resource.type"></name-formatter>
+            </a></td>
+            <td>{{ resource.status }}</td>
+            <td>{{ resource.netname }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p scroller="resourceDetails.almostOnScreen()" ng-show="resourceDetails.showScroller"></p>
+    <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.resources.length === 0">
+        No more specific objects exist.
     </div>
 </section>
