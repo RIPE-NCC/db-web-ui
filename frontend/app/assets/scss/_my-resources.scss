@@ -91,6 +91,7 @@ ul.attrblock {
 }
 
 .prefix-filter {
+    overflow: auto;
     input {
         width: 24em;
         float: left;
