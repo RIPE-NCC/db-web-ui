@@ -34,9 +34,4 @@ describe('My resources', function () {
         expect(page.myResourcesActiveTabRows.count()).toBe(42);
     });
 
-    it('should be able to show other orgs as well', function () {
-        page.selectFromList(page.orgSelector, 'Rop Gonggrijp').click();
-        expect(page.myResourcesActiveTabRows.count()).toBe(2);
-    });
-
 });

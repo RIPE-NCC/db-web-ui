@@ -6,24 +6,25 @@ class OrgDropDownController {
 
     constructor(private $log: angular.ILogService,
                 private $rootScope: angular.IRootScopeService,
-                private orgDropDownStateService: OrgDropDownStateService) {
+                private orgDropDownStateService: IOrgDropDownStateService) {
 
         this.orgDropDownStateService.getOrgs().then((organisations: Organisation[]) => {
-            this.organisations = organisations;
-            this.orgDropDownStateService.getSelectedOrg().then((organisation: Organisation) => {
-                this.selectedOrg = organisation;
-            });
+            if (organisations) {
+                this.organisations = organisations;
+                this.selectedOrg = organisations[0];
+                this.organisationSelected();
+            }
         });
     }
 
     public organisationSelected(): void {
-        this.orgDropDownStateService.setSelectedOrg(this.selectedOrg);
         this.notifyOrganisationChange(this.selectedOrg);
     }
 
     private notifyOrganisationChange(selected: Organisation): void {
         if (selected) {
             this.$rootScope.$broadcast("organisation-changed-event", selected);
+            this.orgDropDownStateService.setSelectedOrganisation(selected);
         }
     }
 

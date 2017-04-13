@@ -12,15 +12,11 @@ class ResourcesController {
     constructor(private $log: angular.ILogService,
                 private $scope: angular.IScope,
                 private resourcesDataService: MyResourcesDataService,
-                private dropdownService: OrgDropDownStateService) {
+                private orgDropDownStateService: IOrgDropDownStateService) {
         $scope.$on("organisation-changed-event", (event: IAngularEvent, selectedOrg: Organisation) => {
             this.refreshPage(selectedOrg);
         });
-        this.dropdownService.getSelectedOrg().then((org: Organisation) => {
-            if (org) {
-                this.refreshPage(org);
-            }
-        });
+        this.refreshPage(orgDropDownStateService.getSelectedOrganisation());
     }
 
     public sponsoredResourcesClicked() {
@@ -29,7 +25,9 @@ class ResourcesController {
     }
 
     private refreshPage(org: Organisation) {
-        this.selectedOrg = org;
+        if (org) {
+            this.selectedOrg = org;
+        }
         this.isShowingSponsored = false;
         this.fetchResourcesAndPopulatePage(0);
         this.checkIfSponsor();
