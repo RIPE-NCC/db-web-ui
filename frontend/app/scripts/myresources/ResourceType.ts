@@ -10,20 +10,10 @@ interface IResourceRangeModel {
     end: number;
 }
 
-interface IPv4ResourcesResponse {
-    orgid: string;
-    resources: IPv4ResourceDetails[];
-}
-
 interface IPv4ResourceDetails {
     range: IResourceRangeModel;
     status: string;
     netname: string;
-}
-
-interface IPv6ResourcesResponse {
-    orgid: string;
-    resources: IPv6ResourceDetails[];
 }
 
 interface IPv6ResourceDetails {
@@ -31,16 +21,27 @@ interface IPv6ResourceDetails {
     status: string;
 }
 
+interface AsnResourceDetails {
+    value: number;
+}
+
+interface IPv6ResourcesResponse {
+    orgid: string;
+    resources: IPv6ResourceDetails[];
+}
+
 interface AsnResourcesResponse {
     orgid: string;
     resources: AsnResourceDetails[];
 }
 
-interface AsnResourceDetails {
-    value: number;
+interface IPv4ResourcesResponse {
+    orgid: string;
+    resources: IPv4ResourceDetails[];
 }
 
 interface IResourcesDataService {
+    fetchParentResources(resource: IResourceModel): IPromise<IWhoisResponseModel>;
     fetchIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse>;
     fetchIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse>;
     fetchAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse>;

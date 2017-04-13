@@ -1,72 +1,69 @@
 import IHttpPromiseCallback = angular.IHttpPromiseCallback;
-class MyResourcesDataService implements IResourcesDataService {
+
+class ResourcesDataService implements IResourcesDataService {
+
     public static $inject = ["$http", "$log"];
 
     constructor(private $http: ng.IHttpService,
                 private $log: angular.ILogService) {
     }
 
-    public fetchIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse> {
-        if (typeof pageNr !== "number") {
-            pageNr = 0;
+    public fetchParentResources(resource: IResourceModel): IPromise<IWhoisResponseModel> {
+        if (!resource || !resource.resource || !resource.type) {
+            this.$log.error("Not a resource", resource);
+            throw new TypeError("ResourcesDataService.fetchParentResource failed: not a resource");
         }
+        const params = {
+            "flags": "Lr",
+            "ignore404": true,
+            "query-string": resource.resource,
+            "type-filter": resource.type,
+        };
+        return this.$http({
+            method: "GET",
+            params,
+            timeout: 10000,
+            url: "api/whois/search",
+        });
+    }
+
+    public fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse> {
         return this.fetchResources({
             "org-id": orgId,
-            "page": pageNr,
             "type": "inetnum",
         });
     }
 
-    public fetchIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse> {
-        if (typeof pageNr !== "number") {
-            pageNr = 0;
-        }
+    public fetchIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse> {
         return this.fetchResources({
             "org-id": orgId,
-            "page": pageNr,
             "type": "inet6num",
         });
     }
 
-    public fetchAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse> {
-        if (typeof pageNr !== "number") {
-            pageNr = 0;
-        }
+    public fetchAsnResources(orgId: string): IPromise<AsnResourcesResponse> {
         return this.fetchResources({
             "org-id": orgId,
-            "page": pageNr,
             "type": "aut-num",
         });
     }
 
-    public fetchSponsoredIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse> {
-        if (typeof pageNr !== "number") {
-            pageNr = 0;
-        }
+    public fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse> {
         return this.fetchResources({
-            "page": pageNr,
             "sponsoring-org-id": orgId,
             "type": "inetnum",
         });
     }
 
-    public fetchSponsoredIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse> {
-        if (typeof pageNr !== "number") {
-            pageNr = 0;
-        }
+    public fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse> {
         return this.fetchResources({
-            "page": pageNr,
             "sponsoring-org-id": orgId,
             "type": "inet6num",
         });
     }
 
-    public fetchSponsoredAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse> {
-        if (typeof pageNr !== "number") {
-            pageNr = 0;
-        }
+    public fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse> {
         return this.fetchResources({
-            "page": pageNr,
             "sponsoring-org-id": orgId,
             "type": "aut-num",
         });
@@ -85,4 +82,4 @@ class MyResourcesDataService implements IResourcesDataService {
 
 angular
     .module("dbWebApp")
-    .service("MyResourcesDataService", MyResourcesDataService);
+    .service("ResourcesDataService", ResourcesDataService);

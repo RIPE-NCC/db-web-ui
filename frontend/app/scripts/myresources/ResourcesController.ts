@@ -1,7 +1,7 @@
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 
 class ResourcesController {
-    public static $inject = ["$log", "$scope", "MyResourcesDataService", "OrgDropDownStateService"];
+    public static $inject = ["$log", "$scope", "ResourcesDataService", "OrgDropDownStateService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
@@ -11,7 +11,7 @@ class ResourcesController {
 
     constructor(private $log: angular.ILogService,
                 private $scope: angular.IScope,
-                private resourcesDataService: MyResourcesDataService,
+                private resourcesDataService: ResourcesDataService,
                 private dropdownService: OrgDropDownStateService) {
         $scope.$on("organisation-changed-event", (event: IAngularEvent, selectedOrg: Organisation) => {
             this.refreshPage(selectedOrg);

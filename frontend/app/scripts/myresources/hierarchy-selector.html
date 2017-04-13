@@ -1,1 +1,4 @@
-<span></span>
+<select name="resourceSelector" ng-model="$ctrl.selectedParent" ng-change="$ctrl.clicked()">
+    <option value="">View parent resource</option>
+    <option ng-repeat="p in $ctrl.parents" value="{{p.resource}}">{{p.resource}}</option>
+</select>
