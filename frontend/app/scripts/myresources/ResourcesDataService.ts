@@ -8,22 +8,23 @@ class ResourcesDataService implements IResourcesDataService {
                 private $log: angular.ILogService) {
     }
 
-    public fetchParentResources(resource: IResourceModel): IPromise<IWhoisResponseModel> {
+    public fetchParentResources(resource: IResourceModel, org: string): IPromise<string[]> {
         if (!resource || !resource.resource || !resource.type) {
             this.$log.error("Not a resource", resource);
             throw new TypeError("ResourcesDataService.fetchParentResource failed: not a resource");
         }
+        const type = resource.type;
+        const key = resource.resource;
         const params = {
-            "flags": "Lr",
-            "ignore404": true,
-            "query-string": resource.resource,
-            "type-filter": resource.type,
+            type,
+            key,
+            org,
         };
         return this.$http({
             method: "GET",
             params,
             timeout: 10000,
-            url: "api/whois/search",
+            url: "api/whois/hierarchy/parents-of",
         });
     }
 

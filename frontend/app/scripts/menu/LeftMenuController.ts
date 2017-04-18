@@ -31,7 +31,7 @@ class LeftMenuController {
         $scope.$on("organisation-changed-event", (event: IAngularEvent, org: Organisation) => {
             this.isLirSelected = org ? /^\d+$/.test(org.memberId.toString()) : false;
             // In case user changes selection in drop-down, make sure we're on overview page
-            this.dropdownService.getSelectedOrg().then((o: Organisation) => {
+            this.dropdownService.getSelectedOrg().then(() => {
                 $state.go("webupdates.myresources");
             });
         });

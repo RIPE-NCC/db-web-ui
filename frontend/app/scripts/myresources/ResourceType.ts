@@ -41,7 +41,7 @@ interface IPv4ResourcesResponse {
 }
 
 interface IResourcesDataService {
-    fetchParentResources(resource: IResourceModel): IPromise<IWhoisResponseModel>;
+    fetchParentResources(resource: IResourceModel, org: string): IPromise<string[]>;
     fetchIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse>;
     fetchIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse>;
     fetchAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse>;

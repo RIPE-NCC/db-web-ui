@@ -1,6 +1,5 @@
-<button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()"><i class="fa fa-chevron-left"></i> Back to my resources</button>
-
-<hierarchy-selector class="pull-right" resource="resourceDetails.resource"></hierarchy-selector>
+<!--<button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()"><i class="fa fa-chevron-left"></i> Back to my resources</button>-->
+<hierarchy-selector class="pull-right" resource="resourceDetails.resource" ng-if="resourceDetails.resource"></hierarchy-selector>
 
 <h1>{{ resourceDetails.formatAsPrefix(resourceDetails.resource.resource) }}</h1>
 <div class="flags-container" style="margin-bottom: 2em">
@@ -38,7 +37,7 @@
         </tr>
         </tbody>
     </table>
-    <p scroller="resourceDetails.almostOnScreen()" ng-show="resourceDetails.showScroller"></p>
+    <p scroller="resourceDetails.almostOnScreen()" ng-if="resourceDetails.showScroller"></p>
     <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.resources.length === 0">
         No more specific objects exist.
     </div>

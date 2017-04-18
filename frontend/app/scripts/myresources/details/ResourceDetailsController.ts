@@ -7,7 +7,7 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
 
 class ResourceDetailsController {
 
-    public static $inject = ["$scope", "$log", "$state", "QueryParametersService", "MoreSpecificsService"];
+    public static $inject = ["$scope", "$log", "$state", "$timeout", "QueryParametersService", "MoreSpecificsService"];
 
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
@@ -34,6 +34,7 @@ class ResourceDetailsController {
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
+                private $timeout: ng.ITimeoutService,
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsDataService) {
 
@@ -48,7 +49,6 @@ class ResourceDetailsController {
         this.canHaveMoreSpecifics = false;
 
         this.getResourcesFromBackEnd();
-
         this.queryParametersService.getWhoisObject(this.objectKey, this.objectType, "RIPE").then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
@@ -160,12 +160,16 @@ class ResourceDetailsController {
                     this.calcScroller();
                 }, () => {
                     this.serverSideForcedValidFilter = false;
+                    this.calcScroller();
                 });
         }
     }
 
     private calcScroller(): void {
         this.showScroller = this.nrMoreSpecificsToShow < this.moreSpecifics.filteredSize;
+        this.$timeout(() => {
+            this.$scope.$apply();
+        }, 10);
     }
 }
 
