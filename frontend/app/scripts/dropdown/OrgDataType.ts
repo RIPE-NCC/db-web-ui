@@ -22,9 +22,3 @@ interface Lir {
 interface IOrgDropDownDataService {
     getOrgs(): IPromise<Organisation[]>;
 }
-
-interface IOrgDropDownStateService {
-    getOrgs(): IPromise<Organisation[]>;
-    getSelectedOrganisation(): Organisation;
-    setSelectedOrganisation(selectedOrganisation: Organisation): void;
-}

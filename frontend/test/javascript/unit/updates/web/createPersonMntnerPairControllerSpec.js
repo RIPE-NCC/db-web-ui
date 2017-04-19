@@ -103,6 +103,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         $httpBackend.expectGET('api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
+        expectGetLirs();
         $httpBackend.flush();
 
         expect($scope.source).toBe(SOURCE);
@@ -135,6 +136,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         $httpBackend.expectGET('api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
+        expectGetLirs();
         $httpBackend.flush();
 
         $scope.submit();
@@ -155,6 +157,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         $httpBackend.expectGET('api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
+        expectGetLirs();
         $httpBackend.flush();
 
         $scope.personAttributes.setSingleAttributeOnName('person', PERSON_NAME);
@@ -206,6 +209,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         $httpBackend.expectGET('api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
+        expectGetLirs();
         $httpBackend.flush();
 
         $scope.personAttributes.setSingleAttributeOnName('person', 'Titus Tester');

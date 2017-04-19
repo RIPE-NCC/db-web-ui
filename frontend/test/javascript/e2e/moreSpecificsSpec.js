@@ -50,11 +50,11 @@ describe('My Resources detail for inetnum', function () {
         expect(page.moreSpecificsTable.isPresent()).toEqual(true);
         expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
-        expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('192.87.0.0 - 192.87.0.255');
+        expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('192.87.0.0/24');
         expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('LEGACY');
         expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual('SNET-HOMELAN');
 
-        expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('192.87.1.0 - 192.87.1.255');
+        expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('192.87.1.0/24');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('LEGACY');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('NFRA');
     });

@@ -14,7 +14,7 @@ describe('The organisation drop-down box', function () {
 
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.get('');
+        browser.get(browser.baseUrl + '#/webupdates/myresources/overview');
     });
 
     it('should be shown when a user has an LIR', function () {

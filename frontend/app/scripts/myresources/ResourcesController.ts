@@ -1,22 +1,31 @@
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 
 class ResourcesController {
-    public static $inject = ["$log", "$scope", "MyResourcesDataService", "OrgDropDownStateService"];
+    public static $inject = ["$log", "$scope", "MyResourcesDataService", "UserInfoService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
-    private selectedOrg: Organisation;
+
+    public organisations: Organisation[]; // fills dropdown
+    public selectedOrg: Organisation; // selection bound to ng-model in widget
+
     private hasSponsoredResources = false;
     private isShowingSponsored = false;
 
     constructor(private $log: angular.ILogService,
                 private $scope: angular.IScope,
                 private resourcesDataService: MyResourcesDataService,
-                private orgDropDownStateService: IOrgDropDownStateService) {
-        $scope.$on("organisation-changed-event", (event: IAngularEvent, selectedOrg: Organisation) => {
-            this.refreshPage(selectedOrg);
+                private userInfoService: any) {
+
+        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: Organisation[]) => {
+            this.refreshPage();
         });
-        this.refreshPage(orgDropDownStateService.getSelectedOrganisation());
+        this.refreshPage();
+    }
+
+    public organisationSelected(): void {
+        this.userInfoService.setSelectedLir(this.selectedOrg);
+        this.refreshPage();
     }
 
     public sponsoredResourcesClicked() {
@@ -24,10 +33,15 @@ class ResourcesController {
         this.fetchResourcesAndPopulatePage(0);
     }
 
-    private refreshPage(org: Organisation) {
-        if (org) {
-            this.selectedOrg = org;
+    private refreshPage() {
+        if (!this.organisations) {
+            this.organisations = this.userInfoService.getLirs();
         }
+
+        if (!this.selectedOrg) {
+            this.selectedOrg = this.userInfoService.getSelectedLir();
+        }
+
         this.isShowingSponsored = false;
         this.fetchResourcesAndPopulatePage(0);
         this.checkIfSponsor();

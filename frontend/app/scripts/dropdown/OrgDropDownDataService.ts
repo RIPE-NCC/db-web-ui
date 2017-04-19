@@ -3,11 +3,10 @@ import IPromise = angular.IPromise;
 
 class OrgDropDownDataService implements IOrgDropDownDataService {
 
-    public static $inject = ["$log", "$http", "$q"];
+    public static $inject = ["$log", "$http"];
 
     constructor(private $log: angular.ILogService,
-                private $http: ng.IHttpService,
-                private $q: ng.IQService) {
+                private $http: ng.IHttpService) {
     }
 
     public getOrgs(): IPromise<Organisation[]> {

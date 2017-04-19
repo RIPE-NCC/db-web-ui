@@ -1,4 +1,23 @@
 <section class="my-resources">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-right" ng-cloak>
+                <div ng-show="resources.organisations && resources.organisations.length == 1">
+                    You are viewing organisation: {{dropdown.selectedOrg.displayName}}
+                </div>
+                <div ng-show="resources.organisations && resources.organisations.length > 1">
+                    <label for="organisation-selector">Select an organisation: </label>
+                    <select name="orgSelector" id="organisation-selector"
+                            ng-change="resources.organisationSelected()"
+                            ng-options="org.displayName for org in resources.organisations track by org.displayName"
+                            ng-model="resources.selectedOrg">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-4">
             <h4>{{ resources.isShowingSponsored ? "Sponsored" : "My"}} Resources</h4>

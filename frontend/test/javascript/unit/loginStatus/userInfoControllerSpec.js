@@ -72,7 +72,7 @@ describe('loginStatus: UserInfoController', function () {
                 active:true
             }, {}];
         });
-        $httpBackend.flush();
+        expectGetLirs(true);
 
         expect(RIPE.username).toEqual('Test User');
 
