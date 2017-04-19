@@ -10,7 +10,6 @@ class HierarchySelectorController {
     public static $inject = ["$log", "$state", "ResourcesDataService", "OrgDropDownStateService"];
 
     public parents: string[];
-    public selectedParent: IResourceModel;
     private resource: IResourceModel;
 
     constructor(private $log: angular.ILogService,
@@ -38,7 +37,15 @@ class HierarchySelectorController {
     }
 
     public goHome(type: string) {
-        this.$state.go("webupdates.myresources", { type });
+        this.$state.go("webupdates.myresources", {type});
+    }
+
+    public backToMyStuff() {
+        if (this.parents.length) {
+            this.selected(this.parents[this.parents.length - 1]);
+        } else {
+            this.goHome(this.resource.type);
+        }
     }
 
     public selected(parent: string) {
