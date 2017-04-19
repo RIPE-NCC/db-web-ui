@@ -41,7 +41,7 @@ class HierarchySelectorController {
     }
 
     public backToMyStuff() {
-        if (this.parents.length) {
+        if (this.parents && this.parents.length) {
             this.selected(this.parents[this.parents.length - 1]);
         } else {
             this.goHome(this.resource.type);

@@ -1,13 +1,12 @@
 <div class="btn-group">
     <button type="button" class="grey-button" ng-click="$ctrl.backToMyStuff()"><i class="fa fa-chevron-left"></i> Back</button>
-    <button type="button" class="grey-button dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button type="button" class="grey-button dropdown-toggle" data-toggle="dropdown" ng-if="$ctrl.parents.length">
         <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
         <li><a href ng-click="$ctrl.goHome($ctrl.resource.type)">all the things</a></li>
-        <li role="separator" class="divider"></li>
         <li ng-repeat="p in $ctrl.parents">
-            <a href ng-click="$ctrl.selected(p)">{{p}}</a>
+            <a href ng-click="$ctrl.selected(p)"><name-formatter name="p" type="$ctrl.resource.type"></name-formatter></a>
         </li>
     </ul>
 </div>
