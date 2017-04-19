@@ -37,11 +37,11 @@ class HierarchySelectorController {
         });
     }
 
-    public selected(parent:string) {
-        console.log("this.selectedParent", this.selectedParent);
-        // if (!this.selectedParent) {
-        //     return;
-        // }
+    public goHome(type: string) {
+        this.$state.go("webupdates.myresources", { type });
+    }
+
+    public selected(parent: string) {
         const params = {
             objectName: parent,
             objectType: this.resource.type,

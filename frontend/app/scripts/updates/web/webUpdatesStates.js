@@ -40,7 +40,7 @@ angular.module('webUpdates')
                     template: '<div ui-view></div>'
                 })
                 .state('webupdates.myresources', {
-                    url: '/myresources/overview',
+                    url: '/myresources/overview/:type',
                     templateUrl: 'scripts/myresources/resources.html',
                     controller: 'ResourcesController',
                     controllerAs: 'resources'

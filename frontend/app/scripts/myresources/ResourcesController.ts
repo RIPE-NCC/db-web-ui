@@ -1,16 +1,18 @@
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 
 class ResourcesController {
-    public static $inject = ["$log", "$scope", "ResourcesDataService", "OrgDropDownStateService"];
+    public static $inject = ["$log", "$scope", "$location", "ResourcesDataService", "OrgDropDownStateService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
+    public typeIndex = 1;
     private selectedOrg: Organisation;
     private hasSponsoredResources = false;
     private isShowingSponsored = false;
 
     constructor(private $log: angular.ILogService,
                 private $scope: angular.IScope,
+                private $location: angular.ILocationService,
                 private resourcesDataService: ResourcesDataService,
                 private dropdownService: OrgDropDownStateService) {
         $scope.$on("organisation-changed-event", (event: IAngularEvent, selectedOrg: Organisation) => {
@@ -21,11 +23,32 @@ class ResourcesController {
                 this.refreshPage(org);
             }
         });
+
+        const idx = $location.absUrl().lastIndexOf("/");
+        if (idx > -1) {
+            const type = $location.absUrl().substr(idx + 1);
+            this.goHome(type);
+        } else {
+            this.typeIndex = 0;
+        }
     }
 
     public sponsoredResourcesClicked() {
         this.isShowingSponsored = !this.isShowingSponsored;
         this.fetchResourcesAndPopulatePage();
+    }
+
+    public goHome(objectType: string) {
+        switch (objectType) {
+            case "inet6num":
+                this.typeIndex = 1;
+                break;
+            case "aut-num":
+                this.typeIndex = 2;
+                break;
+            default:
+                this.typeIndex = 0;
+        }
     }
 
     private refreshPage(org: Organisation) {

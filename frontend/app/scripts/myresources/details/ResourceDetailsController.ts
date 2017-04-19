@@ -7,7 +7,7 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
 
 class ResourceDetailsController {
 
-    public static $inject = ["$scope", "$log", "$state", "$timeout", "QueryParametersService", "MoreSpecificsService"];
+    public static $inject = ["$scope", "$log", "$state", "$timeout", "$anchorScroll", "QueryParametersService", "MoreSpecificsService"];
 
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
@@ -35,6 +35,7 @@ class ResourceDetailsController {
                 private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
                 private $timeout: ng.ITimeoutService,
+                private $anchorScroll: ng.IAnchorScrollService,
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsDataService) {
 
@@ -142,6 +143,10 @@ class ResourceDetailsController {
 
     public formatAsPrefix(range: string): string {
         return this.ipAddressService.formatAsPrefix(range);
+    }
+
+    public goHome(objectType: string) {
+        console.log('hello shit face', objectType);
     }
 
     private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): void {

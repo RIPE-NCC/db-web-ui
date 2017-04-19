@@ -1,5 +1,8 @@
 <span ng-if="$ctrl.parents.length">Parents</span>
 <ul>
+    <li>
+        <a href ng-click="$ctrl.goHome($ctrl.resource.type)">all the things</a>
+    </li>
     <li ng-repeat="p in $ctrl.parents">
         <a href ng-click="$ctrl.selected(p)">{{p}}</a>
     </li>
