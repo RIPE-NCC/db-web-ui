@@ -7,13 +7,12 @@ interface IHierarchySelectorControllerState extends ng.ui.IStateService {
 
 class HierarchySelectorController {
 
-    public static $inject = ["$log", "$state", "ResourcesDataService", "OrgDropDownStateService"];
+    public static $inject = ["$state", "ResourcesDataService", "OrgDropDownStateService"];
 
     public parents: string[];
     private resource: IResourceModel;
 
-    constructor(private $log: angular.ILogService,
-                private $state: IHierarchySelectorControllerState,
+    constructor(private $state: IHierarchySelectorControllerState,
                 private rds: IResourcesDataService,
                 private orgDropDownService: IOrgDropDownStateService) {
 
@@ -36,25 +35,18 @@ class HierarchySelectorController {
         });
     }
 
-    public goHome(type: string) {
-        this.$state.go("webupdates.myresources", {type});
-    }
-
-    public backToMyStuff() {
-        if (this.parents && this.parents.length) {
-            this.selected(this.parents[this.parents.length - 1]);
-        } else {
-            this.goHome(this.resource.type);
+    public takeMeBackHome(parent: string) {
+        if (!parent || !this.parents || !this.parents.length) {
+            return this.$state.go("webupdates.myresources", {type: this.resource.type});
         }
-    }
-
-    public selected(parent: string) {
+        const target = parent ? parent : this.parents[this.parents.length - 1];
         const params = {
-            objectName: parent,
+            objectName: target,
             objectType: this.resource.type,
         };
         this.$state.go("webupdates.myresourcesdetail", params);
     }
+
 }
 
 angular.module("dbWebApp").component("hierarchySelector", {
