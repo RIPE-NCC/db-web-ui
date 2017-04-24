@@ -52,11 +52,14 @@ class HierarchySelectorController {
         });
     }
 
+    public showTopLevelResources() {
+        const params = {type: this.resource.type};
+        this.$state.go("webupdates.myresources", params);
+    }
+
     public takeMeBackHome(parent: string) {
         if (!parent && !this.parents.length) {
-            const params = {type: this.resource.type};
-            this.$state.go("webupdates.myresources", params);
-            return;
+            return this.showTopLevelResources();
         }
         const target = parent ? parent : this.parents[this.parents.length - 1];
         const params = {
