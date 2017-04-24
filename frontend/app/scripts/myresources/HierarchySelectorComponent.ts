@@ -53,6 +53,11 @@ class HierarchySelectorController {
     }
 
     public takeMeBackHome(parent: string) {
+        if (!parent && !this.parents.length) {
+            const params = {type: this.resource.type};
+            this.$state.go("webupdates.myresources", params);
+            return;
+        }
         const target = parent ? parent : this.parents[this.parents.length - 1];
         const params = {
             objectName: target,
