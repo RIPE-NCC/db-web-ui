@@ -18,7 +18,9 @@ class ResourcesController {
                 private resourcesDataService: ResourcesDataService,
                 private userInfoService: any) {
 
-        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: Organisation[]) => {
+        console.log('ResourcesController <init>');
+
+        $scope.$on("lirs-loaded-event", () => {
             this.refreshPage();
         });
         this.refreshPage();
@@ -63,7 +65,6 @@ class ResourcesController {
         if (!this.selectedOrg) {
             this.selectedOrg = this.userInfoService.getSelectedLir();
         }
-
         this.isShowingSponsored = false;
         this.fetchResourcesAndPopulatePage();
         this.checkIfSponsor();

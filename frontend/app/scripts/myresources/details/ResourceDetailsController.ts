@@ -90,10 +90,6 @@ class ResourceDetailsController {
         }, 1000);
     }
 
-    public backToMyResources(): void {
-        this.$state.go("webupdates.myresources");
-    }
-
     public showObjectEditor(): void {
         const params = {
             name: this.resource.resource,
@@ -136,21 +132,13 @@ class ResourceDetailsController {
         }, 400);
     }
 
-
     public isValidPrefix(maybePrefix: string): boolean {
-        if (!this.serverSideForcedValidFilter) {
-            return false;
-        }
         if (!maybePrefix) {
             return false;
         }
         return IpAddressService.isValidV4(maybePrefix)
             || IpAddressService.isValidRange(maybePrefix)
             || IpAddressService.isValidV6(maybePrefix);
-    }
-
-    public formatAsPrefix(range: string): string {
-        return this.ipAddressService.formatAsPrefix(range);
     }
 
     private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): boolean {
@@ -169,7 +157,6 @@ class ResourceDetailsController {
                     this.calcScroller();
 
                 }, () => {
-                    //this.serverSideForcedValidFilter = false;
                     this.calcScroller();
                 });
         }
