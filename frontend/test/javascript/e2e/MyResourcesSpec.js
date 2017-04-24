@@ -21,10 +21,10 @@ describe('My resources', function () {
         expect(page.myResources.isPresent()).toEqual(true);
         expect(page.myResourcesActiveTabLabel.getText()).toContain('IPv4');
         expect(page.myResourcesActiveTabRows.count()).toBe(4);
-        expect(page.myResourcesActiveTabRows.get(0).getText()).toContain('194.104.0.0 - 194.104.0.255');
-        expect(page.myResourcesActiveTabRows.get(1).getText()).toContain('194.171.0.0 - 194.171.255.255');
-        expect(page.myResourcesActiveTabRows.get(2).getText()).toContain('195.169.0.0 - 195.169.255.255');
-        expect(page.myResourcesActiveTabRows.get(3).getText()).toContain('192.87.0.0 - 192.87.255.255');
+        expect(page.myResourcesActiveTabRows.get(0).getText()).toContain('194.104.0.0/24');
+        expect(page.myResourcesActiveTabRows.get(1).getText()).toContain('194.171.0.0/16');
+        expect(page.myResourcesActiveTabRows.get(2).getText()).toContain('195.169.0.0/16');
+        expect(page.myResourcesActiveTabRows.get(3).getText()).toContain('192.87.0.0/16');
     });
 
     it('should show sponsored IPv4 resources', function () {
@@ -32,11 +32,6 @@ describe('My resources', function () {
         page.btnToggleSponsoredResources.click();
         expect(page.myResourcesActiveTabLabel.getText()).toContain('IPv4');
         expect(page.myResourcesActiveTabRows.count()).toBe(42);
-    });
-
-    it('should be able to show other orgs as well', function () {
-        page.selectFromList(page.orgSelector, 'Rop Gonggrijp').click();
-        expect(page.myResourcesActiveTabRows.count()).toBe(2);
     });
 
 });

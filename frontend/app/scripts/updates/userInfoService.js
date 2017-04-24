@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('updates')
-    .service('UserInfoService', ['$resource', '$q', '$http', '$log',
-        function ($resource, $q, $http, $log) {
+    .service('UserInfoService', ['$resource', '$q', '$http', '$log', 'OrgDropDownDataService', '$rootScope',
+        function ($resource, $q, $http, $log, orgDropDownDataService, $rootScope) {
 
             var _userInfo;
+            var _lirs;
+            var _selectedLir;
 
             this.getUserInfo = function () {
                 var deferredObject = $q.defer();
@@ -16,12 +18,22 @@ angular.module('updates')
                         function (result) {
                             _userInfo = result;
                             deferredObject.resolve(result);
+
+                            orgDropDownDataService.getOrgs().then(function(result) {
+                                _lirs = result;
+
+                                if (_lirs && _lirs.length > 0) {
+                                    _selectedLir = _lirs[0];
+                                }
+
+                                $rootScope.$broadcast("lirs-loaded-event", result);
+                            });
                         }, function (error) {
                             deferredObject.reject(error);
                         }
                     );
-                }
 
+                }
                 return deferredObject.promise;
             };
 
@@ -44,5 +56,16 @@ angular.module('updates')
                 _userInfo = undefined;
             };
 
+            this.getLirs = function() {
+                return _lirs;
+            };
+
+            this.getSelectedLir = function() {
+                return _selectedLir;
+            }
+
+            this.setSelectedLir = function(lir) {
+                _selectedLir = lir;
+            }
         }]);
 

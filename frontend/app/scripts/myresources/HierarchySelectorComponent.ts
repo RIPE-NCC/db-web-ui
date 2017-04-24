@@ -7,32 +7,31 @@ interface IHierarchySelectorControllerState extends ng.ui.IStateService {
 
 class HierarchySelectorController {
 
-    public static $inject = ["$state", "ResourcesDataService", "OrgDropDownStateService"];
+    public static $inject = ["$state", "ResourcesDataService", "UserInfoService"];
 
     public parents: string[];
     private resource: IResourceModel;
 
     constructor(private $state: IHierarchySelectorControllerState,
                 private rds: IResourcesDataService,
-                private orgDropDownService: IOrgDropDownStateService) {
+                private userInfoService: any) {
 
         if (!this.resource || ["inetnum", "inet6num"].indexOf(this.resource.type) < 0) {
             return;
         }
-        orgDropDownService.getSelectedOrg().then((organisation: Organisation) => {
-            if (organisation && organisation.orgId) {
-                rds.fetchParentResources(this.resource, organisation.orgId).then(
-                    (resp: IHttpPromiseCallbackArg<string[]>) => {
-                        const parents: string[] = resp.data;
-                        if (parents.length < 1) {
-                            // no parents :'(
-                            this.parents = [];
-                        } else {
-                            this.parents = parents;
-                        }
-                    });
-            }
-        });
+        const selectedOrg = this.userInfoService.getSelectedLir();
+        if (selectedOrg && selectedOrg.orgId) {
+            rds.fetchParentResources(this.resource, selectedOrg.orgId).then(
+                (resp: IHttpPromiseCallbackArg<string[]>) => {
+                    const parents: string[] = resp.data;
+                    if (parents.length < 1) {
+                        // no parents :'(
+                        this.parents = [];
+                    } else {
+                        this.parents = parents;
+                    }
+                });
+        }
     }
 
     public takeMeBackHome(parent: string) {

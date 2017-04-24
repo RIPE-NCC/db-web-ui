@@ -1,7 +1,6 @@
 <!--<button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()"><i class="fa fa-chevron-left"></i> Back to my resources</button>-->
 <hierarchy-selector class="pull-right" resource="resourceDetails.resource" ng-if="resourceDetails.resource"></hierarchy-selector>
-
-<h1>{{ resourceDetails.formatAsPrefix(resourceDetails.resource.resource) }}</h1>
+<h1><name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource" type="resourceDetails.resource.type"></name-formatter></h1>
 <div class="flags-container" style="margin-bottom: 2em">
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
 </div>
@@ -11,13 +10,26 @@
 
 <section ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>More specifics</h2>
-    <div class="prefix-filter" ng-class="{ 'has-error': resourceDetails.ipFilter && !resourceDetails.isValidPrefix(resourceDetails.ipFilter)}" ng-if="::resourceDetails.moreSpecifics.resources.length">
-      <input type="text" name="ipFilter"
-            class="form-control"
-            placeholder="Search for prefix"
-            ng-model="resourceDetails.ipFilter"
-            ng-change="resourceDetails.applyFilter()" />
-        <p class="pull-right" ng-if="::resourceDetails.moreSpecifics.resources.length">Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}</p>
+    <div class="prefix-filter"
+         ng-if="::resourceDetails.moreSpecifics.resources.length">
+        <div class="input-group">
+            <input type="text"
+                   name="ipFilter"
+                   class="form-control"
+                   placeholder="Search for prefix"
+                   ng-model="resourceDetails.ipFilter"
+                   ng-change="resourceDetails.applyFilter()">
+            <span class="input-group-btn">
+                <button type="button"
+                        class="btn btn-default"
+                        ng-disabled="!resourceDetails.ipFilter"
+                        ng-click="resourceDetails.ipFilter = ''; resourceDetails.applyFilter();">
+                    <span class="fa fa-times"></span></button>
+            </span>
+        </div>
+        <span ng-if="resourceDetails.ipFilter" style="float: right">
+            Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}
+        </span>
     </div>
     <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
         <thead>

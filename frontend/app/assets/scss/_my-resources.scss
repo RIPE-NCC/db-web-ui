@@ -92,12 +92,14 @@ ul.attrblock {
 
 .prefix-filter {
     overflow: auto;
-    input {
+    margin-bottom: 20px;
+    div.input-group {
         width: 24em;
         float: left;
     }
     p {
         line-height: 2;
+        float: right;
     }
 }
 

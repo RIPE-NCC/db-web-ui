@@ -3912,7 +3912,7 @@
                     "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/NEWNET-MNT"
                   },
                   "name": "mnt-by",
-                  "value": "AS5486-MNT",
+                  "value": "NEWNET-MNT",
                   "referenced-type": "mntner"
                 },
                 {
@@ -6692,7 +6692,7 @@
       }
     ]
   },
-  "api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255/more-specifics.json?page=0": {
+  "api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255/more-specifics.json?filter=&page=0": {
     "data": {
       "resources": [
         {

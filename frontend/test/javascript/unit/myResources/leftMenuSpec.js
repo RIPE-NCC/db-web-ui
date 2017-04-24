@@ -28,11 +28,16 @@ describe('LeftMenuController', function () {
         controller.orgDropDownStateService = orgDropDownStateService;
     }));
 
-    it('should check if is LIR user in cookie', function () {
-        rootScope.$broadcast('organisation-changed-event', { memberId: '123'});
-        expect(controller.isLirSelected).toBe(true);
-        rootScope.$broadcast('organisation-changed-event', { memberId: 'org:123123'});
-        expect(controller.isLirSelected).toBe(false);
+    it('should set shouldDisplayMyResources flag to true when LIRs are present', function () {
+        rootScope.$broadcast('lirs-loaded-event',
+            [{"membershipId":7347,"regId":"zz.example","organisationname":"Internet Provider BV","serviceLevel":"NORMAL","orgId":"ORG-EIP1-RIPE","billingPhase":0}]
+        );
+        expect(controller.shouldDisplayMyResources).toBe(true);
+    });
+
+    it('should not set shouldDisplayMyResources flag when LIRs are not present', function () {
+        rootScope.$broadcast('lirs-loaded-event', []);
+        expect(controller.shouldDisplayMyResources).toBe(false);
     });
 
 });

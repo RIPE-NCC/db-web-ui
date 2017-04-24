@@ -7,7 +7,15 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
 
 class ResourceDetailsController {
 
-    public static $inject = ["$scope", "$log", "$state", "$timeout", "$anchorScroll", "QueryParametersService", "MoreSpecificsService"];
+    public static $inject = [
+        "$scope",
+        "$log",
+        "$state",
+        "$timeout",
+        "$anchorScroll",
+        "QueryParametersService",
+        "MoreSpecificsService",
+    ];
 
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
@@ -24,12 +32,11 @@ class ResourceDetailsController {
     public showScroller = true;
 
     public ipFilter: string = null;
-    public serverSideForcedValidFilter: boolean = true;
 
     private objectKey: string;
     private objectType: string;
     private MAGIC = 100; // number of items per page on server
-    private ipAddressService = new IpAddressService();
+    private filterDebouncer: IPromise<any> = null;
 
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
@@ -76,7 +83,7 @@ class ResourceDetailsController {
 
     public updateButtonClicked(o: any): void {
         this.show.transition = true;
-        setTimeout(() => {
+        this.$timeout(() => {
             this.show.viewer = !this.show.viewer;
             this.show.editor = !this.show.editor;
             this.$scope.$apply();
@@ -105,8 +112,6 @@ class ResourceDetailsController {
 
     /**
      * Called by 'scroller' directive.
-     *
-     * @returns {boolean}
      */
     public almostOnScreen(): void {
         if (this.nrMoreSpecificsToShow < this.moreSpecifics.resources.length) {
@@ -123,11 +128,14 @@ class ResourceDetailsController {
     }
 
     public applyFilter(): void {
-        this.serverSideForcedValidFilter = true;
-        if (!this.ipFilter || this.isValidPrefix(this.ipFilter)) {
-            this.getResourcesFromBackEnd(0, this.ipFilter);
+        if (this.filterDebouncer != null) {
+            this.$timeout.cancel(this.filterDebouncer);
         }
+        this.filterDebouncer = this.$timeout(() => {
+            return this.getResourcesFromBackEnd(0, this.ipFilter);
+        }, 400);
     }
+
 
     public isValidPrefix(maybePrefix: string): boolean {
         if (!this.serverSideForcedValidFilter) {
@@ -145,11 +153,7 @@ class ResourceDetailsController {
         return this.ipAddressService.formatAsPrefix(range);
     }
 
-    public goHome(objectType: string) {
-        console.log('hello shit face', objectType);
-    }
-
-    private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): void {
+    private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): boolean {
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
             this.moreSpecificsService.getSpecifics(this.objectKey, this.objectType, pageNr, ipFilter).then(
                 (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
@@ -163,11 +167,13 @@ class ResourceDetailsController {
                     }
                     this.canHaveMoreSpecifics = true;
                     this.calcScroller();
+
                 }, () => {
-                    this.serverSideForcedValidFilter = false;
+                    //this.serverSideForcedValidFilter = false;
                     this.calcScroller();
                 });
         }
+        return true;
     }
 
     private calcScroller(): void {

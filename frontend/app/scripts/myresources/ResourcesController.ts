@@ -1,29 +1,27 @@
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 
 class ResourcesController {
-    public static $inject = ["$log", "$scope", "$location", "ResourcesDataService", "OrgDropDownStateService"];
+    public static $inject = ["$log", "$location", "$scope", "ResourcesDataService", "UserInfoService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
     public typeIndex = 1;
-    private selectedOrg: Organisation;
+    public organisations: Organisation[]; // fills dropdown
+    public selectedOrg: Organisation; // selection bound to ng-model in widget
+
     private hasSponsoredResources = false;
     private isShowingSponsored = false;
 
     constructor(private $log: angular.ILogService,
-                private $scope: angular.IScope,
                 private $location: angular.ILocationService,
+                private $scope: angular.IScope,
                 private resourcesDataService: ResourcesDataService,
-                private dropdownService: OrgDropDownStateService) {
-        $scope.$on("organisation-changed-event", (event: IAngularEvent, selectedOrg: Organisation) => {
-            this.refreshPage(selectedOrg);
-        });
-        this.dropdownService.getSelectedOrg().then((org: Organisation) => {
-            if (org) {
-                this.refreshPage(org);
-            }
-        });
+                private userInfoService: any) {
 
+        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: Organisation[]) => {
+            this.refreshPage();
+        });
+        this.refreshPage();
         const idx = $location.absUrl().lastIndexOf("/");
         if (idx > -1) {
             const type = $location.absUrl().substr(idx + 1);
@@ -31,6 +29,12 @@ class ResourcesController {
         } else {
             this.typeIndex = 0;
         }
+
+    }
+
+    public organisationSelected(): void {
+        this.userInfoService.setSelectedLir(this.selectedOrg);
+        this.refreshPage();
     }
 
     public sponsoredResourcesClicked() {
@@ -51,8 +55,15 @@ class ResourcesController {
         }
     }
 
-    private refreshPage(org: Organisation) {
-        this.selectedOrg = org;
+    private refreshPage() {
+        if (!this.organisations) {
+            this.organisations = this.userInfoService.getLirs();
+        }
+
+        if (!this.selectedOrg) {
+            this.selectedOrg = this.userInfoService.getSelectedLir();
+        }
+
         this.isShowingSponsored = false;
         this.fetchResourcesAndPopulatePage();
         this.checkIfSponsor();

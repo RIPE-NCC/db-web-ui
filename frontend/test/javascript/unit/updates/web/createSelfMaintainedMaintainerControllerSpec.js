@@ -76,6 +76,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
             $httpBackend.expectGET('api/user/info').respond(function () {
                 return [200, userInfoData, {}];
             });
+            expectGetLirs();
 
             $httpBackend.flush();
 

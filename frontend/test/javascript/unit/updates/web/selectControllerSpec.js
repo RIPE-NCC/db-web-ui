@@ -74,6 +74,7 @@ describe('webUpdates: SelectController', function () {
                 active:true
             }, {}];
         });
+        expectGetLirs();
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);
@@ -101,6 +102,7 @@ describe('webUpdates: SelectController', function () {
                 active:true
             }, {}];
         });
+        expectGetLirs();
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);
@@ -125,6 +127,7 @@ describe('webUpdates: SelectController', function () {
                 active:true
             }, {}];
         });
+        expectGetLirs();
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);

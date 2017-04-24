@@ -1,5 +1,5 @@
 <div ng-click="showDetail(item)">
-    <p class="title">{{ formatAsPrefix(item.resource) }} <span class="fa fa-angle-right pull-right"></span></p>
+    <p class="title"><name-formatter name="item.resource" type="item.type"></name-formatter> <span class="fa fa-angle-right pull-right"></span></p>
     <p class="org-name" ng-if="item.orgName">{{ item.orgName }}</p>
     <div class="flags-container">
         <flag class="grey" text="item.status" tooltip="Status"></flag>
