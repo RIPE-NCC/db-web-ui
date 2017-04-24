@@ -5,7 +5,7 @@ class ResourcesController {
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
-    public typeIndex = 1;
+    public typeIndex = 0;
     public organisations: Organisation[]; // fills dropdown
     public selectedOrg: Organisation; // selection bound to ng-model in widget
 
@@ -17,8 +17,6 @@ class ResourcesController {
                 private $scope: angular.IScope,
                 private resourcesDataService: ResourcesDataService,
                 private userInfoService: any) {
-
-        console.log('ResourcesController <init>');
 
         $scope.$on("lirs-loaded-event", () => {
             this.refreshPage();
