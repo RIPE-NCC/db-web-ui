@@ -6,4 +6,7 @@
         <flag class="grey" text="item.netname" tooltip="Netname"></flag>
         <flag class="grey" text="item.asname" tooltip="Asname"></flag>
     </div>
+    <div ng-if="item.type !== 'aut-num'" class="progressbar-container">
+        <uib-progressbar value="item.usage.used * 100 / item.usage.total | number:1"></uib-progressbar>
+    </div>
 </div>

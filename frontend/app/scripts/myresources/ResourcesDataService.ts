@@ -17,6 +17,14 @@ class MyResourcesDataService implements IResourcesDataService {
         });
     }
 
+    public fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse> {
+
+        return this.$http({
+            method: "GET",
+            url: "api/whois-internal/api/resources/inetnum/"+objectName,
+        });
+    }
+
     public fetchIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse> {
         if (typeof pageNr !== "number") {
             pageNr = 0;
@@ -25,6 +33,14 @@ class MyResourcesDataService implements IResourcesDataService {
             "org-id": orgId,
             "page": pageNr,
             "type": "inet6num",
+        });
+    }
+
+    public fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse> {
+
+        return this.$http({
+            method: "GET",
+            url: "api/whois-internal/api/resources/inet6num/"+objectName,
         });
     }
 
@@ -77,7 +93,10 @@ class MyResourcesDataService implements IResourcesDataService {
             method: "GET",
             params,
             timeout: 10000,
-            url: "api/whois-internal/api/resources.json",
+            url: "api/whois-internal/api/resources",
+            headers: {
+                "Content-type": "application/json",
+            },
         });
     }
 
