@@ -5,7 +5,7 @@
     .ui-select-choices-row {
 		border-bottom: 1px solid #EAEAEA !important;
 		.ui-select-choices-row-inner {
-			padding: 10px 8px !important;
+			padding: 10px 8px;
 			div.option {
 				span.auth {
 					float: right;
@@ -150,4 +150,59 @@ ul.dropdown-menu {
 			}
 		}
 	}
+}
+
+// Organisation selector
+#organisation-selector {
+    display: inline-block;
+    width: 250px !important;
+    margin-left: 5px;
+    margin-top: -45px;
+    a.select2-choice {
+        @extend %brd;
+        background: none;
+        border-radius: 0;
+        span.ui-select-toggle {
+            border-left: none;
+            background: #fff;
+            background-image: none;
+        }
+    }
+    div.ui-select-dropdown {
+        @extend %brd;
+        border-radius: 0;
+        box-shadow: none;
+        border-top: 0;
+        div.search-container {
+            margin-top: 5px;
+            input.ui-select-search {
+                @extend %brd;
+                padding: 0 20px 0 5px;
+            }
+        }
+        ul.ui-select-choices {
+            padding: 0;
+            outline: none;
+            li.ui-select-choices-group {
+                > ul {
+                    li {
+                        div.ui-select-choices-row-inner {
+                            padding: 5px;
+                            small {
+                                color: $dark-grey-cr;
+                            }
+                        }
+                        &.select2-highlighted {
+                            background-color: $dark-blue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    &.select2-container-active {
+        a.select2-choice {
+            box-shadow: none;
+        }
+    }
 }

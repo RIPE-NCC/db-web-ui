@@ -29,7 +29,7 @@ describe('OrgDropDownDataService', function () {
                     results: [{
                         membershipId: 3629,
                         regId: 'nl.surfnet',
-                        organisationName: 'SURFnet bv',
+                        organisationname: 'SURFnet bv',
                         orgId: 'ORG-Sb3-RIPE'
                     }]
                 }
@@ -51,14 +51,14 @@ describe('OrgDropDownDataService', function () {
                     results: [{
                         membershipId: 3629,
                         regId: 'nl.surfnet',
-                        organisationName: 'SURFnet bv',
+                        organisationname: 'SURFnet bv',
                         serviceLevel: 'NORMAL',
                         orgId: 'ORG-Sb3-RIPE',
                         billingPhase: 0
                     }, {
                         membershipId: 7347,
                         regId: 'zz.example',
-                        organisationName: 'Internet Provider BV',
+                        organisationname: 'Internet Provider BV',
                         serviceLevel: 'NORMAL',
                         orgId: 'ORG-EIP1-RIPE',
                         billingPhase: 0
