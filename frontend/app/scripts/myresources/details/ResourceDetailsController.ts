@@ -2,6 +2,7 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
     params: {
         objectName: string;
         objectType: string;
+        sponsored:  boolean;
     };
 }
 
@@ -30,6 +31,7 @@ class ResourceDetailsController {
         viewer: boolean;
     };
     public showScroller = true;
+    public sponsored = false;
 
     public ipFilter: string = null;
 
@@ -53,6 +55,7 @@ class ResourceDetailsController {
         };
         this.objectKey = $state.params.objectName;
         this.objectType = $state.params.objectType.toLowerCase();
+        this.sponsored = this.$state.params.sponsored;
 
         this.canHaveMoreSpecifics = false;
 
@@ -78,7 +81,7 @@ class ResourceDetailsController {
                 }
             }, () => {
                 this.whoisResponse = null;
-            });
+            });      
     }
 
     public updateButtonClicked(o: any): void {
@@ -103,6 +106,7 @@ class ResourceDetailsController {
         this.$state.go("webupdates.myresourcesdetail", {
             objectName: resource.resource,
             objectType: resource.type,
+            sponsored: this.sponsored,
         });
     }
 

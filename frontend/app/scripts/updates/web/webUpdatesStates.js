@@ -40,13 +40,13 @@ angular.module('webUpdates')
                     template: '<div ui-view></div>'
                 })
                 .state('webupdates.myresources', {
-                    url: '/myresources/overview/:type',
+                    url: '/myresources/overview?type&sponsored',
                     templateUrl: 'scripts/myresources/resources.html',
                     controller: 'ResourcesController',
                     controllerAs: 'resources'
                 })
                 .state('webupdates.myresourcesdetail', {
-                    url: '/myresources/detail/:objectType/{objectName:WhoisObjectName}',
+                    url: '/myresources/detail/:objectType/{objectName:WhoisObjectName}/:sponsored',
                     templateUrl: 'scripts/myresources/details/resource-details.html',
                     controller: 'ResourceDetailsController',
                     controllerAs: 'resourceDetails'

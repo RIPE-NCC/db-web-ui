@@ -36,17 +36,17 @@
         <uib-tabset class="nav-tabs" active="resources.typeIndex">
             <uib-tab name="ipv4Tab" index="0" heading="IPv4">
                 <div class="resource-list" ng-repeat="resource in resources.ipv4Resources">
-                    <resource-item item="resource"></resource-item>
+                    <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
                 </div>
             </uib-tab>
             <uib-tab name="ipv6Tab" index="1" heading="IPv6">
                 <div class="resource-list" ng-repeat="resource in resources.ipv6Resources">
-                    <resource-item item="resource"></resource-item>
+                    <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
                 </div>
             </uib-tab>
             <uib-tab name="asnTab" index="2" heading="ASN">
                 <div class="resource-list" ng-repeat="resource in resources.asnResources">
-                    <resource-item item="resource"></resource-item>
+                    <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
                 </div>
             </uib-tab>
         </uib-tabset>

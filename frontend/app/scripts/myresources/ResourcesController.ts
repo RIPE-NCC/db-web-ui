@@ -1,7 +1,14 @@
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 
+interface IResourcesControllerState extends ng.ui.IStateService {
+    params: {
+        type: string;
+        sponsored: boolean;
+    };
+}
+
 class ResourcesController {
-    public static $inject = ["$log", "$location", "$scope", "ResourcesDataService", "UserInfoService"];
+    public static $inject = ["$log", "$location", "$scope", "$state", "ResourcesDataService", "UserInfoService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
@@ -15,21 +22,17 @@ class ResourcesController {
     constructor(private $log: angular.ILogService,
                 private $location: angular.ILocationService,
                 private $scope: angular.IScope,
+                private $state: IResourcesControllerState,
                 private resourcesDataService: ResourcesDataService,
                 private userInfoService: any) {
+
+        this.isShowingSponsored = this.$state.params.sponsored;
 
         $scope.$on("lirs-loaded-event", () => {
             this.refreshPage();
         });
         this.refreshPage();
-        const idx = $location.absUrl().lastIndexOf("/");
-        if (idx > -1) {
-            const type = $location.absUrl().substr(idx + 1);
-            this.goHome(type);
-        } else {
-            this.typeIndex = 0;
-        }
-
+        this.goHome(this.$state.params.type);
     }
 
     public organisationSelected(): void {
@@ -63,7 +66,7 @@ class ResourcesController {
         if (!this.selectedOrg) {
             this.selectedOrg = this.userInfoService.getSelectedLir();
         }
-        this.isShowingSponsored = false;
+        // this.isShowingSponsored = false;
         this.fetchResourcesAndPopulatePage();
         this.checkIfSponsor();
     }
@@ -114,6 +117,10 @@ class ResourcesController {
                 this.hasSponsoredResources = true;
             }
         });
+        if (!this.hasSponsoredResources && this.isShowingSponsored) {
+          this.isShowingSponsored = false;
+          this.refreshPage();
+        }
     }
 
 }

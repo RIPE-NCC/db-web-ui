@@ -2,6 +2,7 @@ interface IHierarchySelectorControllerState extends ng.ui.IStateService {
     params: {
         objectName: string;
         objectType: string;
+        sponsored: boolean;
     };
 }
 
@@ -53,7 +54,10 @@ class HierarchySelectorController {
     }
 
     public showTopLevelResources() {
-        const params = {type: this.resource.type};
+        const params = {
+          sponsored: this.$state.params.sponsored,
+          type: this.resource.type,
+        };
         this.$state.go("webupdates.myresources", params);
     }
 
@@ -65,6 +69,7 @@ class HierarchySelectorController {
         const params = {
             objectName: target,
             objectType: this.resource.type,
+            sponsored: this.$state.params.sponsored,
         };
         this.$state.go("webupdates.myresourcesdetail", params);
     }
@@ -74,6 +79,7 @@ class HierarchySelectorController {
 angular.module("dbWebApp").component("hierarchySelector", {
     bindings: {
         resource: "<",
+        sponsored: "<",
     },
     controller: HierarchySelectorController,
     templateUrl: "scripts/myresources/hierarchy-selector.html",

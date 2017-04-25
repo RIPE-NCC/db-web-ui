@@ -1,5 +1,9 @@
 <!--<button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()"><i class="fa fa-chevron-left"></i> Back to my resources</button>-->
-<hierarchy-selector class="pull-right" resource="resourceDetails.resource" ng-if="resourceDetails.resource"></hierarchy-selector>
+<hierarchy-selector class="pull-right"
+  resource="resourceDetails.resource"
+  sponsored="resourceDetails.sponsored"
+  ng-if="resourceDetails.resource">
+</hierarchy-selector>
 <h1><name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource" type="resourceDetails.resource.type"></name-formatter></h1>
 <div class="flags-container" style="margin-bottom: 2em">
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
@@ -24,7 +28,8 @@
                         class="btn btn-default"
                         ng-disabled="!resourceDetails.ipFilter"
                         ng-click="resourceDetails.ipFilter = ''; resourceDetails.applyFilter();">
-                    <span class="fa fa-times"></span></button>
+                    <span class="fa fa-times"></span>
+                  </button>
             </span>
         </div>
         <span ng-if="resourceDetails.ipFilter" style="float: right">
