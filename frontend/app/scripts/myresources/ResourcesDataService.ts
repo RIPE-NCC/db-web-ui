@@ -28,6 +28,21 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
+    public fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse> {
+         return this.$http({
+             method: "GET",
+             url: "api/whois-internal/api/resources/inetnum/"+objectName,
+         });
+     }
+
+     public fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse> {
+         return this.$http({
+             method: "GET",
+             url: "api/whois-internal/api/resources/inet6num/"+objectName,
+         });
+     }
+
+
     public fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse> {
         return this.fetchResources({
             "org-id": orgId,

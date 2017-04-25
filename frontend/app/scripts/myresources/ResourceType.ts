@@ -51,12 +51,15 @@ interface IUsage {
 
 interface IResourcesDataService {
     fetchParentResources(resource: IResourceModel, org: string): IPromise<string[]>;
-    fetchIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse>;
+
     fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse>;
-    fetchIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse>;
     fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse>;
-    fetchAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse>;
-    fetchSponsoredIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse>;
-    fetchSponsoredIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse>;
-    fetchSponsoredAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse>;
+
+    fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
+    fetchIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
+    fetchAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
+
+    fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
+    fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
+    fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
 }

@@ -2,7 +2,7 @@ const SIZE: string[] = ['', 'K', 'M', 'G', 'T'];
 
 class UsageStatusController {
 
-    public static $inject = ["$log", "$state", "MyResourcesDataService"];
+    public static $inject = ["$log", "$state", "ResourcesDataService"];
 
     private usage: IUsage;
     private percentageFree: number;

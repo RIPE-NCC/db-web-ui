@@ -10,15 +10,15 @@ describe('testing UsageStatusComponent', function () {
 
     beforeEach(module('dbWebApp'));
 
-    beforeEach(inject(function (_$componentController_, _$log_, _$state_, _MyResourcesDataService_, _$httpBackend_) {
+    beforeEach(inject(function (_$componentController_, _$log_, _$state_, _ResourcesDataService_, _$httpBackend_) {
         $httpBackend = _$httpBackend_;
-        service = _MyResourcesDataService_;
+        service = _ResourcesDataService_;
         state = _$state_;
 
         //mock controller
         controller = function () {
             return _$componentController_('usageStatus', {
-                $log: _$log_, $state: state, myResourcesDataService: _MyResourcesDataService_
+                $log: _$log_, $state: state, myResourcesDataService: _ResourcesDataService_
             });
         };
 
