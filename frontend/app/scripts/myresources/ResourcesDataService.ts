@@ -75,7 +75,10 @@ class ResourcesDataService implements IResourcesDataService {
             method: "GET",
             params,
             timeout: 10000,
-            url: "api/whois-internal/api/resources.json",
+            url: "api/whois-internal/api/resources",
+            headers: {
+                "Content-type": "application/json",
+            },
         });
     }
 

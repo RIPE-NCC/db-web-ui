@@ -38,7 +38,7 @@ div.resource-list {
 resource-item {
     @extend %width-100;
     @extend %float-l;
-    padding: 16px 10px 12px;
+    padding: 16px 10px 0px 0px;
     cursor: pointer;
     overflow: auto;
     p.title {
@@ -55,19 +55,41 @@ resource-item {
         margin: 0;
         color: $black;
     }
+    div.flags-container {
+        @extend %width-100;
+        @extend %float-l;
+        display: inline-block;
+    }
+
+    div.progressbar-container {
+        @extend div.flags-container;
+        margin-top: 5px;
+    }
+    div.progress {
+        background: $grey none;
+        box-shadow: none;
+        height: 10px;
+        border-radius: 0px;
+    }
+    div.progress-bar {
+        background-image: none;
+        background-color: #44465D !important;
+        box-shadow: none;
+        height: 10px;
+        border-radius: 0px;
+    }
     &:hover {
         text-decoration: none;
         background-color: $grey;
+        div.progress {
+            background-color: $brd-color;
+        }
     }
 }
 
-div.flags-container {
-    @extend %width-100;
-    @extend %float-l;
-}
 
 table.resources > thead > tr {
-    background-color: #eee;
+    background-color: $brd-color;
 }
 
 table.table-body-borderless > tbody > tr > td,
@@ -107,3 +129,35 @@ whois-object > section {
     margin-bottom: 41px;
 }
 
+usage-status {
+    @extend %width-100;
+    @extend %float-l;
+    display: inline-block;
+    vertical-align:top;
+    margin: 10px 0 20px 0;
+    .usage-status-box {
+        @extend %float-l;
+        border: 1px solid lightgrey;
+        display: inline-block;
+        width: 207px;
+        height: 120px;
+        padding: 10px;
+        margin-right: 20px;
+        p {
+            display: block;
+            vertical-align: top;
+        }
+        p.box-title {
+            font-size: 20px;
+            padding-top: 8px;
+        }
+        p.box-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        p.box-statistic {
+            font-size: 14px;
+            margin-bottom: 0px;
+        }
+    }
+}

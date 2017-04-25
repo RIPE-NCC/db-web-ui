@@ -14,6 +14,7 @@ interface IMoreSpecificResource {
     status: string;
     type: string;
     netname: string;
+    usage:IUsage;
 }
 
 class MoreSpecificsDataService implements IMoreSpecificsDataService {

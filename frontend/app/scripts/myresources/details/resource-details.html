@@ -6,8 +6,10 @@
 </hierarchy-selector>
 <h1><name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource" type="resourceDetails.resource.type"></name-formatter></h1>
 <div class="flags-container" style="margin-bottom: 2em">
+    <!-- TODO tooltip doesn't work here -->
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
 </div>
+<usage-status></usage-status>
 
 <h2>Object in RIPE Database</h2>
 <whois-object-viewer ng-model="resourceDetails.details" ng-if="resourceDetails.details" update-clicked="resourceDetails.showObjectEditor()"></whois-object-viewer>
@@ -42,6 +44,7 @@
             <th>Internet number resource</th>
             <th>Status</th>
             <th>Netname</th>
+            <th>Used</th>
         </tr>
         </thead>
         <tbody>
@@ -51,6 +54,7 @@
             </a></td>
             <td>{{ resource.status }}</td>
             <td>{{ resource.netname }}</td>
+            <td>{{ resource.usage.used}}</td>
         </tr>
         </tbody>
     </table>
