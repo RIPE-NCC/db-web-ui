@@ -52,6 +52,7 @@ module.exports = function (config) {
             'bower_components/json3/lib/json3.js',
             'bower_components/lodash/lodash.js',
             'bower_components/moment/moment.js',
+            'bower_components/select2/select2.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
             '.tstmp/scripts/app.js',

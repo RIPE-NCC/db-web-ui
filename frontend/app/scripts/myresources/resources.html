@@ -7,12 +7,13 @@
                     You are viewing organisation: {{dropdown.selectedOrg.displayName}}
                 </div>
                 <div ng-show="resources.organisations && resources.organisations.length > 1">
-                    <label for="organisation-selector">Select an organisation: </label>
-                    <select name="orgSelector" id="organisation-selector"
-                            ng-change="resources.organisationSelected()"
-                            ng-options="org.displayName for org in resources.organisations track by org.displayName"
-                            ng-model="resources.selectedOrg">
-                    </select>
+                    <ui-select id="organisation-selector" ng-model="resources.selectedOrg" theme="select2" on-select="resources.organisationSelected()">
+                        <ui-select-match>{{$select.selected.orgName}}</ui-select-match>
+                        <ui-select-choices repeat="org in resources.organisations | filter: $select.search">
+                            <div ng-bind-html="org.orgName | highlight: $select.search"></div>
+                            <small ng-bind-html="org.regId | highlight: $select.search"></small>
+                        </ui-select-choices>
+                    </ui-select>
                 </div>
             </div>
         </div>

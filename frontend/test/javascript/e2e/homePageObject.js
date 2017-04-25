@@ -120,7 +120,7 @@ module.exports = {
     modalSplashText: element(by.css('[uib-modal-window]')).element(by.css('h1')),
 
     orgSelector: element(by.id('organisation-selector')),
-    orgSelectorOptions: element(by.id('organisation-selector')).all(by.css('option')),
+    orgSelectorOptions: element(by.id('organisation-selector')).all(by.css('small')),
 
     //My resources
     myResources: element(by.css('.my-resources')),

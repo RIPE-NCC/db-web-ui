@@ -16,10 +16,10 @@ class OrgDropDownDataService implements IOrgDropDownDataService {
                 const lirs: Lir[] = response.data.response.results;
                 const lirOrgs: Organisation[] = lirs.map((lir) => {
                     return {
-                        displayName: (lir.organisationName ? lir.organisationName + " " + lir.regId : lir.regId),
+                        displayName: (lir.organisationname ? lir.organisationname + " " + lir.regId : lir.regId),
                         memberId: lir.membershipId.toString(),
                         orgId: lir.orgId,
-                        orgName: lir.organisationName,
+                        orgName: lir.organisationname,
                         regId: lir.regId,
                     } as Organisation;
                 });

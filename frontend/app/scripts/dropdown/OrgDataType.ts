@@ -14,7 +14,7 @@ interface Organisation {
 interface Lir {
     membershipId: number;
     regId: string;
-    organisationName: string;
+    organisationname: string;
     serviceLevel: string;
     orgId: string;
 }
