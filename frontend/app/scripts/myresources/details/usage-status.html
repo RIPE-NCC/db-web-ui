@@ -1,4 +1,4 @@
-<div ng-if="ctrlUsage.objectType == 'inetnum'">
+<div ng-if="ctrlUsage.objectType === 'inetnum'">
     <div class="usage-status-box">
         <p class="box-title">Total address space</p>
         <p class="box-value">{{ctrlUsage.usage.total | number:0}}</p>
@@ -14,7 +14,7 @@
         <p class="box-statistic">{{ctrlUsage.percentageFree | number:1}}%</p>
     </div>
 </div>
-<div ng-if="ctrlUsage.objectType == 'inet6num'">
+<div ng-if="ctrlUsage.objectType === 'inet6num'">
     <div class="usage-status-box">
         <p class="box-title">Total subnets (/{{ctrlUsage.usage.blockSize | number:0}})</p>
         <p class="box-value">{{ctrlUsage.ipv6CalcTotal}}</p>

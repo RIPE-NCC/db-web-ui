@@ -29,19 +29,18 @@ class ResourcesDataService implements IResourcesDataService {
     }
 
     public fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse> {
-         return this.$http({
-             method: "GET",
-             url: "api/whois-internal/api/resources/inetnum/"+objectName,
-         });
-     }
+        return this.$http({
+            method: "GET",
+            url: "api/whois-internal/api/resources/inetnum/" + objectName,
+        });
+    }
 
-     public fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse> {
-         return this.$http({
-             method: "GET",
-             url: "api/whois-internal/api/resources/inet6num/"+objectName,
-         });
-     }
-
+    public fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse> {
+        return this.$http({
+            method: "GET",
+            url: "api/whois-internal/api/resources/inet6num/" + objectName,
+        });
+    }
 
     public fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse> {
         return this.fetchResources({
@@ -87,13 +86,13 @@ class ResourcesDataService implements IResourcesDataService {
 
     private fetchResources(params: {}): IPromise<any> {
         return this.$http({
+            headers: {
+                "Content-type": "application/json",
+            },
             method: "GET",
             params,
             timeout: 10000,
             url: "api/whois-internal/api/resources",
-            headers: {
-                "Content-type": "application/json",
-            },
         });
     }
 

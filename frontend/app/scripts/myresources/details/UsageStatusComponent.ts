@@ -1,4 +1,4 @@
-const SIZE: string[] = ['', 'K', 'M', 'G', 'T'];
+const SIZE: string[] = ["", "K", "M", "G", "T"];
 
 class UsageStatusController {
 
@@ -43,7 +43,7 @@ class UsageStatusController {
     private processUsage(response: IHttpPromiseCallbackArg<any>) {
         this.usage = response.data.resources[0].usage;
         this.usage.free = this.calcFreeSpace();
-        //calculate percentage before calculating shorter value with binary prefix
+        // calculate percentage before calculating shorter value with binary prefix
         this.calcPercentage();
     }
 
@@ -63,7 +63,9 @@ class UsageStatusController {
     }
 
     private calcShorterValue(value: number): string {
-        if(value === undefined) return '';
+        if (value === undefined) {
+            return "";
+        }
         let counter = 0;
         while (value >= 1024) {
             value = value / 1024;
@@ -75,6 +77,6 @@ class UsageStatusController {
 
 angular.module("dbWebApp").component("usageStatus", {
     controller: UsageStatusController,
-    controllerAs: 'ctrlUsage',
+    controllerAs: "ctrlUsage",
     templateUrl: "scripts/myresources/details/usage-status.html",
 });
