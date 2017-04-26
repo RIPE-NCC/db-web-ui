@@ -10,21 +10,11 @@ interface IResourceRangeModel {
     end: number;
 }
 
-interface IPv4ResourcesResponse {
-    orgid: string;
-    resources: IPv4ResourceDetails[];
-}
-
 interface IPv4ResourceDetails {
     range: IResourceRangeModel;
     status: string;
     netname: string;
     usage: IUsage;
-}
-
-interface IPv6ResourcesResponse {
-    orgid: string;
-    resources: IPv6ResourceDetails[];
 }
 
 interface IPv6ResourceDetails {
@@ -33,13 +23,23 @@ interface IPv6ResourceDetails {
     usage: IUsage;
 }
 
+interface AsnResourceDetails {
+    value: number;
+}
+
+interface IPv6ResourcesResponse {
+    orgid: string;
+    resources: IPv6ResourceDetails[];
+}
+
 interface AsnResourcesResponse {
     orgid: string;
     resources: AsnResourceDetails[];
 }
 
-interface AsnResourceDetails {
-    value: number;
+interface IPv4ResourcesResponse {
+    orgid: string;
+    resources: IPv4ResourceDetails[];
 }
 
 interface IUsage {
@@ -50,12 +50,16 @@ interface IUsage {
 }
 
 interface IResourcesDataService {
-    fetchIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse>;
+    fetchParentResources(resource: IResourceModel, org: string): IPromise<string[]>;
+
     fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse>;
-    fetchIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse>;
     fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse>;
-    fetchAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse>;
-    fetchSponsoredIpv4Resources(orgId: string, pageNr: number): IPromise<IPv4ResourcesResponse>;
-    fetchSponsoredIpv6Resources(orgId: string, pageNr: number): IPromise<IPv6ResourcesResponse>;
-    fetchSponsoredAsnResources(orgId: string, pageNr: number): IPromise<AsnResourcesResponse>;
+
+    fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
+    fetchIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
+    fetchAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
+
+    fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
+    fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
+    fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
 }

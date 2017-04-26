@@ -1,16 +1,16 @@
 /*global beforeEach,describe,inject,it*/
 'use strict';
 
-describe('testing MyResourcesDataService', function() {
+describe('testing ResourcesDataService', function() {
 
     var $httpBackend;
     var service;
 
     beforeEach(module('dbWebApp'));
 
-    beforeEach(inject(function (_MyResourcesDataService_, _$httpBackend_) {
+    beforeEach(inject(function (_ResourcesDataService_, _$httpBackend_) {
         $httpBackend = _$httpBackend_;
-        service = _MyResourcesDataService_;
+        service = _ResourcesDataService_;
     }));
 
     it('Populate IPv4 Resources', function() {

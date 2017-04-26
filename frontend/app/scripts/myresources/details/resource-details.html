@@ -1,5 +1,9 @@
-<button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()">&lt; Back to my resources</button>
-<hierarchy-selector name="resourceDetails.resource.resource"></hierarchy-selector>
+<!--<button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()"><i class="fa fa-chevron-left"></i> Back to my resources</button>-->
+<hierarchy-selector class="pull-right"
+  resource="resourceDetails.resource"
+  sponsored="resourceDetails.sponsored"
+  ng-if="resourceDetails.resource">
+</hierarchy-selector>
 <h1><name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource" type="resourceDetails.resource.type"></name-formatter></h1>
 <div class="flags-container" style="margin-bottom: 2em">
     <!-- TODO tooltip doesn't work here -->
@@ -26,7 +30,8 @@
                         class="btn btn-default"
                         ng-disabled="!resourceDetails.ipFilter"
                         ng-click="resourceDetails.ipFilter = ''; resourceDetails.applyFilter();">
-                    <span class="fa fa-times"></span></button>
+                    <span class="fa fa-times"></span>
+                  </button>
             </span>
         </div>
         <span ng-if="resourceDetails.ipFilter" style="float: right">
@@ -53,7 +58,7 @@
         </tr>
         </tbody>
     </table>
-    <p scroller="resourceDetails.almostOnScreen()" ng-show="resourceDetails.showScroller"></p>
+    <p scroller="resourceDetails.almostOnScreen()" ng-if="resourceDetails.showScroller"></p>
     <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.resources.length === 0">
         No more specific objects exist.
     </div>

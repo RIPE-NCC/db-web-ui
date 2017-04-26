@@ -1,11 +1,18 @@
 import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
 
+interface IResourcesControllerState extends ng.ui.IStateService {
+    params: {
+        type: string;
+        sponsored: boolean;
+    };
+}
+
 class ResourcesController {
-    public static $inject = ["$log", "$scope", "MyResourcesDataService", "UserInfoService"];
+    public static $inject = ["$log", "$location", "$scope", "$state", "ResourcesDataService", "UserInfoService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
-
+    public typeIndex = 0;
     public organisations: Organisation[]; // fills dropdown
     public selectedOrg: Organisation; // selection bound to ng-model in widget
 
@@ -13,14 +20,20 @@ class ResourcesController {
     private isShowingSponsored = false;
 
     constructor(private $log: angular.ILogService,
+                private $location: angular.ILocationService,
                 private $scope: angular.IScope,
-                private resourcesDataService: MyResourcesDataService,
+                private $state: IResourcesControllerState,
+                private resourcesDataService: ResourcesDataService,
                 private userInfoService: any) {
 
-        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: Organisation[]) => {
+        this.isShowingSponsored = (this.$state.params.sponsored.toString() === "true");
+        console.log("isShowingSponsored 0 = ", this.isShowingSponsored);
+
+        $scope.$on("lirs-loaded-event", () => {
             this.refreshPage();
         });
         this.refreshPage();
+        this.goHome(this.$state.params.type);
     }
 
     public organisationSelected(): void {
@@ -30,7 +43,20 @@ class ResourcesController {
 
     public sponsoredResourcesClicked() {
         this.isShowingSponsored = !this.isShowingSponsored;
-        this.fetchResourcesAndPopulatePage(0);
+        this.fetchResourcesAndPopulatePage();
+    }
+
+    public goHome(objectType: string) {
+        switch (objectType) {
+            case "inet6num":
+                this.typeIndex = 1;
+                break;
+            case "aut-num":
+                this.typeIndex = 2;
+                break;
+            default:
+                this.typeIndex = 0;
+        }
     }
 
     private refreshPage() {
@@ -41,60 +67,42 @@ class ResourcesController {
         if (!this.selectedOrg) {
             this.selectedOrg = this.userInfoService.getSelectedLir();
         }
-
-        this.isShowingSponsored = false;
-        this.fetchResourcesAndPopulatePage(0);
-        this.checkIfSponsor();
+        this.fetchResourcesAndPopulatePage();
     }
 
-    private fetchResourcesAndPopulatePage(pageNr: number) {
+    private fetchResourcesAndPopulatePage() {
         this.ipv4Resources = this.ipv6Resources = this.asnResources = [];
         if (!this.selectedOrg) {
             return;
         }
-        const v4Res = this.resourcesDataService[this.isShowingSponsored ?
-            "fetchSponsoredIpv4Resources" : "fetchIpv4Resources"](this.selectedOrg.orgId, pageNr);
-        const v6Res = this.resourcesDataService[this.isShowingSponsored ?
-            "fetchSponsoredIpv6Resources" : "fetchIpv6Resources"](this.selectedOrg.orgId, pageNr);
-        const asnRes = this.resourcesDataService[this.isShowingSponsored ?
-            "fetchSponsoredAsnResources" : "fetchAsnResources"](this.selectedOrg.orgId, pageNr);
 
-        v4Res.then((response: IHttpPromiseCallbackArg<IPv4ResourcesResponse>) => {
-            this.ipv4Resources = response.data.resources;
-        });
-        v6Res.then((response: IHttpPromiseCallbackArg<IPv6ResourcesResponse>) => {
-            this.ipv6Resources = response.data.resources;
-        });
-        asnRes.then((response: IHttpPromiseCallbackArg<AsnResourcesResponse>) => {
-            this.asnResources = response.data.resources;
-        });
-    }
-
-    private checkIfSponsor() {
-        this.hasSponsoredResources = false;
-        if (!this.selectedOrg) {
-            return;
-        }
-        const v4Res = this.resourcesDataService.fetchSponsoredIpv4Resources(this.selectedOrg.orgId, 0);
-        const v6Res = this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgId, 0);
-        const asnRes = this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgId, 0);
-        v4Res.then((response: IHttpPromiseCallbackArg<IPv4ResourcesResponse>) => {
-            if (response.data.resources && response.data.resources.length) {
-                this.hasSponsoredResources = true;
-            }
-        });
-        v6Res.then((response: IHttpPromiseCallbackArg<IPv6ResourcesResponse>) => {
-            if (response.data.resources && response.data.resources.length) {
-                this.hasSponsoredResources = true;
-            }
-        });
-        asnRes.then((response: IHttpPromiseCallbackArg<AsnResourcesResponse>) => {
-            if (response.data.resources && response.data.resources.length) {
-                this.hasSponsoredResources = true;
+        Promise.all([
+          this.resourcesDataService.fetchIpv4Resources(this.selectedOrg.orgId),
+          this.resourcesDataService.fetchIpv6Resources(this.selectedOrg.orgId),
+          this.resourcesDataService.fetchAsnResources(this.selectedOrg.orgId),
+          this.resourcesDataService.fetchSponsoredIpv4Resources(this.selectedOrg.orgId),
+          this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgId),
+          this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgId),
+        ]).then( (responses: any[]) => {
+            this.hasSponsoredResources = !(this.empty(responses[3]) && this.empty(responses[4]) && this.empty(responses[5]));
+            if (this.hasSponsoredResources && this.isShowingSponsored) {
+              this.ipv4Resources = responses[3].data.resources;
+              this.ipv6Resources = responses[4].data.resources;
+              this.asnResources = responses[5].data.resources;
+            } else {
+              this.ipv4Resources = responses[0].data.resources;
+              this.ipv6Resources = responses[1].data.resources;
+              this.asnResources  = responses[2].data.resources;
             }
         });
     }
 
+    private empty(response: any): boolean {
+      if (response.data.resources && response.data.resources.length) {
+        return false;
+      }
+      return true;
+    }
 }
 
 angular
