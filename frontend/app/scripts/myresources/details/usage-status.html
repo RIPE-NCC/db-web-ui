@@ -1,4 +1,4 @@
-<div ng-if="ctrlUsage.objectType === 'inetnum'">
+<div ng-if="ctrlUsage.objectType === 'inetnum' && ctrlUsage.usage">
     <div class="usage-status-box">
         <p class="box-title">Total address space</p>
         <p class="box-value">{{ctrlUsage.usage.total | number:0}}</p>

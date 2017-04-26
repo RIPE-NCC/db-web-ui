@@ -10,7 +10,7 @@
     <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
 </div>
 <usage-status></usage-status>
-
+<div class="clearfix"></div>
 <h2>Object in RIPE Database</h2>
 <whois-object-viewer ng-model="resourceDetails.details" ng-if="resourceDetails.details" update-clicked="resourceDetails.showObjectEditor()"></whois-object-viewer>
 
