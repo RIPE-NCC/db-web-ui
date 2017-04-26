@@ -42,7 +42,7 @@ class HierarchySelectorController {
                 rds.fetchParentResources(this.resource, selectedOrg.orgId).then(
                     (resp: IHttpPromiseCallbackArg<string[]>) => {
                         const parents: string[] = resp.data;
-                        if (parents.length < 1) {
+                        if (parents && parents.length < 1) {
                             // no parents :'(
                             this.parents = [];
                         } else {
