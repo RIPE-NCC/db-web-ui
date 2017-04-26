@@ -41,6 +41,9 @@ class UsageStatusController {
     }
 
     private processUsage(response: IHttpPromiseCallbackArg<any>) {
+        if (!response.data.resources || !response.data.resources[0].length) {
+            return;
+        }
         this.usage = response.data.resources[0].usage;
         this.usage.free = this.calcFreeSpace();
         // calculate percentage before calculating shorter value with binary prefix

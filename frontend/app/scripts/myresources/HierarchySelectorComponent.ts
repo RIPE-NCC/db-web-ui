@@ -62,7 +62,7 @@ class HierarchySelectorController {
     }
 
     public takeMeBackHome(parent: string) {
-        if (!parent && !this.parents.length) {
+        if (!parent && !(this.parents && this.parents.length)) {
             return this.showTopLevelResources();
         }
         const target = parent ? parent : this.parents[this.parents.length - 1];
