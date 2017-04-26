@@ -2,12 +2,21 @@ interface IResourceDetailsControllerState extends ng.ui.IStateService {
     params: {
         objectName: string;
         objectType: string;
+        sponsored:  boolean;
     };
 }
 
 class ResourceDetailsController {
 
-    public static $inject = ["$scope", "$log", "$state", "$timeout", "QueryParametersService", "MoreSpecificsService"];
+    public static $inject = [
+        "$scope",
+        "$log",
+        "$state",
+        "$timeout",
+        "$anchorScroll",
+        "QueryParametersService",
+        "MoreSpecificsService",
+    ];
 
     public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
@@ -22,6 +31,7 @@ class ResourceDetailsController {
         viewer: boolean;
     };
     public showScroller = true;
+    public sponsored = false;
 
     public ipFilter: string = null;
 
@@ -33,7 +43,8 @@ class ResourceDetailsController {
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
-                private $timeout: angular.ITimeoutService,
+                private $timeout: ng.ITimeoutService,
+                private $anchorScroll: ng.IAnchorScrollService,
                 private queryParametersService: IQueryParametersService,
                 private moreSpecificsService: IMoreSpecificsDataService) {
 
@@ -44,11 +55,11 @@ class ResourceDetailsController {
         };
         this.objectKey = $state.params.objectName;
         this.objectType = $state.params.objectType.toLowerCase();
+        this.sponsored = this.$state.params.sponsored;
 
         this.canHaveMoreSpecifics = false;
 
         this.getResourcesFromBackEnd();
-
         this.queryParametersService.getWhoisObject(this.objectKey, this.objectType, "RIPE").then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 this.whoisResponse = response.data;
@@ -70,7 +81,7 @@ class ResourceDetailsController {
                 }
             }, () => {
                 this.whoisResponse = null;
-            });
+            });      
     }
 
     public updateButtonClicked(o: any): void {
@@ -80,10 +91,6 @@ class ResourceDetailsController {
             this.show.editor = !this.show.editor;
             this.$scope.$apply();
         }, 1000);
-    }
-
-    public backToMyResources(): void {
-        this.$state.go("webupdates.myresources");
     }
 
     public showObjectEditor(): void {
@@ -99,6 +106,7 @@ class ResourceDetailsController {
         this.$state.go("webupdates.myresourcesdetail", {
             objectName: resource.resource,
             objectType: resource.type,
+            sponsored: this.sponsored,
         });
     }
 
@@ -128,6 +136,15 @@ class ResourceDetailsController {
         }, 400);
     }
 
+    public isValidPrefix(maybePrefix: string): boolean {
+        if (!maybePrefix) {
+            return false;
+        }
+        return IpAddressService.isValidV4(maybePrefix)
+            || IpAddressService.isValidRange(maybePrefix)
+            || IpAddressService.isValidV6(maybePrefix);
+    }
+
     private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): boolean {
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
             this.moreSpecificsService.getSpecifics(this.objectKey, this.objectType, pageNr, ipFilter).then(
@@ -142,6 +159,9 @@ class ResourceDetailsController {
                     }
                     this.canHaveMoreSpecifics = true;
                     this.calcScroller();
+
+                }, () => {
+                    this.calcScroller();
                 });
         }
         return true;
@@ -149,6 +169,9 @@ class ResourceDetailsController {
 
     private calcScroller(): void {
         this.showScroller = this.nrMoreSpecificsToShow < this.moreSpecifics.filteredSize;
+        this.$timeout(() => {
+            this.$scope.$apply();
+        }, 10);
     }
 }
 

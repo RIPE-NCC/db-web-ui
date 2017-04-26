@@ -1,1 +1,12 @@
-<span></span>
+<div class="btn-group">
+    <button type="button" class="grey-button" ng-click="$ctrl.takeMeBackHome()"><i class="fa fa-chevron-left"></i> Less specific</button>
+    <button type="button" class="grey-button dropdown-toggle" data-toggle="dropdown" ng-if="$ctrl.parents.length">
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><a href ng-click="$ctrl.showTopLevelResources()">All the things</a></li>
+        <li ng-repeat="p in $ctrl.parents">
+            <a href ng-click="$ctrl.takeMeBackHome(p)"><name-formatter name="p" type="$ctrl.resource.type"></name-formatter></a>
+        </li>
+    </ul>
+</div>

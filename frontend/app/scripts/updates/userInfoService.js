@@ -62,10 +62,10 @@ angular.module('updates')
 
             this.getSelectedLir = function() {
                 return _selectedLir;
-            }
+            };
 
             this.setSelectedLir = function(lir) {
                 _selectedLir = lir;
-            }
+            };
         }]);
 

@@ -1,4 +1,5 @@
 interface IResourceItemDirectiveScope extends angular.IScope {
+    sponsored: boolean;
     showDetail(item: IResourceModel): void;
 }
 
@@ -13,7 +14,9 @@ class ResourceItemDirective implements angular.IDirective {
     public restrict = "E";
     public scope = {
         item: "=",
+        sponsored: "=",
     };
+
     public templateUrl: string = "scripts/myresources/resource-item.html";
 
     private ipAddressService = new IpAddressService();
@@ -27,6 +30,7 @@ class ResourceItemDirective implements angular.IDirective {
             this.$state.go("webupdates.myresourcesdetail", {
                 objectName: item.resource,
                 objectType: item.type,
+                sponsored: scope.sponsored,
             });
         };
     }
