@@ -54,7 +54,7 @@
             </a></td>
             <td>{{ resource.status }}</td>
             <td>{{ resource.netname }}</td>
-            <td>{{ resource.usage.used}}</td>
+            <td>{{ (resource.usage.used / resource.usage.total)*100 | number:1}}%</td>
         </tr>
         </tbody>
     </table>

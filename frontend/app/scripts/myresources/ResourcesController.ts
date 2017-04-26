@@ -27,7 +27,6 @@ class ResourcesController {
                 private userInfoService: any) {
 
         this.isShowingSponsored = this.$state.params.sponsored && this.$state.params.sponsored.toString() === "true";
-        console.log("isShowingSponsored 0 = ", this.isShowingSponsored);
 
         $scope.$on("lirs-loaded-event", () => {
             this.refreshPage();
