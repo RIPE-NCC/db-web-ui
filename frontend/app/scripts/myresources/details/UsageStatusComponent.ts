@@ -41,7 +41,7 @@ class UsageStatusController {
     }
 
     private processUsage(response: IHttpPromiseCallbackArg<any>) {
-        if (!response.data.resources || !response.data.resources[0].length) {
+        if (!response.data.resources || !response.data.resources.length) {
             return;
         }
         this.usage = response.data.resources[0].usage;
