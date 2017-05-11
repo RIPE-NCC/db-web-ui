@@ -113,7 +113,7 @@ public class DnsCheckerController {
 
     private Optional<String> checkDnsConfig(final String ns, final String record, final InetAddress address, final TransportProtocol protocol) {
         try {
-            LOGGER.info("Querying " + ns + " (" + address + ") using " + protocol);
+            LOGGER.info("Querying for "+ record + "@" + ns + " (" + address + ") using " + protocol);
             final Resolver resolver = getResolver(address, port, protocol);
             final Lookup lookup = executeQuery(record, resolver);
             LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
