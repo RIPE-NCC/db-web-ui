@@ -2,7 +2,9 @@ const SIZE: string[] = ["", "K", "M", "G", "T"];
 
 class UsageStatusController {
 
-    public static $inject = ["$log", "$state", "ResourcesDataService"];
+    public static $inject = ["$log", "ResourcesDataService"];
+
+    public resource: IResourceModel;
 
     private usage: IUsage;
     private percentageFree: number;
@@ -12,27 +14,24 @@ class UsageStatusController {
     private ipv6CalcUsed: string;
     private ipv6CalcFree: string;
 
-    private objectKey: string;
-    private objectType: string;
-
     constructor(private $log: angular.ILogService,
-                private $state: IResourceDetailsControllerState,
                 private myResourcesDataService: IResourcesDataService) {
-
-        this.objectKey = $state.params.objectName;
-        this.objectType = $state.params.objectType.toLowerCase();
-
-        this.getResource();
+        //this.getResource();
     }
 
+    $onChanges(): void {
+        if(this.resource) {
+            this.getResource();
+        }
+    }
     private getResource(): void {
-        if (this.objectType === "inetnum") {
-            this.myResourcesDataService.fetchIpv4Resource(this.objectKey).then(
+        if (this.resource.type.toLowerCase() === "inetnum") {
+            this.myResourcesDataService.fetchIpv4Resource(this.resource.resource).then(
                 (response: IHttpPromiseCallbackArg<IPv4ResourcesResponse>) => {
                     this.processUsage(response);
                 });
-        } else if (this.objectType === "inet6num") {
-            this.myResourcesDataService.fetchIpv6Resource(this.objectKey).then(
+        } else if (this.resource.type.toLowerCase() === "inet6num") {
+            this.myResourcesDataService.fetchIpv6Resource(this.resource.resource).then(
                 (response: IHttpPromiseCallbackArg<IPv6ResourcesResponse>) => {
                     this.processUsage(response);
                     this.calcValueForIPv6();
@@ -55,7 +54,7 @@ class UsageStatusController {
     }
 
     private calcPercentage() {
-        this.percentageUsed = this.usage.used * 100 / this.usage.total;
+        this.percentageUsed = Math.round(this.usage.used * 100 / this.usage.total);
         this.percentageFree = 100 - this.percentageUsed;
     }
 
@@ -79,6 +78,9 @@ class UsageStatusController {
 }
 
 angular.module("dbWebApp").component("usageStatus", {
+    bindings: {
+        resource: "<",
+    },
     controller: UsageStatusController,
     controllerAs: "ctrlUsage",
     templateUrl: "scripts/myresources/details/usage-status.html",

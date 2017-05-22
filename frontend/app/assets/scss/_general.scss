@@ -12,6 +12,11 @@
 }
 
 // Buttons
+button {
+  &:focus {
+    outline: none;
+  }
+}
 %btn {
     padding: .5em 1em;
     margin: 0 0 0 .3em;
@@ -29,6 +34,7 @@
         color: #333;
     }
 }
+
 input[disabled="disabled"].blue-button {
     box-shadow: none;
     cursor: not-allowed;

@@ -52,6 +52,10 @@ function GetWhoisObject(parent) {
     this.showRipeStatButton = function () {
         return _this.directive().element(by.css('.ripe-stat-button'));
     };
+
+    this.showUpdateObjectButton = function () {
+        return _this.directive().element(by.css('.update-object-button'));
+    };
 }
 
 
@@ -66,6 +70,7 @@ module.exports = {
     btnNavigateToCreate: element(by.id('btnNavigateToCreate')),
     btnCreateInTextArea: element(by.id('btnCreateInTextArea')),
     btnSwitchToWebCreate: element(by.id('btnSwitchToWebCreate')),
+    btnUpdateObjectButton: element(by.id('btnUpdateObjectButton')),
 
     inpOrgName: element(by.id('createForm')).element(by.name('org-name')),
     inpOrganisation: element(by.id('createForm')).element(by.name('organisation')),
@@ -132,6 +137,9 @@ module.exports = {
     //More specifics page
     moreSpecificsTable: element(by.css('.table')),
     moreSpecificsTableRows: element(by.css('.table')).element(by.css('tbody')).all(by.css('tr')),
+
+    usageStatus: element(by.css('usage-status')),
+    usageStatusStatistics: element(by.css('usage-status')).all(by.css('.box-statistic')),
 
     getTableCell: function (tableElement, rowIndex, colIndex) {
         return tableElement.element(by.css('tbody')).all(by.css('tr')).get(rowIndex).all(by.css('td')).get(colIndex);

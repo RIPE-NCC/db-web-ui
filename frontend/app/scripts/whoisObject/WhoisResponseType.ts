@@ -1,4 +1,5 @@
 interface IErrorMessageModel {
+    attribute: IAttributeModel;
     severity: string;
     text: string;
     args: [{
@@ -16,6 +17,8 @@ interface IAttributeModel {
     value: string;
     link?: IWhoisLinkModel;
     "referenced-type": string;
+    $$error: string;
+    comment: string;
 }
 
 interface IWhoisObjectModel {
@@ -55,4 +58,11 @@ interface IWhoisResponseModel {
         object: IWhoisObjectModel[];
     };
     "terms-and-conditions": any;
+}
+
+interface IMntByModel {
+    auth: string[];
+    key: string;
+    mine: boolean;
+    type: string;
 }

@@ -4,7 +4,7 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).service('AttributeMetadataService', ['$rootScope', 'jsUtilService', 'PrefixService', function ($rootScope, jsUtils, PrefixService) {
+    ).service('AttributeMetadataService', ['$rootScope', 'jsUtilService', 'PrefixService', 'WhoisMetaService', function ($rootScope, jsUtils, PrefixService, WhoisMetaService) {
 
         // Defaults:
         // * attributes are shown
@@ -19,11 +19,13 @@
         this.enrich = enrich;
         this.clearLastPrefix = clearLastPrefix;
         this.getMetadata = getMetadata;
+        this.getAllMetadata = getAllMetadata;
         this.isInvalid = isInvalid;
         this.isHidden = isHidden;
         this.getCardinality = getCardinality;
         this.determineAttributesForNewObject = determineAttributesForNewObject;
         this.resetDomainLookups = resetDomainLookups;
+        this.isList = isList;
 
         function determineAttributesForNewObject(objectType) {
             var i, attributes = [];
@@ -43,6 +45,7 @@
             for (i = 0; i < attributes.length; i++) {
                 attributes[i].$$invalid = isInvalid(objectType, attributes, attributes[i]);
                 attributes[i].$$hidden = isHidden(objectType, attributes, attributes[i]);
+                attributes[i].$$disable = isReadOnly(objectType, attributes, attributes[i]);
             }
         }
 
@@ -70,11 +73,21 @@
             return false;
         }
 
+        function isReadOnly(objectType, attributes, attribute) {
+            jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
+            var md = getMetadata(objectType, attribute.name);
+            if (!md || !md.readOnly) {
+                return false;
+            }
+            return evaluateMetadata(objectType, attributes, attribute, md.readOnly);
+        }
+
         function evaluateMetadata(objectType, attributes, attribute, attrMetadata) {
             jsUtils.checkTypes(arguments, ['string', 'array', 'object']);
             var i, target;
-            // checks a list of attrs to see if any are invalid. each attr has an 'invalid'
-            // definition in the metadata, or, if not, it's valid by default.
+            if (jsUtils.typeOf(attrMetadata) === 'boolean') {
+                return attrMetadata;
+            }
             if (jsUtils.typeOf(attrMetadata) === 'function') {
                 try {
                     attribute.$$error = '';
@@ -95,7 +108,7 @@
                 // handles { ..., invalid: [RegExp, invalid: ['attr1', 'attr2'], Function]}
                 return -1 !== _.findIndex(attrMetadata, function (item) {
                         if (jsUtils.typeOf(item) === 'string') {
-                            // must be 'invalid' or 'hidden'
+                            // must be 'invalid' or 'hidden' or 'readOnly'
                             if (attrMetadata[item]) {
                                 return evaluateMetadata(objectType, attributes, attribute, attrMetadata[item]);
                             } else {
@@ -109,7 +122,7 @@
             }
             // Otherwise, go through the 'invalid' and 'hidden' properties and return the first true result
             // First, check it's valid metadata
-            if (jsUtils.typeOf(attrMetadata) !== 'object' || !(attrMetadata.invalid || attrMetadata.hidden)) {
+            if (jsUtils.typeOf(attrMetadata) !== 'object' || !(attrMetadata.invalid || attrMetadata.hidden || attrMetadata.readOnly)) {
                 return false;
             }
             // Evaluate the 'invalid's and return the first true result
@@ -137,7 +150,7 @@
                         }
                     });
             }
-            // TODO: 'hidden' - string and array
+            // TODO: 'hidden' and 'readOnly' - string and array
             return false;
         }
 
@@ -369,6 +382,24 @@
             return jsUtils.typeOf(attribute.$$invalid) === 'boolean' ? attribute.$$invalid : true;
         }
 
+        function isModifyMode(objectType, attributes) {
+            // If 'created' is filled, we're modifying
+            var created = _.find(attributes, function (item) {
+                return item.name.toUpperCase() === 'CREATED';
+            });
+            return created && typeof created.value === 'string';
+        }
+
+        function isList(objectType, attribute) {
+            var md = getMetadata(objectType, attribute.name);
+            if (md) {
+                if (md.staticList || md.refs) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // Notes on metadata structure:
         //
         // Example 1
@@ -395,24 +426,55 @@
         //
         //     result = testFunction(objectType, attributes, attribute);
         //
-        var objectMetadata = {
-            domain: {
-                domain: {minOccurs: 1, maxOccurs: 1, primaryKey: true},
-                descr: {},
-                org: {refs: ['organisation']},
-                'admin-c': {minOccurs: 1, refs: ['person', 'role']},
-                'tech-c': {minOccurs: 1, refs: ['person', 'role']},
-                'zone-c': {minOccurs: 1, refs: ['person', 'role']},
-                nserver: {minOccurs: 2},
-                'ds-rdata': {},
-                remarks: {},
-                notify: {},
-                'mnt-by': {minOccurs: 1, refs: ['mntner']},
-                created: {maxOccurs: 1},
-                'last-modified': {minOccurs: 0, maxOccurs: 1},
-                source: {minOccurs: 1, maxOccurs: 1}
-            },
-            prefix: {
+        var objectMetadata = makeObjectMetadata();
+
+        function convertMeta(obj) {
+            var newObj = {};
+
+            for (var key in obj) {
+                if (!obj.hasOwnProperty(key)) {
+                    continue;
+                }
+                var o = obj[key];
+                var n = {};
+
+                for (var i = 0; i < o.attributes.length; i++) {
+                    var a = o.attributes[i];
+                    var p = {};
+                    if (a.primaryKey) {
+                        p.primaryKey = a.primaryKey;
+                        p.maxOccurs = 1;
+                        p.minOccurs = 1;
+                    }
+                    if (a.mandatory) {
+                        p.minOccurs = 1;
+                    }
+                    if (!a.multiple) {
+                        p.maxOccurs = 1;
+                    }
+                    if (a.refs && a.refs.length > 0) {
+                        p.refs = a.refs;
+                    }
+                    if (a.searchable) {
+                        p.searchable = a.searchable;
+                    }
+                    if (a.isEnum) {
+                       p.staticList = true;
+                    }
+                    n[a.name] = p;
+                }
+                newObj[key] = n;
+            }
+            return newObj;
+        }
+
+        function makeObjectMetadata() {
+            var metadata = convertMeta(WhoisMetaService._objectTypesMap);
+
+            // add some custom wizard-related attributes hostname
+            metadata.domain.nserver = {minOccurs: 2};
+
+            metadata.prefix = {
                 prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [prefixIsInvalid, domainsAlreadyExist], hidden: {invalid: ['mnt-by']}},
                 descr: {},
                 nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: nserverIsInvalid},
@@ -427,34 +489,26 @@
                 'mnt-by': {minOccurs: 1, refs: ['mntner']},
                 created: {maxOccurs: 1},
                 'last-modified': {minOccurs: 0, maxOccurs: 1},
-                source: {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['mnt-by']}}
-            },
-            inetnum: {
-                inetnum: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [], hidden: {invalid: ['mnt-by']}},
-                netname: {minOccurs: 1, maxOccurs: 1},
-                descr: {},
-                country: {minOccurs: 1},
-                geoloc: {maxOccurs: 1},
-                language: {},
-                org: {maxOccurs: 1, refs: ['ORGANISATION']},
-                'sponsoring-org': {maxOccurs: 1, refs: ['ORGANISATION']},
-                'admin-c': {minOccurs: 1, refs: ['PERSON', 'ROLE']},
-                'tech-c': {minOccurs: 1, refs: ['PERSON', 'ROLE']},
-                status: {minOccurs: 1, maxOccurs: 1},
-                remarks: {},
-                notify: {},
-                'mnt-by': {minOccurs: 1, refs: ['MNTNER']},
-                'mnt-lower': {refs: ['MNTNER']},
-                'mnt-domains': {refs: ['MNTNER']},
-                'mnt-routes': {refs: ['MNTNER']},
-                'mnt-irt': {refs: ['IRT']},
-                created: {maxOccurs: 1},
-                'last-modified': {maxOccurs: 1},
-                source: {minOccurs: 1, maxOccurs: 1}
+                source: {readOnly: true, minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['mnt-by']}}
+            };
 
+            // Here we assume that the basic rules are the same for these attributes
+            var attrs = ['aut-num', 'inetnum', 'inet6num'];
+            for (var a in attrs) {
+              var aName = attrs[a];
+              metadata[aName][aName].invalid = [];
+              metadata[aName][aName].hidden = {invalid: ['mnt-by']};
+              metadata[aName][aName].readOnly = isModifyMode;
+
+              metadata[aName].org.readOnly = true;
+              metadata[aName]['sponsoring-org'].readOnly = true; // TODO: needs to be calculated. also: sponsoring-org and org-type
+              metadata[aName].status.readOnly = isModifyMode;
+              metadata[aName].source.readOnly = isModifyMode;
             }
-        };
+            metadata.inetnum.netname.readOnly = isModifyMode;
+            metadata.inet6num.netname.readOnly = isModifyMode;
 
+            return metadata;
+        }
     }]);
-
 })();

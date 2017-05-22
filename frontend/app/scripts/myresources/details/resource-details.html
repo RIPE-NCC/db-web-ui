@@ -1,34 +1,70 @@
-<!--<button type="button" class="grey-button pull-right" ng-click="resourceDetails.backToMyResources()"><i class="fa fa-chevron-left"></i> Back to my resources</button>-->
-<hierarchy-selector class="pull-right"
-  resource="resourceDetails.resource"
-  sponsored="resourceDetails.sponsored"
-  ng-if="resourceDetails.resource">
-</hierarchy-selector>
-<h1><name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource" type="resourceDetails.resource.type"></name-formatter></h1>
-<div class="flags-container" style="margin-bottom: 2em">
-    <!-- TODO tooltip doesn't work here -->
-    <flag class="grey" tooltip="Status" ng-repeat="f in resourceDetails.flags" text="f"></flag>
+<div class="row">
+    <div class="col-md-12">
+        <div class="pull-right" ng-cloak>
+            <org-drop-down/>
+        </div>
+    </div>
 </div>
-<usage-status></usage-status>
-<div class="clearfix"></div>
-<h2>Object in RIPE Database</h2>
-<whois-object-viewer ng-model="resourceDetails.details" ng-if="resourceDetails.details" update-clicked="resourceDetails.showObjectEditor()"></whois-object-viewer>
 
-<section ng-if="resourceDetails.canHaveMoreSpecifics">
+<section class="resource-intro">
+    <h1><name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource" type="resourceDetails.resource.type"></name-formatter></h1>
+    <div class="flags-container">
+        <flag class="grey" tooltip="{{f.type}}" ng-repeat="f in resourceDetails.flags" text="f.value"></flag>
+    </div>
+</section>
+<section class="back-to-my-resources">
+    <hierarchy-selector
+            resource="resourceDetails.resource"
+            sponsored="resourceDetails.sponsored"
+            ng-if="resourceDetails.resource">
+    </hierarchy-selector>
+</section>
+<usage-status resource="resourceDetails.resource"></usage-status>
+
+<section class="db-object">
+    <h2>Object in RIPE Database</h2>
+    <div class="alert alert-danger" ng-if="resourceDetails.errors.length">
+        <p ng-repeat="error in resourceDetails.errors">
+            <span ng-bind-html="error"></span>
+        </p>
+    </div>
+    <div class="alert alert-success" ng-if="resourceDetails.successes.length">
+        <p ng-repeat="success in resourceDetails.successes">
+            <span ng-bind-html="success"></span>
+        </p>
+    </div>
+    <div class="alert alert-warning" ng-if="resourceDetails.warnings.length">
+        <p ng-repeat="warning in resourceDetails.warnings">
+            <span ng-bind-html="warning"></span>
+        </p>
+    </div>
+    <div class="alert alert-info" ng-if="resourceDetails.infos.length">
+        <p ng-repeat="info in resourceDetails.infos">
+            <span ng-bind-html="info"></span>
+        </p>
+    </div>
+    <whois-object-viewer ng-model="resourceDetails.details" ng-if="resourceDetails.details && !resourceDetails.isEditing"
+                         update-clicked="resourceDetails.showObjectEditor()"></whois-object-viewer>
+    <maintainers-editor ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing" authentication-failed-clbk="resourceDetails.hideObjectEditor()"></maintainers-editor>
+    <whois-object-editor2 ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing"
+                          cancel-clicked="resourceDetails.hideObjectEditor()" update-clicked="resourceDetails.updateButtonClicked()"></whois-object-editor2>
+</section>
+
+<section class="more-specifics" ng-if="resourceDetails.canHaveMoreSpecifics">
     <h2>More specifics</h2>
     <div class="prefix-filter"
          ng-if="::resourceDetails.moreSpecifics.resources.length">
         <div class="input-group">
             <input type="text"
-                   name="ipFilter"
+                   id="ipFilter"
                    class="form-control"
                    placeholder="Search for prefix"
                    ng-model="resourceDetails.ipFilter"
                    ng-change="resourceDetails.applyFilter()">
-            <span class="input-group-btn">
+            <span class="input-group-btn" ng-hide="!resourceDetails.ipFilter">
                 <button type="button"
-                        class="btn btn-default"
-                        ng-disabled="!resourceDetails.ipFilter"
+                        class="btn"
+                        id="clearButton"
                         ng-click="resourceDetails.ipFilter = ''; resourceDetails.applyFilter();">
                     <span class="fa fa-times"></span>
                   </button>
@@ -36,6 +72,9 @@
         </div>
         <span ng-if="resourceDetails.ipFilter" style="float: right">
             Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}
+        </span>
+        <span ng-if="resourceDetails.ipFilter === null || resourceDetails.ipFilter === ''" style="float: right">
+            Total number {{resourceDetails.moreSpecifics.totalNumberOfResources}}
         </span>
     </div>
     <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
@@ -54,7 +93,7 @@
             </a></td>
             <td>{{ resource.status }}</td>
             <td>{{ resource.netname }}</td>
-            <td>{{ (resource.usage.used / resource.usage.total)*100 | number:1}}%</td>
+            <td>{{ (resource.usage.used / resource.usage.total)*100 | number:0}}%</td>
         </tr>
         </tbody>
     </table>

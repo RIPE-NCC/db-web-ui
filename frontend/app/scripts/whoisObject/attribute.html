@@ -1,0 +1,34 @@
+<label>{{attribute.name}}</label>
+<div class="text-error" ng-if="attribute.$$error">
+    <span ng-bind-html="attribute.$$error"></span>
+</div>
+<div class="text-info" ng-if="attribute.$$info">
+    <span ng-bind-html="attribute.$$info"></span>
+</div>
+<div class="text-success" ng-if="attribute.$$success">{{ attribute.$$success }}</div>
+
+<!-- This is for not enums -->
+<input ng-if="!isStaticList(objectType, attribute) ||  attribute.name === 'status'"
+    type="text"
+    name="{{attribute.name + '$' + idx}}"
+    class="form-control"
+    placeholder="{{getAttributeShortDescription(attribute.name)}}"
+    autocomplete="off"
+    ng-model="attribute.value"
+    ng-required="{{attribute.$$meta.$$mandatory}}"
+    ng-disabled="attribute.$$disable || restCallInProgress"
+    ng-change="valueChanged(objectType, attributes, attribute)"
+    uib-typeahead="val.key as val.readableName for val in autocompleteList(objectType, attributes, attribute, $viewValue)"
+    typeahead-min-length="2"
+>
+<!-- This is for enums -->
+<ui-select ng-if="isStaticList(objectType, attribute) && attribute.name !== 'status'"
+        name="{{attribute.name}}"
+        ng-model="attribute.value"
+        ng-disabled="attribute.$$disable"
+        theme="bootstrap">
+ <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
+ <ui-select-choices repeat="item.key as item in staticList(objectType, attribute) | filter: $select.search">
+     <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
+ </ui-select-choices>
+</ui-select>

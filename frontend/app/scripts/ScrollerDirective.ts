@@ -19,8 +19,10 @@ class ScrollerDirective implements angular.IDirective {
      *
      * @type {{almostOnScreen: string}}
      */
-    public scope = {almostOnScreen: "&scroller"};
-    public templateUrl = "scripts/scroller-directive.html";
+    public scope = {
+        almostOnScreen: "&scroller",
+    };
+    public templateUrl = "scripts/loading-indicator.html";
 
     constructor(private $document: angular.IDocumentService) {
     }

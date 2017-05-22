@@ -23,10 +23,7 @@
                         <a class="menuItem" ng-class="{current: menu.activeUrl === '/select'}" href="#/webupdates/select">Create an object</a>
                     </li>
                     <li ng-if="menu.shouldDisplayMyResources">
-                        <a class="menuItem" ng-class="{current: menu.activeUrl === '/myresources/overview'}" href="#/webupdates/myresources/overview?type=inetnum">My Resources</a>
-                    </li>
-                    <li>
-                        <a class="menuItem" href="/crypt/crypt.html">Password Generator</a>
+                        <a class="menuItem" ng-class="{current: menu.activeUrl.startsWith('/myresources/')}" href="#/webupdates/myresources/overview?type=inetnum">My Resources</a>
                     </li>
                 </ul>
             </li>

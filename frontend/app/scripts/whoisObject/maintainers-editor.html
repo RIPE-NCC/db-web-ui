@@ -1,0 +1,43 @@
+<section class="maintainer-fields">
+    <strong>Please enter the maintainers you would like to use as mnt-by</strong>
+    <article class="maintainer-icons">
+        <span class="fa fa-search maintainer-search-icon"></span>
+        <a class="btn btn-default ga-help-attr maintainer-help"
+           ng-click="$ctrl.isMntHelpShown = !$ctrl.isMntHelpShown">
+            <span class="fa fa-question"></span>
+        </a>
+    </article>
+    <ui-select id="selectMaintainerDropdown"
+               multiple
+               theme="bootstrap"
+               ng-model="$ctrl.mntners.object"
+               close-on-select="true"
+               on-select="$ctrl.onMntnerAdded($item, $model)"
+               on-remove="$ctrl.onMntnerRemoved($item, $model)"
+               ng-disabled="$ctrl.isLirObject()">
+
+        <ui-select-match ui-lock-choice="$ctrl.isModifyWithSingleMntnerRemaining() || !$ctrl.isRemovable($item.key) || $ctrl.isLirObject()" placeholder="Type maintainer name">
+            {{ $item.key }}
+            <span class="fa fa-star" ng-if="$item.mine"></span>
+            <span class="fa fa-lock" ng-if="!$ctrl.isRemovable($item.key) || $ctrl.isLirObject()"></span>
+        </ui-select-match>
+        <ui-select-choices repeat="mntner in $ctrl.mntners.alternatives track by mntner.key"
+                           refresh="$ctrl.mntnerAutocomplete($select.search)"
+                           refresh-delay="100">
+            <div class="option">
+                <span class="title">{{ mntner.key }}</span>
+                <span class="star fa fa-star" ng-if="mntner.$$isMine"></span>
+                <span class="auth sso" ng-if="$ctrl.hasSSo(mntner)"> SSO </span>
+                <span class="auth pgp" ng-if="$ctrl.hasPgp(mntner)"> PGP </span>
+                <span class="auth md5" ng-if="$ctrl.hasMd5(mntner)"> MD5 </span>
+            </div>
+        </ui-select-choices>
+    </ui-select>
+    <div uib-collapse="!$ctrl.isMntHelpShown" class="text field-description">
+        <strong>Description</strong><br>
+        <attr-info object-type="mntner" description="mnt-by"></attr-info>
+        <br>
+        <strong>Syntax</strong><br>
+        <attr-info object-type="mntner" syntax="mnt-by"></attr-info>
+    </div>
+</section>

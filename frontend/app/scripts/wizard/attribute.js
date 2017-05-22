@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp'
-    ).controller('AttributeCtrl', ['$scope', '$sce', 'AttributeMetadataService', 'WhoisMetaService', 'CharsetTools', 'RestService',
-        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService) {
+    angular.module('dbWebApp').controller('AttributeCtrl', ['$scope', '$sce', 'AttributeMetadataService', 'WhoisMetaService',
+                 'CharsetTools', 'RestService', 'EnumService', 'ModalService',
+        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService, EnumService, ModalService) {
 
             /*
              * $scope variables we can see because they're bound by our directive: attributeRenderer
@@ -36,21 +36,38 @@
              */
             $scope.canBeAdded = canBeAdded;
 
+            $scope.canAddExtraAttributes = canAddExtraAttributes;
+
             $scope.canBeRemoved = canBeRemoved;
 
-            $scope.referenceAutocomplete = referenceAutocomplete;
+            $scope.autocompleteList = autocompleteList;
+            $scope.staticList = staticList;
+            $scope.displayEnumValue = displayEnumValue;
+
+            $scope.isStaticList = function(objectType, attribute) {
+                return AttributeMetadataService.getMetadata(objectType, attribute.name).staticList;
+            }
 
             $scope.duplicateAttribute = function (objectType, attributes, attribute) {
                 if (canBeAdded(objectType, attributes, attribute)) {
-                    var foundIdx = _.findIndex(attributes, function (attr) {
-                        return attr.name === attribute.name && attr.value === attribute.value;
-                    });
-                    if (foundIdx > -1) {
-                        attributes.splice(foundIdx + 1, 0, {name: attribute.name});
-                        AttributeMetadataService.enrich(objectType, attributes);
-                    }
+                    addAttr(attributes, attribute, attribute.name);
                 }
             };
+
+            $scope.displayAddAttributeDialog = function (objectType, attributes, attribute) {
+                var addableAttributes = [];
+                for (var attributeName in AttributeMetadataService.getAllMetadata(objectType)) {
+                    var metadata = AttributeMetadataService.getMetadata(objectType, attributeName);
+                    if (!metadata.readOnly && !metadata.maxOccurs) {
+                        addableAttributes.push({name:attributeName});
+                    }
+                }
+
+                ModalService.openAddAttributeModal(addableAttributes)
+                    .then(function (selectedItem) {
+                        addAttr(attributes, attribute, selectedItem.name);
+                    });
+            }
 
             $scope.removeAttribute = function (objectType, attributes, attribute) {
                 if (canBeRemoved(objectType, attributes, attribute)) {
@@ -72,24 +89,61 @@
                 return WhoisMetaService.getAttributeShortDescription($scope.objectType, name);
             };
 
+            $scope.attribute.isList = function () {
+              return AttributeMetadataService.isList($scope.objectType, $scope.attribute);
+            };
+
             /*
              * Local functions
              */
+
+            function addAttr(attributes, attribute, attributeName) {
+                var foundIdx = _.findIndex(attributes, function (attr) {
+                    return attr.name === attribute.name && attr.value === attribute.value;
+                });
+                if (foundIdx > -1) {
+                    attributes.splice(foundIdx + 1, 0, {name: attributeName});
+                    AttributeMetadataService.enrich(objectType, attributes);
+                }
+            }
+
             function valueChanged(objectType, attributes) {
                 AttributeMetadataService.enrich(objectType, attributes);
             }
 
-            function referenceAutocomplete(attribute, userInput) {
-                var attrName = attribute.name;
-                var refs = AttributeMetadataService.getMetadata($scope.objectType, $scope.attribute.name).refs;
-                if (!refs) {
-                    return [];
+            function autocompleteList(objectType, attributes, attribute, userInput) {
+                if (attribute.name === 'status') {
+                  // special treatment of the status, it need to react on the changes in parent attribute
+                    return statusAutoCompleteList(objectType, attributes, attribute, userInput);
                 }
+                var metadata = AttributeMetadataService.getMetadata(objectType, attribute.name);
+                if (metadata.refs) {
+                  return refsAutocomplete(attribute, userInput, metadata.refs);
+                }
+                return [];
+            }
+
+            function displayEnumValue(item) {
+                if (item.key === item.value) {
+                    return item.key;
+                }
+                return item.value + ' [' + item.key.toUpperCase() + ']';
+            }
+
+            function staticList(objectType, attribute) {
+                var metadata = AttributeMetadataService.getMetadata(objectType, attribute.name);
+                if (metadata.staticList) {
+                    return EnumService.get($scope.objectType, attribute.name);
+                }
+                return [];
+            }
+
+            function refsAutocomplete(attribute, userInput, refs) {
                 var utf8Substituted = warnForNonSubstitutableUtf8(attribute, userInput);
                 if (utf8Substituted && isServerLookupKey(refs)) {
                     return RestService.autocompleteAdvanced(userInput, refs).then(
                         function (resp) {
-                            return addNiceAutocompleteName(filterBasedOnAttr(resp, attrName), attrName);
+                            return addNiceAutocompleteName(filterBasedOnAttr(resp, attribute.name), attribute.name);
                         },
                         function () {
                             // autocomplete error
@@ -99,6 +153,14 @@
                     // No suggestions since not a reference
                     return [];
                 }
+            }
+
+            // special case of 'status' attribute
+            $scope.attribute.$$statusOptionList = [];
+            function statusAutoCompleteList(objectType, attributes, attribute, userInput) {
+                // TODO Add all the parent-child stuff here
+                $scope.attribute.$$statusOptionList = EnumService.get(objectType, attribute.name);
+                return $scope.attribute.$$statusOptionList;
             }
 
             function isServerLookupKey(refs) {
@@ -161,6 +223,10 @@
                 });
             }
 
+            function canAddExtraAttributes(objectType) {
+                return objectType.toUpperCase() != 'PREFIX';
+            }
+
             function canBeAdded(objectType, attributes, attribute) {
                 if (attribute.name === 'reverse-zone') {
                     return false;
@@ -180,6 +246,10 @@
             }
 
             function canBeRemoved(objectType, attributes, attribute) {
+                var metadata = AttributeMetadataService.getMetadata(objectType, attribute.name);
+                if (metadata.readOnly) {
+                  return false;
+                }
                 var cardinality = AttributeMetadataService.getCardinality(objectType, attribute.name);
                 // check if there's a limit
                 if (cardinality.minOccurs < 1) {

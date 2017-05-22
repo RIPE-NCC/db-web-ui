@@ -1,0 +1,9 @@
+<div ng-show="orgDropDown.hasLirs()">
+    <ui-select id="organisation-selector" ng-model="orgDropDown.selectedOrg" theme="select2" on-select="orgDropDown.organisationSelected()">
+        <ui-select-match>{{$select.selected.orgName}}</ui-select-match>
+        <ui-select-choices repeat="org in orgDropDown.organisations | filter: $select.search">
+            <div ng-bind-html="org.orgName | highlight: $select.search"></div>
+            <small ng-bind-html="org.regId | highlight: $select.search"></small>
+        </ui-select-choices>
+    </ui-select>
+</div>

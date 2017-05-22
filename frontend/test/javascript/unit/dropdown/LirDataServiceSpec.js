@@ -1,16 +1,16 @@
 /*global afterEach,beforeEach,describe,expect,inject,it*/
 'use strict';
 
-describe('OrgDropDownDataService', function () {
+describe('LirDataService', function () {
 
     beforeEach(module('dbWebApp'));
 
     var $httpBackend;
     var service;
 
-    beforeEach(inject(function (_OrgDropDownDataService_, _$httpBackend_) {
+    beforeEach(inject(function (_LirDataService_, _$httpBackend_) {
         $httpBackend = _$httpBackend_;
-        service = _OrgDropDownDataService_;
+        service = _LirDataService_;
 
         $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.flush();

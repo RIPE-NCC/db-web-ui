@@ -1,5 +1,5 @@
 {
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&page=0&type=inetnum": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=inetnum": {
     "data": {
       "sponsoringOrgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -258,7 +258,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&page=0&type=inet6num": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=inet6num": {
     "data": {
       "sponsoringOrgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -295,7 +295,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&page=0&type=aut-num": {
+  "api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=aut-num": {
     "data": {
       "sponsoringOrgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -314,7 +314,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&page=0&type=inetnum": {
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inetnum": {
     "data": {
       "orgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -345,7 +345,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&page=0&type=inet6num": {
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inet6num": {
     "data": {
       "orgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -364,7 +364,7 @@
       ]
     }
   },
-  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&page=0&type=aut-num": {
+  "api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=aut-num": {
     "data": {
       "orgId": "ORG-Sb3-RIPE",
       "resources": [
@@ -426,7 +426,7 @@
           {
             "membershipId": 7347,
             "regId": "zz.example",
-            "organisationname": "Internet Provider BV",
+            "organisationname": "zzInternet Provider BV",
             "serviceLevel": "NORMAL",
             "orgId": "ORG-EIP1-RIPE",
             "billingPhase": 0
@@ -6692,6 +6692,22 @@
       }
     ]
   },
+  "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TPOL888-MNT" : {
+    "data" : [
+      {
+        "key": "RIPE-NCC-HM-MNT",
+        "type": "mntner",
+        "auth": [
+            "MD5-PW",
+            "SSO",
+            "SSO",
+            "SSO",
+            "SSO",
+            "PGPKEY-0E3AEA10"
+          ]
+      }
+    ]
+  },
   "api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255/more-specifics.json?filter=&page=0": {
     "data": {
       "resources": [
@@ -6699,18 +6715,48 @@
           "resource": "192.87.0.0 - 192.87.0.255",
           "status": "LEGACY",
           "type": "inetnum",
-          "netname": "SNET-HOMELAN"
+          "netname": "SNET-HOMELAN",
+          "usage": {
+            "total": 608,
+            "used": 608,
+            "blockSize": 32
+          }
         },
         {
           "resource": "192.87.1.0 - 192.87.1.255",
           "status": "LEGACY",
           "type": "inetnum",
-          "netname": "NFRA"
+          "netname": "NFRA",
+          "usage": {
+            "total": 608,
+            "used": 608,
+            "blockSize": 32
+          }
         }
       ]
     }
   },
-  "api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json?page=0": {
+  "api/whois-internal/api/resources/inetnum/192.87.0.0 - 192.87.255.255": {
+      "data": {
+          "resources": [
+              {
+                  "resource": "192.87.0.0 - 192.87.255.255",
+                  "status": "ALLOCATED PA",
+                  "type": "inetnum",
+                  "netname": "NL-SURFNET-950612",
+                  "usage": {
+                      "total": 65536,
+                      "used": 33096,
+                      "blockSize": 32
+                  }
+              }
+          ],
+          "totalNumberOfResources": 1,
+          "filteredSize": 1,
+          "pageSize": 1
+      }
+  },
+  "api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json?filter=&page=0": {
     "data": {
       "resources": [
         {
@@ -6727,6 +6773,21 @@
         }
       ]
     }
+  },
+  "api/whois-internal/api/resources/inet6num/2001:7f8::/29": {
+    "data": {
+        "resources": [
+        ],
+        "totalNumberOfResources": 0,
+        "filteredSize": 0,
+        "pageSize": 0
+    }
+  },
+  "api/whois/hierarchy/parents-of?key=192.87.0.0+-+192.87.255.255&org=ORG-Sb3-RIPE&type=inetnum": {
+      "data": []
+  },
+  "api/whois/hierarchy/parents-of?key=2001:7f8::%2F29&org=ORG-Sb3-RIPE&type=inet6num": {
+    "data": []
   },
   "api/whois/RIPE/inetnum/192.87.0.0 - 192.87.255.255": {
     "data": {
@@ -6871,6 +6932,145 @@
         "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
       }
     }
+  },
+  "api/whois/RIPE/inetnum/192.87.0.0 - 192.87.255.255?unfiltered=true&unformatted=false": {
+      "data": {
+          "service": {
+              "name": "search"
+          },
+          "parameters": {
+              "inverse-lookup": {},
+              "type-filters": {
+                  "type-filter": [{
+                      "id": "inetnum"
+                  }]
+              },
+              "flags": {
+                  "flag": [{
+                      "value": "no-referenced"
+                  }]
+              },
+              "query-strings": {
+                  "query-string": [{
+                      "value": "185.1.76.0 - 185.1.79.255"
+                  }]
+              },
+              "sources": {}
+          },
+          "objects": {
+              "object": [{
+                  "type": "inetnum",
+                  "link": {
+                      "type": "locator",
+                      "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/192.87.0.0 - 192.87.255.255"
+                  },
+                  "source": {
+                      "id": "ripe"
+                  },
+                  "primary-key": {
+                      "attribute": [{
+                          "name": "inetnum",
+                          "value": "192.87.0.0 - 192.87.255.255"
+                      }]
+                  },
+                  "attributes": {
+                      "attribute": [{
+                          "name": "inetnum",
+                          "value": "192.87.0.0 - 192.87.255.255"
+                      }, {
+                          "name": "netname",
+                          "value": "NL-SURFNET-20030715"
+                      }, {
+                          "name": "descr",
+                          "value": "SURFnet bv"
+                      }, {
+                          "name": "country",
+                          "value": "NO"
+                      }, {
+                          "link": {
+                              "type": "locator",
+                              "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+                          },
+                          "name": "org",
+                          "value": "ORG-Sb3-RIPE",
+                          "referenced-type": "organisation"
+                      }, {
+                          "link": {
+                              "type": "locator",
+                              "href": "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
+                          },
+                          "name": "admin-c",
+                          "value": "SNS1-RIPE",
+                          "referenced-type": "role"
+                      }, {
+                          "link": {
+                              "type": "locator",
+                              "href": "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
+                          },
+                          "name": "tech-c",
+                          "value": "SNS1-RIPE",
+                          "referenced-type": "role"
+                      }, {
+                          "name": "status",
+                          "value": "LEGACY"
+                      }, {
+                          "name": "remarks",
+                          "value": "For information on \"status:\" attribute read https://www.ripe.net/data-tools/db/faq/faq-status-values-legacy-resources"
+                      }, {
+                          "link": {
+                              "type": "locator",
+                              "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ABC-NOC"
+                          },
+                          "name": "mnt-by",
+                          "value": "ABC-NOC",
+                          "referenced-type": "mntner"
+                      }, {
+                          "link": {
+                              "type": "locator",
+                              "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/SN-LIR-MNT"
+                          },
+                          "name": "mnt-lower",
+                          "value": "SN-LIR-MNT",
+                          "referenced-type": "mntner"
+                      }, {
+                          "link": {
+                              "type": "locator",
+                              "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS1103-MNT"
+                          },
+                          "name": "mnt-routes",
+                          "value": "AS1103-MNT",
+                          "referenced-type": "mntner"
+                      }, {
+                          "link": {
+                              "type": "locator",
+                              "href": "http://rest-prepdev.db.ripe.net/ripe/irt/irt-SURFcert"
+                          },
+                          "name": "mnt-irt",
+                          "value": "irt-SURFcert",
+                          "referenced-type": "irt"
+                      }, {
+                          "name": "created",
+                          "value": "2003-07-15T11:56:58Z"
+                      }, {
+                          "name": "last-modified",
+                          "value": "2017-05-04T15:41:37Z"
+                      }, {
+                          "name": "source",
+                          "value": "RIPE"
+                      }]
+                  },
+                  "tags": {
+                      "tag": [{
+                          "id": "RIPE-REGISTRY-RESOURCE"
+                      }]
+                  }
+              }]
+          },
+          "terms-and-conditions": {
+              "type": "locator",
+              "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+          }
+      }
   },
   "api/whois/RIPE/inet6num/2001:7f8::/29": {
     "data": {

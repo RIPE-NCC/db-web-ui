@@ -1,7 +1,7 @@
 import IHttpPromise = angular.IHttpPromise;
 import IPromise = angular.IPromise;
 
-class OrgDropDownDataService implements IOrgDropDownDataService {
+class LirDataService implements ILirDataService {
 
     public static $inject = ["$log", "$http"];
 
@@ -32,4 +32,4 @@ class OrgDropDownDataService implements IOrgDropDownDataService {
 
 }
 
-angular.module("dbWebApp").service("OrgDropDownDataService", OrgDropDownDataService);
+angular.module("dbWebApp").service("LirDataService", LirDataService);

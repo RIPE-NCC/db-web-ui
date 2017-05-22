@@ -11,14 +11,14 @@ const AttributeRendererDirective = () => {
         link: (scope: IAttributeRendererDirectiveScope) => {
             // choose the html template dynamically
             if (scope.attribute.name === "reverse-zone") {
-                scope.widgetHtml = "scripts/wizard/attribute-reverse-zones.html";
+                scope.widgetHtml = "scripts/whoisObject/attribute-reverse-zones.html";
             } else {
-                scope.widgetHtml = "scripts/wizard/attribute.html";
+                scope.widgetHtml = "scripts/whoisObject/attribute.html";
             }
         },
         restrict: "E",
         scope: {attributes: "=", attribute: "=", objectType: "=", source: "=", idx: "="},
-        templateUrl: "scripts/wizard/attribute-renderer.html",
+        templateUrl: "scripts/whoisObject/attribute-renderer.html",
     };
 };
 

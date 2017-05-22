@@ -132,9 +132,10 @@ ul.dropdown-menu {
 	@extend %width-100;
 	box-shadow: none !important;
 	border-radius: 0;
-	overflow: scroll;
+	overflow: auto;
 	max-height: 300px;
 	> li {
+		@extend %width-100;
 		margin-bottom: 0 !important;
 		a {
 			border-bottom: 1px solid #EAEAEA !important;
@@ -142,11 +143,10 @@ ul.dropdown-menu {
 			color: #333;
 			padding: 12px;
 		}
-		&.active, &:focus {
+		&:focus, &:last-child {
 			a, a:hover {
-				background: none !important;
-				background-color: #F5FFFF !important;
-				color: #333;
+				color: $white;
+				background: $dark-blue none !important;
 			}
 		}
 	}

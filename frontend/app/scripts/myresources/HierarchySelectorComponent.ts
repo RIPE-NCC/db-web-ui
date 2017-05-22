@@ -10,7 +10,7 @@ class HierarchySelectorController {
 
     public static $inject = ["$scope", "$state", "ResourcesDataService", "UserInfoService"];
 
-    public parents: string[];
+    private parents: string[];
     private resource: IResourceModel;
 
     constructor(private $scope: angular.IScope,
@@ -33,6 +33,7 @@ class HierarchySelectorController {
                     } else {
                         this.parents = parents;
                     }
+                    this.parents.push(this.resource.resource);
                 });
         }
 
@@ -79,7 +80,6 @@ class HierarchySelectorController {
 angular.module("dbWebApp").component("hierarchySelector", {
     bindings: {
         resource: "<",
-        sponsored: "<",
     },
     controller: HierarchySelectorController,
     templateUrl: "scripts/myresources/hierarchy-selector.html",

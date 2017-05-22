@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('updates')
-    .service('UserInfoService', ['$resource', '$q', '$http', '$log', 'OrgDropDownDataService', '$rootScope',
-        function ($resource, $q, $http, $log, orgDropDownDataService, $rootScope) {
+    .service('UserInfoService', ['$resource', '$q', '$http', '$log', 'LirDataService', '$rootScope',
+        function ($resource, $q, $http, $log, lirDataService, $rootScope) {
 
             var _userInfo;
             var _lirs;
@@ -19,7 +19,7 @@ angular.module('updates')
                             _userInfo = result;
                             deferredObject.resolve(result);
 
-                            orgDropDownDataService.getOrgs().then(function(result) {
+                            lirDataService.getOrgs().then(function(result) {
                                 _lirs = result;
 
                                 if (_lirs && _lirs.length > 0) {

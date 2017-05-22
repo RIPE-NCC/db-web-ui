@@ -19,6 +19,6 @@ interface Lir {
     orgId: string;
 }
 
-interface IOrgDropDownDataService {
+interface ILirDataService {
     getOrgs(): IPromise<Organisation[]>;
 }

@@ -12,7 +12,7 @@ describe('My Resources detail for inetnum', function () {
 
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255');
+        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
     });
 
     it('should show whois object attributes', function() {
@@ -46,6 +46,13 @@ describe('My Resources detail for inetnum', function () {
         expect(url).toEqual("https://stat.ripe.net/192.87.0.0%20-%20192.87.255.255?sourceapp=ripedb");
     });
 
+    it('should display address usage', function() {
+        expect(page.usageStatus.isPresent()).toEqual(true);
+        expect(page.usageStatusStatistics.count()).toEqual(2);
+        expect(page.usageStatusStatistics.get(0).getText()).toEqual('51%');
+        expect(page.usageStatusStatistics.get(1).getText()).toEqual('49%');
+    });
+
     it('should list all the more specific resources', function () {
         expect(page.moreSpecificsTable.isPresent()).toEqual(true);
         expect(page.moreSpecificsTableRows.count()).toEqual(2);
@@ -53,10 +60,12 @@ describe('My Resources detail for inetnum', function () {
         expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('192.87.0.0/24');
         expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('LEGACY');
         expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual('SNET-HOMELAN');
+        expect(page.getTableCell(page.moreSpecificsTable, 0, 3).getText()).toEqual('100%');
 
         expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('192.87.1.0/24');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('LEGACY');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('NFRA');
+        expect(page.getTableCell(page.moreSpecificsTable, 1, 3).getText()).toEqual('100%');
     });
 
 });
@@ -67,7 +76,7 @@ describe('My Resources detail for inet6num', function () {
 
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inet6num/2001:7f8::/29');
+        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inet6num/2001:7f8::/29/');
 
     });
 
@@ -113,7 +122,7 @@ describe('My Resources detail for aut-num', function () {
 
     beforeEach(function () {
         browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/aut-num/AS204056');
+        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/aut-num/AS204056/');
 
     });
 

@@ -21,31 +21,27 @@
 }
 // Flags
 flag {
+  > span {
+    @extend %float-l;
+    margin-right: 5px;
+    background-color: #fff;
+    display: inline-block;
+    padding: 0 5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 13px;
+    width: fit-content;
+    position: relative;
+  }
+  &.grey {
     span {
-        @extend %float-l;
-        margin-right: 5px;
-        background-color: #fff;
-        display: inline-block;
-        padding: 0px 5px;
-        text-transform: uppercase;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 13px;
-        border: 1px solid;
+      @extend %grey-flag;
     }
-}
-flag.grey {
+  }
+  &.green {
     span {
-        @extend %grey-flag;
-        width: fit-content;
-        max-width: 150px;
+      @extend %green-flag;
     }
-}
-flag.green {
-    span {
-        @extend %green-flag;
-        width: fit-content;
-        max-width: 150px;
-    }
+  }
 }

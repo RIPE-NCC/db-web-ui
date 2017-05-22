@@ -3,18 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="pull-right" ng-cloak>
-                <div ng-show="resources.organisations && resources.organisations.length == 1">
-                    You are viewing organisation: {{dropdown.selectedOrg.displayName}}
-                </div>
-                <div ng-show="resources.organisations && resources.organisations.length > 1">
-                    <ui-select id="organisation-selector" ng-model="resources.selectedOrg" theme="select2" on-select="resources.organisationSelected()">
-                        <ui-select-match>{{$select.selected.orgName}}</ui-select-match>
-                        <ui-select-choices repeat="org in resources.organisations | filter: $select.search">
-                            <div ng-bind-html="org.orgName | highlight: $select.search"></div>
-                            <small ng-bind-html="org.regId | highlight: $select.search"></small>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
+                <org-drop-down/>
             </div>
         </div>
     </div>
@@ -36,19 +25,31 @@
     <section>
         <uib-tabset class="nav-tabs" active="resources.typeIndex">
             <uib-tab name="ipv4Tab" index="0" heading="IPv4">
+                <loading-indicator class="resource-page-message" ng-if="resources.loading"></loading-indicator>
                 <div class="resource-list" ng-repeat="resource in resources.ipv4Resources">
                     <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
                 </div>
+                <p class="resource-page-message" ng-if="resources.loading === false && resources.ipv4Resources.length === 0">{{resources.reason.toString()}}
+                    <button ng-if="resources.fail" ng-click="resources.refreshPage()" class="fa fa-refresh"></button>
+                </p>
             </uib-tab>
             <uib-tab name="ipv6Tab" index="1" heading="IPv6">
+                <loading-indicator class="resource-page-message" ng-if="resources.loading"></loading-indicator>
                 <div class="resource-list" ng-repeat="resource in resources.ipv6Resources">
                     <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
                 </div>
+                <p class="resource-page-message" ng-if="resources.loading === false && resources.ipv6Resources.length === 0">{{resources.reason.toString()}}
+                    <button ng-if="resources.fail" ng-click="resources.refreshPage()" class="fa fa-refresh"></button>
+                </p>
             </uib-tab>
             <uib-tab name="asnTab" index="2" heading="ASN">
+                <loading-indicator class="resource-page-message" ng-if="resources.loading"></loading-indicator>
                 <div class="resource-list" ng-repeat="resource in resources.asnResources">
                     <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
                 </div>
+                <p class="resource-page-message" ng-if="resources.loading === false && resources.asnResources.length === 0">{{resources.reason.toString()}}
+                    <button ng-if="resources.fail" ng-click="resources.refreshPage()" class="fa fa-refresh"></button>
+                </p>
             </uib-tab>
         </uib-tabset>
     </section>

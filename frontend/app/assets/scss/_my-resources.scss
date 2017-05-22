@@ -33,59 +33,60 @@
 div.resource-list {
     @extend %width-100;
     @extend %float-l;
-}
-
-resource-item {
-    @extend %width-100;
-    @extend %float-l;
-    padding: 16px 10px 0px 0px;
-    cursor: pointer;
-    overflow: auto;
-    p.title {
-        font: {
-            size: 16px;
-            weight: bold;
-        }
-        margin-bottom: 5px;
-        color: $black;
-    }
-    p.org-name {
-        font-size: 12px;
-        font-weight: bold;
-        margin: 0;
-        color: $black;
-    }
-    div.flags-container {
+    resource-item {
         @extend %width-100;
         @extend %float-l;
-        display: inline-block;
-    }
+        padding: 10px;
+        cursor: pointer;
+        p.title {
+            font: {
+                size: 16px;
+                weight: bold;
+            }
+            margin: 0;
+            color: $black;
+        }
+        p.org-name {
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0;
+            color: $black;
+        }
+        div.flags-container {
+            @extend %width-100;
+            @extend %float-l;
+            display: inline-block;
+            margin-top: 5px;
+        }
 
-    div.progressbar-container {
-        @extend div.flags-container;
-        margin-top: 5px;
-    }
-    div.progress {
-        background: $grey none;
-        box-shadow: none;
-        height: 10px;
-        border-radius: 0px;
-    }
-    div.progress-bar {
-        background-image: none;
-        background-color: #44465D !important;
-        box-shadow: none;
-        height: 10px;
-        border-radius: 0px;
-    }
-    &:hover {
-        text-decoration: none;
-        background-color: $grey;
+        div.progressbar-container {
+            @extend div.flags-container;
+            margin-top: 5px;
+        }
         div.progress {
-            background-color: $brd-color;
+            background: $grey none;
+            box-shadow: none;
+            height: 10px;
+            border-radius: 0;
+            margin: 0;
+        }
+        div.progress-bar {
+            background-image: none;
+            background-color: #44465D !important;
+            box-shadow: none;
+            height: 10px;
+            border-radius: 0px;
+        }
+        &:hover {
+            text-decoration: none;
+            background-color: $grey;
+            div.progress {
+                background-color: $brd-color;
+            }
         }
     }
 }
+
 
 
 table.resources > thead > tr {
@@ -104,24 +105,32 @@ ul.attrblock {
     list-style-type: none;
 }
 
-.back-to-my-resources.blue-button {
-    background-color: #eee;
-    color: black;
-    &:hover {
-        background-color: #ddd;
-    }
-}
-
 .prefix-filter {
-    overflow: auto;
+    overflow: hidden;
     margin-bottom: 20px;
     div.input-group {
-        width: 24em;
-        float: left;
+        @extend %float-l;
+        width: 300px;
+        > span.input-group-btn {
+            position: relative;
+            right: 22px;
+            top: 6px;
+            button.btn {
+                background-color: transparent;
+                padding: 0;
+                margin-left: auto;
+                &:focus {
+                    outline: none;
+                }
+                span.fa {
+                    color: $dark-grey-cr;
+                }
+            }
+        }
     }
     p {
+        @extend %float-r;
         line-height: 2;
-        float: right;
     }
 }
 
@@ -160,4 +169,89 @@ usage-status {
             margin-bottom: 0px;
         }
     }
+}
+
+#clearButton.btn {
+    border-radius: 0;
+}
+
+.resource-page-message {
+    margin: 80px 0 12px 0;
+    @extend %float-l;
+    @extend %width-100;
+    text-align: center;
+}
+section.resource-intro {
+    @extend %float-l;
+    width: 70%;
+    > h1 {
+        margin-bottom: 5px;
+        word-wrap: break-word;
+    }
+}
+section.back-to-my-resources {
+    @extend %float-r;
+    display: flex;
+    position: relative;
+    hierarchy-selector {
+        button {
+            margin: 0;
+        }
+        ul.dropdown-list {
+            @extend %float-l;
+            @extend %width-100;
+            @extend %brd;
+            display: none;
+            position: absolute;
+            list-style: none;
+            padding: 0;
+            margin: 5px 0 0 0;
+            li {
+                @extend %float-l;
+                @extend %width-100;
+                margin: 0;
+                a {
+                    @extend %float-l;
+                    @extend %width-100;
+                    @extend %brd-b;
+                    @extend %brd-box;
+                    background-color: #fff;
+                    padding: 5px;
+                    color: #333;
+                    &:hover {
+                        background-color: $grey;
+                        text-decoration: none;
+                    }
+                }
+                &:last-child {
+                    a {
+                        background-color: $light-blue;
+                        color: #fff;
+                        border-bottom: none;
+                    }
+                }
+            }
+        }
+        &.open {
+            button.dropdown-button {
+                background-color: $dark-grey;
+                span.caret {
+                    -ms-transform: rotate(180deg); /* IE 9 */
+                    -webkit-transform: rotate(180deg); /* Chrome, Safari, Opera */
+                    transform: rotate(180deg);
+                }
+            }
+            ul.dropdown-list {
+                display: inline-block;
+            }
+        }
+    }
+}
+section.db-object {
+    @extend %float-l;
+    @extend %width-100;
+}
+section.more-specifics {
+    @extend %float-l;
+    @extend %width-100;
 }
