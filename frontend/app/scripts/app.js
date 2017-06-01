@@ -32,7 +32,8 @@ angular.module('dbWebApp', [
                 .state('notFound', {
                     url: '/public/not-found',
                     templateUrl: 'scripts/views/notFound.html'
-                }).state('oops', {
+                })
+                .state('oops', {
                     url: '/public/oops',
                     templateUrl: 'scripts/views/oops.html'
                 });

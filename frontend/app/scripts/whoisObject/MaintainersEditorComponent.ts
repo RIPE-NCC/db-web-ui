@@ -88,7 +88,7 @@ class MaintainersEditorController {
     public onMntnerRemoved(item: IMntByModel): void {
 
         // don't remove if it's the last one -- just empty it
-        const objectMntBys = _.filter(this.attributes, (attr: IAttributeModel) => {
+        const objectMntBys = this.attributes.filter((attr: IAttributeModel) => {
             return attr.name === "mnt-by";
         });
         if (objectMntBys.length > 1) {
@@ -137,8 +137,8 @@ class MaintainersEditorController {
 
     private performAuthentication(): void {
         const authParams = {
-            failureClbk: () => { this.navigateAway(); },
-            isLirObject: false,
+            failureClbk: () => this.navigateAway(),
+            isLirObject: this.isLirObject(),
             maintainers: this.mntners,
             object: {
                 name: this.objectName,
@@ -146,17 +146,19 @@ class MaintainersEditorController {
                 type: this.objectType,
             },
             operation: this.isModifyMode() ? "Modify" : "Create",
-            successClbk: () => { this.onSuccessfulAuthentication(); },
+            successClbk: () => this.onSuccessfulAuthentication(),
         };
         this.WebUpdatesCommons.performAuthentication(authParams);
     }
 
     private navigateAway(): void {
-        _.each(this.mntners.object, (mnt: any) => {
-            this.onMntnerRemoved(mnt);
-        });
-        this.mntners.object = [];
-        if ( this.authenticationFailedClbk ) {
+        if (!this.isModifyMode()) {
+            for (const mnt of this.mntners.object) {
+                this.onMntnerRemoved(mnt);
+            }
+            this.mntners.object = [];
+        }
+        if (this.authenticationFailedClbk) {
             this.authenticationFailedClbk();
         }
     }
@@ -171,9 +173,9 @@ class MaintainersEditorController {
         if (this.mntners.sso.length > 0) {
             this.mntners.objectOriginal = [];
             // populate ui-select box with sso-mntners
-            this.mntners.object = _.cloneDeep(this.mntners.sso);
+            this.mntners.object = angular.copy(this.mntners.sso);
             // copy mntners to attributes (for later submit)
-            const mntnerAttrs = _.map(this.mntners.sso, (i: IMntByModel) => {
+            const mntnerAttrs = this.mntners.sso.map((i: IMntByModel) => {
                 return {
                     name: "mnt-by",
                     value: i.key,
@@ -289,12 +291,12 @@ class MaintainersEditorController {
 
     private extractEnrichMntnersFromObject(attributes: IAttributeModel[]): IMntByModel[] {
         // get mntners from response
-        const mntnersInObject = _.filter(attributes, (i) => {
+        const mntnersInObject = attributes.filter((i) => {
             return i.name === "mnt-by";
         });
 
         // determine if mntner is mine
-        const selected: IMntByModel[] = _.map(mntnersInObject, (mntnerAttr: {value: string}) => {
+        const selected: IMntByModel[] = mntnersInObject.map((mntnerAttr: {value: string}) => {
             let isMine = false;
             for (const mnt of this.mntners.sso) {
                 if (mnt.key === mntnerAttr.value) {
@@ -312,7 +314,7 @@ class MaintainersEditorController {
     }
 
     private enrichWithMine(mntners: IMntByModel[]) {
-        return _.map(mntners, (mntner) => {
+        return mntners.map((mntner) => {
             // search in selected list
             mntner.mine = !!this.MntnerService.isMntnerOnlist(this.mntners.sso, mntner);
             return mntner;
@@ -320,7 +322,7 @@ class MaintainersEditorController {
     }
 
     private filterAutocompleteMntners(mntners: IMntByModel[]) {
-        return _.filter(mntners, (mntner) => {
+        return mntners.filter((mntner) => {
             return !this.MntnerService.isNccMntner(mntner.key)
                 && !this.MntnerService.isMntnerOnlist(this.mntners.object, mntner);
         });

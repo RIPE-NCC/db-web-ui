@@ -14,7 +14,7 @@ class ResourcesController {
     public asnResources: AsnResourceDetails[] = [];
     public typeIndex = 0;
     public selectedOrg: Organisation; // selection bound to ng-model in widget
-    public loading: boolean; //true until resources are loaded to tabs
+    public loading: boolean; // true until resources are loaded to tabs
     public reason = "No resources found";
     public fail: boolean;
 
@@ -28,7 +28,7 @@ class ResourcesController {
                 private resourcesDataService: ResourcesDataService,
                 private userInfoService: any) {
 
-        this.isShowingSponsored = this.$state.params.sponsored && this.$state.params.sponsored.toString() === "true";
+        this.isShowingSponsored = this.$state.params.sponsored && this.$state.params.sponsored === true;
 
         $scope.$on("selected-lir-changed", () => {
             this.selectedOrg = this.userInfoService.getSelectedLir();
@@ -81,8 +81,9 @@ class ResourcesController {
             this.resourcesDataService.fetchSponsoredIpv4Resources(this.selectedOrg.orgId),
             this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgId),
             this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgId),
-        ]).then( (responses: any[]) => {
-            this.hasSponsoredResources = !(this.empty(responses[3]) && this.empty(responses[4]) && this.empty(responses[5]));
+        ]).then((responses: any[]) => {
+            this.hasSponsoredResources =
+                !(this.empty(responses[3]) && this.empty(responses[4]) && this.empty(responses[5]));
             if (this.hasSponsoredResources && this.isShowingSponsored) {
                 this.ipv4Resources = responses[3].data.resources;
                 this.ipv6Resources = responses[4].data.resources;
@@ -90,23 +91,19 @@ class ResourcesController {
             } else {
                 this.ipv4Resources = responses[0].data.resources;
                 this.ipv6Resources = responses[1].data.resources;
-                this.asnResources  = responses[2].data.resources;
+                this.asnResources = responses[2].data.resources;
             }
             this.loading = false;
-        }, reason => {
+        }, () => {
             this.fail = true;
             this.loading = false;
             this.reason = "There was problem reading resources please try again ";
-            console.log(reason);
         });
 
     }
 
     private empty(response: any): boolean {
-        if (response.data.resources && response.data.resources.length) {
-            return false;
-        }
-        return true;
+        return !(response.data.resources && response.data.resources.length);
     }
 }
 

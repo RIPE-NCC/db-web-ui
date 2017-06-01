@@ -141,12 +141,12 @@ ul.dropdown-menu {
 			border-bottom: 1px solid #EAEAEA !important;
 			background-color: #FFF;
 			color: #333;
-			padding: 12px;
+			padding: 10px 8px;
 		}
-		&:focus, &:last-child {
+		&.active {
 			a, a:hover {
-				color: $white;
-				background: $dark-blue none !important;
+				color: #333;
+				background: #F5FFFF none !important;
 			}
 		}
 	}

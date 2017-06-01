@@ -1,0 +1,171 @@
+{
+    "api/whois/RIPE/inetnum/192.87.0.0%20-%20192.87.255.255?password=TPOL888-MNT": {
+        "data": {
+            "link": {
+                "type": "locator",
+                "href": "http://127.0.0.1:1080/RIPE/inetnum/192.87.0.0%20-%20192.87.255.255"
+            },
+            "objects": {
+                "object": [{
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/192.87.0.0 - 192.87.255.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [{
+                            "name": "inetnum",
+                            "value": "192.87.0.0 - 192.87.255.255"
+                        }]
+                    },
+                    "attributes": {
+                        "attribute": [{
+                            "name": "inetnum",
+                            "value": "192.87.0.0 - 192.87.255.255"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-IOB1-RIPE"
+                            },
+                            "name": "org",
+                            "value": "ORG-IOB1-RIPE",
+                            "referenced-type": "organisation"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/role/IISI1-RIPE"
+                            },
+                            "name": "admin-c",
+                            "value": "IISI1-RIPE",
+                            "referenced-type": "role"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/role/IISI1-RIPE"
+                            },
+                            "name": "tech-c",
+                            "value": "IISI1-RIPE",
+                            "referenced-type": "role"
+                        }, {
+                            "name": "netname",
+                            "value": "NL-IO-20030210"
+                        }, {
+                            "name": "country",
+                            "value": "NL"
+                        }, {
+                            "name": "status",
+                            "value": "ALLOCATED PA"
+                        }, {
+                            "name": "notify",
+                            "value": "******@2is.nl"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                            },
+                            "name": "mnt-by",
+                            "value": "RIPE-NCC-HM-MNT",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/team-green-mnt"
+                            },
+                            "name": "mnt-by",
+                            "value": "team-green-mnt",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/integratedis-mnt"
+                            },
+                            "name": "mnt-lower",
+                            "value": "integratedis-mnt",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/IO-MNT"
+                            },
+                            "name": "mnt-lower",
+                            "value": "IO-MNT",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AA1000-RIPE-MNT"
+                            },
+                            "name": "mnt-lower",
+                            "value": "AA1000-RIPE-MNT",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/rehan-new-mnt"
+                            },
+                            "name": "mnt-lower",
+                            "value": "rehan-new-mnt",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/rehan-mnt"
+                            },
+                            "name": "mnt-lower",
+                            "value": "rehan-mnt",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS8387-RPSL-TEST-MNT"
+                            },
+                            "name": "mnt-lower",
+                            "value": "AS8387-RPSL-TEST-MNT",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/team-green-mnt"
+                            },
+                            "name": "mnt-lower",
+                            "value": "team-green-mnt",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/DAVE-TEST-BE"
+                            },
+                            "name": "mnt-lower",
+                            "value": "DAVE-TEST-BE",
+                            "referenced-type": "mntner"
+                        }, {
+                            "link": {
+                                "type": "locator",
+                                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/INTEGRATEDIS-MNT"
+                            },
+                            "name": "mnt-routes",
+                            "value": "INTEGRATEDIS-MNT",
+                            "referenced-type": "mntner"
+                        }, {
+                            "name": "created",
+                            "value": "2003-02-10T11:27:53Z"
+                        }, {
+                            "name": "last-modified",
+                            "value": "2017-05-19T14:27:37Z"
+                        }, {
+                            "name": "source",
+                            "value": "RIPE"
+                        }]
+                    }
+                }]
+            },
+            "terms-and-conditions": {
+                "type": "locator",
+                "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+            }
+        }
+    }
+}

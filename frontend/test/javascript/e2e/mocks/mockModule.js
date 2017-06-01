@@ -14,10 +14,23 @@ exports.module = function (mockGet) {
                         {'Content-type': 'application/json'}
                     );
                 });
+            Object.keys(mockPut).forEach(
+                function (key) {
+                    $httpBackend.whenPUT(key).respond(
+                        mockPut[key].status || 200,
+                        mockPut[key].data,
+                        {'Content-type': 'application/json'}
+                    );
+                });
             $httpBackend.whenGET(/^api\//).respond(function (method, req) {
                 $log.error('Error caused by missing mock', method, req);
                 return [404, 'Missing mock'];
             });
+            $httpBackend.whenPUT(/^api\//).respond(function (method, req) {
+                $log.error('Error caused by missing mock', method, req);
+                return [404, 'Missing mock'];
+            });
             $httpBackend.whenGET(/.*/).passThrough();
+            $httpBackend.whenPUT(/.*/).passThrough();
         });
 };

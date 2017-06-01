@@ -32,6 +32,13 @@ class ResourceDetailsController {
         transition: boolean;
         viewer: boolean;
     };
+
+    // Shown in alert boxes
+    public errors: string[];
+    public warnings: string[];
+    public infos: string[];
+    public successes: string[];
+
     public showScroller = true;
     public sponsored = false;
     public isEditing = false;
@@ -42,11 +49,7 @@ class ResourceDetailsController {
     private objectType: string;
     private MAGIC = 100; // number of items per page on server
     private filterDebouncer: IPromise<any> = null;
-    private source = "RIPE";
-    private errors: string[];
-    private warnings: string[];
-    private infos: string[];
-    private successes: string[];
+    private source = "RIPE"; // TODO: calculate this value
 
     constructor(private $scope: angular.IScope,
                 private $log: angular.ILogService,
@@ -83,7 +86,7 @@ class ResourceDetailsController {
                         type: this.objectType,
                     };
                     for (const attr of this.details.attributes.attribute) {
-                        var flag = {type: attr.name, value: attr.value};
+                        const flag = {type: attr.name, value: attr.value};
                         if (attr.name === "status") {
                             this.flags.unshift(flag);
                         } else if (attr.name === "netname" || attr.name === "as-name") {
@@ -117,11 +120,15 @@ class ResourceDetailsController {
 
         const attributesWithoutDates = this.details.attributes.attribute
             .filter((attr: IAttributeModel) => attr.name !== "last-modified" && attr.name !== "created");
-        const object = {objects: {object: [{ attributes: { attribute: attributesWithoutDates }}]}};
+        const object = {objects: {object: [{attributes: {attribute: attributesWithoutDates}}]}};
         const pKey = this.details["primary-key"].attribute[0].value;
         this.RestService.modifyObject(this.source, this.objectType, pKey, object, passwords)
-            .then((response: IWhoisResponseModel) => { this.onSubmitSuccess(response); },
-                (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => { this.onSubmitError(response.data); });
+            .then((response: IWhoisResponseModel) => {
+                    this.onSubmitSuccess(response);
+                },
+                (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                    this.onSubmitError(response.data);
+                });
 
         this.$timeout(() => {
             this.show.viewer = !this.show.viewer;
@@ -198,11 +205,13 @@ class ResourceDetailsController {
 
         this.isEditing = false;
 
-        this.successes = ["Your object has been successfully updated."];
         this.loadMessages(whoisResources);
+
+        this.successes = ["Your object has been successfully updated."];
+        this.scroll("db-object");
     }
 
-    private loadMessages(whoisResources: IWhoisResponseModel): void  {
+    private loadMessages(whoisResources: IWhoisResponseModel): void {
         if (!whoisResources.errormessages || !whoisResources.errormessages.errormessage) {
             return;
         }
@@ -230,11 +239,16 @@ class ResourceDetailsController {
 
         this.loadMessages(whoisResources);
 
+        if (this.errors.length === 0) {
+            this.errors = ["Your object NOT updated, please review issues below"];
+        }
+
+        this.scroll("db-object");
     }
 
     private getErrorText(error: IErrorMessageModel): string {
         let idx = 0;
-        return error.text.replace(/%s/g, (match)  => {
+        return error.text.replace(/%s/g, (match) => {
             if (error.args.length - 1 >= idx) {
                 const arg = error.args[idx].value;
                 idx++;
@@ -275,6 +289,10 @@ class ResourceDetailsController {
         this.$timeout(() => {
             this.$scope.$apply();
         }, 10);
+    }
+
+    private scroll(anchor: string): void {
+        this.$anchorScroll(anchor);
     }
 }
 

@@ -109,8 +109,18 @@ IntelliJ Preferences
                         * Language level: 1.8
 * Languages & Frameworks
 	* JavaScript
+	    * Bower
+	        * Bower executable (wherever you installed bower)
+	        * bower.json (specify frontend/bower.json) 
 		* Code Quality Tools
 			* ESLint: Enable
+		* Libraries
+		    * Add... (specify frontend/bower_components/angular/angular.js)
+    * TypeScript
+        * Use TypeScript Service
+* Plugins
+    * Install JetBrains plugins...
+        * AngularJS
 
 Architecture
 ------------

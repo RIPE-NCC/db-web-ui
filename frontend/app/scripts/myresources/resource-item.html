@@ -1,12 +1,12 @@
-<div ng-click="showDetail(item)">
-    <p class="title"><name-formatter name="item.resource" type="item.type"></name-formatter> <span class="fa fa-angle-right pull-right"></span></p>
-    <p class="org-name" ng-if="item.orgName">{{ item.orgName }}</p>
+<div ng-click="ctrlResourceItem.showDetail()">
+    <p class="title"><name-formatter name="ctrlResourceItem.item.resource" type="ctrlResourceItem.item.type"></name-formatter> <span class="fa fa-angle-right pull-right"></span></p>
+    <p class="org-name" ng-if="ctrlResourceItem.item.orgName">{{ ctrlResourceItem.item.orgName }}</p>
     <div class="flags-container">
-        <flag class="grey" text="item.status" tooltip="status"></flag>
-        <flag class="grey" text="item.netname" tooltip="netname"></flag>
-        <flag class="grey" text="item.asname" tooltip="as-name"></flag>
+        <flag class="grey" text="ctrlResourceItem.item.status" tooltip="status"></flag>
+        <flag class="grey" text="ctrlResourceItem.item.netname" tooltip="netname"></flag>
+        <flag class="grey" text="ctrlResourceItem.item.asname" tooltip="as-name"></flag>
     </div>
-    <div ng-if="item.type !== 'aut-num'" class="progressbar-container">
-        <uib-progressbar value="item.usage.used * 100 / item.usage.total | number:1"></uib-progressbar>
+    <div ng-if="ctrlResourceItem.showProgressbar" class="progressbar-container">
+        <uib-progressbar value="ctrlResourceItem.usedPercentage | number:1" tooltip-enable="{{ctrlResourceItem.showProgressbar}}" uib-tooltip="Usage as per RIPE policies: {{ctrlResourceItem.usedPercentage | number:0}}%"></uib-progressbar>
     </div>
 </div>

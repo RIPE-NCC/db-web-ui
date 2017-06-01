@@ -46,7 +46,7 @@
 
             $scope.isStaticList = function(objectType, attribute) {
                 return AttributeMetadataService.getMetadata(objectType, attribute.name).staticList;
-            }
+            };
 
             $scope.duplicateAttribute = function (objectType, attributes, attribute) {
                 if (canBeAdded(objectType, attributes, attribute)) {
@@ -67,7 +67,7 @@
                     .then(function (selectedItem) {
                         addAttr(attributes, attribute, selectedItem.name);
                     });
-            }
+            };
 
             $scope.removeAttribute = function (objectType, attributes, attribute) {
                 if (canBeRemoved(objectType, attributes, attribute)) {
@@ -103,7 +103,7 @@
                 });
                 if (foundIdx > -1) {
                     attributes.splice(foundIdx + 1, 0, {name: attributeName});
-                    AttributeMetadataService.enrich(objectType, attributes);
+                    AttributeMetadataService.enrich($scope.objectType, attributes);
                 }
             }
 
@@ -224,7 +224,7 @@
             }
 
             function canAddExtraAttributes(objectType) {
-                return objectType.toUpperCase() != 'PREFIX';
+                return objectType.toUpperCase() !== 'PREFIX';
             }
 
             function canBeAdded(objectType, attributes, attribute) {

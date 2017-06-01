@@ -70,7 +70,7 @@ module.exports = {
     btnNavigateToCreate: element(by.id('btnNavigateToCreate')),
     btnCreateInTextArea: element(by.id('btnCreateInTextArea')),
     btnSwitchToWebCreate: element(by.id('btnSwitchToWebCreate')),
-    btnUpdateObjectButton: element(by.id('btnUpdateObjectButton')),
+      btnUpdateObjectButton: element(by.id('btnUpdateObjectButton')),
 
     inpOrgName: element(by.id('createForm')).element(by.name('org-name')),
     inpOrganisation: element(by.id('createForm')).element(by.name('organisation')),
@@ -140,6 +140,12 @@ module.exports = {
 
     usageStatus: element(by.css('usage-status')),
     usageStatusStatistics: element(by.css('usage-status')).all(by.css('.box-statistic')),
+
+    // Inline editor
+    inpDescr: element(by.css('whois-object-editor2')).element(by.name('descr$2')),
+    btnSubmitObject: element(by.css('whois-object-editor2')).element(by.css('.blue-button')),
+    successMessage: element(by.css('.alert-success')),
+
 
     getTableCell: function (tableElement, rowIndex, colIndex) {
         return tableElement.element(by.css('tbody')).all(by.css('tr')).get(rowIndex).all(by.css('td')).get(colIndex);

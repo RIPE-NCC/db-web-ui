@@ -69,13 +69,11 @@ public class CrowdTokenFilter implements Filter {
     }
 
     private boolean isStaticResource(HttpServletRequest request) {
-        if (request.getRequestURI().endsWith(".css") ||
+        return (request.getRequestURI().endsWith(".css") ||
             request.getRequestURI().endsWith(".js") ||
+            request.getRequestURI().endsWith(".js.map") ||
             //request.getRequestURI().endsWith(".html") ||
-            request.getRequestURI().endsWith(".png")) {
-            return true;
-        }
-        return false;
+            request.getRequestURI().endsWith(".png"));
     }
 
     private boolean isUnprotectedUrl(HttpServletRequest request) {

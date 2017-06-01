@@ -666,4 +666,3 @@ angular.module('dbWebApp')
         };
 
     }]);
-
