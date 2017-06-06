@@ -1,8 +1,6 @@
 /*global beforeEach, browser, by, describe, expect, it, protractor, require */
 
 // Local requires
-var mockGet = require('./mocks/mocks');
-var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -13,8 +11,6 @@ describe('The domain wizard', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.executeScript('document.body.className += \' notransition\';');
         browser.get(browser.baseUrl + '#/webupdates/wizard/RIPE/domain');
     });
 
@@ -66,7 +62,8 @@ describe('The domain wizard', function () {
 
     it('should show a domain creation form for IPv6 which rejects invalid nameservers', function() {
         page.modalSplashBtn.click();
-
+        //page.scrollIntoView(page.inpPrefix);
+        browser.driver.wait(protractor.until.elementIsVisible(page.inpPrefix));
         page.inpPrefix.sendKeys('2001:db8::/48');
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
 
@@ -108,6 +105,7 @@ describe('The domain wizard', function () {
     it('should show a popup when a prefix is submitted', function() {
 
         page.modalSplashBtn.click();
+        //page.scrollIntoView(page.inpPrefix);
         page.inpPrefix.sendKeys('212.17.110.0/23');
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
 

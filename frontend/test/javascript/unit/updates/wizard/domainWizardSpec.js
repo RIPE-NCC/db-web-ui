@@ -2,7 +2,7 @@
 
 'use strict';
 
-xdescribe('The domain wizard', function () {
+describe('The domain wizard', function () {
 
     var $scope, $state, $stateParams, $httpBackend, $window;
     var MessageStore;
@@ -31,6 +31,7 @@ xdescribe('The domain wizard', function () {
         CredentialsService = _CredentialsService_;
         MntnerService = _MntnerService_;
         ModalService = _ModalService_;
+        $stateParams.objectType = 'domain';
         _PreferenceService_.isTextMode = function () {
             return false;
         };
@@ -48,7 +49,6 @@ xdescribe('The domain wizard', function () {
     });
 
     it('should not crash', function () {
-        $httpBackend.expectGET('api/user/mntners').respond(200);
         $httpBackend.flush();
     });
 

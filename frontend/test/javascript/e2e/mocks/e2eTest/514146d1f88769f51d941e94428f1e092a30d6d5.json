@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "key": "NEWNET-MNT",
+      "type": "mntner",
+      "auth": [
+        "MD5-PW"
+      ]
+    }
+  ],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=NEWNET-MNT"
+}

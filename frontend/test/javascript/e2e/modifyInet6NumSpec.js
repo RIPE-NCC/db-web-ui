@@ -1,6 +1,4 @@
 /*global beforeEach, browser, describe, expect, it*/
-var mockGet = require('./mocks/mocks');
-var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -9,7 +7,6 @@ var page = require('./homePageObject');
 describe('Modifying an inet6num', function () {
 
     'use strict';
-    browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
 
     describe('which is an allocation', function () {
 

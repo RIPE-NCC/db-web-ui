@@ -1,0 +1,14 @@
+{
+  "data": [
+    {
+      "key": "UHUUUU-MNT",
+      "type": "mntner",
+      "auth": [
+        "SSO"
+      ]
+    }
+  ],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=UHUUUU-MNT"
+}

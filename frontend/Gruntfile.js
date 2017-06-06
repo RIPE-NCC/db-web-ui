@@ -11,6 +11,15 @@ var serveStatic = require('serve-static');
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
 
+var prismFilename = function(config, req) {
+    var crypto = require('crypto');
+    // var path = require('path');
+    var shasum = crypto.createHash('sha1');
+    shasum.update(req.url);
+    var digest = shasum.digest('hex');
+    return digest + '.json';
+};
+
 module.exports = function (grunt) {
 
     // Time how long tasks take. Can help when optimizing build times
@@ -23,7 +32,8 @@ module.exports = function (grunt) {
         cdnify: 'grunt-google-cdn',
         configureProxies: 'grunt-connect-proxy',
         protractor: 'grunt-protractor-runner',
-        instrument: 'grunt-istanbul'
+        instrument: 'grunt-istanbul',
+        prism: 'grunt-connect-prism'
     });
 
     // Configurable paths for the application
@@ -109,6 +119,23 @@ module.exports = function (grunt) {
             }
         },
 
+        prism: {
+            options: {
+                host: 'localhost.ripe.net',
+                port: 9002,
+                https: false,
+                mocksPath: './test/javascript/e2e/mocks',
+                useApi: true,
+                mockFilenameGenerator: prismFilename
+            },
+            e2eTest: {
+                options: {
+                    mode: 'mock',
+                    context: '/api'
+                }
+            }
+        },
+
         // The actual grunt server settings
         connect: {
             options: {
@@ -151,6 +178,7 @@ module.exports = function (grunt) {
                     middleware: function (connect) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
+                            require('grunt-connect-prism/middleware'),
                             serveStatic('instrumented'),
                             serveStatic('.tstmp'),
                             serveStatic('.tmp'),
@@ -225,6 +253,14 @@ module.exports = function (grunt) {
                     src: [
                         '.tmp',
                         'instrumented'
+                    ]
+                }]
+            },
+            ts: {
+                files: [{
+                    dot: true,
+                    src: [
+                        '.tstmp'
                     ]
                 }]
             }
@@ -675,36 +711,27 @@ module.exports = function (grunt) {
 
     grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
 
-    grunt.registerTask('e2eapp', 'Sets flag signalling E2E testing to other Grunt tasks', function (target) {
-        grunt.config('grunt.app.e2e', true);
-        if (target === 'mocks') {
-            grunt.config('grunt.app.mocks', true);
-        }
-    });
-
     grunt.registerTask('e2e-test', [
         'clean:server',
-        'e2eapp:mocks',
         'copy:processtags',
         'ts',
         'wiredep',
         'portPick:protractor',
         'concurrent:server',
+        'prism',
         'connect:e2e',
         'protractor:e2e'
     ]);
 
     grunt.registerTask('e2e-coverage', [
         'clean:server',
-        'e2eapp',
         'copy:processtags',
         'ts',
         'wiredep:sass',
         'instrument',
         'compass',
         'portPick:protractor',
-        //'useminPrepare',
-        //'concurrent:dist',
+        'prism',
         'connect:e2e',
         'protractor_coverage:' + e2eLocalOrRemote(),
         'makeReport'
@@ -712,13 +739,13 @@ module.exports = function (grunt) {
 
     grunt.registerTask('e2e-coverage-headless', [
         'clean:server',
-        'e2eapp',
         'copy:processtags',
         'ts',
         'wiredep:sass',
         'instrument',
         'compass',
         'portPick:protractor',
+        'prism',
         'connect:e2e',
         'protractor_coverage:e2eHeadless',
         'makeReport'
@@ -727,12 +754,12 @@ module.exports = function (grunt) {
 
     grunt.registerTask('e2e-no-test', [
         'clean:server',
-        'e2eapp:mocks',
         'copy:processtags',
         'ts',
         'wiredep',
         'portPick:protractor',
         'concurrent:server',
+        'prism',
         'connect:e2e:keepalive'
     ]);
 

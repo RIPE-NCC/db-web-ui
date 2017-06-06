@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "key": "COGENT-HM-MNT",
+      "type": "mntner",
+      "auth": [
+        "MD5-PW",
+        "PGPKEY-A64383E9",
+        "PGPKEY-BBD4123B",
+        "PGPKEY-4C8A9D8D",
+        "PGPKEY-6B6A5097",
+        "PGPKEY-726BD791",
+        "PGPKEY-B3004B9E",
+        "PGPKEY-D3D6B8C4",
+        "PGPKEY-E3BAB9C6"
+      ]
+    }
+  ],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=COGENT-HM-MNT"
+}

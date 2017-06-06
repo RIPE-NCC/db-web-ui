@@ -13,6 +13,7 @@ class ResourceDetailsController {
         "$log",
         "$state",
         "$timeout",
+        "$location",
         "$anchorScroll",
         "CredentialsService",
         "MoreSpecificsService",
@@ -55,6 +56,7 @@ class ResourceDetailsController {
                 private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
                 private $timeout: ng.ITimeoutService,
+                private $location: angular.ILocationService,
                 private $anchorScroll: ng.IAnchorScrollService,
                 private CredentialsService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
@@ -233,16 +235,15 @@ class ResourceDetailsController {
         const attributeErrors = whoisResources.errormessages.errormessage
             .filter((e) => e.attribute);
         attributeErrors.forEach((e) => {
-            const attribute = this.details.attributes.attribute.find((a) => a.name === e.attribute.name);
+            const attribute = this.details.attributes.attribute.find(
+                (a) => a.name === e.attribute.name && a.value === e.attribute.value,
+            );
             attribute.$$error = this.getErrorText(e);
         });
-
         this.loadMessages(whoisResources);
-
         if (this.errors.length === 0) {
             this.errors = ["Your object NOT updated, please review issues below"];
         }
-
         this.scroll("db-object");
     }
 

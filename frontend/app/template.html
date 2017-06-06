@@ -50,7 +50,7 @@
 <body id="visual-portal-wrapper"
       class="template-external_app_template portaltype-externalapplication site-ripe section-manage-ips-and-asns subsection-db subsection-db-webupdates icons-on thumbs-on frontend viewpermission-view userrole-anonymous"
       dir="ltr"
-      data-ng-controller="PageController as page">
+      ng-controller="PageController as page">
 
 <!-- @include _index_app_body_start.html -->
 <header class="header-gradient container-fluid">
@@ -860,8 +860,6 @@
     </div>
 </footer>
 <!-- @include _index_app_javascript.html -->
-<!-- Footer JavaScript placeholder FOOTERMARKER -->
-<!-- @includeif grunt.app.mocks  _index_app_mocks.html -->
-<!-- @includeif grunt.app.e2e _index_app_body_end_e2e.html _index_app_body_end.html -->
+<!-- @include _index_app_body_end.html -->
 </body>
 </html>

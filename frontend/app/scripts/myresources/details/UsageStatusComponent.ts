@@ -16,14 +16,14 @@ class UsageStatusController {
 
     constructor(private $log: angular.ILogService,
                 private myResourcesDataService: IResourcesDataService) {
-        //this.getResource();
     }
 
-    $onChanges(): void {
-        if(this.resource) {
+    public $onChanges(): void {
+        if (this.resource) {
             this.getResource();
         }
     }
+
     private getResource(): void {
         if (this.resource.type.toLowerCase() === "inetnum") {
             this.myResourcesDataService.fetchIpv4Resource(this.resource.resource).then(

@@ -23,12 +23,12 @@
 
 <section id="db-object" class="db-object">
     <h2>Object in RIPE Database</h2>
-    <div class="alert alert-danger" ng-if="resourceDetails.errors.length">
+    <div id="alert-danger" class="alert alert-danger" ng-if="resourceDetails.errors.length">
         <p ng-repeat="error in resourceDetails.errors">
             <span ng-bind-html="error"></span>
         </p>
     </div>
-    <div class="alert alert-success" ng-if="resourceDetails.successes.length">
+    <div id="alert-success" class="alert alert-success" ng-if="resourceDetails.successes.length">
         <p ng-repeat="success in resourceDetails.successes">
             <span ng-bind-html="success"></span>
         </p>
@@ -74,7 +74,7 @@
             Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}
         </span>
         <span ng-if="resourceDetails.ipFilter === null || resourceDetails.ipFilter === ''" style="float: right">
-            Total number {{resourceDetails.moreSpecifics.totalNumberOfResources}}
+            Total number: {{resourceDetails.moreSpecifics.totalNumberOfResources}}
         </span>
     </div>
     <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">

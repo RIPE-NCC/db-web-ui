@@ -1,0 +1,11 @@
+{
+  "data": {
+    "resources": [],
+    "totalNumberOfResources": 0,
+    "filteredSize": 0,
+    "pageSize": 0
+  },
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois-internal/api/resources/inet6num/2001:7f8::/29"
+}

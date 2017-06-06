@@ -14,10 +14,12 @@ interface IWhoisLinkModel {
 
 interface IAttributeModel {
     name: string;
-    value: string;
+    value: string | any;
     link?: IWhoisLinkModel;
     "referenced-type": string;
     $$error: string;
+    $$info: string;
+    $$invalid: boolean;
     comment: string;
 }
 

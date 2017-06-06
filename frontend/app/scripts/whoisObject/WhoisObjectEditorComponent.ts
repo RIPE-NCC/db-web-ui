@@ -1,7 +1,6 @@
 class WhoisObjectEditorController {
 
     public static $inject = [
-        "$log",
         "AttributeMetadataService",
         "CredentialsService",
         "MessageStore",
@@ -13,15 +12,15 @@ class WhoisObjectEditorController {
     public objectName: string;
     public objectType: string;
     public source: string;
-    private attributes: IAttributeModel[];
-    private cancelClicked: () => void;
-    private updateClicked: () => void;
+    public missingMandatoryAttributes: string[] = [];
+
+    public attributes: IAttributeModel[];
+    public cancelClicked: () => void;
+    public updateClicked: (model: IWhoisObjectModel) => void;
 
     private originalAttibutes: IAttributeModel[];
-    private missingMandatoryAttributes: string[];
 
-    constructor(private log: angular.ILogService,
-                private AttributeMetadataService: any,
+    constructor(private AttributeMetadataService: any,
                 private CredentialsService: any,
                 private MessageStore: any,
                 private WhoisDataService: WhoisDataService) {
@@ -65,12 +64,9 @@ class WhoisObjectEditorController {
                 // decorate the object
                 this.AttributeMetadataService.enrich(this.objectType, this.attributes);
 
-                // add warning for the mandatory attributes which are not set
-                const metadata = this.AttributeMetadataService.getAllMetadata(this.objectType);
-
-                // get the attributes that are to be defin according to metadata but are actually not
-                this.missingMandatoryAttributes = this.getMissingMandatoryAttributes(
-                  metadata, this.ngModel.attributes.attribute);
+                // get the mandatory attributes for this object type and warn if they're not in the one we've just got
+                const missingMandatoryAttributes = this.getMissingMandatoryAttributes();
+                this.missingMandatoryAttributes = missingMandatoryAttributes;
 
                 // save object for later diff in display-screen
                 this.MessageStore.add("DIFF", _.cloneDeep(this.attributes));
@@ -83,14 +79,47 @@ class WhoisObjectEditorController {
     }
 
     public btnSubmitClicked() {
-        this.updateClicked();
+        this.removeEmptyAttributes();
+        if (this.updateClicked) {
+            this.updateClicked(this.ngModel);
+        }
     }
 
-    private getMissingMandatoryAttributes(metadata: any, attributes: any[]): string[] {
-      return attributes.filter((a) => {
-        const md = metadata[a.name];
-        return md.minOccurs > 0 && !a.value;
-      }).map((a) => a.name);
+    private removeEmptyAttributes() {
+        // find indexes of empty attributes, highest index first
+        const emptyAttrIndexes = this.attributes.map((attr: IAttributeModel, index: number) => {
+            if (typeof(attr.value) !== "string" || attr.value.trim().length === 0) {
+                return index;
+            }
+            return -1;
+        }).filter((index: number) => {
+            return index > 0;
+        }).reverse();
+
+        // remove the empty attributes
+        for (const i of emptyAttrIndexes) {
+            this.attributes.splice(i, 1);
+        }
+    }
+
+    /**
+     * TODO: port  this to MetadataService
+     * @returns {[string,string,string,string,string]}
+     */
+    private getMissingMandatoryAttributes(): string[] {
+
+        const attrCopy = angular.copy(this.attributes);
+        const shouldHave = this.AttributeMetadataService.determineAttributesForNewObject(this.objectType);
+        const missing: any[] = [];
+        Object.keys(shouldHave).forEach((k: string) => {
+            const found = _.findIndex(attrCopy, (item) => (item.name === shouldHave[k].name));
+            if (found > -1) {
+                attrCopy.splice(found, 1);
+            } else {
+                missing.push(shouldHave[k].name);
+            }
+        });
+        return missing;
     }
 }
 

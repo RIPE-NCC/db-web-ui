@@ -1,6 +1,4 @@
 /*global beforeEach, browser, describe, expect, it, require */
-var mockGet = require('./mocks/mocks');
-var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -11,7 +9,6 @@ describe('Modifying an aut-num', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/aut-num/AS12467');
     });
 

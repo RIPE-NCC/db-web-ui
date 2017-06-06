@@ -1,3 +1,4 @@
+/*global beforeEach, describe, expect, inject, it*/
 'use strict';
 
 describe('updates: Inet6Num ScreenLogicInterceptor', function () {
@@ -11,20 +12,6 @@ describe('updates: Inet6Num ScreenLogicInterceptor', function () {
         whoisResources = WhoisResources;
         interceptor = ScreenLogicInterceptor;
     }));
-
-    afterEach(function() {
-    });
-
-
-    function printAttrs( msg, attrs ) {
-        console.log(
-            msg + ':' + JSON.stringify(
-                _.map(attrs, function(attr) {
-                    return {name: attr.name, value: attr.value};
-                }
-                ))
-        );
-    }
 
     it('should disable org attribute from inet6num when status is ASSIGNED PI', function() {
 

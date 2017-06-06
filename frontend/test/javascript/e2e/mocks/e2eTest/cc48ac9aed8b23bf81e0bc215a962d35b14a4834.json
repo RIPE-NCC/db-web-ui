@@ -1,0 +1,83 @@
+{
+  "data": {
+    "objects": {
+      "object": [
+        {
+          "type": "mntner",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TPOL888-MNT"
+          },
+          "source": {
+            "id": "ripe"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "mntner",
+                "value": "TPOL888-MNT"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "mntner",
+                "value": "TPOL888-MNT"
+              },
+              {
+                "name": "descr",
+                "value": "adf"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/person/DW-RIPE"
+                },
+                "name": "admin-c",
+                "value": "DW-RIPE",
+                "referenced-type": "person"
+              },
+              {
+                "name": "upd-to",
+                "value": "tpolychnia@ripe.net"
+              },
+              {
+                "name": "auth",
+                "value": "SSO tdacruzper@ripe.net"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TPOL888-MNT"
+                },
+                "name": "mnt-by",
+                "value": "TPOL888-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "created",
+                "value": "2015-12-22T11:05:49Z"
+              },
+              {
+                "name": "last-modified",
+                "value": "2015-12-22T11:06:29Z"
+              },
+              {
+                "name": "source",
+                "value": "RIPE"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "type": "locator",
+      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  },
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/RIPE/mntner/TPOL888-MNT?password=TPOL888-MNT&unfiltered=true"
+}

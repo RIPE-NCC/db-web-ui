@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "id": "ORG-WEG1-RIPE",
+      "name": "Wikom Deutsche Telekabel GmbH"
+    },
+    {
+      "id": "ORG-WA56-RIPE",
+      "name": "Rop Gonggrijp"
+    }
+  ],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/ba-apps/organisations"
+}

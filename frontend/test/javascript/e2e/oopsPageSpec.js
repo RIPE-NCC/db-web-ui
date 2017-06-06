@@ -1,12 +1,9 @@
 /*global beforeEach, browser, by, describe, element, expect, require */
-var mockGet = require('./mocks/mocks');
-var mockModule = require('./mocks/mockModule');
 
 describe('Oops page', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
     });
 
     xit('should go to oops page if the request has an error we cannot handle', function () {

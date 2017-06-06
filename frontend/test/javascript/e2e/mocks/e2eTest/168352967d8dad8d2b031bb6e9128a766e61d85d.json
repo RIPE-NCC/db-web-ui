@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "key": "APPELBAUM-MNT",
+      "type": "mntner",
+      "auth": [
+        "MD5-PW",
+        "SSO",
+        "PGPKEY-8736F482",
+        "SSO"
+      ]
+    }
+  ],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=APPELBAUM-MNT"
+}

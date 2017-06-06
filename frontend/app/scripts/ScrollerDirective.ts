@@ -29,7 +29,7 @@ class ScrollerDirective implements angular.IDirective {
 
     public link: angular.IDirectiveLinkFn = (scope: IScrollerDirectiveScope, element: JQuery) => {
         let keepScrolling = true;
-        let to: number;
+        let to: any;
         const handleScroll = () => {
             if (!keepScrolling) {
                 return;

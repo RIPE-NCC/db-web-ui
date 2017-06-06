@@ -1,0 +1,22 @@
+{
+  "data": {
+    "orgId": "ORG-Sb3-RIPE",
+    "resources": [
+      {
+        "type": "INET6NUM",
+        "resource": "2001:610::/32",
+        "status": "ALLOCATED-BY-RIR",
+        "netname": "NL-SURFNET-19990819"
+      },
+      {
+        "type": "INET6NUM",
+        "resource": "2001:67c:6ec::/48",
+        "status": "ASSIGNED PI",
+        "netname": "onweer6"
+      }
+    ]
+  },
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inet6num"
+}

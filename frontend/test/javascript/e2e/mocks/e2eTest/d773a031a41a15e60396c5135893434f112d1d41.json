@@ -1,0 +1,35 @@
+{
+  "data": {
+    "response": {
+      "status": 200,
+      "message": "OK",
+      "pageNumber": 1,
+      "pageSize": 1,
+      "pageCount": 1,
+      "startIndex": 1,
+      "totalSize": 1,
+      "links": [],
+      "results": [
+        {
+          "membershipId": 7347,
+          "regId": "zz.example",
+          "organisationname": "zzInternet Provider BV",
+          "serviceLevel": "NORMAL",
+          "orgId": "ORG-EIP1-RIPE",
+          "billingPhase": 0
+        },
+        {
+          "membershipId": 3629,
+          "regId": "nl.surfnet",
+          "organisationname": "SURFnet bv",
+          "serviceLevel": "NORMAL",
+          "orgId": "ORG-Sb3-RIPE",
+          "billingPhase": 0
+        }
+      ]
+    }
+  },
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/ba-apps/lirs"
+}

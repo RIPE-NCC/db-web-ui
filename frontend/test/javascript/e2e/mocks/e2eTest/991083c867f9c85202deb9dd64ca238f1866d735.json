@@ -1,0 +1,22 @@
+{
+  "data": {
+    "sponsoringOrgId": "ORG-Sb3-RIPE",
+    "resources": [
+      {
+        "type": "AUT_NUM",
+        "resource": "AS3317",
+        "status": "ASSIGNED",
+        "netname": "UNSPECIFIED"
+      },
+      {
+        "type": "AUT_NUM",
+        "resource": "AS1888",
+        "status": "ASSIGNED",
+        "netname": "CWI-NL"
+      }
+    ]
+  },
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois-internal/api/resources?sponsoring-org-id=ORG-Sb3-RIPE&type=aut-num"
+}

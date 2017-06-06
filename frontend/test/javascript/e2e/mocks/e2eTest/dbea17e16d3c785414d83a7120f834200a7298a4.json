@@ -1,0 +1,46 @@
+{
+  "status": 200,
+  "data": [
+    {
+      "mine": true,
+      "auth": [
+        "SSO"
+      ],
+      "type": "mntner",
+      "key": "etchells-mnt"
+    },
+    {
+      "mine": true,
+      "auth": [
+        "MD5-PW",
+        "SSO"
+      ],
+      "type": "mntner",
+      "key": "AS5486-MNT"
+    },
+    {
+      "mine": true,
+      "auth": [
+        "MD5-PW",
+        "SSO",
+        "SSO",
+        "SSO",
+        "SSO"
+      ],
+      "type": "mntner",
+      "key": "AARDALSNETT-MNT"
+    },
+    {
+      "mine": true,
+      "auth": [
+        "MD5-PW",
+        "SSO"
+      ],
+      "type": "mntner",
+      "key": "EU-IBM-NIC-MNT"
+    }
+  ],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/user/mntners"
+}

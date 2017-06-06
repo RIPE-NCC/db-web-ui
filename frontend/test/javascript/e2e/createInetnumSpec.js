@@ -1,8 +1,6 @@
 /*global beforeEach, browser, describe, expect, it, require */
 
 // Local requires
-var mockGet = require('./mocks/mocks');
-var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 /*
@@ -13,7 +11,6 @@ describe('The inetnum editor', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         browser.get(browser.baseUrl);
     });
 

@@ -127,14 +127,14 @@ module.exports = {
     orgSelector: element(by.id('organisation-selector')),
     orgSelectorOptions: element(by.id('organisation-selector')).all(by.css('small')),
 
-    //My resources
+    // My resources
     myResources: element(by.css('.my-resources')),
     myResourcesActiveTabLabel: element(by.css('.my-resources')).element(by.css('.nav-item.active')),
     myResourcesActiveTabContent: element(by.css('.my-resources')).element(by.css('.tab-pane.active')),
     myResourcesActiveTabRows: element(by.css('.my-resources')).element(by.css('.tab-pane.active')).all(by.css('resource-item')),
     btnToggleSponsoredResources: element(by.css('#btn-toggle-sponsored')),
 
-    //More specifics page
+    // More specifics page
     moreSpecificsTable: element(by.css('.table')),
     moreSpecificsTableRows: element(by.css('.table')).element(by.css('tbody')).all(by.css('tr')),
 
@@ -146,10 +146,14 @@ module.exports = {
     btnSubmitObject: element(by.css('whois-object-editor2')).element(by.css('.blue-button')),
     successMessage: element(by.css('.alert-success')),
 
+    btnDuplicateAttribute: function(attribute) {
+        return attribute.element(by.xpath('../../..')).element(by.css('.fa.fa-plus'));
+    },
 
     getTableCell: function (tableElement, rowIndex, colIndex) {
         return tableElement.element(by.css('tbody')).all(by.css('tr')).get(rowIndex).all(by.css('td')).get(colIndex);
     },
+
     getListItem: function (list, index) {
         return list.all(by.css('li')).get(index);
     },

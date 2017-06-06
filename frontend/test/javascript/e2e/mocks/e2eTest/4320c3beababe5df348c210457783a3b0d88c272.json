@@ -1,0 +1,19 @@
+{
+  "data": [
+    {
+      "key": "RIPE-NCC-HM-MNT",
+      "type": "mntner",
+      "auth": [
+        "MD5-PW",
+        "SSO",
+        "SSO",
+        "SSO",
+        "SSO",
+        "PGPKEY-0E3AEA10"
+      ]
+    }
+  ],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TPOL888-MNT"
+}

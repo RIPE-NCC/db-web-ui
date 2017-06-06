@@ -1,0 +1,6 @@
+{
+  "requestUrl": "/api/dns/status?ignore404=true&ns=nsXXX.xs4all.nl&record=110.17.212.in-addr.arpa",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {"code":-1,"ns":"nsXXX.xs4all.nl","message":"Could not resolve nsXXX.xs4all.nl"}
+}

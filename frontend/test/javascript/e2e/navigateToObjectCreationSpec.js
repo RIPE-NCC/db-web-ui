@@ -1,6 +1,4 @@
 /*global by, beforeEach, browser, describe, element, expect, it, require */
-var mockGet = require('./mocks/mocks');
-var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 describe('webupdates homepage', function() {
@@ -8,7 +6,6 @@ describe('webupdates homepage', function() {
     'use strict';
 
     beforeEach(function() {
-        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         browser.get(browser.baseUrl);
         // Noisy logs enabled here...
         // browser.manage().logs().get('browser').then(function(browserLog) {

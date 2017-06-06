@@ -10,11 +10,11 @@ interface IMoreSpecificsApiResult {
 }
 
 interface IMoreSpecificResource {
+    netname: string;
     resource: string;
     status: string;
     type: string;
-    netname: string;
-    usage:IUsage;
+    usage: IUsage;
 }
 
 class MoreSpecificsDataService implements IMoreSpecificsDataService {

@@ -1,0 +1,10 @@
+{
+  "requestUrl": "/api/dns/status?ignore404=true&ns=nsXXX.xs4all.nl&record=0.0.0.0.8.b.d.0.1.0.0.2.ip6.arpa.",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "ns": "nsXXX.xs4all.nl",
+    "code": -1,
+    "message": "Server does not rock"
+  }
+}

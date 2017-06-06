@@ -28,7 +28,8 @@ class ResourcesController {
                 private resourcesDataService: ResourcesDataService,
                 private userInfoService: any) {
 
-        this.isShowingSponsored = this.$state.params.sponsored && this.$state.params.sponsored === true;
+        this.isShowingSponsored = typeof this.$state.params.sponsored === "string" &&
+            this.$state.params.sponsored === "true";
 
         $scope.$on("selected-lir-changed", () => {
             this.selectedOrg = this.userInfoService.getSelectedLir();
@@ -89,6 +90,7 @@ class ResourcesController {
                 this.ipv6Resources = responses[4].data.resources;
                 this.asnResources = responses[5].data.resources;
             } else {
+                this.isShowingSponsored = false;
                 this.ipv4Resources = responses[0].data.resources;
                 this.ipv6Resources = responses[1].data.resources;
                 this.asnResources = responses[2].data.resources;

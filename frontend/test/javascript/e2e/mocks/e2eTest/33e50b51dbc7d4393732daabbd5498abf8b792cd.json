@@ -1,0 +1,6 @@
+{
+  "data": {},
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-WA56-RIPE&page=0&type=inet6num"
+}

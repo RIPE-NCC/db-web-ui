@@ -1,26 +1,9 @@
 /*global beforeEach, browser, describe, expect, it, require */
-var mockGet = require('./mocks/mocks');
-var mockModule = require('./mocks/mockModule');
 var page = require('./homePageObject');
 
 describe('webupdates', function () {
 
     'use strict';
-
-    beforeEach(function () {
-
-        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        //Noisy logs enabled here...
-        // browser.manage().logs().get('browser').then(function (browserLog) {
-        //     //    console.log('LOG ' + require('util').inspect(browserLog));
-        //     browserLog.forEach(function (log) {
-        //         if (log.level.value > 100) {
-        //             //console.log('Browser console error!');
-        //             console.log(log.level.name + ': ' + log.message);
-        //         }
-        //     });
-        // });
-    });
 
     it('should show "force delete" for an inetnum if NOT allocated by RIPE', function () {
         browser.get(browser.baseUrl + '#/webupdates/display/ripe/inetnum/194.219.52.224%20-%20194.219.52.239');

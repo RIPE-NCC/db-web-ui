@@ -1,0 +1,157 @@
+{
+  "status": 200,
+  "data": {
+    "objects": {
+      "object": [
+        {
+          "type": "aut-num",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/ripe/aut-num/AS12467"
+          },
+          "source": {
+            "id": "ripe"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "aut-num",
+                "value": "AS12467"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "aut-num",
+                "value": "AS12467"
+              },
+              {
+                "name": "as-name",
+                "value": "UNSPECIFIED"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-SI89-RIPE"
+                },
+                "name": "org",
+                "value": "ORG-SI89-RIPE",
+                "referenced-type": "organisation"
+              },
+              {
+                "name": "import",
+                "value": "from AS5400 accept ANY"
+              },
+              {
+                "name": "import",
+                "value": "from AS702 accept ANY"
+              },
+              {
+                "name": "export",
+                "value": "to AS5400 announce AS12467"
+              },
+              {
+                "name": "export",
+                "value": "to AS702 announce AS12467"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/SIG20-RIPE"
+                },
+                "name": "admin-c",
+                "value": "SIG20-RIPE",
+                "referenced-type": "role"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/person/MF7462-RIPE"
+                },
+                "name": "tech-c",
+                "value": "MF7462-RIPE",
+                "referenced-type": "person"
+              },
+              {
+                "name": "remarks",
+                "value": "For information on 'status:' attribute read https://www.ripe.net/data-tools/db/faq/faq-status-values-legacy-resources"
+              },
+              {
+                "name": "status",
+                "value": "ASSIGNED"
+              },
+              {
+                "name": "notify",
+                "value": "***@aladdin.com"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+                },
+                "name": "mnt-by",
+                "value": "RIPE-NCC-END-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS5486-MNT"
+                },
+                "name": "mnt-by",
+                "value": "AS5486-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-ALADDIN"
+                },
+                "name": "mnt-routes",
+                "value": "MNT-ALADDIN",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "created",
+                "value": "1970-01-01T00:00:00Z"
+              },
+              {
+                "name": "last-modified",
+                "value": "2015-05-05T04:31:55Z"
+              },
+              {
+                "name": "source",
+                "value": "RIPE"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-AGNS1-RIPE"
+                },
+                "name": "sponsoring-org",
+                "value": "ORG-AGNS1-RIPE",
+                "referenced-type": "organisation"
+              }
+            ]
+          },
+          "tags": {
+            "tag": [
+              {
+                "id": "RIPE-REGISTRY-RESOURCE",
+                "data": null
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "type": "locator",
+      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  },
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/RIPE/aut-num/AS12467?unfiltered=true"
+}

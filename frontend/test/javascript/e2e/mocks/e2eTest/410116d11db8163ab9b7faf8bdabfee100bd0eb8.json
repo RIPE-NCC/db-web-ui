@@ -1,0 +1,104 @@
+{
+  "data": {
+    "objects": {
+      "object": [
+        {
+          "type": "mntner",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-LGI"
+          },
+          "source": {
+            "id": "ripe"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "mntner",
+                "value": "MNT-LGI"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "mntner",
+                "value": "MNT-LGI"
+              },
+              {
+                "name": "auth",
+                "value": "MD5-PW $1$PzPNvtrT$p6WpK/TPcX3fv5MZ23q0h0"
+              },
+              {
+                "name": "auth",
+                "value": "SSO bad@ripe.net"
+              },
+              {
+                "name": "descr",
+                "value": "Liberty Global Maintainer"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                },
+                "name": "admin-c",
+                "value": "LGI-RIPE",
+                "referenced-type": "role"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                },
+                "name": "tech-c",
+                "value": "LGI-RIPE",
+                "referenced-type": "role"
+              },
+              {
+                "name": "upd-to",
+                "value": "***@libertyglobal.com"
+              },
+              {
+                "name": "mnt-nfy",
+                "value": "***@libertyglobal.com"
+              },
+              {
+                "name": "notify",
+                "value": "***@libertyglobal.com"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/MNT-LGI"
+                },
+                "name": "mnt-by",
+                "value": "MNT-LGI",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "created",
+                "value": "2012-07-03T07:43:36Z"
+              },
+              {
+                "name": "last-modified",
+                "value": "2016-11-04T14:36:09Z"
+              },
+              {
+                "name": "source",
+                "value": "RIPE"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "type": "locator",
+      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  },
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/RIPE/mntner/MNT-LGI?password=MNT-LGI&unfiltered=true"
+}

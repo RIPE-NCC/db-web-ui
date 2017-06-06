@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "key": "AA1-RIPE",
+      "type": "person",
+      "person": "Name Removed",
+      "nic-hdl": "AA1-RIPE",
+      "role": null,
+      "abuse-mailbox": []
+    }
+  ],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/autocomplete?from=PERSON&from=ROLE&like=aa1-ripe&select=person&select=nic-hdl&select=role&select=abuse-mailbox&where=person&where=nic-hdl&where=role&where=abuse-mailbox"
+}
