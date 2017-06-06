@@ -197,6 +197,12 @@ class ResourceDetailsController {
         this.warnings = [];
         this.infos = [];
         this.successes = [];
+
+        // explicitly clear errors on fields before submitting the form, should probably be done elsewhere
+        this.details.attributes.attribute.forEach((a) => {
+            a.$$error = "";
+            a.$$invalid = false;
+        });
     }
 
     private onSubmitSuccess(whoisResources: IWhoisResponseModel): void {
