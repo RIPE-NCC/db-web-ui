@@ -15,6 +15,15 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
+// TODO: [ES] bypass() mapping below is very dangerous, and allows direct user access to any whois-internal API with a matching db-web-ui api key.
+//            For example:
+//                  /api/fmp-pub,
+//                  /api/fmp-int,
+//                  /api/user
+//                  /api/resources
+//      We need to replace aribitrary URL access, with explicit mappings for any APIs that we want to allow.
+//
+//
 @RestController
 @RequestMapping("/api/whois-internal")
 public class WhoisInternalProxyController extends ApiController {
