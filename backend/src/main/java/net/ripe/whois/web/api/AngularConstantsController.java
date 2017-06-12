@@ -30,6 +30,7 @@ import static org.terracotta.modules.ehcache.ToolkitInstanceFactoryImpl.LOGGER;
  */
 @RestController
 @RequestMapping("/")
+@SuppressWarnings("UnusedDeclaration")
 public class AngularConstantsController {
 
     @Value("${spring.profiles.active}")

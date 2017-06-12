@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/rest")
+@SuppressWarnings("UnusedDeclaration")
 public class WhoisRestController extends ApiController {
 
     private final WhoisRestService whoisRestService;

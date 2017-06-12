@@ -18,6 +18,7 @@ import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/ba-apps")
+@SuppressWarnings("UnusedDeclaration")
 public class BaAppsController {
 
     private final BaAppsService baAppsService;

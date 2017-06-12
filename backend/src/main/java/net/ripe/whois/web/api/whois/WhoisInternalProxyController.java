@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 //
 @RestController
 @RequestMapping("/api/whois-internal")
+@SuppressWarnings("UnusedDeclaration")
 public class WhoisInternalProxyController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalProxyController.class);
 

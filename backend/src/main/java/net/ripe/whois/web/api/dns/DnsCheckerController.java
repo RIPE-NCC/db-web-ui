@@ -24,6 +24,7 @@ import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/dns")
+@SuppressWarnings("UnusedDeclaration")
 public class DnsCheckerController {
     private final static Logger LOGGER = LoggerFactory.getLogger(DnsCheckerController.class);
 
