@@ -15,15 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
-// TODO: [ES] bypass() mapping below is very dangerous, and allows direct user access to any whois-internal API with a matching db-web-ui api key.
-//            For example:
-//                  /api/fmp-pub,
-//                  /api/fmp-int,
-//                  /api/user
-//                  /api/resources
-//      We need to replace aribitrary URL access, with explicit mappings for any APIs that we want to allow.
-//
-//
 @RestController
 @RequestMapping("/api/whois-internal")
 @SuppressWarnings("UnusedDeclaration")
@@ -37,16 +28,28 @@ public class WhoisInternalProxyController extends ApiController {
         this.whoisInternalService = whoisInternalService;
     }
 
-    @RequestMapping(value = "/**")
-    public ResponseEntity<String> proxyRestCalls(final HttpServletRequest request,
+    @RequestMapping(value = "/api/resources/**")
+    public ResponseEntity<String> findMyResources(
+            final HttpServletRequest request,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
+    @RequestMapping(value = "/api/fmp-pub/**")
+    public ResponseEntity<String> forgotMaintainerPassword(
+            final HttpServletRequest request,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
+    // call backend (do not map arbitrary user-supplied paths directly!)
+    private ResponseEntity<String> proxyRestCalls(final HttpServletRequest request,
                                                  @Nullable @RequestBody(required = false) final String body,
-                                                 @RequestHeader final HttpHeaders headers) throws Exception {
-
-        LOGGER.debug("whois-internal request: {}", request.toString());
-
+                                                 @RequestHeader final HttpHeaders headers) {
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
-
         return whoisInternalService.bypass(request, body, headers);
     }
 }

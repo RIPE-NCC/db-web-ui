@@ -20,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -106,7 +105,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         return headers;
     }
 
-    public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
+    public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) {
         final URI uri = composeWhoisUrl(request);
 
         return handleErrors(() ->
@@ -117,14 +116,18 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
                 String.class), LOGGER);
     }
 
-    private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
-        return UriComponentsBuilder.fromHttpUrl(apiUrl)
-            .path(request.getRequestURI()
-                .replace("/api/whois-internal", "")
-                .replace(contextPath, ""))
-            .replaceQuery(request.getQueryString())
-            .queryParam("apiKey", apiKey)
-            .build(true).toUri();
+    private URI composeWhoisUrl(final HttpServletRequest request) {
+        try {
+            return UriComponentsBuilder.fromHttpUrl(apiUrl)
+                .path(request.getRequestURI()
+                    .replace("/api/whois-internal", "")
+                    .replace(contextPath, ""))
+                .replaceQuery(request.getQueryString())
+                .queryParam("apiKey", apiKey)
+                .build(true).toUri();
+        } catch (Exception e) {
+            throw new IllegalStateException("Invalid URI " + request.getRequestURI(), e);
+        }
     }
 
 }
