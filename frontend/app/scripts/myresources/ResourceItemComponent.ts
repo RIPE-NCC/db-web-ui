@@ -1,16 +1,17 @@
 class ResourceItemController {
 
-    public static $inject = ["$state"];
+    public static $inject = ["$state", "ResourceStatus"];
     private item: any;
     private sponsored: boolean;
     private usedPercentage: number;
     private showProgressbar: boolean;
 
-    constructor(private $state: ng.ui.IStateService) {
+    constructor(private $state: ng.ui.IStateService, private ResourceStatus: any) {
         if (this.item.usage) {
             this.usedPercentage = Math.round(this.item.usage.used * 100 / this.item.usage.total);
         }
-        this.showProgressbar = this.item.type !== "aut-num" && !this.sponsored;
+        this.showProgressbar = this.item.type.toLowerCase() !== "aut-num" && !this.sponsored &&
+            ResourceStatus.isResourceWithUsage(this.item.type, this.item.status);
     }
 
     public showDetail() {
@@ -20,7 +21,6 @@ class ResourceItemController {
             sponsored: this.sponsored,
         });
     };
-
 }
 
 angular.module("dbWebApp").component("resourceItem", {

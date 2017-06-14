@@ -1,0 +1,21 @@
+{
+	"requestUrl": "/api/whois-internal/api/resources/inetnum/192.87.0.0%20-%20192.87.0.255/more-specifics.json?filter=80&page=0",
+	"contentType": "application/javascript",
+	"statusCode": 200,
+	"data": {
+		"resources": [{
+			"resource": "192.87.0.80 - 192.87.0.95",
+			"status": "LEGACY",
+			"type": "inetnum",
+			"netname": "NEGGERS-NET",
+			"usage": {
+				"total": 16,
+				"used": 0,
+				"blockSize": 32
+			}
+		}],
+		"totalNumberOfResources": 2,
+		"filteredSize": 1,
+		"pageSize": 1
+	}
+}

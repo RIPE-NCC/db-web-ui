@@ -12,7 +12,7 @@ describe('My Resources, update object', function () {
         browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
     });
 
-    it('should react on the update button', function() {
+    it('allow editing of the object', function() {
 
         page.scrollIntoView(page.btnUpdateObjectButton);
 
@@ -24,6 +24,16 @@ describe('My Resources, update object', function () {
         expect(page.inpDescr.isPresent()).toBe(true);
         page.scrollIntoView(page.inpDescr);
         page.inpDescr.sendKeys('Updated test description');
+
+        page.scrollIntoView(page.inpDescr);
+        page.btnDuplicateAttribute(page.inpDescr).click();
+        page.scrollIntoView(page.modal);
+        page.modalBtnSubmit.click();
+
+        expect(page.inpDescr2.isPresent()).toBe(true);
+        page.btnRemoveAttribute(page.inpDescr2).click();
+        expect(page.inpDescr2.isPresent()).toBe(false);
+
         page.scrollIntoView(page.btnSubmitObject);
         page.btnSubmitObject.click();
         expect(page.successMessage.isPresent()).toBe(true);

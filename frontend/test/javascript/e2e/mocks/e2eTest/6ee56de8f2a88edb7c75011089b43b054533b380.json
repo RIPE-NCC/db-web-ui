@@ -1,0 +1,117 @@
+{
+  "requestUrl": "/api/whois/RIPE/inetnum/192.87.0.0%20-%20192.87.0.255",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+            "objects": {
+              "object": [
+                {
+                  "type": "inetnum",
+                  "link": {
+                    "type": "locator",
+                    "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/192.87.0.0 - 192.87.0.255"
+                  },
+                  "source": {
+                    "id": "ripe"
+                  },
+                  "primary-key": {
+                    "attribute": [
+                      {
+                        "name": "inetnum",
+                        "value": "192.87.0.0 - 192.87.0.255"
+                      }
+                    ]
+                  },
+                  "attributes": {
+                    "attribute": [
+                      {
+                        "name": "inetnum",
+                        "value": "192.87.0.0 - 192.87.0.255"
+                      },
+                      {
+                        "name": "netname",
+                        "value": "SNET-HOMELAN"
+                      },
+                      {
+                        "name": "descr",
+                        "value": "SURFnet LAN at Home"
+                      },
+                      {
+                        "name": "country",
+                        "value": "NL"
+                      },
+                      {
+                        "link": {
+                          "type": "locator",
+                          "href": "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
+                        },
+                        "name": "admin-c",
+                        "value": "SNS1-RIPE",
+                        "referenced-type": "role"
+                      },
+                      {
+                        "link": {
+                          "type": "locator",
+                          "href": "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
+                        },
+                        "name": "tech-c",
+                        "value": "SNS1-RIPE",
+                        "referenced-type": "role"
+                      },
+                      {
+                        "name": "status",
+                        "value": "LEGACY"
+                      },
+                      {
+                        "name": "remarks",
+                        "value": "For information on \"status:\" attribute read https://www.ripe.net/data-tools/db/faq/faq-status-values-legacy-resources"
+                      },
+                      {
+                        "link": {
+                          "type": "locator",
+                          "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/SN-LIR-MNT"
+                        },
+                        "name": "mnt-by",
+                        "value": "SN-LIR-MNT",
+                        "referenced-type": "mntner"
+                      },
+                      {
+                        "link": {
+                          "type": "locator",
+                          "href": "http://rest-prepdev.db.ripe.net/ripe/irt/irt-SURFcert"
+                        },
+                        "name": "mnt-irt",
+                        "value": "irt-SURFcert",
+                        "referenced-type": "irt"
+                      },
+                      {
+                        "name": "created",
+                        "value": "2002-06-05T16:21:30Z"
+                      },
+                      {
+                        "name": "last-modified",
+                        "value": "2014-05-27T13:17:37Z"
+                      },
+                      {
+                        "name": "source",
+                        "value": "RIPE",
+                        "comment": "Filtered"
+                      }
+                    ]
+                  },
+                  "tags": {
+                    "tag": [
+                      {
+                        "id": "RIPE-USER-RESOURCE"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "terms-and-conditions": {
+              "type": "locator",
+              "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+            }
+          }
+}

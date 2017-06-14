@@ -91,7 +91,7 @@ class ResourcesDataService implements IResourcesDataService {
             },
             method: "GET",
             params,
-            timeout: 10000,
+            timeout: 30000,
             url: "api/whois-internal/api/resources",
         });
     }

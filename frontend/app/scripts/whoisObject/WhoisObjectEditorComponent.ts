@@ -44,33 +44,40 @@ class WhoisObjectEditorController {
         if (this.CredentialsService.hasCredentials()) {
             password = this.CredentialsService.getCredentials().successfulPassword;
         }
-        WhoisDataService.fetchObject(this.source, this.objectType, this.objectName, password, false).then(
-            (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
-                const whois = response.data;
-                // Should have a unique result
-                if (!whois.objects.object || whois.objects.object.length !== 1) {
-                    // uh-oh
-                    throw new TypeError("WhoisDataService.fetchObject did not return a valid result");
-                }
-                // Update our refs to the new object
-                this.ngModel = whois.objects.object[0];
-                this.attributes = this.ngModel.attributes.attribute;
-                this.objectName = this.attributes[0].value;
-                this.objectType = this.attributes[0].name;
+        const createdAttr = this.attributes.filter((attr: IAttributeModel) => {
+           return attr.name.toLowerCase() === "created";
+        });
+        if (createdAttr && createdAttr.length && createdAttr[0].value) {
+            WhoisDataService.fetchObject(this.source, this.objectType, this.objectName, password, false).then(
+                (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                    const whois = response.data;
+                    // Should have a unique result
+                    if (!whois.objects.object || whois.objects.object.length !== 1) {
+                        // uh-oh
+                        throw new TypeError("WhoisDataService.fetchObject did not return a valid result");
+                    }
+                    // Update our refs to the new object
+                    this.ngModel = whois.objects.object[0];
+                    this.attributes = this.ngModel.attributes.attribute;
+                    this.objectName = this.attributes[0].value;
+                    this.objectType = this.attributes[0].name;
 
-                // make a copy of the object in case we need to restore
-                this.originalAttibutes = angular.copy(this.attributes);
+                    // make a copy of the object in case we need to restore
+                    this.originalAttibutes = angular.copy(this.attributes);
 
-                // decorate the object
-                this.AttributeMetadataService.enrich(this.objectType, this.attributes);
+                    // decorate the object
+                    this.AttributeMetadataService.enrich(this.objectType, this.attributes);
 
-                // get the mandatory attributes for this object type and warn if they're not in the one we've just got
-                const missingMandatoryAttributes = this.getMissingMandatoryAttributes();
-                this.missingMandatoryAttributes = missingMandatoryAttributes;
+                    // get the mandatory attributes for this object
+                    this.missingMandatoryAttributes = this.getMissingMandatoryAttributes();
 
-                // save object for later diff in display-screen
-                this.MessageStore.add("DIFF", _.cloneDeep(this.attributes));
-            });
+                    // save object for later diff in display-screen
+                    this.MessageStore.add("DIFF", _.cloneDeep(this.attributes));
+                });
+        } else {
+            this.originalAttibutes = angular.copy(this.attributes);
+            this.missingMandatoryAttributes = this.getMissingMandatoryAttributes();
+        }
     }
 
     public btnCancelClicked() {
@@ -80,7 +87,7 @@ class WhoisObjectEditorController {
 
     public btnSubmitClicked() {
         this.removeEmptyAttributes();
-        if (this.updateClicked) {
+        if (typeof this.updateClicked === "function") {
             this.updateClicked(this.ngModel);
         }
     }
@@ -123,11 +130,11 @@ class WhoisObjectEditorController {
     }
 }
 
-angular.module("dbWebApp").component("whoisObjectEditor2", {
+angular.module("dbWebApp").component("whoisObjectEditor", {
     bindings: {
         cancelClicked: "&",
         ngModel: "=",
-        updateClicked: "&",
+        updateClicked: "&?",
     },
     controller: WhoisObjectEditorController,
     templateUrl: "scripts/whoisObject/whois-object-editor.html",

@@ -6,7 +6,7 @@ var page = require('./homePageObject');
 /*
  * Tests...
  */
-describe('The domain wizard', function () {
+describe('The create domain screen', function () {
 
     'use strict';
 
@@ -14,11 +14,12 @@ describe('The domain wizard', function () {
         browser.get(browser.baseUrl + '#/webupdates/wizard/RIPE/domain');
     });
 
-    it('should display a splash screen', function() {
+    it('should display a splash screen', function () {
         expect(page.modalSplashText.getText()).toEqual('Creating DOMAIN Objects for Reverse DNS');
     });
 
-    it('should show an editor for domain', function() {
+    it('should show an editor for domain', function () {
+        page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         expect(page.heading.getText()).toEqual('Create "domain" objects');
         expect(page.inpPrefix.isDisplayed()).toEqual(true);
@@ -27,9 +28,16 @@ describe('The domain wizard', function () {
         expect(page.inpAdminC4.isDisplayed()).toEqual(false);
     });
 
-    it('should show a domain creation form for IPv4 which rejects invalid nameservers', function() {
+    it('should show a domain creation form for IPv4 which rejects invalid nameservers', function () {
+        page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         page.inpPrefix.sendKeys('212.17.110.0/23');
+        browser.wait(function () {
+            return browser.isElementPresent(page.modalBtnSubmit);
+        }, 5000);
+        page.modalInpAssociate.click();
+        page.modalInpPassword.sendKeys('ETCHELLS-MNT');
+        page.modalBtnSubmit.click();
 
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
 
@@ -37,7 +45,7 @@ describe('The domain wizard', function () {
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
         var liContainer = page.inpNserver2.element(by.xpath('..'));
 
-        browser.wait(function() {
+        browser.wait(function () {
             return browser.isElementPresent(liContainer.element(by.css('.text-error')));
         }, 5000);
 
@@ -48,7 +56,7 @@ describe('The domain wizard', function () {
 
         page.inpNserver2.clear();
         page.inpNserver2.sendKeys('ns2.xs4all.nl');
-        browser.wait(function() {
+        browser.wait(function () {
             return browser.isElementPresent(liContainer.element(by.css('.text-info')));
         }, 5000);
 
@@ -60,18 +68,25 @@ describe('The domain wizard', function () {
     });
 
 
-    it('should show a domain creation form for IPv6 which rejects invalid nameservers', function() {
+    it('should show a domain creation form for IPv6 which rejects invalid nameservers', function () {
+        page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         //page.scrollIntoView(page.inpPrefix);
-        browser.driver.wait(protractor.until.elementIsVisible(page.inpPrefix));
         page.inpPrefix.sendKeys('2001:db8::/48');
+        browser.wait(function () {
+            return browser.isElementPresent(page.modalBtnSubmit);
+        }, 5000);
+        page.modalInpAssociate.click();
+        page.modalInpPassword.sendKeys('ETCHELLS-MNT');
+        page.modalBtnSubmit.click();
+
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
 
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
         var liContainer = page.inpNserver2.element(by.xpath('..'));
 
-        browser.wait(function() {
+        browser.wait(function () {
             return browser.isElementPresent(liContainer.element(by.css('.text-error')));
         }, 5000);
 
@@ -82,7 +97,7 @@ describe('The domain wizard', function () {
 
         page.inpNserver2.clear();
         page.inpNserver2.sendKeys('ns2.xs4all.nl');
-        browser.wait(function() {
+        browser.wait(function () {
             return browser.isElementPresent(liContainer.element(by.css('.text-info')));
         }, 5000);
 
@@ -95,18 +110,27 @@ describe('The domain wizard', function () {
 
         // User changes his mind!
         page.inpPrefix.sendKeys('212.17.110.0/23');
-        browser.wait(function() {
+        browser.wait(function () {
             return browser.isElementPresent(liContainer.element(by.css('.text-info')));
         }, 5000);
         expect(liContainer.getText()).not.toContain('0.8.b.d.0.1.0.0.2.ip6.arpa');
 
     });
 
-    it('should show a popup when a prefix is submitted', function() {
+    it('should show a popup and a nice message on success', function () {
 
+        page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         //page.scrollIntoView(page.inpPrefix);
-        page.inpPrefix.sendKeys('212.17.110.0/23');
+        page.inpPrefix.sendKeys('212.17.110.0/23\t');
+        browser.wait(function () {
+            return browser.isElementPresent(page.modalBtnSubmit);
+        }, 5000);
+
+        page.modalInpAssociate.click();
+        page.modalInpPassword.sendKeys('ETCHELLS-MNT');
+        page.modalBtnSubmit.click();
+
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
 
         page.inpNserver1.sendKeys('rns1.upc.biz');
@@ -115,13 +139,20 @@ describe('The domain wizard', function () {
         browser.driver.wait(protractor.until.elementIsVisible(page.inpAdminC4));
 
         expect(page.inpReverseZoneTable.all(by.css('tbody tr')).count()).toEqual(2);
-        expect(page.inpAdminC4.sendKeys('LG1-RIPE'));
-        expect(page.inpTechC5.sendKeys('LG1-RIPE'));
-        expect(page.inpZoneC6.sendKeys('LG1-RIPE'));
+        page.inpAdminC4.sendKeys('LG1-RIPE');
+        page.inpTechC5.sendKeys('LG1-RIPE');
+        page.inpZoneC6.sendKeys('LG1-RIPE');
 
         page.scrollIntoView(page.btnSubmitForm);
-
         page.btnSubmitForm.click();
+
+        page.scrollIntoView(page.modal);
+        expect(page.modal.getText()).toContain('Processing your domain objects');
+        browser.wait(function () {
+            return browser.isElementPresent(page.successMessage);
+        }, 5000);
+        page.scrollIntoView(page.successMessage);
+        expect(page.successMessage.getText()).toContain('object(s) have been successfully created');
     });
 
 });

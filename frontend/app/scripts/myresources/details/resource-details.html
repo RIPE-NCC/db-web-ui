@@ -19,7 +19,7 @@
             ng-if="resourceDetails.resource">
     </hierarchy-selector>
 </section>
-<usage-status resource="resourceDetails.resource"></usage-status>
+<usage-status ng-if="resourceDetails.showUsage" resource="resourceDetails.resource"></usage-status>
 
 <section id="db-object" class="db-object">
     <h2>Object in RIPE Database</h2>
@@ -46,8 +46,8 @@
     <whois-object-viewer ng-model="resourceDetails.details" ng-if="resourceDetails.details && !resourceDetails.isEditing"
                          update-clicked="resourceDetails.showObjectEditor()"></whois-object-viewer>
     <maintainers-editor ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing" authentication-failed-clbk="resourceDetails.hideObjectEditor()"></maintainers-editor>
-    <whois-object-editor2 ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing"
-                          cancel-clicked="resourceDetails.hideObjectEditor()" update-clicked="resourceDetails.updateButtonClicked()"></whois-object-editor2>
+    <whois-object-editor ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing"
+                          cancel-clicked="resourceDetails.hideObjectEditor()" update-clicked="resourceDetails.updateButtonClicked()"></whois-object-editor>
 </section>
 
 <section class="more-specifics" ng-if="resourceDetails.canHaveMoreSpecifics">
@@ -83,7 +83,6 @@
             <th>Internet number resource</th>
             <th>Status</th>
             <th>Netname</th>
-            <th>Used</th>
         </tr>
         </thead>
         <tbody>
@@ -93,7 +92,6 @@
             </a></td>
             <td>{{ resource.status }}</td>
             <td>{{ resource.netname }}</td>
-            <td>{{ (resource.usage.used / resource.usage.total)*100 | number:0}}%</td>
         </tr>
         </tbody>
     </table>

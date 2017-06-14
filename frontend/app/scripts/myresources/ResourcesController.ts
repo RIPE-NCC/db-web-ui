@@ -20,6 +20,7 @@ class ResourcesController {
 
     private hasSponsoredResources = false;
     private isShowingSponsored = false;
+    private lastTab = "";
 
     constructor(private $log: angular.ILogService,
                 private $location: angular.ILocationService,
@@ -31,26 +32,9 @@ class ResourcesController {
         this.isShowingSponsored = typeof this.$state.params.sponsored === "string" &&
             this.$state.params.sponsored === "true";
 
-        $scope.$on("selected-lir-changed", () => {
-            this.selectedOrg = this.userInfoService.getSelectedLir();
-            this.refreshPage();
-        });
-
-        $scope.$on("lirs-loaded-event", () => {
-            this.refreshPage();
-        });
-
         this.refreshPage();
-        this.goHome(this.$state.params.type);
-    }
-
-    public sponsoredResourcesClicked() {
-        this.isShowingSponsored = !this.isShowingSponsored;
-        this.fetchResourcesAndPopulatePage();
-    }
-
-    public goHome(objectType: string) {
-        switch (objectType) {
+        this.lastTab = this.$state.params.type;
+        switch (this.$state.params.type) {
             case "inet6num":
                 this.typeIndex = 1;
                 break;
@@ -60,6 +44,26 @@ class ResourcesController {
             default:
                 this.typeIndex = 0;
         }
+
+        // Callbacks
+        $scope.$on("selected-lir-changed", () => {
+            this.selectedOrg = this.userInfoService.getSelectedLir();
+            this.refreshPage();
+        });
+
+        $scope.$on("lirs-loaded-event", () => {
+            this.refreshPage();
+        });
+    }
+
+    public tabClicked(tabName: string) {
+        this.lastTab = tabName;
+        this.$location.search({type: tabName, sponsored: this.isShowingSponsored});
+    }
+
+    public sponsoredResourcesClicked() {
+        this.isShowingSponsored = !this.isShowingSponsored;
+        this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored});
     }
 
     public refreshPage() {
@@ -99,7 +103,7 @@ class ResourcesController {
         }, () => {
             this.fail = true;
             this.loading = false;
-            this.reason = "There was problem reading resources please try again ";
+            this.reason = "There was problem reading resources please try again";
         });
 
     }

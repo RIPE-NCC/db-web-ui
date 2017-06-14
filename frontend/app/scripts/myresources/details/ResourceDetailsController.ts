@@ -19,9 +19,9 @@ class ResourceDetailsController {
         "MoreSpecificsService",
         "RestService",
         "WhoisDataService",
+        "ResourceStatus",
     ];
 
-    public whoisResponse: IWhoisResponseModel;
     public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificsApiResult;
     public resource: any;
@@ -33,6 +33,8 @@ class ResourceDetailsController {
         transition: boolean;
         viewer: boolean;
     };
+
+    public showUsage: boolean;
 
     // Shown in alert boxes
     public errors: string[];
@@ -61,7 +63,8 @@ class ResourceDetailsController {
                 private CredentialsService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
                 private RestService: any,
-                private WhoisDataService: WhoisDataService) {
+                private WhoisDataService: WhoisDataService,
+                private ResourceStatus: any) {
 
         this.show = {
             editor: false,
@@ -78,7 +81,6 @@ class ResourceDetailsController {
 
         this.WhoisDataService.fetchObject(this.source, this.objectType, this.objectName).then(
             (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
-                this.whoisResponse = response.data;
                 const results = response.data.objects.object;
                 if (results.length >= 1) {
                     this.details = results[0];
@@ -91,13 +93,12 @@ class ResourceDetailsController {
                         const flag = {type: attr.name, value: attr.value};
                         if (attr.name === "status") {
                             this.flags.unshift(flag);
+                            this.showUsage = ResourceStatus.isResourceWithUsage(this.objectType, attr.value);
                         } else if (attr.name === "netname" || attr.name === "as-name") {
                             this.flags.push(flag);
                         }
                     }
                 }
-            }, () => {
-                this.whoisResponse = null;
             });
         // TODO: generate maintainer login failure event
         $scope.$on("fail-maintainer-password", () => {

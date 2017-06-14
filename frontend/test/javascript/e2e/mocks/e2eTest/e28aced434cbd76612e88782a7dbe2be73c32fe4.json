@@ -23,7 +23,8 @@
           "blockSize": 32
         }
       }
-    ]
+    ],
+    "totalNumberOfResources": 2
   },
   "statusCode": 200,
   "contentType": "application/json",

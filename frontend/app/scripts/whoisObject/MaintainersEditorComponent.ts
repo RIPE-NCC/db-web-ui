@@ -331,7 +331,7 @@ class MaintainersEditorController {
 
 angular.module("dbWebApp").component("maintainersEditor", {
     bindings: {
-        authenticationFailedClbk: "&",
+        authenticationFailedClbk: "&?",
         ngModel: "=",
     },
     controller: MaintainersEditorController,

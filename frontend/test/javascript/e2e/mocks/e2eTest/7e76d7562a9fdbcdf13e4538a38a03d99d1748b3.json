@@ -1,0 +1,24 @@
+{
+  "requestUrl": "/api/whois-internal/api/resources/inetnum/194.171.0.0%20-%20194.171.255.255",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data":
+  {
+     "resources":[
+        {
+           "resource":"194.171.0.0 - 194.171.255.255",
+           "status":"ALLOCATED PA",
+           "type":"inetnum",
+           "netname":"NL-SURFNET-950612",
+           "usage":{
+              "total":65536,
+              "used":52112,
+              "blockSize":32
+           }
+        }
+     ],
+     "totalNumberOfResources":1,
+     "filteredSize":1,
+     "pageSize":1
+  }
+}

@@ -29,6 +29,12 @@ class MoreSpecificsDataService implements IMoreSpecificsDataService {
                         page: number,
                         filter: string): IHttpPromise<IMoreSpecificsApiResult> {
 
+        if (!objectType) {
+            throw new TypeError("objectType is empty. more-specifics not available");
+        }
+        if (!objectName) {
+            throw new TypeError("objectName is empty. more-specifics not available");
+        }
         const url = "api/whois-internal/api/resources/" + objectType  + "/" + objectName + "/more-specifics.json";
 
         filter = filter ? filter.replace(/\s/g, "") : "";

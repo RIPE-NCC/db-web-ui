@@ -4,7 +4,7 @@
     'use strict';
 
     angular.module('dbWebApp').controller('AttributeCtrl', ['$scope', '$sce', 'AttributeMetadataService', 'WhoisMetaService',
-                 'CharsetTools', 'RestService', 'EnumService', 'ModalService',
+        'CharsetTools', 'RestService', 'EnumService', 'ModalService',
         function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService, EnumService, ModalService) {
 
             /*
@@ -44,7 +44,7 @@
             $scope.staticList = staticList;
             $scope.displayEnumValue = displayEnumValue;
 
-            $scope.isStaticList = function(objectType, attribute) {
+            $scope.isStaticList = function (objectType, attribute) {
                 return AttributeMetadataService.getMetadata(objectType, attribute.name).staticList;
             };
 
@@ -56,10 +56,13 @@
 
             $scope.displayAddAttributeDialog = function (objectType, attributes, attribute) {
                 var addableAttributes = [];
-                for (var attributeName in AttributeMetadataService.getAllMetadata(objectType)) {
-                    var metadata = AttributeMetadataService.getMetadata(objectType, attributeName);
-                    if (!metadata.readOnly && !metadata.maxOccurs) {
-                        addableAttributes.push({name:attributeName});
+                var md = AttributeMetadataService.getAllMetadata(objectType);
+                for (var attributeName in md) {
+                    if (md.hasOwnProperty(attributeName)) {
+                        var metadata = AttributeMetadataService.getMetadata(objectType, attributeName);
+                        if (!metadata.readOnly && !metadata.maxOccurs) {
+                            addableAttributes.push({name: attributeName});
+                        }
                     }
                 }
 
@@ -81,7 +84,7 @@
                 }
             };
 
-            $scope.toggleHelp = function() {
+            $scope.toggleHelp = function () {
                 $scope.isHelpShown = !$scope.isHelpShown;
             };
 
@@ -90,7 +93,7 @@
             };
 
             $scope.attribute.isList = function () {
-              return AttributeMetadataService.isList($scope.objectType, $scope.attribute);
+                return AttributeMetadataService.isList($scope.objectType, $scope.attribute);
             };
 
             /*
@@ -113,12 +116,12 @@
 
             function autocompleteList(objectType, attributes, attribute, userInput) {
                 if (attribute.name === 'status') {
-                  // special treatment of the status, it need to react on the changes in parent attribute
+                    // special treatment of the status, it need to react on the changes in parent attribute
                     return statusAutoCompleteList(objectType, attributes, attribute, userInput);
                 }
                 var metadata = AttributeMetadataService.getMetadata(objectType, attribute.name);
                 if (metadata.refs) {
-                  return refsAutocomplete(attribute, userInput, metadata.refs);
+                    return refsAutocomplete(attribute, userInput, metadata.refs);
                 }
                 return [];
             }
@@ -248,7 +251,7 @@
             function canBeRemoved(objectType, attributes, attribute) {
                 var metadata = AttributeMetadataService.getMetadata(objectType, attribute.name);
                 if (metadata.readOnly) {
-                  return false;
+                    return false;
                 }
                 var cardinality = AttributeMetadataService.getCardinality(objectType, attribute.name);
                 // check if there's a limit

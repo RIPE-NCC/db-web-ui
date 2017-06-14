@@ -17,16 +17,27 @@ angular.module('updates')
                     $resource('api/user/info').get().$promise.then(
                         function (result) {
                             _userInfo = result;
-                            deferredObject.resolve(result);
 
                             lirDataService.getOrgs().then(function(result) {
                                 _lirs = result;
 
                                 if (_lirs && _lirs.length > 0) {
-                                    _selectedLir = _lirs[0];
+                                    var lirMemberId = localStorage.getItem('selectedLir');
+                                    if (lirMemberId) {
+                                        _selectedLir = _.find(_lirs, function (o) {
+                                            return o.memberId === lirMemberId;
+                                        });
+                                    }
+
+                                    if (!_selectedLir) {
+                                        _selectedLir = _lirs[0];
+                                        localStorage.setItem('selectedLir', _selectedLir.memberId);
+                                    }
                                 }
 
                                 $rootScope.$broadcast("lirs-loaded-event", result);
+
+                                deferredObject.resolve(_userInfo);
                             });
                         }, function (error) {
                             deferredObject.reject(error);
@@ -38,17 +49,14 @@ angular.module('updates')
             };
 
             this.getUsername = function () {
-                //$log.info('getUsername:' + _userInfo);
                 return _userInfo ? _userInfo.username : undefined;
             };
 
             this.getDisplayName = function () {
-               //$log.info('getDisplayName:' + _userInfo);
                 return _userInfo ? _userInfo.displayName : undefined;
             };
 
             this.getUuid = function () {
-                //$log.info('getUuid:' + _userInfo);
                 return _userInfo ? _userInfo.uuid : undefined;
             };
 
@@ -66,6 +74,7 @@ angular.module('updates')
 
             this.setSelectedLir = function(lir) {
                 _selectedLir = lir;
+                localStorage.setItem('selectedLir', _selectedLir.memberId);
             };
         }]);
 

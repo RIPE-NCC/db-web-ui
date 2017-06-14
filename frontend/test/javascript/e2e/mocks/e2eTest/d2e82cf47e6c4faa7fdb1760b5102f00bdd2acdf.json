@@ -1,0 +1,100 @@
+{
+  "requestUrl": "/api/whois/RIPE/inetnum/194.104.0.0%20-%20194.104.0.255",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "objects":{"object":[ {
+        "type" : "inetnum",
+        "link" : {
+          "type" : "locator",
+          "href" : "http://rest-prepdev.db.ripe.net/ripe/inetnum/194.104.0.0 - 194.104.0.255"
+        },
+        "source" : {
+          "id" : "ripe"
+        },
+        "primary-key" : {
+          "attribute" : [ {
+            "name" : "inetnum",
+            "value" : "194.104.0.0 - 194.104.0.255"
+          } ]
+        },
+        "attributes" : {
+          "attribute" : [ {
+            "name" : "inetnum",
+            "value" : "194.104.0.0 - 194.104.0.255"
+          }, {
+            "name" : "netname",
+            "value" : "SN-IP"
+          }, {
+            "name" : "descr",
+            "value" : "Europe"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+            },
+            "name" : "org",
+            "value" : "ORG-Sb3-RIPE",
+            "referenced-type" : "organisation"
+          }, {
+            "name" : "country",
+            "value" : "AG"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/person/WB311-RIPE"
+            },
+            "name" : "admin-c",
+            "value" : "WB311-RIPE",
+            "referenced-type" : "person"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/person/WB311-RIPE"
+            },
+            "name" : "tech-c",
+            "value" : "WB311-RIPE",
+            "referenced-type" : "person"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/SN-LIR-MNT"
+            },
+            "name" : "mnt-by",
+            "value" : "SN-LIR-MNT",
+            "referenced-type" : "mntner"
+          }, {
+            "name" : "status",
+            "value" : "ASSIGNED PI"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+            },
+            "name" : "mnt-by",
+            "value" : "RIPE-NCC-END-MNT",
+            "referenced-type" : "mntner"
+          }, {
+            "name" : "created",
+            "value" : "1970-01-01T00:00:00Z"
+          }, {
+            "name" : "last-modified",
+            "value" : "2017-05-30T12:15:29Z"
+          }, {
+            "name" : "source",
+            "value" : "RIPE"
+          } ]
+        },
+        "tags" : {
+          "tag" : [ {
+            "id" : "RIPE-REGISTRY-RESOURCE"
+          } ]
+        }
+      } ]
+      },
+      "terms-and-conditions" : {
+      "type" : "locator",
+      "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+      }
+  }
+}

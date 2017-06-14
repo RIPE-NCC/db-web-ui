@@ -16,7 +16,6 @@ exports.config = {
     framework: 'jasmine2',
     rootElement: 'div', // test everything inside the 1st div
     getPageTimeout: 30000,
-    allScriptsTimeout: 200000,
 
     jasmineNodeOpts: {
         onComplete: null,

@@ -3,10 +3,7 @@ package net.ripe.whois.sit;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Cookie;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,9 +25,9 @@ public class Recording01 {
 
     private void navigateToDomainCreationWizard() {
         driver.get(baseUrl);
-        driver.findElement(By.linkText("Create")).click();
+        driver.findElement(By.linkText("Create an object")).click();
         new Select(driver.findElement(By.id("objectTypeSelector"))).selectByVisibleText("domain");
-        driver.findElement(By.cssSelector("option[value=\"string:domain\"]")).click();
+        driver.findElement(By.cssSelector("option[value=\"domain\"]")).click();
         driver.findElement(By.id("btnNavigateToCreate")).click();
     }
 
@@ -69,7 +66,8 @@ public class Recording01 {
         pause(12);
 
         // search object 1
-        driver.findElement(By.linkText("Query and Update")).click();
+        ((JavascriptExecutor)driver).executeScript("arguments[0].checked = true;", driver.findElement(By.cssSelector("a[href=\"/search/query.html\"]")));
+        driver.findElement(By.cssSelector("a[href=\"/search/query.html\"]")).click();
         driver.findElement(By.id("search:queryString")).sendKeys("110.17.212.in-addr.arpa");
         pause(2);
 
@@ -90,7 +88,7 @@ public class Recording01 {
         pause(2);
 
         // search object 2
-        driver.findElement(By.linkText("Query and Update")).click();
+        driver.findElement(By.linkText("Query the RIPE Database")).click();
         driver.findElement(By.id("search:queryString")).sendKeys("111.17.212.in-addr.arpa");
         pause(2);
 

@@ -73,7 +73,7 @@ module.exports = function (grunt) {
             },
             js: {
                 files: ['<%= yeoman.app %>/scripts/{,*/}{,*/}*.js'],
-                tasks: ['newer:jshint:all', 'newer:jscs:all'],
+                tasks: ['newer:jshint:all', 'newer:jscs:all', 'copy:dev'],
                 options: {
                     livereload: '<%= connect.options.livereload %>'
                 }
@@ -102,7 +102,7 @@ module.exports = function (grunt) {
             dist: {
                 files: [
                     '.tstmp/scripts/{,*/}{,*/}*.js',
-                    // '<%= yeoman.app %>/scripts/{,*/}{,*/}*.js',
+                    '<%= yeoman.app %>/scripts/{,*/}{,*/}*.js',
                     '<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}',
                     '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html'
                 ],
@@ -500,6 +500,12 @@ module.exports = function (grunt) {
 
         // Copies remaining files to places other tasks can use
         copy: {
+            dev: {
+                expand: true,
+                cwd: '<%= yeoman.app %>/scripts',
+                dest: '.tstmp/scripts',
+                src: '**/*.js'
+            },
             dist: {
                 files: [{
                     expand: true,
@@ -714,6 +720,7 @@ module.exports = function (grunt) {
     grunt.registerTask('e2e-test', [
         'clean:server',
         'copy:processtags',
+        'copy:dev',
         'ts',
         'wiredep',
         'portPick:protractor',
@@ -726,6 +733,7 @@ module.exports = function (grunt) {
     grunt.registerTask('e2e-coverage', [
         'clean:server',
         'copy:processtags',
+        'copy:dev',
         'ts',
         'wiredep:sass',
         'instrument',
@@ -740,6 +748,7 @@ module.exports = function (grunt) {
     grunt.registerTask('e2e-coverage-headless', [
         'clean:server',
         'copy:processtags',
+        'copy:dev',
         'ts',
         'wiredep:sass',
         'instrument',
@@ -755,6 +764,7 @@ module.exports = function (grunt) {
     grunt.registerTask('e2e-no-test', [
         'clean:server',
         'copy:processtags',
+        'copy:dev',
         'ts',
         'wiredep',
         'portPick:protractor',
@@ -771,6 +781,7 @@ module.exports = function (grunt) {
         grunt.task.run([
           'clean',
           'copy:processtags',
+          'copy:dev',
           'wiredep',
           'useminPrepare',
           'concurrent:dist',
@@ -791,6 +802,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', [
         'clean:server',
         'copy:processtags',
+        'copy:dev',
         'ts',
         'wiredep',
         'concurrent:test',
@@ -802,6 +814,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', [
         'clean',
         'copy:processtags',
+        'copy:dev',
         'ts',
         'wiredep',
         'useminPrepare',

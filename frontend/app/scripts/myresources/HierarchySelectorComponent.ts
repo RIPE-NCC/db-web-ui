@@ -24,40 +24,21 @@ class HierarchySelectorController {
 
         const selOrg = this.userInfoService.getSelectedLir();
         if (selOrg && selOrg.orgId) {
-            rds.fetchParentResources(this.resource, selOrg.orgId).then(
-                (resp: IHttpPromiseCallbackArg<string[]>) => {
-                    const parents: string[] = resp.data;
-                    if (parents.length < 1) {
-                        // no parents :'(
-                        this.parents = [];
-                    } else {
-                        this.parents = parents;
-                    }
-                    this.parents.push(this.resource.resource);
-                });
+            this.fetchParents(selOrg.orgId);
         }
 
         $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: Organisation[]) => {
             const selectedOrg = userInfoService.getSelectedLir();
             if (lirs && lirs.length > 0) {
-                rds.fetchParentResources(this.resource, selectedOrg.orgId).then(
-                    (resp: IHttpPromiseCallbackArg<string[]>) => {
-                        const parents: string[] = resp.data;
-                        if (parents && parents.length < 1) {
-                            // no parents :'(
-                            this.parents = [];
-                        } else {
-                            this.parents = parents;
-                        }
-                    });
+                this.fetchParents(selectedOrg.orgId);
             }
         });
     }
 
     public showTopLevelResources() {
         const params = {
-          sponsored: this.$state.params.sponsored,
-          type: this.resource.type,
+            sponsored: this.$state.params.sponsored,
+            type: this.resource.type,
         };
         this.$state.go("webupdates.myresources", params);
     }
@@ -75,6 +56,19 @@ class HierarchySelectorController {
         this.$state.go("webupdates.myresourcesdetail", params);
     }
 
+    private fetchParents(orgId: string): void {
+        this.rds.fetchParentResources(this.resource, orgId).then(
+            (resp: IHttpPromiseCallbackArg<string[]>) => {
+                const parents: string[] = resp.data;
+                if (parents && parents.length < 1) {
+                    // no parents :'(
+                    this.parents = [];
+                } else {
+                    this.parents = parents;
+                }
+                this.parents.push(this.resource.resource);
+            });
+    }
 }
 
 angular.module("dbWebApp").component("hierarchySelector", {

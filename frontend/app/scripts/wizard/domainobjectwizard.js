@@ -9,7 +9,7 @@
             // show splash screen
             ModalService.openDomainWizardSplash(function ($uibModalInstance) {
                 var vm = this;
-                vm.ok = function() {
+                vm.ok = function () {
                     $uibModalInstance.close('ok');
                 };
             });
@@ -30,17 +30,26 @@
             vm.isValidatingDomains = false;
 
             var objectType = vm.objectType = $stateParams.objectType === 'domain' ? 'prefix' : $stateParams.objectType;
-            var source = vm.source = $stateParams.source;
 
+            vm.domainObject = {
+                attributes: {
+                    attribute: AttributeMetadataService.determineAttributesForNewObject(objectType)
+                },
+                source: {
+                    id: $stateParams.source
+                }
+            };
+
+            vm.attributes = vm.domainObject.attributes.attribute;
+            vm.source = $stateParams.source;
             /*
              * Main
              */
-            vm.attributes = AttributeMetadataService.determineAttributesForNewObject(objectType);
 
             vm.restCallInProgress = true;
 
             // should be the only thing to do, one day...
-            AttributeMetadataService.enrich(objectType, vm.attributes);
+            AttributeMetadataService.enrich(vm.attributes[0].name, vm.attributes);
 
             /*
              * Callback handlers
@@ -83,7 +92,7 @@
                         vm.maintainers.objectOriginal = enrichedMntners;
                         if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
                             performAuthentication(vm.maintainers, function () {
-                              var prefix = _.find(vm.attributes, {'name':'prefix'});
+                                var prefix = _.find(vm.attributes, {'name': 'prefix'});
                                 prefix.value = '';
                                 prefix.$$invalid = true;
                                 prefix.$$info = '';
@@ -131,15 +140,15 @@
 
                 $http.post(url, data).then(function () {
                     ModalService.openDomainCreationModal(function ($uibModalInstance, $interval) {
-                        var vm = this;
-                        vm.done = 100;
+                        var vmm = this;
+                        vmm.done = 100;
                         // there's probably a better way to get the number of domains we'll create
-                        vm.todo = _.filter(data.attributes, function(attr) {
+                        vmm.todo = _.filter(data.attributes, function (attr) {
                             return attr.name === 'reverse-zone';
                         }).length;
 
                         var backendPinger = $interval(function () {
-                            PrefixService.getDomainCreationStatus(source).then(
+                            PrefixService.getDomainCreationStatus(vm.domainObject.source.id).then(
                                 function (response) {
                                     if (response.status === 200) {
                                         $interval.cancel(backendPinger);
@@ -158,12 +167,12 @@
                                 });
                         }, 2000);
 
-                        vm.goAway = function () {
+                        vmm.goAway = function () {
                             $interval.cancel(backendPinger);
                             $uibModalInstance.close();
                         };
 
-                        vm.cancel = function () {
+                        vmm.cancel = function () {
                             $interval.cancel(backendPinger);
                             $uibModalInstance.close();
                         };
@@ -205,7 +214,7 @@
                 vm.restCallInProgress = false;
                 vm.errors = [];
                 vm.isValidatingDomains = false;
-                var prefix = _.find(vm.attributes, function(attr) {
+                var prefix = _.find(vm.attributes, function (attr) {
                     return attr.name === 'prefix';
                 });
                 AttributeMetadataService.resetDomainLookups(prefix.value);

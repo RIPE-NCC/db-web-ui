@@ -70,7 +70,7 @@ module.exports = {
     btnNavigateToCreate: element(by.id('btnNavigateToCreate')),
     btnCreateInTextArea: element(by.id('btnCreateInTextArea')),
     btnSwitchToWebCreate: element(by.id('btnSwitchToWebCreate')),
-      btnUpdateObjectButton: element(by.id('btnUpdateObjectButton')),
+    btnUpdateObjectButton: element(by.id('btnUpdateObjectButton')),
 
     inpOrgName: element(by.id('createForm')).element(by.name('org-name')),
     inpOrganisation: element(by.id('createForm')).element(by.name('organisation')),
@@ -133,6 +133,8 @@ module.exports = {
     myResourcesActiveTabContent: element(by.css('.my-resources')).element(by.css('.tab-pane.active')),
     myResourcesActiveTabRows: element(by.css('.my-resources')).element(by.css('.tab-pane.active')).all(by.css('resource-item')),
     btnToggleSponsoredResources: element(by.css('#btn-toggle-sponsored')),
+    btn1HierarchySelector: element(by.css('hierarchy-selector')).element(by.css('.fa-chevron-left')),
+    btn2HierarchySelector: element(by.css('hierarchy-selector')).element(by.css('.fa-sitemap')),
 
     // More specifics page
     moreSpecificsTable: element(by.css('.table')),
@@ -141,13 +143,22 @@ module.exports = {
     usageStatus: element(by.css('usage-status')),
     usageStatusStatistics: element(by.css('usage-status')).all(by.css('.box-statistic')),
 
-    // Inline editor
-    inpDescr: element(by.css('whois-object-editor2')).element(by.name('descr$2')),
-    btnSubmitObject: element(by.css('whois-object-editor2')).element(by.css('.blue-button')),
+    // Whois Object Editor
+    inpDescr: element(by.css('whois-object-editor')).element(by.name('descr$2')),
+    inpDescr2: element(by.css('whois-object-editor')).element(by.name('descr$3')),
+    btnSubmitObject: element(by.css('whois-object-editor')).element(by.css('.blue-button')),
     successMessage: element(by.css('.alert-success')),
+
+    progressbarFromResourceItem: function (row) {
+        return this.myResourcesActiveTabRows.get(row).element(by.css('.progress-bar'));
+    },
 
     btnDuplicateAttribute: function(attribute) {
         return attribute.element(by.xpath('../../..')).element(by.css('.fa.fa-plus'));
+    },
+
+    btnRemoveAttribute: function(attribute) {
+        return attribute.element(by.xpath('../../..')).element(by.css('.fa.fa-trash'));
     },
 
     getTableCell: function (tableElement, rowIndex, colIndex) {
@@ -156,6 +167,10 @@ module.exports = {
 
     getListItem: function (list, index) {
         return list.all(by.css('li')).get(index);
+    },
+
+    getContentInTableCell: function(tableCell, cssExpression) {
+        return tableCell.element(by.css(cssExpression));
     },
 
     /**

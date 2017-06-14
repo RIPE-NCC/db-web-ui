@@ -16,10 +16,10 @@
                   idx="$index"></attribute-renderer>
       </li>
   </ul>
-    <section class="supporting-text">
-        <p>By submitting this form you explicitly express your agreement with the <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+    <section class="supporting-text" ng-if="$ctrl.updateClicked">
+        <p>By submitting this form you explicitly express your agreement with the <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>.</p>
     </section>
-    <article class="pull-right">
+    <article class="pull-right" ng-if="$ctrl.updateClicked">
         <button class="grey-button" ng-click="$ctrl.btnCancelClicked()">Cancel</button>
         <button class="blue-button" ng-click="$ctrl.btnSubmitClicked()">Submit</button>
     </article>

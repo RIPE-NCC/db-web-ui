@@ -24,6 +24,16 @@ describe('My resources', function () {
         expect(page.myResourcesActiveTabRows.get(3).getText()).toContain('192.87.0.0/16');
     });
 
+    it('should show progressbar for IPv4 resources with status ALLOCATED PA', function () {
+        expect(page.myResources.isPresent()).toEqual(true);
+        expect(page.progressbarFromResourceItem(1).isPresent()).toEqual(true);
+    });
+
+    it('should hide progressbar for IPv4 resources with status ASSIGNED PI', function () {
+        expect(page.myResources.isPresent()).toEqual(true);
+        expect(page.progressbarFromResourceItem(0).isPresent()).toEqual(false);
+    });
+
     it('should show sponsored IPv4 resources', function () {
         page.scrollIntoView(page.btnToggleSponsoredResources);
         page.btnToggleSponsoredResources.click();

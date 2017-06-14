@@ -1,12 +1,10 @@
 /*global beforeEach, browser, describe, expect, it, require */
+'use strict';
 
 // Local requires
 var page = require('./homePageObject');
 
-
 describe('My Resources detail for inetnum', function () {
-
-    'use strict';
 
     beforeEach(function () {
         browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
@@ -34,47 +32,59 @@ describe('My Resources detail for inetnum', function () {
         expect(attributes.get(10).getText()).toMatch(/created: *2016-03-22T13:48:02Z/);
         expect(attributes.get(11).getText()).toMatch(/last-modified: *2016-04-26T14:28:28Z/);
         expect(attributes.get(12).getText()).toMatch(/source:( *)RIPE/);
-    });
 
-    it('should show RIPEstat link on whois object page', function() {
         var ripeStateButton = page.getWhoisObject().showRipeStatButton();
         expect(ripeStateButton.isPresent()).toEqual(true);
-        var url = ripeStateButton.getAttribute("href");
-        expect(url).toEqual("https://stat.ripe.net/192.87.0.0%20-%20192.87.255.255?sourceapp=ripedb");
-    });
+        var url = ripeStateButton.getAttribute('href');
+        expect(url).toEqual('https://stat.ripe.net/192.87.0.0%20-%20192.87.255.255?sourceapp=ripedb');
 
-    it('should display address usage', function() {
-        expect(page.usageStatus.isPresent()).toEqual(true);
-        expect(page.usageStatusStatistics.count()).toEqual(2);
-        expect(page.usageStatusStatistics.get(0).getText()).toEqual('51%');
-        expect(page.usageStatusStatistics.get(1).getText()).toEqual('49%');
-    });
-
-    it('should list all the more specific resources', function () {
         expect(page.moreSpecificsTable.isPresent()).toEqual(true);
         expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
         expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('192.87.0.0/24');
         expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('LEGACY');
         expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual('SNET-HOMELAN');
-        expect(page.getTableCell(page.moreSpecificsTable, 0, 3).getText()).toEqual('100%');
 
         expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('192.87.1.0/24');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('LEGACY');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('NFRA');
-        expect(page.getTableCell(page.moreSpecificsTable, 1, 3).getText()).toEqual('100%');
+
+        expect(page.btn1HierarchySelector.isPresent()).toEqual(true);
+        expect(page.btn2HierarchySelector.isPresent()).toEqual(true);
+
+        var firstCellInTable = page.getContentInTableCell(page.getTableCell(page.moreSpecificsTable, 0, 0), 'a');
+        page.scrollIntoView(firstCellInTable);
+        firstCellInTable.click();
+        expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('192.87.0.80/28');
+        expect(page.btn1HierarchySelector.isPresent()).toEqual(true);
+        expect(page.btn2HierarchySelector.isPresent()).toEqual(true);
+
+    });
+
+    it('should not display address usage because it is status ASSIGNED PI', function() {
+        expect(page.usageStatus.isPresent()).toEqual(false);
     });
 
 });
 
-describe('My Resources detail for inet6num', function () {
-
-    'use strict';
+describe('My Resources detail for inetnum with usage status', function () {
 
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inet6num/2001:7f8::/29/');
+        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/');
+    });
 
+    it('should display address usage', function() {
+        expect(page.usageStatus.isPresent()).toEqual(true);
+        expect(page.usageStatusStatistics.count()).toEqual(2);
+        expect(page.usageStatusStatistics.get(0).getText()).toEqual('80%');
+        expect(page.usageStatusStatistics.get(1).getText()).toEqual('20%');
+    });
+});
+
+describe('My Resources detail for inet6num', function () {
+
+    beforeEach(function () {
+        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inet6num/2001:7f8::/29/');
     });
 
     it('should show whois object attributes', function() {
@@ -85,7 +95,6 @@ describe('My Resources detail for inet6num', function () {
         var showMoreButton = whoisObject.showMoreButton();
         expect(showMoreButton.isPresent()).toEqual(false);
 
-
         expect(whoisObject.isPresent()).toEqual(true);
         expect(attributes.count()).toEqual(15);
         expect(attributes.get(0).getText()).toMatch(/inet6num: *2001:7f8::\/29/);
@@ -95,9 +104,7 @@ describe('My Resources detail for inet6num', function () {
         expect(attributes.get(4).getText()).toMatch(/descr: *block for RIR assignments/);
         expect(attributes.get(13).getText()).toMatch(/last-modified: *2011-12-30T07:49:39Z/);
         expect(attributes.get(14).getText()).toMatch(/source: *RIPE/);
-    });
 
-    it('should list all the more specific resources', function () {
         expect(page.moreSpecificsTable.isPresent()).toEqual(true);
         expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
@@ -108,19 +115,14 @@ describe('My Resources detail for inet6num', function () {
         expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('2001:7f8:1::/48');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('ASSIGNED PI');
         expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('AMS-IX-20010913');
-
     });
 });
 
 
 describe('My Resources detail for aut-num', function () {
 
-    'use strict';
-
     beforeEach(function () {
-        browser.addMockModule('dbWebAppE2E', mockModule.module, mockGet);
         browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/aut-num/AS204056/');
-
     });
 
     it('should show partial whois object attributes', function() {
@@ -159,15 +161,9 @@ describe('My Resources detail for aut-num', function () {
         expect(attributes.get(23).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
         expect(attributes.get(24).getText()).toMatch(/remarks: *For information on "status:" attribute read https:\/\/www.ripe.net\/data-tools\/db\/faq\/faq-status-values-legacy-resources/);
 
-    });
-
-    it('should show full whois object attributes', function() {
-
-        var whoisObject = page.getWhoisObject();
         expect(whoisObject.isPresent()).toEqual(true);
         expect(whoisObject.showMoreButton().isPresent()).toEqual(true);
 
-        var attributes = whoisObject.attributes();
         expect(attributes.count()).toEqual(25);
 
         page.scrollIntoView(whoisObject.showMoreButton());
@@ -205,9 +201,6 @@ describe('My Resources detail for aut-num', function () {
         expect(attributes.get(60).getText()).toMatch(/last-modified: *2017-03-23T12:08:46Z/);
         expect(attributes.get(61).getText()).toMatch(/source: *RIPE/);
 
-    });
-
-    it('should NOT list the more specific resources', function () {
         expect(page.moreSpecificsTable.isPresent()).toEqual(false);
     });
 });
