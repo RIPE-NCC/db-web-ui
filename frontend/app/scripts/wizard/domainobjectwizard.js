@@ -90,16 +90,22 @@
 
                     RestService.detailsForMntners(enriched).then(function (enrichedMntners) {
                         vm.maintainers.objectOriginal = enrichedMntners;
-                        if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
-                            performAuthentication(vm.maintainers, function () {
-                                var prefix = _.find(vm.attributes, {'name': 'prefix'});
-                                prefix.value = '';
-                                prefix.$$invalid = true;
-                                prefix.$$info = '';
-                                AttributeMetadataService.clearLastPrefix();
-                                $rootScope.$broadcast('attribute-state-changed');
-                            });
-                        }
+                        RestService.fetchMntnersForSSOAccount().then(function (results) {
+                            vm.maintainers.sso = results;
+                            if (MntnerService.needsPasswordAuthentication(vm.maintainers.sso, vm.maintainers.objectOriginal, vm.maintainers.object)) {
+                                performAuthentication(vm.maintainers, function () {
+                                    var prefix = _.find(vm.attributes, {'name': 'prefix'});
+                                    prefix.value = '';
+                                    prefix.$$invalid = true;
+                                    prefix.$$info = '';
+                                    AttributeMetadataService.clearLastPrefix();
+                                    $rootScope.$broadcast('attribute-state-changed');
+                                });
+                            }
+                        }, function () {
+                            vm.errors = [{plainText:'Error fetching maintainers associated with this SSO account'}];
+                        });
+
                     });
                 });
             }
