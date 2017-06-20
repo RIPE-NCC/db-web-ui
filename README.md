@@ -102,6 +102,9 @@ IntelliJ Preferences
 	* File Types
 		* Ignore Files and Folders
 			* Add: node_modules
+	* Code Style
+		* Use single class import (do not allow .* asterisk imports)
+
 * Project Structure
         * Project Settings
                 * Project
