@@ -9,21 +9,34 @@ class ResourceStatus {
                 {key: "OTHER", value: "OTHER"},
             ],
         },
-        inetnum: {
-            default: [
-                {key: "ALLOCATED PA", value: "ALLOCATED PA"},
-                {key: "ALLOCATED PI", value: "ALLOCATED PI"},
-                {key: "ALLOCATED UNSPECIFIED", value: "ALLOCATED UNSPECIFIED"},
-                {key: "ASSIGNED ANYCAST", value: "ASSIGNED ANYCAST"},
-                {key: "ASSIGNED PA", value: "ASSIGNED PA"},
-                {key: "ASSIGNED PI", value: "ASSIGNED PI"},
-                {key: "EARLY-REGISTRATION", value: "EARLY-REGISTRATION"},
-                {key: "LEGACY", value: "LEGACY"},
-                {key: "LIR-PARTITIONED PA", value: "LIR-PARTITIONED PA"},
-                {key: "LIR-PARTITIONED PI", value: "LIR-PARTITIONED PI"},
-                {key: "NOT-SET", value: "NOT-SET"},
-                {key: "SUB-ALLOCATED PA", value: "SUB-ALLOCATED PA"},
+        "inet6num": {
+            "AGGREGATED-BY-LIR": [
+                {key: "AGGREGATED-BY-LIR", value: "AGGREGATED-BY-LIR"},
+                {key: "ASSIGNED", value: "ASSIGNED"},
             ],
+            "ALLOCATED-BY-LIR": [
+                {key: "AGGREGATED-BY-LIR", value: "AGGREGATED-BY-LIR"},
+                {key: "ALLOCATED-BY-LIR", value: "ALLOCATED-BY-LIR"},
+                {key: "ASSIGNED", value: "ASSIGNED"},
+            ],
+            "ALLOCATED-BY-RIR": [
+                {key: "AGGREGATED-BY-LIR", value: "AGGREGATED-BY-LIR"},
+                {key: "ALLOCATED-BY-LIR", value: "ALLOCATED-BY-LIR"},
+                {key: "ALLOCATED-BY-RIR", value: "ALLOCATED-BY-RIR"},
+                {key: "ASSIGNED", value: "ASSIGNED"},
+                {key: "ASSIGNED ANYCAST", value: "ASSIGNED ANYCAST"},
+                {key: "ASSIGNED PI", value: "ASSIGNED PI"},
+            ],
+            "default": [
+                {key: "AGGREGATED-BY-LIR", value: "AGGREGATED-BY-LIR"},
+                {key: "ALLOCATED-BY-LIR", value: "ALLOCATED-BY-LIR"},
+                {key: "ALLOCATED-BY-RIR", value: "ALLOCATED-BY-RIR"},
+                {key: "ASSIGNED", value: "ASSIGNED"},
+                {key: "ASSIGNED ANYCAST", value: "ASSIGNED ANYCAST"},
+                {key: "ASSIGNED PI", value: "ASSIGNED PI"},
+            ],
+        },
+        "inetnum": {
             "ALLOCATED PA": [
                 {key: "ASSIGNED PA", value: "ASSIGNED PA"},
                 {key: "LIR-PARTITIONED PA", value: "LIR-PARTITIONED PA"},
@@ -69,32 +82,19 @@ class ResourceStatus {
                 {key: "LIR-PARTITIONED PA", value: "LIR-PARTITIONED PA"}, // *
                 {key: "SUB-ALLOCATED PA", value: "SUB-ALLOCATED PA"}, // *
             ],
-        },
-        inet6num: {
-            default: [
-                {key: "AGGREGATED-BY-LIR", value: "AGGREGATED-BY-LIR"},
-                {key: "ALLOCATED-BY-LIR", value: "ALLOCATED-BY-LIR"},
-                {key: "ALLOCATED-BY-RIR", value: "ALLOCATED-BY-RIR"},
-                {key: "ASSIGNED", value: "ASSIGNED"},
+            "default": [
+                {key: "ALLOCATED PA", value: "ALLOCATED PA"},
+                {key: "ALLOCATED PI", value: "ALLOCATED PI"},
+                {key: "ALLOCATED UNSPECIFIED", value: "ALLOCATED UNSPECIFIED"},
                 {key: "ASSIGNED ANYCAST", value: "ASSIGNED ANYCAST"},
+                {key: "ASSIGNED PA", value: "ASSIGNED PA"},
                 {key: "ASSIGNED PI", value: "ASSIGNED PI"},
-            ],
-            "AGGREGATED-BY-LIR": [
-                {key: "AGGREGATED-BY-LIR", value: "AGGREGATED-BY-LIR"},
-                {key: "ASSIGNED", value: "ASSIGNED"},
-            ],
-            "ALLOCATED-BY-LIR": [
-                {key: "AGGREGATED-BY-LIR", value: "AGGREGATED-BY-LIR"},
-                {key: "ALLOCATED-BY-LIR", value: "ALLOCATED-BY-LIR"},
-                {key: "ASSIGNED", value: "ASSIGNED"},
-            ],
-            "ALLOCATED-BY-RIR": [
-                {key: "AGGREGATED-BY-LIR", value: "AGGREGATED-BY-LIR"},
-                {key: "ALLOCATED-BY-LIR", value: "ALLOCATED-BY-LIR"},
-                {key: "ALLOCATED-BY-RIR", value: "ALLOCATED-BY-RIR"},
-                {key: "ASSIGNED", value: "ASSIGNED"},
-                {key: "ASSIGNED ANYCAST", value: "ASSIGNED ANYCAST"},
-                {key: "ASSIGNED PI", value: "ASSIGNED PI"},
+                {key: "EARLY-REGISTRATION", value: "EARLY-REGISTRATION"},
+                {key: "LEGACY", value: "LEGACY"},
+                {key: "LIR-PARTITIONED PA", value: "LIR-PARTITIONED PA"},
+                {key: "LIR-PARTITIONED PI", value: "LIR-PARTITIONED PI"},
+                {key: "NOT-SET", value: "NOT-SET"},
+                {key: "SUB-ALLOCATED PA", value: "SUB-ALLOCATED PA"},
             ],
         },
     };

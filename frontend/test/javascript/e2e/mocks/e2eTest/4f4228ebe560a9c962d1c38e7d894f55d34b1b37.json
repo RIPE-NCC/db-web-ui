@@ -102,10 +102,10 @@
               {
                 "link": {
                   "type": "locator",
-                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ETCHELLS-MNT"
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/ERICSSON-MNT"
                 },
                 "name": "mnt-by",
-                "value": "ETCHELLS-MNT",
+                "value": "ERICSSON-MNT",
                 "referenced-type": "mntner"
               },
               {

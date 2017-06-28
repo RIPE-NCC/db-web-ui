@@ -32,6 +32,43 @@ describe('The attributeMetadataService', function () {
         expect(vm.attributes.length).toBe(9);
     });
 
+    it('should create metadata for NOT co-maintained inetnum object with netname NOT read only', function () {
+
+        var attributes = [{name: 'mnt-by', value: 'SOME-MNT'}]
+        var type = 'inetnum';
+        var metaData = AttributeMetadataService.getAllMetadata(type);
+        var isReadOnly = metaData.netname.readOnly(type, attributes);
+        expect(isReadOnly).toBe(false);
+    });
+
+    it('should create metadata for co-maintained inetnum object with netname read only', function () {
+
+        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}]
+        var type = 'inetnum';
+        var metaData = AttributeMetadataService.getAllMetadata(type);
+        var isReadOnly = metaData.netname.readOnly(type, attributes);
+        expect(isReadOnly).toBe(true);
+    });
+
+    it('should create metadata for NOT co-maintained inet6num object with netname NOT read only', function () {
+
+        var attributes = [{name: 'mnt-by', value: 'SOME-MNT'}]
+        var type = 'inet6num';
+        var metaData = AttributeMetadataService.getAllMetadata(type);
+        var isReadOnly = metaData.netname.readOnly(type, attributes);
+        expect(isReadOnly).toBe(false);
+    });
+
+    it('should create metadata for co-maintained inet6num object with netname read only', function () {
+
+        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}]
+        var type = 'inet6num';
+        var metaData = AttributeMetadataService.getAllMetadata(type);
+        var isReadOnly = metaData.netname.readOnly(type, attributes);
+        expect(isReadOnly).toBe(true);
+    });
+
+
     xit('should be able to calculate validity of an attribute', function() {
         var isInvalid;
         var attributes = vm.attributes,
@@ -41,7 +78,6 @@ describe('The attributeMetadataService', function () {
         expect(attributePk.name).toBe('prefix');
         expect(attribute.name).toBe('admin-c');
 
-        //TODO: add object which has primary key with no deps
         attributePk.value = '';
         isInvalid = AttributeMetadataService.isInvalid(objectType, attributes, attributePk);
         expect(isInvalid).toBe(true);

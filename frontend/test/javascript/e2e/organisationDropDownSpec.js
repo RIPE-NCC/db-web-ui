@@ -11,7 +11,7 @@ describe('The organisation drop-down box', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '#/webupdates/myresources/overview');
+        browser.get(browser.baseUrl + '#/myresources/overview');
     });
 
     it('should be shown when a user has an LIR', function () {

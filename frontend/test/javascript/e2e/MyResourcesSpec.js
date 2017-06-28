@@ -11,7 +11,7 @@ describe('My resources', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '#/webupdates/myresources/overview');
+        browser.get(browser.baseUrl + '#/myresources/overview');
     });
 
     it('should show IPv4 resources for an LIR', function () {

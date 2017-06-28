@@ -17,11 +17,10 @@ describe('The password authentication dialogue', function () {
     it('should show a single modal which asks for a password', function () {
         expect(page.modalBtnSubmit.isPresent()).toEqual(true);
         expect(page.modalInpMaintainer.getText()).toEqual('NEWNET-MNT');
-        page.modalClose.click();
-        expect(page.modal.isPresent()).toEqual(false);
-    });
+        page.modalInpAssociate.click();
+        page.modalInpPassword.sendKeys('NEWNET-MNT');
+        page.modalBtnSubmit.click();
 
-    it('should be able to show massive objects', function () {
         // i'm unhappy with this test. it should be able to detect if an element is visible or not
         expect(page.allObjectRows.count()).toEqual(395);
         expect(page.allObjectRows.get(394).isPresent()).toEqual(true);

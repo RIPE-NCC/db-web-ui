@@ -143,6 +143,9 @@ module.exports = {
     usageStatus: element(by.css('usage-status')),
     usageStatusStatistics: element(by.css('usage-status')).all(by.css('.box-statistic')),
 
+    flagsContainer: element(by.css('.flags-container')),
+    flags: element(by.css('.flags-container')).all(by.css('flag')),
+
     // Whois Object Editor
     inpDescr: element(by.css('whois-object-editor')).element(by.name('descr$2')),
     inpDescr2: element(by.css('whois-object-editor')).element(by.name('descr$3')),

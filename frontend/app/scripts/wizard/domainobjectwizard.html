@@ -9,7 +9,7 @@
 <form id="createForm" name="whoisObjectForm" accept-charset="ISO-8859-1">
 
     <h1 title="Create domain objects">Create "domain" objects</h1>
-    <maintainers-editor ng-model="domain.domainObject" ng-if="domain.domainObject"></maintainers-editor>
+    <maintainers-editor ng-model="domain.domainObject" ng-if="domain.domainObject" update-mntners-clbk="domain.updateMaintainers(mntners)"></maintainers-editor>
 
     <section class="visible-field-form">
         <whois-object-editor

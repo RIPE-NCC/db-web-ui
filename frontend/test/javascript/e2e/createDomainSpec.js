@@ -36,7 +36,7 @@ describe('The create domain screen', function () {
             return browser.isElementPresent(page.modalBtnSubmit);
         }, 5000);
         page.modalInpAssociate.click();
-        page.modalInpPassword.sendKeys('ETCHELLS-MNT');
+        page.modalInpPassword.sendKeys('ERICSSON-MNT');
         page.modalBtnSubmit.click();
 
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
@@ -73,12 +73,6 @@ describe('The create domain screen', function () {
         page.modalSplashBtn.click();
         //page.scrollIntoView(page.inpPrefix);
         page.inpPrefix.sendKeys('2001:db8::/48');
-        browser.wait(function () {
-            return browser.isElementPresent(page.modalBtnSubmit);
-        }, 5000);
-        page.modalInpAssociate.click();
-        page.modalInpPassword.sendKeys('ETCHELLS-MNT');
-        page.modalBtnSubmit.click();
 
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
 
@@ -128,7 +122,7 @@ describe('The create domain screen', function () {
         }, 5000);
 
         page.modalInpAssociate.click();
-        page.modalInpPassword.sendKeys('ETCHELLS-MNT');
+        page.modalInpPassword.sendKeys('ERICSSON-MNT');
         page.modalBtnSubmit.click();
 
         browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));

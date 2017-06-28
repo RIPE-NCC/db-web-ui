@@ -9,21 +9,21 @@ class LirDataService implements ILirDataService {
                 private $http: ng.IHttpService) {
     }
 
-    public getOrgs(): IPromise<Organisation[]> {
+    public getOrgs(): IPromise<IOrganisationModel[]> {
         // request LIR data
         return this.$http.get("api/ba-apps/lirs").then(
             (response: IHttpPromiseCallbackArg<any>) => {
-                const lirs: Lir[] = response.data.response.results;
-                const lirOrgs: Organisation[] = lirs.map((lir) => {
+                const lirs: ILirModel[] = response.data.response.results;
+                const lirOrgs: IOrganisationModel[] = lirs.map((lir) => {
                     return {
-                        displayName: (lir.organisationname ? lir.organisationname + " " + lir.regId : lir.regId),
+                        displayName: lir.organisationname ? lir.organisationname + " " + lir.regId : lir.regId,
                         memberId: lir.membershipId.toString(),
                         orgId: lir.orgId,
                         orgName: lir.organisationname,
                         regId: lir.regId,
-                    } as Organisation;
+                    } as IOrganisationModel;
                 });
-                return lirOrgs.sort((a: Organisation, b: Organisation): number => {
+                return lirOrgs.sort((a: IOrganisationModel, b: IOrganisationModel): number => {
                     return a.displayName.localeCompare(b.displayName);
                 });
             },

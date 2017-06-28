@@ -67,6 +67,22 @@ describe('updates: MntnerService', function () {
         expect(ripeOwned.length).toEqual(nccMntners.length);
     });
 
+    it('should detect if object is comaintained', function () {
+        var attributes = [{name:'mnt-by', value:'RIPE-NCC-LEGACY-MNT'}];
+        expect(subject.isComaintained(attributes)).toBe(true);
+    });
+
+    it('should detect if object is comaintained with multiple mnts', function () {
+        var attributes = [{name:'mnt-by', value:'RIPE-NCC-LEGACY-MNT'}, {name:'mnt-by', value:'SOME-MNT'}];
+        expect(subject.isComaintained(attributes)).toBe(true);
+    });
+
+    it('should detect if object is NOT comaintained', function () {
+        var attributes = [{name:'mnt-by', value:'SOME-MNT'}];
+        expect(subject.isComaintained(attributes)).toBe(false);
+        expect(subject.isComaintained([])).toBe(false);
+    });
+
     it('should detect non RIPE-NCC mntners', function () {
         var notRipeOwned = _.filter(['test-MNT', 'other-mnt'], function (mntnerKey) {
             return subject.isNccMntner(mntnerKey);

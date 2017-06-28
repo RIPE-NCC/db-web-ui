@@ -84,6 +84,13 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
+    public fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets> {
+        return this.$http({
+            method: "GET",
+            url: "api/ba-apps/resources/" + orgId + "/" + resource,
+        });
+    }
+
     private fetchResources(params: {}): IPromise<any> {
         return this.$http({
             headers: {

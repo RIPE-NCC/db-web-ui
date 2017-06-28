@@ -15,7 +15,10 @@ angular.module('webUpdates')
                     return decodeURIComponent(val);
                 },
                 encode: function (val) {
-                    return encodeURIComponent(val);
+                    if (val.indexOf('%') === -1) {
+                        return encodeURIComponent(val);
+                    }
+                    return val;
                 },
                 equals: function (decodedA, decodedB) {
                     if (decodedA.indexOf('/') > -1 || decodedA.indexOf(' ') > -1) {
@@ -39,15 +42,15 @@ angular.module('webUpdates')
                     url: '/webupdates',
                     template: '<div ui-view></div>'
                 })
-                .state('webupdates.myresources', {
+                .state('myresources', {
                     url: '/myresources/overview?type&sponsored',
                     templateUrl: 'scripts/myresources/resources.html',
                     controller: 'ResourcesController',
                     controllerAs: 'resources'
                 })
-                .state('webupdates.myresourcesdetail', {
+                .state('myresourcesdetail', {
                     url: '/myresources/detail/:objectType/{objectName:WhoisObjectName}/:sponsored',
-                    templateUrl: 'scripts/myresources/details/resource-details.html',
+                    templateUrl: 'scripts/myresources/resource-details.html',
                     controller: 'ResourceDetailsController',
                     controllerAs: 'resourceDetails'
                 })

@@ -1,4 +1,4 @@
-/*global afterEach, beforeEach, describe, inject, it*/
+/*global afterEach, beforeEach, describe, expect, inject, it*/
 
 'use strict';
 
@@ -10,12 +10,15 @@ describe('The domain wizard', function () {
     var CredentialsService;
     var MntnerService;
     var ModalService;
+    var AttributeMetadataService;
     var $q;
+    var vm;
 
     beforeEach(module('dbWebApp'));
 
     beforeEach(inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_,
-                                _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
+                                _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_,
+                                _AttributeMetadataService_) {
 
         $scope = _$rootScope_.$new();
         $state = _$state_;
@@ -31,14 +34,15 @@ describe('The domain wizard', function () {
         CredentialsService = _CredentialsService_;
         MntnerService = _MntnerService_;
         ModalService = _ModalService_;
-        $stateParams.objectType = 'domain';
+        AttributeMetadataService = _AttributeMetadataService_;
+        $stateParams.objectType = 'prefix';
         _PreferenceService_.isTextMode = function () {
             return false;
         };
         $q = _$q_;
 
-        _$controller_('DomainObjectController', {
-            $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window
+        vm = _$controller_('DomainObjectController', {
+            $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window, AttributeMetadataService: AttributeMetadataService
         });
         $httpBackend.whenGET(/.*\.html/).respond(200);
     }));
@@ -48,8 +52,22 @@ describe('The domain wizard', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should not crash', function () {
+    it('should create the right attributes', function () {
         $httpBackend.flush();
+        expect(vm.attributes.length).toEqual(9);
+        var attrName = [
+            'prefix',
+            'nserver',
+            'nserver',
+            'reverse-zone',
+            'admin-c',
+            'tech-c',
+            'zone-c',
+            'mnt-by',
+            'source'];
+        for (var a in vm.attributes) {
+            expect(vm.attributes[a].name).toEqual(attrName[a]);
+        }
     });
 
 });

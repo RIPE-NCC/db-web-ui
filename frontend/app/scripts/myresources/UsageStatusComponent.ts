@@ -59,6 +59,9 @@ class UsageStatusController {
     }
 
     private calcValueForIPv6() {
+        if (!this.usage) {
+            return;
+        }
         this.ipv6CalcTotal = this.calcShorterValue(this.usage.total);
         this.ipv6CalcUsed = this.calcShorterValue(this.usage.used);
         this.ipv6CalcFree = this.calcShorterValue(this.usage.free);
@@ -83,5 +86,5 @@ angular.module("dbWebApp").component("usageStatus", {
     },
     controller: UsageStatusController,
     controllerAs: "ctrlUsage",
-    templateUrl: "scripts/myresources/details/usage-status.html",
+    templateUrl: "scripts/myresources/usage-status.html",
 });

@@ -4,7 +4,7 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).service('AttributeMetadataService', ['$rootScope', 'jsUtilService', 'PrefixService', 'WhoisMetaService', function ($rootScope, jsUtils, PrefixService, WhoisMetaService) {
+    ).service('AttributeMetadataService', ['$rootScope', 'jsUtilService', 'PrefixService', 'WhoisMetaService', 'MntnerService', function ($rootScope, jsUtils, PrefixService, WhoisMetaService, MntnerService) {
 
         // Defaults:
         // * attributes are shown
@@ -505,8 +505,8 @@
               metadata[aName].status.readOnly = isModifyMode;
               metadata[aName].source.readOnly = isModifyMode;
             }
-            metadata.inetnum.netname.readOnly = isModifyMode;
-            metadata.inet6num.netname.readOnly = isModifyMode;
+            metadata.inetnum.netname.readOnly = function(objectType, attributes) { return MntnerService.isComaintained(attributes)};
+            metadata.inet6num.netname.readOnly = function(objectType, attributes) { return MntnerService.isComaintained(attributes)};
 
             return metadata;
         }

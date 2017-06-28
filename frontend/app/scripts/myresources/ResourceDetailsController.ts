@@ -16,10 +16,12 @@ class ResourceDetailsController {
         "$location",
         "$anchorScroll",
         "CredentialsService",
+        "MntnerService",
         "MoreSpecificsService",
+        "ResourceStatus",
+        "ResourcesDataService",
         "RestService",
         "WhoisDataService",
-        "ResourceStatus",
     ];
 
     public details: IWhoisObjectModel;
@@ -48,6 +50,7 @@ class ResourceDetailsController {
 
     public ipFilter: string = null;
 
+    private orgId: string;
     private objectName: string;
     private objectType: string;
     private MAGIC = 100; // number of items per page on server
@@ -61,22 +64,25 @@ class ResourceDetailsController {
                 private $location: angular.ILocationService,
                 private $anchorScroll: ng.IAnchorScrollService,
                 private CredentialsService: any,
+                private MntnerService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
+                private ResourceStatus: any,
+                private ResourcesDataService: ResourcesDataService,
                 private RestService: any,
-                private WhoisDataService: WhoisDataService,
-                private ResourceStatus: any) {
+                private WhoisDataService: WhoisDataService) {
 
         this.show = {
             editor: false,
             transition: false,
             viewer: true,
         };
-        this.objectName = $state.params.objectName;
+        this.objectName = decodeURIComponent($state.params.objectName);
         this.objectType = $state.params.objectType.toLowerCase();
-        this.sponsored = this.$state.params.sponsored;
+        this.sponsored = typeof this.$state.params.sponsored === "string"
+            ? this.$state.params.sponsored === "true"
+            : this.$state.params.sponsored;
 
         this.canHaveMoreSpecifics = false;
-
         this.getResourcesFromBackEnd();
 
         this.WhoisDataService.fetchObject(this.source, this.objectType, this.objectName).then(
@@ -89,24 +95,33 @@ class ResourceDetailsController {
                         resource: this.details["primary-key"].attribute[0].value,
                         type: this.objectType,
                     };
+                    let hasRipeMaintainer = false;
                     for (const attr of this.details.attributes.attribute) {
-                        const flag = {type: attr.name, value: attr.value};
                         if (attr.name === "status") {
-                            this.flags.unshift(flag);
+                            this.addFlag(attr.value, attr.name);
                             this.showUsage = ResourceStatus.isResourceWithUsage(this.objectType, attr.value);
                         } else if (attr.name === "netname" || attr.name === "as-name") {
-                            this.flags.push(flag);
+                            this.addFlag(attr.value, attr.name);
+                        } else if (attr.name === "org") {
+                            this.orgId = attr.value;
+                        } else if (attr.name === "mnt-by" && !hasRipeMaintainer) {
+                            if (MntnerService.isNccMntner(attr.value)) {
+                                hasRipeMaintainer = true;
+                            }
                         }
+                    }
+                    if (hasRipeMaintainer && typeof this.orgId === "string" && !this.sponsored) {
+                        this.getTicketsAndDates();
                     }
                 }
             });
-        // TODO: generate maintainer login failure event
+
         $scope.$on("fail-maintainer-password", () => {
             this.isEditing = false;
         });
 
         $scope.$on("selected-lir-changed", () => {
-            this.$state.go("webupdates.myresources");
+            this.$state.go("myresources");
         });
 
     }
@@ -151,7 +166,7 @@ class ResourceDetailsController {
     }
 
     public showDetail(resource: IResourceModel): void {
-        this.$state.go("webupdates.myresourcesdetail", {
+        this.$state.go("myresourcesdetail", {
             objectName: resource.resource,
             objectType: resource.type,
             sponsored: this.sponsored,
@@ -269,8 +284,8 @@ class ResourceDetailsController {
 
     private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): boolean {
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
-            this.MoreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter).then(
-                (response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
+            this.MoreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter)
+                .then((response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
 
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
                     // response sizes and work out how they fit with this lot.
@@ -301,6 +316,27 @@ class ResourceDetailsController {
 
     private scroll(anchor: string): void {
         this.$anchorScroll(anchor);
+    }
+
+    private addFlag(textOnFlag: string, tooltip: string) {
+        const flag = {type: tooltip, value: textOnFlag};
+        if (tooltip === "status") {
+            this.flags.unshift(flag);
+        } else {
+            this.flags.push(flag);
+        }
+    }
+
+    private getTicketsAndDates() {
+        this.ResourcesDataService.fetchTicketsAndDates(this.orgId, this.objectName)
+            .then((response: IHttpPromiseCallbackArg<IResourceTickets>) => {
+                if (response.data.tickets !== undefined && response.data.tickets[this.objectName] !== undefined) {
+                    for (const ticket of response.data.tickets[this.objectName]) {
+                        this.addFlag(ticket.date, "Issue date for " + ticket.resource);
+                        this.addFlag(ticket.number, "Ticket number for " + ticket.resource);
+                    }
+                }
+            });
     }
 }
 

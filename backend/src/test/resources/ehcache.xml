@@ -11,7 +11,19 @@
            maxEntriesLocalDisk="0"
            eternal="false"
            diskSpoolBufferSizeMB="0"
-           timeToIdleSeconds="5" timeToLiveSeconds="5"
+           timeToIdleSeconds="5"
+           timeToLiveSeconds="5"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off"
+           statistics="true">
+    </cache>
+    <cache name="net.ripe.whois.web.api.baapps.ResourceTicketService"
+           maxEntriesLocalHeap="100"
+           maxEntriesLocalDisk="0"
+           eternal="false"
+           diskSpoolBufferSizeMB="0"
+           timeToIdleSeconds="5"
+           timeToLiveSeconds="5"
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off"
            statistics="true">

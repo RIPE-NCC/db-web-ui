@@ -13,6 +13,7 @@ class MaintainersEditorController {
     // Input
     public ngModel: IWhoisObjectModel;
     public authenticationFailedClbk: () => void;
+    public updateMntnersClbk: (maintainers: any) => void;
 
     // Parts of the model used in template
     public attributes: IAttributeModel[];
@@ -69,6 +70,9 @@ class MaintainersEditorController {
         } else {
             this.initCreateMode();
         }
+        if (this.updateMntnersClbk) {
+            this.updateMntnersClbk({mntners: this.mntners});
+        }
     }
 
     public onMntnerAdded(item: IMntByModel): void {
@@ -83,6 +87,9 @@ class MaintainersEditorController {
         }
         this.AttributeMetadataService.enrich(this.objectType, this.attributes);
         this.ngModel.attributes.attribute = this.attributes;
+        if (this.updateMntnersClbk) {
+            this.updateMntnersClbk({mntners: this.mntners});
+        }
     }
 
     public onMntnerRemoved(item: IMntByModel): void {
@@ -100,6 +107,10 @@ class MaintainersEditorController {
         }
         this.AttributeMetadataService.enrich(this.objectType, this.attributes);
         this.ngModel.attributes.attribute = this.attributes;
+        if (this.updateMntnersClbk) {
+            this.updateMntnersClbk({mntners: this.mntners});
+        }
+
     }
 
     public isLirObject() {
@@ -333,6 +344,7 @@ angular.module("dbWebApp").component("maintainersEditor", {
     bindings: {
         authenticationFailedClbk: "&?",
         ngModel: "=",
+        updateMntnersClbk: "&?",
     },
     controller: MaintainersEditorController,
     templateUrl: "scripts/whoisObject/maintainers-editor.html",

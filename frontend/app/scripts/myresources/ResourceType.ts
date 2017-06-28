@@ -42,11 +42,31 @@ interface IPv4ResourcesResponse {
     resources: IPv4ResourceDetails[];
 }
 
+// from backend
 interface IUsage {
     total: number;
     used: number;
-    free: number;
     blockSize: number;
+    free?: number; // calculated in f/e
+}
+
+interface IResourceTickets {
+    tickets: {
+        [resourceName: string]: ITicket[];
+    };
+}
+
+interface ITicket {
+    number: string;
+    date: string;
+    resource: string;
+}
+
+interface IResourceScreenItem {
+    resource: string;
+    status: string;
+    type: string;
+    usage: IUsage;
 }
 
 interface IResourcesDataService {
@@ -62,4 +82,6 @@ interface IResourcesDataService {
     fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
     fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
     fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
+
+    fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets>;
 }

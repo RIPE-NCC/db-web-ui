@@ -1,0 +1,23 @@
+{
+  "requestUrl": "/api/whois-internal/api/resources/inetnum/185.51.48.0%20-%20185.51.55.255",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "resources": [
+      {
+        "resource": "185.51.48.0 - 185.51.55.255",
+        "status": "ALLOCATED PA",
+        "type": "inetnum",
+        "netname": "NL-A2B-INTERNET-20140321",
+        "usage": {
+          "total": 2048,
+          "used": 1024,
+          "blockSize": 32
+        }
+      }
+    ],
+    "totalNumberOfResources": 1,
+    "filteredSize": 1,
+    "pageSize": 1
+  }
+}

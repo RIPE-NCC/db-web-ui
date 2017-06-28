@@ -20,10 +20,10 @@
                         <a class="menuItem" href="/syncupdates/simple-rpsl.html">Syncupdates</a>
                     </li>
                     <li>
-                        <a class="menuItem" ng-class="{current: menu.activeUrl === '/select'}" href="#/webupdates/select">Create an object</a>
+                        <a class="menuItem" ng-class="{current: menu.activeUrl.startsWith('/wizard') || menu.activeUrl.startsWith('/select') || menu.activeUrl.startsWith('/create')}" href="#/webupdates/select">Create an object</a>
                     </li>
                     <li ng-if="menu.shouldDisplayMyResources">
-                        <a class="menuItem" ng-class="{current: menu.activeUrl.startsWith('/myresources/')}" href="#/webupdates/myresources/overview?type=inetnum">My Resources</a>
+                        <a class="menuItem" ng-class="{current: menu.activeUrl.startsWith('/myresources/')}" href="#/myresources/overview?type=inetnum&sponsored=false">My Resources</a>
                     </li>
                 </ul>
             </li>

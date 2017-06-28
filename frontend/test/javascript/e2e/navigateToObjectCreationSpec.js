@@ -44,20 +44,6 @@ describe('webupdates homepage', function() {
         expect(page.heading.getText()).toEqual('Create "filter-set" object');
     });
 
-    it('should show an editor for inet6num', function() {
-        expect(page.selectForm.isPresent()).toEqual(true);
-        page.selectObjectType('inet6num').click();
-        page.btnNavigateToCreate.click();
-        expect(page.createForm.isPresent()).toEqual(true);
-        expect(page.heading.getText()).toEqual('Create "inet6num" object');
-        page.inpInet6num.sendKeys('2001:888:2000::/38');
-        page.scrollIntoView(page.inpStatusLink); // bring 'status' into view
-        page.inpStatusLink.click(); // click on dropdown to populate it.
-        expect(page.inpStatusList.count()).toBe(2);
-        expect(page.inpStatusList.get(0).getText()).toEqual('AGGREGATED-BY-LIR');
-        expect(page.inpStatusList.get(1).getText()).toEqual('ASSIGNED');
-    });
-
     it('should show an editor for inet-rtr', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
         page.selectObjectType('inet-rtr').click();

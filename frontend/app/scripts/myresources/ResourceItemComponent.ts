@@ -1,12 +1,16 @@
 class ResourceItemController {
 
-    public static $inject = ["$state", "ResourceStatus"];
-    private item: any;
+    public static $inject = [
+        "$state",
+        "ResourceStatus",
+    ];
+    private item: IResourceScreenItem;
     private sponsored: boolean;
     private usedPercentage: number;
     private showProgressbar: boolean;
 
-    constructor(private $state: ng.ui.IStateService, private ResourceStatus: any) {
+    constructor(private $state: ng.ui.IStateService,
+                private ResourceStatus: any) {
         if (this.item.usage) {
             this.usedPercentage = Math.round(this.item.usage.used * 100 / this.item.usage.total);
         }
@@ -15,12 +19,13 @@ class ResourceItemController {
     }
 
     public showDetail() {
-        this.$state.go("webupdates.myresourcesdetail", {
+        this.$state.go("myresourcesdetail", {
             objectName: this.item.resource,
             objectType: this.item.type,
             sponsored: this.sponsored,
         });
-    };
+    }
+
 }
 
 angular.module("dbWebApp").component("resourceItem", {

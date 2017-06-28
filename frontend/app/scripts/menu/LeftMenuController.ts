@@ -4,7 +4,6 @@ class LeftMenuController {
     public static $inject = ["$log", "$rootScope", "$scope", "$state"];
 
     public webUpdatesExpanded: boolean;
-    public myResourcesChosen: boolean;
     public activeUrl: string;
 
     public shouldDisplayMyResources: boolean;
@@ -17,15 +16,12 @@ class LeftMenuController {
         this.shouldDisplayMyResources = false;
         $rootScope.$on("$stateChangeSuccess", (event: IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
-            this.webUpdatesExpanded = this.myResourcesChosen = false;
-            if (toState.name.startsWith("webupdates.myresources")) {
-                this.myResourcesChosen = true;
-            }
-            if (toState.name.startsWith("webupdates") || toState.name.startsWith("textupdates")) {
-                this.webUpdatesExpanded = true;
-            }
+            this.webUpdatesExpanded =
+                (toState.name.indexOf("myresources") === 0 ||
+                toState.name.indexOf("webupdates") === 0 ||
+                toState.name.indexOf("textupdates") === 0);
         });
-        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: Organisation[]) => {
+        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: IOrganisationModel[]) => {
             if (lirs && lirs.length > 0) {
                 this.shouldDisplayMyResources = true;
             }

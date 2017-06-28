@@ -8,12 +8,12 @@ interface IResourcesControllerState extends ng.ui.IStateService {
 }
 
 class ResourcesController {
-    public static $inject = ["$log", "$location", "$scope", "$state", "ResourcesDataService", "UserInfoService"];
+    public static $inject = ["$log", "$location", "$scope", "$state", "$q", "ResourcesDataService", "UserInfoService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
     public typeIndex = 0;
-    public selectedOrg: Organisation; // selection bound to ng-model in widget
+    public selectedOrg: IOrganisationModel; // selection bound to ng-model in widget
     public loading: boolean; // true until resources are loaded to tabs
     public reason = "No resources found";
     public fail: boolean;
@@ -26,11 +26,12 @@ class ResourcesController {
                 private $location: angular.ILocationService,
                 private $scope: angular.IScope,
                 private $state: IResourcesControllerState,
+                private $q: ng.IQService,
                 private resourcesDataService: ResourcesDataService,
                 private userInfoService: any) {
 
-        this.isShowingSponsored = typeof this.$state.params.sponsored === "string" &&
-            this.$state.params.sponsored === "true";
+        this.isShowingSponsored = typeof this.$state.params.sponsored === "string" ?
+            this.$state.params.sponsored === "true" : this.$state.params.sponsored;
 
         this.refreshPage();
         this.lastTab = this.$state.params.type;
@@ -79,7 +80,7 @@ class ResourcesController {
             return;
         }
         this.loading = true;
-        Promise.all([
+        this.$q.all([
             this.resourcesDataService.fetchIpv4Resources(this.selectedOrg.orgId),
             this.resourcesDataService.fetchIpv6Resources(this.selectedOrg.orgId),
             this.resourcesDataService.fetchAsnResources(this.selectedOrg.orgId),

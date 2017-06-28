@@ -22,15 +22,17 @@ public class BaAppsService implements ExchangeErrorHandler {
 
     private final RestTemplate restTemplate;
     private final String baAppsUrl;
+    private final String apiKey;
 
     @Autowired
     public BaAppsService(
-        final RestTemplate restTemplate,
-        @Value("${ba-apps.api.url}") final String baAppsUrl) {
+            final RestTemplate restTemplate,
+            @Value("${ba-apps.api.url}") final String baAppsUrl,
+            @Value("${ba-apps.api.key}") final String apiKey) {
         this.restTemplate = restTemplate;
         this.baAppsUrl = baAppsUrl;
+        this.apiKey = apiKey;
     }
-
 
     /**
      * @return JSON with the LIRs for a given user determined through the token passed.
@@ -48,21 +50,41 @@ public class BaAppsService implements ExchangeErrorHandler {
         return getAccountData(crowdToken, url);
     }
 
+
+    public String getResourceTickets(String memberId) {
+
+        String url = baAppsUrl + "/resource-services/member-resources/{memberId}?api-key={apiKey}";
+        try {
+            final ResponseEntity<String> response = restTemplate.exchange(
+                    url,
+                    HttpMethod.GET,
+                    new HttpEntity<String>(withHeaders(MediaType.APPLICATION_JSON_VALUE)),
+                    String.class,
+                    memberId, apiKey);
+            if (response.getStatusCode() != HttpStatus.OK) {
+                throw new RestClientException(response.getStatusCode().value(), "Unable to get resource tickets");
+            }
+            return response.getBody();
+        } catch (RestClientException e) {
+            LOGGER.warn("Failed to retrieve LIRs due to {}", e.getMessage());
+            throw new RestClientException(e);
+        }
+    }
+
     private String getAccountData(final String crowdToken, final String url) {
         try {
             final ResponseEntity<String> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                new HttpEntity<String>(withHeaders(MediaType.APPLICATION_JSON_VALUE)),
-                String.class,
-                withParams(crowdToken));
+                    url,
+                    HttpMethod.GET,
+                    new HttpEntity<String>(withHeaders(MediaType.APPLICATION_JSON_VALUE)),
+                    String.class,
+                    withParams(crowdToken));
 
             final String body = response.getBody();
             if (response.getStatusCode() != HttpStatus.OK) {
                 LOGGER.warn("Failed to retrieve LIRs for Crowd token {} due to {}",
-                    crowdToken,
-                    (body != null ? body : "(no response body)"));
-
+                        crowdToken,
+                        (body != null ? body : "(no response body)"));
                 throw new RestClientException(response.getStatusCode().value(), "Unable to get LIRs");
             }
             return body;

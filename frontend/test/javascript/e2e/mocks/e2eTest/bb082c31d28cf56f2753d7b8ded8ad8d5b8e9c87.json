@@ -1,0 +1,45 @@
+{
+  "requestUrl": "/api/whois-internal/api/resources/inetnum/185.51.48.0%20-%20185.51.55.255/more-specifics.json?filter=&page=0",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "resources": [
+      {
+        "resource": "185.51.52.0 - 185.51.52.255",
+        "status": "ASSIGNED PA",
+        "type": "inetnum",
+        "netname": "Access-Range",
+        "usage": {
+          "total": 256,
+          "used": 256,
+          "blockSize": 32
+        }
+      },
+      {
+        "resource": "185.51.53.0 - 185.51.53.255",
+        "status": "ASSIGNED PA",
+        "type": "inetnum",
+        "netname": "Access-Range",
+        "usage": {
+          "total": 256,
+          "used": 256,
+          "blockSize": 32
+        }
+      },
+      {
+        "resource": "185.51.54.0 - 185.51.55.255",
+        "status": "ASSIGNED PA",
+        "type": "inetnum",
+        "netname": "NL-HOSTIO-20150817",
+        "usage": {
+          "total": 512,
+          "used": 512,
+          "blockSize": 32
+        }
+      }
+    ],
+    "totalNumberOfResources": 3,
+    "filteredSize": 3,
+    "pageSize": 3
+  }
+}

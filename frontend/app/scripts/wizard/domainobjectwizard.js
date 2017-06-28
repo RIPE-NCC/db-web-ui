@@ -42,10 +42,10 @@
 
             vm.attributes = vm.domainObject.attributes.attribute;
             vm.source = $stateParams.source;
+
             /*
              * Main
              */
-
             vm.restCallInProgress = true;
 
             // should be the only thing to do, one day...
@@ -54,6 +54,10 @@
             /*
              * Callback handlers
              */
+            vm.updateMaintainers = function(maintainers) {
+                this.maintainers = maintainers;
+            };
+
             vm.submitButtonClicked = submitForm;
 
             vm.containsInvalidValues = function () {
@@ -87,7 +91,6 @@
                             mine: _.contains(mySsos, mntnerAttr.value)
                         };
                     });
-
                     RestService.detailsForMntners(enriched).then(function (enrichedMntners) {
                         vm.maintainers.objectOriginal = enrichedMntners;
                         RestService.fetchMntnersForSSOAccount().then(function (results) {

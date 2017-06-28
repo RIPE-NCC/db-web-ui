@@ -1,0 +1,138 @@
+{
+  "requestUrl": "/api/whois/RIPE/inetnum/185.51.48.0%20-%20185.51.55.255",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "objects": {
+      "object": [
+        {
+          "type": "inetnum",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/185.51.48.0 - 185.51.55.255"
+          },
+          "source": {
+            "id": "ripe"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "inetnum",
+                "value": "185.51.48.0 - 185.51.55.255"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "inetnum",
+                "value": "185.51.48.0 - 185.51.55.255"
+              },
+              {
+                "name": "netname",
+                "value": "NL-A2B-INTERNET-20140321"
+              },
+              {
+                "name": "country",
+                "value": "NL"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-AIbi1-RIPE"
+                },
+                "name": "org",
+                "value": "ORG-AIbi1-RIPE",
+                "referenced-type": "organisation"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/AS51088-ripe"
+                },
+                "name": "admin-c",
+                "value": "AS51088-ripe",
+                "referenced-type": "role"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/AS51088-ripe"
+                },
+                "name": "tech-c",
+                "value": "AS51088-ripe",
+                "referenced-type": "role"
+              },
+              {
+                "name": "status",
+                "value": "ALLOCATED PA"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                },
+                "name": "mnt-by",
+                "value": "RIPE-NCC-HM-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/A2B-INTERNET-MNT"
+                },
+                "name": "mnt-lower",
+                "value": "A2B-INTERNET-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/A2B-INTERNET-MNT"
+                },
+                "name": "mnt-routes",
+                "value": "A2B-INTERNET-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS49544-MNT"
+                },
+                "name": "mnt-routes",
+                "value": "AS49544-MNT {185.51.54.0/23}",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/A2B-INTERNET-MNT"
+                },
+                "name": "mnt-domains",
+                "value": "A2B-INTERNET-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "created",
+                "value": "2014-12-16T10:00:50Z"
+              },
+              {
+                "name": "last-modified",
+                "value": "2015-08-17T14:33:19Z"
+              },
+              {
+                "name": "source",
+                "value": "RIPE",
+                "comment": "Filtered"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "type": "locator",
+      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}

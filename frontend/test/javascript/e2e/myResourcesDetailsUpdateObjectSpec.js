@@ -9,7 +9,7 @@ describe('My Resources, update object', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
+        browser.get(browser.baseUrl+ '#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
     });
 
     it('allow editing of the object', function() {

@@ -1,0 +1,21 @@
+{
+  "requestUrl": "/api/ba-apps/resources/ORG-AIbi1-RIPE/185.51.48.0%20-%20185.51.55.255",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "tickets": {
+      "185.51.48.0 - 185.51.55.255": [
+        {
+          "number": "NCC#2014033634",
+          "date": "2014-03-21",
+          "resource": "185.51.48.0/22"
+        },
+        {
+          "number": "NCC#2014033636",
+          "date": "2014-03-21",
+          "resource": "185.51.52.0/22"
+        }
+      ]
+    }
+  }
+}

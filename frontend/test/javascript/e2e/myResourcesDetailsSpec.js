@@ -7,10 +7,10 @@ var page = require('./homePageObject');
 describe('My Resources detail for inetnum', function () {
 
     beforeEach(function () {
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
+        browser.get(browser.baseUrl + '#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
     });
 
-    it('should show whois object attributes', function() {
+    it('should show whois object attributes', function () {
 
         var whoisObject = page.getWhoisObject();
         var attributes = whoisObject.attributes();
@@ -61,8 +61,24 @@ describe('My Resources detail for inetnum', function () {
 
     });
 
-    it('should not display address usage because it is status ASSIGNED PI', function() {
+    it('should not display address usage because it is status ASSIGNED PI', function () {
         expect(page.usageStatus.isPresent()).toEqual(false);
+    });
+});
+
+describe('My Resources detail for inetnum with flags', function () {
+
+    beforeEach(function () {
+        browser.get(browser.baseUrl + '#/myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false');
+    });
+
+    it('should contain 6 flags, 2 tickets and 2 dates', function () {
+        expect(page.flagsContainer.isPresent()).toEqual(true);
+        expect(page.flags.count()).toEqual(6);
+        expect(page.flags.get(2).getText()).toEqual('2014-03-21');
+        expect(page.flags.get(3).getText()).toEqual('NCC#2014033634');
+        expect(page.flags.get(4).getText()).toEqual('2014-03-21');
+        expect(page.flags.get(5).getText()).toEqual('NCC#2014033636');
     });
 
 });
@@ -70,24 +86,29 @@ describe('My Resources detail for inetnum', function () {
 describe('My Resources detail for inetnum with usage status', function () {
 
     beforeEach(function () {
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/');
+        browser.get(browser.baseUrl + '#/myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/');
     });
 
-    it('should display address usage', function() {
+    it('should display address usage', function () {
         expect(page.usageStatus.isPresent()).toEqual(true);
         expect(page.usageStatusStatistics.count()).toEqual(2);
         expect(page.usageStatusStatistics.get(0).getText()).toEqual('80%');
         expect(page.usageStatusStatistics.get(1).getText()).toEqual('20%');
+    });
+
+    it('should contain 2 flags, 0 tickets and 0 dates', function () {
+        expect(page.flagsContainer.isPresent()).toEqual(true);
+        expect(page.flags.count()).toEqual(2);
     });
 });
 
 describe('My Resources detail for inet6num', function () {
 
     beforeEach(function () {
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/inet6num/2001:7f8::/29/');
+        browser.get(browser.baseUrl + '#/myresources/detail/inet6num/2001:7f8::/29/');
     });
 
-    it('should show whois object attributes', function() {
+    it('should show whois object attributes', function () {
 
         var whoisObject = page.getWhoisObject();
         var attributes = whoisObject.attributes();
@@ -122,10 +143,10 @@ describe('My Resources detail for inet6num', function () {
 describe('My Resources detail for aut-num', function () {
 
     beforeEach(function () {
-        browser.get(browser.baseUrl+ '#/webupdates/myresources/detail/aut-num/AS204056/');
+        browser.get(browser.baseUrl + '#/myresources/detail/aut-num/AS204056/');
     });
 
-    it('should show partial whois object attributes', function() {
+    it('should show partial whois object attributes', function () {
 
         var whoisObject = page.getWhoisObject();
         var attributes = whoisObject.attributes();
@@ -202,5 +223,12 @@ describe('My Resources detail for aut-num', function () {
         expect(attributes.get(61).getText()).toMatch(/source: *RIPE/);
 
         expect(page.moreSpecificsTable.isPresent()).toEqual(false);
+    });
+
+    it('should contain 4 flags, 1 ticket and 1 date', function () {
+        expect(page.flagsContainer.isPresent()).toEqual(true);
+        expect(page.flags.count()).toEqual(4);
+        expect(page.flags.get(2).getText()).toEqual('2017-06-19');
+        expect(page.flags.get(3).getText()).toEqual('NCC#201001020355');
     });
 });

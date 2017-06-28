@@ -1,8 +1,8 @@
 class OrgDropDownController {
     public static $inject = ["$log", "$rootScope", "$scope", "UserInfoService"];
 
-    public selectedOrg: Organisation;
-    public organisations: Organisation[];
+    public selectedOrg: IOrganisationModel;
+    public organisations: IOrganisationModel[];
 
     constructor(private $log: angular.ILogService,
                 private $rootScope: angular.IRootScopeService,

@@ -1,9 +1,4 @@
-interface DbOrg {
-    id: string;
-    name: string;
-}
-
-interface Organisation {
+interface IOrganisationModel {
     orgId: string;
     orgName: string;
     memberId: string;
@@ -11,7 +6,7 @@ interface Organisation {
     displayName: string; // Name shown in dropdown
 }
 
-interface Lir {
+interface ILirModel {
     membershipId: number;
     regId: string;
     organisationname: string;
@@ -20,5 +15,5 @@ interface Lir {
 }
 
 interface ILirDataService {
-    getOrgs(): IPromise<Organisation[]>;
+    getOrgs(): IPromise<IOrganisationModel[]>;
 }

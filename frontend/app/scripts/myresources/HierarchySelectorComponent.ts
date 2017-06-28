@@ -27,7 +27,7 @@ class HierarchySelectorController {
             this.fetchParents(selOrg.orgId);
         }
 
-        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: Organisation[]) => {
+        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: IOrganisationModel[]) => {
             const selectedOrg = userInfoService.getSelectedLir();
             if (lirs && lirs.length > 0) {
                 this.fetchParents(selectedOrg.orgId);
@@ -40,7 +40,7 @@ class HierarchySelectorController {
             sponsored: this.$state.params.sponsored,
             type: this.resource.type,
         };
-        this.$state.go("webupdates.myresources", params);
+        this.$state.go("myresources", params);
     }
 
     public takeMeBackHome(parent: string) {
@@ -53,7 +53,7 @@ class HierarchySelectorController {
             objectType: this.resource.type,
             sponsored: this.$state.params.sponsored,
         };
-        this.$state.go("webupdates.myresourcesdetail", params);
+        this.$state.go("myresourcesdetail", params);
     }
 
     private fetchParents(orgId: string): void {

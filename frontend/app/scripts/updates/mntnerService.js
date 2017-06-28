@@ -83,6 +83,16 @@
                 return _.includes(nccMntners, mntnerKey.toUpperCase());
             };
 
+            mntnerService.isComaintained = function (attributes) {
+                return _.some(attributes, function(attr) {
+                    if(attr.name.toUpperCase() === 'MNT-BY') {
+                        return mntnerService.isNccMntner(attr.value);
+                    } else {
+                        return false;
+                    }
+                });
+            };
+
             mntnerService.isNccEndUserMntner = function (mntnerKey) {
                 return nccEndMntner === mntnerKey.toUpperCase();
             };
