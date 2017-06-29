@@ -2,7 +2,8 @@ package net.ripe.whois.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
-import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,15 +20,18 @@ import java.nio.charset.Charset;
 @SuppressWarnings("UnusedDeclaration")
 public class RestTemplateConfiguration {
 
+    private static final int HTTPCLIENT_CONNECT_TIMEOUT = 5 * 1_000;
+    private static final int HTTPCLIENT_READ_TIMEOUT = 5 * 60 * 1_000;
+
+    private static final RequestConfig DEFAULT_REQUEST_CONFIG = RequestConfig.custom()
+                                                                    .setConnectionRequestTimeout(HTTPCLIENT_CONNECT_TIMEOUT)
+                                                                    .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT)
+                                                                    .setSocketTimeout(HTTPCLIENT_READ_TIMEOUT)
+                                                                    .build();
+
     @Bean
     public RestTemplate restTemplate() {
-        return createRestTemplate();
-    }
-
-    private RestTemplate createRestTemplate() {
-        final CloseableHttpClient httpClient = HttpClientBuilder.create().build();
-        final ClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
-        final RestTemplate restTemplate = new RestTemplate(requestFactory);
+        final RestTemplate restTemplate = new RestTemplate(httpRequestFactory());
 
         restTemplate.getMessageConverters().add(0, new StringHttpMessageConverter(Charset.forName("UTF-8")));
 
@@ -40,4 +44,15 @@ public class RestTemplateConfiguration {
 
         return restTemplate;
     }
+
+    @Bean
+    public ClientHttpRequestFactory httpRequestFactory() {
+        return new HttpComponentsClientHttpRequestFactory(httpClient());
+    }
+
+    @Bean
+    public HttpClient httpClient() {
+        return HttpClientBuilder.create().setDefaultRequestConfig(DEFAULT_REQUEST_CONFIG).build();
+    }
+
 }
