@@ -1,8 +1,9 @@
 package net.ripe.whois.web.api.baapps;
 
-import net.ripe.db.whois.common.ip.IpInterval;
 import net.ripe.db.whois.common.ip.Ipv4Resource;
 import net.ripe.db.whois.common.ip.Ipv6Resource;
+import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
+import net.ripe.db.whois.common.rpsl.attrs.AutNum;
 import net.ripe.whois.services.BaAppsService;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static net.ripe.whois.web.api.baapps.ResourceTicketMap.KeyType;
@@ -23,7 +23,6 @@ import static net.ripe.whois.web.api.baapps.ResourceTicketMap.KeyType;
 public class ResourceTicketService {
 
     private final BaAppsService baAppsService;
-    private final static Pattern AUT_NUM_NAME_PATTERN = Pattern.compile("$[Aa][Ss]\\d+$");
 
     @Autowired
     ResourceTicketService(final BaAppsService baAppsService) {
@@ -64,17 +63,52 @@ public class ResourceTicketService {
     }
 
     private KeyType determineType(final String resource) {
-        if (AUT_NUM_NAME_PATTERN.matcher(resource).matches()) {
+        if (isValidAutnum(resource)) {
             return KeyType.ASN;
         } else {
-            IpInterval<?> ipInterval = IpInterval.parse(resource);
-            if (ipInterval instanceof Ipv4Resource) {
+            if (isValidInetnum(resource)) {
                 return KeyType.IPV4;
-            } else if (ipInterval instanceof Ipv6Resource) {
-                return KeyType.IPV6;
             } else {
-                throw new IllegalArgumentException();
+                if (isValidInet6num(resource)) {
+                    return KeyType.IPV6;
+                }
+                else {
+                    throw new IllegalArgumentException("Invalid Type " + resource);
+                }
             }
+        }
+    }
+
+    private static boolean isValidAutnum(final String key) {
+        try {
+            AutNum.parse(key);
+            return true;
+        } catch (AttributeParseException e) {
+            return false;
+        }
+    }
+
+    private static boolean isValidInetnum(final String key) {
+        if (key.indexOf(':') != - 1) {
+            return false;
+        }
+        try {
+            Ipv4Resource.parse(key);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private static boolean isValidInet6num(final String key) {
+        if (key.indexOf(':') == - 1) {
+            return false;
+        }
+        try {
+            Ipv6Resource.parse(key);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
         }
     }
 
