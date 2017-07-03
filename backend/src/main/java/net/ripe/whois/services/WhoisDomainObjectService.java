@@ -36,7 +36,7 @@ public class WhoisDomainObjectService {
     public WhoisDomainObjectService(final RestTemplate restTemplate, @Value("${rest.api.ripeUrl}") final String ripeUrl) {
         this.restApiUrl = ripeUrl;
         this.restTemplate = restTemplate;
-        LOGGER.debug("Set restApiUrl to " + this.restApiUrl);
+        LOGGER.debug("Set restApiUrl to {}", this.restApiUrl);
     }
 
     @Async
@@ -54,9 +54,7 @@ public class WhoisDomainObjectService {
         try {
             result = restTemplate.postForEntity(getCreateDomainUri(source, passwords), new HttpEntity<>(whoisResources, headers), String.class);
         } catch (HttpClientErrorException e) {
-            LOGGER.error("Fail to create domain object(s): " + e.getMessage());
-            LOGGER.error(e.getResponseBodyAsString());
-            LOGGER.error(e.getStatusCode() + ":", e);
+            LOGGER.error("Fail to create domain object(s): {}:{}\n{}\n{}", e.getClass().getName(), e.getMessage(), e.getResponseBodyAsString(), e.getStatusCode());
             result = new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
         } catch (HttpServerErrorException e) {
             String msg = "Call to Whois backend failed: ";

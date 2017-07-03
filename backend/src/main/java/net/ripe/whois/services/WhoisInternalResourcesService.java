@@ -41,7 +41,7 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
-        LOGGER.info("BYPASS: uri={} path={} queryString={}", withURI(request).toString() );
+        LOGGER.info("BYPASS: {}", withURI(request).toString() );
 
         return handleErrors(() -> restTemplate.exchange(
                 withURI(request),

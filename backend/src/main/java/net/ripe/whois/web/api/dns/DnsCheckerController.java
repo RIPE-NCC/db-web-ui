@@ -75,7 +75,7 @@ public class DnsCheckerController {
             }
         }
 
-        LOGGER.info("Success DNS check for " + ns);
+        LOGGER.debug("Success DNS check for {}", ns);
         return new ResponseEntity<>(jsonResponse(ns, 0, "Server is authoritative for " + record), HttpStatus.OK);
     }
 
@@ -114,10 +114,10 @@ public class DnsCheckerController {
 
     private Optional<String> checkDnsConfig(final String ns, final String record, final InetAddress address, final TransportProtocol protocol) {
         try {
-            LOGGER.info("Querying for "+ record + "@" + ns + " (" + address + ") using " + protocol);
+            LOGGER.debug("Querying for {}@{} ({}) using {}", record, ns, address, protocol);
             final Resolver resolver = getResolver(address, port, protocol);
             final Lookup lookup = executeQuery(record, resolver);
-            LOGGER.info("Response message for " + ns + " (" + address + "):" + lookup.getErrorString());
+            LOGGER.debug("Response message for {} ({}):{}", ns, address, lookup.getErrorString());
             if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
                 String msgString = "No reply from " + address.getHostAddress() + " on port " + port + "/" + protocol + ". " + LEARN_MORE_MESSAGE;
                 return Optional.of(jsonResponse(ns, -1, msgString));
@@ -131,10 +131,9 @@ public class DnsCheckerController {
             return Optional.empty();
 
         } catch (Exception e) {
-            LOGGER.info("Could not test DNS for " + ns);
-            LOGGER.info(e.getMessage(), e);
             String msgString = "Could not check " + ns + ". " + LEARN_MORE_MESSAGE;
             return Optional.of(jsonResponse(ns, -1, msgString));
+            LOGGER.info("Could not test DNS for {}", ns, e);
         }
     }
 
@@ -159,8 +158,8 @@ public class DnsCheckerController {
         try {
             return Arrays.asList(InetAddress.getAllByName(ns));
         } catch (UnknownHostException e) {
-            LOGGER.info("Could not resolve '" + ns + "' " + e.getClass().getName() + " " + e.getMessage());
             return Arrays.asList();
+            LOGGER.info("Could not resolve '{}' {} {}", ns, e.getClass().getName(), e.getMessage());
         }
     }
 

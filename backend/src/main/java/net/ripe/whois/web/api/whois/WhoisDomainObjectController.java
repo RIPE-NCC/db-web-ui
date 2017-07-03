@@ -103,7 +103,7 @@ public class WhoisDomainObjectController extends ApiController {
             stickyCookie.setSecure(true);
             stickyCookie.setPath("/");
 
-            LOGGER.debug("setting %s (routing cookie) to: %s", NAME_SESSIONID_USED_FOR_STICKINESS, sessionId);
+            LOGGER.debug("setting {} (routing cookie) to: {}", NAME_SESSIONID_USED_FOR_STICKINESS, sessionId);
             response.addCookie(stickyCookie);
         }
 
