@@ -30,18 +30,6 @@ public class ResourceTicketService {
         this.baAppsService = baAppsService;
     }
 
-    String findMemberIdFromLirs(final String orgId, final String jsonLirs) throws JSONException {
-        final JSONObject lirsResponse = new JSONObject(jsonLirs);
-        final JSONArray lirs = lirsResponse.getJSONObject("response").getJSONArray("results");
-        // check that the orgId is in 'results'
-        for (int i = 0; i < lirs.length(); i++) {
-            if (orgId.equals(lirs.getJSONObject(i).getString("orgId"))) {
-                return lirs.getJSONObject(i).getString("membershipId");
-            }
-        }
-        throw new IllegalAccessError();
-    }
-
     @Cacheable("net.ripe.whois.web.api.baapps.ResourceTicketService")
     public ResourceTicketMap getTicketsForMember(final String memberId) throws JSONException {
         final String jsonTickets = baAppsService.getResourceTickets(memberId);

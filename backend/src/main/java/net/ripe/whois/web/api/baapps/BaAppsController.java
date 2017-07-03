@@ -2,13 +2,13 @@ package net.ripe.whois.web.api.baapps;
 
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.BaAppsService;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +39,7 @@ public class BaAppsController {
     public ResponseEntity getLirs(@CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken) {
         try {
             final String json = baAppsService.getLirs(crowdToken);
-            return new ResponseEntity<>(json, headers(), HttpStatus.OK);
+            return new ResponseEntity<>(json, HttpStatus.OK);
         } catch (RestClientException e) {
             // No error message in response
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -50,7 +50,7 @@ public class BaAppsController {
     public ResponseEntity getOrganisations(@CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken) {
         try {
             final String json = baAppsService.getOrganisations(crowdToken);
-            return new ResponseEntity<>(json, headers(), HttpStatus.OK);
+            return new ResponseEntity<>(json, HttpStatus.OK);
         } catch (RestClientException e) {
             // No error message in response
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -67,16 +67,16 @@ public class BaAppsController {
 
     @RequestMapping(value = "/resources/{orgId}/{resource:.+}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getTickets(@CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken,
-                                     @PathVariable(name = "orgId") String orgIdIn,
-                                     @PathVariable(name = "resource") String resourceIn) {
+                                     @PathVariable(name = "orgId") String orgId,
+                                     @PathVariable(name = "resource") String resource) {
         try {
-            final String orgId = sanitize(orgIdIn);
-            final String resource = sanitize(resourceIn);
+            validateInput(orgId);
+            validateInput(resource);
             final String jsonLirs = baAppsService.getLirs(crowdToken);
-            final String memberId = resourceTicketService.findMemberIdFromLirs(orgId, jsonLirs);
+            final String memberId = findMemberIdFromLirs(orgId.trim(), jsonLirs);
             final ResourceTicketMap resourceTicketMap = resourceTicketService.getTicketsForMember(memberId);
-            final ResourceTicketResponse filtered = resourceTicketService.filteredResponse(resource, resourceTicketMap);
-            return new ResponseEntity<>(filtered, headers(), HttpStatus.OK);
+            final ResourceTicketResponse filtered = resourceTicketService.filteredResponse(resource.trim(), resourceTicketMap);
+            return new ResponseEntity<>(filtered, HttpStatus.OK);
         } catch (JSONException e) {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (RestClientException | IllegalArgumentException | IllegalAccessError e) {
@@ -84,17 +84,25 @@ public class BaAppsController {
         }
     }
 
-    private static String sanitize(String strIn) {
-        if (IP_ADDRESS_AND_ASN_NAME.matcher(strIn).matches()) {
-            return strIn.trim();
+    // find memberId for selected organisation
+    private String findMemberIdFromLirs(final String orgId, final String jsonLirs) throws JSONException {
+        final JSONObject lirsResponse = new JSONObject(jsonLirs);
+        final JSONArray lirs = lirsResponse.getJSONObject("response").getJSONArray("results");
+        // check that the orgId is in 'results'
+        for (int i = 0; i <
+                lirs.length(); i++) {
+            if (orgId.equals(lirs.getJSONObject(i).getString("orgId"))) {
+                return lirs.getJSONObject(i).getString("membershipId");
+            }
         }
-        throw new IllegalArgumentException("Unsupported input");
+        throw new IllegalAccessError();
     }
 
-    private static MultiValueMap<String, String> headers() {
-        final MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        return headers;
+    private static void validateInput(final String strIn) {
+        if (!(IP_ADDRESS_AND_ASN_NAME.matcher(strIn).matches())) {
+            throw new IllegalArgumentException("Unsupported input " + strIn);
+        }
     }
+
 }
 
