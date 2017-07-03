@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.regex.Pattern;
-
 import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
 
 
@@ -32,7 +30,6 @@ public class BaAppsController {
 
     private final BaAppsService baAppsService;
     private final ResourceTicketService resourceTicketService;
-    private static Pattern IP_ADDRESS_AND_ASN_NAME = Pattern.compile("^[a-zA-Z0-9:./ -]+$");
 
     @Autowired
     public BaAppsController(final BaAppsService baAppsService, final ResourceTicketService resourceTicketService) {
