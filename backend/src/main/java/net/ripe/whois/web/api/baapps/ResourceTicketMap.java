@@ -9,14 +9,9 @@ import java.util.Map;
 
 class ResourceTicketMap {
 
-    enum KeyType {
-        IPV4,
-        IPV6,
-        ASN
-    }
+    private final Map<KeyType, List<ResourceTicketResponse.ResourceTicket>> map = Maps.newHashMap();
 
     ResourceTicketMap() {
-        map = Maps.newHashMap();
         for (KeyType type : KeyType.values()) {
             map.put(type, Lists.newArrayList());
         }
@@ -30,5 +25,7 @@ class ResourceTicketMap {
         return map.get(type);
     }
 
-    private Map<KeyType, List<ResourceTicketResponse.ResourceTicket>> map;
+    enum KeyType {
+        IPV4, IPV6, ASN
+    }
 }
