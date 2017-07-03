@@ -1,6 +1,11 @@
 package net.ripe.whois.web.api.baapps;
 
 import net.ripe.db.whois.api.rest.client.RestClientException;
+import net.ripe.db.whois.common.ip.IpInterval;
+import net.ripe.db.whois.common.rpsl.AttributeType;
+import net.ripe.db.whois.common.rpsl.ObjectType;
+import net.ripe.db.whois.common.rpsl.attrs.AttributeParseException;
+import net.ripe.db.whois.common.rpsl.attrs.AutNum;
 import net.ripe.whois.services.BaAppsService;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,8 +75,8 @@ public class BaAppsController {
                                      @PathVariable(name = "orgId") String orgId,
                                      @PathVariable(name = "resource") String resource) {
         try {
-            validateInput(orgId);
-            validateInput(resource);
+            validateOrgId(orgId);
+            validateResource(resource);
             final String jsonLirs = baAppsService.getLirs(crowdToken);
             final String memberId = findMemberIdFromLirs(orgId.trim(), jsonLirs);
             final ResourceTicketMap resourceTicketMap = resourceTicketService.getTicketsForMember(memberId);
@@ -98,11 +103,38 @@ public class BaAppsController {
         throw new IllegalAccessError();
     }
 
-    private static void validateInput(final String strIn) {
-        if (!(IP_ADDRESS_AND_ASN_NAME.matcher(strIn).matches())) {
-            throw new IllegalArgumentException("Unsupported input " + strIn);
+    private static void validateOrgId(final String orgId) {
+        if (!isValidOrgId(orgId)) {
+            throw new IllegalArgumentException("Invalid org-id " + orgId);
         }
     }
 
+    private static void validateResource(final String resource) {
+        if (!isValidIp(resource) && !isValidAutnum(resource)) {
+            throw new IllegalArgumentException("Invalid resource " + resource);
+        }
+    }
+
+    private static boolean isValidIp(final String key) {
+        try {
+            IpInterval.parse(key);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private static boolean isValidAutnum(final String key) {
+        try {
+            AutNum.parse(key);
+            return true;
+        } catch (AttributeParseException e) {
+            return false;
+        }
+    }
+
+    private static boolean isValidOrgId(final String key) {
+        return AttributeType.ORGANISATION.isValidValue(ObjectType.ORGANISATION, key);
+    }
 }
 
