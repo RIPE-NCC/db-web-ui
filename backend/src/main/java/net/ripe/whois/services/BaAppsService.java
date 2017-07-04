@@ -13,6 +13,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 
+/**
+ * Call various BA Apps APIs.
+ *
+ * Caching
+ * The Authorisation Service API calls are handled by the SSO Application, and are all cached on the server side.
+ * The Member Resources API call is cached by the ResourceTicketService (see below).
+ *
+ */
 @Service
 public class BaAppsService implements ExchangeErrorHandler {
 
@@ -50,7 +58,15 @@ public class BaAppsService implements ExchangeErrorHandler {
         return getAccountData(crowdToken, url);
     }
 
-
+    /**
+     * Get ALL resource tickets for a member.
+     *
+     * Caching
+     * This API call is cached through the ResourceTicketService (do not call this method directly).
+     *
+     * @param memberId
+     * @return
+     */
     public String getResourceTickets(String memberId) {
 
         String url = baAppsUrl + "/resource-services/member-resources/{memberId}?api-key={apiKey}";
