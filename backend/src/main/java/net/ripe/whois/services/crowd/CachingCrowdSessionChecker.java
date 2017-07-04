@@ -8,6 +8,8 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
+// TODO: [ES] be consistent in caching Crowd calls, we should cache globally (refactor CrowdClient).
+// TODO: However we should also handle cache invalidation (the logout link in the browser should be handled by us).
 @Component
 @CacheConfig
 public class CachingCrowdSessionChecker {
