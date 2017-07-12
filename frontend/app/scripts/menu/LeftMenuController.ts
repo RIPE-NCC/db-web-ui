@@ -1,29 +1,63 @@
 import IAngularEvent = angular.IAngularEvent;
 
 class LeftMenuController {
-    public static $inject = ["$log", "$rootScope", "$scope", "$state"];
+    public static $inject = ["$rootScope", "$scope", "$state"];
 
-    public webUpdatesExpanded: boolean;
     public activeUrl: string;
+    public show: {
+        admin: boolean;
+        billing: boolean;
+        certification: boolean;
+        general: boolean;
+        generalMeeting: boolean;
+        ticketing: boolean;
+    } = {
+        admin: false,
+        billing: false,
+        certification: false,
+        general: false,
+        generalMeeting: false,
+        ticketing: false,
+    };
 
-    public shouldDisplayMyResources: boolean;
-
-    constructor(private $log: angular.ILogService,
-                private $rootScope: angular.IRootScopeService,
+    constructor(private $rootScope: angular.IRootScopeService,
                 private $scope: angular.IScope,
                 private $state: ng.ui.IStateService) {
 
-        this.shouldDisplayMyResources = false;
         $rootScope.$on("$stateChangeSuccess", (event: IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
-            this.webUpdatesExpanded =
-                (toState.name.indexOf("myresources") === 0 ||
-                toState.name.indexOf("webupdates") === 0 ||
-                toState.name.indexOf("textupdates") === 0);
         });
-        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: IOrganisationModel[]) => {
-            if (lirs && lirs.length > 0) {
-                this.shouldDisplayMyResources = true;
+
+        $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
+            this.show.admin = this.show.general = this.show.billing
+                = this.show.generalMeeting = this.show.ticketing = this.show.certification = false;
+
+            if (!selected || !selected.roles) {
+                return;
+            }
+            for (const role of selected.roles) {
+                switch (role.toLowerCase()) {
+                    case "admin":
+                        this.show.admin = true;
+                        break;
+                    case "billing":
+                        this.show.billing = true;
+                        break;
+                    case "certification":
+                        this.show.certification = true;
+                        break;
+                    case "general":
+                        this.show.general = true;
+                        break;
+                    case "generalmeeting":
+                        this.show.generalMeeting = true;
+                        break;
+                    case "ticketing":
+                        this.show.ticketing = true;
+                        break;
+                    default:
+                        break;
+                }
             }
         });
     }

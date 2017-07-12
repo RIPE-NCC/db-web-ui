@@ -26,13 +26,6 @@ class HierarchySelectorController {
         if (selOrg && selOrg.orgId) {
             this.fetchParents(selOrg.orgId);
         }
-
-        $scope.$on("lirs-loaded-event", (event: IAngularEvent, lirs: IOrganisationModel[]) => {
-            const selectedOrg = userInfoService.getSelectedLir();
-            if (lirs && lirs.length > 0) {
-                this.fetchParents(selectedOrg.orgId);
-            }
-        });
     }
 
     public showTopLevelResources() {

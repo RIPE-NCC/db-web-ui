@@ -44,6 +44,14 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
+    @RequestMapping(value = "/api/user/**")
+    public ResponseEntity<String> whoisInternalUserInfo(
+            final HttpServletRequest request,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
     // call backend (do not map arbitrary user-supplied paths directly!)
     private ResponseEntity<String> proxyRestCalls(final HttpServletRequest request,
                                                  @Nullable @RequestBody(required = false) final String body,

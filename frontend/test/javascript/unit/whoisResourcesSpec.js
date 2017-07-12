@@ -1,3 +1,4 @@
+/*global afterEach, beforeEach, describe, expect, inject, it*/
 'use strict';
 
 describe('dbWebApp: WhoisResources', function () {
@@ -14,7 +15,7 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
-    it('should wrap a success response', function() {
+    it('should wrap a success response', function () {
         var resp = {
             "link": {
                 "type": "locator",
@@ -116,13 +117,17 @@ describe('dbWebApp: WhoisResources', function () {
     it('should detect invalid whoisressources', function () {
         expect($whoisResources.wrapWhoisResources(null)).toBeUndefined();
         expect($whoisResources.wrapWhoisResources('garbage')).toBeUndefined();
-        expect($whoisResources.wrapWhoisResources({otherField:"hi", otherRef:{number:4}})).toBeUndefined();
+        expect($whoisResources.wrapWhoisResources({otherField: "hi", otherRef: {number: 4}})).toBeUndefined();
 
-        expect($whoisResources.wrapWhoisResources({objects:{object:[]}})).toBeDefined();
-        expect($whoisResources.wrapWhoisResources({errormessages:{errormessage:[  {
-            severity: 'Warning',
-            text: 'Not authenticated'
-        }]}})).toBeDefined();
+        expect($whoisResources.wrapWhoisResources({objects: {object: []}})).toBeDefined();
+        expect($whoisResources.wrapWhoisResources({
+            errormessages: {
+                errormessage: [{
+                    severity: 'Warning',
+                    text: 'Not authenticated'
+                }]
+            }
+        })).toBeDefined();
 
     });
 
@@ -148,16 +153,16 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('should produce a list of filterable attributes', function () {
         var attrs = $whoisResources.getFilterableAttrsForObjectTypes(['role']);
-        expect(attrs).toEqual([ 'role', 'nic-hdl', 'abuse-mailbox']);
+        expect(attrs).toEqual(['role', 'nic-hdl', 'abuse-mailbox']);
 
         var attrs = $whoisResources.getFilterableAttrsForObjectTypes(['person']);
         expect(attrs).toEqual(['person', 'nic-hdl']);
 
         var attrs = $whoisResources.getFilterableAttrsForObjectTypes(['organisation']);
-        expect(attrs).toEqual(['organisation','org-name']);
+        expect(attrs).toEqual(['organisation', 'org-name']);
 
         var attrs = $whoisResources.getFilterableAttrsForObjectTypes(['person', 'role', 'organisation']);
-        expect(attrs).toEqual(['person', 'nic-hdl', 'role', 'abuse-mailbox', 'organisation', 'org-name' ]);
+        expect(attrs).toEqual(['person', 'nic-hdl', 'role', 'abuse-mailbox', 'organisation', 'org-name']);
 
     });
 
@@ -169,19 +174,19 @@ describe('dbWebApp: WhoisResources', function () {
 
         expect($whoisResources.turnAttrsIntoWhoisObjects(
             [
-                [  {name: 'person', value: 'p'}, {name: 'source', value:'ripe'} ],
-                [  {name: 'mntner', value: 'm'}, {name: 'auth', value:'SSO a@b'} ]
+                [{name: 'person', value: 'p'}, {name: 'source', value: 'ripe'}],
+                [{name: 'mntner', value: 'm'}, {name: 'auth', value: 'SSO a@b'}]
             ]
         )).toEqual({
             objects: {
                 object: [
                     {
-                        type:'person',
-                        attributes: { attribute: [ {name: 'person', value: 'p'}, {name: 'source', value:'ripe'} ] }
+                        type: 'person',
+                        attributes: {attribute: [{name: 'person', value: 'p'}, {name: 'source', value: 'ripe'}]}
                     },
                     {
-                        type:'mntner',
-                        attributes: { attribute: [ {name: 'mntner', value: 'm'}, {name: 'auth', value:'SSO a@b'} ]}
+                        type: 'mntner',
+                        attributes: {attribute: [{name: 'mntner', value: 'm'}, {name: 'auth', value: 'SSO a@b'}]}
                     }
                 ]
             }
@@ -275,32 +280,37 @@ describe('dbWebApp: WhoisResources', function () {
 
     });
 
-    it('should extract authentication candidates from error resp', function() {
+    it('should extract authentication candidates from error resp', function () {
         var errorResponse = $whoisResources.wrapWhoisResources({
             errormessages: {
                 errormessage: [
-                    { severity: 'Error',
+                    {
+                        severity: 'Error',
                         text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                         args: [
-                            {value: 'inetnum'  }, {value: '194.219.52.240 - 194.219.52.243'},
-                            {value: 'mnt-by' },{value: 'TPOLYCHNIA4-MNT'}
+                            {value: 'inetnum'}, {value: '194.219.52.240 - 194.219.52.243'},
+                            {value: 'mnt-by'}, {value: 'TPOLYCHNIA4-MNT'}
                         ]
                     },
-                    {  severity: 'Error',
+                    {
+                        severity: 'Error',
                         text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
                         args: [
-                            { value: 'inetnum' }, {  value: '194.219.0.0 - 194.219.255.255' },
-                            { value: 'mnt-lower' }, { value: 'FORTHNETGR-MNT' }
+                            {value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
+                            {value: 'mnt-lower'}, {value: 'FORTHNETGR-MNT'}
                         ]
                     },
-                    {  severity: 'Error',
+                    {
+                        severity: 'Error',
                         text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
-                        args: [  { value: 'inetnum'  }, {  value: '194.219.0.0 - 194.219.255.255' },
-                            { value: 'mnt-by'  }, { value: 'RIPE-NCC-HM-MNT, AARDVARK-MNT'  }
+                        args: [{value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
+                            {value: 'mnt-by'}, {value: 'RIPE-NCC-HM-MNT, AARDVARK-MNT'}
                         ]
                     },
-                    { severity: 'Info',
-                        text: 'Dry-run performed, no changes to the database have been made' }
+                    {
+                        severity: 'Info',
+                        text: 'Dry-run performed, no changes to the database have been made'
+                    }
                 ]
             }
         });
@@ -372,9 +382,9 @@ describe('dbWebApp: WhoisResources', function () {
         expect(successResponse.getGlobalWarnings()).toEqual([]);
 
         expect(successResponse.getAttributes()).toEqual([
-            { name: 'as-block', value: 'a' },
-            { name: 'mnt-by', value: 'b' },
-            { name: 'source', value: 'c' }
+            {name: 'as-block', value: 'a'},
+            {name: 'mnt-by', value: 'b'},
+            {name: 'source', value: 'c'}
         ]);
 
         expect(successResponse.getPrimaryKey()).toEqual('MG20276-RIPEXYZ');
@@ -420,11 +430,11 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'source', value: 'd'}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName('as-block').value).toEqual('a' );
+        expect(whoisAttributes.getSingleAttributeOnName('as-block').value).toEqual('a');
         expect(whoisAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(null);
         expect(whoisAttributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('c' );
-        expect(whoisAttributes.getSingleAttributeOnName('source').value).toEqual('d' );
+        expect(whoisAttributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('c');
+        expect(whoisAttributes.getSingleAttributeOnName('source').value).toEqual('d');
 
         // has side effects
         expect(whoisAttributes.setSingleAttributeOnName('source', 'RIPE')).toEqual([
@@ -434,11 +444,11 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'source', value: 'RIPE'}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName('as-block').value).toEqual('a' );
+        expect(whoisAttributes.getSingleAttributeOnName('as-block').value).toEqual('a');
         expect(whoisAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(null);
         expect(whoisAttributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('c' );
-        expect(whoisAttributes.getSingleAttributeOnName('source').value).toEqual('RIPE' );
+        expect(whoisAttributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('c');
+        expect(whoisAttributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
     });
 
@@ -451,25 +461,25 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'source', value: 'd'}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName('as-block').value).toEqual('a' );
+        expect(whoisAttributes.getSingleAttributeOnName('as-block').value).toEqual('a');
         expect(whoisAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(null);
         expect(whoisAttributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('c' );
-        expect(whoisAttributes.getSingleAttributeOnName('source').value).toEqual('d' );
+        expect(whoisAttributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('c');
+        expect(whoisAttributes.getSingleAttributeOnName('source').value).toEqual('d');
 
         // has side effects
         expect(whoisAttributes.setSingleAttributeOnName('mnt-by', 'TEST-MNT')).toEqual([
-            {name: 'as-block', value:'a'},
+            {name: 'as-block', value: 'a'},
             {name: 'mnt-by', value: 'TEST-MNT'},
             {name: 'mnt-by', value: 'c'},
             {name: 'source', value: 'd'}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName('as-block').value).toEqual('a' );
-        expect(whoisAttributes.getSingleAttributeOnName('mnt-by').value).toEqual('TEST-MNT' );
+        expect(whoisAttributes.getSingleAttributeOnName('as-block').value).toEqual('a');
+        expect(whoisAttributes.getSingleAttributeOnName('mnt-by').value).toEqual('TEST-MNT');
         expect(whoisAttributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
-        expect(whoisAttributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('c' );
-        expect(whoisAttributes.getSingleAttributeOnName('source').value).toEqual('d' );
+        expect(whoisAttributes.getAllAttributesOnName('mnt-by')[1].value).toEqual('c');
+        expect(whoisAttributes.getSingleAttributeOnName('source').value).toEqual('d');
 
     });
 
@@ -477,8 +487,8 @@ describe('dbWebApp: WhoisResources', function () {
 
         var whoisAttributesWithMeta = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0}},
-            {name: 'mnt-by',   value: 'b', $$meta: {$$idx: 1}},
-            {name: 'source',   value: 'd', $$meta: {$$idx: 2}},
+            {name: 'mnt-by', value: 'b', $$meta: {$$idx: 1}},
+            {name: 'source', value: 'd', $$meta: {$$idx: 2}}
         ]);
 
         // has side effectts
@@ -486,19 +496,19 @@ describe('dbWebApp: WhoisResources', function () {
             [{name: 'mnt-by', value: 'c'}]
         )).toEqual([
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0}},
-            {name: 'mnt-by',   value: 'b', $$meta: {$$idx: 1}},
-            {name: 'mnt-by',   value: 'c', $$meta: {$$idx: 1}},
-            {name: 'source',   value: 'd', $$meta: {$$idx: 2}}
+            {name: 'mnt-by', value: 'b', $$meta: {$$idx: 1}},
+            {name: 'mnt-by', value: 'c', $$meta: {$$idx: 1}},
+            {name: 'source', value: 'd', $$meta: {$$idx: 2}}
         ]);
     });
 
-    it('should add an attribute after', function() {
+    it('should add an attribute after', function () {
         var whoisAttributes = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a'},
             {name: 'mnt-by', value: 'c'},
             {name: 'source', value: 'd'}
         ]);
-        var after = whoisAttributes.addAttributeAfter({name:'remarks'}, whoisAttributes[0]);
+        var after = whoisAttributes.addAttributeAfter({name: 'remarks'}, whoisAttributes[0]);
         expect(after[1].name).toEqual('remarks');
     });
 
@@ -506,7 +516,7 @@ describe('dbWebApp: WhoisResources', function () {
 
         var whoisAttributesWithMeta = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0}},
-            {name: 'source',   value: 'd', $$meta: {$$idx: 2}},
+            {name: 'source', value: 'd', $$meta: {$$idx: 2}},
         ]);
 
         // has side effectts
@@ -514,8 +524,8 @@ describe('dbWebApp: WhoisResources', function () {
             [{name: 'mnt-by', value: 'c'}]
         )).toEqual([
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0}},
-            {name: 'source',   value: 'd', $$meta: {$$idx: 2}},
-            {name: 'mnt-by',   value: 'c'}
+            {name: 'source', value: 'd', $$meta: {$$idx: 2}},
+            {name: 'mnt-by', value: 'c'}
         ]);
     });
 
@@ -535,7 +545,7 @@ describe('dbWebApp: WhoisResources', function () {
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
         ]);
 
-        _.each( attrs.getMissingMandatoryAttributes('as-block'), function(item) {
+        _.each(attrs.getMissingMandatoryAttributes('as-block'), function (item) {
             attrs = $whoisResources.wrapAttributes(attrs.addMissingMandatoryAttribute('as-block', item));
         });
 
@@ -553,9 +563,9 @@ describe('dbWebApp: WhoisResources', function () {
     it('should accept a correct object', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
-            {name: 'mnt-by',   value: 'c', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-            {name: 'mnt-by',   value: 'e', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-            {name: 'source',   value: 'd', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by', value: 'c', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'mnt-by', value: 'e', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source', value: 'd', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
         expect(attrs.validateWithoutSettingErrors()).toEqual(true);
@@ -569,10 +579,10 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('should accept a correct object with second multiple null', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'as-block', value: 'a',  $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
-            {name: 'mnt-by',   value: 'c',  $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-            {name: 'mnt-by',   value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-            {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+            {name: 'as-block', value: 'a', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by', value: 'c', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'mnt-by', value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source', value: 'd', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
         expect(attrs.validateWithoutSettingErrors()).toEqual(true);
@@ -587,9 +597,9 @@ describe('dbWebApp: WhoisResources', function () {
     it('should detect missing single mandatory attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'as-block', value: null, $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
-            {name: 'mnt-by',   value: 'c',  $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-            {name: 'mnt-by',   value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-            {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by', value: 'c', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'mnt-by', value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source', value: 'd', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
         expect(attrs.validateWithoutSettingErrors()).toEqual(false);
@@ -602,9 +612,9 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('should detect missing multiple mandatory attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'as-block', value: 'a',  $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
-            {name: 'mnt-by',   value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-            {name: 'source',   value: 'd',  $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+            {name: 'as-block', value: 'a', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by', value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source', value: 'd', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
         expect(attrs.validateWithoutSettingErrors()).toEqual(false);
@@ -617,9 +627,9 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('should detect missing multiple mandatory attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'as-block', value: 'a',  $$error:'my error', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
-            {name: 'mnt-by',   value: null, $$error:'my error', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
-            {name: 'source',   value: 'd',  $$error:'my error', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
+            {name: 'as-block', value: 'a', $$error: 'my error', $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by', value: null, $$error: 'my error', $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
+            {name: 'source', value: 'd', $$error: 'my error', $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
         expect(attrs.getSingleAttributeOnName('mnt-by').$$error).toEqual('my error');
 
@@ -631,15 +641,15 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('detact if an attribute can be added', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'person',        value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},
-            {name: 'address',       value: 'b', $$meta:{$$mandatory:true,  $$multiple:true}},
-            {name: 'address',       value: 'c', $$meta:{$$mandatory:true,  $$multiple:true}},
-            {name: 'phone',         value: 'd', $$meta:{$$mandatory:true,  $$multiple:true}},
-            {name: 'nic-hdl',       value: 'e', $$meta:{$$mandatory:true,  $$multiple:false}},
-            {name: 'source',        value: 'g', $$meta:{$$mandatory:true,  $$multiple:false}},
+            {name: 'person', value: 'a', $$meta: {$$mandatory: true, $$multiple: false}},
+            {name: 'address', value: 'b', $$meta: {$$mandatory: true, $$multiple: true}},
+            {name: 'address', value: 'c', $$meta: {$$mandatory: true, $$multiple: true}},
+            {name: 'phone', value: 'd', $$meta: {$$mandatory: true, $$multiple: true}},
+            {name: 'nic-hdl', value: 'e', $$meta: {$$mandatory: true, $$multiple: false}},
+            {name: 'source', value: 'g', $$meta: {$$mandatory: true, $$multiple: false}},
         ]);
 
-        var addableAttrs = attrs.getAddableAttributes('person', attrs );
+        var addableAttrs = attrs.getAddableAttributes('person', attrs);
         expect(addableAttrs[0].name).toBe('address');
         expect(addableAttrs[1].name).toBe('phone');
         expect(addableAttrs[2].name).toBe('fax-no');
@@ -655,13 +665,13 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('detact if an attribute can be removed', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'person',        value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},
-            {name: 'address',       value: 'a', $$meta:{$$mandatory:true,  $$multiple:true}},
-            {name: 'address',       value: 'a', $$meta:{$$mandatory:true,  $$multiple:true}},
-            {name: 'phone',         value: 'a', $$meta:{$$mandatory:true,  $$multiple:true}},
-            {name: 'nic-hdl',       value: 'a', $$meta:{$$mandatory:true,  $$multiple:false}},
-            {name: 'last-modified', value: 'f', $$meta:{$$mandatory:false, $$multiple:false}},
-            {name: 'source',        value: 'g', $$meta:{$$mandatory:true,  $$multiple:false}},
+            {name: 'person', value: 'a', $$meta: {$$mandatory: true, $$multiple: false}},
+            {name: 'address', value: 'a', $$meta: {$$mandatory: true, $$multiple: true}},
+            {name: 'address', value: 'a', $$meta: {$$mandatory: true, $$multiple: true}},
+            {name: 'phone', value: 'a', $$meta: {$$mandatory: true, $$multiple: true}},
+            {name: 'nic-hdl', value: 'a', $$meta: {$$mandatory: true, $$multiple: false}},
+            {name: 'last-modified', value: 'f', $$meta: {$$mandatory: false, $$multiple: false}},
+            {name: 'source', value: 'g', $$meta: {$$mandatory: true, $$multiple: false}},
         ]);
 
         expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName('person'))).toBe(false);
@@ -703,8 +713,8 @@ describe('dbWebApp: WhoisResources', function () {
     it('remove an attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a'},
-            {name: 'mnt-by',   value: 'b'},
-            {name: 'source',   value: 'c'},
+            {name: 'mnt-by', value: 'b'},
+            {name: 'source', value: 'c'},
         ]);
 
         attrs = attrs.removeAttribute(attrs[1]);
@@ -717,8 +727,8 @@ describe('dbWebApp: WhoisResources', function () {
     it('remove null attributes', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'as-block', value: 'a'},
-            {name: 'mnt-by',   value: null},
-            {name: 'source',   value: 'c'},
+            {name: 'mnt-by', value: null},
+            {name: 'source', value: 'c'},
         ]);
 
         var result = attrs.removeNullAttributes();
@@ -730,8 +740,8 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('remove a null valued attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'mnt-by',   value: null},
-            {name: 'source',   value: 'c'},
+            {name: 'mnt-by', value: null},
+            {name: 'source', value: 'c'},
         ]);
 
         attrs = attrs.removeAttribute(attrs[0]);
@@ -742,7 +752,7 @@ describe('dbWebApp: WhoisResources', function () {
     it('remove an undefined valued attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
             {name: 'mnt-by'},
-            {name: 'source',   value: 'c'},
+            {name: 'source', value: 'c'},
         ]);
 
         attrs = attrs.removeAttribute(attrs[0]);
@@ -752,9 +762,9 @@ describe('dbWebApp: WhoisResources', function () {
 
     it('duplicate an attribute', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'as-block', value: 'a', $$meta:{$$mandatory:true, $$multiple:false}},
-            {name: 'mnt-by',   value: 'b', $$meta:{$$mandatory:true, $$multiple:true}},
-            {name: 'source',   value: 'c', $$meta:{$$mandatory:true, $$multiple:false}}
+            {name: 'as-block', value: 'a', $$meta: {$$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by', value: 'b', $$meta: {$$mandatory: true, $$multiple: true}},
+            {name: 'source', value: 'c', $$meta: {$$mandatory: true, $$multiple: false}}
         ]);
 
         attrs = attrs.duplicateAttribute(attrs[1]);
@@ -767,11 +777,11 @@ describe('dbWebApp: WhoisResources', function () {
         expect(attrs[3].value).toEqual('c');
     });
 
-    it('plaintext version of attributes', function() {
+    it('plaintext version of attributes', function () {
         var attrs = $whoisResources.wrapAttributes([
-            {name: 'as-block', value: 'a', $$meta:{$$mandatory:true, $$multiple:false}},
-            {name: 'mnt-by',   value: 'b', $$meta:{$$mandatory:true, $$multiple:true}},
-            {name: 'source',   value: 'c', $$meta:{$$mandatory:true, $$multiple:false}}
+            {name: 'as-block', value: 'a', $$meta: {$$mandatory: true, $$multiple: false}},
+            {name: 'mnt-by', value: 'b', $$meta: {$$mandatory: true, $$multiple: true}},
+            {name: 'source', value: 'c', $$meta: {$$mandatory: true, $$multiple: false}}
         ]);
 
         expect(attrs.toPlaintext()).toEqual(
@@ -780,7 +790,7 @@ describe('dbWebApp: WhoisResources', function () {
             'source:              c\n');
     });
 
-    it('plaintext version of object', function() {
+    it('plaintext version of object', function () {
         var resources = $whoisResources.wrapWhoisResources({
             objects: {
                 object: [
@@ -828,31 +838,32 @@ describe('dbWebApp: WhoisResources', function () {
             'source:              RIPE\n');
     });
 
-    it('extract object from a response', function() {
-        var personAttrs =  [
-            { name: 'person', value: 'Test Person' },
-            { name: 'nic-hdl', value: 'MG20276-RIPE' },
-            { name: 'mnt-by',value: 'TEST-MNT' },
-            { name: 'source',  value: 'RIPE' }
+    it('extract object from a response', function () {
+        var personAttrs = [
+            {name: 'person', value: 'Test Person'},
+            {name: 'nic-hdl', value: 'MG20276-RIPE'},
+            {name: 'mnt-by', value: 'TEST-MNT'},
+            {name: 'source', value: 'RIPE'}
         ];
-        var mntnerAttrs =  [
-            { name: 'mntner', value: 'TEST-MNT' },
-            { name: 'admin-c', value: 'MG20276-RIPE' },
-            { name: 'mnt-by', value: 'TEST-MNT' },
-            { name: 'source', value: 'RIPE' }
+        var mntnerAttrs = [
+            {name: 'mntner', value: 'TEST-MNT'},
+            {name: 'admin-c', value: 'MG20276-RIPE'},
+            {name: 'mnt-by', value: 'TEST-MNT'},
+            {name: 'source', value: 'RIPE'}
         ];
         var resources = $whoisResources.wrapWhoisResources({
             objects: {
                 object: [
-                    { attributes: { attribute: personAttrs } },
-                    { attributes: {  attribute: mntnerAttrs } }
+                    {attributes: {attribute: personAttrs}},
+                    {attributes: {attribute: mntnerAttrs}}
                 ]
-            }});
+            }
+        });
 
-        expect($whoisResources.getAttributesForObjectOfType(resources, 'person')).toEqual( personAttrs);
-        expect($whoisResources.getAttributesForObjectOfType(resources,'mntner')).toEqual( mntnerAttrs);
-        expect($whoisResources.getAttributesForObjectOfType(resources,'inetnum')).toEqual( []);
+        expect($whoisResources.getAttributesForObjectOfType(resources, 'person')).toEqual(personAttrs);
+        expect($whoisResources.getAttributesForObjectOfType(resources, 'mntner')).toEqual(mntnerAttrs);
+        expect($whoisResources.getAttributesForObjectOfType(resources, 'inetnum')).toEqual([]);
     });
 
 
-    });
+});

@@ -3,27 +3,79 @@
     <div class="portlet navigation margin-bottom">
         <div class="Title">
             <i title="Show/Hide navigation" class="fa fa-angle-double-left"></i>
-            <a href="/search/query.html" class="h5">RIPE Database</a>
+            <a href="#" class="h5">My RIPE NCC</a>
         </div>
         <ul class="toplevel">
-            <li class="child" ng-class="{active: menu.webUpdatesExpanded}">
-                <i title="Expand sub navigation" class="fa fa-angle-right"></i>
-                <a href="/search/query.html">Webupdates</a>
+            <li class="child" ng-class="{active: menu.selected.lir}" ng-show="menu.show.admin || menu.show.general || menu.show.billing || menu.show.generalMeeting || menu.show.ticketing">
+                <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                <a href="">My LIR</a>
+                <ul class="level2">
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.LIR_ACCOUNT_DETAILS_URL}}">LIR Account Details</a>
+                    </li>
+                    <li ng-show="menu.show.billing">
+                        <a class="menuItem" href="{{page.Properties.LIR_BILLING_DETAILS_URL}}">Billing Details</a>
+                    </li>
+                    <li ng-show="menu.show.generalMeeting">
+                        <a class="menuItem" href="{{page.Properties.LIR_GENERAL_MEETING_URL}}">GM preferences</a>
+                    </li>
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.LIR_USER_ACCOUNTS_URL}}">User Accounts</a>
+                    </li>
+                    <li ng-show="menu.show.ticketing">
+                        <a class="menuItem" href="{{page.Properties.LIR_TICKETS_URL}}">My Tickets</a>
+                    </li>
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.LIR_TRAINING_URL}}">My Training</a>
+                    </li>
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.LIR_API_ACCESS_KEYS_URL}}">API Access Keys</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child" ng-class="{active: menu.activeUrl.indexOf('/myresources/') > -1}" ng-show="menu.show.admin || menu.show.general || menu.show.certification">
+                <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                <a href="#">Resources</a>
+                <ul class="level2">
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/myresources/') > -1}" href="{{page.Properties.MY_RESOURCES_URL}}">My Resources</a>
+                    </li>
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.IPV4_ANALYSER_URL}}">IPv4 Analyser</a>
+                    </li>
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.IPV6_ANALYSER_URL}}">IPv6 Analyser</a>
+                    </li>
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.REQUEST_RESOURCES_URL}}">Request Resources</a>
+                    </li>
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.REQUEST_TRANSFER_URL}}">Request Transfer</a>
+                    </li>
+                    <li ng-show="menu.show.admin || menu.show.general">
+                        <a class="menuItem" href="{{page.Properties.IPV4_TRANSFER_LISTING_URL}}">IPv4 Transfer Listing Service</a>
+                    </li>
+                    <li ng-show="menu.show.certification">
+                        <a class="menuItem" href="{{page.Properties.RPKI_DASHBOARD_URL}}">RPKI Dashboard</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child" ng-class="{active: menu.activeUrl.indexOf('/wizard') > -1 || menu.activeUrl.indexOf('/select') > -1 || menu.activeUrl.indexOf('/create') > -1}">
+                <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                <a href="{{page.Properties.DATABASE_QUERY_URL}}">RIPE Database</a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem" href="/search/query.html">Query the RIPE Database</a>
+                        <a class="menuItem" href="{{page.Properties.DATABASE_QUERY_URL}}">Query the RIPE Database</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="/search/full-text.html">Full Text Search</a>
+                        <a class="menuItem" href="{{page.Properties.DATABASE_FULL_TEXT_SEARCH_URL}}">Full Text Search</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="/syncupdates/simple-rpsl.html">Syncupdates</a>
+                        <a class="menuItem" href="{{page.Properties.DATABASE_SYNCUPDATES_URL}}">Syncupdates</a>
                     </li>
                     <li>
-                        <a class="menuItem" ng-class="{current: menu.activeUrl.startsWith('/wizard') || menu.activeUrl.startsWith('/select') || menu.activeUrl.startsWith('/create')}" href="#/webupdates/select">Create an object</a>
-                    </li>
-                    <li ng-if="menu.shouldDisplayMyResources">
-                        <a class="menuItem" ng-class="{current: menu.activeUrl.startsWith('/myresources/')}" href="#/myresources/overview?type=inetnum&sponsored=false">My Resources</a>
+                        <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/wizard') === 0 || menu.activeUrl.indexOf('/select') === 0 || menu.activeUrl.indexOf('/create') === 0}"
+                           href="{{page.Properties.DATABASE_CREATE_URL}}">Create an object</a>
                     </li>
                 </ul>
             </li>
@@ -33,16 +85,4 @@
 <div>
     <div class="portlet margin-bottom grey grey-border"></div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('.menuItem').on('click', function(){
-            $('.menuItem').removeClass('current');
-            $(this).addClass(function(n){
-                return 'current';
-            });
-        });
-    });
-</script>
-
 <!--  Webupdates specific menu end -->

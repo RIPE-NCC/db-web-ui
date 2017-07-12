@@ -18,7 +18,7 @@ describe('The organisation drop-down box', function () {
         expect(page.orgSelector.isPresent()).toEqual(true);
         page.orgSelector.click();
 
-        expect (page.orgSelectorOptions.count()).toBe(2);
+        expect (page.orgSelectorOptions.count()).toBe(3);
     });
 
 });

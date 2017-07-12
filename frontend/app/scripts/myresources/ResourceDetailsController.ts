@@ -15,6 +15,7 @@ class ResourceDetailsController {
         "$timeout",
         "$location",
         "$anchorScroll",
+        "$cookies",
         "CredentialsService",
         "MntnerService",
         "MoreSpecificsService",
@@ -63,6 +64,7 @@ class ResourceDetailsController {
                 private $timeout: ng.ITimeoutService,
                 private $location: angular.ILocationService,
                 private $anchorScroll: ng.IAnchorScrollService,
+                private $cookies: angular.cookies.ICookiesService,
                 private CredentialsService: any,
                 private MntnerService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
@@ -120,10 +122,19 @@ class ResourceDetailsController {
             this.isEditing = false;
         });
 
-        $scope.$on("selected-lir-changed", () => {
+        $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
+            const selectedId = this.$cookies.get("activeMembershipId");
+            if (selected && selectedId) {
+                if (selectedId.indexOf("org:") === 0) {
+                    if ("org:" + selected.orgObjectId === selectedId) {
+                        return;
+                    }
+                } else if ((selected as IUserInfoRegistration).membershipId + "" === selectedId) {
+                    return;
+                }
+            }
             this.$state.go("myresources");
         });
-
     }
 
     public updateButtonClicked(): void {
@@ -254,8 +265,7 @@ class ResourceDetailsController {
     }
 
     private onSubmitError(whoisResources: IWhoisResponseModel): void {
-        const attributeErrors = whoisResources.errormessages.errormessage
-            .filter((e) => e.attribute);
+        const attributeErrors = whoisResources.errormessages.errormessage.filter((e) => e.attribute);
         attributeErrors.forEach((e) => {
             const attribute = this.details.attributes.attribute.find(
                 (a) => a.name === e.attribute.name && a.value === e.attribute.value,

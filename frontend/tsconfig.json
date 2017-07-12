@@ -11,7 +11,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./.tstmp",
+    "outDir": "./tmp",
     "rootDir": "./app",
     "sourceMap": true,
     "suppressImplicitAnyIndexErrors": true,

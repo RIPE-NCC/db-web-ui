@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('updates')
-    .service('UserInfoService', ['$resource', '$q', '$http', '$log', 'LirDataService', '$rootScope',
-        function ($resource, $q, $http, $log, lirDataService, $rootScope) {
+    .service('UserInfoService', ['$resource', '$q', '$http', '$log', 'LirDataService', '$rootScope', '$cookies',
+        function ($resource, $q, $http, $log, lirDataService, $rootScope, $cookies) {
 
             var _userInfo;
             var _lirs;
@@ -17,26 +17,26 @@ angular.module('updates')
                     $resource('api/user/info').get().$promise.then(
                         function (result) {
                             _userInfo = result;
-
                             lirDataService.getOrgs().then(function(result) {
                                 _lirs = result;
-
                                 if (_lirs && _lirs.length > 0) {
-                                    var lirMemberId = localStorage.getItem('selectedLir');
+                                var cookie = $cookies.get('activeMembershipId');
+                                var lirMemberId = cookie ? cookie : localStorage.getItem('selectedLir');
                                     if (lirMemberId) {
                                         _selectedLir = _.find(_lirs, function (o) {
                                             return o.memberId === lirMemberId;
                                         });
                                     }
-
                                     if (!_selectedLir) {
                                         _selectedLir = _lirs[0];
-                                        localStorage.setItem('selectedLir', _selectedLir.memberId);
+                                    $cookies.put("activeMembershipId",
+                                        _selectedLir.memberId,
+                                        {path: "/", domain: ".ripe.net", secure: true});
                                     }
                                 }
 
+                            localStorage.clear();
                                 $rootScope.$broadcast("lirs-loaded-event", result);
-
                                 deferredObject.resolve(_userInfo);
                             });
                         }, function (error) {
@@ -76,5 +76,7 @@ angular.module('updates')
                 _selectedLir = lir;
                 localStorage.setItem('selectedLir', _selectedLir.memberId);
             };
+
+
         }]);
 

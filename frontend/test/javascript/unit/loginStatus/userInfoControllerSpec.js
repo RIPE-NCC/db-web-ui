@@ -72,7 +72,8 @@ describe('loginStatus: UserInfoController', function () {
                 active:true
             }, {}];
         });
-        expectGetLirs(true);
+        expectGetLirs();
+        expectGetOrganisations(true);
 
         expect(RIPE.username).toEqual('Test User');
 

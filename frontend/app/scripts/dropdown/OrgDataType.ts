@@ -1,3 +1,8 @@
+interface IDbOrg {
+    id: string;
+    name: string;
+}
+
 interface IOrganisationModel {
     orgId: string;
     orgName: string;
@@ -16,4 +21,28 @@ interface ILirModel {
 
 interface ILirDataService {
     getOrgs(): IPromise<IOrganisationModel[]>;
+}
+
+interface IUserInfoOrganisation {
+    orgObjectId: string;
+    organisationName: string;
+    roles: string[];
+}
+
+interface IUserInfoRegistration extends IUserInfoOrganisation {
+    membershipId: string;
+    regId: string;
+}
+
+interface IUserInfo {
+    active: boolean;
+    username: string;
+    displayName: string;
+    uuid: string;
+
+}
+interface IUserInfoResponseData {
+    user: IUserInfo;
+    organisations: IUserInfoOrganisation[];
+    members: IUserInfoRegistration[];
 }

@@ -35,13 +35,14 @@ describe('updates: UserInfoService', function () {
             }]
         }
     };
+    var $cookies;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (_$httpBackend_, _UserInfoService_) {
+    beforeEach(inject(function (_$httpBackend_, _UserInfoService_, _$cookies_) {
         $httpBackend = _$httpBackend_;
         userInfoService = _UserInfoService_;
-
+        $cookies = _$cookies_;
     }));
 
     afterEach(function() {
@@ -53,11 +54,12 @@ describe('updates: UserInfoService', function () {
         $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.whenGET('api/user/info').respond(userInfo);
         $httpBackend.whenGET('api/ba-apps/lirs').respond(lirs);
+        expectGetOrganisations();
 
         userInfoService.getUserInfo().then(
             function(result) {
-                expect(userInfoService.getUsername()).toEqual(userInfo.username);
-                expect(userInfoService.getDisplayName()).toEqual(userInfo.displayName);
+                expect(result.username).toEqual(userInfo.username);
+                expect(result.displayName).toEqual(userInfo.displayName);
             }, function(error) {
                 // NOT to be called
                 expect(true).toBe(false);
@@ -84,12 +86,16 @@ describe('updates: UserInfoService', function () {
         $httpBackend.flush();
     });
 
-    it('should handle illegal selectedLir value from localStorage',function() {
+    it('should handle illegal selectedOrg value from cookie',function() {
         $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.whenGET('api/user/info').respond(userInfo);
         $httpBackend.whenGET('api/ba-apps/lirs').respond(lirs);
+        expectGetOrganisations();
 
-        localStorage.setItem('selectedLir', 'unparseableValue');
+        $cookies.put("activeMembershipId",
+                    'unparseableValue',
+                    {path: "/", domain: ".ripe.net", secure: true});
+        //localStorage.setItem('selectedLir', 'unparseableValue');
 
         userInfoService.getUserInfo().then(
             function(result) {
@@ -103,16 +109,19 @@ describe('updates: UserInfoService', function () {
         $httpBackend.flush();
     });
 
-    it('should preselect correct lir based on localStorage selectedLir value',function() {
+    it('should preselect correct lir based on cookie selectedLir value',function() {
         $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.whenGET('api/user/info').respond(userInfo);
         $httpBackend.whenGET('api/ba-apps/lirs').respond(lirs);
+        expectGetOrganisations();
 
-        localStorage.setItem('selectedLir', '3629');
+        $cookies.put("activeMembershipId",
+            '3629',
+            {path: "/", domain: ".ripe.net", secure: true});
 
         userInfoService.getUserInfo().then(
             function(result) {
-                expect(userInfoService.getSelectedLir().orgName).toEqual('SURFnet bv');
+                expect(userInfoService.getSelectedLir().orgName).toEqual('Internet Provider BV');
             }, function( error) {
                 // NOT to be called
                 expect(true).toBe(false);

@@ -10,6 +10,8 @@ angular.module('dbWebApp')
         ACCESS_URL: 'https://access.prepdev.ripe.net?originalUrl=https://dev.db.ripe.net/db-web-ui/',
         PORTAL_URL: 'https://my.prepdev.ripe.net/',
         BANNER: 'Welcome to the DEV Environment of the RIPE Database.',
-        GTM_ID: 'GTM-WTWTB7'
+        GTM_ID: 'GTM-WTWTB7',
+
+        MY_RESOURCES_URL: '#/myresources/overview'
     });
 

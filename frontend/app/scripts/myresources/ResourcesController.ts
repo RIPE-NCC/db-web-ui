@@ -8,12 +8,12 @@ interface IResourcesControllerState extends ng.ui.IStateService {
 }
 
 class ResourcesController {
-    public static $inject = ["$log", "$location", "$scope", "$state", "$q", "ResourcesDataService", "UserInfoService"];
+    public static $inject = ["$log", "$location", "$scope", "$state", "$q", "ResourcesDataService", "UserInfoService2"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
     public typeIndex = 0;
-    public selectedOrg: IOrganisationModel; // selection bound to ng-model in widget
+    public selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
     public loading: boolean; // true until resources are loaded to tabs
     public reason = "No resources found";
     public fail: boolean;
@@ -28,7 +28,7 @@ class ResourcesController {
                 private $state: IResourcesControllerState,
                 private $q: ng.IQService,
                 private resourcesDataService: ResourcesDataService,
-                private userInfoService: any) {
+                private UserInfoService: UserInfoService) {
 
         this.isShowingSponsored = typeof this.$state.params.sponsored === "string" ?
             this.$state.params.sponsored === "true" : this.$state.params.sponsored;
@@ -47,14 +47,11 @@ class ResourcesController {
         }
 
         // Callbacks
-        $scope.$on("selected-lir-changed", () => {
-            this.selectedOrg = this.userInfoService.getSelectedLir();
+        $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
+            this.selectedOrg = selected;
             this.refreshPage();
         });
 
-        $scope.$on("lirs-loaded-event", () => {
-            this.refreshPage();
-        });
     }
 
     public tabClicked(tabName: string) {
@@ -69,9 +66,13 @@ class ResourcesController {
 
     public refreshPage() {
         if (!this.selectedOrg) {
-            this.selectedOrg = this.userInfoService.getSelectedLir();
+            this.UserInfoService.getSelectedOrganisation().then((org) => {
+                this.selectedOrg = org;
+                this.fetchResourcesAndPopulatePage();
+            });
+        } else {
+            this.fetchResourcesAndPopulatePage();
         }
-        this.fetchResourcesAndPopulatePage();
     }
 
     private fetchResourcesAndPopulatePage() {
@@ -81,12 +82,12 @@ class ResourcesController {
         }
         this.loading = true;
         this.$q.all([
-            this.resourcesDataService.fetchIpv4Resources(this.selectedOrg.orgId),
-            this.resourcesDataService.fetchIpv6Resources(this.selectedOrg.orgId),
-            this.resourcesDataService.fetchAsnResources(this.selectedOrg.orgId),
-            this.resourcesDataService.fetchSponsoredIpv4Resources(this.selectedOrg.orgId),
-            this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgId),
-            this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgId),
+            this.resourcesDataService.fetchIpv4Resources(this.selectedOrg.orgObjectId),
+            this.resourcesDataService.fetchIpv6Resources(this.selectedOrg.orgObjectId),
+            this.resourcesDataService.fetchAsnResources(this.selectedOrg.orgObjectId),
+            this.resourcesDataService.fetchSponsoredIpv4Resources(this.selectedOrg.orgObjectId),
+            this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgObjectId),
+            this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgObjectId),
         ]).then((responses: any[]) => {
             this.hasSponsoredResources =
                 !(this.empty(responses[3]) && this.empty(responses[4]) && this.empty(responses[5]));

@@ -75,6 +75,8 @@ describe('webUpdates: SelectController', function () {
             }, {}];
         });
         expectGetLirs();
+        expectGetOrganisations();
+
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);
@@ -103,6 +105,7 @@ describe('webUpdates: SelectController', function () {
             }, {}];
         });
         expectGetLirs();
+        expectGetOrganisations();
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);
@@ -128,6 +131,7 @@ describe('webUpdates: SelectController', function () {
             }, {}];
         });
         expectGetLirs();
+        expectGetOrganisations();
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);

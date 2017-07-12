@@ -35,22 +35,16 @@ public class AngularConstantsController {
 
     @Value("${spring.profiles.active}")
     private String environment;
-
     @Value("${rest.api.ripeSource}")
     private String ripeSource;
-
     @Value("${crowd.login.url}")
     private String crowdLoginUrl;
-
     @Value("${crowd.access.url}")
     private String crowdAccessUrl;
-
     @Value("${portal.url}")
     private String portalUrl;
-
     @Value("${frontend.banner:}")
     private String frontendBanner;
-
     @Value("${frontend.gtm.id}")
     private String frontendGtmId;
 
@@ -58,29 +52,12 @@ public class AngularConstantsController {
 
     @Autowired
     private ServletContext servletContext;
+    @Autowired
+    private LeftMenuConfiguration leftMenuConfiguration;
 
     @PostConstruct
     private void init() {
-        appConstantsJsContents = String.format("'use strict';\n\n" +
-                        "angular.module('dbWebApp')\n" +
-                        "    .constant('Properties', {\n" +
-                        "        ENV: '%s',\n" +
-                        "        SOURCE: '%s',\n" +
-                        "        BUILD_TAG: '%s',\n" +
-                        "        LOGIN_URL: '%s',\n" +
-                        "        ACCESS_URL: '%s',\n" +
-                        "        PORTAL_URL: '%s',\n" +
-                        "        BANNER: '%s',\n" +
-                        "        GTM_ID: '%s'\n" +
-                        "    });\n",
-                environment,
-                ripeSource,
-                getImplementationVersion(),
-                crowdLoginUrl,
-                crowdAccessUrl,
-                portalUrl,
-                frontendBanner,
-                frontendGtmId);
+        appConstantsJsContents = generateContents();
     }
 
     @RequestMapping(value = "/scripts/app.constants.js", method = RequestMethod.GET, produces = "application/javascript")
@@ -103,7 +80,6 @@ public class AngularConstantsController {
      * Maven command line: '-Dversion=${some-variable-from-cd-server}
      */
     private String getImplementationVersion() {
-
         try {
             // iterate over all MANIFEST.MF files to find our own (silly but safe)
             Enumeration<URL> resources = getClass().getClassLoader().getResources(JarFile.MANIFEST_NAME);
@@ -124,5 +100,41 @@ public class AngularConstantsController {
             LOGGER.warn("Could not read MANIFEST.MF"); // considered not fatal
         }
         return "SNAPSHOT";
+    }
+
+    private String generateContents() {
+        final StringBuilder builder = new StringBuilder();
+        return builder
+                .append("'use strict';\n\n")
+                .append("angular.module('dbWebApp')\n")
+                .append("    .constant('Properties', {\n")
+                .append("        ENV: '").append(environment).append("',\n")
+                .append("        SOURCE: '").append(ripeSource).append("',\n")
+                .append("        BUILD_TAG: '").append(getImplementationVersion()).append("',\n")
+                .append("        LOGIN_URL: '").append(crowdLoginUrl).append("',\n")
+                .append("        ACCESS_URL: '").append(crowdAccessUrl).append("',\n")
+                .append("        PORTAL_URL: '").append(portalUrl).append("',\n")
+                .append("        BANNER: '").append(frontendBanner).append("',\n")
+                .append("        GTM_ID: '").append(frontendGtmId).append("',\n")
+                .append("        LIR_ACCOUNT_DETAILS_URL: '").append(leftMenuConfiguration.getLirAccountDetailsUrl()).append("',\n")
+                .append("        LIR_BILLING_DETAILS_URL: '").append(leftMenuConfiguration.getLirBillingDetailsUrl()).append("',\n")
+                .append("        LIR_GENERAL_MEETING_URL: '").append(leftMenuConfiguration.getLirGeneralMeetingUrl()).append("',\n")
+                .append("        LIR_USER_ACCOUNTS_URL: '").append(leftMenuConfiguration.getLirUserAccountsUrl()).append("',\n")
+                .append("        LIR_TICKETS_URL: '").append(leftMenuConfiguration.getLirTicketsUrl()).append("',\n")
+                .append("        LIR_TRAINING_URL: '").append(leftMenuConfiguration.getLirTrainingUrl()).append("',\n")
+                .append("        LIR_API_ACCESS_KEYS_URL: '").append(leftMenuConfiguration.getLirApiAccessKeysUrl()).append("',\n")
+                .append("        MY_RESOURCES_URL: '").append(leftMenuConfiguration.getMyResourcesUrl()).append("',\n")
+                .append("        IPV4_ANALYSER_URL: '").append(leftMenuConfiguration.getIpv4AnalyserUrl()).append("',\n")
+                .append("        IPV6_ANALYSER_URL: '").append(leftMenuConfiguration.getIpv6AnalyserUrl()).append("',\n")
+                .append("        REQUEST_RESOURCES_URL: '").append(leftMenuConfiguration.getRequestResourcesUrl()).append("',\n")
+                .append("        REQUEST_TRANSFER_URL: '").append(leftMenuConfiguration.getRequestTransferUrl()).append("',\n")
+                .append("        IPV4_TRANSFER_LISTING_URL: '").append(leftMenuConfiguration.getIpv4TransferListingServiceUrl()).append("',\n")
+                .append("        RPKI_DASHBOARD_URL: '").append(leftMenuConfiguration.getRpkiDashboardUrl()).append("',\n")
+                .append("        DATABASE_QUERY_URL: '").append(leftMenuConfiguration.getDatabaseQueryUrl()).append("',\n")
+                .append("        DATABASE_FULL_TEXT_SEARCH_URL: '").append(leftMenuConfiguration.getDatabaseFullTextSearchUrl()).append("',\n")
+                .append("        DATABASE_SYNCUPDATES_URL: '").append(leftMenuConfiguration.getDatabaseSyncupdatesUrl()).append("',\n")
+                .append("        DATABASE_CREATE_URL: '").append(leftMenuConfiguration.getDatabaseCreateUrl()).append("'\n")
+                .append("    })\n")
+                .toString();
     }
 }

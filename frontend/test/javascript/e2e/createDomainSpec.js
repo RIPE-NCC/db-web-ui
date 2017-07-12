@@ -11,14 +11,13 @@ describe('The create domain screen', function () {
     'use strict';
 
     beforeEach(function () {
-        browser.get(browser.baseUrl + '#/webupdates/wizard/RIPE/domain');
+        browser.get(browser.baseUrl);
+        page.selectObjectType('domain').click();
+        page.btnNavigateToCreate.click();
     });
 
-    it('should display a splash screen', function () {
+    it('should show a domain creation form for IPv4 which rejects invalid nameservers', function () {
         expect(page.modalSplashText.getText()).toEqual('Creating DOMAIN Objects for Reverse DNS');
-    });
-
-    it('should show an editor for domain', function () {
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         expect(page.heading.getText()).toEqual('Create "domain" objects');
@@ -26,12 +25,8 @@ describe('The create domain screen', function () {
         expect(page.inpNserver1.isDisplayed()).toEqual(false);
         expect(page.inpNserver2.isDisplayed()).toEqual(false);
         expect(page.inpAdminC4.isDisplayed()).toEqual(false);
-    });
 
-    it('should show a domain creation form for IPv4 which rejects invalid nameservers', function () {
-        page.scrollIntoView(page.modalSplashBtn);
-        page.modalSplashBtn.click();
-        page.inpPrefix.sendKeys('212.17.110.0/23');
+        page.inpPrefix.sendKeys('212.17.110.0/23\t');
         browser.wait(function () {
             return browser.isElementPresent(page.modalBtnSubmit);
         }, 5000);
@@ -112,10 +107,11 @@ describe('The create domain screen', function () {
     });
 
     it('should show a popup and a nice message on success', function () {
-
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
-        //page.scrollIntoView(page.inpPrefix);
+        browser.wait(function () {
+            return browser.isElementPresent(page.inpPrefix);
+        }, 5000);
         page.inpPrefix.sendKeys('212.17.110.0/23\t');
         browser.wait(function () {
             return browser.isElementPresent(page.modalBtnSubmit);

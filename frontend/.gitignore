@@ -1,6 +1,5 @@
-.tmp/
+tmp/
 .tscache/
-.tstmp/
 node_modules/
 bower_components/
 dist/

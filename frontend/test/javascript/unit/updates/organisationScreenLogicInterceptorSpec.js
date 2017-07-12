@@ -419,7 +419,7 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
          value :'ORG-WA56-RIPE'
     }, {
          name :'org-name',
-         value :'Rop Gonggrijp'
+         value :'Swi Rop Gonggrijp'
     }, {
          name :'org-type',
          value :'OTHER'

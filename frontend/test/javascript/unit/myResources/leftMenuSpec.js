@@ -28,16 +28,39 @@ describe('LeftMenuController', function () {
         controller.orgDropDownStateService = orgDropDownStateService;
     }));
 
-    it('should set shouldDisplayMyResources flag to true when LIRs are present', function () {
-        rootScope.$broadcast('lirs-loaded-event',
-            [{"membershipId":7347,"regId":"zz.example","organisationname":"Internet Provider BV","serviceLevel":"NORMAL","orgId":"ORG-EIP1-RIPE","billingPhase":0}]
+    it('should show all menu items for a user with all roles', function () {
+        rootScope.$broadcast('selected-org-changed',
+            {
+                "membershipId": 7347,
+                "regId": "zz.example",
+                "orgObjectId": "ORG-EIP1-RIPE",
+                "organisationName": "Internet Provider BV",
+                "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
+            }
         );
-        expect(controller.shouldDisplayMyResources).toBe(true);
+        expect(controller.show.admin).toBe(true);
+        expect(controller.show.general).toBe(true);
+        expect(controller.show.generalMeeting).toBe(true);
+        expect(controller.show.ticketing).toBe(true);
+        expect(controller.show.certification).toBe(true);
+        expect(controller.show.billing).toBe(true);
     });
 
-    it('should not set shouldDisplayMyResources flag when LIRs are not present', function () {
-        rootScope.$broadcast('lirs-loaded-event', []);
-        expect(controller.shouldDisplayMyResources).toBe(false);
+    it('should not set anything if user has no roles', function () {
+        rootScope.$broadcast('selected-org-changed', null);
+        expect(controller.show.admin).toBe(false);
+        expect(controller.show.general).toBe(false);
+        expect(controller.show.generalMeeting).toBe(false);
+        expect(controller.show.ticketing).toBe(false);
+        expect(controller.show.certification).toBe(false);
+        expect(controller.show.billing).toBe(false);
+        rootScope.$broadcast('selected-org-changed', {"roles": [] });
+        expect(controller.show.admin).toBe(false);
+        expect(controller.show.general).toBe(false);
+        expect(controller.show.generalMeeting).toBe(false);
+        expect(controller.show.ticketing).toBe(false);
+        expect(controller.show.certification).toBe(false);
+        expect(controller.show.billing).toBe(false);
     });
 
 });

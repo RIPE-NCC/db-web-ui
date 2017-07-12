@@ -55,10 +55,10 @@ module.exports = function (config) {
             'bower_components/select2/select2.js',
             'bower_components/angular-mocks/angular-mocks.js',
             // endbower
-            '.tstmp/scripts/app.js',
-            '.tstmp/scripts/**/*Module.js',
-            '.tstmp/scripts/**/*States.js',
-            '.tstmp/scripts/**/*.js',
+            'tmp/scripts/app.js',
+            'tmp/scripts/**/*Module.js',
+            'tmp/scripts/**/*States.js',
+            'tmp/scripts/**/*.js',
             'test/javascript/unit/**/*.js'
         ],
 
@@ -88,7 +88,7 @@ module.exports = function (config) {
 
         reporters: ['progress', 'coverage'],
         preprocessors: {
-            '.tstmp/**/*.js': ['coverage']
+            'tmp/**/*.js': ['coverage']
         },
 
         // optionally, configure the reporter

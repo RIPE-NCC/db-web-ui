@@ -35,7 +35,7 @@ describe('LirDataService', function () {
                 }
             }, {}];
         });
-
+        expectGetOrganisations();
         service.getOrgs().then(function (data) {
             expect(data).toEqual([{displayName: 'SURFnet bv nl.surfnet', memberId: '3629', orgId: 'ORG-Sb3-RIPE', orgName: 'SURFnet bv', regId: 'nl.surfnet'}]);
 
@@ -67,9 +67,15 @@ describe('LirDataService', function () {
             }, {}];
         });
 
+        var orgHttpResponse = [{ id: 'ORG-BLA1-RIPE', name: 'Some provider' }];
+        $httpBackend.whenGET('api/ba-apps/organisations').respond(function () {
+            return [200, orgHttpResponse];
+        });
+
         service.getOrgs().then(function (data) {
             expect(data).toEqual([
                 {displayName: 'Internet Provider BV zz.example', memberId: '7347', orgId: 'ORG-EIP1-RIPE', orgName: 'Internet Provider BV', regId: 'zz.example'},
+                {displayName: 'Some provider', memberId: 'org:ORG-BLA1-RIPE', orgId: 'ORG-BLA1-RIPE', orgName: 'Some provider', regId: 'ORG-BLA1-RIPE'},
                 {displayName: 'SURFnet bv nl.surfnet', memberId: '3629', orgId: 'ORG-Sb3-RIPE', orgName: 'SURFnet bv', regId: 'nl.surfnet'}
             ]);
         });

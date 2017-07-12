@@ -89,7 +89,8 @@ describe('webUpdates: DisplayController', function () {
         createDisplayController();
 
         expectUserInfo(false);
-        expectGetLirs(true);
+        expectGetLirs(false);
+        expectGetOrganisations(true);
 
         expect($scope.objectSource).toBe(SOURCE);
     });
@@ -99,7 +100,8 @@ describe('webUpdates: DisplayController', function () {
         createDisplayController();
 
         expectUserInfo(false);
-        expectGetLirs(true);
+        expectGetLirs(false);
+        expectGetOrganisations(true);
 
         expect($scope.objectType).toBe(OBJECT_TYPE);
     });
@@ -109,7 +111,8 @@ describe('webUpdates: DisplayController', function () {
         createDisplayController();
 
         expectUserInfo(false);
-        expectGetLirs(true);
+        expectGetLirs(false);
+        expectGetOrganisations(true);
 
         expect($scope.objectName).toBe(OBJECT_NAME);
     });
@@ -119,7 +122,8 @@ describe('webUpdates: DisplayController', function () {
         createDisplayController();
 
         expectUserInfo(false);
-        expectGetLirs(true);
+        expectGetLirs(false);
+        expectGetOrganisations(true);
 
         expect($scope.loggedIn).toBe(true);
     });
@@ -131,7 +135,8 @@ describe('webUpdates: DisplayController', function () {
         createDisplayController();
 
         expectUserInfo(false);
-        expectGetLirs(true);
+        expectGetLirs(false);
+        expectGetOrganisations(true);
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
@@ -154,6 +159,7 @@ describe('webUpdates: DisplayController', function () {
         });
 
         expectGetLirs();
+        expectGetOrganisations(false);
 
         $httpBackend.flush();
 
@@ -192,6 +198,7 @@ describe('webUpdates: DisplayController', function () {
         });
 
         expectGetLirs();
+        expectGetOrganisations();
 
         $httpBackend.flush();
 
@@ -207,7 +214,8 @@ describe('webUpdates: DisplayController', function () {
         createDisplayController();
 
         expectUserInfo(false);
-        expectGetLirs(true);
+        expectGetLirs(false);
+        expectGetOrganisations(true);
 
         $scope.navigateToSelect();
 
@@ -220,7 +228,8 @@ describe('webUpdates: DisplayController', function () {
         createDisplayController();
 
         expectUserInfo(false);
-        expectGetLirs(true);
+        expectGetLirs(false);
+        expectGetOrganisations(true);
 
         $scope.navigateToModify();
         $httpBackend.flush();
@@ -330,6 +339,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
         });
 
         expectGetLirs();
+        expectGetOrganisations();
 
         $httpBackend.flush();
 
@@ -350,6 +360,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
         });
 
         expectGetLirs();
+        expectGetOrganisations();
 
         $httpBackend.flush();
 
@@ -375,6 +386,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
         });
 
         expectGetLirs();
+        expectGetOrganisations();
 
         $httpBackend.flush();
 

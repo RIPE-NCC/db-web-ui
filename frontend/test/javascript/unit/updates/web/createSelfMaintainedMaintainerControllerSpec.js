@@ -77,6 +77,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
                 return [200, userInfoData, {}];
             });
             expectGetLirs();
+            expectGetOrganisations();
 
             $httpBackend.flush();
 
