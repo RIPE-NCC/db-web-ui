@@ -10,13 +10,14 @@ describe('webUpdates: ModalAuthenticationController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$log_,_WhoisResources_,_RestService_, _$httpBackend_) {
+        inject(function (_$controller_, _$rootScope_, _$log_,_WhoisResources_,_RestService_, _$httpBackend_,_UserInfoService_) {
 
             $scope = _$rootScope_.$new();
             $log = _$log_;
             WhoisResources = _WhoisResources_;
             RestService = _RestService_;
             $httpBackend = _$httpBackend_;
+            userInfoService = _UserInfoService_;
 
             modalInstance = {
                 close: jasmine.createSpy('modalInstance.close'),
@@ -25,11 +26,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
                     then: jasmine.createSpy('modalInstance.result.then')
                 }
             };
-            userInfoService = {
-                getUsername: function() {
-                    return 'dummy@ripe.net';
-                }
-            };
+
             credentialsService = {
                 setCredentials: jasmine.createSpy('credentialsService.setCredentials'),
                 removeCredentials: jasmine.createSpy('credentialsService.removeCredentials'),
@@ -49,6 +46,15 @@ describe('webUpdates: ModalAuthenticationController', function () {
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
+
+            $httpBackend.whenGET('api/whois-internal/api/user/info').respond({
+                user: {
+                    'username': 'dummy@ripe.net',
+                    'displayName': 'Test User',
+                    'uuid': 'aaaa-bbbb-cccc-dddd',
+                    'active': 'true'
+                }
+            });
 
             $httpBackend.flush();
 

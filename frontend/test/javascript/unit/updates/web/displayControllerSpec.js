@@ -70,13 +70,15 @@ describe('webUpdates: DisplayController', function () {
     });
 
     function expectUserInfo(withFlush) {
-        $httpBackend.expectGET('api/user/info').respond(function() {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
             return [200, {
-                username:'test@ripe.net',
-                displayName:'Test User',
-                expiryDate:[2015,9,9,14,9,27,863],
-                uuid:'aaaa-bbbb-cccc-dddd',
-                active:true
+                user: {
+                    username: 'test@ripe.net',
+                    displayName: 'Test User',
+                    expiryDate: [2015, 9, 9, 14, 9, 27, 863],
+                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    active: true
+                }
             }, {}];
         });
         if(withFlush) {
@@ -88,9 +90,7 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
-        expectUserInfo(false);
-        expectGetLirs(false);
-        expectGetOrganisations(true);
+        expectUserInfo(true);
 
         expect($scope.objectSource).toBe(SOURCE);
     });
@@ -99,9 +99,7 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
-        expectUserInfo(false);
-        expectGetLirs(false);
-        expectGetOrganisations(true);
+        expectUserInfo(true);
 
         expect($scope.objectType).toBe(OBJECT_TYPE);
     });
@@ -110,9 +108,7 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
-        expectUserInfo(false);
-        expectGetLirs(false);
-        expectGetOrganisations(true);
+        expectUserInfo(true);
 
         expect($scope.objectName).toBe(OBJECT_NAME);
     });
@@ -121,9 +117,7 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
-        expectUserInfo(false);
-        expectGetLirs(false);
-        expectGetOrganisations(true);
+        expectUserInfo(true);
 
         expect($scope.loggedIn).toBe(true);
     });
@@ -134,9 +128,7 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
-        expectUserInfo(false);
-        expectGetLirs(false);
-        expectGetOrganisations(true);
+        expectUserInfo(true);
 
         expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
@@ -157,9 +149,6 @@ describe('webUpdates: DisplayController', function () {
         $httpBackend.expectGET('api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true').respond(function() {
             return [200, objectToDisplay, {}];
         });
-
-        expectGetLirs();
-        expectGetOrganisations(false);
 
         $httpBackend.flush();
 
@@ -197,9 +186,6 @@ describe('webUpdates: DisplayController', function () {
             }, {}];
         });
 
-        expectGetLirs();
-        expectGetOrganisations();
-
         $httpBackend.flush();
 
         expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
@@ -213,9 +199,7 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
-        expectUserInfo(false);
-        expectGetLirs(false);
-        expectGetOrganisations(true);
+        expectUserInfo(true);
 
         $scope.navigateToSelect();
 
@@ -227,9 +211,7 @@ describe('webUpdates: DisplayController', function () {
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
-        expectUserInfo(false);
-        expectGetLirs(false);
-        expectGetOrganisations(true);
+        expectUserInfo(true);
 
         $scope.navigateToModify();
         $httpBackend.flush();
@@ -313,13 +295,14 @@ describe('webUpdates: DisplayController with object containing slash', function 
     });
 
     function expectUserInfo(withFlush) {
-        $httpBackend.expectGET('api/user/info').respond(function() {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
             return [200, {
-                username:'test@ripe.net',
-                displayName:'Test User',
-                expiryDate:[2015,9,9,14,9,27,863],
-                uuid:'aaaa-bbbb-cccc-dddd',
-                active:true
+                user: {
+                    username: 'test@ripe.net',
+                    displayName: 'Test User',
+                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    active: true
+                }
             }, {}];
         });
         if(withFlush) {
@@ -338,9 +321,6 @@ describe('webUpdates: DisplayController with object containing slash', function 
             return [200, objectToDisplay, {}];
         });
 
-        expectGetLirs();
-        expectGetOrganisations();
-
         $httpBackend.flush();
 
         expect($scope.attributes.getSingleAttributeOnName('route').value).toBe(OBJECT_NAME);
@@ -358,9 +338,6 @@ describe('webUpdates: DisplayController with object containing slash', function 
         $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function() {
             return [200, objectToDisplay, {}];
         });
-
-        expectGetLirs();
-        expectGetOrganisations();
 
         $httpBackend.flush();
 
@@ -384,9 +361,6 @@ describe('webUpdates: DisplayController with object containing slash', function 
         $httpBackend.expectGET('api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true').respond(function() {
             return [200, objectToDisplay, {}];
         });
-
-        expectGetLirs();
-        expectGetOrganisations();
 
         $httpBackend.flush();
 

@@ -1,9 +1,13 @@
+import IHttpPromise = angular.IHttpPromise;
+import IPromise = angular.IPromise;
+
 class UserInfoService {
 
     public static $inject = ["$log", "$http", "$q", "$cookies"];
 
     private userInfo: IUserInfoResponseData;
     private selectedOrganisation: IUserInfoOrganisation;
+    private deferred: ng.IDeferred<IUserInfoResponseData>;
 
     constructor(private $log: angular.ILogService,
                 private $http: angular.IHttpService,
@@ -12,20 +16,32 @@ class UserInfoService {
     }
 
     public getUserOrgsAndRoles(): IHttpPromise<IUserInfoResponseData> {
-        if (this.userInfo) {
-            return this.$q.resolve(this.userInfo);
+        if (!this.deferred) {
+            this.deferred = this.$q.defer();
+
+            if (this.userInfo) {
+                this.deferred.resolve(this.userInfo);
+            } else {
+                this.deferred.resolve(
+                    this.$http({
+                        method: "GET",
+                        timeout: 10000,
+                        url: "api/whois-internal/api/user/info",
+                    }).then((response: IHttpPromiseCallbackArg<IUserInfoResponseData>) => {
+                        this.userInfo = response.data;
+                        return this.userInfo;
+                    }),
+                );
+            }
         }
-        return this.$http({
-            method: "GET",
-            timeout: 10000,
-            url: "api/whois-internal/api/user/info",
-        }).then((response: IHttpPromiseCallbackArg<IUserInfoResponseData>) => {
-            this.userInfo = response.data;
-            return this.userInfo;
-        });
+        return this.deferred.promise;
     }
 
-    public getSelectedOrganisation(): ng.IPromise<IUserInfoOrganisation> {
+    public clear(): void {
+        this.deferred = null;
+    }
+
+    public getSelectedOrganisation(): IPromise<IUserInfoOrganisation> {
         const storedSelectionId = this.getSelectedOrgFromCookie();
         return this.getUserOrgsAndRoles().then((userInfo: IUserInfoResponseData) => {
             if (storedSelectionId) {
@@ -46,11 +62,18 @@ class UserInfoService {
                     }
                 }
             }
-            if (!this.selectedOrganisation && this.userInfo.members && this.userInfo.members.length ) {
-                this.selectedOrganisation = this.userInfo.members[0];
-            }
-            if (!this.selectedOrganisation && this.userInfo.organisations && this.userInfo.organisations.length ) {
-                this.selectedOrganisation = this.userInfo.organisations[0];
+            if (!this.selectedOrganisation) {
+                let orgs: IUserInfoOrganisation[] = [];
+                if (userInfo.organisations) {
+                    orgs = orgs.concat(userInfo.organisations);
+                }
+                if (userInfo.members) {
+                    orgs = orgs.concat(userInfo.members);
+                }
+                orgs.sort((o1, o2) => {
+                    return o1.organisationName.localeCompare(o2.organisationName);
+                });
+                this.selectedOrganisation = orgs[0];
             }
             return this.selectedOrganisation;
         });
@@ -74,4 +97,4 @@ class UserInfoService {
 
 angular
     .module("dbWebApp")
-    .service("UserInfoService2", UserInfoService);
+    .service("UserInfoService", UserInfoService);

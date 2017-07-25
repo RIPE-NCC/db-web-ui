@@ -18,7 +18,7 @@
 
             $scope.loggedIn = undefined;
 
-            UserInfoService.getUserInfo().then(
+            UserInfoService.getUserOrgsAndRoles().then(
                 function () {
                     $scope.loggedIn = true;
                 }

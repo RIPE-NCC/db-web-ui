@@ -53,7 +53,7 @@ describe('loginStatus: UserInfoController', function () {
     it('Do not populate upper-right upon authentication error',function() {
 
         createController();
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function(method,url) {
             return [401, "", {}];
         });
         $httpBackend.flush();
@@ -63,17 +63,17 @@ describe('loginStatus: UserInfoController', function () {
 
     it('Successful population of upper right corner',function() {
         createController();
-        $httpBackend.expectGET('api/user/info').respond(function(method,url) {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function(method,url) {
             return [200, {
-                username:"test@ripe.net",
-                displayName:"Test User",
-                expiryDate:[2015,9,9,14,9,27,863],
-                uuid:"aaaa-bbbb-cccc-dddd",
-                active:true
+                user: {
+                    username: "test@ripe.net",
+                    displayName: "Test User",
+                    uuid: "aaaa-bbbb-cccc-dddd",
+                    active: true
+                }
             }, {}];
         });
-        expectGetLirs();
-        expectGetOrganisations(true);
+        $httpBackend.flush();
 
         expect(RIPE.username).toEqual('Test User');
 

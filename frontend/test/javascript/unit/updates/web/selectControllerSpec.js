@@ -26,7 +26,7 @@ describe('webUpdates: SelectController', function () {
 
             selectController = function() {
                 _$controller_('SelectController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams, UserInfoService:UserInfoService
+                    $scope: $scope, $state: $state, $stateParams: $stateParams, UserInfoService: UserInfoService
                 });
             };
 
@@ -44,7 +44,7 @@ describe('webUpdates: SelectController', function () {
     it('should navigate to crowd if currently logged out', function () {
         selectController();
 
-        $httpBackend.expectGET('api/user/info').respond(function() {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
             return [401, '', {}];
         });
         $httpBackend.flush();
@@ -65,18 +65,14 @@ describe('webUpdates: SelectController', function () {
     it('should navigate to create screen when logged in', function () {
         selectController();
 
-        $httpBackend.expectGET('api/user/info').respond(function() {
-            return [200, {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
+            return [200, { user: {
                 username:'test@ripe.net',
                 displayName:'Test User',
-                expiryDate:[2015,9,9,14,9,27,863],
                 uuid:'aaaa-bbbb-cccc-dddd',
-                active:true
+                active:true}
             }, {}];
         });
-        expectGetLirs();
-        expectGetOrganisations();
-
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);
@@ -95,17 +91,14 @@ describe('webUpdates: SelectController', function () {
     it('should navigate to create person maintainer screen when logged in and selected', function () {
         selectController();
 
-        $httpBackend.expectGET('api/user/info').respond(function() {
-            return [200, {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
+            return [200, { user: {
                 username:'test@ripe.net',
                 displayName:'Test User',
-                expiryDate:[2015,9,9,14,9,27,863],
                 uuid:'aaaa-bbbb-cccc-dddd',
-                active:true
+                active:true}
             }, {}];
         });
-        expectGetLirs();
-        expectGetOrganisations();
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);
@@ -121,17 +114,14 @@ describe('webUpdates: SelectController', function () {
     it('should navigate to create self maintained mntner screen when logged in', function () {
         selectController();
 
-        $httpBackend.expectGET('api/user/info').respond(function() {
-            return [200, {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
+            return [200, { user: {
                 username:'test@ripe.net',
                 displayName:'Test User',
-                expiryDate:[2015,9,9,14,9,27,863],
                 uuid:'aaaa-bbbb-cccc-dddd',
-                active:true
+                active:true}
             }, {}];
         });
-        expectGetLirs();
-        expectGetOrganisations();
         $httpBackend.flush();
 
         expect($scope.loggedIn).toBe(true);

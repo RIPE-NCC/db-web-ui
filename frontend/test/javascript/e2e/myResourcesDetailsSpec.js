@@ -8,7 +8,7 @@ describe('My Resources detail', function () {
 
     beforeEach(function () {
         browser.get(browser.baseUrl);
-        browser.manage().addCookie('activeMembershipId', '16372', '/', null);
+        browser.manage().addCookie('activeMembershipId', '3629', '/', null);
     });
 
     describe('for inetnum', function () {

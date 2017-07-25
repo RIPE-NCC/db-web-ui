@@ -10,7 +10,6 @@ describe('My Resources, update object', function () {
 
     beforeEach(function () {
         browser.get(browser.baseUrl);
-        browser.executeScript("window.localStorage.setItem('selectedOrg', 'ORG-Sb3-RIPE');");
         browser.get(browser.baseUrl + '#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
     });
 

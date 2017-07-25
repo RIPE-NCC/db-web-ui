@@ -66,11 +66,12 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
             });
 
             userInfoData = {
-                'username': SSO_EMAIL,
-                'displayName': 'Tester X',
-                'expiryDate': [2015, 8, 27, 18, 2, 35, 606],
-                'uuid': '93efb5ac-81f7-40b1-aac7-f2ff497b00e7',
-                'active': true
+                user: {
+                    'username': SSO_EMAIL,
+                    'displayName': 'Tester X',
+                    'uuid': '93efb5ac-81f7-40b1-aac7-f2ff497b00e7',
+                    'active': true
+                }
             };
 
             UserInfoService.clear();
@@ -100,11 +101,9 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
     it('should extract data from url', function () {
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function () {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
-        expectGetLirs();
-        expectGetOrganisations();
         $httpBackend.flush();
 
         expect($scope.source).toBe(SOURCE);
@@ -115,7 +114,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function () {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
             return [403, whoisObjectWithErrors, {}];
         });
         $httpBackend.flush();
@@ -134,11 +133,9 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function () {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
-        expectGetLirs();
-        expectGetOrganisations();
         $httpBackend.flush();
 
         $scope.submit();
@@ -156,11 +153,9 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function () {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
-        expectGetLirs();
-        expectGetOrganisations();
         $httpBackend.flush();
 
         $scope.personAttributes.setSingleAttributeOnName('person', PERSON_NAME);
@@ -209,11 +204,9 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
         createController();
 
-        $httpBackend.expectGET('api/user/info').respond(function () {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
-        expectGetLirs();
-        expectGetOrganisations();
         $httpBackend.flush();
 
         $scope.personAttributes.setSingleAttributeOnName('person', 'Titus Tester');

@@ -8,17 +8,17 @@
 
             function initialize() {
                 $log.debug('Using login-url:' + Properties.LOGIN_URL);
-                UserInfoService.getUserInfo().then(
+                UserInfoService.getUserOrgsAndRoles().then(
                     function (result) {
-                        RIPE.username = result.displayName;
-                        RIPE.usermail = result.username;
+                        RIPE.username = result.user.displayName;
+                        RIPE.usermail = result.user.username;
                         RIPE.usermenu = {
                             'User details': [['Profile', Properties.LOGIN_URL + '/profile'], ['Logout', Properties.LOGIN_URL + '/logout']]
                         };
-                        RIPE.userimg = Properties.LOGIN_URL + '/picture/' + result.uuid;
+                        RIPE.userimg = Properties.LOGIN_URL + '/picture/' + result.user.uuid;
                         RIPE.user = {
-                            fullName: result.displayName,
-                            email: result.username,
+                            fullName: result.user.displayName,
+                            email: result.user.username,
                             buildTag: Properties.BUILD_TAG
                         };
                         init_user_menu();

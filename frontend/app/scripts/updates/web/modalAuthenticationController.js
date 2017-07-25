@@ -53,36 +53,36 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
                     CredentialsService.setCredentials($scope.selected.item.key, $scope.selected.password);
 
-                    var ssoUserName = UserInfoService.getUsername();
-                    if ($scope.selected.associate && ssoUserName) {
+                    UserInfoService.getUserOrgsAndRoles().then(function(userInfo) {
+                        var ssoUserName = userInfo.user.username;
+                        if ($scope.selected.associate && ssoUserName) {
 
-                        // append auth-md5 attribute
-                        var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({
-                            name: 'auth',
-                            value: 'SSO ' + ssoUserName
-                        }, {name: 'auth'});
+                            // append auth-md5 attribute
+                            var attributes = WhoisResources.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({
+                                name: 'auth',
+                                value: 'SSO ' + ssoUserName
+                            }, {name: 'auth'});
 
-                        // do adjust the maintainer
-                        RestService.associateSSOMntner(whoisResources.getSource(), 'mntner', $scope.selected.item.key,
-                            WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.selected.password).then(
-                            function (resp) {
-                                $scope.selected.item.mine = true;
-                                CredentialsService.removeCredentials(); // because it's now an sso mntner
-                                // report success back
-                                $modalInstance.close({selectedItem: $scope.selected.item, response: resp});
+                            // do adjust the maintainer
+                            RestService.associateSSOMntner(whoisResources.getSource(), 'mntner', $scope.selected.item.key,
+                                WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.selected.password).then(
+                                function (resp) {
+                                    $scope.selected.item.mine = true;
+                                    CredentialsService.removeCredentials(); // because it's now an sso mntner
+                                    // report success back
+                                    $modalInstance.close({selectedItem: $scope.selected.item, response: resp});
 
-                            }, function (error) {
-                                $log.error('Association error:' + angular.toJson(error));
-                                // remove modal anyway
-                                $modalInstance.close({selectedItem: $scope.selected.item});
-                            });
-                    } else {
-                        $log.debug('No need to associate');
-                        // report success back
-                        $modalInstance.close({selectedItem: $scope.selected.item});
-                    }
-
-
+                                }, function (error) {
+                                    $log.error('Association error:' + angular.toJson(error));
+                                    // remove modal anyway
+                                    $modalInstance.close({selectedItem: $scope.selected.item});
+                                });
+                        } else {
+                            $log.debug('No need to associate');
+                            // report success back
+                            $modalInstance.close({selectedItem: $scope.selected.item});
+                        }
+                    });
                 }, function (error) {
                     $log.error('Authentication error:' + angular.toJson(error));
 

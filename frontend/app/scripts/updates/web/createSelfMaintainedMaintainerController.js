@@ -52,10 +52,10 @@
                 }
 
                 // kick off ajax-call to fetch email address of logged-in user
-                UserInfoService.getUserInfo().then(
+                UserInfoService.getUserOrgsAndRoles().then(
                     function (result) {
-                        $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', result.username);
-                        $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + result.username);
+                        $scope.maintainerAttributes.setSingleAttributeOnName('upd-to', result.user.username);
+                        $scope.maintainerAttributes.setSingleAttributeOnName('auth', 'SSO ' + result.user.username);
                     }, function () {
                         AlertService.setGlobalError('Error fetching SSO information');
                     }

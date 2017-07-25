@@ -40,10 +40,10 @@ angular.module('webUpdates')
                 $scope.mntnerAttributes.setSingleAttributeOnName('source', $scope.source);
 
                 // kick off ajax-call to fetch email address of logged-in user
-                UserInfoService.getUserInfo().then(
+                UserInfoService.getUserOrgsAndRoles().then(
                     function (result) {
-                        $scope.mntnerAttributes.setSingleAttributeOnName('auth', 'SSO ' + result.username);
-                        $scope.mntnerAttributes.setSingleAttributeOnName('upd-to', result.username);
+                        $scope.mntnerAttributes.setSingleAttributeOnName('auth', 'SSO ' + result.user.username);
+                        $scope.mntnerAttributes.setSingleAttributeOnName('upd-to', result.user.username);
                     }, function () {
                         AlertService.setGlobalError('Error fetching SSO information');
                     }

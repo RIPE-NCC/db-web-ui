@@ -22,7 +22,7 @@ public class LeftMenuConfiguration {
     private String lirTrainingUrl;
     @Value("${lir.api.access.keys.url:}")
     private String lirApiAccessKeysUrl;
-    @Value("${my.resources.url:}")
+    @Value("${my.resources.url:#/myresources/overview}")
     private String myResourcesUrl;
     @Value("${ipv4.analyser.url:}")
     private String ipv4AnalyserUrl;

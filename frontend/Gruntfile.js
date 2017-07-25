@@ -808,16 +808,9 @@ module.exports = function (grunt) {
         'wiredep',
         'useminPrepare',
         'concurrent:dist',
-        'postcss',
-        //'ngtemplates',
-        'concat',
-        'ngAnnotate',
-        'copy:dist',
-        //'cdnify',
         'cssmin',
-        //'uglify',
-        //'filerev',
-        //'usemin',
+        'postcss',
+        'copy:dist',
         'htmlmin',
         'cacheBust'
     ]);

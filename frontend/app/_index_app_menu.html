@@ -6,7 +6,7 @@
             <a href="#" class="h5">My RIPE NCC</a>
         </div>
         <ul class="toplevel">
-            <li class="child" ng-class="{active: menu.selected.lir}" ng-show="menu.show.admin || menu.show.general || menu.show.billing || menu.show.generalMeeting || menu.show.ticketing">
+            <li class="child" ng-class="{active: menu.selected.lir}" ng-show="!menu.show.testTrainingEnv && (menu.show.admin || menu.show.general || menu.show.billing || menu.show.generalMeeting || menu.show.ticketing)">
                 <i title="Open sub-menu" class="fa fa-angle-right"></i>
                 <a href="">My LIR</a>
                 <ul class="level2">
@@ -17,9 +17,9 @@
                         <a class="menuItem" href="{{page.Properties.LIR_BILLING_DETAILS_URL}}">Billing Details</a>
                     </li>
                     <li ng-show="menu.show.generalMeeting">
-                        <a class="menuItem" href="{{page.Properties.LIR_GENERAL_MEETING_URL}}">GM preferences</a>
+                        <a class="menuItem" href="{{page.Properties.LIR_GENERAL_MEETING_URL}}">GM Preferences</a>
                     </li>
-                    <li ng-show="menu.show.admin || menu.show.general">
+                    <li ng-show="menu.show.admin || menu.show.general || menu.show.billing">
                         <a class="menuItem" href="{{page.Properties.LIR_USER_ACCOUNTS_URL}}">User Accounts</a>
                     </li>
                     <li ng-show="menu.show.ticketing">
@@ -28,34 +28,34 @@
                     <li ng-show="menu.show.admin || menu.show.general">
                         <a class="menuItem" href="{{page.Properties.LIR_TRAINING_URL}}">My Training</a>
                     </li>
-                    <li ng-show="menu.show.admin || menu.show.general">
+                    <li ng-show="menu.show.admin">
                         <a class="menuItem" href="{{page.Properties.LIR_API_ACCESS_KEYS_URL}}">API Access Keys</a>
                     </li>
                 </ul>
             </li>
-            <li class="child" ng-class="{active: menu.activeUrl.indexOf('/myresources/') > -1}" ng-show="menu.show.admin || menu.show.general || menu.show.certification">
+            <li class="child" ng-class="{active: menu.activeUrl.indexOf('/myresources/') > -1}" ng-show="menu.show.admin || menu.show.general || menu.show.certification || menu.show.myResources">
                 <i title="Open sub-menu" class="fa fa-angle-right"></i>
                 <a href="#">Resources</a>
                 <ul class="level2">
-                    <li ng-show="menu.show.admin || menu.show.general">
+                    <li ng-show="menu.show.admin || menu.show.general || menu.show.certification || menu.show.myResources">
                         <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/myresources/') > -1}" href="{{page.Properties.MY_RESOURCES_URL}}">My Resources</a>
                     </li>
-                    <li ng-show="menu.show.admin || menu.show.general">
+                    <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testTrainingEnv">
                         <a class="menuItem" href="{{page.Properties.IPV4_ANALYSER_URL}}">IPv4 Analyser</a>
                     </li>
-                    <li ng-show="menu.show.admin || menu.show.general">
+                    <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testTrainingEnv">
                         <a class="menuItem" href="{{page.Properties.IPV6_ANALYSER_URL}}">IPv6 Analyser</a>
                     </li>
-                    <li ng-show="menu.show.admin || menu.show.general">
+                    <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testTrainingEnv">
                         <a class="menuItem" href="{{page.Properties.REQUEST_RESOURCES_URL}}">Request Resources</a>
                     </li>
-                    <li ng-show="menu.show.admin || menu.show.general">
+                    <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testTrainingEnv">
                         <a class="menuItem" href="{{page.Properties.REQUEST_TRANSFER_URL}}">Request Transfer</a>
                     </li>
-                    <li ng-show="menu.show.admin || menu.show.general">
+                    <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testTrainingEnv">
                         <a class="menuItem" href="{{page.Properties.IPV4_TRANSFER_LISTING_URL}}">IPv4 Transfer Listing Service</a>
                     </li>
-                    <li ng-show="menu.show.certification">
+                    <li ng-show="menu.show.certification && !menu.show.testTrainingEnv">
                         <a class="menuItem" href="{{page.Properties.RPKI_DASHBOARD_URL}}">RPKI Dashboard</a>
                     </li>
                 </ul>

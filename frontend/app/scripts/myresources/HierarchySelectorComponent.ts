@@ -16,16 +16,17 @@ class HierarchySelectorController {
     constructor(private $scope: angular.IScope,
                 private $state: IHierarchySelectorControllerState,
                 private rds: IResourcesDataService,
-                private userInfoService: any) {
+                private UserInfoService: UserInfoService) {
 
         if (!this.resource || ["inetnum", "inet6num"].indexOf(this.resource.type) < 0) {
             return;
         }
 
-        const selOrg = this.userInfoService.getSelectedLir();
-        if (selOrg && selOrg.orgId) {
-            this.fetchParents(selOrg.orgId);
-        }
+        this.UserInfoService.getSelectedOrganisation().then((selOrg) => {
+            if (selOrg && selOrg.orgObjectId) {
+                this.fetchParents(selOrg.orgObjectId);
+            }
+        });
     }
 
     public showTopLevelResources() {

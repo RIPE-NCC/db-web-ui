@@ -55,7 +55,7 @@ class ResourceDetailsController {
     private objectName: string;
     private objectType: string;
     private MAGIC = 100; // number of items per page on server
-    private filterDebouncer: IPromise<any> = null;
+    private filterDebouncer: ng.IPromise<any> = null;
     private source = "RIPE"; // TODO: calculate this value
 
     constructor(private $scope: angular.IScope,

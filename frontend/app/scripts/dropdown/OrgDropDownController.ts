@@ -1,5 +1,5 @@
 class OrgDropDownController {
-    public static $inject = ["$log", "$rootScope", "$scope", "UserInfoService2"];
+    public static $inject = ["$log", "$rootScope", "$scope", "UserInfoService"];
 
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];

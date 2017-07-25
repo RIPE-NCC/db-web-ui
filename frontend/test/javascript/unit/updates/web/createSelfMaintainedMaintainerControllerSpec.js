@@ -24,11 +24,13 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     };
 
     var userInfoData = {
-        'username': 'tdacruzper@ripe.net',
-        'displayName': 'Test User',
-        'expiryDate': '[2015,7,7,14,58,3,244]',
-        'uuid': 'aaaa-bbbb-cccc-dddd',
-        'active': 'true'
+        user: {
+            'username': 'tdacruzper@ripe.net',
+            'displayName': 'Test User',
+            'expiryDate': '[2015,7,7,14,58,3,244]',
+            'uuid': 'aaaa-bbbb-cccc-dddd',
+            'active': 'true'
+        }
     };
 
     beforeEach(function () {
@@ -73,11 +75,9 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
             $httpBackend.whenGET(/.*.html/).respond(200);
 
-            $httpBackend.expectGET('api/user/info').respond(function () {
+            $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
                 return [200, userInfoData, {}];
             });
-            expectGetLirs();
-            expectGetOrganisations();
 
             $httpBackend.flush();
 
