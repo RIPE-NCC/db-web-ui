@@ -3,23 +3,20 @@ package net.ripe.whois.web.api.dns;
 import com.github.jgonian.ipmath.Ipv4;
 import com.github.jgonian.ipmath.Ipv6;
 import net.ripe.whois.services.crowd.CrowdClient;
-import org.json.JSONException;
-import org.json.JSONObject;
+import net.ripe.whois.services.crowd.CrowdClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.xbill.DNS.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Optional;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
@@ -29,65 +26,58 @@ public class DnsCheckerController {
     private final static Logger LOGGER = LoggerFactory.getLogger(DnsCheckerController.class);
 
     private final CrowdClient crowdClient;
-    private final int port;
+    private final DnsClient dnsClient;
 
-    private static final String LEARN_MORE_MESSAGE = "<a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/configuring-reverse-dns#4--reverse-dns-troubleshooting\" target=\"_blank\">Learn More</a>";
     private static final Pattern INVALID_INPUT = Pattern.compile("[^a-zA-Z0-9\\\\.:-]");
 
     @Autowired
-    public DnsCheckerController(final CrowdClient crowdClient, @Value("${dns.check.port:53}") final int port) {
+    public DnsCheckerController(final CrowdClient crowdClient, final DnsClient dnsClient) {
         this.crowdClient = crowdClient;
-        this.port = port;
+        this.dnsClient = dnsClient;
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public ResponseEntity<String> status(@CookieValue(value = "crowd.token_key") final String crowdToken,
+    public ResponseEntity<Response> status(@CookieValue(value = "crowd.token_key") final String crowdToken,
                                          @RequestParam(value = "ns") final String inNs,
                                          @RequestParam(value = "record") final String inRecord) {
 
-
-        if (crowdToken == null || !crowdClient.getUserSession(crowdToken).isActive()) {
+        try {
+            if (crowdToken == null || !crowdClient.getUserSession(crowdToken).isActive()) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+        } catch (CrowdClientException e) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
+
         // tidy up a bit
-        String ns = inNs.trim();
-        String record = inRecord.trim();
+        final String ns = inNs.trim();
+        final String record = inRecord.trim();
 
-        if (sanityCheckFailed(ns) || sanityCheckFailed(inRecord)) {
-            return new ResponseEntity<>(jsonResponse(ns, -1, "Invalid characters in input"), HttpStatus.OK);
+        if (isInputInvalid(ns) || isInputInvalid(inRecord)) {
+            return new ResponseEntity<>(new Response(ns, -1, "Invalid characters in input"), HttpStatus.OK);
         }
 
-        if (!nameserverChecksOut(ns)) {
-            return new ResponseEntity<>(jsonResponse(ns, -1, "Could not resolve " + ns), HttpStatus.OK);
+        if (!isNameserverValid(ns)) {
+            return new ResponseEntity<>(new Response(ns, -1, "Could not resolve " + ns), HttpStatus.OK);
         }
 
-        final List<InetAddress> addresses = getAddresses(ns);
-        if (addresses.isEmpty()) {
-            return new ResponseEntity<>(jsonResponse(ns, -1, "Could not resolve " + ns), HttpStatus.OK);
-        }
-
-        for (InetAddress address : addresses) {
-            for (TransportProtocol protocol : TransportProtocol.values()) {
-                final Optional<String> errorMessage = checkDnsConfig(ns, record, address, protocol);
-                if (errorMessage.isPresent()) {
-                    return new ResponseEntity<>(errorMessage.get(), HttpStatus.OK);
-                }
-            }
+        final Optional<String> errorMessage = dnsClient.checkDnsConfig(ns, record);
+        if (errorMessage.isPresent()) {
+            return new ResponseEntity<>(new Response(ns, -1, errorMessage.get()) , HttpStatus.OK);
         }
 
         LOGGER.info("Success DNS check for {}", ns);
-        return new ResponseEntity<>(jsonResponse(ns, 0, "Server is authoritative for " + record), HttpStatus.OK);
+        return new ResponseEntity<>(new Response(ns, 0, "Server is authoritative for " + record), HttpStatus.OK);
     }
 
-    private boolean sanityCheckFailed(final String inString) {
-        Matcher matcher = INVALID_INPUT.matcher(inString);
-        return matcher.find();
+    private boolean isInputInvalid(final String inString) {
+        return INVALID_INPUT.matcher(inString).find();
     }
 
-    private boolean nameserverChecksOut(final String ns) {
+    private boolean isNameserverValid(final String ns) {
         try {
             final String[] split = ns.split("\\.");
-            String tld = split[split.length - 1];
+            final String tld = split[split.length - 1];
 
             Integer.parseInt(tld);
             return false;
@@ -112,76 +102,32 @@ public class DnsCheckerController {
         return true;
     }
 
-    private Optional<String> checkDnsConfig(final String ns, final String record, final InetAddress address, final TransportProtocol protocol) {
-        try {
-            LOGGER.info("Querying for {}@{} ({}) using {}", record, ns, address, protocol);
-            final Resolver resolver = getResolver(address, port, protocol);
-            final Lookup lookup = executeQuery(record, resolver);
-            LOGGER.info("Response message for {} ({}):{}", ns, address, lookup.getErrorString());
-            if ("timed out".equalsIgnoreCase(lookup.getErrorString()) || "network error".equalsIgnoreCase(lookup.getErrorString())) {
-                String msgString = "No reply from " + address.getHostAddress() + " on port " + port + "/" + protocol + ". " + LEARN_MORE_MESSAGE;
-                return Optional.of(jsonResponse(ns, -1, msgString));
-            }
+    @XmlRootElement
+    public static class Response {
 
-            if (lookup.getAnswers() == null || lookup.getAnswers().length == 0) {
-                String msgString = "Server is not authoritative for " + record + ". " + LEARN_MORE_MESSAGE;
-                return Optional.of(jsonResponse(ns, -1, msgString));
-            }
+        private final String ns;
+        private final int code;
+        private final String message;
 
-            return Optional.empty();
+        public Response(final String ns, final int code, final String message) {
+            this.ns = ns;
+            this.code = code;
+            this.message = message;
+        }
 
-        } catch (Exception e) {
-            LOGGER.info("Could not test DNS for {}", ns, e);
-            String msgString = "Could not check " + ns + ". " + LEARN_MORE_MESSAGE;
-            return Optional.of(jsonResponse(ns, -1, msgString));
+        public String getNs() {
+            return this.ns;
+        }
+
+        public int getCode() {
+            return this.code;
+        }
+
+        public String getMessage() {
+            return this.message;
         }
     }
 
-    private Lookup executeQuery(final String record, final Resolver resolver) throws TextParseException {
-        final Lookup lookup = new Lookup(record, Type.SOA);
-        lookup.setCache(null);
-        lookup.setResolver(resolver);
-        lookup.run();
-        return lookup;
-    }
 
-    private Resolver getResolver(final InetAddress address, final int port, final TransportProtocol transportProtocol) throws UnknownHostException {
-        final SimpleResolver resolver = new SimpleResolver();
-        resolver.setAddress(address);
-        resolver.setTCP(transportProtocol == TransportProtocol.TCP);
-        resolver.setPort(port);
-        resolver.setTimeout(transportProtocol.timeout);
-        return resolver;
-    }
-
-    private List<InetAddress> getAddresses(final String ns) {
-        try {
-            return Arrays.asList(InetAddress.getAllByName(ns));
-        } catch (UnknownHostException e) {
-            LOGGER.info("Could not resolve '{}' {} {}", ns, e.getClass().getName(), e.getMessage());
-            return Arrays.asList();
-        }
-    }
-
-    private static String jsonResponse(final String ns, final int code, final String message) {
-        JSONObject json = new JSONObject();
-        try {
-            json.put("ns", ns);
-            json.put("code", code);
-            json.put("message", message);
-            return json.toString();
-        } catch (JSONException e) {
-            return "{}";
-        }
-    }
 }
 
-enum TransportProtocol {
-    TCP(10), UDP(5);
-
-    final int timeout;
-
-    TransportProtocol(final int timeout) {
-        this.timeout = timeout;
-    }
-}
