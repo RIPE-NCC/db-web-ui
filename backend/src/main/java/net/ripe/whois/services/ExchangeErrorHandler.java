@@ -7,7 +7,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 public interface ExchangeErrorHandler {
 
     default ResponseEntity<String> handleErrors(ExchangeCall exchangeCall, Logger logger) {
-        return handleErrors(exchangeCall, (HttpStatusCodeException e) -> new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode()), logger);
+        return handleErrors(exchangeCall, (HttpStatusCodeException e) -> new ResponseEntity<>(e.getResponseBodyAsString(), e.getResponseHeaders(), e.getStatusCode()), logger);
     }
 
     default ResponseEntity<String> handleErrors(ExchangeCall exchangeCall, ErrorHandler errorHandler, Logger logger) {

@@ -47,6 +47,8 @@ public class AngularConstantsController {
     private String frontendBanner;
     @Value("${frontend.gtm.id}")
     private String frontendGtmId;
+    @Value("${object.lookup.url:/search/lookup.html}")
+    private String objectLookupUrl;
 
     private String appConstantsJsContents;
 
@@ -103,38 +105,37 @@ public class AngularConstantsController {
     }
 
     private String generateContents() {
-        final StringBuilder builder = new StringBuilder();
-        return builder
-                .append("'use strict';\n\n")
-                .append("angular.module('dbWebApp')\n")
-                .append("    .constant('Properties', {\n")
-                .append("        ENV: '").append(environment).append("',\n")
-                .append("        SOURCE: '").append(ripeSource).append("',\n")
-                .append("        BUILD_TAG: '").append(getImplementationVersion()).append("',\n")
-                .append("        LOGIN_URL: '").append(crowdLoginUrl).append("',\n")
-                .append("        ACCESS_URL: '").append(crowdAccessUrl).append("',\n")
-                .append("        PORTAL_URL: '").append(portalUrl).append("',\n")
-                .append("        BANNER: '").append(frontendBanner).append("',\n")
-                .append("        GTM_ID: '").append(frontendGtmId).append("',\n")
-                .append("        LIR_ACCOUNT_DETAILS_URL: '").append(leftMenuConfiguration.getLirAccountDetailsUrl()).append("',\n")
-                .append("        LIR_BILLING_DETAILS_URL: '").append(leftMenuConfiguration.getLirBillingDetailsUrl()).append("',\n")
-                .append("        LIR_GENERAL_MEETING_URL: '").append(leftMenuConfiguration.getLirGeneralMeetingUrl()).append("',\n")
-                .append("        LIR_USER_ACCOUNTS_URL: '").append(leftMenuConfiguration.getLirUserAccountsUrl()).append("',\n")
-                .append("        LIR_TICKETS_URL: '").append(leftMenuConfiguration.getLirTicketsUrl()).append("',\n")
-                .append("        LIR_TRAINING_URL: '").append(leftMenuConfiguration.getLirTrainingUrl()).append("',\n")
-                .append("        LIR_API_ACCESS_KEYS_URL: '").append(leftMenuConfiguration.getLirApiAccessKeysUrl()).append("',\n")
-                .append("        MY_RESOURCES_URL: '").append(leftMenuConfiguration.getMyResourcesUrl()).append("',\n")
-                .append("        IPV4_ANALYSER_URL: '").append(leftMenuConfiguration.getIpv4AnalyserUrl()).append("',\n")
-                .append("        IPV6_ANALYSER_URL: '").append(leftMenuConfiguration.getIpv6AnalyserUrl()).append("',\n")
-                .append("        REQUEST_RESOURCES_URL: '").append(leftMenuConfiguration.getRequestResourcesUrl()).append("',\n")
-                .append("        REQUEST_TRANSFER_URL: '").append(leftMenuConfiguration.getRequestTransferUrl()).append("',\n")
-                .append("        IPV4_TRANSFER_LISTING_URL: '").append(leftMenuConfiguration.getIpv4TransferListingServiceUrl()).append("',\n")
-                .append("        RPKI_DASHBOARD_URL: '").append(leftMenuConfiguration.getRpkiDashboardUrl()).append("',\n")
-                .append("        DATABASE_QUERY_URL: '").append(leftMenuConfiguration.getDatabaseQueryUrl()).append("',\n")
-                .append("        DATABASE_FULL_TEXT_SEARCH_URL: '").append(leftMenuConfiguration.getDatabaseFullTextSearchUrl()).append("',\n")
-                .append("        DATABASE_SYNCUPDATES_URL: '").append(leftMenuConfiguration.getDatabaseSyncupdatesUrl()).append("',\n")
-                .append("        DATABASE_CREATE_URL: '").append(leftMenuConfiguration.getDatabaseCreateUrl()).append("'\n")
-                .append("    })\n")
-                .toString();
+        String builder = "'use strict';\n\n" +
+            "angular.module('dbWebApp')\n" +
+            "    .constant('Properties', {\n" +
+            "        ENV: '" + environment + "',\n" +
+            "        SOURCE: '" + ripeSource + "',\n" +
+            "        BUILD_TAG: '" + getImplementationVersion() + "',\n" +
+            "        LOGIN_URL: '" + crowdLoginUrl + "',\n" +
+            "        ACCESS_URL: '" + crowdAccessUrl + "',\n" +
+            "        PORTAL_URL: '" + portalUrl + "',\n" +
+            "        BANNER: '" + frontendBanner + "',\n" +
+            "        GTM_ID: '" + frontendGtmId + "',\n" +
+            "        LIR_ACCOUNT_DETAILS_URL: '" + leftMenuConfiguration.getLirAccountDetailsUrl() + "',\n" +
+            "        LIR_BILLING_DETAILS_URL: '" + leftMenuConfiguration.getLirBillingDetailsUrl() + "',\n" +
+            "        LIR_GENERAL_MEETING_URL: '" + leftMenuConfiguration.getLirGeneralMeetingUrl() + "',\n" +
+            "        LIR_USER_ACCOUNTS_URL: '" + leftMenuConfiguration.getLirUserAccountsUrl() + "',\n" +
+            "        LIR_TICKETS_URL: '" + leftMenuConfiguration.getLirTicketsUrl() + "',\n" +
+            "        LIR_TRAINING_URL: '" + leftMenuConfiguration.getLirTrainingUrl() + "',\n" +
+            "        LIR_API_ACCESS_KEYS_URL: '" + leftMenuConfiguration.getLirApiAccessKeysUrl() + "',\n" +
+            "        MY_RESOURCES_URL: '" + leftMenuConfiguration.getMyResourcesUrl() + "',\n" +
+            "        IPV4_ANALYSER_URL: '" + leftMenuConfiguration.getIpv4AnalyserUrl() + "',\n" +
+            "        IPV6_ANALYSER_URL: '" + leftMenuConfiguration.getIpv6AnalyserUrl() + "',\n" +
+            "        REQUEST_RESOURCES_URL: '" + leftMenuConfiguration.getRequestResourcesUrl() + "',\n" +
+            "        REQUEST_TRANSFER_URL: '" + leftMenuConfiguration.getRequestTransferUrl() + "',\n" +
+            "        IPV4_TRANSFER_LISTING_URL: '" + leftMenuConfiguration.getIpv4TransferListingServiceUrl() + "',\n" +
+            "        RPKI_DASHBOARD_URL: '" + leftMenuConfiguration.getRpkiDashboardUrl() + "',\n" +
+            "        DATABASE_QUERY_URL: '" + leftMenuConfiguration.getDatabaseQueryUrl() + "',\n" +
+            "        DATABASE_FULL_TEXT_SEARCH_URL: '" + leftMenuConfiguration.getDatabaseFullTextSearchUrl() + "',\n" +
+            "        DATABASE_SYNCUPDATES_URL: '" + leftMenuConfiguration.getDatabaseSyncupdatesUrl() + "',\n" +
+            "        DATABASE_CREATE_URL: '" + leftMenuConfiguration.getDatabaseCreateUrl() + "',\n" +
+            "        OBJECT_LOOKUP_URL: '" + objectLookupUrl + "'\n" +
+            "    })\n";
+        return builder;
     }
 }

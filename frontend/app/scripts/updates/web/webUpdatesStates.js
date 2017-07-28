@@ -115,6 +115,24 @@ angular.module('webUpdates')
                     url: '/forceDelete/:source/:objectType/{name:WhoisObjectName}',
                     templateUrl: 'scripts/updates/web/forceDelete.html',
                     controller: 'ForceDeleteController'
+                })
+                .state('lookup', {
+                    url: '/lookup?source&key&type',
+                    templateUrl: 'scripts/query/lookup-single.html',
+                    controller: 'LookupSingleObjectController',
+                    controllerAs: '$ctrl'
+                })
+                .state('query', {
+                    url: '/query',
+                    templateUrl: 'scripts/query/query.html',
+                    controller: 'QueryController',
+                    controllerAs: 'query'
+                })
+                .state('fulltextsearch', {
+                    url: '/fulltextsearch',
+                    templateUrl: 'scripts/fulltextsearch/full-text-search.html',
+                    controller: 'FullTextSearchController',
+                    controllerAs: 'fts'
                 });
 
         }]);

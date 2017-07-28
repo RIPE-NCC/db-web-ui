@@ -8,6 +8,7 @@ describe('LeftMenuController', function () {
     var scope;
     var returnCode = '123';
     var $location;
+    var EnvironmentStatus;
     var orgDropDownStateService = {
         getSelectedOrg: function () {
             return {
@@ -18,7 +19,7 @@ describe('LeftMenuController', function () {
 
     beforeEach(module('dbWebApp'));
 
-    beforeEach(inject(function (_$rootScope_, $controller, _$location_) {
+    beforeEach(inject(function (_$rootScope_, $controller, _$location_, _EnvironmentStatus_) {
         rootScope = _$rootScope_;
         scope = _$rootScope_.$new();
         $location = _$location_;
@@ -26,7 +27,7 @@ describe('LeftMenuController', function () {
             $log: null,
             $rootScope: _$rootScope_,
             $scope: scope,
-            $location: $location,
+            EnvironmentStatus: _EnvironmentStatus_,
         });
         controller.orgDropDownStateService = orgDropDownStateService;
     }));
@@ -48,7 +49,8 @@ describe('LeftMenuController', function () {
         expect(controller.show.ticketing).toBe(true);
         expect(controller.show.certification).toBe(true);
         expect(controller.show.billing).toBe(true);
-        expect(controller.show.testTrainingEnv).toBe(false);
+        expect(controller.show.testRcEnv).toBe(false);
+        expect(controller.show.trainingEnv).toBe(false);
     });
 
     it('should show just Resource/My Resources and RIPE Database for Training environment', function () {
@@ -62,7 +64,8 @@ describe('LeftMenuController', function () {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(controller.show.testTrainingEnv).toBe(true);
+        expect(controller.show.testRcEnv).toBe(false);
+        expect(controller.show.trainingEnv).toBe(true);
     });
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', function () {
@@ -76,7 +79,8 @@ describe('LeftMenuController', function () {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(controller.show.testTrainingEnv).toBe(true);
+        expect(controller.show.testRcEnv).toBe(true);
+        expect(controller.show.trainingEnv).toBe(false);
     });
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', function () {
@@ -90,7 +94,8 @@ describe('LeftMenuController', function () {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(controller.show.testTrainingEnv).toBe(true);
+        expect(controller.show.testRcEnv).toBe(true);
+        expect(controller.show.trainingEnv).toBe(false);
     });
 
     it('should not set anything if user has no roles', function () {

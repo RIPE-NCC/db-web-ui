@@ -1,7 +1,7 @@
 import IAngularEvent = angular.IAngularEvent;
 
 class LeftMenuController {
-    public static $inject = ["$rootScope", "$scope", "$state", "$location"];
+    public static $inject = ["$rootScope", "$scope", "$state", "EnvironmentStatus"];
 
     public activeUrl: string;
     public show: {
@@ -13,7 +13,8 @@ class LeftMenuController {
         myResources: boolean;
         ticketing: boolean;
         // Only temporary for the test environment
-        testTrainingEnv: boolean;
+        trainingEnv: boolean;
+        testRcEnv: boolean;
     } = {
         admin: false,
         billing: false,
@@ -22,16 +23,29 @@ class LeftMenuController {
         generalMeeting: false,
         myResources: false,
         ticketing: false,
-        testTrainingEnv: false,
+        // Only temporary for the test environment
+        trainingEnv: false,
+        testRcEnv: false,
     };
+
+    public dbMenuIsActive: boolean;
 
     constructor(private $rootScope: angular.IRootScopeService,
                 private $scope: angular.IScope,
                 private $state: ng.ui.IStateService,
-                private $location: ng.ILocationService) {
+                private EnvironmentStatus: EnvironmentStatus) {
 
         $rootScope.$on("$stateChangeSuccess", (event: IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
+            this.dbMenuIsActive =
+                this.activeUrl.indexOf('/wizard') > -1 ||
+                this.activeUrl.indexOf('/select') > -1 ||
+                this.activeUrl.indexOf('/create') > -1 ||
+                this.activeUrl.indexOf('/display') > -1 ||
+                this.activeUrl.indexOf('/modify') > -1 ||
+                this.activeUrl.indexOf('/query') > -1 ||
+                this.activeUrl.indexOf('/fulltextsearch') > -1 ||
+                this.activeUrl.indexOf('/lookup') > -1;
         });
         $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
             this.show.admin = this.show.general = this.show.billing
@@ -39,12 +53,8 @@ class LeftMenuController {
                 = this.show.myResources = false;
 
             // Only temporary for the test environment
-            const host = $location.host();
-            if (host.indexOf("training.db.ripe.net") === 0
-                || host.indexOf("apps-test.db.ripe.net") === 0
-                || host.indexOf("rc.db.ripe.net") === 0) {
-                this.show.testTrainingEnv = true;
-            }
+            this.show.testRcEnv = this.EnvironmentStatus.isTestRcEnv();
+            this.show.trainingEnv = this.EnvironmentStatus.isTrainingEnv();
 
             if (!selected || !selected.roles) {
                 return;

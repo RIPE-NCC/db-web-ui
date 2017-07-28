@@ -70,7 +70,7 @@ module.exports = {
     btnNavigateToCreate: element(by.id('btnNavigateToCreate')),
     btnCreateInTextArea: element(by.id('btnCreateInTextArea')),
     btnSwitchToWebCreate: element(by.id('btnSwitchToWebCreate')),
-    btnUpdateObjectButton: element(by.id('btnUpdateObjectButton')),
+    btnUpdateObjectButton: element(by.css('div.viewerbuttons')).element(by.css('a.blue-button[ng-click]')),
 
     inpOrgName: element(by.id('createForm')).element(by.name('org-name')),
     inpOrganisation: element(by.id('createForm')).element(by.name('organisation')),

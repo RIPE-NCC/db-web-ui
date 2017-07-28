@@ -33,11 +33,10 @@
                     </div>
                 </div>
             </div>
-
             <p>
                 You can search up to 5 terms at once in the search box above, separating them with a semicolon.
             </p>
-            <div>
+            <div class="margin-bottom">
                 <uib-tabset active="activeForm">
                     <uib-tab heading="Sources">
                         <ng-form name="sourceForm">
@@ -58,7 +57,7 @@
                                             <label for="search:sources:0">Search RIPE Database only</label></label>
                                     </div>
                                     <div class="help-block">
-                                        XXX Are you looking for the
+                                        Are you looking for the
                                         <a href="https://apps-test.db.ripe.net/search/query.html" target="_blank">TEST Database</a>?
                                     </div>
                                 </div>
@@ -177,65 +176,117 @@
                                 <div class="row radio">
                                     <div class="col-md-4">
                                         <ul class="list-unstyled">
-                                            <li><input id="search:inverseLookup:0" type="checkbox" ng-model="query.inverse.ABUSE_MAILBOX"><label for="search:inverseLookup:0">
-                                                &nbsp;abuse-mailbox</label></li>
-                                            <li><input id="searchinverseLookup1" type="checkbox" ng-model="query.inverse.ADMIN_C"><label for="searchinverseLookup1">&nbsp;admin-c</label></li>
-                                            <li><input id="searchinverseLookup2" type="checkbox" ng-model="query.inverse.AUTH"><label for="searchinverseLookup2">&nbsp;auth</label></li>
-                                            <li><input id="search:inverseLookup:3" type="checkbox" ng-model="query.inverse.AUTHOR"><label for="search:inverseLookup:3">&nbsp;author</label></li>
-                                            <li><input id="search:inverseLookup:4" type="checkbox" ng-model="query.inverse.FINGERPR"><label for="search:inverseLookup:4">&nbsp;fingerpr</label>
+                                            <li>
+                                                <input id="search:inverseLookup:0" type="checkbox" ng-model="query.inverse.ABUSE_MAILBOX">
+                                                <label for="search:inverseLookup:0">&nbsp;abuse-mailbox</label></li>
+                                            <li>
+                                                <input id="searchinverseLookup1" type="checkbox" ng-model="query.inverse.ADMIN_C">
+                                                <label for="searchinverseLookup1">&nbsp;admin-c</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:5" type="checkbox" ng-model="query.inverse.FORM"><label for="search:inverseLookup:5">&nbsp;form</label></li>
-                                            <li><input id="search:inverseLookup:6" type="checkbox" ng-model="query.inverse.IRT_NFY"><label for="search:inverseLookup:6">&nbsp;irt-nfy</label>
+                                            <li>
+                                                <input id="searchinverseLookup2" type="checkbox" ng-model="query.inverse.AUTH">
+                                                <label for="searchinverseLookup2">&nbsp;auth</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:7" type="checkbox" ng-model="query.inverse.LOCAL_AS"><label for="search:inverseLookup:7">&nbsp;local-as</label>
+                                            <li>
+                                                <input id="search:inverseLookup:3" type="checkbox" ng-model="query.inverse.AUTHOR">
+                                                <label for="search:inverseLookup:3">&nbsp;author</label></li>
+                                            <li>
+                                                <input id="search:inverseLookup:4" type="checkbox" ng-model="query.inverse.FINGERPR">
+                                                <label for="search:inverseLookup:4">&nbsp;fingerpr</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:8" type="checkbox" ng-model="query.inverse.MBRS_BY_REF"><label for="search:inverseLookup:8">
-                                                &nbsp;mbrs-by-ref</label>
+                                            <li>
+                                                <input id="search:inverseLookup:5" type="checkbox" ng-model="query.inverse.FORM">
+                                                <label for="search:inverseLookup:5">&nbsp;form</label></li>
+                                            <li>
+                                                <input id="search:inverseLookup:6" type="checkbox" ng-model="query.inverse.IRT_NFY">
+                                                <label for="search:inverseLookup:6">&nbsp;irt-nfy</label>
                                             </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <ul class="list-unstyled">
-                                            <li><input id="search:inverseLookup:9" type="checkbox" ng-model="query.inverse.MEMBER_OF"><label for="search:inverseLookup:9">&nbsp;member-of</label>
+                                            <li>
+                                                <input id="search:inverseLookup:7" type="checkbox" ng-model="query.inverse.LOCAL_AS">
+                                                <label for="search:inverseLookup:7">&nbsp;local-as</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:10" type="checkbox" ng-model="query.inverse.MNT_BY"><label for="search:inverseLookup:10">&nbsp;mnt-by</label>
-                                            </li>
-                                            <li><input id="search:inverseLookup:11" type="checkbox" ng-model="query.inverse.MNT_DOMAINS"><label for="search:inverseLookup:11">
-                                                &nbsp;mnt-domains</label></li>
-                                            <li><input id="search:inverseLookup:12" type="checkbox" ng-model="query.inverse.MNT_IRT"><label for="search:inverseLookup:12">&nbsp;mnt-irt</label>
-                                            </li>
-                                            <li><input id="search:inverseLookup:13" type="checkbox" ng-model="query.inverse.MNT_LOWER"><label for="search:inverseLookup:13">
-                                                &nbsp;mnt-lower</label>
-                                            </li>
-                                            <li><input id="search:inverseLookup:14" type="checkbox" ng-model="query.inverse.MNT_NFY"><label for="search:inverseLookup:14">&nbsp;mnt-nfy</label>
-                                            </li>
-                                            <li><input id="search:inverseLookup:15" type="checkbox" ng-model="query.inverse.MNT_REF"><label for="search:inverseLookup:15">&nbsp;mnt-ref</label>
-                                            </li>
-                                            <li><input id="search:inverseLookup:16" type="checkbox" ng-model="query.inverse.MNT_ROUTES"><label for="search:inverseLookup:16">
-                                                &nbsp;mnt-routes</label>
-                                            </li>
-                                            <li><input id="search:inverseLookup:17" type="checkbox" ng-model="query.inverse.NOTIFY"><label for="search:inverseLookup:17">&nbsp;notify</label>
+                                            <li>
+                                                <input id="search:inverseLookup:8" type="checkbox" ng-model="query.inverse.MBRS_BY_REF">
+                                                <label for="search:inverseLookup:8">&nbsp;mbrs-by-ref</label>
                                             </li>
                                         </ul>
                                     </div>
                                     <div class="col-md-4">
                                         <ul class="list-unstyled">
-                                            <li><input id="search:inverseLookup:18" type="checkbox" ng-model="query.inverse.NSERVER"><label for="search:inverseLookup:18">&nbsp;nserver</label>
+                                            <li>
+                                                <input id="search:inverseLookup:9" type="checkbox" ng-model="query.inverse.MEMBER_OF">
+                                                <label for="search:inverseLookup:9">&nbsp;member-of</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:19" type="checkbox" ng-model="query.inverse.ORG"><label for="search:inverseLookup:19">&nbsp;org</label></li>
-                                            <li><input id="search:inverseLookup:20" type="checkbox" ng-model="query.inverse.ORIGIN"><label for="search:inverseLookup:20">&nbsp;origin</label>
+                                            <li>
+                                                <input id="search:inverseLookup:10" type="checkbox" ng-model="query.inverse.MNT_BY">
+                                                <label for="search:inverseLookup:10">&nbsp;mnt-by</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:21" type="checkbox" ng-model="query.inverse.PERSON"><label for="search:inverseLookup:21">&nbsp;person</label>
+                                            <li>
+                                                <input id="search:inverseLookup:11" type="checkbox" ng-model="query.inverse.MNT_DOMAINS">
+                                                <label for="search:inverseLookup:11">&nbsp;mnt-domains</label></li>
+                                            <li>
+                                                <input id="search:inverseLookup:12" type="checkbox" ng-model="query.inverse.MNT_IRT">
+                                                <label for="search:inverseLookup:12">&nbsp;mnt-irt</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:22" type="checkbox" ng-model="query.inverse.PING_HDL"><label for="search:inverseLookup:22">&nbsp;ping-hdl</label>
+                                            <li>
+                                                <input id="search:inverseLookup:13" type="checkbox" ng-model="query.inverse.MNT_LOWER">
+                                                <label for="search:inverseLookup:13">&nbsp;mnt-lower</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:23" type="checkbox" ng-model="query.inverse.REF_NFY"><label for="search:inverseLookup:23">&nbsp;ref-nfy</label>
+                                            <li>
+                                                <input id="search:inverseLookup:14" type="checkbox" ng-model="query.inverse.MNT_NFY">
+                                                <label for="search:inverseLookup:14">&nbsp;mnt-nfy</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:24" type="checkbox" ng-model="query.inverse.TECH_C"><label for="search:inverseLookup:24">&nbsp;tech-c</label>
+                                            <li>
+                                                <input id="search:inverseLookup:15" type="checkbox" ng-model="query.inverse.MNT_REF">
+                                                <label for="search:inverseLookup:15">&nbsp;mnt-ref</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:25" type="checkbox" ng-model="query.inverse.UPD_TO"><label for="search:inverseLookup:25">&nbsp;upd-to</label>
+                                            <li>
+                                                <input id="search:inverseLookup:16" type="checkbox" ng-model="query.inverse.MNT_ROUTES">
+                                                <label for="search:inverseLookup:16">&nbsp;mnt-routes</label>
                                             </li>
-                                            <li><input id="search:inverseLookup:26" type="checkbox" ng-model="query.inverse.ZONE_C"><label for="search:inverseLookup:26">&nbsp;zone-c</label>
+                                            <li>
+                                                <input id="search:inverseLookup:17" type="checkbox" ng-model="query.inverse.NOTIFY">
+                                                <label for="search:inverseLookup:17">&nbsp;notify</label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul class="list-unstyled">
+                                            <li>
+                                                <input id="search:inverseLookup:18" type="checkbox" ng-model="query.inverse.NSERVER">
+                                                <label for="search:inverseLookup:18">&nbsp;nserver</label>
+                                            </li>
+                                            <li>
+                                                <input id="search:inverseLookup:19" type="checkbox" ng-model="query.inverse.ORG">
+                                                <label for="search:inverseLookup:19">&nbsp;org</label>
+                                            </li>
+                                            <li>
+                                                <input id="search:inverseLookup:20" type="checkbox" ng-model="query.inverse.ORIGIN">
+                                                <label for="search:inverseLookup:20">&nbsp;origin</label>
+                                            </li>
+                                            <li>
+                                                <input id="search:inverseLookup:21" type="checkbox" ng-model="query.inverse.PERSON">
+                                                <label for="search:inverseLookup:21">&nbsp;person</label>
+                                            </li>
+                                            <li>
+                                                <input id="search:inverseLookup:22" type="checkbox" ng-model="query.inverse.PING_HDL">
+                                                <label for="search:inverseLookup:22">&nbsp;ping-hdl</label>
+                                            </li>
+                                            <li>
+                                                <input id="search:inverseLookup:23" type="checkbox" ng-model="query.inverse.REF_NFY">
+                                                <label for="search:inverseLookup:23">&nbsp;ref-nfy</label>
+                                            </li>
+                                            <li>
+                                                <input id="search:inverseLookup:24" type="checkbox" ng-model="query.inverse.TECH_C">
+                                                <label for="search:inverseLookup:24">&nbsp;tech-c</label>
+                                            </li>
+                                            <li>
+                                                <input id="search:inverseLookup:25" type="checkbox" ng-model="query.inverse.UPD_TO">
+                                                <label for="search:inverseLookup:25">&nbsp;upd-to</label>
+                                            </li>
+                                            <li>
+                                                <input id="search:inverseLookup:26" type="checkbox" ng-model="query.inverse.ZONE_C">
+                                                <label for="search:inverseLookup:26">&nbsp;zone-c</label>
                                             </li>
                                         </ul>
                                     </div>
@@ -245,12 +296,10 @@
                     </uib-tab>
                 </uib-tabset>
             </div>
-
-            <div class="margin-top clearfix">
-                <span>
+            <button type="button" ng-click="query.searchClicked()" class="blue-button pull-right">Search</button>
+            <div class="help-block small">
                 By submitting this form you explicitly express your agreement with the
-                <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></span>
-                <button type="submit" class="blue-button pull-right ga-dbsearch-button">Search</button>
+                <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
             </div>
         </form>
     </section>
@@ -258,7 +307,6 @@
     <section ng-show="query.results.length > 0">
         <p class="pull-right padding list-unstyle search-icons"></p>
         <h2 class="documentFirstHeading">Search results</h2>
-
         <div class="clearfix">
             <div class="alert alert-info col-md-12">
                 <p class="small">
@@ -267,9 +315,11 @@
                 </p>
             </div>
         </div>
-        <div class="clearfix" ng-repeat="whoisObject in query.results">
-            <whois-object-viewer ng-model="whoisObject"></whois-object-viewer>
+        <div class="clearfix" ng-repeat="whoisObject in query.results" ng-if="$index < query.numResultsToShow">
+            <div class="resultpane">
+                <lookup ng-model="whoisObject" update-clicked="query.updateClicked(whoisObject)"></lookup>
+            </div>
         </div>
+        <p scroller="query.lastResultOnScreen()" ng-if="query.showScroller"></p>
     </section>
-    RIPE Database Software Version 1.88
 </div>

@@ -1,0 +1,11 @@
+paginator ul li {
+  cursor: pointer;
+  a {
+    min-width: 46px;
+    text-align: center;
+  }
+}
+
+#content ul.pagination>li {
+    display: inline;
+}

@@ -1,0 +1,100 @@
+<section>
+    <h1>RIPE Database Text Search</h1>
+    <p>This service allows searches over the full text of the RIPE Database object data.</p>
+    <p>The search is done on object text without regard for any relationships.
+        Multiple search terms should be separated with a space.
+    </p>
+</section>
+<section>
+    <form class="grey padding margin-bottom" style="overflow:auto" ng-submit="fts.searchClicked()">
+        <input type="text" class="form-control" ng-model="fts.ftquery" placeholder="Search term">
+        <div class="margin-bottom margin-top" ng-click="fts.toggleSearchMode()">
+            <i class="fa fa-plus-square"></i>
+            <a class="padding-left" href ng-show="!fts.advancedSearch">Advanced Search</a>
+            <a class="padding-left" href ng-show="fts.advancedSearch">Basic Search</a>
+        </div>
+
+        <div ng-if="fts.advancedSearch">
+            <table id="home_search:advancedSearch:typeSelectBox" class="table-radio">
+                <tbody>
+                <tr>
+                    <td>
+                        <input type="radio" id="home_search:advancedSearch:typeSelectBox:0" value="all" ng-model="fts.advmode">
+                        <label for="home_search:advancedSearch:typeSelectBox:0"> All</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="home_search:advancedSearch:typeSelectBox" id="home_search:advancedSearch:typeSelectBox:1" value="any" ng-model="fts.advmode">
+                        <label for="home_search:advancedSearch:typeSelectBox:1"> Any</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" name="home_search:advancedSearch:typeSelectBox" id="home_search:advancedSearch:typeSelectBox:2" value="exact" ng-model="fts.advmode">
+                        <label for="home_search:advancedSearch:typeSelectBox:2"> Exact Match</label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="clearfix">
+                <div class="col-md-6 form-group">
+                    <label for="selectObjectType">Search only within the following objects: </label>
+                    <select id="selectObjectType"
+                            class="form-control"
+                            multiple
+                            ng-attr-size="{{ fts.objectTypes.length }}"
+                            ng-change="fts.objectTypeChanged()"
+                            ng-model="fts.selectedObjectTypes"
+                            ng-options="o for o in fts.objectTypes">
+                    </select>
+                    <span class="small">
+                        <a href ng-click="fts.selectAll()">Select all</a> |
+                        <a href ng-click="fts.selectNone()">Select none</a>
+                    </span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="home_search:advancedSearch:selectFieldType">Search within the following fields: </label>
+                    <a data-toggle="tooltip" data-delay="{'show':'1000', 'hide':'1000'}" title="" data-placement="right"
+                       data-original-title="Only objects where search string is contained within specified fields are returned in result set, but all attributes containing the search string within those objects are reported">
+                        <span class="fa fa-question fa-lg"></span>
+                    </a>
+                    <select id="home_search:advancedSearch:selectFieldType"
+                            class="form-control"
+                            multiple
+                            ng-disabled="!fts.selectedObjectTypes || fts.selectedObjectTypes.length < 1"
+                            ng-attr-size="{{ fts.objectTypes.length }}"
+                            ng-model="fts.selectedAttrs"
+                            ng-options="a for a in fts.selectableAttributes">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="blue-button pull-right">Search</button>
+        <span class="help-block small">By submitting this form you explicitly express your agreement with the
+<a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></span>
+    </form>
+</section>
+<section ng-if="fts.results">
+    <div class="grey padding" id="resultsAnchor">
+        <h2>Search results</h2>
+        <div class="alert alert-info small">
+            <div>This is the RIPE Database full text search service.</div>
+            <div>The RIPE Database is subject to <a href="http://www.ripe.net/db/support/db-terms-conditions.pdf">Terms and Conditions</a>.</div>
+        </div>
+        <full-text-result-summary tabledata="fts.resultSummary" row-clicked="fts.addObjectToFilter(type.name)"></full-text-result-summary>
+        <paginator pages="fts.navbarSyncArray" active-page="fts.activePage" num-results="fts.numResults" results-per-page="10" page-clicked="fts.pageClicked(page)" ng-if="fts.results"></paginator>
+        <div class="padding">
+            <div class="margin-bottom grey-border-top padding-top results" ng-repeat="result in fts.results">
+                <div><a href="#/lookup?source=RIPE&type={{result.name}}&key={{ result.lookupKey }}" target="_blank">{{ result.name }}: {{ result.lookupKey }}</a></div>
+                <div>
+                <span class="small" ng-repeat="hl in result.hls">
+                    <span ng-if="$index !== 0">, </span>
+                    <span>{{ hl.name }}=<span ng-bind-html="hl.value"></span></span>
+                </span>
+                </div>
+            </div>
+        </div>
+        <paginator pages="fts.navbarSyncArray" active-page="fts.activePage" num-results="fts.numResults" results-per-page="10" page-clicked="fts.pageClicked(page)"></paginator>
+    </div>
+</section>

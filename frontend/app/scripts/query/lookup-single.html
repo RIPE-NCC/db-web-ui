@@ -1,0 +1,12 @@
+<h1>Lookup Results</h1>
+
+<div class="alert alert-info small">
+    This is the RIPE Database search service. The objects are in RPSL format.
+    The RIPE Database is subject to <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">Terms and Conditions.</a>
+</div>
+<div ng-if="$ctrl.whoisResponse">
+    <whois-object-viewer
+            ng-model="$ctrl.whoisResponse"
+            update-clicked="$ctrl.goToUpdate()">
+    </whois-object-viewer>
+</div>

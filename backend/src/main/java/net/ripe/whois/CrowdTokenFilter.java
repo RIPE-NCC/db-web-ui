@@ -27,16 +27,25 @@ public class CrowdTokenFilter implements Filter {
 
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
     private static final String[] UNPROTECTED_URLS = {
-        ".*/api/.*", /* let rest-operation itself decide about authentication */
-        ".*/db-web-ui/",
-        ".*/index.html",
-        ".*/fmp/requireLogin.html",
-        ".*/fmp/findMaintainer.html",
-        ".*/updates/web/select.html",
-        ".*/updates/web/display.html",
-        ".*/alertsDirective.html",
-        ".*/match-multiple.tpl.html",
-        ".*/select-multiple.tpl.html"
+            ".*/alertsDirective.html",
+            ".*/api/.*", /* let rest-operation itself decide about authentication */
+            ".*/db-web-ui/",
+            ".*/dropdown/org-drop-down.html",
+            ".*/fmp/findMaintainer.html",
+            ".*/fmp/requireLogin.html",
+            ".*/fulltextsearch/full-text-result-summary.html",
+            ".*/fulltextsearch/full-text-search.html",
+            ".*/index.html",
+            ".*/loading-indicator.html",
+            ".*/match-multiple.tpl.html",
+            ".*/paginator/*.html",
+            ".*/query/lookup.html",
+            ".*/query/query.html",
+            ".*/select-multiple.tpl.html",
+            ".*/updates/web/display.html",
+            ".*/updates/web/select.html",
+            ".*/views/error.html",
+            ".*/whoisObject/whois-object-viewer.html",
     };
 
     private final String crowdLoginUrl;
@@ -50,15 +59,15 @@ public class CrowdTokenFilter implements Filter {
 
     @Override
     public void doFilter(
-        final ServletRequest servletRequest,
-        final ServletResponse servletResponse,
-        final FilterChain filterChain)
-        throws IOException, ServletException {
+            final ServletRequest servletRequest,
+            final ServletResponse servletResponse,
+            final FilterChain filterChain)
+            throws IOException, ServletException {
 
         final HttpServletRequest request = (HttpServletRequest) servletRequest;
         final HttpServletResponse response = (HttpServletResponse) servletResponse;
 
-        if (isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request) ) {
+        if (isStaticResource(request) || isUnprotectedUrl(request) || hasCrowdCookie(request)) {
             LOGGER.debug("******* Allow {} {}", request.getMethod(), request.getRequestURI());
             filterChain.doFilter(request, response);
             return;
@@ -70,10 +79,10 @@ public class CrowdTokenFilter implements Filter {
 
     private boolean isStaticResource(HttpServletRequest request) {
         return (request.getRequestURI().endsWith(".css") ||
-            request.getRequestURI().endsWith(".js") ||
-            request.getRequestURI().endsWith(".js.map") ||
-            //request.getRequestURI().endsWith(".html") ||
-            request.getRequestURI().endsWith(".png"));
+                request.getRequestURI().endsWith(".js") ||
+                request.getRequestURI().endsWith(".js.map") ||
+                //request.getRequestURI().endsWith(".html") ||
+                request.getRequestURI().endsWith(".png"));
     }
 
     private boolean isUnprotectedUrl(HttpServletRequest request) {
@@ -82,7 +91,6 @@ public class CrowdTokenFilter implements Filter {
                 return true;
             }
         }
-
         return false;
     }
 
@@ -97,9 +105,9 @@ public class CrowdTokenFilter implements Filter {
         return false;
     }
 
-    private void reportAuthorisationError( final HttpServletRequest request, final HttpServletResponse response ) {
+    private void reportAuthorisationError(final HttpServletRequest request, final HttpServletResponse response) {
         boolean isAjax = "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
-        if( isAjax ) {
+        if (isAjax) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         } else {
             response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
@@ -115,9 +123,9 @@ public class CrowdTokenFilter implements Filter {
         final String queryString = request.getQueryString();
         if (queryString != null) {
             return request.getRequestURL()
-                .append('?')
-                .append(queryString)
-                .toString();
+                    .append('?')
+                    .append(queryString)
+                    .toString();
         } else {
             return request.getRequestURL().toString();
         }

@@ -35,12 +35,19 @@
 <script src="scripts/ScrollerDirective.js"></script>
 <script src="scripts/jsUtils.js"></script>
 
+<!-- Temporary just until we need different menu on test, training and rc enviroments -->
+<script src="scripts/EnvironmentStatus.js"></script>
+
 <!-- General directives -->
 <script src="scripts/alertsDirective.js"></script>
 
 <!-- General Update services -->
 <script src="scripts/dropdown/OrgDropDownController.js"></script>
 <script src="scripts/dropdown/OrgDropDownDirective.js"></script>
+<script src="scripts/fulltextsearch/FullTextSearchController.js"></script>
+<script src="scripts/fulltextsearch/FullTextResponseService.js"></script>
+<script src="scripts/fulltextsearch/FullTextResultSummaryComponent.js"></script>
+<script src="scripts/fulltextsearch/FullTextSearchService.js"></script>
 <script src="scripts/myresources/FlagDirective.js"></script>
 <script src="scripts/myresources/HierarchySelectorComponent.js"></script>
 <script src="scripts/myresources/IpAddressService.js"></script>
@@ -49,10 +56,14 @@
 <script src="scripts/myresources/ResourcesController.js"></script>
 <script src="scripts/myresources/ResourcesDataService.js"></script>
 <script src="scripts/myresources/UsageStatusComponent.js"></script>
+<script src="scripts/paginator/PaginationComponent.js"></script>
 <script src="scripts/LoadingIndicatorComponent.js"></script>
 <script src="scripts/myresources/ResourcesController.js"></script>
 <script src="scripts/myresources/ResourcesDataService.js"></script>
 <script src="scripts/myresources/ResourceItemComponent.js"></script>
+<script src="scripts/query/LookupComponent.js"></script>
+<script src="scripts/query/LookupSingleObjectController.js"></script>
+<script src="scripts/query/QueryController.js"></script>
 <script src="scripts/query/QueryParametersService.js"></script>
 <script src="scripts/updates/updatesModule.js"></script>
 <script src="scripts/updates/restService.js"></script>
@@ -70,7 +81,7 @@
 <script src="scripts/whoisObject/MaintainersEditorComponent.js"></script>
 <script src="scripts/whoisObject/NameFormatterComponent.js"></script>
 <script src="scripts/whoisObject/WhoisDataService.js"></script>
-<script src="scripts/whoisObject/WhoisObjectViewerDirective.js"></script>
+<script src="scripts/whoisObject/WhoisObjectViewerComponent.js"></script>
 <script src="scripts/whoisObject/WhoisObjectEditorComponent.js"></script>
 <script src="scripts/wizard/attribute.js"></script>
 <script src="scripts/wizard/attributeMetadataService.js"></script>
@@ -91,7 +102,6 @@
 <script src="scripts/updates/web/attributeTransformerDirective.js"></script>
 
 <!-- Webupdates Controllers -->
-
 <script src="scripts/updates/web/webUpdatesStates.js"></script>
 <script src="scripts/updates/web/modalCreateRoleForAbuseCController.js"></script>
 <script src="scripts/updates/web/modalAuthenticationController.js"></script>
@@ -107,11 +117,9 @@
 <script src="scripts/updates/web/displayController.js"></script>
 <script src="scripts/updates/web/forceDeleteSelectController.js"></script>
 <script src="scripts/updates/web/forceDeleteController.js"></script>
-
 <!-- Webupdates specific javascript end -->
 
 <!-- Textupdates -->
-
 <script src="scripts/updates/text/textUpdatesModule.js"></script>
 <script src="scripts/updates/text/textUpdatesStates.js"></script>
 <script src="scripts/updates/text/rpslService.js"></script>
@@ -123,24 +131,19 @@
 <script src="scripts/updates/text/textMultiDecisionController.js"></script>
 <script src="scripts/updates/text/textMultiDecisionModalController.js"></script>
 <script src="scripts/updates/text/textMultiController.js"></script>
-
 <!-- Textupdates specific javascript end -->
 
 <!-- LoginStatus Controllers -->
-
 <script src="scripts/loginStatus/loginStatusModule.js"></script>
 <script src="scripts/loginStatus/userInfoController.js"></script>
-
 <!--  LoginStatus specific javascript end -->
 
 <!-- Menu Controllers -->
 <script src="scripts/menu/LeftMenuController.js"></script>
 <script src="scripts/menu/UserInfoService.js"></script>
-
 <!--  Menu specific javascript end -->
 
 <!-- Forgot-Maintainer-Password Controllers -->
-
 <script src="scripts/fmp/fmpModule.js"></script>
 <script src="scripts/fmp/fmpStates.js"></script>
 <script src="scripts/fmp/fmpServices.js"></script>
@@ -151,12 +154,6 @@
 <script src="scripts/fmp/ssoAddedController.js"></script>
 <script src="scripts/fmp/redirectToLegacyController.js"></script>
 <script src="scripts/fmp/voluntarilyRedirectToLegacyController.js"></script>
-
 <!-- Forgot-Maintainer-Password javascript end -->
-
-
-<!-- Search Controllers -->
-
-<script src="scripts/search/searchModule.js"></script>
 
 <!-- Search javascript end -->

@@ -166,7 +166,7 @@ class ResourceDetailsController {
         }, 1000);
     }
 
-    public showObjectEditor(): void {
+    public showObjectEditor(model: IWhoisObjectModel): void {
         this.resetMessages();
         this.isEditing = true;
     }

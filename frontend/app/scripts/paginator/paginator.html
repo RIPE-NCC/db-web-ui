@@ -1,0 +1,15 @@
+<nav aria-label="Page navigation" ng-hide="$ctrl.hidePaginator">
+    <ul class="pagination">
+        <li ng-class="{disabled: $ctrl.rewindDisabled}">
+            <a aria-label="Previous" ng-click="$ctrl.fastFwd(-1 * $ctrl.maxNumPaginatorTabs)">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li ng-class="{active: $ctrl.activePage === pg}" ng-repeat="pg in $ctrl.pages"><a ng-click="$ctrl.pageSelected(pg)">{{ pg }}</a></li>
+        <li ng-class="{disabled: $ctrl.ffDisabled}">
+            <a aria-label="Next" ng-click="$ctrl.fastFwd($ctrl.maxNumPaginatorTabs)">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

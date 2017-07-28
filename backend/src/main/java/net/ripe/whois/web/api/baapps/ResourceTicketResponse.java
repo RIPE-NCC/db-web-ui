@@ -9,9 +9,6 @@ import java.util.*;
 @JsonIgnoreProperties(ignoreUnknown = true)
 class ResourceTicketResponse {
 
-    @JsonProperty("tickets")
-    private final Map<String, List<ResourceTicket>> tickets;
-
     ResourceTicketResponse() {
         this.tickets = new HashMap<>();
     }
@@ -45,4 +42,6 @@ class ResourceTicketResponse {
         final private String ticketResource;
     }
 
+    @JsonProperty("tickets")
+    private final Map<String, List<ResourceTicket>> tickets;
 }

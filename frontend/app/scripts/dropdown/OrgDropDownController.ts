@@ -1,19 +1,26 @@
 class OrgDropDownController {
-    public static $inject = ["$log", "$rootScope", "$scope", "UserInfoService"];
+    public static $inject = ["$log", "$rootScope", "$scope", "UserInfoService", "EnvironmentStatus"];
 
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];
+    //Temporary until we need different application on Test, Training and RC environment
+    public trainingEnv: boolean;
 
     constructor(private $log: angular.ILogService,
                 private $rootScope: angular.IRootScopeService,
                 private $scope: angular.IScope,
-                private UserInfoService: UserInfoService) {
+                private UserInfoService: UserInfoService,
+                private EnvironmentStatus: EnvironmentStatus) {
     }
 
     public $onInit(): void {
+        this.trainingEnv = this.EnvironmentStatus.isTrainingEnv();
         const orgs: IUserInfoOrganisation[] = [];
         this.UserInfoService.getUserOrgsAndRoles()
             .then((userInfo: IUserInfoResponseData) => {
+                if (!userInfo) {
+                    return;
+                }
                 if (angular.isArray(userInfo.organisations)) {
                     for (const org of userInfo.organisations) {
                         orgs.push(org);
@@ -34,6 +41,9 @@ class OrgDropDownController {
                         this.selectedOrg = org;
                     }
                 });
+            }, (err) => {
+                this.$log.warn("err", err);
+                return null;
             });
     }
 

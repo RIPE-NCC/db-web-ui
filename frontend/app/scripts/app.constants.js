@@ -11,7 +11,7 @@ angular.module('dbWebApp')
         PORTAL_URL: 'https://my.prepdev.ripe.net/',
         BANNER: 'Welcome to the DEV Environment of the RIPE Database.',
         GTM_ID: 'GTM-WTWTB7',
-
+        OBJECT_LOOKUP_URL: '/search/lookup.html', // feature switch
         MY_RESOURCES_URL: '#/myresources/overview'
     });
 

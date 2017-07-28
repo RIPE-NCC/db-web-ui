@@ -36,7 +36,7 @@
         </p>
     </div>
     <whois-object-viewer ng-model="resourceDetails.details" ng-if="resourceDetails.details && !resourceDetails.isEditing"
-                         update-clicked="resourceDetails.showObjectEditor()"></whois-object-viewer>
+                         update-clicked="resourceDetails.showObjectEditor(resourceDetails.details)"></whois-object-viewer>
     <maintainers-editor ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing" authentication-failed-clbk="resourceDetails.hideObjectEditor()"></maintainers-editor>
     <whois-object-editor ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing"
                           cancel-clicked="resourceDetails.hideObjectEditor()" update-clicked="resourceDetails.updateButtonClicked()"></whois-object-editor>
