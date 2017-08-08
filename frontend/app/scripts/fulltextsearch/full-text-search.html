@@ -7,32 +7,35 @@
 </section>
 <section>
     <form class="grey padding margin-bottom" style="overflow:auto" ng-submit="fts.searchClicked()">
-        <input type="text" class="form-control" ng-model="fts.ftquery" placeholder="Search term">
-        <div class="margin-bottom margin-top" ng-click="fts.toggleSearchMode()">
+        <div class="alert alert-warning" ng-if="fts.showNoResultsAlert">
+            No results were found for your search. Your search details may be too selective.
+        </div>
+        <input id="fullTextSearchInput" type="text" class="form-control" ng-model="fts.ftquery" placeholder="Search term">
+        <div class="margin-bottom margin-top" ng-click="fts.toggleSearchMode()" id="fullTextAdvanceModeLink">
             <i class="fa fa-plus-square"></i>
             <a class="padding-left" href ng-show="!fts.advancedSearch">Advanced Search</a>
             <a class="padding-left" href ng-show="fts.advancedSearch">Basic Search</a>
         </div>
 
         <div ng-if="fts.advancedSearch">
-            <table id="home_search:advancedSearch:typeSelectBox" class="table-radio">
+            <table class="table-radio">
                 <tbody>
                 <tr>
                     <td>
-                        <input type="radio" id="home_search:advancedSearch:typeSelectBox:0" value="all" ng-model="fts.advmode">
-                        <label for="home_search:advancedSearch:typeSelectBox:0"> All</label>
+                        <input type="radio" id="fullTextAdvancedTypeAll" value="all" ng-model="fts.advmode">
+                        <label for="fullTextAdvancedTypeAll"> All</label>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="radio" name="home_search:advancedSearch:typeSelectBox" id="home_search:advancedSearch:typeSelectBox:1" value="any" ng-model="fts.advmode">
-                        <label for="home_search:advancedSearch:typeSelectBox:1"> Any</label>
+                        <input type="radio" id="fullTextAdvancedTypeAny" value="any" ng-model="fts.advmode">
+                        <label for="fullTextAdvancedTypeAny"> Any</label>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="radio" name="home_search:advancedSearch:typeSelectBox" id="home_search:advancedSearch:typeSelectBox:2" value="exact" ng-model="fts.advmode">
-                        <label for="home_search:advancedSearch:typeSelectBox:2"> Exact Match</label>
+                        <input type="radio" id="fullTextAdvancedTypeExact" value="exact" ng-model="fts.advmode">
+                        <label for="fullTextAdvancedTypeExact"> Exact Match</label>
                     </td>
                 </tr>
                 </tbody>
@@ -70,19 +73,20 @@
                 </div>
             </div>
         </div>
-        <button type="submit" class="blue-button pull-right">Search</button>
+        <button id="fullTextSearchButton" type="submit" class="blue-button pull-right">Search</button>
         <span class="help-block small">By submitting this form you explicitly express your agreement with the
-<a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></span>
+<a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
+        </span>
     </form>
 </section>
-<section ng-if="fts.results">
+<section ng-if="fts.results && !fts.showNoResultsAlert">
     <div class="grey padding" id="resultsAnchor">
         <h2>Search results</h2>
         <div class="alert alert-info small">
             <div>This is the RIPE Database full text search service.</div>
             <div>The RIPE Database is subject to <a href="http://www.ripe.net/db/support/db-terms-conditions.pdf">Terms and Conditions</a>.</div>
         </div>
-        <full-text-result-summary tabledata="fts.resultSummary" row-clicked="fts.addObjectToFilter(type.name)"></full-text-result-summary>
+        <full-text-result-summary ng-if="fts.resultSummary" tabledata="fts.resultSummary" row-clicked="fts.addObjectToFilter(type.name)"></full-text-result-summary>
         <paginator pages="fts.navbarSyncArray" active-page="fts.activePage" num-results="fts.numResults" results-per-page="10" page-clicked="fts.pageClicked(page)" ng-if="fts.results"></paginator>
         <div class="padding">
             <div class="margin-bottom grey-border-top padding-top results" ng-repeat="result in fts.results">

@@ -138,6 +138,7 @@ class ResourceDetailsController {
     }
 
     public updateButtonClicked(): void {
+        console.log('arguments', arguments);
         this.resetMessages();
 
         this.show.transition = true;

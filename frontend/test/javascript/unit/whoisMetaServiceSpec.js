@@ -12,10 +12,6 @@ describe('dbWebApp: WhoisMetaService', function () {
         $whoisMetaService = WhoisMetaService;
     }));
 
-    afterEach(function () {
-
-    });
-
     it('should return correct documentation based on object- and attribute-name', function () {
         expect($whoisMetaService.getAttributeDescription('mntner', 'admin-c')).toEqual('References an on-site administrative contact.');
         expect($whoisMetaService.getAttributeDescription('inet-rtr', 'mp-peer')).toEqual('Details of any (interior or exterior) multiprotocol router peerings.');

@@ -2,19 +2,23 @@ class FullTextSearchController {
 
     public static $inject = ["$log", "FullTextSearchService", "FullTextResponseService", "WhoisMetaService"];
 
+    // In
     public ftquery: string;
-    public results: any;
-    public resultSummary: ResultSummary[];
-
-    public advancedSearch = false;
     public advmode = "all";
-    public numResults: number;
-    public activePage = 1;
-    public objectTypes: string[];
+    public advancedSearch = false;
     public selectedObjectTypes: string[] = [];
+    public selectedAttrs: string[] = [];
+    public resultSummary: ResultSummary[];
+    public numResults: number;
+
+    // Out
+    public objectTypes: string[];
     public objectMetadata: any;
-    public selectableAttributes: string[];
-    public selectedAttrs: string[];
+    public selectableAttributes: string[] = [];
+    public results: any;
+    public showNoResultsAlert = false;
+    public activePage = 1;
+
     // not used by search directly but we declare this array so that paginator instances
     // can share it (via 2-way binding) and will be sync'd.
     public navbarSyncArray: string[] = [];
@@ -55,6 +59,7 @@ class FullTextSearchController {
 
     public selectNone() {
         this.selectedObjectTypes = this.selectableAttributes = [];
+        this.objectTypeChanged();
     }
 
     public addObjectToFilter(type: string) {
@@ -65,10 +70,12 @@ class FullTextSearchController {
             }
         }
         this.selectedObjectTypes.push(type.toLowerCase());
-        this.performSearch(1);
+        this.objectTypeChanged();
+        this.performSearch(0);
     }
 
     private performSearch(start: number) {
+        this.showNoResultsAlert = false;
         this.resultSummary = null;
         this.searchService.doSearch(
             this.ftquery.trim(),
@@ -78,14 +85,18 @@ class FullTextSearchController {
             this.selectedObjectTypes || [],
             this.selectedAttrs || []).then(
             (resp: IHttpPromiseCallbackArg<ISearchResponseModel>) => this.handleResponse(resp),
-            () => { this.results = []; });
+            () => { this.results = []; console.log("handleResponseFailure"); });
     }
 
     private handleResponse(resp: IHttpPromiseCallbackArg<ISearchResponseModel>) {
+        console.log("handleResponse");
         this.numResults = resp.data.result.numFound;
         const responseModel = this.fullTextResponseService.parseResponse(resp.data);
         this.results = responseModel.details;
         this.resultSummary = responseModel.summary;
+        if (this.results.length === 0) {
+            this.showNoResultsAlert = true;
+        }
     }
 
     private parseMetadataToLists(metadata: any) {

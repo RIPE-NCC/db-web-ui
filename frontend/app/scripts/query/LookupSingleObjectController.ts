@@ -6,7 +6,7 @@ interface ILookupState extends ng.ui.IStateParamsService {
 
 class LookupSingleObjectController {
 
-    public static $inject = ["$log", "$state", "$stateParams", "WhoisDataService"];
+    public static $inject = ["$log", "$state", "$stateParams", "WhoisDataService", "QueryParametersService"];
 
     public whoisResponse: IWhoisObjectModel;
 
@@ -17,33 +17,39 @@ class LookupSingleObjectController {
     constructor(private $log: angular.ILogService,
                 private $state: angular.ui.IStateService,
                 private $stateParams: ILookupState,
-                private WhoisDataService: WhoisDataService) {
+                private WhoisDataService: WhoisDataService,
+                private QueryParametersService: IQueryParametersService) {
 
         this.source = $stateParams.source;
         this.objectType = $stateParams.type;
         this.objectName = $stateParams.key;
 
         if (this.source && this.objectType && this.objectName) {
-            this.WhoisDataService.fetchObject(this.source, this.objectType, this.objectName).then(
-                (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
-                    if (response.data &&
-                        response.data.objects &&
-                        response.data.objects.object &&
-                        response.data.objects.object.length === 1) {
-                        this.whoisResponse = response.data.objects.object[0];
-                    } else {
-                        this.$log.warn(
-                            "No data returned. source:", this.source,
-                            "type:", this.objectType,
-                            "name:", this.objectName);
-                    }
-                });
+            const types = {};
+            types[this.objectType] = true;
+            this.QueryParametersService
+                .searchWhoisObjects(this.objectName, this.source, types, "rB", {})
+                .then(
+                    (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                        if (response.data &&
+                            response.data.objects &&
+                            response.data.objects.object &&
+                            response.data.objects.object.length === 1) {
+                            this.whoisResponse = response.data.objects.object[0];
+                        } else {
+                            this.$log.warn(
+                                "Expected a single object from query. source:", this.source,
+                                "type:", this.objectType,
+                                "name:", this.objectName);
+                        }
+                    });
         } else {
             this.$log.warn("Lookup parameter is null");
         }
     }
 
     public goToUpdate() {
+        console.log("oh-oh", arguments);
         const params = {
             name: this.objectName,
             objectType: this.objectType,

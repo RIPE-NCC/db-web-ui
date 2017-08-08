@@ -12,7 +12,11 @@ interface IntNvPair {
 }
 
 interface ArrNvPair {
-    arr: NvPair;
+    name: string;
+    arr: {
+        name: string;
+        str: NvPair;
+    };
 }
 interface DocNvPair {
     doc: {

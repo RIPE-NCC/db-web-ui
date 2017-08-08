@@ -1,7 +1,7 @@
 class LookupController {
 
     public ngModel: IWhoisObjectModel;
-    public updateClicked: (o: IWhoisObjectModel) => {};
+    public updateClicked: () => void;
 }
 
 angular.module("dbWebApp").component("lookup", {

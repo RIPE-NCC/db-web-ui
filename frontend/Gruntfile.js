@@ -100,7 +100,8 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: [
-                    '<%= yeoman.tmp %>/scripts/{,*/}{,*/}*.js',
+                    '<%= yeoman.app %>/scripts/{,*/}{,*/}*.js',
+                    '<%= yeoman.app %>/scripts/{,*/}{,*/}*.ts',
                     '<%= yeoman.app %>/assets/scss/{,*/}*.{scss,sass}',
                     '<%= yeoman.app %>/{,*/}{,*/}{,*/}*.html'
                 ],
@@ -110,6 +111,7 @@ module.exports = function (grunt) {
                     'wiredep',
                     'compass',
                     'postcss',
+                    'ts',
                     'concat',
                     'copy:dist',
                     'cssmin'
