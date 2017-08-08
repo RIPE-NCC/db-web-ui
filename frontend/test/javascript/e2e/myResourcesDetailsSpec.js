@@ -11,7 +11,7 @@ describe('My Resources detail', function () {
         browser.manage().addCookie('activeMembershipId', '3629', '/', null);
     });
 
-    describe('for inetnum', function () {
+    describe('for an ASSIGNED PI inetnum', function () {
         beforeEach(function () {
             browser.get(browser.baseUrl + '#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
         });
@@ -67,12 +67,12 @@ describe('My Resources detail', function () {
 
         });
 
-        it('should not display address usage because it is status ASSIGNED PI', function () {
+        it('should not display address usage', function () {
             expect(page.usageStatus.isPresent()).toEqual(false);
         });
     });
 
-    describe('My Resources detail for inetnum with flags', function () {
+    describe('for inetnum with flags', function () {
 
         beforeEach(function () {
             browser.get(browser.baseUrl + '#/myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false');
@@ -89,7 +89,7 @@ describe('My Resources detail', function () {
 
     });
 
-    describe('My Resources detail for inetnum with usage status', function () {
+    describe('for inetnum with usage status', function () {
 
         beforeEach(function () {
             browser.get(browser.baseUrl + '#/myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/');
@@ -108,7 +108,7 @@ describe('My Resources detail', function () {
         });
     });
 
-    describe('My Resources detail for inet6num', function () {
+    describe('for inet6num', function () {
 
         beforeEach(function () {
             browser.get(browser.baseUrl + '#/myresources/detail/inet6num/2001:7f8::/29/');
@@ -146,13 +146,13 @@ describe('My Resources detail', function () {
     });
 
 
-    describe('My Resources detail for aut-num', function () {
+    describe('for aut-num with loads of attributes', function () {
 
         beforeEach(function () {
             browser.get(browser.baseUrl + '#/myresources/detail/aut-num/AS204056/');
         });
 
-        it('should show partial whois object attributes', function () {
+        it('should show a partial view that can be expanded', function () {
 
             var whoisObject = page.getWhoisObject();
             var attributes = whoisObject.attributes();
@@ -192,12 +192,6 @@ describe('My Resources detail', function () {
             expect(whoisObject.showMoreButton().isPresent()).toEqual(true);
 
             expect(attributes.count()).toEqual(25);
-
-            page.scrollIntoView(whoisObject.showMoreButton());
-            whoisObject.showMoreButton().click();
-            expect(whoisObject.isPresent()).toEqual(true);
-            expect(whoisObject.showMoreButton().isPresent()).toEqual(true);
-            expect(attributes.count()).toEqual(50);
 
             page.scrollIntoView(whoisObject.showMoreButton());
             whoisObject.showMoreButton().click();

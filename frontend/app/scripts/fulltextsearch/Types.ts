@@ -28,6 +28,7 @@ interface LstObj {
         lsts: LstObj[];
     }
 }
+
 interface ISearchResponseModel {
     result: {
         name: string;

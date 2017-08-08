@@ -28,7 +28,6 @@ module.exports = function (grunt) {
     // Automatically load required Grunt tasks
     require('jit-grunt')(grunt, {
         useminPrepare: 'grunt-usemin',
-        ngtemplates: 'grunt-angular-templates',
         cdnify: 'grunt-google-cdn',
         configureProxies: 'grunt-connect-proxy',
         protractor: 'grunt-protractor-runner',
@@ -177,8 +176,8 @@ module.exports = function (grunt) {
                         return [
                             //require('grunt-connect-proxy/lib/utils').proxyRequest,
                             require('grunt-connect-prism/middleware'),
-                            serveStatic('instrumented'),
-                            serveStatic('tmp'),
+                            serveStatic('instrumented/' + appConfig.tmp),
+                            serveStatic(appConfig.tmp),
                             connect().use(
                                 '/bower_components',
                                 serveStatic('./bower_components')
@@ -654,9 +653,8 @@ module.exports = function (grunt) {
         },
 
         instrument: {
-            files: 'scripts/**/*.js',
+            files: '<%= yeoman.tmp %>/scripts/**/*.js',
             options: {
-                cwd: '<%= yeoman.tmp %>',
                 lazy: true,
                 basePath: 'instrumented'
             }
