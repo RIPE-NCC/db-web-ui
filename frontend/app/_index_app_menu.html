@@ -1,6 +1,6 @@
 <!--  Webupdates specific menu start -->
 <div ng-controller="LeftMenuController as menu">
-    <div class="portlet navigation margin-bottom">
+    <div class="portlet navigation margin-bottom menu-override">
         <ul class="toplevel">
             <li class="child" ng-class="{active: menu.selected.lir}" ng-show="!menu.show.testRcEnv && !menu.show.trainingEnv && (menu.show.admin || menu.show.general || menu.show.billing || menu.show.generalMeeting || menu.show.ticketing)">
                 <i title="Open sub-menu" class="fa fa-angle-right"></i>
@@ -34,7 +34,7 @@
             </li>
             <li class="child" ng-class="{active: menu.activeUrl.indexOf('/myresources/') > -1}" ng-show="!menu.show.trainingEnv && (menu.show.admin || menu.show.general || menu.show.certification || menu.show.myResources)">
                 <i title="Open sub-menu" class="fa fa-angle-right"></i>
-                <a href="#">Resources</a>
+                <a href="">Resources</a>
                 <ul class="level2">
                     <li ng-show="menu.show.admin || menu.show.general || menu.show.certification || menu.show.myResources">
                         <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/myresources/') > -1}" href="{{page.Properties.MY_RESOURCES_URL}}">My Resources</a>
@@ -61,7 +61,7 @@
             </li>
             <li class="child" ng-class="{active: menu.dbMenuIsActive}">
                 <i title="Open sub-menu" class="fa fa-angle-right"></i>
-                <a href="{{page.Properties.DATABASE_QUERY_URL}}">RIPE Database</a>
+                <a href="">RIPE Database</a>
                 <ul class="level2">
                     <li>
                         <a class="menuItem" href="{{page.Properties.DATABASE_QUERY_URL}}" ng-class="{current: menu.activeUrl.indexOf('/query') === 0}">Query the RIPE Database</a>
@@ -70,7 +70,7 @@
                         <a class="menuItem" href="{{page.Properties.DATABASE_FULL_TEXT_SEARCH_URL}}" ng-class="{current: menu.activeUrl.indexOf('/fulltextsearch') === 0}">Full Text Search</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="{{page.Properties.DATABASE_SYNCUPDATES_URL}}">Syncupdates</a>
+                        <a class="menuItem" href="{{page.Properties.DATABASE_SYNCUPDATES_URL}}" ng-class="{current: menu.activeUrl.indexOf('/multi') === 0}">Syncupdates</a>
                     </li>
                     <li>
                         <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/wizard') === 0 || menu.activeUrl.indexOf('/select') === 0 || menu.activeUrl.indexOf('/create') === 0 || menu.activeUrl.indexOf('/modify') === 0 || menu.activeUrl.indexOf('/display') === 0 || menu.activeUrl.indexOf('/lookup') === 0}"

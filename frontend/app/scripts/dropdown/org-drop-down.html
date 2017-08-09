@@ -1,4 +1,5 @@
-<div class="pull-right" ng-show="orgDropDown.organisations.length && !orgDropDown.trainingEnv">
+<div class="registry-selector-container" ng-show="orgDropDown.organisations.length && !orgDropDown.trainingEnv">
+    <span>You are editing</span>
     <ui-select id="organisation-selector" ng-model="orgDropDown.selectedOrg" theme="select2" on-select="orgDropDown.organisationSelected()">
         <ui-select-match>{{$select.selected.organisationName}}</ui-select-match>
         <ui-select-choices repeat="org in orgDropDown.organisations | filter: $select.search">

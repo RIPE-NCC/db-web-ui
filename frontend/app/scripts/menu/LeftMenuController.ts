@@ -45,7 +45,8 @@ class LeftMenuController {
                 this.activeUrl.indexOf('/modify') > -1 ||
                 this.activeUrl.indexOf('/query') > -1 ||
                 this.activeUrl.indexOf('/fulltextsearch') > -1 ||
-                this.activeUrl.indexOf('/lookup') > -1;
+                this.activeUrl.indexOf('/lookup') > -1 ||
+                this.activeUrl.indexOf('/multi') > -1;
         });
         $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
             this.show.admin = this.show.general = this.show.billing

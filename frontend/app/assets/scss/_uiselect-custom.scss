@@ -156,8 +156,6 @@ ul.dropdown-menu {
 #organisation-selector {
     display: inline-block;
     width: 250px !important;
-    margin-left: 5px;
-    margin-top: -45px;
     a.select2-choice {
         @extend %brd;
         background: none;

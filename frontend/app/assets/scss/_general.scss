@@ -145,6 +145,9 @@ div.portlet.navigation {
                     display: block !important;
                 }
             }
+            &.active a:hover, a:hover {
+              text-decoration: none !important;
+            }
         }
     }
 }
@@ -182,4 +185,17 @@ div#button-container {
 }
 .showripemanaged .ripemanaged {
   background-color: #D1EFFE;
+}
+
+#portal-breadcrumbs {
+    display: inline-block;
+}
+
+div.registry-selector-container {
+    @extend %float-r;
+    margin-right: 15px;
+    > span {
+        @extend %float-l;
+        margin: 3px 10px 0 0;
+    }
 }
