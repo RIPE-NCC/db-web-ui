@@ -3,8 +3,10 @@
     <div class="portlet navigation margin-bottom menu-override">
         <ul class="toplevel">
             <li class="child" ng-class="{active: menu.selected.lir}" ng-show="!menu.show.testRcEnv && !menu.show.trainingEnv && (menu.show.admin || menu.show.general || menu.show.billing || menu.show.generalMeeting || menu.show.ticketing)">
-                <i title="Open sub-menu" class="fa fa-angle-right"></i>
-                <a href="">My LIR</a>
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    My LIR
+                </a>
                 <ul class="level2">
                     <li ng-show="menu.show.admin || menu.show.general">
                         <a class="menuItem" href="{{page.Properties.LIR_ACCOUNT_DETAILS_URL}}">LIR Account Details</a>
@@ -33,8 +35,10 @@
                 </ul>
             </li>
             <li class="child" ng-class="{active: menu.activeUrl.indexOf('/myresources/') > -1}" ng-show="!menu.show.trainingEnv && (menu.show.admin || menu.show.general || menu.show.certification || menu.show.myResources)">
-                <i title="Open sub-menu" class="fa fa-angle-right"></i>
-                <a href="">Resources</a>
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    Resources
+                </a>
                 <ul class="level2">
                     <li ng-show="menu.show.admin || menu.show.general || menu.show.certification || menu.show.myResources">
                         <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/myresources/') > -1}" href="{{page.Properties.MY_RESOURCES_URL}}">My Resources</a>
@@ -60,8 +64,10 @@
                 </ul>
             </li>
             <li class="child" ng-class="{active: menu.dbMenuIsActive}">
-                <i title="Open sub-menu" class="fa fa-angle-right"></i>
-                <a href="">RIPE Database</a>
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    RIPE Database
+                </a>
                 <ul class="level2">
                     <li>
                         <a class="menuItem" href="{{page.Properties.DATABASE_QUERY_URL}}" ng-class="{current: menu.activeUrl.indexOf('/query') === 0}">Query the RIPE Database</a>
