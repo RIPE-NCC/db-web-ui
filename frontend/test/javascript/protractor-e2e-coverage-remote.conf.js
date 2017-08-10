@@ -23,6 +23,12 @@ exports.config = {
         showColors: false,
         includeStackTrace: true,
         defaultTimeoutInterval: 30000
+    },
+
+    onPrepare: function() {
+        var width = 1280;
+        var height = 1000;
+        browser.driver.manage().window().setSize(width, height);
     }
 
 };

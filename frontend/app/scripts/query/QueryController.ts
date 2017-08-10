@@ -2,10 +2,6 @@ class QueryController {
 
     public static $inject = ["$scope", "$state", "QueryParametersService"];
 
-    private static primaryKeyAsString(whoisObject: IWhoisObjectModel): string {
-        return whoisObject["primary-key"].attribute.map((attr) => attr.value).join("") || "";
-    }
-
     // show/hide the warning: no objects match...
     public showWarning = false;
 
@@ -51,8 +47,9 @@ class QueryController {
         this.$state.go("webupdates.modify", params);
     }
 
-    public searchClicked(): void {
+    public searchClicked() {
         if (!this.queryString) {
+            this.results = [];
             return;
         }
         // Reset on-screen widgets
@@ -70,7 +67,7 @@ class QueryController {
         if (this.doNotRetrieveRelatedObjects) {
             flags += "r";
         }
-        this.queryParametersService
+        return this.queryParametersService
             .searchWhoisObjects(
                 this.queryString,
                 this.source,

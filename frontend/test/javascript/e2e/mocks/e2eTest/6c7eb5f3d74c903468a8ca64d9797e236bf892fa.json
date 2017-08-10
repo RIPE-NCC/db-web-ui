@@ -1,0 +1,6 @@
+{
+  "requestUrl": "/api/whois/search?abuse-contact=true&flags=Br&ignore404=true&managed-attributes=true&query-string=193.0.0.0&resource-holder=true",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {}
+}

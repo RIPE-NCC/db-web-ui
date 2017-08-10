@@ -2,9 +2,9 @@ interface IQueryParametersService {
 
     searchWhoisObjects(queryString: string,
                        source: string,
-                       types: {},
+                       types: { [objectName: string]: boolean },
                        flags: string,
-                       inverse: {}): IHttpPromise<IWhoisResponseModel>;
+                       inverse: { [attrName: string]: boolean }): IHttpPromise<IWhoisResponseModel>;
 }
 
 class QueryParametersService implements IQueryParametersService {
@@ -16,12 +16,12 @@ class QueryParametersService implements IQueryParametersService {
 
     public searchWhoisObjects(queryString: string,
                               source: string,
-                              types: {},
+                              types: { [objectName: string]: boolean },
                               flags: string,
-                              inverse: {}): IHttpPromise<IWhoisResponseModel> {
+                              inverse: { [attrName: string]: boolean }): IHttpPromise<IWhoisResponseModel> {
 
-        const typeFilter = _.filter(Object.keys(types), (type: string) => types[type]).join(",");
-        const inverseFilter = _.filter(Object.keys(inverse), (inv: string) => inverse[inv]).join(",");
+        const typeFilter = _.filter(Object.keys(types), type => types[type]).join(",");
+        const inverseFilter = _.filter(Object.keys(inverse), inv => inverse[inv]).join(",");
         const config: angular.IRequestShortcutConfig = {};
         config.params = {
             "abuse-contact": true,

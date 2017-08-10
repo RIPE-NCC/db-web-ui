@@ -24,7 +24,7 @@ class WhoisObjectViewerController {
 
     private objLength: number;
 
-    constructor(public properties: any) {
+    constructor(public properties: { [key: string]: string }) {
         this.objLength = this.ngModel.attributes.attribute.length;
         this.nrLinesToShow = this.objLength >= 30 ? 25 : 30;
         this.showMoreButton = this.objLength > this.nrLinesToShow;

@@ -146,11 +146,33 @@ module.exports = {
     flagsContainer: element(by.css('.flags-container')),
     flags: element(by.css('.flags-container')).all(by.css('flag')),
 
+    // Whois Object Viewer / lookup
+    lookupPageViewer: element(by.css('whois-object-viewer')),
+    lookupPageObjectLi: element(by.css('whois-object-viewer')).all(by.css('li')),
+    lookupHeader: element(by.css('lookup')).element(by.css('.lookupheader')),
+
     // Whois Object Editor
     inpDescr: element(by.css('whois-object-editor')).element(by.name('descr$2')),
     inpDescr2: element(by.css('whois-object-editor')).element(by.name('descr$3')),
     btnSubmitObject: element(by.css('whois-object-editor')).element(by.css('.blue-button')),
     successMessage: element(by.css('.alert-success')),
+
+    // Query page
+    inpQueryString: element(by.id('queryStringInput')),
+    inpShowFullDetails: element(by.model('query.showFullObjectDetails')),
+    inpDontRetrieveRelated: element(by.model('query.doNotRetrieveRelatedObjects')),
+    btnSubmitQuery: element(by.name('searchform')).element(by.css('button.blue-button')),
+    resultsSection: element(by.id('resultsSection')),
+    searchResults: element(by.id('resultsSection')).all(by.css('lookup')),
+    queryParamTabs: element(by.name('searchform')).element(by.css('.nav.nav-tabs')).all(by.css('li')),
+
+    // full text search page
+    fullTextSearchResults: element(by.id('resultsAnchor')).all(by.css('.results')),
+    fullTextResultSummaryRow: element(by.css('full-text-result-summary')).element(by.css('tbody')).all(by.css('tr')),
+
+    byId: function(id) {
+        return element(by.id(id));
+    },
 
     progressbarFromResourceItem: function (row) {
         return this.myResourcesActiveTabRows.get(row).element(by.css('.progress-bar'));

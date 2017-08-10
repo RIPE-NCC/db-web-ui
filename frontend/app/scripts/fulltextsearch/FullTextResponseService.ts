@@ -8,12 +8,18 @@ class FullTextResponseService {
     public parseResponse(data: ISearchResponseModel) {
         const results = [];
         const hlMap = {};
-        if (data.lsts[1].lst.name !== "highlighting") {
+        if (data.lsts.length < 2 || data.lsts[1].lst.name !== "highlighting") {
             this.$log.error("Results have no highlighting information");
-            return;
+            return {details: [], summary: []};
         }
+
         for (const doc of data.lsts[1].lst.lsts) {
-            hlMap[doc.lst.name] = this.parseArrs(doc.lst.arrs);
+            hlMap[doc.lst.name] = doc.lst.arrs
+                .filter((arr) => arr.name !== "object-type")
+                .map((arr) => {
+                    return {name: arr.arr.name, value: arr.arr.str.value}
+                });
+
         }
         for (const doc of data.result.docs) {
             const pk = this.getDocPk(doc.doc.strs);
@@ -30,33 +36,17 @@ class FullTextResponseService {
             });
         }
         const resultSummaries: ResultSummary[] = [];
-        if (data.lsts[2].lst.name !== "facet_counts") {
-            this.$log.error("Result has no facets");
-            return {details: results, summary: resultSummaries};
-        }
-        if (data.lsts[2].lst.lsts[0].lst.name !== "facet_fields") {
-            this.$log.error("Result has no facet fields");
-            return {details: results, summary: resultSummaries};
-        }
-        const aggResultData = data.lsts[2].lst.lsts[0].lst.lsts[0].lst.ints;
-        for (const doc of aggResultData) {
-            resultSummaries.push({name: doc.int.name, value: parseInt(doc.int.value, 10)} as ResultSummary);
+        // check we've got some facets for the summaries
+        if (data.lsts.length > 2 &&
+            data.lsts[2].lst.name === "facet_counts" &&
+            data.lsts[2].lst.lsts[0].lst.name === "facet_fields" &&
+            data.lsts[2].lst.lsts[0].lst.lsts.length > 0) {
+            const aggResultData = data.lsts[2].lst.lsts[0].lst.lsts[0].lst.ints;
+            for (const doc of aggResultData) {
+                resultSummaries.push({name: doc.int.name, value: parseInt(doc.int.value, 10)} as ResultSummary);
+            }
         }
         return {details: results, summary: resultSummaries};
-    }
-
-    private parseArrs(arrs: any[]) {
-        const result = [];
-        for (const arr of arrs) {
-            if (arr.arr.name === "object-type") {
-                continue;
-            }
-            result.push({
-                name: arr.arr.name,
-                value: arr.arr.str.value,
-            });
-        }
-        return result;
     }
 
     private getDocPk(strs: Array<{ str: { name: string; value: string } }>) {

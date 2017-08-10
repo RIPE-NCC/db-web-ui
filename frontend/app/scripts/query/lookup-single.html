@@ -5,8 +5,8 @@
     The RIPE Database is subject to <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">Terms and Conditions.</a>
 </div>
 <div ng-if="$ctrl.whoisResponse">
-    <whois-object-viewer
+    <lookup
             ng-model="$ctrl.whoisResponse"
             update-clicked="$ctrl.goToUpdate()">
-    </whois-object-viewer>
+    </lookup>
 </div>

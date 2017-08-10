@@ -67,7 +67,6 @@ angular.module('webUpdates')
 
             var inetnumParentAuthError = false;
 
-            _initialisePage();
 
             /*
              * Functions / callbacks below...
@@ -79,6 +78,7 @@ angular.module('webUpdates')
              * @returns {boolean}
              */
             $scope.showMoreAttributes = function () {
+                console.log('$scope.showMoreAttributes');
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
                     $scope.nrAttributesToRender+= 50; // increment
@@ -88,6 +88,8 @@ angular.module('webUpdates')
                     return true;
                 }
             };
+
+            _initialisePage();
 
             /*
              * Select status list for resources based on parent's status.
