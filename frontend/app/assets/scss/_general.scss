@@ -152,8 +152,13 @@ div.portlet.navigation {
     }
 }
 
+#portal-column-one .portlet {
+  display: inline-block;
+  width: 100%;
+}
+
 div#button-container {
-  a.api-button {
+    a.api-button {
     background: #00A0B0;
     &:before {
       font-family: FontAwesome;
@@ -188,11 +193,11 @@ div#button-container {
 }
 
 #portal-breadcrumbs {
-    display: inline-block;
+  display: inline-block;
 }
 
 div.registry-selector-container {
-    @extend %float-r;
+  @extend %float-r;
     margin-right: 15px;
     > span {
         @extend %float-l;
