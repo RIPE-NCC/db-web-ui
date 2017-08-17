@@ -105,7 +105,7 @@ describe('updates: UserInfoService', function () {
         $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.whenGET('api/whois-internal/api/user/info').respond(userInfo);
 
-        $cookies.put('activeMembershipId',
+        $cookies.put("activeMembershipId",
                     'unparseableValue',
                     {path: "/", domain: ".ripe.net", secure: true});
 
