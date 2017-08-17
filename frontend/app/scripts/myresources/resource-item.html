@@ -7,8 +7,8 @@
         <flag text="ctrlResourceItem.item.status" tooltip="status"></flag>
         <flag text="ctrlResourceItem.item.netname" tooltip="netname"></flag>
         <flag text="ctrlResourceItem.item.asname" tooltip="as-name"></flag>
-        <flag class="red" ng-if="ctrlResourceItem.item.notRipeRegistered" text="'Not registered'" tooltip="Not registered at RIPE"></flag>
-        <flag class="orange" ng-if="ctrlResourceItem.item.sponsoredByOther" text="'Sponsored by other'" tooltip="Sponsored by another LIR"></flag>
+        <flag class="orange" ng-if="ctrlResourceItem.item.notRipeRegistered" text="'No contract'" tooltip="This resource is not covered by an agreement by RIPE NCC"></flag>
+        <flag class="red" ng-if="ctrlResourceItem.item.sponsoredByOther" text="'Sponsored by other'" tooltip="Sponsored by another LIR"></flag>
     </div>
     <div ng-if="ctrlResourceItem.showProgressbar" class="progressbar-container">
         <uib-progressbar
