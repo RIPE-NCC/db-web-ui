@@ -60,6 +60,10 @@ describe('updates: UserInfoService', function () {
         $cookies = _$cookies_;
     }));
 
+    beforeEach(function() {
+        localStorage.clear();
+    });
+
     afterEach(function() {
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();

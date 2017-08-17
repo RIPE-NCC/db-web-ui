@@ -101,5 +101,18 @@ module.exports = function (config) {
                 { type: 'html', dir: 'reports/clover', subdir: '.', file: 'index.html' }
             ]
         }
+
+        // enable logging of console.log() output to terminal
+        //
+        // client: {
+        //   captureConsole: true
+        // },
+        // browserConsoleLogOptions: {
+        //   level: 'debug',
+        //   terminal: true
+        // }
+        //
+
+
     });
 };
