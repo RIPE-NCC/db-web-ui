@@ -4,9 +4,9 @@
         <span class="fa fa-angle-right pull-right"></span></p>
     <p class="org-name" ng-if="ctrlResourceItem.item.orgName">{{ ctrlResourceItem.item.orgName }}</p>
     <div class="flags-container">
-        <flag text="ctrlResourceItem.item.status" tooltip="status"></flag>
-        <flag text="ctrlResourceItem.item.netname" tooltip="netname"></flag>
-        <flag text="ctrlResourceItem.item.asname" tooltip="as-name"></flag>
+        <flag text="ctrlResourceItem.item.status" tooltip="status: {{ ctrlResourceItem.item.status }}"></flag>
+        <flag text="ctrlResourceItem.item.netname" tooltip="netname: {{ ctrlResourceItem.item.netname }}"></flag>
+        <flag text="ctrlResourceItem.item.asname" tooltip="as-name:  {{ ctrlResourceItem.item.asname }}"></flag>
         <flag class="orange" ng-if="ctrlResourceItem.item.notRipeRegistered" text="'No contract'" tooltip="This resource is not covered by an agreement by RIPE NCC"></flag>
         <flag class="red" ng-if="ctrlResourceItem.item.sponsoredByOther" text="'Sponsored by other'" tooltip="Sponsored by another LIR"></flag>
     </div>

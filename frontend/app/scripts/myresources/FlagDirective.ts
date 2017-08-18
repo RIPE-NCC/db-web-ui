@@ -1,6 +1,6 @@
 const flagDirective = () => ({
     scope: {
-        text: "=",
+        text: "<",
         tooltip: "@",
     },
      templateUrl: "scripts/myresources/flag.html",
