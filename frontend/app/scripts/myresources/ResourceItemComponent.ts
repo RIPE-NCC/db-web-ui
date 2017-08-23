@@ -8,6 +8,8 @@ class ResourceItemController {
     private sponsored: boolean;
     private usedPercentage: number;
     private showProgressbar: boolean;
+    private noContractText = "This resource is not covered by an agreement with the <a href='http://www.ripe.net'>RIPE NCC</a>";
+    private otherSponsorText = "Sponsored by another LIR";
 
     constructor(private $state: ng.ui.IStateService,
                 private ResourceStatus: any) {

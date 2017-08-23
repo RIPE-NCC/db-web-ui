@@ -8,8 +8,8 @@
         <flag text="ctrlResourceItem.item.status" tooltip="'status'"></flag>
         <flag text="ctrlResourceItem.item.netname" tooltip="'netname'"></flag>
         <flag text="ctrlResourceItem.item.asname" tooltip="'as-name'"></flag>
-        <flag class="orange" text="ctrlResourceItem.item.notRipeRegistered ? 'No contract': ''" tooltip="'This resource is <i>not</i> covered by an agreement by <a href=\'http://www.ripe.net\'>RIPE NCC</a>'"></flag>
-        <flag class="red" text="ctrlResourceItem.item.sponsoredByOther ? 'Sponsored by other': ''" tooltip="'Sponsored by another LIR'"></flag>
+        <flag class="orange" text="ctrlResourceItem.item.notRipeRegistered ? 'No contract': ''" tooltip="ctrlResourceItem.noContractText"></flag>
+        <flag class="red" text="ctrlResourceItem.item.sponsoredByOther ? 'Sponsored by other': ''" tooltip="ctrlResourceItem.otherSponsorText"></flag>
     </div>
     <div ng-if="ctrlResourceItem.showProgressbar" class="progressbar-container">
         <uib-progressbar

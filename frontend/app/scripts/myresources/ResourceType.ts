@@ -67,6 +67,8 @@ interface IResourceScreenItem {
     status: string;
     type: string;
     usage: IUsage;
+    notRipeRegistered: boolean;
+    sponsoredByOther: boolean;
 }
 
 interface IResourcesDataService {
