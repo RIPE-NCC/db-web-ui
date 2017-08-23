@@ -37,14 +37,17 @@ div.resource-list {
         @extend %width-100;
         @extend %float-l;
         padding: 10px;
-        cursor: pointer;
-        p.title {
+        border: 1px transparent solid;
+        a.title {
             font: {
                 size: 16px;
                 weight: bold;
             }
             margin: 0;
-            color: $black;
+            cursor: pointer;
+            span {
+                color: $black;
+            }
         }
         p.org-name {
             font-size: 12px;
@@ -75,14 +78,7 @@ div.resource-list {
             background-color: #44465D !important;
             box-shadow: none;
             height: 10px;
-            border-radius: 0px;
-        }
-        &:hover {
-            text-decoration: none;
-            background-color: $grey;
-            div.progress {
-                background-color: $brd-color;
-            }
+            border-radius: 0;
         }
     }
 }
@@ -166,7 +162,7 @@ usage-status {
         }
         p.box-statistic {
             font-size: 14px;
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
     }
 }

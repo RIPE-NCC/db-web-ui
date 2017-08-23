@@ -35,11 +35,8 @@ flag {
         display: inline-block;
         padding: 0 5px;
         text-transform: uppercase;
-        white-space: nowrap;
-        text-overflow: ellipsis;
         font-size: 13px;
-        width: fit-content;
-        position: relative;
+        cursor: pointer;
     }
     &.red {
         span {
