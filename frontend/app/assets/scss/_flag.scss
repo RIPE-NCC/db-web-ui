@@ -4,45 +4,56 @@
     border-color: $dark-grey;
     color: $dark-grey-cr;
 }
+
 %green-flag {
     background-color: $lighter-green;
     border-color: $light-green;
     color: $dark-green;
 }
+
 %orange-flag {
     background-color: $orange-lighter;
     border-color: $orange-light;
     color: $orange;
 }
+
 %red-flag {
     background-color: $lighter-red;
     border-color: $light-red;
     color: $dark-red;
 }
+
 // Flags
 flag {
-  > span {
-    @extend %float-l;
-    margin-right: 5px;
-    margin-bottom: 5px;
-    background-color: #fff;
-    display: inline-block;
-    padding: 0 5px;
-    text-transform: uppercase;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    font-size: 13px;
-    width: fit-content;
-    position: relative;
-  }
-  &.grey {
-    span {
-      @extend %grey-flag;
+    > span {
+        @extend %float-l;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        background-color: $grey;
+        border-color: $dark-grey;
+        color: $dark-grey-cr;
+        display: inline-block;
+        padding: 0 5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-size: 13px;
+        width: fit-content;
+        position: relative;
     }
-  }
-  &.green {
-    span {
-      @extend %green-flag;
+    &.red {
+        span {
+            @extend %red-flag;
+        }
     }
-  }
+    &.orange {
+        span {
+            @extend %orange-flag;
+        }
+    }
+    &.green {
+        span {
+            @extend %green-flag;
+        }
+    }
 }
