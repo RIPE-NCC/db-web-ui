@@ -4,7 +4,6 @@ class FlagController {
     public tooltip: string;
 
     constructor() {
-        console.log("Text is", this.text, this.tooltip)
     }
 }
 

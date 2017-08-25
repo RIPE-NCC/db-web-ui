@@ -19,9 +19,9 @@ interface IMoreSpecificResource {
 
 class MoreSpecificsDataService implements IMoreSpecificsDataService {
 
-    public static $inject = ["$log", "$http"];
+    public static $inject = ["$http"];
 
-    constructor(private $log: angular.ILogService, private $http: angular.IHttpService) {
+    constructor(private $http: angular.IHttpService) {
     }
 
     public getSpecifics(objectName: string,

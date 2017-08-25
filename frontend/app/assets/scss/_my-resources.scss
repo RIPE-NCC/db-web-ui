@@ -38,7 +38,10 @@ div.resource-list {
         @extend %float-l;
         padding: 10px;
         border: 1px transparent solid;
-        a.title {
+        .title {
+            name-formatter {
+                color: $black;
+            }
             font: {
                 size: 16px;
                 weight: bold;

@@ -2,51 +2,24 @@ const SIZE: string[] = ["", "K", "M", "G", "T"];
 
 class UsageStatusController {
 
-    public static $inject = ["$log", "ResourcesDataService"];
+    // Inputs
+    public type: string;
+    public usage: IUsage;
 
-    public resource: IResourceModel;
+    // Outputs
+    public percentageFree: number;
+    public percentageUsed: number;
+    public ipv6CalcTotal: string;
+    public ipv6CalcUsed: string;
+    public ipv6CalcFree: string;
 
-    private usage: IUsage;
-    private percentageFree: number;
-    private percentageUsed: number;
-
-    private ipv6CalcTotal: string;
-    private ipv6CalcUsed: string;
-    private ipv6CalcFree: string;
-
-    constructor(private $log: angular.ILogService,
-                private myResourcesDataService: IResourcesDataService) {
+    constructor() {
     }
 
     public $onChanges(): void {
-        if (this.resource) {
-            this.getResource();
-        }
-    }
-
-    private getResource(): void {
-        if (this.resource.type.toLowerCase() === "inetnum") {
-            this.myResourcesDataService.fetchIpv4Resource(this.resource.resource).then(
-                (response: IHttpPromiseCallbackArg<IPv4ResourcesResponse>) => {
-                    this.processUsage(response);
-                });
-        } else if (this.resource.type.toLowerCase() === "inet6num") {
-            this.myResourcesDataService.fetchIpv6Resource(this.resource.resource).then(
-                (response: IHttpPromiseCallbackArg<IPv6ResourcesResponse>) => {
-                    this.processUsage(response);
-                    this.calcValueForIPv6();
-                });
-        }
-    }
-
-    private processUsage(response: IHttpPromiseCallbackArg<any>) {
-        if (!response.data.resources || !response.data.resources.length) {
-            return;
-        }
-        this.usage = response.data.resources[0].usage;
         this.usage.free = this.calcFreeSpace();
-        // calculate percentage before calculating shorter value with binary prefix
         this.calcPercentage();
+        this.calcValueForIPv6();
     }
 
     private calcFreeSpace(): number {
@@ -82,9 +55,9 @@ class UsageStatusController {
 
 angular.module("dbWebApp").component("usageStatus", {
     bindings: {
-        resource: "<",
+        type: "<",
+        usage: "<",
     },
     controller: UsageStatusController,
-    controllerAs: "ctrlUsage",
     templateUrl: "scripts/myresources/usage-status.html",
 });

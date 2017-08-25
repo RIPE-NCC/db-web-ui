@@ -28,6 +28,14 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
+    public fetchResource(objectName: string, type: string): IPromise<any> {
+        const url = ["api/whois-internal/api/resources/", type, "/", objectName].join("");
+        return this.$http({
+            method: "GET",
+            url,
+        });
+    }
+
     public fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse> {
         return this.$http({
             method: "GET",
