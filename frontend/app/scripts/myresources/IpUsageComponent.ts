@@ -1,6 +1,6 @@
 const SIZE: string[] = ["", "K", "M", "G", "T"];
 
-class UsageStatusController {
+class IpUsageController {
 
     // Inputs
     public type: string;
@@ -13,8 +13,7 @@ class UsageStatusController {
     public ipv6CalcUsed: string;
     public ipv6CalcFree: string;
 
-    constructor() {
-    }
+    constructor() {}
 
     public $onChanges(): void {
         this.usage.free = this.calcFreeSpace();
@@ -53,11 +52,11 @@ class UsageStatusController {
     }
 }
 
-angular.module("dbWebApp").component("usageStatus", {
+angular.module("dbWebApp").component("ipUsage", {
     bindings: {
         type: "<",
         usage: "<",
     },
-    controller: UsageStatusController,
-    templateUrl: "scripts/myresources/usage-status.html",
+    controller: IpUsageController,
+    templateUrl: "scripts/myresources/ip-usage.html",
 });

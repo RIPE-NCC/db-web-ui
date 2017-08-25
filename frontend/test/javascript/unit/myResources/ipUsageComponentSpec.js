@@ -11,7 +11,7 @@ describe('testing UsageStatusComponent', function () {
 
         //mock controller
         controller = function () {
-            return _$componentController_('usageStatus', {});
+            return _$componentController_('ip-usage', {});
         };
 
     }));
@@ -28,7 +28,6 @@ describe('testing UsageStatusComponent', function () {
 
     it('should calculate free space and percentages for inet6num', function () {
         var controllerInstance = controller();
-        controllerInstance.resource = {"orgName":"","resource":"2001:610::/32","type":"inet6num"};
         controllerInstance.type = "inet6num";
         controllerInstance.usage = {"total":65536,"used":523,"blockSize":48};
         controllerInstance.$onChanges();
