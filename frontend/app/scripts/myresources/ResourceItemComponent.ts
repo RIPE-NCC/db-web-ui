@@ -2,22 +2,27 @@ class ResourceItemController {
 
     public static $inject = [
         "$state",
+        "LabelService",
         "ResourceStatus",
     ];
-    private item: IResourceScreenItem;
-    private sponsored: boolean;
-    private usedPercentage: number;
-    private showProgressbar: boolean;
-    private noContractText = "This resource is not covered by an agreement with the <a href='http://www.ripe.net'>RIPE NCC</a>";
-    private otherSponsorText = "Sponsored by another LIR";
+    public item: IResourceScreenItem;
+    public sponsored: boolean;
+    public usedPercentage: number;
+    public showProgressbar: boolean;
+
+    public noContractText: string;
+    public otherSponsorText: string;
 
     constructor(private $state: ng.ui.IStateService,
+                private LabelService: ILabelService,
                 private ResourceStatus: any) {
         if (this.item.usage) {
             this.usedPercentage = Math.round(this.item.usage.used * 100 / this.item.usage.total);
         }
         this.showProgressbar = this.item.type.toLowerCase() !== "aut-num" && !this.sponsored &&
             ResourceStatus.isResourceWithUsage(this.item.type, this.item.status);
+        this.noContractText = this.LabelService.getLabel("noContractText");
+        this.otherSponsorText = this.LabelService.getLabel("otherSponsorText");
     }
 
     public showDetail() {

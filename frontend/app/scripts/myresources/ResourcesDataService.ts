@@ -28,7 +28,7 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchResource(objectName: string, type: string): IPromise<any> {
+    public fetchResource(objectName: string, type: string): IPromise<IMoreSpecificsApiResult> {
         const url = ["api/whois-internal/api/resources/", type, "/", objectName].join("");
         return this.$http({
             method: "GET",

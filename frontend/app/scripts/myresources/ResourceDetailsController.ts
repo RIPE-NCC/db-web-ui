@@ -10,13 +10,13 @@ class ResourceDetailsController {
 
     public static $inject = [
         "$scope",
-        "$log",
         "$state",
         "$timeout",
         "$location",
         "$anchorScroll",
         "$cookies",
         "CredentialsService",
+        "LabelService",
         "MntnerService",
         "MoreSpecificsService",
         "ResourceStatus",
@@ -58,13 +58,13 @@ class ResourceDetailsController {
     private source = "RIPE"; // TODO: calculate this value
 
     constructor(private $scope: angular.IScope,
-                private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
                 private $timeout: ng.ITimeoutService,
                 private $location: angular.ILocationService,
                 private $anchorScroll: ng.IAnchorScrollService,
                 private $cookies: angular.cookies.ICookiesService,
                 private CredentialsService: any,
+                private LabelService: LabelService,
                 private MntnerService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
                 private ResourceStatus: any,
@@ -107,6 +107,9 @@ class ResourceDetailsController {
                 }
                 if (hasRipeMaintainer && typeof this.orgId === "string" && !this.sponsored) {
                     this.getTicketsAndDates();
+                }
+                if (!hasRipeMaintainer && response.data.topLevel) {
+                    this.addFlag("No contract", this.LabelService.getLabel("noContractText"), "orange");
                 }
             });
 
@@ -321,8 +324,8 @@ class ResourceDetailsController {
         this.$anchorScroll(anchor);
     }
 
-    private addFlag(textOnFlag: string, tooltip: string) {
-        const flag = {type: tooltip, value: textOnFlag};
+    private addFlag(textOnFlag: string, tooltip: string, colour?: string) {
+        const flag = {type: tooltip, value: textOnFlag, colour: colour};
         if (tooltip === "status") {
             this.flags.unshift(flag);
         } else {

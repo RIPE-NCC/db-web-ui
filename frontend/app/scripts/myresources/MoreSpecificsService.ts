@@ -1,12 +1,16 @@
 interface IMoreSpecificsDataService {
     getSpecifics(objectName: string,
-                 objectType: string, pageNr: number, filter: string): IHttpPromise<IMoreSpecificsApiResult>;
+                 objectType: string,
+                 pageNr: number,
+                 filter: string): IHttpPromise<IMoreSpecificsApiResult>;
 }
 
 interface IMoreSpecificsApiResult {
     resources: IMoreSpecificResource[];
     totalNumberOfResources: number;
     filteredSize: number;
+    object?: IWhoisObjectModel;
+    topLevel?: boolean;
 }
 
 interface IMoreSpecificResource {
@@ -35,7 +39,7 @@ class MoreSpecificsDataService implements IMoreSpecificsDataService {
         if (!objectName) {
             throw new TypeError("objectName is empty. more-specifics not available");
         }
-        const url = "api/whois-internal/api/resources/" + objectType  + "/" + objectName + "/more-specifics.json";
+        const url = "api/whois-internal/api/resources/" + objectType + "/" + objectName + "/more-specifics.json";
 
         filter = filter ? filter.replace(/\s/g, "") : "";
         const params = {
