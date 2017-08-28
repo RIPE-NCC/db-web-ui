@@ -11,7 +11,7 @@ describe('testing UsageStatusComponent', function () {
 
         //mock controller
         controller = function () {
-            return _$componentController_('ip-usage', {});
+            return _$componentController_('ipUsage', {});
         };
 
     }));
