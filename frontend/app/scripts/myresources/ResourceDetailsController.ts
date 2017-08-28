@@ -108,7 +108,7 @@ class ResourceDetailsController {
                 if (hasRipeMaintainer && typeof this.orgId === "string" && !this.sponsored) {
                     this.getTicketsAndDates();
                 }
-                if (!hasRipeMaintainer && response.data.topLevel) {
+                if (!hasRipeMaintainer && response.data.notUnderContract) {
                     this.addFlag("No contract", this.LabelService.getLabel("noContractText"), "orange");
                 }
             });

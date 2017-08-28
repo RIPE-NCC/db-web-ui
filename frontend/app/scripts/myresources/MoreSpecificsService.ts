@@ -10,7 +10,7 @@ interface IMoreSpecificsApiResult {
     totalNumberOfResources: number;
     filteredSize: number;
     object?: IWhoisObjectModel;
-    topLevel?: boolean;
+    notUnderContract?: boolean;
 }
 
 interface IMoreSpecificResource {
