@@ -108,6 +108,7 @@ div.ui-select-container {
 
 // Dropdown list
 .ui-select-container {
+    cursor: pointer;
 	> ul.ui-select-choices {
 		border-radius: 0;
 		> li.ui-select-choices-group {
