@@ -25,7 +25,7 @@
 
 // Flags
 flag {
-    > span {
+     span.flag {
         @extend %float-l;
         margin-right: 5px;
         margin-bottom: 5px;
@@ -39,17 +39,17 @@ flag {
         cursor: pointer;
     }
     &.red {
-        span {
+        span.flag {
             @extend %red-flag;
         }
     }
     &.orange {
-        span {
+        span.flag {
             @extend %orange-flag;
         }
     }
     &.green {
-        span {
+        span.flag {
             @extend %green-flag;
         }
     }
