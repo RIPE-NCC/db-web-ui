@@ -1,46 +1,38 @@
 whois-object-viewer {
-  display: block;
-  overflow: auto;
-  span.blue-button {
-    float: right;
-  }
-  pre {
-    border: 0;
-    background: inherit;
-    padding: 0;
-    margin: 0;
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
+    display: block;
+    overflow: auto;
+    span.blue-button {
+        float: right;
     }
-  }
-  .show-more {
-    margin-left: auto;
-    margin-right: auto;
-  }
-}
-
-.blue-button {
-  cursor: pointer;
-}
-
-.grey-button {
-    cursor: pointer;
+    pre {
+        border: 0;
+        background: inherit;
+        padding: 0;
+        margin: 0;
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+    }
+    .show-more {
+        margin-left: auto;
+        margin-right: auto;
+    }
 }
 
 .resultpane {
-  padding: 10px;
-  margin: 5px 0;
-  border: 1px #ccc solid;
-  border-radius: 8px;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px #ccc solid;
+    border-radius: 8px;
 }
 
 .viewerbuttons {
-  position:absolute;
-  right:37px;
+    position: absolute;
+    right: 37px;
 }
 
 .showripemanaged > .ripemanaged {
-  background: #d1effe;
+    background: #d1effe;
 }

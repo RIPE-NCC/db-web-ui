@@ -1,206 +1,217 @@
 .inner-container {
-	@extend %float-l;
-	width: 100%;
+    @extend %float-l;
+    width: 100%;
 }
+
 .form-fields {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	li {
-		margin-bottom: 15px !important;
-	}
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+        margin-bottom: 15px !important;
+    }
 }
 
 // Buttons
 button {
-	&:focus {
-		outline: none;
-	}
+    &:focus {
+        outline: none;
+    }
 }
+
 %btn {
-	padding: .5em 1em;
-	margin: 0 0 0 .3em;
-	border: 0;
+    padding: .5em 1em;
+    margin: 0 0 0 .3em;
+    border: 0;
+    cursor: pointer;
 }
+
 .blue-button {
-	@extend %btn;
+    @extend %btn;
 }
+
 .grey-button {
-	@extend %btn;
-	background-color: $grey;
-	color: #333;
-	&:hover {
-		background-color: $dark-grey;
-		color: #333;
-	}
+    @extend %btn;
+    background-color: $grey;
+    color: #333;
+    &:hover {
+        background-color: $dark-grey;
+        color: #333;
+    }
 }
 
 input[disabled="disabled"].blue-button {
-	box-shadow: none;
-	cursor: not-allowed;
-	opacity: 0.65;
-	pointer-events: none;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.65;
+    pointer-events: none;
 }
+
 ul.success-fields {
-	list-style: none;
-	padding: 20px !important;
-	border: 1px #ccc dashed;
-	font {
-		family: menlo !important;
-	}
-	li {
-		display: inline-block !important;
-		width: 50%;
-	}
+    list-style: none;
+    padding: 20px !important;
+    border: 1px #ccc dashed;
+    font {
+        family: menlo !important;
+    }
+    li {
+        display: inline-block !important;
+        width: 50%;
+    }
 }
+
 .modal.portlet .modal-content i.fa-close {
-	padding: 6px 17px;
+    padding: 6px 17px;
 }
+
 .modal-content {
-	div.modal-body {
-		ul {
-			li {
-				@extend %width-100;
-				margin-bottom: 15px;
-			}
-		}
-	}
+    div.modal-body {
+        ul {
+            li {
+                @extend %width-100;
+                margin-bottom: 15px;
+            }
+        }
+    }
 }
 
 .not-found {
-	text-align: center;
-	i.fa {
-		font: {
-			size: 150px;
-		}
-		color: #00abab;
-	}
-	h1 {
-		font: {
-			size: 60px;
-		}
-	}
+    text-align: center;
+    i.fa {
+        font: {
+            size: 150px;
+        }
+        color: #00abab;
+    }
+    h1 {
+        font: {
+            size: 60px;
+        }
+    }
 }
 
 .modal-body {
-	ul {
-		list-style: none;
-		padding-left: 0;
-		&.bullets {
-			list-style: disc;
-		}
-		li {
-			margin-bottom: 5px;
-		}
-	}
-	a.more-reference {
-		padding: inherit 30px;
-	}
+    ul {
+        list-style: none;
+        padding-left: 0;
+        &.bullets {
+            list-style: disc;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    }
+    a.more-reference {
+        padding: inherit 30px;
+    }
 }
 
 .fivehunder-error {
-	text-align: center;
-	h1 {
-		font: {
-			size: 6em;
-		}
-		color: #00abab;
-	}
+    text-align: center;
+    h1 {
+        font: {
+            size: 6em;
+        }
+        color: #00abab;
+    }
 }
+
 ul.radio {
-	list-style: none;
-	li {
-		label {
-			padding-left: 0;
-		}
-	}
+    list-style: none;
+    li {
+        label {
+            padding-left: 0;
+        }
+    }
 }
+
 .modal-content {
-	border: none !important;
-	div.modal-header {
-		background-color: #080037;
-		color: #fff;
-		h5, i {
-			color: #fff;
-		}
-		.close {
-			margin-top: 2px;
-		}
-	}
+    border: none !important;
+    div.modal-header {
+        background-color: #080037;
+        color: #fff;
+        h5, i {
+            color: #fff;
+        }
+        .close {
+            margin-top: 2px;
+        }
+    }
 }
 
 #portal-columns.no-pad-top {
-	@extend %no-pad-top;
+    @extend %no-pad-top;
 }
 
 /* Side menu **/
 div.portlet.navigation {
-	ul.toplevel {
-		> li.child {
-			> ul.level2 {
-				display: none;
-			}
-			&.active {
-				> ul.level2 {
-					display: block !important;
-				}
-			}
-			&.active a:hover, a:hover {
-				text-decoration: none !important;
-			}
-		}
-	}
+    ul.toplevel {
+        > li.child {
+            > ul.level2 {
+                display: none;
+            }
+            &.active {
+                > ul.level2 {
+                    display: block !important;
+                }
+            }
+            &.active a:hover, a:hover {
+                text-decoration: none !important;
+            }
+        }
+    }
 }
 
 #portal-column-one .portlet {
-	display: inline-block;
-	width: 100%;
+    display: inline-block;
+    width: 100%;
 }
 
 div#button-container {
-	a.api-button {
-		background: #00A0B0;
-		&:before {
-			font-family: FontAwesome;
-			margin-right: 10px;
-			content: "\f085";
-			font-size: 1.2em;
-		}
-	}
+    a.api-button {
+        background: #00A0B0;
+        &:before {
+            font-family: FontAwesome;
+            margin-right: 10px;
+            content: "\f085";
+            font-size: 1.2em;
+        }
+    }
 }
 
 .form-control:focus {
-	border-color: #adadad;
-	box-shadow: none;
-	transition: none;
+    border-color: #adadad;
+    box-shadow: none;
+    transition: none;
 }
 
 // Angular CSS reset
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
-	display: none !important;
+    display: none !important;
 }
 
 .lookupheader {
-	background-color: #F5E075;
-	margin-bottom: 10px;
-	padding: 15px;
-	vertical-align: top;
-	white-space: normal;
-	width: 100%;
+    background-color: #F5E075;
+    margin-bottom: 10px;
+    padding: 15px;
+    vertical-align: top;
+    white-space: normal;
+    width: 100%;
 }
+
 .showripemanaged .ripemanaged {
-	background-color: #D1EFFE;
+    background-color: #D1EFFE;
 }
 
 #portal-breadcrumbs {
-	display: inline-block;
+    display: inline-block;
 }
 
 div.registry-selector-container {
-	@extend %float-r;
-	margin-right: 15px;
-	> span {
-		@extend %float-l;
-		margin: 3px 10px 0 0;
-	}
+    @extend %float-r;
+    margin-right: 15px;
+    > span {
+        @extend %float-l;
+        margin: 3px 10px 0 0;
+    }
 }
