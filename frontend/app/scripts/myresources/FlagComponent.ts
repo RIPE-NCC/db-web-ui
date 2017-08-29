@@ -21,7 +21,7 @@ class FlagController {
             this.timer = this.$timeout(() => {
                 this.isOpen = false;
                 this.timer = null;
-            }, 250);
+            }, 66);
         }
     }
 }
