@@ -4,7 +4,7 @@ interface ILabelService {
 }
 
 const LABELS = {
-    "noContractText": "This resource is not covered by an agreement with the <a href='http://www.ripe.net'>RIPE NCC</a>",
+    "noContractText": "This resource is not covered by an agreement with the RIPE NCC. <a href='https://www.ripe.net/manage-ips-and-asns/legacy-resources/ripe-ncc-services-to-legacy-internet-resource-holders#i-am-a-legacy-internet-resource-holder-and-i-want-to-' target='_blank'>Find out more</a>",
     "otherSponsorText": "Sponsored by another LIR"
 };
 
@@ -17,7 +17,6 @@ class LabelService implements ILabelService {
         }
         throw new TypeError("No such label key");
     }
-
 }
 
 
