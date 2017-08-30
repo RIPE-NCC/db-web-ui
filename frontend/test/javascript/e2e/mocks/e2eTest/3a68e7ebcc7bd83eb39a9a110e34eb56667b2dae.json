@@ -1,124 +1,148 @@
 {
-  "requestUrl": "/api/whois/RIPE/inetnum/194.171.0.0%20-%20194.171.255.255",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data":
-  {"objects":{"object":[ {
-    "type" : "inetnum",
-    "link" : {
-      "type" : "locator",
-      "href" : "http://rest-prepdev.db.ripe.net/ripe/inetnum/194.171.0.0 - 194.171.255.255"
-    },
-    "source" : {
-      "id" : "ripe"
-    },
-    "primary-key" : {
-      "attribute" : [ {
-        "name" : "inetnum",
-        "value" : "194.171.0.0 - 194.171.255.255"
-      } ]
-    },
-    "attributes" : {
-      "attribute" : [ {
-        "name" : "inetnum",
-        "value" : "194.171.0.0 - 194.171.255.255"
-      }, {
-        "name" : "netname",
-        "value" : "NL-SURFNET-950612"
-      }, {
-        "name" : "country",
-        "value" : "NL"
-      }, {
-        "link" : {
-          "type" : "locator",
-          "href" : "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+    "requestUrl": "/api/whois/RIPE/inetnum/194.171.0.0%20-%20194.171.255.255",
+    "contentType": "application/javascript",
+    "statusCode": 200,
+    "data": {
+        "objects": {
+            "object": [
+                {
+                    "type": "inetnum",
+                    "link": {
+                        "type": "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/194.171.0.0 - 194.171.255.255"
+                    },
+                    "source": {
+                        "id": "ripe"
+                    },
+                    "primary-key": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "194.171.0.0 - 194.171.255.255"
+                            }
+                        ]
+                    },
+                    "attributes": {
+                        "attribute": [
+                            {
+                                "name": "inetnum",
+                                "value": "194.171.0.0 - 194.171.255.255"
+                            },
+                            {
+                                "name": "netname",
+                                "value": "NL-SURFNET-950612"
+                            },
+                            {
+                                "name": "country",
+                                "value": "NL"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+                                },
+                                "name": "org",
+                                "value": "ORG-Sb3-RIPE",
+                                "referenced-type": "organisation"
+                            },
+                            {
+                                "name": "language",
+                                "value": "NL"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
+                                },
+                                "name": "admin-c",
+                                "value": "SNS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
+                                },
+                                "name": "tech-c",
+                                "value": "SNS1-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "name": "status",
+                                "value": "ALLOCATED PA"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                                },
+                                "name": "mnt-by",
+                                "value": "RIPE-NCC-HM-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/tdacruzper2-mnt"
+                                },
+                                "name": "mnt-by",
+                                "value": "tdacruzper2-mnt",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/SN-LIR-MNT"
+                                },
+                                "name": "mnt-lower",
+                                "value": "SN-LIR-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS1103-MNT"
+                                },
+                                "name": "mnt-routes",
+                                "value": "AS1103-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                "link": {
+                                    "type": "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/irt/irt-SURFcert"
+                                },
+                                "name": "mnt-irt",
+                                "value": "irt-SURFcert",
+                                "referenced-type": "irt"
+                            },
+                            {
+                                "name": "created",
+                                "value": "2002-01-21T12:47:47Z"
+                            },
+                            {
+                                "name": "last-modified",
+                                "value": "2017-05-29T09:59:14Z"
+                            },
+                            {
+                                "name": "source",
+                                "value": "RIPE"
+                            }
+                        ]
+                    },
+                    "tags": {
+                        "tag": [
+                            {
+                                "id": "RIPE-REGISTRY-RESOURCE"
+                            }
+                        ]
+                    }
+                }
+            ]
         },
-        "name" : "org",
-        "value" : "ORG-Sb3-RIPE",
-        "referenced-type" : "organisation"
-      }, {
-        "name" : "language",
-        "value" : "NL"
-      }, {
-        "link" : {
-          "type" : "locator",
-          "href" : "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
-        },
-        "name" : "admin-c",
-        "value" : "SNS1-RIPE",
-        "referenced-type" : "role"
-      }, {
-        "link" : {
-          "type" : "locator",
-          "href" : "http://rest-prepdev.db.ripe.net/ripe/role/SNS1-RIPE"
-        },
-        "name" : "tech-c",
-        "value" : "SNS1-RIPE",
-        "referenced-type" : "role"
-      }, {
-        "name" : "status",
-        "value" : "ALLOCATED PA"
-      }, {
-        "link" : {
-          "type" : "locator",
-          "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
-        },
-        "name" : "mnt-by",
-        "value" : "RIPE-NCC-HM-MNT",
-        "referenced-type" : "mntner"
-      }, {
-        "link" : {
-          "type" : "locator",
-          "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/tdacruzper2-mnt"
-        },
-        "name" : "mnt-by",
-        "value" : "tdacruzper2-mnt",
-        "referenced-type" : "mntner"
-      }, {
-        "link" : {
-          "type" : "locator",
-          "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/SN-LIR-MNT"
-        },
-        "name" : "mnt-lower",
-        "value" : "SN-LIR-MNT",
-        "referenced-type" : "mntner"
-      }, {
-        "link" : {
-          "type" : "locator",
-          "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/AS1103-MNT"
-        },
-        "name" : "mnt-routes",
-        "value" : "AS1103-MNT",
-        "referenced-type" : "mntner"
-      }, {
-        "link" : {
-          "type" : "locator",
-          "href" : "http://rest-prepdev.db.ripe.net/ripe/irt/irt-SURFcert"
-        },
-        "name" : "mnt-irt",
-        "value" : "irt-SURFcert",
-        "referenced-type" : "irt"
-      }, {
-        "name" : "created",
-        "value" : "2002-01-21T12:47:47Z"
-      }, {
-        "name" : "last-modified",
-        "value" : "2017-05-29T09:59:14Z"
-      }, {
-        "name" : "source",
-        "value" : "RIPE"
-      } ]
-    },
-    "tags" : {
-      "tag" : [ {
-        "id" : "RIPE-REGISTRY-RESOURCE"
-      } ]
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
     }
-  } ]
-  },
-  "terms-and-conditions" : {
-  "type" : "locator",
-  "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
-  }
-  }
 }
