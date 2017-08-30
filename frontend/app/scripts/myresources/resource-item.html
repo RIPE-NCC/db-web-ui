@@ -1,8 +1,8 @@
 <div>
-    <a class="title" ng-click="ctrlResourceItem.showDetail()">
+    <span class="title" ng-click="ctrlResourceItem.showDetail()">
         <name-formatter name="ctrlResourceItem.item.resource" type="ctrlResourceItem.item.type"></name-formatter>
-        <span class="fa fa-angle-right pull-right"></span>
-    </a>
+        <span class="fa fa-chevron-right pull-right"></span>
+    </span>
     <p class="org-name" ng-if="ctrlResourceItem.item.orgName">{{ ctrlResourceItem.item.orgName }}</p>
     <div class="flags-container">
         <flag text="ctrlResourceItem.item.status" tooltip="'status'"></flag>

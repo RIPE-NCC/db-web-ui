@@ -39,17 +39,16 @@ div.resource-list {
         padding: 10px;
         border: 1px transparent solid;
         .title {
-            name-formatter {
-                color: $black;
-            }
             font: {
                 size: 16px;
                 weight: bold;
             }
-            margin: 0;
             cursor: pointer;
+            &:hover {
+                color: $link;
+            }
             span {
-                color: $black;
+                line-height: 1.1em;
             }
         }
         p.org-name {

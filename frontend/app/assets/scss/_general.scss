@@ -112,7 +112,7 @@ ul.success-fields {
         font: {
             size: 6em;
         }
-        color: #00abab;
+        color: $link;
     }
 }
 
@@ -169,7 +169,7 @@ div.portlet.navigation {
 
 div#button-container {
     a.api-button {
-        background: #00A0B0;
+        background: $link;
         &:before {
             font-family: FontAwesome;
             margin-right: 10px;
