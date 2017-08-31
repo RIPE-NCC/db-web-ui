@@ -25,7 +25,7 @@
 
 // Flags
 flag {
-     span.flag {
+    > span {
         @extend %float-l;
         margin-right: 5px;
         margin-bottom: 5px;
@@ -35,20 +35,24 @@ flag {
         display: inline-block;
         padding: 0 5px;
         text-transform: uppercase;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         font-size: 13px;
+        width: fit-content;
+        position: relative;
     }
     &.red {
-        span.flag {
+        span {
             @extend %red-flag;
         }
     }
     &.orange {
-        span.flag {
+        span {
             @extend %orange-flag;
         }
     }
     &.green {
-        span.flag {
+        span {
             @extend %green-flag;
         }
     }

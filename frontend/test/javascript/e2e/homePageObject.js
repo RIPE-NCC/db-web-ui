@@ -140,8 +140,8 @@ module.exports = {
     moreSpecificsTable: element(by.css('.table')),
     moreSpecificsTableRows: element(by.css('.table')).element(by.css('tbody')).all(by.css('tr')),
 
-    usageStatus: element(by.css('ip-usage')),
-    usageStatusStatistics: element(by.css('ip-usage')).all(by.css('.box-statistic')),
+    usageStatus: element(by.css('usage-status')),
+    usageStatusStatistics: element(by.css('usage-status')).all(by.css('.box-statistic')),
 
     flagsContainer: element(by.css('.flags-container')),
     flags: element(by.css('.flags-container')).all(by.css('flag')),

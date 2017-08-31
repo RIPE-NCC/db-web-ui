@@ -73,9 +73,8 @@ angular.module('dbWebApp', [
             });
 
         }])
-    .controller('PageController', ['Properties', 'Labels', function(Properties, Labels) {
+    .controller('PageController', ['Properties', function(Properties) {
         var vm = this;
         vm.Properties = Properties;
-        vm.Labels = Labels;
     }])
 ;

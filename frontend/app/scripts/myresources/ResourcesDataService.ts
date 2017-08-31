@@ -1,3 +1,4 @@
+import IHttpPromiseCallback = angular.IHttpPromiseCallback;
 
 class ResourcesDataService implements IResourcesDataService {
 
@@ -27,14 +28,6 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchResource(objectName: string, type: string): IPromise<IMoreSpecificsApiResult> {
-        const url = ["api/whois-internal/api/resources/", type, "/", objectName].join("");
-        return this.$http({
-            method: "GET",
-            url,
-        });
-    }
-
     public fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse> {
         return this.$http({
             method: "GET",
@@ -49,18 +42,14 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchResources(orgId: string, resourceType: string, sponsored: boolean): IPromise<any> {
-        if (!resourceType) {
-            this.$log.error("fetchResources failed. No resourceType given");
-            return;
-        }
+    public fetchResources(orgId: string, resource: string, sponsored: boolean): IPromise<any> {
         const params = {};
         if (sponsored) {
             params["sponsoring-org-id"] = orgId;
         } else {
             params["org-id"] = orgId;
         }
-        params["type"] = resourceType;
+        params["type"] = resource;
         return this.$http({
             headers: {
                 "Content-type": "application/json",

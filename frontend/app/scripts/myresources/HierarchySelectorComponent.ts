@@ -8,12 +8,13 @@ interface IHierarchySelectorControllerState extends ng.ui.IStateService {
 
 class HierarchySelectorController {
 
-    public static $inject = ["$state", "ResourcesDataService", "UserInfoService"];
+    public static $inject = ["$scope", "$state", "ResourcesDataService", "UserInfoService"];
 
     private parents: string[];
     private resource: IResourceModel;
 
-    constructor(private $state: IHierarchySelectorControllerState,
+    constructor(private $scope: angular.IScope,
+                private $state: IHierarchySelectorControllerState,
                 private rds: IResourcesDataService,
                 private UserInfoService: UserInfoService) {
 

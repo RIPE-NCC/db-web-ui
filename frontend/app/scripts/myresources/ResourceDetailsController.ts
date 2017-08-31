@@ -16,15 +16,15 @@ class ResourceDetailsController {
         "$anchorScroll",
         "$cookies",
         "CredentialsService",
-        "LabelService",
         "MntnerService",
         "MoreSpecificsService",
         "ResourceStatus",
         "ResourcesDataService",
         "RestService",
+        "WhoisDataService",
     ];
 
-    public whoisObject: IWhoisObjectModel;
+    public details: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificsApiResult;
     public resource: any;
     public flags: any[] = [];
@@ -64,12 +64,12 @@ class ResourceDetailsController {
                 private $anchorScroll: ng.IAnchorScrollService,
                 private $cookies: angular.cookies.ICookiesService,
                 private CredentialsService: any,
-                private LabelService: LabelService,
                 private MntnerService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
                 private ResourceStatus: any,
                 private ResourcesDataService: ResourcesDataService,
-                private RestService: any) {
+                private RestService: any,
+                private WhoisDataService: WhoisDataService) {
 
         this.show = {
             editor: false,
@@ -85,38 +85,34 @@ class ResourceDetailsController {
         this.canHaveMoreSpecifics = false;
         this.getResourcesFromBackEnd();
 
-        this.ResourcesDataService.fetchResource(this.objectName, this.objectType)
-            .then((response: IHttpPromiseCallbackArg<IResourceDetailsModel>) => {
-                this.whoisObject = response.data.object;
-                // should only be one
-                this.resource = response.data.resources[0] ? response.data.resources[0] : {
-                    orgName: "",
-                    resource: this.whoisObject["primary-key"].attribute[0].value,
-                    type: this.objectType,
-                };
-                let hasRipeMaintainer = false;
-                for (const attr of this.whoisObject.attributes.attribute) {
-                    if (attr.name === "status") {
-                        this.addFlag(attr.value, attr.name);
-                        this.showUsage = ResourceStatus.isResourceWithUsage(this.objectType, attr.value);
-                    } else if (attr.name === "netname" || attr.name === "as-name") {
-                        this.addFlag(attr.value, attr.name);
-                    } else if (attr.name === "org") {
-                        this.orgId = attr.value;
-                    } else if (attr.name === "mnt-by" && !hasRipeMaintainer) {
-                        if (MntnerService.isNccMntner(attr.value)) {
-                            hasRipeMaintainer = true;
+        this.WhoisDataService.fetchObject(this.source, this.objectType, this.objectName).then(
+            (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                const results = response.data.objects.object;
+                if (results.length >= 1) {
+                    this.details = results[0];
+                    this.resource = {
+                        orgName: "",
+                        resource: this.details["primary-key"].attribute[0].value,
+                        type: this.objectType,
+                    };
+                    let hasRipeMaintainer = false;
+                    for (const attr of this.details.attributes.attribute) {
+                        if (attr.name === "status") {
+                            this.addFlag(attr.value, attr.name);
+                            this.showUsage = ResourceStatus.isResourceWithUsage(this.objectType, attr.value);
+                        } else if (attr.name === "netname" || attr.name === "as-name") {
+                            this.addFlag(attr.value, attr.name);
+                        } else if (attr.name === "org") {
+                            this.orgId = attr.value;
+                        } else if (attr.name === "mnt-by" && !hasRipeMaintainer) {
+                            if (MntnerService.isNccMntner(attr.value)) {
+                                hasRipeMaintainer = true;
+                            }
                         }
                     }
-                }
-                if (hasRipeMaintainer && typeof this.orgId === "string" && !this.sponsored) {
-                    this.getTicketsAndDates();
-                }
-                if (!hasRipeMaintainer && response.data.notUnderContract) {
-                    this.addFlag(this.LabelService.getLabel("flag.noContract.text"), this.LabelService.getLabel("flag.noContract.title"), "orange");
-                }
-                if (response.data.sponsoredByOther) {
-                    this.addFlag(this.LabelService.getLabel("flag.otherSponsor.text"), this.LabelService.getLabel("flag.otherSponsor.title"), "red");
+                    if (hasRipeMaintainer && typeof this.orgId === "string" && !this.sponsored) {
+                        this.getTicketsAndDates();
+                    }
                 }
             });
 
@@ -150,10 +146,10 @@ class ResourceDetailsController {
             passwords.push(this.CredentialsService.getCredentials().successfulPassword);
         }
 
-        const attributesWithoutDates = this.whoisObject.attributes.attribute
+        const attributesWithoutDates = this.details.attributes.attribute
             .filter((attr: IAttributeModel) => attr.name !== "last-modified" && attr.name !== "created");
         const object = {objects: {object: [{attributes: {attribute: attributesWithoutDates}}]}};
-        const pKey = this.whoisObject["primary-key"].attribute[0].value;
+        const pKey = this.details["primary-key"].attribute[0].value;
         this.RestService.modifyObject(this.source, this.objectType, pKey, object, passwords)
             .then((response: IWhoisResponseModel) => {
                     this.onSubmitSuccess(response);
@@ -229,7 +225,7 @@ class ResourceDetailsController {
         this.successes = [];
 
         // explicitly clear errors on fields before submitting the form, should probably be done elsewhere
-        this.whoisObject.attributes.attribute.forEach((a) => {
+        this.details.attributes.attribute.forEach((a) => {
             a.$$error = "";
             a.$$invalid = false;
         });
@@ -238,7 +234,7 @@ class ResourceDetailsController {
     private onSubmitSuccess(whoisResources: IWhoisResponseModel): void {
         const results = whoisResources.objects.object;
         if (results.length >= 1) {
-            this.whoisObject = results[0];
+            this.details = results[0];
         }
 
         this.isEditing = false;
@@ -270,7 +266,7 @@ class ResourceDetailsController {
     private onSubmitError(whoisResources: IWhoisResponseModel): void {
         const attributeErrors = whoisResources.errormessages.errormessage.filter((e) => e.attribute);
         attributeErrors.forEach((e) => {
-            const attribute = this.whoisObject.attributes.attribute.find(
+            const attribute = this.details.attributes.attribute.find(
                 (a) => a.name === e.attribute.name && a.value === e.attribute.value,
             );
             attribute.$$error = this.getErrorText(e);
@@ -331,8 +327,8 @@ class ResourceDetailsController {
         this.$anchorScroll(anchor);
     }
 
-    private addFlag(textOnFlag: string, tooltip: string, colour?: string) {
-        const flag = {type: tooltip, value: textOnFlag, colour: colour};
+    private addFlag(textOnFlag: string, tooltip: string) {
+        const flag = {type: tooltip, value: textOnFlag};
         if (tooltip === "status") {
             this.flags.unshift(flag);
         } else {

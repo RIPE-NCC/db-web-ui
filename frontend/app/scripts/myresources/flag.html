@@ -1,11 +1,3 @@
-<span
-    ng-mouseover="$ctrl.in()"
-    ng-mouseleave="$ctrl.out()">
-    <span class="flag"
-          ng-if="$ctrl.text"
-          uib-popover-html="$ctrl.tooltip"
-          popover-placement="bottom"
-          popover-trigger="'none'"
-          popover-is-open="$ctrl.isOpen">
-    {{ $ctrl.text }}</span>
+<span ng-if="text" uib-popover="{{ tooltip }}" popover-placement="bottom" popover-trigger="'mouseenter'">
+    {{text}}
 </span>
