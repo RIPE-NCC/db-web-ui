@@ -8,7 +8,7 @@ interface IResourcesControllerState extends ng.ui.IStateService {
 }
 
 class ResourcesController {
-    public static $inject = ["$log", "$location", "$scope", "$state", "$q", "ResourcesDataService", "UserInfoService"];
+    public static $inject = ["$location", "$scope", "$state", "$q", "ResourcesDataService", "UserInfoService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
@@ -22,8 +22,7 @@ class ResourcesController {
     private isShowingSponsored = false;
     private lastTab = "";
 
-    constructor(private $log: angular.ILogService,
-                private $location: angular.ILocationService,
+    constructor(private $location: angular.ILocationService,
                 private $scope: angular.IScope,
                 private $state: IResourcesControllerState,
                 private $q: ng.IQService,
@@ -81,38 +80,35 @@ class ResourcesController {
             return;
         }
         this.loading = true;
-        this.$q.all([
-            this.resourcesDataService.fetchIpv4Resources(this.selectedOrg.orgObjectId),
-            this.resourcesDataService.fetchIpv6Resources(this.selectedOrg.orgObjectId),
-            this.resourcesDataService.fetchAsnResources(this.selectedOrg.orgObjectId),
-            this.resourcesDataService.fetchSponsoredIpv4Resources(this.selectedOrg.orgObjectId),
-            this.resourcesDataService.fetchSponsoredIpv6Resources(this.selectedOrg.orgObjectId),
-            this.resourcesDataService.fetchSponsoredAsnResources(this.selectedOrg.orgObjectId),
-        ]).then((responses: any[]) => {
-            this.hasSponsoredResources =
-                !(this.empty(responses[3]) && this.empty(responses[4]) && this.empty(responses[5]));
-            if (this.hasSponsoredResources && this.isShowingSponsored) {
-                this.ipv4Resources = responses[3].data.resources;
-                this.ipv6Resources = responses[4].data.resources;
-                this.asnResources = responses[5].data.resources;
-            } else {
-                this.isShowingSponsored = false;
-                this.ipv4Resources = responses[0].data.resources;
-                this.ipv6Resources = responses[1].data.resources;
-                this.asnResources = responses[2].data.resources;
-            }
-            this.loading = false;
-        }, () => {
-            this.fail = true;
-            this.loading = false;
-            this.reason = "There was problem reading resources please try again";
-        });
 
+        this.resourcesDataService
+            .fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
+            .then((response) => {
+                this.loading = false;
+                this.hasSponsoredResources = (
+                    response.data.stats.numSponsoredInetnums +
+                    response.data.stats.numSponsoredInet6nums +
+                    response.data.stats.numSponsoredAutnums) > 0;
+                switch (this.lastTab) {
+                    case "inetnum":
+                        this.ipv4Resources = response.data.resources;
+                        break;
+                    case "inet6num":
+                        this.ipv6Resources = response.data.resources;
+                        break;
+                    case "aut-num":
+                        this.asnResources = response.data.resources;
+                        break;
+                    default:
+                        console.log("Error. Cannot understand resources response")
+                }
+            }, () => {
+                this.fail = true;
+                this.loading = false;
+                this.reason = "There was problem reading resources please try again";
+            });
     }
 
-    private empty(response: any): boolean {
-        return !(response.data.resources && response.data.resources.length);
-    }
 }
 
 angular

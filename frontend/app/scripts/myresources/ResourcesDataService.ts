@@ -42,56 +42,14 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse> {
-        return this.fetchResources({
-            "org-id": orgId,
-            "type": "inetnum",
-        });
-    }
-
-    public fetchIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse> {
-        return this.fetchResources({
-            "org-id": orgId,
-            "type": "inet6num",
-        });
-    }
-
-    public fetchAsnResources(orgId: string): IPromise<AsnResourcesResponse> {
-        return this.fetchResources({
-            "org-id": orgId,
-            "type": "aut-num",
-        });
-    }
-
-    public fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse> {
-        return this.fetchResources({
-            "sponsoring-org-id": orgId,
-            "type": "inetnum",
-        });
-    }
-
-    public fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse> {
-        return this.fetchResources({
-            "sponsoring-org-id": orgId,
-            "type": "inet6num",
-        });
-    }
-
-    public fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse> {
-        return this.fetchResources({
-            "sponsoring-org-id": orgId,
-            "type": "aut-num",
-        });
-    }
-
-    public fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets> {
-        return this.$http({
-            method: "GET",
-            url: "api/ba-apps/resources/" + orgId + "/" + resource,
-        });
-    }
-
-    private fetchResources(params: {}): IPromise<any> {
+    public fetchResources(orgId: string, resource: string, sponsored: boolean): IPromise<any> {
+        const params = {};
+        if (sponsored) {
+            params["sponsoring-org-id"] = orgId;
+        } else {
+            params["org-id"] = orgId;
+        }
+        params["type"] = resource;
         return this.$http({
             headers: {
                 "Content-type": "application/json",
@@ -100,6 +58,13 @@ class ResourcesDataService implements IResourcesDataService {
             params,
             timeout: 30000,
             url: "api/whois-internal/api/resources",
+        });
+    }
+
+    public fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets> {
+        return this.$http({
+            method: "GET",
+            url: "api/ba-apps/resources/" + orgId + "/" + resource,
         });
     }
 

@@ -10,7 +10,6 @@ class ResourceDetailsController {
 
     public static $inject = [
         "$scope",
-        "$log",
         "$state",
         "$timeout",
         "$location",
@@ -59,7 +58,6 @@ class ResourceDetailsController {
     private source = "RIPE"; // TODO: calculate this value
 
     constructor(private $scope: angular.IScope,
-                private $log: angular.ILogService,
                 private $state: IResourceDetailsControllerState,
                 private $timeout: ng.ITimeoutService,
                 private $location: angular.ILocationService,
