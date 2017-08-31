@@ -92,17 +92,7 @@ interface IResourcesDataService {
 
     fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse>;
 
-    fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
-
-    fetchIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
-
-    fetchAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
-
-    fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
-
-    fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
-
-    fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
+    fetchResources(orgId: string, resource: string, sponsored: boolean): IPromise<any>;
 
     fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets>;
 }
