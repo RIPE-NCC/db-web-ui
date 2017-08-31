@@ -9,8 +9,6 @@ interface IMoreSpecificsApiResult {
     resources: IMoreSpecificResource[];
     totalNumberOfResources: number;
     filteredSize: number;
-    object?: IWhoisObjectModel;
-    notUnderContract?: boolean;
 }
 
 interface IMoreSpecificResource {

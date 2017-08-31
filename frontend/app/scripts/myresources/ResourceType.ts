@@ -63,6 +63,9 @@ interface ITicket {
 }
 
 interface IResourceScreenItem {
+    netname?: string;
+    asname?: string;
+
     resource: string;
     status: string;
     type: string;
@@ -71,18 +74,34 @@ interface IResourceScreenItem {
     sponsoredByOther: boolean;
 }
 
+
+interface IResourceDetailsModel {
+    resources: IMoreSpecificResource[];
+    totalNumberOfResources: number;
+    filteredSize: number;
+    object?: IWhoisObjectModel;
+    notUnderContract?: boolean;
+    sponsoredByOther?: boolean;
+}
+
 interface IResourcesDataService {
+
     fetchParentResources(resource: IResourceModel, org: string): IPromise<string[]>;
 
     fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse>;
+
     fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse>;
 
     fetchIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
+
     fetchIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
+
     fetchAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
 
     fetchSponsoredIpv4Resources(orgId: string): IPromise<IPv4ResourcesResponse>;
+
     fetchSponsoredIpv6Resources(orgId: string): IPromise<IPv6ResourcesResponse>;
+
     fetchSponsoredAsnResources(orgId: string): IPromise<AsnResourcesResponse>;
 
     fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets>;

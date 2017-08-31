@@ -86,7 +86,7 @@ class ResourceDetailsController {
         this.getResourcesFromBackEnd();
 
         this.ResourcesDataService.fetchResource(this.objectName, this.objectType)
-            .then((response: IHttpPromiseCallbackArg<any>) => {
+            .then((response: IHttpPromiseCallbackArg<IResourceDetailsModel>) => {
                 this.whoisObject = response.data.object;
                 // should only be one
                 this.resource = response.data.resources[0] ? response.data.resources[0] : {
@@ -113,7 +113,10 @@ class ResourceDetailsController {
                     this.getTicketsAndDates();
                 }
                 if (!hasRipeMaintainer && response.data.notUnderContract) {
-                    this.addFlag("No contract", this.LabelService.getLabel("noContractText"), "orange");
+                    this.addFlag(this.LabelService.getLabel("flag.noContract.text"), this.LabelService.getLabel("flag.noContract.title"), "orange");
+                }
+                if (response.data.sponsoredByOther) {
+                    this.addFlag(this.LabelService.getLabel("flag.otherSponsor.text"), this.LabelService.getLabel("flag.otherSponsor.title"), "red");
                 }
             });
 

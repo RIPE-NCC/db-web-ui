@@ -10,8 +10,11 @@ class ResourceItemController {
     public usedPercentage: number;
     public showProgressbar: boolean;
 
-    public noContractText: string;
-    public otherSponsorText: string;
+    public flags: Array<{
+        colour?: string;
+        text: string;
+        tooltip: string;
+    }> = [];
 
     constructor(private $state: ng.ui.IStateService,
                 private LabelService: ILabelService,
@@ -21,8 +24,30 @@ class ResourceItemController {
         }
         this.showProgressbar = this.item.type.toLowerCase() !== "aut-num" && !this.sponsored &&
             ResourceStatus.isResourceWithUsage(this.item.type, this.item.status);
-        this.noContractText = this.LabelService.getLabel("noContractText");
-        this.otherSponsorText = this.LabelService.getLabel("otherSponsorText");
+
+        if (this.item.status) {
+            this.flags.push({text: this.item.status, tooltip: "status"});
+        }
+        if (this.item.netname) {
+            this.flags.push({text: this.item.netname, tooltip: "netname"});
+        }
+        if (this.item.asname) {
+            this.flags.push({text: this.item.asname, tooltip: "as-name"});
+        }
+        if (this.item.notRipeRegistered) {
+            this.flags.push({
+                text: this.LabelService.getLabel("flag.noContract.text"),
+                tooltip: this.LabelService.getLabel("flag.noContract.title"),
+                colour: "orange"
+            });
+        }
+        if (this.item.sponsoredByOther) {
+            this.flags.push({
+                text: this.LabelService.getLabel("flag.otherSponsor.text"),
+                tooltip: this.LabelService.getLabel("flag.otherSponsor.title"),
+                colour: "red"
+            });
+        }
     }
 
     public showDetail() {

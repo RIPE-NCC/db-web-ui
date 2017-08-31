@@ -5,11 +5,7 @@
     </span>
     <p class="org-name" ng-if="ctrlResourceItem.item.orgName">{{ ctrlResourceItem.item.orgName }}</p>
     <div class="flags-container">
-        <flag text="ctrlResourceItem.item.status" tooltip="'status'"></flag>
-        <flag text="ctrlResourceItem.item.netname" tooltip="'netname'"></flag>
-        <flag text="ctrlResourceItem.item.asname" tooltip="'as-name'"></flag>
-        <flag class="orange" text="ctrlResourceItem.item.notRipeRegistered ? 'No contract': ''" tooltip="ctrlResourceItem.noContractText"></flag>
-        <flag class="red" text="ctrlResourceItem.item.sponsoredByOther ? 'Sponsored by other': ''" tooltip="ctrlResourceItem.otherSponsorText"></flag>
+        <flag ng-repeat="f in ctrlResourceItem.flags" ng-class="f.colour" tooltip="f.tooltip" text="f.text"></flag>
     </div>
     <div ng-if="ctrlResourceItem.showProgressbar" class="progressbar-container">
         <uib-progressbar

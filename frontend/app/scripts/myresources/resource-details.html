@@ -4,7 +4,7 @@
                         type="resourceDetails.resource.type"></name-formatter>
     </h1>
     <div class="flags-container">
-        <flag ng-class="f.colour" tooltip="f.type" ng-repeat="f in resourceDetails.flags" text="f.value"></flag>
+        <flag ng-repeat="f in resourceDetails.flags" ng-class="f.colour" tooltip="f.type" text="f.value"></flag>
     </div>
 </section>
 <section class="back-to-my-resources">
