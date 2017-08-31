@@ -1,4 +1,3 @@
-import IHttpPromiseCallback = angular.IHttpPromiseCallback;
 
 class ResourcesDataService implements IResourcesDataService {
 
