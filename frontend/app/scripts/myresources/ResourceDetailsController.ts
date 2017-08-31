@@ -89,7 +89,11 @@ class ResourceDetailsController {
             .then((response: IHttpPromiseCallbackArg<any>) => {
                 this.whoisObject = response.data.object;
                 // should only be one
-                this.resource = response.data.resources[0];
+                this.resource = response.data.resources[0] ? response.data.resources[0] : {
+                    orgName: "",
+                    resource: this.whoisObject["primary-key"].attribute[0].value,
+                    type: this.objectType,
+                };
                 let hasRipeMaintainer = false;
                 for (const attr of this.whoisObject.attributes.attribute) {
                     if (attr.name === "status") {
