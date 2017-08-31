@@ -8,7 +8,7 @@ interface IResourcesControllerState extends ng.ui.IStateService {
 }
 
 class ResourcesController {
-    public static $inject = ["$location", "$scope", "$state", "$q", "ResourcesDataService", "UserInfoService"];
+    public static $inject = ["$location", "$scope", "$state", "$timeout", "$q", "ResourcesDataService", "UserInfoService"];
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
@@ -25,6 +25,7 @@ class ResourcesController {
     constructor(private $location: angular.ILocationService,
                 private $scope: angular.IScope,
                 private $state: IResourcesControllerState,
+                private $timeout: any,
                 private $q: ng.IQService,
                 private resourcesDataService: ResourcesDataService,
                 private UserInfoService: UserInfoService) {
@@ -79,13 +80,17 @@ class ResourcesController {
         if (!this.selectedOrg) {
             return;
         }
-        this.loading = true;
+
+        const promise = this.$timeout(()=>{
+            this.loading = true;
+        }, 200);
 
         this.resourcesDataService
             .fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
             .then((response) => {
+                this.$timeout.cancel(promise);
                 this.loading = false;
-                this.hasSponsoredResources = (
+                this.hasSponsoredResources = response.data.stats && (
                     response.data.stats.numSponsoredInetnums +
                     response.data.stats.numSponsoredInet6nums +
                     response.data.stats.numSponsoredAutnums) > 0;
@@ -104,6 +109,7 @@ class ResourcesController {
                 }
             }, () => {
                 this.fail = true;
+                this.$timeout.cancel(promise);
                 this.loading = false;
                 this.reason = "There was problem reading resources please try again";
             });

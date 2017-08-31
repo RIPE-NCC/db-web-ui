@@ -49,14 +49,18 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchResources(orgId: string, resource: string, sponsored: boolean): IPromise<any> {
+    public fetchResources(orgId: string, resourceType: string, sponsored: boolean): IPromise<any> {
+        if (!resourceType) {
+            this.$log.error("fetchResources failed. No resourceType given");
+            return;
+        }
         const params = {};
         if (sponsored) {
             params["sponsoring-org-id"] = orgId;
         } else {
             params["org-id"] = orgId;
         }
-        params["type"] = resource;
+        params["type"] = resourceType;
         return this.$http({
             headers: {
                 "Content-type": "application/json",
