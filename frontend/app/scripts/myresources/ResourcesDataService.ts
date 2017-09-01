@@ -1,4 +1,3 @@
-
 class ResourcesDataService implements IResourcesDataService {
 
     public static $inject = ["$http", "$log"];
@@ -7,7 +6,7 @@ class ResourcesDataService implements IResourcesDataService {
                 private $log: angular.ILogService) {
     }
 
-    public fetchParentResources(resource: IResourceModel, org: string): IPromise<string[]> {
+    public fetchParentResources(resource: IResourceModel, org: string): ng.IPromise<string[]> {
         if (!resource || !resource.resource || !resource.type) {
             this.$log.error("Not a resource", resource);
             throw new TypeError("ResourcesDataService.fetchParentResource failed: not a resource");
@@ -27,7 +26,7 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchResource(objectName: string, type: string): IPromise<IMoreSpecificsApiResult> {
+    public fetchResource(objectName: string, type: string): ng.IPromise<IMoreSpecificsApiResult> {
         const url = ["api/whois-internal/api/resources/", type, "/", objectName].join("");
         return this.$http({
             method: "GET",
@@ -35,21 +34,21 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse> {
+    public fetchIpv4Resource(objectName: string): ng.IPromise<IPv4ResourcesResponse> {
         return this.$http({
             method: "GET",
             url: "api/whois-internal/api/resources/inetnum/" + objectName,
         });
     }
 
-    public fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse> {
+    public fetchIpv6Resource(objectName: string): ng.IPromise<IPv6ResourcesResponse> {
         return this.$http({
             method: "GET",
             url: "api/whois-internal/api/resources/inet6num/" + objectName,
         });
     }
 
-    public fetchResources(orgId: string, resourceType: string, sponsored: boolean): IPromise<any> {
+    public fetchResources(orgId: string, resourceType: string, sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>> {
         if (!resourceType) {
             this.$log.error("fetchResources failed. No resourceType given");
             return;
@@ -72,7 +71,7 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets> {
+    public fetchTicketsAndDates(orgId: string, resource: string): ng.IPromise<IResourceTickets> {
         return this.$http({
             method: "GET",
             url: "api/ba-apps/resources/" + orgId + "/" + resource,

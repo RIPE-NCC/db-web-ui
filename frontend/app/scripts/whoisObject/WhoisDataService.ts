@@ -15,7 +15,7 @@ class WhoisDataService {
                        objectType: string,
                        objectName: string,
                        password?: string,
-                       unformatted?: boolean): IPromise<IWhoisResponseModel> {
+                       unformatted?: boolean): ng.IPromise<IWhoisResponseModel> {
 
         const urlArr = [
             "api/whois/",

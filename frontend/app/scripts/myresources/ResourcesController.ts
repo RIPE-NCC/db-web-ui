@@ -1,5 +1,3 @@
-import IHttpPromiseCallbackArg = angular.IHttpPromiseCallbackArg;
-
 interface IResourcesControllerState extends ng.ui.IStateService {
     params: {
         type: string;
@@ -8,7 +6,17 @@ interface IResourcesControllerState extends ng.ui.IStateService {
 }
 
 class ResourcesController {
-    public static $inject = ["$location", "$scope", "$state", "$timeout", "$q", "ResourcesDataService", "UserInfoService"];
+
+    public static $inject = [
+        "$location",
+        "$scope",
+        "$state",
+        "$timeout",
+        "$q",
+        "ResourcesDataService",
+        "UserInfoService"
+    ];
+
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];
@@ -20,21 +28,21 @@ class ResourcesController {
 
     private hasSponsoredResources = false;
     private isShowingSponsored = false;
-    private lastTab = "";
+    private lastTab: string;
 
     constructor(private $location: angular.ILocationService,
                 private $scope: angular.IScope,
                 private $state: IResourcesControllerState,
-                private $timeout: any,
+                private $timeout: ng.ITimeoutService,
                 private $q: ng.IQService,
-                private resourcesDataService: ResourcesDataService,
+                private ResourcesDataService: IResourcesDataService,
                 private UserInfoService: UserInfoService) {
 
         this.isShowingSponsored = typeof this.$state.params.sponsored === "string" ?
             this.$state.params.sponsored === "true" : this.$state.params.sponsored;
 
         this.refreshPage();
-        this.lastTab = this.$state.params.type;
+        this.lastTab = this.$state.params.type || "inetnum";
         switch (this.$state.params.type) {
             case "inet6num":
                 this.typeIndex = 1;
@@ -81,13 +89,13 @@ class ResourcesController {
             return;
         }
 
-        const promise = this.$timeout(()=>{
+        const promise = this.$timeout(() => {
             this.loading = true;
         }, 200);
 
-        this.resourcesDataService
+        this.ResourcesDataService
             .fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
-            .then((response) => {
+            .then((response: ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>) => {
                 this.$timeout.cancel(promise);
                 this.loading = false;
                 this.hasSponsoredResources = response.data.stats && (

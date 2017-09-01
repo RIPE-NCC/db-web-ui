@@ -86,7 +86,7 @@ class ResourceDetailsController {
         this.getResourcesFromBackEnd();
 
         this.ResourcesDataService.fetchResource(this.objectName, this.objectType)
-            .then((response: IHttpPromiseCallbackArg<IResourceDetailsModel>) => {
+            .then((response: ng.IHttpPromiseCallbackArg<IResourceDetailsResponseModel>) => {
                 this.whoisObject = response.data.object;
                 // should only be one
                 this.resource = response.data.resources[0] ? response.data.resources[0] : {
@@ -158,7 +158,7 @@ class ResourceDetailsController {
             .then((response: IWhoisResponseModel) => {
                     this.onSubmitSuccess(response);
                 },
-                (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                     this.onSubmitError(response.data);
                 });
 
@@ -298,7 +298,7 @@ class ResourceDetailsController {
     private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): boolean {
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
             this.MoreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter)
-                .then((response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
+                .then((response: ng.IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
 
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
                     // response sizes and work out how they fit with this lot.
@@ -342,7 +342,7 @@ class ResourceDetailsController {
 
     private getTicketsAndDates() {
         this.ResourcesDataService.fetchTicketsAndDates(this.orgId, this.objectName)
-            .then((response: IHttpPromiseCallbackArg<IResourceTickets>) => {
+            .then((response: ng.IHttpPromiseCallbackArg<IResourceTickets>) => {
                 if (response.data.tickets !== undefined && response.data.tickets[this.objectName] !== undefined) {
                     for (const ticket of response.data.tickets[this.objectName]) {
                         this.addFlag(ticket.date, "Issue date for " + ticket.resource);

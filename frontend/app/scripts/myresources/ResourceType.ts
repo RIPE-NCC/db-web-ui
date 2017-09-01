@@ -62,6 +62,11 @@ interface ITicket {
     resource: string;
 }
 
+interface IResourceOverviewResponseModel {
+    filteredSize: number;
+    stats: any;
+    resources: any[];
+}
 interface IResourceScreenItem {
     netname?: string;
     asname?: string;
@@ -75,7 +80,7 @@ interface IResourceScreenItem {
 }
 
 
-interface IResourceDetailsModel {
+interface IResourceDetailsResponseModel {
     resources: IMoreSpecificResource[];
     totalNumberOfResources: number;
     filteredSize: number;
@@ -86,13 +91,13 @@ interface IResourceDetailsModel {
 
 interface IResourcesDataService {
 
-    fetchParentResources(resource: IResourceModel, org: string): IPromise<string[]>;
+    fetchParentResources(resource: IResourceModel, org: string): ng.IPromise<string[]>;
 
-    fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse>;
+    fetchIpv4Resource(objectName: string): ng.IPromise<IPv4ResourcesResponse>;
 
-    fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse>;
+    fetchIpv6Resource(objectName: string): ng.IPromise<IPv6ResourcesResponse>;
 
-    fetchResources(orgId: string, resource: string, sponsored: boolean): IPromise<any>;
+    fetchResources(orgId: string, resource: string, sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>>;
 
-    fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets>;
+    fetchTicketsAndDates(orgId: string, resource: string): ng.IPromise<IResourceTickets>;
 }
