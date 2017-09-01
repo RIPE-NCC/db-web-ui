@@ -55,7 +55,7 @@ class ResourcesController {
         }
 
         // Callbacks
-        $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
+        $scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.selectedOrg = selected;
             this.refreshPage();
         });

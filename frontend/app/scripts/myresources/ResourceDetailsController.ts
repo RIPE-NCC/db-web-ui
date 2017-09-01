@@ -124,7 +124,7 @@ class ResourceDetailsController {
             this.isEditing = false;
         });
 
-        $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
+        $scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
             const selectedId = this.$cookies.get("activeMembershipId");
             if (selected && selectedId) {
                 if (selectedId.indexOf("org:") === 0) {
