@@ -4,7 +4,7 @@ interface IQueryParametersService {
                        source: string,
                        types: { [objectName: string]: boolean },
                        flags: string,
-                       inverse: { [attrName: string]: boolean }): IHttpPromise<IWhoisResponseModel>;
+                       inverse: { [attrName: string]: boolean }): ng.IHttpPromise<IWhoisResponseModel>;
 }
 
 class QueryParametersService implements IQueryParametersService {
@@ -18,7 +18,7 @@ class QueryParametersService implements IQueryParametersService {
                               source: string,
                               types: { [objectName: string]: boolean },
                               flags: string,
-                              inverse: { [attrName: string]: boolean }): IHttpPromise<IWhoisResponseModel> {
+                              inverse: { [attrName: string]: boolean }): ng.IHttpPromise<IWhoisResponseModel> {
 
         const typeFilter = _.filter(Object.keys(types), type => types[type]).join(",");
         const inverseFilter = _.filter(Object.keys(inverse), inv => inverse[inv]).join(",");

@@ -1,7 +1,5 @@
-import IAngularEvent = angular.IAngularEvent;
-
 class LeftMenuController {
-    public static $inject = ["$rootScope", "$scope", "$state", "EnvironmentStatus"];
+    public static $inject = ["$rootScope", "$scope", "EnvironmentStatus"];
 
     public activeUrl: string;
     public show: {
@@ -32,10 +30,9 @@ class LeftMenuController {
 
     constructor(private $rootScope: angular.IRootScopeService,
                 private $scope: angular.IScope,
-                private $state: ng.ui.IStateService,
                 private EnvironmentStatus: EnvironmentStatus) {
 
-        $rootScope.$on("$stateChangeSuccess", (event: IAngularEvent, toState: any) => {
+        $rootScope.$on("$stateChangeSuccess", (event: angular.IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
             this.dbMenuIsActive =
                 this.activeUrl.indexOf('/wizard') > -1 ||
@@ -48,7 +45,7 @@ class LeftMenuController {
                 this.activeUrl.indexOf('/lookup') > -1 ||
                 this.activeUrl.indexOf('/multi') > -1;
         });
-        $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
+        $scope.$on("selected-org-changed", (event: angular.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.show.admin = this.show.general = this.show.billing
                 = this.show.generalMeeting = this.show.ticketing = this.show.certification
                 = this.show.myResources = false;

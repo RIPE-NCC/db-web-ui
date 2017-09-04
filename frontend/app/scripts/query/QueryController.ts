@@ -75,7 +75,7 @@ class QueryController {
                 flags,
                 this.inverse)
             .then(
-                (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => this.handleWhoisSearch(response),
+                (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => this.handleWhoisSearch(response),
                 () => this.handleWhoisSearchError());
     }
 
@@ -90,7 +90,7 @@ class QueryController {
         }
     }
 
-    private handleWhoisSearch(response: IHttpPromiseCallbackArg<IWhoisResponseModel>) {
+    private handleWhoisSearch(response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
         this.whoisResponse = response.data;
         this.results = response.data.objects.object;
         this.showWarning = !this.results || this.results.length === 0;

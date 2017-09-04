@@ -1,6 +1,3 @@
-import IHttpPromise = angular.IHttpPromise;
-import IPromise = angular.IPromise;
-
 class UserInfoService {
 
     public static $inject = ["$log", "$http", "$q", "$cookies"];
@@ -15,7 +12,7 @@ class UserInfoService {
                 private $cookies: angular.cookies.ICookiesService) {
     }
 
-    public getUserOrgsAndRoles(): IHttpPromise<IUserInfoResponseData> {
+    public getUserOrgsAndRoles(): ng.IHttpPromise<IUserInfoResponseData> {
         if (!this.deferred) {
             this.deferred = this.$q.defer();
 
@@ -27,7 +24,7 @@ class UserInfoService {
                         method: "GET",
                         timeout: 10000,
                         url: "api/whois-internal/api/user/info",
-                    }).then((response: IHttpPromiseCallbackArg<IUserInfoResponseData>) => {
+                    }).then((response: ng.IHttpPromiseCallbackArg<IUserInfoResponseData>) => {
                         this.userInfo = response.data;
                         return this.userInfo;
                     }),
@@ -41,7 +38,7 @@ class UserInfoService {
         this.deferred = null;
     }
 
-    public getSelectedOrganisation(): IPromise<IUserInfoOrganisation> {
+    public getSelectedOrganisation(): ng.IPromise<IUserInfoOrganisation> {
         const storedSelectionId = this.getSelectedOrgFromCookie();
         return this.getUserOrgsAndRoles().then((userInfo: IUserInfoResponseData) => {
             if (storedSelectionId) {

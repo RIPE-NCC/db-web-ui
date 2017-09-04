@@ -1,34 +1,42 @@
 {
-  "data": {
-    "orgId": "ORG-Sb3-RIPE",
-    "resources": [
-      {
-        "type": "INETNUM",
-        "resource": "194.104.0.0 - 194.104.0.255",
-        "status": "ASSIGNED PI",
-        "netname": "SN-IP"
-      },
-      {
-        "type": "INETNUM",
-        "resource": "194.171.0.0 - 194.171.255.255",
-        "status": "ALLOCATED PA",
-        "netname": "NL-SURFNET-950612"
-      },
-      {
-        "type": "INETNUM",
-        "resource": "195.169.0.0 - 195.169.255.255",
-        "status": "ALLOCATED PA",
-        "netname": "NL-SURFNET-970616"
-      },
-      {
-        "type": "INETNUM",
-        "resource": "192.87.0.0 - 192.87.255.255",
-        "status": "LEGACY",
-        "netname": "NL-SURFNET-20030715"
-      }
-    ]
-  },
-  "statusCode": 200,
-  "contentType": "application/json",
-  "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inetnum"
+    "data": {
+        "stats": {
+            "numInetnums": 4,
+            "numInet6nums": 1,
+            "numAutnums": 1,
+            "numSponsoredInetnums": 1,
+            "numSponsoredInet6nums": 1,
+            "numSponsoredAutnums": 1
+        },
+        "orgId": "ORG-Sb3-RIPE",
+        "resources": [
+            {
+                "type": "INETNUM",
+                "resource": "194.104.0.0 - 194.104.0.255",
+                "status": "ASSIGNED PI",
+                "netname": "SN-IP"
+            },
+            {
+                "type": "INETNUM",
+                "resource": "194.171.0.0 - 194.171.255.255",
+                "status": "ALLOCATED PA",
+                "netname": "NL-SURFNET-950612"
+            },
+            {
+                "type": "INETNUM",
+                "resource": "195.169.0.0 - 195.169.255.255",
+                "status": "ALLOCATED PA",
+                "netname": "NL-SURFNET-970616"
+            },
+            {
+                "type": "INETNUM",
+                "resource": "192.87.0.0 - 192.87.255.255",
+                "status": "LEGACY",
+                "netname": "NL-SURFNET-20030715"
+            }
+        ]
+    },
+    "statusCode": 200,
+    "contentType": "application/json",
+    "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=inetnum"
 }

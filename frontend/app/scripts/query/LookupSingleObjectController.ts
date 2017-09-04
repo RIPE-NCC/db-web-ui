@@ -30,7 +30,7 @@ class LookupSingleObjectController {
             this.QueryParametersService
                 .searchWhoisObjects(this.objectName, this.source, types, "rB", {})
                 .then(
-                    (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                    (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                         if (response.data &&
                             response.data.objects &&
                             response.data.objects.object &&

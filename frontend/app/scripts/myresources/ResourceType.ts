@@ -62,20 +62,39 @@ interface ITicket {
     resource: string;
 }
 
+interface IResourceOverviewResponseModel {
+    filteredSize: number;
+    stats: any;
+    resources: any[];
+}
 interface IResourceScreenItem {
     resource: string;
     status: string;
     type: string;
     usage: IUsage;
+    notRipeRegistered: boolean;
+    sponsoredByOther: boolean;
+}
+
+
+interface IResourceDetailsResponseModel {
+    resources: IMoreSpecificResource[];
+    totalNumberOfResources: number;
+    filteredSize: number;
+    object?: IWhoisObjectModel;
+    notUnderContract?: boolean;
+    sponsoredByOther?: boolean;
 }
 
 interface IResourcesDataService {
-    fetchParentResources(resource: IResourceModel, org: string): IPromise<string[]>;
 
-    fetchIpv4Resource(objectName: string): IPromise<IPv4ResourcesResponse>;
-    fetchIpv6Resource(objectName: string): IPromise<IPv6ResourcesResponse>;
+    fetchParentResources(resource: IResourceModel, org: string): ng.IPromise<string[]>;
 
-    fetchResources(orgId: string, resource: string, sponsored: boolean): IPromise<any>;
+    fetchIpv4Resource(objectName: string): ng.IPromise<IPv4ResourcesResponse>;
 
-    fetchTicketsAndDates(orgId: string, resource: string): IPromise<IResourceTickets>;
+    fetchIpv6Resource(objectName: string): ng.IPromise<IPv6ResourcesResponse>;
+
+    fetchResources(orgId: string, resource: string, sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>>;
+
+    fetchTicketsAndDates(orgId: string, resource: string): ng.IPromise<IResourceTickets>;
 }

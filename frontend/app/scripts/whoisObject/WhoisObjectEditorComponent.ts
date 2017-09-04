@@ -49,7 +49,7 @@ class WhoisObjectEditorController {
         });
         if (createdAttr && createdAttr.length && createdAttr[0].value) {
             WhoisDataService.fetchObject(this.source, this.objectType, this.objectName, password, false).then(
-                (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                     const whois = response.data;
                     // Should have a unique result
                     if (!whois.objects.object || whois.objects.object.length !== 1) {

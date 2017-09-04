@@ -1,6 +1,8 @@
 interface IMoreSpecificsDataService {
     getSpecifics(objectName: string,
-                 objectType: string, pageNr: number, filter: string): IHttpPromise<IMoreSpecificsApiResult>;
+                 objectType: string,
+                 pageNr: number,
+                 filter: string): ng.IHttpPromise<IMoreSpecificsApiResult>;
 }
 
 interface IMoreSpecificsApiResult {
@@ -27,7 +29,7 @@ class MoreSpecificsDataService implements IMoreSpecificsDataService {
     public getSpecifics(objectName: string,
                         objectType: string,
                         page: number,
-                        filter: string): IHttpPromise<IMoreSpecificsApiResult> {
+                        filter: string): ng.IHttpPromise<IMoreSpecificsApiResult> {
 
         if (!objectType) {
             throw new TypeError("objectType is empty. more-specifics not available");

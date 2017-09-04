@@ -24,7 +24,7 @@ class ResourceDetailsController {
         "WhoisDataService",
     ];
 
-    public details: IWhoisObjectModel;
+    public whoisObject: IWhoisObjectModel;
     public moreSpecifics: IMoreSpecificsApiResult;
     public resource: any;
     public flags: any[] = [];
@@ -85,29 +85,27 @@ class ResourceDetailsController {
         this.canHaveMoreSpecifics = false;
         this.getResourcesFromBackEnd();
 
-        this.WhoisDataService.fetchObject(this.source, this.objectType, this.objectName).then(
-            (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
-                const results = response.data.objects.object;
-                if (results.length >= 1) {
-                    this.details = results[0];
-                    this.resource = {
-                        orgName: "",
-                        resource: this.details["primary-key"].attribute[0].value,
-                        type: this.objectType,
-                    };
-                    let hasRipeMaintainer = false;
-                    for (const attr of this.details.attributes.attribute) {
-                        if (attr.name === "status") {
-                            this.addFlag(attr.value, attr.name);
-                            this.showUsage = ResourceStatus.isResourceWithUsage(this.objectType, attr.value);
-                        } else if (attr.name === "netname" || attr.name === "as-name") {
-                            this.addFlag(attr.value, attr.name);
-                        } else if (attr.name === "org") {
-                            this.orgId = attr.value;
-                        } else if (attr.name === "mnt-by" && !hasRipeMaintainer) {
-                            if (MntnerService.isNccMntner(attr.value)) {
-                                hasRipeMaintainer = true;
-                            }
+        this.ResourcesDataService.fetchResource(this.objectName, this.objectType)
+            .then((response: ng.IHttpPromiseCallbackArg<IResourceDetailsResponseModel>) => {
+                this.whoisObject = response.data.object;
+                // should only be one
+                this.resource = response.data.resources[0] ? response.data.resources[0] : {
+                    orgName: "",
+                    resource: this.whoisObject["primary-key"].attribute[0].value,
+                    type: this.objectType,
+                };
+                let hasRipeMaintainer = false;
+                for (const attr of this.whoisObject.attributes.attribute) {
+                    if (attr.name === "status") {
+                        this.addFlag(attr.value, attr.name);
+                        this.showUsage = ResourceStatus.isResourceWithUsage(this.objectType, attr.value);
+                    } else if (attr.name === "netname" || attr.name === "as-name") {
+                        this.addFlag(attr.value, attr.name);
+                    } else if (attr.name === "org") {
+                        this.orgId = attr.value;
+                    } else if (attr.name === "mnt-by" && !hasRipeMaintainer) {
+                        if (MntnerService.isNccMntner(attr.value)) {
+                            hasRipeMaintainer = true;
                         }
                     }
                     if (hasRipeMaintainer && typeof this.orgId === "string" && !this.sponsored) {
@@ -120,7 +118,7 @@ class ResourceDetailsController {
             this.isEditing = false;
         });
 
-        $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
+        $scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
             const selectedId = this.$cookies.get("activeMembershipId");
             if (selected && selectedId) {
                 if (selectedId.indexOf("org:") === 0) {
@@ -146,15 +144,15 @@ class ResourceDetailsController {
             passwords.push(this.CredentialsService.getCredentials().successfulPassword);
         }
 
-        const attributesWithoutDates = this.details.attributes.attribute
+        const attributesWithoutDates = this.whoisObject.attributes.attribute
             .filter((attr: IAttributeModel) => attr.name !== "last-modified" && attr.name !== "created");
         const object = {objects: {object: [{attributes: {attribute: attributesWithoutDates}}]}};
-        const pKey = this.details["primary-key"].attribute[0].value;
+        const pKey = this.whoisObject["primary-key"].attribute[0].value;
         this.RestService.modifyObject(this.source, this.objectType, pKey, object, passwords)
             .then((response: IWhoisResponseModel) => {
                     this.onSubmitSuccess(response);
                 },
-                (response: IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                     this.onSubmitError(response.data);
                 });
 
@@ -225,7 +223,7 @@ class ResourceDetailsController {
         this.successes = [];
 
         // explicitly clear errors on fields before submitting the form, should probably be done elsewhere
-        this.details.attributes.attribute.forEach((a) => {
+        this.whoisObject.attributes.attribute.forEach((a) => {
             a.$$error = "";
             a.$$invalid = false;
         });
@@ -234,7 +232,7 @@ class ResourceDetailsController {
     private onSubmitSuccess(whoisResources: IWhoisResponseModel): void {
         const results = whoisResources.objects.object;
         if (results.length >= 1) {
-            this.details = results[0];
+            this.whoisObject = results[0];
         }
 
         this.isEditing = false;
@@ -266,7 +264,7 @@ class ResourceDetailsController {
     private onSubmitError(whoisResources: IWhoisResponseModel): void {
         const attributeErrors = whoisResources.errormessages.errormessage.filter((e) => e.attribute);
         attributeErrors.forEach((e) => {
-            const attribute = this.details.attributes.attribute.find(
+            const attribute = this.whoisObject.attributes.attribute.find(
                 (a) => a.name === e.attribute.name && a.value === e.attribute.value,
             );
             attribute.$$error = this.getErrorText(e);
@@ -294,7 +292,7 @@ class ResourceDetailsController {
     private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): boolean {
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
             this.MoreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter)
-                .then((response: IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
+                .then((response: ng.IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
 
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
                     // response sizes and work out how they fit with this lot.
@@ -338,7 +336,7 @@ class ResourceDetailsController {
 
     private getTicketsAndDates() {
         this.ResourcesDataService.fetchTicketsAndDates(this.orgId, this.objectName)
-            .then((response: IHttpPromiseCallbackArg<IResourceTickets>) => {
+            .then((response: ng.IHttpPromiseCallbackArg<IResourceTickets>) => {
                 if (response.data.tickets !== undefined && response.data.tickets[this.objectName] !== undefined) {
                     for (const ticket of response.data.tickets[this.objectName]) {
                         this.addFlag(ticket.date, "Issue date for " + ticket.resource);
