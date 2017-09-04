@@ -1,14 +1,11 @@
-<div ng-click="ctrlResourceItem.showDetail()">
-    <p class="title">
+<div>
+    <span class="title" ng-click="ctrlResourceItem.showDetail()">
         <name-formatter name="ctrlResourceItem.item.resource" type="ctrlResourceItem.item.type"></name-formatter>
-        <span class="fa fa-angle-right pull-right"></span></p>
+        <span class="fa fa-chevron-right pull-right"></span>
+    </span>
     <p class="org-name" ng-if="ctrlResourceItem.item.orgName">{{ ctrlResourceItem.item.orgName }}</p>
     <div class="flags-container">
-        <flag text="ctrlResourceItem.item.status" tooltip="status"></flag>
-        <flag text="ctrlResourceItem.item.netname" tooltip="netname"></flag>
-        <flag text="ctrlResourceItem.item.asname" tooltip="as-name"></flag>
-        <flag class="orange" ng-if="ctrlResourceItem.item.notRipeRegistered" text="'No contract'" tooltip="This resource is not covered by an agreement by RIPE NCC"></flag>
-        <flag class="red" ng-if="ctrlResourceItem.item.sponsoredByOther" text="'Sponsored by other'" tooltip="Sponsored by another LIR"></flag>
+        <flag ng-repeat="f in ctrlResourceItem.flags" ng-class="f.colour" tooltip="f.tooltip" text="f.text"></flag>
     </div>
     <div ng-if="ctrlResourceItem.showProgressbar" class="progressbar-container">
         <uib-progressbar

@@ -6,7 +6,7 @@ class LiveChatController {
     private available: boolean = false;
 
     constructor(private $scope: angular.IScope, private $location: ng.ILocationService) {
-        $scope.$on("selected-org-changed", (event: IAngularEvent, selected: IUserInfoOrganisation) => {
+        $scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.available = (selected as IUserInfoRegistration).membershipId !== undefined;
         });
     }

@@ -1,17 +1,20 @@
 <section class="resource-intro">
-    <h1><name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource" type="resourceDetails.resource.type"></name-formatter></h1>
+    <h1>
+        <name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource"
+                        type="resourceDetails.resource.type"></name-formatter>
+    </h1>
     <div class="flags-container">
-        <flag class="grey" tooltip="{{f.type}}" ng-repeat="f in resourceDetails.flags" text="f.value"></flag>
+        <flag ng-repeat="f in resourceDetails.flags" ng-class="f.colour" tooltip="f.type" text="f.value"></flag>
     </div>
 </section>
 <section class="back-to-my-resources">
     <hierarchy-selector
-            resource="resourceDetails.resource"
-            sponsored="resourceDetails.sponsored"
-            ng-if="resourceDetails.resource">
+        resource="resourceDetails.resource"
+        sponsored="resourceDetails.sponsored"
+        ng-if="resourceDetails.resource">
     </hierarchy-selector>
 </section>
-<usage-status ng-if="resourceDetails.showUsage" resource="resourceDetails.resource"></usage-status>
+<ip-usage ng-if="resourceDetails.showUsage" type="resourceDetails.objectType" usage="resourceDetails.resource.usage"></ip-usage>
 
 <section id="db-object" class="db-object">
     <h2>Object in RIPE Database</h2>
@@ -35,11 +38,18 @@
             <span ng-bind-html="info"></span>
         </p>
     </div>
-    <whois-object-viewer ng-model="resourceDetails.details" ng-if="resourceDetails.details && !resourceDetails.isEditing"
-                         update-clicked="resourceDetails.showObjectEditor(resourceDetails.details)"></whois-object-viewer>
-    <maintainers-editor ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing" authentication-failed-clbk="resourceDetails.hideObjectEditor()"></maintainers-editor>
-    <whois-object-editor ng-model="resourceDetails.details" ng-if="resourceDetails.details && resourceDetails.isEditing"
-                          cancel-clicked="resourceDetails.hideObjectEditor()" update-clicked="resourceDetails.updateButtonClicked()"></whois-object-editor>
+    <div ng-if="resourceDetails.whoisObject">
+        <whois-object-viewer ng-model="resourceDetails.whoisObject"
+                             ng-if="!resourceDetails.isEditing"
+                             update-clicked="resourceDetails.showObjectEditor(resourceDetails.whoisObject)"></whois-object-viewer>
+        <maintainers-editor ng-model="resourceDetails.whoisObject"
+                            ng-if="resourceDetails.isEditing"
+                            authentication-failed-clbk="resourceDetails.hideObjectEditor()"></maintainers-editor>
+        <whois-object-editor ng-model="resourceDetails.whoisObject"
+                             ng-if="resourceDetails.isEditing"
+                             cancel-clicked="resourceDetails.hideObjectEditor()"
+                             update-clicked="resourceDetails.updateButtonClicked()"></whois-object-editor>
+    </div>
 </section>
 
 <section class="more-specifics" ng-if="resourceDetails.canHaveMoreSpecifics">
@@ -69,7 +79,8 @@
             Total number: {{resourceDetails.moreSpecifics.totalNumberOfResources}}
         </span>
     </div>
-    <table class="table table-bordered table-body-borderless resources table-striped" ng-if="resourceDetails.moreSpecifics.resources.length">
+    <table class="table table-bordered table-body-borderless resources table-striped"
+           ng-if="resourceDetails.moreSpecifics.resources.length">
         <thead>
         <tr>
             <th>Internet number resource</th>
@@ -78,7 +89,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="resource in resourceDetails.moreSpecifics.resources" ng-if="$index < resourceDetails.nrMoreSpecificsToShow">
+        <tr ng-repeat="resource in resourceDetails.moreSpecifics.resources"
+            ng-if="$index < resourceDetails.nrMoreSpecificsToShow">
             <td><a ng-click="resourceDetails.showDetail(resource)">
                 <name-formatter name="resource.resource" type="resource.type"></name-formatter>
             </a></td>

@@ -68,6 +68,9 @@ interface IResourceOverviewResponseModel {
     resources: any[];
 }
 interface IResourceScreenItem {
+    netname?: string;
+    asname?: string;
+
     resource: string;
     status: string;
     type: string;

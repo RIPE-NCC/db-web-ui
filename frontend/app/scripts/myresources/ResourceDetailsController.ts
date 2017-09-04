@@ -16,12 +16,12 @@ class ResourceDetailsController {
         "$anchorScroll",
         "$cookies",
         "CredentialsService",
+        "LabelService",
         "MntnerService",
         "MoreSpecificsService",
         "ResourceStatus",
         "ResourcesDataService",
         "RestService",
-        "WhoisDataService",
     ];
 
     public whoisObject: IWhoisObjectModel;
@@ -64,12 +64,12 @@ class ResourceDetailsController {
                 private $anchorScroll: ng.IAnchorScrollService,
                 private $cookies: angular.cookies.ICookiesService,
                 private CredentialsService: any,
+                private LabelService: LabelService,
                 private MntnerService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
                 private ResourceStatus: any,
                 private ResourcesDataService: ResourcesDataService,
-                private RestService: any,
-                private WhoisDataService: WhoisDataService) {
+                private RestService: any) {
 
         this.show = {
             editor: false,
@@ -108,9 +108,15 @@ class ResourceDetailsController {
                             hasRipeMaintainer = true;
                         }
                     }
-                    if (hasRipeMaintainer && typeof this.orgId === "string" && !this.sponsored) {
-                        this.getTicketsAndDates();
-                    }
+                }
+                if (hasRipeMaintainer && typeof this.orgId === "string" && !this.sponsored) {
+                    this.getTicketsAndDates();
+                }
+                if (!hasRipeMaintainer && response.data.notUnderContract) {
+                    this.addFlag(this.LabelService.getLabel("flag.noContract.text"), this.LabelService.getLabel("flag.noContract.title"), "orange");
+                }
+                if (response.data.sponsoredByOther) {
+                    this.addFlag(this.LabelService.getLabel("flag.otherSponsor.text"), this.LabelService.getLabel("flag.otherSponsor.title"), "red");
                 }
             });
 
@@ -325,8 +331,8 @@ class ResourceDetailsController {
         this.$anchorScroll(anchor);
     }
 
-    private addFlag(textOnFlag: string, tooltip: string) {
-        const flag = {type: tooltip, value: textOnFlag};
+    private addFlag(textOnFlag: string, tooltip: string, colour?: string) {
+        const flag = {type: tooltip, value: textOnFlag, colour: colour};
         if (tooltip === "status") {
             this.flags.unshift(flag);
         } else {

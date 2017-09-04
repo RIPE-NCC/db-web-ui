@@ -98,7 +98,7 @@ class ResourcesController {
             .then((response: ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>) => {
                 this.$timeout.cancel(promise);
                 this.loading = false;
-                this.hasSponsoredResources = (
+                this.hasSponsoredResources = response.data.stats && (
                     response.data.stats.numSponsoredInetnums +
                     response.data.stats.numSponsoredInet6nums +
                     response.data.stats.numSponsoredAutnums) > 0;
@@ -117,6 +117,7 @@ class ResourcesController {
                 }
             }, () => {
                 this.fail = true;
+                this.$timeout.cancel(promise);
                 this.loading = false;
                 this.reason = "There was problem reading resources please try again";
             });

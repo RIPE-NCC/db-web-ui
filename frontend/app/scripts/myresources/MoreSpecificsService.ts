@@ -21,9 +21,9 @@ interface IMoreSpecificResource {
 
 class MoreSpecificsDataService implements IMoreSpecificsDataService {
 
-    public static $inject = ["$log", "$http"];
+    public static $inject = ["$http"];
 
-    constructor(private $log: angular.ILogService, private $http: angular.IHttpService) {
+    constructor(private $http: angular.IHttpService) {
     }
 
     public getSpecifics(objectName: string,
@@ -37,7 +37,7 @@ class MoreSpecificsDataService implements IMoreSpecificsDataService {
         if (!objectName) {
             throw new TypeError("objectName is empty. more-specifics not available");
         }
-        const url = "api/whois-internal/api/resources/" + objectType  + "/" + objectName + "/more-specifics.json";
+        const url = "api/whois-internal/api/resources/" + objectType + "/" + objectName + "/more-specifics.json";
 
         filter = filter ? filter.replace(/\s/g, "") : "";
         const params = {
