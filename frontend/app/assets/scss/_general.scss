@@ -167,18 +167,6 @@ div.portlet.navigation {
     width: 100%;
 }
 
-div#button-container {
-    a.api-button {
-        background: #00A0B0;
-        &:before {
-            font-family: FontAwesome;
-            margin-right: 10px;
-            content: "\f085";
-            font-size: 1.2em;
-        }
-    }
-}
-
 .form-control:focus {
     border-color: #adadad;
     box-shadow: none;

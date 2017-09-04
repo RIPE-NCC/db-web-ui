@@ -126,6 +126,11 @@ module.exports = {
 
     orgSelector: element(by.id('organisation-selector')),
     orgSelectorOptions: element(by.id('organisation-selector')).all(by.css('small')),
+    orgSelectorOptions0: element(by.id('ui-select-choices-row-0-0')),
+    orgSelectorOptions1: element(by.id('ui-select-choices-row-0-1')),
+
+    liveChatButtonTab: element(by.id('userlikeCustomTab')),
+    liveChatPopup: element(by.id('userlike-popup')),
 
     // My resources
     myResources: element(by.css('.my-resources')),

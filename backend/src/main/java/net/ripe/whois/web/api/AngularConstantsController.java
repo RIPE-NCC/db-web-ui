@@ -47,6 +47,8 @@ public class AngularConstantsController {
     private String frontendBanner;
     @Value("${frontend.gtm.id}")
     private String frontendGtmId;
+    @Value("${frontend.livechat.key}")
+    private String frontendLiveChatKey;
     @Value("${object.lookup.url:/search/lookup.html}")
     private String objectLookupUrl;
 
@@ -116,6 +118,7 @@ public class AngularConstantsController {
             "        PORTAL_URL: '" + portalUrl + "',\n" +
             "        BANNER: '" + frontendBanner + "',\n" +
             "        GTM_ID: '" + frontendGtmId + "',\n" +
+            "        LIVE_CHAT_KEY: '" + frontendLiveChatKey + "',\n" +
             "        LIR_ACCOUNT_DETAILS_URL: '" + leftMenuConfiguration.getLirAccountDetailsUrl() + "',\n" +
             "        LIR_BILLING_DETAILS_URL: '" + leftMenuConfiguration.getLirBillingDetailsUrl() + "',\n" +
             "        LIR_GENERAL_MEETING_URL: '" + leftMenuConfiguration.getLirGeneralMeetingUrl() + "',\n" +

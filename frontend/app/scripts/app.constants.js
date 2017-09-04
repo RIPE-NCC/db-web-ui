@@ -11,6 +11,7 @@ angular.module('dbWebApp')
         PORTAL_URL: 'https://my.prepdev.ripe.net/',
         BANNER: 'Welcome to the DEV Environment of the RIPE Database.',
         GTM_ID: 'GTM-WTWTB7',
+        LIVE_CHAT_KEY: '98e82f81b368ddac660f7980f60227954738de3d5b6eaf8d07fc763f617d80b5',
         OBJECT_LOOKUP_URL: '/search/lookup.html', // feature switch
         MY_RESOURCES_URL: '#/myresources/overview'
     });

@@ -27,6 +27,7 @@ describe('The query pagina', function () {
 
     it('should be able to search using the text box', function () {
         page.inpQueryString.sendKeys('193.0.0.0\n'); // press 'enter' for a laugh
+        page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(4);
         expect(page.inpQueryString.getAttribute('value')).toEqual('193.0.0.0');
