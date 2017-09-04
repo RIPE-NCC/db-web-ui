@@ -1,4 +1,3 @@
-
 class ResourcesDataService implements IResourcesDataService {
 
     public static $inject = ["$http", "$log"];
