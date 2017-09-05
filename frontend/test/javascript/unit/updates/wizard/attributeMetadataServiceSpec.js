@@ -68,6 +68,41 @@ describe('The attributeMetadataService', function () {
         expect(isReadOnly).toBe(true);
     });
 
+    it('should create metadata for co-maintained inetnum object with org read only', function () {
+
+        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}, {name: 'org', value: 'ORG-EIP1-RIPE'}]
+        var type = 'inetnum';
+        var metaData = AttributeMetadataService.getAllMetadata(type);
+        var isReadOnly = metaData.org.readOnly(type, attributes);
+        expect(isReadOnly).toBe(true);
+    });
+
+    it('should create metadata for NOT co-maintained inetnum object with org NOT read only', function () {
+
+        var attributes = [{name: 'org', value: 'ORG-EIP1-RIPE'}]
+        var type = 'inetnum';
+        var metaData = AttributeMetadataService.getAllMetadata(type);
+        var isReadOnly = metaData.org.readOnly(type, attributes);
+        expect(isReadOnly).toBe(false);
+    });
+
+    it('should create metadata for co-maintained inet6num object with org read only', function () {
+
+        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}, {name: 'org', value: 'ORG-EIP1-RIPE'}]
+        var type = 'inet6num';
+        var metaData = AttributeMetadataService.getAllMetadata(type);
+        var isReadOnly = metaData.org.readOnly(type, attributes);
+        expect(isReadOnly).toBe(true);
+    });
+
+    it('should create metadata for NOT co-maintained inet6num object with org NOT read only', function () {
+
+        var attributes = [{name: 'org', value: 'ORG-EIP1-RIPE'}]
+        var type = 'inet6num';
+        var metaData = AttributeMetadataService.getAllMetadata(type);
+        var isReadOnly = metaData.org.readOnly(type, attributes);
+        expect(isReadOnly).toBe(false);
+    });
 
     xit('should be able to calculate validity of an attribute', function() {
         var isInvalid;

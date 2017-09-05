@@ -40,4 +40,44 @@ describe('My Resources, update object', function () {
         expect(page.successMessage.isPresent()).toBe(true);
     });
 
+    describe('not comaintained by ripe', function () {
+
+        beforeEach(function () {
+            browser.get(browser.baseUrl + '#/myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false');
+        });
+
+        it('can edit netname', function () {
+            page.btnUpdateObjectButton.click();
+            page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
+            page.modalInpAssociate.click();
+            page.modalBtnSubmit.click();
+            expect(page.modal.isPresent()).toBe(false);
+
+            // ensure netname is editable and edit it
+            expect(page.woeNetname.getAttribute('disabled')).toBeFalsy();
+            page.woeNetname.clear();
+            page.woeNetname.sendKeys('some netname');
+
+            // and check the value has changed correctly
+            expect(page.woeNetname.getAttribute('value')).toBe('some netname');
+        });
+
+        it('can add org attribute', function () {
+            page.btnUpdateObjectButton.click();
+            page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
+            page.modalInpAssociate.click();
+            page.modalBtnSubmit.click();
+            expect(page.modal.isPresent()).toBe(false);
+
+            // add org attribute
+            page.woeBtnAddAttribute.click();
+            page.modalOrg.click();
+            page.modalBtnSubmit.click();
+
+            // and check it's there
+            expect(page.woeOrg.isPresent()).toBe(true);
+        });
+
+    });
+
 });

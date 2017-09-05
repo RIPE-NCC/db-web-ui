@@ -60,7 +60,8 @@
                 for (var attributeName in md) {
                     if (md.hasOwnProperty(attributeName)) {
                         var metadata = AttributeMetadataService.getMetadata(objectType, attributeName);
-                        if (!metadata.readOnly && !metadata.maxOccurs) {
+
+                        if (!isReadOnly(metadata, objectType, attributes) && canBeAdded(objectType, attributes, { name: attributeName })) {
                             addableAttributes.push({name: attributeName});
                         }
                     }
@@ -248,11 +249,18 @@
                 return matches.length < cardinality.maxOccurs;
             }
 
+            function isReadOnly(metadata, objectType, attributes) {
+                return typeof metadata.readOnly === 'function'?
+                    metadata.readOnly(objectType, attributes) : metadata.readOnly;
+            }
+
             function canBeRemoved(objectType, attributes, attribute) {
                 var metadata = AttributeMetadataService.getMetadata(objectType, attribute.name);
-                if (metadata.readOnly) {
+
+                if (isReadOnly(metadata, objectType, attributes)) {
                     return false;
                 }
+
                 var cardinality = AttributeMetadataService.getCardinality(objectType, attribute.name);
                 // check if there's a limit
                 if (cardinality.minOccurs < 1) {

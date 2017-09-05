@@ -390,6 +390,10 @@
             return created && typeof created.value === 'string';
         }
 
+        function isComaintained(objectType, attributes) {
+            return MntnerService.isComaintained(attributes);
+        }
+
         function isList(objectType, attribute) {
             var md = getMetadata(objectType, attribute.name);
             if (md) {
@@ -500,13 +504,13 @@
               metadata[aName][aName].hidden = {invalid: ['mnt-by']};
               metadata[aName][aName].readOnly = isModifyMode;
 
-              metadata[aName].org.readOnly = true;
-              metadata[aName]['sponsoring-org'].readOnly = true; // TODO: needs to be calculated. also: sponsoring-org and org-type
+              metadata[aName].org.readOnly = isComaintained;
+              metadata[aName]['sponsoring-org'].readOnly = true;
               metadata[aName].status.readOnly = isModifyMode;
               metadata[aName].source.readOnly = isModifyMode;
             }
-            metadata.inetnum.netname.readOnly = function(objectType, attributes) { return MntnerService.isComaintained(attributes)};
-            metadata.inet6num.netname.readOnly = function(objectType, attributes) { return MntnerService.isComaintained(attributes)};
+            metadata.inetnum.netname.readOnly = isComaintained;
+            metadata.inet6num.netname.readOnly = isComaintained;
 
             return metadata;
         }

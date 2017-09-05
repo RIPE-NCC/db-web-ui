@@ -117,6 +117,7 @@ module.exports = {
     modalInpMaintainer: element(by.css('[uib-modal-window]')).element(by.model('selected.item')),
     modalInpPassword: element(by.css('[uib-modal-window]')).element(by.model('selected.password')),
     modalInpAssociate: element(by.css('[uib-modal-window]')).element(by.model('selected.associate')),
+    modalOrg: element(by.css('[uib-modal-window]')).element(by.css("option[label='org']")),
     modalBtnSubmit: element(by.css('[uib-modal-window]')).element(by.css('button[type=submit]')),
     modalClose: element(by.css('[uib-modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
     modalBody: element(by.css('[uib-modal-window]')).element(by.css('.modal-body')),
@@ -159,6 +160,9 @@ module.exports = {
     // Whois Object Editor
     inpDescr: element(by.css('whois-object-editor')).element(by.name('descr$2')),
     inpDescr2: element(by.css('whois-object-editor')).element(by.name('descr$3')),
+    woeNetname: element(by.css('whois-object-editor')).element(by.name('netname$1')),
+    woeOrg: element(by.css('whois-object-editor')).element(by.name('org$1')),
+    woeBtnAddAttribute: element(by.css('whois-object-editor')).all(by.css('.fa.fa-plus')).first(),
     btnSubmitObject: element(by.css('whois-object-editor')).element(by.css('.blue-button')),
     successMessage: element(by.css('.alert-success')),
 
