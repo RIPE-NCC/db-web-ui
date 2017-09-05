@@ -26,6 +26,9 @@
                     {
                         "name": "netname",
                         "value": "RU-1C-20160322"
+                    }, {
+                        "name": "descr",
+                        "value": "first line of description"
                     },
                     {
                         "name": "country",
