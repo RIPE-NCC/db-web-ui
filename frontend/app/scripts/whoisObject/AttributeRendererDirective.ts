@@ -10,11 +10,9 @@ const AttributeRendererDirective = () => {
         controller: "AttributeCtrl",
         link: (scope: IAttributeRendererDirectiveScope) => {
             // choose the html template dynamically
-            if (scope.attribute.name === "reverse-zone") {
-                scope.widgetHtml = "scripts/whoisObject/attribute-reverse-zones.html";
-            } else {
-                scope.widgetHtml = "scripts/whoisObject/attribute.html";
-            }
+            scope.widgetHtml = scope.attribute.name === "reverse-zone"
+                ? "scripts/whoisObject/attribute-reverse-zones.html"
+                : scope.widgetHtml = "scripts/whoisObject/attribute.html";
         },
         restrict: "E",
         scope: {attributes: "=", attribute: "=", objectType: "=", source: "=", idx: "="},

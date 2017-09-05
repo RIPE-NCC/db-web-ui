@@ -4,11 +4,10 @@
 class WhoisDataService {
 
     public static $inject = [
-        "$log",
-        "$http"];
+        "$http",
+    ];
 
-    constructor(private $log: angular.ILogService,
-                private $http: angular.IHttpService) {
+    constructor(private $http: angular.IHttpService) {
     }
 
     public fetchObject(source: string,

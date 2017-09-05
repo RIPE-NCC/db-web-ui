@@ -32,11 +32,6 @@ interface IPv6ResourcesResponse {
     resources: IPv6ResourceDetails[];
 }
 
-interface AsnResourcesResponse {
-    orgid: string;
-    resources: AsnResourceDetails[];
-}
-
 interface IPv4ResourcesResponse {
     orgid: string;
     resources: IPv4ResourceDetails[];
@@ -67,6 +62,7 @@ interface IResourceOverviewResponseModel {
     stats: any;
     resources: any[];
 }
+
 interface IResourceScreenItem {
     netname?: string;
     asname?: string;
@@ -78,7 +74,6 @@ interface IResourceScreenItem {
     notRipeRegistered: boolean;
     sponsoredByOther: boolean;
 }
-
 
 interface IResourceDetailsResponseModel {
     resources: IMoreSpecificResource[];
@@ -97,7 +92,9 @@ interface IResourcesDataService {
 
     fetchIpv6Resource(objectName: string): ng.IPromise<IPv6ResourcesResponse>;
 
-    fetchResources(orgId: string, resource: string, sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>>;
+    fetchResources(orgId: string,
+                   resource: string,
+                   sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>>;
 
     fetchTicketsAndDates(orgId: string, resource: string): ng.IPromise<IResourceTickets>;
 }

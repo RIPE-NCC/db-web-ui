@@ -36,16 +36,16 @@ class ResourceItemController {
         }
         if (this.item.notRipeRegistered) {
             this.flags.push({
+                colour: "orange",
                 text: this.LabelService.getLabel("flag.noContract.text"),
                 tooltip: this.LabelService.getLabel("flag.noContract.title"),
-                colour: "orange"
             });
         }
         if (this.item.sponsoredByOther) {
             this.flags.push({
+                colour: "red",
                 text: this.LabelService.getLabel("flag.otherSponsor.text"),
                 tooltip: this.LabelService.getLabel("flag.otherSponsor.title"),
-                colour: "red"
             });
         }
     }

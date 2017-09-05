@@ -13,8 +13,6 @@ class IpUsageController {
     public ipv6CalcUsed: string;
     public ipv6CalcFree: string;
 
-    constructor() {}
-
     public $onChanges(): void {
         this.usage.free = this.calcFreeSpace();
         this.calcPercentage();

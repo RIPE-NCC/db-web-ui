@@ -113,10 +113,16 @@ class ResourceDetailsController {
                     this.getTicketsAndDates();
                 }
                 if (!hasRipeMaintainer && response.data.notUnderContract) {
-                    this.addFlag(this.LabelService.getLabel("flag.noContract.text"), this.LabelService.getLabel("flag.noContract.title"), "orange");
+                    this.addFlag(this.LabelService.getLabel(
+                        "flag.noContract.text"),
+                        this.LabelService.getLabel("flag.noContract.title"),
+                        "orange");
                 }
                 if (response.data.sponsoredByOther) {
-                    this.addFlag(this.LabelService.getLabel("flag.otherSponsor.text"), this.LabelService.getLabel("flag.otherSponsor.title"), "red");
+                    this.addFlag(this.LabelService.getLabel(
+                        "flag.otherSponsor.text"),
+                        this.LabelService.getLabel("flag.otherSponsor.title"),
+                        "red");
                 }
             });
 
@@ -140,11 +146,8 @@ class ResourceDetailsController {
     }
 
     public updateButtonClicked(): void {
-        console.log('arguments', arguments);
         this.resetMessages();
-
         this.show.transition = true;
-
         const passwords = [];
         if (this.CredentialsService.hasCredentials()) {
             passwords.push(this.CredentialsService.getCredentials().successfulPassword);
@@ -332,7 +335,11 @@ class ResourceDetailsController {
     }
 
     private addFlag(textOnFlag: string, tooltip: string, colour?: string) {
-        const flag = {type: tooltip, value: textOnFlag, colour: colour};
+        const flag = {
+            colour,
+            type: tooltip,
+            value: textOnFlag,
+        };
         if (tooltip === "status") {
             this.flags.unshift(flag);
         } else {

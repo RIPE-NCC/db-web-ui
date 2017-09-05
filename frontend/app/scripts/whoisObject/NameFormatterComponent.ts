@@ -5,11 +5,10 @@ class NameFormatterController {
     public type: string;
 
     constructor() {
-        if (typeof this.type === "string" && this.type.toUpperCase() === "INETNUM") {
-            this.formatted = new IpAddressService().formatAsPrefix(this.name);
-        } else {
-            this.formatted = this.name || "";
-        }
+        this.formatted =
+            typeof this.type === "string" && this.type.toUpperCase() === "INETNUM"
+                ? new IpAddressService().formatAsPrefix(this.name)
+                : this.name || "";
     }
 
 }
