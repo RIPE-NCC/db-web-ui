@@ -107,18 +107,18 @@
             if (jsUtils.typeOf(attrMetadata) === 'array') {
                 // handles { ..., invalid: [RegExp, invalid: ['attr1', 'attr2'], Function]}
                 return -1 !== _.findIndex(attrMetadata, function (item) {
-                        if (jsUtils.typeOf(item) === 'string') {
-                            // must be 'invalid' or 'hidden' or 'readOnly'
-                            if (attrMetadata[item]) {
-                                return evaluateMetadata(objectType, attributes, attribute, attrMetadata[item]);
-                            } else {
-                                // not handled
-                                return false;
-                            }
+                    if (jsUtils.typeOf(item) === 'string') {
+                        // must be 'invalid' or 'hidden' or 'readOnly'
+                        if (attrMetadata[item]) {
+                            return evaluateMetadata(objectType, attributes, attribute, attrMetadata[item]);
                         } else {
-                            return evaluateMetadata(objectType, attributes, attribute, item);
+                            // not handled
+                            return false;
                         }
-                    });
+                    } else {
+                        return evaluateMetadata(objectType, attributes, attribute, item);
+                    }
+                });
             }
             // Otherwise, go through the 'invalid' and 'hidden' properties and return the first true result
             // First, check it's valid metadata
@@ -138,17 +138,17 @@
                 }
             } else if (jsUtils.typeOf(attrMetadata.invalid) === 'array') {
                 return -1 !== _.findIndex(attrMetadata.invalid, function (attrName) {
-                        // filter takes care of multiple attributes with the same name
-                        target = _.filter(attributes, function (o) {
-                            return o.name === attrName;
-                        });
-                        for (i = 0; i < target.length; i++) {
-                            target[i].$$invalid = isInvalid(objectType, attributes, target[i]);
-                            if (target[i].$$invalid) {
-                                return true;
-                            }
-                        }
+                    // filter takes care of multiple attributes with the same name
+                    target = _.filter(attributes, function (o) {
+                        return o.name === attrName;
                     });
+                    for (i = 0; i < target.length; i++) {
+                        target[i].$$invalid = isInvalid(objectType, attributes, target[i]);
+                        if (target[i].$$invalid) {
+                            return true;
+                        }
+                    }
+                });
             }
             // TODO: 'hidden' and 'readOnly' - string and array
             return false;
@@ -463,7 +463,7 @@
                         p.searchable = a.searchable;
                     }
                     if (a.isEnum) {
-                       p.staticList = true;
+                        p.staticList = true;
                     }
                     n[a.name] = p;
                 }
@@ -479,7 +479,13 @@
             metadata.domain.nserver = {minOccurs: 2};
 
             metadata.prefix = {
-                prefix: {minOccurs: 1, maxOccurs: 1, primaryKey: true, invalid: [prefixIsInvalid, domainsAlreadyExist], hidden: {invalid: ['mnt-by']}},
+                prefix: {
+                    minOccurs: 1,
+                    maxOccurs: 1,
+                    primaryKey: true,
+                    invalid: [prefixIsInvalid, domainsAlreadyExist],
+                    hidden: {invalid: ['mnt-by']}
+                },
                 descr: {},
                 nserver: {minOccurs: 2, hidden: {invalid: 'prefix'}, invalid: nserverIsInvalid},
                 'reverse-zone': {minOccurs: 1, maxOccurs: 1, hidden: {invalid: ['prefix', 'nserver']}},
@@ -499,15 +505,15 @@
             // Here we assume that the basic rules are the same for these attributes
             var attrs = ['aut-num', 'inetnum', 'inet6num'];
             for (var a in attrs) {
-              var aName = attrs[a];
-              metadata[aName][aName].invalid = [];
-              metadata[aName][aName].hidden = {invalid: ['mnt-by']};
-              metadata[aName][aName].readOnly = isModifyMode;
+                var aName = attrs[a];
+                metadata[aName][aName].invalid = [];
+                metadata[aName][aName].hidden = {invalid: ['mnt-by']};
+                metadata[aName][aName].readOnly = isModifyMode;
 
-              metadata[aName].org.readOnly = isComaintained;
-              metadata[aName]['sponsoring-org'].readOnly = true;
-              metadata[aName].status.readOnly = isModifyMode;
-              metadata[aName].source.readOnly = isModifyMode;
+                metadata[aName].org.readOnly = isComaintained;
+                metadata[aName]['sponsoring-org'].readOnly = true;
+                metadata[aName].status.readOnly = isModifyMode;
+                metadata[aName].source.readOnly = isModifyMode;
             }
             metadata.inetnum.netname.readOnly = isComaintained;
             metadata.inet6num.netname.readOnly = isComaintained;
