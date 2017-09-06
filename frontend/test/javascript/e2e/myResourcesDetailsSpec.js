@@ -4,7 +4,7 @@
 // Local requires
 var page = require('./homePageObject');
 
-describe('My Resources detail', function () {
+fdescribe('My Resources detail', function () {
 
     beforeEach(function () {
         browser.get(browser.baseUrl);
@@ -28,13 +28,14 @@ describe('My Resources detail', function () {
             expect(attributes.count()).toEqual(13);
             expect(attributes.get(0).getText()).toMatch(/inetnum: *192\.87\.0\.0 - 192\.87\.255\.255/);
             expect(attributes.get(1).getText()).toMatch(/netname: *RU-1C-20160322/);
-            expect(attributes.get(2).getText()).toMatch(/country: *FI/);
-            expect(attributes.get(3).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
-            expect(attributes.get(4).getText()).toMatch(/sponsoring-org: *ORG-LA538-RIPE/);
-            expect(attributes.get(5).getText()).toMatch(/admin-c: *MV10039-RIPE/);
-            expect(attributes.get(6).getText()).toMatch(/tech-c: *inty1-ripe/);
-            expect(attributes.get(7).getText()).toMatch(/status: *ASSIGNED PI/);
-            expect(attributes.get(8).getText()).toMatch(/mnt-by: *TPOL888-MNT/);
+            expect(attributes.get(2).getText()).toMatch(/descr: *first line of description/);
+            expect(attributes.get(3).getText()).toMatch(/country: *FI/);
+            expect(attributes.get(4).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
+            expect(attributes.get(5).getText()).toMatch(/sponsoring-org: *ORG-LA538-RIPE/);
+            expect(attributes.get(6).getText()).toMatch(/admin-c: *MV10039-RIPE/);
+            expect(attributes.get(7).getText()).toMatch(/tech-c: *inty1-ripe/);
+            expect(attributes.get(8).getText()).toMatch(/status: *ASSIGNED PI/);
+            expect(attributes.get(9).getText()).toMatch(/mnt-by: *TPOL888-MNT/);
             expect(attributes.get(10).getText()).toMatch(/created: *2016-03-22T13:48:02Z/);
             expect(attributes.get(11).getText()).toMatch(/last-modified: *2016-04-26T14:28:28Z/);
             expect(attributes.get(12).getText()).toMatch(/source:( *)RIPE/);
