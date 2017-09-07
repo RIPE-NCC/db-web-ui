@@ -1,4 +1,5 @@
 class LinkService {
+
     public getLink(source: string, type: string, name: string) {
         return [
             "<a target=\"_blank\" href=\"#/webupdates/display/",
@@ -20,7 +21,7 @@ class LinkService {
         return "<a target=\"_blank\" href=\"" + this.getModifyUrl(source, type, name) + "\">" + name + "</a>";
     }
 
-    public filterAndCreateTextWithLinksForMntnersfunction (source: string, mntners: string) {
+    public filterAndCreateTextWithLinksForMntners(source: string, mntners: string) {
         const chopped = _.words(mntners, /[^, ]+/g);
         if (_.isUndefined(chopped)) {
             return mntners;
