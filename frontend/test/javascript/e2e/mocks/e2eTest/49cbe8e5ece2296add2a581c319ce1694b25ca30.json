@@ -1,6 +1,0 @@
-{
-  "requestUrl": "/api/whois-internal/api/resources?sponsoring-org-id=ORG-WA56-RIPE&type=inet6num",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {}
-}

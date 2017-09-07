@@ -17,7 +17,6 @@ var prismFilename = function (config, req) {
     var shasum = crypto.createHash('sha1');
     shasum.update(req.url);
     var digest = shasum.digest('hex');
-    console.log("<<<" + digest + ">>>");
     return digest + '.json';
 };
 
