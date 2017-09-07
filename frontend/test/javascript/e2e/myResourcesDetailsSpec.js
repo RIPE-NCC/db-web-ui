@@ -4,7 +4,7 @@
 // Local requires
 var page = require('./homePageObject');
 
-fdescribe('My Resources detail', function () {
+describe('My Resources detail', function () {
 
     beforeEach(function () {
         browser.get(browser.baseUrl);
