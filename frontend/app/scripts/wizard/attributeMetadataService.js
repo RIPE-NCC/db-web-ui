@@ -46,6 +46,7 @@
                 attributes[i].$$invalid = isInvalid(objectType, attributes, attributes[i]);
                 attributes[i].$$hidden = isHidden(objectType, attributes, attributes[i]);
                 attributes[i].$$disable = isReadOnly(objectType, attributes, attributes[i]);
+                attributes[i].$$id = "attr-" + i;
             }
         }
 

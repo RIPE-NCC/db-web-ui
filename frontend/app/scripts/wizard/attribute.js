@@ -102,9 +102,18 @@
              */
 
             function addAttr(attributes, attribute, attributeName) {
-                var foundIdx = _.findIndex(attributes, function (attr) {
-                    return attr.name === attribute.name && attr.value === attribute.value;
-                });
+                var foundIdx = -1;
+                if (attribute.$$id) {
+                    foundIdx = _.findIndex(attributes, function (attr) {
+                        return attribute.$$id === attr.$$id;
+                    });
+                }
+                // if id wasn't found, find match on name/value.
+                if (foundIdx < 0) {
+                    foundIdx = _.findIndex(attributes, function (attr) {
+                        return attr.name === attribute.name && attr.value === attribute.value;
+                    });
+                }
                 if (foundIdx > -1) {
                     attributes.splice(foundIdx + 1, 0, {name: attributeName});
                     AttributeMetadataService.enrich($scope.objectType, attributes);

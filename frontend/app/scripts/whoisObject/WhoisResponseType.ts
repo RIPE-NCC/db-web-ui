@@ -20,6 +20,7 @@ interface IAttributeModel {
     $$error: string;
     $$info: string;
     $$invalid: boolean;
+    $$id: string;
     comment: string;
 }
 
