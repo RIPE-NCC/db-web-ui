@@ -9,12 +9,13 @@ class ResourcesController {
 
     public static $inject = [
         "$location",
+        "$log",
         "$scope",
         "$state",
         "$timeout",
         "$q",
         "ResourcesDataService",
-        "UserInfoService"
+        "UserInfoService",
     ];
 
     public ipv4Resources: IPv4ResourceDetails[] = [];
@@ -31,6 +32,7 @@ class ResourcesController {
     private lastTab: string;
 
     constructor(private $location: angular.ILocationService,
+                private $log: angular.ILogService,
                 private $scope: angular.IScope,
                 private $state: IResourcesControllerState,
                 private $timeout: ng.ITimeoutService,
@@ -113,7 +115,7 @@ class ResourcesController {
                         this.asnResources = response.data.resources;
                         break;
                     default:
-                        console.log("Error. Cannot understand resources response")
+                        this.$log.error("Error. Cannot understand resources response");
                 }
             }, () => {
                 this.fail = true;

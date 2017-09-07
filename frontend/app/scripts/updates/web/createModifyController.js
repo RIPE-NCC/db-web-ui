@@ -78,7 +78,6 @@ angular.module('webUpdates')
              * @returns {boolean}
              */
             $scope.showMoreAttributes = function () {
-                console.log('$scope.showMoreAttributes');
                 // Called from scrollmarker directive
                 if (!$scope.attributesAllRendered && $scope.attributes && $scope.nrAttributesToRender < $scope.attributes.length) {
                     $scope.nrAttributesToRender+= 50; // increment

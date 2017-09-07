@@ -333,13 +333,10 @@
 
                 }, function () {
                     // TODO: error handling
-                    //console.log('ERROR: ' + angular.toJson(error));
                     return mntHandler([]);
                 });
             };
-
             return mntnerService;
-
         }]);
 
 })();
