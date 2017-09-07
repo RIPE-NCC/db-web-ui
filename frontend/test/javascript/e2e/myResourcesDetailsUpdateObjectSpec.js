@@ -15,8 +15,7 @@ describe('My Resources, update object', function () {
 
     it('allow editing of the object', function() {
 
-        // page.scrollIntoView(page.btnUpdateObjectButton);
-
+        page.scrollIntoView(page.btnUpdateObjectButton);
         page.btnUpdateObjectButton.click();
         page.modalInpPassword.sendKeys('TPOL888-MNT');
         page.modalInpAssociate.click();
@@ -47,6 +46,7 @@ describe('My Resources, update object', function () {
         });
 
         it('can edit netname', function () {
+            page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
             page.modalInpAssociate.click();
@@ -63,6 +63,7 @@ describe('My Resources, update object', function () {
         });
 
         it('can add org attribute', function () {
+            page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
             page.modalInpAssociate.click();
