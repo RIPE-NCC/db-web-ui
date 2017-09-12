@@ -67,7 +67,7 @@
                 <executions>
                     <execution>
                         <goals>
-                            <goal>check</goal>
+                            <goal>aggregate</goal>
                         </goals>
                     </execution>
                 </executions>
