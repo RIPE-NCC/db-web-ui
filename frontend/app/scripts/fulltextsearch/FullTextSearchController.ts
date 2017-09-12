@@ -85,11 +85,10 @@ class FullTextSearchController {
             this.selectedObjectTypes || [],
             this.selectedAttrs || []).then(
             (resp: ng.IHttpPromiseCallbackArg<ISearchResponseModel>) => this.handleResponse(resp),
-            () => { this.results = []; console.log("handleResponseFailure"); });
+            (err) => { this.results = []; this.$log.error("performSearch error", err); });
     }
 
     private handleResponse(resp: ng.IHttpPromiseCallbackArg<ISearchResponseModel>) {
-        console.log("handleResponse");
         this.numResults = resp.data.result.numFound;
         const responseModel = this.fullTextResponseService.parseResponse(resp.data);
         this.results = responseModel.details;

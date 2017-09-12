@@ -37,6 +37,7 @@ describe('The query pagina', function () {
         page.inpQueryString.sendKeys('193.0.0.0');
         page.inpDontRetrieveRelated.click();
         page.queryParamTabs.get(1).click();
+        page.scrollIntoView(page.byId('search:types:6'));
         page.byId('search:types:6').click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();

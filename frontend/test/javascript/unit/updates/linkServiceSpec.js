@@ -1,4 +1,4 @@
-/*global afterEach, beforeEach, describe, expect, inject, it*/
+/*global beforeEach, describe, expect, inject, it*/
 'use strict';
 
 describe('updates: LinkService', function () {
@@ -6,13 +6,11 @@ describe('updates: LinkService', function () {
     var linkService;
     var source = 'TEST';
 
-    beforeEach(module('updates'));
+    beforeEach(module('dbWebApp'));
 
     beforeEach(inject(function (LinkService) {
         linkService = LinkService;
     }));
-
-    afterEach(function() {});
 
     it('linkService is defined', function() {
         expect(_.isUndefined(linkService)).toBe(false);

@@ -4,13 +4,11 @@ describe('updates: CredentialsService', function () {
 
     var $credentialsService;
 
-    beforeEach(module('updates'));
+    beforeEach(module('dbWebApp'));
 
     beforeEach(inject(function (CredentialsService) {
         $credentialsService = CredentialsService;
     }));
-
-    afterEach(function() {});
 
     it('initial state',function() {
         expect($credentialsService.hasCredentials()).toEqual(false);

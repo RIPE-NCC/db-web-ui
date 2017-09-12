@@ -49,7 +49,6 @@ class LookupSingleObjectController {
     }
 
     public goToUpdate() {
-        console.log("oh-oh", arguments);
         const params = {
             name: this.objectName,
             objectType: this.objectType,

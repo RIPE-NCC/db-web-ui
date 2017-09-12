@@ -1,8 +1,0 @@
-{
-  "requestUrl": "/api/ba-apps/resources/ORG-EIP1-RIPE/3.0.103.0%20-%203.0.103.255",
-  "contentType": "application/javascript",
-  "statusCode": 200,
-  "data": {
-    "tickets":{"3.0.103.0 - 3.0.103.255":[]}
-  }
-}

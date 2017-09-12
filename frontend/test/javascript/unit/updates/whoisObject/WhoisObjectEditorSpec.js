@@ -41,7 +41,7 @@ describe('The whois object editor', function () {
     var $httpBackend;
     var $componentController;
 
-    beforeEach(module('updates'));
+    beforeEach(module('dbWebApp'));
 
     beforeEach(inject(function (_$httpBackend_, _$componentController_) {
         $httpBackend = _$httpBackend_;
