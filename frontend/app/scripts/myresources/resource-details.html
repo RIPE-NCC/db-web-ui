@@ -72,10 +72,10 @@
                   </button>
             </span>
         </div>
-        <span ng-if="resourceDetails.ipFilter" style="float: right">
+        <span ng-if="resourceDetails.ipFilter" class="pull-right">
             Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}
         </span>
-        <span ng-if="resourceDetails.ipFilter === null || resourceDetails.ipFilter === ''" style="float: right">
+        <span ng-if="resourceDetails.ipFilter === null || resourceDetails.ipFilter === ''" class="pull-right">
             Total number: {{resourceDetails.moreSpecifics.totalNumberOfResources}}
         </span>
     </div>
