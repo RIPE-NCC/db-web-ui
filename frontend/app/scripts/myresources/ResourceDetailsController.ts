@@ -122,7 +122,7 @@ class ResourceDetailsController {
                     this.addFlag(this.LabelService.getLabel(
                         "flag.otherSponsor.text"),
                         this.LabelService.getLabel("flag.otherSponsor.title"),
-                        "red");
+                        "orange");
                 }
             });
 
