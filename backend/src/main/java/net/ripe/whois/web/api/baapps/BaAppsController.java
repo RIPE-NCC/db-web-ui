@@ -76,6 +76,10 @@ public class BaAppsController {
             validateResource(resource);
             final String jsonLirs = baAppsService.getLirs(crowdToken);
             final String memberId = findMemberIdFromLirs(orgId.trim(), jsonLirs);
+            if (memberId.length() == 0) {
+                // either end-user org or lir has no access
+                return new ResponseEntity(HttpStatus.OK);
+            }
             final ResourceTicketMap resourceTicketMap = resourceTicketService.getTicketsForMember(memberId);
             final ResourceTicketResponse filtered = resourceTicketService.filteredResponse(resource.trim(), resourceTicketMap);
             return new ResponseEntity<>(filtered, HttpStatus.OK);
@@ -91,13 +95,12 @@ public class BaAppsController {
         final JSONObject lirsResponse = new JSONObject(jsonLirs);
         final JSONArray lirs = lirsResponse.getJSONObject("response").getJSONArray("results");
         // check that the orgId is in 'results'
-        for (int i = 0; i <
-                lirs.length(); i++) {
+        for (int i = 0; i < lirs.length(); i++) {
             if (orgId.equals(lirs.getJSONObject(i).getString("orgId"))) {
                 return lirs.getJSONObject(i).getString("membershipId");
             }
         }
-        throw new IllegalAccessError();
+        return "";
     }
 
     private static void validateOrgId(final String orgId) {

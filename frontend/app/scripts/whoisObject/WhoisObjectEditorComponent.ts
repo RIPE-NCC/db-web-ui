@@ -123,7 +123,7 @@ class WhoisObjectEditorController {
 angular.module("dbWebApp").component("whoisObjectEditor", {
     bindings: {
         cancelClicked: "&",
-        ngModel: "=",
+        ngModel: "<",
         updateClicked: "&?",
     },
     controller: WhoisObjectEditorController,
