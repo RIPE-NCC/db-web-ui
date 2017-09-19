@@ -32,7 +32,6 @@ class ResourceDetailsController {
     public nrMoreSpecificsToShow: number = 50;
     public show: {
         editor: boolean;
-        transition: boolean;
         viewer: boolean;
     };
 
@@ -53,6 +52,8 @@ class ResourceDetailsController {
     private orgId: string;
     private objectName: string;
     private objectType: string;
+
+    private lastPage: number;
     private MAGIC = 100; // number of items per page on server
     private filterDebouncer: ng.IPromise<any> = null;
     private source = "RIPE"; // TODO: calculate this value
@@ -73,7 +74,6 @@ class ResourceDetailsController {
 
         this.show = {
             editor: false,
-            transition: false,
             viewer: true,
         };
         this.objectName = decodeURIComponent($state.params.objectName);
@@ -83,8 +83,8 @@ class ResourceDetailsController {
             : this.$state.params.sponsored;
 
         this.canHaveMoreSpecifics = false;
+        this.lastPage = -1;
         this.getResourcesFromBackEnd();
-
         this.ResourcesDataService.fetchResource(this.objectName, this.objectType)
             .then((response: ng.IHttpPromiseCallbackArg<IResourceDetailsResponseModel>) => {
                 this.whoisObject = response.data.object;
@@ -147,7 +147,6 @@ class ResourceDetailsController {
 
     public updateButtonClicked(): void {
         this.resetMessages();
-        this.show.transition = true;
         const passwords = [];
         if (this.CredentialsService.hasCredentials()) {
             passwords.push(this.CredentialsService.getCredentials().successfulPassword);
@@ -175,6 +174,8 @@ class ResourceDetailsController {
     public showObjectEditor(model: IWhoisObjectModel): void {
         this.resetMessages();
         this.isEditing = true;
+        this.$location.hash("editortop");
+        this.$anchorScroll();
     }
 
     public hideObjectEditor(): void {
@@ -208,10 +209,11 @@ class ResourceDetailsController {
     }
 
     public applyFilter(): void {
-        if (this.filterDebouncer != null) {
+        if (this.filterDebouncer) {
             this.$timeout.cancel(this.filterDebouncer);
         }
         this.filterDebouncer = this.$timeout(() => {
+            this.lastPage = -1;
             return this.getResourcesFromBackEnd(0, this.ipFilter);
         }, 400);
     }
@@ -243,13 +245,11 @@ class ResourceDetailsController {
         if (results.length >= 1) {
             this.whoisObject = results[0];
         }
-
         this.isEditing = false;
-
         this.loadMessages(whoisResources);
-
         this.successes = ["Your object has been successfully updated."];
-        this.scroll("db-object");
+        this.$location.hash("editortop");
+        this.$anchorScroll();
     }
 
     private loadMessages(whoisResources: IWhoisResponseModel): void {
@@ -282,7 +282,8 @@ class ResourceDetailsController {
         if (this.errors.length === 0) {
             this.errors = ["Your object NOT updated, please review issues below"];
         }
-        this.scroll("db-object");
+        this.$location.hash("editortop");
+        this.$anchorScroll();
     }
 
     private getErrorText(error: IErrorMessageModel): string {
@@ -298,7 +299,18 @@ class ResourceDetailsController {
         });
     }
 
-    private getResourcesFromBackEnd(pageNr = 0, ipFilter = ""): boolean {
+    private getResourcesFromBackEnd(pageNr = 0, ipFilter = "") {
+        if (pageNr <= this.lastPage) {
+            // ignore requests for pages that we've done, or that we're are already fetching.
+            return;
+        }
+        const url: string = "" + this.$state.current.url;
+        if (url.indexOf("/myresources/detail") < 0) {
+            this.lastPage = -1;
+            this.showScroller = false;
+            return;
+        }
+        this.lastPage = pageNr;
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
             this.MoreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter)
                 .then((response: ng.IHttpPromiseCallbackArg<IMoreSpecificsApiResult>) => {
@@ -312,12 +324,10 @@ class ResourceDetailsController {
                     }
                     this.canHaveMoreSpecifics = true;
                     this.calcScroller();
-
                 }, () => {
                     this.calcScroller();
                 });
         }
-        return true;
     }
 
     private calcScroller(): void {
@@ -328,10 +338,6 @@ class ResourceDetailsController {
         this.$timeout(() => {
             this.$scope.$apply();
         }, 10);
-    }
-
-    private scroll(anchor: string): void {
-        this.$anchorScroll(anchor);
     }
 
     private addFlag(textOnFlag: string, tooltip: string, colour?: string) {

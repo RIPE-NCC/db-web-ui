@@ -16,7 +16,7 @@
 </section>
 <ip-usage ng-if="resourceDetails.showUsage" type="resourceDetails.objectType" usage="resourceDetails.resource.usage"></ip-usage>
 
-<section id="db-object" class="db-object">
+<section class="db-object" id="editortop">
     <h2>Object in RIPE Database</h2>
     <div id="alert-danger" class="alert alert-danger" ng-if="resourceDetails.errors.length">
         <p ng-repeat="error in resourceDetails.errors">
@@ -38,14 +38,14 @@
             <span ng-bind-html="info"></span>
         </p>
     </div>
-    <div ng-if="resourceDetails.whoisObject">
-        <whois-object-viewer ng-model="resourceDetails.whoisObject"
+    <div ng-if="::resourceDetails.whoisObject">
+        <whois-object-viewer ng-model="::resourceDetails.whoisObject"
                              ng-if="!resourceDetails.isEditing"
                              update-clicked="resourceDetails.showObjectEditor(resourceDetails.whoisObject)"></whois-object-viewer>
-        <maintainers-editor ng-model="resourceDetails.whoisObject"
+        <maintainers-editor ng-model="::resourceDetails.whoisObject"
                             ng-if="resourceDetails.isEditing"
                             authentication-failed-clbk="resourceDetails.hideObjectEditor()"></maintainers-editor>
-        <whois-object-editor ng-model="resourceDetails.whoisObject"
+        <whois-object-editor ng-model="::resourceDetails.whoisObject"
                              ng-if="resourceDetails.isEditing"
                              cancel-clicked="resourceDetails.hideObjectEditor()"
                              update-clicked="resourceDetails.updateButtonClicked()"></whois-object-editor>

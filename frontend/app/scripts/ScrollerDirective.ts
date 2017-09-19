@@ -24,6 +24,8 @@ class ScrollerDirective implements angular.IDirective {
     };
     public templateUrl = "scripts/loading-indicator.html";
 
+    private handle: any;
+
     constructor(private $document: angular.IDocumentService) {
     }
 
@@ -50,7 +52,10 @@ class ScrollerDirective implements angular.IDirective {
             }
         };
         if (typeof scope.almostOnScreen === "function") {
-            angular.element(this.$document).on("scroll", handleScroll);
+            this.handle = angular.element(this.$document).on("scroll", handleScroll);
+            scope.$on("$destroy", () => {
+                angular.element(this.$document).off("scroll");
+            });
             handleScroll();
         }
     }
