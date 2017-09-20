@@ -43,7 +43,7 @@ class ResourceItemController {
         }
         if (this.item.sponsoredByOther) {
             this.flags.push({
-                colour: "red",
+                colour: "orange",
                 text: this.LabelService.getLabel("flag.otherSponsor.text"),
                 tooltip: this.LabelService.getLabel("flag.otherSponsor.title"),
             });
