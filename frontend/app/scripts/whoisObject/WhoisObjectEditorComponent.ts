@@ -66,6 +66,7 @@ class WhoisObjectEditorController {
 
         } else {
             this.originalAttibutes = angular.copy(this.attributes);
+            this.AttributeMetadataService.enrich(this.objectType, this.attributes);
             this.missingMandatoryAttributes = this.getMissingMandatoryAttributes();
         }
     }

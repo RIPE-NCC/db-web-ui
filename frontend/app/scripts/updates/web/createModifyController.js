@@ -3,11 +3,11 @@
 'use strict';
 
 angular.module('webUpdates')
-    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$log', '$window', '$q', '$sce', '$document',
+    .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$anchorScroll', '$location', '$log', '$window', '$q', '$sce', '$document',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', 'ModalService',
         'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'ResourceStatus',
         'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor', 'ObjectUtilService',
-        function ($scope, $stateParams, $state, $log, $window, $q, $sce, $document,
+        function ($scope, $stateParams, $state, $anchorScroll, $location, $log, $window, $q, $sce, $document,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService, ResourceStatus,
                   WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor, ObjectUtilService) {
@@ -534,14 +534,20 @@ angular.module('webUpdates')
                         WebUpdatesCommons.navigateToDisplay($scope.source, $scope.objectType, whoisResources.getPrimaryKey(), $scope.PENDING_OPERATION);
                     } else {
                         _validateForm();
-                        AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
+                        var firstErr = AlertService.populateFieldSpecificErrors($scope.objectType, $scope.attributes, whoisResources);
                         AlertService.setErrors(whoisResources);
                         ErrorReporterService.log($scope.operation, $scope.objectType, AlertService.getErrors(), $scope.attributes);
                         $scope.attributes = _interceptBeforeEdit($scope.operation, $scope.attributes);
+                        if (firstErr) {
+                            setTimeout(function () {
+                                $location.hash("anchor-" + firstErr);
+                                $anchorScroll();
+                            }, 0);
+                        }
                     }
                 }
 
-                // Post-process atttributes before submit using screen-logic-interceptor
+                // Post-process attributes before submit using screen-logic-interceptor
                 $scope.attributes = _interceptAfterEdit($scope.operation, $scope.attributes);
 
                 if (!_validateForm()) {

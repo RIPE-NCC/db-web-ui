@@ -105,15 +105,21 @@
 
             alertService.populateFieldSpecificErrors = function (objectType, attrs, whoisResources) {
 
+                var firstAttrError = "";
+
                 _.each(attrs, function (attr) {
                     // keep existing error messages
                     if (!attr.$$error) {
                         var errors = whoisResources.getErrorsOnAttribute(attr.name, attr.value);
                         if (errors && errors.length > 0) {
                             attr.$$error = errors[0].plainText;
+                            if (!firstAttrError) {
+                                firstAttrError = attr.name;
+                            }
                         }
                     }
                 });
+                return firstAttrError;
             };
 
             alertService.showWhoisResourceErrors = function (objectType, error) {

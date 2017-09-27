@@ -67,9 +67,9 @@
             <li class="attr-{{$index}}" ng-repeat="attribute in (attributes | filter: {name: '!mnt-by'} |  filter: {name: '!created'})" ng-if="$index < nrAttributesToRender">
 
                 <label>{{attribute.name}}</label>
-                <span ng-if="attribute.$$error" class="text-error">
-                <span ng-bind-html="attribute.$$error"></span>
-            </span>
+                <span id="anchor-{{attribute.name}}" ng-if="attribute.$$error" class="text-error">
+                    <span ng-bind-html="attribute.$$error"></span>
+                </span>
                 <span ng-if="attribute.$$success" class="text-success">{{attribute.$$success}}</span>
 
                 <input ng-if="!attribute.$$meta.$$isEnum"
