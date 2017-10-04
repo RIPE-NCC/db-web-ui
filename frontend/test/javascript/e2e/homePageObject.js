@@ -156,6 +156,7 @@ module.exports = {
     lookupPageViewer: element(by.css('whois-object-viewer')),
     lookupPageObjectLi: element(by.css('whois-object-viewer')).all(by.css('li')),
     lookupHeader: element(by.css('lookup')).element(by.css('.lookupheader')),
+    ripeManagedAttributesCheckbox: element(by.css('whois-object-viewer')).element(by.css('.checkbox')),
 
     // Whois Object Editor
     inpDescr: element(by.css('whois-object-editor')).element(by.name('descr$2')),
@@ -167,9 +168,9 @@ module.exports = {
     successMessage: element(by.css('.alert-success')),
 
     // Query page
-    inpQueryString: element(by.id('queryStringInput')),
-    inpShowFullDetails: element(by.model('query.showFullObjectDetails')),
-    inpDontRetrieveRelated: element(by.model('query.doNotRetrieveRelatedObjects')),
+    inpQueryString: element(by.model('$ctrl.qp.queryText')),
+    inpShowFullDetails: element(by.model('$ctrl.qp.showFullObjectDetails')),
+    inpDontRetrieveRelated: element(by.model('$ctrl.qp.doNotRetrieveRelatedObjects')),
     btnSubmitQuery: element(by.name('searchform')).element(by.css('button.blue-button')),
     resultsSection: element(by.id('resultsSection')),
     searchResults: element(by.id('resultsSection')).all(by.css('lookup')),

@@ -31,6 +31,10 @@ whois-object-viewer {
 .viewerbuttons {
     position: absolute;
     right: 37px;
+    background: white;
+    border-color: white;
+    border-width: 0 0 6px 2px;
+    border-style: solid;
 }
 
 .showripemanaged > .ripemanaged {

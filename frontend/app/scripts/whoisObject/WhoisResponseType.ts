@@ -36,6 +36,7 @@ interface IWhoisObjectModel {
     attributes: {
         attribute: IAttributeModel[];
     };
+    comaintained?: boolean;
 }
 
 interface IWhoisResponseModel {

@@ -2,7 +2,7 @@ class ResourceItemController {
 
     public static $inject = [
         "$state",
-        "LabelService",
+        "Labels",
         "ResourceStatus",
     ];
     public item: IResourceScreenItem;
@@ -17,7 +17,7 @@ class ResourceItemController {
     }> = [];
 
     constructor(private $state: ng.ui.IStateService,
-                private LabelService: ILabelService,
+                private labels: { [key: string]: string },
                 private ResourceStatus: any) {
         if (this.item.usage) {
             this.usedPercentage = Math.round(this.item.usage.used * 100 / this.item.usage.total);
@@ -37,15 +37,15 @@ class ResourceItemController {
         if (this.item.notRipeRegistered) {
             this.flags.push({
                 colour: "orange",
-                text: this.LabelService.getLabel("flag.noContract.text"),
-                tooltip: this.LabelService.getLabel("flag.noContract.title"),
+                text: this.labels["flag.noContract.text"],
+                tooltip: this.labels["flag.noContract.title"],
             });
         }
         if (this.item.sponsoredByOther) {
             this.flags.push({
                 colour: "orange",
-                text: this.LabelService.getLabel("flag.otherSponsor.text"),
-                tooltip: this.LabelService.getLabel("flag.otherSponsor.title"),
+                text: this.labels["flag.otherSponsor.text"],
+                tooltip: this.labels["flag.otherSponsor.title"],
             });
         }
     }

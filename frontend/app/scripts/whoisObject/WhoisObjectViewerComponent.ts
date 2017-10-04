@@ -1,10 +1,12 @@
 class WhoisObjectViewerController {
 
     public static $inject = [
-        "Properties"];
+        "Properties",
+        "Labels",
+    ];
 
     private static MAX_ATTR_NAME_MASK = "                ";
-    private static RESOURCES = [
+    private static HAS_RIPE_STAT_LINK = [
         "aut-num",
         "route",
         "route6",
@@ -18,20 +20,31 @@ class WhoisObjectViewerController {
     public nrLinesToShow: number;
     public showMoreButton: boolean;
     public showMoreInfo: boolean;
-    public showRipeStatButton: boolean;
     public objectPrimaryKey: string;
-    public showUpdateButton: boolean;
+    public pkLink: string;
+
+    public showRipeManagedAttrs = true;
+
+    public show = {
+        ripeManagedToggleControl: false,
+        ripeStatButton: false,
+        updateButton: false,
+    };
 
     private objLength: number;
 
-    constructor(public properties: { [key: string]: string }) {
+    constructor(public properties: { [key: string]: string },
+                public labels: { [key: string]: string }) {
         this.objLength = this.ngModel.attributes.attribute.length;
-        this.nrLinesToShow = this.objLength >= 30 ? 25 : 30;
+        this.nrLinesToShow = this.objLength > 30 ? 25 : 30;
         this.showMoreButton = this.objLength > this.nrLinesToShow;
         this.showMoreInfo = true;
-        this.showRipeStatButton = WhoisObjectViewerController.RESOURCES.indexOf(this.ngModel.type.toLowerCase()) > -1;
         this.objectPrimaryKey = this.ngModel["primary-key"].attribute.map((attr) => attr.value).join("");
-        this.showUpdateButton = typeof this.updateClicked === "function";
+        this.pkLink = this.ngModel["primary-key"].attribute[0].name;
+        this.show.ripeStatButton = WhoisObjectViewerController.HAS_RIPE_STAT_LINK
+            .indexOf(this.ngModel.type.toLowerCase()) > -1;
+        this.show.updateButton = typeof this.updateClicked === "function";
+        this.show.ripeManagedToggleControl = this.ngModel.comaintained;
     }
 
     public clickShowMoreLines() {
@@ -48,7 +61,7 @@ class WhoisObjectViewerController {
 
 angular.module("dbWebApp").component("whoisObjectViewer", {
     bindings: {
-        ngModel: "=",
+        ngModel: "<",
         updateClicked: "&?",
     },
     controller: WhoisObjectViewerController,

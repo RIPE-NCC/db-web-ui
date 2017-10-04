@@ -1,13 +1,20 @@
+<div class="checkbox" ng-if="$ctrl.show.ripeManagedToggleControl">
+    <label>
+        <input type="checkbox" ng-model="$ctrl.showRipeManagedAttrs"> {{ $ctrl.labels['lookup.ripeManagedValuesCheckbox.text'] }}
+    </label>
+</div>
 <div class="viewerbuttons">
-    <a class="blue-button pull-right" ng-click="$ctrl.updateClicked($ctrl.ngModel)" ng-if="$ctrl.showUpdateButton">Update object</a>
-    <a class="grey-button pull-right ripe-stat-button" ng-href="https://stat.ripe.net/{{ $ctrl.objectPrimaryKey }}?sourceapp=ripedb" ng-if="$ctrl.showRipeStatButton" target="_newtab">RIPEstat
+    <a class="blue-button pull-right" ng-click="$ctrl.updateClicked($ctrl.ngModel)" ng-if="$ctrl.show.updateButton"> {{ $ctrl.labels['lookup.updateObjectButton.text'] }}</a>
+    <a class="grey-button pull-right ripe-stat-button" ng-href="https://stat.ripe.net/{{ $ctrl.objectPrimaryKey }}?sourceapp=ripedb" ng-if="$ctrl.show.ripeStatButton" target="_newtab">
+        {{ $ctrl.labels['lookup.ripestatLink.text'] }}
         <i class="fa fa-external-link"></i>
     </a>
 </div>
-<pre><ul><li ng-class="{ 'ripemanaged': attr.managed }"
+<pre><ul ng-class="{showripemanaged: $ctrl.showRipeManagedAttrs}"><li ng-class="{ ripemanaged: attr.managed }"
         ng-repeat="attr in $ctrl.ngModel.attributes.attribute" ng-if="$index < $ctrl.nrLinesToShow">{{ attr.name }}:{{ $ctrl.padding(attr) }}<a
-        ng-if="attr.link.type === 'locator'" href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source=ripe&key={{ attr.value }}&type={{ attr['referenced-type'] }}">{{ attr.value }}</a><span
-        ng-if="attr.link.type !== 'locator'">{{ attr.value }}</span></li></ul></pre>
+        ng-if="attr.link.type === 'locator'" href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source=ripe&key={{ attr.value }}&type={{ attr['referenced-type'] }}">{{ attr.value }}</a><a
+        ng-if="attr.name === $ctrl.pkLink" href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source=ripe&key={{ $ctrl.objectPrimaryKey }}&type={{ $ctrl.ngModel.type }}">{{ attr.value }}</a><span
+        ng-if="attr.link.type !== 'locator' && attr.name !== $ctrl.pkLink">{{ attr.value }}</span></li></ul></pre>
 <div class="pull-right">
-    <div id="showEntireObjectInViewer" class="grey-button show-more" ng-click="$ctrl.clickShowMoreLines()" ng-if="$ctrl.showMoreButton">Show entire object...</div>
+    <div id="showEntireObjectInViewer" class="grey-button show-more" ng-click="$ctrl.clickShowMoreLines()" ng-if="$ctrl.showMoreButton"> {{ $ctrl.labels['lookup.showAllObjectButton.text'] }}</div>
 </div>

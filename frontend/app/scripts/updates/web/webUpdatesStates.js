@@ -123,10 +123,8 @@ angular.module('webUpdates')
                     controllerAs: '$ctrl'
                 })
                 .state('query', {
-                    url: '/query',
-                    templateUrl: 'scripts/query/query.html',
-                    controller: 'QueryController',
-                    controllerAs: 'query'
+                    url: '/query?searchtext&hierarchyFlag&inverse&types&bflag&dflag&rflag&source',
+                    template: '<query></query>'
                 })
                 .state('fulltextsearch', {
                     url: '/fulltextsearch',

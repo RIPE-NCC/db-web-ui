@@ -1,10 +1,25 @@
-<h1>Lookup Results</h1>
+<section id="resultsSection">
+    <div class="pull-right resultlinks">
+        <a href="http://rest-prepdev.db.ripe.net/{{ $ctrl.$stateParams.source }}/{{ $ctrl.$stateParams.type }}/{{ $ctrl.$stateParams.key }}.xml"
+           target="_blank">
+            <i class="fa fa-file-code-o"></i>
+            XML
+        </a>&nbsp;
+        <a href="http://rest-prepdev.db.ripe.net/{{ $ctrl.$stateParams.source }}/{{ $ctrl.$stateParams.type }}/{{ $ctrl.$stateParams.key }}.json"
+           target="_blank">
+            <i class="fa fa-file-text-o"></i>
+            JSON
+        </a>
+    </div>
+    <h2 class="documentFirstHeading">Lookup results</h2>
+    <div class="clearfix">
+        <div class="alert alert-info small" ng-bind-html="page.labels['msg.searchResultsTandCLink.text']">
+        </div>
+    </div>
+</section>
 
-<div class="alert alert-info small">
-    This is the RIPE Database search service. The objects are in RPSL format.
-    The RIPE Database is subject to <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">Terms and Conditions.</a>
-</div>
-<div ng-if="$ctrl.whoisResponse">
+
+<div ng-if="$ctrl.whoisResponse" class="resultpane">
     <lookup
             ng-model="$ctrl.whoisResponse"
             update-clicked="$ctrl.goToUpdate()">

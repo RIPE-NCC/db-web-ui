@@ -187,10 +187,6 @@ div.portlet.navigation {
     width: 100%;
 }
 
-.showripemanaged .ripemanaged {
-    background-color: #D1EFFE;
-}
-
 #portal-breadcrumbs {
     display: inline-block;
 }
@@ -202,4 +198,14 @@ div.registry-selector-container {
         @extend %float-l;
         margin: 3px 10px 0 0;
     }
+}
+
+div.db-version-footer {
+    @extend %clear-b;
+    margin: 12px;
+    margin-top: 20px;
+}
+
+section .resultlinks {
+    line-height: 2.9em;
 }

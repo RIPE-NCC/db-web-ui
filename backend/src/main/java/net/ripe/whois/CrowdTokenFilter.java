@@ -39,13 +39,13 @@ public class CrowdTokenFilter implements Filter {
             ".*/loading-indicator.html",
             ".*/match-multiple.tpl.html",
             ".*/paginator/*.html",
-            ".*/query/lookup.html",
-            ".*/query/query.html",
+            ".*/query/*.*",
             ".*/select-multiple.tpl.html",
             ".*/updates/web/display.html",
             ".*/updates/web/select.html",
             ".*/views/error.html",
             ".*/whoisObject/whois-object-viewer.html",
+            ".*/scripts/livechat/live-chat.html",
     };
 
     private final String crowdLoginUrl;

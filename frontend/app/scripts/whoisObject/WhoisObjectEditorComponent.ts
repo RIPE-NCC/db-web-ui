@@ -3,8 +3,7 @@ class WhoisObjectEditorController {
     public static $inject = [
         "AttributeMetadataService",
         "CredentialsService",
-        "MessageStore",
-        "WhoisDataService"];
+        "MessageStore"];
 
     // Input
     public ngModel: IWhoisObjectModel;
@@ -22,8 +21,7 @@ class WhoisObjectEditorController {
 
     constructor(private AttributeMetadataService: any,
                 private CredentialsService: any,
-                private MessageStore: any,
-                private WhoisDataService: WhoisDataService) {
+                private MessageStore: any) {
 
         // Assign to short-cut accessor.
         this.attributes = this.ngModel.attributes.attribute;

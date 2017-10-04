@@ -54,7 +54,7 @@
 						"managed": true
 					}, {
 						"name": "descr",
-						"value": "IPv4 address block not managed by the RIPE NCC"
+						"value": "IPv4 address block not managed by the RIPE ibihvjg "
 					}, {
 						"name": "remarks",
 						"value": "------------------------------------------------------"
@@ -191,7 +191,8 @@
 				"resource-holder": {
 					"key": "ORG-IANA1-RIPE",
 					"name": "Internet Assigned Numbers Authority"
-				}
+				},
+                "comaintained": true
 			}]
 		},
 		"terms-and-conditions": {

@@ -16,13 +16,14 @@ describe('The attributeMetadataService', function () {
         inject(function (_$rootScope_, _$controller_, _$stateParams_, _RestService_, _PrefixService_, _AttributeMetadataService_) {
             $scope = _$rootScope_.$new();
             _$stateParams_.objectType = 'prefix';
+            AttributeMetadataService = _AttributeMetadataService_;
             vm = _$controller_('DomainObjectController', {
                 $scope: $scope,
                 $stateParams: _$stateParams_,
+                AttributeMetadataService: _AttributeMetadataService_,
                 RestService: _RestService_,
                 PrefixService: _PrefixService_
             });
-            AttributeMetadataService = _AttributeMetadataService_;
         });
     });
 
@@ -34,7 +35,7 @@ describe('The attributeMetadataService', function () {
 
     it('should create metadata for NOT co-maintained inetnum object with netname NOT read only', function () {
 
-        var attributes = [{name: 'mnt-by', value: 'SOME-MNT'}]
+        var attributes = [{name: 'mnt-by', value: 'SOME-MNT'}];
         var type = 'inetnum';
         var metaData = AttributeMetadataService.getAllMetadata(type);
         var isReadOnly = metaData.netname.readOnly(type, attributes);
@@ -43,7 +44,7 @@ describe('The attributeMetadataService', function () {
 
     it('should create metadata for co-maintained inetnum object with netname read only', function () {
 
-        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}]
+        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}];
         var type = 'inetnum';
         var metaData = AttributeMetadataService.getAllMetadata(type);
         var isReadOnly = metaData.netname.readOnly(type, attributes);
@@ -52,7 +53,7 @@ describe('The attributeMetadataService', function () {
 
     it('should create metadata for NOT co-maintained inet6num object with netname NOT read only', function () {
 
-        var attributes = [{name: 'mnt-by', value: 'SOME-MNT'}]
+        var attributes = [{name: 'mnt-by', value: 'SOME-MNT'}];
         var type = 'inet6num';
         var metaData = AttributeMetadataService.getAllMetadata(type);
         var isReadOnly = metaData.netname.readOnly(type, attributes);
@@ -61,7 +62,7 @@ describe('The attributeMetadataService', function () {
 
     it('should create metadata for co-maintained inet6num object with netname read only', function () {
 
-        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}]
+        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}];
         var type = 'inet6num';
         var metaData = AttributeMetadataService.getAllMetadata(type);
         var isReadOnly = metaData.netname.readOnly(type, attributes);
@@ -70,7 +71,7 @@ describe('The attributeMetadataService', function () {
 
     it('should create metadata for co-maintained inetnum object with org read only', function () {
 
-        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}, {name: 'org', value: 'ORG-EIP1-RIPE'}]
+        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}, {name: 'org', value: 'ORG-EIP1-RIPE'}];
         var type = 'inetnum';
         var metaData = AttributeMetadataService.getAllMetadata(type);
         var isReadOnly = metaData.org.readOnly(type, attributes);
@@ -79,7 +80,7 @@ describe('The attributeMetadataService', function () {
 
     it('should create metadata for NOT co-maintained inetnum object with org NOT read only', function () {
 
-        var attributes = [{name: 'org', value: 'ORG-EIP1-RIPE'}]
+        var attributes = [{name: 'org', value: 'ORG-EIP1-RIPE'}];
         var type = 'inetnum';
         var metaData = AttributeMetadataService.getAllMetadata(type);
         var isReadOnly = metaData.org.readOnly(type, attributes);
@@ -88,7 +89,7 @@ describe('The attributeMetadataService', function () {
 
     it('should create metadata for co-maintained inet6num object with org read only', function () {
 
-        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}, {name: 'org', value: 'ORG-EIP1-RIPE'}]
+        var attributes = [{name: 'mnt-by', value: 'RIPE-NCC-HM-MNT'}, {name: 'org', value: 'ORG-EIP1-RIPE'}];
         var type = 'inet6num';
         var metaData = AttributeMetadataService.getAllMetadata(type);
         var isReadOnly = metaData.org.readOnly(type, attributes);
@@ -97,7 +98,7 @@ describe('The attributeMetadataService', function () {
 
     it('should create metadata for NOT co-maintained inet6num object with org NOT read only', function () {
 
-        var attributes = [{name: 'org', value: 'ORG-EIP1-RIPE'}]
+        var attributes = [{name: 'org', value: 'ORG-EIP1-RIPE'}];
         var type = 'inet6num';
         var metaData = AttributeMetadataService.getAllMetadata(type);
         var isReadOnly = metaData.org.readOnly(type, attributes);
@@ -161,7 +162,6 @@ describe('The attributeMetadataService', function () {
         attrPrefix.value = VALID_PREFIX;
         isHidden = AttributeMetadataService.isHidden(objectType, attributes, attrToTest);
         expect(isHidden).toBe(false);
-
     });
 
 });

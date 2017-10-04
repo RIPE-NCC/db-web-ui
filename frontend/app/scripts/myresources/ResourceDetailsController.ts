@@ -16,7 +16,7 @@ class ResourceDetailsController {
         "$anchorScroll",
         "$cookies",
         "CredentialsService",
-        "LabelService",
+        "Labels",
         "MntnerService",
         "MoreSpecificsService",
         "ResourceStatus",
@@ -65,7 +65,7 @@ class ResourceDetailsController {
                 private $anchorScroll: ng.IAnchorScrollService,
                 private $cookies: angular.cookies.ICookiesService,
                 private CredentialsService: any,
-                private LabelService: LabelService,
+                private labels: { [key: string]: string },
                 private MntnerService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
                 private ResourceStatus: any,
@@ -113,16 +113,12 @@ class ResourceDetailsController {
                     this.getTicketsAndDates();
                 }
                 if (!hasRipeMaintainer && response.data.notUnderContract) {
-                    this.addFlag(this.LabelService.getLabel(
-                        "flag.noContract.text"),
-                        this.LabelService.getLabel("flag.noContract.title"),
-                        "orange");
+                    this.addFlag(this.labels["flag.noContract.text"],
+                        this.labels["flag.noContract.title"], "orange");
                 }
                 if (response.data.sponsoredByOther) {
-                    this.addFlag(this.LabelService.getLabel(
-                        "flag.otherSponsor.text"),
-                        this.LabelService.getLabel("flag.otherSponsor.title"),
-                        "orange");
+                    this.addFlag(this.labels["flag.otherSponsor.text"],
+                        this.labels["flag.otherSponsor.title"], "orange");
                 }
             });
 

@@ -6,7 +6,7 @@ interface ILookupState extends ng.ui.IStateParamsService {
 
 class LookupSingleObjectController {
 
-    public static $inject = ["$log", "$state", "$stateParams", "WhoisDataService", "QueryParametersService"];
+    public static $inject = ["$log", "$state", "$stateParams", "QueryService"];
 
     public whoisResponse: IWhoisObjectModel;
 
@@ -17,8 +17,7 @@ class LookupSingleObjectController {
     constructor(private $log: angular.ILogService,
                 private $state: angular.ui.IStateService,
                 private $stateParams: ILookupState,
-                private WhoisDataService: WhoisDataService,
-                private QueryParametersService: IQueryParametersService) {
+                private queryService: IQueryService) {
 
         this.source = $stateParams.source;
         this.objectType = $stateParams.type;
@@ -27,8 +26,14 @@ class LookupSingleObjectController {
         if (this.source && this.objectType && this.objectName) {
             const types = {};
             types[this.objectType] = true;
-            this.QueryParametersService
-                .searchWhoisObjects(this.objectName, this.source, types, "rB", {})
+            const qp = new QueryParameters();
+            qp.queryText = this.objectName;
+            qp.types = types;
+            qp.source = this.source;
+            qp.showFullObjectDetails = true;
+            qp.doNotRetrieveRelatedObjects = true;
+            this.queryService
+                .searchWhoisObjects(qp)
                 .then(
                     (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                         if (response.data &&
@@ -44,7 +49,7 @@ class LookupSingleObjectController {
                         }
                     });
         } else {
-            this.$log.warn("Lookup parameter is null");
+            this.$log.warn("Missing lookup parameter");
         }
     }
 

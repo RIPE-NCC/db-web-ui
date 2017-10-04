@@ -33,6 +33,8 @@ import static org.terracotta.modules.ehcache.ToolkitInstanceFactoryImpl.LOGGER;
 @SuppressWarnings("UnusedDeclaration")
 public class AngularConstantsController {
 
+    @Value("${whois.version.display.text:UNKNOWN}")
+    private String whoisVersionDisplayText;
     @Value("${spring.profiles.active}")
     private String environment;
     @Value("${rest.api.ripeSource}")
@@ -51,6 +53,10 @@ public class AngularConstantsController {
     private String frontendLiveChatKey;
     @Value("${object.lookup.url:/search/lookup.html}")
     private String objectLookupUrl;
+    @Value("${rest.search.xml.url:http://rest-prepdev.db.ripe.net/search.json}")
+    private String restSearchJsonUrl;
+    @Value("${rest.search.xml.url:http://rest-prepdev.db.ripe.net/search.xml}")
+    private String restSearchXmlUrl;
 
     private String appConstantsJsContents;
 
@@ -137,7 +143,10 @@ public class AngularConstantsController {
             "        DATABASE_FULL_TEXT_SEARCH_URL: '" + leftMenuConfiguration.getDatabaseFullTextSearchUrl() + "',\n" +
             "        DATABASE_SYNCUPDATES_URL: '" + leftMenuConfiguration.getDatabaseSyncupdatesUrl() + "',\n" +
             "        DATABASE_CREATE_URL: '" + leftMenuConfiguration.getDatabaseCreateUrl() + "',\n" +
-            "        OBJECT_LOOKUP_URL: '" + objectLookupUrl + "'\n" +
+            "        OBJECT_LOOKUP_URL: '" + objectLookupUrl + "',\n" +
+            "        REST_SEARCH_JSON_URL: '" + restSearchJsonUrl + "',\n" +
+            "        REST_SEARCH_XML_URL: '" + restSearchXmlUrl + "',\n" +
+            "        WHOIS_VERSION_DISPLAY_TEXT: '" + whoisVersionDisplayText + "'\n" +
             "    })\n";
         return builder;
     }

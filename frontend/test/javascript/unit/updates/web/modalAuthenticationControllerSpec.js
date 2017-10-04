@@ -61,9 +61,6 @@ describe('webUpdates: ModalAuthenticationController', function () {
         });
     });
 
-    afterEach(function() {
-    });
-
     it('should detect empty password', function () {
         $scope.selected.item = {type: 'mntner', key: 'b-mnt'};
         $scope.selected.password = '';
