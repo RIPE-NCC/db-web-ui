@@ -23,7 +23,6 @@ module.exports = function (config) {
             'bower_components/angular-diff-match-patch/angular-diff-match-patch.js',
             'bower_components/angular-dynamic-locale/src/tmhDynamicLocale.js',
             'bower_components/angular-loading-bar/build/loading-bar.js',
-            'bower_components/angular-local-storage/dist/angular-local-storage.js',
             'bower_components/angular-resource/angular-resource.js',
             'bower_components/angular-sanitize/angular-sanitize.js',
             'bower_components/angular-ui-router/release/angular-ui-router.js',
@@ -101,18 +100,5 @@ module.exports = function (config) {
                 { type: 'html', dir: 'reports/clover', subdir: '.', file: 'index.html' }
             ]
         }
-
-        // enable logging of console.log() output to terminal
-        //
-        // client: {
-        //   captureConsole: true
-        // },
-        // browserConsoleLogOptions: {
-        //   level: 'debug',
-        //   terminal: true
-        // }
-        //
-
-
     });
 };

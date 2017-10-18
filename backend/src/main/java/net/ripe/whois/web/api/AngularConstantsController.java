@@ -53,10 +53,12 @@ public class AngularConstantsController {
     private String frontendLiveChatKey;
     @Value("${object.lookup.url:/search/lookup.html}")
     private String objectLookupUrl;
-    @Value("${rest.search.xml.url:http://rest-prepdev.db.ripe.net/search.json}")
-    private String restSearchJsonUrl;
-    @Value("${rest.search.xml.url:http://rest-prepdev.db.ripe.net/search.xml}")
-    private String restSearchXmlUrl;
+    @Value("${rest.search.xml.url:http://rest-prepdev.db.ripe.net/}")
+    private String restSearchUrl;
+    @Value("${query.linkToOtherDb.text:Are you looking for the other database}")
+    private String queryPageLinkToOtherDb;
+    @Value("${syncupdates.api.url}")
+    private String syncupdatesApiUrl;
 
     private String appConstantsJsContents;
 
@@ -144,8 +146,8 @@ public class AngularConstantsController {
             "        DATABASE_SYNCUPDATES_URL: '" + leftMenuConfiguration.getDatabaseSyncupdatesUrl() + "',\n" +
             "        DATABASE_CREATE_URL: '" + leftMenuConfiguration.getDatabaseCreateUrl() + "',\n" +
             "        OBJECT_LOOKUP_URL: '" + objectLookupUrl + "',\n" +
-            "        REST_SEARCH_JSON_URL: '" + restSearchJsonUrl + "',\n" +
-            "        REST_SEARCH_XML_URL: '" + restSearchXmlUrl + "',\n" +
+            "        REST_SEARCH_URL: '" + restSearchUrl + "',\n" +
+            "        QUERY_PAGE_LINK_TO_OTHER_DB: '" + queryPageLinkToOtherDb + "',\n" +
             "        WHOIS_VERSION_DISPLAY_TEXT: '" + whoisVersionDisplayText + "'\n" +
             "    })\n";
         return builder;

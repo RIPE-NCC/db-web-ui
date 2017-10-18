@@ -6,7 +6,6 @@ interface IResourcesControllerState extends ng.ui.IStateService {
 }
 
 class ResourcesController {
-
     public static $inject = [
         "$location",
         "$log",
@@ -17,7 +16,6 @@ class ResourcesController {
         "ResourcesDataService",
         "UserInfoService",
     ];
-
     public ipv4Resources: IPv4ResourceDetails[] = [];
     public ipv6Resources: IPv6ResourceDetails[] = [];
     public asnResources: AsnResourceDetails[] = [];

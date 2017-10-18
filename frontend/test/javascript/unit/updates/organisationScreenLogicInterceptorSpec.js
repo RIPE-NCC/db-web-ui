@@ -244,35 +244,6 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         expect(orgName[0].$$meta.$$isLir).toBeUndefined();
     });
 
-    it('should disable abuse-mailbox on Modify operation for LIRs', function() {
-        var organisationSubject = _wrap('organisation', organisationAttributes);
-        organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
-
-        var errors = [];
-        var warnings = [];
-        var infos = [];
-        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
-
-        var abuseMailbox = after.getAllAttributesOnName('abuse-mailbox');
-        expect(abuseMailbox.length).toEqual(1);
-        expect(abuseMailbox[0].$$meta.$$disable).toBe(true);
-    });
-
-    it('should NOT disable abuse-mailbox on Modify operation for non-LIRs', function() {
-        var organisationSubject = _wrap('organisation', organisationAttributes);
-        organisationSubject.setSingleAttributeOnName('org-type', 'OTHER');
-
-        var errors = [];
-        var warnings = [];
-        var infos = [];
-        var after = interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
-
-        var abuseMailbox = after.getAllAttributesOnName('abuse-mailbox');
-        expect(abuseMailbox.length).toEqual(1);
-        expect(abuseMailbox[0].$$meta.$$disable).toBeUndefined();
-
-    });
-
     it('should disable org on Modify operation for LIRs', function() {
         var organisationSubject = _wrap('organisation', organisationAttributes);
         organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
@@ -323,28 +294,6 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
 
         var abuseMailbox = filteredAddableAttributes.getSingleAttributeOnName('abuse-mailbox');
         expect(abuseMailbox).toBeUndefined();
-    });
-
-    it('should NOT remove abuse-mailbox from organisation addable attributes when it is an NON-LIR on Modify', function() {
-        var organisationSubject = _wrap('organisation', organisationAttributes);
-        organisationSubject.setSingleAttributeOnName('org-type', 'OTHER');
-        var addableAttributes = _wrap('organisation', organisationSubject.getAddableAttributes('organisation', organisationSubject));
-
-        var filteredAddableAttributes = interceptor.beforeAddAttribute('Modify', 'RIPE', 'organisation', organisationSubject, addableAttributes);
-
-        var abuseMailbox = filteredAddableAttributes.getSingleAttributeOnName('abuse-mailbox');
-        expect(abuseMailbox).not.toBeUndefined();
-    });
-
-    it('should NOT remove abuse-mailbox from organisation addable attributes when it action is not Modify', function() {
-        var organisationSubject = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
-        organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
-        var addableAttributes = _wrap('organisation', organisationSubject.getAddableAttributes('organisation', organisationSubject));
-
-        var filteredAddableAttributes = interceptor.beforeAddAttribute('Create', 'RIPE', 'organisation', organisationSubject, addableAttributes);
-
-        var abuseMailbox = filteredAddableAttributes.getSingleAttributeOnName('abuse-mailbox');
-        expect(abuseMailbox).not.toBeUndefined();
     });
 
     it('should remove org from organisation addable attributes when it is an LIR on Modify', function() {

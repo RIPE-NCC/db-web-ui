@@ -28,7 +28,9 @@ describe('My Resources detail', function () {
             expect(attributes.count()).toEqual(13);
             expect(attributes.get(0).getText()).toMatch(/inetnum: *192\.87\.0\.0 - 192\.87\.255\.255/);
             expect(attributes.get(1).getText()).toMatch(/netname: *RU-1C-20160322/);
+
             expect(attributes.get(2).getText()).toMatch(/descr: *first line of description/);
+
             expect(attributes.get(3).getText()).toMatch(/country: *FI/);
             expect(attributes.get(4).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
             expect(attributes.get(5).getText()).toMatch(/sponsoring-org: *ORG-LA538-RIPE/);

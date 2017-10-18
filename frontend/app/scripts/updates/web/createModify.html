@@ -142,7 +142,7 @@
                     </li>
                     <li>
                         <a id="createRoleForAbuseCAttribute" class="btn btn-default ga-add-dup" title="Create new role to use as abuse-c"
-                           ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="attribute.name == 'abuse-c' && objectType == 'organisation' && !attribute.value">
+                           ng-click="createRoleForAbuseCAttribute(attribute)" ng-show="shouldShowBellIcon(attribute, objectType)">
                             <span class="fa fa-bell-o degree-25"></span>
                         </a>
                     </li>

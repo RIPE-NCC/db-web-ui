@@ -70,16 +70,16 @@
                 </a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem" href="{{page.Properties.DATABASE_QUERY_URL}}" ng-class="{current: menu.activeUrl.indexOf('/query') === 0}">Query the RIPE Database</a>
+                        <a class="menuItem" href="{{page.Properties.DATABASE_QUERY_URL}}" ng-class="{current: menu.activeUrl.indexOf('/query') === 0 || menu.activeUrl.indexOf('/lookup') === 0}">Query the RIPE Database</a>
                     </li>
                     <li>
                         <a class="menuItem" href="{{page.Properties.DATABASE_FULL_TEXT_SEARCH_URL}}" ng-class="{current: menu.activeUrl.indexOf('/fulltextsearch') === 0}">Full Text Search</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="{{page.Properties.DATABASE_SYNCUPDATES_URL}}" ng-class="{current: menu.activeUrl.indexOf('/multi') === 0}">Syncupdates</a>
+                        <a class="menuItem" href="{{page.Properties.DATABASE_SYNCUPDATES_URL}}" ng-class="{current: menu.activeUrl.indexOf('/multi') === 0 || menu.activeUrl.indexOf('/syncupdates') === 0}">Syncupdates</a>
                     </li>
                     <li>
-                        <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/wizard') === 0 || menu.activeUrl.indexOf('/select') === 0 || menu.activeUrl.indexOf('/create') === 0 || menu.activeUrl.indexOf('/modify') === 0 || menu.activeUrl.indexOf('/display') === 0 || menu.activeUrl.indexOf('/lookup') === 0}"
+                        <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/wizard') === 0 || menu.activeUrl.indexOf('/select') === 0 || menu.activeUrl.indexOf('/create') === 0 || menu.activeUrl.indexOf('/modify') === 0 || menu.activeUrl.indexOf('/display') === 0}"
                            href="{{page.Properties.DATABASE_CREATE_URL}}">Create an Object</a>
                     </li>
                 </ul>

@@ -42,7 +42,7 @@ class MaintainersEditorController {
     public hasSSo = this.MntnerService.hasSSo;
     public isRemovable = this.MntnerService.isRemovable;
 
-    private source = "RIPE";
+    private source: string;
 
     constructor(private $log: angular.ILogService,
                 private AlertService: any,
@@ -54,6 +54,7 @@ class MaintainersEditorController {
                 private WebUpdatesCommons: any,
                 private jsUtils: any) {
 
+        this.source = this.ngModel.source.id;
         this.attributes = this.ngModel.attributes.attribute;
         this.objectType = this.attributes[0].name;
         this.objectName = this.attributes[0].value;

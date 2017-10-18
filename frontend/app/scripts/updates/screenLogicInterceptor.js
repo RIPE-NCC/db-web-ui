@@ -265,8 +265,9 @@ angular.module('updates')
             function _removeAbuseMailBoxAndOrgIfLIR(method, source, objectType, objectAttributes, addableAttributes) {
                 var orgType = objectAttributes.getSingleAttributeOnName('org-type');
 
+                addableAttributes.removeAttributeWithName('abuse-mailbox');
+
                 if(method === 'Modify' && orgType.value === 'LIR') {
-                    addableAttributes.removeAttributeWithName('abuse-mailbox');
                     addableAttributes.removeAttributeWithName('org');
                 }
 

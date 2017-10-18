@@ -8,8 +8,6 @@
             'FMP_STATE', {
                 REQUIRE_LOGIN: 'fmp.requireLogin',
                 FIND: 'fmp.find',
-                VOLUNTARY: 'fmp.voluntary',
-                LEGACY: 'fmp.legacy',
                 CONFIRM: 'fmp.confirm',
                 SSO_ADDED: 'fmp.ssoAdded',
                 MAIL_SENT: 'fmp.mailSent'

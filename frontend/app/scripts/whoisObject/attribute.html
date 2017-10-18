@@ -1,11 +1,13 @@
 <label>{{attribute.name}}</label>
-<div class="text-error" ng-if="attribute.$$error">
-    <span ng-bind-html="attribute.$$error"></span>
+<div ng-if="attribute.$$error">
+    <span class="text-error" ng-bind-html="attribute.$$error"></span>
 </div>
-<div class="text-info" ng-if="attribute.$$info">
-    <span ng-bind-html="attribute.$$info"></span>
+<div ng-if="attribute.$$info">
+    <span class="text-info" ng-bind-html="attribute.$$info"></span>
 </div>
-<div class="text-success" ng-if="attribute.$$success">{{ attribute.$$success }}</div>
+<div ng-if="attribute.$$success">
+    <span class="text-success" ng-bind-html="attribute.$$success"></span>
+</div>
 
 <!-- This is for not enums -->
 <input ng-if="!isStaticList(objectType, attribute) ||  attribute.name === 'status'"

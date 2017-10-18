@@ -149,6 +149,7 @@ describe('textUpdates: TextCreateController', function () {
             'sponsoring-org:\n' +
             'ADMIN-C:       \n' +
             'TECH-C:        \n' +
+            'abuse-c:       \n' +
             'STATUS:        \n' +
             'remarks:       \n' +
             'notify:        \n' +
@@ -179,6 +180,7 @@ describe('textUpdates: TextCreateController', function () {
             'sponsoring-org:\n' +
             'ADMIN-C:       \n' +
             'TECH-C:        \n' +
+            'abuse-c:       \n' +
             'STATUS:        \n' +
             'remarks:       \n' +
             'notify:        \n' +
@@ -220,6 +222,7 @@ describe('textUpdates: TextCreateController', function () {
             'sponsoring-org:\n' +
             'ADMIN-C:       \n' +
             'TECH-C:        \n' +
+            'abuse-c:       \n' +
             'STATUS:        \n' +
             'remarks:       \n' +
             'notify:        \n' +

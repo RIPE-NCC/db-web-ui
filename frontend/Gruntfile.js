@@ -570,6 +570,18 @@ module.exports = function (grunt) {
             }
         },
 
+        md2html: {
+            one_file: {
+                options: {
+                    layout: 'md-template.html'
+                },
+                files: [{
+                    src: ['../README.md'],
+                    dest: '../README.html'
+                }]
+            }
+        },
+
         cacheBust: {
             options: {
                 baseDir: './<%= yeoman.dist %>',
@@ -706,7 +718,7 @@ module.exports = function (grunt) {
 
     grunt.config('grunt.build.tag', grunt.option('buildtag') || 'empty_tag');
 
-    grunt.registerTask('e2e-test', [
+    grunt.registerTask('e2e-test', 'Runs all the E2E tests with Protractor', [
         'clean:server',
         'copy:processtags',
         'copy:dev',
@@ -719,7 +731,7 @@ module.exports = function (grunt) {
         'protractor:e2e'
     ]);
 
-    grunt.registerTask('e2e-coverage', [
+    grunt.registerTask('e2e-coverage', 'Runs E2E tests and shows coverage data', [
         'clean:server',
         'copy:processtags',
         'copy:dev',
@@ -734,7 +746,7 @@ module.exports = function (grunt) {
         'makeReport'
     ]);
 
-    grunt.registerTask('e2e-coverage-headless', [
+    grunt.registerTask('e2e-coverage-headless', 'Not working. Should run Protractor on a headless browser', [
         'clean:server',
         'copy:processtags',
         'copy:dev',
@@ -750,7 +762,7 @@ module.exports = function (grunt) {
 
     ]);
 
-    grunt.registerTask('e2e-no-test', [
+    grunt.registerTask('e2e-no-test', 'Start a server using E2E mocks for debugging purposes', [
         'clean:server',
         'copy:processtags',
         'copy:dev',
@@ -788,7 +800,7 @@ module.exports = function (grunt) {
         grunt.task.run(['serve:' + target]);
     });
 
-    grunt.registerTask('test', [
+    grunt.registerTask('test', 'Run unit tests with Karma', [
         'clean:server',
         'copy:processtags',
         'copy:dev',
@@ -800,8 +812,9 @@ module.exports = function (grunt) {
         'karma'
     ]);
 
-    grunt.registerTask('build', [
+    grunt.registerTask('build', 'Do a full clean, compile, build', [
         'clean',
+        'md2html',
         'copy:processtags',
         'copy:dev',
         'ts',

@@ -3,13 +3,36 @@ class UserInfoService {
     public static $inject = ["$log", "$http", "$q", "$cookies"];
 
     private userInfo: IUserInfoResponseData;
+    private loggedInUser: IUserInfo;
     private selectedOrganisation: IUserInfoOrganisation;
     private deferred: ng.IDeferred<IUserInfoResponseData>;
+    private deferredUserInfo: ng.IDeferred<IUserInfo>;
 
     constructor(private $log: angular.ILogService,
                 private $http: angular.IHttpService,
                 private $q: ng.IQService,
                 private $cookies: angular.cookies.ICookiesService) {
+    }
+
+    public getLoggedInUser(): ng.IHttpPromise<IUserInfo> {
+        if (!this.deferredUserInfo) {
+            this.deferredUserInfo = this.$q.defer();
+
+            if (this.loggedInUser) {
+                this.deferredUserInfo.resolve(this.loggedInUser);
+            } else {
+                this.deferredUserInfo.resolve(
+                    this.$http({
+                        method: "GET",
+                        url: "api/user/info",
+                    }).then((response: ng.IHttpPromiseCallbackArg<IUserInfo>) => {
+                        this.loggedInUser = response.data;
+                        return this.loggedInUser;
+                    }),
+                );
+            }
+        }
+        return this.deferredUserInfo.promise;
     }
 
     public getUserOrgsAndRoles(): ng.IHttpPromise<IUserInfoResponseData> {

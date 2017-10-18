@@ -2,8 +2,9 @@ class WhoisObjectEditorController {
 
     public static $inject = [
         "AttributeMetadataService",
-        "CredentialsService",
-        "MessageStore"];
+        "MessageStore",
+        "Properties",
+    ];
 
     // Input
     public ngModel: IWhoisObjectModel;
@@ -20,8 +21,8 @@ class WhoisObjectEditorController {
     private originalAttibutes: IAttributeModel[];
 
     constructor(private AttributeMetadataService: any,
-                private CredentialsService: any,
-                private MessageStore: any) {
+                private MessageStore: any,
+                private properties: { SOURCE: string }) {
 
         // Assign to short-cut accessor.
         this.attributes = this.ngModel.attributes.attribute;
@@ -33,23 +34,15 @@ class WhoisObjectEditorController {
         if (typeof this.ngModel.source !== "undefined") {
             this.source = this.ngModel.source.id.toUpperCase();
         } else {
-            this.source = "RIPE";
+            this.source = this.properties.SOURCE;
             this.ngModel.source = {
                 id: this.source,
             };
         }
-        let password: string;
-        if (this.CredentialsService.hasCredentials()) {
-            password = this.CredentialsService.getCredentials().successfulPassword;
-        }
         const createdAttr = this.attributes.filter((attr: IAttributeModel) => {
-           return attr.name.toLowerCase() === "created";
+            return attr.name.toLowerCase() === "created";
         });
         if (createdAttr && createdAttr.length && createdAttr[0].value) {
-            this.attributes = this.ngModel.attributes.attribute;
-            this.objectName = this.attributes[0].value;
-            this.objectType = this.attributes[0].name;
-
             // make a copy of the object in case we need to restore
             this.originalAttibutes = angular.copy(this.attributes);
 

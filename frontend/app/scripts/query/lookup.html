@@ -5,14 +5,14 @@
             <a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source=ripe&key={{ $ctrl.ngModel['resource-holder'].key }}&type=organisation"
                target="_blank">{{ $ctrl.ngModel['resource-holder'].name }}</a>
         </span><span ng-if="!$ctrl.show.resourceHolderFound">
-        {{ $ctrl.labels["msg.noResourceHolderFound.text"] }}
+        {{ "msg.noResourceHolderFound.text" | label }}
     </span>
         <br>
         <span ng-if="$ctrl.show.abuseContactFound">
             Abuse contact info:
             <a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source=ripe&key={{ $ctrl.ngModel['abuse-contact'].key }}&type=role" target="_blank">{{ $ctrl.ngModel['abuse-contact'].email}}</a>
         </span><span ng-if="!$ctrl.show.abuseContactFound">
-        <i>{{ $ctrl.labels["msg.noAbuseContactFound.text"] }}</i>
+        <i>{{ "msg.noAbuseContactFound.text" | label }}</i>
         </span>
     </div>
     <whois-object-viewer

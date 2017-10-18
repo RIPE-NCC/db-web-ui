@@ -434,7 +434,7 @@
 
             function useOld() {
                 PreferenceService.setPoorSyncupdatesMode();
-                $window.location.href = '/syncupdates/simple-rpsl.html';
+                $window.location.href = Properties.DATABASE_SYNCUPDATES_URL;
             }
 
         }]);

@@ -2,16 +2,20 @@
 
 describe('webUpdates: ModalCreateRoleForAbuseCController', function () {
 
-    var $scope, modalInstance, whoisResources, restService, maintainers, password;
+    var modalInstance, whoisResources, restService, password;
     var source = 'RIPE';
-    var maintainers = [{type:'mntner', key:'a-mnt', auth:['MD5-PW']}];
+    var maintainers = [{type:'mntner', key:'a-mnt', auth:['MD5-PW']}, ({type:'mntner', key:'RIPE-NCC-HM-MNT'})];
+    var controller;
+    var $rootScope;
+    var $httpBackend;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _WhoisResources_, _RestService_, $q) {
-            $scope = _$rootScope_.$new();
+        inject(function (_$controller_, _$rootScope_, _WhoisResources_, _RestService_, $q, _$httpBackend_) {
+            $rootScope = _$rootScope_;
             whoisResources = _WhoisResources_;
+            $httpBackend = _$httpBackend_;
 
             restService = {
                 createObject: jasmine.createSpy('restService.createObject').and.returnValue($q.when({
@@ -26,8 +30,8 @@ describe('webUpdates: ModalCreateRoleForAbuseCController', function () {
                     then: jasmine.createSpy('modalInstance.result.then')
                 }
             };
-            _$controller_('ModalCreateRoleForAbuseCController', {
-                $scope: $scope, $uibModalInstance: modalInstance, WhoisResources: whoisResources, RestService: restService, source: source, maintainers: maintainers, passwords: password
+            controller = _$controller_('ModalCreateRoleForAbuseCController', {
+                $scope: _$rootScope_.$new(), $uibModalInstance: modalInstance, WhoisResources: whoisResources, RestService: restService, source: source, maintainers: maintainers, passwords: password
             });
 
         });
@@ -37,47 +41,69 @@ describe('webUpdates: ModalCreateRoleForAbuseCController', function () {
     });
 
     it('should create role with abuse-mailbox and close', function () {
-        $scope.email = 'm@ripe.net';
-        $scope.create();
+        $httpBackend.expectGET('scripts/updates/web/select.html').respond({});
+        $httpBackend.flush();
+
+        controller.email = 'm@ripe.net';
+        controller.create();
+        $rootScope.$digest();
+
         expect(restService.createObject.calls.mostRecent().args[2].objects.object[0].attributes.attribute)
             .toContain(jasmine.objectContaining({
                 name: 'abuse-mailbox',
                 value: 'm@ripe.net'
         }));
-        $scope.$digest();
+        expect(modalInstance.close).toHaveBeenCalledWith('close');
+    });
+
+    it('should remove mnt-by: RIPE-NCC-HM-MNT from creating role', function () {
+        $httpBackend.expectGET('scripts/updates/web/select.html').respond({});
+        $httpBackend.flush();
+
+        controller.email = 'm@ripe.net';
+        controller.create();
+        $rootScope.$digest();
+
+        expect(restService.createObject.calls.mostRecent().args[2].objects.object[0].attributes.attribute)
+            .not.toContain(jasmine.objectContaining({
+                name: 'mnt-by',
+                value: 'RIPE-NCC-HM-MNT'
+        }));
         expect(modalInstance.close).toHaveBeenCalledWith('close');
     });
 
     it('should validate as valid email', function () {
-        $scope.email = 'm@ripe.net';
-        expect($scope.isEmailValid()).toEqual(true);
+        controller.email = 'm@ripe.net';
+        expect(controller.isEmailValid()).toEqual(true);
     });
 
     it('should validate as invalid email', function () {
-        $scope.email = '@ripe.net';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = '.@ripe.net';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = 'a b@ripe.net';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = 'a@b@ripe.net';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = 'ab@ripe';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = 'a..b@ripe.web';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = '.bc@ripe.web';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = 'ab.@ripe.web';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = 'ab@ripe..web';
-        expect($scope.isEmailValid()).toEqual(false);
-        $scope.email = 'ab.ripe.web';
-        expect($scope.isEmailValid()).toEqual(false);
+        controller.email = '@ripe.net';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = '.@ripe.net';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = 'a b@ripe.net';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = 'a@b@ripe.net';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = 'ab@ripe';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = 'a..b@ripe.web';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = '.bc@ripe.web';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = 'ab.@ripe.web';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = 'ab@ripe..web';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = 'ab.ripe.web';
+        expect(controller.isEmailValid()).toEqual(false);
+        controller.email = '';
+        expect(controller.isEmailValid()).toEqual(false);
     });
 
     it('should cancel', function () {
-        $scope.cancel();
+        controller.cancel();
         expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
     });
 });

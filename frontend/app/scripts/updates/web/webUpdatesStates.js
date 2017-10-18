@@ -21,10 +21,10 @@ angular.module('webUpdates')
                     return val;
                 },
                 equals: function (decodedA, decodedB) {
-                    if (decodedA.indexOf('/') > -1 || decodedA.indexOf(' ') > -1) {
+                    if (decodedA.indexOf(':') > -1 || decodedA.indexOf('/') > -1 || decodedA.indexOf(' ') > -1) {
                         decodedA = encodeURIComponent(decodedA);
                     }
-                    if (decodedB.indexOf('/') > -1 || decodedB.indexOf(' ') > -1) {
+                    if (decodedB.indexOf(':') > -1 || decodedB.indexOf('/') > -1 || decodedB.indexOf(' ') > -1) {
                         decodedB = encodeURIComponent(decodedB);
                     }
                     return decodedA === decodedB;
@@ -126,11 +126,13 @@ angular.module('webUpdates')
                     url: '/query?searchtext&hierarchyFlag&inverse&types&bflag&dflag&rflag&source',
                     template: '<query></query>'
                 })
+                .state('syncupdates', {
+                    url: '/syncupdates',
+                    template: '<syncupdates></syncupdates>'
+                })
                 .state('fulltextsearch', {
                     url: '/fulltextsearch',
-                    templateUrl: 'scripts/fulltextsearch/full-text-search.html',
-                    controller: 'FullTextSearchController',
-                    controllerAs: 'fts'
+                    template: '<full-text-search></full-text-search>'
                 });
 
         }]);

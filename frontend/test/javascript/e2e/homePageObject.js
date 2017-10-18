@@ -106,6 +106,7 @@ module.exports = {
     inpCountryList: element(by.id('createForm')).element(by.name('country')).element(by.css('.ui-select-choices-group')).all(by.css('.ui-select-choices-row')),
     btnSubmitForm: element(by.id('btnSubmitCreate')),
     btnDeleteObject: element(by.id('deleteObject')),
+    btnConfirmDeleteObject: element(by.id('btnConfirmDeleteObject')),
 
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
     btnAddAttribute: element(by.id('createForm')).element(by.css('.attr-0')).element(by.css('.fa.fa-plus')),
@@ -176,9 +177,29 @@ module.exports = {
     searchResults: element(by.id('resultsSection')).all(by.css('lookup')),
     queryParamTabs: element(by.name('searchform')).element(by.css('.nav.nav-tabs')).all(by.css('li')),
 
+    // Syncupdate page
+    inpSyncupdateString: element(by.model('$ctrl.rpslObject')),
+    viewSyncupdateString: element(by.name('updateResultPreview')),
+    btnUpdate: element(by.name('btnSyncupdate')),
+    btnSwitchSyncupdates: element(by.name('btnSwitchSyncupdates')),
+
     // full text search page
     fullTextSearchResults: element(by.id('resultsAnchor')).all(by.css('.results')),
     fullTextResultSummaryRow: element(by.css('full-text-result-summary')).element(by.css('tbody')).all(by.css('tr')),
+
+    // FMP page
+    fmpForm: element(by.name('fmpform')),
+    fmpReason: element(by.name('fmpform')).element(by.id('reason')),
+    fmpEmail: element(by.name('fmpform')).element(by.id('email')),
+    fmpNext: element(by.name('fmpform')).element(by.id('next')),
+    fmpStep2: element(by.id('fmp-step2')),
+
+    //Find maintainer
+    findMaintainerForm: element(by.id('find-maintainer')),
+    searchMaintainer: element(by.id('find-maintainer')).element(by.id('search-maintainer')),
+    inputMaintainer: element(by.id('find-maintainer')).element(by.id('input-maintainer')),
+    searchMaintainerCancel: element(by.id('find-maintainer')).element(by.id('search-cancel')),
+    maintainerContainer: element(by.id('maintainer-container')),
 
     byId: function(id) {
         return element(by.id(id));
@@ -188,7 +209,7 @@ module.exports = {
         return this.myResourcesActiveTabRows.get(row).element(by.css('.progress-bar'));
     },
 
-    btnDuplicateAttribute: function(attribute) {
+    btnAddAnAttribute: function(attribute) {
         return attribute.element(by.xpath('../../..')).element(by.css('.fa.fa-plus'));
     },
 

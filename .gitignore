@@ -6,6 +6,7 @@ backend/target/
 sit/target/
 .idea/
 backend/src/main/resources/menu.properties
+README.html
 
 ######################
 # Eclipse

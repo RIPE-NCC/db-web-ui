@@ -31,6 +31,14 @@
         </a>
     </li>
     <li>
+        <a class="btn btn-default ga-add-dup"
+           title="Create new role to use as abuse-c"
+           ng-click="createRoleForAbuseCAttribute(attributes)"
+           ng-show="shouldShowBellIcon(attribute, objectType)">
+            <span class="fa fa-bell-o"></span>
+        </a>
+    </li>
+    <li>
         <a class="btn btn-default ga-help-attr"
            ng-click="toggleHelp()"
            ng-if="attribute.name !== 'reverse-zone'">

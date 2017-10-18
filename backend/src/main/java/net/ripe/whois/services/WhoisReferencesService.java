@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
+import javax.annotation.Nullable;
 import java.net.URI;
 import java.util.HashMap;
 
@@ -39,9 +40,9 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
         variables.put("name", objectName);
         variables.put("limit", limit != null ? limit : MAX_RESULT_NUMBER);
 
-        URI uri = new UriTemplate("{url}/{source}/{object-type}/{name}?limit={limit}").expand(variables);
+        final URI uri = new UriTemplate("{url}/{source}/{object-type}/{name}?limit={limit}").expand(variables);
 
-        LOGGER.debug("Performing fetch {}", uri.toString());
+        LOGGER.debug("Performing fetch {}", uri);
 
         return handleErrors(() -> restTemplate.exchange(uri,
                 HttpMethod.GET,
@@ -51,15 +52,13 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
 
 
     public ResponseEntity<String> createReferencedObjects(final String source, final String body, final HttpHeaders headers) {
-        final String url = "{url}/{source}";
-
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", referencesApiUrl);
         variables.put("source", source);
 
-        URI uri = new UriTemplate(url).expand(variables);
+        final URI uri = new UriTemplate("{url}/{source}").expand(variables);
 
-        LOGGER.debug("Performing create {}", uri.toString());
+        LOGGER.debug("Performing create {}", uri);
 
         return handleErrors(() -> restTemplate.exchange(uri,
                 HttpMethod.POST,
@@ -68,8 +67,7 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
 
     }
 
-    public ResponseEntity<String> deleteObjectAndReferences(final String source, final String objectType, final String name, final String reason, final String password, final HttpHeaders headers) {
-
+    public ResponseEntity<String> deleteObjectAndReferences(final String source, final String objectType, final String name, final String reason, @Nullable final String password, final HttpHeaders headers) {
         final StringBuilder urlBuffer = new StringBuilder("{url}/{source}/{object-type}/{name}?reason={reason}");
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", referencesApiUrl);
@@ -82,7 +80,7 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
             urlBuffer.append("&password={password}");
         }
 
-        URI uri = new UriTemplate(urlBuffer.toString()).expand(variables);
+        final URI uri = new UriTemplate(urlBuffer.toString()).expand(variables);
 
         LOGGER.debug("Performing delete {}", uri.toString());
 

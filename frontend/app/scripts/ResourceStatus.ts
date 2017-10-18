@@ -1,6 +1,5 @@
 class ResourceStatus {
 
-    private readonly emptyArray: string[] = [];
     private readonly statuses = {
         "aut-num": {
             default: [
@@ -64,7 +63,7 @@ class ResourceStatus {
             "ASSIGNED PI": [
                 {key: "ASSIGNED PI", value: "ASSIGNED PI"}, // *
             ],
-            "EARLY-REGISTRATION": this.emptyArray,
+            "EARLY-REGISTRATION": [] as string[],
             "LEGACY": [
                 {key: "LEGACY", value: "LEGACY"},
             ],
@@ -119,10 +118,11 @@ class ResourceStatus {
         let list = this.statuses[objectType][parentState || "default"];
         if (!list) {
             // if no match on parentState then return default
-            list = this.statuses[objectType]["default"] || [];
+            list = this.statuses[objectType].default || [];
         }
         return list;
     }
 }
 
-angular.module("dbWebApp").service("ResourceStatus", ResourceStatus);
+angular.module("dbWebApp")
+    .service("ResourceStatus", ResourceStatus);

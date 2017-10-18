@@ -55,6 +55,13 @@ describe('ConfirmMaintainerCtrl', function() {
         expect(AlertService.getInfos()[0].plainText).toBe('You are logged in with the RIPE NCC Access account user');
     });
 
+    it('should throw an error if hash is not found', function() {
+        $stateParams.hash = undefined;
+        startController($stateParams);
+        expect(AlertService.getErrors().length).toBe(1);
+        expect(AlertService.getErrors()[0].plainText).toBe('No hash passed along');
+    });
+
     it('should redirect to legacy on invalid hash', function() {
         $stateParams.hash = 'invalidhash';
 
@@ -202,6 +209,31 @@ describe('ConfirmMaintainerCtrl', function() {
             '<p>An error occurred while adding the RIPE NCC Access account to the <span class="mntner">MNTNER</span> object.</p>' +
             '<p>No changes were made to the <span class="mntner">MNTNER</span> object maintainer.</p>' +
             '<p>If this error continues, please contact us at <a href="mailto:ripe-dbm@ripe.net">ripe-dbm@ripe.net</a> for assistance.</p>'
+        );
+    });
+
+    it('should return a message that linking account with mntner has failed already contains SSO', function() {
+        $stateParams.hash = 'validhash';
+
+        startController($stateParams);
+
+        $httpBackend.whenGET('api/whois-internal/api/fmp-pub/emaillink/validhash.json').respond(200,
+            {
+                mntner: 'maintainer',
+                email: 'a@b.c',
+                username: 'user',
+                expiredDate: 20280808,
+                currentUserAlreadyManagesMntner: true
+            }
+        );
+        $httpBackend.flush();
+
+        $scope.associate();
+        $httpBackend.whenPUT('api/whois-internal/api/fmp-pub/emaillink/validhash.json').respond(400, 'already contains SSO');
+        $httpBackend.flush();
+
+        expect(AlertService.getErrors()[0].plainText).toBe(
+            'already contains SSO'
         );
     });
 });

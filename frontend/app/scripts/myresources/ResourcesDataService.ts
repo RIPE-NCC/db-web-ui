@@ -14,9 +14,9 @@ class ResourcesDataService implements IResourcesDataService {
         const type = resource.type;
         const key = resource.resource;
         const params = {
-            type,
             key,
             org,
+            type,
         };
         return this.$http({
             method: "GET",
@@ -48,18 +48,21 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
-    public fetchResources(orgId: string, resourceType: string, sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>> {
+    public fetchResources(orgId: string,
+                          resourceType: string,
+                          sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>> {
         if (!resourceType) {
             this.$log.error("fetchResources failed. No resourceType given");
             return;
         }
-        const params = {};
+        const params = {
+            type: resourceType,
+        };
         if (sponsored) {
             params["sponsoring-org-id"] = orgId;
         } else {
             params["org-id"] = orgId;
         }
-        params["type"] = resourceType;
         return this.$http({
             headers: {
                 "Content-type": "application/json",

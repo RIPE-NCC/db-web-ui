@@ -1,0 +1,9 @@
+{
+  "requestUrl": "/api/references/RIPE/as-set/AS196613%253AAS-TEST?limit=5",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+      "primaryKey" : "AS196613:AS-TEST",
+      "objectType" : "as-set"
+  }
+}

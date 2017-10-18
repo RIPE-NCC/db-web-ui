@@ -9,7 +9,9 @@
     <div class="dbmessage" ng-if="$ctrl.errorMessages.length">
         <div class="alert alert-warning">
             <ul>
-                <li ng-repeat="msg in $ctrl.errorMessages"><div ng-bind-html="$ctrl.formatError(msg)"></div></li>
+                <li ng-repeat="msg in $ctrl.errorMessages">
+                    <div ng-bind-html="$ctrl.formatError(msg)"></div>
+                </li>
             </ul>
         </div>
     </div>
@@ -26,23 +28,18 @@
             </div>
             <div>
                 <div class="checkbox">
-                    <label
-                        title="A default query hides some personal information. Check this box to see the full object.">
-                        <input type="checkbox" ng-model="$ctrl.qp.showFullObjectDetails">Show full object details
+                    <label>
+                        <input type="checkbox" ng-model="$ctrl.qp.showFullObjectDetails">
+                        Show full object details
+                        <help-marker label-key="query.optionFullObject.title"></help-marker>
                     </label>
-                    <a>
-                        <span class="fa fa-question fa-lg" aria-hidden="true"></span>
-                    </a>
                 </div>
                 <div class="checkbox">
-                    <label
-                        title="Do not return personal data and other related objects for each object in the query results. There are daily limits on personal data objects returned. You will be blocked if you exceed the limits."><input
-                        type="checkbox" ng-model="$ctrl.qp.doNotRetrieveRelatedObjects">
+                    <label>
+                        <input type="checkbox" ng-model="$ctrl.qp.doNotRetrieveRelatedObjects">
                         Do not retrieve related objects
+                        <help-marker label-key="query.optionRelatedObjects.title"></help-marker>
                     </label>
-                    <a href="https://www.ripe.net/data-tools/support/documentation/aup">
-                        <span class="fa fa-question fa-lg" aria-hidden="true"></span>
-                    </a>
                 </div>
             </div>
         </div>
@@ -60,12 +57,9 @@
                                         <input id="search:sources:1" type="radio" value="GRS"
                                                class="ga-grsdb-checkbox" ng-model="$ctrl.qp.source">
                                         <label for="search:sources:1">Search resource objects in all available
-                                            databases</label></label>
-                                    <a href="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service"
-                                       target="_blank"
-                                       title="RIPE, APNIC, AfriNIC, LACNIC, ARIN, ARIN-RR, RADb, NTTCOM and JPIRR">
-                                        <span class="fa fa-question fa-lg" aria-hidden="true"></span>
-                                    </a>
+                                            databases</label>
+                                    </label>
+                                    <help-marker label-key="query.optionAllDatabases.title" link="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service"></help-marker>
                                 </div>
                                 <div class="radio">
                                     <label>
@@ -73,8 +67,8 @@
                                                class="ga-ripedb-checkbox" ng-model="$ctrl.qp.source">
                                         <label for="search:sources:0">Search RIPE Database only</label></label>
                                 </div>
-                                <div class="help-block">
-                                    Are you looking for the TEST Database?
+                                <div class="help-block small">
+                                    <span ng-bind-html="$ctrl.properties.QUERY_PAGE_LINK_TO_OTHER_DB"></span>
                                 </div>
                             </div>
                         </div>
@@ -83,10 +77,7 @@
                 <uib-tab heading="Types">
                     <div class="padding">
                         <ng-form name="typesForm">
-                            <a href="https://www.ripe.net/data-tools/support/documentation/ripe-database-query-reference-manual#LinkTarget_3010"
-                               title="Learn more about RIPE Database object types">
-                                <span class="fa fa-question fa-lg" aria-hidden="true"></span>
-                            </a>
+                            <help-marker label-key="query.optionPageTypes.title" link="https://www.ripe.net/data-tools/support/documentation/ripe-database-query-reference-manual#LinkTarget_3010"></help-marker>
                             <div class="row radio">
                                 <div class="col-md-4">
                                     <ul class="list-unstyled">
@@ -171,11 +162,7 @@
                     <div class="padding">
                         <ng-form name="hierarchyForm">
                             <div>
-                                <a href="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"
-                                   target="_blank"
-                                   title="Learn more about RIPE Database queries using primary and lookup keys">
-                                    <span class="fa fa-question fa-lg" aria-hidden="true"></span>
-                                </a>
+                                <help-marker label-key="query.optionPageHierarchy.title" link="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"></help-marker>
                             </div>
                             <div class="radio">
                                 <label>
@@ -235,11 +222,7 @@
                 <uib-tab heading="Inverse lookup">
                     <div class="padding">
                         <ng-form name="inverseForm">
-                            <a title="Learn more about RIPE Database queries using inverse lookup keys"
-                               href="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"
-                               target="_blank">
-                                <span class="fa fa-question fa-lg"></span>
-                            </a>
+                            <help-marker label-key="query.optionPageInverse.title" link="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"></help-marker>
                             <div class="row radio">
                                 <div class="col-md-4">
                                     <ul class="list-unstyled">
@@ -390,16 +373,17 @@
                 </uib-tab>
             </uib-tabset>
         </div>
+        <p ng-bind-html="'query.whoisTelnetOutputLabel.text' | label"></p>
         <pre>{{ $ctrl.whoisCliQuery() }}</pre>
-        <button type="submit" class="blue-button pull-right">Search</button>
+        <button class="blue-button pull-right">Search</button>
         <div class="help-block small">
-            <span ng-bind-html="$ctrl.labels['msg.ripeTandCSubmitLink.text']"></span>
+            <span ng-bind-html="'msg.ripeTandCSubmitLink.text' | label"></span>
         </div>
     </form>
 </section>
 
 <section id="resultsSection" ng-show="$ctrl.results.length > 0">
-    <div class="pull-right resultlinks">
+    <div class="pull-right resultlinks" ng-if="$ctrl.link.perma">
         <a href="{{ $ctrl.link.perma }}">
             <i class="fa fa-link" title="Permanent link to the results for this query."></i>
             PERMA
@@ -418,7 +402,7 @@
     <h2>Search results</h2>
     <div class="clearfix">
         <div class="alert alert-info col-md-12">
-            <div class="small" ng-bind-html="$ctrl.labels['msg.searchResultsTandCLink.text']"></div>
+            <div class="small" ng-bind-html="'msg.searchResultsTandCLink.text' | label"></div>
         </div>
     </div>
     <div class="clearfix" ng-repeat="whoisObject in $ctrl.results" ng-if="$index < $ctrl.numResultsToShow">

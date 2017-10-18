@@ -48,6 +48,7 @@ angular.module('dbWebApp').factory('ModalService', ['$q', '$uibModal', '$log', f
                 animation: false,
                 templateUrl: 'scripts/updates/web/modalCreateRoleForAbuseC.html',
                 controller: 'ModalCreateRoleForAbuseCController',
+                controllerAs: '$ctrl',
                 keyboard: false,
                 resolve: {
                     source: function () {

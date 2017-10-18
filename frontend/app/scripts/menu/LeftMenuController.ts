@@ -9,10 +9,10 @@ class LeftMenuController {
         general: boolean;
         generalMeeting: boolean;
         myResources: boolean;
+        testRcEnv: boolean;
         ticketing: boolean;
         // Only temporary for the test environment
         trainingEnv: boolean;
-        testRcEnv: boolean;
     } = {
         admin: false,
         billing: false,
@@ -20,10 +20,10 @@ class LeftMenuController {
         general: false,
         generalMeeting: false,
         myResources: false,
+        testRcEnv: false,
         ticketing: false,
         // Only temporary for the test environment
         trainingEnv: false,
-        testRcEnv: false,
     };
 
     public dbMenuIsActive: boolean;
@@ -35,15 +35,16 @@ class LeftMenuController {
         $rootScope.$on("$stateChangeSuccess", (event: angular.IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
             this.dbMenuIsActive =
-                this.activeUrl.indexOf('/wizard') > -1 ||
-                this.activeUrl.indexOf('/select') > -1 ||
-                this.activeUrl.indexOf('/create') > -1 ||
-                this.activeUrl.indexOf('/display') > -1 ||
-                this.activeUrl.indexOf('/modify') > -1 ||
-                this.activeUrl.indexOf('/query') > -1 ||
-                this.activeUrl.indexOf('/fulltextsearch') > -1 ||
-                this.activeUrl.indexOf('/lookup') > -1 ||
-                this.activeUrl.indexOf('/multi') > -1;
+                this.activeUrl.indexOf("/wizard") > -1 ||
+                this.activeUrl.indexOf("/select") > -1 ||
+                this.activeUrl.indexOf("/create") > -1 ||
+                this.activeUrl.indexOf("/display") > -1 ||
+                this.activeUrl.indexOf("/modify") > -1 ||
+                this.activeUrl.indexOf("/query") > -1 ||
+                this.activeUrl.indexOf("/fulltextsearch") > -1 ||
+                this.activeUrl.indexOf("/lookup") > -1 ||
+                this.activeUrl.indexOf("/multi") > -1 ||
+                this.activeUrl.indexOf("/syncupdates") > -1;
         });
         $scope.$on("selected-org-changed", (event: angular.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.show.admin = this.show.general = this.show.billing

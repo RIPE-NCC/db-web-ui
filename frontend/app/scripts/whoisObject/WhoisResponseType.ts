@@ -61,7 +61,7 @@ interface IWhoisResponseModel {
     objects?: {
         object: IWhoisObjectModel[];
     };
-    "terms-and-conditions": any;
+    "terms-and-conditions"?: any;
 }
 
 interface IMntByModel {

@@ -30,6 +30,10 @@ button {
     @extend %btn;
 }
 
+.red-button {
+    @extend %btn;
+}
+
 .grey-button {
     @extend %btn;
     background-color: $grey;
@@ -202,8 +206,7 @@ div.registry-selector-container {
 
 div.db-version-footer {
     @extend %clear-b;
-    margin: 12px;
-    margin-top: 20px;
+    margin: 20px 12px 12px 0;
 }
 
 section .resultlinks {

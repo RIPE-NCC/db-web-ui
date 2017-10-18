@@ -9,3 +9,7 @@ paginator ul li {
 #content ul.pagination>li {
     display: inline;
 }
+
+.full-text-result-summary tbody tr {
+    cursor: pointer;
+}

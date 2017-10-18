@@ -107,13 +107,23 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) {
         final URI uri = composeWhoisUrl(request);
-
+        LOGGER.info("Calling WhoisInternalService {}", uri);
         return handleErrors(() ->
             restTemplate.exchange(
                 uri,
                 HttpMethod.valueOf(request.getMethod().toUpperCase()),
                 new HttpEntity<>(body, headers),
                 String.class), LOGGER);
+    }
+
+    public ResponseEntity<byte[]> bypassFile(final HttpServletRequest request, final String body, final HttpHeaders headers) {
+        final URI uri = composeWhoisUrl(request);
+        LOGGER.info("Calling WhoisInternalService {}", uri);
+        return restTemplate.exchange(
+            uri,
+            HttpMethod.valueOf(request.getMethod().toUpperCase()),
+            new HttpEntity<>(body, headers),
+            byte[].class);
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) {

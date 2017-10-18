@@ -32,6 +32,7 @@ public class CrowdTokenFilter implements Filter {
             ".*/db-web-ui/",
             ".*/dropdown/org-drop-down.html",
             ".*/fmp/findMaintainer.html",
+            ".*/fmp/forgotMaintainerPassword.html",
             ".*/fmp/requireLogin.html",
             ".*/fulltextsearch/full-text-result-summary.html",
             ".*/fulltextsearch/full-text-search.html",
@@ -46,6 +47,7 @@ public class CrowdTokenFilter implements Filter {
             ".*/views/error.html",
             ".*/whoisObject/whois-object-viewer.html",
             ".*/scripts/livechat/live-chat.html",
+            ".*/scripts/syncupdates/syncupdates.html",
     };
 
     private final String crowdLoginUrl;

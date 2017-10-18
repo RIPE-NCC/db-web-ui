@@ -14,24 +14,12 @@
                     template: '<div ui-view></div>'
                 })
                 .state('fmp.requireLogin', {
-                    url: '/requireLogin',
-                    templateUrl: 'scripts/fmp/requireLogin.html',
-                    controller: 'RequireLoginCtrl'
+                    url: '/requireLogin?mntnerKey&voluntary',
+                    template: '<require-login></require-login>'
                 })
                 .state('fmp.find', {
                     url: '/',
-                    templateUrl: 'scripts/fmp/findMaintainer.html',
-                    controller: 'FindMaintainerCtrl'
-                })
-                .state('fmp.voluntary', {
-                    url: '/legacy/:maintainerKey/voluntary',
-                    template: '<div></div>',
-                    controller: 'VoluntarilyRedirectToLegacyCtrl'
-                })
-                .state('fmp.legacy', {
-                    url: '/legacy/:maintainerKey',
-                    template: '<div></div>',
-                    controller: 'RedirectToLegacyCtrl'
+                    template: '<find-maintainer></find-maintainer>'
                 })
                 .state('fmp.mailSent', {
                     url: '/mailSent/:email',
@@ -47,6 +35,10 @@
                     url: '/confirm?hash',
                     templateUrl: 'scripts/fmp/confirmMaintainer.html',
                     controller: 'ConfirmMaintainerCtrl'
+                })
+                .state('fmp.forgotMaintainerPassword', {
+                    url: '/change-auth?mntnerKey&voluntary',
+                    template: '<fmp></fmp>'
                 });
 
         }]);

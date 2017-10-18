@@ -1,6 +1,13 @@
 class FullTextSearchController {
 
-    public static $inject = ["$log", "FullTextSearchService", "FullTextResponseService", "WhoisMetaService"];
+    public static $inject = [
+        "$log",
+        "FullTextSearchService",
+        "FullTextResponseService",
+        "WhoisMetaService",
+        "Labels",
+        "Properties",
+    ];
 
     // In
     public ftquery: string;
@@ -8,7 +15,7 @@ class FullTextSearchController {
     public advancedSearch = false;
     public selectedObjectTypes: string[] = [];
     public selectedAttrs: string[] = [];
-    public resultSummary: ResultSummary[];
+    public resultSummary: ResultSummary[] = [];
     public numResults: number;
 
     // Out
@@ -16,24 +23,31 @@ class FullTextSearchController {
     public objectMetadata: any;
     public selectableAttributes: string[] = [];
     public results: any;
-    public showNoResultsAlert = false;
+    public showError = "";
     public activePage = 1;
+    public numResultsPerPage: number;
 
     // not used by search directly but we declare this array so that paginator instances
     // can share it (via 2-way binding) and will be sync'd.
     public navbarSyncArray: string[] = [];
 
+    private lastHash = "";
+
     constructor(private $log: angular.ILogService,
                 private searchService: FullTextSearchService,
                 private fullTextResponseService: FullTextResponseService,
-                private WhoisMetaService: any) {
+                private whoisMetaService: any,
+                public labels: { [key: string]: string },
+                public properties: IProperties) {
         this.ftquery = "";
-        this.objectTypes = Object.keys(WhoisMetaService._objectTypesMap);
-        this.objectMetadata = this.parseMetadataToLists(WhoisMetaService._objectTypesMap);
+        this.objectTypes = Object.keys(whoisMetaService._objectTypesMap);
+        this.objectMetadata = this.parseMetadataToLists(whoisMetaService._objectTypesMap);
+        this.numResultsPerPage = 10;
     }
 
     public searchClicked() {
         if (!this.ftquery.trim()) {
+            this.showError = "fullText.emptyQueryText.text";
             return;
         }
         this.performSearch(0);
@@ -45,7 +59,7 @@ class FullTextSearchController {
 
     public pageClicked(page: number) {
         this.activePage = page;
-        this.performSearch(page - 1);
+        this.performSearch((page - 1) * this.numResultsPerPage);
     }
 
     public objectTypeChanged() {
@@ -75,8 +89,10 @@ class FullTextSearchController {
     }
 
     private performSearch(start: number) {
-        this.showNoResultsAlert = false;
-        this.resultSummary = null;
+        this.showError = "";
+        if (!this.advancedSearch) {
+            this.selectNone();
+        }
         this.searchService.doSearch(
             this.ftquery.trim(),
             start,
@@ -85,20 +101,28 @@ class FullTextSearchController {
             this.selectedObjectTypes || [],
             this.selectedAttrs || []).then(
             (resp: ng.IHttpPromiseCallbackArg<ISearchResponseModel>) => this.handleResponse(resp),
-            (err) => { this.results = []; this.$log.error("performSearch error", err); });
+            (err) => {
+                this.results = [];
+                this.$log.error("performSearch error", err);
+            });
     }
 
     private handleResponse(resp: ng.IHttpPromiseCallbackArg<ISearchResponseModel>) {
-        this.numResults = resp.data.result.numFound;
         const responseModel = this.fullTextResponseService.parseResponse(resp.data);
+        const qh = this.queryHash();
+        if (this.lastHash !== qh) {
+            this.activePage = 1;
+            this.lastHash = qh;
+        }
+        this.numResults = resp.data.result.numFound;
         this.results = responseModel.details;
         this.resultSummary = responseModel.summary;
         if (this.results.length === 0) {
-            this.showNoResultsAlert = true;
+            this.showError = "fullText.emptyRresult.text";
         }
     }
 
-    private parseMetadataToLists(metadata: any) {
+    private parseMetadataToLists(metadata: any): { [key: string]: string } {
         const result = {};
         for (const o of Object.keys(metadata)) {
             const md = metadata[o];
@@ -124,8 +148,20 @@ class FullTextSearchController {
         return allAttrs.sort();
     }
 
+    private queryHash(): string {
+        return [
+            this.ftquery,
+            this.advmode,
+            this.advancedSearch,
+            this.selectedObjectTypes.map((t) => t).join(""),
+            this.selectedAttrs.map((t) => t).join(""),
+        ].join("");
+    }
 }
 
 angular
     .module("dbWebApp")
-    .controller("FullTextSearchController", FullTextSearchController);
+    .component("fullTextSearch", {
+        controller: FullTextSearchController,
+        templateUrl: "scripts/fulltextsearch/full-text-search.html",
+    });

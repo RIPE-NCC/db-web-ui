@@ -11,6 +11,12 @@ describe('The Paginator', function () {
         $componentController = _$componentController_;
     }));
 
+    it('should not crash', function() {
+        var ctrl = $componentController('paginator');
+        ctrl.refresh();
+        expect(ctrl.hidePaginator).toEqual(false);
+    });
+
     it('should show all results on 1 page', function () {
         var ctrl = $componentController('paginator');
         ctrl.numResults = 5;
@@ -33,8 +39,17 @@ describe('The Paginator', function () {
         ctrl.fastFwd(2);
         expect(ctrl.activePage).toEqual(3);
 
+        ctrl.pageSelected(0);
+        expect(ctrl.activePage).toEqual(1);
+
+        ctrl.fastFwd(-2);
+        expect(ctrl.activePage).toEqual(1);
+
         ctrl.pageSelected(2);
         expect(ctrl.activePage).toEqual(2);
+
+        ctrl.pageSelected(2000);
+        expect(ctrl.activePage).toEqual(40);
     });
 
 });

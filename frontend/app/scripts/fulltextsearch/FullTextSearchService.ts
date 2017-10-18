@@ -1,9 +1,8 @@
 class FullTextSearchService {
 
-    public static $inject = ["$log", "$http"];
+    public static $inject = ["$http"];
 
-    constructor(private $log: angular.ILogService,
-                private $http: angular.IHttpService) {
+    constructor(private $http: angular.IHttpService) {
     }
 
     public doSearch(query: string,
@@ -12,8 +11,6 @@ class FullTextSearchService {
                     advancedMode: string,
                     searchObjects: string[],
                     searchAttributes: string[]) {
-
-        // TODO: parse stateParams to support PERMA link functionality
 
         const params: {
             q?: string;
@@ -25,11 +22,8 @@ class FullTextSearchService {
         } = {};
 
         if (typeof query === "string") {
-            if (!advanced) {
-                params.q = this.createQuery(query, "all", [], []);
-            } else {
-                params.q = this.createQuery(query, advancedMode, searchObjects, searchAttributes);
-            }
+            params.q = advanced ? this.createQuery(query, advancedMode, searchObjects, searchAttributes)
+                : this.createQuery(query, "all", [], []);
             params.start = start;
             params.hl = true;
             params.facet = true;
@@ -37,8 +31,8 @@ class FullTextSearchService {
             params.wt = "json";
             return this.$http({
                 method: "GET",
-                url: "api/rest/fulltextsearch/select",
                 params,
+                url: "api/rest/fulltextsearch/select",
             });
         }
     }

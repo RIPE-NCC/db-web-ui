@@ -35,10 +35,10 @@
 
     <div class="modal-footer">
         <div ng-if="canBeDeleted">
-            <input type="submit" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="doDelete()" value="Confirm delete"/>
+            <button id="btnConfirmDeleteObject" class="red-button ga-attr-popup-btn" data-dismiss="modal" ng-click="doDelete()">Confirm delete</button>
         </div>
         <div ng-if="!canBeDeleted">
-            <input type="submit" class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="doCancel()" value="Return to object"/>
+            <button class="blue-button ga-nondelete-popup-btn" data-dismiss="modal" ng-click="doCancel()">Return to object</button>
         </div>
     </div>
 

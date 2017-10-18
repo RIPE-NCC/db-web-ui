@@ -20,12 +20,20 @@
                 if (doc === null) {
                     $log.info('objectType, attrName, docKind', objectType, attrName, docKind);
                 } else if (!_.isUndefined(doc)) {
-                    return doc[docKind];
+                    return lookupDefaultText(doc, objectType, attrName, docKind);
                 } else {
                     $log.warn('No documentation for objectType:', objectType, 'attrName:', attrName);
                 }
                 return doc;
             };
+
+            function lookupDefaultText(doc, objectType, attrName, docKind) {
+                // only for organisation on abuse-c field is shown bell icon
+                if (attrName === 'abuse-c' && objectType === 'organisation' && docKind === 'short') {
+                    return doc[docKind].substring(0, doc[docKind].length - 1) + ' or click the "bell" icon to create one.';
+                }
+                return doc[docKind];
+            }
 
             this.getAttributeShortDescription = function (objectType, attrName) {
                 var short = this._getDocumentationForAttribute(objectType, attrName, 'short');
@@ -203,6 +211,7 @@
                         {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                         {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                         {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
+                        {name: 'abuse-c', mandatory: false, multiple: false, refs: ['ROLE']},
                         {name: 'status', mandatory: false, multiple: false, refs: [], isEnum: true},
                         {name: 'notify', mandatory: false, multiple: true, refs: []},
                         {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
@@ -264,6 +273,7 @@
                         {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                         {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                         {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
+                        {name: 'abuse-c', mandatory: false, multiple: false, refs: ['ROLE']},
                         {name: 'status', mandatory: true, multiple: false, refs: [], isEnum: true},
                         {name: 'assignment-size', mandatory: false, multiple: false, refs: []},
                         {name: 'remarks', mandatory: false, multiple: true, refs: []},
@@ -291,6 +301,7 @@
                         {name: 'sponsoring-org', mandatory: false, multiple: false, refs: ['ORGANISATION']},
                         {name: 'admin-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
                         {name: 'tech-c', mandatory: true, multiple: true, refs: ['PERSON', 'ROLE']},
+                        {name: 'abuse-c', mandatory: false, multiple: false, refs: ['ROLE']},
                         {name: 'status', mandatory: true, multiple: false, refs: [], isEnum: true},
                         {name: 'remarks', mandatory: false, multiple: true, refs: []},
                         {name: 'notify', mandatory: false, multiple: true, refs: []},
@@ -658,7 +669,7 @@
                     syntax: _shared.email.syntax
                 },
                 'abuse-c': {
-                    short: 'Enter the nic-handle of your abuse-c role object or click the \"bell\" icon to create one.',
+                    short: 'Enter the nic-handle of your abuse-c role object.',
                     description: 'References an abuse contact. This can only be a <strong>role</strong> object containing an \"abuse-mailbox:\" attribute.',
                     syntax: _shared.nicHandle.syntax
                 },

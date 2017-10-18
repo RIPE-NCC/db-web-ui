@@ -25,7 +25,7 @@ public class Recording01 {
 
     private void navigateToDomainCreationWizard() {
         driver.get(baseUrl);
-        driver.findElement(By.linkText("Create an object")).click();
+        driver.findElement(By.linkText("Create an Object")).click();
         new Select(driver.findElement(By.id("objectTypeSelector"))).selectByVisibleText("domain");
         driver.findElement(By.cssSelector("option[value=\"domain\"]")).click();
         driver.findElement(By.id("btnNavigateToCreate")).click();
@@ -66,8 +66,8 @@ public class Recording01 {
         pause(12);
 
         // search object 1
-        ((JavascriptExecutor)driver).executeScript("arguments[0].checked = true;", driver.findElement(By.cssSelector("a[href=\"/search/query.html\"]")));
-        driver.findElement(By.cssSelector("a[href=\"/search/query.html\"]")).click();
+        ((JavascriptExecutor)driver).executeScript("arguments[0].checked = true;", driver.findElement(By.cssSelector("a[href=\"/db-web-ui/#/search/query\"]")));
+        driver.findElement(By.cssSelector("a[href=\"/db-web-ui/#/query\"]")).click();
         driver.findElement(By.id("search:queryString")).sendKeys("110.17.212.in-addr.arpa");
         pause(2);
 

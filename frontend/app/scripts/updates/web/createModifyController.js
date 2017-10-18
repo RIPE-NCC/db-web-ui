@@ -153,6 +153,7 @@ angular.module('webUpdates')
                 // extract parameters from the url
                 $scope.source = $stateParams.source;
                 $scope.objectType = $stateParams.objectType;
+
                 if (!_.isUndefined($stateParams.name)) {
                     $scope.name = decodeURIComponent($stateParams.name);
                 }
@@ -216,6 +217,11 @@ angular.module('webUpdates')
             /*
              * Methods called from the html-template
              */
+
+            //Should show bell icon for abuse-c in case value is not specified and objectType is organisation
+            $scope.shouldShowBellIcon = function(attribute, objectType) {
+                return attribute.name === 'abuse-c' && !attribute.value && objectType === 'organisation';
+            };
 
             function createRoleForAbuseCAttribute() {
                 var maintainers = _.map($scope.maintainers.object, function (o) {
@@ -992,5 +998,4 @@ angular.module('webUpdates')
                     });
                 }
             }
-
         }]);

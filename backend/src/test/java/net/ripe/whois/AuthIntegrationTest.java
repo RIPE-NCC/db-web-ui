@@ -7,14 +7,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -31,22 +32,13 @@ import static org.junit.Assert.assertThat;
  */
 @RunWith(SpringRunner.class)
 @ActiveProfiles(profiles = "test")
-@SpringBootTest(classes = {Application.class, AuthIntegrationTest.ContextConfiguration.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {Application.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthIntegrationTest {
 
     protected static final String CROWD_COOKIE_NAME = "crowd.token_key";
     protected static final String CROWD_COOKIE_VALUE = "aabbccdd";
     protected static final String CROWD_SESSION_PATH = "/rest/usermanagement/1/session";
     protected static final String CROWD_USER_ATTRIBUTE_PATH = "/rest/usermanagement/1/user/attribute";
-
-    @Configuration
-    @EnableAutoConfiguration
-    static class ContextConfiguration {
-        @Bean
-        public TestRestTemplate testRestTemplate() {
-            return new TestRestTemplate();
-        }
-    }
 
     @Autowired
     protected Environment environment;
@@ -82,6 +74,7 @@ public class AuthIntegrationTest {
         System.setProperty("internal.api.key", "123");
         System.setProperty("ba-apps.api.key", "OMG");
         System.setProperty("ba-apps.api.url", getMockServerUrl());
+        System.setProperty("syncupdates.api.url", getMockServerUrl());
     }
 
     @AfterClass
@@ -340,4 +333,19 @@ public class AuthIntegrationTest {
             "    }\n" +
             "  }\n" +
             "}";
+
+    @Test
+    public void syncupdate_no_object() {
+        mock("/authorisation-service/v2/notification/account/aabbccdd/member",LIRS_MOCK);
+        mock("/resource-services/member-resources/7347", RESOURCES_MOCK);
+
+        final HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Cookie", "crowd.token_key=aabbccdd");
+        final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-EIP1-RIPE/94.126.32.0/20", HttpMethod.GET, requestEntity, String.class);
+        assertThat(response.getBody(), is(
+                "{\"tickets\":{\"94.126.32.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"94.126.32.0/21\"}]}}"));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+    }
 }

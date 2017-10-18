@@ -19,6 +19,7 @@ class ResourceDetailsController {
         "Labels",
         "MntnerService",
         "MoreSpecificsService",
+        "Properties",
         "ResourceStatus",
         "ResourcesDataService",
         "RestService",
@@ -56,7 +57,7 @@ class ResourceDetailsController {
     private lastPage: number;
     private MAGIC = 100; // number of items per page on server
     private filterDebouncer: ng.IPromise<any> = null;
-    private source = "RIPE"; // TODO: calculate this value
+    private source: string;
 
     constructor(private $scope: angular.IScope,
                 private $state: IResourceDetailsControllerState,
@@ -68,6 +69,7 @@ class ResourceDetailsController {
                 private labels: { [key: string]: string },
                 private MntnerService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
+                private properties: { SOURCE: string },
                 private ResourceStatus: any,
                 private ResourcesDataService: ResourcesDataService,
                 private RestService: any) {
@@ -76,6 +78,7 @@ class ResourceDetailsController {
             editor: false,
             viewer: true,
         };
+        this.source = this.properties.SOURCE;
         this.objectName = decodeURIComponent($state.params.objectName);
         this.objectType = $state.params.objectType.toLowerCase();
         this.sponsored = typeof this.$state.params.sponsored === "string"

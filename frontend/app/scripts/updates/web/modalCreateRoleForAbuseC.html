@@ -1,15 +1,15 @@
 <div class="modal-content no-rounded">
     <div class="modal-header">
-        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="cancel()"></i>
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="$ctrl.cancel()"></i>
         <h5 class="modal-title" >Enter the email address for the abuse contact</h5>
     </div>
     <div class="modal-body">
         <div class="pass-strength-output"></div>
          <input type="email" class="form-control margin-bottom" name="email" placeholder="abuse@example.net"
-               ng-model="email" ng-minlength=5 ng-maxlength=100 required autocomplete="off">
+               ng-model="$ctrl.email" ng-minlength=5 ng-maxlength=100 required autocomplete="off">
     </div>
     <div class="modal-footer">
-        <input type="submit" class="blue-button ga-createabusec-popup-btn" data-dismiss="modal" ng-click="create()" ng-disabled="!isEmailValid()" value="Submit"/>
+        <input type="submit" class="blue-button ga-createabusec-popup-btn" data-dismiss="modal" ng-click="$ctrl.create()" ng-disabled="!$ctrl.isEmailValid()" value="Submit"/>
     </div>
 </div>
 

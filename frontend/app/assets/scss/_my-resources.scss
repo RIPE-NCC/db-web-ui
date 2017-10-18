@@ -146,7 +146,7 @@ ip-usage {
         @extend %float-l;
         border: 1px solid lightgrey;
         display: inline-block;
-        width: 207px;
+        width: 30%;
         height: 120px;
         padding: 10px;
         margin-right: 20px;
@@ -157,6 +157,9 @@ ip-usage {
         p.box-title {
             font-size: 20px;
             padding-top: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         p.box-value {
             font-size: 20px;

@@ -11,9 +11,9 @@ interface IQueryState extends ng.ui.IStateParamsService {
 
 interface IProperties {
     // only here to stop tslint from whinging
-    REST_SEARCH_XML_URL: string;
-    REST_SEARCH_JSON_URL: string;
+    REST_SEARCH_URL: string;
     SOURCE: string;
+    LOGIN_URL: string;
 }
 
 class QueryController {
@@ -114,20 +114,18 @@ class QueryController {
     }
 
     public whoisCliQuery(): string {
-        if (!this.qp.queryText) {
+        if (!this.qp.queryText || this.qp.queryText.indexOf(";") > -1) {
             return " ";
         }
-        const q = [
-            this.qp.queryText,
-        ];
+        const q = [];
         const invs = this.qp.inverseAsList().join(",");
         const typs = this.qp.typesAsList().join(",");
         if (invs.length) {
-            q.push(" -i ");
+            q.push("-i ");
             q.push(invs);
         }
         if (typs.length) {
-            q.push(" -t ");
+            q.push(" -T ");
             q.push(typs);
         }
         let flags = this.qp.hierarchy || "";
@@ -146,6 +144,7 @@ class QueryController {
         if (this.qp.source === "GRS") {
             q.push(" --resource");
         }
+        q.push(" " + this.qp.queryText);
         return q.join("").trim();
     }
 
@@ -166,20 +165,28 @@ class QueryController {
 
     private handleWhoisSearch(response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
         this.results = response.data.objects.object;
-        this.showScroller = true;
-        this.errorMessages = [] as IErrorMessageModel[];
-
-        this.link.perma = "#/query?" + this.service.buildPermalink(this.qp);
-        const jsonQueryString = this.service.buildQueryStringForLink(this.qp);
-        this.link.json = this.properties.REST_SEARCH_JSON_URL + "?" + jsonQueryString;
-        this.link.xml = this.properties.REST_SEARCH_XML_URL + "?" + jsonQueryString;
-    }
-
-    private handleWhoisSearchError(error: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
-        const msgs = error.data.errormessages && error.data.errormessages.errormessage;
+        // multiple term searches can have errors, too
+        const msgs = response.data.errormessages && response.data.errormessages.errormessage;
         if (msgs && msgs.length > 0) {
             this.errorMessages = msgs;
-            this.results = [];
+        }
+        this.showScroller = true;
+
+        const jsonQueryString = this.service.buildQueryStringForLink(this.qp);
+        if (jsonQueryString) {
+            this.link.perma = "#/query?" + this.service.buildPermalink(this.qp);
+            this.link.json = this.properties.REST_SEARCH_URL + "search.json?" + jsonQueryString;
+            this.link.xml = this.properties.REST_SEARCH_URL + "search.xml?" + jsonQueryString;
+        } else {
+            this.link.perma = this.link.json = this.link.xml = "";
+        }
+    }
+
+    private handleWhoisSearchError(response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
+        this.results = response.data.objects ? response.data.objects.object : [];
+        const msgs = response.data.errormessages && response.data.errormessages.errormessage;
+        if (msgs && msgs.length > 0) {
+            this.errorMessages = msgs;
         }
     }
 
@@ -187,7 +194,7 @@ class QueryController {
         const map = {};
         if (angular.isArray(list)) {
             for (const l of list) {
-                map[l.replace("-", "_").toLocaleUpperCase()] = true;
+                map[l.replace(/-/g, "_").toLocaleUpperCase()] = true;
             }
         }
         return map;

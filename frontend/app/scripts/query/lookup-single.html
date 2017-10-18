@@ -1,11 +1,11 @@
 <section id="resultsSection">
     <div class="pull-right resultlinks">
-        <a href="http://rest-prepdev.db.ripe.net/{{ $ctrl.$stateParams.source }}/{{ $ctrl.$stateParams.type }}/{{ $ctrl.$stateParams.key }}.xml"
+        <a href="{{ $ctrl.properties.REST_SEARCH_URL }}{{ $ctrl.$stateParams.source }}/{{ $ctrl.$stateParams.type }}/{{ $ctrl.$stateParams.key }}.xml"
            target="_blank">
             <i class="fa fa-file-code-o"></i>
             XML
         </a>&nbsp;
-        <a href="http://rest-prepdev.db.ripe.net/{{ $ctrl.$stateParams.source }}/{{ $ctrl.$stateParams.type }}/{{ $ctrl.$stateParams.key }}.json"
+        <a href="{{ $ctrl.properties.REST_SEARCH_URL }}{{ $ctrl.$stateParams.source }}/{{ $ctrl.$stateParams.type }}/{{ $ctrl.$stateParams.key }}.json"
            target="_blank">
             <i class="fa fa-file-text-o"></i>
             JSON
@@ -13,7 +13,7 @@
     </div>
     <h2 class="documentFirstHeading">Lookup results</h2>
     <div class="clearfix">
-        <div class="alert alert-info small" ng-bind-html="page.labels['msg.searchResultsTandCLink.text']">
+        <div class="alert alert-info small" ng-bind-html="'msg.searchResultsTandCLink.text' | label">
         </div>
     </div>
 </section>

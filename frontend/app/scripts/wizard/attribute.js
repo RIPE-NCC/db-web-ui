@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp').controller('AttributeCtrl', ['$scope', '$sce', 'AttributeMetadataService', 'WhoisMetaService',
-        'CharsetTools', 'RestService', 'EnumService', 'ModalService',
-        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService, EnumService, ModalService) {
+        'CharsetTools', 'RestService', 'EnumService', 'ModalService', 'CredentialsService', 'WhoisResources',
+        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService, EnumService, ModalService, CredentialsService, WhoisResources) {
 
             /*
              * $scope variables we can see because they're bound by our directive: attributeRenderer
@@ -72,6 +72,51 @@
                         addAttr(attributes, attribute, selectedItem.name);
                     });
             };
+
+            //Should show bell icon for abuse-c in case value is not specified and objectType is organisation
+            $scope.shouldShowBellIcon = function(attribute, objectType) {
+                return attribute.name === 'abuse-c' && !attribute.value && objectType === 'organisation';
+            };
+
+            // same like in createModify
+            $scope.createRoleForAbuseCAttribute = function () {
+                var maintainers = _.filter($scope.attributes, function(attr) {
+                   if (attr.name === 'mnt-by')
+                       return {name: 'mnt-by', value: attr.key};
+                });
+                $scope.attribute.$$error = undefined;
+                $scope.attribute.$$success = undefined;
+                ModalService.openCreateRoleForAbuseCAttribute($scope.source, maintainers, _getPasswordsForRestCall()).then(
+                    function (roleAttrs) {
+                        $scope.roleForAbuseC = WhoisResources.wrapAndEnrichAttributes('role', roleAttrs);
+                        $scope.attribute.value = $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value;
+                        $scope.attribute.$$success = 'Role object for abuse-c successfully created';
+                    }, function (error) {
+                        if (error !== 'cancel') { //dismissing modal will hit this function with the string "cancel" in error arg
+                            //TODO: pass more specific errors from REST? [RM]
+                            $scope.attribute.$$error = 'The role object for the abuse-c attribute was not created';
+                        }
+                    }
+                );
+            }
+
+            // same like in createModify
+            function _getPasswordsForRestCall() {
+                var passwords = [];
+
+                if (CredentialsService.hasCredentials()) {
+                    passwords.push(CredentialsService.getCredentials().successfulPassword);
+                }
+
+                /*
+                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
+                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
+                 */
+                if (['route', 'route6', 'aut-num'].indexOf($scope.objectType)) {
+                    passwords.push('RPSL');
+                }
+                return passwords;
+            }
 
             $scope.removeAttribute = function (objectType, attributes, attribute) {
                 if (canBeRemoved(objectType, attributes, attribute)) {

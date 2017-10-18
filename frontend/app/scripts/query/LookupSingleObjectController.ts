@@ -6,7 +6,7 @@ interface ILookupState extends ng.ui.IStateParamsService {
 
 class LookupSingleObjectController {
 
-    public static $inject = ["$log", "$state", "$stateParams", "QueryService"];
+    public static $inject = ["$log", "$state", "$stateParams", "Properties", "QueryService"];
 
     public whoisResponse: IWhoisObjectModel;
 
@@ -17,6 +17,7 @@ class LookupSingleObjectController {
     constructor(private $log: angular.ILogService,
                 private $state: angular.ui.IStateService,
                 private $stateParams: ILookupState,
+                public properties: IProperties,
                 private queryService: IQueryService) {
 
         this.source = $stateParams.source;

@@ -99,6 +99,7 @@ public class Application implements AsyncConfigurer {
         LOGGER.info("crowd.rest.url:             {}", environment.getProperty("crowd.rest.url"));
         LOGGER.info("crowd.rest.user:            {}", environment.getProperty("crowd.rest.user"));
         LOGGER.info("crowd.rest.password:        {}", String.format("%sxxxxx", environment.getProperty("crowd.rest.password").substring(0, 2)));
+        LOGGER.info("syncupdates.api.url         {}", environment.getProperty("syncupdates.api.url"));
     }
 
     @Bean

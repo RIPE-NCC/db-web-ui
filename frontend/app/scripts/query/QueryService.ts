@@ -2,20 +2,36 @@ interface IQueryService {
 
     searchWhoisObjects(qp: QueryParameters): ng.IHttpPromise<IWhoisResponseModel>;
 
-    convertMapOfBoolsToList(boolMap: { [key: string]: boolean }): string[];
-
     buildPermalink(qp: QueryParameters): string;
 
     buildQueryStringForLink(qp: QueryParameters): string;
 
-    convertListToMapOfBools(list: string[]): { [key: string]: boolean };
 }
+
+const EMPTY_MODEL: ng.IHttpPromiseCallbackArg<IWhoisResponseModel> = {
+    data: {
+        errormessages: {errormessage: []},
+        objects: {object: []},
+    },
+};
 
 class QueryService implements IQueryService {
 
-    public static $inject = ["$http"];
+    public static $inject = ["$http", "$q"];
 
-    constructor(private $http: angular.IHttpService) {
+    private static accumulate(resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>,
+                              acc: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
+        if (resp.data.objects) {
+            acc.data.objects.object = acc.data.objects.object.concat(resp.data.objects.object);
+        }
+        if (resp.data.errormessages) {
+            acc.data.errormessages.errormessage =
+                acc.data.errormessages.errormessage.concat(resp.data.errormessages.errormessage);
+        }
+    }
+
+    constructor(private $http: angular.IHttpService,
+                private $q: ng.IQService) {
     }
 
     public searchWhoisObjects(qp: QueryParameters): ng.IHttpPromise<IWhoisResponseModel> {
@@ -49,29 +65,61 @@ class QueryService implements IQueryService {
             flags += "B";
         }
         config.params.flags = qp.source === "GRS" ? flags ? ["resource", flags] : ["resource"] : flags;
-        return this.$http.get("api/whois/search", config);
+
+        const acc = angular.copy(EMPTY_MODEL);
+
+        return config.params["query-string"]
+        // put the first 5 terms into an array and trim them
+            .split(";")
+            .map((item: string) => item.trim())
+            .filter((item: string, idx: number) => item.length && idx < 5)
+            // build an array of promises
+            .map((term: string) => {
+                const conf = angular.copy(config);
+                conf.params["query-string"] = term;
+                return this.$http.get<IWhoisResponseModel>("api/whois/search", conf);
+            })
+            // execute each promise sequentially. can't do them in parallel or a 404 will reject the entire promise...
+            .reduce((prev: ng.IHttpPromise<IWhoisResponseModel>,
+                     curr: ng.IHttpPromise<IWhoisResponseModel>) => {
+                return prev.then((resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                    QueryService.accumulate(resp, acc);
+                    return curr;
+                }, (resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                    // ... so catch every rejection and return normal data
+                    QueryService.accumulate(resp, acc);
+                    return curr;
+                });
+            }, this.$q.resolve(acc))
+            .then((resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                QueryService.accumulate(resp, acc);
+                return acc;
+            }, (resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                QueryService.accumulate(resp, acc);
+                return acc;
+            });
     }
 
     public buildPermalink(qp: QueryParameters): string {
-
+        if (!qp.queryText || !qp.queryText.trim() || qp.queryText.indexOf(";") > -1) {
+            return "";
+        }
         const linkParts: string[] = [];
-        if (qp.queryText && qp.queryText.trim()) {
-            linkParts.push("searchtext=" + qp.queryText.trim());
+        linkParts.push("searchtext=" + qp.queryText.trim());
+
+        const invs = this.convertMapOfBoolsToList(qp.inverse);
+        if (invs.length > 0) {
+            linkParts.push("inverse=" + invs.join(";"));
         }
-        if (qp.inverse) {
-            const invs = this.convertMapOfBoolsToList(qp.inverse);
-            if (invs.length > 0) {
-                linkParts.push("inverse=" + invs.join(";"));
-            }
-        }
-        if (qp.types) {
-            const typs = this.convertMapOfBoolsToList(qp.types);
-            if (typs.length > 0) {
-                linkParts.push("types=" + typs.join(";"));
-            }
+        const typs = this.convertMapOfBoolsToList(qp.types);
+        if (typs.length > 0) {
+            linkParts.push("types=" + typs.join(";"));
         }
         if (qp.hierarchy) {
-            linkParts.push("hierarchyFlag=" + QueryParameters.shortHierarchyFlagToLong(qp.hierarchy));
+            const longFlag = QueryParameters.shortHierarchyFlagToLong(qp.hierarchy);
+            if (longFlag) {
+                linkParts.push("hierarchyFlag=" + longFlag);
+            }
         }
         if (qp.reverseDomain) {
             linkParts.push("dflag=true");
@@ -85,16 +133,16 @@ class QueryService implements IQueryService {
         if (qp.source) {
             linkParts.push("source=" + qp.source);
         }
-
         return linkParts.join("&");
     }
 
     public buildQueryStringForLink(qp: QueryParameters): string {
-        // TODO hierarchy flag
-        const linkParts: string[] = [];
-        if (qp.queryText && qp.queryText.trim()) {
-            linkParts.push("query-string=" + qp.queryText.trim());
+        if (!qp.queryText || !qp.queryText.trim() || qp.queryText.indexOf(";") > -1) {
+            return "";
         }
+        const linkParts: string[] = [];
+        linkParts.push("query-string=" + qp.queryText.trim());
+
         if (qp.inverse) {
             const invs = this.convertMapOfBoolsToList(qp.inverse);
             for (const inv of invs) {
@@ -131,22 +179,15 @@ class QueryService implements IQueryService {
 
     }
 
-    public convertMapOfBoolsToList(boolMap: { [key: string]: boolean }): string[] {
+    private convertMapOfBoolsToList(boolMap: { [key: string]: boolean }): string[] {
+        if (!boolMap || typeof boolMap !== "object") {
+            return [];
+        }
         return Object.keys(boolMap)
             .filter((key) => boolMap[key])
             .map((obj) => {
                 return obj.replace(/_/g, "-").toLocaleLowerCase();
             });
-    }
-
-    public convertListToMapOfBools(list: string[]) {
-        const map = {};
-        if (list && list.length) {
-            for (const l of list) {
-                map[l.replace("-", "_").toLocaleUpperCase()] = true;
-            }
-        }
-        return map;
     }
 
 }

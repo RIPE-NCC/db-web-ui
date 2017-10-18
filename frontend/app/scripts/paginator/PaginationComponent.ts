@@ -1,5 +1,9 @@
 class PaginationController {
 
+    public static $inject = [
+        "$scope",
+    ];
+
     public numResults: number;
     public resultsPerPage: number;
     public pageClicked: (page: any) => void;
@@ -12,12 +16,14 @@ class PaginationController {
 
     public maxNumPaginatorTabs = 10;
 
-    constructor() {
+    constructor(private $scope: any) {
         this.activePage = 1;
     }
 
     public $onInit() {
-        this.refresh();
+        this.$scope.$watch(() => this.numResults, () => {
+            this.refresh();
+        });
     }
 
     public pageSelected(page: number) {
@@ -53,7 +59,7 @@ class PaginationController {
         this.rewindDisabled = firstPage === 1;
         this.ffDisabled = this.activePage === numPages;
         this.pages = [];
-        for (let i = firstPage; i < Math.min(firstPage + this.maxNumPaginatorTabs, numPages); i++) {
+        for (let i = firstPage; i <= Math.min(firstPage + this.maxNumPaginatorTabs, numPages); i++) {
             this.pages.push(i);
         }
     }
