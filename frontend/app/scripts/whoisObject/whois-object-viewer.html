@@ -4,7 +4,9 @@
     </label>
 </div>
 <div class="viewerbuttons">
-    <a class="blue-button pull-right" ng-click="$ctrl.updateClicked($ctrl.ngModel)" ng-if="$ctrl.show.updateButton"> {{ 'lookup.updateObjectButton.text' | label }}</a>
+    <a href="#/webupdates/modify/ripe/{{ $ctrl.ngModel.type }}/{{ $ctrl.ngModel['primary-key'].attribute[0].value }}" class="tag-link ga-dbresult-update"><span>Login to update</span>
+        <i class="fa fa-database"></i></a>
+    <a class="blue-button pull-right" ng-click="$ctrl.updateClicked($ctrl.ngModel)" ng-if="$ctrl.show.updateButton">{{ 'lookup.updateObjectButton.text' | label }}</a>
     <a class="grey-button pull-right ripe-stat-button" ng-href="https://stat.ripe.net/{{ $ctrl.objectPrimaryKey }}?sourceapp=ripedb" ng-if="$ctrl.show.ripeStatButton" target="_newtab">
         {{ 'lookup.ripestatLink.text' | label }}
         <i class="fa fa-external-link"></i>

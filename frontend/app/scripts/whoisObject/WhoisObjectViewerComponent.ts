@@ -3,6 +3,7 @@ class WhoisObjectViewerController {
     public static $inject = [
         "Properties",
         "Labels",
+        "UserInfoService",
     ];
 
     private static MAX_ATTR_NAME_MASK = "                ";
@@ -26,6 +27,7 @@ class WhoisObjectViewerController {
     public showRipeManagedAttrs = true;
 
     public show = {
+        loginLink: false,
         ripeManagedToggleControl: false,
         ripeStatButton: false,
         updateButton: false,
@@ -33,8 +35,9 @@ class WhoisObjectViewerController {
 
     private objLength: number;
 
-    constructor(public properties: { [key: string]: string },
-                public labels: { [key: string]: string }) {
+    constructor(public properties: IProperties,
+                public labels: { [key: string]: string },
+                private userInfoService: UserInfoService) {
         this.objLength = this.ngModel.attributes.attribute.length;
         this.nrLinesToShow = this.objLength > 30 ? 25 : 30;
         this.showMoreButton = this.objLength > this.nrLinesToShow;
@@ -43,7 +46,11 @@ class WhoisObjectViewerController {
         this.pkLink = this.ngModel["primary-key"].attribute[0].name;
         this.show.ripeStatButton = WhoisObjectViewerController.HAS_RIPE_STAT_LINK
             .indexOf(this.ngModel.type.toLowerCase()) > -1;
-        this.show.updateButton = typeof this.updateClicked === "function";
+        this.userInfoService.getLoggedInUser().then((resp: IUserInfo) => {
+            this.show.updateButton = typeof this.updateClicked === "function";
+        }, () => {
+            this.show.loginLink = true;
+        });
         this.show.ripeManagedToggleControl = this.ngModel.comaintained;
     }
 
