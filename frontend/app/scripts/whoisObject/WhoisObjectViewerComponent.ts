@@ -48,6 +48,7 @@ class WhoisObjectViewerController {
             .indexOf(this.ngModel.type.toLowerCase()) > -1;
         this.userInfoService.getLoggedInUser().then((resp: IUserInfo) => {
             this.show.updateButton = typeof this.updateClicked === "function";
+            this.show.loginLink = false;
         }, () => {
             this.show.loginLink = true;
         });
