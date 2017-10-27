@@ -122,7 +122,7 @@ module.exports = function (grunt) {
         prism: {
             options: {
                 host: 'localhost.ripe.net',
-                port: 9002,
+                port: 0,
                 https: false,
                 mocksPath: './test/javascript/e2e/mocks',
                 useApi: true,
@@ -384,7 +384,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.dist %>/assets/css'
                 ],
                 patterns: {
-                    js: [[/(images\/[^''""]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
+                    js: [[/(images\/[^'"]*\.(png|jpg|jpeg|gif|webp|svg))/g, 'Replacing references to images']]
                 }
             }
         },
@@ -692,6 +692,7 @@ module.exports = function (grunt) {
             },
             protractor: {
                 targets: [
+                    'prism.options.port',
                     'connect.e2e.options.port',
                     'protractor.options.args.baseUrl',
                     'protractor_coverage.options.args.baseUrl',
