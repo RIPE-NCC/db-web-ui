@@ -65,7 +65,7 @@ class ResourceDetailsController {
                 private $location: angular.ILocationService,
                 private $anchorScroll: ng.IAnchorScrollService,
                 private $cookies: angular.cookies.ICookiesService,
-                private credentialsService: CredentialsService,
+                private CredentialsService: any,
                 private labels: { [key: string]: string },
                 private MntnerService: any,
                 private MoreSpecificsService: IMoreSpecificsDataService,
@@ -147,8 +147,8 @@ class ResourceDetailsController {
     public updateButtonClicked(): void {
         this.resetMessages();
         const passwords = [];
-        if (this.credentialsService.hasCredentials()) {
-            passwords.push(this.credentialsService.getCredentials().successfulPassword);
+        if (this.CredentialsService.hasCredentials()) {
+            passwords.push(this.CredentialsService.getCredentials().successfulPassword);
         }
 
         const attributesWithoutDates = this.whoisObject.attributes.attribute

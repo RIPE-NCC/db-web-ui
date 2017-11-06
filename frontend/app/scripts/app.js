@@ -67,14 +67,8 @@ angular.module('dbWebApp', [
             });
 
             destroyable.four = $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
-                //TODO do not act; authorisation errors during transition should be handled by stateTransitionError-handler above
+                // do not act; authorisation errors during transition are handled by stateTransitionError-handler above
                 $log.error('Authentication error');
-                var url = $location.absUrl();
-                if (url.indexOf('myresources') > -1) {
-                    var crowdUrl = Properties.LOGIN_URL + '?originalUrl=' + encodeURIComponent(url);
-                    $log.info('Force crowd login:' + crowdUrl);
-                    $window.location.href = crowdUrl;
-                }
             });
 
         }])
