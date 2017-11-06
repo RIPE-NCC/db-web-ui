@@ -53,7 +53,7 @@ public class AngularConstantsController {
     private String frontendLiveChatKey;
     @Value("${object.lookup.url:/search/lookup.html}")
     private String objectLookupUrl;
-    @Value("${rest.search.xml.url:http://rest-prepdev.db.ripe.net/}")
+    @Value("${rest.search.url}")
     private String restSearchUrl;
     @Value("${query.linkToOtherDb.text:Are you looking for the other database}")
     private String queryPageLinkToOtherDb;

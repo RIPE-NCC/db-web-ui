@@ -2,7 +2,6 @@ class WhoisObjectViewerController {
 
     public static $inject = [
         "Properties",
-        "Labels",
         "UserInfoService",
     ];
 
@@ -36,7 +35,6 @@ class WhoisObjectViewerController {
     private objLength: number;
 
     constructor(public properties: IProperties,
-                public labels: { [key: string]: string },
                 private userInfoService: UserInfoService) {
         this.objLength = this.ngModel.attributes.attribute.length;
         this.nrLinesToShow = this.objLength > 30 ? 25 : 30;

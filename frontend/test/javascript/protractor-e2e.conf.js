@@ -26,7 +26,7 @@ exports.config = {
     },
 
     onPrepare: function() {
-        var width = 1280;
+        var width = 1080;
         var height = 1000;
         browser.driver.manage().window().setSize(width, height);
     }

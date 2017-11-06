@@ -7,12 +7,11 @@
 </section>
 <section>
     <div class="dbmessage" ng-if="$ctrl.errorMessages.length">
-        <div class="alert alert-warning">
-            <ul>
-                <li ng-repeat="msg in $ctrl.errorMessages">
-                    <div ng-bind-html="$ctrl.formatError(msg)"></div>
-                </li>
-            </ul>
+        <div ng-repeat="msg in $ctrl.errorMessages">
+            <div class="alert"
+                 ng-class="{ 'alert-warning': msg.severity.toLowerCase() === 'warning', 'alert-danger': msg.severity.toLowerCase() === 'error' }">
+                <div ng-bind-html="$ctrl.formatError(msg)"></div>
+            </div>
         </div>
     </div>
     <form name="searchform" class="grey padding margin-bottom ga-dbsearch-form" ng-submit="$ctrl.submitSearchForm()">
@@ -44,7 +43,7 @@
             </div>
         </div>
         <p>
-            You can search up to 5 terms at once in the search box above, separating them with a semicolon.
+            You can search up to five terms at once in the search box above, separating them with a semi-colon.
         </p>
         <div class="margin-bottom">
             <uib-tabset active="activeForm">
@@ -59,7 +58,8 @@
                                         <label for="search:sources:1">Search resource objects in all available
                                             databases</label>
                                     </label>
-                                    <help-marker label-key="query.optionAllDatabases.title" link="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service"></help-marker>
+                                    <help-marker label-key="query.optionAllDatabases.title"
+                                                 link="https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries/16-9-ripe-ncc-global-resource-service"></help-marker>
                                 </div>
                                 <div class="radio">
                                     <label>
@@ -77,7 +77,8 @@
                 <uib-tab heading="Types">
                     <div class="padding">
                         <ng-form name="typesForm">
-                            <help-marker label-key="query.optionPageTypes.title" link="https://www.ripe.net/data-tools/support/documentation/ripe-database-query-reference-manual#LinkTarget_3010"></help-marker>
+                            <help-marker label-key="query.optionPageTypes.title"
+                                         link="https://www.ripe.net/data-tools/support/documentation/ripe-database-query-reference-manual#LinkTarget_3010"></help-marker>
                             <div class="row radio">
                                 <div class="col-md-4">
                                     <ul class="list-unstyled">
@@ -162,7 +163,8 @@
                     <div class="padding">
                         <ng-form name="hierarchyForm">
                             <div>
-                                <help-marker label-key="query.optionPageHierarchy.title" link="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"></help-marker>
+                                <help-marker label-key="query.optionPageHierarchy.title"
+                                             link="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"></help-marker>
                             </div>
                             <div class="radio">
                                 <label>
@@ -222,7 +224,8 @@
                 <uib-tab heading="Inverse lookup">
                     <div class="padding">
                         <ng-form name="inverseForm">
-                            <help-marker label-key="query.optionPageInverse.title" link="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"></help-marker>
+                            <help-marker label-key="query.optionPageInverse.title"
+                                         link="https://www.ripe.net/data-tools/support/documentation/queries-quick-ref"></help-marker>
                             <div class="row radio">
                                 <div class="col-md-4">
                                     <ul class="list-unstyled">

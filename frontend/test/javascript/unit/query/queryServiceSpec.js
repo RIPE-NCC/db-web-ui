@@ -45,16 +45,16 @@ describe('The QueryService', function () {
 
         qp.queryText = "   yorkshire   ";
 
-        expect(service.buildPermalink(qp)).toEqual("searchtext=yorkshire");
+        expect(service.buildPermalink(qp)).toEqual("searchtext=yorkshire&bflag=false");
         expect(service.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire");
 
         qp.hierarchy = "Z";
 
-        expect(service.buildPermalink(qp)).toEqual("searchtext=yorkshire");
+        expect(service.buildPermalink(qp)).toEqual("searchtext=yorkshire&bflag=false");
         expect(service.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire");
 
         qp.source = "TEST";
-        expect(service.buildPermalink(qp)).toEqual("searchtext=yorkshire&source=TEST");
+        expect(service.buildPermalink(qp)).toEqual("searchtext=yorkshire&source=TEST&bflag=false");
         expect(service.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&source=TEST");
         $httpBackend.flush();
     });
@@ -71,7 +71,7 @@ describe('The QueryService', function () {
             source: "TEST"
         };
         expect(service.buildPermalink(qp)).toEqual("searchtext=yorkshire&inverse=mnt-ref;mnt-by&types=mntner;as-set&" +
-            "hierarchyFlag=one-less&dflag=true&rflag=true&bflag=true&source=TEST");
+            "hierarchyFlag=one-less&dflag=true&rflag=true&source=TEST&bflag=true");
         expect(service.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&inverse-attribute=mnt-ref&" +
             "inverse-attribute=mnt-by&type-filter=mntner&type-filter=as-set&flags=one-less&flags=reverse-domain&" +
             "flags=no-referenced&flags=no-irt&flags=no-filtering&source=TEST");

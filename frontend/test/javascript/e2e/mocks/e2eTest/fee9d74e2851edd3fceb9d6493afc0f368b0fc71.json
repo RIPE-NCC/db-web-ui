@@ -1,0 +1,6 @@
+{
+  "requestUrl": "/api/whois-internal/api/resources/inet6num/2001:7f8::/29/more-specifics.json?filter=nooo&page=0",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {}
+}

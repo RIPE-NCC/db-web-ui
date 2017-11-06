@@ -1,8 +1,8 @@
 interface IErrorMessageModel {
-    attribute: IAttributeModel;
+    attribute?: IAttributeModel;
     severity: string;
     text: string;
-    args: [{
+    args?: [{
         value: string;
     }];
 }

@@ -20,6 +20,7 @@ describe('Modifying an aut-num', function () {
         });
 
         it('should not allow sponsoring-org to be added', function () {
+            page.scrollIntoView(page.btnAddAttribute);
             expect(page.inpSponsoringOrg.isPresent()).toEqual(true);
             page.btnAddAttribute.click();
             expect(page.modal.isPresent()).toEqual(true);

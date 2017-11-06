@@ -6,7 +6,7 @@ angular.module("dbWebApp")
         "flag.otherSponsor.title": "Sponsored by another LIR",
 
         "fullText.attributeHelpText.title": "Only objects where search string is contained within specified fields are returned in result set, but all attributes containing the search string within those objects are reported",
-        "fullText.emptyQueryText.text": "Empty query &mdash; please specify at least one character",
+        "fullText.emptyQueryText.text": "Empty query - please specify at least one character",
         "fullText.emptyRresult.text": "No results were found for your search. Your search details may be too selective.",
 
         "lookup.ripeManagedValuesCheckbox.text": "Highlight RIPE NCC managed values",
@@ -20,7 +20,7 @@ angular.module("dbWebApp")
         "msg.searchResultsFullTextTandCLink.text": "This is the RIPE Database full text search service.<br>The RIPE Database is subject to <a href='http://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
         "msg.searchResultsTandCLink.text": "This is the RIPE Database search service. The objects are in RPSL format.<br>The RIPE Database is subject to <a href='http://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
 
-        "query.optionAllDatabases.title": "RIPE, APNIC, AfriNIC, LACNIC, ARIN, ARIN-RR, RADb, NTTCOM and JPIRR",
+        "query.optionAllDatabases.title": "RIPE, APNIC, AFRINIC, LACNIC, ARIN, ARIN-RR, RADb, NTTCOM and JPIRR",
         "query.optionFullObject.title": "A default query hides some personal information. Check this box to see the full object.",
         "query.optionPageHierarchy.title": "Learn more about RIPE Database queries using primary and lookup keys",
         "query.optionPageInverse.title": "Learn more about RIPE Database queries using inverse lookup keys",

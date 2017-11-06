@@ -8,7 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,7 +30,7 @@ public interface WhoisServiceBase {
             map(Attribute::getValue).collect(Collectors.toList());
     }
 
-    @NotNull
+    @Nonnull
     default HttpEntity<String> getRequestEntity() {
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_XML_VALUE);

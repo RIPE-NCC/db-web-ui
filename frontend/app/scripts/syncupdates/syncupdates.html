@@ -7,14 +7,13 @@
     <p>This form allows an advanced user to paste one or more objects into the text area, and perform a whois update.</p>
 </section>
 <div ng-if="$ctrl.updateResponse">
-    <pre name="updateResultPreview">{{$ctrl.updateResponse}}</pre>
+    <pre id="updateResultPreview">{{$ctrl.updateResponse}}</pre>
 </div>
 <form class="padding grey ga-syncupdate-form">
     <label>Object Data</label>
     <textarea ng-model="$ctrl.rpslObject" rows="18" class="full-width form-control margin-bottom">{{$ctrl.rpslObject}}</textarea>
     <button name="btnSyncupdate" ng-click="$ctrl.update()" type="button" class="blue-button pull-right">Update</button>
     <div class="help-block small">
-        By submitting this form you explicitly express your agreement with the
-        <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
+        <span ng-bind-html="'msg.ripeTandCSubmitLink.text' | label"></span>
     </div>
 </form>

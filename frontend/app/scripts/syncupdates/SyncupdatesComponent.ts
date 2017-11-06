@@ -22,7 +22,7 @@ class SyncupdatesController {
     }
 
     public update() {
-        if (this.rpslObject == null) {
+        if (!this.rpslObject) {
             return;
         }
 

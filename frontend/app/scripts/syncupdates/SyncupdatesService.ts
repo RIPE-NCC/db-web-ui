@@ -12,7 +12,7 @@ class SyncupdatesService implements ISyncupdatesService {
     }
 
     public update(rpslObject: string): angular.IHttpPromise<string> {
-            return this.$http.post("api/syncupdates", encodeURIComponent(rpslObject.trim()));
+            return this.$http.post("api/syncupdates", encodeURIComponent(rpslObject.trim()), { withCredentials: true });
     }
 }
 

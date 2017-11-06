@@ -1,0 +1,29 @@
+{
+	"requestUrl": "/api/whois-internal/api/user/info",
+	"contentType": "application/javascript",
+	"statusCode": 200,
+	"data": {
+		"user": {
+			"username": "tdacruzper@ripe.net",
+			"uuid": "938c6a59-5302-4953-974e-686567eac074",
+			"active": true,
+			"displayName": "Fred Astaire",
+			"expiryDate": "2017-07-06T18:25:41.877"
+		},
+		"members": [{
+			"membershipId": 3629,
+			"regId": "nl.surfnet",
+			"orgObjectId": "ORG-Sb3-RIPE",
+			"organisationName": "SURFnet bv",
+			"roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
+		}, {
+			"orgObjectId": "ORG-WEG1-RIPE",
+			"organisationName": "Wikom Deutsche Telekabel GmbH",
+			"roles": ["certification", "NON-MEMBER"]
+		}, {
+			"orgObjectId": "ORG-WA56-RIPE",
+			"organisationName": "Swi Rop Gonggrijp",
+			"roles": ["certification", "NON-MEMBER"]
+		}]
+	}
+}

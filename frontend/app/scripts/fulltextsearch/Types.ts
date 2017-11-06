@@ -1,36 +1,36 @@
-interface NvPair {
+interface INvPair {
     name: string;
     value: string;
 }
 
-interface StrNvPair {
-    str: NvPair;
+interface IStrNvPair {
+    str: INvPair;
 }
 
-interface IntNvPair {
-    int: NvPair;
+interface IIntNvPair {
+    int: INvPair;
 }
 
-interface ArrNvPair {
+interface IArrNvPair {
     name: string;
     arr: {
         name: string;
-        str: NvPair;
+        str: INvPair;
     };
 }
-interface DocNvPair {
+interface IDocNvPair {
     doc: {
-        strs: StrNvPair[];
-    }
+        strs: IStrNvPair[];
+    };
 }
-interface LstObj {
+interface ILstObj {
     lst: {
         name: string;
-        arrs: ArrNvPair[];
-        ints: IntNvPair[];
-        strs: StrNvPair[];
-        lsts: LstObj[];
-    }
+        arrs: IArrNvPair[];
+        ints: IIntNvPair[];
+        strs: IStrNvPair[];
+        lsts: ILstObj[];
+    };
 }
 
 interface ISearchResponseModel {
@@ -38,12 +38,12 @@ interface ISearchResponseModel {
         name: string;
         start: number;
         numFound: number;
-        docs: DocNvPair[];
+        docs: IDocNvPair[];
     };
-    lsts: LstObj[];
+    lsts: ILstObj[];
 }
 
-interface ResultSummary {
+interface IResultSummary {
     name: string;
     value: number;
 }

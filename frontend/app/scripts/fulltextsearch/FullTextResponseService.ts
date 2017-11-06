@@ -30,12 +30,12 @@ class FullTextResponseService {
             // now find the highlighted results to show
             results.push({
                 hls: hlMap[pk],
+                lookupKey,
                 name,
                 value,
-                lookupKey,
             });
         }
-        const resultSummaries: ResultSummary[] = [];
+        const resultSummaries: IResultSummary[] = [];
         // check we've got some facets for the summaries
         if (data.lsts.length > 2 &&
             data.lsts[2].lst.name === "facet_counts" &&
@@ -43,7 +43,7 @@ class FullTextResponseService {
             data.lsts[2].lst.lsts[0].lst.lsts.length > 0) {
             const aggResultData = data.lsts[2].lst.lsts[0].lst.lsts[0].lst.ints;
             for (const doc of aggResultData) {
-                resultSummaries.push({name: doc.int.name, value: parseInt(doc.int.value, 10)} as ResultSummary);
+                resultSummaries.push({name: doc.int.name, value: parseInt(doc.int.value, 10)} as IResultSummary);
             }
         }
         return {details: results, summary: resultSummaries};

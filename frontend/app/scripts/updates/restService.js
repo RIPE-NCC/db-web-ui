@@ -250,8 +250,12 @@
                         $log.debug('createObject success:' + angular.toJson(result));
                         deferredObject.resolve(WhoisResources.wrapSuccess(result));
                     }, function (error) {
-                        $log.error('createObject error:' + angular.toJson(error));
-                        deferredObject.reject(WhoisResources.wrapError(error));
+                        if (!error) {
+                            throw new TypeError("Unknown error createObject");
+                        } else {
+                            $log.error('createObject error:' + angular.toJson(error));
+                            deferredObject.reject(WhoisResources.wrapError(error));
+                        }
                     });
 
                     return deferredObject.promise;

@@ -35,6 +35,7 @@ describe('The query pagina', function () {
 
     it('should be able to search using the text box and a type checkbox', function () {
         page.inpQueryString.sendKeys('193.0.0.0');
+        page.scrollIntoView(page.inpDontRetrieveRelated);
         page.inpDontRetrieveRelated.click();
         page.queryParamTabs.get(1).click();
         page.scrollIntoView(page.byId('search:types:6'));

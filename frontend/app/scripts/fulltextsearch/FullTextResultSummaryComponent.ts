@@ -3,8 +3,9 @@ class FullTextResultSummaryController {
     private static $inject = [
         "$scope",
     ];
-    public tabledata: ResultSummary[];
-    public rowClicked: (td: ResultSummary) => {};
+
+    public tabledata: IResultSummary[];
+    public rowClicked: (td: IResultSummary) => {};
 
     public total: number;
 

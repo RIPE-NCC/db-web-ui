@@ -23,6 +23,7 @@ describe('The organisation editor', function () {
     });
 
     it('should be able to switch to text mode and back', function () {
+        page.scrollIntoView(page.btnCreateInTextArea);
         expect(page.createForm.isPresent()).toEqual(true);
         page.btnCreateInTextArea.click();
         expect(page.textCreateForm.isPresent()).toEqual(true);

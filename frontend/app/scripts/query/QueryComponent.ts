@@ -23,7 +23,6 @@ class QueryController {
         "$scope",
         "$state",
         "$stateParams",
-        "Labels",
         "Properties",
         "QueryService",
     ];
@@ -45,7 +44,6 @@ class QueryController {
                 private $scope: angular.IScope,
                 private $state: angular.ui.IStateService,
                 private $stateParams: IQueryState,
-                private labels: { [key: string]: string },
                 private properties: IProperties,
                 private service: IQueryService) {
 
@@ -92,11 +90,30 @@ class QueryController {
             this.results = [];
             return;
         }
+        const cleanQp = angular.copy(this.qp);
         // Reset on-screen widgets
         this.errorMessages = [];
         this.results = [];
-        return this.service
-            .searchWhoisObjects(this.qp)
+        const issues = cleanQp.validate();
+        for (const msg of issues.warnings) {
+            const err: IErrorMessageModel = {
+                severity: "warning",
+                text: msg,
+            };
+            this.errorMessages.push(err);
+        }
+        for (const msg of issues.errors) {
+            const err: IErrorMessageModel = {
+                severity: "error",
+                text: msg,
+            };
+            this.errorMessages.push(err);
+        }
+        if (issues.errors.length) {
+            return;
+        }
+        this.service
+            .searchWhoisObjects(cleanQp)
             .then(
                 (response) => this.handleWhoisSearch(response),
                 (error) => this.handleWhoisSearchError(error));
@@ -117,9 +134,13 @@ class QueryController {
         if (!this.qp.queryText || this.qp.queryText.indexOf(";") > -1) {
             return " ";
         }
+        const qpClean = angular.copy(this.qp);
+        if (qpClean.validate().errors.length > 0) {
+            return " ";
+        }
         const q = [];
-        const invs = this.qp.inverseAsList().join(",");
-        const typs = this.qp.typesAsList().join(",");
+        const invs = qpClean.inverseAsList().join(",");
+        const typs = qpClean.typesAsList().join(",");
         if (invs.length) {
             q.push("-i ");
             q.push(invs);
@@ -128,23 +149,23 @@ class QueryController {
             q.push(" -T ");
             q.push(typs);
         }
-        let flags = this.qp.hierarchy || "";
-        if (this.qp.reverseDomain && flags) {
+        let flags = qpClean.hierarchy || "";
+        if (qpClean.reverseDomain && flags) {
             flags += "d";
         }
-        if (this.qp.showFullObjectDetails) {
+        if (qpClean.showFullObjectDetails) {
             flags += "B";
         }
-        if (this.qp.doNotRetrieveRelatedObjects) {
+        if (qpClean.doNotRetrieveRelatedObjects) {
             flags += "r";
         }
         if (flags) {
             q.push(" -" + flags);
         }
-        if (this.qp.source === "GRS") {
+        if (qpClean.source === "GRS") {
             q.push(" --resource");
         }
-        q.push(" " + this.qp.queryText);
+        q.push(" " + qpClean.queryText);
         return q.join("").trim();
     }
 

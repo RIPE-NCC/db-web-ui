@@ -75,6 +75,7 @@ public class AuthIntegrationTest {
         System.setProperty("ba-apps.api.key", "OMG");
         System.setProperty("ba-apps.api.url", getMockServerUrl());
         System.setProperty("syncupdates.api.url", getMockServerUrl());
+        System.setProperty("rest.search.url", getMockServerUrl());
     }
 
     @AfterClass

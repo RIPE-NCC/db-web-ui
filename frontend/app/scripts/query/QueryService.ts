@@ -127,12 +127,10 @@ class QueryService implements IQueryService {
         if (qp.doNotRetrieveRelatedObjects) {
             linkParts.push("rflag=true");
         }
-        if (qp.showFullObjectDetails) {
-            linkParts.push("bflag=true");
-        }
         if (qp.source) {
             linkParts.push("source=" + qp.source);
         }
+        linkParts.push("bflag=" + qp.showFullObjectDetails);
         return linkParts.join("&");
     }
 

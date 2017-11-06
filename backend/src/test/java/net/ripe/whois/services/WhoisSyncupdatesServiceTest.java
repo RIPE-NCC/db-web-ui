@@ -2,6 +2,7 @@ package net.ripe.whois.services;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +20,8 @@ public class WhoisSyncupdatesServiceTest {
     private WhoisSyncupdatesService whoisSyncupdatesService = new WhoisSyncupdatesService(restTemplate, MOCK_SYNCUPDATE_URL);
 
     private MockRestServiceServer mockServer;
+
+    private HttpHeaders httpHeaders;
 
     final String rpslObject =
             "inetnum:         3.0.103.0 - 3.0.103.255\n" +
@@ -38,6 +41,7 @@ public class WhoisSyncupdatesServiceTest {
     @Before
     public void setUp() throws Exception {
         mockServer = MockRestServiceServer.createServer(restTemplate);
+        httpHeaders = new HttpHeaders();
     }
 
     private final static String crowdToken = "snfkvjnfkjvnsdnc";
@@ -55,7 +59,7 @@ public class WhoisSyncupdatesServiceTest {
 
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
-        String respons = whoisSyncupdatesService.update("something").toString();
+        String respons = whoisSyncupdatesService.proxy("something", httpHeaders).toString();
         assertTrue(respons.contains(expectedResponse));
     }
 
@@ -67,7 +71,7 @@ public class WhoisSyncupdatesServiceTest {
                 "            not authenticated by: RIPE-NCC-HM-MNT, TPOLYCHNIA-MNT";
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
-        String respons = whoisSyncupdatesService.update(rpslObject).toString();
+        String respons = whoisSyncupdatesService.proxy(rpslObject, httpHeaders).toString();
         assertTrue(respons.contains(expectedResponse));
     }
 
@@ -84,7 +88,47 @@ public class WhoisSyncupdatesServiceTest {
                 "***Warning: Submitted object identical to database object";
         mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
                 .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
-        String respons = whoisSyncupdatesService.update(rpslObject.concat("password:TPOLYCHNIA-MNT")).toString();
+        String respons = whoisSyncupdatesService.proxy(rpslObject.concat("password:TPOLYCHNIA-MNT"), httpHeaders).toString();
+        assertTrue(respons.contains(expectedResponse));
+    }
+
+    @Test
+    public void shouldForLoggedInMntReturnSuccessMessage() {
+        httpHeaders.add("Cookie", "pref-ui-mode=textupdates; _ga=GA1.3.1221467399.1496843568; " +
+                "pref-syncupdates-mode=rich; uslk_e=MjFiZjlkMWYtYTE1Mi1hNmFiLWZmOGUtMDFkNTYyYWRiMzIz~~~~~~~2~; " +
+                "activeMembershipId=org%3AORG-SA1840-RIPE; cookies-accepted=accepted; crowd.token_key=u00dCkpOmYzHek0GegdqFA00; " +
+                "crowd.ripe.hint=true; uslk_s=Idle%3B0~~0~0~0~~\n");
+
+        final String rpslObjectIsvMnt =
+                "organisation:    ORG-SA1840-RIPE\n" +
+                "org-name:        Shw\n" +
+                "org-type:        OTHER\n" +
+                "address:         Amsterdam\n" +
+                "e-mail:          ivana.svonja@ripe.net\n" +
+                "abuse-c:         ACRO93-RIPE\n" +
+                "mnt-ref:         ISV-MNT\n" +
+                "mnt-by:          isvonja-mnt\n" +
+                "mnt-by:          ISV-MNT\n" +
+                "created:         2017-01-27T07:20:46Z\n" +
+                "last-modified:   2017-10-10T12:00:28Z\n" +
+                "source:          RIPE";
+
+        final String expectedResponse =
+                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+                "The following object(s) were processed SUCCESSFULLY:\n" +
+                "\n" +
+                "---\n" +
+                "No operation: [organisation] ORG-SA1840-RIPE\n" +
+                "\n" +
+                "\n" +
+                "***Warning: Submitted object identical to database object\n" +
+                "\n" +
+                "\n" +
+                "\n" +
+                "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+        mockServer.expect(requestTo(MOCK_SYNCUPDATE_URL))
+                .andRespond(withSuccess(expectedResponse, MediaType.APPLICATION_FORM_URLENCODED));
+        String respons = whoisSyncupdatesService.proxy(rpslObjectIsvMnt, httpHeaders).toString();
         assertTrue(respons.contains(expectedResponse));
     }
 

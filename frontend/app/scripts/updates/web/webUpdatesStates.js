@@ -118,9 +118,7 @@ angular.module('webUpdates')
                 })
                 .state('lookup', {
                     url: '/lookup?source&key&type',
-                    templateUrl: 'scripts/query/lookup-single.html',
-                    controller: 'LookupSingleObjectController',
-                    controllerAs: '$ctrl'
+                    template: '<lookup-single></lookup-single>'
                 })
                 .state('query', {
                     url: '/query?searchtext&hierarchyFlag&inverse&types&bflag&dflag&rflag&source',

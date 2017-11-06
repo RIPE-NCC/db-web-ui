@@ -1,23 +1,23 @@
 'use strict';
 
 angular.module('dbWebApp', [
-        'ui.router',
-        'angular-loading-bar',
-        'ngAnimate',
-        'ngResource',
-        'ngSanitize',
-        'angulartics',
-        'angulartics.google.tagmanager',
-        'diff-match-patch',
-        'ui.bootstrap',
-        'ui.select',
-        'ngCookies',
-        'updates',
-        'webUpdates',
-        'textUpdates',
-        'fmp',
-        'loginStatus'
-    ])
+    'ui.router',
+    'angular-loading-bar',
+    'ngAnimate',
+    'ngResource',
+    'ngSanitize',
+    'angulartics',
+    'angulartics.google.tagmanager',
+    'diff-match-patch',
+    'ui.bootstrap',
+    'ui.select',
+    'ngCookies',
+    'updates',
+    'webUpdates',
+    'textUpdates',
+    'fmp',
+    'loginStatus'
+])
 
     .config(['$stateProvider', '$logProvider', '$httpProvider', 'Properties',
         function ($stateProvider, $logProvider, $httpProvider, Properties) {
@@ -41,7 +41,6 @@ angular.module('dbWebApp', [
             // Always tell server if request was made using ajax
             $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         }])
-
     .run(['$rootScope', '$state', '$window', '$location', '$log', 'ERROR_EVENTS', 'Properties',
         function ($rootScope, $state, $window, $location, $log, ERROR_EVENTS, Properties) {
 
@@ -68,12 +67,18 @@ angular.module('dbWebApp', [
             });
 
             destroyable.four = $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
-                // do not act; authorisation errors during transition are handled by stateTransitionError-handler above
+                //TODO do not act; authorisation errors during transition should be handled by stateTransitionError-handler above
                 $log.error('Authentication error');
+                var url = $location.absUrl();
+                if (url.indexOf('myresources') > -1) {
+                    var crowdUrl = Properties.LOGIN_URL + '?originalUrl=' + encodeURIComponent(url);
+                    $log.info('Force crowd login:' + crowdUrl);
+                    $window.location.href = crowdUrl;
+                }
             });
 
         }])
-    .controller('PageController', ['Properties', 'Labels', function(Properties, Labels) {
+    .controller('PageController', ['Properties', 'Labels', function (Properties, Labels) {
         var vm = this;
         vm.Properties = Properties;
         vm.labels = Labels;

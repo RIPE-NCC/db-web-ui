@@ -616,7 +616,7 @@ module.exports = function (grunt) {
                 args: {
                     baseUrl: 'http://localhost:0',
                     chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
-                    seleniumServerJar: './test/lib/client-combined-3.0.1-nodeps.jar'
+                    seleniumServerJar: './test/lib/selenium-server-standalone-3.6.0.jar'
                 }
             },
             e2e: {
@@ -650,7 +650,7 @@ module.exports = function (grunt) {
                     args: {
                         baseUrl: 'http://localhost:0',
                         chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
-                        seleniumServerJar: './test/lib/client-combined-3.0.1-nodeps.jar'
+                        seleniumServerJar: './test/lib/selenium-server-standalone-3.6.0.jar'
                     }
                 }
             },
@@ -684,7 +684,7 @@ module.exports = function (grunt) {
         },
 
         // Range from 9000 - 9099 available through msw7 / db-tools-2 firewall
-        // 9080 reserved for grunt serve and grunt e2e-no-test
+        // 9080 reserved for grunt serve
         portPick: {
             options: {
                 port: 9002,

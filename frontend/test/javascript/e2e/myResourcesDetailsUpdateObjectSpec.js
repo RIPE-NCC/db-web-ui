@@ -82,6 +82,7 @@ describe('My Resources, update object', function () {
     });
 
     it('should allow the user to add abuse-c', function(){
+        page.scrollIntoView(page.btnUpdateObjectButton);
         page.btnUpdateObjectButton.click();
         page.modalInpPassword.sendKeys('TPOL888-MNT');
         page.modalInpAssociate.click();
@@ -101,6 +102,7 @@ describe('My Resources, update object', function () {
         });
 
         it('can edit netname', function () {
+            page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
             page.modalInpAssociate.click();
@@ -117,6 +119,7 @@ describe('My Resources, update object', function () {
         });
 
         it('can add org attribute', function () {
+            page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
             page.modalInpAssociate.click();

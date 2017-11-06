@@ -10,7 +10,7 @@ exports.config = {
 
     capabilities: {
         'browserName': 'chrome',
-        'seleniumAddress': 'http://193.0.2.219:4444/wd/hub',
+        'seleniumAddress': 'http://193.0.2.222:4444/wd/hub',
         'chromeOptions': {'args': ['--disable-extensions']}
     },
     framework: 'jasmine2',
@@ -26,7 +26,7 @@ exports.config = {
     },
 
     onPrepare: function() {
-        var width = 1280;
+        var width = 1080;
         var height = 1000;
         browser.driver.manage().window().setSize(width, height);
     }

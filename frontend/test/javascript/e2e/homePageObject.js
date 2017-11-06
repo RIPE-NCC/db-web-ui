@@ -134,6 +134,12 @@ module.exports = {
     liveChatButtonTab: element(by.id('userlikeCustomTab')),
     liveChatPopup: element(by.id('userlike-popup')),
 
+    // Lefthand menu items
+    topMenuItems: element.all(by.css('.toplevel li.child')),
+    myLirMenuItems: element.all(by.css('.toplevel li.child')).get(0).all(by.css('.level2 li')),
+    resourcesMenuItems: element.all(by.css('.toplevel li.child')).get(1).all(by.css('.level2 li')),
+    ripeDatabaseMenuItems: element.all(by.css('.toplevel li.child')).get(2).all(by.css('.level2 li')),
+
     // My resources
     myResources: element(by.css('.my-resources')),
     myResourcesActiveTabLabel: element(by.css('.my-resources')).element(by.css('.nav-item.active')),
@@ -152,6 +158,9 @@ module.exports = {
 
     flagsContainer: element(by.css('.flags-container')),
     flags: element(by.css('.flags-container')).all(by.css('flag')),
+
+    numberOfMoreSpecific: element(by.css('.prefix-filter')),
+    filterOfMoreSpecific: element(by.id('ipFilter')),
 
     // Whois Object Viewer / lookup
     lookupPageViewer: element(by.css('whois-object-viewer')),
@@ -179,7 +188,7 @@ module.exports = {
 
     // Syncupdate page
     inpSyncupdateString: element(by.model('$ctrl.rpslObject')),
-    viewSyncupdateString: element(by.name('updateResultPreview')),
+    viewSyncupdateString: element(by.id('updateResultPreview')),
     btnUpdate: element(by.name('btnSyncupdate')),
     btnSwitchSyncupdates: element(by.name('btnSwitchSyncupdates')),
 

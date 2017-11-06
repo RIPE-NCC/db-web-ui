@@ -230,7 +230,7 @@ angular.module('webUpdates')
                 var abuseAttr = $scope.attributes.getSingleAttributeOnName('abuse-c');
                 abuseAttr.$$error = undefined;
                 abuseAttr.$$success = undefined;
-                ModalService.openCreateRoleForAbuseCAttribute($scope.source, maintainers, _getPasswordsForRestCall()).then(
+                ModalService.openCreateRoleForAbuseCAttribute($scope.source, maintainers, CredentialsService.getPasswordsForRestCall($scope.objectType)).then(
                     function (roleAttrs) {
                         $scope.roleForAbuseC = WhoisResources.wrapAndEnrichAttributes('role', roleAttrs);
                         $scope.attributes.setSingleAttributeOnName('abuse-c', $scope.roleForAbuseC.getSingleAttributeOnName('nic-hdl').value);
@@ -379,16 +379,13 @@ angular.module('webUpdates')
                     return 'on';
                 }
             }
+            var personRe = /^[A-Z][A-Z0-9\\.`'_-]{0,63}(?: [A-Z0-9\\.`'_-]{1,64}){0,9}$/i;
 
             function fieldVisited(attribute) {
-
-                // replace utf-8 to become latin1
-                if (!CharsetTools.isLatin1(attribute.value)) {
-                    CharsetTools.replaceUtf8(attribute);
-                    // clear attribute specific warning
-                    attribute.$$error = '';
+                if (attribute.name === "person") {
+                    attribute.$$error = (!attribute.value || personRe.exec(attribute.value)) ? "" : "Input contains unsupported characters.";
+                    attribute.$$invalid = !!attribute.$$error;
                 }
-
                 // Verify if primary-key not already in use
                 if ($scope.operation === $scope.CREATE_OPERATION && attribute.$$meta.$$primaryKey === true) {
                     RestService.autocomplete(attribute.name, attribute.value, true, []).then(
@@ -463,7 +460,7 @@ angular.module('webUpdates')
                         return !attr.$$meta.$$isLir;
                     });
 
-                ModalService.openAddAttributeModal(addableAttributes, _getPasswordsForRestCall())
+                ModalService.openAddAttributeModal(addableAttributes, CredentialsService.getPasswordsForRestCall($scope.objectType))
                     .then(function (selectedItem) {
                         addSelectedAttribute(selectedItem, attr);
                     });
@@ -567,7 +564,7 @@ angular.module('webUpdates')
                         return;
                     }
 
-                    var passwords = _getPasswordsForRestCall();
+                    var passwords = CredentialsService.getPasswordsForRestCall($scope.objectType);
 
                     $scope.restCallInProgress = true;
 
@@ -627,23 +624,6 @@ angular.module('webUpdates')
                     }
                 }
                 return true;
-            }
-
-            function _getPasswordsForRestCall() {
-                var passwords = [];
-
-                if (CredentialsService.hasCredentials()) {
-                    passwords.push(CredentialsService.getCredentials().successfulPassword);
-                }
-
-                /*
-                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-                 */
-                if ($scope.objectType === 'route' || $scope.objectType === 'route6' || $scope.objectType === 'aut-num') {
-                    passwords.push('RPSL');
-                }
-                return passwords;
             }
 
             function _fetchDataForCreate() {

@@ -138,6 +138,12 @@ describe('My Resources detail', function () {
             expect(page.moreSpecificsTable.isPresent()).toEqual(true);
             expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
+            // filtering content in table text about number of items in table should change
+            expect(page.numberOfMoreSpecific.getText()).toEqual('Total more specifics:');
+            page.filterOfMoreSpecific.sendKeys('nooo');
+            expect(page.numberOfMoreSpecific.getText()).toEqual('Showing out of');
+            page.filterOfMoreSpecific.clear();
+
             expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('2001:7f8::/48');
             expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('ASSIGNED PI');
             expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual('DE-CIX-IXP-20010913');

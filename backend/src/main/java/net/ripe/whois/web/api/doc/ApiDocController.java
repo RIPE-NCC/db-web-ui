@@ -16,18 +16,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.AnnotatedElement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
 import static java.util.Arrays.asList;
 import static java.util.Arrays.stream;
 import static java.util.Comparator.comparing;
 import static org.apache.commons.lang.CharEncoding.UTF_8;
-import static org.apache.commons.lang.StringUtils.*;
+import static org.apache.commons.lang.StringUtils.substringBefore;
 
 @RestController
 @RequestMapping("/api/doc")
@@ -87,7 +92,7 @@ public class ApiDocController {
     // e.g.
     // if restControllerClass.getSimpleName().equals("DnsCheckerController")
     // then "dns checker" is returned.
-    @NotNull
+    @Nonnull
     private String getFriendlyName(Class restControllerClass) {
 
         final String shortName = substringBefore(restControllerClass.getSimpleName(), "Controller");

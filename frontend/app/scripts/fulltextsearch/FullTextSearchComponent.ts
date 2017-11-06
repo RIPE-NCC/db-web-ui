@@ -15,7 +15,7 @@ class FullTextSearchController {
     public advancedSearch = false;
     public selectedObjectTypes: string[] = [];
     public selectedAttrs: string[] = [];
-    public resultSummary: ResultSummary[] = [];
+    public resultSummary: IResultSummary[] = [];
     public numResults: number;
 
     // Out

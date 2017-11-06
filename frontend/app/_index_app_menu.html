@@ -34,13 +34,13 @@
                     </li>
                 </ul>
             </li>
-            <li class="child" ng-class="{active: menu.activeUrl.indexOf('/myresources/') > -1}" ng-show="!menu.show.trainingEnv && (menu.show.admin || menu.show.general || menu.show.certification || menu.show.myResources)">
+            <li class="child" ng-class="{active: menu.activeUrl.indexOf('/myresources/') > -1}" ng-show="!menu.show.trainingEnv">
                 <a href="">
                     <i title="Open sub-menu" class="fa fa-angle-right"></i>
                     Resources
                 </a>
                 <ul class="level2">
-                    <li ng-show="menu.show.admin || menu.show.general || menu.show.certification || menu.show.myResources">
+                    <li>
                         <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/myresources/') > -1}" href="{{page.Properties.MY_RESOURCES_URL}}">My Resources</a>
                     </li>
                     <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testRcEnv">

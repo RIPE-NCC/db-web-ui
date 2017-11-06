@@ -1,0 +1,19 @@
+{
+	"requestUrl": "/api/whois-internal/api/user/info",
+	"contentType": "application/javascript",
+	"statusCode": 200,
+	"data": {
+		"user": {
+			"username": "noorgnolir@ripe.net",
+			"uuid": "4b771d00-4d54-4922-8f4e-1e4ecaed9a76",
+			"active": true,
+			"displayName": "No Org and Not LIR Test"
+		},
+		"organisations": [
+
+		],
+		"members": [
+
+		]
+	}
+}

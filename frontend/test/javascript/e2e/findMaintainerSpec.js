@@ -41,7 +41,7 @@ describe('Find Maintainer', function () {
         expect(maintainerContainer).toContain('RIPE');
         expect(maintainerContainer).toContain('An email containing further instructions will be sent to the address eshryane@ripe.net.');
         expect(maintainerContainer).toContain('I have access to eshryane@ripe.net. Take me to the automated recovery process');
-        expect(maintainerContainer).toContain('I do not have access to . Take me to the manual recovery process');
+        expect(maintainerContainer).toContain('I do not have access to eshryane@ripe.net. Take me to the manual recovery process');
     });
 
 });

@@ -8,7 +8,7 @@
 <section>
     <form class="grey padding margin-bottom" style="overflow:auto" ng-submit="$ctrl.searchClicked()">
         <div class="alert alert-warning" ng-if="$ctrl.showError">
-            {{ $ctrl.showError | label }}
+            <span ng-bind-html="$ctrl.showError | label"></span>
         </div>
         <input id="fullTextSearchInput" type="text" class="form-control" ng-model="$ctrl.ftquery" placeholder="Search term">
         <div class="margin-bottom margin-top" ng-click="$ctrl.toggleSearchMode()" id="fullTextAdvanceModeLink">

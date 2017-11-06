@@ -413,7 +413,7 @@ angular.module('dbWebApp')
         var validateWithoutSettingErrors = function() {
             var self = this;
             return !_.any(this, function (attr) {
-                return attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0;
+                return attr.$$invalid || attr.$$meta.$$mandatory === true && ! attr.value && self.getAllAttributesWithValueOnName(attr.name).length === 0;
             });
         };
 

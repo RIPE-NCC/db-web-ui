@@ -21,7 +21,7 @@ class ResourcesController {
     public asnResources: AsnResourceDetails[] = [];
     public typeIndex = 0;
     public selectedOrg: IUserInfoOrganisation; // selection bound to ng-model in widget
-    public loading: boolean; // true until resources are loaded to tabs
+    public loading: boolean = false; // true until resources are loaded to tabs
     public reason = "No resources found";
     public fail: boolean;
 
@@ -35,8 +35,8 @@ class ResourcesController {
                 private $state: IResourcesControllerState,
                 private $timeout: ng.ITimeoutService,
                 private $q: ng.IQService,
-                private ResourcesDataService: IResourcesDataService,
-                private UserInfoService: UserInfoService) {
+                private resourcesDataService: IResourcesDataService,
+                private userInfoService: UserInfoService) {
 
         this.isShowingSponsored = typeof this.$state.params.sponsored === "string" ?
             this.$state.params.sponsored === "true" : this.$state.params.sponsored;
@@ -74,7 +74,7 @@ class ResourcesController {
 
     public refreshPage() {
         if (!this.selectedOrg) {
-            this.UserInfoService.getSelectedOrganisation().then((org) => {
+            this.userInfoService.getSelectedOrganisation().then((org) => {
                 this.selectedOrg = org;
                 this.fetchResourcesAndPopulatePage();
             });
@@ -93,7 +93,7 @@ class ResourcesController {
             this.loading = true;
         }, 200);
 
-        this.ResourcesDataService
+        this.resourcesDataService
             .fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
             .then((response: ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>) => {
                 this.$timeout.cancel(promise);
@@ -115,11 +115,14 @@ class ResourcesController {
                     default:
                         this.$log.error("Error. Cannot understand resources response");
                 }
-            }, () => {
-                this.fail = true;
-                this.$timeout.cancel(promise);
-                this.loading = false;
-                this.reason = "There was problem reading resources please try again";
+            }, (error: any) => {
+                // if it's not authentication error
+                if (error.status !== 401 && error.status !== 403) {
+                    this.fail = true;
+                    this.$timeout.cancel(promise);
+                    this.loading = false;
+                    this.reason = "There was problem reading resources please try again";
+                }
             });
     }
 
