@@ -134,7 +134,10 @@ class QueryService implements IQueryService {
         return linkParts.join("&");
     }
 
-    public buildQueryStringForLink(qp: QueryParameters): string {
+    public buildQueryStringForLink(qpIn: QueryParameters): string {
+
+        const qp = angular.copy(qpIn);
+        qp.validate();
         if (!qp.queryText || !qp.queryText.trim() || qp.queryText.indexOf(";") > -1) {
             return "";
         }
