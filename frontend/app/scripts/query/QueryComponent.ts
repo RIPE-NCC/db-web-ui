@@ -195,7 +195,9 @@ class QueryController {
 
         const jsonQueryString = this.service.buildQueryStringForLink(this.qp);
         if (jsonQueryString) {
-            this.link.perma = "#/query?" + this.service.buildPermalink(this.qp);
+            const qpClean = angular.copy(this.qp);
+            qpClean.validate();
+            this.link.perma = "#/query?" + this.service.buildPermalink(qpClean);
             this.link.json = this.properties.REST_SEARCH_URL + "search.json?" + jsonQueryString;
             this.link.xml = this.properties.REST_SEARCH_URL + "search.xml?" + jsonQueryString;
         } else {
