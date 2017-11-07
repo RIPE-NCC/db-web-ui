@@ -193,11 +193,11 @@ class QueryController {
         }
         this.showScroller = true;
 
-        const jsonQueryString = this.service.buildQueryStringForLink(this.qp);
+        const qpClean = angular.copy(this.qp);
+        qpClean.validate();
+        const jsonQueryString = this.service.buildQueryStringForLink(qpClean);
         if (jsonQueryString) {
-            const qpClean = angular.copy(this.qp);
-            qpClean.validate();
-            this.link.perma = "#/query?" + this.service.buildPermalink(qpClean);
+            this.link.perma = "#/query?" + this.service.buildPermalink(this.qp);
             this.link.json = this.properties.REST_SEARCH_URL + "search.json?" + jsonQueryString;
             this.link.xml = this.properties.REST_SEARCH_URL + "search.xml?" + jsonQueryString;
         } else {
