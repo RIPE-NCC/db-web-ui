@@ -5,7 +5,6 @@ class FullTextSearchController {
         "FullTextSearchService",
         "FullTextResponseService",
         "WhoisMetaService",
-        "Labels",
         "Properties",
     ];
 
@@ -37,7 +36,6 @@ class FullTextSearchController {
                 private searchService: FullTextSearchService,
                 private fullTextResponseService: FullTextResponseService,
                 private whoisMetaService: any,
-                public labels: { [key: string]: string },
                 public properties: IProperties) {
         this.ftquery = "";
         this.objectTypes = Object.keys(whoisMetaService._objectTypesMap);

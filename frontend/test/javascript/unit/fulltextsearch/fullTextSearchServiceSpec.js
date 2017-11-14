@@ -20,7 +20,7 @@ describe('The FullTextSearchService', function () {
 
     it('should be able to encode query text', function (done) {
         $httpBackend
-            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4-ripe)&start=0&wt=json")
+            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4%5C-ripe)&start=0&wt=json")
             .respond(200);
 
         var query = "ops4-ripe";
@@ -43,7 +43,7 @@ describe('The FullTextSearchService', function () {
 
     it('should be able to encode various', function (done) {
         $httpBackend
-            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(ops4-ripe))+AND+(object-type:inetnum+OR+object-type:mntner)&start=0&wt=json")
+            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(ops4%5C-ripe))+AND+(object-type:inetnum+OR+object-type:mntner)&start=0&wt=json")
             .respond(200);
 
         var query = "ops4-ripe";
@@ -66,7 +66,7 @@ describe('The FullTextSearchService', function () {
 
     it('should be able to encode advanced all options', function (done) {
         $httpBackend
-            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4-ripe+AND+etch-mnt)+AND+(object-type:inetnum+OR+object-type:mntner)&start=0&wt=json")
+            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4%5C-ripe+AND+etch%5C-mnt)+AND+(object-type:inetnum+OR+object-type:mntner)&start=0&wt=json")
             .respond(200);
 
         var query = "ops4-ripe etch-mnt";
@@ -89,7 +89,7 @@ describe('The FullTextSearchService', function () {
 
     it('should be able to encode advanced any options', function (done) {
         $httpBackend
-            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4-ripe+OR+etch-mnt)+AND+(object-type:inetnum+OR+object-type:mntner)&start=0&wt=json")
+            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(ops4%5C-ripe+OR+etch%5C-mnt)+AND+(object-type:inetnum+OR+object-type:mntner)&start=0&wt=json")
             .respond(200);
 
         var query = "ops4-ripe etch-mnt";
@@ -112,7 +112,7 @@ describe('The FullTextSearchService', function () {
 
     it('should be able to encode advanced exact options', function (done) {
         $httpBackend
-            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(%22ops4-ripe+etch-mnt%22)+OR+country:(%22ops4-ripe+etch-mnt%22))+AND+(object-type:inetnum+OR+object-type:mntner)&start=0&wt=json")
+            .when("GET", "api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(remarks:(%22ops4%5C-ripe+etch%5C-mnt%22)+OR+country:(%22ops4%5C-ripe+etch%5C-mnt%22))+AND+(object-type:inetnum+OR+object-type:mntner)&start=0&wt=json")
             .respond(200);
 
         var query = "ops4-ripe etch-mnt";

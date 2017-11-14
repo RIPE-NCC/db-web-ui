@@ -2,6 +2,10 @@ class FullTextSearchService {
 
     public static $inject = ["$http"];
 
+    private static sanitizeString(str: string): string {
+        return str.replace(/([+&|!(){}[\]^"~*?:-])/g, "\\$1");
+    }
+
     constructor(private $http: angular.IHttpService) {
     }
 
@@ -42,6 +46,7 @@ class FullTextSearchService {
                         searchObjects: string[],
                         searchAttributes: string[]): string {
 
+        query = FullTextSearchService.sanitizeString(query);
         // Main query input control
         const qmain: string[] = [];
         const splits = query.split(" ");
@@ -96,6 +101,7 @@ class FullTextSearchService {
         }
         return qmain.join("") + qadv.join("");
     }
+
 }
 
 angular

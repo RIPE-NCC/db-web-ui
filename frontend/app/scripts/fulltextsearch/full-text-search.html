@@ -71,7 +71,7 @@
         </div>
         <button id="fullTextSearchButton" type="submit" class="blue-button pull-right">Search</button>
         <div class="help-block small">
-            <span ng-bind-html="$ctrl.labels['msg.ripeTandCSubmitLink.text']"></span>
+            <span ng-bind-html="'msg.ripeTandCSubmitLink.text' | label"></span>
         </div>
     </form>
 </section>
@@ -79,7 +79,7 @@
     <div class="grey padding" id="resultsAnchor">
         <h2>Search results</h2>
         <div class="alert alert-info small">
-            <span ng-bind-html="$ctrl.labels['msg.searchResultsFullTextTandCLink.text']"></span>
+            <span ng-bind-html="'msg.searchResultsFullTextTandCLink.text' | label"></span>
         </div>
         <full-text-result-summary ng-if="$ctrl.resultSummary" tabledata="$ctrl.resultSummary" row-clicked="$ctrl.addObjectToFilter(type.name)"></full-text-result-summary>
         <paginator pages="$ctrl.navbarSyncArray" active-page="$ctrl.activePage" num-results="$ctrl.numResults" results-per-page="$ctrl.numResultsPerPage" page-clicked="$ctrl.pageClicked(page)" ng-if="$ctrl.results"></paginator>
