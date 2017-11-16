@@ -33,15 +33,16 @@ class PaginationController {
         } else if (page > numPages) {
             page = numPages;
         }
+        if (this.activePage === page) {
+            // we're already on that page
+            return;
+        }
         this.pageClicked({page});
         this.activePage = page;
         this.refresh();
     }
 
     public fastFwd(num: number) {
-        if (num > 0 && this.ffDisabled || num < 0 && this.rewindDisabled) {
-            return;
-        }
         this.pageSelected(num + this.activePage);
     }
 
@@ -56,7 +57,7 @@ class PaginationController {
             firstPage = Math.ceil(Math.min(numPages - this.maxNumPaginatorTabs,
                 Math.max(1, this.activePage - this.maxNumPaginatorTabs / 2)));
         }
-        this.rewindDisabled = firstPage === 1;
+        this.rewindDisabled = this.activePage === 1;
         this.ffDisabled = this.activePage === numPages;
         this.pages = [];
         for (let i = firstPage; i <= Math.min(firstPage + this.maxNumPaginatorTabs, numPages); i++) {
