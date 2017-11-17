@@ -32,10 +32,6 @@ angular.module('dbWebApp', [
                 .state('notFound', {
                     url: '/public/not-found',
                     templateUrl: 'scripts/views/notFound.html'
-                })
-                .state('oops', {
-                    url: '/public/oops',
-                    templateUrl: 'scripts/views/oops.html'
                 });
 
             // Always tell server if request was made using ajax
@@ -49,12 +45,10 @@ angular.module('dbWebApp', [
             destroyable.one = $rootScope.$on(ERROR_EVENTS.stateTransitionError, function (event, toState, toParams, fromState, fromParams, err) {
                 $log.error('Error transitioning to state:' + angular.toJson(toState) + ' due to error ' + angular.toJson(err));
 
-                if (err.status === 403) {
+                if (err.status === 403 || err.status === 401) {
                     // redirect to crowd login screen
                     var returnUrl = $location.absUrl().split('#')[0] + $state.href(toState, toParams);
-                    var crowdUrl = Properties.LOGIN_URL + '?originalUrl=' + encodeURIComponent(returnUrl);
-                    $log.info('Force crowd login:' + crowdUrl);
-                    $window.location.href = crowdUrl;
+                    redirectToLogin(returnUrl);
                 }
             });
 
@@ -67,9 +61,19 @@ angular.module('dbWebApp', [
             });
 
             destroyable.four = $rootScope.$on(ERROR_EVENTS.authenticationError, function () {
-                // do not act; authorisation errors during transition are handled by stateTransitionError-handler above
+                //TODO do not act; authorisation errors during transition should be handled by stateTransitionError-handler above
                 $log.error('Authentication error');
+                var url = $location.absUrl();
+                if (url.indexOf('myresources') > -1) {
+                    redirectToLogin(url);
+                }
             });
+
+            function redirectToLogin(url) {
+                var crowdUrl = Properties.LOGIN_URL + '?originalUrl=' + encodeURIComponent(url);
+                $log.info('Force crowd login:' + crowdUrl);
+                $window.location.href = crowdUrl;
+            }
 
         }])
     .controller('PageController', ['Properties', 'Labels', function (Properties, Labels) {

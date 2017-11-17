@@ -17,8 +17,8 @@ class FullTextResponseService {
             hlMap[doc.lst.name] = doc.lst.arrs
                 .filter((arr) => arr.name !== "object-type")
                 .map((arr) => {
-                    return {name: arr.arr.name, value: arr.arr.str.value}
-                });
+                    return {name: arr.arr.name, value: arr.arr.str.value};
+            });
 
         }
         for (const doc of data.result.docs) {

@@ -31,6 +31,11 @@ class FindMaintainerService implements IFindMaintainerService {
         );
     }
 
+    public sendMail(mntKey: string): ng.IPromise<any> {
+        this.$log.info("Posting data to url {} with object {}.", this.API_BASE_URL, mntKey);
+        return this.$http.post(this.API_BASE_URL + mntKey + "/emaillink.json", {maintainerKey: mntKey});
+    }
+
     private find(maintainerKey: string): ng.IPromise<any> {
         this.$log.info("Posting data to url {} with object {}.", this.API_BASE_URL, maintainerKey);
         return this.$http.get(this.API_BASE_URL + maintainerKey);
@@ -39,11 +44,6 @@ class FindMaintainerService implements IFindMaintainerService {
     private validate(maintainerKey: string): ng.IPromise<any> {
         this.$log.info("Posting data to url {} with object {}.", this.API_BASE_URL, maintainerKey);
         return this.$http.get(this.API_BASE_URL + maintainerKey + "/validate");
-    }
-
-    public sendMail(mntKey: string): ng.IPromise<any> {
-        this.$log.info("Posting data to url {} with object {}.", this.API_BASE_URL, mntKey);
-        return this.$http.post(this.API_BASE_URL + mntKey + "/emaillink.json", {maintainerKey: mntKey});
     }
 }
 

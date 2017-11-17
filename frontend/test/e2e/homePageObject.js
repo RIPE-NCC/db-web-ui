@@ -208,6 +208,7 @@ module.exports = {
     searchMaintainer: element(by.id('find-maintainer')).element(by.id('search-maintainer')),
     inputMaintainer: element(by.id('find-maintainer')).element(by.id('input-maintainer')),
     searchMaintainerCancel: element(by.id('find-maintainer')).element(by.id('search-cancel')),
+    errorAlert: element(by.css('.alert-expired')),
     maintainerContainer: element(by.id('maintainer-container')),
 
     byId: function(id) {

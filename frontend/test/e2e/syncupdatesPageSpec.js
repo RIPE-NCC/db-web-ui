@@ -22,7 +22,7 @@ describe('The syncupdates page', function () {
         expect(page.viewSyncupdateString.isPresent()).toEqual(false);
     });
 
-    it('should show preview area in case object is  incorect', function () {
+    it('should show preview area in case object is incorrect', function () {
         var response =
             '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n' +
             'The following paragraph(s) do not look like objects\n' +
@@ -36,7 +36,6 @@ describe('The syncupdates page', function () {
         expect(page.inpSyncupdateString.getAttribute('value')).toEqual('something');
         page.scrollIntoView(page.btnUpdate);
         page.btnUpdate.click();
-        browser.driver.wait(protractor.until.elementIsVisible(page.viewSyncupdateString));
         expect(page.viewSyncupdateString.getText()).toContain(response);
     });
 

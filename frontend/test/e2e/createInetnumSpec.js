@@ -53,9 +53,9 @@ describe('The inetnum editor', function () {
         page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
         page.inpStatusLink.click(); // click on dropdown to populate it.
         expect(page.inpStatusList.count()).toBe(3);
-        expect(page.inpStatusList.get(0).getInnerHtml()).toContain('ASSIGNED PA');
-        expect(page.inpStatusList.get(1).getInnerHtml()).toContain('LIR-PARTITIONED PA');
-        expect(page.inpStatusList.get(2).getInnerHtml()).toContain('SUB-ALLOCATED PA');
+        expect(page.inpStatusList.get(0).getText()).toContain('ASSIGNED PA');
+        expect(page.inpStatusList.get(1).getText()).toContain('LIR-PARTITIONED PA');
+        expect(page.inpStatusList.get(2).getText()).toContain('SUB-ALLOCATED PA');
         page.scrollIntoView(page.inpStatusList.get(0));
         expect(page.inpStatusList.get(0).click());
         // submit button should be available
@@ -83,9 +83,9 @@ describe('The inetnum editor', function () {
         page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
         page.inpStatusLink.click(); // click on dropdown to populate it.
         expect(page.inpStatusList.count()).toBe(3);
-        expect(page.inpStatusList.get(0).getInnerHtml()).toContain('ASSIGNED PA');
-        expect(page.inpStatusList.get(1).getInnerHtml()).toContain('LIR-PARTITIONED PA');
-        expect(page.inpStatusList.get(2).getInnerHtml()).toContain('SUB-ALLOCATED PA');
+        expect(page.inpStatusList.get(0).getText()).toContain('ASSIGNED PA');
+        expect(page.inpStatusList.get(1).getText()).toContain('LIR-PARTITIONED PA');
+        expect(page.inpStatusList.get(2).getText()).toContain('SUB-ALLOCATED PA');
         page.scrollIntoView(page.inpStatusList.get(0));
         expect(page.inpStatusList.get(0).click());
         // submit button should NOT be available

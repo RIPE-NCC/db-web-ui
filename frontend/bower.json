@@ -2,7 +2,7 @@
   "name": "db-web-ui",
   "version": "0.0.0",
   "appPath": "app",
-  "testPath": "test/javascript/unit",
+  "testPath": "test/unit",
   "distPath": "dist",
   "dependencies": {
     "angular": "1.5.11",

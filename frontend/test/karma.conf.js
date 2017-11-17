@@ -6,12 +6,12 @@ module.exports = function (config) {
 
     config.set({
         // base path, that will be used to resolve files and exclude
-        basePath: '../../',
+        basePath: '../',
 
         // testing framework to use (jasmine/mocha/qunit/...)
         frameworks: ['jasmine'],
 
-        // list of files / patterns to load in the browser
+        // files up to 'endbower' are written by the 'wiredep' task in the Gruntfile
         files: [
             // bower:js
             'bower_components/angular/angular.js',
@@ -58,7 +58,7 @@ module.exports = function (config) {
             'tmp/scripts/**/*Module.js',
             'tmp/scripts/**/*States.js',
             'tmp/scripts/**/*.js',
-            'test/javascript/unit/**/*.js'
+            'test/unit/**/*.js'
         ],
 
         // list of files / patterns to exclude

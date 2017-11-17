@@ -16,14 +16,14 @@
     <form id="find-maintainer" class="padding grey ga-forgotpass-findmnt-form" ng-submit="$ctrl.selectMaintainer($ctrl.maintainerKey)">
         <label>Please enter your <span class="mntner">MNTNER</span> name:</label>
         <div class="input-group">
-            <input type="text" id="input-maintainer" class="searchField form-control" ng-model="$ctrl.maintainerKey" autofocus="true" required />
+            <input type="text" id="input-maintainer" class="searchField form-control" ng-model="$ctrl.maintainerKey" autofocus required />
             <span class="input-group-btn">
                 <button id="search-maintainer" class="btn blue-button ga-forgotpass-findmnt-search">Search</button>
             </span>
         </div>
         <div class="margin-top clearfix">
-            <button type="button" id="search-cancel" name="cancelButton" class="blue-button pull-right"
-                    ng-click="$ctrl.cancel()" type="button">Cancel
+            <button id="search-cancel" name="cancelButton" class="blue-button pull-right"
+                    ng-click="$ctrl.cancel()">Cancel
             </button>
         </div>
     </form>

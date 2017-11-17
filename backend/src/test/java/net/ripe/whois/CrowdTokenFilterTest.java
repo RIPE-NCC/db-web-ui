@@ -190,7 +190,7 @@ public class CrowdTokenFilterTest {
     }
 
     @Test
-    public void respond_with_403_found_for_protected_resource_with_ajax() throws Exception {
+    public void respond_with_401_found_for_protected_resource_with_ajax() throws Exception {
 
         request = new MockHttpServletRequest("GET", "/db-web-ui/#/webupdates/modify/RIPE/mntner/test-mnt");
         request.setCookies();
@@ -198,7 +198,7 @@ public class CrowdTokenFilterTest {
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
-        assertThat(response.getStatus(), is(403));
+        assertThat(response.getStatus(), is(401));
     }
 
     @Test

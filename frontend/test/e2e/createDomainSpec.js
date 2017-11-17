@@ -3,6 +3,8 @@
 // Local requires
 var page = require('./homePageObject');
 
+var until = protractor.ExpectedConditions;
+
 /*
  * Tests...
  */
@@ -27,14 +29,12 @@ describe('The create domain screen', function () {
         expect(page.inpAdminC4.isDisplayed()).toEqual(false);
 
         page.inpPrefix.sendKeys('212.17.110.0/23\t');
-        browser.wait(function () {
-            return browser.isElementPresent(page.modalBtnSubmit);
-        }, 5000);
+        browser.wait(until.visibilityOf(page.modalBtnSubmit), 5000, 'waited too long');
         page.modalInpAssociate.click();
         page.modalInpPassword.sendKeys('ERICSSON-MNT');
         page.modalBtnSubmit.click();
 
-        browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
+        browser.wait(until.visibilityOf(page.inpNserver1), 5000, 'waited too long');
 
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
@@ -69,7 +69,8 @@ describe('The create domain screen', function () {
         //page.scrollIntoView(page.inpPrefix);
         page.inpPrefix.sendKeys('2001:db8::/48');
 
-        browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
+        //browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
+        browser.wait(until.visibilityOf(page.inpNserver1), 5000, 'waited too long');
 
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
@@ -121,13 +122,13 @@ describe('The create domain screen', function () {
         page.modalInpPassword.sendKeys('ERICSSON-MNT');
         page.modalBtnSubmit.click();
 
-        browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
+        browser.wait(until.visibilityOf(page.inpNserver1), 5000, 'waited too long');
 
         page.inpNserver1.sendKeys('rns1.upc.biz');
         page.inpNserver2.sendKeys('rns2.upc.biz');
 
-        browser.driver.wait(protractor.until.elementIsVisible(page.inpAdminC4));
-
+        // browser.driver.wait(protractor.until.elementIsVisible(page.inpAdminC4));
+        browser.wait(until.visibilityOf(page.inpAdminC4), 5000, 'waited too long');
         expect(page.inpReverseZoneTable.all(by.css('tbody tr')).count()).toEqual(2);
         page.inpAdminC4.sendKeys('LG1-RIPE');
         page.inpTechC5.sendKeys('LG1-RIPE');

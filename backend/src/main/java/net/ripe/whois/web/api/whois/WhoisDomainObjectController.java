@@ -42,11 +42,15 @@ public class WhoisDomainObjectController extends ApiController {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectController.class);
     private static final String NAME_SESSIONID_USED_FOR_STICKINESS = "JSESSIONID";
 
-    @Autowired
-    private BatchUpdateSession batchUpdateSession;
+    private final BatchUpdateSession batchUpdateSession;
+
+    private final WhoisDomainObjectService whoisDomainObjectService;
 
     @Autowired
-    private WhoisDomainObjectService whoisDomainObjectService;
+    public WhoisDomainObjectController(final BatchUpdateSession batchUpdateSession, final WhoisDomainObjectService whoisDomainObjectService) {
+        this.batchUpdateSession = batchUpdateSession;
+        this.whoisDomainObjectService = whoisDomainObjectService;
+    }
 
     @RequestMapping(value = "/{source}/status", method = RequestMethod.GET)
     public ResponseEntity getStatus(@PathVariable final String source) {

@@ -6,15 +6,9 @@ angular.module('dbWebApp')
         serverError: 'server-error-occurred',
         notFound: 'not-found',
         authenticationError: 'authentication-error',
+        forbiddenError: 'forbidden',
         stateTransitionError: '$stateChangeError'
     })
-    //.factory('$exceptionHandler', function($log, $injector) {
-    //    return function (exception, cause) {
-    //        var $state = $injector.get("$state");
-    //        $log.error(exception, cause);
-    //        $state.go('oops');
-    //    };
-    //})
     .factory('ErrorInterceptor', function ($rootScope, $q, $location, $log, ERROR_EVENTS) {
 
         function isServerError(status) {
@@ -22,7 +16,11 @@ angular.module('dbWebApp')
         }
 
         function isAuthorisationError(status) {
-            return status === 401 || status === 403;
+            return status === 401;
+        }
+
+        function isForbiddenError(status) {
+            return status === 403;
         }
 
         function isNotFoundError(status) {
@@ -37,6 +35,9 @@ angular.module('dbWebApp')
             if (!_.isUndefined(response.config)) {
                 $log.debug('rest-url:' + response.config.url);
                 if (isAuthorisationError(response.status) && _.endsWith(response.config.url, 'api/user/info')) {
+                    toBeSwallowed = true;
+                }
+                if (isForbiddenError(response.status) && _.endsWith(response.config.url, 'api/user/info')) {
                     toBeSwallowed = true;
                 }
                 if (isNotFoundError(response.status)) {
@@ -77,7 +78,7 @@ angular.module('dbWebApp')
                         503: ERROR_EVENTS.serverError,
                         502: ERROR_EVENTS.serverError,
                         404: ERROR_EVENTS.notFound,
-                        403: ERROR_EVENTS.authenticationError,
+                        403: ERROR_EVENTS.forbiddenError,
                         401: ERROR_EVENTS.authenticationError
                     }[response.status], response);
                 }

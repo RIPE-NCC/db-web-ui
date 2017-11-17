@@ -78,7 +78,7 @@ module.exports = function (grunt) {
                 }
             },
             jsTest: {
-                files: ['test/javascript/unit/{,*/}{,*/}*.js'],
+                files: ['test/unit/{,*/}{,*/}*.js'],
                 tasks: ['newer:jshint:test', 'karma']
             },
             compass: {
@@ -124,7 +124,7 @@ module.exports = function (grunt) {
                 host: 'localhost.ripe.net',
                 port: 0,
                 https: false,
-                mocksPath: './test/javascript/e2e/mocks',
+                mocksPath: './test/e2e/mocks',
                 useApi: true,
                 mockFilenameGenerator: prismFilename
             },
@@ -211,9 +211,9 @@ module.exports = function (grunt) {
             },
             test: {
                 options: {
-                    jshintrc: 'test/javascript/.jshintrc'
+                    jshintrc: 'test/.jshintrc'
                 },
-                src: ['test/javascript/{,*/}*.js']
+                src: ['test/{,*/}*.js']
             }
         },
 
@@ -293,7 +293,7 @@ module.exports = function (grunt) {
             test: {
                 devDependencies: true,
                 src: '<%= karma.unit.configFile %>',
-                ignorePath: /\.\.\/\.\.\//,
+                ignorePath: /\.\.\//,
                 fileTypes: {
                     js: {
                         block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
@@ -621,13 +621,13 @@ module.exports = function (grunt) {
             },
             e2e: {
                 options: {
-                    configFile: './test/javascript/protractor-e2e.conf.js', // Default config file
+                    configFile: './test/protractor-e2e.conf.js', // Default config file
                     keepAlive: false // If false, the grunt process stops when the test fails.
                 }
             },
             noTest: {
                 options: {
-                    configFile: 'test/javascript/protractor-no-test.conf.js', // Default config file
+                    configFile: 'test/protractor-no-test.conf.js', // Default config file
                     keepAlive: true
                 }
             }
@@ -646,7 +646,7 @@ module.exports = function (grunt) {
             },
             e2eLocal: {
                 options: {
-                    configFile: 'test/javascript/protractor-e2e-coverage-local.conf.js',
+                    configFile: 'test/protractor-e2e-coverage-local.conf.js',
                     args: {
                         baseUrl: 'http://localhost:0',
                         chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
@@ -661,7 +661,7 @@ module.exports = function (grunt) {
             },
             e2eRemote: {
                 options: {
-                    configFile: 'test/javascript/protractor-e2e-coverage-remote.conf.js'
+                    configFile: 'test/protractor-e2e-coverage-remote.conf.js'
                 }
             }
         },
@@ -711,7 +711,7 @@ module.exports = function (grunt) {
                 port: 0
             },
             unit: {
-                configFile: 'test/javascript/karma.conf.js',
+                configFile: 'test/karma.conf.js',
                 singleRun: true
             }
         }

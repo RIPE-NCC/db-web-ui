@@ -14,11 +14,11 @@ describe('The left hand menu structure depend on logged in user role', function 
 
     'use strict';
 
-    const userInfoFile = './test/javascript/e2e/mocks/e2eTest/35076578e970f4e6bca92a8f746671291eec84b0.json';
-    const userWithAllRoles = './test/javascript/e2e/mocks/e2eTest/user-with-all-role.json';
-    const userWithBillingRole = './test/javascript/e2e/mocks/e2eTest/user-with-billing-role.json';
-    const userWithoutOrgOrLir = './test/javascript/e2e/mocks/e2eTest/user-without-org-or-lir.json';
-    const userNotLoggedIn = './test/javascript/e2e/mocks/e2eTest/user-not-logged-in.json';
+    const userInfoFile = './test/e2e/mocks/e2eTest/35076578e970f4e6bca92a8f746671291eec84b0.json';
+    const userWithAllRoles = './test/e2e/mocks/e2eTest/user-with-all-role.json';
+    const userWithBillingRole = './test/e2e/mocks/e2eTest/user-with-billing-role.json';
+    const userWithoutOrgOrLir = './test/e2e/mocks/e2eTest/user-without-org-or-lir.json';
+    const userNotLoggedIn = './test/e2e/mocks/e2eTest/user-not-logged-in.json';
 
     const changeJsonResponsFile = function(file, replacement) {
         fs.readFile(replacement, 'utf8', function (err,data) {

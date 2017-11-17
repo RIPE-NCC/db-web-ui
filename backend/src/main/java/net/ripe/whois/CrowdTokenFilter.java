@@ -110,7 +110,7 @@ public class CrowdTokenFilter implements Filter {
     private void reportAuthorisationError(final HttpServletRequest request, final HttpServletResponse response) {
         boolean isAjax = "XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"));
         if (isAjax) {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         } else {
             response.setHeader(HttpHeaders.LOCATION, generateLocationHeader(request));
             response.setStatus(HttpServletResponse.SC_FOUND);

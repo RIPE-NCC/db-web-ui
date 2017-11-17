@@ -44,4 +44,16 @@ describe('Find Maintainer', function () {
         expect(maintainerContainer).toContain('I do not have access to eshryane@ripe.net. Take me to the manual recovery process');
     });
 
+    it('Should hide previous error alert after maintainer was found', function () {
+        expect(page.maintainerContainer.isPresent()).toEqual(false);
+        page.scrollIntoView(page.findMaintainerForm);
+        page.inputMaintainer.clear().sendKeys('svonja');
+        page.searchMaintainer.click();
+        expect(page.errorAlert.isPresent()).toEqual(true);
+
+        page.inputMaintainer.clear().sendKeys('shryane-mnt');
+        page.searchMaintainer.click();
+        expect(page.errorAlert.isPresent()).toEqual(false);
+    });
+
 });

@@ -14,7 +14,7 @@ class UserInfoService {
                 private $cookies: angular.cookies.ICookiesService) {
     }
 
-    public getLoggedInUser(): ng.IHttpPromise<IUserInfo> {
+    public getLoggedInUser(): ng.IPromise<IUserInfo> {
         if (!this.deferredUserInfo) {
             this.deferredUserInfo = this.$q.defer();
 
@@ -35,7 +35,7 @@ class UserInfoService {
         return this.deferredUserInfo.promise;
     }
 
-    public getUserOrgsAndRoles(): ng.IHttpPromise<IUserInfoResponseData> {
+    public getUserOrgsAndRoles(): ng.IPromise<IUserInfoResponseData> {
         if (!this.deferred) {
             this.deferred = this.$q.defer();
 

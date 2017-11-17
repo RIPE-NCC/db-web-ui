@@ -8,7 +8,7 @@ interface IQueryService {
 
 }
 
-const EMPTY_MODEL: ng.IHttpPromiseCallbackArg<IWhoisResponseModel> = {
+const EMPTY_MODEL: { data: IWhoisResponseModel} = {
     data: {
         errormessages: {errormessage: []},
         objects: {object: []},
@@ -20,7 +20,7 @@ class QueryService implements IQueryService {
     public static $inject = ["$http", "$q"];
 
     private static accumulate(resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>,
-                              acc: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
+                              acc: { data: IWhoisResponseModel}) {
         if (resp.data.objects) {
             acc.data.objects.object = acc.data.objects.object.concat(resp.data.objects.object);
         }
@@ -69,16 +69,19 @@ class QueryService implements IQueryService {
         const acc = angular.copy(EMPTY_MODEL);
 
         return config.params["query-string"]
-        // put the first 5 terms into an array and trim them
+
+            // put the first 5 terms into an array and trim them
             .split(";")
             .map((item: string) => item.trim())
             .filter((item: string, idx: number) => item.length && idx < 5)
+
             // build an array of promises
             .map((term: string) => {
                 const conf = angular.copy(config);
                 conf.params["query-string"] = term;
                 return this.$http.get<IWhoisResponseModel>("api/whois/search", conf);
             })
+
             // execute each promise sequentially. can't do them in parallel or a 404 will reject the entire promise...
             .reduce((prev: ng.IHttpPromise<IWhoisResponseModel>,
                      curr: ng.IHttpPromise<IWhoisResponseModel>) => {

@@ -10,31 +10,31 @@ interface IResourceRangeModel {
     end: number;
 }
 
-interface IPv4ResourceDetails {
+interface IIPv4ResourceDetails {
     range: IResourceRangeModel;
     status: string;
     netname: string;
     usage: IUsage;
 }
 
-interface IPv6ResourceDetails {
+interface IIPv6ResourceDetails {
     range: IResourceRangeModel;
     status: string;
     usage: IUsage;
 }
 
-interface AsnResourceDetails {
+interface IAsnResourceDetails {
     value: number;
 }
 
-interface IPv6ResourcesResponse {
+interface IIPv6ResourcesResponse {
     orgid: string;
-    resources: IPv6ResourceDetails[];
+    resources: IIPv6ResourceDetails[];
 }
 
-interface IPv4ResourcesResponse {
+interface IIPv4ResourcesResponse {
     orgid: string;
-    resources: IPv4ResourceDetails[];
+    resources: IIPv4ResourceDetails[];
 }
 
 // from backend
@@ -86,15 +86,15 @@ interface IResourceDetailsResponseModel {
 
 interface IResourcesDataService {
 
-    fetchParentResources(resource: IResourceModel, org: string): ng.IPromise<string[]>;
+    fetchParentResources(resource: IResourceModel, org: string): ng.IPromise<ng.IHttpResponse<string[]>>;
 
-    fetchIpv4Resource(objectName: string): ng.IPromise<IPv4ResourcesResponse>;
+    fetchIpv4Resource(objectName: string): ng.IPromise<ng.IHttpResponse<IIPv4ResourcesResponse>>;
 
-    fetchIpv6Resource(objectName: string): ng.IPromise<IPv6ResourcesResponse>;
+    fetchIpv6Resource(objectName: string): ng.IPromise<ng.IHttpResponse<IIPv6ResourcesResponse>>;
 
     fetchResources(orgId: string,
                    resource: string,
                    sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>>;
 
-    fetchTicketsAndDates(orgId: string, resource: string): ng.IPromise<IResourceTickets>;
+    fetchTicketsAndDates(orgId: string, resource: string): ng.IPromise<ng.IHttpResponse<IResourceTickets>>;
 }

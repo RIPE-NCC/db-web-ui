@@ -27,9 +27,10 @@ class FindMaintainerController {
     }
 
     public selectMaintainer(maintainerKey: string) {
+        this.clearAllAlerts();
         this.$log.info("Search for mntner " + maintainerKey);
         this.findMaintainerService.search(maintainerKey)
-            .then( (result: IFindMaintainer) => {
+            .then((result: IFindMaintainer) => {
                 this.foundMaintainer = result;
                 if (this.foundMaintainer.expired === false) {
                     this.addAlert(
@@ -86,8 +87,7 @@ class FindMaintainerController {
 
     private addAlert(message: string, type: AlertType, clearAllAlerts: boolean = true) {
         if (clearAllAlerts) {
-            this.errors = [];
-            this.warnings = [];
+            this.clearAllAlerts();
         }
         switch (type) {
             case AlertType.Error: {
@@ -99,6 +99,11 @@ class FindMaintainerController {
                 break;
             }
         }
+    }
+
+    private clearAllAlerts() {
+        this.errors = [];
+        this.warnings = [];
     }
 }
 

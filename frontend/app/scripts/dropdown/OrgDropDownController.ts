@@ -3,7 +3,7 @@ class OrgDropDownController {
 
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];
-    //Temporary until we need different application on Test, Training and RC environment
+    // Temporary until we need different application on Test, Training and RC environment
     public trainingEnv: boolean;
 
     constructor(private $log: angular.ILogService,
@@ -17,7 +17,7 @@ class OrgDropDownController {
         this.trainingEnv = this.EnvironmentStatus.isTrainingEnv();
         const orgs: IUserInfoOrganisation[] = [];
         this.UserInfoService.getUserOrgsAndRoles()
-            .then((userInfo: IUserInfoResponseData) => {
+            .then((userInfo: IUserInfoResponseData): void => {
                 if (!userInfo) {
                     return;
                 }
@@ -41,7 +41,7 @@ class OrgDropDownController {
                         this.selectedOrg = org;
                     }
                 });
-            }, (err) => {
+            }, (err: Error): void => {
                 this.$log.warn("err", err);
                 return null;
             });

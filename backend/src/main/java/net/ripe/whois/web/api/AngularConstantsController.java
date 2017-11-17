@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.net.URL;
@@ -62,10 +61,12 @@ public class AngularConstantsController {
 
     private String appConstantsJsContents;
 
+    private final LeftMenuConfiguration leftMenuConfiguration;
+
     @Autowired
-    private ServletContext servletContext;
-    @Autowired
-    private LeftMenuConfiguration leftMenuConfiguration;
+    public AngularConstantsController(final LeftMenuConfiguration leftMenuConfiguration) {
+        this.leftMenuConfiguration = leftMenuConfiguration;
+    }
 
     @PostConstruct
     private void init() {
@@ -76,7 +77,6 @@ public class AngularConstantsController {
     @ResponseBody
     public ResponseEntity<String> getAppConstantsJs(HttpServletResponse response) {
         response.setHeader(CACHE_CONTROL, "no-cache"); // deliberately overrides CacheFilter
-        //response.setHeader(HttpHeaders.EXPIRES, );
 
         return new ResponseEntity<>(appConstantsJsContents, HttpStatus.OK);
     }
