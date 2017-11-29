@@ -24,6 +24,10 @@
 			"orgObjectId": "ORG-WA56-RIPE",
 			"organisationName": "Swi Rop Gonggrijp",
 			"roles": ["certification", "NON-MEMBER"]
+		}, {
+			"orgObjectId": "ORG-VA397-RIPE",
+			"organisationName": "Viollier AG",
+			"roles": ["certification", "NON-MEMBER"]
 		}]
 	}
 }

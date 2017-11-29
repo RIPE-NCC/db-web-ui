@@ -1,5 +1,13 @@
 {
   "data": {
+    "stats": {
+      "numInetnums": 4,
+      "numInet6nums": 1,
+      "numAutnums": 1,
+      "numSponsoredInetnums": 42,
+      "numSponsoredInet6nums": 1,
+      "numSponsoredAutnums": 1
+    },
     "sponsoringOrgId": "ORG-Sb3-RIPE",
     "resources": [
       {

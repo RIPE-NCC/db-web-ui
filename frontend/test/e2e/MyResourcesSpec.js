@@ -36,9 +36,27 @@ describe('My resources', function () {
 
     it('should show sponsored IPv4 resources', function () {
         page.scrollIntoView(page.btnToggleSponsoredResources);
+        expect(page.btnToggleSponsoredResources.getText()).toContain('Switch to Sponsored Resources');
+        // switch to Sponsored Resources
         page.btnToggleSponsoredResources.click();
         expect(page.myResourcesActiveTabLabel.getText()).toContain('IPv4');
         expect(page.myResourcesActiveTabRows.count()).toBe(42);
+        expect(page.btnToggleSponsoredResources.getText()).toContain('Switch to My Resources');
+        // switch back to My Resources
+        page.scrollIntoView(page.btnToggleSponsoredResources);
+        page.btnToggleSponsoredResources.click();
+    });
+
+    it('should show not sponsores resources after switching organisation without sponsored resources', function () {
+        page.scrollIntoView(page.btnToggleSponsoredResources);
+        page.btnToggleSponsoredResources.click();
+        expect(page.myResourcesActiveTabLabel.getText()).toContain('IPv4');
+        page.scrollIntoView(page.orgSelector);
+        page.orgSelector.click();
+        // switch selected org to Viollier AG
+        page.orgSelectorOptions2.click();
+        page.scrollIntoView(page.btnToggleSponsoredResources);
+        expect(page.btnToggleSponsoredResources.isDisplayed()).toEqual(false);
     });
 
 });

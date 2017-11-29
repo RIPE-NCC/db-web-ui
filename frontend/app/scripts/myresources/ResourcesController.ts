@@ -57,6 +57,8 @@ class ResourcesController {
         // Callbacks
         $scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.selectedOrg = selected;
+            // go back to the start "My Resources" page
+            this.isShowingSponsored = false;
             this.refreshPage();
         });
 
