@@ -774,10 +774,21 @@ describe('LookupSingleObjectComponent', function () {
 
         var qSvc = function(resp) {
             return {
-                searchWhoisObjects: function () {
+                lookupWhoisObject: function () {
                     return {
                         then: function (success) {
                             success(resp);
+                        }
+                    }
+                }
+            }
+        };
+        var qSvcWithException = function(resp) {
+            return {
+                lookupWhoisObject: function () {
+                    return {
+                        then: function (success) {
+                            throw new TypeError("That just won't do.");
                         }
                     }
                 }
@@ -795,7 +806,7 @@ describe('LookupSingleObjectComponent', function () {
             var ctrl = $componentController('lookupSingle', {
                 $state: $state,
                 $stateParams: $stateParams,
-                QueryService: qSvc(response)
+                LookupService: qSvc(response)
             });
             done();
             expect(ctrl.whoisResponse).toBeTruthy();
@@ -808,15 +819,17 @@ describe('LookupSingleObjectComponent', function () {
             });
         });
 
-        it('but not when the params are empty', function () {
+        it('but not when the params are empty', function (done) {
             spyOn($log, "warn");
 
             var ctrl = $componentController('lookupSingle', {
                 $state: $state,
                 $stateParams: {},
-                QueryService: qSvc(response)
+                LookupService: qSvcWithException(response)
             });
-            expect($log.warn).toHaveBeenCalled();
+            done();
+            expect(ctrl.whoisResponse).toBeFalsy();
+            expect(ctrl.error).toBeTruthy();
         });
 
         it('but not when the response is empty', function(done) {
@@ -831,7 +844,7 @@ describe('LookupSingleObjectComponent', function () {
             var ctrl = $componentController('lookupSingle', {
                 $state: $state,
                 $stateParams: $stateParams,
-                QueryService: qSvc({})
+                LookupService: qSvc({})
             });
             done();
             expect($log.warn).toHaveBeenCalled();
@@ -850,7 +863,7 @@ describe('LookupSingleObjectComponent', function () {
             var ctrl = $componentController('lookupSingle', {
                 $state: $state,
                 $stateParams: $stateParams,
-                QueryService: qSvc({ data: mockResponse.wakefield })
+                LookupService: qSvc({ data: mockResponse.wakefield })
             });
             done();
             expect($log.warn).toHaveBeenCalled();

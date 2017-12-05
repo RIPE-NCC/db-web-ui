@@ -13,11 +13,13 @@
     </div>
     <h2 class="documentFirstHeading">Lookup results</h2>
     <div class="clearfix">
-        <div class="alert alert-info small" ng-bind-html="'msg.searchResultsTandCLink.text' | label">
+        <div ng-if="!$ctrl.error" class="alert alert-info small" ng-bind-html="'msg.searchResultsTandCLink.text' | label">
+        </div>
+        <div ng-if="$ctrl.error" class="alert alert-warning">
+            {{ $ctrl.error }}
         </div>
     </div>
 </section>
-
 
 <div ng-if="$ctrl.whoisResponse" class="resultpane">
     <lookup

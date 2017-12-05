@@ -76,6 +76,27 @@ public class AuthIntegrationTest {
         System.setProperty("ba-apps.api.url", getMockServerUrl());
         System.setProperty("syncupdates.api.url", getMockServerUrl());
         System.setProperty("rest.search.url", getMockServerUrl());
+        System.setProperty("my.resources.url", "#/myresources/overview");
+        System.setProperty("lir.account.details.url", "https://my.prepdev.ripe.net/#/account-details");
+        System.setProperty("lir.billing.details.url", "https://my.prepdev.ripe.net/#/billing");
+        System.setProperty("lir.gm.preferences.url", "https://my.prepdev.ripe.net/#/meetings/44529bcf-7f19-4dc9-8f76-b9043a3973dd");
+        System.setProperty("lir.user.accounts.url", "https://my.prepdev.ripe.net/#/contacts");
+        System.setProperty("lir.tickets.url", "https://lirportal.prepdev.ripe.net/tickets/");
+        System.setProperty("lir.training.url", "https://lirportal.prepdev.ripe.net/training/");
+        System.setProperty("lir.api.access.keys.url", "https://lirportal.prepdev.ripe.net/api/");
+        System.setProperty("ipv4.analyser.url", "https://lirportal.prepdev.ripe.net/ipanalyser/");
+        System.setProperty("ipv6.analyser.url", "https://lirportal.prepdev.ripe.net/ipv6analyser/#/loading");
+        System.setProperty("ipv4.transfer.listing.service.url", "https://lirportal.prepdev.ripe.net/member-to-member/");
+        System.setProperty("request.resources.url", "https://my.prepdev.ripe.net/#/request");
+        System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
+        System.setProperty("request.transfer.url", "https://my.prepdev.ripe.net/#/update-registry");
+        System.setProperty("rpki.dashboard.url", "https://my.prepdev.ripe.net/#/rpki");
+        System.setProperty("my.resources.url", "#/myresources/overview");
+        System.setProperty("database.query.url", "#/query");
+        System.setProperty("database.full.text.search.url", "#/fulltextsearch");
+        System.setProperty("object.lookup.url", "#/lookup");
+        System.setProperty("database.syncupdates.url", "#/syncupdates");
+        System.setProperty("database.create.url", "#/webupdates/select");
     }
 
     @AfterClass

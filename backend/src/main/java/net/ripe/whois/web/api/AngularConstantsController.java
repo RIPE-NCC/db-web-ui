@@ -50,7 +50,7 @@ public class AngularConstantsController {
     private String frontendGtmId;
     @Value("${frontend.livechat.key}")
     private String frontendLiveChatKey;
-    @Value("${object.lookup.url:/search/lookup.html}")
+    @Value("${object.lookup.url}")
     private String objectLookupUrl;
     @Value("${rest.search.url}")
     private String restSearchUrl;

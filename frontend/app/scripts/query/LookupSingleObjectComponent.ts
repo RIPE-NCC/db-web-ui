@@ -6,9 +6,10 @@ interface ILookupState extends ng.ui.IStateParamsService {
 
 class LookupSingleObjectController {
 
-    public static $inject = ["$log", "$state", "$stateParams", "Properties", "QueryService"];
+    public static $inject = ["$log", "$state", "$stateParams", "Properties", "LookupService"];
 
     public whoisResponse: IWhoisObjectModel;
+    public error: string;
 
     private source: string;
     private objectType: string;
@@ -18,39 +19,29 @@ class LookupSingleObjectController {
                 private $state: angular.ui.IStateService,
                 private $stateParams: ILookupState,
                 public properties: IProperties,
-                private queryService: IQueryService) {
+                private lookupService: ILookupService) {
 
         this.source = $stateParams.source;
         this.objectType = $stateParams.type;
         this.objectName = $stateParams.key;
 
-        if (this.source && this.objectType && this.objectName) {
-            const types = {};
-            types[this.objectType] = true;
-            const qp = new QueryParameters();
-            qp.queryText = this.objectName;
-            qp.types = types;
-            qp.source = this.source;
-            qp.showFullObjectDetails = true;
-            qp.doNotRetrieveRelatedObjects = true;
-            this.queryService
-                .searchWhoisObjects(qp)
-                .then(
-                    (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
-                        if (response.data &&
-                            response.data.objects &&
-                            response.data.objects.object &&
-                            response.data.objects.object.length === 1) {
-                            this.whoisResponse = response.data.objects.object[0];
-                        } else {
-                            this.$log.warn(
-                                "Expected a single object from query. source:", this.source,
-                                "type:", this.objectType,
-                                "name:", this.objectName);
-                        }
-                    });
-        } else {
-            this.$log.warn("Missing lookup parameter");
+        try {
+            this.lookupService.lookupWhoisObject($stateParams).then(
+                (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                    if (response.data &&
+                        response.data.objects &&
+                        response.data.objects.object &&
+                        response.data.objects.object.length === 1) {
+                        this.whoisResponse = response.data.objects.object[0];
+                    } else {
+                        this.$log.warn(
+                            "Expected a single object from query. source:", this.source,
+                            "type:", this.objectType,
+                            "name:", this.objectName);
+                    }
+                });
+        } catch (e) {
+            this.error = "An error occurred looking for " + this.objectType + " " + this.objectName;
         }
     }
 

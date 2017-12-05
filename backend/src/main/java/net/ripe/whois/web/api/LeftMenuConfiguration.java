@@ -22,7 +22,7 @@ public class LeftMenuConfiguration {
     private String lirTrainingUrl;
     @Value("${lir.api.access.keys.url:}")
     private String lirApiAccessKeysUrl;
-    @Value("${my.resources.url:#/myresources/overview}")
+    @Value("${my.resources.url}")
     private String myResourcesUrl;
     @Value("${ipv4.analyser.url:}")
     private String ipv4AnalyserUrl;
@@ -32,17 +32,17 @@ public class LeftMenuConfiguration {
     private String requestResourcesUrl;
     @Value("${request.transfer.url:}")
     private String requestTransferUrl;
-    @Value("${ipv4.transfer.listing.service.url:}")
+    @Value("${ipv4.transfer.listing.service.url}")
     private String ipv4TransferListingServiceUrl;
     @Value("${rpki.dashboard.url:}")
     private String rpkiDashboardUrl;
-    @Value("${database.query.url:/search/query.html}")
+    @Value("${database.query.url}")
     private String databaseQueryUrl;
-    @Value("${database.full.text.search.url:/search/full-text.html}")
+    @Value("${database.full.text.search.url}")
     private String databaseFullTextSearchUrl;
-    @Value("${database.syncupdates.url:/syncupdates/simple-rpsl.html}")
+    @Value("${database.syncupdates.url}")
     private String databaseSyncupdatesUrl;
-    @Value("${database.create.url:/db-web-ui/#/webupdates/select}")
+    @Value("${database.create.url}")
     private String databaseCreateUrl;
 
     public String getLirAccountDetailsUrl() {
