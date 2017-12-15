@@ -166,7 +166,7 @@ class QueryParameters {
         if (typeOptionPos !== -1) {
             errors.push("Object type flag specified without value");
         }
-        this.queryText = terms.filter((term) => term.length).join("").trim();
+        this.queryText = terms.filter((term) => term.length).join(" ").trim();
         if (!this.queryText) {
             errors.push("No search term provided");
         }

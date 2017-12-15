@@ -90,7 +90,7 @@ class QueryController {
             this.results = [];
             return;
         }
-        const cleanQp = angular.copy(this.qp);
+        const cleanQp: QueryParameters = angular.copy(this.qp);
         // Reset on-screen widgets
         this.errorMessages = [];
         this.results = [];
