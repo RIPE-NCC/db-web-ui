@@ -29,6 +29,7 @@ describe('The query pagina', function () {
         page.inpQueryString.sendKeys('193.0.0.0\n'); // press 'enter' for a laugh
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
+        page.scrollIntoView(page.resultsSection);
         expect(page.searchResults.count()).toEqual(4);
         expect(page.inpQueryString.getAttribute('value')).toEqual('193.0.0.0');
     });

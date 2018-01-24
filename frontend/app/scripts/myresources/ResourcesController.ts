@@ -27,6 +27,7 @@ class ResourcesController {
 
     private hasSponsoredResources = false;
     private isShowingSponsored = false;
+    private activeSponsoredTab = 0;
     private lastTab: string;
 
     constructor(private $location: angular.ILocationService,
@@ -40,6 +41,7 @@ class ResourcesController {
 
         this.isShowingSponsored = typeof this.$state.params.sponsored === "string" ?
             this.$state.params.sponsored === "true" : this.$state.params.sponsored;
+        this.activeSponsoredTab = this.isShowingSponsored ? 1 : 0;
 
         this.refreshPage();
         this.lastTab = this.$state.params.type || "inetnum";
@@ -59,6 +61,7 @@ class ResourcesController {
             this.selectedOrg = selected;
             // go back to the start "My Resources" page
             this.isShowingSponsored = false;
+            this.activeSponsoredTab = 0;
             this.refreshPage();
         });
 
@@ -69,8 +72,13 @@ class ResourcesController {
         this.$location.search({type: tabName, sponsored: this.isShowingSponsored});
     }
 
-    public sponsoredResourcesClicked() {
-        this.isShowingSponsored = !this.isShowingSponsored;
+    public sponsoredResourcesTabClicked() {
+        this.isShowingSponsored = true;
+        this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored});
+    }
+
+    public resourcesTabClicked() {
+        this.isShowingSponsored = false;
         this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored});
     }
 

@@ -4,11 +4,13 @@
 describe('The QueryComponent', function () {
 
     var $componentController;
+    var $location;
 
     beforeEach(module('dbWebApp'));
 
-    beforeEach(inject(function (_$componentController_) {
+    beforeEach(inject(function (_$componentController_, _$location_) {
         $componentController = _$componentController_;
+        $location = _$location_;
     }));
 
     describe('with no query string', function () {
@@ -211,7 +213,6 @@ describe('The QueryComponent', function () {
         });
 
         it('should react to scroll events', function () {
-            var locationArgs;
             var stateGo;
             var calledApply = 0;
             var scope = {
@@ -219,27 +220,22 @@ describe('The QueryComponent', function () {
                     calledApply++;
                 }
             };
-            var location = {
-                search: function (args) {
-                    locationArgs = args;
-                }
-            };
             var state = {
                 go: function (args) {
                     stateGo = args;
                 }
             };
+
             var ctrl = $componentController('query', {
-                $location: location,
+                $location: $location,
                 $scope: scope,
                 $state: state,
                 $stateParams: sp,
                 QueryService: queryService
             });
-
             ctrl.numResultsToShow = 2;
             ctrl.submitSearchForm();
-            expect(locationArgs.hierarchyFlag).toEqual("exact");
+            expect(ctrl.$stateParams.hierarchyFlag).toEqual("exact");
             ctrl.doSearch();
             expect(ctrl.results.length).toEqual(21);
             ctrl.lastResultOnScreen();

@@ -2,3 +2,21 @@
 .progress-bar {
   background-color: #453e7d !important;
 }
+/* Bootstrap Dropdown */
+.btn-group.open .dropdown-toggle {
+  box-shadow: none !important;
+}
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  background-image: none !important;
+}
+.nav-tabs {
+  li {
+    a {
+      border: none;
+      border-radius: 0;
+    }
+    a, a:hover {
+      background-color: $white;
+    }
+  }
+}

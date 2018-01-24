@@ -7,23 +7,53 @@
 
 .nav-tabs {
     border-bottom: 0;
+    margin-top: 20px;
     ul {
         @extend %width-100;
-        border: 0;
         li {
             a {
-                border: 0;
                 padding: 8px 40px;
                 color: #9d9d9d;
                 cursor: pointer;
                 &:hover {
-                    border: 0;
-                    background: $white;
                 }
             }
             &.active {
                 > a, > a:focus, > a:hover {
                     @extend %active-state;
+                }
+            }
+        }
+    }
+}
+
+.resources-sponsored-tabs {
+    display: inline-block;
+    font: {
+        size: 1.6em;
+        weight: normal;
+    }
+    ul {
+        margin-top: 0;
+        li {
+            padding-right: 10px;
+            &+li {
+                border-left: 2px $dark-grey solid;
+                padding-left: 10px;
+                padding-right: 0;
+            }
+            &.active {
+                a, a:hover, a:focus {
+                    border: none;
+                    color: $black;
+                }
+            }
+            a {
+                color: #C1C1C1;
+                text-decoration: none;
+                padding: 0;
+                &:hover {
+                    color: $link;
                 }
             }
         }
@@ -38,6 +68,9 @@ div.resource-list {
         @extend %float-l;
         padding: 10px;
         border: 1px transparent solid;
+        &:hover {
+            background-color: #fbfbfb;
+        }
         .title {
             font: {
                 size: 16px;
@@ -57,7 +90,7 @@ div.resource-list {
             margin: 0;
             color: $black;
         }
-        div.flags-container {
+        .flags-container {
             @extend %width-100;
             @extend %float-l;
             display: inline-block;
@@ -65,7 +98,7 @@ div.resource-list {
         }
 
         div.progressbar-container {
-            @extend div.flags-container;
+            @extend .flags-container;
             margin-top: 5px;
         }
         div.progress {
@@ -192,11 +225,12 @@ section.resource-intro {
 }
 section.back-to-my-resources {
     @extend %float-r;
-    display: flex;
     position: relative;
+    width: 30%;
     hierarchy-selector {
         button {
-            margin: 0;
+            @extend %float-r;
+            margin-left: 5px;
         }
         ul.dropdown-list {
             @extend %float-l;
@@ -207,6 +241,8 @@ section.back-to-my-resources {
             list-style: none;
             padding: 0;
             margin: 5px 0 0 0;
+            top: 36px;
+            right: -1px;
             li {
                 @extend %float-l;
                 @extend %width-100;

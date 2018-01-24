@@ -66,6 +66,7 @@ describe('updates: CharsetTools', function () {
         expect(subject.replaceSubstitutables('nbsp\u00A0test')).toEqual('nbsp test');
         expect(subject.replaceSubstitutables('mixed\u2013\u2014\u00A0test')).toEqual('mixed-- test');
         expect(subject.replaceSubstitutables('multiple\u2013\u2013\u00A0\u2014\u2014test')).toEqual('multiple-- --test');
+        expect(subject.replaceSubstitutables('r\u00F8\u00e5')).toEqual('røå');
     });
 
     it('should replace invalid chars with ?', function () {

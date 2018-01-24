@@ -47,7 +47,7 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         // Do not accept compressed response, as it's not handled properly (by whois)
         headers.remove(HttpHeaders.ACCEPT_ENCODING);
         headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
-
+        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_UTF8_VALUE);
         return handleErrors(() ->
             restTemplate.exchange(
                 uri,
@@ -72,6 +72,8 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
 
         return new URI(builder.toString());
     }
+
+    // TODO: [ES] refactor this logic, move into WhoisHierarchyController. Expose generic Search API here instead.
 
     public List<String> getPathToRoot(String type, String key, String org) throws URISyntaxException {
         final URI uri = lessSpecificUrl(type, key);

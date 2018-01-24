@@ -35,28 +35,30 @@ describe('My resources', function () {
     });
 
     it('should show sponsored IPv4 resources', function () {
-        page.scrollIntoView(page.btnToggleSponsoredResources);
-        expect(page.btnToggleSponsoredResources.getText()).toContain('Switch to Sponsored Resources');
+        page.scrollIntoView(page.tabsMySponsoredResources);
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('My Resources');
         // switch to Sponsored Resources
-        page.btnToggleSponsoredResources.click();
-        expect(page.myResourcesActiveTabLabel.getText()).toContain('IPv4');
+        page.tabSponsoredResources.click();
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('Sponsored Resources');
         expect(page.myResourcesActiveTabRows.count()).toBe(42);
-        expect(page.btnToggleSponsoredResources.getText()).toContain('Switch to My Resources');
         // switch back to My Resources
-        page.scrollIntoView(page.btnToggleSponsoredResources);
-        page.btnToggleSponsoredResources.click();
+        page.scrollIntoView(page.tabsMySponsoredResources);
+        page.tabMyResources.click();
     });
 
     it('should show not sponsores resources after switching organisation without sponsored resources', function () {
-        page.scrollIntoView(page.btnToggleSponsoredResources);
-        page.btnToggleSponsoredResources.click();
-        expect(page.myResourcesActiveTabLabel.getText()).toContain('IPv4');
+        page.scrollIntoView(page.tabsMySponsoredResources);
+        page.tabSponsoredResources.click();
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('Sponsored Resources');
         page.scrollIntoView(page.orgSelector);
         page.orgSelector.click();
         // switch selected org to Viollier AG
         page.orgSelectorOptions2.click();
-        page.scrollIntoView(page.btnToggleSponsoredResources);
-        expect(page.btnToggleSponsoredResources.isDisplayed()).toEqual(false);
+        page.scrollIntoView(page.tabsMySponsoredResources);
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('My Resources');
+        page.orgSelector.click();
+        // switch back selected org to SURFnet
+        page.orgSelectorOptions0.click();
     });
 
 });

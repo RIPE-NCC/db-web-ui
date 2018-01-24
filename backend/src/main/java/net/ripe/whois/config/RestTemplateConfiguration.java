@@ -23,6 +23,12 @@ public class RestTemplateConfiguration {
     private static final int HTTPCLIENT_CONNECT_TIMEOUT = 5 * 1_000;
     private static final int HTTPCLIENT_READ_TIMEOUT = 5 * 60 * 1_000;
 
+    // Total maximum client connections in pool. Default is 20.
+    private static final int HTTPCLIENT_TOTAL_MAX_CONNECTIONS = 200;
+
+    // Maximum client connections per route in pool. Default is 2.
+    private static final int HTTPCLIENT_MAX_CONNECTIONS_PER_ROUTE = 25;
+
     private static final RequestConfig DEFAULT_REQUEST_CONFIG = RequestConfig.custom()
                                                                     .setConnectionRequestTimeout(HTTPCLIENT_CONNECT_TIMEOUT)
                                                                     .setConnectTimeout(HTTPCLIENT_CONNECT_TIMEOUT)
@@ -52,7 +58,11 @@ public class RestTemplateConfiguration {
 
     @Bean
     public HttpClient httpClient() {
-        return HttpClientBuilder.create().setDefaultRequestConfig(DEFAULT_REQUEST_CONFIG).build();
+        return HttpClientBuilder.create()
+                .setDefaultRequestConfig(DEFAULT_REQUEST_CONFIG)
+                .setMaxConnTotal(HTTPCLIENT_TOTAL_MAX_CONNECTIONS)
+                .setMaxConnPerRoute(HTTPCLIENT_MAX_CONNECTIONS_PER_ROUTE)
+                .build();
     }
 
 }

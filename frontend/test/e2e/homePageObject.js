@@ -143,10 +143,14 @@ module.exports = {
 
     // My resources
     myResources: element(by.css('.my-resources')),
-    myResourcesActiveTabLabel: element(by.css('.my-resources')).element(by.css('.nav-item.active')),
-    myResourcesActiveTabContent: element(by.css('.my-resources')).element(by.css('.tab-pane.active')),
-    myResourcesActiveTabRows: element(by.css('.my-resources')).element(by.css('.tab-pane.active')).all(by.css('resource-item')),
-    btnToggleSponsoredResources: element(by.css('#btn-toggle-sponsored')),
+    myResourcesActiveTabLabel: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).element(by.css('.nav-item.active')),
+    myResourcesActiveTabContent: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).element(by.css('.tab-pane.active')),
+    myResourcesActiveTabRows: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).element(by.css('.tab-pane.active')).all(by.css('resource-item')),
+    tabsMySponsoredResources: element(by.css('.my-resources')).element(by.css('.resources-sponsored-tabs')),
+    tabsMySponsoredResourcesActiveLabel: element(by.css('.my-resources')).element(by.css('.resources-sponsored-tabs')).element(by.css('.nav-tabs')).element(by.css('.nav-item.active')),
+    tabMyResources: element(by.css('.my-resources')).element(by.css('.resources-sponsored-tabs')).all(by.css('li')).get(0),
+    tabSponsoredResources: element(by.css('.my-resources')).element(by.css('.resources-sponsored-tabs')).all(by.css('li')).get(1),
+    tabsMySponsoredResourcesAllTabs: element(by.css('.my-resources')).element(by.css('.resources-sponsored-tabs')).all(by.css('li')),
     btn1HierarchySelector: element(by.css('hierarchy-selector')).element(by.css('.fa-chevron-left')),
     btn2HierarchySelector: element(by.css('hierarchy-selector')).element(by.css('.fa-sitemap')),
 

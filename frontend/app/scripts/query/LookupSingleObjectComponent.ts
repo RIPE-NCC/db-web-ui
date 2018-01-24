@@ -27,19 +27,19 @@ class LookupSingleObjectController {
 
         try {
             this.lookupService.lookupWhoisObject($stateParams).then(
-                (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
-                    if (response.data &&
-                        response.data.objects &&
-                        response.data.objects.object &&
-                        response.data.objects.object.length === 1) {
-                        this.whoisResponse = response.data.objects.object[0];
-                    } else {
-                        this.$log.warn(
-                            "Expected a single object from query. source:", this.source,
-                            "type:", this.objectType,
-                            "name:", this.objectName);
-                    }
-                });
+                    (response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
+                        if (response.data &&
+                            response.data.objects &&
+                            response.data.objects.object &&
+                            response.data.objects.object.length === 1) {
+                            this.whoisResponse = response.data.objects.object[0];
+                        } else {
+                            this.$log.warn(
+                                "Expected a single object from query. source:", this.source,
+                                "type:", this.objectType,
+                                "name:", this.objectName);
+                        }
+                    });
         } catch (e) {
             this.error = "An error occurred looking for " + this.objectType + " " + this.objectName;
         }

@@ -1,19 +1,54 @@
 class LiveChatController {
 
-    public static $inject = ["$scope", "$location"];
+    public static $inject = ["$scope", "$location", "UserInfoService", "$window"];
 
     private static MY_RESOURCES_PAGE_PATH = "myresources";
-    private available: boolean = false;
+    public loggedInUser: boolean = true;
+    private selected: IUserInfoRegistration;
 
-    constructor(private $scope: angular.IScope, private $location: ng.ILocationService) {
+    constructor(private $scope: angular.IScope,
+                private $location: ng.ILocationService,
+                private userInfoService: UserInfoService,
+                private $window: any) {
         $scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
-            this.available = (selected as IUserInfoRegistration).membershipId !== undefined;
+            this.selected = (selected as IUserInfoRegistration);
+            this.updateLiveChatAvailable();
         });
     }
 
-    public isLiveChatAvailable(): boolean {
-        const myResourcesPage: boolean = this.$location.path().includes(LiveChatController.MY_RESOURCES_PAGE_PATH);
-        return this.available && myResourcesPage;
+    public isLiveChatEnabled(): boolean {
+        return this.isOnMyResourcePage() && this.isSelectedMember();
+    }
+
+    private isSelectedMember(): boolean {
+        return this.selected !== undefined && this.selected.membershipId !== undefined;
+    }
+
+    private isOnMyResourcePage(): boolean {
+        return this.$location.path().includes(LiveChatController.MY_RESOURCES_PAGE_PATH);
+    }
+
+    private updateLiveChatAvailable() {
+        if (this.isLiveChatEnabled()) {
+            this.checkLoggedInUserAndUpdateUserLikeData(this.selected);
+        }
+    }
+
+    private checkLoggedInUserAndUpdateUserLikeData(selected: IUserInfoRegistration) {
+        this.$window.userlikeData = this.$window.userlikeData || {};
+        this.userInfoService.getLoggedInUser().then((user: IUserInfo) => {
+            this.$window.userlikeData.user = {};
+            this.$window.userlikeData.user.name = user.displayName;
+            this.$window.userlikeData.user.email = user.username;
+            this.$window.userlikeData.custom = {};
+            this.$window.userlikeData.custom.roles = selected.roles.join(", ");
+            this.$window.userlikeData.custom.registries = selected.regId;
+        }, () => {
+            // If user is logged out, make sure to disable the chat
+            this.$window.userlikeData = {};
+            // Turn off live chat if an error occurs while checking logged in user.
+            this.loggedInUser = false;
+        });
     }
 }
 

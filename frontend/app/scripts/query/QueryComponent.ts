@@ -14,6 +14,8 @@ interface IProperties {
     REST_SEARCH_URL: string;
     SOURCE: string;
     LOGIN_URL: string;
+    BUILD_TAG: string;
+    PORTAL_URL: string;
 }
 
 class QueryController {
@@ -25,6 +27,7 @@ class QueryController {
         "$stateParams",
         "Properties",
         "QueryService",
+        "$anchorScroll",
     ];
 
     public qp: QueryParameters;
@@ -45,7 +48,8 @@ class QueryController {
                 private $state: angular.ui.IStateService,
                 private $stateParams: IQueryState,
                 private properties: IProperties,
-                private service: IQueryService) {
+                private service: IQueryService,
+                private $anchorScroll: ng.IAnchorScrollService) {
 
         this.qp = new QueryParameters();
         this.qp.source = this.$stateParams.source || this.properties.SOURCE;
@@ -73,6 +77,11 @@ class QueryController {
 
     public submitSearchForm() {
         this.$location.search(this.qp.asLocationSearchParams());
+        // remove previous anchor from hash
+        this.setActiveAnchor("");
+        if (this.qp.queryText === this.$stateParams.searchtext) {
+            this.gotoAnchor();
+        }
     }
 
     public updateClicked(model: IWhoisObjectModel): void {
@@ -115,7 +124,10 @@ class QueryController {
         this.service
             .searchWhoisObjects(cleanQp)
             .then(
-                (response) => this.handleWhoisSearch(response),
+                (response) => {
+                    this.handleWhoisSearch(response);
+                    this.gotoAnchor();
+                    },
                 (error) => this.handleWhoisSearchError(error));
     }
 
@@ -228,6 +240,19 @@ class QueryController {
             return def;
         }
         return flag.toLowerCase() === "true";
+    }
+
+    private gotoAnchor() {
+        if (this.errorMessages && this.errorMessages.length > 0) {
+            this.setActiveAnchor("anchorTop");
+        } else {
+            this.setActiveAnchor("resultsSection");
+        }
+    }
+
+    private setActiveAnchor(id: string) {
+        this.$location.hash(id);
+        this.$anchorScroll();
     }
 }
 

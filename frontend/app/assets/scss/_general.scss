@@ -220,3 +220,27 @@ div.db-version-footer {
 section .resultlinks {
     line-height: 2.9em;
 }
+.generic-drop-down {
+    button#single-button {
+        padding: 0px 10px;
+        position: relative;
+        > span {
+            font: {
+                size: 300%;
+                weight: bold;
+            }
+            position: relative;
+            top: -8px;
+        }
+    }
+    ul.dropdown-menu {
+        width: auto;
+        padding: 0 !important;
+        li {
+            a:hover {
+                background-color: #fff;
+                color: $black;
+            }
+        }
+    }
+}

@@ -8,7 +8,7 @@ interface IQueryService {
 
 }
 
-const EMPTY_MODEL: { data: IWhoisResponseModel } = {
+const EMPTY_MODEL: { data: IWhoisResponseModel} = {
     data: {
         errormessages: {errormessage: []},
         objects: {object: []},
@@ -20,7 +20,7 @@ class QueryService implements IQueryService {
     public static $inject = ["$http", "$q"];
 
     private static accumulate(resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>,
-                              acc: { data: IWhoisResponseModel }) {
+                              acc: { data: IWhoisResponseModel}) {
         if (resp.data.objects) {
             acc.data.objects.object = acc.data.objects.object.concat(resp.data.objects.object);
         }
@@ -69,7 +69,7 @@ class QueryService implements IQueryService {
 
         return config.params["query-string"]
 
-        // put the first 5 terms into an array and trim them
+            // put the first 5 terms into an array and trim them
             .split(";")
             .map((item: string) => item.trim())
             .filter((item: string, idx: number) => item.length && idx < 5)

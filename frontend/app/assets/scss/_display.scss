@@ -1,4 +1,4 @@
-table.success-fields {
+.success-fields {
 	@extend %width-100;
 	border: 1px #ccc dashed;
 	margin-bottom: 20px;
@@ -21,7 +21,7 @@ table.success-fields {
 }
 
 @media (max-width: 768px) { 
-	table.success-fields {
+	.success-fields {
 		td {
     		float: left;
 		    width: 100%;
@@ -35,7 +35,7 @@ table.success-fields {
 }
 
 pre.textdiff {
-    @extend table.success-fields;
+    @extend .success-fields;
     padding: 0;
     border-radius: 0;
     font: {

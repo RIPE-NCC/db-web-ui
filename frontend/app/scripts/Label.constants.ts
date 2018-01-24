@@ -27,5 +27,4 @@ angular.module("dbWebApp")
         "query.optionPageTypes.title": "Learn more about RIPE Database object types",
         "query.optionRelatedObjects.title": "Do not return personal data and other related objects for each object in the query results. There are daily limits on personal data objects returned. You will be blocked if you exceed the limits.",
         "query.whoisTelnetOutputLabel.text": "The equivalent Whois <a href=\"https://www.ripe.net/manage-ips-and-asns/db/support/documentation/ripe-database-documentation/types-of-queries\" target='\"_blank\"'>query flags</a> are shown below.",
-
     });
