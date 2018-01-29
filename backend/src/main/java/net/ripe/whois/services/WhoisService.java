@@ -3,21 +3,28 @@ package net.ripe.whois.services;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.api.rest.domain.WhoisObject;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
-
 import net.ripe.db.whois.common.ip.Ipv4Resource;
 import net.ripe.db.whois.common.ip.Ipv6Resource;
-
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RequestCallback;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -35,42 +42,56 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     private final String contextPath;
 
     @Autowired
-    public WhoisService(final RestTemplate restTemplate, @Value("${rest.api.ripeUrl}") final String apiUrl, @Value("${server.contextPath}") final String contextPath) {
+    public WhoisService(
+            final RestTemplate restTemplate,
+            @Value("${rest.api.ripeUrl}") final String apiUrl,
+            @Value("${server.contextPath}") final String contextPath) {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.contextPath = contextPath;
     }
 
-    public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
-        final URI uri = composeWhoisUrl(request);
+    public ResponseEntity<String> bypass(final HttpServletRequest request, final HttpServletResponse response, @Nullable final String requestBody, final HttpHeaders requestHeaders) {
+
+        // Connection value "keep-alive" doesn't work with resttemplate
+        requestHeaders.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
 
         // Do not accept compressed response, as it's not handled properly (by whois)
-        headers.remove(HttpHeaders.ACCEPT_ENCODING);
-        headers.set(HttpHeaders.ACCEPT_ENCODING, "identity");
-        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_UTF8_VALUE);
-        return handleErrors(() ->
-            restTemplate.exchange(
-                uri,
-                HttpMethod.valueOf(request.getMethod().toUpperCase()),
-                new HttpEntity<>(body, headers),
-                String.class), LOGGER);
+        requestHeaders.remove(HttpHeaders.ACCEPT_ENCODING);
+        requestHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
+        requestHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_UTF8_VALUE);
+        return handleErrors(() -> stream(request, response, requestBody, requestHeaders), LOGGER);
     }
 
-    private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
-        final StringBuilder builder = new StringBuilder(apiUrl)
-            .append(request.getRequestURI()
-                .replace("/api/whois", "")
-                .replace(contextPath, ""));
+    private ResponseEntity<String> stream(final HttpServletRequest request, final HttpServletResponse response, final String requestBody, final HttpHeaders requestHeaders) {
+        response.setStatus(HttpStatus.OK.value());
+        return restTemplate.execute(
+            composeWhoisUrl(request),
+            HttpMethod.valueOf(request.getMethod().toUpperCase()),
+             httpEntityCallback(new HttpEntity<>(requestBody, requestHeaders)),
+            responseExtractor -> {
+                IOUtils.copy(responseExtractor.getBody(), response.getOutputStream());
+                return null;
+            });
+    }
 
-        if (StringUtils.isNotBlank(request.getQueryString())) {
-            builder
-                .append('?')
-                .append(request.getQueryString());
+    private URI composeWhoisUrl(final HttpServletRequest request) {
+        try {
+            final StringBuilder builder = new StringBuilder(apiUrl)
+                    .append(request.getRequestURI()
+                        .replace("/api/whois", "")
+                        .replace(contextPath, ""));
+
+            if (StringUtils.isNotBlank(request.getQueryString())) {
+                builder
+                    .append('?')
+                    .append(request.getQueryString());
+            }
+
+            return new URI(builder.toString());
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
         }
-
-        LOGGER.debug("uri = {}", builder.toString());
-
-        return new URI(builder.toString());
     }
 
     // TODO: [ES] refactor this logic, move into WhoisHierarchyController. Expose generic Search API here instead.
@@ -134,5 +155,18 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
             default:
                 return r1.equals(r2);
         }
+    }
+
+    private <T> RequestCallback httpEntityCallback(final HttpEntity<T> requestEntity) {
+        return new RestTemplate() {
+            {
+                this.setMessageConverters(restTemplate.getMessageConverters());
+                setRequestFactory(restTemplate.getRequestFactory());
+            }
+
+            <T> RequestCallback httpEntityCallback() {
+                return httpEntityCallback(requestEntity);
+        	}
+        }.httpEntityCallback();
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api/whois")
@@ -31,14 +32,12 @@ public class WhoisProxyController extends ApiController {
     @RequestMapping(value = "/**")
     public ResponseEntity<String> proxyRestCalls(
             final HttpServletRequest request,
+            final HttpServletResponse response,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) throws Exception {
 
-        LOGGER.info("whois-request: {}", request.toString());
-
-        headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
 
-        return whoisService.bypass(request, body, headers);
+        return whoisService.bypass(request, response, body, headers);
     }
 }
