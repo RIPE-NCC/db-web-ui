@@ -12,7 +12,7 @@ class LiveChatController {
                 private $window: any) {
         $scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.selected = (selected as IUserInfoRegistration);
-            this.updateLiveChatAvailable();
+            this.checkLoggedInUserAndUpdateUserLikeData(this.selected);
         });
     }
 
@@ -26,12 +26,6 @@ class LiveChatController {
 
     private isOnMyResourcePage(): boolean {
         return this.$location.path().includes(LiveChatController.MY_RESOURCES_PAGE_PATH);
-    }
-
-    private updateLiveChatAvailable() {
-        if (this.isLiveChatEnabled()) {
-            this.checkLoggedInUserAndUpdateUserLikeData(this.selected);
-        }
     }
 
     private checkLoggedInUserAndUpdateUserLikeData(selected: IUserInfoRegistration) {
