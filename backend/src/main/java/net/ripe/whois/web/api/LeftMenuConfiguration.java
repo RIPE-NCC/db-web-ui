@@ -32,6 +32,8 @@ public class LeftMenuConfiguration {
     private String requestResourcesUrl;
     @Value("${request.transfer.url:}")
     private String requestTransferUrl;
+    @Value("${request.update.url:}")
+    private String requestUpdateUrl;
     @Value("${ipv4.transfer.listing.service.url}")
     private String ipv4TransferListingServiceUrl;
     @Value("${rpki.dashboard.url:}")
@@ -87,6 +89,10 @@ public class LeftMenuConfiguration {
 
     public String getRequestResourcesUrl() {
         return requestResourcesUrl;
+    }
+
+    public String getRequestUpdateUrl() {
+        return requestUpdateUrl;
     }
 
     public String getRequestTransferUrl() {

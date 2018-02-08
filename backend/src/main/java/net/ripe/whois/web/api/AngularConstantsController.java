@@ -138,6 +138,7 @@ public class AngularConstantsController {
             "        IPV4_ANALYSER_URL: '" + leftMenuConfiguration.getIpv4AnalyserUrl() + "',\n" +
             "        IPV6_ANALYSER_URL: '" + leftMenuConfiguration.getIpv6AnalyserUrl() + "',\n" +
             "        REQUEST_RESOURCES_URL: '" + leftMenuConfiguration.getRequestResourcesUrl() + "',\n" +
+            "        REQUEST_UPDATE_URL: '" + leftMenuConfiguration.getRequestUpdateUrl() + "',\n" +
             "        REQUEST_TRANSFER_URL: '" + leftMenuConfiguration.getRequestTransferUrl() + "',\n" +
             "        IPV4_TRANSFER_LISTING_URL: '" + leftMenuConfiguration.getIpv4TransferListingServiceUrl() + "',\n" +
             "        RPKI_DASHBOARD_URL: '" + leftMenuConfiguration.getRpkiDashboardUrl() + "',\n" +
