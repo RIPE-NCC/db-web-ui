@@ -109,7 +109,7 @@ var mockResponse = {
                     "key": "AR17615-RIPE",
                     "email": "abuse@easynet.com"
                 },
-                "comaintained": false
+                "managed": false
             }, {
                 "type": "inetnum",
                 "link": {
@@ -195,7 +195,7 @@ var mockResponse = {
                     "key": "AR17615-RIPE",
                     "email": "abuse@easynet.com"
                 },
-                "comaintained": false
+                "managed": false
             }, {
                 "type": "inetnum",
                 "link": {
@@ -281,7 +281,7 @@ var mockResponse = {
                     "key": "AR17615-RIPE",
                     "email": "abuse@easynet.com"
                 },
-                "comaintained": false
+                "managed": false
             }, {
                 "type": "inetnum",
                 "link": {
@@ -367,7 +367,7 @@ var mockResponse = {
                     "key": "AR17615-RIPE",
                     "email": "abuse@easynet.com"
                 },
-                "comaintained": false
+                "managed": false
             }, {
                 "type": "inetnum",
                 "link": {
@@ -453,7 +453,7 @@ var mockResponse = {
                     "key": "AR17615-RIPE",
                     "email": "abuse@easynet.com"
                 },
-                "comaintained": false
+                "managed": false
             }, {
                 "type": "inetnum",
                 "link": {
@@ -539,7 +539,7 @@ var mockResponse = {
                     "key": "AR17615-RIPE",
                     "email": "abuse@easynet.com"
                 },
-                "comaintained": false
+                "managed": false
             }, {
                 "type": "role",
                 "link": {
@@ -650,7 +650,7 @@ var mockResponse = {
                         "value": "RIPE"
                     }]
                 },
-                "comaintained": false
+                "managed": false
             }]
         },
         "terms-and-conditions": {
@@ -742,7 +742,7 @@ var mockResponse = {
                         "comment": "Filtered"
                     }]
                 },
-                "comaintained": false
+                "managed": false
             }]
         },
         "terms-and-conditions": {

@@ -68,6 +68,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
                                 WhoisResources.turnAttrsIntoWhoisObject(attributes), $scope.selected.password).then(
                                 function (resp) {
                                     $scope.selected.item.mine = true;
+                                    $scope.selected.item.auth.push("SSO");
                                     CredentialsService.removeCredentials(); // because it's now an sso mntner
                                     // report success back
                                     $modalInstance.close({selectedItem: $scope.selected.item, response: resp});

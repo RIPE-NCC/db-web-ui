@@ -50,7 +50,7 @@ class WhoisObjectViewerController {
         }, () => {
             this.show.loginLink = true;
         });
-        this.show.ripeManagedToggleControl = this.ngModel.comaintained;
+        this.show.ripeManagedToggleControl = this.ngModel.managed;
     }
 
     public clickShowMoreLines() {

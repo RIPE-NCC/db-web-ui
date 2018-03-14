@@ -195,7 +195,7 @@ describe('LookupComponent', function () {
                         "key": "ORG-IANA1-RIPE",
                         "name": "Internet Assigned Numbers Authority"
                     },
-                    "comaintained": true
+                    "managed": true
                 }]
             },
             "terms-and-conditions": {

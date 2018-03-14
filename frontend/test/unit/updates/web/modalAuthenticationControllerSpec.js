@@ -132,7 +132,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
     });
 
     it('should associate and close the modal and return selected item when ok', function () {
-        $scope.selected.item = { type:'mntner', key:'b-mnt'};
+        $scope.selected.item = { type:'mntner', key:'b-mnt', auth: []};
         $scope.selected.password = 'secret';
         $scope.selected.associate = true;
 
@@ -179,7 +179,7 @@ describe('webUpdates: ModalAuthenticationController', function () {
         expect(credentialsService.setCredentials).toHaveBeenCalledWith( 'b-mnt', 'secret');
         expect(credentialsService.removeCredentials).toHaveBeenCalled( );
 
-        expect(modalInstance.close).toHaveBeenCalledWith( { selectedItem:{type:'mntner', key:'b-mnt', mine:true},
+        expect(modalInstance.close).toHaveBeenCalledWith( { selectedItem:{type:'mntner', key:'b-mnt', auth: [ 'SSO' ], mine:true},
                                     response: jasmine.any(Object)} );
     });
 
