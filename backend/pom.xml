@@ -32,7 +32,7 @@
         <spring-security.version>4.0.0.RELEASE</spring-security.version>
         <swagger-springmvc.version>0.9.5</swagger-springmvc.version>
         <usertype-core.version>3.2.0.GA</usertype-core.version>
-        <whois.version>1.92-SNAPSHOT</whois.version>
+        <whois.version>1.91.2</whois.version>
     </properties>
 
     <dependencies>
