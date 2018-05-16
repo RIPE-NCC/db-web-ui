@@ -85,7 +85,7 @@
         <paginator pages="$ctrl.navbarSyncArray" active-page="$ctrl.activePage" num-results="$ctrl.numResults" results-per-page="$ctrl.numResultsPerPage" page-clicked="$ctrl.pageClicked(page)" ng-if="$ctrl.results"></paginator>
         <div class="padding">
             <div class="margin-bottom grey-border-top padding-top results" ng-repeat="result in $ctrl.results">
-                <div><a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source=RIPE&type={{result.name}}&key={{ result.lookupKey }}" target="_blank">{{ result.name }}: {{ result.lookupKey }}</a></div>
+                <div><a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source={{ $ctrl.ngModel['source'].id }}&type={{result.name}}&key={{ result.lookupKey }}" target="_blank">{{ result.name }}: {{ result.lookupKey }}</a></div>
                 <div>
                 <span class="small" ng-repeat="hl in result.hls">
                     <span ng-if="$index !== 0">, </span>

@@ -2,7 +2,7 @@
     <div class="lookupheader" ng-if="$ctrl.show.header">
         Responsible organisation:
         <span ng-if="$ctrl.show.resourceHolderFound">
-            <a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source=ripe&key={{ $ctrl.ngModel['resource-holder'].key }}&type=organisation"
+            <a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source={{ $ctrl.ngModel['source'].id }}&key={{ $ctrl.ngModel['resource-holder'].key }}&type=organisation"
                target="_blank">{{ $ctrl.ngModel['resource-holder'].name }}</a>
         </span><span ng-if="!$ctrl.show.resourceHolderFound">
         {{ "msg.noResourceHolderFound.text" | label }}
@@ -10,7 +10,7 @@
         <br>
         <span ng-if="$ctrl.show.abuseContactFound">
             Abuse contact info:
-            <a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source=ripe&key={{ $ctrl.ngModel['abuse-contact'].key }}&type=role" target="_blank">{{ $ctrl.ngModel['abuse-contact'].email}}</a>
+            <a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source={{ $ctrl.ngModel['source'].id }}&key={{ $ctrl.ngModel['abuse-contact'].key }}&type=role" target="_blank">{{ $ctrl.ngModel['abuse-contact'].email}}</a>
         </span><span ng-if="!$ctrl.show.abuseContactFound">
         <i>{{ "msg.noAbuseContactFound.text" | label }}</i>
         </span>
