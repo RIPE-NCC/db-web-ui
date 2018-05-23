@@ -47,4 +47,28 @@ describe('The query pagina', function () {
         expect(page.inpQueryString.getAttribute('value')).toEqual('193.0.0.0');
     });
 
+    it('should be able to have source dynamic', function () {
+        page.inpQueryString.sendKeys('193.0.0.0');
+        page.scrollIntoView(page.inpDontRetrieveRelated);
+        page.inpDontRetrieveRelated.click();
+        page.queryParamTabs.get(1).click();
+        page.scrollIntoView(page.byId('search:types:6'));
+        page.byId('search:types:6').click();
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        expect(page.resultsSection.getAttribute('innerHTML')).toContain('?source=ripe&amp;key=ORG-IANA1-RIPE&amp;type=organisation');
+    });
+
+    it('should be able to have source dynamic', function () {
+        page.inpQueryString.sendKeys('223.0.0.0');
+        page.scrollIntoView(page.inpDontRetrieveRelated);
+        page.inpDontRetrieveRelated.click();
+        page.queryParamTabs.get(1).click();
+        page.scrollIntoView(page.byId('search:types:6'));
+        page.byId('search:types:6').click();
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        expect(page.resultsSection.getAttribute('innerHTML')).toContain('?source=apnic&amp;key=ORG-IANA1-RIPE&amp;type=organisation');
+    });
+
 });

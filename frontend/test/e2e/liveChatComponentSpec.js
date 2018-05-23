@@ -16,13 +16,13 @@ describe('Live chat button', function () {
     it('should be possible to hide / show Live Chat button', function () {
         //selected SURFnet bv - LIR
         expect(page.orgSelector.isPresent()).toEqual(true);
+        page.orgSelector.click();
         expect(page.liveChatButtonTab.isDisplayed()).toEqual(true);
-        page.orgSelector.click();
-        //selected Swi Rop Gonggrijp - ORG
+        // //selected Swi Rop Gonggrijp - ORG
         page.orgSelectorOptions1.click();
-        expect(page.liveChatButtonTab.isDisplayed()).toEqual(false);
         page.orgSelector.click();
-        //selected SURFnet bv - LIR
+        expect(page.liveChatButtonTab.isDisplayed()).toEqual(false);
+        // //selected SURFnet bv - LIR
         page.orgSelectorOptions0.click();
         expect(page.liveChatButtonTab.isDisplayed()).toEqual(true);
     });

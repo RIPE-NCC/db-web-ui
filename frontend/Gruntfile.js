@@ -616,7 +616,7 @@ module.exports = function (grunt) {
                 args: {
                     baseUrl: 'http://localhost:0',
                     chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
-                    seleniumServerJar: './test/lib/selenium-server-standalone-3.6.0.jar'
+                    seleniumServerJar: './test/lib/selenium-server-standalone-3.12.0.jar'
                 }
             },
             e2e: {
@@ -650,7 +650,7 @@ module.exports = function (grunt) {
                     args: {
                         baseUrl: 'http://localhost:0',
                         chromeDriver: './test/lib/webdrivers/' + process.platform + '/chromedriver' + (process.platform === 'win32' ? '.exe' : ''),
-                        seleniumServerJar: './test/lib/selenium-server-standalone-3.6.0.jar'
+                        seleniumServerJar: './test/lib/selenium-server-standalone-3.12.0.jar'
                     }
                 }
             },

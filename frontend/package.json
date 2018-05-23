@@ -10,8 +10,8 @@
     "@types/lodash": "4.14.80",
     "autoprefixer": "7.1.6",
     "connect-prism": "1.0.17",
-    "grunt": "1.0.1",
-    "grunt-cache-bust": "1.4.1",
+    "grunt": "1.0.2",
+    "grunt-cache-bust": "1.6.0",
     "grunt-cdnify": "1.0.2",
     "grunt-concurrent": "2.3.1",
     "grunt-connect-prism": "1.0.11",
@@ -44,13 +44,13 @@
     "jasmine-core": "2.8.0",
     "jit-grunt": "0.10.0",
     "jshint-stylish": "2.2.1",
-    "karma": "1.7.1",
-    "karma-coverage": "1.1.1",
-    "karma-jasmine": "1.1.0",
+    "karma": "2.0.2",
+    "karma-coverage": "1.1.2",
+    "karma-jasmine": "1.1.2",
     "karma-phantomjs-launcher": "1.0.4",
     "load-grunt-tasks": "3.5.2",
-    "phantomjs-prebuilt": "2.1.15",
-    "protractor": "5.2.0",
+    "phantomjs-prebuilt": "2.1.16",
+    "protractor": "5.3.2",
     "serve-static": "1.13.1",
     "time-grunt": "1.4.0",
     "tslint": "5.8.0",
@@ -58,5 +58,8 @@
   },
   "engines": {
     "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "npm": "^6.0.1"
   }
 }
