@@ -90,6 +90,33 @@ class IpAddressService {
         return new Address4(match[2]).bigInteger().intValue();
     }
 
+    public fromSlashToRange(inetnum: string): string {
+        if(inetnum.includes(",")) {
+            return this.doSlashToRangeMagic(inetnum);
+        } else {
+            return new Address4(inetnum).startAddress().address + " - "+ new Address4(inetnum).endAddress().address;
+        }
+    }
+
+    private doSlashToRangeMagic(inetnum: string): string {
+        let range: any;
+        inetnum.split(",/").forEach((str:string) => {
+            if(!range) {
+                range = new Address4(str);
+            } else {
+                let end = new Address4(Address4.fromInteger(
+                    Number(parseInt(range.endAddress().getBitsBase2(0,32),2)) + 1
+                ).startAddress().address + "/" + str);
+
+                range = new Address4(range.startAddress().address + " - " + end.endAddress().address);
+            }
+
+        });
+
+
+        return range.address;
+    }
+
 }
 
 angular

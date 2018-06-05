@@ -2,6 +2,7 @@ interface IResourcesControllerState extends ng.ui.IStateService {
     params: {
         type: string;
         sponsored: boolean;
+        ipanalyserRedirect: boolean;
     };
 }
 
@@ -24,6 +25,8 @@ class ResourcesController {
     public loading: boolean = false; // true until resources are loaded to tabs
     public reason = "No resources found";
     public fail: boolean;
+    public showIpAnalyserRedirectBanner: boolean = true;
+    public isRedirectedFromIpAnalyser: boolean = false;
 
     private hasSponsoredResources = false;
     private isShowingSponsored = false;
@@ -42,6 +45,8 @@ class ResourcesController {
         this.isShowingSponsored = typeof this.$state.params.sponsored === "string" ?
             this.$state.params.sponsored === "true" : this.$state.params.sponsored;
         this.activeSponsoredTab = this.isShowingSponsored ? 1 : 0;
+
+        this.showTheIpAnalyserBanner(this.$state.params.ipanalyserRedirect);
 
         this.refreshPage();
         this.lastTab = this.$state.params.type || "inetnum";
@@ -69,17 +74,17 @@ class ResourcesController {
 
     public tabClicked(tabName: string) {
         this.lastTab = tabName;
-        this.$location.search({type: tabName, sponsored: this.isShowingSponsored});
+        this.$location.search({type: tabName, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
     }
 
     public sponsoredResourcesTabClicked() {
         this.isShowingSponsored = true;
-        this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored});
+        this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
     }
 
     public resourcesTabClicked() {
         this.isShowingSponsored = false;
-        this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored});
+        this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
     }
 
     public refreshPage() {
@@ -91,6 +96,29 @@ class ResourcesController {
         } else {
             this.fetchResourcesAndPopulatePage();
         }
+    }
+
+    private showTheIpAnalyserBanner(ipanalyserRedirect: boolean) {
+      const redirect: boolean = typeof this.$state.params.ipanalyserRedirect === "string" ?
+          this.$state.params.ipanalyserRedirect === "true" :
+          this.$state.params.ipanalyserRedirect;
+
+      this.isRedirectedFromIpAnalyser = redirect;
+
+      // this is to prevent the annoying banner every time (we probably
+      // want to remove this logic and show the banner all the time)
+      const item = "shown";
+      if (redirect) {
+        const shown = localStorage.getItem(item);
+        if (shown === item) {
+          this.showIpAnalyserRedirectBanner = false;
+        } else {
+          this.showIpAnalyserRedirectBanner = redirect;
+          localStorage.setItem(item, item);
+        }
+      } else {
+        this.showIpAnalyserRedirectBanner = false;
+      }
     }
 
     private fetchResourcesAndPopulatePage() {

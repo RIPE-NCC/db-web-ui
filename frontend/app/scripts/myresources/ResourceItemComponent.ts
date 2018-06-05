@@ -7,6 +7,7 @@ class ResourceItemController {
     ];
     public item: IResourceScreenItem;
     public sponsored: boolean;
+    public ipanalyserRedirect: boolean;
     public usedPercentage: number;
     public showProgressbar: boolean;
 
@@ -52,6 +53,7 @@ class ResourceItemController {
 
     public showDetail() {
         this.$state.go("myresourcesdetail", {
+            ipanalyserRedirect: this.item.ipanalyserRedirect,
             objectName: this.item.resource,
             objectType: this.item.type,
             sponsored: this.sponsored,
@@ -62,6 +64,7 @@ class ResourceItemController {
 
 angular.module("dbWebApp").component("resourceItem", {
     bindings: {
+        ipanalyserRedirect: "<",
         item: "<",
         sponsored: "<",
     },

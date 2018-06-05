@@ -74,6 +74,14 @@ class ResourcesDataService implements IResourcesDataService {
         });
     }
 
+    public fetchIpv4Analysis(orgId: string): ng.IPromise<ng.IHttpResponse<IIpv4Analysis>> {
+        return this.$http({
+            method: "GET",
+            params: {"org-id": orgId},
+            url: "api/whois-internal/api/resources/ipanalyser/v1/ipv4.json",
+        });
+    }
+
     public fetchTicketsAndDates(orgId: string, resource: string): ng.IPromise<ng.IHttpResponse<IResourceTickets>> {
         return this.$http({
             method: "GET",

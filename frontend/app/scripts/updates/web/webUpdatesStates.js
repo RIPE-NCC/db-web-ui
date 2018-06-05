@@ -43,7 +43,7 @@ angular.module('webUpdates')
                     template: '<div ui-view></div>'
                 })
                 .state('myresources', {
-                    url: '/myresources/overview?type&sponsored',
+                    url: '/myresources/overview?type&sponsored&ipanalyserRedirect',
                     templateUrl: 'scripts/myresources/resources.html',
                     controller: 'ResourcesController',
                     controllerAs: 'resources'

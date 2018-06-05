@@ -1,5 +1,6 @@
 interface IResourceDetailsControllerState extends ng.ui.IStateService {
     params: {
+        ipanalyserRedirect: boolean;
         objectName: string;
         objectType: string;
         sponsored: boolean;
@@ -47,6 +48,7 @@ class ResourceDetailsController {
     public showScroller = true;
     public sponsored = false;
     public isEditing = false;
+    public ipanalyserRedirect = false;
 
     public ipFilter: string = null;
 
@@ -184,6 +186,7 @@ class ResourceDetailsController {
 
     public showDetail(resource: IResourceModel): void {
         this.$state.go("myresourcesdetail", {
+            ipanalyserRedirect: this.ipanalyserRedirect,
             objectName: resource.resource,
             objectType: resource.type,
             sponsored: this.sponsored,

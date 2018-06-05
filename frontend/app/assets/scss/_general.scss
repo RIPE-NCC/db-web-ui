@@ -244,3 +244,56 @@ section .resultlinks {
         }
     }
 }
+.bell-drop-down {
+    @extend .generic-drop-down;
+    button#grey-bell-button {
+        height: 33px;
+        &.grey-button{
+           .fa-bell-o {
+                color: $dark-grey-cr;
+                font-size: 18px;
+                font-weight: bold;
+            }
+        }
+
+    }
+    button#red-bell-button {
+        height: 33px;
+        &.red-button {
+            background-color: #f1dede;
+            border: solid 0.1rem $light-red;
+            .fa-bell-o {
+                color: $dark-red;
+                font-size: 18px;
+                font-weight: bold;
+            }
+            &:hover {
+                background-color: #e9d6d6;
+            }
+        }
+    }
+    ul.dropdown-menu {
+        li{
+            &.dropdown-header {
+                background-color: $grey;
+                font-size: 14px;
+                padding: 4px 10px;
+            }
+            > span {
+                margin: 10px;
+                line-height: 1.1em;
+            }
+            > .overlap-link {
+                cursor: pointer;
+                line-height: 1em;
+                &:hover {
+                    color: $link;
+                    background-color: #fbfbfb;
+                }
+            }
+        }
+    }
+    div.popover {
+        width: 100px;
+    }
+}

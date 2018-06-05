@@ -48,12 +48,12 @@ public class CustomCacheFilter implements Filter {
     }
 
     private boolean isCacheable(final HttpServletRequest request) {
+        final String requestURI = request.getRequestURI();
         for (final String urlPattern : CACHEABLE) {
-            if (request.getRequestURI().endsWith(urlPattern)) {
+            if (requestURI.endsWith(urlPattern)) {
                 return true;
             }
         }
-
         return false;
     }
 

@@ -73,6 +73,7 @@ interface IResourceScreenItem {
     usage: IUsage;
     notRipeRegistered: boolean;
     sponsoredByOther: boolean;
+    ipanalyserRedirect: boolean;
 }
 
 interface IResourceDetailsResponseModel {
@@ -82,6 +83,23 @@ interface IResourceDetailsResponseModel {
     object?: IWhoisObjectModel;
     notUnderContract?: boolean;
     sponsoredByOther?: boolean;
+}
+
+interface IIpv4Analysis {
+    allocations: IIpv4AllocationAnalysis[];
+}
+
+interface IIpv4AllocationAnalysis {
+    violations: IIpv4ViolationsAnalysis;
+}
+
+interface IIpv4ViolationsAnalysis {
+    inetnumSyntaxErrors: string[ ];
+    overlappingInetnums: IIpv4OverlappingInetnumsAnalysis[ ];
+}
+
+interface IIpv4OverlappingInetnumsAnalysis {
+    range: string;
 }
 
 interface IResourcesDataService {
@@ -97,4 +115,6 @@ interface IResourcesDataService {
                    sponsored: boolean): ng.IPromise<ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>>;
 
     fetchTicketsAndDates(orgId: string, resource: string): ng.IPromise<ng.IHttpResponse<IResourceTickets>>;
+
+    fetchIpv4Analysis(orgId: string): ng.IPromise<ng.IHttpResponse<IIpv4Analysis>>;
 }

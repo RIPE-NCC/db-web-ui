@@ -3,6 +3,7 @@ interface IHierarchySelectorControllerState extends ng.ui.IStateService {
         objectName: string;
         objectType: string;
         sponsored: boolean;
+        ipanalyserRedirect: boolean;
     };
 }
 
@@ -31,6 +32,7 @@ class HierarchySelectorController {
     public showTopLevelResources() {
         const params = {
             sponsored: this.$state.params.sponsored,
+            ipanalyserRedirect: this.$state.params.ipanalyserRedirect,
             type: this.resource.type,
         };
         this.$state.go("myresources", params);
@@ -45,6 +47,7 @@ class HierarchySelectorController {
             objectName: target,
             objectType: this.resource.type,
             sponsored: this.$state.params.sponsored,
+            ipanalyserRedirect: this.$state.params.ipanalyserRedirect,
         };
         this.$state.go("myresourcesdetail", params);
     }
