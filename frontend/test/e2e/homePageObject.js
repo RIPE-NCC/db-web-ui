@@ -190,6 +190,8 @@ module.exports = {
     btnSubmitQuery: element(by.name('searchform')).element(by.css('button.blue-button')),
     resultsSection: element(by.id('resultsSection')),
     searchResults: element(by.id('resultsSection')).all(by.css('lookup')),
+    ripeStateButtonInetnum: element(by.id('resultsSection')).all(by.css('lookup')).get(0).element(by.css('.ripe-stat-button')),
+    ripeStateButtonRoute: element(by.id('resultsSection')).all(by.css('lookup')).get(3).element(by.css('.ripe-stat-button')),
     queryParamTabs: element(by.name('searchform')).element(by.css('.nav.nav-tabs')).all(by.css('li')),
 
     // Syncupdate page

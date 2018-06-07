@@ -56,6 +56,7 @@ describe('My resources', function () {
         page.orgSelectorOptions2.click();
         page.scrollIntoView(page.tabsMySponsoredResources);
         expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('My Resources');
+        page.scrollIntoView(page.orgSelector);
         page.orgSelector.click();
         // switch back selected org to SURFnet
         page.orgSelectorOptions0.click();

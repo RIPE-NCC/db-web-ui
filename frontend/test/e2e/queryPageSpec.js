@@ -71,4 +71,19 @@ describe('The query pagina', function () {
         expect(page.resultsSection.getAttribute('innerHTML')).toContain('?source=apnic&amp;key=ORG-IANA1-RIPE&amp;type=organisation');
     });
 
+    it('should be specified ripe stat link', function () {
+        page.inpQueryString.sendKeys('193.0.0.0');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        // ripe stat link for should contain inetnum
+        page.scrollIntoView(page.ripeStateButtonInetnum);
+        expect(page.ripeStateButtonInetnum.isPresent()).toEqual(true);
+        var url = page.ripeStateButtonInetnum.getAttribute('href');
+        expect(url).toEqual('https://stat.ripe.net/193.0.0.0%20-%20193.0.0.63?sourceapp=ripedb');
+        // link for route(6) should contain just route value without AS
+        page.scrollIntoView(page.ripeStateButtonRoute);
+        expect(page.ripeStateButtonRoute.isPresent()).toEqual(true);
+        var url = page.ripeStateButtonRoute.getAttribute('href');
+        expect(url).toEqual('https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb');
+    });
 });
