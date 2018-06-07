@@ -25,7 +25,7 @@ describe('My Resources detail', function () {
             expect(showMoreButton.isPresent()).toEqual(false);
 
             expect(whoisObject.isPresent()).toEqual(true);
-            expect(attributes.count()).toEqual(13);
+            expect(attributes.count()).toEqual(14);
             expect(attributes.get(0).getText()).toMatch(/inetnum: *192\.87\.0\.0 - 192\.87\.255\.255/);
             expect(attributes.get(1).getText()).toMatch(/netname: *RU-1C-20160322/);
 
