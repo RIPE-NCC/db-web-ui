@@ -117,7 +117,8 @@
                         if (!_.isUndefined(attr.$$meta)) {
                             enrichedAttrs.push(attr);
                         } else {
-                            enrichedAttrs.push(_wrapMetaInAttribute(self, objectTypeName, attr.name, attr.value, attr.comment, attr.link, attr['referenced-type'], attrMeta, undefined));
+                            var value = (attr.comment && attr.comment !== '') ? attr.value + " #" + attr.comment : attr.value;
+                            enrichedAttrs.push(_wrapMetaInAttribute(self, objectTypeName, attr.name, value, attr.comment, attr.link, attr['referenced-type'], attrMeta, undefined));
                         }
                     }
                 });

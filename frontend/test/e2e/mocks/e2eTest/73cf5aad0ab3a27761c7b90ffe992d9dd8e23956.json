@@ -26,9 +26,11 @@
                     {
                         "name": "netname",
                         "value": "RU-1C-20160322"
-                    }, {
+                    },
+                    {
                         "name": "descr",
-                        "value": "first line of description"
+                        "value": "first line of description",
+                        "comment": "comment"
                     },
                     {
                         "name": "country",
@@ -82,6 +84,10 @@
                         "name": "mnt-by",
                         "value": "TPOL888-MNT",
                         "referenced-type": "mntner"
+                    },
+                    {
+                        "name": "remarks",
+                        "value": "#should show remarks starting with hash"
                     },
                     {
                         "name": "created",

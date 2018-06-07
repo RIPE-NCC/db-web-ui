@@ -29,7 +29,7 @@ describe('My Resources detail', function () {
             expect(attributes.get(0).getText()).toMatch(/inetnum: *192\.87\.0\.0 - 192\.87\.255\.255/);
             expect(attributes.get(1).getText()).toMatch(/netname: *RU-1C-20160322/);
 
-            expect(attributes.get(2).getText()).toMatch(/descr: *first line of description/);
+            expect(attributes.get(2).getText()).toMatch(/descr: *first line of description #comment/);
 
             expect(attributes.get(3).getText()).toMatch(/country: *FI/);
             expect(attributes.get(4).getText()).toMatch(/org: *ORG-EIP1-RIPE/);
@@ -38,9 +38,10 @@ describe('My Resources detail', function () {
             expect(attributes.get(7).getText()).toMatch(/tech-c: *inty1-ripe/);
             expect(attributes.get(8).getText()).toMatch(/status: *ASSIGNED PI/);
             expect(attributes.get(9).getText()).toMatch(/mnt-by: *TPOL888-MNT/);
-            expect(attributes.get(10).getText()).toMatch(/created: *2016-03-22T13:48:02Z/);
-            expect(attributes.get(11).getText()).toMatch(/last-modified: *2016-04-26T14:28:28Z/);
-            expect(attributes.get(12).getText()).toMatch(/source:( *)RIPE/);
+            expect(attributes.get(10).getText()).toMatch(/remarks: *#should show remarks starting with hash/);
+            expect(attributes.get(11).getText()).toMatch(/created: *2016-03-22T13:48:02Z/);
+            expect(attributes.get(12).getText()).toMatch(/last-modified: *2016-04-26T14:28:28Z/);
+            expect(attributes.get(13).getText()).toMatch(/source:( *)RIPE/);
 
             var ripeStatButton = page.getWhoisObject().showRipeStatButton();
             expect(ripeStatButton.isPresent()).toEqual(true);
@@ -72,6 +73,18 @@ describe('My Resources detail', function () {
 
         it('should not display address usage', function () {
             expect(page.usageStatus.isPresent()).toEqual(false);
+        });
+
+        it('should show the remarks field starting with hash (#)', function () {
+            var whoisObject = page.getWhoisObject();
+            var attributes = whoisObject.attributes();
+            expect(attributes.get(10).getText()).toMatch(/remarks: *#should show remarks starting with hash/);
+        });
+
+        it('should show comment behind value starting with hash (#)', function () {
+            var whoisObject = page.getWhoisObject();
+            var attributes = whoisObject.attributes();
+            expect(attributes.get(2).getText()).toMatch(/descr: *first line of description #comment/);
         });
     });
 

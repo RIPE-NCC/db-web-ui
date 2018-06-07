@@ -568,6 +568,8 @@ angular.module('webUpdates')
 
                     $scope.restCallInProgress = true;
 
+                    _splitAttrsCommentsFromValue();
+
                     if (!$scope.name) {
 
                         RestService.createObject($scope.source, $scope.objectType,
@@ -585,6 +587,16 @@ angular.module('webUpdates')
                             WhoisResources.turnAttrsIntoWhoisObject($scope.attributes), passwords).then(
                             _onSubmitSuccess,
                             _onSubmitError);
+                    }
+                }
+            }
+
+            function _splitAttrsCommentsFromValue() {
+                for (var a in $scope.attributes) {
+                    var attribute = $scope.attributes[a];
+                    if (attribute.value && attribute.value.indexOf('#') > -1) {
+                        attribute.comment = attribute.value.substring(attribute.value.indexOf("#")+1, attribute.value.length);
+                        attribute.value = attribute.value.substring(0, attribute.value.indexOf("#"));
                     }
                 }
             }

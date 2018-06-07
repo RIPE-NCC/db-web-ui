@@ -75,7 +75,7 @@ describe('dbWebApp: WhoisMetaService', function () {
             },
             {
                 name: 'optional1',
-                value: 'optional1value',
+                value: 'optional1value #My comment',
                 comment: 'My comment',
                 link: undefined,
                 'referenced-type': 'dummy',

@@ -98,6 +98,7 @@ module.exports = {
     inpTechC5: element(by.id('createForm')).element(by.name('tech-c$5')),
     inpZoneC6: element(by.id('createForm')).element(by.name('zone-c$6')),
     inpReverseZoneTable: element(by.id('createForm')).element(by.css('table')),
+    inpRemarks: element(by.id('createForm')).element(by.name('remarks')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
 
     inpAdminC: element(by.id('createForm')).element(by.name('admin-c')),

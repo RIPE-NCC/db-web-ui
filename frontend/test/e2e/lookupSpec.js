@@ -26,4 +26,13 @@ describe('The lookup page', function () {
 
     });
 
+    it('should show the remarks field starting with hash (#)', function () {
+        expect(page.lookupPageObjectLi.get(5).isPresent()).toEqual(true);
+        expect(page.lookupPageObjectLi.get(4).getText()).toContain('#comments starting with hash');
+    });
+
+    it('should show comment behind value starting with hash (#)', function () {
+        expect(page.lookupPageObjectLi.get(2).isPresent()).toEqual(true);
+        expect(page.lookupPageObjectLi.get(2).getText()).toContain('IPv4 address block not managed by the RIPE ibihvjg #test shown comment');
+    });
 });

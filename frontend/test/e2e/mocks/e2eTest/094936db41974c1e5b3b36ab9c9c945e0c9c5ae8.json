@@ -54,13 +54,14 @@
   						"managed": true
   					}, {
   						"name": "descr",
-  						"value": "IPv4 address block not managed by the RIPE ibihvjg "
+  						"value": "IPv4 address block not managed by the RIPE ibihvjg",
+						"comment": "test shown comment"
   					}, {
   						"name": "remarks",
   						"value": "------------------------------------------------------"
   					}, {
   						"name": "remarks",
-  						"value": ""
+  						"value": "#comments starting with hash"
   					}, {
   						"name": "remarks",
   						"value": "You can find the whois server to query, or the"

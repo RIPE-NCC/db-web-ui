@@ -18,6 +18,15 @@ describe('Modifying an organisation', function () {
             expect(page.inpMaintainer.getAttribute('disabled')).toBeTruthy();
         });
 
+        it('should show the remarks field starting with hash (#)', function () {
+            expect(page.inpRemarks.isPresent()).toEqual(true);
+            expect(page.inpRemarks.getAttribute('value')).toEqual('# comment');
+        });
+
+        it('should show comment behind value starting with hash (#)', function () {
+            expect(page.inpAddress.isPresent()).toEqual(true);
+            expect(page.inpAddress.getAttribute('value')).toEqual('Wilhelmina van Pruisenweg 106 #office');
+        });
     });
 
 });
