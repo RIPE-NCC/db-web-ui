@@ -9,7 +9,7 @@
         <uib-tab index="0" heading="My Resources" select="resources.resourcesTabClicked()"></uib-tab>
         <uib-tab ng-if="resources.hasSponsoredResources" index="1" heading="Sponsored Resources" select="resources.sponsoredResourcesTabClicked()"></uib-tab>
     </uib-tabset>
-    <transfer-drop-down sponsored-menu="resources.isShowingSponsored"></transfer-drop-down>
+    <transfer-drop-down is-member="resources.isMemberOrg()" sponsored-menu="resources.isShowingSponsored"></transfer-drop-down>
     <alerts-drop-down ng-if="!resources.isShowingSponsored && resources.lastTab=='inetnum'"></alerts-drop-down>
     <uib-tabset id="ipv4-ipv6-asn-tabs" class="nav-tabs" active="resources.typeIndex">
         <uib-tab name="ipv4Tab" index="0" heading="IPv4" select="resources.tabClicked('inetnum')">

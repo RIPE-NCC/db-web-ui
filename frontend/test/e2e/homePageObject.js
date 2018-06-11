@@ -154,6 +154,8 @@ module.exports = {
     tabsMySponsoredResourcesAllTabs: element(by.css('.my-resources')).element(by.css('.resources-sponsored-tabs')).all(by.css('li')),
     btn1HierarchySelector: element(by.css('hierarchy-selector')).element(by.css('.fa-chevron-left')),
     btn2HierarchySelector: element(by.css('hierarchy-selector')).element(by.css('.fa-sitemap')),
+    btnTransfer: element(by.css('.my-resources')).element(by.css('transfer-drop-down')).element(by.css('.grey-button')),
+    transferMenuItems: element(by.css('.my-resources')).element(by.css('transfer-drop-down')).all(by.css('li')),
 
     // More specifics page
     moreSpecificsTable: element(by.css('.table')),

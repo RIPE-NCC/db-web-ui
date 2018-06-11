@@ -98,6 +98,10 @@ class ResourcesController {
         }
     }
 
+    private isMemberOrg(): boolean {
+        return this.selectedOrg !== undefined && (this.selectedOrg as IUserInfoRegistration).membershipId !== undefined;
+    }
+
     private showTheIpAnalyserBanner(ipanalyserRedirect: boolean) {
       const redirect: boolean = typeof this.$state.params.ipanalyserRedirect === "string" ?
           this.$state.params.ipanalyserRedirect === "true" :

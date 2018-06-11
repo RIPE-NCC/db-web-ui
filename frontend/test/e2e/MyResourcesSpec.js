@@ -62,4 +62,29 @@ describe('My resources', function () {
         page.orgSelectorOptions0.click();
     });
 
+    it('should show menu item Request resources in ... button for selected LIR organisation', function () {
+        expect(page.btnTransfer.isPresent()).toEqual(true);
+        page.btnTransfer.click();
+        expect(page.transferMenuItems.get(0).getText()).toContain('Transfer resources');
+        expect(page.transferMenuItems.get(1).getText()).toContain('Request resources');
+        page.tabSponsoredResources.click();
+        expect(page.btnTransfer.isPresent()).toEqual(true);
+        page.btnTransfer.click();
+        expect(page.transferMenuItems.get(0).getText()).toContain('Start/stop sponsoring PI resources');
+        expect(page.transferMenuItems.get(1).getText()).toContain('Transfer customer\'s resources');
+    });
+
+    it('should hide menu item Request resources in ... button for selected not LIR organisation', function () {
+        page.orgSelector.click();
+        // //selected Swi Rop Gonggrijp - ORG
+        page.orgSelectorOptions1.click();
+        expect(page.btnTransfer.isPresent()).toEqual(true);
+        page.btnTransfer.click();
+        expect(page.transferMenuItems.count()).toEqual(1);
+        // //selected SURFnet bv - LIR
+        page.orgSelector.click();
+        page.orgSelectorOptions0.click();
+        expect(page.btnTransfer.isPresent()).toEqual(true);
+        expect(page.transferMenuItems.count()).toEqual(2);
+    });
 });

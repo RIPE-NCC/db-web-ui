@@ -4,7 +4,7 @@
     </button>
     <ul class="dropdown-menu" ng-if="!$ctrl.sponsoredMenu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
         <li role="menuitem"><a class="extra-menu-item" href="{{$ctrl.properties.PORTAL_URL}}#/update-registry/provide-details?onBehalfOfEndUser=false&updateRegistryRequestType=transfer">Transfer resources</a></li>
-        <li role="menuitem"><a class="extra-menu-item" href="{{$ctrl.properties.PORTAL_URL}}#/request">Request resources</a></li>
+        <li role="menuitem" ng-if="$ctrl.isMember"><a class="extra-menu-item" href="{{$ctrl.properties.PORTAL_URL}}#/request">Request resources</a></li>
     </ul>
     <ul class="dropdown-menu" ng-if="$ctrl.sponsoredMenu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
         <li role="menuitem"><a class="extra-menu-item" href="{{$ctrl.properties.PORTAL_URL}}#/update-registry/provide-details?onBehalfOfEndUser=true&updateRegistryRequestType=open_ticket">Start/stop sponsoring PI resources</a></li>
