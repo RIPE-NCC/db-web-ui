@@ -75,7 +75,7 @@ module.exports = {
     inpOrgName: element(by.id('createForm')).element(by.name('org-name')),
     inpOrganisation: element(by.id('createForm')).element(by.name('organisation')),
     inpOrgType: element(by.id('createForm')).element(by.name('org-type')),
-    inpAddress: element(by.id('createForm')).element(by.name('address')),
+    inpAddress: element(by.id('createForm')).all(by.name('address')).get(0),
     inpEmail: element(by.id('createForm')).element(by.name('e-mail')),
     inpNetname: element(by.id('createForm')).element(by.name('netname')),
     inpAssignmentSize: element(by.id('createForm')).element(by.name('assignment-size')),

@@ -35,7 +35,7 @@ class ResourceItemController {
         if (this.item.asname) {
             this.flags.push({text: this.item.asname, tooltip: "as-name"});
         }
-        if (this.item.notRipeRegistered) {
+        if (this.item.noContract) {
             this.flags.push({
                 colour: "orange",
                 text: this.labels["flag.noContract.text"],

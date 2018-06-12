@@ -71,7 +71,7 @@ interface IResourceScreenItem {
     status: string;
     type: string;
     usage: IUsage;
-    notRipeRegistered: boolean;
+    noContract: boolean;
     sponsoredByOther: boolean;
     ipanalyserRedirect: boolean;
 }
