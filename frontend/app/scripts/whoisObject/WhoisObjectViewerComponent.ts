@@ -66,8 +66,9 @@ class WhoisObjectViewerController {
     }
 
     public getRipeStatLink(): string {
-        const routeObject = this.ngModel["primary-key"].attribute
-            .find((attr) => attr.name === "route" || attr.name === "route6");
+        const routeObject = _.find(this.ngModel["primary-key"].attribute, (attr) => {
+            return attr.name === "route" || attr.name === "route6";
+        });
         return routeObject ? routeObject.value : this.objectPrimaryKey;
     }
 }

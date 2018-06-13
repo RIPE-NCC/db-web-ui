@@ -592,8 +592,8 @@ angular.module('webUpdates')
             }
 
             function _splitAttrsCommentsFromValue() {
-                for (var a in $scope.attributes) {
-                    var attribute = $scope.attributes[a];
+                for (var i = 0; i < $scope.attributes.length; i++) {
+                    var attribute = $scope.attributes[i];
                     if (attribute.value && attribute.value.indexOf('#') > -1) {
                         attribute.comment = attribute.value.substring(attribute.value.indexOf("#")+1, attribute.value.length);
                         attribute.value = attribute.value.substring(0, attribute.value.indexOf("#"));
