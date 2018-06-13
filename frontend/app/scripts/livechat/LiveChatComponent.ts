@@ -25,7 +25,7 @@ class LiveChatController {
     }
 
     private isOnMyResourcePage(): boolean {
-        return this.$location.path().includes(LiveChatController.MY_RESOURCES_PAGE_PATH);
+        return this.$location.path().indexOf(LiveChatController.MY_RESOURCES_PAGE_PATH) > -1;
     }
 
     private checkLoggedInUserAndUpdateUserLikeData(selected: IUserInfoRegistration) {
