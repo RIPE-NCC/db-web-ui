@@ -1,7 +1,4 @@
-
-
 class AlertsDropDownController {
-
 
     public static $inject = [
         "Properties",
@@ -9,14 +6,13 @@ class AlertsDropDownController {
         "ResourcesDataService",
         "IpAddressService",
         "$state",
-        "$scope"
+        "$scope",
     ];
-
 
     public overlaps: IIpv4OverlappingInetnumsAnalysis[] = [];
     public syntaxErrors: string[] = [];
     public hasAlerts: boolean = false;
-    public hasAllocations : boolean = false;
+    public hasAllocations: boolean = false;
 
     public showDetail(resource: string): void {
         this.$state.go("myresourcesdetail", {
@@ -26,20 +22,16 @@ class AlertsDropDownController {
         });
     }
 
-
     constructor(private properties: IProperties, private userInfoService: UserInfoService, private resourcesDataService: ResourcesDataService, private ipAddressService: IpAddressService, private $state: ng.ui.IStateService, private $scope: angular.IScope) {
-
         userInfoService.getSelectedOrganisation().then((org: IUserInfoOrganisation) => {
             this.load(resourcesDataService, org);
         });
-
-
         $scope.$on("selected-org-changed", (event: ng.IAngularEvent, org: IUserInfoOrganisation) => {
             this.load(resourcesDataService, org);
         });
     }
 
-    private load(resourcesDataService: ResourcesDataService, org: IUserInfoOrganisation):void {
+    private load(resourcesDataService: ResourcesDataService, org: IUserInfoOrganisation): void {
 
         resourcesDataService.fetchIpv4Analysis(org.orgObjectId).then((analysisResponse: ng.IHttpResponse<IIpv4Analysis>) => {
             this.overlaps = [];
@@ -47,19 +39,23 @@ class AlertsDropDownController {
             this.hasAlerts = false;
             this.hasAllocations = false;
 
-            var analysis: IIpv4Analysis = analysisResponse.data;
+            const analysis: IIpv4Analysis = analysisResponse.data;
 
             this.hasAllocations = analysis.allocations.length > 0;
             analysis
                 .allocations
                 .forEach((allocation: IIpv4AllocationAnalysis, index: number, allocations: IIpv4AllocationAnalysis[]) => {
-                    this.overlaps = allocation.violations.overlappingInetnums.concat(this.overlaps);
+                    if (allocation.violations.overlappingInetnums) {
+                        this.overlaps = allocation.violations.overlappingInetnums.concat(this.overlaps);
+                    }
                 });
 
             analysis
                 .allocations
                 .forEach((allocation: IIpv4AllocationAnalysis, index: number, allocations: IIpv4AllocationAnalysis[]) => {
-                    this.syntaxErrors = allocation.violations.inetnumSyntaxErrors.concat(this.syntaxErrors);
+                    if (allocation.violations.inetnumSyntaxErrors) {
+                        this.syntaxErrors = allocation.violations.inetnumSyntaxErrors.concat(this.syntaxErrors);
+                    }
                 });
             this.syntaxErrors = [].concat.apply([], this.syntaxErrors);
 
@@ -67,7 +63,7 @@ class AlertsDropDownController {
         });
     }
 
-    public getRange(inetnum: string):string {
+    public getRange(inetnum: string): string {
         return this.ipAddressService.fromSlashToRange(inetnum);
     }
 }

@@ -91,7 +91,7 @@ class IpAddressService {
     }
 
     public fromSlashToRange(inetnum: string): string {
-        if (inetnum.includes(",")) {
+        if (inetnum.indexOf(",") > -1) {
             return this.doSlashToRangeMagic(inetnum);
         } else {
             return new Address4(inetnum).startAddress().address + " - " + new Address4(inetnum).endAddress().address;
