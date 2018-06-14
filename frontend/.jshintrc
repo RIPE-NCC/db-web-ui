@@ -3,7 +3,8 @@
     "camelcase": true,
     "curly": true,
     "eqeqeq": true,
-    "esnext": true,
+    "esversion": 6,
+    "freeze": true,
     "globals": {
         "angular": false,
         "_": false,
@@ -14,6 +15,7 @@
     "latedef": false,
     "newcap": true,
     "noarg": true,
+    "nocomma": true,
     "node": true,
     "predef": ["angular"],
     "quotmark": "single",
