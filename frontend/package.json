@@ -39,6 +39,7 @@
     "grunt-protractor-runner": "5.0.0",
     "grunt-svgmin": "4.0.0",
     "grunt-ts": "6.0.0-beta.17",
+    "grunt-tslint": "^5.0.2",
     "grunt-usemin": "3.1.1",
     "grunt-wiredep": "3.0.1",
     "jasmine-core": "2.8.0",

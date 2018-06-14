@@ -217,6 +217,19 @@ module.exports = function (grunt) {
             }
         },
 
+        tslint: {
+            options: {
+                configuration: 'tslint.json',
+                project: 'tsconfig.json',
+                // don't fail the build, even if there are lint errors (for now)
+                force: true,
+                fix: false
+            },
+            test: {
+                src: ['app/scripts/{,*/}*.ts']
+            }
+        },
+
         // Make sure code styles are up to par
         jscs: {
             options: {
@@ -830,6 +843,7 @@ module.exports = function (grunt) {
     ]);
 
     grunt.registerTask('default', [
+        'tslint:test',
         'newer:jshint',
         'test',
         'build'
