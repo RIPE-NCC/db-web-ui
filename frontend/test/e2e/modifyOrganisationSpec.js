@@ -25,7 +25,7 @@ describe('Modifying an organisation', function () {
 
         it('should show comment behind value starting with hash (#)', function () {
             expect(page.inpAddress.isPresent()).toEqual(true);
-            expect(page.inpAddress.getAttribute('value')).toEqual('Wilhelmina van Pruisenweg 106 #office');
+            expect(page.inpAddress.getAttribute('value')).toEqual('Wilhelmina van Pruisenweg 106 # office');
         });
     });
 

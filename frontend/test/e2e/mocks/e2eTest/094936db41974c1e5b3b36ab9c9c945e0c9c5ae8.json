@@ -61,7 +61,8 @@
   						"value": "------------------------------------------------------"
   					}, {
   						"name": "remarks",
-  						"value": "#comments starting with hash"
+  						"value": "",
+						"comment": "comments starting with hash"
   					}, {
   						"name": "remarks",
   						"value": "You can find the whois server to query, or the"
