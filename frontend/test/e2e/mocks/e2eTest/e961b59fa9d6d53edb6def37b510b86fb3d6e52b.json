@@ -32,7 +32,8 @@
                 "type": "INETNUM",
                 "resource": "192.87.0.0 - 192.87.255.255",
                 "status": "LEGACY",
-                "netname": "NL-SURFNET-20030715"
+                "netname": "NL-SURFNET-20030715",
+                "sponsored": true
             }
         ]
     },
