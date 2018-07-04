@@ -59,9 +59,9 @@
                        autocomplete="off"/>
                 <div class="text field-description" uib-collapse="!isHelpShown" ng-if="isHelpShown">
                     <strong>Description</strong><br>
-                    <span ng-bind-html="attribute.$$meta.$$description"></span><br>
+                    <span ng-bind-html="getAttributeDescription('mntner')"></span><br>
                     <strong>Syntax</strong><br>
-                    <span ng-bind-html="attribute.$$meta.$$syntax"></span>
+                    <span ng-bind-html="getAttributeSyntax('mntner')"></span>
                 </div>
                 <ul class="input-group-btn">
                     <li>
