@@ -115,8 +115,6 @@ describe('The left hand menu structure depend on logged in user role', function 
 
         /* Resource structure of menu items
             My Resources
-            IPv4 Analyser
-            IPv6 Analyser
             Request Resources
             Request Transfer
             IPv4 Transfer Listing Service
@@ -126,12 +124,6 @@ describe('The left hand menu structure depend on logged in user role', function 
         expect(page.resourcesMenuItems.count()).toEqual(7);
         page.resourcesMenuItems.get(0).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('My Resources');
-        });
-        page.resourcesMenuItems.get(1).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('IPv4 Analyser');
-        });
-        page.resourcesMenuItems.get(2).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('IPv6 Analyser');
         });
         page.resourcesMenuItems.get(3).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('Request Resources');
