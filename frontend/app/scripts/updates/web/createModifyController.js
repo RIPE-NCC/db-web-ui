@@ -6,11 +6,11 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$anchorScroll', '$location', '$log', '$window', '$q', '$sce', '$document',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', 'ModalService',
         'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'ResourceStatus',
-        'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetTools', 'ScreenLogicInterceptor', 'ObjectUtilService',
+        'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetToolsService', 'ScreenLogicInterceptor', 'ObjectUtilService',
         function ($scope, $stateParams, $state, $anchorScroll, $location, $log, $window, $q, $sce, $document,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService, ResourceStatus,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetTools, ScreenLogicInterceptor, ObjectUtilService) {
+                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetToolsService, ScreenLogicInterceptor, ObjectUtilService) {
 
             $scope.optionList = {
                 status: []
@@ -624,10 +624,10 @@ angular.module('webUpdates')
              */
 
             function _warnForNonSubstitutableUtf8(attribute, userInput) {
-                if (!CharsetTools.isLatin1(userInput)) {
+                if (!CharsetToolsService.isLatin1(userInput)) {
                     // see if any chars can be substituted
-                    var subbedValue = CharsetTools.replaceSubstitutables(userInput);
-                    if (!CharsetTools.isLatin1(subbedValue)) {
+                    var subbedValue = CharsetToolsService.replaceSubstitutables(userInput);
+                    if (!CharsetToolsService.isLatin1(subbedValue)) {
                         attribute.$$error = 'Input contains illegal characters. These will be converted to \'?\'';
                         return false;
                     } else {

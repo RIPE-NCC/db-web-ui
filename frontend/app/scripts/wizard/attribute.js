@@ -4,8 +4,8 @@
     'use strict';
 
     angular.module('dbWebApp').controller('AttributeCtrl', ['$scope', '$sce', 'AttributeMetadataService', 'WhoisMetaService',
-        'CharsetTools', 'RestService', 'EnumService', 'ModalService', 'CredentialsService', 'WhoisResources',
-        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetTools, RestService, EnumService, ModalService, CredentialsService, WhoisResources) {
+        'CharsetToolsService', 'RestService', 'EnumService', 'ModalService', 'CredentialsService', 'WhoisResources',
+        function ($scope, $sce, AttributeMetadataService, WhoisMetaService, CharsetToolsService, RestService, EnumService, ModalService, CredentialsService, WhoisResources) {
 
             /*
              * $scope variables we can see because they're bound by our directive: attributeRenderer
@@ -226,10 +226,10 @@
             }
 
             function warnForNonSubstitutableUtf8(attribute, userInput) {
-                if (!CharsetTools.isLatin1(userInput)) {
+                if (!CharsetToolsService.isLatin1(userInput)) {
                     // see if any chars can be substituted
-                    var subbedValue = CharsetTools.replaceSubstitutables(userInput);
-                    if (!CharsetTools.isLatin1(subbedValue)) {
+                    var subbedValue = CharsetToolsService.replaceSubstitutables(userInput);
+                    if (!CharsetToolsService.isLatin1(subbedValue)) {
                         attribute.$$error = 'Input contains illegal characters. These will be converted to \'?\'';
                         return false;
                     } else {

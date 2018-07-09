@@ -1,13 +1,13 @@
 'use strict';
 
-describe('updates: CharsetTools', function () {
+describe('updates: CharsetToolsService', function () {
 
     var subject;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (CharsetTools) {
-        subject = CharsetTools;
+    beforeEach(inject(function (CharsetToolsService) {
+        subject = CharsetToolsService;
     }));
 
     afterEach(function() {
