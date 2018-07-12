@@ -8,7 +8,7 @@ class MaintainersEditorController {
         "MntnerService",
         "RestService",
         "WebUpdatesCommons",
-        "jsUtilService"];
+        "JsUtilService"];
 
     // Input
     public ngModel: IWhoisObjectModel;
@@ -36,12 +36,6 @@ class MaintainersEditorController {
     };
     public isMntHelpShown = false;
 
-    // hot-wire the MntnerService functions
-    public hasMd5 = this.MntnerService.hasMd5;
-    public hasPgp = this.MntnerService.hasPgp;
-    public hasSSo = this.MntnerService.hasSSo;
-    public isRemovable = this.MntnerService.isRemovable;
-
     private source: string;
 
     constructor(private $log: angular.ILogService,
@@ -49,10 +43,10 @@ class MaintainersEditorController {
                 private AttributeMetadataService: any,
                 private CredentialsService: any,
                 private MessageStore: any,
-                private MntnerService: any,
+                private MntnerService: MntnerService,
                 private RestService: any,
                 private WebUpdatesCommons: any,
-                private jsUtils: any) {
+                private jsUtils: JsUtilService) {
 
         this.source = this.ngModel.source.id;
         this.attributes = this.ngModel.attributes.attribute;
@@ -136,6 +130,12 @@ class MaintainersEditorController {
             },
         );
     }
+
+    // hot-wire the MntnerService functions
+    public hasMd5 = (mntner: IMntByModel) => this.MntnerService.hasMd5(mntner);
+    public hasPgp = (mntner: IMntByModel) => this.MntnerService.hasPgp(mntner);
+    public hasSSo = (mntner: IMntByModel) => this.MntnerService.hasSSo(mntner);
+    public isRemovable = (mntnerKey: string) => this.MntnerService.isRemovable(mntnerKey);
 
     private isAllocation() {
         const allocationStatuses = ["ALLOCATED PA", "ALLOCATED PI", "ALLOCATED UNSPECIFIED", "ALLOCATED-BY-RIR"];

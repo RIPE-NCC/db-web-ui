@@ -2,7 +2,7 @@ class JsUtilService {
 
     /**
      * Checks the types of args against an array of expected JS types and throws a
-     * TypeError if not. Uses the types returned by jsUtilService.typeOf(obj) rather
+     * TypeError if not. Uses the types returned by JsUtilService.typeOf(obj) rather
      * than Javascript"s own.
      *
      * @param args JS built-in "arguments"
@@ -34,4 +34,4 @@ class JsUtilService {
     }
 }
 
-angular.module("dbWebApp").service("jsUtilService", JsUtilService);
+angular.module("dbWebApp").service("JsUtilService", JsUtilService);

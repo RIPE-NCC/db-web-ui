@@ -3,7 +3,7 @@
 (function () {
     'use strict';
 
-    angular.module('dbWebApp').controller('DomainObjectController', ['$rootScope', '$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'jsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService', 'ErrorReporterService',
+    angular.module('dbWebApp').controller('DomainObjectController', ['$rootScope', '$http', '$scope', '$stateParams', '$location', '$anchorScroll', '$state', 'JsUtilService', 'AlertService', 'ModalService', 'RestService', 'AttributeMetadataService', 'WhoisResources', 'MntnerService', 'WebUpdatesCommons', 'CredentialsService', 'MessageStore', 'PrefixService', 'ErrorReporterService',
         function ($rootScope, $http, $scope, $stateParams, $location, $anchorScroll, $state, jsUtils, AlertService, ModalService, RestService, AttributeMetadataService, WhoisResources, MntnerService, WebUpdatesCommons, CredentialsService, MessageStore, PrefixService, ErrorReporterService) {
 
             // show splash screen

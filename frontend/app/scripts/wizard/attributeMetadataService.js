@@ -4,7 +4,7 @@
     'use strict';
 
     angular.module('dbWebApp'
-    ).service('AttributeMetadataService', ['$rootScope', 'jsUtilService', 'PrefixService', 'WhoisMetaService', 'MntnerService', function ($rootScope, jsUtils, PrefixService, WhoisMetaService, MntnerService) {
+    ).service('AttributeMetadataService', ['$rootScope', 'JsUtilService', 'PrefixService', 'WhoisMetaService', 'MntnerService', function ($rootScope, jsUtils, PrefixService, WhoisMetaService, MntnerService) {
 
         // Defaults:
         // * attributes are shown
