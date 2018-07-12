@@ -89,7 +89,7 @@ class MntnerService {
             return true;
         }
         return !_.includes(this.nccMntners, mntnerKey.toUpperCase());
-    };
+    }
 
     public isNccMntner = (mntnerKey: string): boolean => {
         return _.includes(this.nccMntners, mntnerKey.toUpperCase());

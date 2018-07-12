@@ -22,20 +22,19 @@
 
                 $scope.localHash = $stateParams.hash;
 
-                EmailLink.get({hash: $scope.localHash}, function (link) {
+                EmailLink.get($scope.localHash).then( function (link) {
+                    $log.info('Successfully fetched email-link:' + JSON.stringify(link.data));
 
-                    $log.info('Successfully fetched email-link:' + JSON.stringify(link));
+                    $scope.key = link.data.mntner;
+                    $scope.email = link.data.email;
+                    $scope.user = link.data.username;
 
-                    $scope.key = link.mntner;
-                    $scope.email = link.email;
-                    $scope.user = link.username;
-
-                    if (!link.hasOwnProperty('expiredDate') || moment(link.expiredDate, moment.ISO_8601).isBefore(moment())) {
+                    if (!link.data.hasOwnProperty('expiredDate') || moment(link.data.expiredDate, moment.ISO_8601).isBefore(moment())) {
                         AlertService.addGlobalWarning('Your link has expired');
                         return;
                     }
 
-                    if (link.currentUserAlreadyManagesMntner === true) {
+                    if (link.data.currentUserAlreadyManagesMntner === true) {
                         AlertService.addGlobalWarning(
                             'Your RIPE NCC Access account is already associated with this mntner. ' +
                             'You can modify this mntner <a href="' + makeModificationUrl($scope.key) + '">here</a>.');
@@ -56,8 +55,7 @@
                 });
 
                 $scope.associate = function () {
-
-                    EmailLink.update({hash: $scope.localHash}, {hash: $scope.localHash}, function (resp) {
+                    EmailLink.update($scope.localHash).then(function (resp) {
 
                         $log.error('Successfully associated email-link:' + resp);
 
