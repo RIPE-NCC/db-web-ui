@@ -25,10 +25,11 @@ class CredentialsService {
     }
 
     public getPasswordsForRestCall(objectType: string) {
+        const passwords = [];
         if (this.hasCredentials()) {
-            return this.credentials.successfulPassword;
+            passwords.push(this.credentials.successfulPassword);
         }
-        return [];
+        return passwords;
     }
 
 }
