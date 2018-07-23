@@ -470,7 +470,12 @@ angular.module('dbWebApp')
                     hasMeta = true;
                 });
             }
-            var foundAt = _.findIndex(this, { name: after.name, value: after.value });
+            var foundAt = after.$$hashKey ? _.findIndex(this, {
+                name: after.name,
+                value: after.value,
+                $$hashKey: after.$$hashKey
+            }) : _.findIndex(this, {name: after.name, value: after.value});
+
             var attrCopy = { name: attr.name, value: attr.value };
             if (hasMeta) {
                 attrCopy.$$meta = metaClone;
