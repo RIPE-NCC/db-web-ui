@@ -88,7 +88,6 @@ public class WhoisDomainObjectController extends ApiController {
             @CookieValue(value = NAME_SESSIONID_USED_FOR_STICKINESS, required = false) final String cookieUsedForStickinessOnly,
             @RequestBody final WhoisWebDTO dto,
             @PathVariable final String source,
-            @QueryParam("password") final String[] passwords,
             @RequestHeader final HttpHeaders headers) throws URISyntaxException {
 
         LOGGER.debug("create domain objects {}", source);
@@ -131,7 +130,7 @@ public class WhoisDomainObjectController extends ApiController {
         }
         headers.remove(com.google.common.net.HttpHeaders.HOST);
 
-        batchUpdateSession.setResponseFuture(whoisDomainObjectService.createDomainObjects(source, passwords, domainObjects, headers));
+        batchUpdateSession.setResponseFuture(whoisDomainObjectService.createDomainObjects(source, dto.passwords, domainObjects, headers));
 
         return new ResponseEntity(HttpStatus.OK);
     }

@@ -40,7 +40,7 @@ public class WhoisDomainObjectService {
     }
 
     @Async
-    public Future<ResponseEntity<String>> createDomainObjects(final String source, String[] passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
+    public Future<ResponseEntity<String>> createDomainObjects(final String source, List<String> passwords, final List<WhoisObject> domainObjects, final HttpHeaders headers) {
 
         final WhoisResources whoisResources = new WhoisResources();
         whoisResources.setWhoisObjects(domainObjects);
@@ -64,7 +64,7 @@ public class WhoisDomainObjectService {
         return new AsyncResult<>(result);
     }
 
-    private URI getCreateDomainUri(final String source, final String[] passwords) {
+    private URI getCreateDomainUri(final String source, final List<String> passwords) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("url", restApiUrl);
         variables.put("source", source);
@@ -72,10 +72,11 @@ public class WhoisDomainObjectService {
         final URI uri = new UriTemplate("{url}/domain-objects/{source}").expand(variables);
 
         final UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromUri(uri);
-        if (passwords != null && passwords.length > 0) {
-            uriComponentsBuilder.queryParam("password", passwords);
+        if (passwords != null) {
+            for (String password : passwords){
+                uriComponentsBuilder.queryParam("password", password);
+            }
         }
         return uriComponentsBuilder.build().encode().toUri();
     }
-
 }

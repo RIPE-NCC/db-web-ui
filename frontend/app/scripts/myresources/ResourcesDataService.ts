@@ -78,6 +78,7 @@ class ResourcesDataService implements IResourcesDataService {
         return this.$http({
             method: "GET",
             params: {"org-id": orgId},
+            timeout: 30000,
             url: "api/whois-internal/api/resources/ipanalyser/ipv4.json",
         });
     }

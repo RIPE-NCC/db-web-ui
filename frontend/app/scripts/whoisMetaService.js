@@ -117,7 +117,13 @@
                         if (!_.isUndefined(attr.$$meta)) {
                             enrichedAttrs.push(attr);
                         } else {
-                            var value = (attr.comment && attr.comment !== '') ? attr.value + " #" + attr.comment : attr.value;
+                            var value = attr.value;
+                            if (attr.comment && attr.comment !== '') {
+                                if (attr.value && attr.value.trim().length > 0) {
+                                    value += " ";
+                                }
+                                value += "# " + attr.comment
+                            }
                             enrichedAttrs.push(_wrapMetaInAttribute(self, objectTypeName, attr.name, value, attr.comment, attr.link, attr['referenced-type'], attrMeta, undefined));
                         }
                     }

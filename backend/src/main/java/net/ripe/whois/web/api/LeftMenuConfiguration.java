@@ -24,10 +24,6 @@ public class LeftMenuConfiguration {
     private String lirApiAccessKeysUrl;
     @Value("${my.resources.url}")
     private String myResourcesUrl;
-    @Value("${ipv4.analyser.url:}")
-    private String ipv4AnalyserUrl;
-    @Value("${ipv6.analyser.url:}")
-    private String ipv6AnalyserUrl;
     @Value("${request.resources.url:}")
     private String requestResourcesUrl;
     @Value("${request.transfer.url:}")
@@ -77,14 +73,6 @@ public class LeftMenuConfiguration {
 
     public String getMyResourcesUrl() {
         return myResourcesUrl;
-    }
-
-    public String getIpv4AnalyserUrl() {
-        return ipv4AnalyserUrl;
-    }
-
-    public String getIpv6AnalyserUrl() {
-        return ipv6AnalyserUrl;
     }
 
     public String getRequestResourcesUrl() {

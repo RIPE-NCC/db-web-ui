@@ -4,6 +4,8 @@ angular.module("dbWebApp")
         "flag.noContract.title": "This resource is not covered by an agreement with the RIPE NCC.<br> <a href='https://www.ripe.net/manage-ips-and-asns/legacy-resources/ripe-ncc-services-to-legacy-internet-resource-holders#i-am-a-legacy-internet-resource-holder-and-i-want-to-' target='_blank'>Find out more</a>",
         "flag.otherSponsor.text": "Other sponsor",
         "flag.otherSponsor.title": "Sponsored by another LIR",
+        "flag.sponsored.text": "Sponsored resource",
+        "flag.sponsored.title": "Sponsored resource",
 
         "fullText.attributeHelpText.title": "Only objects where search string is contained within specified fields are returned in result set, but all attributes containing the search string within those objects are reported",
         "fullText.emptyQueryText.text": "Empty query - please specify at least one character",

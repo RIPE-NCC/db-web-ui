@@ -17,6 +17,8 @@ public interface WhoisServiceBase {
 
     @Deprecated
     default String getObjectSinglePrimaryKey(final WhoisObject obj) {
+        // TODO: [ES] logic won't work for route/route6 objects, which have a composite primary key,
+        // TODO:      or for person/role objects, which have a nic-hdl primary key which is not the first attribute.
         return obj.getPrimaryKey().stream().findFirst().map(Attribute::getValue).orElse(null);
     }
 

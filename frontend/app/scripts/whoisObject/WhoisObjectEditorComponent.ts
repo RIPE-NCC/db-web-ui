@@ -26,6 +26,7 @@ class WhoisObjectEditorController {
 
         // Assign to short-cut accessor.
         this.attributes = this.ngModel.attributes.attribute;
+        this.addCommentsToValueOfAtrributes(this.attributes);
 
         // the type is always the first attribute
         this.objectName = this.attributes[0].value;
@@ -89,6 +90,19 @@ class WhoisObjectEditorController {
         for (const i of emptyAttrIndexes) {
             this.attributes.splice(i, 1);
         }
+    }
+
+    private addCommentsToValueOfAtrributes(attributes: IAttributeModel[]) {
+        attributes.map((attr: IAttributeModel) => {
+            if (attr.comment && attr.comment.trim().length > 0) {
+                if (attr.value.trim().length === 0) {
+                    attr.value += "# " + attr.comment;
+                } else {
+                    attr.value += " # " + attr.comment;
+                }
+                attr.comment = undefined;
+            }
+        });
     }
 
     /**

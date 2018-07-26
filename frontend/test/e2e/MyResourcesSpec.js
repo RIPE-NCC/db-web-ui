@@ -87,4 +87,9 @@ describe('My resources', function () {
         expect(page.btnTransfer.isPresent()).toEqual(true);
         expect(page.transferMenuItems.count()).toEqual(2);
     });
+
+    it('should show sponsored flag', function () {
+        expect(page.myResourcesActiveTabRows.get(3).all(by.css('flag')).get(2).getText()).toEqual('SPONSORED RESOURCE');
+    });
+
 });

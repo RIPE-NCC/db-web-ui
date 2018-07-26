@@ -31,8 +31,8 @@ class HierarchySelectorController {
 
     public showTopLevelResources() {
         const params = {
-            sponsored: this.$state.params.sponsored,
             ipanalyserRedirect: this.$state.params.ipanalyserRedirect,
+            sponsored: this.$state.params.sponsored,
             type: this.resource.type,
         };
         this.$state.go("myresources", params);
@@ -44,10 +44,10 @@ class HierarchySelectorController {
         }
         const target = parent ? parent : this.parents[this.parents.length - 1];
         const params = {
+            ipanalyserRedirect: this.$state.params.ipanalyserRedirect,
             objectName: target,
             objectType: this.resource.type,
             sponsored: this.$state.params.sponsored,
-            ipanalyserRedirect: this.$state.params.ipanalyserRedirect,
         };
         this.$state.go("myresourcesdetail", params);
     }
