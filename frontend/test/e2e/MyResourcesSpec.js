@@ -92,4 +92,15 @@ describe('My resources', function () {
         expect(page.myResourcesActiveTabRows.get(3).all(by.css('flag')).get(2).getText()).toEqual('SPONSORED RESOURCE');
     });
 
+
+    it('should show out of region (RIPE-NONAUTH) autnum', function () {
+        expect(page.myResources.isPresent()).toEqual(true);
+        expect(page.myResourcesTabs.count()).toEqual(3);
+        page.myResourcesTabs.get(2).click();
+        expect(page.myResourcesActiveTabLabel.getText()).toContain('ASN');
+        expect(page.myResourcesActiveTabRows.count()).toBe(76);
+        // RIPE-NONAUTH item - aut-num which is out of region
+        expect(page.myResourcesActiveTabRows.get(75).isPresent()).toBeTruthy();
+    });
+
 });

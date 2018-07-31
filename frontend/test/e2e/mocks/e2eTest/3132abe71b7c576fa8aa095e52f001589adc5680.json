@@ -1,0 +1,553 @@
+{
+  "requestUrl": "/api/whois-internal/api/resources?org-id=ORG-Sb3-RIPE&type=aut-num",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "stats": {
+      "numInetnums": 113,
+      "numInet6nums": 3,
+      "numAutnums": 76,
+      "numSponsoredInetnums": 52,
+      "numSponsoredInet6nums": 7,
+      "numSponsoredAutnums": 3
+    },
+    "orgId": "ORG-Sb3-RIPE",
+    "resources": [
+      {
+        "type": "aut-num",
+        "resource": "AS1101",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "IP-EEND-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1102",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SMEERBOEL-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1103",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-NL"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1105",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1106",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1107",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1108",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1125",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1127",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1128",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "TUDELFT-NL"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1129",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1130",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1131",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1132",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "METEOGROUP-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1133",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UTWENTE-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1138",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1139",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1141",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "TUE-Spacelabs"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1142",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "WKAPNET"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1143",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "notinuse-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1144",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1145",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "Kennisnet-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1146",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "OS3-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1147",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "MCL-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1148",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "LOFAR-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1149",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1150",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SHA2017-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1151",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1152",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1153",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1154",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1155",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1156",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1157",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1158",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1159",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1160",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1161",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "AS-TUE"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1162",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFsara-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1163",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1164",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1165",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1166",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1167",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1168",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1169",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1170",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1171",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1172",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1173",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1174",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1175",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1176",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1177",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1178",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1179",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1180",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1181",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1182",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1183",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1184",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1185",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1186",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1187",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1188",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1189",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1190",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1191",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1192",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1193",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1194",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1195",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1196",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "SURFNET-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1198",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS1199",
+        "status": "LEGACY",
+        "type": "aut-num",
+        "asname": "ABUSEHUB-AS"
+      },
+      {
+        "type": "aut-num",
+        "resource": "AS36867",
+        "status": "OTHER",
+        "type": "aut-num",
+        "asname": "UNSPECIFIED"
+      }
+    ],
+    "totalNumberOfResources": 76,
+    "filteredSize": 76,
+    "pageSize": 76
+  }
+}

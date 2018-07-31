@@ -17,7 +17,7 @@
         ng-repeat="attr in $ctrl.ngModel.attributes.attribute"
         ng-class="{ ripemanaged: attr.managed }"
         ng-if="$index < $ctrl.nrLinesToShow">{{ attr.name }}:{{ $ctrl.padding(attr) }}<a
-        ng-if="attr.link.type === 'locator'" href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source={{ $ctrl.ngModel['source'].id }}&key={{ attr.value }}&type={{ attr['referenced-type'] }}">{{ attr.value }}</a><a
+        ng-if="attr.link.type === 'locator'" href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source={{ $ctrl.properties.SOURCE }}&key={{ attr.value }}&type={{ attr['referenced-type'] }}">{{ attr.value }}</a><a
         ng-if="attr.name === $ctrl.pkLink" href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source={{ $ctrl.ngModel['source'].id }}&key={{ $ctrl.objectPrimaryKey }}&type={{ $ctrl.ngModel.type }}">{{ attr.value }}</a><span
         ng-if="attr.link.type !== 'locator' && attr.name !== $ctrl.pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : ''}}</span><span
         ng-if="attr.comment && attr.comment !== 'Filtered'">{{(!attr.value || attr.value === '')? '' :' '}}# {{attr.comment}}</span></li></ul></pre>
