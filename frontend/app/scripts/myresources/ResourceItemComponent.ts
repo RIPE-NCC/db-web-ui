@@ -49,6 +49,13 @@ class ResourceItemController {
                 tooltip: this.labels["flag.otherSponsor.title"],
             });
         }
+        if (this.item.sponsored) {
+            this.flags.push({
+                colour: "orange",
+                text: this.labels["flag.sponsored.text"],
+                tooltip: this.labels["flag.sponsored.title"],
+            });
+        }
     }
 
     public showDetail() {

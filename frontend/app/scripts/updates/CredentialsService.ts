@@ -26,17 +26,8 @@ class CredentialsService {
 
     public getPasswordsForRestCall(objectType: string) {
         const passwords = [];
-
         if (this.hasCredentials()) {
             passwords.push(this.credentials.successfulPassword);
-        }
-
-        /*
-         * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-         * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-         */
-        if (["route", "route6", "aut-num"].indexOf(objectType) > -1) {
-            passwords.push("RPSL");
         }
         return passwords;
     }

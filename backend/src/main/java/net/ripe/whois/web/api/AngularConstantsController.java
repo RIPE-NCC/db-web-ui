@@ -135,8 +135,6 @@ public class AngularConstantsController {
             "        LIR_TRAINING_URL: '" + leftMenuConfiguration.getLirTrainingUrl() + "',\n" +
             "        LIR_API_ACCESS_KEYS_URL: '" + leftMenuConfiguration.getLirApiAccessKeysUrl() + "',\n" +
             "        MY_RESOURCES_URL: '" + leftMenuConfiguration.getMyResourcesUrl() + "',\n" +
-            "        IPV4_ANALYSER_URL: '" + leftMenuConfiguration.getIpv4AnalyserUrl() + "',\n" +
-            "        IPV6_ANALYSER_URL: '" + leftMenuConfiguration.getIpv6AnalyserUrl() + "',\n" +
             "        REQUEST_RESOURCES_URL: '" + leftMenuConfiguration.getRequestResourcesUrl() + "',\n" +
             "        REQUEST_UPDATE_URL: '" + leftMenuConfiguration.getRequestUpdateUrl() + "',\n" +
             "        REQUEST_TRANSFER_URL: '" + leftMenuConfiguration.getRequestTransferUrl() + "',\n" +

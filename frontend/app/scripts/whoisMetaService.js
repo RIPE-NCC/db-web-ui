@@ -117,7 +117,13 @@
                         if (!_.isUndefined(attr.$$meta)) {
                             enrichedAttrs.push(attr);
                         } else {
-                            var value = (attr.comment && attr.comment !== '') ? attr.value + " #" + attr.comment : attr.value;
+                            var value = attr.value;
+                            if (attr.comment && attr.comment !== '') {
+                                if (attr.value && attr.value.trim().length > 0) {
+                                    value += " ";
+                                }
+                                value += "# " + attr.comment
+                            }
                             enrichedAttrs.push(_wrapMetaInAttribute(self, objectTypeName, attr.name, value, attr.comment, attr.link, attr['referenced-type'], attrMeta, undefined));
                         }
                     }
@@ -1297,8 +1303,8 @@
 
             this._mntRoutesDoc = {
                 'aut-num': {
-                    short: 'References a mntner used in determining authorisation for the creation of route(6) objects.',
-                    description: 'This attribute references a maintainer object which is used in determining authorisation for the creation of route6 objects.  This entry is for the mnt-routes attribute of aut-num class.  After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
+                    short: 'References a mntner.',
+                    description: 'This attribute references a maintainer object. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
                     syntax: '&lt;mnt-name&gt; [ { list of (&lt;ipv4-address&gt;/&lt;prefix&gt; or &lt;ipv6-address&gt;/&lt;prefix&gt;) } | ANY ]'
                 },
                 domain: {

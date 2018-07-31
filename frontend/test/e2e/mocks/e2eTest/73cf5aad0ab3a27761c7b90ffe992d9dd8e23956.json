@@ -87,7 +87,8 @@
                     },
                     {
                         "name": "remarks",
-                        "value": "#should show remarks starting with hash"
+                        "value": "",
+                        "comment": "should show remarks starting with hash"
                     },
                     {
                         "name": "created",

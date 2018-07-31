@@ -73,6 +73,7 @@ interface IResourceScreenItem {
     usage: IUsage;
     noContract: boolean;
     sponsoredByOther: boolean;
+    sponsored: boolean;
     ipanalyserRedirect: boolean;
 }
 
@@ -83,6 +84,7 @@ interface IResourceDetailsResponseModel {
     object?: IWhoisObjectModel;
     notUnderContract?: boolean;
     sponsoredByOther?: boolean;
+    sponsored?: boolean;
 }
 
 interface IIpv4Analysis {

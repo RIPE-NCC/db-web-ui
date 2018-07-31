@@ -44,12 +44,6 @@
                         <a class="menuItem" ng-class="{current: menu.activeUrl.indexOf('/myresources/') > -1}" href="{{page.Properties.MY_RESOURCES_URL}}">My Resources</a>
                     </li>
                     <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testRcEnv">
-                        <a class="menuItem" href="{{page.Properties.IPV4_ANALYSER_URL}}">IPv4 Analyser</a>
-                    </li>
-                    <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testRcEnv">
-                        <a class="menuItem" href="{{page.Properties.IPV6_ANALYSER_URL}}">IPv6 Analyser</a>
-                    </li>
-                    <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testRcEnv">
                         <a class="menuItem" href="{{page.Properties.REQUEST_RESOURCES_URL}}">Request Resources</a>
                     </li>
                     <li ng-show="(menu.show.admin || menu.show.general) && !menu.show.testRcEnv">

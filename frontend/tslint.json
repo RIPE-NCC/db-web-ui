@@ -1,3 +1,13 @@
 {
-  "extends": "tslint:latest"
+  "extends": "tslint:latest",
+  "rules": {
+    "max-line-length": {
+      "options": [180]
+    }
+  },
+  "jsRules": {
+    "max-line-length": {
+      "options": [180]
+    }
+  }
 }

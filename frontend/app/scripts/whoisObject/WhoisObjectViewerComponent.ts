@@ -35,6 +35,7 @@ class WhoisObjectViewerController {
     ];
     constructor(public properties: IProperties,
                 private userInfoService: UserInfoService) {
+        this.splitCommentsFromValueOfAtrributes(this.ngModel.attributes.attribute)
         this.objLength = this.ngModel.attributes.attribute.length;
         this.nrLinesToShow = this.objLength > 30 ? 25 : 30;
         this.showMoreButton = this.objLength > this.nrLinesToShow;
@@ -70,6 +71,16 @@ class WhoisObjectViewerController {
             return attr.name === "route" || attr.name === "route6";
         });
         return routeObject ? routeObject.value : this.objectPrimaryKey;
+    }
+
+    // split in case object was edited
+    private splitCommentsFromValueOfAtrributes(attributes: IAttributeModel[]) {
+        attributes.map((attr: IAttributeModel) => {
+            if (attr.value && attr.value.indexOf("#") > -1) {
+                attr.comment = attr.value.substring(attr.value.indexOf("#") + 1, attr.value.length).trim();
+                attr.value = attr.value.substring(0, attr.value.indexOf("#")).trim();
+            }
+        });
     }
 }
 

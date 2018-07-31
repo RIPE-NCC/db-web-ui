@@ -19,6 +19,8 @@
             $scope.onAdminCRemoved = onAdminCRemoved;
             $scope.isFormValid = isFormValid;
             $scope.fieldVisited = fieldVisited;
+            $scope.getAttributeDescription = getAttributeDescription;
+            $scope.getAttributeSyntax = getAttributeSyntax;
 
             function _initialise() {
 
@@ -169,6 +171,14 @@
                 _.remove($scope.maintainerAttributes, function (i) {
                     return i.name === 'admin-c' && i.value === item.key;
                 });
+            }
+
+            function getAttributeDescription(attrName) {
+                return WhoisResources.getAttributeDescription($scope.objectType, attrName);
+            }
+
+            function getAttributeSyntax(attrName) {
+                return WhoisResources.getAttributeSyntax($scope.objectType, attrName);
             }
 
         }]);

@@ -32,9 +32,9 @@ class UserInfoController {
                 };
                 RIPE.userimg = this.properties.LOGIN_URL + "/picture/" + userInfo.user.uuid;
                 RIPE.user = {
-                    fullName: userInfo.user.displayName,
-                    email: userInfo.user.username,
                     buildTag: this.properties.BUILD_TAG,
+                    email: userInfo.user.username,
+                    fullName: userInfo.user.displayName,
                 };
                 init_user_menu();
                 display_user_menu();

@@ -428,11 +428,11 @@ describe('webUpdates: CreateController', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should be possible to create route objects', function() {
+    it('should not be possible to create route objects with RIPE-NCC-RPSL-MNT for out-of-region objects', function() {
         $scope.objectType = 'route';
-        // for creation and modiication of route, route6 and aut-num, password for RIPE-NCC-RPSL-MNT is added to
+        // for creation and modification of route, route6 and aut-num, password for RIPE-NCC-RPSL-MNT is added to
         // the rest-call to allow creation of 'out-of-region'-objects without knowing the details of RPSL-mntner
-        $httpBackend.expectPOST('api/whois/RIPE/route?password=RPSL').respond(400, {
+        $httpBackend.expectPOST('api/whois/RIPE/route').respond(400, {
             objects: {
                 object: [
                     {
@@ -487,7 +487,6 @@ describe('webUpdates: CreateController', function () {
 
         $scope.submit();
         $httpBackend.flush();
-
         var resp = MessageStore.get('193.0.7.231/32AS1299');
         expect(resp.getPrimaryKey()).toEqual('193.0.7.231/32AS1299');
         var attrs = WhoisResources.wrapAttributes(resp.getAttributes());

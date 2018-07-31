@@ -125,6 +125,10 @@ class ResourceDetailsController {
                     this.addFlag(this.labels["flag.otherSponsor.text"],
                         this.labels["flag.otherSponsor.title"], "orange");
                 }
+                if (response.data.sponsored) {
+                    this.addFlag(this.labels["flag.sponsored.text"],
+                        this.labels["flag.sponsored.title"], "orange");
+                }
             });
 
         $scope.$on("fail-maintainer-password", () => {
