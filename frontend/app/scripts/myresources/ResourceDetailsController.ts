@@ -93,6 +93,7 @@ class ResourceDetailsController {
         this.ResourcesDataService.fetchResource(this.objectName, this.objectType)
             .then((response: ng.IHttpPromiseCallbackArg<IResourceDetailsResponseModel>) => {
                 this.whoisObject = response.data.object;
+                this.source = this.whoisObject.source.id;
                 // should only be one
                 this.resource = response.data.resources[0] ? response.data.resources[0] : {
                     orgName: "",
