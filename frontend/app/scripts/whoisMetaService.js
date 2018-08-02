@@ -222,7 +222,6 @@
                         {name: 'status', mandatory: false, multiple: false, refs: [], isEnum: true},
                         {name: 'notify', mandatory: false, multiple: true, refs: []},
                         {name: 'mnt-lower', mandatory: false, multiple: true, refs: ['MNTNER']},
-                        {name: 'mnt-routes', mandatory: false, multiple: true, refs: ['MNTNER']},
                         {name: 'mnt-by', mandatory: true, multiple: true, refs: ['MNTNER']},
                         {name: 'created', mandatory: false, multiple: false, refs: []},
                         {name: 'last-modified', mandatory: false, multiple: false, refs: []},
@@ -1302,11 +1301,6 @@
             };
 
             this._mntRoutesDoc = {
-                'aut-num': {
-                    short: 'References a mntner.',
-                    description: 'This attribute references a maintainer object. After the reference to the maintainer, an optional list of prefix ranges inside of curly braces or the keyword \"ANY\" may follow. The default, when no additional set items are specified, is \"ANY\" or all more specifics. <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers" target="_blank">Learn more.</a>',
-                    syntax: '&lt;mnt-name&gt; [ { list of (&lt;ipv4-address&gt;/&lt;prefix&gt; or &lt;ipv6-address&gt;/&lt;prefix&gt;) } | ANY ]'
-                },
                 domain: {
                     short: '',
                     description: '',
