@@ -8,7 +8,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
 
         $scope.mntners = mntners;
         $scope.mntnersWithoutPassword = mntnersWithoutPassword;
-        $scope.source = source;
+        $scope.source = Properties.SOURCE;
         $scope.objectType = objectType;
         $scope.objectName = objectName;
         $scope.selected = {
@@ -41,7 +41,7 @@ angular.module('webUpdates').controller('ModalAuthenticationController', ['$scop
             if (!$scope.selected.item || !$scope.selected.item.key) {
                 return;
             }
-            RestService.authenticate(method, source, 'mntner', $scope.selected.item.key, $scope.selected.password).then(
+            RestService.authenticate(method, $scope.source, 'mntner', $scope.selected.item.key, $scope.selected.password).then(
                 function (result) {
                     var whoisResources = result;
 
