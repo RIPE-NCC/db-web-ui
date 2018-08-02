@@ -71,13 +71,14 @@ class QueryController {
         this.qp.doNotRetrieveRelatedObjects = this.flagToBoolean(this.$stateParams.rflag, false); // -r
         this.qp.queryText = (this.$stateParams.searchtext || "").trim();
         if (this.qp.queryText) {
-            this.doSearch();
+            this.submitSearchForm();
         }
     }
 
     public submitSearchForm() {
         this.$location.search(this.qp.asLocationSearchParams());
         // remove previous anchor from hash
+        this.doSearch();
         this.setActiveAnchor("");
         if (this.qp.queryText === this.$stateParams.searchtext) {
             this.gotoAnchor();
