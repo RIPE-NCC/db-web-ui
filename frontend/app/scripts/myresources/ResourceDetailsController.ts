@@ -80,7 +80,6 @@ class ResourceDetailsController {
             editor: false,
             viewer: true,
         };
-        this.source = this.properties.SOURCE;
         this.objectName = decodeURIComponent($state.params.objectName);
         this.objectType = $state.params.objectType.toLowerCase();
         this.sponsored = typeof this.$state.params.sponsored === "string"
@@ -93,7 +92,7 @@ class ResourceDetailsController {
         this.ResourcesDataService.fetchResource(this.objectName, this.objectType)
             .then((response: ng.IHttpPromiseCallbackArg<IResourceDetailsResponseModel>) => {
                 this.whoisObject = response.data.object;
-                this.source = this.whoisObject.source.id;
+                this.source = this.whoisObject ? this.whoisObject.source.id : this.properties.SOURCE;
                 // should only be one
                 this.resource = response.data.resources[0] ? response.data.resources[0] : {
                     orgName: "",
