@@ -190,7 +190,6 @@ describe('webUpdates: ModalAuthenticationComponent', function () {
                                     response: jasmine.any(Object)}});
     });
 
-
     it('should close the modal and return error when canceled', function () {
         ctrl.cancel();
         expect(ctrl.dismiss).toHaveBeenCalled();
@@ -242,6 +241,4 @@ describe('webUpdates: ModalAuthenticationComponent', function () {
         ctrl.mntners = [ {type:'mntner', key:'RIPE-NCC-END-MNT', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
         expect(ctrl.allowForceDelete()).toBe(false);
     });
-
 });
-

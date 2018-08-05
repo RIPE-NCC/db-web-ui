@@ -1,48 +1,41 @@
 /*global beforeEach, describe, expect, inject, it, jasmine, module*/
 'use strict';
 
-describe('webUpdates: ModalAddAttributeController', function () {
+describe('webUpdates: ModalAddAttributeComponent', function () {
 
-    var $scope, modalInstance;
-    var items;
+    var $componentController, bindings, ctrl;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_) {
+        inject(function (_$componentController_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+            $componentController = _$componentController_;
 
-            modalInstance = {
+            bindings = {
                 close: jasmine.createSpy('modalInstance.close'),
                 dismiss: jasmine.createSpy('modalInstance.dismiss'),
-                result: {
-                    then: jasmine.createSpy('modalInstance.result.then')
+                resolve: {
+                    items: [ {name:'a'}, {name:'b'} ],
                 }
-            };
-            items = [ {name:'a'}, {name:'b'} ];
-
-            _$controller_('ModalAddAttributeController', {
-                $scope: $scope, $uibModalInstance: modalInstance, items: function() { return items; }
-            });
-
+            }
         });
     });
 
     it('should close the modal and return selected item when ok', function () {
-        $scope.selected.item = { name:'b'};
-        $scope.ok();
-        expect(modalInstance.close).toHaveBeenCalledWith( { name:'b'} );
+        ctrl = $componentController('modalAddAttribute', {}, bindings);
+        ctrl.$onInit();
+        ctrl.selected.item = {$value:{name:'b'}};
+        ctrl.ok();
+        expect(ctrl.close).toHaveBeenCalledWith({name:'b'});
 
     });
 
     it('should close the modal and return error when canceled', function () {
-        $scope.selected = 'b';
-        $scope.cancel();
-        expect(modalInstance.dismiss).toHaveBeenCalledWith("cancel");
+        ctrl = $componentController('modalAddAttribute', {}, bindings);
+        ctrl.$onInit();
+        ctrl.selected = 'b';
+        ctrl.cancel();
+        expect(ctrl.dismiss).toHaveBeenCalled();
     });
-
-
 });
-

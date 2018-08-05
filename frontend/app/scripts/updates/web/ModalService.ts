@@ -92,7 +92,7 @@ class ModalService {
 
         this.$modal.open({
             animation: false,
-            controller: "ModalAddAttributeController",
+            component: "modalAddAttribute",
             keyboard: false,
             resolve: {
                 items() {
@@ -100,7 +100,6 @@ class ModalService {
                 },
             },
             size: "lg",
-            templateUrl: "scripts/updates/web/modalAddAttribute.html",
         }).result
             .then((selectedItem: any) => {
                 this.$log.debug("openAddAttributeModal completed with:", selectedItem);
@@ -120,7 +119,7 @@ class ModalService {
 
         const modalInstance = this.$modal.open({
             animation: false,
-            controller: "modalMd5Password",
+            component: "modalMd5Password",
             keyboard: false,
             size: "lg",
         });
