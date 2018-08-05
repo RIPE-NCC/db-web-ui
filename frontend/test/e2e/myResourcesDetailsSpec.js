@@ -293,6 +293,7 @@ describe('My Resources detail', function () {
             page.btnAddAnAttribute(page.inpDescr).click();
             page.scrollIntoView(page.modal);
             page.modalBtnSubmit.click();
+            expect(page.modal.isPresent()).toEqual(false);
 
             expect(page.inpDescr2.isPresent()).toBe(true);
             page.btnRemoveAttribute(page.inpDescr2).click();
