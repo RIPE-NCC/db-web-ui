@@ -1,32 +1,22 @@
 /*global afterEach, beforeEach, describe, expect, inject, it, jasmine, module*/
 'use strict';
 
-describe('webUpdates: ModalAuthentication', function () {
+describe('webUpdates: ModalAuthenticationComponent', function () {
 
     var $componentController, ctrl;
-    var $log, modalInstance, WhoisResources, RestService, userInfoService, credentialsService, $httpBackend, properties;
-    // var source = 'RIPE';
+    var $log, WhoisResources, RestService, userInfoService, credentialsService, $httpBackend, properties;
     var mntners, mntnersWithoutPassword;
     var param, bindings;
 
     beforeEach(function () {
         module('webUpdates');
         inject(function (_$componentController_, _$log_,_WhoisResources_,_RestService_, _$httpBackend_,_UserInfoService_, _Properties_) {
-            $componentController = _$componentController_;
             $log = _$log_;
             WhoisResources = _WhoisResources_;
             RestService = _RestService_;
             $httpBackend = _$httpBackend_;
             userInfoService = _UserInfoService_;
             properties = _Properties_;
-
-            modalInstance = {
-                close: jasmine.createSpy('modalInstance.close'),
-                dismiss: jasmine.createSpy('modalInstance.dismiss'),
-                result: {
-                    then: jasmine.createSpy('modalInstance.result.then')
-                }
-            };
 
             credentialsService = {
                 setCredentials: jasmine.createSpy('credentialsService.setCredentials'),
@@ -35,6 +25,7 @@ describe('webUpdates: ModalAuthentication', function () {
                 getCredentials: jasmine.createSpy('credentialsService.getCredentials')
             };
 
+            $componentController = _$componentController_;
             mntners = [ {type:'mntner', key:'a-mnt', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
             mntnersWithoutPassword = [ {type:'mntner', key:'z-mnt', auth:['SSO']} ];
             param = {
@@ -202,7 +193,7 @@ describe('webUpdates: ModalAuthentication', function () {
 
     it('should close the modal and return error when canceled', function () {
         ctrl.cancel();
-        expect(ctrl.dismiss).toHaveBeenCalledWith('cancel');
+        expect(ctrl.dismiss).toHaveBeenCalled();
     });
 
     it('should set mntnersWithoutPassword to the scope', function () {

@@ -120,10 +120,9 @@ class ModalService {
 
         const modalInstance = this.$modal.open({
             animation: false,
-            controller: "ModalMd5PasswordController",
+            controller: "modalMd5Password",
             keyboard: false,
             size: "lg",
-            templateUrl: "scripts/updates/web/modalMd5Password.html",
         });
 
         modalInstance.result
