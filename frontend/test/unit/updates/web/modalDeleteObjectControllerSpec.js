@@ -9,17 +9,14 @@ var ON_CANCEL = 'modify';
 describe('webUpdates: primitives of modalDeleteObject', function () {
 
     var $componentController, param, bindings, ctrl;
-    var $log, $state, logger, $httpBackend, credentialsService, whoisResources, messageStore, restService;
+    var $log, $state, logger, $httpBackend, restService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$log_, _CredentialsService_, _WhoisResources_, _MessageStore_, _$httpBackend_) {
+        inject(function (_$componentController_, _$state_, _$log_, _$httpBackend_) {
             $state = _$state_;
             $log = _$log_;
-            credentialsService = _CredentialsService_;
-            whoisResources = _WhoisResources_;
-            messageStore = _MessageStore_;
             $httpBackend = _$httpBackend_;
 
             restService = {
@@ -48,10 +45,7 @@ describe('webUpdates: primitives of modalDeleteObject', function () {
             param = {
                 $state: $state,
                 $log: $log,
-                RestService: restService,
-                CredentialsService: credentialsService,
-                WhoisResources: whoisResources,
-                MessageStore: messageStore
+                RestService: restService
             };
             bindings = {
                 close: jasmine.createSpy('modalInstance.close'),
@@ -178,18 +172,15 @@ describe('webUpdates: primitives of modalDeleteObject', function () {
 describe('webUpdates: ModalDeleteObjectComponent undeletable object', function () {
 
     var $componentController, param, bindings, ctrl;
-    var $log, $state, $httpBackend, credentialsService, whoisResources, messageStore, restService;
+    var $log, $state, $httpBackend, restService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$log_, _CredentialsService_, _WhoisResources_, _MessageStore_, _$httpBackend_) {
+        inject(function (_$componentController_, _$state_, _$log_, _$httpBackend_) {
 
             $state = _$state_;
             $log = _$log_;
-            credentialsService = _CredentialsService_;
-            whoisResources = _WhoisResources_;
-            messageStore = _MessageStore_;
             $httpBackend = _$httpBackend_;
 
             restService = {
@@ -215,10 +206,7 @@ describe('webUpdates: ModalDeleteObjectComponent undeletable object', function (
             param = {
                 $state: $state,
                 $log: $log,
-                RestService: restService,
-                CredentialsService: credentialsService,
-                WhoisResources: whoisResources,
-                MessageStore: messageStore
+                RestService: restService
             };
             bindings = {
                 close: jasmine.createSpy('modalInstance.close'),
@@ -307,19 +295,17 @@ describe('webUpdates: ModalDeleteObjectComponent undeletable object', function (
 describe('webUpdates: ModalDeleteObjectComponent deleteable object ', function () {
 
     var $componentController, param, bindings, ctrl;
-    var $log, $state, $httpBackend, credentialsService, whoisResources, messageStore, restService;
+    var $log, $state, $httpBackend, restService, credentialsService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$log_, _CredentialsService_, _WhoisResources_, _MessageStore_, _$httpBackend_) {
+        inject(function (_$componentController_, _$state_, _$log_, _$httpBackend_, _CredentialsService_) {
 
             $state = _$state_;
             $log = _$log_;
-            credentialsService = _CredentialsService_;
-            whoisResources = _WhoisResources_;
-            messageStore = _MessageStore_;
             $httpBackend = _$httpBackend_;
+            credentialsService = _CredentialsService_;
             restService = {
                 deleteObject: function () {
                     return {
@@ -346,9 +332,7 @@ describe('webUpdates: ModalDeleteObjectComponent deleteable object ', function (
                 $state: $state,
                 $log: $log,
                 RestService: restService,
-                CredentialsService: credentialsService,
-                WhoisResources: whoisResources,
-                MessageStore: messageStore
+                credentialsService: credentialsService
             };
             bindings = {
                 close: jasmine.createSpy('modalInstance.close'),
@@ -461,19 +445,16 @@ describe('webUpdates: ModalDeleteObjectComponent deleteable object ', function (
 describe('webUpdates: ModalDeleteObjectComponent loading references failures ', function () {
 
     var $componentController, param, bindings, ctrl;
-    var $log, $state, $httpBackend, credentialsService, whoisResources, messageStore, restService;
+    var $log, $state, $httpBackend, restService;
 
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$log_, _CredentialsService_, _WhoisResources_, _MessageStore_, _$httpBackend_) {
+        inject(function (_$componentController_, _$state_, _$log_, _$httpBackend_) {
 
             $state = _$state_;
             $log = _$log_;
-            credentialsService = _CredentialsService_;
-            whoisResources = _WhoisResources_;
-            messageStore = _MessageStore_;
             $httpBackend = _$httpBackend_;
             restService = {
                 getReferences: function () {
@@ -491,10 +472,7 @@ describe('webUpdates: ModalDeleteObjectComponent loading references failures ', 
             param = {
                 $state: $state,
                 $log: $log,
-                RestService: restService,
-                CredentialsService: credentialsService,
-                WhoisResources: whoisResources,
-                MessageStore: messageStore
+                RestService: restService
             };
             bindings = {
                 close: jasmine.createSpy('modalInstance.close'),
