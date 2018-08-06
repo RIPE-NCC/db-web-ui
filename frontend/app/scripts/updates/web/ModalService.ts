@@ -63,9 +63,9 @@ class ModalService {
 
     public openDeleteObjectModal(source: string, objectType: string, name: string, onCancel: any) {
         this.$log.debug("_openDeleteObjectModal called for " + objectType + "/" + name);
-        return this.$modal.open({
+        const modalInstance = this.$modal.open({
             animation: false,
-            controller: "ModalDeleteObjectController",
+            component: "modalDeleteObject",
             keyboard: false,
             resolve: {
                 name() {
@@ -81,8 +81,8 @@ class ModalService {
                     return source;
                 },
             },
-            templateUrl: "scripts/updates/web/modalDeleteObject.html",
-        }).result;
+        });
+        return modalInstance.result;
     }
 
     public openAddAttributeModal(items: any) {

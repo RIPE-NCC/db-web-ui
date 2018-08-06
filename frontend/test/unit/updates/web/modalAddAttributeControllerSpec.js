@@ -25,9 +25,9 @@ describe('webUpdates: ModalAddAttributeComponent', function () {
     it('should close the modal and return selected item when ok', function () {
         ctrl = $componentController('modalAddAttribute', {}, bindings);
         ctrl.$onInit();
-        ctrl.selected.item = {$value:{name:'b'}};
+        ctrl.selected.item = {name:'b'};
         ctrl.ok();
-        expect(ctrl.close).toHaveBeenCalledWith({name:'b'});
+        expect(ctrl.close).toHaveBeenCalledWith({$value: {name:'b'}});
 
     });
 
