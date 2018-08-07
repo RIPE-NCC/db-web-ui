@@ -46,7 +46,9 @@ angular.module('webUpdates')
                     function (errorResp) {
                         $scope.modalInProgress = false;
                         $log.debug('ERROR deleting object'+JSON.stringify(errorResp));
-                        AlertService.setErrors(errorResp.data);
+                        if (errorResp.data) {
+                            AlertService.setErrors(errorResp.data);
+                        }
                     }
                 );
             }

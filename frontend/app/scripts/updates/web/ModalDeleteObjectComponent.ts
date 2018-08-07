@@ -21,6 +21,7 @@ class ModalDeleteObjectController {
     public incomingReferences: any;
     public canBeDeleted: any;
     public restCallInProgress = false;
+    private isDismissed: boolean = true;
 
     constructor(public $state: ng.ui.IStateService,
                 public $log: angular.ILogService,
@@ -32,6 +33,12 @@ class ModalDeleteObjectController {
 
     public $onInit() {
         this.getReferences(this.resolve.source, this.resolve.objectType, this.resolve.name);
+    }
+
+    public $onDestroy() {
+        if (this.isDismissed) {
+            this.cancel();
+        }
     }
 
     public delete() {
@@ -48,6 +55,7 @@ class ModalDeleteObjectController {
 
         this.RestService.deleteObject(this.resolve.source, this.resolve.objectType, this.resolve.name, this.reason, deleteWithRefs, password)
             .then((resp: any) => {
+                this.isDismissed = false;
                 this.close({$value: resp});
             }, (error: any) => {
                 this.dismiss(error);
@@ -55,9 +63,11 @@ class ModalDeleteObjectController {
         );
     }
 
+    // this method maybe can be removed because onDestroy should handle
     public cancel() {
         this.close();
         this.transitionToState(this.resolve.source, this.resolve.objectType, this.resolve.name, this.resolve.onCancel);
+        this.isDismissed = false;
     }
 
     public isEqualTo(selfType: string, selfName: string, ref: any) {

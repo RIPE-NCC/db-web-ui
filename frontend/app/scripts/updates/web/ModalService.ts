@@ -63,7 +63,7 @@ class ModalService {
 
     public openDeleteObjectModal(source: string, objectType: string, name: string, onCancel: any) {
         this.$log.debug("_openDeleteObjectModal called for " + objectType + "/" + name);
-        const modalInstance = this.$modal.open({
+        return this.$modal.open({
             animation: false,
             component: "modalDeleteObject",
             keyboard: false,
@@ -81,8 +81,7 @@ class ModalService {
                     return source;
                 },
             },
-        });
-        return modalInstance.result;
+        }).result;
     }
 
     public openAddAttributeModal(items: any) {
