@@ -72,10 +72,9 @@ class ModalCreateRoleForAbuseCCotroller {
             "role",
             this.WhoisResources.turnAttrsIntoWhoisObject(attributes),
             this.resolve.passwords,
-        ).then(
-            (response: any) => {
+        ).then((response: any) => {
                 const whoisResources = response;
-                this.close(whoisResources.getAttributes());
+                this.close({$value: whoisResources.getAttributes()});
             },
             (error: any) => {
                 return this.dismiss(error);
