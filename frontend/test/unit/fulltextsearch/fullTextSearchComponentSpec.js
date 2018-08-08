@@ -55,12 +55,13 @@ describe('dbWebApp: FullTextSearchComponent', function () {
         expect(ctrl.selectedObjectTypes.length).toEqual(1);
         ctrl.addObjectToFilter('inetnum'); // Still 1 coz it's already added
         expect(ctrl.selectedObjectTypes.length).toEqual(1);
-        expect(ctrl.selectableAttributes.length).toEqual(22);
+        // without source attribute
+        expect(ctrl.selectableAttributes.length).toEqual(21);
         expect(ctrl.queryHash()).toEqual("alltrueinetnum");
 
         ctrl.selectAll();
         expect(ctrl.selectedObjectTypes.length).toEqual(21);
-        expect(ctrl.selectableAttributes.length).toEqual(101);
+        expect(ctrl.selectableAttributes.length).toEqual(99);
         expect(ctrl.queryHash()).toEqual("alltrueas-blockas-setaut-numdomainfilter-setinet6numinetnuminet-rtrirtkey-certmntnerorganisationpeering-setpersonpoempoetic-formrolerouteroute6route-setrtr-set");
 
         ctrl.selectNone();

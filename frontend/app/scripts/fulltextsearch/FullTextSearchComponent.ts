@@ -32,6 +32,9 @@ class FullTextSearchController {
 
     private lastHash = "";
 
+    // attributes which are skipped in fulltext search on whois side
+    private readonly attrsNotConsiderableByWhois: string[] = ["source", "certif", "changed"];
+
     constructor(private $log: angular.ILogService,
                 private searchService: FullTextSearchService,
                 private fullTextResponseService: FullTextResponseService,
@@ -143,7 +146,8 @@ class FullTextSearchController {
                 }
             }
         }
-        return allAttrs.sort();
+        const allAttrsConsiderableByWhois = allAttrs.filter((item)  => this.attrsNotConsiderableByWhois.indexOf(item) < 0);
+        return allAttrsConsiderableByWhois.sort();
     }
 
     private queryHash(): string {
