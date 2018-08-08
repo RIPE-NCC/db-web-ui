@@ -39,12 +39,10 @@ class ModalService {
             templateUrl: "scripts/wizard/domainObjectSplash.html",
         }).result;
     }
-
     public openCreateRoleForAbuseCAttribute(source: string, maintainers: any, passwords: string) {
         return this.$modal.open({
             animation: false,
-            controller: "ModalCreateRoleForAbuseCController",
-            controllerAs: "$ctrl",
+            component: "modalCreateRoleForAbuseC",
             keyboard: false,
             resolve: {
                 maintainers() {
@@ -57,7 +55,6 @@ class ModalService {
                     return source;
                 },
             },
-            templateUrl: "scripts/updates/web/modalCreateRoleForAbuseC.html",
         }).result;
     }
 
