@@ -18,13 +18,14 @@ class ModalService {
         }).result;
     }
 
+    // [IS] looks to me that this functionality can be removed together with TextMultiDecisionController.js
+    // and TextMultiDecisionModal.ts
     public openChoosePoorRichSyncupdates() {
         return this.$modal.open({
             animation: false,
-            controller: "TextMultiDecisionModalController",
+            component: "textMultiDecisionModal",
             keyboard: false,
             resolve: {},
-            templateUrl: "scripts/updates/text/multiDecisionModal.html",
         }).result;
     }
 

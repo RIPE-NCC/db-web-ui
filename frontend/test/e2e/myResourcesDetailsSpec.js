@@ -289,7 +289,6 @@ describe('My Resources detail', function () {
             page.scrollIntoView(page.inpDescr);
             page.inpDescr.sendKeys('Updated test description');
 
-            page.scrollIntoView(page.inpDescr);
             page.btnAddAnAttribute(page.inpDescr).click();
             page.scrollIntoView(page.modal);
             page.modalBtnSubmit.click();
