@@ -25,7 +25,8 @@
     "angular",
     "angular-cookies",
     "angular-ui-router",
-    "lodash"
+    "lodash",
+    "moment"
   ],
   "include": [
     "./app/**/*.js",

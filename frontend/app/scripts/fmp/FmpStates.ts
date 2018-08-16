@@ -27,9 +27,8 @@ angular.module("fmp").config(["$stateProvider",
                 controller: "SsoAddedCtrl",
             })
             .state("fmp.confirm", {
+                component: "ConfirmMaintainer",
                 url: "/confirm?hash",
-                templateUrl: "scripts/fmp/confirmMaintainer.html",
-                controller: "ConfirmMaintainerCtrl",
             })
             .state("fmp.forgotMaintainerPassword", {
                 url: "/change-auth?mntnerKey&voluntary",
