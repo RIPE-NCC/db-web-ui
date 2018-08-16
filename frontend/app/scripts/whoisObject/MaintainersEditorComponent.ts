@@ -44,7 +44,7 @@ class MaintainersEditorController {
                 private CredentialsService: any,
                 private MessageStore: any,
                 private MntnerService: MntnerService,
-                private RestService: any,
+                private RestService: RestService,
                 private WebUpdatesCommons: any,
                 private jsUtils: JsUtilService) {
 

@@ -74,7 +74,7 @@ class ResourceDetailsController {
                 private properties: { SOURCE: string },
                 private ResourceStatus: any,
                 private ResourcesDataService: ResourcesDataService,
-                private RestService: any) {
+                private RestService: RestService) {
 
         this.show = {
             editor: false,

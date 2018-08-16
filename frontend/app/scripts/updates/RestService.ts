@@ -203,7 +203,7 @@ class RestService {
         return deferredObject.promise;
     }
 
-    public createObject(source: string, objectType: string, attributes: any, passwords: string, overrides: any, unformatted: any) {
+    public createObject(source: string, objectType: string, attributes: any, passwords: string, overrides?: any, unformatted?: any) {
         const deferredObject = this.$q.defer();
 
         this.$resource("api/whois/:source/:objectType", {
@@ -231,7 +231,7 @@ class RestService {
         return deferredObject.promise;
     }
 
-    public modifyObject(source: string, objectType: string, objectName: string, attributes: string, passwords: string, overrides: any, unformatted: any) {
+    public modifyObject(source: string, objectType: string, objectName: any, attributes: any, passwords: string[], overrides?: any, unformatted?: any) {
         const deferredObject = this.$q.defer();
 
         /*

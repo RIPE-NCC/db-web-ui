@@ -36,7 +36,7 @@ class ModalCreateRoleForAbuseCController {
 
     constructor(private $uibModalInstance: any,
                 private WhoisResources: any,
-                private RestService: any,
+                private RestService: RestService,
                 private source: string,
                 private maintainers: any,
                 private passwords: any,

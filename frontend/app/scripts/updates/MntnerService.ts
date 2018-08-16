@@ -20,7 +20,7 @@ class MntnerService {
                 private credentialsService: CredentialsService,
                 private WhoisResources: any,
                 private ModalService: any,
-                private RestService: any,
+                private RestService: RestService,
                 private PrefixService: any) {
         this.nccEndMntner = "RIPE-NCC-END-MNT";
         this.nccHmMntner = "RIPE-NCC-HM-MNT";
