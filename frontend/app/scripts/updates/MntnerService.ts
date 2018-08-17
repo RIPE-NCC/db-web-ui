@@ -21,7 +21,7 @@ class MntnerService {
                 private WhoisResources: any,
                 private ModalService: any,
                 private RestService: RestService,
-                private PrefixService: any) {
+                private PrefixService: PrefixService) {
         this.nccEndMntner = "RIPE-NCC-END-MNT";
         this.nccHmMntner = "RIPE-NCC-HM-MNT";
         this.nccLegacyMntner = "RIPE-NCC-LEGACY-MNT";
