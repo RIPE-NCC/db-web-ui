@@ -69,7 +69,7 @@ class ResourceDetailsController {
                 private $cookies: angular.cookies.ICookiesService,
                 private credentialsService: CredentialsService,
                 private labels: { [key: string]: string },
-                private MntnerService: any,
+                private MntnerService: MntnerService,
                 private MoreSpecificsService: IMoreSpecificsDataService,
                 private properties: { SOURCE: string },
                 private ResourceStatus: any,

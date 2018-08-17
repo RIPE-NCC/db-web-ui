@@ -40,7 +40,7 @@ class ModalCreateRoleForAbuseCController {
                 private source: string,
                 private maintainers: any,
                 private passwords: any,
-                private MntnerService: any) {
+                private MntnerService: MntnerService) {
     }
 
     public create() {
