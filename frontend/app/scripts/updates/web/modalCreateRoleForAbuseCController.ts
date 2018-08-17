@@ -73,8 +73,7 @@ class ModalCreateRoleForAbuseCController {
             this.passwords,
         ).then(
             (response: any) => {
-                const whoisResources = response;
-                this.$uibModalInstance.close(whoisResources.getAttributes());
+                this.$uibModalInstance.close(response.getAttributes());
             },
             (error: any) => {
                 return this.$uibModalInstance.dismiss(error);
@@ -100,6 +99,5 @@ class ModalCreateRoleForAbuseCController {
 
 }
 
-angular
-    .module("dbWebApp")
+angular.module("dbWebApp")
     .controller("ModalCreateRoleForAbuseCController", ModalCreateRoleForAbuseCController);

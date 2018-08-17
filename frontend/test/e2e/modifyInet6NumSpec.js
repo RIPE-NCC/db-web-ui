@@ -43,7 +43,7 @@ describe('Modifying an inet6num', function () {
             page.modalBtnSubmit.click();
         });
 
-        it('should show input controls in the correct disabled or enabled state', function() {
+        fit('should show input controls in the correct disabled or enabled state', function() {
             // maintainer input is enabled
             expect(page.inpMntnerBox.isPresent()).toEqual(true);
             expect(page.inpMntnerBox.getAttribute('disabled')).toBeFalsy();
