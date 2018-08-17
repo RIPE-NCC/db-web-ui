@@ -16,12 +16,28 @@ interface IAttributeModel {
     name: string;
     value: string | any;
     link?: IWhoisLinkModel;
-    "referenced-type": string;
-    $$error: string;
-    $$info: string;
-    $$invalid: boolean;
-    $$id: string;
-    comment: string;
+    "referenced-type"?: string;
+    $$error?: string;
+    $$info?: string;
+    $$invalid?: boolean;
+    $$id?: string;
+    comment?: string;
+    $$success?: string;
+    $$statusOptionList?: IStatusOption[];
+    $$meta?: {
+        $$idx?: string,
+        $$mandatory?: boolean,
+        $$multiple?: boolean,
+        $$primaryKey?: string,
+        $$refs?: string[],
+        $$isEnum?: boolean,
+        $$disable?: boolean,
+    };
+}
+
+interface IStatusOption {
+    key: string;
+    value: string;
 }
 
 interface IWhoisObjectModel {

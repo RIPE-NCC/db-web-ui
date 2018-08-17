@@ -115,9 +115,8 @@ class RestService {
         return deferredObject.promise;
     }
 
-    public autocompleteAdvanced(query: any, targetObjectTypes: any) { // : ng.IPromise<ng.IHttpResponse<any[]>> {
+    public autocompleteAdvanced(query: any, targetObjectTypes: any) {
         const deferredObject = this.$q.defer();
-
         const debounce = () => {
             if (_.isUndefined(query) || query.length < 2) {
                 deferredObject.resolve([]);

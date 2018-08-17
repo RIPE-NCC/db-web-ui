@@ -111,7 +111,7 @@ class ResourceStatus {
         return false;
     }
 
-    public get(objectType: string, parentState: string): string[] {
+    public get(objectType: string, parentState: string): IStatusOption[] {
         if (!objectType || !this.statuses[objectType]) {
             return [];
         }
