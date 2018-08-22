@@ -71,8 +71,7 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.createPersonMntnerPair', {
                     url: '/create/person/self',
-                    templateUrl: 'scripts/updates/web/createPersonMntnerPair.html',
-                    controller: 'CreatePersonMntnerPairController'
+                    template: '<create-person-mntner-pair></create-person-mntner-pair>',
                 })
                 .state('webupdates.displayPersonMntnerPair', {
                     url: '/display/:source/person/:person/mntner/:mntner',

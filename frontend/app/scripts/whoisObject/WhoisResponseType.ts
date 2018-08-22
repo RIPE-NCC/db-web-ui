@@ -28,7 +28,7 @@ interface IAttributeModel {
         $$idx?: string,
         $$mandatory?: boolean,
         $$multiple?: boolean,
-        $$primaryKey?: string,
+        $$primaryKey?: boolean,
         $$refs?: string[],
         $$isEnum?: boolean,
         $$disable?: boolean,

@@ -1,9 +1,9 @@
 /*global afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
-describe('webUpdates: CreatePersonMntnerPairController', function () {
+describe('webUpdates: CreatePersonMntnerPair', function () {
 
-    var $scope, $rootScope, $state, $stateParams, $httpBackend, $log;
+    var $state, $stateParams, $httpBackend, $log;
     var MessageStore;
     var WhoisResources;
     var AlertService;
@@ -18,14 +18,13 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
     var personMntnerPair;
     var userInfoData;
     var createController;
+    var $ctrl;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$log_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_, _MessageStore_, _WhoisResources_, _AlertService_, _RestService_) {
+        inject(function (_$componentController_, _$log_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_, _MessageStore_, _WhoisResources_, _AlertService_, _RestService_) {
 
-            $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
             $log = _$log_;
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -80,8 +79,8 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
 
                 $stateParams.source = SOURCE;
 
-                _$controller_('CreatePersonMntnerPairController', {
-                    $scope: $scope, $state: $state, $log: $log, $stateParams: $stateParams,
+                $ctrl = _$componentController_('createPersonMntnerPair', {
+                    $state: $state, $log: $log, $stateParams: $stateParams,
                     WhoisResources: WhoisResources, AlertService: AlertService, UserInfoService: UserInfoService,
                     RestService: RestService, MessageStore: MessageStore
                 });
@@ -106,7 +105,7 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         });
         $httpBackend.flush();
 
-        expect($scope.source).toBe(SOURCE);
+        expect($ctrl.source).toBe(SOURCE);
     });
 
     it('should be able to handle failing user-info-service', function () {
@@ -119,9 +118,9 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         });
         $httpBackend.flush();
 
-        $scope.submit();
+        $ctrl.submit();
 
-        expect($scope.errors[0].plainText).toEqual('Error fetching SSO information');
+        expect($ctrl.AlertService.getErrors()[0].plainText).toEqual('Error fetching SSO information');
 
         expect($state.current.name).toBe(stateBefore);
 
@@ -138,12 +137,12 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         });
         $httpBackend.flush();
 
-        $scope.submit();
+        $ctrl.submit();
 
-        expect($scope.personAttributes.getSingleAttributeOnName('person').$$error).toEqual('Mandatory attribute not set');
-        expect($scope.personAttributes.getSingleAttributeOnName('address').$$error).toEqual('Mandatory attribute not set');
-        expect($scope.personAttributes.getSingleAttributeOnName('phone').$$error).toEqual('Mandatory attribute not set');
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual('Mandatory attribute not set');
+        expect($ctrl.personAttributes.getSingleAttributeOnName('person').$$error).toEqual('Mandatory attribute not set');
+        expect($ctrl.personAttributes.getSingleAttributeOnName('address').$$error).toEqual('Mandatory attribute not set');
+        expect($ctrl.personAttributes.getSingleAttributeOnName('phone').$$error).toEqual('Mandatory attribute not set');
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual('Mandatory attribute not set');
 
         expect($state.current.name).toBe(stateBefore);
         expect($stateParams.source).toBe(SOURCE);
@@ -158,26 +157,26 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         });
         $httpBackend.flush();
 
-        $scope.personAttributes.setSingleAttributeOnName('person', PERSON_NAME);
-        $scope.personAttributes.setSingleAttributeOnName('phone', '+316');
-        $scope.personAttributes.setSingleAttributeOnName('address', 'home');
-        $scope.mntnerAttributes.setSingleAttributeOnName('mntner', MNTNER_NAME);
+        $ctrl.personAttributes.setSingleAttributeOnName('person', PERSON_NAME);
+        $ctrl.personAttributes.setSingleAttributeOnName('phone', '+316');
+        $ctrl.personAttributes.setSingleAttributeOnName('address', 'home');
+        $ctrl.mntnerAttributes.setSingleAttributeOnName('mntner', MNTNER_NAME);
 
-        $scope.submit();
+        $ctrl.submit();
 
-        expect($scope.personAttributes.getSingleAttributeOnName('person').value).toBe(PERSON_NAME);
-        expect($scope.personAttributes.getSingleAttributeOnName('phone').value).toBe('+316');
-        expect($scope.personAttributes.getSingleAttributeOnName('address').value).toBe('home');
-        expect($scope.personAttributes.getSingleAttributeOnName('nic-hdl').value).toEqual('AUTO-1');
-        expect($scope.personAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
-        expect($scope.personAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.personAttributes.getSingleAttributeOnName('person').value).toBe(PERSON_NAME);
+        expect($ctrl.personAttributes.getSingleAttributeOnName('phone').value).toBe('+316');
+        expect($ctrl.personAttributes.getSingleAttributeOnName('address').value).toBe('home');
+        expect($ctrl.personAttributes.getSingleAttributeOnName('nic-hdl').value).toEqual('AUTO-1');
+        expect($ctrl.personAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
+        expect($ctrl.personAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('AUTO-1');
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO ' + SSO_EMAIL);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('upd-to').value).toEqual(SSO_EMAIL);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('AUTO-1');
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO ' + SSO_EMAIL);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('upd-to').value).toEqual(SSO_EMAIL);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
         $httpBackend.expectPOST('api/references/RIPE').respond(function () {
             return [200, personMntnerPair, {}];
@@ -209,33 +208,33 @@ describe('webUpdates: CreatePersonMntnerPairController', function () {
         });
         $httpBackend.flush();
 
-        $scope.personAttributes.setSingleAttributeOnName('person', 'Titus Tester');
-        $scope.personAttributes.setSingleAttributeOnName('phone', '+316');
-        $scope.personAttributes.setSingleAttributeOnName('address', 'home');
-        $scope.mntnerAttributes.setSingleAttributeOnName('mntner', MNTNER_NAME);
+        $ctrl.personAttributes.setSingleAttributeOnName('person', 'Titus Tester');
+        $ctrl.personAttributes.setSingleAttributeOnName('phone', '+316');
+        $ctrl.personAttributes.setSingleAttributeOnName('address', 'home');
+        $ctrl.mntnerAttributes.setSingleAttributeOnName('mntner', MNTNER_NAME);
 
-        $scope.submit();
+        $ctrl.submit();
 
-        expect($scope.personAttributes.getSingleAttributeOnName('person').value).toBe(PERSON_NAME);
-        expect($scope.personAttributes.getSingleAttributeOnName('nic-hdl').value).toEqual('AUTO-1');
-        expect($scope.personAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
-        expect($scope.personAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.personAttributes.getSingleAttributeOnName('person').value).toBe(PERSON_NAME);
+        expect($ctrl.personAttributes.getSingleAttributeOnName('nic-hdl').value).toEqual('AUTO-1');
+        expect($ctrl.personAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
+        expect($ctrl.personAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO ' + SSO_EMAIL);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('AUTO-1');
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('upd-to').value).toEqual(SSO_EMAIL);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('mntner').value).toEqual(MNTNER_NAME);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO ' + SSO_EMAIL);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('AUTO-1');
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('upd-to').value).toEqual(SSO_EMAIL);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER_NAME);
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
         $httpBackend.expectPOST('api/references/RIPE').respond(function () {
             return [400, whoisObjectWithErrors, {}];
         });
         $httpBackend.flush();
 
-        expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
-        expect($scope.warnings[0].plainText).toEqual('Not authenticated');
-        expect($scope.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual('\'' + MNTNER_NAME + '\' is not valid for this object type');
+        expect($ctrl.AlertService.getErrors()[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
+        expect($ctrl.AlertService.getWarnings()[0].plainText).toEqual('Not authenticated');
+        expect($ctrl.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual('\'' + MNTNER_NAME + '\' is not valid for this object type');
 
         expect($state.current.name).toBe(stateBefore);
 
