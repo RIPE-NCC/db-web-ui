@@ -77,11 +77,6 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
                 });
             };
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-
-            $httpBackend.flush();
-
-
         });
     });
 
@@ -124,8 +119,6 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
     });
 
     it('should populate the ui from rest ok', function () {
-        var stateBefore = $state.current.name;
-
         // no objects in message store
         createController();
 
@@ -146,13 +139,11 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         expect($scope.mntnerAttributes.getSingleAttributeOnName('admin-c').value).toEqual(PERSON_NAME);
         expect($scope.mntnerAttributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
     it('should populate the ui from rest failure', function () {
-        var stateBefore = $state.current.name;
-
         // no objects in message store
         createController();
 
@@ -181,7 +172,7 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
         expect($rootScope.warnings[0].plainText).toEqual('Not authenticated');
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
@@ -190,10 +181,10 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         MessageStore.add(mntnerToDisplay.getPrimaryKey(), mntnerToDisplay);
 
         createController();
-
-        $scope.navigateToSelect();
-
-        expect($state.current.name).toBe('webupdates.select');
+        $httpBackend.whenGET(/.*.html/).respond(200);
+        $scope.navigateToSelect().then(function() {
+            expect($state.current.name).toBe('webupdates.select');
+        });
     });
 
     it('should navigate to modify person screen', function () {
@@ -201,16 +192,17 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
         MessageStore.add(mntnerToDisplay.getPrimaryKey(), mntnerToDisplay);
 
         createController();
-
-        $scope.navigateToModifyPerson();
+        $httpBackend.whenGET(/.*.html/).respond(200);
+        $scope.navigateToModifyPerson().then(function () {
+            expect($state.current.name).toBe('webupdates.modify');
+            expect($stateParams.source).toBe(SOURCE);
+            expect($stateParams.objectType).toBe('person');
+            expect($stateParams.name).toBe(PERSON_NAME);
+        });
 
         // fragment of new target view will be fetched
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('webupdates.modify');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe('person');
-        expect($stateParams.name).toBe(PERSON_NAME);
     });
 
 
@@ -220,15 +212,16 @@ describe('webUpdates: DisplayPersonMntnerPairController', function () {
 
         createController();
 
-        $scope.navigateToModifyMntner();
+        $httpBackend.whenGET(/.*.html/).respond(200);
+        $scope.navigateToModifyMntner().then(function() {
+            expect($state.current.name).toBe('webupdates.modify');
+            expect($stateParams.source).toBe(SOURCE);
+            expect($stateParams.objectType).toBe('mntner');
+            expect($stateParams.name).toBe(MNTNER_NAME);
+        });
 
         // fragment of new target view will be fetched
         $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.modify');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe('mntner');
-        expect($stateParams.name).toBe(MNTNER_NAME);
     });
 
 });

@@ -5,18 +5,18 @@
     <div>
 	    <label>Object type</label>
 	    <select id="objectTypeSelector"
-            ng-model="selected.objectType"
+            ng-model="$ctrl.selected.objectType"
 	            ng-required="true"
 	            class="form-control select-height">
             <option value="person-mntnr" label="person and maintainer pair">person and maintainer pair</option>
-            <option ng-repeat="objectType in objectTypes" label="{{objectType}}" value="{{objectType}}">{{objectType}}</option>
+            <option ng-repeat="objectType in $ctrl.objectTypes" label="{{objectType}}" value="{{objectType}}">{{objectType}}</option>
         </select>
 	</div>
     <br/>
 
     <button id="btnNavigateToCreate"
             class="blue-button pull-right ga-createobj-select"
-            ng-click="navigateToCreate()">{{loggedIn ? 'Create' : 'Login to create'}}</button>
+            ng-click="$ctrl.navigateToCreate()">{{$ctrl.loggedIn ? 'Create' : 'Login to create'}}</button>
 
 </form>
 </section>

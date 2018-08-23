@@ -45,8 +45,6 @@ describe('webUpdates: ModalAuthenticationController', function () {
                 isLirObject: false
             });
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-
             $httpBackend.whenGET('api/whois-internal/api/user/info').respond({
                 user: {
                     'username': 'dummy@ripe.net',
@@ -55,8 +53,6 @@ describe('webUpdates: ModalAuthenticationController', function () {
                     'active': 'true'
                 }
             });
-
-            $httpBackend.flush();
 
         });
     });

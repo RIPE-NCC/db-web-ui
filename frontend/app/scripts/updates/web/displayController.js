@@ -102,11 +102,11 @@ angular.module('webUpdates')
             }
 
             function navigateToSelect() {
-                $state.transitionTo('webupdates.select');
+                return $state.transitionTo('webupdates.select');
             }
 
             function navigateToModify() {
-                $state.transitionTo('webupdates.modify', {
+                return $state.transitionTo('webupdates.modify', {
                     source: $scope.objectSource,
                     objectType: $scope.objectType,
                     name: $scope.objectName

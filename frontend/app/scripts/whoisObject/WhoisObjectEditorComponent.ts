@@ -23,7 +23,9 @@ class WhoisObjectEditorController {
     constructor(private AttributeMetadataService: any,
                 private MessageStore: any,
                 private properties: { SOURCE: string }) {
+    }
 
+    public $onInit() {
         // Assign to short-cut accessor.
         this.attributes = this.ngModel.attributes.attribute;
         this.addCommentsToValueOfAtrributes(this.attributes);

@@ -46,7 +46,6 @@ describe('The whois object editor', function () {
     beforeEach(inject(function (_$httpBackend_, _$componentController_) {
         $httpBackend = _$httpBackend_;
         $componentController = _$componentController_;
-        $httpBackend.when('GET', /.*\.html/).respond(200);
     }));
 
     afterEach(function () {
@@ -55,28 +54,20 @@ describe('The whois object editor', function () {
     });
 
     it('should be able to submit attributes', function () {
-        $httpBackend.when('GET', 'api/whois/RIPE/inetnum/1.2.3.4?unfiltered=true&unformatted=false').respond({
-            'objects': {'object': [modifyinetnum()]},
-            'terms-and-conditions': {'type': 'locator', 'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'}
-        });
         var model;
         var ctrl = $componentController('whoisObjectEditor', null, {
             ngModel: modifyinetnum(), updateClicked: function (o) {
                 model = o;
             }
         });
+        ctrl.$onInit();
         ctrl.btnSubmitClicked();
-        $httpBackend.flush();
 
         expect(ctrl.attributes.length).toEqual(5);
         expect(model.type).toBe('inetnum');
     });
 
     it('should filter out empty attributes on submit', function () {
-        $httpBackend.when('GET', 'api/whois/RIPE/inetnum/1.2.3.4?unfiltered=true&unformatted=false').respond({
-            'objects': {'object': [modifyinetnum()]},
-            'terms-and-conditions': {'type': 'locator', 'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'}
-        });
         var testModel = modifyinetnum();
         testModel.attributes.attribute.push({name: 'descr', value: 'keep this one'});
         testModel.attributes.attribute.push({name: 'descr', value: ''}); // gets removed
@@ -88,8 +79,8 @@ describe('The whois object editor', function () {
                 model = o;
             }
         });
+        ctrl.$onInit();
         ctrl.btnSubmitClicked();
-        $httpBackend.flush();
 
         expect(model.attributes.attribute.length).toEqual(6);
         expect(ctrl.missingMandatoryAttributes.length).toBe(5);
@@ -97,10 +88,6 @@ describe('The whois object editor', function () {
     });
 
     it('should be able to suss out missing mandatory attributes', function () {
-        $httpBackend.when('GET', 'api/whois/RIPE/inetnum/1.2.3.4?unfiltered=true&unformatted=false').respond({
-            'objects': {'object': [modifyinetnum()]},
-            'terms-and-conditions': {'type': 'locator', 'href': 'http://www.ripe.net/db/support/db-terms-conditions.pdf'}
-        });
         var testModel = modifyinetnum();
         var model;
         var ctrl = $componentController('whoisObjectEditor', null, {
@@ -108,8 +95,8 @@ describe('The whois object editor', function () {
                 model = o;
             }
         });
+        ctrl.$onInit();
         ctrl.btnSubmitClicked();
-        $httpBackend.flush();
 
         expect(model.attributes.attribute.length).toEqual(5);
         expect(ctrl.missingMandatoryAttributes.length).toBe(5);

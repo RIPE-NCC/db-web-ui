@@ -56,11 +56,11 @@ angular.module('webUpdates')
             _initialisePage();
 
             $scope.navigateToSelect = function () {
-                $state.transitionTo('webupdates.select');
+                return $state.transitionTo('webupdates.select');
             };
 
             $scope.navigateToModifyPerson = function () {
-                $state.transitionTo('webupdates.modify', {
+                return $state.transitionTo('webupdates.modify', {
                     source: $scope.objectSource,
                     objectType: 'person',
                     name: $scope.personName
@@ -68,7 +68,7 @@ angular.module('webUpdates')
             };
 
             $scope.navigateToModifyMntner = function () {
-                $state.transitionTo('webupdates.modify', {
+                return $state.transitionTo('webupdates.modify', {
                     source: $scope.objectSource,
                     objectType: 'mntner',
                     name: $scope.mntnerName
@@ -76,7 +76,7 @@ angular.module('webUpdates')
             };
 
             $scope.navigateToSharedMntner = function () {
-                $state.transitionTo('webupdates.createSelfMnt', {
+                return $state.transitionTo('webupdates.createSelfMnt', {
                     source: $scope.objectSource,
                     objectType: 'mntner',
                     admin:$scope.personName

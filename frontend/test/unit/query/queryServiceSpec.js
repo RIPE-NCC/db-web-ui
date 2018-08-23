@@ -11,7 +11,6 @@ describe('The QueryService', function () {
     beforeEach(inject(function (QueryService, _$httpBackend_) {
         service = QueryService;
         $httpBackend = _$httpBackend_;
-        $httpBackend.when('GET', /.*\.html/).respond(200);
     }));
 
     afterEach(function () {
@@ -21,7 +20,6 @@ describe('The QueryService', function () {
 
     it('should not generate a link if there is no text', function () {
         var qp = {};
-        $httpBackend.flush();
         expect(service.buildPermalink(qp)).toEqual("");
         expect(service.buildQueryStringForLink(qp)).toEqual("");
     });
@@ -56,7 +54,6 @@ describe('The QueryService', function () {
         qp.source = "TEST";
         expect(service.buildPermalink(qp)).toEqual("searchtext=yorkshire&source=TEST&bflag=false");
         expect(service.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&source=TEST");
-        $httpBackend.flush();
     });
 
     it('should generate a link for a text search with options', function () {
@@ -75,7 +72,6 @@ describe('The QueryService', function () {
         expect(service.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&inverse-attribute=mnt-ref&" +
             "inverse-attribute=mnt-by&type-filter=mntner&type-filter=as-set&flags=one-less&flags=reverse-domain&" +
             "flags=no-referenced&flags=no-irt&flags=no-filtering&source=TEST");
-        $httpBackend.flush();
     });
 
     it('should handle multiple search terms', function () {
@@ -91,7 +87,6 @@ describe('The QueryService', function () {
         };
         expect(service.buildPermalink(qp)).toEqual("");
         expect(service.buildQueryStringForLink(qp)).toEqual("");
-        $httpBackend.flush();
     });
 
     it('should be able to run queries and accumulate results', function (done) {

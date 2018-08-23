@@ -17,8 +17,6 @@ describe('FindMaintainer', function () {
         $state = _$state_;
         FindMaintainerService: _FindMaintainerService_;
 
-        $httpBackend.when('GET', /.*\.html/).respond(200);
-        $httpBackend.flush();
     }));
 
     afterEach(function () {
@@ -149,6 +147,7 @@ describe('FindMaintainer', function () {
             ctrl.selectMaintainer(maintainerKey);
 
             $httpBackend.whenGET('api/whois-internal/api/fmp-pub/mntner/I-AM-NO-MNT').respond(500);
+            $httpBackend.whenGET(/.*.html/).respond(200);
             $httpBackend.flush();
 
             expect(ctrl.foundMaintainer).toBeUndefined();
@@ -198,6 +197,7 @@ describe('FindMaintainer', function () {
                 mntner: 'WORLD',
                 email: 'a@b.c'
             });
+            $httpBackend.whenGET(/.*.html/).respond(200);
             $httpBackend.flush();
 
             expect(ctrl.errors.length).toBe(0);
@@ -211,6 +211,7 @@ describe('FindMaintainer', function () {
             ctrl.validateEmail();
 
             $httpBackend.whenPOST('api/whois-internal/api/fmp-pub/mntner/I-AM-MNT/emaillink.json').respond(500);
+            $httpBackend.whenGET(/.*.html/).respond(200);
             $httpBackend.flush();
 
             expect(ctrl.errors.length).toBe(1);

@@ -72,8 +72,6 @@ describe('webUpdates: ForceDeleteController', function () {
 
             createForceDeleteController = function () {
 
-                $httpBackend.whenGET(/.*.html/).respond(200);
-
                 $httpBackend.expectGET('api/whois/RIPE/inetnum/111%20-%20255?unfiltered=true').respond(
                     function () {
                         return [200, objectToDisplay, {}];
@@ -179,8 +177,6 @@ describe('webUpdates: ForceDeleteController', function () {
 
     it('should have errors on wrong type', function () {
 
-        $httpBackend.whenGET(/.*.html/).respond(200);
-
         $stateParams.source = SOURCE;
         $stateParams.objectType = 'mntner';
         $stateParams.name = 'TPOLYCHNIA-MNT';
@@ -189,16 +185,12 @@ describe('webUpdates: ForceDeleteController', function () {
             $scope: $scope, $state: $state, $stateParams: $stateParams
         });
 
-        $httpBackend.flush();
-
         expect($rootScope.errors[0].plainText)
             .toBe('Only inetnum, inet6num, route, route6, domain object types are force-deletable');
     });
 
 
     it('should show error on missing object key', function () {
-
-        $httpBackend.whenGET(/.*.html/).respond(200);
 
         $stateParams.source = SOURCE;
         $stateParams.objectType = 'inetnum';
@@ -208,14 +200,10 @@ describe('webUpdates: ForceDeleteController', function () {
             $scope: $scope, $state: $state, $stateParams: $stateParams
         });
 
-        $httpBackend.flush();
-
         expect($rootScope.errors[0].plainText).toBe('Object key is missing');
     });
 
     it('should show error on missing source', function () {
-
-        $httpBackend.whenGET(/.*.html/).respond(200);
 
         $stateParams.source = undefined;
         $stateParams.objectType = 'inetnum';
@@ -224,8 +212,6 @@ describe('webUpdates: ForceDeleteController', function () {
         $controller('ForceDeleteController', {
             $scope: $scope, $state: $state, $stateParams: $stateParams
         });
-
-        $httpBackend.flush();
 
         expect($rootScope.errors[0].plainText).toBe('Source is missing');
     });

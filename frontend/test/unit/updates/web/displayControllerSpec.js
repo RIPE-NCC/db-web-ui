@@ -57,10 +57,6 @@ describe('webUpdates: DisplayController', function () {
                 });
             };
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-
-            $httpBackend.flush();
-
         });
     });
 
@@ -123,8 +119,6 @@ describe('webUpdates: DisplayController', function () {
     });
 
     it('should populate the ui from message-store', function () {
-        var stateBefore = $state.current.name;
-
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
@@ -134,13 +128,11 @@ describe('webUpdates: DisplayController', function () {
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
     it('should populate the ui from rest ok', function () {
-        var stateBefore = $state.current.name;
-
         // no objects in message store
         createDisplayController();
 
@@ -156,13 +148,11 @@ describe('webUpdates: DisplayController', function () {
         expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
         expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
     it('should populate the ui from rest failure', function () {
-        var stateBefore = $state.current.name;
-
         // no objects in message store
         createDisplayController();
 
@@ -191,7 +181,7 @@ describe('webUpdates: DisplayController', function () {
         expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
         expect($scope.warnings[0].plainText).toEqual('Not authenticated');
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
@@ -201,9 +191,9 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        $scope.navigateToSelect();
-
-        expect($state.current.name).toBe('webupdates.select');
+        $scope.navigateToSelect().then(function() {
+            expect($state.current.name).toBe('webupdates.select');
+        });
 
     });
 
@@ -213,13 +203,16 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        $scope.navigateToModify();
+        $httpBackend.whenGET(/.*.html/).respond(200);
+        $scope.navigateToModify().then(function() {
+            expect($state.current.name).toBe('webupdates.modify');
+            expect($stateParams.source).toBe(SOURCE);
+            expect($stateParams.objectType).toBe(OBJECT_TYPE);
+            expect($stateParams.name).toBe(OBJECT_NAME);
+        });
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('webupdates.modify');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe(OBJECT_TYPE);
-        expect($stateParams.name).toBe(OBJECT_NAME);
+
     });
 
 
@@ -364,11 +357,9 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         $httpBackend.flush();
 
-        $scope.navigateToSelect();
-
-        // select screen already loaded so no flush here
-
-        expect($state.current.name).toBe('webupdates.select');
+        $scope.navigateToSelect().then(function() {
+            expect($state.current.name).toBe('webupdates.select');
+        });
 
     });
 

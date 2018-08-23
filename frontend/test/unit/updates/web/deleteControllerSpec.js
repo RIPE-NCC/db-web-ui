@@ -143,8 +143,6 @@ describe('webUpdates: DeleteController', function () {
 
             };
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
         });
     });
 

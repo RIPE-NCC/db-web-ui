@@ -52,9 +52,6 @@ describe('textUpdates: TextMultiController', function () {
                 initialState = $state.current.name;
             };
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-
-            $httpBackend.flush();
         });
     });
 
@@ -283,6 +280,7 @@ describe('textUpdates: TextMultiController', function () {
         expect($scope.objects.objects[0].errors.length).toBe(0);
 
         $httpBackend.whenGET('api/whois/RIPE/person/MM1-RIPE?unfiltered=true&unformatted=true').respond(404, errorResponse);
+        $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.flush();
 
         expect($scope.objects.objects[0].rpslOriginal).toBeUndefined();

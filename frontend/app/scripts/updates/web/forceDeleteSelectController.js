@@ -26,7 +26,7 @@
             }
 
             function _navigateToForceDelete() {
-                $state.transitionTo(STATE.FORCE_DELETE, {
+                return $state.transitionTo(STATE.FORCE_DELETE, {
                     source: $scope.selected.source,
                     objectType: $scope.selected.objectType,
                     name: $scope.selected.name

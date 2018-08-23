@@ -61,7 +61,7 @@ angular.module('webUpdates').controller('ModalDeleteObjectController',
 
         function doCancel() {
             $modalInstance.close();
-            _transitionToState(source, $scope.objectType, $scope.name, $scope.onCancel);
+            return _transitionToState(source, $scope.objectType, $scope.name, $scope.onCancel);
         }
 
         function isEqualTo(selfType, selfName, ref) {
@@ -126,8 +126,8 @@ angular.module('webUpdates').controller('ModalDeleteObjectController',
         }
 
 
-        function _transitionToState(source, objectType, pkey, onCancel) {
-            $state.transitionTo(onCancel, {
+        function _transitionToState(source, objectType, pkey, state) {
+            return $state.transitionTo(state, {
                 source: source,
                 objectType: objectType,
                 name: pkey

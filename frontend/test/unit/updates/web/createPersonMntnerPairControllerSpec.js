@@ -86,9 +86,6 @@ describe('webUpdates: CreatePersonMntnerPair', function () {
                 });
             };
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-
-            $httpBackend.flush();
         });
     });
 
@@ -109,8 +106,6 @@ describe('webUpdates: CreatePersonMntnerPair', function () {
     });
 
     it('should be able to handle failing user-info-service', function () {
-        var stateBefore = $state.current.name;
-
         createController();
 
         $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
@@ -122,19 +117,20 @@ describe('webUpdates: CreatePersonMntnerPair', function () {
 
         expect($ctrl.AlertService.getErrors()[0].plainText).toEqual('Error fetching SSO information');
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
 
     it('should validate before submitting', function () {
-        var stateBefore = $state.current.name;
+        var stateBefore = $ctrl.$state.current.name;
 
         createController();
 
         $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
             return [200, userInfoData, {}];
         });
+// just submit
         $httpBackend.flush();
 
         $ctrl.submit();
@@ -144,8 +140,10 @@ describe('webUpdates: CreatePersonMntnerPair', function () {
         expect($ctrl.personAttributes.getSingleAttributeOnName('phone').$$error).toEqual('Mandatory attribute not set');
         expect($ctrl.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual('Mandatory attribute not set');
 
-        expect($state.current.name).toBe(stateBefore);
-        expect($stateParams.source).toBe(SOURCE);
+        expect($ctrl.$state.current.name).toBe(stateBefore);
+        expect($ctrl.source).toBe(SOURCE);
+
+//        $httpBackend.flush();
     });
 
     it('should pre-populate and submit ok', function () {
@@ -181,6 +179,7 @@ describe('webUpdates: CreatePersonMntnerPair', function () {
         $httpBackend.expectPOST('api/references/RIPE').respond(function () {
             return [200, personMntnerPair, {}];
         });
+        $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.flush();
 
         var cachedPerson = WhoisResources.wrapWhoisResources(MessageStore.get(PERSON_UID));
@@ -199,8 +198,6 @@ describe('webUpdates: CreatePersonMntnerPair', function () {
     });
 
     it('should handle submit failure', function () {
-        var stateBefore = $state.current.name;
-
         createController();
 
         $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function () {
@@ -236,7 +233,7 @@ describe('webUpdates: CreatePersonMntnerPair', function () {
         expect($ctrl.AlertService.getWarnings()[0].plainText).toEqual('Not authenticated');
         expect($ctrl.mntnerAttributes.getSingleAttributeOnName('mntner').$$error).toEqual('\'' + MNTNER_NAME + '\' is not valid for this object type');
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 

@@ -41,9 +41,6 @@ describe('webUpdates: ModalCreateRoleForAbuseCController', function () {
     });
 
     it('should create role with abuse-mailbox and close', function () {
-        $httpBackend.expectGET('scripts/updates/web/select.html').respond({});
-        $httpBackend.flush();
-
         controller.email = 'm@ripe.net';
         controller.create();
         $rootScope.$digest();
@@ -57,9 +54,6 @@ describe('webUpdates: ModalCreateRoleForAbuseCController', function () {
     });
 
     it('should remove mnt-by: RIPE-NCC-HM-MNT from creating role', function () {
-        $httpBackend.expectGET('scripts/updates/web/select.html').respond({});
-        $httpBackend.flush();
-
         controller.email = 'm@ripe.net';
         controller.create();
         $rootScope.$digest();

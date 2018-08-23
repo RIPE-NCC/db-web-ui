@@ -679,10 +679,6 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('Call rest backend with slash-escaped url', function () {
-        $httpBackend.flush();
-    });
-
 });
 
 describe('webUpdates: ModifyController for organisation', function () {

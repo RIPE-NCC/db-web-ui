@@ -66,8 +66,7 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.select', {
                     url: '/select',
-                    templateUrl: 'scripts/updates/web/select.html',
-                    controller: 'SelectController'
+                    template: '<select-component></select-component>'
                 })
                 .state('webupdates.createPersonMntnerPair', {
                     url: '/create/person/self',

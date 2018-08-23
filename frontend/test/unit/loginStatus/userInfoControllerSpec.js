@@ -38,10 +38,6 @@ describe('loginStatus: UserInfoController', function () {
                 });
             };
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-
-            $httpBackend.flush();
-
         });
     });
 

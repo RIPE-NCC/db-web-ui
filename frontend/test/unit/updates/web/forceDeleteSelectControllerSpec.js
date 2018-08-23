@@ -25,8 +25,6 @@ describe('webUpdates: ForceDeleteSelectController', function () {
             };
 
             $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
-
         });
     });
 
@@ -44,14 +42,14 @@ describe('webUpdates: ForceDeleteSelectController', function () {
             name: '127.0.0.1 - 127.0.0.10'
         };
 
-        $scope.navigateToForceDelete();
+        $scope.navigateToForceDelete().then(function() {
+            expect($state.current.name).toBe('webupdates.forceDelete');
+            expect($stateParams.source).toBe('RIPE');
+            expect($stateParams.objectType).toBe('inetnum');
+            expect($stateParams.name).toBe('127.0.0.1%20-%20127.0.0.10');
+        });
 
         $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.forceDelete');
-        expect($stateParams.source).toBe('RIPE');
-        expect($stateParams.objectType).toBe('inetnum');
-        expect($stateParams.name).toBe('127.0.0.1%20-%20127.0.0.10');
     });
 
 });

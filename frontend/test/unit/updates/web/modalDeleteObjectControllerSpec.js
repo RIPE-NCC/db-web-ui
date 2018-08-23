@@ -45,9 +45,6 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
                 source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
             });
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
-
         });
     });
 
@@ -182,9 +179,6 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
                 source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
             });
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
-
         });
     });
 
@@ -218,25 +212,23 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
     });
 
     it('should close the modal and return to modify when canceled', function () {
-
+        $httpBackend.whenGET(/.*.html/).respond(200);
         $scope.onCancel = 'webupdates.modify';
-        $scope.doCancel();
+        $scope.doCancel().then(function() {
+            expect($state.current.name).toBe('webupdates.modify');
+        });
         expect(modalInstance.close).toHaveBeenCalled();
-
         $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.modify');
     });
 
     it('should close the modal and return to force delete when canceled', function () {
-
+        $httpBackend.whenGET(/.*.html/).respond(200);
         $scope.onCancel = 'webupdates.forceDelete';
-        $scope.doCancel();
+        $scope.doCancel().then(function() {
+            expect($state.current.name).toBe('webupdates.forceDelete');
+        });
         expect(modalInstance.close).toHaveBeenCalled();
-
         $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.forceDelete');
     });
 
 });
@@ -298,10 +290,6 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
                 $scope: $scope, $state: $state, $log: logger, $uibModalInstance: modalInstance, RestService: RestService, CredentialService: CredentialsService,
                 source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
             });
-
-            $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
-
         });
     });
 
@@ -416,10 +404,6 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
                 $scope: $scope, $state: $state, $uibModalInstance: modalInstance, RestService: RestService, CredentialsService: CredentialsService,
                 source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
             });
-
-            $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
-
         });
     });
 
