@@ -1,6 +1,6 @@
 class CreatePersonMntnerPairController {
 
-    public static inject = ["$state", "$log", "Properties",
+    public static $inject = ["$state", "$log", "Properties",
         "WhoisResources", "AlertService", "UserInfoService", "RestService", "MessageStore", "ErrorReporterService", "LinkService"];
 
     public submitInProgress: boolean;

@@ -1,9 +1,9 @@
 /*global afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
-describe('webUpdates: DisplayController', function () {
+describe('webUpdates: DisplayComponent', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var OBJECT_TYPE = 'as-block';
@@ -12,14 +12,12 @@ describe('webUpdates: DisplayController', function () {
     var MNTNER = 'TEST-MNT';
     var objectToDisplay;
     var createDisplayController;
+    var $ctrl;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
-
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
@@ -52,8 +50,8 @@ describe('webUpdates: DisplayController', function () {
                 $stateParams.name = OBJECT_NAME;
 
 
-                _$controller_('DisplayController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams
+                $ctrl = _$componentController_('displayComponent', {
+                    $state: $state, $stateParams: $stateParams
                 });
             };
 
@@ -88,7 +86,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.objectSource).toBe(SOURCE);
+        expect($ctrl.objectSource).toBe(SOURCE);
     });
 
     it('should get objectType from url', function () {
@@ -97,7 +95,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.objectType).toBe(OBJECT_TYPE);
+        expect($ctrl.objectType).toBe(OBJECT_TYPE);
     });
 
     it('should get objectName from url', function () {
@@ -106,7 +104,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.objectName).toBe(OBJECT_NAME);
+        expect($ctrl.objectName).toBe(OBJECT_NAME);
     });
 
     it('should detect logged in', function() {
@@ -115,7 +113,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.loggedIn).toBe(true);
+        expect($ctrl.loggedIn).toBe(true);
     });
 
     it('should populate the ui from message-store', function () {
@@ -124,9 +122,9 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
         expect($state.current.name).toBe('webupdates.select');
 
@@ -144,9 +142,9 @@ describe('webUpdates: DisplayController', function () {
 
         $httpBackend.flush();
 
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
         expect($state.current.name).toBe('webupdates.select');
 
@@ -178,8 +176,8 @@ describe('webUpdates: DisplayController', function () {
 
         $httpBackend.flush();
 
-        expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
-        expect($scope.warnings[0].plainText).toEqual('Not authenticated');
+        expect($ctrl.AlertService.getErrors()[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
+        expect($ctrl.AlertService.getWarnings()[0].plainText).toEqual('Not authenticated');
 
         expect($state.current.name).toBe('webupdates.select');
 
@@ -191,7 +189,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        $scope.navigateToSelect().then(function() {
+        $ctrl.navigateToSelect().then(function() {
             expect($state.current.name).toBe('webupdates.select');
         });
 
@@ -204,7 +202,7 @@ describe('webUpdates: DisplayController', function () {
         expectUserInfo(true);
 
         $httpBackend.whenGET(/.*.html/).respond(200);
-        $scope.navigateToModify().then(function() {
+        $ctrl.navigateToModify().then(function() {
             expect($state.current.name).toBe('webupdates.modify');
             expect($stateParams.source).toBe(SOURCE);
             expect($stateParams.objectType).toBe(OBJECT_TYPE);
@@ -219,9 +217,9 @@ describe('webUpdates: DisplayController', function () {
 });
 
 
-describe('webUpdates: DisplayController with object containing slash', function () {
+describe('webUpdates: DisplayComponent with object containing slash', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var SOURCE = 'RIPE';
@@ -230,14 +228,12 @@ describe('webUpdates: DisplayController with object containing slash', function 
     var MNTNER = 'TEST-MNT';
     var objectToDisplay;
     var createDisplayController;
+    var $ctrl;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
-
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -270,8 +266,8 @@ describe('webUpdates: DisplayController with object containing slash', function 
                 $stateParams.name = OBJECT_NAME;
 
 
-                _$controller_('DisplayController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams
+                $ctrl = _$componentController_('displayComponent', {
+                    $state: $state, $stateParams: $stateParams
                 });
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
@@ -316,9 +312,9 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         $httpBackend.flush();
 
-        expect($scope.attributes.getSingleAttributeOnName('route').value).toBe(OBJECT_NAME);
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.attributes.getSingleAttributeOnName('route').value).toBe(OBJECT_NAME);
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
     });
 
@@ -334,7 +330,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         $httpBackend.flush();
 
-        $scope.navigateToModify();
+        $ctrl.navigateToModify();
 
         $httpBackend.flush();
 
@@ -357,7 +353,7 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         $httpBackend.flush();
 
-        $scope.navigateToSelect().then(function() {
+        $ctrl.navigateToSelect().then(function() {
             expect($state.current.name).toBe('webupdates.select');
         });
 

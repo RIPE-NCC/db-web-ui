@@ -94,8 +94,7 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.display', {
                     url: '/display/:source/:objectType/{name:WhoisObjectName}?method',
-                    templateUrl: 'scripts/updates/web/display.html',
-                    controller: 'DisplayController'
+                    template: '<display-component></display-component>'
                 })
                 .state('webupdates.delete', {
                     url: '/delete/:source/:objectType/{name:WhoisObjectName}?onCancel',

@@ -127,7 +127,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('upd-to');
 
         $scope.submit();
-        $httpBackend.flush();
+//        $httpBackend.flush();
 
         expect(updTo.value).toEqual('tdacruzper@ripe.net');
     });
@@ -138,7 +138,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('auth');
 
         $scope.submit();
-        $httpBackend.flush();
+        // $httpBackend.flush();
 
         expect(updTo.value).toEqual('SSO tdacruzper@ripe.net');
     });
@@ -150,7 +150,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         var mntBy = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('mnt-by');
 
         $scope.submit();
-        $httpBackend.flush();
+        // $httpBackend.flush();
 
         expect(mntBy.value).toEqual('SOME-MNT');
     });
@@ -161,7 +161,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('source');
 
         $scope.submit();
-        $httpBackend.flush();
+        // $httpBackend.flush();
 
         expect(updTo.value).toEqual(SOURCE);
     });
@@ -173,7 +173,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
         $scope.submit();
 
-        $httpBackend.flush();
+        // $httpBackend.flush();
 
         var obj = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
         expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', obj);
