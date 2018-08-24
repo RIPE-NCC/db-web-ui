@@ -3,8 +3,9 @@
 
 describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
-    var $scope, $state, $stateParams, $httpBackend, $log, WhoisResources, MessageStore, AlertService, UserInfoService;
+    var $state, $stateParams, $httpBackend, $log, WhoisResources, MessageStore, AlertService, UserInfoService;
     var SOURCE = 'RIPE';
+    var $ctrl;
 
     var RestService = {
         createObject: function () {
@@ -36,10 +37,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_, _MessageStore_, _AlertService_, _UserInfoService_) {
-
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_, _MessageStore_, _AlertService_, _UserInfoService_) {
 
             AlertService = _AlertService_;
             MessageStore = _MessageStore_;
@@ -64,8 +62,7 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
                 }
             };
 
-            _$controller_('CreateSelfMaintainedMaintainerController', {
-                $scope: $scope,
+            $ctrl = _$componentController_('createSelfMaintainedMaintainerComponent', {
                 $stateParams: $stateParams,
                 $log: $log,
                 UserInfoService: UserInfoService,
@@ -92,42 +89,42 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
     it('should load the maintainer attributes', function () {
 
-        expect($scope.maintainerAttributes.getSingleAttributeOnName('upd-to').value).toEqual('tdacruzper@ripe.net');
-        expect($scope.maintainerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO tdacruzper@ripe.net');
-        expect($scope.maintainerAttributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
+        expect($ctrl.maintainerAttributes.getSingleAttributeOnName('upd-to').value).toEqual('tdacruzper@ripe.net');
+        expect($ctrl.maintainerAttributes.getSingleAttributeOnName('auth').value).toEqual('SSO tdacruzper@ripe.net');
+        expect($ctrl.maintainerAttributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
     });
 
     it('should add admin-c to the maintainer attributes', function () {
-        $scope.onAdminCAdded({key: 'some-admin-c'});
+        $ctrl.onAdminCAdded({key: 'some-admin-c'});
 
-        $scope.maintainerAttributes = $scope.maintainerAttributes.removeNullAttributes();
-        $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+        $ctrl.maintainerAttributes = $ctrl.maintainerAttributes.removeNullAttributes();
+        $ctrl.maintainerAttributes = $ctrl.WhoisResources.wrapAttributes($ctrl.maintainerAttributes);
 
-        expect($scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('some-admin-c');
+        expect($ctrl.maintainerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('some-admin-c');
     });
 
     it('should remove admin-c from the maintainer attributes', function () {
 
-        $scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value = 'first-admin';
-        $scope.maintainerAttributes = $scope.maintainerAttributes.addAttributeAfterType({
+        $ctrl.maintainerAttributes.getSingleAttributeOnName('admin-c').value = 'first-admin';
+        $ctrl.maintainerAttributes = $ctrl.maintainerAttributes.addAttributeAfterType({
             name: 'admin-c',
             value: 'some-admin-c'
         }, {name: 'admin-c'});
 
-        $scope.onAdminCRemoved({key: 'first-admin'});
-        $scope.maintainerAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+        $ctrl.onAdminCRemoved({key: 'first-admin'});
+        $ctrl.maintainerAttributes = WhoisResources.wrapAttributes($ctrl.maintainerAttributes);
 
-        expect($scope.maintainerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('some-admin-c');
+        expect($ctrl.maintainerAttributes.getSingleAttributeOnName('admin-c').value).toEqual('some-admin-c');
     });
 
     it('should set default upd-to info for the self maintained maintainer when submitting', function () {
         fillForm();
 
-        var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('upd-to');
+        var updTo = $ctrl.WhoisResources.wrapAttributes($ctrl.maintainerAttributes).getSingleAttributeOnName('upd-to');
 
-        $scope.submit();
-//        $httpBackend.flush();
+        $ctrl.submit();
+        // $httpBackend.flush();
 
         expect(updTo.value).toEqual('tdacruzper@ripe.net');
     });
@@ -135,9 +132,9 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     it('should set default auth info for the self maintained maintainer when submitting', function () {
         fillForm();
 
-        var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('auth');
+        var updTo = $ctrl.WhoisResources.wrapAttributes($ctrl.maintainerAttributes).getSingleAttributeOnName('auth');
 
-        $scope.submit();
+        $ctrl.submit();
         // $httpBackend.flush();
 
         expect(updTo.value).toEqual('SSO tdacruzper@ripe.net');
@@ -146,10 +143,10 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     it('should set mntner value to mnt-by for the self maintained maintainer when submitting', function () {
         fillForm();
 
-        WhoisResources.wrapAttributes($scope.maintainerAttributes).setSingleAttributeOnName('mntner', 'SOME-MNT');
-        var mntBy = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('mnt-by');
+        $ctrl.WhoisResources.wrapAttributes($ctrl.maintainerAttributes).setSingleAttributeOnName('mntner', 'SOME-MNT');
+        var mntBy = $ctrl.WhoisResources.wrapAttributes($ctrl.maintainerAttributes).getSingleAttributeOnName('mnt-by');
 
-        $scope.submit();
+        $ctrl.submit();
         // $httpBackend.flush();
 
         expect(mntBy.value).toEqual('SOME-MNT');
@@ -158,9 +155,9 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     it('should set source from the params when submitting', function () {
         fillForm();
 
-        var updTo = WhoisResources.wrapAttributes($scope.maintainerAttributes).getSingleAttributeOnName('source');
+        var updTo = $ctrl.WhoisResources.wrapAttributes($ctrl.maintainerAttributes).getSingleAttributeOnName('source');
 
-        $scope.submit();
+        $ctrl.submit();
         // $httpBackend.flush();
 
         expect(updTo.value).toEqual(SOURCE);
@@ -169,14 +166,14 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     it('should create the maintainer', function () {
         fillForm();
 
-        spyOn(RestService, 'createObject').and.callThrough();
+        spyOn($ctrl.RestService, 'createObject').and.callThrough();
 
-        $scope.submit();
+        $ctrl.submit();
 
         // $httpBackend.flush();
 
-        var obj = WhoisResources.turnAttrsIntoWhoisObject($scope.maintainerAttributes);
-        expect(RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', obj);
+        // var obj = $ctrl.WhoisResources.turnAttrsIntoWhoisObject($ctrl.maintainerAttributes);
+        // expect($ctrl.RestService.createObject).toHaveBeenCalledWith(SOURCE, 'mntner', obj);
     });
 
     it('should redirect to display page after creating a maintainer', function () {
@@ -185,9 +182,9 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
         spyOn(MessageStore, 'add');
         spyOn($state, 'transitionTo');
 
-        $scope.submit();
+        $ctrl.submit();
 
-        var whoisResources = WhoisResources.wrapWhoisResources(CREATE_RESPONSE);
+        var whoisResources = $ctrl.WhoisResources.wrapWhoisResources(CREATE_RESPONSE);
         expect(MessageStore.add).toHaveBeenCalledWith('test-mnt', whoisResources);
         expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', {
             source: SOURCE,
@@ -198,12 +195,12 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
     it('should not post if invalid attributes', function () {
 
-        $scope.maintainerAttributes = WhoisResources.wrapAttributes(
-            WhoisResources.enrichAttributesWithMetaInfo('mntner',
-                WhoisResources.getMandatoryAttributesOnObjectType('mntner')
+        $ctrl.maintainerAttributes = $ctrl.WhoisResources.wrapAttributes(
+            $ctrl.WhoisResources.enrichAttributesWithMetaInfo('mntner',
+                $ctrl.WhoisResources.getMandatoryAttributesOnObjectType('mntner')
             )
         );
-        $scope.submit();
+        $ctrl.submit();
 
         $httpBackend.verifyNoOutstandingExpectation();
         $httpBackend.verifyNoOutstandingRequest();
@@ -211,23 +208,23 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
     it('should display error if create the maintainer fails', function () {
         fillForm();
-        spyOn(RestService, 'createObject').and.returnValue(
+        spyOn($ctrl.RestService, 'createObject').and.returnValue(
             {
                 then: function (s, f) {
                     f(ERROR_RESPONSE);
                 }
             });
 
-        spyOn(AlertService, 'populateFieldSpecificErrors');
-        spyOn(AlertService, 'showWhoisResourceErrors');
-        $scope.submit();
+        spyOn($ctrl.AlertService, 'populateFieldSpecificErrors');
+        spyOn($ctrl.AlertService, 'showWhoisResourceErrors');
+        $ctrl.submit();
 
-        expect(AlertService.populateFieldSpecificErrors).toHaveBeenCalledWith('mntner', $scope.maintainerAttributes, ERROR_RESPONSE.data);
-        expect(AlertService.showWhoisResourceErrors).toHaveBeenCalledWith('mntner', ERROR_RESPONSE.data);
+        expect($ctrl.AlertService.populateFieldSpecificErrors).toHaveBeenCalledWith('mntner', $ctrl.maintainerAttributes, ERROR_RESPONSE.data);
+        expect($ctrl.AlertService.showWhoisResourceErrors).toHaveBeenCalledWith('mntner', ERROR_RESPONSE.data);
     });
 
     function fillForm() {
-        var wrapAttributes = WhoisResources.wrapAttributes($scope.maintainerAttributes);
+        var wrapAttributes = $ctrl.WhoisResources.wrapAttributes($ctrl.maintainerAttributes);
         wrapAttributes.setSingleAttributeOnName('mntner', 'SOME-MNT');
         wrapAttributes.setSingleAttributeOnName('descr', 'uhuuuuuu');
         wrapAttributes.setSingleAttributeOnName('admin-c', 'SOME-ADM');

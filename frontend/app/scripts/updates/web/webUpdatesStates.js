@@ -78,8 +78,7 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.createSelfMnt', {
                     url: '/create/:source/mntner/self?admin',
-                    templateUrl: 'scripts/updates/web/createSelfMaintainedMaintainer.html',
-                    controller: 'CreateSelfMaintainedMaintainerController'
+                    template: '<create-self-maintained-maintainer-component></create-self-maintained-maintainer-component>',
                 })
                 .state('webupdates.create', {
                     url: '/create/:source/:objectType?noRedirect',

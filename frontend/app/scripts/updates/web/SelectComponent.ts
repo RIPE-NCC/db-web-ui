@@ -13,12 +13,12 @@ class SelectController {
                 public WhoisResources: any,
                 public UserInfoService: UserInfoService,
                 public Properties: IProperties) {
-    }
-
-    /*
-     * UI initialisation
-     */
-    public $onInit() {
+    // }
+    //
+    // /*
+    //  * UI initialisation
+    //  */
+    // public $onInit() {
         this.objectTypes = this.filterObjectTypes(this.WhoisResources.getObjectTypes());
         this.UserInfoService.getUserOrgsAndRoles().then(() => {
                 this.loggedIn = true;
