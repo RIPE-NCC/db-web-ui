@@ -45,7 +45,7 @@ class UserInfoService {
                 this.deferred.resolve(
                     this.$http({
                         method: "GET",
-                        timeout: 10000,
+                        timeout: 30000,
                         url: "api/whois-internal/api/user/info",
                     }).then((response: ng.IHttpPromiseCallbackArg<IUserInfoResponseData>) => {
                         this.userInfo = response.data;
