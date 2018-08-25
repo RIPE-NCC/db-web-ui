@@ -72,7 +72,9 @@ describe('The inetnum editor', function () {
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
         expect(page.modalBody.getText()).toContain('You have not supplied the correct password for mntner');
+        page.scrollIntoView(page.modalClose);
         page.modalClose.click();
+        expect(page.modal.isPresent()).toBe(false);
         page.inpNetname.sendKeys('bogus-netname1');
         page.scrollIntoView(page.inpCountry); // let's have a look at that link
         page.inpCountry.click();

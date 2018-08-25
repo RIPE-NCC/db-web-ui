@@ -254,4 +254,63 @@ describe('My Resources detail', function () {
             expect(page.flags.get(3).getText()).toEqual('NCC#201001020355');
         });
     });
+
+    describe('for out of region aut-num', function () {
+
+        beforeEach(function () {
+            browser.get(browser.baseUrl + '#/myresources/detail/aut-num/AS36867/');
+        });
+
+        it('should show out of region aut-num', function () {
+            let whoisObject = page.getWhoisObject();
+            let attributes = whoisObject.attributes();
+            expect(whoisObject.isPresent()).toEqual(true);
+            expect(attributes.count()).toEqual(12);
+            expect(attributes.get(0).getText()).toMatch(/aut-num: *AS36867/);
+            expect(attributes.get(1).getText()).toMatch(/as-name: *Kokonet-BGP/);
+            expect(attributes.get(2).getText()).toMatch(/descr: *Kokonet Ltd Seychelles ISP/);
+            expect(attributes.get(3).getText()).toMatch(/org: *ORG-Sb3-RIPE/);
+            expect(attributes.get(4).getText()).toMatch(/admin-c: *SNS1-RIPE/);
+            expect(attributes.get(5).getText()).toMatch(/tech-c: *JK9622-RIPE/);
+            expect(attributes.get(6).getText()).toMatch(/status: *OTHER/);
+            expect(attributes.get(11).getText()).toMatch(/source: *RIPE-NONAUTH/);
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(0).getAttribute('href')).toContain('?source=ripe-nonauth&key=AS36867&type=aut-num');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(3).getAttribute('href')).toContain('?source=RIPE&key=ORG-Sb3-RIPE&type=organisation');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(4).getAttribute('href')).toContain('?source=RIPE&key=SNS1-RIPE&type=role');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(5).getAttribute('href')).toContain('?source=RIPE&key=JK9622-RIPE&type=person');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(7).getAttribute('href')).toContain('?source=RIPE&key=KOKONET-MNT&type=mntner');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(8).getAttribute('href')).toContain('?source=RIPE&key=RIPE-NCC-RPSL-MNT&type=mntner');
+        });
+
+        it('should edit and update out of region aut-num', function () {
+            page.scrollIntoView(page.btnUpdateObjectButton);
+            page.btnUpdateObjectButton.click();
+            expect(page.inpDescr.isPresent()).toBe(true);
+            page.scrollIntoView(page.inpDescr);
+            page.inpDescr.sendKeys('Updated test description');
+
+            page.btnAddAnAttribute(page.inpDescr).click();
+            page.scrollIntoView(page.modal);
+            page.modalBtnSubmit.click();
+            expect(page.modal.isPresent()).toEqual(false);
+
+            expect(page.inpDescr2.isPresent()).toBe(true);
+            page.btnRemoveAttribute(page.inpDescr2).click();
+            expect(page.inpDescr2.isPresent()).toBe(false);
+
+            // source field should be disabled
+            expect(page.woeSource.getAttribute('disabled')).toBeTruthy();
+
+            page.scrollIntoView(page.btnSubmitObject);
+            page.btnSubmitObject.click();
+            expect(page.successMessage.isPresent()).toBe(true);
+        });
+
+        it('should contain 2 flags', function () {
+            expect(page.flagsContainer.isPresent()).toEqual(true);
+            expect(page.flags.count()).toEqual(2);
+            expect(page.flags.get(0).getText()).toEqual('OTHER');
+            expect(page.flags.get(1).getText()).toEqual('KOKONET-BGP');
+        });
+    });
 });

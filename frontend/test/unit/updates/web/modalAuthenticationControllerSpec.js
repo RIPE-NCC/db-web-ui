@@ -1,31 +1,22 @@
 /*global afterEach, beforeEach, describe, expect, inject, it, jasmine, module*/
 'use strict';
 
-describe('webUpdates: ModalAuthenticationController', function () {
+describe('webUpdates: ModalAuthenticationComponent', function () {
 
-    var $scope, $log, modalInstance, WhoisResources, RestService, userInfoService, credentialsService, $httpBackend;
-    var source = 'RIPE';
+    var $componentController, ctrl;
+    var $log, WhoisResources, RestService, userInfoService, credentialsService, $httpBackend, properties;
     var mntners, mntnersWithoutPassword;
+    var param, bindings;
 
     beforeEach(function () {
         module('webUpdates');
-
-        inject(function (_$controller_, _$rootScope_, _$log_,_WhoisResources_,_RestService_, _$httpBackend_,_UserInfoService_) {
-
-            $scope = _$rootScope_.$new();
+        inject(function (_$componentController_, _$log_,_WhoisResources_,_RestService_, _$httpBackend_,_UserInfoService_, _Properties_) {
             $log = _$log_;
             WhoisResources = _WhoisResources_;
             RestService = _RestService_;
             $httpBackend = _$httpBackend_;
             userInfoService = _UserInfoService_;
-
-            modalInstance = {
-                close: jasmine.createSpy('modalInstance.close'),
-                dismiss: jasmine.createSpy('modalInstance.dismiss'),
-                result: {
-                    then: jasmine.createSpy('modalInstance.result.then')
-                }
-            };
+            properties = _Properties_;
 
             credentialsService = {
                 setCredentials: jasmine.createSpy('credentialsService.setCredentials'),
@@ -34,16 +25,25 @@ describe('webUpdates: ModalAuthenticationController', function () {
                 getCredentials: jasmine.createSpy('credentialsService.getCredentials')
             };
 
+            $componentController = _$componentController_;
             mntners = [ {type:'mntner', key:'a-mnt', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
             mntnersWithoutPassword = [ {type:'mntner', key:'z-mnt', auth:['SSO']} ];
-
-            _$controller_('ModalAuthenticationController', {
-                $scope: $scope, $log: $log, $uibModalInstance: modalInstance, WhoisResources:WhoisResources,
-                RestService:RestService, UserInfoService:userInfoService, CredentialsService:credentialsService,
-                method:'PUT', source: source, objectType: 'mntner', objectName: 'someName', mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword,
-                allowForcedDelete: false,
-                isLirObject: false
-            });
+            param = {
+                $log: $log,
+                WhoisResources:WhoisResources,
+                RestService:RestService,
+                UserInfoService:userInfoService,
+                CredentialsService:credentialsService,
+                properties: properties,
+                };
+            bindings = {
+                close: jasmine.createSpy('modalInstance.close'),
+                dismiss: jasmine.createSpy('modalInstance.dismiss'),
+                resolve: {
+                    method:'PUT', source: source, objectType: 'mntner', objectName: 'someName', mntners: mntners, mntnersWithoutPassword: mntnersWithoutPassword,
+                    allowForcedDelete: false,
+                    isLirObject: false
+                }};
 
             $httpBackend.whenGET('api/whois-internal/api/user/info').respond({
                 user: {
@@ -58,18 +58,21 @@ describe('webUpdates: ModalAuthenticationController', function () {
     });
 
     it('should detect empty password', function () {
-        $scope.selected.item = {type: 'mntner', key: 'b-mnt'};
-        $scope.selected.password = '';
-        $scope.selected.associate = false;
-
-        $scope.ok();
-        expect($scope.selected.message).toEqual('Password for mntner: \'b-mnt\' too short');
+        ctrl = $componentController('modalAuthentication', param, bindings);
+        ctrl.$onInit();
+        ctrl.selected.item = {type: 'mntner', key: 'b-mnt'};
+        ctrl.selected.password = '';
+        ctrl.selected.associate = false;
+        ctrl.ok();
+        expect(ctrl.selected.message).toEqual('Password for mntner: \'b-mnt\' too short');
     });
 
     it('should detect invalid password', function () {
-        $scope.selected.item = { type:'mntner', key:'b-mnt'};
-        $scope.selected.password = 'secret';
-        $scope.selected.associate = false;
+        ctrl = $componentController('modalAuthentication', param, bindings);
+        ctrl.$onInit();
+        ctrl.selected.item = { type:'mntner', key:'b-mnt'};
+        ctrl.selected.password = 'secret';
+        ctrl.selected.associate = false;
 
         $httpBackend.expectGET('api/whois/RIPE/mntner/b-mnt?password=secret&unfiltered=true').respond({
             objects: {
@@ -89,17 +92,19 @@ describe('webUpdates: ModalAuthenticationController', function () {
             }
         });
 
-        $scope.ok();
+        ctrl.ok();
         $httpBackend.flush();
 
-        expect($scope.selected.message).toEqual('You have not supplied the correct password for mntner: \'b-mnt\'');
+        expect(ctrl.selected.message).toEqual('You have not supplied the correct password for mntner: \'b-mnt\'');
 
     });
 
     it('should close the modal and return selected item when ok', function () {
-        $scope.selected.item = { type:'mntner', key:'b-mnt'};
-        $scope.selected.password = 'secret';
-        $scope.selected.associate = false;
+        ctrl = $componentController('modalAuthentication', param, bindings);
+        ctrl.$onInit();
+        ctrl.selected.item = { type:'mntner', key:'b-mnt'};
+        ctrl.selected.password = 'secret';
+        ctrl.selected.associate = false;
 
         $httpBackend.expectGET('api/whois/RIPE/mntner/b-mnt?password=secret&unfiltered=true').respond({
             objects: {
@@ -119,18 +124,20 @@ describe('webUpdates: ModalAuthenticationController', function () {
             }
         });
 
-        $scope.ok();
+        ctrl.ok();
         $httpBackend.flush();
 
         expect(credentialsService.setCredentials).toHaveBeenCalledWith( 'b-mnt', 'secret');
 
-        expect(modalInstance.close).toHaveBeenCalledWith( {selectedItem:{ type:'mntner', key:'b-mnt'}} );
+        expect(ctrl.close).toHaveBeenCalledWith( { $value: {selectedItem:{ type:'mntner', key:'b-mnt'}}} );
     });
 
     it('should associate and close the modal and return selected item when ok', function () {
-        $scope.selected.item = { type:'mntner', key:'b-mnt', auth: []};
-        $scope.selected.password = 'secret';
-        $scope.selected.associate = true;
+        ctrl = $componentController('modalAuthentication', param, bindings);
+        ctrl.$onInit();
+        ctrl.selected.item = { type:'mntner', key:'b-mnt', auth: []};
+        ctrl.selected.password = 'secret';
+        ctrl.selected.associate = true;
 
         $httpBackend.expectGET('api/whois/RIPE/mntner/b-mnt?password=secret&unfiltered=true').respond({
             objects: {
@@ -169,68 +176,65 @@ describe('webUpdates: ModalAuthenticationController', function () {
         };
         $httpBackend.expectPUT('api/whois/RIPE/mntner/b-mnt?password=secret').respond(resp);
 
-        $scope.ok();
+        ctrl.ok();
         $httpBackend.flush();
 
         expect(credentialsService.setCredentials).toHaveBeenCalledWith( 'b-mnt', 'secret');
         expect(credentialsService.removeCredentials).toHaveBeenCalled( );
 
-        expect(modalInstance.close).toHaveBeenCalledWith( { selectedItem:{type:'mntner', key:'b-mnt', auth: [ 'SSO' ], mine:true},
-                                    response: jasmine.any(Object)} );
+        expect(ctrl.close).toHaveBeenCalledWith({$value: { selectedItem:{type:'mntner', key:'b-mnt', auth: [ 'SSO' ], mine:true},
+                                    response: jasmine.any(Object)}});
     });
 
-
     it('should close the modal and return error when canceled', function () {
-        $scope.cancel();
-        expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
+        ctrl.cancel();
+        expect(ctrl.dismiss).toHaveBeenCalled();
     });
 
     it('should set mntnersWithoutPassword to the scope', function () {
-        expect($scope.mntnersWithoutPassword).toEqual(mntnersWithoutPassword);
+        expect(ctrl.resolve.mntnersWithoutPassword).toEqual(mntnersWithoutPassword);
     });
 
     xit('should allow force delete if objectType is inetnum', function () {
-        $scope.objectType = 'inetnum';
-        expect($scope.allowForceDelete()).toBe(true);
+        ctrl.objectType = 'inetnum';
+        expect(ctrl.allowForceDelete()).toBe(true);
     });
 
     xit('should allow force delete if objectType is inet6num', function () {
-        $scope.objectType = 'inet6num';
-        expect($scope.allowForceDelete()).toBe(true);
+        ctrl.objectType = 'inet6num';
+        expect(ctrl.allowForceDelete()).toBe(true);
     });
 
     xit('should allow force delete if objectType is route', function () {
-        $scope.objectType = 'route';
-        expect($scope.allowForceDelete()).toBe(true);
+        ctrl.objectType = 'route';
+        expect(ctrl.allowForceDelete()).toBe(true);
     });
 
     xit('should allow force delete if objectType is route6', function () {
-        $scope.objectType = 'route6';
-        expect($scope.allowForceDelete()).toBe(true);
+        ctrl.objectType = 'route6';
+        expect(ctrl.allowForceDelete()).toBe(true);
     });
 
     xit('should allow force delete if objectType is domain', function () {
-        $scope.objectType = 'domain';
-        expect($scope.allowForceDelete()).toBe(true);
+        ctrl.objectType = 'domain';
+        expect(ctrl.allowForceDelete()).toBe(true);
     });
 
     it('should not allow force delete if objectType has no name', function () {
-        $scope.objectType = 'inetnum';
-        delete $scope.objectName;
-        expect($scope.allowForceDelete()).toBe(false);
+        ctrl.objectType = 'inetnum';
+        delete ctrl.objectName;
+        expect(ctrl.allowForceDelete()).toBe(false);
     });
 
     it('should not allow force delete if objectType has empty name', function () {
-        $scope.objectType = 'inetnum';
-        $scope.objectName = '';
-        expect($scope.allowForceDelete()).toBe(false);
+        ctrl.objectType = 'inetnum';
+        ctrl.objectName = '';
+        expect(ctrl.allowForceDelete()).toBe(false);
     });
 
     it('should not allow force delete if objectType has RIPE-NCC-END-MNT', function () {
-        $scope.objectType = 'inetnum';
-        $scope.mntners = [ {type:'mntner', key:'RIPE-NCC-END-MNT', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
-        expect($scope.allowForceDelete()).toBe(false);
+        ctrl.objectType = 'inetnum';
+        ctrl.mntners = [ {type:'mntner', key:'RIPE-NCC-END-MNT', auth:['MD5-PW']}, {type:'mntner', name:'b-mnt', auth:['MD5-PW']} ];
+        expect(ctrl.allowForceDelete()).toBe(false);
     });
-
 });
-

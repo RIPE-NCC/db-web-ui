@@ -99,15 +99,22 @@ module.exports = {
     inpZoneC6: element(by.id('createForm')).element(by.name('zone-c$6')),
     inpReverseZoneTable: element(by.id('createForm')).element(by.css('table')),
     inpRemarks: element(by.id('createForm')).element(by.name('remarks')),
+    inpDescrCreateForm: element(by.id('createForm')).element(by.name('descr')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
+
+    inpAutnum: element(by.id('createForm')).element(by.name('aut-num')),
+    inpAsName: element(by.id('createForm')).element(by.name('as-name')),
 
     inpAdminC: element(by.id('createForm')).element(by.name('admin-c')),
     inpTechC: element(by.id('createForm')).element(by.name('tech-c')),
     inpCountry: element(by.id('createForm')).element(by.name('country')),
     inpCountryList: element(by.id('createForm')).element(by.name('country')).element(by.css('.ui-select-choices-group')).all(by.css('.ui-select-choices-row')),
     btnSubmitForm: element(by.id('btnSubmitCreate')),
+    inpRoute: element(by.id('createForm')).element(by.name('route')),
+    inpOrigin: element(by.id('createForm')).element(by.name('origin')),
     btnDeleteObject: element(by.id('deleteObject')),
     btnConfirmDeleteObject: element(by.id('btnConfirmDeleteObject')),
+    btnSubmitModify: element(by.id('btnSubmitModify')),
 
     btnModify: element(by.css('section.inner-container')).element(by.css('span[ng-show]')).element(by.css('button[ng-click]')),
     btnAddAttribute: element(by.id('createForm')).element(by.css('.attr-0')).element(by.css('.fa.fa-plus')),
@@ -116,12 +123,12 @@ module.exports = {
     modal: element(by.css('[uib-modal-window]')),
     modalAttributeList: element(by.css('[uib-modal-window]')).element(by.css('select')),
     modalEmail: element(by.css('[uib-modal-window]')).element(by.name('email')),
-    modalInpMaintainer: element(by.css('[uib-modal-window]')).element(by.model('selected.item')),
-    modalInpPassword: element(by.css('[uib-modal-window]')).element(by.model('selected.password')),
-    modalInpAssociate: element(by.css('[uib-modal-window]')).element(by.model('selected.associate')),
+    modalInpMaintainer: element(by.css('[uib-modal-window]')).element(by.model('$ctrl.selected.item')),
+    modalInpPassword: element(by.css('[uib-modal-window]')).element(by.model('$ctrl.selected.password')),
+    modalInpAssociate: element(by.css('[uib-modal-window]')).element(by.model('$ctrl.selected.associate')),
     modalOrg: element(by.css('[uib-modal-window]')).element(by.css("option[label='org']")),
     modalBtnSubmit: element(by.css('[uib-modal-window]')).element(by.css('button[type=submit]')),
-    modalClose: element(by.css('[uib-modal-window]')).element(by.css('.modal-header')).element(by.css('i[ng-click]')),
+    modalClose: element(by.css('[uib-modal-window]')).element(by.css('.modal-header')).element(by.css('.close')),
     modalBody: element(by.css('[uib-modal-window]')).element(by.css('.modal-body')),
     modalFooter: element(by.css('[uib-modal-window]')).element(by.css('.modal-footer')),
     modalSplashBtn: element(by.id('modal-splash-button')),
@@ -144,6 +151,7 @@ module.exports = {
 
     // My resources
     myResources: element(by.css('.my-resources')),
+    myResourcesTabs: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).all(by.css('.nav-item')),
     myResourcesActiveTabLabel: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).element(by.css('.nav-item.active')),
     myResourcesActiveTabContent: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).element(by.css('.tab-pane.active')),
     myResourcesActiveTabRows: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).element(by.css('.tab-pane.active')).all(by.css('resource-item')),
@@ -175,15 +183,19 @@ module.exports = {
     lookupPageObjectLi: element(by.css('whois-object-viewer')).all(by.css('li')),
     lookupHeader: element(by.css('lookup')).element(by.css('.lookupheader')),
     ripeManagedAttributesCheckbox: element(by.css('whois-object-viewer')).element(by.css('.checkbox')),
+    btnRipeStat: element(by.css('whois-object-viewer')).element(by.css('.ripe-stat-button')),
+    lookupLinkToXmlJSON: element(by.id('resultsSection')).element(by.css('.resultlinks')).all(by.css('a')),
 
     // Whois Object Editor
     inpDescr: element(by.css('whois-object-editor')).element(by.name('descr$2')),
     inpDescr2: element(by.css('whois-object-editor')).element(by.name('descr$3')),
     woeNetname: element(by.css('whois-object-editor')).element(by.name('netname$1')),
     woeOrg: element(by.css('whois-object-editor')).element(by.name('org$1')),
+    woeSource: element(by.css('whois-object-editor')).element(by.name('source$8')),
     woeBtnAddAttribute: element(by.css('whois-object-editor')).all(by.css('.fa.fa-plus')).first(),
     btnSubmitObject: element(by.css('whois-object-editor')).element(by.css('.blue-button')),
     successMessage: element(by.css('.alert-success')),
+    infoMessage: element(by.css('.alert-info')),
 
     // Query page
     inpQueryString: element(by.model('$ctrl.qp.queryText')),
@@ -192,8 +204,6 @@ module.exports = {
     btnSubmitQuery: element(by.name('searchform')).element(by.css('button.blue-button')),
     resultsSection: element(by.id('resultsSection')),
     searchResults: element(by.id('resultsSection')).all(by.css('lookup')),
-    ripeStateButtonInetnum: element(by.id('resultsSection')).all(by.css('lookup')).get(0).element(by.css('.ripe-stat-button')),
-    ripeStateButtonRoute: element(by.id('resultsSection')).all(by.css('lookup')).get(3).element(by.css('.ripe-stat-button')),
     queryParamTabs: element(by.name('searchform')).element(by.css('.nav.nav-tabs')).all(by.css('li')),
 
     // Syncupdate page
@@ -247,6 +257,33 @@ module.exports = {
 
     getContentInTableCell: function(tableCell, cssExpression) {
         return tableCell.element(by.css(cssExpression));
+    },
+
+    /*
+    orderNumber - number of whois object position between results objects on Query Page
+     */
+    getWhoisObjectViewerOnQueryPage: function(orderNumber) {
+        return this.searchResults.get(orderNumber).element(by.css('whois-object-viewer'))
+    },
+
+    /*
+    whoisViewerNumber - order number of whois object in search result on Query Page
+    attributeNumber - attribute order number in specified whois object on Query Page
+     */
+    getAttributeValueFromWhoisObjectOnQueryPage: function(whoisViewerNumber, attributeNumber) {
+        return this.getWhoisObjectViewerOnQueryPage(whoisViewerNumber).all(by.css('li')).get(attributeNumber).element(by.css('span'));
+    },
+
+    getAttributeHrefFromWhoisObjectOnQueryPage: function(whoisViewerNumber, attributeNumber) {
+        return this.getWhoisObjectViewerOnQueryPage(whoisViewerNumber).all(by.css('li')).get(attributeNumber).element(by.css('a'));
+    },
+
+    getRipeStateFromWhoisObjectOnQueryPage: function(whoisViewerNumber) {
+        return this.searchResults.get(whoisViewerNumber).element(by.css('.ripe-stat-button'))
+    },
+
+    getAttributeHrefFromWhoisObjectOnLookupPage: function(attributeNumber) {
+        return this.lookupPageObjectLi.get(attributeNumber).element(by.css('a'));
     },
 
     /**
@@ -323,6 +360,7 @@ module.exports = {
             el.scrollIntoView();
         }, el.getWebElement());
     },
+
     getWhoisObject: function (parent) {
         return new GetWhoisObject(parent);
     }
