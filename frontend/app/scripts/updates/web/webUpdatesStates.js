@@ -101,8 +101,7 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.forceDeleteSelect', {
                     url: '/forceDeleteSelect',
-                    templateUrl: 'scripts/updates/web/forceDeleteSelect.html',
-                    controller: 'ForceDeleteSelectController'
+                    template: '<force-delete-select></force-delete-select>',
                 })
                 .state('webupdates.forceDelete', {
                     url: '/forceDelete/:source/:objectType/{name:WhoisObjectName}',

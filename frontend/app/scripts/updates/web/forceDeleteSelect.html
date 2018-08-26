@@ -6,9 +6,9 @@
     <section>
         <div>
             <label>Object type</label>
-            <select ng-model="selected.objectType"
+            <select ng-model="$ctrl.selected.objectType"
                     ng-required="true"
-                    ng-options="objectType for objectType in objectTypes" class="form-control select-height"></select>
+                    ng-options="objectType for objectType in $ctrl.objectTypes" class="form-control select-height"></select>
             <br/>
             <label>Object key to be deleted with force</label>
             <span ng-if="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
@@ -23,7 +23,7 @@
 
     <section>
         <br/>
-        <input type="submit" ng-click="navigateToForceDelete()" ng-disabled="!isFormValid()" class="blue-button pull-right ga-createobj-create" value="Force delete">
+        <input type="submit" ng-click="$ctrl.navigateToForceDelete()" ng-disabled="!$ctrl.isFormValid()" class="blue-button pull-right ga-createobj-create" value="Force delete">
 
     </section>
 </div>
