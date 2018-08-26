@@ -54,6 +54,8 @@ class OrgDropDownController {
 
 }
 
-angular
-    .module("dbWebApp")
-    .controller("OrgDropDownController", OrgDropDownController);
+angular.module("dbWebApp")
+    .component("orgDropDown", {
+        controller: OrgDropDownController,
+        templateUrl: "scripts/dropdown/org-drop-down.html",
+    });
