@@ -22,7 +22,7 @@ class AlertService {
         this.$rootScope.infos = [];
     }
 
-    public hasErrors() {
+    public hasErrors(): boolean {
         return this.$rootScope.errors.length > 0;
     }
 

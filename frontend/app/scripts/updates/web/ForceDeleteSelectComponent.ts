@@ -33,7 +33,7 @@ class ForceDeleteSelectController {
     }
 }
 
-angular.module("dbWebApp")
+angular.module("webUpdates")
     .component("forceDeleteSelect", {
         controller: ForceDeleteSelectController,
         templateUrl: "scripts/updates/web/forceDeleteSelect.html",

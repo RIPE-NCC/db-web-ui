@@ -170,7 +170,7 @@ class RestService {
         return deferredObject.promise;
     }
 
-    public fetchObject(source: string, objectType: string, objectName: string, passwords: string, unformatted: any) {
+    public fetchObject(source: string, objectType: string, objectName: string, passwords?: string, unformatted?: any) {
         const deferredObject = this.$q.defer();
 
         this.$resource("api/whois/:source/:objectType/:name", {

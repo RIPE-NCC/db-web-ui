@@ -105,8 +105,7 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.forceDelete', {
                     url: '/forceDelete/:source/:objectType/{name:WhoisObjectName}',
-                    templateUrl: 'scripts/updates/web/forceDelete.html',
-                    controller: 'ForceDeleteController'
+                    template: '<force-delete></force-delete>',
                 })
                 .state('lookup', {
                     url: '/lookup?source&key&type',

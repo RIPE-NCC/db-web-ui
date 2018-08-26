@@ -13,16 +13,15 @@ var logger = {
     }
 };
 
-describe('webUpdates: ForceDeleteController', function () {
-    var $scope, $state, $stateParams, $httpBackend;
+fdescribe('webUpdates: ForceDeleteController', function () {
+    var $ctrl, $state, $stateParams, $httpBackend;
     var WhoisResources;
     var ModalService;
     var AlertService;
     var MntnerService;
     var CredentialsService;
 
-    var $rootScope;
-    var $controller;
+    var $componentController;
 
     var INETNUM = '111 - 255';
     var SOURCE = 'RIPE';
@@ -34,19 +33,16 @@ describe('webUpdates: ForceDeleteController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_, _AlertService_, _MntnerService_, _CredentialsService_) {
-
-            $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_, _AlertService_, _MntnerService_, _CredentialsService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            $controller = _$controller_;
-            ModalService = _ModalService_;
+            $componentController = _$componentController_;
+            // ModalService = _ModalService_;
             WhoisResources = _WhoisResources_;
-            AlertService = _AlertService_;
-            MntnerService = _MntnerService_;
+            // AlertService = _AlertService_;
+            // MntnerService = _MntnerService_;
             CredentialsService = _CredentialsService_;
 
 
@@ -129,8 +125,8 @@ describe('webUpdates: ForceDeleteController', function () {
                 $stateParams.objectType = 'inetnum';
                 $stateParams.name = '111%20-%20255';
 
-                _$controller_('ForceDeleteController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams, $log: logger
+                $ctrl = _$componentController_('forceDelete', {
+                    $state: $state, $stateParams: $stateParams, $log: logger
                 });
 
                 $httpBackend.flush();
@@ -148,26 +144,26 @@ describe('webUpdates: ForceDeleteController', function () {
 
         createForceDeleteController();
 
-        expect($scope.object.type).toBe('inetnum');
-        expect($scope.object.source).toBe(SOURCE);
-        expect($scope.object.name).toBe(INETNUM);
+        expect($ctrl.object.type).toBe('inetnum');
+        expect($ctrl.object.source).toBe(SOURCE);
+        expect($ctrl.object.name).toBe(INETNUM);
     });
 
     it('should populate the ui with attributes', function () {
         createForceDeleteController();
 
-        expect($scope.object.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
-        expect($scope.object.attributes.getSingleAttributeOnName('descr').value).toEqual('description');
-        expect($scope.object.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.object.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
+        expect($ctrl.object.attributes.getSingleAttributeOnName('descr').value).toEqual('description');
+        expect($ctrl.object.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
     });
 
     it('should transition to display state if cancel is pressed', function () {
         createForceDeleteController();
-        spyOn($state, 'transitionTo');
+        spyOn($ctrl.$state, 'transitionTo');
 
-        $scope.cancel();
+        $ctrl.cancel();
 
-        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', {
+        expect($ctrl.$state.transitionTo).toHaveBeenCalledWith('webupdates.display', {
             source: SOURCE,
             objectType: 'inetnum',
             name: INETNUM,
@@ -181,11 +177,11 @@ describe('webUpdates: ForceDeleteController', function () {
         $stateParams.objectType = 'mntner';
         $stateParams.name = 'TPOLYCHNIA-MNT';
 
-        $controller('ForceDeleteController', {
-            $scope: $scope, $state: $state, $stateParams: $stateParams
+        $ctrl = $componentController('forceDelete', {
+            $state: $state, $stateParams: $stateParams
         });
 
-        expect($rootScope.errors[0].plainText)
+        expect($ctrl.AlertService.getErrors()[0].plainText)
             .toBe('Only inetnum, inet6num, route, route6, domain object types are force-deletable');
     });
 
@@ -196,11 +192,11 @@ describe('webUpdates: ForceDeleteController', function () {
         $stateParams.objectType = 'inetnum';
         $stateParams.name = undefined;
 
-        $controller('ForceDeleteController', {
-            $scope: $scope, $state: $state, $stateParams: $stateParams
+        $ctrl = $componentController('forceDelete', {
+            $state: $state, $stateParams: $stateParams
         });
 
-        expect($rootScope.errors[0].plainText).toBe('Object key is missing');
+        expect($ctrl.AlertService.getErrors()[0].plainText).toBe('Object key is missing');
     });
 
     it('should show error on missing source', function () {
@@ -209,11 +205,11 @@ describe('webUpdates: ForceDeleteController', function () {
         $stateParams.objectType = 'inetnum';
         $stateParams.name = 'asdf';
 
-        $controller('ForceDeleteController', {
-            $scope: $scope, $state: $state, $stateParams: $stateParams
+        $ctrl = $componentController('forceDelete', {
+            $state: $state, $stateParams: $stateParams
         });
 
-        expect($rootScope.errors[0].plainText).toBe('Source is missing');
+        expect($ctrl.AlertService.getErrors()[0].plainText).toBe('Source is missing');
     });
 
 
@@ -221,24 +217,24 @@ describe('webUpdates: ForceDeleteController', function () {
 
         createForceDeleteController();
 
-        $scope.forceDelete();
+        $ctrl.forceDelete();
 
         $httpBackend.whenGET(/.*.html/).respond(200);
         $httpBackend.flush();
 
-        expect($state.current.name).toBe('webupdates.delete');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe('inetnum');
-        expect($stateParams.name.replace(/%20/g, '')).toBe('111-255');
-        expect($stateParams.onCancel).toBe('webupdates.forceDelete');
+        expect($ctrl.$state.current.name).toBe('webupdates.delete');
+        expect($ctrl.$stateParams.source).toBe(SOURCE);
+        expect($ctrl.$stateParams.objectType).toBe('inetnum');
+        expect($ctrl.$stateParams.name.replace(/%20/g, '')).toBe('111-255');
+        expect($ctrl.$stateParams.onCancel).toBe('webupdates.forceDelete');
 
     });
 
 });
 
-describe('webUpdates: ForceDeleteController should be able to handle escape objected with slash', function () {
+fdescribe('webUpdates: ForceDeleteController should be able to handle escape objected with slash', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $ctrl, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var MntnerService;
@@ -253,10 +249,7 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
 
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _$q_, _ModalService_) {
-
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _$q_, _ModalService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -273,8 +266,8 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
                 $stateParams.source = SOURCE;
                 $stateParams.name = NAME;
 
-                _$controller_('ForceDeleteController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams, $log: logger
+                $ctrl = _$componentController_('forceDelete', {
+                    $state: $state, $stateParams: $stateParams, $log: logger
                 });
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
@@ -318,9 +311,9 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
 
         $httpBackend.flush();
 
-        expect($scope.object.source).toBe(SOURCE);
-        expect($scope.object.type).toBe('route');
-        expect($scope.object.name).toBe('12.235.32.0/19AS1680');
+        expect($ctrl.object.source).toBe(SOURCE);
+        expect($ctrl.object.type).toBe('route');
+        expect($ctrl.object.name).toBe('12.235.32.0/19AS1680');
     });
 
     it('should present auth popup', function () {
@@ -366,7 +359,7 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
 
         $httpBackend.flush();
 
-        $scope.forceDelete();
+        $ctrl.forceDelete();
 
         expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
 

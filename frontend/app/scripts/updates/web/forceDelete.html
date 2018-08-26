@@ -1,6 +1,6 @@
 <div>
 
-    <h1>Force delete {{objectType}} {{objectName}}</h1>
+    <h1>Force delete {{$ctrl.objectType}} {{$ctrl.objectName}}</h1>
 
 
     <section>
@@ -18,7 +18,7 @@
         <strong>Object to be deleted</strong>
         <br/><br/>
         <table class="success-fields grey">
-            <tr ng-repeat="attribute in object.attributes">
+            <tr ng-repeat="attribute in $ctrl.object.attributes">
                 <td width="20%">
                     <label>{{attribute.name}}:</label>
                 </td>
@@ -29,8 +29,8 @@
         </table>
 
         <span>
-            <input type="submit" ng-click="forceDelete()" ng-disabled="!isFormValid() || restCallInProgress" class="red-button pull-right ga-forcedeleteobj-forcedelete" value="Force delete this object" />
-            <button ng-click="cancel()" class="blue-button pull-right ga-forcedeleteobj-cancel" style="border:0;">Cancel</button>
+            <input type="submit" ng-click="$ctrl.forceDelete()" ng-disabled="!$ctrl.isFormValid() || $ctrl.restCallInProgress" class="red-button pull-right ga-forcedeleteobj-forcedelete" value="Force delete this object" />
+            <button ng-click="$ctrl.cancel()" class="blue-button pull-right ga-forcedeleteobj-cancel" style="border:0;">Cancel</button>
         </span>
 
     </section>
