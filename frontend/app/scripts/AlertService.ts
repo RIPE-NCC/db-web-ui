@@ -1,98 +1,106 @@
-// TODO replace any with concrete type
-// TODO don't use rootScope but declare errors, warnings in AlertService and use it in AlertDirective
-// for this purpose AlertDirective should be converted into AlertControler
+interface IAlertMsg {
+    plainText: string;
+}
+
 class AlertService {
 
-    public static $inject = ["$log", "$rootScope"];
+    public static $inject = ["$log"];
 
-    constructor(private $log: angular.ILogService, private $rootScope: any) {
-        $rootScope.errors = [];
-        $rootScope.warnings = [];
-        $rootScope.infos = [];
-        $rootScope.hasErrors = () => $rootScope.errors.length > 0;
+    public errors: IAlertMsg[] = [];
+    public warnings: IAlertMsg[] = [];
+    public infos: IAlertMsg[] = [];
 
-        $rootScope.hasWarnings = () => $rootScope.warnings.length > 0;
-
-        $rootScope.hasInfos = () => $rootScope.infos.length > 0;
+    constructor(private $log: angular.ILogService) {
+        this.hasErrors();
+        this.hasWarnings();
+        this.hasInfos();
     }
 
     public clearErrors() {
-        this.$rootScope.errors = [];
-        this.$rootScope.warnings = [];
-        this.$rootScope.infos = [];
+        this.errors = [];
+        this.warnings = [];
+        this.infos = [];
     }
 
     public hasErrors(): boolean {
-        return this.$rootScope.errors.length > 0;
+        return this.errors.length > 0;
+    }
+
+    public hasWarnings(): boolean {
+        return this.warnings.length > 0;
+    }
+
+    public hasInfos(): boolean {
+        return this.infos.length > 0;
     }
 
     public getErrors() {
-        return this.$rootScope.errors;
+        return this.errors;
     }
 
     public getWarnings() {
-        return this.$rootScope.warnings;
+        return this.warnings;
     }
 
     public getInfos() {
-        return this.$rootScope.infos;
+        return this.infos;
     }
 
     // TODO change to WhoisResources after converting js to ts
     public setErrors(whoisResources: any) {
-        this.$rootScope.errors = whoisResources.getGlobalErrors();
-        this.$rootScope.warnings = whoisResources.getGlobalWarnings();
-        this.$rootScope.infos = whoisResources.getGlobalInfos();
+        this.errors = whoisResources.getGlobalErrors();
+        this.warnings = whoisResources.getGlobalWarnings();
+        this.infos = whoisResources.getGlobalInfos();
     }
 
     public setAllErrors(whoisResources: any) {
-        this.$rootScope.errors = whoisResources.getAllErrors();
-        this.$rootScope.warnings = whoisResources.getAllWarnings();
-        this.$rootScope.infos = whoisResources.getAllInfos();
+        this.errors = whoisResources.getAllErrors();
+        this.warnings = whoisResources.getAllWarnings();
+        this.infos = whoisResources.getAllInfos();
     }
 
     public addErrors(whoisResources: any) {
         if (_.isUndefined(whoisResources)) {
-            this.$log.error("alertService.addErrors: undefined input");
+            this.$log.error("AlertService.addErrors: undefined input");
         } else {
-            this.$rootScope.errors = this.$rootScope.errors.concat(whoisResources.getGlobalErrors());
-            this.$rootScope.warnings = this.$rootScope.warnings.concat(whoisResources.getGlobalWarnings());
-            this.$rootScope.infos = this.$rootScope.infos.concat(whoisResources.getGlobalInfos());
+            this.errors = this.errors.concat(whoisResources.getGlobalErrors());
+            this.warnings = this.warnings.concat(whoisResources.getGlobalWarnings());
+            this.infos = this.infos.concat(whoisResources.getGlobalInfos());
         }
     }
 
-    public setGlobalError(errorMsg: any) {
+    public setGlobalError(errorMsg: string) {
         this.clearErrors();
-        this.$rootScope.errors.push({plainText: errorMsg});
+        this.errors.push({plainText: errorMsg});
     }
 
-    public addGlobalWarning(errorMsg: any) {
-        this.$rootScope.warnings.push({plainText: errorMsg});
+    public addGlobalWarning(errorMsg: string) {
+        this.warnings.push({plainText: errorMsg});
     }
 
-    public addGlobalError(errorMsg: any) {
-        this.$rootScope.errors.push({plainText: errorMsg});
+    public addGlobalError(errorMsg: string) {
+        this.errors.push({plainText: errorMsg});
     }
 
-    public setGlobalInfo(errorMsg: any) {
+    public setGlobalInfo(errorMsg: string) {
         this.clearErrors();
-        this.$rootScope.infos.push({plainText: errorMsg});
+        this.infos.push({plainText: errorMsg});
     }
 
-    public setGlobalErrors(errorMsgs: any) {
-        this.$rootScope.errors = errorMsgs;
+    public setGlobalErrors(errorMsgs: IAlertMsg[]) {
+        this.errors = errorMsgs;
     }
 
-    public setGlobalWarnings(warningMsgs: any) {
-        this.$rootScope.warnings = warningMsgs;
+    public setGlobalWarnings(warningMsgs: IAlertMsg[]) {
+        this.warnings = warningMsgs;
     }
 
-    public setGlobalInfos(infoMsgs: any) {
-        this.$rootScope.infos = infoMsgs;
+    public setGlobalInfos(infoMsgs: IAlertMsg[]) {
+        this.infos = infoMsgs;
     }
 
-    public addGlobalInfo(errorMsg: any) {
-        this.$rootScope.infos.push({plainText: errorMsg});
+    public addGlobalInfo(errorMsg: string) {
+        this.infos.push({plainText: errorMsg});
     }
 
     public populateFieldSpecificErrors(objectType: any, attrs: any, whoisResources: any) {
@@ -116,9 +124,9 @@ class AlertService {
 
     public showWhoisResourceErrors(objectType: any, error: any) {
 
-        this.$rootScope.errors = error.getGlobalErrors();
-        this.$rootScope.warnings = error.getGlobalWarnings();
-        this.$rootScope.infos = error.getGlobalInfos();
+        this.errors = error.getGlobalErrors();
+        this.warnings = error.getGlobalWarnings();
+        this.infos = error.getGlobalInfos();
     }
 }
 

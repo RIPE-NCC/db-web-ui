@@ -20,6 +20,7 @@ describe('webUpdates: ForceDeleteController', function () {
     var AlertService;
     var MntnerService;
     var CredentialsService;
+    var WebUpdatesCommons;
 
     var $componentController;
 
@@ -33,7 +34,7 @@ describe('webUpdates: ForceDeleteController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_, _AlertService_, _MntnerService_, _CredentialsService_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_, _AlertService_, _MntnerService_, _CredentialsService_, _WebUpdatesCommons_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -44,6 +45,8 @@ describe('webUpdates: ForceDeleteController', function () {
             // AlertService = _AlertService_;
             // MntnerService = _MntnerService_;
             CredentialsService = _CredentialsService_;
+            WebUpdatesCommons = _WebUpdatesCommons_;
+
 
 
             objectToDisplay = WhoisResources.wrapWhoisResources(
@@ -126,7 +129,7 @@ describe('webUpdates: ForceDeleteController', function () {
                 $stateParams.name = '111%20-%20255';
 
                 $ctrl = _$componentController_('forceDelete', {
-                    $state: $state, $stateParams: $stateParams, $log: logger
+                    $state: $state, $stateParams: $stateParams, $log: logger, WebUpdatesCommons: WebUpdatesCommons
                 });
 
                 $httpBackend.flush();
@@ -214,20 +217,14 @@ describe('webUpdates: ForceDeleteController', function () {
 
 
     it('should go to delete controler on reclaim', function () {
-
+        spyOn(WebUpdatesCommons, "navigateToDelete");
         createForceDeleteController();
 
         $ctrl.forceDelete();
 
         $httpBackend.whenGET(/.*.html/).respond(200);
-        $httpBackend.flush();
 
-        expect($ctrl.$state.current.name).toBe('webupdates.delete');
-        expect($ctrl.$stateParams.source).toBe(SOURCE);
-        expect($ctrl.$stateParams.objectType).toBe('inetnum');
-        expect($ctrl.$stateParams.name.replace(/%20/g, '')).toBe('111-255');
-        expect($ctrl.$stateParams.onCancel).toBe('webupdates.forceDelete');
-
+        expect(WebUpdatesCommons.navigateToDelete).toHaveBeenCalledWith(SOURCE, 'inetnum', '111 - 255', 'webupdates.forceDelete');
     });
 
 });

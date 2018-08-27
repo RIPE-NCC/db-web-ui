@@ -3,9 +3,9 @@
 (function () {
     'use strict';
 
-    angular.module('webUpdates').service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService', 'STATE',
+    angular.module('webUpdates').service('WebUpdatesCommons', ['$state', '$log', 'WhoisResources', 'CredentialsService', 'AlertService', 'MntnerService', 'ModalService',
 
-        function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService, STATE) {
+        function ($state, $log, WhoisResources, CredentialsService, AlertService, MntnerService, ModalService) {
 
             var webUpdatesCommons = {};
 

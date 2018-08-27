@@ -96,8 +96,7 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.delete', {
                     url: '/delete/:source/:objectType/{name:WhoisObjectName}?onCancel',
-                    templateUrl: 'scripts/updates/web/delete.html',
-                    controller: 'DeleteController'
+                    template: '<delete-component></delete-component>',
                 })
                 .state('webupdates.forceDeleteSelect', {
                     url: '/forceDeleteSelect',

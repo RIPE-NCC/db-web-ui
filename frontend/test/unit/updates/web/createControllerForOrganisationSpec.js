@@ -47,7 +47,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
             $stateParams.name = NAME;
 
             _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService
+                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService,
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);

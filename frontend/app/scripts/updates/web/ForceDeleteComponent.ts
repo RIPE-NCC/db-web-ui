@@ -13,7 +13,7 @@ interface IMaintainers {
 
 class ForceDeleteController {
     public static $inject = ["$stateParams", "$state", "$log", "$q", "WhoisResources", "WebUpdatesCommons",
-        "RestService", "MntnerService", "AlertService", "STATE"];
+        "RestService", "MntnerService", "AlertService"];
 
     public object: IObjectFromParameters = {
         attributes: {},
@@ -36,8 +36,7 @@ class ForceDeleteController {
                 public WebUpdatesCommons: any,
                 public RestService: RestService,
                 public MntnerService: MntnerService,
-                public AlertService: AlertService,
-                public STATE: any) {
+                public AlertService: AlertService) {
 
         this.AlertService.clearErrors();
 
@@ -223,7 +222,7 @@ class ForceDeleteController {
 
     private onSuccessfulAuthentication() {
         this.$log.debug("Navigate to force delete screen");
-        this.WebUpdatesCommons.navigateToDelete(this.object.source, this.object.type, this.object.name, this.STATE.FORCE_DELETE);
+        this.WebUpdatesCommons.navigateToDelete(this.object.source, this.object.type, this.object.name, STATE.FORCE_DELETE);
     }
 }
 angular.module("webUpdates")

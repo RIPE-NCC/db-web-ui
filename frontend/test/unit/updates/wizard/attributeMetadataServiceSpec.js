@@ -13,7 +13,7 @@ describe('The attributeMetadataService', function () {
 
     beforeEach(function() {
         module('dbWebApp');
-        inject(function (_$rootScope_, _$controller_, _$stateParams_, _RestService_, _PrefixService_, _AttributeMetadataService_) {
+            inject(function (_$rootScope_, _$controller_, _$stateParams_, _RestService_, _PrefixService_, _AttributeMetadataService_) {
             $scope = _$rootScope_.$new();
             _$stateParams_.objectType = 'prefix';
             AttributeMetadataService = _AttributeMetadataService_;

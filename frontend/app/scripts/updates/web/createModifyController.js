@@ -6,11 +6,11 @@ angular.module('webUpdates')
     .controller('CreateModifyController', ['$scope', '$stateParams', '$state', '$anchorScroll', '$location', '$log', '$window', '$q', '$sce', '$document',
         'WhoisResources', 'MessageStore', 'CredentialsService', 'RestService', 'ModalService',
         'MntnerService', 'AlertService', 'ErrorReporterService', 'LinkService', 'ResourceStatus',
-        'WebUpdatesCommons', 'OrganisationHelper', 'STATE', 'PreferenceService', 'EnumService', 'CharsetToolsService', 'ScreenLogicInterceptor', 'ObjectUtilService',
+        'WebUpdatesCommons', 'OrganisationHelper', 'PreferenceService', 'EnumService', 'CharsetToolsService', 'ScreenLogicInterceptor', 'ObjectUtilService',
         function ($scope, $stateParams, $state, $anchorScroll, $location, $log, $window, $q, $sce, $document,
                   WhoisResources, MessageStore, CredentialsService, RestService, ModalService,
                   MntnerService, AlertService, ErrorReporterService, LinkService, ResourceStatus,
-                  WebUpdatesCommons, OrganisationHelper, STATE, PreferenceService, EnumService, CharsetToolsService, ScreenLogicInterceptor, ObjectUtilService) {
+                  WebUpdatesCommons, OrganisationHelper, PreferenceService, EnumService, CharsetToolsService, ScreenLogicInterceptor, ObjectUtilService) {
 
             $scope.optionList = {
                 status: []
