@@ -280,7 +280,7 @@ describe('webUpdates: ModalDeleteObjectComponent undeletable object', function (
         ctrl.cancel();
         expect(ctrl.close).toHaveBeenCalled();
 
-        $httpBackend.flush();
+        // $httpBackend.flush();
     });
 
 });

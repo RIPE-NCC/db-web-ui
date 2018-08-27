@@ -13,7 +13,7 @@ var logger = {
     }
 };
 
-fdescribe('webUpdates: ForceDeleteController', function () {
+describe('webUpdates: ForceDeleteController', function () {
     var $ctrl, $state, $stateParams, $httpBackend;
     var WhoisResources;
     var ModalService;
@@ -232,7 +232,7 @@ fdescribe('webUpdates: ForceDeleteController', function () {
 
 });
 
-fdescribe('webUpdates: ForceDeleteController should be able to handle escape objected with slash', function () {
+describe('webUpdates: ForceDeleteController should be able to handle escape objected with slash', function () {
 
     var $ctrl, $state, $stateParams, $httpBackend;
     var MessageStore;

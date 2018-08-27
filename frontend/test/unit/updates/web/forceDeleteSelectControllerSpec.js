@@ -43,10 +43,10 @@ describe('webUpdates: ForceDeleteSelectComponent', function () {
             expect($state.current.name).toBe('webupdates.forceDelete');
             expect($stateParams.source).toBe('RIPE');
             expect($stateParams.objectType).toBe('inetnum');
-            expect($stateParams.name).toBe('127.0.0.1%20-%20127.0.0.10');
+            expect($stateParams.name).toBe('127.0.0.1 - 127.0.0.10');
         });
 
-        $httpBackend.flush();
+        // $httpBackend.flush();
     });
 
 });
