@@ -1,26 +1,24 @@
 'use strict';
 
-describe('MailSentCtrl', function() {
-    var $stateParams, $scope, $controller;
+describe('MailSentComponent', function() {
+    var $stateParams, $componentControler, $ctrl;
 
     beforeEach(module('fmp'));
 
-    beforeEach(inject(function (_$rootScope_, _$controller_, _$stateParams_) {
-        $scope = _$rootScope_.$new();
+    beforeEach(inject(function (_$componentController_, _$stateParams_) {
         $stateParams = _$stateParams_;
-        $controller = _$controller_;
+        $componentControler = _$componentController_;
     }));
 
     it('should extract email from url params', function() {
 
         $stateParams.email = 'test@work.net';
 
-        $controller('MailSentCtrl', {
-            $scope:$scope,
+        $ctrl = $componentControler('mailSent', {
             $stateParams: $stateParams
         });
 
-        expect($scope.email).toBe('test@work.net');
+        expect($ctrl.email).toBe('test@work.net');
 
     });
 });

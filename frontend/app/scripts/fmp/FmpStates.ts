@@ -18,8 +18,7 @@ angular.module("fmp").config(["$stateProvider",
             })
             .state("fmp.mailSent", {
                 url: "/mailSent/:email",
-                templateUrl: "scripts/fmp/mailSent.html",
-                controller: "MailSentCtrl",
+                template: "<mail-sent></mail-sent>",
             })
             .state("fmp.ssoAdded", {
                 url: "/ssoAdded/:mntnerKey/:user",
