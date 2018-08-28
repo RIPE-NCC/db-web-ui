@@ -15,8 +15,7 @@
                     })
                     .state('textupdates.create', {
                         url: '/create/:source/:objectType?noRedirect&rpsl',
-                        templateUrl: 'scripts/updates/text/create.html',
-                        controller: 'TextCreateController'
+                        template: '<text-create></text-create>'
                     })
                     .state('textupdates.modify', {
                         url: '/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect&rpsl',
