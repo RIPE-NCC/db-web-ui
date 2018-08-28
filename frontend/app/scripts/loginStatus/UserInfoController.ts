@@ -45,6 +45,5 @@ class UserInfoController {
 
 }
 
-angular
-    .module("loginStatus")
+angular.module("loginStatus")
     .controller("UserInfoController", UserInfoController);

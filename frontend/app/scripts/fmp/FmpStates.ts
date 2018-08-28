@@ -22,8 +22,7 @@ angular.module("fmp").config(["$stateProvider",
             })
             .state("fmp.ssoAdded", {
                 url: "/ssoAdded/:mntnerKey/:user",
-                templateUrl: "scripts/fmp/ssoAdded.html",
-                controller: "SsoAddedCtrl",
+                template: "<sso-added></sso-added>",
             })
             .state("fmp.confirm", {
                 component: "ConfirmMaintainer",

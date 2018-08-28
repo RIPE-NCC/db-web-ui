@@ -1,14 +1,13 @@
 'use strict';
 
 describe('SsoAddedCtrl', function() {
-    var $stateParams, $scope, $controller;
+    var $stateParams, $componentController, $ctrl;
 
     beforeEach(module('fmp'));
 
-    beforeEach(inject(function (_$rootScope_, _$controller_,_$stateParams_) {
-        $scope = _$rootScope_.$new();
-        $controller = _$controller_;
+    beforeEach(inject(function (_$componentController_,_$stateParams_) {
         $stateParams =_$stateParams_;
+        $componentController = _$componentController_;
 
     }));
 
@@ -17,11 +16,10 @@ describe('SsoAddedCtrl', function() {
 
         $stateParams.mntnerKey = 'test@work.net';
 
-        $controller('SsoAddedCtrl', {
-            $scope:$scope,
+        $ctrl = $componentController('ssoAdded', {
             $stateParams: $stateParams
         });
 
-        expect($scope.user).toBe('userX');
+        expect($ctrl.user).toBe('userX');
     });
 });

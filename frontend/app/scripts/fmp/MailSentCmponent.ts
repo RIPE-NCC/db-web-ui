@@ -9,7 +9,8 @@ class MailSentController {
     }
 }
 
-angular.module("fmp").component("mailSent", {
-    controller: MailSentController,
-    templateUrl: "scripts/fmp/mailSent.html",
-});
+angular.module("fmp")
+    .component("mailSent", {
+        controller: MailSentController,
+        templateUrl: "scripts/fmp/mailSent.html",
+    });
