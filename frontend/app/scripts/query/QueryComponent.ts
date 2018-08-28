@@ -16,6 +16,7 @@ interface IProperties {
     LOGIN_URL: string;
     BUILD_TAG: string;
     PORTAL_URL: string;
+    DATABASE_SYNCUPDATES_URL: string;
 }
 
 class QueryController {

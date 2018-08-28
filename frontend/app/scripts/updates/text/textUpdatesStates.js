@@ -25,8 +25,7 @@
                     })
                     .state('textupdates.multiDecision', {
                         url: '/multiDecision',
-                        templateUrl: 'scripts/updates/text/multiDecision.html',
-                        controller: 'TextMultiDecisionController'
+                        controller: '<text-multi-decision></text-multi-decision>'
                     })
                     .state('textupdates.multi', {
                         url: '/multi',

@@ -4,17 +4,15 @@ var RIPE = {};
 var init_user_menu = function() {};
 var display_user_menu = function() {};
 
-describe('loginStatus: UserInfoController', function () {
-    var createController;
+describe('loginStatus: UserInfoComponent', function () {
+    var createController, $ctrl;
 
-    var $scope, $stateParams, $state, $httpBackend, UserInfoService, $log;
+    var $stateParams, $state, $httpBackend, UserInfoService, $log;
 
     beforeEach(function () {
         module('loginStatus');
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_) {
 
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
@@ -33,8 +31,8 @@ describe('loginStatus: UserInfoController', function () {
             UserInfoService.clear();
 
             createController = function() {
-                _$controller_('UserInfoController', {
-                    $scope: $scope, $log:$log, UserInfoService: UserInfoService
+                $ctrl = _$componentController_('userInfo', {
+                    $log:$log, UserInfoService: UserInfoService
                 });
             };
 

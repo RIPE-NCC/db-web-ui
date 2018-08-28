@@ -4,15 +4,13 @@ declare var display_user_menu: any;
 
 class UserInfoController {
     public static $inject = [
-        "$scope",
         "$log",
         "UserInfoService",
         "Properties",
         "ERROR_EVENTS",
     ];
 
-    constructor(private $rootScope: angular.IRootScopeService,
-                private $log: angular.ILogService,
+    constructor(private $log: angular.ILogService,
                 private userInfoService: UserInfoService,
                 private properties: IProperties,
                 private ERROR_EVENTS: any) {
@@ -46,4 +44,6 @@ class UserInfoController {
 }
 
 angular.module("loginStatus")
-    .controller("UserInfoController", UserInfoController);
+    .component("userInfo", {
+        controller: UserInfoController,
+    });
