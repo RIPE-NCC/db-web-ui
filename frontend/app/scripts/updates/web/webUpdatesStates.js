@@ -48,9 +48,7 @@ angular.module('webUpdates')
                 })
                 .state('myresourcesdetail', {
                     url: '/myresources/detail/:objectType/{objectName:WhoisObjectName}/:sponsored',
-                    templateUrl: 'scripts/myresources/resource-details.html',
-                    controller: 'ResourceDetailsController',
-                    controllerAs: 'resourceDetails'
+                    template: '<resource-details></resource-details>',
                 })
                 .state('webupdates.domainobjectwizard', {
                     url: '/wizard/:source/:objectType',

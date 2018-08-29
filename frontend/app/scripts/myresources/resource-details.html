@@ -1,86 +1,86 @@
 <section class="resource-intro">
     <h1>
-        <name-formatter ng-if="resourceDetails.resource.resource" name="resourceDetails.resource.resource"
-                        type="resourceDetails.resource.type"></name-formatter>
+        <name-formatter ng-if="$ctrl.resource.resource" name="$ctrl.resource.resource"
+                        type="$ctrl.resource.type"></name-formatter>
     </h1>
     <div class="flags-container">
-        <flag ng-repeat="f in resourceDetails.flags" ng-class="f.colour" tooltip="f.type" text="f.value"></flag>
+        <flag ng-repeat="f in $ctrl.flags" ng-class="f.colour" tooltip="f.type" text="f.value"></flag>
     </div>
 </section>
 <section class="back-to-my-resources">
     <hierarchy-selector
-        resource="resourceDetails.resource"
-        sponsored="resourceDetails.sponsored"
-        ng-if="resourceDetails.resource">
+        resource="$ctrl.resource"
+        sponsored="$ctrl.sponsored"
+        ng-if="$ctrl.resource">
     </hierarchy-selector>
 </section>
-<ip-usage ng-if="resourceDetails.showUsage" type="resourceDetails.objectType" usage="resourceDetails.resource.usage"></ip-usage>
+<ip-usage ng-if="$ctrl.showUsage" type="$ctrl.objectType" usage="$ctrl.resource.usage"></ip-usage>
 
 <section class="db-object" id="editortop">
     <h2>Object in RIPE Database</h2>
-    <div id="alert-danger" class="alert alert-danger" ng-if="resourceDetails.errors.length">
-        <p ng-repeat="error in resourceDetails.errors">
+    <div id="alert-danger" class="alert alert-danger" ng-if="$ctrl.errors.length">
+        <p ng-repeat="error in $ctrl.errors">
             <span ng-bind-html="error"></span>
         </p>
     </div>
-    <div id="alert-success" class="alert alert-success" ng-if="resourceDetails.successes.length">
-        <p ng-repeat="success in resourceDetails.successes">
+    <div id="alert-success" class="alert alert-success" ng-if="$ctrl.successes.length">
+        <p ng-repeat="success in $ctrl.successes">
             <span ng-bind-html="success"></span>
         </p>
     </div>
-    <div class="alert alert-warning" ng-if="resourceDetails.warnings.length">
-        <p ng-repeat="warning in resourceDetails.warnings">
+    <div class="alert alert-warning" ng-if="$ctrl.warnings.length">
+        <p ng-repeat="warning in $ctrl.warnings">
             <span ng-bind-html="warning"></span>
         </p>
     </div>
-    <div class="alert alert-info" ng-if="resourceDetails.infos.length">
-        <p ng-repeat="info in resourceDetails.infos">
+    <div class="alert alert-info" ng-if="$ctrl.infos.length">
+        <p ng-repeat="info in $ctrl.infos">
             <span ng-bind-html="info"></span>
         </p>
     </div>
-    <div ng-if="::resourceDetails.whoisObject">
-        <whois-object-viewer ng-model="::resourceDetails.whoisObject"
-                             ng-if="!resourceDetails.isEditing"
-                             update-clicked="resourceDetails.showObjectEditor(resourceDetails.whoisObject)"></whois-object-viewer>
-        <maintainers-editor ng-model="::resourceDetails.whoisObject"
-                            ng-if="resourceDetails.isEditing"
-                            authentication-failed-clbk="resourceDetails.hideObjectEditor()"></maintainers-editor>
-        <whois-object-editor ng-model="::resourceDetails.whoisObject"
-                             ng-if="resourceDetails.isEditing"
-                             cancel-clicked="resourceDetails.hideObjectEditor()"
-                             update-clicked="resourceDetails.updateButtonClicked()"></whois-object-editor>
+    <div ng-if="::$ctrl.whoisObject">
+        <whois-object-viewer ng-model="::$ctrl.whoisObject"
+                             ng-if="!$ctrl.isEditing"
+                             update-clicked="$ctrl.showObjectEditor($ctrl.whoisObject)"></whois-object-viewer>
+        <maintainers-editor ng-model="::$ctrl.whoisObject"
+                            ng-if="$ctrl.isEditing"
+                            authentication-failed-clbk="$ctrl.hideObjectEditor()"></maintainers-editor>
+        <whois-object-editor ng-model="::$ctrl.whoisObject"
+                             ng-if="$ctrl.isEditing"
+                             cancel-clicked="$ctrl.hideObjectEditor()"
+                             update-clicked="$ctrl.updateButtonClicked()"></whois-object-editor>
     </div>
 </section>
 
-<section class="more-specifics" ng-if="resourceDetails.canHaveMoreSpecifics">
+<section class="more-specifics" ng-if="$ctrl.canHaveMoreSpecifics">
     <h2>More specifics</h2>
     <div class="prefix-filter"
-         ng-if="::resourceDetails.moreSpecifics.resources.length">
+         ng-if="::$ctrl.moreSpecifics.resources.length">
         <div class="input-group">
             <input type="text"
                    id="ipFilter"
                    class="form-control"
                    placeholder="Search for prefix"
-                   ng-model="resourceDetails.ipFilter"
-                   ng-change="resourceDetails.applyFilter()">
-            <span class="input-group-btn" ng-hide="!resourceDetails.ipFilter">
+                   ng-model="$ctrl.ipFilter"
+                   ng-change="$ctrl.applyFilter()">
+            <span class="input-group-btn" ng-hide="!$ctrl.ipFilter">
                 <button type="button"
                         class="btn"
                         id="clearButton"
-                        ng-click="resourceDetails.ipFilter = ''; resourceDetails.applyFilter();">
+                        ng-click="$ctrl.ipFilter = ''; $ctrl.applyFilter();">
                     <span class="fa fa-times"></span>
                   </button>
             </span>
         </div>
-        <span ng-if="resourceDetails.ipFilter" class="pull-right">
-            Showing {{resourceDetails.moreSpecifics.filteredSize }} out of {{resourceDetails.moreSpecifics.totalNumberOfResources}}
+        <span ng-if="$ctrl.ipFilter" class="pull-right">
+            Showing {{$ctrl.moreSpecifics.filteredSize }} out of {{$ctrl.moreSpecifics.totalNumberOfResources}}
         </span>
-        <span ng-if="resourceDetails.ipFilter === null || resourceDetails.ipFilter === ''" class="pull-right">
-            Total more specifics: {{resourceDetails.moreSpecifics.totalNumberOfResources}}
+        <span ng-if="$ctrl.ipFilter === null || $ctrl.ipFilter === ''" class="pull-right">
+            Total more specifics: {{$ctrl.moreSpecifics.totalNumberOfResources}}
         </span>
     </div>
     <table class="table table-bordered table-body-borderless resources table-striped"
-           ng-if="resourceDetails.moreSpecifics.resources.length">
+           ng-if="$ctrl.moreSpecifics.resources.length">
         <thead>
         <tr>
             <th>Internet number resource</th>
@@ -89,9 +89,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="resource in resourceDetails.moreSpecifics.resources"
-            ng-if="$index < resourceDetails.nrMoreSpecificsToShow">
-            <td><a ng-click="resourceDetails.showDetail(resource)">
+        <tr ng-repeat="resource in $ctrl.moreSpecifics.resources"
+            ng-if="$index < $ctrl.nrMoreSpecificsToShow">
+            <td><a ng-click="$ctrl.showDetail(resource)">
                 <name-formatter name="resource.resource" type="resource.type"></name-formatter>
             </a></td>
             <td>{{ resource.status }}</td>
@@ -99,8 +99,8 @@
         </tr>
         </tbody>
     </table>
-    <p scroller="resourceDetails.almostOnScreen()" ng-if="resourceDetails.showScroller"></p>
-    <div class="alert alert-warning" ng-if="resourceDetails.moreSpecifics.resources.length === 0">
+    <p scroller="$ctrl.almostOnScreen()" ng-if="$ctrl.showScroller"></p>
+    <div class="alert alert-warning" ng-if="$ctrl.moreSpecifics.resources.length === 0">
         No more specific objects exist.
     </div>
 </section>
