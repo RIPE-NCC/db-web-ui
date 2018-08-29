@@ -2,6 +2,7 @@ interface ITextObject {
     rpsl?: any;
     source: string;
     type: string;
+    name?: string;
 }
 class TextCreateController {
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",

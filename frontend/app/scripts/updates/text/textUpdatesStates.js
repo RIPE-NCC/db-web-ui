@@ -19,8 +19,7 @@
                     })
                     .state('textupdates.modify', {
                         url: '/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect&rpsl',
-                        templateUrl: 'scripts/updates/text/modify.html',
-                        controller: 'TextModifyController'
+                        template: '<text-modify></text-modify>'
                     })
                     .state('textupdates.multiDecision', {
                         url: '/multiDecision',

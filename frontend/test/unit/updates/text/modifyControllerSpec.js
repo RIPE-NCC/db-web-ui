@@ -1,8 +1,8 @@
 'use strict';
 
-describe('textUpdates: TextModifyController', function () {
+describe('textUpdates: TextModifyComponent', function () {
 
-    var $scope, $state, $stateParams, $httpBackend, $q;
+    var $state, $stateParams, $httpBackend, $q;
     var WhoisResources;
     var AlertService;
     var PreferenceService;
@@ -13,6 +13,7 @@ describe('textUpdates: TextModifyController', function () {
     var OBJECT_NAME = 'TP-RIPE';
     var setupController;
     var initialState;
+    var $ctrl;
 
     var testPersonRpsl =
         'person:test person\n' +
@@ -63,10 +64,8 @@ describe('textUpdates: TextModifyController', function () {
     beforeEach(function () {
         module('textUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _$q_,
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _$q_,
                          _MessageStore_, _WhoisResources_, _AlertService_, _ModalService_, _PreferenceService_, _CredentialsService_) {
-
-            $scope = _$rootScope_.$new();
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -100,8 +99,7 @@ describe('textUpdates: TextModifyController', function () {
                 $stateParams.noRedirect = noRedirect;
                 $stateParams.rpsl = rpsl;
 
-                _$controller_('TextModifyController', {
-                    $scope: $scope,
+                $ctrl = _$componentController_('textModify', {
                     $state: $state,
                     $stateParams: $stateParams,
                     AlertService: AlertService,
@@ -134,17 +132,17 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        expect($scope.object.source).toBe(SOURCE);
-        expect($scope.object.type).toBe(OBJECT_TYPE);
-        expect($scope.object.name).toBe(OBJECT_NAME);
+        expect($ctrl.object.source).toBe(SOURCE);
+        expect($ctrl.object.type).toBe(OBJECT_TYPE);
+        expect($ctrl.object.name).toBe(OBJECT_NAME);
     });
 
     it('should get rpsl from url-parameter', function () {
         setupController('inetnum', "1", false, "inetnum:1\inetnum:2\n");
 
-        expect($scope.object.source).toBe(SOURCE);
-        expect($scope.object.type).toBe('inetnum');
-        expect($scope.object.rpsl).toBe('inetnum:1\inetnum:2\n');
+        expect($ctrl.object.source).toBe(SOURCE);
+        expect($ctrl.object.type).toBe('inetnum');
+        expect($ctrl.object.rpsl).toBe('inetnum:1\inetnum:2\n');
     });
 
     it('should redirect to webupdates when web-preference is set', function () {
@@ -211,7 +209,7 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        expect($scope.object.rpsl).toEqual(testPersonRpslScreen );
+        expect($ctrl.object.rpsl).toEqual(testPersonRpslScreen );
     });
 
     it('should report an error when mandatory field is missing', function () {
@@ -230,8 +228,8 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        $scope.object.rpsl = testPersonRpslMissingPhone;
-        $scope.submit();
+        $ctrl.object.rpsl = testPersonRpslMissingPhone;
+        $ctrl.submit();
 
         expect(AlertService.getErrors()).toEqual([
             {plainText: 'phone: Mandatory attribute not set'},
@@ -256,8 +254,8 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        $scope.object.rpsl = testPersonRpsl;
-        $scope.submit();
+        $ctrl.object.rpsl = testPersonRpsl;
+        $ctrl.submit();
 
         $httpBackend.expectPUT('api/whois/RIPE/person/TP-RIPE?unformatted=true').respond(testPersonObject);
         $httpBackend.whenGET(/.*.html/).respond(200);
@@ -288,7 +286,7 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        $scope.deleteObject();
+        $ctrl.deleteObject();
         $httpBackend.whenGET(/.*.html/).respond(200);
 
         // FIXME [IS]
@@ -320,7 +318,7 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        $scope.submit();
+        $ctrl.submit();
 
         $httpBackend.expectPUT('api/whois/RIPE/route/12.235.32.0%2F19AS1680?unformatted=true').respond(routeJSON);
         $httpBackend.flush();
@@ -401,9 +399,9 @@ describe('textUpdates: TextModifyController', function () {
 
         var stateBefore = $state.current.name;
 
-        $scope.object.rpsl = testPersonRpsl;
+        $ctrl.object.rpsl = testPersonRpsl;
 
-        $scope.submit();
+        $ctrl.submit();
 
         $httpBackend.expectPUT('api/whois/RIPE/person/TP-RIPE?unformatted=true').respond(400, {
             objects: {
@@ -443,7 +441,7 @@ describe('textUpdates: TextModifyController', function () {
             {plainText: '"mnt-ref" is not valid for this object type'}
         ]);
 
-        expect($scope.object.rpsl).toEqual(testPersonRpsl);
+        expect($ctrl.object.rpsl).toEqual(testPersonRpsl);
 
         expect($state.current.name).toBe(stateBefore);
 
@@ -469,9 +467,9 @@ describe('textUpdates: TextModifyController', function () {
 
         expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
 
-        $scope.object.rpsl = testPersonRpsl + 'password:secret2\n';
+        $ctrl.object.rpsl = testPersonRpsl + 'password:secret2\n';
 
-        $scope.submit();
+        $ctrl.submit();
 
         $httpBackend.expectPUT('api/whois/RIPE/person/TP-RIPE?password=secret2&password=secret&unformatted=true').respond(testPersonObject);
         $httpBackend.whenGET(/.*.html/).respond(200);
@@ -505,7 +503,7 @@ describe('textUpdates: TextModifyController', function () {
 
         $httpBackend.flush();
 
-        $scope.object.rpsl = testPersonRpsl;
+        $ctrl.object.rpsl = testPersonRpsl;
 
         expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
     });
@@ -578,7 +576,7 @@ describe('textUpdates: TextModifyController', function () {
 
         expect(ModalService.openAuthenticationModal).toHaveBeenCalled();
 
-        expect($scope.object.rpsl).toEqual('mntner:TEST-MNT\n' +
+        expect($ctrl.object.rpsl).toEqual('mntner:TEST-MNT\n' +
             'descr:.\n' +
             'admin-c:TP-RIPE\n' +
             'upd-to:email@email.com\n' +
