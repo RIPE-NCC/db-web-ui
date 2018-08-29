@@ -143,7 +143,7 @@ class TextMultiController {
 
         if (object.success === true) {
             deferredObject.resolve(object);
-            this.markActionCompleted(object, this.determineAction(object) + " already performed", undefined);
+            this.markActionCompleted(object, this.determineAction(object) + " already performed");
         } else {
             this.setStatus(object, undefined, "Start " + this.determineAction(object));
             this.performAction(this.objects.source, object)
@@ -165,7 +165,7 @@ class TextMultiController {
                         object.warnings = whoisResources.getAllWarnings();
                         object.infos = whoisResources.getAllInfos();
 
-                        this.markActionCompleted(object, this.determineAction(object) + " success", this.rewriteRpsl);
+                        this.markActionCompleted(object, this.determineAction(object) + " success", true);
 
                         deferredObject.resolve(object);
                     }, (whoisResources: any) => {
@@ -175,7 +175,7 @@ class TextMultiController {
                             object.infos = whoisResources.getAllInfos();
                         }
 
-                        this.markActionCompleted(object, this.determineAction(object) + " failed", this.rewriteRpsl);
+                        this.markActionCompleted(object, this.determineAction(object) + " failed", true);
 
                         deferredObject.reject(object);
                     },
@@ -376,7 +376,7 @@ class TextMultiController {
         return deferredObject.promise;
     }
 
-    private rewriteRpsl = () => {
+    private rewriteRpsl() {
         this.$log.debug("Rewriting RPSL");
 
         this.objects.rpsl = "";
@@ -442,13 +442,13 @@ class TextMultiController {
         this.$log.debug("initializeActionCounter:" + this.actionsPending);
     }
 
-    private markActionCompleted = (object: any, action: any, callback?: () => any) => {
+    private markActionCompleted(object: any, action: any, rewriteRpsl: boolean = false) {
         this.actionsPending--;
         this.$log.debug("mark " + this.determineAction(object) + "-" + object.type + "-" + object.name +
             " action completed for " + this.determineAction(object) + ": " + this.actionsPending);
         if (this.actionsPending === 0) {
-            if (!_.isUndefined(callback) && _.isFunction(callback)) {
-                callback();
+            if (rewriteRpsl) {
+                this.rewriteRpsl();
             }
         }
     }
