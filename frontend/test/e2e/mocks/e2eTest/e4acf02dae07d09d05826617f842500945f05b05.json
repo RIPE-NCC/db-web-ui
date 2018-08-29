@@ -1,0 +1,6 @@
+{
+  "requestUrl": "/api/whois/search?flags=lr&ignore404=true&query-string=AS9777&type-filter=aut-num",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {}
+}

@@ -1,0 +1,114 @@
+{
+  "requestUrl": "/api/whois/RIPE-NONAUTH/aut-num/AS36867",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "link" : {
+      "type" : "locator",
+      "href" : "http://127.0.0.1:1080/RIPE-NONAUTH/aut-num/AS36867"
+    },
+    "objects" : {
+      "object" : [ {
+        "type" : "aut-num",
+        "link" : {
+          "type" : "locator",
+          "href" : "http://rest-dev.db.ripe.net/ripe-nonauth/aut-num/AS36867"
+        },
+        "source" : {
+          "id" : "ripe-nonauth"
+        },
+        "primary-key" : {
+          "attribute" : [ {
+            "name" : "aut-num",
+            "value" : "AS36867"
+          } ]
+        },
+        "attributes" : {
+          "attribute" : [ {
+            "name": "aut-num",
+            "value": "AS36867"
+          },
+            {
+              "name": "as-name",
+              "value": "Kokonet-BGP"
+            },
+            {
+              "name": "descr",
+              "value": "Kokonet Ltd Seychelles ISP"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest-dev.db.ripe.net/ripe/organisation/ORG-Sb3-RIPE"
+              },
+              "name": "org",
+              "value": "ORG-Sb3-RIPE",
+              "referenced-type": "organisation"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest-dev.db.ripe.net/ripe/role/SNS1-RIPE"
+              },
+              "name": "admin-c",
+              "value": "SNS1-RIPE",
+              "referenced-type": "role"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "https://rest-dev.db.ripe.net/ripe/person/JK9622-RIPE"
+              },
+              "name": "tech-c",
+              "value": "JK9622-RIPE",
+              "referenced-type": "person"
+            },
+            {
+              "name": "status",
+              "value": "OTHER"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/KOKONET-MNT"
+              },
+              "name": "mnt-by",
+              "value": "KOKONET-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "link": {
+                "type": "locator",
+                "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/RIPE-NCC-RPSL-MNT"
+              },
+              "name": "mnt-lower",
+              "value": "RIPE-NCC-RPSL-MNT",
+              "referenced-type": "mntner"
+            },
+            {
+              "name": "created",
+              "value": "2005-08-26T10:56:16Z"
+            },
+            {
+              "name": "last-modified",
+              "value": "2018-07-30T10:34:16Z"
+            },
+            {
+              "name": "source",
+              "value": "RIPE-NONAUTH"
+            } ]
+        }
+      } ]
+    },
+    "errormessages" : {
+      "errormessage" : [ {
+        "severity" : "Warning",
+        "text" : "Submitted object identical to database object"
+      } ]
+    },
+    "terms-and-conditions" : {
+      "type" : "locator",
+      "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}

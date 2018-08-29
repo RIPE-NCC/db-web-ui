@@ -108,13 +108,6 @@
                     passwords.push(CredentialsService.getCredentials().successfulPassword);
                 }
 
-                /*
-                 * For routes and aut-nums we always add the password for the RIPE-NCC-RPSL-MNT
-                 * This to allow creation for out-of-region objects, without explicitly asking for the RIPE-NCC-RPSL-MNT-pasword
-                 */
-                if (['route', 'route6', 'aut-num'].indexOf($scope.objectType)) {
-                    passwords.push('RPSL');
-                }
                 return passwords;
             }
 

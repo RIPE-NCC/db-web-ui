@@ -1,0 +1,10 @@
+{
+  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=KOKONET-MNT",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+      "key" : "KOKONET-MNT",
+      "type" : "mntner",
+      "auth" : [ "MD5-PW" ]
+  }
+}

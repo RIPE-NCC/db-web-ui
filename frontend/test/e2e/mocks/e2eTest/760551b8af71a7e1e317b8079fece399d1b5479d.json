@@ -1,0 +1,9 @@
+{
+  "requestUrl": "/api/references/RIPE/route/211.43.192.0%252F19AS9777?limit=5",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "primaryKey" : "211.43.192.0/19AS9777",
+    "objectType" : "route"
+  }
+}
