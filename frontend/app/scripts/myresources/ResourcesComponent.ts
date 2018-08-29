@@ -172,4 +172,7 @@ class ResourcesController {
 
 angular
     .module("dbWebApp")
-    .controller("ResourcesController", ResourcesController);
+    .component("resources", {
+        controller: ResourcesController,
+        templateUrl: "scripts/myresources/resources.html",
+    });

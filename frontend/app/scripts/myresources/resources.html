@@ -1,47 +1,47 @@
 <section class="my-resources">
-    <div class="alert alert-success alert-dismissible" ng-if="resources.showIpAnalyserRedirectBanner">
+    <div class="alert alert-success alert-dismissible" ng-if="$ctrl.showIpAnalyserRedirectBanner">
       <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
       Looking for analytics on your IP resource allocation and/or assignments? You can find this now in “My Resources”.
     </div>
-    <uib-tabset class="resources-sponsored-tabs" active="resources.activeSponsoredTab">
-        <uib-tab index="0" heading="My Resources" select="resources.resourcesTabClicked()"></uib-tab>
-        <uib-tab ng-if="resources.hasSponsoredResources" index="1" heading="Sponsored Resources" select="resources.sponsoredResourcesTabClicked()"></uib-tab>
+    <uib-tabset class="resources-sponsored-tabs" active="$ctrl.activeSponsoredTab">
+        <uib-tab index="0" heading="My Resources" select="$ctrl.resourcesTabClicked()"></uib-tab>
+        <uib-tab ng-if="$ctrl.hasSponsoredResources" index="1" heading="Sponsored Resources" select="$ctrl.sponsoredResourcesTabClicked()"></uib-tab>
     </uib-tabset>
-    <transfer-drop-down is-member="resources.isMemberOrg()" sponsored-menu="resources.isShowingSponsored"></transfer-drop-down>
-    <alerts-drop-down ng-if="!resources.isShowingSponsored && resources.lastTab=='inetnum'"></alerts-drop-down>
-    <uib-tabset id="ipv4-ipv6-asn-tabs" class="nav-tabs" active="resources.typeIndex">
-        <uib-tab name="ipv4Tab" index="0" heading="IPv4" select="resources.tabClicked('inetnum')">
-            <loading-indicator class="resource-page-message" ng-if="resources.loading"></loading-indicator>
-            <div class="resource-list" ng-repeat="resource in resources.ipv4Resources">
-                <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
+    <transfer-drop-down is-member="$ctrl.isMemberOrg()" sponsored-menu="$ctrl.isShowingSponsored"></transfer-drop-down>
+    <alerts-drop-down ng-if="!$ctrl.isShowingSponsored && $ctrl.lastTab=='inetnum'"></alerts-drop-down>
+    <uib-tabset id="ipv4-ipv6-asn-tabs" class="nav-tabs" active="$ctrl.typeIndex">
+        <uib-tab name="ipv4Tab" index="0" heading="IPv4" select="$ctrl.tabClicked('inetnum')">
+            <loading-indicator class="resource-page-message" ng-if="$ctrl.loading"></loading-indicator>
+            <div class="resource-list" ng-repeat="resource in $ctrl.ipv4Resources">
+                <resource-item item="resource" sponsored="$ctrl.isShowingSponsored"></resource-item>
             </div>
             <p class="resource-page-message"
-               ng-if="resources.loading === false && resources.ipv4Resources.length === 0">
-                {{ resources.reason.toString() }}
-                <button ng-if="resources.fail" ng-click="resources.refreshPage()" class="fa fa-refresh"></button>
+               ng-if="$ctrl.loading === false && $ctrl.ipv4Resources.length === 0">
+                {{ $ctrl.reason.toString() }}
+                <button ng-if="$ctrl.fail" ng-click="$ctrl.refreshPage()" class="fa fa-refresh"></button>
             </p>
         </uib-tab>
-        <uib-tab name="ipv6Tab" index="1" heading="IPv6" select="resources.tabClicked('inet6num')">
-            <loading-indicator class="resource-page-message" ng-if="resources.loading"></loading-indicator>
-            <div class="resource-list" ng-repeat="resource in resources.ipv6Resources">
-                <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
+        <uib-tab name="ipv6Tab" index="1" heading="IPv6" select="$ctrl.tabClicked('inet6num')">
+            <loading-indicator class="resource-page-message" ng-if="$ctrl.loading"></loading-indicator>
+            <div class="resource-list" ng-repeat="resource in $ctrl.ipv6Resources">
+                <resource-item item="resource" sponsored="$ctrl.isShowingSponsored"></resource-item>
             </div>
             <p class="resource-page-message"
-               ng-if="resources.loading === false && resources.ipv6Resources.length === 0">
-                {{ resources.reason.toString() }}
-                <button ng-if="resources.fail" ng-click="resources.refreshPage()" class="fa fa-refresh"></button>
+               ng-if="$ctrl.loading === false && $ctrl.ipv6Resources.length === 0">
+                {{ $ctrl.reason.toString() }}
+                <button ng-if="$ctrl.fail" ng-click="$ctrl.refreshPage()" class="fa fa-refresh"></button>
             </p>
         </uib-tab>
-        <uib-tab name="asnTab" index="2" heading="ASN" select="resources.tabClicked('aut-num')">
-            <loading-indicator class="resource-page-message" ng-if="resources.loading"></loading-indicator>
-            <div class="resource-list" ng-repeat="resource in resources.asnResources">
-                <resource-item item="resource" sponsored="resources.isShowingSponsored"></resource-item>
+        <uib-tab name="asnTab" index="2" heading="ASN" select="$ctrl.tabClicked('aut-num')">
+            <loading-indicator class="resource-page-message" ng-if="$ctrl.loading"></loading-indicator>
+            <div class="resource-list" ng-repeat="resource in $ctrl.asnResources">
+                <resource-item item="resource" sponsored="$ctrl.isShowingSponsored"></resource-item>
             </div>
-            <p class="resource-page-message" ng-if="resources.loading === false && resources.asnResources.length === 0">
-                {{ resources.reason.toString() }}
-                <button ng-if="resources.fail" ng-click="resources.refreshPage()" class="fa fa-refresh"></button>
+            <p class="resource-page-message" ng-if="$ctrl.loading === false && $ctrl.asnResources.length === 0">
+                {{ $ctrl.reason.toString() }}
+                <button ng-if="$ctrl.fail" ng-click="$ctrl.refreshPage()" class="fa fa-refresh"></button>
             </p>
         </uib-tab>
     </uib-tabset>

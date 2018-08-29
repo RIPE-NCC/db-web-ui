@@ -44,9 +44,7 @@ angular.module('webUpdates')
                 })
                 .state('myresources', {
                     url: '/myresources/overview?type&sponsored&ipanalyserRedirect',
-                    templateUrl: 'scripts/myresources/resources.html',
-                    controller: 'ResourcesController',
-                    controllerAs: 'resources'
+                    template: '<resources></resources>',
                 })
                 .state('myresourcesdetail', {
                     url: '/myresources/detail/:objectType/{objectName:WhoisObjectName}/:sponsored',
