@@ -27,8 +27,7 @@
                     })
                     .state('textupdates.multi', {
                         url: '/multi',
-                        templateUrl: 'scripts/updates/text/multi.html',
-                        controller: 'TextMultiController'
+                        template: '<text-multi></text-multi>',
                     });
 
             }]);

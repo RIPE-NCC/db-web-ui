@@ -3,6 +3,7 @@ interface ITextObject {
     source: string;
     type: string;
     name?: string;
+    objects?: any;
 }
 class TextCreateController {
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",
@@ -57,7 +58,7 @@ class TextCreateController {
         this.mntners = {};
         this.mntners.sso = [];
 
-        this.$log.debug("TextCreateController: Url params:" +
+        this.$log.debug("TextCreateComponent: Url params:" +
             " object.source:" + this.object.source +
             ", object.type:" + this.object.type +
             ", noRedirect:" + !redirect);
