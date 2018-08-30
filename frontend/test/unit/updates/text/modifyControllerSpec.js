@@ -148,7 +148,7 @@ describe('textUpdates: TextModifyComponent', function () {
     it('should redirect to webupdates when web-preference is set', function () {
 
         PreferenceService.setWebMode();
-
+        spyOn($state, "transitionTo");
         setupController('person', 'TP-RIPE', false);
 
         $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
@@ -163,19 +163,17 @@ describe('textUpdates: TextModifyComponent', function () {
         }]);
 
         $httpBackend.whenGET(/.*.html/).respond(200);
-        $httpBackend.flush();
-
-        expect($state.current.name).not.toBe(initialState);
-        // FIXME [IS]
-        //        expect($state.current.name).toBe('webupdates.modify');
+        // $httpBackend.flush();
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.modify', {
+            name: $ctrl.object.name,
+            objectType: $ctrl.object.type,
+            source: $ctrl.object.source,
+        });
     });
 
     it('should not redirect to webupdates no-redirect is set', function () {
-
         PreferenceService.setWebMode();
-
         setupController('person', 'TP-RIPE', true);
-
         $httpBackend.whenGET('api/whois/RIPE/person/TP-RIPE?unfiltered=true&unformatted=true').respond(
             function (method, url) {
                 return [200, testPersonObject, {}];
@@ -189,7 +187,7 @@ describe('textUpdates: TextModifyComponent', function () {
 
         $httpBackend.flush();
 // FIXME [IS]
-        //expect($state.current.name).toBe(initialState);
+//         expect($state.current.name).toBe(initialState);
     });
 
     it('should populate fetched person object in rpsl area', function () {

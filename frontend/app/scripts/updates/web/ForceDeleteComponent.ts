@@ -5,12 +5,6 @@ interface IObjectFromParameters {
     type: string;
 }
 
-interface IMaintainers {
-    object: any[];
-    objectOriginal: any[];
-    sso: any;
-}
-
 class ForceDeleteController {
     public static $inject = ["$stateParams", "$state", "$log", "$q", "WhoisResources", "WebUpdatesCommons",
         "RestService", "MntnerService", "AlertService"];
@@ -23,7 +17,7 @@ class ForceDeleteController {
     };
     public maintainers: IMaintainers = {
         object: [],
-        objectOriginal: [], // needed to make MntnerService.performAuthentication happy
+        objectOriginal: [],
         sso: [],
     };
     public restCallInProgress: boolean = false;

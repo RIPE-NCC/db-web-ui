@@ -208,12 +208,7 @@ describe('webUpdates: DisplayComponent', function () {
             expect($stateParams.objectType).toBe(OBJECT_TYPE);
             expect($stateParams.name).toBe(OBJECT_NAME);
         });
-        $httpBackend.flush();
-
-
     });
-
-
 });
 
 
@@ -319,6 +314,7 @@ describe('webUpdates: DisplayComponent with object containing slash', function (
     });
 
     it('should navigate to modify', function () {
+        spyOn($state, "transitionTo");
         // no objects in message store
         createDisplayController();
 
@@ -332,13 +328,11 @@ describe('webUpdates: DisplayComponent with object containing slash', function (
 
         $ctrl.navigateToModify();
 
-        $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.modify');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe(OBJECT_TYPE);
-        expect($stateParams.name).toBe('212.235.32.0%2F19AS1680');
-
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.modify', {
+            name: $ctrl.objectName,
+            objectType: $ctrl.objectType,
+            source: $ctrl.objectSource,
+        });
     });
 
     it('should navigate to select', function () {

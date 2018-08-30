@@ -29,7 +29,7 @@ class MntnerService {
         this.nccMntners = [this.nccHmMntner, this.nccEndMntner, this.nccLegacyMntner];
     }
 
-    public getAuthForObjectIfNeeded = (whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): ng.IPromise<any> => {
+    public getAuthForObjectIfNeeded(whoisObject: any, ssoAccts: any, operation: any, source: any, objectType: string, name: string): ng.IPromise<any> {
 
         const object = {
             name,
@@ -67,7 +67,7 @@ class MntnerService {
         return this.$q(promiseHandler);
     }
 
-    public isSsoAuthorisedForMntByOrLower = (object: any, maintainers: IMntByModel[]) => {
+    public isSsoAuthorisedForMntByOrLower(object: any, maintainers: IMntByModel[]) {
         const mntBys = object.getAllAttributesOnName("mnt-by");
         const mntLowers = object.getAllAttributesOnName("mnt-lower");
         const ssoAccts = _.filter(maintainers, (mntner: IMntByModel) => {
@@ -83,7 +83,7 @@ class MntnerService {
         return !!match;
     }
 
-    public isRemovable = (mntnerKey: string) => {
+    public isRemovable(mntnerKey: string) {
         // Should be possible to remove RIPE-NCC-RPSL-MNT, but allowed to add it
         if (mntnerKey.toUpperCase() === this.nccRpslMntner) {
             return true;
@@ -91,11 +91,11 @@ class MntnerService {
         return !_.includes(this.nccMntners, mntnerKey.toUpperCase());
     }
 
-    public isNccMntner = (mntnerKey: string): boolean => {
+    public isNccMntner(mntnerKey: string): boolean {
         return _.includes(this.nccMntners, mntnerKey.toUpperCase());
     }
 
-    public isComaintained = (attributes: any) => {
+    public isComaintained(attributes: any) {
         return _.some(attributes, (attr: any) => {
             if (attr.name.toUpperCase() === "MNT-BY") {
                 return this.isNccMntner(attr.value);
@@ -105,31 +105,31 @@ class MntnerService {
         });
     }
 
-    public isNccEndUserMntner = (mntnerKey: string): boolean => {
+    public isNccEndUserMntner(mntnerKey: string): boolean {
         return this.nccEndMntner === mntnerKey.toUpperCase();
     }
 
-    public isNccHmMntner = (mntnerKey: string): boolean => {
+    public isNccHmMntner(mntnerKey: string): boolean {
         return this.nccHmMntner === mntnerKey.toUpperCase();
     }
 
-    public isNccRpslMntner = (mntnerKey: string): boolean => {
+    public isNccRpslMntner(mntnerKey: string): boolean {
         return this.nccRpslMntner === mntnerKey.toUpperCase();
     }
 
-    public isMntnerOnlist = (list: any, mntner: IMntByModel): boolean => {
+    public isMntnerOnlist(list: any, mntner: IMntByModel): boolean {
         return _.some(list, (item: IMntByModel) => {
             return item.key.toUpperCase() === mntner.key.toUpperCase();
         });
     }
 
-    public hasNccMntner = (mntnerList: IMntByModel[]): boolean => {
+    public hasNccMntner(mntnerList: IMntByModel[]): boolean {
         return _.some(mntnerList, (mntner: string) => {
             return this.isNccMntner(mntner);
         });
     }
 
-    public hasMd5 = (mntner: IMntByModel): boolean => {
+    public hasMd5(mntner: IMntByModel): boolean {
         if (_.isUndefined(mntner.auth)) {
             return false;
         }
@@ -139,7 +139,7 @@ class MntnerService {
         });
     }
 
-    public isMine = (mntner: IMntByModel): boolean => {
+    public isMine(mntner: IMntByModel): boolean {
         if (!mntner.mine) {
             return false;
         } else {
@@ -147,7 +147,7 @@ class MntnerService {
         }
     }
 
-    public hasSSo = (mntner: IMntByModel): boolean => {
+    public hasSSo(mntner: IMntByModel): boolean {
         if (_.isUndefined(mntner.auth)) {
             return false;
         }
@@ -156,7 +156,7 @@ class MntnerService {
         });
     }
 
-    public hasPgp = (mntner: IMntByModel): boolean => {
+    public hasPgp(mntner: IMntByModel): boolean {
         if (_.isUndefined(mntner.auth)) {
             return false;
         }
@@ -165,21 +165,21 @@ class MntnerService {
         });
     }
 
-    public isNew = (mntner: any): boolean => {
+    public isNew(mntner: any): boolean {
         if (_.isUndefined(mntner.isNew)) {
             return false;
         }
         return mntner.isNew;
     }
 
-    public enrichWithSsoStatus = (ssoMntners: IMntByModel[], mntners: IMntByModel[]): IMntByModel[] => {
+    public enrichWithSsoStatus(ssoMntners: IMntByModel[], mntners: IMntByModel[]): IMntByModel[] {
         return _.map(mntners, (mntner: IMntByModel) => {
             mntner.mine = !!this.isMntnerOnlist(ssoMntners, mntner);
             return mntner;
         });
     }
 
-    public enrichWithNewStatus = (originalMntners: any, actualMntners: any): any => {
+    public enrichWithNewStatus(originalMntners: any, actualMntners: any): any {
         return _.map(actualMntners, (mntner: any) => {
             mntner.isNew = !this.isMntnerOnlist(originalMntners, mntner);
             return mntner;
@@ -188,7 +188,7 @@ class MntnerService {
 
     public enrichWithMine = (ssoMntners: IMntByModel[], mntners: IMntByModel[]) => this.enrichWithSsoStatus(ssoMntners, mntners);
 
-    public needsPasswordAuthentication = (ssoMntners: any, originalObjectMntners: any, objectMntners: any): boolean => {
+    public needsPasswordAuthentication (ssoMntners: any, originalObjectMntners: any, objectMntners: any): boolean {
         let input = originalObjectMntners;
         if (originalObjectMntners.length === 0) {
             // it is a create
@@ -220,7 +220,7 @@ class MntnerService {
         return true;
     }
 
-    public getMntnersForPasswordAuthentication = (ssoMntners: IMntByModel[], originalObjectMntners: any, objectMntners: IMntByModel[]) => {
+    public getMntnersForPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: any, objectMntners: IMntByModel[]) {
         let input = originalObjectMntners;
         if (originalObjectMntners.length === 0) {
             // it is a create
@@ -241,7 +241,7 @@ class MntnerService {
         });
     }
 
-    public getMntnersNotEligibleForPasswordAuthentication = (ssoMntners: any, originalObjectMntners: any, objectMntners: any) => {
+    public getMntnersNotEligibleForPasswordAuthentication(ssoMntners: any, originalObjectMntners: any, objectMntners: any) {
         // Note: this function is NOT the exact opposite of getMntnersForPasswordAuthentication()
         let input = originalObjectMntners;
         if (originalObjectMntners.length === 0) {
@@ -262,15 +262,15 @@ class MntnerService {
         });
     }
 
-    public mntbyDescription = (objectType: string) => {
+    public mntbyDescription(objectType: string) {
         return this.WhoisResources.getAttributeDescription(objectType, "mnt-by");
     }
 
-    public mntbySyntax = (objectType: string): any => {
+    public mntbySyntax(objectType: string): any {
         return this.WhoisResources.getAttributeSyntax(objectType, "mnt-by");
     }
 
-    public stripNccMntners = (mntners: any, allowEmptyResult: boolean) => {
+    public stripNccMntners(mntners: any, allowEmptyResult: boolean) {
         // remove NCC mntners and dupes
         const stripped = _.reject(mntners, (mntner: any) => {
             return (this.isNccMntner(mntner.key));
@@ -284,7 +284,7 @@ class MntnerService {
     }
 
     // temporary function to check if only mntner is RPSL
-    public isLoneRpslMntner = (mntners: any) => {
+    public isLoneRpslMntner(mntners: any) {
         if (mntners.length !== 1) {
             return false;
         }
@@ -307,7 +307,7 @@ class MntnerService {
         return false;
     }
 
-    private getMntsToAuthenticateUsingParent = (prefix: any, mntHandler: any) => {
+    private getMntsToAuthenticateUsingParent(prefix: any, mntHandler: any) {
         const objectType = this.PrefixService.isValidIpv4Prefix(prefix) ? "inetnum" : "inet6num";
         this.RestService.fetchResource(objectType, prefix).get((result: any) => {
 

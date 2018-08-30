@@ -31,6 +31,7 @@ interface IAttributeModel {
         $$primaryKey?: boolean,
         $$refs?: string[],
         $$isEnum?: boolean,
+        $$isLir?: boolean,
         $$disable?: boolean,
     };
 }
@@ -81,7 +82,7 @@ interface IWhoisResponseModel {
 }
 
 interface IMntByModel {
-    auth: string[];
+    auth?: string[];
     key: string;
     mine: boolean;
     type: string;

@@ -78,13 +78,11 @@ angular.module('webUpdates')
                 })
                 .state('webupdates.create', {
                     url: '/create/:source/:objectType?noRedirect',
-                    templateUrl: 'scripts/updates/web/createModify.html',
-                    controller: 'CreateModifyController'
+                    template: '<create-modify></create-modify>',
                 })
                 .state('webupdates.modify', {
                     url: '/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect',
-                    templateUrl: 'scripts/updates/web/createModify.html',
-                    controller: 'CreateModifyController'
+                    template: '<create-modify></create-modify>',
                 })
                 .state('webupdates.display', {
                     url: '/display/:source/:objectType/{name:WhoisObjectName}?method',

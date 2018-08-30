@@ -198,12 +198,7 @@ describe('webUpdates: displayPersonMntnerPairComponent', function () {
             expect($stateParams.objectType).toBe('person');
             expect($stateParams.name).toBe(PERSON_NAME);
         });
-
-        // fragment of new target view will be fetched
-        $httpBackend.flush();
-
     });
-
 
     it('should navigate to modify mntner screen', function () {
         MessageStore.add(personToDisplay.getPrimaryKey(), personToDisplay);
@@ -218,9 +213,6 @@ describe('webUpdates: displayPersonMntnerPairComponent', function () {
             expect($stateParams.objectType).toBe('mntner');
             expect($stateParams.name).toBe(MNTNER_NAME);
         });
-
-        // fragment of new target view will be fetched
-        $httpBackend.flush();
     });
 
 });

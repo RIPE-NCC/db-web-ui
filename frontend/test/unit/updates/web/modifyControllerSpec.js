@@ -109,7 +109,7 @@ var ROLE_OBJ = [{
 
 describe('webUpdates: ModifyController', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $ctrl, $state, $stateParams, $httpBackend;
     var MessageStore;
     var CredentialsService;
     var WhoisResources;
@@ -121,9 +121,7 @@ describe('webUpdates: ModifyController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, $window, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_, _PreferenceService_) {
-
-            $scope = _$rootScope_.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, $window, _MessageStore_, _CredentialsService_, _WhoisResources_, _MntnerService_, _PreferenceService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -147,8 +145,8 @@ describe('webUpdates: ModifyController', function () {
 
             CredentialsService.setCredentials('TEST-MNT', '@123');
 
-            _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window, $log: logger
+            $ctrl = _$componentController_('createModify', {
+                $state: $state, $stateParams: $stateParams, $window: $window, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -192,48 +190,48 @@ describe('webUpdates: ModifyController', function () {
     });
 
     it('should get objectType from url', function () {
-        expect($scope.objectType).toBe(OBJECT_TYPE);
+        expect($ctrl.objectType).toBe(OBJECT_TYPE);
     });
 
     it('should get source from url', function () {
-        expect($scope.source).toBe(SOURCE);
+        expect($ctrl.source).toBe(SOURCE);
     });
 
     it('should get name from url', function () {
-        expect($scope.name).toBe(NAME);
+        expect($ctrl.name).toBe(NAME);
     });
 
     it('should populate mntner data', function () {
-        expect($scope.maintainers.sso.length).toBe(2);
-        expect($scope.maintainers.objectOriginal.length).toBe(1);
-        expect($scope.maintainers.object.length).toBe(1);
+        expect($ctrl.maintainers.sso.length).toBe(2);
+        expect($ctrl.maintainers.objectOriginal.length).toBe(1);
+        expect($ctrl.maintainers.object.length).toBe(1);
 
-        expect($scope.maintainers.sso[0].key).toEqual('TEST-MNT');
-        expect($scope.maintainers.sso[0].type).toEqual('mntner');
-        expect($scope.maintainers.object[0].auth).toEqual(['MD5-PW', 'SSO']);
-        expect($scope.maintainers.object[0].mine).toEqual(true);
+        expect($ctrl.maintainers.sso[0].key).toEqual('TEST-MNT');
+        expect($ctrl.maintainers.sso[0].type).toEqual('mntner');
+        expect($ctrl.maintainers.object[0].auth).toEqual(['MD5-PW', 'SSO']);
+        expect($ctrl.maintainers.object[0].mine).toEqual(true);
 
-        expect($scope.maintainers.objectOriginal[0].key).toEqual('TEST-MNT');
+        expect($ctrl.maintainers.objectOriginal[0].key).toEqual('TEST-MNT');
 
-        expect($scope.maintainers.object[0].key).toEqual('TEST-MNT');
-        expect($scope.maintainers.object[0].type).toEqual('mntner');
-        expect($scope.maintainers.object[0].mine).toEqual(true);
-        expect($scope.maintainers.object[0].isNew).toEqual(false);
-        expect($scope.maintainers.object[0].auth).toEqual(['MD5-PW', 'SSO']);
+        expect($ctrl.maintainers.object[0].key).toEqual('TEST-MNT');
+        expect($ctrl.maintainers.object[0].type).toEqual('mntner');
+        expect($ctrl.maintainers.object[0].mine).toEqual(true);
+        expect($ctrl.maintainers.object[0].isNew).toEqual(false);
+        expect($ctrl.maintainers.object[0].auth).toEqual(['MD5-PW', 'SSO']);
 
     });
 
     it('should populate the ui based on object-type meta model and source', function () {
         var stateBefore = $state.current.name;
 
-        expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toBeUndefined();
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toEqual(NAME);
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').$$error).toBeUndefined();
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').value).toEqual(NAME);
 
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].$$error).toBeUndefined();
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].$$error).toBeUndefined();
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
 
-        expect($scope.attributes.getAllAttributesOnName('source')[0].$$error).toBeUndefined();
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
+        expect($ctrl.attributes.getAllAttributesOnName('source')[0].$$error).toBeUndefined();
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe(stateBefore);
 
@@ -243,17 +241,17 @@ describe('webUpdates: ModifyController', function () {
     it('should display field specific errors upon submit click on form with missing values', function () {
         var stateBefore = $state.current.name;
 
-        $scope.attributes.setSingleAttributeOnName('as-block', null);
+        $ctrl.attributes.setSingleAttributeOnName('as-block', null);
 
-        $scope.submit();
-        expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('Mandatory attribute not set');
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBeNull();
+        $ctrl.submit();
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('Mandatory attribute not set');
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').value).toBeNull();
 
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].$$error).toBeUndefined();
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].$$error).toBeUndefined();
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
 
-        expect($scope.attributes.getSingleAttributeOnName('source').$$error).toBeUndefined();
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
+        expect($ctrl.attributes.getSingleAttributeOnName('source').$$error).toBeUndefined();
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual('RIPE');
 
         expect($state.current.name).toBe(stateBefore);
 
@@ -278,14 +276,14 @@ describe('webUpdates: ModifyController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('changed', 'dummy@ripe.net');
+        $ctrl.attributes.setSingleAttributeOnName('changed', 'dummy@ripe.net');
 
-        $scope.submit();
+        $ctrl.submit();
         $httpBackend.flush();
 
-        var resp = MessageStore.get('MY-AS-BLOCK');
+        var resp = $ctrl.MessageStore.get('MY-AS-BLOCK');
         expect(resp.getPrimaryKey()).toEqual('MY-AS-BLOCK');
-        var attrs = WhoisResources.wrapAttributes(resp.getAttributes());
+        var attrs = $ctrl.WhoisResources.wrapAttributes(resp.getAttributes());
         expect(attrs.getSingleAttributeOnName('as-block').value).toEqual('MY-AS-BLOCK');
         expect(attrs.getAllAttributesOnName('mnt-by')[0].value).toEqual('TEST-MNT');
         expect(attrs.getSingleAttributeOnName('source').value).toEqual('RIPE');
@@ -339,44 +337,44 @@ describe('webUpdates: ModifyController', function () {
             }
         });
 
-        $scope.attributes.setSingleAttributeOnName('as-block', 'A');
+        $ctrl.attributes.setSingleAttributeOnName('as-block', 'A');
 
-        $scope.submit();
+        $ctrl.submit();
         $httpBackend.flush();
 
         // FIXME [IS] error warning and etc are now in AlertService not on scope
-        // expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
-        // expect($scope.warnings[0].plainText).toEqual('Not authenticated');
-        expect($scope.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('\'MY-AS-BLOCK\' is not valid for this object type');
+        // expect($ctrl.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
+        // expect($ctrl.warnings[0].plainText).toEqual('Not authenticated');
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').$$error).toEqual('\'MY-AS-BLOCK\' is not valid for this object type');
 
         expect($state.current.name).toBe(stateBefore);
 
     });
 
     it('duplicate attribute', function () {
-        expect($scope.attributes.length).toEqual(3);
+        expect($ctrl.attributes.length).toEqual(3);
 
-        $scope.duplicateAttribute($scope.attributes[1]);
+        $ctrl.duplicateAttribute($ctrl.attributes[1]);
 
-        expect($scope.attributes.length).toEqual(4);
-        expect($scope.attributes[2].name).toEqual($scope.attributes[1].name);
-        expect($scope.attributes[2].value).toEqual('');
+        expect($ctrl.attributes.length).toEqual(4);
+        expect($ctrl.attributes[2].name).toEqual($ctrl.attributes[1].name);
+        expect($ctrl.attributes[2].value).toEqual('');
     });
 
     it('remove attribute', function () {
-        expect($scope.attributes.length).toEqual(3);
+        expect($ctrl.attributes.length).toEqual(3);
 
-        $scope.removeAttribute($scope.attributes[1]);
+        $ctrl.removeAttribute($ctrl.attributes[1]);
 
-        expect($scope.attributes.length).toEqual(2);
-        expect($scope.attributes[1].name).toEqual('source');
-        expect($scope.attributes[1].value).toEqual('RIPE');
+        expect($ctrl.attributes.length).toEqual(2);
+        expect($ctrl.attributes[1].name).toEqual('source');
+        expect($ctrl.attributes[1].value).toEqual('RIPE');
 
     });
 
     it('should transition to display state if cancel is pressed', function () {
         spyOn($state, 'transitionTo');
-        $scope.cancel();
+        $ctrl.cancel();
         expect($state.transitionTo).toHaveBeenCalledWith('webupdates.display', {
             source: SOURCE,
             objectType: 'as-block',
@@ -389,7 +387,7 @@ describe('webUpdates: ModifyController', function () {
 
 describe('webUpdates: ModifyController init with failures', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $ctrl, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var MntnerService;
@@ -400,9 +398,7 @@ describe('webUpdates: ModifyController init with failures', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _PreferenceService_) {
-
-            $scope = _$rootScope_.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _PreferenceService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -418,8 +414,8 @@ describe('webUpdates: ModifyController init with failures', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $log: logger
+            $ctrl = _$componentController_('createModify', {
+                $state: $state, $stateParams: $stateParams, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -439,8 +435,8 @@ describe('webUpdates: ModifyController init with failures', function () {
 
         $httpBackend.flush();
 // FIXME [IS] error warning and etc are now in AlertService not on scope
-//         expect($scope.hasErrors()).toBe(true);
-//         expect($scope.errors[0].plainText).toEqual('Error fetching maintainers associated with this SSO account');
+//         expect($ctrl.hasErrors()).toBe(true);
+//         expect($ctrl.errors[0].plainText).toEqual('Error fetching maintainers associated with this SSO account');
     });
 
     it('should report error when fetching object fails', function () {
@@ -450,8 +446,8 @@ describe('webUpdates: ModifyController init with failures', function () {
 
         $httpBackend.flush();
 // FIXME [IS] error warning and etc are now in AlertService not on scope
-//         expect($scope.hasWarnings()).toBe(true);
-//         expect($scope.warnings[0].plainText).toEqual('Not authenticated');
+//         expect($ctrl.hasWarnings()).toBe(true);
+//         expect($ctrl.warnings[0].plainText).toEqual('Not authenticated');
     });
 
     it('should report error when fetching maintainer details fails', function () {
@@ -461,8 +457,8 @@ describe('webUpdates: ModifyController init with failures', function () {
         failToGetMaintainerDetails();
 
         $httpBackend.flush();
-        // expect($scope.hasErrors()).toBe(true);
-        // expect($scope.errors[0].plainText).toEqual('Error fetching maintainer details');
+        // expect($ctrl.hasErrors()).toBe(true);
+        // expect($ctrl.errors[0].plainText).toEqual('Error fetching maintainer details');
     });
 
     function getSsoMaintainers() {
@@ -523,7 +519,7 @@ describe('webUpdates: ModifyController init with failures', function () {
 
 describe('webUpdates: ModifyController ask for password before modify object with non-sso maintainer with password', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $ctrl, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var MntnerService;
@@ -536,9 +532,7 @@ describe('webUpdates: ModifyController ask for password before modify object wit
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
-
-            $scope = _$rootScope_.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -584,8 +578,8 @@ describe('webUpdates: ModifyController ask for password before modify object wit
                     return [200, [{key: 'TEST3-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                 });
 
-            _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $log: logger
+            $ctrl = _$componentController_('createModify', {
+                $state: $state, $stateParams: $stateParams, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -611,7 +605,7 @@ describe('webUpdates: ModifyController ask for password before modify object wit
 
 describe('webUpdates: ModifyController should be able to handle escape objected with slash', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $ctrl, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var MntnerService;
@@ -623,9 +617,7 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _$q_) {
-
-            $scope = _$rootScope_.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _$q_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -666,8 +658,8 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
                     return [200, [{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}], {}];
                 });
 
-            _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, $log: logger
+            $ctrl = _$componentController_('createModify', {
+                $state: $state, $stateParams: $stateParams, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -684,7 +676,7 @@ describe('webUpdates: ModifyController should be able to handle escape objected 
 
 describe('webUpdates: ModifyController for organisation', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $ctrl, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var MntnerService;
@@ -697,9 +689,7 @@ describe('webUpdates: ModifyController for organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_, _PreferenceService_) {
-
-            $scope = _$rootScope_.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_, _PreferenceService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -725,8 +715,8 @@ describe('webUpdates: ModifyController for organisation', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService, $log: logger
+            $ctrl = _$componentController_('createModify', {
+                $state: $state, $stateParams: $stateParams, ModalService: ModalService, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -765,17 +755,17 @@ describe('webUpdates: ModifyController for organisation', function () {
     });
 
     it('should populate abuse-c with new role\'s nic-hdl', function () {
-        $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-        $scope.createRoleForAbuseCAttribute();
+        $ctrl.attributes = OrganisationHelper.addAbuseC($ctrl.objectType, $ctrl.attributes);
+        $ctrl.createRoleForAbuseCAttribute();
 
-        expect($scope.attributes.getSingleAttributeOnName('abuse-c').value).toBe('SR11027-RIPE');
+        expect($ctrl.attributes.getSingleAttributeOnName('abuse-c').value).toBe('SR11027-RIPE');
     });
 
-    it('should populate $scope.roleForAbuseC', function () {
-        $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-        $scope.createRoleForAbuseCAttribute();
+    it('should populate $ctrl.roleForAbuseC', function () {
+        $ctrl.attributes = OrganisationHelper.addAbuseC($ctrl.objectType, $ctrl.attributes);
+        $ctrl.createRoleForAbuseCAttribute();
 
-        expect($scope.roleForAbuseC).toBeDefined();
+        expect($ctrl.roleForAbuseC).toBeDefined();
     });
 
     it('should show LIR orgs with certain attributes disabled', function () {
@@ -786,7 +776,7 @@ describe('webUpdates: ModifyController for organisation', function () {
 
 describe('webUpdates: ModifyController for LIR organisation', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $ctrl, $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var MntnerService;
@@ -799,9 +789,7 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
-
-            $scope = _$rootScope_.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -824,8 +812,8 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService, $log: logger
+            $ctrl = _$componentController_('createModify', {
+                $state: $state, $stateParams: $stateParams, ModalService: ModalService, $log: logger
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);

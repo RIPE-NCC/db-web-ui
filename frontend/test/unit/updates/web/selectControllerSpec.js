@@ -4,15 +4,16 @@
 describe('webUpdates: SelectController', function () {
     var $componentController;
 
-    var $stateParams, $httpBackend, UserInfoService;
+    var $state, $stateParams, $httpBackend, UserInfoService;
     var OBJECT_TYPE = 'as-set';
     var SOURCE = 'RIPE';
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$stateParams_, _$httpBackend_, _UserInfoService_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _UserInfoService_) {
             $componentController = _$componentController_;
+            $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             UserInfoService = _UserInfoService_;
@@ -31,9 +32,8 @@ describe('webUpdates: SelectController', function () {
         $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
             return [401, '', {}];
         });
-
-        var $ctrl = $componentController('selectComponent');
-        // $ctrl.$onInit();
+        spyOn($state, "transitionTo");
+        var $ctrl = $componentController('selectComponent', {$state: $state});
 
         $httpBackend.flush();
         expect($ctrl.loggedIn).toBeUndefined();
@@ -42,11 +42,7 @@ describe('webUpdates: SelectController', function () {
 
         $ctrl.navigateToCreate();
 
-        $httpBackend.flush();
-
-        expect($ctrl.$state.current.name).toBe('webupdates.create');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe(OBJECT_TYPE);
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.create', $ctrl.selected);
         // Note that the  error-interceptor is responsible for flagging redirect to crowd
     });
 
@@ -60,9 +56,8 @@ describe('webUpdates: SelectController', function () {
                 active:true}
             }, {}];
         });
-
-        var $ctrl = $componentController('selectComponent');
-        // $ctrl.$onInit();
+        spyOn($state, "transitionTo");
+        var $ctrl = $componentController('selectComponent', {$state: $state});
 
         $httpBackend.flush();
 
@@ -72,11 +67,7 @@ describe('webUpdates: SelectController', function () {
 
         $ctrl.navigateToCreate();
 
-        $httpBackend.flush();
-
-        expect($ctrl.$state.current.name).toBe('webupdates.create');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe(OBJECT_TYPE);
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.create', $ctrl.selected);
     });
 
     it('should navigate to create person maintainer screen when logged in and selected', function () {

@@ -87,15 +87,14 @@ describe('textUpdates: TextCreateComponent', function () {
 
     it('should redirect to webupdates when web-preference is set', function () {
         PreferenceService.setWebMode();
-
+        spyOn($state, "transitionTo");
         doCreateController('inetnum',false);
         $httpBackend.whenGET('api/user/mntners').respond([]);
         $httpBackend.whenGET(/.*.html/).respond(200);
-        $httpBackend.flush();
-
-        expect($state.current.name).not.toBe(initialState);
-        // FIXME [IS]
-        // expect($ctrl.$state.current.name).toBe('webupdates.create');
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.create', {
+            objectType: 'inetnum',
+            source: 'RIPE',
+        });
     });
 
     it('should not redirect to webupdates when web-preference is set and no-redirect is true', function () {
