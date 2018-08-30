@@ -288,11 +288,10 @@ describe('My Resources detail', function () {
             expect(page.inpDescr.isPresent()).toBe(true);
             page.scrollIntoView(page.inpDescr);
             page.inpDescr.sendKeys('Updated test description');
-
+            page.scrollIntoView(page.inpDescr);
             page.btnAddAnAttribute(page.inpDescr).click();
             page.scrollIntoView(page.modal);
             page.modalBtnSubmit.click();
-            expect(page.modal.isPresent()).toEqual(false);
 
             expect(page.inpDescr2.isPresent()).toBe(true);
             page.btnRemoveAttribute(page.inpDescr2).click();
