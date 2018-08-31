@@ -1,6 +1,6 @@
-<div id="errors" class="alert alert-danger" role="alert" ng-if="domain.errors.length">
+<div id="errors" class="alert alert-danger" role="alert" ng-if="$ctrl.errors.length">
     <ul>
-        <li ng-repeat="error in domain.errors">
+        <li ng-repeat="error in $ctrl.errors">
             <div>{{error.plainText}}</div>
         </li>
     </ul>
@@ -9,23 +9,23 @@
 <form id="createForm" name="whoisObjectForm" accept-charset="ISO-8859-1">
 
     <h1 title="Create domain objects">Create "domain" objects</h1>
-    <maintainers-editor ng-model="domain.domainObject" ng-if="domain.domainObject" update-mntners-clbk="domain.updateMaintainers(mntners)"></maintainers-editor>
+    <maintainers-editor ng-model="$ctrl.domainObject" ng-if="$ctrl.domainObject" update-mntners-clbk="$ctrl.updateMaintainers(mntners)"></maintainers-editor>
 
     <section class="visible-field-form">
         <whois-object-editor
-            ng-model="domain.domainObject"
-            cancel-clicked="domain.cancelEditor()">
+            ng-model="$ctrl.domainObject"
+            cancel-clicked="$ctrl.cancelEditor()">
         </whois-object-editor>
     </section>
 
-    <section class="supporting-text" ng-show="!domain.containsInvalidValues() && !domain.isValidatingDomains">
+    <section class="supporting-text" ng-show="!$ctrl.containsInvalidValues() && !$ctrl.isValidatingDomains">
         <p>By submitting this form you explicitly express your agreement with the
             <a href="http://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a>
         </p>
         <button id="btnSubmitCreate"
                 class="pull-right blue-button ga-createobj-domain"
                 type="button"
-                ng-click="domain.submitButtonClicked()">Submit
+                ng-click="$ctrl.submitButtonClicked()">Submit
         </button>
     </section>
 

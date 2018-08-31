@@ -3,7 +3,7 @@ class ErrorReporterService {
     public static $inject = ["$log", "$location", "$analytics"];
     constructor(private $log: angular.ILogService, private $location: angular.ILocationService, private $analytics: any) {}
 
-    public log(operation: string, objectType: string, globalErrors: any, attributes: IAttributeModel[]) {
+    public log(operation: string, objectType: string, globalErrors: any, attributes?: IAttributeModel[]) {
         _.each(globalErrors, (item: any) => {
             this.$log.error("url:" + this.$location.path() + ", operation:" + operation + ", objectType: " + objectType + ", description: " + item.plainText);
             this.$analytics.eventTrack("FormSubmitAction", {

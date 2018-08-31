@@ -28,5 +28,5 @@ class DisplayDomainObjectsController {
 angular.module("dbWebApp")
     .component("displayDomainObjects", {
         controller: DisplayDomainObjectsController,
-        templateUrl: "scripts/wizard/displayDomainObjects.html",
+        templateUrl: "scripts/wizard/display-domain-objects.html",
     });

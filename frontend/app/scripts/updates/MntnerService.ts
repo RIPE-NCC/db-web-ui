@@ -291,23 +291,7 @@ class MntnerService {
         return mntners[0].key.toUpperCase() === this.nccRpslMntner;
     }
 
-    private oneOfOriginalMntnersIsMine(originalObjectMntners: any) {
-        return _.some(originalObjectMntners, (mntner: IMntByModel) => {
-            return mntner.mine === true;
-        });
-    }
-
-    private oneOfOriginalMntnersHasCredential(originalObjectMntners: any) {
-        if (this.credentialsService.hasCredentials()) {
-            const trustedMtnerName = this.credentialsService.getCredentials().mntner;
-            return _.some(originalObjectMntners, (mntner: IMntByModel) => {
-                return mntner.key.toUpperCase() === trustedMtnerName.toUpperCase();
-            });
-        }
-        return false;
-    }
-
-    private getMntsToAuthenticateUsingParent(prefix: any, mntHandler: any) {
+    public getMntsToAuthenticateUsingParent(prefix: any, mntHandler: any) {
         const objectType = this.PrefixService.isValidIpv4Prefix(prefix) ? "inetnum" : "inet6num";
         this.RestService.fetchResource(objectType, prefix).get((result: any) => {
 
@@ -343,6 +327,23 @@ class MntnerService {
             return mntHandler([]);
         });
     }
+
+    private oneOfOriginalMntnersIsMine(originalObjectMntners: any) {
+        return _.some(originalObjectMntners, (mntner: IMntByModel) => {
+            return mntner.mine === true;
+        });
+    }
+
+    private oneOfOriginalMntnersHasCredential(originalObjectMntners: any) {
+        if (this.credentialsService.hasCredentials()) {
+            const trustedMtnerName = this.credentialsService.getCredentials().mntner;
+            return _.some(originalObjectMntners, (mntner: IMntByModel) => {
+                return mntner.key.toUpperCase() === trustedMtnerName.toUpperCase();
+            });
+        }
+        return false;
+    }
+
 }
 
 angular.module("updates").service("MntnerService", MntnerService);

@@ -2,7 +2,7 @@ class MessageStore {
 
     private messages = {};
 
-    public add(key: string, value: string) {
+    public add(key: string, value: any) {
         this.messages[key] = value;
     }
 

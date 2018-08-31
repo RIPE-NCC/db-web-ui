@@ -7,15 +7,33 @@ class ModalService {
                 public $log: angular.ILogService) {
     }
 
-    public openDomainCreationModal(ctrl: any) { // FIXME probably Function
-        return this.$modal.open({
+    public openDomainCreationModal(attributes: any, domainObjectSource: string) {
+        const deferredObject = this.$q.defer();
+
+        this.$modal.open({
             animation: false,
-            controller: ctrl,
-            controllerAs: "$ctrl",
+            component: "modalDomainCreationWait",
             keyboard: false,
-            resolve: {},
-            templateUrl: "scripts/wizard/domainCreationWaitModal.html",
-        }).result;
+            resolve: {
+                attributes() {
+                    return attributes;
+                },
+                source() {
+                    return domainObjectSource;
+                },
+                promise() {
+                    return deferredObject;
+                },
+            },
+        }).result
+            .then((response: any) => {
+                this.$log.debug("openDomainCreationModal completed with:", response);
+                deferredObject.resolve(response);
+            }, (reason: any) => {
+                this.$log.debug("openDomainCreationModal cancelled because: " + reason);
+                deferredObject.reject(reason);
+            });
+        return deferredObject.promise;
     }
 
     // [IS] looks to me that this functionality can be removed together with TextMultiDecisionController.js
@@ -29,17 +47,16 @@ class ModalService {
         }).result;
     }
 
-    public openDomainWizardSplash(ctrl: any) {
+    public openDomainWizardSplash() {
         return this.$modal.open({
             animation: false,
             backdrop: "static",
-            controller: ctrl,
-            controllerAs: "$ctrl",
+            component: "modalDomainObjectSplash",
             keyboard: false,
             resolve: {},
-            templateUrl: "scripts/wizard/domainObjectSplash.html",
         }).result;
     }
+
     public openCreateRoleForAbuseCAttribute(source: string, maintainers: any, passwords: string) {
         return this.$modal.open({
             animation: false,

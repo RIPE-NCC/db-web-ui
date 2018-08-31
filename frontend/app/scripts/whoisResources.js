@@ -296,7 +296,7 @@ angular.module('dbWebApp')
             return object.attributes.attribute;
         };
 
-        function isValidWhoisResources( whoisResources) {
+        function isValidWhoisResources(whoisResources) {
             if(_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
                 $log.error('isValidWhoisResources: Null input:' + JSON.stringify(whoisResources));
                 return false;
@@ -310,8 +310,8 @@ angular.module('dbWebApp')
             return true;
         }
 
-        this.wrapWhoisResources = function( whoisResources ) {
-            if ( !  isValidWhoisResources(whoisResources) ) {
+        this.wrapWhoisResources = function(whoisResources ) {
+            if (! isValidWhoisResources(whoisResources) ) {
                 return undefined;
             }
             // enrich data with methods
