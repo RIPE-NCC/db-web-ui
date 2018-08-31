@@ -13,7 +13,7 @@ class DomainObjectWizardController {
         "MntnerService", "WebUpdatesCommons", "CredentialsService", "MessageStore", "PrefixService"];
 
     public objectType: string;
-    public domainObject: any;
+    public domainObject: IDomainObject;
     public attributes: any;
     public source: string;
     public errors: any[];
