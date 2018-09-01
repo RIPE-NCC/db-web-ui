@@ -16,7 +16,24 @@ interface IProperties {
     LOGIN_URL: string;
     BUILD_TAG: string;
     PORTAL_URL: string;
+
+    LIR_ACCOUNT_DETAILS_URL: string;
+    LIR_BILLING_DETAILS_URL: string;
+    REQUEST_UPDATE_URL: string;
+    LIR_GENERAL_MEETING_URL: string;
+    LIR_USER_ACCOUNTS_URL: string;
+    LIR_TICKETS_URL: string;
+    LIR_TRAINING_URL: string;
+    LIR_API_ACCESS_KEYS_URL: string;
+
+    REQUEST_RESOURCES_URL: string;
+    REQUEST_TRANSFER_URL: string;
+    IPV4_TRANSFER_LISTING_URL: string;
+    RPKI_DASHBOARD_URL: string;
+
+    DATABASE_FULL_TEXT_SEARCH_URL: string;
     DATABASE_SYNCUPDATES_URL: string;
+    DATABASE_CREATE_URL: string;
 }
 
 class QueryController {

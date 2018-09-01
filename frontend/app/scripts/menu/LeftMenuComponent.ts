@@ -1,5 +1,12 @@
+// FIXME remove scope and handle events
+
+// this method needs to be called when this component is created to add the dropdown effect
+interface Window { // tslint:disable-line
+    init_portlet_menu(): void;
+}
+
 class LeftMenuController {
-    public static $inject = ["$rootScope", "$scope", "EnvironmentStatus"];
+    public static $inject = ["$rootScope", "$scope", "EnvironmentStatus", "Properties", "$window"];
 
     public activeUrl: string;
     public show: {
@@ -28,10 +35,15 @@ class LeftMenuController {
 
     public dbMenuIsActive: boolean;
 
-    constructor(private $rootScope: angular.IRootScopeService,
-                private $scope: angular.IScope,
-                private EnvironmentStatus: EnvironmentStatus) {
+    constructor(public $rootScope: angular.IRootScopeService,
+                public $scope: angular.IScope,
+                public EnvironmentStatus: EnvironmentStatus,
+                public properties: IProperties,
+                public $window: any) {
 
+        $window.init_portlet_menu();
+        // TODO probably inject $location here instead of document.location
+        this.activeUrl = document.location.href;
         $rootScope.$on("$stateChangeSuccess", (event: angular.IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
             this.dbMenuIsActive =
@@ -50,6 +62,8 @@ class LeftMenuController {
             this.show.admin = this.show.general = this.show.billing
                 = this.show.generalMeeting = this.show.ticketing = this.show.certification
                 = this.show.myResources = false;
+
+            // this.selected = selected;
 
             // Only temporary for the test environment
             this.show.testRcEnv = this.EnvironmentStatus.isTestRcEnv();
@@ -90,4 +104,8 @@ class LeftMenuController {
 
 }
 
-angular.module("dbWebApp").controller("LeftMenuController", LeftMenuController);
+angular.module("dbWebApp")
+    .component("leftMenu", {
+        controller: LeftMenuController,
+        templateUrl: "scripts/menu/left-hand-menu.html",
+    });

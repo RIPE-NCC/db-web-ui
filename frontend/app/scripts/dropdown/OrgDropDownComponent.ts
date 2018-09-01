@@ -1,5 +1,5 @@
 class OrgDropDownController {
-    public static $inject = ["$log", "$rootScope", "$scope", "UserInfoService", "EnvironmentStatus"];
+    public static $inject = ["$log", "$rootScope", "$scope", "UserInfoService", "EnvironmentStatus", "Properties"];
 
     public selectedOrg: IUserInfoOrganisation;
     public organisations: IUserInfoOrganisation[] = [];
@@ -10,7 +10,8 @@ class OrgDropDownController {
                 private $rootScope: angular.IRootScopeService,
                 private $scope: angular.IScope,
                 private UserInfoService: UserInfoService,
-                private EnvironmentStatus: EnvironmentStatus) {
+                private EnvironmentStatus: EnvironmentStatus,
+                public Properties: IProperties) {
     }
 
     public $onInit(): void {

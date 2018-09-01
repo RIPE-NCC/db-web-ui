@@ -76,6 +76,5 @@ angular.module("dbWebApp").component("resourceItem", {
         sponsored: "<",
     },
     controller: ResourceItemController,
-    controllerAs: "ctrlResourceItem",
     templateUrl: "scripts/myresources/resource-item.html",
 });

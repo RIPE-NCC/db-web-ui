@@ -1,0 +1,87 @@
+<!--  Webupdates specific menu start -->
+<!--<div ng-controller="LeftMenuController as menu">-->
+<div class="portlet navigation margin-bottom menu-override">
+        <ul class="toplevel">
+            <li class="child" ng-class="{active: $ctrl.selected.lir}" ng-show="!$ctrl.show.testRcEnv && !$ctrl.show.trainingEnv && ($ctrl.show.admin || $ctrl.show.general || $ctrl.show.billing || $ctrl.show.generalMeeting || $ctrl.show.ticketing)">
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    My LIR
+                </a>
+                <ul class="level2">
+                    <li ng-show="$ctrl.show.admin || $ctrl.show.general">
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_ACCOUNT_DETAILS_URL}}">LIR Account Details</a>
+                    </li>
+                    <li ng-show="$ctrl.show.billing">
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_BILLING_DETAILS_URL}}">Billing Details</a>
+                    </li>
+                    <li ng-show="$ctrl.show.admin || $ctrl.show.general">
+                        <a class="menuItem" href="{{$ctrl.properties.REQUEST_UPDATE_URL}}">Request Update</a>
+                    </li>
+                    <li ng-show="$ctrl.show.generalMeeting">
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_GENERAL_MEETING_URL}}">GM Preferences</a>
+                    </li>
+                    <li ng-show="$ctrl.show.admin || $ctrl.show.general || $ctrl.show.billing">
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_USER_ACCOUNTS_URL}}">User Accounts</a>
+                    </li>
+                    <li ng-show="$ctrl.show.ticketing">
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_TICKETS_URL}}">My Tickets</a>
+                    </li>
+                    <li ng-show="$ctrl.show.admin || $ctrl.show.general">
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_TRAINING_URL}}">My Training</a>
+                    </li>
+                    <li ng-show="$ctrl.show.admin">
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_API_ACCESS_KEYS_URL}}">API Access Keys</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child" ng-class="{active: $ctrl.activeUrl.indexOf('/myresources/') > -1}" ng-show="!$ctrl.show.trainingEnv">
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    Resources
+                </a>
+                <ul class="level2">
+                    <li>
+                        <a class="menuItem" ng-class="{current: $ctrl.activeUrl.indexOf('/myresources/') > -1}" href="{{$ctrl.properties.MY_RESOURCES_URL}}">My Resources</a>
+                    </li>
+                    <li ng-show="($ctrl.show.admin || $ctrl.show.general) && !$ctrl.show.testRcEnv">
+                        <a class="menuItem" href="{{$ctrl.properties.REQUEST_RESOURCES_URL}}">Request Resources</a>
+                    </li>
+                    <li ng-show="($ctrl.show.admin || $ctrl.show.general) && !$ctrl.show.testRcEnv">
+                        <a class="menuItem" href="{{$ctrl.properties.REQUEST_TRANSFER_URL}}">Request Transfer</a>
+                    </li>
+                    <li ng-show="($ctrl.show.admin || $ctrl.show.general) && !$ctrl.show.testRcEnv">
+                        <a class="menuItem" href="{{$ctrl.properties.IPV4_TRANSFER_LISTING_URL}}">IPv4 Transfer Listing Service</a>
+                    </li>
+                    <li ng-show="$ctrl.show.certification && !$ctrl.show.testRcEnv">
+                        <a class="menuItem" href="{{$ctrl.properties.RPKI_DASHBOARD_URL}}">RPKI Dashboard</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child" ng-class="{active: $ctrl.dbMenuIsActive}">
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    RIPE Database
+                </a>
+                <ul class="level2">
+                    <li>
+                        <a class="menuItem" href="#/query" ng-class="{current: $ctrl.activeUrl.indexOf('/query') === 0 || $ctrl.activeUrl.indexOf('/lookup') === 0}">Query the RIPE Database</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="{{$ctrl.properties.DATABASE_FULL_TEXT_SEARCH_URL}}" ng-class="{current: $ctrl.activeUrl.indexOf('/fulltextsearch') === 0}">Full Text Search</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="{{$ctrl.properties.DATABASE_SYNCUPDATES_URL}}" ng-class="{current: $ctrl.activeUrl.indexOf('/multi') === 0 || $ctrl.activeUrl.indexOf('/syncupdates') === 0}">Syncupdates</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" ng-class="{current: $ctrl.activeUrl.indexOf('/wizard') === 0 || $ctrl.activeUrl.indexOf('/select') === 0 || $ctrl.activeUrl.indexOf('/create') === 0 || $ctrl.activeUrl.indexOf('/modify') === 0 || $ctrl.activeUrl.indexOf('/display') === 0}"
+                           href="{{$ctrl.properties.DATABASE_CREATE_URL}}">Create an Object</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+<!--</div>-->
+<div>
+    <div class="portlet margin-bottom grey grey-border"></div>
+</div>
+<!--  Webupdates specific menu end -->
