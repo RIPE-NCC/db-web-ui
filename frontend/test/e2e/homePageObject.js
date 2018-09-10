@@ -140,9 +140,6 @@ module.exports = {
     orgSelectorOptions1: element(by.id('ui-select-choices-row-0-1')),
     orgSelectorOptions2: element(by.id('ui-select-choices-row-0-2')),
 
-    liveChatButtonTab: element(by.id('userlikeCustomTab')),
-    liveChatPopup: element(by.id('userlike-popup')),
-
     // Lefthand menu items
     topMenuItems: element.all(by.css('.toplevel li.child')),
     myLirMenuItems: element.all(by.css('.toplevel li.child')).get(0).all(by.css('.level2 li')),

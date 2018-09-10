@@ -1,5 +1,3 @@
-<!--  Webupdates specific body-end start -->
-
 <!-- Usersnap widget: always on -->
 <script type="text/javascript">
     (function () {
@@ -12,11 +10,7 @@
     })();
 </script>
 
-<div id="button-container">
-    <!-- Live Chat button -->
-    <live-chat></live-chat>
-</div>
-
+<!--  Webupdates specific body-end start -->
 <script type="text/javascript">
     angular.element(document).ready(function() {
         angular.bootstrap(document, ['dbWebApp']);
@@ -26,14 +20,6 @@
                 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
         })(window,document,'script','dataLayer',angular.element(document).injector().get('Properties').GTM_ID);
-        // Live chat script
-        (function(doc, script, key) {
-            var f=doc.getElementsByTagName(script)[0], s = doc.createElement(script);
-            s.type = 'text/javascript';
-            s.async = true;
-            s.src = ('https:' === doc.location.protocol ? 'https://' : 'http://') + 's3-eu-west-1.amazonaws.com/userlike-cdn-widgets/' + key + '.js';
-            f.parentNode.insertBefore(s,f);
-        })(document,'script',angular.element(document).injector().get('Properties').LIVE_CHAT_KEY);
     });
 </script>
 <!--  Webupdates specific body-end end -->
