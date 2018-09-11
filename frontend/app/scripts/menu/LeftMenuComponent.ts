@@ -63,8 +63,6 @@ class LeftMenuController {
                 = this.show.generalMeeting = this.show.ticketing = this.show.certification
                 = this.show.myResources = false;
 
-            // this.selected = selected;
-
             // Only temporary for the test environment
             this.show.testRcEnv = this.EnvironmentStatus.isTestRcEnv();
             this.show.trainingEnv = this.EnvironmentStatus.isTrainingEnv();
