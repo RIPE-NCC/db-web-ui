@@ -63,16 +63,16 @@
                 </a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem" href="#/query" ng-class="{current: $ctrl.activeUrl.indexOf('/query') === 0 || $ctrl.activeUrl.indexOf('/lookup') === 0}">Query the RIPE Database</a>
+                        <a class="menuItem" href="#/query" ng-class="{current: $ctrl.activeUrl.indexOf('/query') > -1 || $ctrl.activeUrl.indexOf('/lookup') > -1}">Query the RIPE Database</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="{{$ctrl.properties.DATABASE_FULL_TEXT_SEARCH_URL}}" ng-class="{current: $ctrl.activeUrl.indexOf('/fulltextsearch') === 0}">Full Text Search</a>
+                        <a class="menuItem" href="{{$ctrl.properties.DATABASE_FULL_TEXT_SEARCH_URL}}" ng-class="{current: $ctrl.activeUrl.indexOf('/fulltextsearch') > -1}">Full Text Search</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="{{$ctrl.properties.DATABASE_SYNCUPDATES_URL}}" ng-class="{current: $ctrl.activeUrl.indexOf('/multi') === 0 || $ctrl.activeUrl.indexOf('/syncupdates') === 0}">Syncupdates</a>
+                        <a class="menuItem" href="{{$ctrl.properties.DATABASE_SYNCUPDATES_URL}}" ng-class="{current: $ctrl.activeUrl.indexOf('/multi') > -1 || $ctrl.activeUrl.indexOf('/syncupdates') > -1}">Syncupdates</a>
                     </li>
                     <li>
-                        <a class="menuItem" ng-class="{current: $ctrl.activeUrl.indexOf('/wizard') === 0 || $ctrl.activeUrl.indexOf('/select') === 0 || $ctrl.activeUrl.indexOf('/create') === 0 || $ctrl.activeUrl.indexOf('/modify') === 0 || $ctrl.activeUrl.indexOf('/display') === 0}"
+                        <a class="menuItem" ng-class="{current: $ctrl.activeUrl.indexOf('/wizard') > -1 || $ctrl.activeUrl.indexOf('/select') > -1 || $ctrl.activeUrl.indexOf('/create') > -1 || $ctrl.activeUrl.indexOf('/modify') > -1 || $ctrl.activeUrl.indexOf('/display') > -1}"
                            href="{{$ctrl.properties.DATABASE_CREATE_URL}}">Create an Object</a>
                     </li>
                 </ul>

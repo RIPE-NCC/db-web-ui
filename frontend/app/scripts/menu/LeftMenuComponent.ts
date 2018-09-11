@@ -6,7 +6,7 @@ interface Window { // tslint:disable-line
 }
 
 class LeftMenuController {
-    public static $inject = ["$rootScope", "$scope", "EnvironmentStatus", "Properties", "$window"];
+    public static $inject = ["$rootScope", "$scope", "EnvironmentStatus", "Properties", "$window", "$location"];
 
     public activeUrl: string;
     public show: {
@@ -39,26 +39,18 @@ class LeftMenuController {
                 public $scope: angular.IScope,
                 public EnvironmentStatus: EnvironmentStatus,
                 public properties: IProperties,
-                public $window: any) {
+                public $window: any,
+                public $location: ng.ILocationService) {
 
         $window.init_portlet_menu();
-        // TODO probably inject $location here instead of document.location
-        this.activeUrl = document.location.href;
-        $rootScope.$on("$stateChangeSuccess", (event: angular.IAngularEvent, toState: any) => {
+        this.activeUrl = this.$location.path();
+        this.isDbMenuActive();
+
+        this.$rootScope.$on("$stateChangeSuccess", (event: angular.IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
-            this.dbMenuIsActive =
-                this.activeUrl.indexOf("/wizard") > -1 ||
-                this.activeUrl.indexOf("/select") > -1 ||
-                this.activeUrl.indexOf("/create") > -1 ||
-                this.activeUrl.indexOf("/display") > -1 ||
-                this.activeUrl.indexOf("/modify") > -1 ||
-                this.activeUrl.indexOf("/query") > -1 ||
-                this.activeUrl.indexOf("/fulltextsearch") > -1 ||
-                this.activeUrl.indexOf("/lookup") > -1 ||
-                this.activeUrl.indexOf("/multi") > -1 ||
-                this.activeUrl.indexOf("/syncupdates") > -1;
+            this.isDbMenuActive();
         });
-        $scope.$on("selected-org-changed", (event: angular.IAngularEvent, selected: IUserInfoOrganisation) => {
+        this.$scope.$on("selected-org-changed", (event: angular.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.show.admin = this.show.general = this.show.billing
                 = this.show.generalMeeting = this.show.ticketing = this.show.certification
                 = this.show.myResources = false;
@@ -98,6 +90,20 @@ class LeftMenuController {
                 }
             }
         });
+    }
+
+    private isDbMenuActive() {
+        this.dbMenuIsActive =
+            this.activeUrl.indexOf("/wizard") > -1 ||
+            this.activeUrl.indexOf("/select") > -1 ||
+            this.activeUrl.indexOf("/create") > -1 ||
+            this.activeUrl.indexOf("/display") > -1 ||
+            this.activeUrl.indexOf("/modify") > -1 ||
+            this.activeUrl.indexOf("/query") > -1 ||
+            this.activeUrl.indexOf("/fulltextsearch") > -1 ||
+            this.activeUrl.indexOf("/lookup") > -1 ||
+            this.activeUrl.indexOf("/multi") > -1 ||
+            this.activeUrl.indexOf("/syncupdates") > -1;
     }
 
 }
