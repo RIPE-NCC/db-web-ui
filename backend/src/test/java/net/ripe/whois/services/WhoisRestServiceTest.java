@@ -44,7 +44,7 @@ public class WhoisRestServiceTest {
         when(request.getMethod()).thenReturn(HttpMethod.GET.name());
         subject.bypass(request, body, httpHeaders);
 
-        verify(restTemplate).exchange(new URI("http://localhost/fulltextsearch/select"), HttpMethod.GET, new HttpEntity<>(body, httpHeaders), String.class);
+        verify(restTemplate).exchange(new URI("http://localhost/whois/fulltextsearch/select"), HttpMethod.GET, new HttpEntity<>(body, httpHeaders), String.class);
     }
 
     @Test
@@ -54,6 +54,6 @@ public class WhoisRestServiceTest {
         when(request.getMethod()).thenReturn(HttpMethod.GET.name());
         subject.bypass(request, body, httpHeaders);
 
-        verify(restTemplate).exchange(new URI("http://localhost/fulltextsearch/select?q=%3Csvg+onload=%22alert('XSS')%22%3E"), HttpMethod.GET, new HttpEntity<>(body, httpHeaders), String.class);
+        verify(restTemplate).exchange(new URI("http://localhost/whois/fulltextsearch/select?q=%3Csvg+onload=%22alert('XSS')%22%3E"), HttpMethod.GET, new HttpEntity<>(body, httpHeaders), String.class);
     }
 }
