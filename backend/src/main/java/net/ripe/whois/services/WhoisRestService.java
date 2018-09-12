@@ -64,16 +64,16 @@ public class WhoisRestService implements ExchangeErrorHandler {
             }, LOGGER);
     }
 
-    private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException, UnsupportedEncodingException {
+    private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
         final URIBuilder builder = new URIBuilder(apiUrl)
                 .setPath(request.getRequestURI()
-                    .replace("/api/rest", "")
+                    .replace("/api/rest", "/whois")
                     .replace(contextPath, ""));
 
         if (StringUtils.isNotBlank(request.getQueryString())) {
             builder.setCustomQuery(request.getQueryString());
         }
-        LOGGER.debug("uri = {}", builder);
+        LOGGER.debug("uri = {}", builder.toString());
         return new URI(builder.toString());
     }
 
