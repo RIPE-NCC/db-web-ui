@@ -1,7 +1,6 @@
 package net.ripe.whois.services;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -40,7 +38,7 @@ public class WhoisRestService implements ExchangeErrorHandler {
         this.contextPath = contextPath;
     }
 
-    public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
+    public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
         final URI uri = composeWhoisUrl(request);
 
         // Do not accept compressed response, as it's not handled properly (by whois)
@@ -65,13 +63,14 @@ public class WhoisRestService implements ExchangeErrorHandler {
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
-        final URIBuilder builder = new URIBuilder(apiUrl)
-                .setPath(request.getRequestURI()
-                    .replace("/api/rest", "/whois")
+        final StringBuilder builder = new StringBuilder(apiUrl)
+                .append(request.getRequestURI()
+                    .replace("/api/rest", "")
                     .replace(contextPath, ""));
 
         if (StringUtils.isNotBlank(request.getQueryString())) {
-            builder.setCustomQuery(request.getQueryString());
+            builder.append('?')
+                    .append(request.getQueryString());
         }
         LOGGER.debug("uri = {}", builder.toString());
         return new URI(builder.toString());

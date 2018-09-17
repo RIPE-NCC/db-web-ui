@@ -18,9 +18,9 @@ angular.module("dbWebApp")
 
         "msg.noAbuseContactFound.text": "No abuse contact found",
         "msg.noResourceHolderFound.text": "Not found",
-        "msg.ripeTandCSubmitLink.text": "By submitting this form you explicitly express your agreement with the <a href='http://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>RIPE Database Terms and Conditions</a>",
-        "msg.searchResultsFullTextTandCLink.text": "This is the RIPE Database full text search service.<br>The RIPE Database is subject to <a href='http://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
-        "msg.searchResultsTandCLink.text": "This is the RIPE Database search service. The objects are in RPSL format.<br>The RIPE Database is subject to <a href='http://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
+        "msg.ripeTandCSubmitLink.text": "By submitting this form you explicitly express your agreement with the <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>RIPE Database Terms and Conditions</a>",
+        "msg.searchResultsFullTextTandCLink.text": "This is the RIPE Database full text search service.<br>The RIPE Database is subject to <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
+        "msg.searchResultsTandCLink.text": "This is the RIPE Database search service. The objects are in RPSL format.<br>The RIPE Database is subject to <a href='https://www.ripe.net/db/support/db-terms-conditions.html' target='_blank'>Terms and Conditions</a>.",
 
         "query.optionAllDatabases.title": "RIPE, APNIC, AFRINIC, LACNIC, ARIN, ARIN-RR, RADb, NTTCOM and JPIRR",
         "query.optionFullObject.title": "A default query hides some personal information. Check this box to see the full object.",
