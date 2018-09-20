@@ -19,7 +19,7 @@ class MntnerService {
                 private $q: ng.IQService,
                 private credentialsService: CredentialsService,
                 private WhoisResources: any,
-                private ModalService: any,
+                private ModalService: ModalService,
                 private RestService: RestService,
                 private PrefixService: PrefixService) {
         this.nccEndMntner = "RIPE-NCC-END-MNT";

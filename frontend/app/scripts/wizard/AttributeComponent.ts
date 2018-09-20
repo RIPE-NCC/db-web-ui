@@ -18,7 +18,7 @@ class AttributeController {
                 private CharsetToolsService: CharsetToolsService,
                 private RestService: RestService,
                 private EnumService: EnumService,
-                private ModalService: any,
+                private ModalService: ModalService,
                 private CredentialsService: CredentialsService,
                 private WhoisResources: any) {
 
