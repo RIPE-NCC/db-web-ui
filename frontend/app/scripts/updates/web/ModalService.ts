@@ -57,7 +57,7 @@ class ModalService {
         }).result;
     }
 
-    public openCreateRoleForAbuseCAttribute(source: string, maintainers: any, passwords: string) {
+    public openCreateRoleForAbuseCAttribute(source: string, maintainers: any, passwords: string[]) {
         return this.$modal.open({
             animation: false,
             component: "modalCreateRoleForAbuseC",

@@ -27,7 +27,7 @@
         </tr>
     </table>
 
-    <pre class="textdiff" line-diff left-obj="before" right-obj="after" ng-if="$ctrl.isDiff()"></pre>
+    <pre class="textdiff" line-diff left-obj="$ctrl.before" right-obj="$ctrl.after" ng-if="$ctrl.isDiff()"></pre>
 
     <button ng-click="$ctrl.navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
     <span ng-show="$ctrl.modifyButtonToBeShown()">

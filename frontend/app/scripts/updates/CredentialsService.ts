@@ -24,7 +24,7 @@ class CredentialsService {
         return this.credentials;
     }
 
-    public getPasswordsForRestCall(objectType: string) {
+    public getPasswordsForRestCall(objectType: string): string[] {
         const passwords = [];
         if (this.hasCredentials()) {
             passwords.push(this.credentials.successfulPassword);

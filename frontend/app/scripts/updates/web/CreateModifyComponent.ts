@@ -61,7 +61,7 @@ class CreateModifyController {
                 private MessageStore: MessageStore,
                 private CredentialsService: CredentialsService,
                 private RestService: RestService,
-                private ModalService: any,
+                private ModalService: ModalService,
                 private MntnerService: MntnerService,
                 private AlertService: AlertService,
                 private ErrorReporterService: ErrorReporterService,
@@ -451,7 +451,7 @@ class CreateModifyController {
                 return !attrPred.$$meta.$$isLir;
             });
 
-        this.ModalService.openAddAttributeModal(addableAttributes, this.CredentialsService.getPasswordsForRestCall(this.objectType))
+        this.ModalService.openAddAttributeModal(addableAttributes)
             .then((selectedItem: any) => {
                 this.addSelectedAttribute(selectedItem, attr);
             });

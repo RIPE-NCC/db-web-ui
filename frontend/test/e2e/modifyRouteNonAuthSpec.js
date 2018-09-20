@@ -39,6 +39,7 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', function () {
         page.btnSubmitModify.click();
         expect(browser.getCurrentUrl()).toContain('#/webupdates/display/ripe/route/211.43.192.0%252F19AS9777?method=Modify');
         expect(page.successMessage.getText()).toEqual('Your object has been successfully modified');
+        expect(page.displayPanel.isDisplayed()).toBeTruthy();
     });
 
     it('should be possible for RC to delete out of region route object', function () {
