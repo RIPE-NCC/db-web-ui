@@ -18,7 +18,7 @@ class TextMultiController {
 
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",
         "WhoisResources", "RestService", "AlertService", "ErrorReporterService",
-        "RpslService", "TextCommons", "SerialExecutor", "AutoKeyLogicService", "Properties", "PreferenceService"];
+        "RpslService", "TextCommons", "SerialExecutorService", "AutoKeyLogicService", "Properties", "PreferenceService"];
 
     public actionsPending: number = 0;
     public restCallInProgress: boolean = false;
@@ -45,7 +45,7 @@ class TextMultiController {
                 public ErrorReporterService: ErrorReporterService,
                 public RpslService: any,
                 public TextCommons: any,
-                public SerialExecutor: any,
+                public SerialExecutorService: SerialExecutorService,
                 public AutoKeyLogicService: AutoKeyLogicService,
                 public Properties: any,
                 public PreferenceService: PreferenceService) {
@@ -135,7 +135,7 @@ class TextMultiController {
         this.initializeActionCounter(this.objects.objects);
 
         // Execute any by one so that AUT0-keys can be resolved
-        this.SerialExecutor.execute(this.objects.objects, this.submitSingle);
+        this.SerialExecutorService.execute(this.objects.objects, this.submitSingle);
     }
 
     private submitSingle = (object: any) => {

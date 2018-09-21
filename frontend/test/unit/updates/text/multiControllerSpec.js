@@ -7,7 +7,7 @@ describe('textUpdates: TextMultiComponent', function () {
     var WhoisResources;
     var AlertService;
     var AutoKeyLogicService;
-    var SerialExecutor;
+    var SerialExecutorService;
     var SOURCE = 'RIPE';
     var doSetupController;
     var $q;
@@ -18,7 +18,7 @@ describe('textUpdates: TextMultiComponent', function () {
         module('textUpdates');
 
         inject(function (_$rootScope_, _$componentController_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
-                         _WhoisResources_, _AlertService_, _$q_, _AutoKeyLogicService_, _SerialExecutor_) {
+                         _WhoisResources_, _AlertService_, _$q_, _AutoKeyLogicService_, _SerialExecutorService_) {
 
             var $rootScope = _$rootScope_;
             $scope = $rootScope.$new();
@@ -29,7 +29,7 @@ describe('textUpdates: TextMultiComponent', function () {
             WhoisResources = _WhoisResources_;
             AlertService = _AlertService_;
             AutoKeyLogicService = _AutoKeyLogicService_;
-            SerialExecutor = _SerialExecutor_;
+            SerialExecutorService = _SerialExecutorService_;
             $q = _$q_;
 
             var logger = {
