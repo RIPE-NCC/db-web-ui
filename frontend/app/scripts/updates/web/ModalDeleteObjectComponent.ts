@@ -25,7 +25,7 @@ class ModalDeleteObjectController {
 
     constructor(public $state: ng.ui.IStateService,
                 public $log: angular.ILogService,
-                public RestService: any,
+                public RestService: RestService,
                 public CredentialsService: CredentialsService,
                 public WhoisResources: any,
                 public MessageStore: MessageStore) {

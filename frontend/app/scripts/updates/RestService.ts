@@ -286,7 +286,7 @@ class RestService {
         return deferredObject.promise;
     }
 
-    public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, passwords: string, dryRun: any) {
+    public deleteObject(source: string, objectType: string, name: string, reason: string, withReferences: any, passwords: string, dryRun?: any) {
         const deferredObject = this.$q.defer();
 
         const service = withReferences ? "references" : "whois";

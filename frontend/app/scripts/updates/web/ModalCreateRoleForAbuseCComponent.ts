@@ -40,7 +40,7 @@ class ModalCreateRoleForAbuseCCotroller {
     public resolve: IModalCreateRoleForAbuceC;
 
     constructor(private WhoisResources: any,
-                private RestService: any,
+                private RestService: RestService,
                 private MntnerService: any) {
     }
 

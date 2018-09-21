@@ -21,7 +21,7 @@ class WhoisObjectEditorController {
     private originalAttibutes: IAttributeModel[];
 
     constructor(private AttributeMetadataService: any,
-                private MessageStore: any,
+                private MessageStore: MessageStore,
                 private properties: { SOURCE: string }) {
     }
 
