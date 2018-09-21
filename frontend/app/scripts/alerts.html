@@ -5,7 +5,7 @@
 </div>
 
 <div ng-if="$ctrl.AlertService.hasWarnings()" class="alert alert-warning">
-    <p ng-repeat="warning in $ctrl.warnings">
+    <p ng-repeat="warning in $ctrl.AlertService.warnings">
         <span ng-bind-html="warning.plainText"></span>
     </p>
 </div>
