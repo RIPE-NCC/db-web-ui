@@ -18,7 +18,7 @@ class TextMultiController {
 
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",
         "WhoisResources", "RestService", "AlertService", "ErrorReporterService",
-        "RpslService", "TextCommons", "SerialExecutor", "AutoKeyLogic", "Properties", "PreferenceService"];
+        "RpslService", "TextCommons", "SerialExecutor", "AutoKeyLogicService", "Properties", "PreferenceService"];
 
     public actionsPending: number = 0;
     public restCallInProgress: boolean = false;
@@ -46,7 +46,7 @@ class TextMultiController {
                 public RpslService: any,
                 public TextCommons: any,
                 public SerialExecutor: any,
-                public AutoKeyLogic: any,
+                public AutoKeyLogicService: AutoKeyLogicService,
                 public Properties: any,
                 public PreferenceService: PreferenceService) {
         this.initialisePage();
@@ -187,7 +187,7 @@ class TextMultiController {
 
     private verify(source: string, rpsl: any, parsedObjs: any) {
         const objects: ITextMultiObject[] = [];
-        this.AutoKeyLogic.clear();
+        this.AutoKeyLogicService.clear();
         this.initializeActionCounter(parsedObjs);
 
         _.each(parsedObjs, (parsedObj) => {
@@ -223,7 +223,7 @@ class TextMultiController {
                 object.name = this.getPkey(object.type, object.attributes);
 
                 // find out if this object has AUTO-keys
-                this.AutoKeyLogic.identifyAutoKeys(object.type, attrs);
+                this.AutoKeyLogicService.identifyAutoKeys(object.type, attrs);
 
                 // start fetching to determine if exists
                 this.setStatus(object, undefined, "Fetching");
@@ -295,10 +295,10 @@ class TextMultiController {
             this.$log.debug("Start performing action " + this.determineAction(object) + "-" + object.type + "-" + object.name);
 
             // replace auto-key with real generated key
-            this.AutoKeyLogic.substituteAutoKeys(object.attributes);
+            this.AutoKeyLogicService.substituteAutoKeys(object.attributes);
 
             // find attrs with an auto key
-            const autoAttrs = this.AutoKeyLogic.getAutoKeys(object.attributes);
+            const autoAttrs = this.AutoKeyLogicService.getAutoKeys(object.attributes);
 
             // might have changed due to auto-key
             const oldName = _.trim(object.name);
@@ -340,7 +340,7 @@ class TextMultiController {
 
                         // Associate generated value for auto-key so that next object with auto- can be substituted
                         _.each(autoAttrs, (attr) => {
-                            this.AutoKeyLogic.registerAutoKeyValue(attr, result.getAttributes());
+                            this.AutoKeyLogicService.registerAutoKeyValue(attr, result.getAttributes());
                         });
                         deferredObject.resolve(result);
                     }, (error: any) => {
