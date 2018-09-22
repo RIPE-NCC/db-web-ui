@@ -1,4 +1,4 @@
-class StateProvider {
+class TextUpdateStateProvider {
 
     public static $inject = ["$stateProvider"];
 
@@ -28,4 +28,4 @@ class StateProvider {
     }
 }
 
-angular.module("textUpdates").config(StateProvider);
+angular.module("textUpdates").config(TextUpdateStateProvider);
