@@ -1,7 +1,7 @@
 interface IRpslObject {
     attributes: IAttributeModel[];
     override?: string;
-    passwords: string[];
+    passwords?: string[];
     deleteReason?: string;
 }
 

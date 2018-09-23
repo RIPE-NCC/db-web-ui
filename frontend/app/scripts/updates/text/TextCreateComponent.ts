@@ -18,7 +18,7 @@ class TextCreateController {
     public mntners: any;
     public name: string;
     public override: string;
-    public passwords: string;
+    public passwords: string[];
 
     constructor(public $stateParams: ng.ui.IStateParamsService,
                 public $state: ng.ui.IStateService,
@@ -173,7 +173,7 @@ class TextCreateController {
         this.enrichAttributesWithSsoMntners(attributes)
             .then((attrs: any) => {
                 this.TextCommons.capitaliseMandatory(attrs);
-                const obj = {
+                const obj: IRpslObject = {
                     attributes: attrs,
                     override: this.override,
                     passwords: this.passwords,
