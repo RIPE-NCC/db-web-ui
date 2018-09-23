@@ -13,7 +13,7 @@ class CreateModifyController {
     public static $inject = ["$scope", "$stateParams", "$state", "$anchorScroll", "$location", "$log", "$window", "$q", "$sce",
         "$document", "WhoisResources", "MessageStore", "CredentialsService", "RestService", "ModalService",
         "MntnerService", "AlertService", "ErrorReporterService", "LinkService", "ResourceStatus",
-        "WebUpdatesCommons", "OrganisationHelper", "PreferenceService", "EnumService", "CharsetToolsService",
+        "WebUpdatesCommons", "OrganisationHelperService", "PreferenceService", "EnumService", "CharsetToolsService",
         "ScreenLogicInterceptor", "ObjectUtilService"];
 
     public optionList: IOptionList = {status: []};
@@ -68,7 +68,7 @@ class CreateModifyController {
                 private LinkService: LinkService,
                 private ResourceStatus: ResourceStatus,
                 private WebUpdatesCommons: any,
-                private OrganisationHelper: any,
+                private OrganisationHelperService: OrganisationHelperService,
                 private PreferenceService: PreferenceService,
                 private EnumService: EnumService,
                 private CharsetToolsService: CharsetToolsService,
@@ -493,7 +493,7 @@ class CreateModifyController {
             if (this.interceptOnSubmitSuccess(this.operation, whoisResources.getAttributes()) === false) {
 
                 // It" ok to just let it happen or fail.
-                this.OrganisationHelper.updateAbuseC(this.source, this.objectType, this.roleForAbuseC, this.attributes);
+                this.OrganisationHelperService.updateAbuseC(this.source, this.objectType, this.roleForAbuseC, this.attributes);
 
                 // stick created object in temporary store, so display-screen can fetch it from here
                 this.MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
@@ -902,7 +902,7 @@ class CreateModifyController {
     }
 
     private validateForm() {
-        return this.attributes.validate() && this.OrganisationHelper.validateAbuseC(this.objectType, this.attributes);
+        return this.attributes.validate() && this.OrganisationHelperService.validateAbuseC(this.objectType, this.attributes);
     }
 
     private isFormValid() {

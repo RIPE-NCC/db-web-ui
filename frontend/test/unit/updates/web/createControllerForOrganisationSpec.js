@@ -7,7 +7,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     var MessageStore;
     var WhoisResources;
     var MntnerService;
-    var OrganisationHelper;
+    var OrganisationHelperService;
     var ModalService;
     var OBJECT_TYPE = 'organisation';
     var SOURCE = 'RIPE';
@@ -17,13 +17,13 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _OrganisationHelper_, _PreferenceService_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _OrganisationHelperService_, _PreferenceService_) {
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            OrganisationHelper = _OrganisationHelper_;
-            OrganisationHelper.updateAbuseC = function() {};
+            OrganisationHelperService = _OrganisationHelperService_;
+            OrganisationHelperService.updateAbuseC = function() {};
             PreferenceService = _PreferenceService_;
             PreferenceService.isTextMode = function() {return false;};
 
@@ -70,14 +70,14 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     });
 
     it('should populate abuse-c with new role\'s nic-hdl', function () {
-        $ctrl.attributes = $ctrl.OrganisationHelper.addAbuseC($ctrl.objectType, $ctrl.attributes);
+        $ctrl.attributes = $ctrl.OrganisationHelperService.addAbuseC($ctrl.objectType, $ctrl.attributes);
         $ctrl.createRoleForAbuseCAttribute();
 
         expect($ctrl.attributes.getSingleAttributeOnName('abuse-c').value).toBe('SR11027-RIPE');
     });
 
     it('should populate $ctrl.roleForAbuseC', function () {
-        $ctrl.attributes = OrganisationHelper.addAbuseC($ctrl.objectType, $ctrl.attributes);
+        $ctrl.attributes = OrganisationHelperService.addAbuseC($ctrl.objectType, $ctrl.attributes);
         $ctrl.createRoleForAbuseCAttribute();
 
         expect($ctrl.roleForAbuseC).toBeDefined();
@@ -90,12 +90,12 @@ describe('webUpdates: CreateModifyController for organisation', function () {
         );
 
         $httpBackend.whenPUT('api/whois/RIPE/organisation/ORG-UA300-RIPE').respond(DEFAULT_RESPONSE); // I don' care about this call
-        spyOn(OrganisationHelper, 'updateAbuseC');
+        spyOn(OrganisationHelperService, 'updateAbuseC');
 
         $ctrl.submit();
         $httpBackend.flush();
 
-        expect(OrganisationHelper.updateAbuseC).toHaveBeenCalled();
+        expect(OrganisationHelperService.updateAbuseC).toHaveBeenCalled();
 
     });
 

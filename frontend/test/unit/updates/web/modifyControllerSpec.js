@@ -680,7 +680,7 @@ describe('webUpdates: ModifyController for organisation', function () {
     var MessageStore;
     var WhoisResources;
     var MntnerService;
-    var OrganisationHelper;
+    var OrganisationHelperService;
     var ModalService;
     var OBJECT_TYPE = 'organisation';
     var SOURCE = 'RIPE';
@@ -689,14 +689,14 @@ describe('webUpdates: ModifyController for organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_, _PreferenceService_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelperService_, _PreferenceService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
-            OrganisationHelper = _OrganisationHelper_;
+            OrganisationHelperService = _OrganisationHelperService_;
             MntnerService = _MntnerService_;
             ModalService = {
                 openCreateRoleForAbuseCAttribute: function () {
@@ -755,14 +755,14 @@ describe('webUpdates: ModifyController for organisation', function () {
     });
 
     it('should populate abuse-c with new role\'s nic-hdl', function () {
-        $ctrl.attributes = OrganisationHelper.addAbuseC($ctrl.objectType, $ctrl.attributes);
+        $ctrl.attributes = OrganisationHelperService.addAbuseC($ctrl.objectType, $ctrl.attributes);
         $ctrl.createRoleForAbuseCAttribute();
 
         expect($ctrl.attributes.getSingleAttributeOnName('abuse-c').value).toBe('SR11027-RIPE');
     });
 
     it('should populate $ctrl.roleForAbuseC', function () {
-        $ctrl.attributes = OrganisationHelper.addAbuseC($ctrl.objectType, $ctrl.attributes);
+        $ctrl.attributes = OrganisationHelperService.addAbuseC($ctrl.objectType, $ctrl.attributes);
         $ctrl.createRoleForAbuseCAttribute();
 
         expect($ctrl.roleForAbuseC).toBeDefined();
@@ -780,7 +780,7 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
     var MessageStore;
     var WhoisResources;
     var MntnerService;
-    var OrganisationHelper;
+    var OrganisationHelperService;
     var ModalService;
     var OBJECT_TYPE = 'organisation';
     var SOURCE = 'RIPE';
@@ -789,14 +789,14 @@ describe('webUpdates: ModifyController for LIR organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelperService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
-            OrganisationHelper = _OrganisationHelper_;
+            OrganisationHelperService = _OrganisationHelperService_;
             MntnerService = _MntnerService_;
             ModalService = {
                 openCreateRoleForAbuseCAttribute: function () {

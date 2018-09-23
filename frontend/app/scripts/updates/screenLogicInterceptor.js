@@ -4,8 +4,8 @@
     'use strict';
 
 angular.module('updates')
-    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelper', 'MessageStore', 'MntnerService', 'LinkService',
-        function ($log, WhoisResources, OrganisationHelper, MessageStore, MntnerService, LinkService) {
+    .service('ScreenLogicInterceptor', ['$log', 'WhoisResources', 'OrganisationHelperService', 'MessageStore', 'MntnerService', 'LinkService',
+        function ($log, WhoisResources, OrganisationHelperService, MessageStore, MntnerService, LinkService) {
 
             // TODO: start
             // Move the following stuff from Create-modify-controller:
@@ -243,15 +243,15 @@ angular.module('updates')
 
             function _loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos) {
                 if(method === 'Create') {
-                    if (!OrganisationHelper.containsAbuseC(attributes)) {
-                        attributes = OrganisationHelper.addAbuseC(objectType, attributes);
+                    if (!OrganisationHelperService.containsAbuseC(attributes)) {
+                        attributes = OrganisationHelperService.addAbuseC(objectType, attributes);
                     }
                     attributes.setSingleAttributeOnName('organisation', 'AUTO-1');
                     attributes.setSingleAttributeOnName('org-type', 'OTHER');
                 }
 
-                if(method === 'Modify' && !OrganisationHelper.containsAbuseC(attributes)) {
-                    attributes = OrganisationHelper.addAbuseC(objectType, attributes);
+                if(method === 'Modify' && !OrganisationHelperService.containsAbuseC(attributes)) {
+                    attributes = OrganisationHelperService.addAbuseC(objectType, attributes);
                     attributes.getSingleAttributeOnName('abuse-c').$$meta.$$missing = true;
                     warnings.push('<p>There is currently no abuse contact set up for your organisation, which is required under ' +
                         '<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>'+
