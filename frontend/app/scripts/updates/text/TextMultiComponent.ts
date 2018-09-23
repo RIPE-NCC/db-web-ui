@@ -43,7 +43,7 @@ class TextMultiController {
                 public RestService: RestService,
                 public AlertService: AlertService,
                 public ErrorReporterService: ErrorReporterService,
-                public RpslService: any,
+                public RpslService: RpslService,
                 public TextCommons: any,
                 public SerialExecutorService: SerialExecutorService,
                 public AutoKeyLogicService: AutoKeyLogicService,

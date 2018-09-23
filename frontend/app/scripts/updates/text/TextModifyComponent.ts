@@ -26,7 +26,7 @@ class TextModifyController {
         public AlertService: AlertService,
         public ErrorReporterService: ErrorReporterService,
         public MessageStore: MessageStore,
-        public RpslService: any,
+        public RpslService: RpslService,
         public TextCommons: any,
         public CredentialsService: CredentialsService,
         public PreferenceService: PreferenceService) {

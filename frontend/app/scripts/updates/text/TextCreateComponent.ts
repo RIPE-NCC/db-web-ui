@@ -31,7 +31,7 @@ class TextCreateController {
                 public AlertService: AlertService,
                 public ErrorReporterService: ErrorReporterService,
                 public MessageStore: MessageStore,
-                public RpslService: any,
+                public RpslService: RpslService,
                 public TextCommons: any,
                 public PreferenceService: PreferenceService,
                 public MntnerService: MntnerService) {
