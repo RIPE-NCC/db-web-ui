@@ -6,7 +6,7 @@ interface IObjectFromParameters {
 }
 
 class ForceDeleteController {
-    public static $inject = ["$stateParams", "$state", "$log", "$q", "WhoisResources", "WebUpdatesCommons",
+    public static $inject = ["$stateParams", "$state", "$log", "$q", "WhoisResources", "WebUpdatesCommonsService",
         "RestService", "MntnerService", "AlertService"];
 
     public object: IObjectFromParameters = {
@@ -27,7 +27,7 @@ class ForceDeleteController {
                 public $log: angular.ILogService,
                 public $q: ng.IQService,
                 public WhoisResources: any,
-                public WebUpdatesCommons: any,
+                public WebUpdatesCommonsService: WebUpdatesCommonsService,
                 public RestService: RestService,
                 public MntnerService: MntnerService,
                 public AlertService: AlertService) {
@@ -113,7 +113,7 @@ class ForceDeleteController {
                         // fetch details of all selected maintainers concurrently
                         this.restCallInProgress = true;
                         this.RestService.detailsForMntners(objectMntners)
-                            .then((enrichedMntners) => {
+                            .then((enrichedMntners: IMntByModel[]) => {
                                 this.restCallInProgress = false;
 
                                 this.maintainers.object = enrichedMntners;
@@ -183,7 +183,7 @@ class ForceDeleteController {
     }
 
     private cancel() {
-        this.WebUpdatesCommons.navigateToDisplay(this.object.source, this.object.type, this.object.name, undefined);
+        this.WebUpdatesCommonsService.navigateToDisplay(this.object.source, this.object.type, this.object.name, undefined);
     }
 
     private forceDelete() {
@@ -199,7 +199,7 @@ class ForceDeleteController {
     }
 
     private performAuthentication() {
-        const authParams = {
+        const authParams: IAuthParams = {
             failureClbk: this.cancel,
             // isLirObject: false,
             maintainers: this.maintainers,
@@ -211,12 +211,12 @@ class ForceDeleteController {
             operation: "ForceDelete",
             successClbk: this.onSuccessfulAuthentication,
         };
-        this.WebUpdatesCommons.performAuthentication(authParams);
+        this.WebUpdatesCommonsService.performAuthentication(authParams);
     }
 
     private onSuccessfulAuthentication() {
         this.$log.debug("Navigate to force delete screen");
-        this.WebUpdatesCommons.navigateToDelete(this.object.source, this.object.type, this.object.name, STATE.FORCE_DELETE);
+        this.WebUpdatesCommonsService.navigateToDelete(this.object.source, this.object.type, this.object.name, STATE.FORCE_DELETE);
     }
 }
 angular.module("webUpdates")

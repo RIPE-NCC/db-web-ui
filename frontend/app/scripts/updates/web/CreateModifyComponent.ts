@@ -3,17 +3,17 @@ interface IOptionList {
 }
 
 interface IMaintainers {
-    alternatives?: string[];
-    object: any[];
-    objectOriginal: any[];
-    sso: any[];
+    alternatives?: IMntByModel[];
+    object: IMntByModel[];
+    objectOriginal: IMntByModel[];
+    sso: IMntByModel[];
 }
 
 class CreateModifyController {
     public static $inject = ["$scope", "$stateParams", "$state", "$anchorScroll", "$location", "$log", "$window", "$q", "$sce",
         "$document", "WhoisResources", "MessageStore", "CredentialsService", "RestService", "ModalService",
         "MntnerService", "AlertService", "ErrorReporterService", "LinkService", "ResourceStatus",
-        "WebUpdatesCommons", "OrganisationHelperService", "PreferenceService", "EnumService", "CharsetToolsService",
+        "WebUpdatesCommonsService", "OrganisationHelperService", "PreferenceService", "EnumService", "CharsetToolsService",
         "ScreenLogicInterceptor", "ObjectUtilService"];
 
     public optionList: IOptionList = {status: []};
@@ -67,7 +67,7 @@ class CreateModifyController {
                 private ErrorReporterService: ErrorReporterService,
                 private LinkService: LinkService,
                 private ResourceStatus: ResourceStatus,
-                private WebUpdatesCommons: any,
+                private WebUpdatesCommonsService: WebUpdatesCommonsService,
                 private OrganisationHelperService: OrganisationHelperService,
                 private PreferenceService: PreferenceService,
                 private EnumService: EnumService,
@@ -479,7 +479,7 @@ class CreateModifyController {
     }
 
     public deleteObject() {
-        this.WebUpdatesCommons.navigateToDelete(this.source, this.objectType, this.name, STATE.MODIFY);
+        this.WebUpdatesCommonsService.navigateToDelete(this.source, this.objectType, this.name, STATE.MODIFY);
     }
 
     public submit() {
@@ -499,7 +499,7 @@ class CreateModifyController {
                 this.MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
 
                 // make transition to next display screen
-                this.WebUpdatesCommons.navigateToDisplay(this.source, this.objectType, whoisResources.getPrimaryKey(), this.operation);
+                this.WebUpdatesCommonsService.navigateToDisplay(this.source, this.objectType, whoisResources.getPrimaryKey(), this.operation);
             }
         };
 
@@ -524,7 +524,7 @@ class CreateModifyController {
             if (intercepted) {
                 this.loadAlerts([], [], []);
                 /* Instruct downstream screen (typically display screen) that object is in pending state */
-                this.WebUpdatesCommons.navigateToDisplay(this.source, this.objectType, whoisResources.getPrimaryKey(), this.PENDING_OPERATION);
+                this.WebUpdatesCommonsService.navigateToDisplay(this.source, this.objectType, whoisResources.getPrimaryKey(), this.PENDING_OPERATION);
             } else {
                 this.validateForm();
                 const firstErr = this.AlertService.populateFieldSpecificErrors(this.objectType, this.attributes, whoisResources);
@@ -968,7 +968,7 @@ class CreateModifyController {
 
     private navigateAway() {
         if (this.operation === "Modify") {
-            this.WebUpdatesCommons.navigateToDisplay(this.source, this.objectType, this.name, undefined);
+            this.WebUpdatesCommonsService.navigateToDisplay(this.source, this.objectType, this.name, undefined);
         } else {
             this.$state.transitionTo("webupdates.select");
         }
@@ -987,7 +987,7 @@ class CreateModifyController {
             operation: this.operation,
             successClbk: this.onSuccessfulAuthentication,
         };
-        this.WebUpdatesCommons.performAuthentication(authParams);
+        this.WebUpdatesCommonsService.performAuthentication(authParams);
     }
 
     private onSuccessfulAuthentication = (associationResp: any) => {

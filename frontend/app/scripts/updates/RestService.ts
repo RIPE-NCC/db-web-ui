@@ -69,7 +69,7 @@ class RestService {
         const deferredObject = this.$q.defer();
 
         this.$resource("api/user/mntners")
-            .query().$promise.then((result: any) => {
+            .query().$promise.then((result: IMaintainers) => {
             this.$log.debug("fetchMntnersForSSOAccount success:" + angular.toJson(result));
             deferredObject.resolve(result);
         }, (error: any) => {

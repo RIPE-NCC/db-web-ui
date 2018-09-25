@@ -16,11 +16,8 @@ var logger = {
 describe('webUpdates: ForceDeleteController', function () {
     var $ctrl, $state, $stateParams, $httpBackend;
     var WhoisResources;
-    var ModalService;
-    var AlertService;
-    var MntnerService;
     var CredentialsService;
-    var WebUpdatesCommons;
+    var WebUpdatesCommonsService;
 
     var $componentController;
 
@@ -34,18 +31,15 @@ describe('webUpdates: ForceDeleteController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_, _AlertService_, _MntnerService_, _CredentialsService_, _WebUpdatesCommons_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_, _CredentialsService_, _WebUpdatesCommonsService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             $componentController = _$componentController_;
-            // ModalService = _ModalService_;
             WhoisResources = _WhoisResources_;
-            // AlertService = _AlertService_;
-            // MntnerService = _MntnerService_;
             CredentialsService = _CredentialsService_;
-            WebUpdatesCommons = _WebUpdatesCommons_;
+            WebUpdatesCommonsService = _WebUpdatesCommonsService_;
 
 
 
@@ -129,7 +123,7 @@ describe('webUpdates: ForceDeleteController', function () {
                 $stateParams.name = '111%20-%20255';
 
                 $ctrl = _$componentController_('forceDelete', {
-                    $state: $state, $stateParams: $stateParams, $log: logger, WebUpdatesCommons: WebUpdatesCommons
+                    $state: $state, $stateParams: $stateParams, $log: logger, WebUpdatesCommonsService: WebUpdatesCommonsService
                 });
 
                 $httpBackend.flush();
@@ -217,14 +211,14 @@ describe('webUpdates: ForceDeleteController', function () {
 
 
     it('should go to delete controler on reclaim', function () {
-        spyOn(WebUpdatesCommons, "navigateToDelete");
+        spyOn(WebUpdatesCommonsService, "navigateToDelete");
         createForceDeleteController();
 
         $ctrl.forceDelete();
 
         $httpBackend.whenGET(/.*.html/).respond(200);
 
-        expect(WebUpdatesCommons.navigateToDelete).toHaveBeenCalledWith(SOURCE, 'inetnum', '111 - 255', 'webupdates.forceDelete');
+        expect(WebUpdatesCommonsService.navigateToDelete).toHaveBeenCalledWith(SOURCE, 'inetnum', '111 - 255', 'webupdates.forceDelete');
     });
 
 });
@@ -232,9 +226,6 @@ describe('webUpdates: ForceDeleteController', function () {
 describe('webUpdates: ForceDeleteController should be able to handle escape objected with slash', function () {
 
     var $ctrl, $state, $stateParams, $httpBackend;
-    var MessageStore;
-    var WhoisResources;
-    var MntnerService;
     var ModalService;
     var SOURCE = 'RIPE';
     var OBJECT_TYPE = 'route';
@@ -246,14 +237,11 @@ describe('webUpdates: ForceDeleteController should be able to handle escape obje
 
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _$q_, _ModalService_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _$q_, _ModalService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            MessageStore = _MessageStore_;
-            WhoisResources = _WhoisResources_;
-            MntnerService = _MntnerService_;
             ModalService = _ModalService_;
             $q = _$q_;
 

@@ -10,7 +10,7 @@ interface IDomainObject {
 class DomainObjectWizardController {
     public static $inject = ["$scope", "$rootScope", "$http", "$stateParams", "$location", "$anchorScroll", "$state",
         "JsUtilService", "AlertService", "ModalService", "RestService", "AttributeMetadataService", "WhoisResources",
-        "MntnerService", "WebUpdatesCommons", "CredentialsService", "MessageStore", "PrefixService"];
+        "MntnerService", "WebUpdatesCommonsService", "CredentialsService", "MessageStore", "PrefixService"];
 
     public objectType: string;
     public domainObject: IDomainObject;
@@ -46,7 +46,7 @@ class DomainObjectWizardController {
                 private AttributeMetadataService: any,
                 private WhoisResources: any,
                 private MntnerService: MntnerService,
-                private WebUpdatesCommons: any,
+                private WebUpdatesCommonsService: WebUpdatesCommonsService,
                 private CredentialsService: CredentialsService,
                 private MessageStore: MessageStore,
                 private PrefixService: PrefixService,
@@ -200,8 +200,8 @@ class DomainObjectWizardController {
         return flattenedAttributes;
     }
 
-    private performAuthentication(maintainers: any) {
-        const authParams = {
+    private performAuthentication(maintainers: IMaintainers) {
+        const authParams: IAuthParams = {
             isLirObject: false,
             maintainers,
             object: {
@@ -211,7 +211,7 @@ class DomainObjectWizardController {
             },
             operation: this.operation,
         };
-        this.WebUpdatesCommons.performAuthentication(authParams);
+        this.WebUpdatesCommonsService.performAuthentication(authParams);
     }
 
     private showCreatedDomains(resp: any) {

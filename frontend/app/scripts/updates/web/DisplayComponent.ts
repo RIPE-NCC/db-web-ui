@@ -1,7 +1,7 @@
 class DisplayComponent {
 
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "WhoisResources", "MessageStore",
-        "RestService", "AlertService", "UserInfoService", "WebUpdatesCommons"];
+        "RestService", "AlertService", "UserInfoService", "WebUpdatesCommonsService"];
 
     public objectSource: string;
     public objectType: string;
@@ -22,7 +22,7 @@ class DisplayComponent {
                 public RestService: RestService,
                 public AlertService: AlertService,
                 public UserInfoService: UserInfoService,
-                public WebUpdatesCommons: any) {
+                public WebUpdatesCommonsService: WebUpdatesCommonsService) {
 
         this.AlertService.clearErrors();
 
@@ -61,12 +61,12 @@ class DisplayComponent {
                     this.after = this.attributes.toPlaintext();
                 }
             }
-            this.WebUpdatesCommons.addLinkToReferenceAttributes(this.attributes, this.objectSource);
+            this.WebUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
         } else {
             this.RestService.fetchObject(this.objectSource, this.objectType, this.objectName, null, null)
                 .then((resp: any) => {
                     this.attributes = resp.getAttributes();
-                    this.WebUpdatesCommons.addLinkToReferenceAttributes(this.attributes, this.objectSource);
+                    this.WebUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
                     this.AlertService.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
                     this.AlertService.setErrors(resp);
 

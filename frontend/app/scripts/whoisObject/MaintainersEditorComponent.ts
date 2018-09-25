@@ -7,7 +7,7 @@ class MaintainersEditorController {
         "MessageStore",
         "MntnerService",
         "RestService",
-        "WebUpdatesCommons",
+        "WebUpdatesCommonsService",
         "JsUtilService"];
 
     // Input
@@ -21,15 +21,11 @@ class MaintainersEditorController {
     public objectName: string;
 
     // Underlying mntner model
-    public mntners: {
-        sso: IMntByModel[],
-        object: IMntByModel[];
-        alternatives: IMntByModel[];
-        objectOriginal: IMntByModel[];
-    };
+    public mntners: IMaintainers;
 
     // Interface control
     public restCallInProgress = false;
+
     public message: {
         text: string;
         type: string;
@@ -45,7 +41,7 @@ class MaintainersEditorController {
                 private MessageStore: MessageStore,
                 private MntnerService: MntnerService,
                 private RestService: RestService,
-                private WebUpdatesCommons: any,
+                private WebUpdatesCommonsService: WebUpdatesCommonsService,
                 private jsUtils: JsUtilService) {
 
         this.source = this.ngModel.source.id;
@@ -148,7 +144,7 @@ class MaintainersEditorController {
     }
 
     private performAuthentication(): void {
-        const authParams = {
+        const authParams: IAuthParams = {
             failureClbk: () => this.navigateAway(),
             isLirObject: this.isLirObject(),
             maintainers: this.mntners,
@@ -160,7 +156,7 @@ class MaintainersEditorController {
             operation: this.isModifyMode() ? "Modify" : "Create",
             successClbk: () => this.onSuccessfulAuthentication(),
         };
-        this.WebUpdatesCommons.performAuthentication(authParams);
+        this.WebUpdatesCommonsService.performAuthentication(authParams);
     }
 
     private navigateAway(): void {
