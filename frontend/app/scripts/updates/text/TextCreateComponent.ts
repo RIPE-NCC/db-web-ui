@@ -8,7 +8,7 @@ interface ITextObject {
 class TextCreateController {
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",
         "WhoisResources", "RestService", "AlertService", "ErrorReporterService", "MessageStore",
-        "RpslService", "TextCommons", "PreferenceService", "MntnerService"];
+        "RpslService", "TextCommonsService", "PreferenceService", "MntnerService"];
 
     public restCallInProgress: boolean = false;
     public object: ITextObject = {
@@ -32,7 +32,7 @@ class TextCreateController {
                 public ErrorReporterService: ErrorReporterService,
                 public MessageStore: MessageStore,
                 public RpslService: RpslService,
-                public TextCommons: any,
+                public TextCommonsService: TextCommonsService,
                 public PreferenceService: PreferenceService,
                 public MntnerService: MntnerService) {
 
@@ -86,10 +86,10 @@ class TextCreateController {
         }
         this.passwords = objects[0].passwords;
         this.override = objects[0].override;
-        const attributes = this.TextCommons.uncapitalize(objects[0].attributes);
+        const attributes = this.TextCommonsService.uncapitalize(objects[0].attributes);
         this.$log.debug("attributes:" + JSON.stringify(attributes));
 
-        if (!this.TextCommons.validate(this.object.type, attributes)) {
+        if (!this.TextCommonsService.validate(this.object.type, attributes)) {
             return;
         }
 
@@ -127,7 +127,7 @@ class TextCreateController {
                 });
             }
         } else {
-            this.TextCommons.authenticate("Create", this.object.source, this.object.type, undefined, this.mntners.sso,
+            this.TextCommonsService.authenticate("Create", this.object.source, this.object.type, undefined, this.mntners.sso,
                 attributes, this.passwords, this.override)
                 .then((authenticated: any) => {
                     this.$log.debug("Authenticated successfully:" + authenticated);
@@ -169,10 +169,10 @@ class TextCreateController {
     }
 
     private enrichAttributes(attributes: any) {
-        this.TextCommons.enrichWithDefaults(this.object.source, this.object.type, attributes);
+        this.TextCommonsService.enrichWithDefaults(this.object.source, this.object.type, attributes);
         this.enrichAttributesWithSsoMntners(attributes)
             .then((attrs: any) => {
-                this.TextCommons.capitaliseMandatory(attrs);
+                this.TextCommonsService.capitaliseMandatory(attrs);
                 const obj: IRpslObject = {
                     attributes: attrs,
                     override: this.override,
@@ -230,8 +230,8 @@ class TextCreateController {
     }
 
     private doCreate(attributes: any, objectType: string) {
-        const combinedPaswords = _.union(this.passwords, this.TextCommons.getPasswordsForRestCall(objectType));
-        attributes = this.TextCommons.stripEmptyAttributes(attributes);
+        const combinedPaswords = _.union(this.passwords, this.TextCommonsService.getPasswordsForRestCall(objectType));
+        attributes = this.TextCommonsService.stripEmptyAttributes(attributes);
         // rest-POST to server
         this.restCallInProgress = true;
         this.RestService.createObject(this.object.source, objectType, this.WhoisResources.turnAttrsIntoWhoisObject(attributes), combinedPaswords, this.override, true)
@@ -239,7 +239,7 @@ class TextCreateController {
                 this.restCallInProgress = false;
                 const whoisResources = result;
                 this.MessageStore.add(whoisResources.getPrimaryKey(), whoisResources);
-                this.TextCommons.navigateToDisplayPage(this.object.source, objectType, whoisResources.getPrimaryKey(), "Create");
+                this.TextCommonsService.navigateToDisplayPage(this.object.source, objectType, whoisResources.getPrimaryKey(), "Create");
             }, (error: any) => {
                 this.restCallInProgress = false;
                 const whoisResources = error.data;

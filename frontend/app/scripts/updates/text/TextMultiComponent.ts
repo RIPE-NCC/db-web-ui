@@ -18,7 +18,7 @@ class TextMultiController {
 
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",
         "WhoisResources", "RestService", "AlertService", "ErrorReporterService",
-        "RpslService", "TextCommons", "SerialExecutorService", "AutoKeyLogicService", "Properties", "PreferenceService"];
+        "RpslService", "TextCommonsService", "SerialExecutorService", "AutoKeyLogicService", "Properties", "PreferenceService"];
 
     public actionsPending: number = 0;
     public restCallInProgress: boolean = false;
@@ -44,7 +44,7 @@ class TextMultiController {
                 public AlertService: AlertService,
                 public ErrorReporterService: ErrorReporterService,
                 public RpslService: RpslService,
-                public TextCommons: any,
+                public TextCommonsService: TextCommonsService,
                 public SerialExecutorService: SerialExecutorService,
                 public AutoKeyLogicService: AutoKeyLogicService,
                 public Properties: any,
@@ -202,7 +202,7 @@ class TextMultiController {
             };
             objects.push(object);
 
-            const attrs = this.TextCommons.uncapitalize(parsedObj.attributes);
+            const attrs = this.TextCommonsService.uncapitalize(parsedObj.attributes);
 
             // assume nam of first attribute is type indicator
             object.type = this.determineObjectType(attrs);
@@ -213,7 +213,7 @@ class TextMultiController {
             this.$log.info("object:" + JSON.stringify(object));
 
             // validate
-            if (!this.TextCommons.validate(object.type, attrs, object.errors)) {
+            if (!this.TextCommonsService.validate(object.type, attrs, object.errors)) {
                 this.$log.info("validation error:" + JSON.stringify(object.errors));
                 this.setStatus(object, false, "Invalid syntax");
                 this.markActionCompleted(object, "syntax error");

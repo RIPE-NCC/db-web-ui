@@ -1,7 +1,7 @@
 class TextModifyController {
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",
         "WhoisResources", "RestService", "AlertService", "ErrorReporterService", "MessageStore", "RpslService",
-        "TextCommons", "CredentialsService", "PreferenceService"];
+        "TextCommonsService", "CredentialsService", "PreferenceService"];
 
     public restCallInProgress: boolean = false;
     public noRedirect: boolean = false;
@@ -27,7 +27,7 @@ class TextModifyController {
         public ErrorReporterService: ErrorReporterService,
         public MessageStore: MessageStore,
         public RpslService: RpslService,
-        public TextCommons: any,
+        public TextCommonsService: TextCommonsService,
         public CredentialsService: CredentialsService,
         public PreferenceService: PreferenceService) {
 
@@ -75,10 +75,10 @@ class TextModifyController {
 
         this.passwords = objects[0].passwords;
         this.override = objects[0].override;
-        let attributes = this.TextCommons.uncapitalize(objects[0].attributes);
+        let attributes = this.TextCommonsService.uncapitalize(objects[0].attributes);
 
         this.$log.debug("attributes:" + JSON.stringify(attributes));
-        if (!this.TextCommons.validate(this.object.type, attributes)) {
+        if (!this.TextCommonsService.validate(this.object.type, attributes)) {
             return;
         }
 
@@ -87,15 +87,15 @@ class TextModifyController {
             this.passwords.push(this.CredentialsService.getCredentials().successfulPassword);
         }
 
-        this.TextCommons.authenticate("Modify", this.object.source, this.object.type, this.object.name, this.mntners.sso, attributes,
+        this.TextCommonsService.authenticate("Modify", this.object.source, this.object.type, this.object.name, this.mntners.sso, attributes,
             this.passwords, this.override)
             .then(() => {
                 this.$log.info("Successfully authenticated");
 
                 // combine all passwords
-                const combinedPasswords = _.union(this.passwords, this.TextCommons.getPasswordsForRestCall(this.object.type));
+                const combinedPasswords = _.union(this.passwords, this.TextCommonsService.getPasswordsForRestCall(this.object.type));
 
-                attributes = this.TextCommons.stripEmptyAttributes(attributes);
+                attributes = this.TextCommonsService.stripEmptyAttributes(attributes);
 
                 this.restCallInProgress = true;
                 this.RestService.modifyObject(this.object.source, this.object.type, this.object.name,
@@ -142,7 +142,7 @@ class TextModifyController {
     }
 
     public deleteObject() {
-        this.TextCommons.navigateToDelete(this.object.source, this.object.type, this.object.name, "textupdates.modify");
+        this.TextCommonsService.navigateToDelete(this.object.source, this.object.type, this.object.name, "textupdates.modify");
     }
 
     private fetchAndPopulateObject() {
@@ -161,7 +161,7 @@ class TextModifyController {
                 const attributes = this.handleFetchResponse(results.objectToModify);
                 // store mntners for SSO account
                 this.mntners.sso = results.mntners;
-                this.TextCommons.authenticate("Modify", this.object.source, this.object.type, this.object.name,
+                this.TextCommonsService.authenticate("Modify", this.object.source, this.object.type, this.object.name,
                     this.mntners.sso, attributes, this.passwords, this.override)
                     .then(() => {
                         this.$log.debug("Successfully authenticated");
