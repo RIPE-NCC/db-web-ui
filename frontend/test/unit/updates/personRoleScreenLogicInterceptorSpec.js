@@ -1,16 +1,16 @@
 /*global beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
-describe('updates: Person/Role ScreenLogicInterceptor', function () {
+describe('updates: Person/Role ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptor) {
+    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
-        interceptor = ScreenLogicInterceptor;
+        interceptor = ScreenLogicInterceptorService;
     }));
 
     it('should set default nic-ndl before-edit person on Create operation', function() {

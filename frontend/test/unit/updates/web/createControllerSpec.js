@@ -367,37 +367,27 @@ describe('webUpdates: CreateController', function () {
 
 describe('webUpdates: CreateController', function () {
 
-    var $ctrl, $rootScope, $state, $stateParams, $httpBackend, $window;
-    var MessageStore;
+    var $ctrl, $state, $stateParams, $httpBackend, $window;
     var WhoisResources;
-    var CredentialsService;
-    var MntnerService;
-    var ModalService;
     var OBJECT_TYPE = 'route';
     var SOURCE = 'RIPE';
     var userMaintainers;
     var PreferenceService;
-    var $q;
 
     beforeEach(function () {
         module('webUpdates');
 
         inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _$window_,
-                         _MessageStore_, _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_) {
+                         _WhoisResources_, _PreferenceService_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             $window = _$window_;
-            MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
-            CredentialsService = _CredentialsService_;
-            MntnerService = _MntnerService_;
-            ModalService = _ModalService_;
             PreferenceService = _PreferenceService_;
-            PreferenceService.isTextMode = function() {return false;};
 
-            $q = _$q_;
+            PreferenceService.isTextMode = function() {return false;};
 
             userMaintainers = [
                 {'mine': true, 'type': 'mntner', 'auth': ['SSO'], 'key': 'RIPE-NCC-MNT'}

@@ -1,15 +1,15 @@
 'use strict';
 
-describe('updates: ScreenLogicInterceptor', function () {
+describe('updates: ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptor) {
+    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
-        interceptor = ScreenLogicInterceptor;
+        interceptor = ScreenLogicInterceptorService;
     }));
 
     afterEach(function() {

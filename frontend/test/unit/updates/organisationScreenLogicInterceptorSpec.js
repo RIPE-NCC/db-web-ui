@@ -1,15 +1,15 @@
 'use strict';
 
-describe('updates: Organisation ScreenLogicInterceptor', function () {
+describe('updates: Organisation ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptor) {
+    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
-        interceptor = ScreenLogicInterceptor;
+        interceptor = ScreenLogicInterceptorService;
     }));
 
     afterEach(function() {
@@ -119,8 +119,9 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         expect(abuseC[0].value).toEqual('');
         expect(abuseC[0].$$meta.$$missing).toBe(true);
         expect(warnings.length).toEqual(1);
-        expect(warnings[0]).toEqual('<p>There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p><p>Please specify the abuse-c attribute below.</p>');
-
+        expect(warnings[0]).toContain('<p>There is currently no abuse contact set up for your organisation, which is required under');
+        expect(warnings[0]).toContain('<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>');
+        expect(warnings[0]).toContain('<p>Please specify the abuse-c attribute below.</p>');
     });
 
     it('should add warning if abuse-c is not present for the organisation before-edit organisation on Modify operation', function() {
@@ -132,7 +133,9 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
 
         expect(warnings.length).toEqual(1);
-        expect(warnings[0]).toEqual('<p>There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p><p>Please specify the abuse-c attribute below.</p>');
+        expect(warnings[0]).toContain('<p>There is currently no abuse contact set up for your organisation, which is required under');
+        expect(warnings[0]).toContain('<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>');
+        expect(warnings[0]).toContain('<p>Please specify the abuse-c attribute below.</p>');
 
     });
 

@@ -14,7 +14,7 @@ class CreateModifyController {
         "$document", "WhoisResources", "MessageStore", "CredentialsService", "RestService", "ModalService",
         "MntnerService", "AlertService", "ErrorReporterService", "LinkService", "ResourceStatus",
         "WebUpdatesCommonsService", "OrganisationHelperService", "PreferenceService", "EnumService", "CharsetToolsService",
-        "ScreenLogicInterceptor", "ObjectUtilService"];
+        "ScreenLogicInterceptorService", "ObjectUtilService"];
 
     public optionList: IOptionList = {status: []};
     // public optionList: any;
@@ -30,7 +30,7 @@ class CreateModifyController {
     };
     public mntbyDescription: string;
     public mntbySyntax: string;
-    public operation: any;
+    public operation: string;
     public restCallInProgress: boolean;
     public uiSelectTemplateReady: boolean = false;
     /*
@@ -72,14 +72,9 @@ class CreateModifyController {
                 private PreferenceService: PreferenceService,
                 private EnumService: EnumService,
                 private CharsetToolsService: CharsetToolsService,
-                private ScreenLogicInterceptor: any,
+                private ScreenLogicInterceptorService: ScreenLogicInterceptorService,
                 private ObjectUtilService: ObjectUtilService) {
-        this.maintainers = {
-            alternatives: [],
-            object: [],
-            objectOriginal: [],
-            sso: [],
-        };
+
         this.optionList = {status: []};
 
         this.inetnumParentAuthError = false;
@@ -446,7 +441,8 @@ class CreateModifyController {
         let originalAddableAttributes = this.attributes.getAddableAttributes(this.objectType, this.attributes);
         originalAddableAttributes = this.WhoisResources.wrapAndEnrichAttributes(this.objectType, originalAddableAttributes);
 
-        const addableAttributes = _.filter(this.ScreenLogicInterceptor.beforeAddAttribute(this.operation, this.source, this.objectType, this.attributes, originalAddableAttributes),
+        const addableAttributes = _.filter(
+            this.ScreenLogicInterceptorService.beforeAddAttribute(this.operation, this.source, this.objectType, this.attributes, originalAddableAttributes),
             (attrPred: any) => {
                 return !attrPred.$$meta.$$isLir;
             });
@@ -506,23 +502,23 @@ class CreateModifyController {
         const onSubmitError = (resp: any) => {
 
             const whoisResources = resp.data;
-            // const errorMessages = [];
-            // const warningMessages = [];
-            // const infoMessages = [];
+            const errorMessages: string[] = [];
+            const warningMessages: string[] = [];
+            const infoMessages: string[] = [];
 
             this.restCallInProgress = false;
             this.attributes = whoisResources.getAttributes();
 
             // This interceptor allows us to convert error into success
             // This could change in the future
-            const intercepted = this.ScreenLogicInterceptor.afterSubmitError(this.operation,
+            const intercepted = this.ScreenLogicInterceptorService.afterSubmitError(this.operation,
                 this.source, this.objectType,
                 resp.status, resp.data,
-                [], [], []);
+                errorMessages, warningMessages, infoMessages);
 
             // Post-process attribute after submit-error using screen-logic-interceptor
             if (intercepted) {
-                this.loadAlerts([], [], []);
+                this.loadAlerts(errorMessages, warningMessages, infoMessages);
                 /* Instruct downstream screen (typically display screen) that object is in pending state */
                 this.WebUpdatesCommonsService.navigateToDisplay(this.source, this.objectType, whoisResources.getPrimaryKey(), this.PENDING_OPERATION);
             } else {
@@ -728,37 +724,42 @@ class CreateModifyController {
     }
 
     private interceptBeforeEdit(method: string, attributes: any[]) {
-        // const errorMessages = [];
-        // const warningMessages = [];
-        // const infoMessages = [];
-        const interceptedAttrs = this.ScreenLogicInterceptor.beforeEdit(method,
+        const errorMessages: string[] = [];
+        const warningMessages: string[] = [];
+        const infoMessages: string[] = [];
+        const interceptedAttrs = this.ScreenLogicInterceptorService.beforeEdit(method,
             this.source, this.objectType, attributes,
-            [], [], []);
+            errorMessages, warningMessages, infoMessages);
 
-        this.loadAlerts([], [], []);
+        this.loadAlerts(errorMessages, warningMessages, infoMessages);
 
         return interceptedAttrs;
     }
 
     private interceptAfterEdit(method: string, attributes: any[]) {
-        // let errorMessages: string[] = [];
-        // let warningMessages: string[] = [];
-        // let infoMessages: string[] = [];
-        const interceptedAttrs = this.ScreenLogicInterceptor.afterEdit(method,
+        const errorMessages: string[] = [];
+        const warningMessages: string[] = [];
+        const infoMessages: string[] = [];
+        const interceptedAttrs = this.ScreenLogicInterceptorService.afterEdit(method,
             this.source, this.objectType, attributes,
-            [], [], []);
+            errorMessages, warningMessages, infoMessages);
 
-        this.loadAlerts([], [], []);
+        this.loadAlerts(errorMessages, warningMessages, infoMessages);
 
         return interceptedAttrs;
     }
 
     private interceptOnSubmitSuccess(method: string, responseAttributes: any[]) {
-        this.loadAlerts([], [], []);
+        const errorMessages: string[] = [];
+        const warningMessages: string[] = [];
+        const infoMessages: string[] = [];
 
-        return this.ScreenLogicInterceptor.afterSubmitSuccess(method,
+        const interceptedAttrs = this.ScreenLogicInterceptorService.afterSubmitSuccess(method,
             this.source, this.objectType, responseAttributes,
-            [], []);
+            warningMessages, infoMessages);
+        this.loadAlerts(errorMessages, warningMessages, infoMessages);
+
+        return interceptedAttrs;
     }
 
     private fetchDataForModify() {

@@ -1,16 +1,16 @@
 /*global beforeEach, describe, expect, inject, it*/
 'use strict';
 
-describe('updates: Inet6Num ScreenLogicInterceptor', function () {
+describe('updates: Inet6Num ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptor) {
+    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
-        interceptor = ScreenLogicInterceptor;
+        interceptor = ScreenLogicInterceptorService;
     }));
 
     it('should disable org attribute from inet6num when status is ASSIGNED PI', function() {
