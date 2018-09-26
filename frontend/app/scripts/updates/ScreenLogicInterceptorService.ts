@@ -25,13 +25,13 @@ class ScreenLogicInterceptorService {
         // - RPSL password for resources
         // TODO end
         this.globalInterceptor = {
-            afterEdit: (method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) => {
+            afterEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                 return attributes;
             },
-            beforeAddAttribute: (method: string, source: string, objectType: string, objectAttributes: any, addableAttributes: any) => {
+            beforeAddAttribute: (method: string, source: string, objectType: string, objectAttributes: IAttributeModel[], addableAttributes: IAttributeModel[]) => {
                 return addableAttributes;
             },
-            beforeEdit: (method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) => {
+            beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                 this._disablePrimaryKeyIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                 return this._loadGenericDefaultValues(method, source, objectType, attributes, errors, warnings, infos);
             },
@@ -58,7 +58,7 @@ class ScreenLogicInterceptorService {
                 afterSubmitError: undefined,
                 afterSubmitSuccess: undefined,
                 beforeAddAttribute: undefined,
-                beforeEdit: (method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) => {
+                beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                     // _disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     return this._disableOrgWhenStatusIsAssignedPI(method, source, objectType, attributes, errors, warnings, infos);
@@ -92,7 +92,7 @@ class ScreenLogicInterceptorService {
                 beforeAddAttribute: (method: string, source: string, objectType: string, objectAttributes: IAttributeModel[], addableAttributes: IAttributeModel[]) => {
                     return this._removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes);
                 },
-                beforeEdit: (method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) => {
+                beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, infos);
@@ -107,7 +107,7 @@ class ScreenLogicInterceptorService {
                 beforeAddAttribute: (method: string, source: string, objectType: string, objectAttributes: IAttributeModel[], addableAttributes: IAttributeModel[]) => {
                     return this._removeSponsoringOrgIfNeeded(method, source, objectType, objectAttributes, addableAttributes);
                 },
-                beforeEdit: (method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) => {
+                beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                     this._disableStatusIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableRipeMntnrAttributes(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableLockedResourceAttributes(method, source, objectType, attributes, errors, warnings, infos);
@@ -143,7 +143,7 @@ class ScreenLogicInterceptorService {
                 beforeAddAttribute: (method: string, source: string, objectType: string, objectAttributes: IAttributeModel[], addableAttributes: IAttributeModel[]) => {
                     return this._removeAbuseMailBoxAndOrgIfLIR(method, source, objectType, objectAttributes, addableAttributes);
                 },
-                beforeEdit: (method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) => {
+                beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                     this._checkLirAttributes(method, source, objectType, attributes, errors, warnings, infos);
                     this._disableRipeMntIfModifying(method, source, objectType, attributes, errors, warnings, infos);
                     return this._loadOrganisationDefaults(method, source, objectType, attributes, errors, warnings, infos);
@@ -161,7 +161,7 @@ class ScreenLogicInterceptorService {
                 afterSubmitError: undefined,
                 afterSubmitSuccess: undefined,
                 beforeAddAttribute: undefined,
-                beforeEdit: (method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) => {
+                beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                     return this._loadPersonRoleDefaults(method, source, objectType, attributes, errors, warnings, infos);
                 },
             },
@@ -184,7 +184,7 @@ class ScreenLogicInterceptorService {
                 afterSubmitError: undefined,
                 afterSubmitSuccess: undefined,
                 beforeAddAttribute: undefined,
-                beforeEdit: (method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) => {
+                beforeEdit: (method: string, source: string, objectType: string, attributes: IAttributeModel[], errors: string[], warnings: string[], infos: string[]) => {
                     return this._loadPersonRoleDefaults(method, source, objectType, attributes, errors, warnings, infos);
                 },
             },
@@ -259,7 +259,7 @@ class ScreenLogicInterceptorService {
         return interceptorFunc(method, source, objectType, status, whoisResources, errors, warnings, infos);
     }
 
-    public beforeAddAttribute(method: string, source: string, objectType: string, objectAttributes: any, addableAttributes: any) {
+    public beforeAddAttribute(method: string, source: string, objectType: string, objectAttributes: IAttributeModel[], addableAttributes: any) {
         const addableAttrs = this.globalInterceptor.beforeAddAttribute(method, source, objectType, objectAttributes, addableAttributes);
         const interceptorFunc = this._getInterceptorFunc(objectType, "beforeAddAttribute");
         if (_.isUndefined(interceptorFunc)) {
