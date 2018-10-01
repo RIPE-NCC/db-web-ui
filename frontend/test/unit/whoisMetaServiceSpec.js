@@ -23,7 +23,7 @@ describe('dbWebApp: WhoisMetaService', function () {
     });
 
     it('should return all objectTypes', function () {
-        $whoisMetaService._objectTypesMap = {
+        $whoisMetaService.objectTypesMap = {
             type1: {name: 'type1'},
             type2: {name: 'type2'}
         };
@@ -32,7 +32,7 @@ describe('dbWebApp: WhoisMetaService', function () {
     });
 
     it('should find meta attribute on objectType and name', function () {
-        $whoisMetaService._objectTypesMap = {
+        $whoisMetaService.objectTypesMap = {
             'type1': {
                 name: 'type1', description: 'Z',
                 'attributes': [
@@ -49,7 +49,7 @@ describe('dbWebApp: WhoisMetaService', function () {
 
     it('should enrich attributes with meta attributes for a given type', function () {
 
-        $whoisMetaService._objectTypesMap =
+        $whoisMetaService.objectTypesMap =
             {
                 'type1': {
                     name: 'type1', description: 'Z',
@@ -86,7 +86,7 @@ describe('dbWebApp: WhoisMetaService', function () {
 
     it('should return exactly the mandatory meta attributes for a given type', function () {
 
-        $whoisMetaService._objectTypesMap =
+        $whoisMetaService.objectTypesMap =
             {
                 'type1': {
                     name: 'type1', description: 'Z',
@@ -105,7 +105,7 @@ describe('dbWebApp: WhoisMetaService', function () {
 
     it('should return all meta attributes for a given type', function () {
 
-        $whoisMetaService._objectTypesMap =
+        $whoisMetaService.objectTypesMap =
             {
                 'type1': {
                     name: 'type1', description: 'Z',
@@ -123,7 +123,7 @@ describe('dbWebApp: WhoisMetaService', function () {
 
     it('should return all attributes for a given type', function () {
 
-        $whoisMetaService._objectTypesMap =
+        $whoisMetaService.objectTypesMap =
             {
                 'type1': {
                     name: 'type1', description: 'Z',
@@ -156,7 +156,7 @@ describe('dbWebApp: WhoisMetaService', function () {
 
     it('should return exactly the mandatory attributes for a given type', function () {
 
-        $whoisMetaService._objectTypesMap = {
+        $whoisMetaService.objectTypesMap = {
             'type1': {
                 name: 'type1', description: 'Z',
                 'attributes': [

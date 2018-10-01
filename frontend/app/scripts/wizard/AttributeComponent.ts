@@ -14,7 +14,7 @@ class AttributeController {
 
     constructor(private $sce: any,
                 private AttributeMetadataService: any,
-                private WhoisMetaService: any,
+                private WhoisMetaService: WhoisMetaService,
                 private CharsetToolsService: CharsetToolsService,
                 private RestService: RestService,
                 private EnumService: EnumService,

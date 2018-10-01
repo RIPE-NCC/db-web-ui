@@ -10,7 +10,7 @@ class AttributeInfoController {
 
     public text = "";
 
-    constructor(private whoisMetaService: any) {}
+    constructor(private whoisMetaService: WhoisMetaService) {}
 
     public $onInit() {
         if (!this.objectType) {

@@ -25,7 +25,7 @@ interface IAttributeModel {
     $$success?: string;
     $$statusOptionList?: IStatusOption[];
     $$meta?: {
-        $$idx?: string,
+        $$idx?: number,
         $$mandatory?: boolean,
         $$multiple?: boolean,
         $$primaryKey?: boolean,

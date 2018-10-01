@@ -474,7 +474,7 @@
         }
 
         function makeObjectMetadata() {
-            var metadata = convertMeta(WhoisMetaService._objectTypesMap);
+            var metadata = convertMeta(WhoisMetaService.objectTypesMap);
 
             // add some custom wizard-related attributes hostname
             metadata.domain.nserver = {minOccurs: 2};
