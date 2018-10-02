@@ -9,7 +9,7 @@ class ModalMd5PasswordComponent {
     public close: any;
     public dismiss: any;
 
-    constructor(public cryptService: any) {
+    constructor(public CryptService: CryptService) {
     }
 
     public ok() {
@@ -36,7 +36,7 @@ class ModalMd5PasswordComponent {
     }
 
     private _createAuthMd5Value() {
-        return "MD5-PW " + this.cryptService.crypt(this.password);
+        return "MD5-PW " + this.CryptService.crypt(this.password);
     }
 }
 
