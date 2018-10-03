@@ -1,0 +1,38 @@
+{
+	"requestUrl": "/api/whois-internal/api/user/info",
+	"contentType": "application/javascript",
+	"statusCode": 200,
+	"data": {
+		"user": {
+			"username": "isvonja@ripe.net",
+			"uuid": "d21329b1-c0d6-421c-a52b-0a48177b324b",
+			"active": true,
+			"displayName": "Ivana Svonja"
+		},
+		"organisations": [
+
+		],
+		"members": [
+			{
+				"membershipId": 1527,
+				"regId": "nl.io",
+				"orgObjectId": "ORG-IOB1-RIPE",
+				"organisationName": "Non integrated internet services 3",
+				"roles": [
+					"guest",
+					"guestupdaterequest"
+				]
+			},
+			{
+				"membershipId": 7347,
+				"regId": "zz.example",
+				"orgObjectId": "ORG-EIP1-RIPE",
+				"organisationName": "Internet Provider BV1",
+				"roles": [
+					"guest",
+					"guestupdaterequest"
+				]
+			}
+		]
+	}
+}

@@ -19,6 +19,7 @@ describe('The left hand menu structure depend on logged in user role', function 
     const userWithBillingRole = './test/e2e/mocks/e2eTest/user-with-billing-role.json';
     const userWithoutOrgOrLir = './test/e2e/mocks/e2eTest/user-without-org-or-lir.json';
     const userNotLoggedIn = './test/e2e/mocks/e2eTest/user-not-logged-in.json';
+    const userGuest = './test/e2e/mocks/e2eTest/user-with-guest-role.json';
 
     const changeJsonResponsFile = function(file, replacement) {
         fs.readFile(replacement, 'utf8', function (err,data) {
@@ -87,7 +88,7 @@ describe('The left hand menu structure depend on logged in user role', function 
          */
         page.scrollIntoView(page.topMenuItems.get(0));
         page.topMenuItems.get(0).click();
-        expect(page.myLirMenuItems.count()).toEqual(8);
+        expect(page.myLirMenuItems.count()).toEqual(9);
         page.myLirMenuItems.get(0).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('LIR Account Details');
         });
@@ -160,7 +161,7 @@ describe('The left hand menu structure depend on logged in user role', function 
             User Accounts
          */
         page.topMenuItems.get(0).click();
-        expect(page.myLirMenuItems.count()).toEqual(8);
+        expect(page.myLirMenuItems.count()).toEqual(9);
         expect(page.myLirMenuItems.get(0).isDisplayed()).toEqual(false);
         expect(page.myLirMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.myLirMenuItems.get(2).isDisplayed()).toEqual(false);
@@ -243,6 +244,38 @@ describe('The left hand menu structure depend on logged in user role', function 
         expect(page.resourcesMenuItems.get(2).isDisplayed()).toEqual(false);
         expect(page.resourcesMenuItems.get(3).isDisplayed()).toEqual(false);
         expect(page.resourcesMenuItems.get(4).isDisplayed()).toEqual(false);
+
+        expectRipeDatabaseMenuItemWithAllSubItems();
+    });
+
+    it('Should show menu structure for a guest user', function () {
+        changeJsonResponsFile(userInfoFile, userGuest);
+        browser.get(browser.baseUrl);
+        expect(page.topMenuItems.count()).toEqual(3);
+        expect(page.topMenuItems.get(0).isDisplayed()).toEqual(true);
+        expect(page.topMenuItems.get(1).isDisplayed()).toEqual(false);
+        expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
+        page.topMenuItems.get(0).all(by.css('a')).first().getText().then(function(text) {
+            expect(text).toBe('My LIR');
+        });
+
+        /* Resource structure of menu items
+            My LIR
+         */
+        page.topMenuItems.get(0).click();
+        expect(page.myLirMenuItems.count()).toEqual(9);
+        page.myLirMenuItems.get(8).element(by.css('a')).getText().then(function(text) {
+            expect(text).toBe('Request Acquisition');
+        });
+        expect(page.myLirMenuItems.get(0).isDisplayed()).toEqual(false);
+        expect(page.myLirMenuItems.get(1).isDisplayed()).toEqual(false);
+        expect(page.myLirMenuItems.get(2).isDisplayed()).toEqual(false);
+        expect(page.myLirMenuItems.get(3).isDisplayed()).toEqual(false);
+        expect(page.myLirMenuItems.get(4).isDisplayed()).toEqual(false);
+        expect(page.myLirMenuItems.get(5).isDisplayed()).toEqual(false);
+        expect(page.myLirMenuItems.get(6).isDisplayed()).toEqual(false);
+        expect(page.myLirMenuItems.get(7).isDisplayed()).toEqual(false);
+        expect(page.myLirMenuItems.get(8).isDisplayed()).toEqual(true);
 
         expectRipeDatabaseMenuItemWithAllSubItems();
     });

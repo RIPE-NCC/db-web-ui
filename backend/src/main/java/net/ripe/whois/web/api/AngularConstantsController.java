@@ -137,6 +137,7 @@ public class AngularConstantsController {
             "        MY_RESOURCES_URL: '" + leftMenuConfiguration.getMyResourcesUrl() + "',\n" +
             "        REQUEST_RESOURCES_URL: '" + leftMenuConfiguration.getRequestResourcesUrl() + "',\n" +
             "        REQUEST_UPDATE_URL: '" + leftMenuConfiguration.getRequestUpdateUrl() + "',\n" +
+            "        OPEN_ACQUISITION_URL: '" + leftMenuConfiguration.getOpenAcquisitionUrl() + "',\n" +
             "        REQUEST_TRANSFER_URL: '" + leftMenuConfiguration.getRequestTransferUrl() + "',\n" +
             "        IPV4_TRANSFER_LISTING_URL: '" + leftMenuConfiguration.getIpv4TransferListingServiceUrl() + "',\n" +
             "        RPKI_DASHBOARD_URL: '" + leftMenuConfiguration.getRpkiDashboardUrl() + "',\n" +
