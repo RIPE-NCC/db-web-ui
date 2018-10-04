@@ -36,7 +36,7 @@ class MaintainersEditorController {
 
     constructor(private $log: angular.ILogService,
                 private AlertService: AlertService,
-                private AttributeMetadataService: any,
+                private AttributeMetadataService: AttributeMetadataService,
                 private CredentialsService: CredentialsService,
                 private MessageStore: MessageStore,
                 private MntnerService: MntnerService,

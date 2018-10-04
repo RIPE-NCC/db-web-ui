@@ -13,7 +13,7 @@ class AttributeController {
     private idx: string;
 
     constructor(private $sce: any,
-                private AttributeMetadataService: any,
+                private AttributeMetadataService: AttributeMetadataService,
                 private WhoisMetaService: WhoisMetaService,
                 private CharsetToolsService: CharsetToolsService,
                 private RestService: RestService,

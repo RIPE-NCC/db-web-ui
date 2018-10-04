@@ -10,7 +10,7 @@ interface IDomainObject {
 class DomainObjectWizardController {
     public static $inject = ["$scope", "$rootScope", "$http", "$stateParams", "$location", "$anchorScroll", "$state",
         "JsUtilService", "AlertService", "ModalService", "RestService", "AttributeMetadataService", "WhoisResources",
-        "MntnerService", "WebUpdatesCommonsService", "CredentialsService", "MessageStore", "PrefixService"];
+        "MntnerService", "WebUpdatesCommonsService", "CredentialsService", "MessageStore", "PrefixService", "ErrorReporterService"];
 
     public objectType: string;
     public domainObject: IDomainObject;
@@ -43,7 +43,7 @@ class DomainObjectWizardController {
                 private AlertService: AlertService,
                 private ModalService: ModalService,
                 private RestService: RestService,
-                private AttributeMetadataService: any,
+                private AttributeMetadataService: AttributeMetadataService,
                 private WhoisResources: any,
                 private MntnerService: MntnerService,
                 private WebUpdatesCommonsService: WebUpdatesCommonsService,

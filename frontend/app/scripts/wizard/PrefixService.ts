@@ -12,7 +12,7 @@ class PrefixService {
      * @param str
      * @returns {boolean}
      */
-    public isValidPrefix(str: string) {
+    public isValidPrefix(str: string): boolean {
         // here we have a string with a subnet mask, but dno if it"s v4 or v6 yet, so check...
         return this.isValidIpv4Prefix(str) || this.isValidIpv6Prefix(str);
     }

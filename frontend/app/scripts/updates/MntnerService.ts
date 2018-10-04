@@ -188,7 +188,7 @@ class MntnerService {
 
     public enrichWithMine = (ssoMntners: IMntByModel[], mntners: IMntByModel[]) => this.enrichWithSsoStatus(ssoMntners, mntners);
 
-    public needsPasswordAuthentication (ssoMntners: any, originalObjectMntners: any, objectMntners: any): boolean {
+    public needsPasswordAuthentication(ssoMntners: any, originalObjectMntners: any, objectMntners: any): boolean {
         let input = originalObjectMntners;
         if (originalObjectMntners.length === 0) {
             // it is a create

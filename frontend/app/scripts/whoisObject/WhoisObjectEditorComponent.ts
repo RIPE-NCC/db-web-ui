@@ -20,7 +20,7 @@ class WhoisObjectEditorController {
 
     private originalAttibutes: IAttributeModel[];
 
-    constructor(private AttributeMetadataService: any,
+    constructor(private AttributeMetadataService: AttributeMetadataService,
                 private MessageStore: MessageStore,
                 private properties: { SOURCE: string }) {
     }
@@ -114,7 +114,7 @@ class WhoisObjectEditorController {
     private getMissingMandatoryAttributes(): string[] {
 
         const attrCopy = angular.copy(this.attributes);
-        const shouldHave = this.AttributeMetadataService.determineAttributesForNewObject(this.objectType);
+        const shouldHave: IAttributeModel[] = this.AttributeMetadataService.determineAttributesForNewObject(this.objectType);
         const missing: any[] = [];
         Object.keys(shouldHave).forEach((k: string) => {
             const found = _.findIndex(attrCopy, (item) => (item.name === shouldHave[k].name));
