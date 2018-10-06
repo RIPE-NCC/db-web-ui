@@ -564,7 +564,7 @@ class WhoisMetaService {
         return enrichedAttrs;
     }
 
-    public getAllAttributesOnObjectType(objectTypeName: string) {
+    public getAllAttributesOnObjectType(objectTypeName: string): IAttributeModel[] {
         if (objectTypeName === null) {
             return [];
         }

@@ -118,19 +118,6 @@ class DomainObjectWizardController {
         });
     }
 
-    public readableError(errorMessage: any) {
-        let idx = 0;
-        return errorMessage.text.replace(/%s/g, (match: any) => {
-            if (errorMessage.args.length - 1 >= idx) {
-                const arg = errorMessage.args[idx].value;
-                idx++;
-                return arg;
-            } else {
-                return match;
-            }
-        });
-    }
-
     public updateMaintainers(maintainers: IMaintainers) {
         this.maintainers = maintainers;
     }
@@ -234,7 +221,7 @@ class DomainObjectWizardController {
         this.restCallInProgress = false;
         this.isValidatingDomains = false;
         this.errors = _.filter(response.data.errormessages.errormessage, (errorMessage: any) => {
-                errorMessage.plainText = this.readableError(errorMessage);
+                errorMessage.plainText = this.WhoisResources.readableError(errorMessage);
                 return errorMessage.severity === "Error";
             });
 
