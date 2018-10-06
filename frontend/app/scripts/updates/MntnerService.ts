@@ -5,6 +5,7 @@ class MntnerService {
         "$q",
         "CredentialsService",
         "WhoisResources",
+        "WhoisMetaService",
         "ModalService",
         "RestService",
         "PrefixService"];
@@ -19,6 +20,7 @@ class MntnerService {
                 private $q: ng.IQService,
                 private credentialsService: CredentialsService,
                 private WhoisResources: any,
+                private WhoisMetaService: WhoisMetaService,
                 private ModalService: ModalService,
                 private RestService: RestService,
                 private PrefixService: PrefixService) {
@@ -263,11 +265,11 @@ class MntnerService {
     }
 
     public mntbyDescription(objectType: string) {
-        return this.WhoisResources.getAttributeDescription(objectType, "mnt-by");
+        return this.WhoisMetaService.getAttributeDescription(objectType, "mnt-by");
     }
 
     public mntbySyntax(objectType: string): any {
-        return this.WhoisResources.getAttributeSyntax(objectType, "mnt-by");
+        return this.WhoisMetaService.getAttributeSyntax(objectType, "mnt-by");
     }
 
     public stripNccMntners(mntners: any, allowEmptyResult: boolean) {

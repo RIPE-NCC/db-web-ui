@@ -5,41 +5,9 @@ angular.module('dbWebApp')
 
         var allowedEmptyAttrs = ['remarks','descr', 'certif', 'address'];
 
-        this.getAttributeShortDescription = function( objectType, attrName ) {
-            return WhoisMetaService.getAttributeShortDescription(objectType, attrName);
-        };
-
-        this.getAttributeDescription = function( objectType, attrName ) {
-            return WhoisMetaService.getAttributeDescription(objectType, attrName);
-        };
-
-        this.getAttributeSyntax = function (objectType, attrName) {
-            return WhoisMetaService.getAttributeSyntax(objectType, attrName);
-        };
-
-        this._getMetaAttributesOnObjectType = function (objectTypeName, mandatoryOnly) {
-            return WhoisMetaService._getMetaAttributesOnObjectType(objectTypeName, mandatoryOnly);
-        };
-
-        this.findMetaAttributeOnObjectTypeAndName = function(objectTypeName, attributeName) {
-            return WhoisMetaService.findMetaAttributeOnObjectTypeAndName(objectTypeName, attributeName);
-        };
-
-        this.getObjectTypes = function () {
-            return WhoisMetaService.getObjectTypes();
-        };
-
-        this.enrichAttributesWithMetaInfo = function( objectTypeName, attrs ) {
-            return WhoisMetaService.enrichAttributesWithMetaInfo(objectTypeName, attrs);
-        };
-
-        this.getAllAttributesOnObjectType = function (objectTypeName) {
-            return WhoisMetaService.getAllAttributesOnObjectType(objectTypeName);
-        };
-
-        this.getFilterableAttrsForObjectTypes  = function (targetObjectTypes) {
+        this.getFilterableAttrsForObjectTypes = function (targetObjectTypes) {
             var attrsToFilterOn = [];
-            _.each( targetObjectTypes, function(objectType) {
+            _.each(targetObjectTypes, function(objectType) {
                 _.each(WhoisMetaService._getMetaAttributesOnObjectType(objectType.toLowerCase(), false), function(metaAttr) {
                     if (( metaAttr.primaryKey === true || metaAttr.searchable === true ) && !_.contains(attrsToFilterOn, metaAttr.name)) {
                         attrsToFilterOn.push(metaAttr.name);
@@ -53,17 +21,13 @@ angular.module('dbWebApp')
             return this.getFilterableAttrsForObjectTypes(targetObjectTypes);
         };
 
-        this.getMandatoryAttributesOnObjectType = function (objectTypeName) {
-            return WhoisMetaService.getMandatoryAttributesOnObjectType(objectTypeName);
-        };
-
         var toString = function() {
             return angular.toJson(this);
         };
 
         this.wrapAndEnrichAttributes = function (objectType, attrs) {
             return this.wrapAttributes(
-                this.enrichAttributesWithMetaInfo(objectType, attrs)
+                WhoisMetaService.enrichAttributesWithMetaInfo(objectType, attrs)
             );
         };
 
@@ -296,7 +260,7 @@ angular.module('dbWebApp')
             return object.attributes.attribute;
         };
 
-        function isValidWhoisResources(whoisResources) {
+        function isValidWhoisResources( whoisResources) {
             if(_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
                 $log.error('isValidWhoisResources: Null input:' + JSON.stringify(whoisResources));
                 return false;
@@ -310,8 +274,8 @@ angular.module('dbWebApp')
             return true;
         }
 
-        this.wrapWhoisResources = function(whoisResources ) {
-            if (! isValidWhoisResources(whoisResources) ) {
+        this.wrapWhoisResources = function( whoisResources ) {
+            if ( !  isValidWhoisResources(whoisResources) ) {
                 return undefined;
             }
             // enrich data with methods
@@ -631,7 +595,7 @@ angular.module('dbWebApp')
                 if (!_.isUndefined(objectType) && !_.isUndefined(wrapped.getAttributes())) {
                     wrapped.objects.object[0].attributes.attribute =
                         this.wrapAttributes(
-                            this.enrichAttributesWithMetaInfo(objectType, wrapped.getAttributes())
+                            WhoisMetaService.enrichAttributesWithMetaInfo(objectType, wrapped.getAttributes())
                         );
                 }
                 result = wrapped;

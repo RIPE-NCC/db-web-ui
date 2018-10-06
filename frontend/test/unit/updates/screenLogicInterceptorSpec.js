@@ -4,11 +4,13 @@ describe('updates: ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
+    var whoisMetaService;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptorService) {
+    beforeEach(inject(function (WhoisResources, WhoisMetaService, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
+        whoisMetaService = WhoisMetaService;
         interceptor = ScreenLogicInterceptorService;
     }));
 
@@ -38,7 +40,7 @@ describe('updates: ScreenLogicInterceptorService', function () {
     });
 
     it('should set default source before-edit any object on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];

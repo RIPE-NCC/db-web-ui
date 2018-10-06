@@ -4,9 +4,7 @@
 describe('webUpdates: CreateModifyController for organisation', function () {
 
     var $ctrl, $state, $stateParams, $httpBackend;
-    var MessageStore;
-    var WhoisResources;
-    var MntnerService;
+    var WhoisMetaService;
     var OrganisationHelperService;
     var ModalService;
     var OBJECT_TYPE = 'organisation';
@@ -17,7 +15,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _OrganisationHelperService_, _PreferenceService_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _OrganisationHelperService_, _PreferenceService_, _WhoisMetaService_) {
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
@@ -26,6 +24,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
             OrganisationHelperService.updateAbuseC = function() {};
             PreferenceService = _PreferenceService_;
             PreferenceService.isTextMode = function() {return false;};
+            WhoisMetaService = _WhoisMetaService_;
 
             ModalService = {
                 openCreateRoleForAbuseCAttribute: function () {
@@ -86,7 +85,7 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     it('should use the helper to update role for abuse-c', function () {
         $ctrl.attributes = $ctrl.attributes.addAttributeAfterType({name: 'abuse-c', value: 'some abuse-c'}, {name: 'e-mail'});
         $ctrl.attributes = $ctrl.WhoisResources.wrapAttributes(
-            $ctrl.WhoisResources.enrichAttributesWithMetaInfo($ctrl.objectType, $ctrl.attributes )
+            WhoisMetaService.enrichAttributesWithMetaInfo($ctrl.objectType, $ctrl.attributes )
         );
 
         $httpBackend.whenPUT('api/whois/RIPE/organisation/ORG-UA300-RIPE').respond(DEFAULT_RESPONSE); // I don' care about this call

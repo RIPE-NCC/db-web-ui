@@ -5,16 +5,18 @@ describe('updates: Person/Role ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
+    var whoisMetaService;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptorService) {
+    beforeEach(inject(function (WhoisResources, WhoisMetaService, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
+        whoisMetaService = WhoisMetaService;
         interceptor = ScreenLogicInterceptorService;
     }));
 
     it('should set default nic-ndl before-edit person on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('person', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('person', true));
 
         var errors = [];
         var warnings = [];
@@ -44,7 +46,7 @@ describe('updates: Person/Role ScreenLogicInterceptorService', function () {
     });
 
     it('should set default nic-ndl before-edit role on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('role', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('role', true));
 
         var errors = [];
         var warnings = [];

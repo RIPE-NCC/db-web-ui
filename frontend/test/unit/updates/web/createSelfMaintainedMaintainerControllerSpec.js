@@ -3,7 +3,7 @@
 
 describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
 
-    var $state, $stateParams, $httpBackend, $log, WhoisResources, MessageStore, AlertService, UserInfoService;
+    var $state, $stateParams, $httpBackend, $log, WhoisResources, WhoisMetaService, MessageStore, AlertService, UserInfoService;
     var SOURCE = 'RIPE';
     var $ctrl;
 
@@ -37,12 +37,13 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_, _MessageStore_, _AlertService_, _UserInfoService_) {
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_, _WhoisMetaService_, _MessageStore_, _AlertService_, _UserInfoService_) {
 
             AlertService = _AlertService_;
             MessageStore = _MessageStore_;
             $httpBackend = _$httpBackend_;
             WhoisResources = _WhoisResources_;
+            WhoisMetaService = _WhoisMetaService_;
             UserInfoService = _UserInfoService_;
             $state = _$state_;
             $stateParams = _$stateParams_;
@@ -196,8 +197,8 @@ describe('webUpdates: CreateSelfMaintainedMaintainerController', function () {
     it('should not post if invalid attributes', function () {
 
         $ctrl.maintainerAttributes = $ctrl.WhoisResources.wrapAttributes(
-            $ctrl.WhoisResources.enrichAttributesWithMetaInfo('mntner',
-                $ctrl.WhoisResources.getMandatoryAttributesOnObjectType('mntner')
+            WhoisMetaService.enrichAttributesWithMetaInfo('mntner',
+                WhoisMetaService.getMandatoryAttributesOnObjectType('mntner')
             )
         );
         $ctrl.submit();

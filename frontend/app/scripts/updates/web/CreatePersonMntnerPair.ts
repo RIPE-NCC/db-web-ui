@@ -1,7 +1,7 @@
 class CreatePersonMntnerPairController {
 
     public static $inject = ["$state", "$log", "Properties",
-        "WhoisResources", "AlertService", "UserInfoService", "RestService", "MessageStore", "ErrorReporterService", "LinkService"];
+        "WhoisResources", "WhoisMetaService", "AlertService", "UserInfoService", "RestService", "MessageStore", "ErrorReporterService", "LinkService"];
 
     public submitInProgress: boolean;
     public source: string;
@@ -13,6 +13,7 @@ class CreatePersonMntnerPairController {
                 private $log: angular.ILogService,
                 private Properties: IProperties,
                 private WhoisResources: any,
+                private WhoisMetaService: WhoisMetaService,
                 private AlertService: AlertService,
                 private UserInfoService: UserInfoService,
                 private RestService: RestService,
@@ -27,12 +28,12 @@ class CreatePersonMntnerPairController {
         this.source = this.Properties.SOURCE;
 
         this.personAttributes = this.WhoisResources.wrapAndEnrichAttributes("person",
-            this.WhoisResources.getMandatoryAttributesOnObjectType("person"));
+            this.WhoisMetaService.getMandatoryAttributesOnObjectType("person"));
         this.personAttributes.setSingleAttributeOnName("nic-hdl", "AUTO-1");
         this.personAttributes.setSingleAttributeOnName("source", this.source);
 
         this.mntnerAttributes = this.WhoisResources.wrapAndEnrichAttributes("mntner",
-            this.WhoisResources.getMandatoryAttributesOnObjectType("mntner"));
+            this.WhoisMetaService.getMandatoryAttributesOnObjectType("mntner"));
         this.mntnerAttributes.setSingleAttributeOnName("admin-c", "AUTO-1");
         this.mntnerAttributes.setSingleAttributeOnName("source", this.source);
 
@@ -153,11 +154,11 @@ class CreatePersonMntnerPairController {
     }
 
     private getAttributeDescription(attrName: string) {
-        return this.WhoisResources.getAttributeDescription(this.objectType, attrName);
+        return this.WhoisMetaService.getAttributeDescription(this.objectType, attrName);
     }
 
     private getAttributeSyntax(attrName: string) {
-        return this.WhoisResources.getAttributeSyntax(this.objectType, attrName);
+        return this.WhoisMetaService.getAttributeSyntax(this.objectType, attrName);
     }
 }
 

@@ -4,11 +4,13 @@ describe('updates: Organisation ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
+    var whoisMetaService;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptorService) {
+    beforeEach(inject(function (WhoisResources, WhoisMetaService, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
+        whoisMetaService = WhoisMetaService;
         interceptor = ScreenLogicInterceptorService;
     }));
 
@@ -27,7 +29,7 @@ describe('updates: Organisation ScreenLogicInterceptorService', function () {
     }
 
     it('should set default organisation before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];
@@ -58,7 +60,7 @@ describe('updates: Organisation ScreenLogicInterceptorService', function () {
     });
 
     it('should set default org-type before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];
@@ -91,7 +93,7 @@ describe('updates: Organisation ScreenLogicInterceptorService', function () {
     });
 
     it('should add empty abuse-c by default organisation before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];
@@ -140,7 +142,7 @@ describe('updates: Organisation ScreenLogicInterceptorService', function () {
     });
 
     it('should NOT add empty abuse-c if it exists for default organisation before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
         var errors = [];
         var warnings = [];
         var infos = [];
@@ -277,7 +279,7 @@ describe('updates: Organisation ScreenLogicInterceptorService', function () {
     });
 
     it('should NOT disable mnt-by before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];
@@ -322,7 +324,7 @@ describe('updates: Organisation ScreenLogicInterceptorService', function () {
     });
 
     it('should NOT remove org from organisation addable attributes when it action is not Modify', function() {
-        var organisationSubject = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var organisationSubject = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
         organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
         var addableAttributes = _wrap('organisation', organisationSubject.getAddableAttributes('organisation', organisationSubject));
 

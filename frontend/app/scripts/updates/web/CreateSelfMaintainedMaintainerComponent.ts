@@ -1,6 +1,6 @@
 class CreateSelfMaintainedMaintainerController {
     public static $inject = ["$state", "$log", "$stateParams",
-        "WhoisResources", "AlertService", "UserInfoService", "RestService", "MessageStore", "ErrorReporterService", "LinkService"];
+        "WhoisResources", "WhoisMetaService", "AlertService", "UserInfoService", "RestService", "MessageStore", "ErrorReporterService", "LinkService"];
 
     public submitInProgress: boolean = false;
     public admincDescription: any;
@@ -16,6 +16,7 @@ class CreateSelfMaintainedMaintainerController {
                 private $log: angular.ILogService,
                 private $stateParams: ng.ui.IStateParamsService,
                 private WhoisResources: any,
+                private WhoisMetaService: WhoisMetaService,
                 private AlertService: AlertService,
                 private UserInfoService: UserInfoService,
                 private RestService: RestService,
@@ -25,8 +26,8 @@ class CreateSelfMaintainedMaintainerController {
 
         this.AlertService.clearErrors();
 
-        this.admincDescription = WhoisResources.getAttributeDescription(this.objectType, "admin-c");
-        this.admincSyntax = WhoisResources.getAttributeSyntax(this.objectType, "admin-c");
+        this.admincDescription = WhoisMetaService.getAttributeDescription(this.objectType, "admin-c");
+        this.admincSyntax = WhoisMetaService.getAttributeSyntax(this.objectType, "admin-c");
 
         this.adminC = {
             alternatives: [],
@@ -40,7 +41,7 @@ class CreateSelfMaintainedMaintainerController {
             this.uiSelectTemplateReady = true;
         });
 
-        this.maintainerAttributes = this.WhoisResources.wrapAndEnrichAttributes(this.MNT_TYPE, WhoisResources.getMandatoryAttributesOnObjectType(this.MNT_TYPE));
+        this.maintainerAttributes = this.WhoisResources.wrapAndEnrichAttributes(this.MNT_TYPE, WhoisMetaService.getMandatoryAttributesOnObjectType(this.MNT_TYPE));
 
         this.source = $stateParams.source;
         this.maintainerAttributes.setSingleAttributeOnName("source", this.source);
@@ -156,7 +157,7 @@ class CreateSelfMaintainedMaintainerController {
     private onAdminCAdded(item: any) {
         this.$log.debug("onAdminCAdded:" + JSON.stringify(item));
         this.maintainerAttributes = this.maintainerAttributes.addAttributeAfterType({name: "admin-c", value: item.key}, {name: "admin-c"});
-        this.maintainerAttributes = this.WhoisResources.enrichAttributesWithMetaInfo(this.MNT_TYPE, this.maintainerAttributes);
+        this.maintainerAttributes = this.WhoisMetaService.enrichAttributesWithMetaInfo(this.MNT_TYPE, this.maintainerAttributes);
         this.maintainerAttributes = this.WhoisResources.wrapAttributes(this.maintainerAttributes);
     }
 
@@ -168,11 +169,11 @@ class CreateSelfMaintainedMaintainerController {
     }
 
     private getAttributeDescription(attrName: string) {
-        return this.WhoisResources.getAttributeDescription(this.objectType, attrName);
+        return this.WhoisMetaService.getAttributeDescription(this.objectType, attrName);
     }
 
     private getAttributeSyntax(attrName: string) {
-        return this.WhoisResources.getAttributeSyntax(this.objectType, attrName);
+        return this.WhoisMetaService.getAttributeSyntax(this.objectType, attrName);
     }
 }
 

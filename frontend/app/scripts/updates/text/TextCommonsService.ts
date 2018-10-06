@@ -1,11 +1,12 @@
 class TextCommonsService {
-    public static $inject = ["$state", "$log", "$q", "WhoisResources", "CredentialsService", "AlertService",
+    public static $inject = ["$state", "$log", "$q", "WhoisResources", "WhoisMetaService", "CredentialsService", "AlertService",
         "MntnerService", "ModalService", "ObjectUtilService"];
 
     constructor(private $state: ng.ui.IStateService,
                 private $log: angular.ILogService,
                 private $q: ng.IQService,
                 private WhoisResources: any,
+                private WhoisMetaService: WhoisMetaService,
                 private CredentialsService: CredentialsService,
                 private AlertService: AlertService,
                 private MntnerService: MntnerService,
@@ -28,7 +29,7 @@ class TextCommonsService {
 
     public validate(objectType: string, attributes: IAttributeModel[], errors?: any) {
         const unknownAttrs = _.filter(attributes, (attr) => {
-            return _.isUndefined(this.WhoisResources.findMetaAttributeOnObjectTypeAndName(objectType, attr.name));
+            return _.isUndefined(this.WhoisMetaService.findMetaAttributeOnObjectTypeAndName(objectType, attr.name));
         });
         if (!_.isEmpty(unknownAttrs)) {
             _.each(unknownAttrs, (attr) => {
@@ -43,9 +44,9 @@ class TextCommonsService {
         }
 
         let errorCount = 0;
-        const mandatoryAtrs = this.WhoisResources._getMetaAttributesOnObjectType(objectType, true);
+        const mandatoryAtrs = this.WhoisMetaService._getMetaAttributesOnObjectType(objectType, true);
         _.each(mandatoryAtrs, (meta) => {
-            if (_.any(attributes, (attr) => {
+            if (_.any(attributes, (attr: IAttributeModel) => {
                 return attr.name === meta.name;
             }) === false) {
                 const msg = meta.name + ": Missing mandatory attribute";

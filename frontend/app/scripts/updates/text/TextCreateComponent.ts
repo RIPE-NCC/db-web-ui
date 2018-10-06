@@ -7,7 +7,7 @@ interface ITextObject {
 }
 class TextCreateController {
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",
-        "WhoisResources", "RestService", "AlertService", "ErrorReporterService", "MessageStore",
+        "WhoisResources", "WhoisMetaService", "RestService", "AlertService", "ErrorReporterService", "MessageStore",
         "RpslService", "TextCommonsService", "PreferenceService", "MntnerService"];
 
     public restCallInProgress: boolean = false;
@@ -27,6 +27,7 @@ class TextCreateController {
                 public $q: ng.IQService,
                 public $window: any,
                 public WhoisResources: any,
+                public WhoisMetaService: WhoisMetaService,
                 public RestService: RestService,
                 public AlertService: AlertService,
                 public ErrorReporterService: ErrorReporterService,
@@ -158,7 +159,7 @@ class TextCreateController {
     }
 
     private prepopulateRpsl() {
-        const attributesOnObjectType = this.WhoisResources.getAllAttributesOnObjectType(this.object.type);
+        const attributesOnObjectType = this.WhoisMetaService.getAllAttributesOnObjectType(this.object.type);
         if (_.isEmpty(attributesOnObjectType)) {
             this.$log.error("Object type " + this.object.type + " was not found");
             this.$state.transitionTo("notFound");

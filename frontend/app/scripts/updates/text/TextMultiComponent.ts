@@ -17,7 +17,7 @@ interface ITextMultiObject {
 class TextMultiController {
 
     public static $inject = ["$stateParams", "$state", "$resource", "$log", "$q", "$window",
-        "WhoisResources", "RestService", "AlertService", "ErrorReporterService",
+        "WhoisResources", "WhoisMetaService", "RestService", "AlertService", "ErrorReporterService",
         "RpslService", "TextCommonsService", "SerialExecutorService", "AutoKeyLogicService", "Properties", "PreferenceService"];
 
     public actionsPending: number = 0;
@@ -40,6 +40,7 @@ class TextMultiController {
                 public $q: ng.IQService,
                 public $window: any,
                 public WhoisResources: any,
+                public WhoisMetaService: WhoisMetaService,
                 public RestService: RestService,
                 public AlertService: AlertService,
                 public ErrorReporterService: ErrorReporterService,
@@ -399,7 +400,7 @@ class TextMultiController {
     }
 
     private getPkey(objectType: string, attributes: any) {
-        const objectMeta = this.WhoisResources._getMetaAttributesOnObjectType(objectType, true);
+        const objectMeta = this.WhoisMetaService._getMetaAttributesOnObjectType(objectType, true);
         const pkeyAttrs = _.filter(objectMeta, (item: any) => {
             return item.primaryKey === true;
         });

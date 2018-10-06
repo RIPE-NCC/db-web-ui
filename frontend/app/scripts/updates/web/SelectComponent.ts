@@ -4,13 +4,14 @@ interface ISelectedObjectType {
 }
 
 class SelectController {
-    public static $inject = ["$state", "WhoisResources", "UserInfoService", "Properties"];
+    public static $inject = ["$state", "WhoisResources", "WhoisMetaService", "UserInfoService", "Properties"];
     public selected: ISelectedObjectType;
     public objectTypes: string[];
     public loggedIn: boolean;
 
     constructor(public $state: ng.ui.IStateService,
                 public WhoisResources: any,
+                public WhoisMetaService: WhoisMetaService,
                 public UserInfoService: UserInfoService,
                 public Properties: IProperties) {
     // }
@@ -19,7 +20,7 @@ class SelectController {
     //  * UI initialisation
     //  */
     // public $onInit() {
-        this.objectTypes = this.filterObjectTypes(this.WhoisResources.getObjectTypes());
+        this.objectTypes = this.filterObjectTypes(this.WhoisMetaService.getObjectTypes());
         this.UserInfoService.getUserOrgsAndRoles().then(() => {
                 this.loggedIn = true;
             },

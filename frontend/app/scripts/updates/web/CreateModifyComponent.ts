@@ -11,7 +11,7 @@ interface IMaintainers {
 
 class CreateModifyController {
     public static $inject = ["$scope", "$stateParams", "$state", "$anchorScroll", "$location", "$log", "$window", "$q", "$sce",
-        "$document", "WhoisResources", "MessageStore", "CredentialsService", "RestService", "ModalService",
+        "$document", "WhoisResources", "WhoisMetaService", "MessageStore", "CredentialsService", "RestService", "ModalService",
         "MntnerService", "AlertService", "ErrorReporterService", "LinkService", "ResourceStatus",
         "WebUpdatesCommonsService", "OrganisationHelperService", "PreferenceService", "EnumService", "CharsetToolsService",
         "ScreenLogicInterceptorService", "ObjectUtilService"];
@@ -58,6 +58,7 @@ class CreateModifyController {
                 private $sce: any,
                 private $document: angular.IDocumentService,
                 private WhoisResources: any,
+                private WhoisMetaService: WhoisMetaService,
                 private MessageStore: MessageStore,
                 private CredentialsService: CredentialsService,
                 private RestService: RestService,
@@ -119,7 +120,7 @@ class CreateModifyController {
             this.operation = this.CREATE_OPERATION;
 
             // Populate empty attributes based on meta-info
-            const mandatoryAttributesOnObjectType = this.WhoisResources.getMandatoryAttributesOnObjectType(this.objectType);
+            const mandatoryAttributesOnObjectType = this.WhoisMetaService.getMandatoryAttributesOnObjectType(this.objectType);
             if (_.isEmpty(mandatoryAttributesOnObjectType)) {
                 this.$state.transitionTo("notFound");
                 return;
@@ -612,15 +613,15 @@ class CreateModifyController {
     }
 
     public getAttributeShortDescription(attrName: string) {
-        return this.WhoisResources.getAttributeShortDescription(this.objectType, attrName);
+        return this.WhoisMetaService.getAttributeShortDescription(this.objectType, attrName);
     }
 
     public getAttributeDescription(attrName: string) {
-        return this.WhoisResources.getAttributeDescription(this.objectType, attrName);
+        return this.WhoisMetaService.getAttributeDescription(this.objectType, attrName);
     }
 
     public getAttributeSyntax(attrName: string) {
-        return this.WhoisResources.getAttributeSyntax(this.objectType, attrName);
+        return this.WhoisMetaService.getAttributeSyntax(this.objectType, attrName);
     }
 
     public isLirObject() {
