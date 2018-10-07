@@ -3,6 +3,7 @@
 var RIPE = {};
 var init_user_menu = function() {};
 var display_user_menu = function() {};
+var init_sso_nav = function() {};
 
 describe('updates: UserInfoService', function () {
 

@@ -34,6 +34,8 @@ interface IProperties {
     DATABASE_FULL_TEXT_SEARCH_URL: string;
     DATABASE_SYNCUPDATES_URL: string;
     DATABASE_CREATE_URL: string;
+
+    ENV: string;
 }
 
 class QueryController {

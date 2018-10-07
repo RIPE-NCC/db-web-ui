@@ -1,6 +1,7 @@
 declare var RIPE: any;
 declare var init_user_menu: any;
 declare var display_user_menu: any;
+declare var init_sso_nav: any;
 
 class UserInfoController {
     public static $inject = [
@@ -34,6 +35,7 @@ class UserInfoController {
                     email: userInfo.user.username,
                     fullName: userInfo.user.displayName,
                 };
+                init_sso_nav();
                 init_user_menu();
                 display_user_menu();
             }, (error: Error): void => {
@@ -46,4 +48,5 @@ class UserInfoController {
 angular.module("loginStatus")
     .component("userInfo", {
         controller: UserInfoController,
+        templateUrl: "scripts/loginStatus/user-info.html",
     });
