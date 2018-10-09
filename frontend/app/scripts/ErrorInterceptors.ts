@@ -1,13 +1,13 @@
 // TODO convert to service
 angular.module("dbWebApp")
     .constant("ERROR_EVENTS", {
-        serverError: "server-error-occurred",
-        notFound: "not-found",
         authenticationError: "authentication-error",
         forbiddenError: "forbidden",
+        notFound: "not-found",
+        serverError: "server-error-occurred",
         stateTransitionError: "$stateChangeError",
     })
-    .factory("ErrorInterceptor",  ($rootScope: angular.IRootScopeService, $q: ng.IQService, $location: angular.ILocationService, $log: angular.ILogService, ERROR_EVENTS: any) => {
+    .service("ErrorInterceptor",  ($rootScope: angular.IRootScopeService, $q: ng.IQService, $location: angular.ILocationService, $log: angular.ILogService, ERROR_EVENTS: any) => {
 
         function isServerError(status: number) {
             return status === 500;
