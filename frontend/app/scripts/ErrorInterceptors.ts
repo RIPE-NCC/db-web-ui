@@ -38,7 +38,7 @@ class ErrorInterceptorService {
         return status === 404;
     }
 
-    private mustErrorBeSwallowed(response: ng.IHttpResponse<any>) {
+    private mustErrorBeSwallowed = (response: ng.IHttpResponse<any>) => {
         let toBeSwallowed = false;
 
         this.$log.debug("ui-url:" + this.$location.path());
