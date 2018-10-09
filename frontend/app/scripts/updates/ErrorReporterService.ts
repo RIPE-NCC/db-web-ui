@@ -15,7 +15,8 @@ class ErrorReporterService {
         });
         _.each(attributes, (item: any) => {
             if (!_.isUndefined(item.$$error)) {
-                this.$log.error("url:" + this.$location.path() + ", operation:" + operation + ", objectType: " + objectType + ", attributeType: " + item.name + ", description: " + item.$$error);
+                this.$log.error("url:" + this.$location.path() + ", operation:" + operation + ", objectType: " + objectType +
+                    ", attributeType: " + item.name + ", description: " + item.$$error);
                 this.$analytics.eventTrack("FormSubmitAction", {
                     category: "Form Validation Error",
                     label: objectType + "." + item.name,
