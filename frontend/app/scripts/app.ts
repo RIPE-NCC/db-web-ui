@@ -68,7 +68,7 @@ angular.module("dbWebApp", [
                 // TODO do not act; authorisation errors during transition should be handled by stateTransitionError-handler above
                 $log.error("Authentication error");
                 const url = $location.absUrl();
-                if (url.indexOf("myresources") > -1 || url.indexOf("modify") > -1) {
+                if (url.indexOf("myresources") > -1 || url.indexOf("modify") > -1 || url.indexOf("create") > -1) {
                     redirectToLogin(url);
                 }
             });
