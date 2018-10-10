@@ -27,7 +27,7 @@ class ModalDeleteObjectController {
                 public $log: angular.ILogService,
                 public RestService: RestService,
                 public CredentialsService: CredentialsService,
-                public WhoisResources: any,
+                public WhoisResources: WhoisResources,
                 public MessageStore: MessageStore) {
     }
 

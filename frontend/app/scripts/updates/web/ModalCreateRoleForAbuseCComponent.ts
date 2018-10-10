@@ -12,7 +12,7 @@ class ModalCreateRoleForAbuseCCotroller {
         "MntnerService",
     ];
 
-    private static NEW_ROLE_TEMPLATE = [ {
+    private static NEW_ROLE_TEMPLATE: IAttributeModel[] = [ {
         name : "role",
         value : "Abuse contact role object",
     }, {
@@ -39,7 +39,7 @@ class ModalCreateRoleForAbuseCCotroller {
     public dismiss: any;
     public resolve: IModalCreateRoleForAbuceC;
 
-    constructor(private WhoisResources: any,
+    constructor(private WhoisResources: WhoisResources,
                 private RestService: RestService,
                 private MntnerService: any) {
     }

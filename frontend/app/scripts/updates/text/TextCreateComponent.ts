@@ -26,7 +26,7 @@ class TextCreateController {
                 public $log: angular.ILogService,
                 public $q: ng.IQService,
                 public $window: any,
-                public WhoisResources: any,
+                public WhoisResources: WhoisResources,
                 public WhoisMetaService: WhoisMetaService,
                 public RestService: RestService,
                 public AlertService: AlertService,

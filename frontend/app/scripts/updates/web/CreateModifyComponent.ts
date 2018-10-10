@@ -57,7 +57,7 @@ class CreateModifyController {
                 private $q: ng.IQService,
                 private $sce: any,
                 private $document: angular.IDocumentService,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private WhoisMetaService: WhoisMetaService,
                 private MessageStore: MessageStore,
                 private CredentialsService: CredentialsService,

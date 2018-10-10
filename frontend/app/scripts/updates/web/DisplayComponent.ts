@@ -17,7 +17,7 @@ class DisplayComponent {
                 public $state: ng.ui.IStateService,
                 public $resource: any,
                 public $log: angular.ILogService,
-                public WhoisResources: any,
+                public WhoisResources: WhoisResources,
                 public MessageStore: MessageStore,
                 public RestService: RestService,
                 public AlertService: AlertService,

@@ -10,7 +10,7 @@ class RestService {
                 private $templateCache: any,
                 private $log: ng.ILogService,
                 private $state: ng.ui.IStateService,
-                private WhoisResources: any) {}
+                private WhoisResources: WhoisResources) {}
 
     public fetchParentResource(objectType: string, qs: string) {
         // e.g. https://rest.db.ripe.net/search?flags=lr&type-filter=inetnum&query-string=193.0.4.0%20-%20193.0.4.255

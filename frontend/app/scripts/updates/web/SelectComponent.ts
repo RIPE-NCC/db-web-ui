@@ -10,7 +10,7 @@ class SelectController {
     public loggedIn: boolean;
 
     constructor(public $state: ng.ui.IStateService,
-                public WhoisResources: any,
+                public WhoisResources: WhoisResources,
                 public WhoisMetaService: WhoisMetaService,
                 public UserInfoService: UserInfoService,
                 public Properties: IProperties) {

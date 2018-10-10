@@ -12,7 +12,7 @@ class DisplayPersonMntnerPairController {
         public $stateParams: ng.ui.IStateParamsService,
         public $state: ng.ui.IStateService,
         public $log: angular.ILogService,
-        public WhoisResources: any,
+        public WhoisResources: WhoisResources,
         public MessageStore: MessageStore,
         public RestService: RestService,
         public AlertService: AlertService) {

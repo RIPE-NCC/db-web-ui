@@ -44,7 +44,7 @@ class DomainObjectWizardController {
                 private ModalService: ModalService,
                 private RestService: RestService,
                 private AttributeMetadataService: AttributeMetadataService,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private MntnerService: MntnerService,
                 private WebUpdatesCommonsService: WebUpdatesCommonsService,
                 private CredentialsService: CredentialsService,

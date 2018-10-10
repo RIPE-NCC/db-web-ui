@@ -20,7 +20,7 @@ class AttributeController {
                 private EnumService: EnumService,
                 private ModalService: ModalService,
                 private CredentialsService: CredentialsService,
-                private WhoisResources: any) {
+                private WhoisResources: WhoisResources) {
 
     }
 

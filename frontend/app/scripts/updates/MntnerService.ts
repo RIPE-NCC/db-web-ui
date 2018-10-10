@@ -19,7 +19,7 @@ class MntnerService {
     constructor(private $log: angular.ILogService,
                 private $q: ng.IQService,
                 private credentialsService: CredentialsService,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private WhoisMetaService: WhoisMetaService,
                 private ModalService: ModalService,
                 private RestService: RestService,

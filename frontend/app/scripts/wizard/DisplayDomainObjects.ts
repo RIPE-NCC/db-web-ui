@@ -7,7 +7,7 @@ class DisplayDomainObjectsController {
     constructor(private $state: ng.ui.IStateService,
                 private $stateParams: ng.ui.IStateParamsService,
                 private MessageStore: MessageStore,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private AlertService: AlertService) {
         this.source = this.$stateParams.source;
 

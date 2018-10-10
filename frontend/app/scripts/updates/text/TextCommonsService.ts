@@ -5,7 +5,7 @@ class TextCommonsService {
     constructor(private $state: ng.ui.IStateService,
                 private $log: angular.ILogService,
                 private $q: ng.IQService,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private WhoisMetaService: WhoisMetaService,
                 private CredentialsService: CredentialsService,
                 private AlertService: AlertService,

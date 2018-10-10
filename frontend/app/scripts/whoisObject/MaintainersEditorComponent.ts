@@ -304,7 +304,7 @@ class MaintainersEditorController {
         });
 
         // determine if mntner is mine
-        const selected: IMntByModel[] = mntnersInObject.map((mntnerAttr: {value: string}) => {
+        const selected: IMntByModel[] = mntnersInObject.map((mntnerAttr: IAttributeModel) => {
             let isMine = false;
             for (const mnt of this.mntners.sso) {
                 if (mnt.key === mntnerAttr.value) {

@@ -24,7 +24,7 @@ class ModalAuthenticationController {
 
     constructor(
         public $log: angular.ILogService,
-        public WhoisResources: any, // extand IWhoisResponseModel
+        public WhoisResources: WhoisResources,
         public RestService: RestService,
         public UserInfoService: UserInfoService,
         public CredentialsService: CredentialsService,

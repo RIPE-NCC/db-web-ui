@@ -14,7 +14,7 @@ class ScreenLogicInterceptorService {
     public objectInterceptors: any;
 
     constructor(private $log: angular.ILogService,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private OrganisationHelperService: OrganisationHelperService,
                 private MessageStore: MessageStore,
                 private MntnerService: MntnerService,

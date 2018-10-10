@@ -15,7 +15,7 @@ class CreateSelfMaintainedMaintainerController {
     constructor(private $state: ng.ui.IStateService,
                 private $log: angular.ILogService,
                 private $stateParams: ng.ui.IStateParamsService,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private WhoisMetaService: WhoisMetaService,
                 private AlertService: AlertService,
                 private UserInfoService: UserInfoService,

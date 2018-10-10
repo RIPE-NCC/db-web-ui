@@ -16,7 +16,7 @@ class WebUpdatesCommonsService {
 
     constructor(private $state: ng.ui.IStateService,
                 private $log: angular.ILogService,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private CredentialsService: CredentialsService,
                 private AlertService: AlertService,
                 private MntnerService: MntnerService,

@@ -12,7 +12,7 @@ class CreatePersonMntnerPairController {
     constructor(private $state: ng.ui.IStateService,
                 private $log: angular.ILogService,
                 private Properties: IProperties,
-                private WhoisResources: any,
+                private WhoisResources: WhoisResources,
                 private WhoisMetaService: WhoisMetaService,
                 private AlertService: AlertService,
                 private UserInfoService: UserInfoService,

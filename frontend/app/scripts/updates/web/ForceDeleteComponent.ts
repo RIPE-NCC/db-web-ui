@@ -26,7 +26,7 @@ class ForceDeleteController {
                 public $state: ng.ui.IStateService,
                 public $log: angular.ILogService,
                 public $q: ng.IQService,
-                public WhoisResources: any,
+                public WhoisResources: WhoisResources,
                 public WebUpdatesCommonsService: WebUpdatesCommonsService,
                 public RestService: RestService,
                 public MntnerService: MntnerService,

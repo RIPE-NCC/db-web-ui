@@ -610,8 +610,8 @@ class WhoisResources {
         }
         return result;
     }
-
-    public wrapSuccess(whoisResources: IWhoisResponseModel): IWhoisResponseModel {
+    // should return IWhoisResponseModel
+    public wrapSuccess(whoisResources: IWhoisResponseModel): any {
         return this.wrap(whoisResources);
     }
 

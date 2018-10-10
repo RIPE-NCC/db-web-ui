@@ -1,6 +1,6 @@
 class OrganisationHelperService {
     public static $inject = ["WhoisResources", "RestService"];
-    constructor(private WhoisResources: any,
+    constructor(private WhoisResources: WhoisResources,
                 private RestService: RestService) {
     }
 

@@ -12,7 +12,7 @@ class DeleteController {
     constructor(public $stateParams: ng.ui.IStateParamsService,
                 public $state: ng.ui.IStateService,
                 public $log: angular.ILogService,
-                public WhoisResources: any,
+                public WhoisResources: WhoisResources,
                 public ModalService: ModalService,
                 public AlertService: AlertService) {
         // this page does not raise a modal for authentication. It can be user directly either

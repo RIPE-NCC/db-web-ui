@@ -21,7 +21,7 @@ class TextModifyController {
         public $log: angular.ILogService,
         public $q: ng.IQService,
         public $window: any,
-        public WhoisResources: any,
+        public WhoisResources: WhoisResources,
         public RestService: RestService,
         public AlertService: AlertService,
         public ErrorReporterService: ErrorReporterService,
