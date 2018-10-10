@@ -48,6 +48,7 @@ public class CrowdTokenFilter implements Filter {
             ".*/whoisObject/whois-object-viewer.html",
             ".*/scripts/livechat/live-chat.html",
             ".*/scripts/syncupdates/syncupdates.html",
+            ".*/emailconfirmation/emailConfirm.html",
     };
 
     private final String crowdLoginUrl;

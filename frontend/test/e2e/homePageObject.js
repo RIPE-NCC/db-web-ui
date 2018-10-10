@@ -228,6 +228,10 @@ module.exports = {
     errorAlert: element(by.css('.alert-expired')),
     maintainerContainer: element(by.id('maintainer-container')),
 
+    checkImg: element(by.css('email-confirmation')).element(by.css('.fa-check')),
+    exclamationImg: element(by.css('email-confirmation')).element(by.css('.fa-exclamation-circle')),
+    emailConfirmationMsg: element(by.css('email-confirmation')).element(by.css('h2')),
+
     byId: function(id) {
         return element(by.id(id));
     },
