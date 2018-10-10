@@ -49,6 +49,7 @@ public class CrowdTokenFilter implements Filter {
             ".*/scripts/syncupdates/syncupdates.html",
             ".*/scripts/menu/left-hand-menu.html",
             ".*/scripts/loginStatus/user-info.html",
+            ".*/emailconfirmation/emailConfirm.html",
     };
 
     private final String crowdLoginUrl;

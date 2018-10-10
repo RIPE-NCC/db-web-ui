@@ -1,0 +1,17 @@
+<section class="not-found">
+    <div ng-if="$ctrl.loading">
+        <loading-indicator class="resource-page-message"></loading-indicator>
+    </div>
+    <div ng-if="!$ctrl.loading">
+        <div ng-if="$ctrl.validEmail">
+            <i class="fa fa-check" aria-hidden="true"></i>
+            <h2>Thank you! Your email has been validated.</h2>
+        </div>
+        <div ng-if="!$ctrl.validEmail">
+            <i class="fa fa-exclamation-circle"></i>
+            <h2>Sorry, this link is not valid anymore.</h2>
+        </div>
+        <a href="/search/query.html" class="blue-button">Search for an object</a>
+        <a href="#/" class="blue-button">Create an object</a>
+    </div>
+</section>

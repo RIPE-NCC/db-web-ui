@@ -30,6 +30,10 @@ angular.module("dbWebApp", [
                 .state("notFound", {
                     templateUrl: "scripts/views/notFound.html",
                     url: "/public/not-found",
+                })
+                .state("confirmEmail", {
+                    template: "<email-confirmation></email-confirmation>",
+                    url: "/confirmEmail?t=:token",
                 });
 
             // Always tell server if request was made using ajax
