@@ -209,7 +209,7 @@ class WhoisResources {
         if (_.isUndefined(whoisResponse.objects)) {
             return undefined;
         }
-        const keys =_.map(whoisResponse.objects.object[0]["primary-key"].attribute, (item) => {
+        const keys = _.map(whoisResponse.objects.object[0]["primary-key"].attribute, (item) => {
             return item.value;
         });
 

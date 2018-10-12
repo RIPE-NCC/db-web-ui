@@ -1,10 +1,11 @@
 interface IErrorMessageModel {
     attribute?: IAttributeModel;
-    severity: string;
-    text: string;
+    severity?: string;
+    text?: string;
     args?: [{
         value: string;
     }];
+    plainText?: string;
 }
 
 interface IWhoisLinkModel {

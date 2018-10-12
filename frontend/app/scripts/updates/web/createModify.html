@@ -180,8 +180,7 @@
         <input id="btnSubmitCreate" type="submit" ng-click="$ctrl.submit()" ng-disabled="!$ctrl.isFormValid() || $ctrl.restCallInProgress" class="blue-button pull-right ga-createobj-create" value="Submit"/>
         <button ng-click="$ctrl.cancel()" class="blue-button pull-right ga-createobj-cancel" style="border:0;">Cancel</button>
     </span>
-
-        <span ng-if="$ctrl.operation == $ctrl.MODIFY_OPERATION && !$ctrl.isLirObject() && !$ctrl.isResourceWithNccMntner()">
+    <span ng-if="$ctrl.operation == $ctrl.MODIFY_OPERATION && !$ctrl.isLirObject() && !$ctrl.isResourceWithNccMntner()">
         <button id="deleteObject" ng-click="$ctrl.deleteObject()" ng-disabled="$ctrl.restCallInProgress" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
     </span>
     </section>

@@ -1,14 +1,10 @@
-interface IAlertMsg {
-    plainText: string;
-}
-
 class AlertService {
 
     public static $inject = ["$log"];
 
-    public errors: IAlertMsg[] = [];
-    public warnings: IAlertMsg[] = [];
-    public infos: IAlertMsg[] = [];
+    public errors: IErrorMessageModel[] = [];
+    public warnings: IErrorMessageModel[] = [];
+    public infos: IErrorMessageModel[] = [];
 
     constructor(private $log: angular.ILogService) {
         this.hasErrors();
@@ -87,15 +83,15 @@ class AlertService {
         this.infos.push({plainText: errorMsg});
     }
 
-    public setGlobalErrors(errorMsgs: IAlertMsg[]) {
+    public setGlobalErrors(errorMsgs: IErrorMessageModel[]) {
         this.errors = errorMsgs;
     }
 
-    public setGlobalWarnings(warningMsgs: IAlertMsg[]) {
+    public setGlobalWarnings(warningMsgs: IErrorMessageModel[]) {
         this.warnings = warningMsgs;
     }
 
-    public setGlobalInfos(infoMsgs: IAlertMsg[]) {
+    public setGlobalInfos(infoMsgs: IErrorMessageModel[]) {
         this.infos = infoMsgs;
     }
 
@@ -103,11 +99,9 @@ class AlertService {
         this.infos.push({plainText: errorMsg});
     }
 
-    public populateFieldSpecificErrors(objectType: any, attrs: any, whoisResources: any) {
-
-        let firstAttrError = "";
-
-        _.each(attrs, (attr) => {
+    public populateFieldSpecificErrors(objectType: string, attrs: IAttributeModel[], whoisResources: any) {
+        let firstAttrError: string;
+        _.each(attrs, (attr: IAttributeModel) => {
             // keep existing error messages
             if (!attr.$$error) {
                 const errors = whoisResources.getErrorsOnAttribute(attr.name, attr.value);
@@ -122,8 +116,7 @@ class AlertService {
         return firstAttrError;
     }
 
-    public showWhoisResourceErrors(objectType: any, error: any) {
-
+    public showWhoisResourceErrors(objectType: string, error: any) {
         this.errors = error.getGlobalErrors();
         this.warnings = error.getGlobalWarnings();
         this.infos = error.getGlobalInfos();
