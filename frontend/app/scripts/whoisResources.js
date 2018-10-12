@@ -228,7 +228,7 @@ angular.module('dbWebApp')
                 function (errorMessage) {
                     if (errorMessage.attribute) {
                         errorMessage.plainText = self.readableError(errorMessage);
-                        return errorMessage.attribute.name === attributeName && errorMessage.attribute.value === attributeValue;
+                        return errorMessage.attribute.name === attributeName && errorMessage.attribute.value.trim() === attributeValue;
                     }
                     return false;
                 });

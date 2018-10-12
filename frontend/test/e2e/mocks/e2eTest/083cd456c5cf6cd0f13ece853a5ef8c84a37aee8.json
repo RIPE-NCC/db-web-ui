@@ -1,0 +1,47 @@
+{
+  "requestUrl": "/api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=SYSTEM",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": [
+    {
+     "key" : "ADVANCED-SYSTEMHAUS-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW" ]
+   }, {
+     "key" : "AKSON-SYSTEMS-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW", "PGPKEY-7FD0A168" ]
+   }, {
+     "key" : "ASN-SYSTEMS-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW" ]
+   }, {
+     "key" : "Audio_Systems_mnt",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW" ]
+   }, {
+     "key" : "BWI-SYSTEME-LIR-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW" ]
+   }, {
+     "key" : "BWI-SYSTEME-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW" ]
+   }, {
+     "key" : "BWI-SYSTEME-SHARED-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW" ]
+   }, {
+     "key" : "CRYSTAL-SYSTEM-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW", "PGPKEY-7FD0A168" ]
+   }, {
+     "key" : "ENIGMA-SYSTEM-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW", "PGPKEY-7FD0A168" ]
+   }, {
+     "key" : "ESSENTIAL-SYSTEMS-MNT",
+     "type" : "mntner",
+     "auth" : [ "MD5-PW" ]
+   } ]
+}
