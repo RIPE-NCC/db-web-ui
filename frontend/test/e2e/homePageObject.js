@@ -100,6 +100,8 @@ module.exports = {
     inpReverseZoneTable: element(by.id('createForm')).element(by.css('table')),
     inpRemarks: element(by.id('createForm')).element(by.name('remarks')),
     inpDescrCreateForm: element(by.id('createForm')).element(by.name('descr')),
+    inpCertif: element(by.id('createForm')).element(by.name('certif')),
+    inpErrorCertif: element(by.id('createForm')).element(by.id('anchor-certif')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
 
     inpAutnum: element(by.id('createForm')).element(by.name('aut-num')),

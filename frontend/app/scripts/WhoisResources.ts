@@ -198,7 +198,7 @@ class WhoisResources {
             .filter((errorMessage: any) => {
                 if (errorMessage.attribute) {
                     errorMessage.plainText = this.readableError(whoisResponse)(errorMessage);
-                    return errorMessage.attribute.name === attributeName && errorMessage.attribute.value === attributeValue;
+                    return errorMessage.attribute.name === attributeName && errorMessage.attribute.value.trim() === attributeValue;
                 }
                 return false;
             });
