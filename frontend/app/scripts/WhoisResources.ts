@@ -24,7 +24,6 @@ class WhoisResources {
     }
 
     // FIXME
-    // var toString = function() {
     public toString = (object: any) => () => {
         return angular.toJson(object);
     }
@@ -130,7 +129,6 @@ class WhoisResources {
         });
     }
     // private
-    // function _getRelatedAttribute( errorMessage ) {
     public _getRelatedAttribute(errorMessage: IErrorMessageModel) {
         if (errorMessage.attribute && typeof errorMessage.attribute.name === "string") {
             return errorMessage.attribute.name + ": ";
@@ -138,7 +136,6 @@ class WhoisResources {
         return "";
     }
     // private
-    // var getGlobalWarnings = function () {
     public getGlobalWarnings = (whoisResponse: IWhoisResponseModel) => () => {
         if (!whoisResponse.errormessages) {
             return [];
@@ -151,7 +148,6 @@ class WhoisResources {
             });
     }
     // private
-    // var getAllWarnings = function () {
     public getAllWarnings = (whoisResponse: IWhoisResponseModel) => () => {
         if (!whoisResponse.errormessages) {
             return [];
@@ -164,7 +160,6 @@ class WhoisResources {
             });
     }
     // private
-    // var getGlobalInfos = function () {
     public getGlobalInfos = (whoisResponse: IWhoisResponseModel) => () => {
         if (!whoisResponse.errormessages) {
             return [];
@@ -177,7 +172,6 @@ class WhoisResources {
             });
     }
     // private
-    // var getAllInfos = function () {
     public getAllInfos = (whoisResponse: IWhoisResponseModel) => () => {
         if (!whoisResponse.errormessages) {
             return [];
@@ -189,7 +183,6 @@ class WhoisResources {
             });
     }
     // private
-    // var getErrorsOnAttribute = function (attributeName, attributeValue) {
     public getErrorsOnAttribute = (whoisResponse: IWhoisResponseModel) => (attributeName: string, attributeValue: any) => {
         if (!whoisResponse.errormessages) {
             return [];
@@ -203,8 +196,7 @@ class WhoisResources {
                 return false;
             });
     }
-// private
-//     var getPrimaryKey = function () {
+    // private
     public getPrimaryKey = (whoisResponse: IWhoisResponseModel) => () => {
         if (_.isUndefined(whoisResponse.objects)) {
             return undefined;
@@ -217,15 +209,13 @@ class WhoisResources {
         return keys.join("");
     }
     // private
-    // var getSource = function () {
     public getSource = (whoisResponse: IWhoisResponseModel) => () => {
         if (!whoisResponse.objects) {
             return undefined;
         }
         return whoisResponse.objects.object[0].source.id;
     }
-// private
-//     var getObjectType = function () {
+    // private
     public getObjectType = (whoisResponse: IWhoisResponseModel) => () => {
         if (!whoisResponse.objects || !whoisResponse.objects.object || whoisResponse.objects.object.length === 0) {
             return undefined;
@@ -243,14 +233,12 @@ class WhoisResources {
         return objectType;
     }
     // private
-    // var isFiltered = function () {
     public isFiltered = (whoisResponse: IWhoisResponseModel) => () => {
         const sourceAttribute = this.getSingleAttributeOnName(this.getAttributes(whoisResponse)())("source");
         // const sourceAttribute = getSingleAttributeOnName.call(whoisResponse.getAttributes(), "source");
         return (sourceAttribute && sourceAttribute.comment === "Filtered");
     }
     // private
-    // var getAttributes = function () {
     public getAttributes = (whoisResponse: IWhoisResponseModel) => () => {
         if (!whoisResponse.objects) {
             return [];
@@ -272,7 +260,6 @@ class WhoisResources {
         return object.attributes.attribute;
     }
     // private
-    // function isValidWhoisResources( whoisResources) {
     public isValidWhoisResources(whoisResources: IWhoisResponseModel) {
         if (_.isUndefined(whoisResources) || _.isNull(whoisResources)) {
             this.$log.error("isValidWhoisResources: Null input:" + JSON.stringify(whoisResources));
@@ -320,21 +307,18 @@ class WhoisResources {
         });
     }
     // private
-    // var getAllAttributesOnName = function (attributeName) {
     public getAllAttributesOnName = (attributes: IAttributeModel[]) => (attributeName: string) => {
         return _.filter(attributes, (attribute) => {
                 return attribute.name === attributeName;
             });
     }
     // private
-    // var getAllAttributesWithValueOnName = function (attributeName) {
     public getAllAttributesWithValueOnName = (attributes: IAttributeModel[]) => (attributeName: string) => {
         return _.filter(attributes, (attribute) => {
                 return attribute.value && attribute.name === attributeName;
             });
     }
     // private
-    // var addAttrsSorted = function (attrTypeName, attrs) {
     public addAttrsSorted = (attributes: IAttributeModel[]) => (attrTypeName: string, attrs: IAttributeModel[]) => {
         const lastIdxOfType = _.findLastIndex(attributes, (item) => {
             return item.name === attrTypeName;
@@ -361,8 +345,7 @@ class WhoisResources {
             return attributes.concat(attrs);
         }
     }
-// private
-//     var setSingleAttributeOnName = function( name, value) {
+    // private
     public setSingleAttributeOnName = (attributes: IAttributeModel[]) => (name: string, value: any) => {
         let found = false;
         return _.map(attributes, (attr: IAttributeModel) => {
@@ -373,8 +356,7 @@ class WhoisResources {
             return attr;
         });
     }
-// private
-//     var validate = function() {
+    // private
     public validate = (attributes: IAttributeModel[]) => () => {
         let errorFound = false;
         _.each(attributes, (attr: IAttributeModel) => {
@@ -431,7 +413,7 @@ class WhoisResources {
     public canAttributeBeDuplicated = (attributes: IAttributeModel[]) => (attr: IAttributeModel) => {
         return attr.$$meta.$$multiple === true;
     }
-// private
+    // private
     public canAttributeBeRemoved = (attributes: IAttributeModel[]) => (attr: IAttributeModel) => {
         let status = false;
         if (attr.$$meta.$$mandatory === false) {
@@ -442,7 +424,7 @@ class WhoisResources {
 
         return status;
     }
-// private
+    // private
     public addAttributeAfter = (attributes: IAttributeModel[]) => (attr: IAttributeModel, after: any) => {
         const metaClone = {};
         let hasMeta = false;
@@ -462,7 +444,7 @@ class WhoisResources {
         attributes.splice(foundAt + 1, 0, attrCopy);
         return attributes;
     }
-// private
+    // private
     public getAddableAttributes = (attributes: IAttributeModel[]) => (objectType: string, attrs: IAttributeModel[]) => {
         return _.filter(this.WhoisMetaService.getAllAttributesOnObjectType(objectType), (attr) => {
             if (attr.name === "created  ") {
@@ -481,7 +463,7 @@ class WhoisResources {
             return false;
         });
     }
-// private
+    // private
     public addAttributeAfterType = (attributes: IAttributeModel[]) => (attr: IAttributeModel, after: any) => {
         const result: IAttributeModel[] = [];
         let found = false;
@@ -495,7 +477,7 @@ class WhoisResources {
 
         return result;
     }
-// private
+    // private
     public removeNullAttributes = (attributes: IAttributeModel[]) => () => {
         const filtered = _.filter(attributes, (attr: IAttributeModel) => {
             const allowedEmpty = _.includes(this.allowedEmptyAttrs, attr.name);
@@ -512,7 +494,7 @@ class WhoisResources {
             return item;
         });
     }
-// private
+    // private
     public toPlaintext = (attributes: IAttributeModel[]) => () => {
         let result = "";
         _.each(attributes, (attr: IAttributeModel) => {
@@ -520,17 +502,17 @@ class WhoisResources {
         });
         return result;
     }
-// private
+    // private
     public _repeat(text: string, n: number) {
         return new Array(n + 1).join(text);
     }
-// private
+    // private
     public attributeWithNameExists(attrs: IAttributeModel[], attributeName: string): boolean {
         return _.any(attrs, (attribute: IAttributeModel) => {
             return attribute.name === attributeName;
         });
     }
-// private
+    // private
     public getMissingMandatoryAttributes = (attributes: IAttributeModel[]) => (objectType: string) => {
         const missingAttrs: IAttributeModel[] = [];
         _.each(this.WhoisMetaService.getMandatoryAttributesOnObjectType(objectType), (item) => {
@@ -540,7 +522,7 @@ class WhoisResources {
         });
         return missingAttrs;
     }
-// private
+    // private
     public getFirstMandatoryAttrAbove(objectType: string, attrTypeName: string) {
         const metaAttrs =  this.WhoisMetaService.getMandatoryAttributesOnObjectType(objectType);
         const idx = _.findIndex(metaAttrs, (item) => {
@@ -548,7 +530,7 @@ class WhoisResources {
         });
         return metaAttrs[Math.max(0, idx - 1)].name;
     }
-// private
+    // private
     public addBelowLastOf(attrs: IAttributeModel[], attrTypeName: string, item: any) {
         const last =  _.last(_.filter(attrs, (attr) => {
                 return attr.name === attrTypeName;
@@ -562,12 +544,11 @@ class WhoisResources {
         });
         return result;
     }
-// private
+    // private
     public addMissingMandatoryAttribute = (attributes: IAttributeModel[]) => (objectType: string, attr: IAttributeModel) => {
         return this.addBelowLastOf(attributes, this.getFirstMandatoryAttrAbove(objectType, attr.name), attr);
     }
 
-    // public wrapAttributes(attrs: IAttributeModel[]) {
     public wrapAttributes(attrs: any) {
         if (!attrs) {
             return [];
