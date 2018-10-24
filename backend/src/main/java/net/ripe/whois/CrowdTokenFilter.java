@@ -46,9 +46,10 @@ public class CrowdTokenFilter implements Filter {
             ".*/updates/web/select.html",
             ".*/views/error.html",
             ".*/whoisObject/whois-object-viewer.html",
-            ".*/scripts/syncupdates/syncupdates.html",
-            ".*/scripts/menu/left-hand-menu.html",
-            ".*/scripts/loginStatus/user-info.html",
+            ".*/syncupdates/syncupdates.html",
+            ".*/updates/text/multi.html",
+            ".*/menu/left-hand-menu.html",
+            ".*/loginStatus/user-info.html",
             ".*/emailconfirmation/emailConfirm.html",
     };
 
