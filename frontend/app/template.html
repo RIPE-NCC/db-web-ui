@@ -797,10 +797,7 @@
 </nav>
 <main class="container-fluid">
     <div class="container box-shadow clearfix" id="portal-columns">
-        <p id="envbanner" class="ng-cloak envbanner alert orangebackground" style="text-align: center" ng-if="page.Properties.BANNER">
-            <span id="envBannerId" style="text-transform: uppercase">{{ page.Properties.ENV }}</span><br>
-            {{ page.Properties.BANNER }}
-        </p>
+        <!-- @include _index_app_banner.html -->
         <div id="portal-breadcrumbs">
                 <span id="breadcrumbs-you-are-here">You are here:</span>
                 <span id="breadcrumbs-home">
@@ -843,10 +840,7 @@
                     <div id="external">
                         <!-- End of header ENDHEADERMARKER -->
                         <!-- Insert your content here CONTENTMARKER -->
-                        <div ui-view></div>
-                        <div class="db-version-footer text-muted">
-                            RIPE Database Software Version {{ page.Properties.WHOIS_VERSION_DISPLAY_TEXT }}
-                        </div>
+                        <!-- @include _index_app_content.html -->
                         <!-- Start of footer STARTFOOTERMARKER -->
                     </div>
                 </div>
