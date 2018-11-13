@@ -1,3 +1,8 @@
+class PageController {
+    constructor(public Properties: any) {
+    }
+}
+
 angular.module("dbWebApp", [
     "ui.router",
     "angular-loading-bar",
@@ -84,7 +89,4 @@ angular.module("dbWebApp", [
             };
 
         }])
-    .controller("PageController", ["Properties", "Labels", (Properties, Labels) => {
-        this.Properties = Properties;
-        this.labels = Labels;
-    }]);
+    .controller("PageController", ["Properties", PageController]);
