@@ -208,6 +208,7 @@ describe('webUpdates: DisplayComponent', function () {
             expect($stateParams.objectType).toBe(OBJECT_TYPE);
             expect($stateParams.name).toBe(OBJECT_NAME);
         });
+        $httpBackend.flush();
     });
 });
 

@@ -267,6 +267,8 @@ describe('webUpdates: ModalDeleteObjectComponent undeletable object', function (
         ctrl.resolve.onCancel = 'webupdates.modify';
         ctrl.cancel();
         expect(ctrl.close).toHaveBeenCalled();
+
+        $httpBackend.flush();
     });
 
     it('should close the modal and return to force delete when canceled', function () {

@@ -89,9 +89,9 @@ describe('webUpdates: SelectController', function () {
         // person-mntnr pair is default selection (top of the drop down list)
         $ctrl.navigateToCreate();
         // FIXME [IS]
-        // $httpBackend.flush();
-        //
-        // expect($ctrl.$state.current.name).toBe('webupdates.createPersonMntnerPair');
+        $httpBackend.flush();
+
+        expect($ctrl.$state.current.name).toBe('webupdates.createPersonMntnerPair');
 
     });
 
@@ -117,9 +117,9 @@ describe('webUpdates: SelectController', function () {
 
         $ctrl.navigateToCreate();
 
-        // $httpBackend.flush();
+        $httpBackend.flush();
 
-        // expect($ctrl.$state.current.name).toBe('webupdates.createSelfMnt');
+        expect($ctrl.$state.current.name).toBe('webupdates.createSelfMnt');
         expect($ctrl.selected.source).toBe(SOURCE);
     });
 

@@ -37,6 +37,14 @@ class WebUpdatesStatesProvider {
 
         $urlRouterProvider.otherwise("webupdates/select");
 
+        // TODO this will be fixed with routing after switching to angular
+        // Used to redirect state to component only if any authorized page is available - basically if user is logged in
+        // this way is fixed 2 times loading loginpage on back browser button
+        const anyAuthorizedPage = {
+            url: ["$http",  (http: any) => {
+                return http.get("scripts/updates/web/createPersonMntnerPair.html");
+            }]};
+
         $stateProvider
             .state("webupdates", {
                 abstract: true,
@@ -44,6 +52,7 @@ class WebUpdatesStatesProvider {
                 url: "/webupdates",
             })
             .state("myresources", {
+                resolve: anyAuthorizedPage,
                 template: "<resources></resources>",
                 url: "/myresources/overview?type&sponsored&ipanalyserRedirect",
             })
@@ -52,10 +61,12 @@ class WebUpdatesStatesProvider {
                 url: "/myresources/detail/:objectType/{objectName:WhoisObjectName}/:sponsored",
             })
             .state("webupdates.domainobjectwizard", {
+                resolve: anyAuthorizedPage,
                 template: "<domain-object-wizard></domain-object-wizard>",
                 url: "/wizard/:source/:objectType",
             })
             .state("webupdates.displayDomainObjects", {
+                resolve: anyAuthorizedPage,
                 template: "<display-domain-objects></display-domain-objects>",
                 url: "/wizard/:source/:objectType/success",
             })
@@ -64,6 +75,7 @@ class WebUpdatesStatesProvider {
                 url: "/select",
             })
             .state("webupdates.createPersonMntnerPair", {
+                resolve: anyAuthorizedPage,
                 template: "<create-person-mntner-pair></create-person-mntner-pair>",
                 url: "/create/person/self",
             })
@@ -72,14 +84,17 @@ class WebUpdatesStatesProvider {
                 url: "/display/:source/person/:person/mntner/:mntner",
             })
             .state("webupdates.createSelfMnt", {
+                resolve: anyAuthorizedPage,
                 template: "<create-self-maintained-maintainer-component></create-self-maintained-maintainer-component>",
                 url: "/create/:source/mntner/self?admin",
             })
             .state("webupdates.create", {
+                resolve: anyAuthorizedPage,
                 template: "<create-modify></create-modify>",
                 url: "/create/:source/:objectType?noRedirect",
             })
             .state("webupdates.modify", {
+                resolve: anyAuthorizedPage,
                 template: "<create-modify></create-modify>",
                 url: "/modify/:source/:objectType/{name:WhoisObjectName}?noRedirect",
             })

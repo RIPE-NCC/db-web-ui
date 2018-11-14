@@ -198,6 +198,7 @@ describe('webUpdates: displayPersonMntnerPairComponent', function () {
             expect($stateParams.objectType).toBe('person');
             expect($stateParams.name).toBe(PERSON_NAME);
         });
+        $httpBackend.flush();
     });
 
     it('should navigate to modify mntner screen', function () {
@@ -213,6 +214,7 @@ describe('webUpdates: displayPersonMntnerPairComponent', function () {
             expect($stateParams.objectType).toBe('mntner');
             expect($stateParams.name).toBe(MNTNER_NAME);
         });
+        $httpBackend.flush();
     });
 
 });
