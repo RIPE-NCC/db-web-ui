@@ -13,6 +13,10 @@ class ModalDomainObjectSplashCotroller {
     public cancel() {
         this.dismiss();
     }
+
+    public goAway() {
+        this.dismiss();
+    }
 }
 
 angular.module("dbWebApp")
