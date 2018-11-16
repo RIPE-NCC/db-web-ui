@@ -7,8 +7,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Nonnull;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 

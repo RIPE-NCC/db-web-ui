@@ -6,7 +6,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -198,8 +197,9 @@ public class WhoisServiceTest {
     private static final String MOCK_WHOIS_URL = "http://localhost:8089";
 
     private final RestTemplate restTemplate = new RestTemplate();
+    private final WhoisProxyUrl whoisProxyUrl = new WhoisProxyUrl("/");
 
-    private final WhoisService whoisService = new WhoisService(restTemplate, MOCK_WHOIS_URL, "/");
+    private final WhoisService whoisService = new WhoisService(restTemplate, whoisProxyUrl, MOCK_WHOIS_URL);
 
     private MockRestServiceServer mockServer;
 
