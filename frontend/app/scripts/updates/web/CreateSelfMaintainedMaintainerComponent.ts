@@ -81,20 +81,13 @@ class CreateSelfMaintainedMaintainerController {
         return this.maintainerAttributes.validateWithoutSettingErrors();
     }
 
-    private populateMissingAttributes() {
-        this.maintainerAttributes = this.WhoisResources.wrapAttributes(this.maintainerAttributes);
-
-        const mntner = this.maintainerAttributes.getSingleAttributeOnName(this.MNT_TYPE);
-        this.maintainerAttributes.setSingleAttributeOnName("mnt-by", mntner.value);
-    }
-
-    private cancel() {
+    public cancel() {
         if (window.confirm("Are you sure?")) {
             this.$state.transitionTo("webupdates.select");
         }
     }
 
-    private fieldVisited(attr: any) {
+    public fieldVisited(attr: any) {
         this.RestService.autocomplete(attr.name, attr.value, true, [])
             .then((data: any) => {
                 if (_.any(data, (item: any) => {
@@ -106,6 +99,44 @@ class CreateSelfMaintainedMaintainerController {
                 }
             },
         );
+    }
+
+    public adminCAutocomplete(query: any) {
+        this.RestService.autocomplete("admin-c", query, true, ["person", "role"]).then(
+            (data: any) => {
+                this.$log.debug("autocomplete success:" + JSON.stringify(data));
+                // mark new
+                this.adminC.alternatives = this.stripAlreadySelected(data);
+            }, (error: any) => {
+                this.$log.error("autocomplete error:" + JSON.stringify(error));
+            },
+        );
+    }
+
+    public hasAdminC() {
+        return this.adminC.object.length > 0;
+    }
+
+    public onAdminCAdded(item: any) {
+        this.$log.debug("onAdminCAdded:" + JSON.stringify(item));
+        this.maintainerAttributes = this.maintainerAttributes.addAttributeAfterType({name: "admin-c", value: item.key}, {name: "admin-c"});
+        this.maintainerAttributes = this.WhoisMetaService.enrichAttributesWithMetaInfo(this.MNT_TYPE, this.maintainerAttributes);
+        this.maintainerAttributes = this.WhoisResources.wrapAttributes(this.maintainerAttributes);
+    }
+
+    public onAdminCRemoved(item: any) {
+        this.$log.debug("onAdminCRemoved:" + JSON.stringify(item));
+        _.remove(this.maintainerAttributes, (i: any) => {
+            return i.name === "admin-c" && i.value === item.key;
+        });
+    }
+
+    public getAttributeDescription(attrName: string) {
+        return this.WhoisMetaService.getAttributeDescription(this.objectType, attrName);
+    }
+
+    public getAttributeSyntax(attrName: string) {
+        return this.WhoisMetaService.getAttributeSyntax(this.objectType, attrName);
     }
 
     private createObject() {
@@ -132,48 +163,17 @@ class CreateSelfMaintainedMaintainerController {
             );
     }
 
-    private adminCAutocomplete(query: any) {
-        this.RestService.autocomplete("admin-c", query, true, ["person", "role"]).then(
-            (data: any) => {
-                this.$log.debug("autocomplete success:" + JSON.stringify(data));
-                // mark new
-                this.adminC.alternatives = this.stripAlreadySelected(data);
-            }, (error: any) => {
-                this.$log.error("autocomplete error:" + JSON.stringify(error));
-            },
-        );
+    private populateMissingAttributes() {
+        this.maintainerAttributes = this.WhoisResources.wrapAttributes(this.maintainerAttributes);
+
+        const mntner = this.maintainerAttributes.getSingleAttributeOnName(this.MNT_TYPE);
+        this.maintainerAttributes.setSingleAttributeOnName("mnt-by", mntner.value);
     }
 
     private stripAlreadySelected(adminC: any) {
         return _.filter(adminC, (aC: any) => {
             return !this.adminC.object !== aC;
         });
-    }
-
-    private hasAdminC() {
-        return this.adminC.object.length > 0;
-    }
-
-    private onAdminCAdded(item: any) {
-        this.$log.debug("onAdminCAdded:" + JSON.stringify(item));
-        this.maintainerAttributes = this.maintainerAttributes.addAttributeAfterType({name: "admin-c", value: item.key}, {name: "admin-c"});
-        this.maintainerAttributes = this.WhoisMetaService.enrichAttributesWithMetaInfo(this.MNT_TYPE, this.maintainerAttributes);
-        this.maintainerAttributes = this.WhoisResources.wrapAttributes(this.maintainerAttributes);
-    }
-
-    private onAdminCRemoved(item: any) {
-        this.$log.debug("onAdminCRemoved:" + JSON.stringify(item));
-        _.remove(this.maintainerAttributes, (i: any) => {
-            return i.name === "admin-c" && i.value === item.key;
-        });
-    }
-
-    private getAttributeDescription(attrName: string) {
-        return this.WhoisMetaService.getAttributeDescription(this.objectType, attrName);
-    }
-
-    private getAttributeSyntax(attrName: string) {
-        return this.WhoisMetaService.getAttributeSyntax(this.objectType, attrName);
     }
 }
 
