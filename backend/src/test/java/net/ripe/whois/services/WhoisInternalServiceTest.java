@@ -85,9 +85,8 @@ public class WhoisInternalServiceTest {
 
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final WhoisProxyUrl whoisProxyUrl = new WhoisProxyUrl("/");
 
-    private final WhoisInternalService whoisInternalService = new WhoisInternalService(restTemplate, whoisProxyUrl, MOCK_WHOIS_INTERNAL_URL, API_KEY);
+    private final WhoisInternalService whoisInternalService = new WhoisInternalService(restTemplate, MOCK_WHOIS_INTERNAL_URL, API_KEY, "/");
 
     private MockRestServiceServer mockServer;
 

@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.MediaType;
@@ -25,18 +26,18 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
     private final RestTemplate restTemplate;
     private final String apiUrl;
     private final String apiKey;
-    private final WhoisProxyUrl whoisProxyUrl;
+    private final String contextPath;
 
     @Autowired
     public WhoisInternalResourcesService(
         final RestTemplate restTemplate,
-        final WhoisProxyUrl whoisProxyUrl,
         @Value("${internal.api.url}") final String apiUrl,
-        @Value("${internal.api.key}") final String apiKey) {
+        @Value("${internal.api.key}") final String apiKey,
+        @Value("${server.contextPath}") final String contextPath) {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;
-        this.whoisProxyUrl = whoisProxyUrl;
+        this.contextPath = contextPath;
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
@@ -51,12 +52,11 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
     }
 
     private URI withURI(final HttpServletRequest request) {
-        return whoisProxyUrl.composeProxyUrl(
-            request.getRequestURI(),
-            request.getQueryString(),
-            "",
-            apiUrl,
-            apiKey);
+        return UriComponentsBuilder.fromHttpUrl(apiUrl)
+            .path(request.getRequestURI().replace(contextPath, ""))
+            .replaceQuery(request.getQueryString())
+            .queryParam("apiKey", apiKey)
+            .build().toUri();
     }
 
     private HttpEntity<?> withEntity(final HttpHeaders headers, final String body) {
