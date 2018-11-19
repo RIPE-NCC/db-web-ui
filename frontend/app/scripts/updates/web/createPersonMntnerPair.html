@@ -27,7 +27,7 @@
                 </div>
                 <ul class="input-group-btn">
                     <li>
-                        <a class="btn btn-default ga-help-attr" ng-click="$ctrl.isHelpShown = !$ctrl.isHelpShown">
+                        <a class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
                             <span class="fa fa-question" ></span>
                         </a>
                     </li>
@@ -45,7 +45,7 @@
                        ng-required="{{attribute.$$meta.$$mandatory}}"
                        class="form-control"
                        autocomplete="off"/>
-               <div class="text field-description" uib-collapse="!$ctrl.isHelpShown">
+               <div class="text field-description" uib-collapse="!isHelpShown">
                    <strong>Description</strong><br>
                    <span ng-bind-html="$ctrl.getAttributeDescription(attribute.name)"></span><br>
                    <strong>Syntax</strong><br>
@@ -53,7 +53,7 @@
                </div>
                 <ul class="input-group-btn">
                     <li>
-                        <a class="btn btn-default ga-help-attr" ng-click="$ctrl.isHelpShown = !$ctrl.isHelpShown">
+                        <a class="btn btn-default ga-help-attr" ng-click="isHelpShown = !isHelpShown">
                             <span class="fa fa-question" ></span>
                         </a>
                     </li>
