@@ -1,5 +1,6 @@
 package net.ripe.whois.services;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,24 +25,21 @@ public class WhoisRestService implements ExchangeErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestService.class);
 
     private final RestTemplate restTemplate;
-    private final WhoisProxyUrl whoisProxyUrl;
     private final String apiUrl;
-
+    private final String contextPath;
 
     @Autowired
     public WhoisRestService(
             final RestTemplate restTemplate,
-            final WhoisProxyUrl whoisProxyUrl,
-            @Value("${rest.api.ripeUrl}") final String apiUrl) {
-
+            @Value("${rest.api.ripeUrl}") final String apiUrl,
+            @Value("${server.contextPath}") final String contextPath) {
         this.restTemplate = restTemplate;
-        this.whoisProxyUrl = whoisProxyUrl;
         this.apiUrl = apiUrl;
+        this.contextPath = contextPath;
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
-        final URI uri = whoisProxyUrl.composeProxyUrl(request.getRequestURI(),
-            request.getQueryString(),"/api/rest", apiUrl);
+        final URI uri = composeWhoisUrl(request);
 
         // Do not accept compressed response, as it's not handled properly (by whois)
         headers.remove(HttpHeaders.ACCEPT_ENCODING);
@@ -62,6 +60,20 @@ public class WhoisRestService implements ExchangeErrorHandler {
                 // e instanceof HttpServerErrorException
                 return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());
             }, LOGGER);
+    }
+
+    private URI composeWhoisUrl(final HttpServletRequest request) throws URISyntaxException {
+        final StringBuilder builder = new StringBuilder(apiUrl)
+                .append(request.getRequestURI()
+                    .replace("/api/rest", "")
+                    .replace(contextPath, ""));
+
+        if (StringUtils.isNotBlank(request.getQueryString())) {
+            builder.append('?')
+                    .append(request.getQueryString());
+        }
+        LOGGER.debug("uri = {}", builder.toString());
+        return new URI(builder.toString());
     }
 
 }

@@ -6,6 +6,7 @@ import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.ip.Ipv4Resource;
 import net.ripe.db.whois.common.ip.Ipv6Resource;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,22 +38,22 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisService.class);
 
     private final RestTemplate restTemplate;
-    private final WhoisProxyUrl whoisProxyUrl;
     private final String apiUrl;
+    private final String contextPath;
 
     @Autowired
     public WhoisService(
             final RestTemplate restTemplate,
-            final WhoisProxyUrl whoisProxyUrl,
-            @Value("${rest.api.ripeUrl}") final String apiUrl) {
+            @Value("${rest.api.ripeUrl}") final String apiUrl,
+            @Value("${server.contextPath}") final String contextPath) {
         this.restTemplate = restTemplate;
-        this.whoisProxyUrl = whoisProxyUrl;
         this.apiUrl = apiUrl;
+        this.contextPath = contextPath;
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final HttpServletResponse response, @Nullable final String requestBody, final HttpHeaders requestHeaders) {
 
-        // Connection value "keep-alive" doesn't work with rest-template
+        // Connection value "keep-alive" doesn't work with resttemplate
         requestHeaders.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
 
         // Do not accept compressed response, as it's not handled properly (by whois)
@@ -72,6 +73,25 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
                 IOUtils.copy(responseExtractor.getBody(), response.getOutputStream());
                 return null;
             });
+    }
+
+    private URI composeWhoisUrl(final HttpServletRequest request) {
+        try {
+            final StringBuilder builder = new StringBuilder(apiUrl)
+                    .append(request.getRequestURI()
+                        .replace("/api/whois", "")
+                        .replace(contextPath, ""));
+
+            if (StringUtils.isNotBlank(request.getQueryString())) {
+                builder
+                    .append('?')
+                    .append(request.getQueryString());
+            }
+
+            return new URI(builder.toString());
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     // TODO: [ES] refactor this logic, move into WhoisHierarchyController. Expose generic Search API here instead.
@@ -148,12 +168,5 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
                 return httpEntityCallback(requestEntity);
         	}
         }.httpEntityCallback();
-    }
-
-    private URI composeWhoisUrl(final HttpServletRequest request) {
-        return whoisProxyUrl.composeProxyUrl(request.getRequestURI(),
-            request.getQueryString(),
-            "/api/whois",
-            apiUrl);
     }
 }
