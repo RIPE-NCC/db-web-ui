@@ -32,7 +32,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisInternalService.class);
 
     private final RestTemplate restTemplate;
-    private final WhoisProxyUrl whoisProxyUrl;
+    private final WhoisInternalProxy whoisInternalProxy;
     private final String apiKey;
     private final String apiUrl;
 
@@ -40,11 +40,11 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     @Autowired
     public WhoisInternalService(
             final RestTemplate restTemplate,
-            final WhoisProxyUrl whoisProxyUrl,
+            final WhoisInternalProxy whoisInternalProxy,
             @Value("${internal.api.url}") final String apiUrl,
             @Value("${internal.api.key}") final String apiKey) {
         this.restTemplate = restTemplate;
-        this.whoisProxyUrl = whoisProxyUrl;
+        this.whoisInternalProxy = whoisInternalProxy;
         this.apiKey = apiKey;
         this.apiUrl = apiUrl;
     }
@@ -126,11 +126,12 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) {
-        return whoisProxyUrl.composeProxyUrl(request.getRequestURI(),
+        return whoisInternalProxy.composeProxyUrl(request.getRequestURI(),
             request.getQueryString(),
             "/api/whois-internal",
             apiUrl,
-            apiKey);
+            apiKey,
+            true);
     }
 
 }

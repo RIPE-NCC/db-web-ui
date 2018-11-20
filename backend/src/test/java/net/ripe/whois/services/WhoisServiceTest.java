@@ -197,9 +197,9 @@ public class WhoisServiceTest {
     private static final String MOCK_WHOIS_URL = "http://localhost:8089";
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final WhoisProxyUrl whoisProxyUrl = new WhoisProxyUrl("/");
+    private final WhoisProxy whoisProxy = new WhoisProxy("/");
 
-    private final WhoisService whoisService = new WhoisService(restTemplate, whoisProxyUrl, MOCK_WHOIS_URL);
+    private final WhoisService whoisService = new WhoisService(restTemplate, whoisProxy, MOCK_WHOIS_URL);
 
     private MockRestServiceServer mockServer;
 

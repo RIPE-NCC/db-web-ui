@@ -25,18 +25,18 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
     private final RestTemplate restTemplate;
     private final String apiUrl;
     private final String apiKey;
-    private final WhoisProxyUrl whoisProxyUrl;
+    private final WhoisInternalProxy whoisInternalProxy;
 
     @Autowired
     public WhoisInternalResourcesService(
         final RestTemplate restTemplate,
-        final WhoisProxyUrl whoisProxyUrl,
+        final WhoisInternalProxy whoisInternalProxy,
         @Value("${internal.api.url}") final String apiUrl,
         @Value("${internal.api.key}") final String apiKey) {
         this.restTemplate = restTemplate;
         this.apiUrl = apiUrl;
         this.apiKey = apiKey;
-        this.whoisProxyUrl = whoisProxyUrl;
+        this.whoisInternalProxy = whoisInternalProxy;
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
@@ -51,7 +51,7 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
     }
 
     private URI withURI(final HttpServletRequest request) {
-        return whoisProxyUrl.composeProxyUrl(
+        return whoisInternalProxy.composeProxyUrl(
             request.getRequestURI(),
             request.getQueryString(),
             "",

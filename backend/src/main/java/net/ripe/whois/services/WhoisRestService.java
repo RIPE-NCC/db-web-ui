@@ -24,23 +24,23 @@ public class WhoisRestService implements ExchangeErrorHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisRestService.class);
 
     private final RestTemplate restTemplate;
-    private final WhoisProxyUrl whoisProxyUrl;
+    private final WhoisProxy whoisProxy;
     private final String apiUrl;
 
 
     @Autowired
     public WhoisRestService(
             final RestTemplate restTemplate,
-            final WhoisProxyUrl whoisProxyUrl,
+            final WhoisProxy whoisProxy,
             @Value("${rest.api.ripeUrl}") final String apiUrl) {
 
         this.restTemplate = restTemplate;
-        this.whoisProxyUrl = whoisProxyUrl;
+        this.whoisProxy = whoisProxy;
         this.apiUrl = apiUrl;
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) throws URISyntaxException {
-        final URI uri = whoisProxyUrl.composeProxyUrl(request.getRequestURI(),
+        final URI uri = whoisProxy.composeProxyUrl(request.getRequestURI(),
             request.getQueryString(),"/api/rest", apiUrl);
 
         // Do not accept compressed response, as it's not handled properly (by whois)

@@ -37,16 +37,16 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisService.class);
 
     private final RestTemplate restTemplate;
-    private final WhoisProxyUrl whoisProxyUrl;
+    private final WhoisProxy whoisProxy;
     private final String apiUrl;
 
     @Autowired
     public WhoisService(
             final RestTemplate restTemplate,
-            final WhoisProxyUrl whoisProxyUrl,
+            final WhoisProxy whoisProxy,
             @Value("${rest.api.ripeUrl}") final String apiUrl) {
         this.restTemplate = restTemplate;
-        this.whoisProxyUrl = whoisProxyUrl;
+        this.whoisProxy = whoisProxy;
         this.apiUrl = apiUrl;
     }
 
@@ -151,7 +151,7 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
     }
 
     private URI composeWhoisUrl(final HttpServletRequest request) {
-        return whoisProxyUrl.composeProxyUrl(request.getRequestURI(),
+        return whoisProxy.composeProxyUrl(request.getRequestURI(),
             request.getQueryString(),
             "/api/whois",
             apiUrl);

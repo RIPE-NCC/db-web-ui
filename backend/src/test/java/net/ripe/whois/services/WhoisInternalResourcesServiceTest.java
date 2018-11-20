@@ -29,7 +29,7 @@ public class WhoisInternalResourcesServiceTest {
     private HttpServletRequest request;
     private HttpHeaders httpHeaders;
     private RestTemplate restTemplate;
-    private WhoisProxyUrl whoisProxyUrl;
+    private WhoisInternalProxy whoisInternalProxy;
     private WhoisInternalResourcesService subject;
     private MockRestServiceServer mockServer;
 
@@ -39,8 +39,8 @@ public class WhoisInternalResourcesServiceTest {
         httpHeaders = new HttpHeaders();
         restTemplate = new RestTemplate();
         mockServer = MockRestServiceServer.createServer(restTemplate);
-        whoisProxyUrl = new WhoisProxyUrl(CONTEXT_PATH);
-        subject = new WhoisInternalResourcesService(restTemplate, whoisProxyUrl, API_URL, API_KEY);
+        whoisInternalProxy = new WhoisInternalProxy(CONTEXT_PATH);
+        subject = new WhoisInternalResourcesService(restTemplate, whoisInternalProxy, API_URL, API_KEY);
     }
 
     @Test
