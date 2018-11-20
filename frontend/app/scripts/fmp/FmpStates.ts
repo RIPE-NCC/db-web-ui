@@ -5,32 +5,32 @@ angular.module("fmp").config(["$stateProvider",
         $stateProvider
             .state("fmp", {
                 abstract: true,
-                url: "/fmp",
                 template: "<div ui-view></div>",
+                url: "/fmp",
             })
             .state("fmp.requireLogin", {
-                url: "/requireLogin?mntnerKey&voluntary",
                 template: "<require-login></require-login>",
+                url: "/requireLogin?mntnerKey&voluntary",
             })
             .state("fmp.find", {
-                url: "/",
                 template: "<find-maintainer></find-maintainer>",
+                url: "/",
             })
             .state("fmp.mailSent", {
-                url: "/mailSent/:email",
                 template: "<mail-sent></mail-sent>",
+                url: "/mailSent/:email",
             })
             .state("fmp.ssoAdded", {
-                url: "/ssoAdded/:mntnerKey/:user",
                 template: "<sso-added></sso-added>",
+                url: "/ssoAdded/:mntnerKey/:user",
             })
             .state("fmp.confirm", {
-                component: "ConfirmMaintainer",
+                template: "<confirm-maintainer></confirm-maintainer>",
                 url: "/confirm?hash",
             })
             .state("fmp.forgotMaintainerPassword", {
-                url: "/change-auth?mntnerKey&voluntary",
                 template: "<fmp></fmp>",
+                url: "/change-auth?mntnerKey&voluntary",
             });
 
     }]);
