@@ -11,8 +11,6 @@ describe('dbWebApp: SyncupdatesService', function () {
     beforeEach(inject(function (_$httpBackend_, _SyncupdatesService_) {
         $http = _$httpBackend_;
         service = _SyncupdatesService_;
-        $http.whenGET(/.*.html/).respond(200);
-        $http.flush();
 
     }));
 

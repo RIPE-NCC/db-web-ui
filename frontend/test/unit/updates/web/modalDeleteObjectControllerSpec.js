@@ -6,20 +6,20 @@ var name = 'TEST-MNT';
 var source = 'RIPE';
 var ON_CANCEL = 'modify';
 
-describe('webUpdates: primitives of ModalDeleteObjectController', function () {
+describe('webUpdates: primitives of modalDeleteObject', function () {
 
-    var $scope, $state, logger, $httpBackend;
+    var $componentController, param, bindings, ctrl;
+    var $log, $state, logger, $httpBackend, restService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_) {
-            var $rootScope = _$rootScope_;
+        inject(function (_$componentController_, _$state_, _$log_, _$httpBackend_) {
             $state = _$state_;
-            $scope = $rootScope.$new();
+            $log = _$log_;
             $httpBackend = _$httpBackend_;
 
-            var restService = {
+            restService = {
                 getReferences: function () {
                     return {
                         then: function (s) {
@@ -40,13 +40,23 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
                 }
             };
 
-            _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state: $state, $log: logger, $uibModalInstance: {}, RestService: restService,
-                source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
-            });
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
+            $componentController = _$componentController_;
+            param = {
+                $state: $state,
+                $log: $log,
+                RestService: restService
+            };
+            bindings = {
+                close: jasmine.createSpy('modalInstance.close'),
+                dismiss: jasmine.createSpy('modalInstance.dismiss'),
+                resolve: {
+                    name: 'TEST-MNT',
+                    objectType: 'mntner',
+                    onCancel: ON_CANCEL,
+                    source: 'RIPE'
+                }
+            };
 
         });
     });
@@ -57,94 +67,120 @@ describe('webUpdates: primitives of ModalDeleteObjectController', function () {
     });
 
     it('should compare objects', function () {
-        var ref = {objectType: 'mntner', 'primaryKey': 'TEST-MNT'};
-        expect($scope.isEqualTo('mntner', 'TEST-MNT', ref)).toEqual(true);
-        expect($scope.isEqualTo('person', 'TEST-MNT', ref)).toEqual(false);
-        expect($scope.isEqualTo('mntner', 'TEST2-MNT', ref)).toEqual(false);
+        var ref = {objectType: 'mntner', primaryKey: 'TEST-MNT'};
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+        expect(ctrl.isEqualTo('mntner', 'TEST-MNT', ref)).toEqual(true);
+        expect(ctrl.isEqualTo('person', 'TEST-MNT', ref)).toEqual(false);
+        expect(ctrl.isEqualTo('mntner', 'TEST2-MNT', ref)).toEqual(false);
     });
 
     it('should compare objects with composite primary keys', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         var ref = {objectType: 'route', primaryKey: '193.0.0.0/21AS3333'};
-        expect($scope.isEqualTo('route', '193.0.0.0/21AS3333', ref)).toEqual(true);
-        expect($scope.isEqualTo('person', '193.0.0.0/21AS3333', ref)).toEqual(false);
-        expect($scope.isEqualTo('route', 'xyz', ref)).toEqual(false);
+        expect(ctrl.isEqualTo('route', '193.0.0.0/21AS3333', ref)).toEqual(true);
+        expect(ctrl.isEqualTo('person', '193.0.0.0/21AS3333', ref)).toEqual(false);
+        expect(ctrl.isEqualTo('route', 'xyz', ref)).toEqual(false);
     });
 
     it('should be able to compose display url for object', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         var ref = {objectType: 'mntner', primaryKey: 'TEST-MNT'};
-        expect($scope.displayUrl(ref)).toEqual('#/webupdates/display/RIPE/mntner/TEST-MNT');
+        expect(ctrl.displayUrl(ref)).toEqual('#/webupdates/display/RIPE/mntner/TEST-MNT');
     });
 
     it('should be able to compose display url for object with slash', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         var ref = {objectType: 'route', primaryKey: '193.0.0.0/21AS3333'};
-        expect($scope.displayUrl(ref)).toEqual('#/webupdates/display/RIPE/route/193.0.0.0%252F21AS3333');
+        expect(ctrl.displayUrl(ref)).toEqual('#/webupdates/display/RIPE/route/193.0.0.0%252F21AS3333');
     });
 
     it('should allow deletion of unreferenced object: undefined refs', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         logger.notice('should allow deletion of unreferenced object: undefined refs');
         var refs = {objectType: 'mntner', primaryKey: 'TEST-MNT'};
-        expect($scope.isDeletable(refs)).toBe(true);
+        expect(ctrl.isDeletable(refs)).toBe(true);
     });
 
     it('should allow deletion of unreferenced object: empty refs', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         logger.notice('should allow deletion of unreferenced object: empty refs');
         var refs = {objectType: 'route', primaryKey: '193.0.0.0/21AS3333', incoming: [], outgoing: []};
-        expect($scope.isDeletable(refs)).toBe(true);
+        expect(ctrl.isDeletable(refs)).toBe(true);
     });
 
     it('should allow deletion of self-referenced object', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         logger.notice('should allow deletion of self-referenced object');
         var refs = {
             objectType: 'mntner', primaryKey: 'TEST-MNT',
             incoming: [{objectType: 'mntner', primaryKey: 'TEST-MNT'}], outgoing: []
         };
-        expect($scope.isDeletable(refs)).toBe(true);
+        expect(ctrl.isDeletable(refs)).toBe(true);
     });
 
     it('should allow deletion of simple mntner-person pair', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         logger.notice('should allow deletion of simple mntner-person pair');
-        expect($scope.isDeletable(REFS_FOR_TEST_MNT)).toBe(true);
+        expect(ctrl.isDeletable(REFS_FOR_TEST_MNT)).toBe(true);
     });
 
     it('should allow deletion of simple person-mntner pair', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         logger.notice('should allow deletion of simple person-mntner pair');
-        expect($scope.isDeletable(REFS_FOR_TEST_PERSON)).toBe(true);
+        expect(ctrl.isDeletable(REFS_FOR_TEST_PERSON)).toBe(true);
     });
 
     it('should not allow deletion of object with other incoming refs', function () {
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
         logger.notice('should not allow deletion of object with other incoming refs');
-        expect($scope.isDeletable(REFS_FOR_UNDELETEABLE_OBJECTS)).toBe(false);
+        expect(ctrl.isDeletable(REFS_FOR_UNDELETEABLE_OBJECTS)).toBe(false);
     });
 
     it('should detect that object has no () incoming refs', function () {
-        expect($scope.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', [])).toBe(false);
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+        expect(ctrl.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', [])).toBe(false);
     });
 
     it('should detect that object has no () incoming refs', function () {
-        expect($scope.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', [{objectType: 'mntner', primaryKey: 'TEST-MNT'}])).toBe(false);
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+        expect(ctrl.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', [{objectType: 'mntner', primaryKey: 'TEST-MNT'}])).toBe(false);
     });
 
     it('should detect that object has incoming refs', function () {
-        expect($scope.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', REFS_FOR_TEST_MNT.incoming)).toBe(true);
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+        expect(ctrl.hasNonSelfIncomingRefs('mntner', 'TEST-MNT', REFS_FOR_TEST_MNT.incoming)).toBe(true);
     });
-
 });
 
 
-describe('webUpdates: ModalDeleteObjectController undeletable object', function () {
+describe('webUpdates: ModalDeleteObjectComponent undeletable object', function () {
 
-    var $scope, $state, $httpBackend, modalInstance, RestService, CredentialsService, logger;
+    var $componentController, param, bindings, ctrl;
+    var $log, $state, $httpBackend, restService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _CredentialsService_) {
+        inject(function (_$componentController_, _$state_, _$log_, _$httpBackend_) {
 
             $state = _$state_;
-            CredentialsService = _CredentialsService_;
+            $log = _$log_;
             $httpBackend = _$httpBackend_;
 
-            RestService = {
+            restService = {
                 deleteObject: function () {
                     return {
                         then: function (s) {
@@ -161,29 +197,26 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
                 }
             };
 
-            spyOn(RestService, 'getReferences').and.callThrough();
+            spyOn(restService, 'getReferences').and.callThrough();
 
-            $scope = _$rootScope_.$new();
-
-            modalInstance = {
-                close: jasmine.createSpy('modalInstance.close'),
-                dismiss: jasmine.createSpy('modalInstance.dismiss')
+            $componentController = _$componentController_;
+            param = {
+                $state: $state,
+                $log: $log,
+                RestService: restService
             };
-            logger = {
-                debug: function () {
-                    //console.log(msg);
-                },
-                info: function () {
-                    //console.log(msg);
+            bindings = {
+                close: jasmine.createSpy('modalInstance.close'),
+                dismiss: jasmine.createSpy('modalInstance.dismiss'),
+                resolve: {
+                    source: 'RIPE',
+                    objectType: 'mntner',
+                    name: 'TEST-MNT',
+                    onCancel: ON_CANCEL
                 }
             };
-            _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state: $state, $log: logger, $uibModalInstance: modalInstance, RestService: RestService, CredentialsService: CredentialsService,
-                source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
-            });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
 
         });
     });
@@ -194,67 +227,78 @@ describe('webUpdates: ModalDeleteObjectController undeletable object', function 
     });
 
     it('should query for last object revision references', function () {
-        expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name, $scope.MAX_REFS_TO_SHOW);
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+        expect(restService.getReferences).toHaveBeenCalledWith(bindings.resolve.source, bindings.resolve.objectType, bindings.resolve.name, ctrl.MAX_REFS_TO_SHOW);
     });
 
     it('should select referencesInfo if any', function () {
-        expect($scope.incomingReferences.length).toEqual(1);
-        expect($scope.incomingReferences[0].objectType).toEqual('person');
-        expect($scope.incomingReferences[0].primaryKey).toEqual('ME-RIPE');
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+        expect(ctrl.incomingReferences.length).toEqual(1);
+        expect(ctrl.incomingReferences[0].objectType).toEqual('person');
+        expect(ctrl.incomingReferences[0].primaryKey).toEqual('ME-RIPE');
     });
 
     it('should decide that object cannot be deleted ', function () {
-        expect($scope.canBeDeleted).toBe(false);
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+        expect(ctrl.canBeDeleted).toBe(false);
     });
 
     it('should not call delete endpoint', function () {
-        $scope.reason = 'some reason';
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
 
-        spyOn(RestService, 'deleteObject').and.callThrough();
+        ctrl.reason = 'some reason';
 
-        $scope.doDelete();
+        spyOn(restService, 'deleteObject').and.callThrough();
 
-        expect(RestService.deleteObject).not.toHaveBeenCalled();
+        ctrl.delete();
+
+        expect(restService.deleteObject).not.toHaveBeenCalled();
     });
 
     it('should close the modal and return to modify when canceled', function () {
 
-        $scope.onCancel = 'webupdates.modify';
-        $scope.doCancel();
-        expect(modalInstance.close).toHaveBeenCalled();
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+
+        ctrl.resolve.onCancel = 'webupdates.modify';
+        ctrl.cancel();
+        expect(ctrl.close).toHaveBeenCalled();
 
         $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.modify');
     });
 
     it('should close the modal and return to force delete when canceled', function () {
 
-        $scope.onCancel = 'webupdates.forceDelete';
-        $scope.doCancel();
-        expect(modalInstance.close).toHaveBeenCalled();
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
 
-        $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.forceDelete');
+        ctrl.resolve.onCancel = 'webupdates.forceDelete';
+        ctrl.cancel();
+        expect(ctrl.close).toHaveBeenCalled();
     });
 
 });
 
 
-describe('webUpdates: ModalDeleteObjectController deleteable object ', function () {
+describe('webUpdates: ModalDeleteObjectComponent deleteable object ', function () {
 
-    var $scope, $state, $httpBackend, modalInstance, RestService, CredentialsService;
+    var $componentController, param, bindings, ctrl;
+    var $log, $state, $httpBackend, restService, credentialsService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _$log_, _CredentialsService_) {
+        inject(function (_$componentController_, _$state_, _$log_, _$httpBackend_, _CredentialsService_) {
 
             $state = _$state_;
-            CredentialsService = _CredentialsService_;
+            $log = _$log_;
             $httpBackend = _$httpBackend_;
-            RestService = {
+            credentialsService = _CredentialsService_;
+            restService = {
                 deleteObject: function () {
                     return {
                         then: function (s) {
@@ -273,34 +317,27 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
                 }
             };
 
-            spyOn(RestService, 'getReferences').and.callThrough();
+            spyOn(restService, 'getReferences').and.callThrough();
 
-            $scope = _$rootScope_.$new();
-
-            modalInstance = {
-                close: jasmine.createSpy('modalInstance.close'),
-                dismiss: jasmine.createSpy('modalInstance.dismiss')
+            $componentController = _$componentController_;
+            param = {
+                $state: $state,
+                $log: $log,
+                RestService: restService,
+                credentialsService: credentialsService
             };
-
-            var logger = {
-                debug: function () {
-                    //console.log('debug:'+msg);
-                },
-                info: function () {
-                    //console.log('info:'+msg);
-                },
-                error: function () {
-                    //console.log('error:'+ msg);
+            bindings = {
+                close: jasmine.createSpy('modalInstance.close'),
+                dismiss: jasmine.createSpy('modalInstance.dismiss'),
+                resolve: {
+                    source: 'RIPE',
+                    objectType: 'mntner',
+                    name: 'TEST-MNT',
+                    onCancel: ON_CANCEL
                 }
             };
 
-            _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state: $state, $log: logger, $uibModalInstance: modalInstance, RestService: RestService, CredentialService: CredentialsService,
-                source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
-            });
-
             $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
 
         });
     });
@@ -311,86 +348,106 @@ describe('webUpdates: ModalDeleteObjectController deleteable object ', function 
     });
 
     it('should query for last object revision references', function () {
-        expect(RestService.getReferences).toHaveBeenCalledWith(source, objectType, name, $scope.MAX_REFS_TO_SHOW);
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+
+        expect(restService.getReferences).toHaveBeenCalledWith(source, objectType, name, ctrl.MAX_REFS_TO_SHOW);
     });
 
     it('should select referencesInfo if any', function () {
-        expect($scope.incomingReferences.length).toEqual(2);
-        expect($scope.incomingReferences[0].objectType).toEqual('mntner');
-        expect($scope.incomingReferences[0].primaryKey).toEqual('TEST-MNT');
-        expect($scope.incomingReferences[1].objectType).toEqual('person');
-        expect($scope.incomingReferences[1].primaryKey).toEqual('ME-RIPE');
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+
+        expect(ctrl.incomingReferences.length).toEqual(2);
+        expect(ctrl.incomingReferences[0].objectType).toEqual('mntner');
+        expect(ctrl.incomingReferences[0].primaryKey).toEqual('TEST-MNT');
+        expect(ctrl.incomingReferences[1].objectType).toEqual('person');
+        expect(ctrl.incomingReferences[1].primaryKey).toEqual('ME-RIPE');
     });
 
     it('should decide that object can be deleted ', function () {
-        expect($scope.canBeDeleted).toBe(true);
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+
+        expect(ctrl.canBeDeleted).toBe(true);
     });
 
     it('should call delete endpoint without password and close modal', function () {
-        $scope.reason = 'some reason';
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
 
-        spyOn(RestService, 'deleteObject').and.callThrough();
+        ctrl.reason = 'some reason';
 
-        $scope.doDelete();
+        spyOn(restService, 'deleteObject').and.callThrough();
 
-        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, true, undefined);
-        expect(modalInstance.close).toHaveBeenCalled();
+        ctrl.delete();
 
+        expect(restService.deleteObject).toHaveBeenCalledWith(source, objectType, name, ctrl.reason, true, undefined);
+        expect(ctrl.close).toHaveBeenCalled();
     });
 
     it('should call delete endpoint with password and close modal', function () {
-        $scope.reason = 'some reason';
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
 
-        spyOn(RestService, 'deleteObject').and.callThrough();
-        CredentialsService.setCredentials('TEST-MNT', 'secret');
+        ctrl.reason = 'some reason';
 
-        $scope.doDelete();
+        spyOn(restService, 'deleteObject').and.callThrough();
+        credentialsService.setCredentials('TEST-MNT', 'secret');
 
-        expect(RestService.deleteObject).toHaveBeenCalledWith(source, objectType, name, $scope.reason, true, 'secret');
-        expect(modalInstance.close).toHaveBeenCalled();
+        ctrl.delete();
+
+        expect(restService.deleteObject).toHaveBeenCalledWith(source, objectType, name, ctrl.reason, true, 'secret');
+        expect(ctrl.close).toHaveBeenCalled();
     });
 
     it('should dismiss modal after error deleting object', function () {
-        spyOn(RestService, 'deleteObject').and.returnValue({
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+
+        spyOn(restService, 'deleteObject').and.returnValue({
             then: function (s, f) {
                 f({data: 'error'});
             }
         });
 
-        $scope.doDelete();
+        ctrl.delete();
 
-        expect(modalInstance.dismiss).toHaveBeenCalledWith({data: 'error'});
+        expect(ctrl.dismiss).toHaveBeenCalledWith({data: 'error'});
     });
 
     it('should redirect to success delete page after delete object', function () {
-        spyOn(RestService, 'deleteObject').and.returnValue({
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+
+        spyOn(restService, 'deleteObject').and.returnValue({
             then: function (s) {
                 s({data: 'error'});
             }
         });
 
-        $scope.doDelete();
+        ctrl.delete();
 
-        expect(modalInstance.close).toHaveBeenCalled();
+        expect(ctrl.close).toHaveBeenCalled();
     });
-
-
 });
 
 
-describe('webUpdates: ModalDeleteObjectController loading references failures ', function () {
+describe('webUpdates: ModalDeleteObjectComponent loading references failures ', function () {
 
-    var $scope, $state, $httpBackend, modalInstance, RestService, CredentialsService;
+    var $componentController, param, bindings, ctrl;
+    var $log, $state, $httpBackend, restService;
+
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$httpBackend_, _CredentialsService_) {
+        inject(function (_$componentController_, _$state_, _$log_, _$httpBackend_) {
 
             $state = _$state_;
-            CredentialsService = _CredentialsService_;
+            $log = _$log_;
             $httpBackend = _$httpBackend_;
-            RestService = {
+            restService = {
                 getReferences: function () {
                     return {
                         then: function (s, f) {
@@ -400,25 +457,26 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
                 }
             };
 
-            spyOn(RestService, 'getReferences').and.callThrough();
+            spyOn(restService, 'getReferences').and.callThrough();
 
-            $scope = _$rootScope_.$new();
-
-            modalInstance = {
-                dismiss: jasmine.createSpy('modalInstance.dismiss')
+            $componentController = _$componentController_;
+            param = {
+                $state: $state,
+                $log: $log,
+                RestService: restService
+            };
+            bindings = {
+                close: jasmine.createSpy('modalInstance.close'),
+                dismiss: jasmine.createSpy('modalInstance.dismiss'),
+                resolve: {
+                    source: 'RIPE',
+                    objectType: 'MNT',
+                    name: 'TEST-MNT',
+                    onCancel: ON_CANCEL
+                }
             };
 
-            $scope.objectType = 'MNT';
-            $scope.name = 'TEST-MNT';
-            $scope.source = 'RIPE';
-
-            _$controller_('ModalDeleteObjectController', {
-                $scope: $scope, $state: $state, $uibModalInstance: modalInstance, RestService: RestService, CredentialsService: CredentialsService,
-                source: source, objectType: objectType, name: name, onCancel: ON_CANCEL
-            });
-
             $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
 
         });
     });
@@ -429,7 +487,10 @@ describe('webUpdates: ModalDeleteObjectController loading references failures ',
     });
 
     it('should dismiss modal after error getting object references', function () {
-        expect(modalInstance.dismiss).toHaveBeenCalledWith('error');
+        ctrl = $componentController('modalDeleteObject', param, bindings);
+        ctrl.$onInit();
+
+        expect(ctrl.dismiss).toHaveBeenCalledWith('error');
     });
 
 });

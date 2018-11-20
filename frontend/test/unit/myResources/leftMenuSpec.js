@@ -1,14 +1,13 @@
 /*global beforeEach,describe,expect,inject,it, spyOn*/
 'use strict';
 
-describe('LeftMenuController', function () {
+describe('LeftMenuComponent', function () {
 
-    var controller;
+    var $componentController;
     var rootScope;
     var scope;
     var returnCode = '123';
     var $location;
-    var EnvironmentStatus;
     var orgDropDownStateService = {
         getSelectedOrg: function () {
             return {
@@ -19,17 +18,19 @@ describe('LeftMenuController', function () {
 
     beforeEach(module('dbWebApp'));
 
-    beforeEach(inject(function (_$rootScope_, $controller, _$location_, _EnvironmentStatus_) {
+    beforeEach(inject(function (_$rootScope_, _$componentController_, _$location_, _EnvironmentStatus_, _$window_) {
         rootScope = _$rootScope_;
         scope = _$rootScope_.$new();
         $location = _$location_;
-        controller = $controller('LeftMenuController', {
+        _$window_.init_portlet_menu = function(){};
+        $componentController = _$componentController_('leftMenu', {
             $log: null,
             $rootScope: _$rootScope_,
             $scope: scope,
             EnvironmentStatus: _EnvironmentStatus_,
+            $window: _$window_,
         });
-        controller.orgDropDownStateService = orgDropDownStateService;
+        $componentController.orgDropDownStateService = orgDropDownStateService;
     }));
 
     it('should show all menu items for a user with all roles', function () {
@@ -43,14 +44,14 @@ describe('LeftMenuController', function () {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(controller.show.admin).toBe(true);
-        expect(controller.show.general).toBe(true);
-        expect(controller.show.generalMeeting).toBe(true);
-        expect(controller.show.ticketing).toBe(true);
-        expect(controller.show.certification).toBe(true);
-        expect(controller.show.billing).toBe(true);
-        expect(controller.show.testRcEnv).toBe(false);
-        expect(controller.show.trainingEnv).toBe(false);
+        expect($componentController.show.admin).toBe(true);
+        expect($componentController.show.general).toBe(true);
+        expect($componentController.show.generalMeeting).toBe(true);
+        expect($componentController.show.ticketing).toBe(true);
+        expect($componentController.show.certification).toBe(true);
+        expect($componentController.show.billing).toBe(true);
+        expect($componentController.show.testRcEnv).toBe(false);
+        expect($componentController.show.trainingEnv).toBe(false);
     });
 
     it('should show just Resource/My Resources and RIPE Database for Training environment', function () {
@@ -64,8 +65,8 @@ describe('LeftMenuController', function () {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(controller.show.testRcEnv).toBe(false);
-        expect(controller.show.trainingEnv).toBe(true);
+        expect($componentController.show.testRcEnv).toBe(false);
+        expect($componentController.show.trainingEnv).toBe(true);
     });
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', function () {
@@ -79,8 +80,8 @@ describe('LeftMenuController', function () {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(controller.show.testRcEnv).toBe(true);
-        expect(controller.show.trainingEnv).toBe(false);
+        expect($componentController.show.testRcEnv).toBe(true);
+        expect($componentController.show.trainingEnv).toBe(false);
     });
 
     it('should show just Resource/My Resources and RIPE Database for Production Test environment', function () {
@@ -94,25 +95,25 @@ describe('LeftMenuController', function () {
                 "roles": ["admin", "general", "generalMeeting", "resources", "certification", "ticketing", "billing", "LIR"]
             }
         );
-        expect(controller.show.testRcEnv).toBe(true);
-        expect(controller.show.trainingEnv).toBe(false);
+        expect($componentController.show.testRcEnv).toBe(true);
+        expect($componentController.show.trainingEnv).toBe(false);
     });
 
     it('should not set anything if user has no roles', function () {
         rootScope.$broadcast('selected-org-changed', null);
-        expect(controller.show.admin).toBe(false);
-        expect(controller.show.general).toBe(false);
-        expect(controller.show.generalMeeting).toBe(false);
-        expect(controller.show.ticketing).toBe(false);
-        expect(controller.show.certification).toBe(false);
-        expect(controller.show.billing).toBe(false);
+        expect($componentController.show.admin).toBe(false);
+        expect($componentController.show.general).toBe(false);
+        expect($componentController.show.generalMeeting).toBe(false);
+        expect($componentController.show.ticketing).toBe(false);
+        expect($componentController.show.certification).toBe(false);
+        expect($componentController.show.billing).toBe(false);
         rootScope.$broadcast('selected-org-changed', {"roles": [] });
-        expect(controller.show.admin).toBe(false);
-        expect(controller.show.general).toBe(false);
-        expect(controller.show.generalMeeting).toBe(false);
-        expect(controller.show.ticketing).toBe(false);
-        expect(controller.show.certification).toBe(false);
-        expect(controller.show.billing).toBe(false);
+        expect($componentController.show.admin).toBe(false);
+        expect($componentController.show.general).toBe(false);
+        expect($componentController.show.generalMeeting).toBe(false);
+        expect($componentController.show.ticketing).toBe(false);
+        expect($componentController.show.certification).toBe(false);
+        expect($componentController.show.billing).toBe(false);
     });
 
     it('should set menu for end user role', function () {
@@ -123,23 +124,23 @@ describe('LeftMenuController', function () {
                 "roles": ["certification", "NON-MEMBER"]
             }
         );
-        expect(controller.show.admin).toBe(false);
-        expect(controller.show.general).toBe(false);
-        expect(controller.show.generalMeeting).toBe(false);
-        expect(controller.show.ticketing).toBe(false);
-        expect(controller.show.certification).toBe(true);
-        expect(controller.show.billing).toBe(false);
+        expect($componentController.show.admin).toBe(false);
+        expect($componentController.show.general).toBe(false);
+        expect($componentController.show.generalMeeting).toBe(false);
+        expect($componentController.show.ticketing).toBe(false);
+        expect($componentController.show.certification).toBe(true);
+        expect($componentController.show.billing).toBe(false);
     });
 
     it('should set menu for user role without lir or organisation', function () {
         rootScope.$broadcast('selected-org-changed',
             {}
         );
-        expect(controller.show.admin).toBe(false);
-        expect(controller.show.general).toBe(false);
-        expect(controller.show.generalMeeting).toBe(false);
-        expect(controller.show.ticketing).toBe(false);
-        expect(controller.show.certification).toBe(false);
-        expect(controller.show.billing).toBe(false);
+        expect($componentController.show.admin).toBe(false);
+        expect($componentController.show.general).toBe(false);
+        expect($componentController.show.generalMeeting).toBe(false);
+        expect($componentController.show.ticketing).toBe(false);
+        expect($componentController.show.certification).toBe(false);
+        expect($componentController.show.billing).toBe(false);
     });
 });

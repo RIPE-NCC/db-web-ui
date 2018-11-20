@@ -1,0 +1,34 @@
+<div class="alert alert-success">
+    <p>{{$ctrl.objects.length}} object(s) have been successfully created</p>
+</div>
+
+<alerts></alerts>
+
+<section class="inner-container">
+
+    <table class="success-fields grey" ng-repeat="object in $ctrl.objects | limitTo: 4">
+        <tr ng-repeat="attribute in object.attributes.attribute">
+            <td class="col-sm-3">
+                <label>{{attribute.name}}:</label>
+            </td>
+            <td class="col-sm-9">
+                <p>{{attribute.value}}</p>
+                <div ng-show="attribute.$$error" class="modify-feedback">
+                    <span>{{attribute.$$error}}</span>
+                    <i class="fa fa-info-circle"></i>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <p ng-if="$ctrl.objects.length > 4">
+        <a target="_blank" href="/search/query.html?searchtext=%20-M%20-rd%20-T%20domain%20{{$ctrl.prefix}}&bflag=true&source={{$ctrl.source}}">
+            and {{$ctrl.objects.length - 4}} more...
+        </a>
+    </p>
+
+    <button ng-click="$ctrl.navigateToSelect()" class="blue-button pull-right ga-createobj-modifyobj">
+        Back to Create Object
+    </button>
+
+</section>

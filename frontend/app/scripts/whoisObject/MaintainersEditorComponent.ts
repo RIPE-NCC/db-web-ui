@@ -7,8 +7,8 @@ class MaintainersEditorController {
         "MessageStore",
         "MntnerService",
         "RestService",
-        "WebUpdatesCommons",
-        "jsUtilService"];
+        "WebUpdatesCommonsService",
+        "JsUtilService"];
 
     // Input
     public ngModel: IWhoisObjectModel;
@@ -21,38 +21,28 @@ class MaintainersEditorController {
     public objectName: string;
 
     // Underlying mntner model
-    public mntners: {
-        sso: IMntByModel[],
-        object: IMntByModel[];
-        alternatives: IMntByModel[];
-        objectOriginal: IMntByModel[];
-    };
+    public mntners: IMaintainers;
 
     // Interface control
     public restCallInProgress = false;
+
     public message: {
         text: string;
         type: string;
     };
     public isMntHelpShown = false;
 
-    // hot-wire the MntnerService functions
-    public hasMd5 = this.MntnerService.hasMd5;
-    public hasPgp = this.MntnerService.hasPgp;
-    public hasSSo = this.MntnerService.hasSSo;
-    public isRemovable = this.MntnerService.isRemovable;
-
     private source: string;
 
     constructor(private $log: angular.ILogService,
-                private AlertService: any,
-                private AttributeMetadataService: any,
-                private CredentialsService: any,
-                private MessageStore: any,
-                private MntnerService: any,
-                private RestService: any,
-                private WebUpdatesCommons: any,
-                private jsUtils: any) {
+                private AlertService: AlertService,
+                private AttributeMetadataService: AttributeMetadataService,
+                private CredentialsService: CredentialsService,
+                private MessageStore: MessageStore,
+                private MntnerService: MntnerService,
+                private RestService: RestService,
+                private WebUpdatesCommonsService: WebUpdatesCommonsService,
+                private jsUtils: JsUtilService) {
 
         this.source = this.ngModel.source.id;
         this.attributes = this.ngModel.attributes.attribute;
@@ -137,6 +127,12 @@ class MaintainersEditorController {
         );
     }
 
+    // hot-wire the MntnerService functions
+    public hasMd5 = (mntner: IMntByModel) => this.MntnerService.hasMd5(mntner);
+    public hasPgp = (mntner: IMntByModel) => this.MntnerService.hasPgp(mntner);
+    public hasSSo = (mntner: IMntByModel) => this.MntnerService.hasSSo(mntner);
+    public isRemovable = (mntnerKey: string) => this.MntnerService.isRemovable(mntnerKey);
+
     private isAllocation() {
         const allocationStatuses = ["ALLOCATED PA", "ALLOCATED PI", "ALLOCATED UNSPECIFIED", "ALLOCATED-BY-RIR"];
         for (const attr of this.attributes) {
@@ -148,7 +144,7 @@ class MaintainersEditorController {
     }
 
     private performAuthentication(): void {
-        const authParams = {
+        const authParams: IAuthParams = {
             failureClbk: () => this.navigateAway(),
             isLirObject: this.isLirObject(),
             maintainers: this.mntners,
@@ -160,7 +156,7 @@ class MaintainersEditorController {
             operation: this.isModifyMode() ? "Modify" : "Create",
             successClbk: () => this.onSuccessfulAuthentication(),
         };
-        this.WebUpdatesCommons.performAuthentication(authParams);
+        this.WebUpdatesCommonsService.performAuthentication(authParams);
     }
 
     private navigateAway(): void {
@@ -308,7 +304,7 @@ class MaintainersEditorController {
         });
 
         // determine if mntner is mine
-        const selected: IMntByModel[] = mntnersInObject.map((mntnerAttr: {value: string}) => {
+        const selected: IMntByModel[] = mntnersInObject.map((mntnerAttr: IAttributeModel) => {
             let isMine = false;
             for (const mnt of this.mntners.sso) {
                 if (mnt.key === mntnerAttr.value) {

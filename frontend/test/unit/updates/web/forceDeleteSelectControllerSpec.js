@@ -1,17 +1,14 @@
 'use strict';
 
-describe('webUpdates: ForceDeleteSelectController', function () {
-    var forceDeleteSelectController;
+describe('webUpdates: ForceDeleteSelectComponent', function () {
+    var forceDeleteSelectController, $ctrl;
 
-    var $scope, $rootScope, $state, $stateParams, $window, $httpBackend;
+    var $state, $stateParams, $window, $httpBackend;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$window_, _$httpBackend_) {
-
-            $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$window_, _$httpBackend_) {
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
@@ -19,14 +16,12 @@ describe('webUpdates: ForceDeleteSelectController', function () {
             $window = _$window_;
 
             forceDeleteSelectController = function() {
-                _$controller_('ForceDeleteSelectController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams
+                return _$componentController_('forceDeleteSelect', {
+                    $state: $state, $stateParams: $stateParams
                 });
             };
 
             $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
-
         });
     });
 
@@ -36,22 +31,22 @@ describe('webUpdates: ForceDeleteSelectController', function () {
     });
 
     it('should navigate to force delete screen', function () {
-        forceDeleteSelectController();
+        $ctrl = forceDeleteSelectController();
 
-        $scope.selected = {
+        $ctrl.selected = {
             source: 'RIPE',
             objectType: 'inetnum',
             name: '127.0.0.1 - 127.0.0.10'
         };
 
-        $scope.navigateToForceDelete();
+        $ctrl.navigateToForceDelete().then(function() {
+            expect($state.current.name).toBe('webupdates.forceDelete');
+            expect($stateParams.source).toBe('RIPE');
+            expect($stateParams.objectType).toBe('inetnum');
+            expect($stateParams.name).toBe('127.0.0.1 - 127.0.0.10');
+        });
 
-        $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.forceDelete');
-        expect($stateParams.source).toBe('RIPE');
-        expect($stateParams.objectType).toBe('inetnum');
-        expect($stateParams.name).toBe('127.0.0.1%20-%20127.0.0.10');
+        // $httpBackend.flush();
     });
 
 });

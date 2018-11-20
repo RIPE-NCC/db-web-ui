@@ -865,5 +865,4 @@ describe('dbWebApp: WhoisResources', function () {
         expect($whoisResources.getAttributesForObjectOfType(resources, 'inetnum')).toEqual([]);
     });
 
-
 });

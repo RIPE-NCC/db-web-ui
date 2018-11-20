@@ -1,15 +1,15 @@
 /*global beforeEach, describe, expect, inject, it*/
 'use strict';
 
-describe('webUpdates: OrganisationHelper', function () {
+describe('webUpdates: OrganisationHelperService', function () {
 
-    var OrganisationHelper;
+    var OrganisationHelperService;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_OrganisationHelper_) {
-            OrganisationHelper = _OrganisationHelper_;
+        inject(function (_OrganisationHelperService_) {
+            OrganisationHelperService = _OrganisationHelperService_;
         });
     });
 
@@ -21,7 +21,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'name': 'e-mail',
             'value': 'a@b.c'
         }];
-        expect(OrganisationHelper.containsAbuseC(attributes)).toBe(false);
+        expect(OrganisationHelperService.containsAbuseC(attributes)).toBe(false);
     });
 
     it('should inform if abuse-c is available', function () {
@@ -35,7 +35,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'name' : 'abuse-c',
             'value' : 'some abuse-c'
         }];
-        expect(OrganisationHelper.containsAbuseC(attributes)).toBe(true);
+        expect(OrganisationHelperService.containsAbuseC(attributes)).toBe(true);
     });
 
     it('should inform if abuse-c is available but with empty value', function () {
@@ -48,7 +48,7 @@ describe('webUpdates: OrganisationHelper', function () {
         }, {
             'name' : 'abuse-c'
         }];
-        expect(OrganisationHelper.containsAbuseC(attributes)).toBe(false);
+        expect(OrganisationHelperService.containsAbuseC(attributes)).toBe(false);
     });
 
     it('should inform if abuse-c is available but with empty string', function () {
@@ -62,7 +62,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'name' : 'abuse-c',
             'value' : ' '
         }];
-        expect(OrganisationHelper.containsAbuseC(attributes)).toBe(false);
+        expect(OrganisationHelperService.containsAbuseC(attributes)).toBe(false);
     });
 
     it('should add abuse-c is object type is organisation', function () {
@@ -74,7 +74,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'value': 'a@b.c'
         }];
 
-        var attrs = OrganisationHelper.addAbuseC('organisation', attributes);
+        var attrs = OrganisationHelperService.addAbuseC('organisation', attributes);
         var abuseC = _.find(attrs, function(attr) {
             return attr.name === 'abuse-c';
         });
@@ -88,7 +88,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'value' : 'BLA-RIPE'
         }];
 
-        var attrs = OrganisationHelper.addAbuseC('something', attributes);
+        var attrs = OrganisationHelperService.addAbuseC('something', attributes);
         var abuseC = _.find(attrs, function(attr) {
             return attr.name === 'abuse-c';
         });
@@ -97,7 +97,7 @@ describe('webUpdates: OrganisationHelper', function () {
     });
 
     it('should be valid if it is not an organisation object', function () {
-        expect(OrganisationHelper.validateAbuseC('mntner', [])).toBe(true);
+        expect(OrganisationHelperService.validateAbuseC('mntner', [])).toBe(true);
     });
 
     it('should be valid if abuse-c is not present', function () {
@@ -109,7 +109,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'value': 'a@b.c'
         }];
 
-        expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(true);
+        expect(OrganisationHelperService.validateAbuseC('organisation', attributes)).toBe(true);
     });
 
     it('should be invalid if abuse-c is empty', function () {
@@ -123,7 +123,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'name': 'abuse-c'
         }];
 
-        expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(false);
+        expect(OrganisationHelperService.validateAbuseC('organisation', attributes)).toBe(false);
     });
 
     it('should be set message if abuse-c is empty', function () {
@@ -137,7 +137,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'name': 'abuse-c'
         }];
 
-        OrganisationHelper.validateAbuseC('organisation', attributes);
+        OrganisationHelperService.validateAbuseC('organisation', attributes);
         var abuseC = _.find(attributes, function(attr) {
             return attr.name === 'abuse-c';
         });
@@ -155,7 +155,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'value': 'a@b.c'
         }];
 
-        expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(true);
+        expect(OrganisationHelperService.validateAbuseC('organisation', attributes)).toBe(true);
     });
 
     it('should be valid if abuse-c is present', function () {
@@ -170,7 +170,7 @@ describe('webUpdates: OrganisationHelper', function () {
             'value' : 'some abuse-c'
         }];
 
-        expect(OrganisationHelper.validateAbuseC('organisation', attributes)).toBe(true);
+        expect(OrganisationHelperService.validateAbuseC('organisation', attributes)).toBe(true);
     });
 
 });

@@ -1,9 +1,9 @@
 /*global afterEach, beforeEach, describe, expect, inject, it, module*/
 'use strict';
 
-describe('webUpdates: DisplayController', function () {
+describe('webUpdates: DisplayComponent', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
+    var $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var OBJECT_TYPE = 'as-block';
@@ -12,14 +12,12 @@ describe('webUpdates: DisplayController', function () {
     var MNTNER = 'TEST-MNT';
     var objectToDisplay;
     var createDisplayController;
+    var $ctrl;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
-
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
@@ -52,14 +50,10 @@ describe('webUpdates: DisplayController', function () {
                 $stateParams.name = OBJECT_NAME;
 
 
-                _$controller_('DisplayController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams
+                $ctrl = _$componentController_('displayComponent', {
+                    $state: $state, $stateParams: $stateParams
                 });
             };
-
-            $httpBackend.whenGET(/.*.html/).respond(200);
-
-            $httpBackend.flush();
 
         });
     });
@@ -92,7 +86,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.objectSource).toBe(SOURCE);
+        expect($ctrl.objectSource).toBe(SOURCE);
     });
 
     it('should get objectType from url', function () {
@@ -101,7 +95,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.objectType).toBe(OBJECT_TYPE);
+        expect($ctrl.objectType).toBe(OBJECT_TYPE);
     });
 
     it('should get objectName from url', function () {
@@ -110,7 +104,7 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.objectName).toBe(OBJECT_NAME);
+        expect($ctrl.objectName).toBe(OBJECT_NAME);
     });
 
     it('should detect logged in', function() {
@@ -119,28 +113,24 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        expect($scope.loggedIn).toBe(true);
+        expect($ctrl.loggedIn).toBe(true);
     });
 
     it('should populate the ui from message-store', function () {
-        var stateBefore = $state.current.name;
-
         MessageStore.add(objectToDisplay.getPrimaryKey(), objectToDisplay);
         createDisplayController();
 
         expectUserInfo(true);
 
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
     it('should populate the ui from rest ok', function () {
-        var stateBefore = $state.current.name;
-
         // no objects in message store
         createDisplayController();
 
@@ -152,17 +142,15 @@ describe('webUpdates: DisplayController', function () {
 
         $httpBackend.flush();
 
-        expect($scope.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
     it('should populate the ui from rest failure', function () {
-        var stateBefore = $state.current.name;
-
         // no objects in message store
         createDisplayController();
 
@@ -188,10 +176,10 @@ describe('webUpdates: DisplayController', function () {
 
         $httpBackend.flush();
 
-        expect($scope.errors[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
-        expect($scope.warnings[0].plainText).toEqual('Not authenticated');
+        expect($ctrl.AlertService.getErrors()[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
+        expect($ctrl.AlertService.getWarnings()[0].plainText).toEqual('Not authenticated');
 
-        expect($state.current.name).toBe(stateBefore);
+        expect($state.current.name).toBe('webupdates.select');
 
     });
 
@@ -201,9 +189,9 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        $scope.navigateToSelect();
-
-        expect($state.current.name).toBe('webupdates.select');
+        $ctrl.navigateToSelect().then(function() {
+            expect($state.current.name).toBe('webupdates.select');
+        });
 
     });
 
@@ -213,22 +201,20 @@ describe('webUpdates: DisplayController', function () {
 
         expectUserInfo(true);
 
-        $scope.navigateToModify();
+        $httpBackend.whenGET(/.*.html/).respond(200);
+        $ctrl.navigateToModify().then(function() {
+            expect($state.current.name).toBe('webupdates.modify');
+            expect($stateParams.source).toBe(SOURCE);
+            expect($stateParams.objectType).toBe(OBJECT_TYPE);
+            expect($stateParams.name).toBe(OBJECT_NAME);
+        });
         $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.modify');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe(OBJECT_TYPE);
-        expect($stateParams.name).toBe(OBJECT_NAME);
     });
-
-
 });
 
+describe('webUpdates: DisplayComponent with object containing slash', function () {
 
-describe('webUpdates: DisplayController with object containing slash', function () {
-
-    var $scope, $state, $stateParams, $httpBackend;
+    var $state, $stateParams, $httpBackend;
     var MessageStore;
     var WhoisResources;
     var SOURCE = 'RIPE';
@@ -237,19 +223,16 @@ describe('webUpdates: DisplayController with object containing slash', function 
     var MNTNER = 'TEST-MNT';
     var objectToDisplay;
     var createDisplayController;
+    var $ctrl;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
-
-            var $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
 
             objectToDisplay = WhoisResources.wrapWhoisResources({
@@ -277,13 +260,11 @@ describe('webUpdates: DisplayController with object containing slash', function 
                 $stateParams.name = OBJECT_NAME;
 
 
-                _$controller_('DisplayController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams
+                $ctrl = _$componentController_('displayComponent', {
+                    $state: $state, $stateParams: $stateParams
                 });
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
-                //$httpBackend.flush();
-
             };
 
         });
@@ -323,13 +304,14 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         $httpBackend.flush();
 
-        expect($scope.attributes.getSingleAttributeOnName('route').value).toBe(OBJECT_NAME);
-        expect($scope.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect($scope.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect($ctrl.attributes.getSingleAttributeOnName('route').value).toBe(OBJECT_NAME);
+        expect($ctrl.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
 
     });
 
     it('should navigate to modify', function () {
+        spyOn($state, "transitionTo");
         // no objects in message store
         createDisplayController();
 
@@ -341,15 +323,13 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         $httpBackend.flush();
 
-        $scope.navigateToModify();
+        $ctrl.navigateToModify();
 
-        $httpBackend.flush();
-
-        expect($state.current.name).toBe('webupdates.modify');
-        expect($stateParams.source).toBe(SOURCE);
-        expect($stateParams.objectType).toBe(OBJECT_TYPE);
-        expect($stateParams.name).toBe('212.235.32.0%2F19AS1680');
-
+        expect($state.transitionTo).toHaveBeenCalledWith('webupdates.modify', {
+            name: $ctrl.objectName,
+            objectType: $ctrl.objectType,
+            source: $ctrl.objectSource,
+        });
     });
 
     it('should navigate to select', function () {
@@ -364,14 +344,124 @@ describe('webUpdates: DisplayController with object containing slash', function 
 
         $httpBackend.flush();
 
-        $scope.navigateToSelect();
-
-        // select screen already loaded so no flush here
-
-        expect($state.current.name).toBe('webupdates.select');
+        $ctrl.navigateToSelect().then(function() {
+            expect($state.current.name).toBe('webupdates.select');
+        });
 
     });
 
 });
 
+describe('webUpdates: DisplayComponent for RIPE-NONAUTH aut-num object', function () {
 
+    var $state, $stateParams, $httpBackend;
+    var WhoisResources;
+    var SOURCE = 'RIPE-NONAUTH';
+    var OBJECT_TYPE = 'aut-num';
+    var OBJECT_NAME = 'AS9777';
+    var MNTNER = 'TEST-MNT';
+    var ADMINC = 'JYH3-RIPE';
+    var objectToDisplay;
+    var createDisplayController;
+    var $ctrl;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$componentController_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_) {
+
+            $state = _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            WhoisResources = _WhoisResources_;
+
+            objectToDisplay = WhoisResources.wrapWhoisResources({
+                objects: {
+                    object: [
+                        {
+                            'primary-key': {attribute: [{name: OBJECT_TYPE, value: OBJECT_NAME}]},
+                            attributes: {
+                                attribute: [
+                                    {name: 'aut-num', value: OBJECT_NAME},
+                                    {name: 'mnt-by', value: MNTNER, "referenced-type": "mntner",
+                                        link:
+                                            {href: 'http://rest-prepdev.db.ripe.net/ripe/mnt-by/TEST-MNT',
+                                            type: 'locator'},
+                                    },
+                                    {name: 'admin-c', value: ADMINC, "referenced-type": "person",
+                                        link:
+                                             {href: 'http://rest-prepdev.db.ripe.net/ripe/person/JYH3-RIPE',
+                                             type: 'locator'},
+                                    },
+                                    {name: 'source', value: SOURCE}
+                                ]
+                            }
+                        }
+                    ]
+                }
+            });
+
+
+            createDisplayController = function () {
+
+                $stateParams.source = SOURCE;
+                $stateParams.objectType = OBJECT_TYPE;
+                $stateParams.name = OBJECT_NAME;
+
+
+                $ctrl = _$componentController_('displayComponent', {
+                    $state: $state, $stateParams: $stateParams
+                });
+
+                $httpBackend.whenGET(/.*.html/).respond(200);
+                //$httpBackend.flush();
+
+            };
+
+        });
+    });
+
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    function expectUserInfo(withFlush) {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
+            return [200, {
+                user: {
+                    username: 'test@ripe.net',
+                    displayName: 'Test User',
+                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    active: true
+                }
+            }, {}];
+        });
+        if(withFlush) {
+            $httpBackend.flush();
+        }
+    }
+
+    it('should add uiHref to attributes with link', function () {
+
+        // no objects in message store
+        createDisplayController();
+
+        expectUserInfo(false);
+
+        $httpBackend.expectGET('api/whois/RIPE-NONAUTH/aut-num/AS9777?unfiltered=true').respond(function() {
+            return [200, objectToDisplay, {}];
+        });
+
+        $httpBackend.flush();
+
+        expect($ctrl.attributes.getSingleAttributeOnName('aut-num').value).toBe(OBJECT_NAME);
+        expect($ctrl.attributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER);
+        expect($ctrl.attributes.getSingleAttributeOnName('mnt-by').link.uiHref).toEqual('#/webupdates/display/RIPE/mntner/TEST-MNT');
+        expect($ctrl.attributes.getSingleAttributeOnName('admin-c').value).toBe(ADMINC);
+        expect($ctrl.attributes.getSingleAttributeOnName('admin-c').link.uiHref).toBe('#/webupdates/display/RIPE/person/JYH3-RIPE');
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+
+    });
+
+});

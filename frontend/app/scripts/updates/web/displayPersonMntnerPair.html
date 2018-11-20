@@ -4,11 +4,11 @@
 
 <alerts></alerts>
 
-<h1>person with primary key &quot;{{personName}}&quot;</h1>
+<h1>person with primary key &quot;{{$ctrl.personName}}&quot;</h1>
 
 <section class="inner-container">
     <table class="success-fields grey">
-        <tr ng-repeat="attribute in personAttributes">
+        <tr ng-repeat="attribute in $ctrl.personAttributes">
             <td width="20%">
                 <label>{{attribute.name}}:</label>
             </td>
@@ -22,10 +22,10 @@
         </tr>
     </table>
 
-    <h1>mntner with primary key &quot;{{mntnerName}}&quot;</h1>
+    <h1>mntner with primary key &quot;{{$ctrl.mntnerName}}&quot;</h1>
 
         <table class="success-fields grey">
-        <tr ng-repeat="attribute in mntnerAttributes">
+        <tr ng-repeat="attribute in $ctrl.mntnerAttributes">
             <td width="20%">
                 <label>{{attribute.name}}:</label>
             </td>
@@ -43,7 +43,7 @@
     <p>You should only use this maintainer to make changes to your person object.</p>
     <p>To create and update other objects, we recommend you create a "shared maintainer" for your organisation, if you don't already have one. <a target="_blank" href="https://www.ripe.net/manage-ips-and-asns/db/support/security/maintainers#personal-vs-shared">Learn more...</a></p>
 
-    <button ng-click="navigateToSharedMntner()" class="blue-button pull-right ga-createobj-modifyobj">Create Shared Maintainer</button>
-    <button ng-click="navigateToSelect()" class="blue-button pull-right ga-createobj-modifyobj">Back to Create Object</button>
+    <button ng-click="$ctrl.navigateToSharedMntner()" class="blue-button pull-right ga-createobj-modifyobj">Create Shared Maintainer</button>
+    <button ng-click="$ctrl.navigateToSelect()" class="blue-button pull-right ga-createobj-modifyobj">Back to Create Object</button>
 
 </section>

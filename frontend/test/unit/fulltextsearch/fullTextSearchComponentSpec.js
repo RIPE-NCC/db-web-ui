@@ -38,7 +38,7 @@ describe('dbWebApp: FullTextSearchComponent', function () {
             properties: {}
         });
 
-        var expectedObjectTypes = ['as-block', 'as-set', 'aut-num', 'domain', 'filter-set', 'inet6num', 'inetnum', 'inet-rtr', 'irt', 'key-cert', 'mntner', 'organisation', 'peering-set', 'person', 'poem', 'poetic-form', 'role', 'route', 'route6', 'route-set', 'rtr-set'];
+        var expectedObjectTypes = ['as-block', 'as-set', 'aut-num', 'domain', 'filter-set', 'inet-rtr', 'inet6num', 'inetnum', 'irt', 'key-cert', 'mntner', 'organisation', 'peering-set', 'person', 'poem', 'poetic-form', 'role', 'route', 'route-set', 'route6', 'rtr-set'];
 
         expect(expectedObjectTypes.length).toEqual(ctrl.objectTypes.length);
 
@@ -62,7 +62,7 @@ describe('dbWebApp: FullTextSearchComponent', function () {
         ctrl.selectAll();
         expect(ctrl.selectedObjectTypes.length).toEqual(21);
         expect(ctrl.selectableAttributes.length).toEqual(99);
-        expect(ctrl.queryHash()).toEqual("alltrueas-blockas-setaut-numdomainfilter-setinet6numinetnuminet-rtrirtkey-certmntnerorganisationpeering-setpersonpoempoetic-formrolerouteroute6route-setrtr-set");
+        expect(ctrl.queryHash()).toEqual("alltrueas-blockas-setaut-numdomainfilter-setinet-rtrinet6numinetnumirtkey-certmntnerorganisationpeering-setpersonpoempoetic-formrolerouteroute-setroute6rtr-set");
 
         ctrl.selectNone();
         expect(ctrl.selectedObjectTypes.length).toEqual(0);

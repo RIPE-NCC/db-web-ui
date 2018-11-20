@@ -1,14 +1,14 @@
-<div ng-if="isCreateOrModify()" class="alert alert-success">
-    <p>Your object has been successfully {{getOperationName()}}</p>
+<div ng-if="$ctrl.isCreateOrModify()" class="alert alert-success">
+    <p>Your object has been successfully {{$ctrl.getOperationName()}}</p>
 </div>
 
 <alerts></alerts>
 
-<h1>{{objectType}} &quot;{{objectName}}&quot;</h1>
+<h1>{{$ctrl.objectType}} &quot;{{$ctrl.objectName}}&quot;</h1>
 
 <section class="inner-container">
-    <table class="success-fields grey" ng-if="!isDiff()">
-        <tr ng-repeat="attribute in attributes">
+    <table class="success-fields grey" ng-if="!$ctrl.isDiff()">
+        <tr ng-repeat="attribute in $ctrl.attributes">
             <td width="20%">
                 <label>{{attribute.name}}:</label>
             </td>
@@ -27,11 +27,11 @@
         </tr>
     </table>
 
-    <pre class="textdiff" line-diff left-obj="before" right-obj="after" ng-if="isDiff()"></pre>
+    <pre class="textdiff" line-diff left-obj="$ctrl.before" right-obj="$ctrl.after" ng-if="$ctrl.isDiff()"></pre>
 
-    <button ng-click="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
-    <span ng-show="modifyButtonToBeShown()">
-        <button ng-click="navigateToModify()"  class="blue-button pull-right ga-createobj-modifyobj">{{loggedIn ? 'Modify' : 'Login to modify'}}</button>
+    <button ng-click="$ctrl.navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
+    <span ng-show="$ctrl.modifyButtonToBeShown()">
+        <button ng-click="$ctrl.navigateToModify()"  class="blue-button pull-right ga-createobj-modifyobj">{{$ctrl.loggedIn ? 'Modify' : 'Login to modify'}}</button>
     </span>
 
 </section>

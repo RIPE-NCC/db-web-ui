@@ -446,7 +446,7 @@ class EnumService {
 
     constructor(private resourceStatus: ResourceStatus) {}
 
-    public get(objectType: string, attrName: string) {
+    public get(objectType: string, attrName: string): IStatusOption[] {
         if (attrName === "status") {
             return this.resourceStatus.get(objectType, attrName);
         } else if (attrName === "language") {

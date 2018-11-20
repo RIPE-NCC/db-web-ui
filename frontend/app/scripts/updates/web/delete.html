@@ -1,8 +1,8 @@
-<div ng-show="!modalInProgress">
+<div ng-show="!$ctrl.modalInProgress">
 
     <alerts></alerts>
 
-    <section ng-repeat="object in deletedObjects" class="inner-container">
+    <section ng-repeat="object in $ctrl.deletedObjects" class="inner-container">
         <table class="success-fields grey">
             <tr ng-repeat="attribute in object.attributes.attribute">
                 <td width="20%">

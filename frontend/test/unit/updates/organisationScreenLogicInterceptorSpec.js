@@ -1,15 +1,17 @@
 'use strict';
 
-describe('updates: Organisation ScreenLogicInterceptor', function () {
+describe('updates: Organisation ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
+    var whoisMetaService;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptor) {
+    beforeEach(inject(function (WhoisResources, WhoisMetaService, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
-        interceptor = ScreenLogicInterceptor;
+        whoisMetaService = WhoisMetaService;
+        interceptor = ScreenLogicInterceptorService;
     }));
 
     afterEach(function() {
@@ -27,7 +29,7 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
     }
 
     it('should set default organisation before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];
@@ -58,7 +60,7 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
     });
 
     it('should set default org-type before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];
@@ -91,7 +93,7 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
     });
 
     it('should add empty abuse-c by default organisation before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];
@@ -119,8 +121,9 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         expect(abuseC[0].value).toEqual('');
         expect(abuseC[0].$$meta.$$missing).toBe(true);
         expect(warnings.length).toEqual(1);
-        expect(warnings[0]).toEqual('<p>There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p><p>Please specify the abuse-c attribute below.</p>');
-
+        expect(warnings[0]).toContain('<p>There is currently no abuse contact set up for your organisation, which is required under');
+        expect(warnings[0]).toContain('<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>');
+        expect(warnings[0]).toContain('<p>Please specify the abuse-c attribute below.</p>');
     });
 
     it('should add warning if abuse-c is not present for the organisation before-edit organisation on Modify operation', function() {
@@ -132,12 +135,14 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
         interceptor.beforeEdit('Modify', 'RIPE', 'organisation', organisationSubject, errors, warnings, infos);
 
         expect(warnings.length).toEqual(1);
-        expect(warnings[0]).toEqual('<p>There is currently no abuse contact set up for your organisation, which is required under <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p><p>Please specify the abuse-c attribute below.</p>');
+        expect(warnings[0]).toContain('<p>There is currently no abuse contact set up for your organisation, which is required under');
+        expect(warnings[0]).toContain('<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>');
+        expect(warnings[0]).toContain('<p>Please specify the abuse-c attribute below.</p>');
 
     });
 
     it('should NOT add empty abuse-c if it exists for default organisation before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
         var errors = [];
         var warnings = [];
         var infos = [];
@@ -274,7 +279,7 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
     });
 
     it('should NOT disable mnt-by before-edit organisation on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];
@@ -319,7 +324,7 @@ describe('updates: Organisation ScreenLogicInterceptor', function () {
     });
 
     it('should NOT remove org from organisation addable attributes when it action is not Modify', function() {
-        var organisationSubject = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var organisationSubject = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
         organisationSubject.setSingleAttributeOnName('org-type', 'LIR');
         var addableAttributes = _wrap('organisation', organisationSubject.getAddableAttributes('organisation', organisationSubject));
 

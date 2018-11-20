@@ -1,29 +1,21 @@
 /*global afterEach, beforeEach, describe, expect, inject, it, jasmine, module*/
 'use strict';
 
-describe('webUpdates: ModalMd5PasswordController', function () {
+describe('webUpdates: ModalMd5PasswordComponent', function () {
 
-    var $scope, modalInstance, cryptService;
+    var $componentController, cryptService, bindings, ctrl;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _CryptService_) {
+        inject(function (_$componentController_, _CryptService_) {
 
-            $scope = _$rootScope_.$new();
             cryptService = _CryptService_;
 
-            modalInstance = {
+            $componentController = _$componentController_;
+            bindings = {
                 close: jasmine.createSpy('modalInstance.close'),
-                dismiss: jasmine.createSpy('modalInstance.dismiss'),
-                result: {
-                    then: jasmine.createSpy('modalInstance.result.then')
-                }
-            };
-            _$controller_('ModalMd5PasswordController', {
-                $scope: $scope, $uibModalInstance: modalInstance, CryptService: cryptService
-            });
-
+                dismiss: jasmine.createSpy('modalInstance.dismiss')};
         });
     });
 
@@ -31,29 +23,33 @@ describe('webUpdates: ModalMd5PasswordController', function () {
     });
 
     it('should close the modal and return selected md5 value when ok', function () {
-        $scope.password = '123';
-        $scope.passwordAgain = '123';
-        $scope.ok();
-        expect(modalInstance.close).toHaveBeenCalled( ); // md5 hash is unpredictable
+        ctrl = $componentController('modalMd5Password', cryptService, bindings);
+        ctrl.password = '123';
+        ctrl.passwordAgain = '123';
+        ctrl.ok();
+        expect(ctrl.close).toHaveBeenCalled( ); // md5 hash is unpredictable
     });
 
     it('should report error when passwords are empty', function () {
-        $scope.password = '';
-        $scope.passwordAgain = '';
-        $scope.ok();
-        expect($scope.authPasswordMessage).toEqual('Password too short!');
+        ctrl = $componentController('modalMd5Password', cryptService, bindings);
+        ctrl.password = '';
+        ctrl.passwordAgain = '';
+        ctrl.ok();
+        expect(ctrl.authPasswordMessage).toEqual('Password too short!');
     });
 
     it('should report error when passwords are not equal', function () {
-        $scope.password = '123';
-        $scope.passwordAgain = '1234';
-        $scope.ok();
-        expect($scope.authPasswordMessage).toEqual('Passwords do not match!');
+        ctrl = $componentController('modalMd5Password', cryptService, bindings);
+        ctrl.password = '123';
+        ctrl.passwordAgain = '1234';
+        ctrl.ok();
+        expect(ctrl.authPasswordMessage).toEqual('Passwords do not match!');
     });
 
     it('should report error the modal and return error when cancelled', function () {
-        $scope.cancel();
-        expect(modalInstance.dismiss).toHaveBeenCalledWith('cancel');
+        ctrl = $componentController('modalMd5Password', cryptService, bindings);
+        ctrl.cancel();
+        expect(ctrl.dismiss).toHaveBeenCalled();
     });
 });
 

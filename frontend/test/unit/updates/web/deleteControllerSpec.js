@@ -2,35 +2,28 @@
 'use strict';
 
 describe('webUpdates: DeleteController', function () {
-
-    var $scope, $state, $stateParams, $httpBackend;
+    var $state, $stateParams, $httpBackend;
     var WhoisResources;
     var ModalService;
-    var AlertService;
     var OBJECT_TYPE = 'as-block';
     var SOURCE = 'RIPE';
     var ON_CANCEL = 'modify';
     var createDeleteController;
-    var $rootScope;
     var objectToDisplay;
     var multipleObjectsToDisplay;
     var whoisObjectWithErrors;
-    var $log;
+    var $ctrl;
 
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_, _AlertService_) {
-
-            $rootScope = _$rootScope_;
-            $scope = $rootScope.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _ModalService_, _WhoisResources_) {
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
             ModalService = _ModalService_;
             WhoisResources = _WhoisResources_;
-            AlertService = _AlertService_;
 
             objectToDisplay = WhoisResources.wrapWhoisResources({
                 objects: {
@@ -114,18 +107,6 @@ describe('webUpdates: DeleteController', function () {
                 }
             };
 
-            $log = {
-                debug: function() {
-                    //console.log('debug:'+msg);
-                },
-                info: function() {
-                    //console.log('info:'+msg);
-                },
-                error: function() {
-                    //console.log('error:'+msg);
-                }
-            };
-
             createDeleteController = function() {
 
                 $stateParams.source = SOURCE;
@@ -135,16 +116,9 @@ describe('webUpdates: DeleteController', function () {
 
                 $state.current.name = 'delete';
 
-                _$controller_('DeleteController', {
-                    $scope: $scope, $state: $state, $stateParams: $stateParams, $log: $log,
-                    WhoisResources:WhoisResources, ModalService:ModalService,  AlertService:AlertService
-
-                });
-
+                $ctrl = _$componentController_('deleteComponent');
             };
 
-            $httpBackend.whenGET(/.*.html/).respond(200);
-            $httpBackend.flush();
         });
     });
 
@@ -159,7 +133,7 @@ describe('webUpdates: DeleteController', function () {
 
         createDeleteController();
 
-        expect(ModalService.openDeleteObjectModal).toHaveBeenCalledWith($scope.source, $scope.objectType, $scope.name, $scope.onCancel);
+        expect($ctrl.ModalService.openDeleteObjectModal).toHaveBeenCalledWith($ctrl.source, $ctrl.objectType, $ctrl.name, $ctrl.onCancel);
     });
 
     it('should display errors if delete object fail', function() {
@@ -171,9 +145,9 @@ describe('webUpdates: DeleteController', function () {
 
         createDeleteController();
 
-        expect(AlertService.getErrors()).toEqual( [ { severity: 'Error', text: 'Unrecognized source: %s', args: [ { value: 'INVALID_SOURCE' } ], plainText: 'Unrecognized source: INVALID_SOURCE' } ]);
+        expect($ctrl.AlertService.getErrors()).toEqual( [ { severity: 'Error', text: 'Unrecognized source: %s', args: [ { value: 'INVALID_SOURCE' } ], plainText: 'Unrecognized source: INVALID_SOURCE' } ]);
 
-        expect($state.current.name).toBe('delete');
+        expect($ctrl.$state.current.name).toBe('delete');
     });
 
 
@@ -186,9 +160,9 @@ describe('webUpdates: DeleteController', function () {
 
         createDeleteController();
 
-        expect(AlertService.getErrors()).toEqual([{ severity: 'Error', text:'Unexpected error: please retry later', plainText:'Unexpected error: please retry later'}]);
+        expect($ctrl.AlertService.getErrors()).toEqual([{ severity: 'Error', text:'Unexpected error: please retry later', plainText:'Unexpected error: please retry later'}]);
 
-        expect($state.current.name).toBe('delete');
+        expect($ctrl.$state.current.name).toBe('delete');
     });
 
     it('should populate the ui after delete with 1 object', function () {
@@ -196,9 +170,9 @@ describe('webUpdates: DeleteController', function () {
 
         createDeleteController();
 
-        expect($scope.deletedObjects.length).toBe(1);
+        expect($ctrl.deletedObjects.length).toBe(1);
 
-        var whoisobject = WhoisResources.wrapAttributes($scope.deletedObjects[0].attributes.attribute);
+        var whoisobject = $ctrl.WhoisResources.wrapAttributes($ctrl.deletedObjects[0].attributes.attribute);
         expect(whoisobject.getSingleAttributeOnName('as-block').value).toBe('AS1 - AS2');
 
         expect($state.current.name).toBe('delete');
@@ -209,14 +183,14 @@ describe('webUpdates: DeleteController', function () {
 
         createDeleteController();
 
-        expect($scope.deletedObjects.length).toBe(2);
+        expect($ctrl.deletedObjects.length).toBe(2);
 
-        var asblock1 = WhoisResources.wrapAttributes($scope.deletedObjects[0].attributes.attribute);
-        var asblock2 = WhoisResources.wrapAttributes($scope.deletedObjects[1].attributes.attribute);
+        var asblock1 = $ctrl.WhoisResources.wrapAttributes($ctrl.deletedObjects[0].attributes.attribute);
+        var asblock2 = $ctrl.WhoisResources.wrapAttributes($ctrl.deletedObjects[1].attributes.attribute);
 
         expect(asblock1.getSingleAttributeOnName('as-block').value).toBe('AS1 - AS2');
         expect(asblock2.getSingleAttributeOnName('as-block').value).toBe('AS10 - AS20');
 
-        expect($state.current.name).toBe('delete');
+        expect($ctrl.$state.current.name).toBe('delete');
     });
 });

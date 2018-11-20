@@ -9,15 +9,15 @@ describe('The attributeMetadataService', function () {
     var AttributeMetadataService;
     var $scope;
     var objectType = 'prefix';
-    var vm;
+    var $ctrl;
 
     beforeEach(function() {
         module('dbWebApp');
-        inject(function (_$rootScope_, _$controller_, _$stateParams_, _RestService_, _PrefixService_, _AttributeMetadataService_) {
+            inject(function (_$rootScope_, _$componentController_, _$stateParams_, _RestService_, _PrefixService_, _AttributeMetadataService_) {
             $scope = _$rootScope_.$new();
             _$stateParams_.objectType = 'prefix';
             AttributeMetadataService = _AttributeMetadataService_;
-            vm = _$controller_('DomainObjectController', {
+            $ctrl = _$componentController_('domainObjectWizard', {
                 $scope: $scope,
                 $stateParams: _$stateParams_,
                 AttributeMetadataService: _AttributeMetadataService_,
@@ -29,8 +29,8 @@ describe('The attributeMetadataService', function () {
 
     it('should not crash', function () {
         $scope.objectType = 'prefix';
-        expect(!!vm.attributes).toBe(true);
-        expect(vm.attributes.length).toBe(9);
+        expect(!!$ctrl.attributes).toBe(true);
+        expect($ctrl.attributes.length).toBe(9);
     });
 
     it('should create metadata for NOT co-maintained inetnum object with netname NOT read only', function () {
@@ -107,9 +107,9 @@ describe('The attributeMetadataService', function () {
 
     xit('should be able to calculate validity of an attribute', function() {
         var isInvalid;
-        var attributes = vm.attributes,
-            attributePk = vm.attributes[0],
-            attribute = vm.attributes[4];
+        var attributes = $ctrl.attributes,
+            attributePk = $ctrl.attributes[0],
+            attribute = $ctrl.attributes[4];
 
         expect(attributePk.name).toBe('prefix');
         expect(attribute.name).toBe('admin-c');
@@ -132,8 +132,8 @@ describe('The attributeMetadataService', function () {
     });
 
     xit('should be able to calculate hidden state of an attribute with no dependencies', function() {
-        var attributes = vm.attributes,
-            attribute = vm.attributes[0];
+        var attributes = $ctrl.attributes,
+            attribute = $ctrl.attributes[0];
 
         expect(attribute.name).toBe('prefix');
         var isHidden = AttributeMetadataService.isHidden(objectType, attributes, attribute);
@@ -142,11 +142,11 @@ describe('The attributeMetadataService', function () {
 
     xit('should be able to calculate hidden state of an attribute with dependencies', function() {
         var isHidden,
-            attributes = vm.attributes,
-            attrPrefix = vm.attributes[0],
-            attrNs1 = vm.attributes[1],
-            attrNs2 = vm.attributes[2],
-            attrToTest = vm.attributes[4];
+            attributes = $ctrl.attributes,
+            attrPrefix = $ctrl.attributes[0],
+            attrNs1 = $ctrl.attributes[1],
+            attrNs2 = $ctrl.attributes[2],
+            attrToTest = $ctrl.attributes[4];
 
         expect(attrPrefix.name).toBe('prefix');
         expect(attrNs1.name).toBe('nserver');

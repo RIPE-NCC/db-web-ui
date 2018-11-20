@@ -1,36 +1,36 @@
-<label>{{attribute.name}}</label>
-<div ng-if="attribute.$$error">
-    <span class="text-error" ng-bind-html="attribute.$$error"></span>
+<label>{{$ctrl.attribute.name}}</label>
+<div ng-if="$ctrl.attribute.$$error">
+    <span class="text-error" ng-bind-html="$ctrl.attribute.$$error"></span>
 </div>
-<div ng-if="attribute.$$info">
-    <span class="text-info" ng-bind-html="attribute.$$info"></span>
+<div ng-if="$ctrl.attribute.$$info">
+    <span class="text-info" ng-bind-html="$ctrl.attribute.$$info"></span>
 </div>
-<div ng-if="attribute.$$success">
-    <span class="text-success" ng-bind-html="attribute.$$success"></span>
+<div ng-if="$ctrl.attribute.$$success">
+    <span class="text-success" ng-bind-html="$ctrl.attribute.$$success"></span>
 </div>
 
 <!-- This is for not enums -->
-<input ng-if="!isStaticList(objectType, attribute) ||  attribute.name === 'status'"
+<input ng-if="!$ctrl.isStaticList($ctrl.objectType, $ctrl.attribute) ||  $ctrl.attribute.name === 'status'"
     type="text"
-    name="{{attribute.name + '$' + idx}}"
+    name="{{$ctrl.attribute.name + '$' + $ctrl.idx}}"
     class="form-control"
-    placeholder="{{getAttributeShortDescription(attribute.name)}}"
+    placeholder="{{$ctrl.getAttributeShortDescription($ctrl.attribute.name)}}"
     autocomplete="off"
-    ng-model="attribute.value"
-    ng-required="{{attribute.$$meta.$$mandatory}}"
-    ng-disabled="attribute.$$disable || restCallInProgress"
-    ng-change="valueChanged(objectType, attributes, attribute)"
-    uib-typeahead="val.key as val.readableName for val in autocompleteList(objectType, attributes, attribute, $viewValue)"
+    ng-model="$ctrl.attribute.value"
+    ng-required="{{$ctrl.attribute.$$meta.$$mandatory}}"
+    ng-disabled="$ctrl.attribute.$$disable || $ctrl.restCallInProgress"
+    ng-change="$ctrl.valueChanged($ctrl.objectType, $ctrl.attributes, $ctrl.attribute)"
+    uib-typeahead="val.key as val.readableName for val in $ctrl.autocompleteList($ctrl.objectType, $ctrl.attributes, $ctrl.attribute, $viewValue)"
     typeahead-min-length="2"
 >
 <!-- This is for enums -->
-<ui-select ng-if="isStaticList(objectType, attribute) && attribute.name !== 'status'"
-        name="{{attribute.name}}"
-        ng-model="attribute.value"
-        ng-disabled="attribute.$$disable"
+<ui-select ng-if="$ctrl.isStaticList($ctrl.objectType, $ctrl.attribute) && $ctrl.attribute.name !== 'status'"
+        name="{{$ctrl.attribute.name}}"
+        ng-model="$ctrl.attribute.value"
+        ng-disabled="$ctrl.attribute.$$disable"
         theme="bootstrap">
- <ui-select-match placeholder="{{getAttributeShortDescription(attribute.name)}}">{{$select.selected.key}}</ui-select-match>
- <ui-select-choices repeat="item.key as item in staticList(objectType, attribute) | filter: $select.search">
-     <div ng-bind-html="displayEnumValue(item) | highlight: $select.search"></div>
+ <ui-select-match placeholder="{{$ctrl.getAttributeShortDescription($ctrl.attribute.name)}}">{{$select.selected.key}}</ui-select-match>
+ <ui-select-choices repeat="item.key as item in $ctrl.staticList($ctrl.objectType, $ctrl.attribute) | filter: $select.search">
+     <div ng-bind-html="$ctrl.displayEnumValue(item) | highlight: $select.search"></div>
  </ui-select-choices>
 </ui-select>

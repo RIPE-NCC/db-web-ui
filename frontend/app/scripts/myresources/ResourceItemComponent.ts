@@ -19,7 +19,7 @@ class ResourceItemController {
 
     constructor(private $state: ng.ui.IStateService,
                 private labels: { [key: string]: string },
-                private ResourceStatus: any) {
+                private ResourceStatus: ResourceStatus) {
         if (this.item.usage) {
             this.usedPercentage = Math.round(this.item.usage.used * 100 / this.item.usage.total);
         }
@@ -76,6 +76,5 @@ angular.module("dbWebApp").component("resourceItem", {
         sponsored: "<",
     },
     controller: ResourceItemController,
-    controllerAs: "ctrlResourceItem",
     templateUrl: "scripts/myresources/resource-item.html",
 });

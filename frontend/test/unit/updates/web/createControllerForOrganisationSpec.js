@@ -3,11 +3,9 @@
 
 describe('webUpdates: CreateModifyController for organisation', function () {
 
-    var $scope, $state, $stateParams, $httpBackend;
-    var MessageStore;
-    var WhoisResources;
-    var MntnerService;
-    var OrganisationHelper;
+    var $ctrl, $state, $stateParams, $httpBackend;
+    var WhoisMetaService;
+    var OrganisationHelperService;
     var ModalService;
     var OBJECT_TYPE = 'organisation';
     var SOURCE = 'RIPE';
@@ -17,20 +15,16 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_, _MntnerService_, _OrganisationHelper_, _PreferenceService_) {
-
-            $scope = _$rootScope_.$new();
+        inject(function (_$componentController_, _$state_, _$stateParams_, _$httpBackend_, _OrganisationHelperService_, _PreferenceService_, _WhoisMetaService_) {
 
             $state =  _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            MessageStore = _MessageStore_;
-            WhoisResources = _WhoisResources_;
-            MntnerService = _MntnerService_;
-            OrganisationHelper = _OrganisationHelper_;
-            OrganisationHelper.updateAbuseC = function() {};
+            OrganisationHelperService = _OrganisationHelperService_;
+            OrganisationHelperService.updateAbuseC = function() {};
             PreferenceService = _PreferenceService_;
             PreferenceService.isTextMode = function() {return false;};
+            WhoisMetaService = _WhoisMetaService_;
 
             ModalService = {
                 openCreateRoleForAbuseCAttribute: function () {
@@ -46,8 +40,8 @@ describe('webUpdates: CreateModifyController for organisation', function () {
             $stateParams.source = SOURCE;
             $stateParams.name = NAME;
 
-            _$controller_('CreateModifyController', {
-                $scope: $scope, $state: $state, $stateParams: $stateParams, ModalService: ModalService
+            $ctrl = _$componentController_('createModify', {
+                $state: $state, $stateParams: $stateParams, ModalService: ModalService,
             });
 
             $httpBackend.whenGET(/.*.html/).respond(200);
@@ -75,32 +69,32 @@ describe('webUpdates: CreateModifyController for organisation', function () {
     });
 
     it('should populate abuse-c with new role\'s nic-hdl', function () {
-        $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-        $scope.createRoleForAbuseCAttribute();
+        $ctrl.attributes = $ctrl.OrganisationHelperService.addAbuseC($ctrl.objectType, $ctrl.attributes);
+        $ctrl.createRoleForAbuseCAttribute();
 
-        expect($scope.attributes.getSingleAttributeOnName('abuse-c').value).toBe('SR11027-RIPE');
+        expect($ctrl.attributes.getSingleAttributeOnName('abuse-c').value).toBe('SR11027-RIPE');
     });
 
-    it('should populate $scope.roleForAbuseC', function () {
-        $scope.attributes = OrganisationHelper.addAbuseC($scope.objectType, $scope.attributes);
-        $scope.createRoleForAbuseCAttribute();
+    it('should populate $ctrl.roleForAbuseC', function () {
+        $ctrl.attributes = OrganisationHelperService.addAbuseC($ctrl.objectType, $ctrl.attributes);
+        $ctrl.createRoleForAbuseCAttribute();
 
-        expect($scope.roleForAbuseC).toBeDefined();
+        expect($ctrl.roleForAbuseC).toBeDefined();
     });
 
     it('should use the helper to update role for abuse-c', function () {
-        $scope.attributes = $scope.attributes.addAttributeAfterType({name: 'abuse-c', value: 'some abuse-c'}, {name: 'e-mail'});
-        $scope.attributes = WhoisResources.wrapAttributes(
-            WhoisResources.enrichAttributesWithMetaInfo($scope.objectType, $scope.attributes )
+        $ctrl.attributes = $ctrl.attributes.addAttributeAfterType({name: 'abuse-c', value: 'some abuse-c'}, {name: 'e-mail'});
+        $ctrl.attributes = $ctrl.WhoisResources.wrapAttributes(
+            WhoisMetaService.enrichAttributesWithMetaInfo($ctrl.objectType, $ctrl.attributes )
         );
 
         $httpBackend.whenPUT('api/whois/RIPE/organisation/ORG-UA300-RIPE').respond(DEFAULT_RESPONSE); // I don' care about this call
-        spyOn(OrganisationHelper, 'updateAbuseC');
+        spyOn(OrganisationHelperService, 'updateAbuseC');
 
-        $scope.submit();
+        $ctrl.submit();
         $httpBackend.flush();
 
-        expect(OrganisationHelper.updateAbuseC).toHaveBeenCalled();
+        expect(OrganisationHelperService.updateAbuseC).toHaveBeenCalled();
 
     });
 

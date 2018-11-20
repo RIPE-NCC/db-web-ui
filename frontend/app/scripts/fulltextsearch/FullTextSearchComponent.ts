@@ -38,11 +38,11 @@ class FullTextSearchController {
     constructor(private $log: angular.ILogService,
                 private searchService: FullTextSearchService,
                 private fullTextResponseService: FullTextResponseService,
-                private whoisMetaService: any,
+                private whoisMetaService: WhoisMetaService,
                 public properties: IProperties) {
         this.ftquery = "";
-        this.objectTypes = Object.keys(whoisMetaService._objectTypesMap);
-        this.objectMetadata = this.parseMetadataToLists(whoisMetaService._objectTypesMap);
+        this.objectTypes = Object.keys(whoisMetaService.objectTypesMap);
+        this.objectMetadata = this.parseMetadataToLists(whoisMetaService.objectTypesMap);
         this.numResultsPerPage = 10;
     }
 

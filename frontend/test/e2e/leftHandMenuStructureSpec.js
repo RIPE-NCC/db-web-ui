@@ -61,7 +61,7 @@ describe('The left hand menu structure depend on logged in user role', function 
         changeJsonResponsFile(userInfoFile, userWithAllRoles);
     });
 
-    it('Should show menu structure for user with all role', function () {
+    it('should show menu structure for user with all role', function () {
         changeJsonResponsFile(userInfoFile, userWithAllRoles);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);
@@ -141,7 +141,7 @@ describe('The left hand menu structure depend on logged in user role', function 
         expectRipeDatabaseMenuItemWithAllSubItems();
     });
 
-    it('Should show menu structure for user with billing role', function () {
+    it('should show menu structure for user with billing role', function () {
         changeJsonResponsFile(userInfoFile, userWithBillingRole);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);
@@ -191,7 +191,7 @@ describe('The left hand menu structure depend on logged in user role', function 
         expectRipeDatabaseMenuItemWithAllSubItems();
     });
 
-    it('Should show menu structure for user without org or lir', function () {
+    it('should show menu structure for user without org or lir', function () {
         changeJsonResponsFile(userInfoFile, userWithoutOrgOrLir);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);
@@ -219,7 +219,7 @@ describe('The left hand menu structure depend on logged in user role', function 
         expectRipeDatabaseMenuItemWithAllSubItems();
     });
 
-    it('Should show menu structure for no logged in user', function () {
+    it('should show menu structure for no logged in user', function () {
         changeJsonResponsFile(userInfoFile, userNotLoggedIn);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);

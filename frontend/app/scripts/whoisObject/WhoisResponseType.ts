@@ -1,10 +1,11 @@
 interface IErrorMessageModel {
     attribute?: IAttributeModel;
-    severity: string;
-    text: string;
+    severity?: string;
+    text?: string;
     args?: [{
         value: string;
     }];
+    plainText?: string;
 }
 
 interface IWhoisLinkModel {
@@ -14,14 +15,31 @@ interface IWhoisLinkModel {
 
 interface IAttributeModel {
     name: string;
-    value: string | any;
+    value?: string | any;
     link?: IWhoisLinkModel;
-    "referenced-type": string;
-    $$error: string;
-    $$info: string;
-    $$invalid: boolean;
-    $$id: string;
-    comment: string;
+    "referenced-type"?: string;
+    $$error?: string;
+    $$info?: string;
+    $$invalid?: boolean;
+    $$id?: string;
+    comment?: string;
+    $$success?: string;
+    $$statusOptionList?: IStatusOption[];
+    $$meta?: {
+        $$idx?: number,
+        $$mandatory?: boolean,
+        $$multiple?: boolean,
+        $$primaryKey?: boolean,
+        $$refs?: string[],
+        $$isEnum?: boolean,
+        $$isLir?: boolean,
+        $$disable?: boolean,
+    };
+}
+
+interface IStatusOption {
+    key: string;
+    value: string;
 }
 
 interface IWhoisObjectModel {
@@ -65,7 +83,7 @@ interface IWhoisResponseModel {
 }
 
 interface IMntByModel {
-    auth: string[];
+    auth?: string[];
     key: string;
     mine: boolean;
     type: string;

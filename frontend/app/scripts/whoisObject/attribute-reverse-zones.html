@@ -1,16 +1,16 @@
-<div class="text-error" ng-if="attribute.$$error">
-    <span ng-bind-html="attribute.$$error"></span>
+<div class="text-error" ng-if="$ctrl.attribute.$$error">
+    <span ng-bind-html="$ctrl.attribute.$$error"></span>
 </div>
 
 <div class="panel panel-default">
-    <table class="table table-hover reverse-zones" ng-if="attribute.value && attribute.value.length">
+    <table class="table table-hover reverse-zones" ng-if="$ctrl.attribute.value && $ctrl.attribute.value.length">
         <thead>
         <tr>
             <th>Reverse zones</th>
         </tr>
         </thead>
         <tbody class="reverse-zone-table">
-        <tr ng-repeat="r in attribute.value">
+        <tr ng-repeat="r in $ctrl.attribute.value">
             <td><small>{{ r.value }}</small></td>
         </tr>
         </tbody>

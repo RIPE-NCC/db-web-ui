@@ -2,6 +2,7 @@ interface IUserInfoOrganisation {
     orgObjectId: string;
     organisationName: string;
     roles: string[];
+    lir: boolean;
 }
 
 interface IUserInfoRegistration extends IUserInfoOrganisation {

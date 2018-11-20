@@ -1,15 +1,17 @@
 'use strict';
 
-describe('updates: ScreenLogicInterceptor', function () {
+describe('updates: ScreenLogicInterceptorService', function () {
 
     var interceptor;
     var whoisResources;
+    var whoisMetaService;
 
     beforeEach(module('updates'));
 
-    beforeEach(inject(function (WhoisResources, ScreenLogicInterceptor) {
+    beforeEach(inject(function (WhoisResources, WhoisMetaService, ScreenLogicInterceptorService) {
         whoisResources = WhoisResources;
-        interceptor = ScreenLogicInterceptor;
+        whoisMetaService = WhoisMetaService;
+        interceptor = ScreenLogicInterceptorService;
     }));
 
     afterEach(function() {
@@ -38,7 +40,7 @@ describe('updates: ScreenLogicInterceptor', function () {
     });
 
     it('should set default source before-edit any object on Create operation', function() {
-        var before = whoisResources.wrapAttributes(whoisResources.getMandatoryAttributesOnObjectType('organisation', true));
+        var before = whoisResources.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation', true));
 
         var errors = [];
         var warnings = [];

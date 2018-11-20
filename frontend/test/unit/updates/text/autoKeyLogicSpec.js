@@ -1,13 +1,13 @@
 'use strict';
 
-describe('textUpdates: AutoKeyLogic', function () {
+describe('textUpdates: AutoKeyLogicService', function () {
 
     var subject;
 
     beforeEach(module('textUpdates'));
 
-    beforeEach(inject(function (AutoKeyLogic) {
-        subject = AutoKeyLogic;
+    beforeEach(inject(function (AutoKeyLogicService) {
+        subject = AutoKeyLogicService;
     }));
 
     afterEach(function () {
