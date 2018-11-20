@@ -12,7 +12,7 @@ interface IAuthParams {
 }
 
 class WebUpdatesCommonsService {
-    public static $inject = ["$state", "$log", "WhoisResources", "CredentialsService", "AlertService", "MntnerService", "ModalService"];
+    public static $inject = ["$state", "$log", "WhoisResources", "CredentialsService", "AlertService", "MntnerService", "ModalService", "Properties"];
 
     constructor(private $state: ng.ui.IStateService,
                 private $log: angular.ILogService,
@@ -20,7 +20,8 @@ class WebUpdatesCommonsService {
                 private CredentialsService: CredentialsService,
                 private AlertService: AlertService,
                 private MntnerService: MntnerService,
-                private ModalService: ModalService) {
+                private ModalService: ModalService,
+                private Properties: IProperties) {
 
     }
 
@@ -108,7 +109,7 @@ class WebUpdatesCommonsService {
         return this.$state.href(STATE.DISPLAY, {
             name: _.last(parts),
             objectType: attribute["referenced-type"],
-            source: objectSource,
+            source: this.Properties.SOURCE,
         });
     }
 }

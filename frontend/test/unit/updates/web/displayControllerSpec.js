@@ -212,7 +212,6 @@ describe('webUpdates: DisplayComponent', function () {
     });
 });
 
-
 describe('webUpdates: DisplayComponent with object containing slash', function () {
 
     var $state, $stateParams, $httpBackend;
@@ -229,12 +228,11 @@ describe('webUpdates: DisplayComponent with object containing slash', function (
     beforeEach(function () {
         module('webUpdates');
 
-        inject(function (_$componentController_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _MessageStore_, _WhoisResources_) {
+        inject(function (_$componentController_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_) {
 
             $state = _$state_;
             $stateParams = _$stateParams_;
             $httpBackend = _$httpBackend_;
-            MessageStore = _MessageStore_;
             WhoisResources = _WhoisResources_;
 
             objectToDisplay = WhoisResources.wrapWhoisResources({
@@ -267,8 +265,6 @@ describe('webUpdates: DisplayComponent with object containing slash', function (
                 });
 
                 $httpBackend.whenGET(/.*.html/).respond(200);
-                //$httpBackend.flush();
-
             };
 
         });
@@ -356,4 +352,116 @@ describe('webUpdates: DisplayComponent with object containing slash', function (
 
 });
 
+describe('webUpdates: DisplayComponent for RIPE-NONAUTH aut-num object', function () {
 
+    var $state, $stateParams, $httpBackend;
+    var WhoisResources;
+    var SOURCE = 'RIPE-NONAUTH';
+    var OBJECT_TYPE = 'aut-num';
+    var OBJECT_NAME = 'AS9777';
+    var MNTNER = 'TEST-MNT';
+    var ADMINC = 'JYH3-RIPE';
+    var objectToDisplay;
+    var createDisplayController;
+    var $ctrl;
+
+    beforeEach(function () {
+        module('webUpdates');
+
+        inject(function (_$componentController_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _WhoisResources_) {
+
+            $state = _$state_;
+            $stateParams = _$stateParams_;
+            $httpBackend = _$httpBackend_;
+            WhoisResources = _WhoisResources_;
+
+            objectToDisplay = WhoisResources.wrapWhoisResources({
+                objects: {
+                    object: [
+                        {
+                            'primary-key': {attribute: [{name: OBJECT_TYPE, value: OBJECT_NAME}]},
+                            attributes: {
+                                attribute: [
+                                    {name: 'aut-num', value: OBJECT_NAME},
+                                    {name: 'mnt-by', value: MNTNER, "referenced-type": "mntner",
+                                        link:
+                                            {href: 'http://rest-prepdev.db.ripe.net/ripe/mnt-by/TEST-MNT',
+                                            type: 'locator'},
+                                    },
+                                    {name: 'admin-c', value: ADMINC, "referenced-type": "person",
+                                        link:
+                                             {href: 'http://rest-prepdev.db.ripe.net/ripe/person/JYH3-RIPE',
+                                             type: 'locator'},
+                                    },
+                                    {name: 'source', value: SOURCE}
+                                ]
+                            }
+                        }
+                    ]
+                }
+            });
+
+
+            createDisplayController = function () {
+
+                $stateParams.source = SOURCE;
+                $stateParams.objectType = OBJECT_TYPE;
+                $stateParams.name = OBJECT_NAME;
+
+
+                $ctrl = _$componentController_('displayComponent', {
+                    $state: $state, $stateParams: $stateParams
+                });
+
+                $httpBackend.whenGET(/.*.html/).respond(200);
+                //$httpBackend.flush();
+
+            };
+
+        });
+    });
+
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingExpectation();
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
+    function expectUserInfo(withFlush) {
+        $httpBackend.expectGET('api/whois-internal/api/user/info').respond(function() {
+            return [200, {
+                user: {
+                    username: 'test@ripe.net',
+                    displayName: 'Test User',
+                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    active: true
+                }
+            }, {}];
+        });
+        if(withFlush) {
+            $httpBackend.flush();
+        }
+    }
+
+    it('should add uiHref to attributes with link', function () {
+
+        // no objects in message store
+        createDisplayController();
+
+        expectUserInfo(false);
+
+        $httpBackend.expectGET('api/whois/RIPE-NONAUTH/aut-num/AS9777?unfiltered=true').respond(function() {
+            return [200, objectToDisplay, {}];
+        });
+
+        $httpBackend.flush();
+
+        expect($ctrl.attributes.getSingleAttributeOnName('aut-num').value).toBe(OBJECT_NAME);
+        expect($ctrl.attributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER);
+        expect($ctrl.attributes.getSingleAttributeOnName('mnt-by').link.uiHref).toEqual('#/webupdates/display/RIPE/mntner/TEST-MNT');
+        expect($ctrl.attributes.getSingleAttributeOnName('admin-c').value).toBe(ADMINC);
+        expect($ctrl.attributes.getSingleAttributeOnName('admin-c').link.uiHref).toBe('#/webupdates/display/RIPE/person/JYH3-RIPE');
+        expect($ctrl.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+
+    });
+
+});
