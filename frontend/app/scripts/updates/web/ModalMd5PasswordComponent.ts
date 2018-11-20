@@ -8,13 +8,15 @@ class ModalMd5PasswordComponent {
 
     public close: any;
     public dismiss: any;
+    public resolve: any;
 
     constructor(public CryptService: CryptService) {
     }
 
     public ok() {
         if (this.verifyAuthDialog()) {
-            this.close(this._createAuthMd5Value());
+            this.close({$value: this._createAuthMd5Value(),
+                });
         }
     }
 
@@ -44,6 +46,7 @@ angular.module("webUpdates").component("modalMd5Password", {
     bindings: {
         close: "&",
         dismiss: "&",
+        resolve: "=",
     },
     controller: ModalMd5PasswordComponent,
     templateUrl: "scripts/updates/web/modalMd5Password.html",
