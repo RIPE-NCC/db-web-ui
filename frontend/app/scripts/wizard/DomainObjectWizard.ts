@@ -165,7 +165,6 @@ class DomainObjectWizardController {
                     if (response.status === 200) {
                         return this.showCreatedDomains(response);
                     }
-                    // ok then just wait and keep on pinging...
                 }, (failResponse: any) => {
                     return this.createDomainsFailed(failResponse);
                 });
@@ -221,7 +220,7 @@ class DomainObjectWizardController {
         this.restCallInProgress = false;
         this.isValidatingDomains = false;
         this.errors = _.filter(response.data.errormessages.errormessage, (errorMessage: any) => {
-                errorMessage.plainText = this.WhoisResources.readableError(errorMessage);
+                errorMessage.plainText = this.WhoisResources.readableError(response)(errorMessage);
                 return errorMessage.severity === "Error";
             });
 

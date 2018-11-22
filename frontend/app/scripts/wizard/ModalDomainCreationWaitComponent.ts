@@ -34,8 +34,7 @@ class ModalDomainCreationWaitCotroller {
                     // ok then just wait and keep on pinging...
                 }, (failResponse) => {
                     this.$interval.cancel(backendPinger);
-                    this.close({$value: failResponse});
-                    // return createDomainsFailed(failResponse);
+                    this.dismiss({$value: failResponse});
                 });
         }, 2000);
     }
