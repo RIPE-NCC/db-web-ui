@@ -6,7 +6,6 @@ class TransferDropDownController {
 
     // Input
     public sponsoredMenu: boolean;
-    public isMember: boolean;
 
     constructor(private properties: IProperties) {}
 }

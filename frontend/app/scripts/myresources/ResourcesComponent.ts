@@ -98,8 +98,12 @@ class ResourcesController {
         }
     }
 
-    private isMemberOrg(): boolean {
-        return this.selectedOrg !== undefined && (this.selectedOrg as IUserInfoRegistration).membershipId !== undefined;
+    public isMemberOrg(): boolean {
+        return this.isUserInfoRegistration(this.selectedOrg);
+    }
+
+    private isUserInfoRegistration(arg: any): arg is IUserInfoRegistration {
+        return arg.membershipId !== undefined;
     }
 
     private showTheIpAnalyserBanner(ipanalyserRedirect: boolean) {

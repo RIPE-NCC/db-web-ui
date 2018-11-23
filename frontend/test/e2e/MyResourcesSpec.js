@@ -74,14 +74,12 @@ describe('My resources', function () {
         expect(page.transferMenuItems.get(1).getText()).toContain('Transfer customer\'s resources');
     });
 
-    it('should hide menu item Request resources in ... button for selected not LIR organisation', function () {
+    it('should hide ... button for selected not LIR organisation', function () {
         page.orgSelector.click();
-        // //selected Swi Rop Gonggrijp - ORG
+        //selected Swi Rop Gonggrijp - ORG
         page.orgSelectorOptions1.click();
-        expect(page.btnTransfer.isPresent()).toEqual(true);
-        page.btnTransfer.click();
-        expect(page.transferMenuItems.count()).toEqual(1);
-        // //selected SURFnet bv - LIR
+        expect(page.btnTransfer.isPresent()).toEqual(false);
+        //selected SURFnet bv - LIR
         page.orgSelector.click();
         page.orgSelectorOptions0.click();
         expect(page.btnTransfer.isPresent()).toEqual(true);
