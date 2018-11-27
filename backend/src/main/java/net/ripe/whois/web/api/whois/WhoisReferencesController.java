@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,7 +38,7 @@ public class WhoisReferencesController extends ApiController {
     }
 
 
-    @RequestMapping(value = "/{source}/{objectType}/{name:.*}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{source}/{objectType}/{name:.*}", method = RequestMethod.GET, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<String> search(@PathVariable String source, @PathVariable String objectType, @PathVariable String name,
                                          @RequestParam(value = "limit", required = false) Integer limit,
                                          @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {

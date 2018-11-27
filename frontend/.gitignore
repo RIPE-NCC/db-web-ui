@@ -9,4 +9,3 @@ reports/
 .baseDir.ts
 !test/lib/*.jar
 tscommand-*.tmp.txt
-package-lock.json

@@ -3,6 +3,7 @@ package net.ripe.whois.web.api.whois;
 import net.ripe.whois.services.WhoisService;
 import net.ripe.whois.web.api.ApiController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class WhoisHierarchyController extends ApiController {
 
     /* TODO RequestMapping fail to work with slashes inside of
        the path parameters, so we use query parameters for now */
-    @RequestMapping(value = "/parents-of", method = RequestMethod.GET)
+    @RequestMapping(value = "/parents-of", method = RequestMethod.GET, produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity getStatus(
         @RequestParam("type") final String type,
         @RequestParam("key") final String key,
