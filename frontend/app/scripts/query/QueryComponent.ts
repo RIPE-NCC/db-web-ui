@@ -52,8 +52,8 @@ class QueryController {
 
     public qp: QueryParameters;
 
-    public numResultsToShow = 20;
-    public showScroller = true;
+    public offset = 0;
+    public showScroller = false;
     public results: IWhoisObjectModel[];
     public errorMessages: IErrorMessageModel[];
 
@@ -91,18 +91,16 @@ class QueryController {
         this.qp.doNotRetrieveRelatedObjects = this.flagToBoolean(this.$stateParams.rflag, false); // -r
         this.qp.queryText = (this.$stateParams.searchtext || "").trim();
         if (this.qp.queryText) {
-            this.submitSearchForm();
+            this.doSearch();
         }
     }
 
     public submitSearchForm() {
         this.$location.search(this.qp.asLocationSearchParams());
-        // remove previous anchor from hash
+        this.clearResults();
         this.doSearch();
+        // remove previous anchor from hash
         this.setActiveAnchor("");
-        if (this.qp.queryText === this.$stateParams.searchtext) {
-            this.gotoAnchor();
-        }
     }
 
     public updateClicked(model: IWhoisObjectModel): void {
@@ -117,13 +115,13 @@ class QueryController {
 
     public doSearch() {
         if (!this.qp.queryText) {
-            this.results = [];
+            this.clearResults();
             return;
         }
         const cleanQp: QueryParameters = angular.copy(this.qp);
         // Reset on-screen widgets
         this.errorMessages = [];
-        this.results = [];
+
         const issues = cleanQp.validate();
         for (const msg of issues.warnings) {
             const err: IErrorMessageModel = {
@@ -140,26 +138,23 @@ class QueryController {
             this.errorMessages.push(err);
         }
         if (issues.errors.length) {
+            this.gotoAnchor();
             return;
         }
+
         this.service
-            .searchWhoisObjects(cleanQp)
+            .searchWhoisObjects(cleanQp, this.offset)
             .then(
                 (response) => {
                     this.handleWhoisSearch(response);
-                    this.gotoAnchor();
                     },
                 (error) => this.handleWhoisSearchError(error));
     }
 
     public lastResultOnScreen() {
-        if (this.results && this.numResultsToShow <= this.results.length) {
-            this.numResultsToShow += 20;
-            this.$scope.$apply();
-        }
-        if (this.results && this.numResultsToShow >= this.results.length) {
-            this.showScroller = false;
-            this.$scope.$apply();
+        if (this.showScroller && this.results) {
+            this.offset += QueryService.PAGE_SIZE;
+            this.doSearch();
         }
     }
 
@@ -218,15 +213,19 @@ class QueryController {
     }
 
     private handleWhoisSearch(response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
-        this.results = response.data.objects.object;
+        if (this.results) {
+            this.results = this.results.concat(response.data.objects.object);
+        } else {
+            this.results = response.data.objects.object;
+        }
+
         // multiple term searches can have errors, too
         const msgs = response.data.errormessages && response.data.errormessages.errormessage;
         if (msgs && msgs.length > 0) {
             this.errorMessages = msgs;
         }
-        this.showScroller = true;
-
         const qpClean = angular.copy(this.qp);
+
         qpClean.validate();
         const jsonQueryString = this.service.buildQueryStringForLink(qpClean);
         if (jsonQueryString) {
@@ -236,6 +235,10 @@ class QueryController {
         } else {
             this.link.perma = this.link.json = this.link.xml = "";
         }
+        if (this.offset === 0) {
+            this.gotoAnchor();
+        }
+        this.showScroller = response.data.objects.object.length === QueryService.PAGE_SIZE;
     }
 
     private handleWhoisSearchError(response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
@@ -244,6 +247,12 @@ class QueryController {
         if (msgs && msgs.length > 0) {
             this.errorMessages = msgs;
         }
+        this.gotoAnchor();
+    }
+
+    private clearResults() {
+        this.results = [];
+        this.offset = 0;
     }
 
     private convertListToMapOfBools(list: string[]) {

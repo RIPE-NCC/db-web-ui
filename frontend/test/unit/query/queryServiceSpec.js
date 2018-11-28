@@ -90,15 +90,15 @@ describe('The QueryService', function () {
     });
 
     it('should be able to run queries and accumulate results', function (done) {
-        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&managed-attributes=true&query-string=middlestown&resource-holder=true&type-filter=MNTNER,AS-SET")
+        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&limit=20&managed-attributes=true&query-string=middlestown&resource-holder=true&type-filter=MNTNER,AS-SET")
             .respond(404, mockResponse.middlestown);
-        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&managed-attributes=true&query-string=wakefield&resource-holder=true&type-filter=MNTNER,AS-SET")
+        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&limit=20&managed-attributes=true&query-string=wakefield&resource-holder=true&type-filter=MNTNER,AS-SET")
             .respond(mockResponse.wakefield);
-        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&managed-attributes=true&query-string=yorkshire&resource-holder=true&type-filter=MNTNER,AS-SET")
+        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&limit=20&managed-attributes=true&query-string=yorkshire&resource-holder=true&type-filter=MNTNER,AS-SET")
             .respond(mockResponse.yorkshire);
-        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&managed-attributes=true&query-string=horbury&resource-holder=true&type-filter=MNTNER,AS-SET")
+        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&limit=20&managed-attributes=true&query-string=horbury&resource-holder=true&type-filter=MNTNER,AS-SET")
             .respond(404, mockResponse.horbury);
-        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&managed-attributes=true&query-string=ossett&resource-holder=true&type-filter=MNTNER,AS-SET")
+        $httpBackend.when("GET", "api/whois/search?abuse-contact=true&flags=rB&ignore404=true&inverse-attribute=MNT-REF,MNT-BY&limit=20&managed-attributes=true&query-string=ossett&resource-holder=true&type-filter=MNTNER,AS-SET")
             .respond(404, mockResponse.ossett);
         var qp = {
             queryText: "middlestown;wakefield;yorkshire;horbury;ossett;dewsbury;netherton",
@@ -111,7 +111,7 @@ describe('The QueryService', function () {
             source: "TEST"
         };
         service.searchWhoisObjects(qp).then(function (resp) {
-            expect(resp.data.objects.object.length).toEqual(28);
+            expect(resp.data.objects.object.length).toEqual(27);
             expect(resp.data.errormessages.errormessage.length).toEqual(3);
             done();
         });
@@ -161,92 +161,6 @@ var mockResponse = {
         },
         "objects": {
             "object": [{
-                "type": "inetnum",
-                "link": {
-                    "type": "locator",
-                    "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/82.109.34.192 - 82.109.34.223"
-                },
-                "source": {
-                    "id": "ripe"
-                },
-                "primary-key": {
-                    "attribute": [{
-                        "name": "inetnum",
-                        "value": "82.109.34.192 - 82.109.34.223"
-                    }]
-                },
-                "attributes": {
-                    "attribute": [{
-                        "name": "inetnum",
-                        "value": "82.109.34.192 - 82.109.34.223"
-                    }, {
-                        "name": "netname",
-                        "value": "WAKEFIELD"
-                    }, {
-                        "name": "descr",
-                        "value": "Wakefield Media Centre Ltd"
-                    }, {
-                        "name": "descr",
-                        "value": "Office"
-                    }, {
-                        "name": "descr",
-                        "value": "Wakefield"
-                    }, {
-                        "name": "country",
-                        "value": "GB"
-                    }, {
-                        "link": {
-                            "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/person/CM2992-RIPE"
-                        },
-                        "name": "admin-c",
-                        "value": "CM2992-RIPE",
-                        "referenced-type": "person"
-                    }, {
-                        "link": {
-                            "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/role/EH92-RIPE"
-                        },
-                        "name": "tech-c",
-                        "value": "EH92-RIPE",
-                        "referenced-type": "role"
-                    }, {
-                        "name": "status",
-                        "value": "ASSIGNED PA"
-                    }, {
-                        "link": {
-                            "type": "locator",
-                            "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/EASYNET-UK-MNT"
-                        },
-                        "name": "mnt-by",
-                        "value": "EASYNET-UK-MNT",
-                        "referenced-type": "mntner"
-                    }, {
-                        "name": "created",
-                        "value": "2004-11-17T12:00:56Z"
-                    }, {
-                        "name": "last-modified",
-                        "value": "2004-11-17T12:00:56Z"
-                    }, {
-                        "name": "source",
-                        "value": "RIPE"
-                    }]
-                },
-                "tags": {
-                    "tag": [{
-                        "id": "RIPE-USER-RESOURCE"
-                    }]
-                },
-                "resource-holder": {
-                    "key": "ORG-EA49-RIPE",
-                    "name": "Easynet Global Services Limited"
-                },
-                "abuse-contact": {
-                    "key": "AR17615-RIPE",
-                    "email": "abuse@easynet.com"
-                },
-                "managed": false
-            }, {
                 "type": "role",
                 "link": {
                     "type": "locator",

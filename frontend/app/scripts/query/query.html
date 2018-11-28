@@ -407,7 +407,7 @@
             <div class="small" ng-bind-html="'msg.searchResultsTandCLink.text' | label"></div>
         </div>
     </div>
-    <div class="clearfix" ng-repeat="whoisObject in $ctrl.results" ng-if="$index < $ctrl.numResultsToShow">
+        <div class="clearfix" ng-repeat="whoisObject in $ctrl.results">
         <div class="resultpane">
             <lookup ng-model="whoisObject" update-clicked="$ctrl.updateClicked(whoisObject)"></lookup>
         </div>

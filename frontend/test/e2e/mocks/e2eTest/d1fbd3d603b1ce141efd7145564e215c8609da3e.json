@@ -1,5 +1,5 @@
 {
-  "requestUrl": "/api/whois/search?abuse-contact=true&flags=rB&ignore404=true&managed-attributes=true&query-string=193.0.0.0&resource-holder=true&type-filter=INETNUM",
+  "requestUrl": "/api/whois/search?abuse-contact=true&flags=rB&ignore404=true&limit=20&managed-attributes=true&offset=0&query-string=193.0.0.0&resource-holder=true&type-filter=INETNUM",
   "contentType": "application/javascript",
   "statusCode": 200,
   	"data": {

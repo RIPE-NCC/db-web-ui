@@ -1,6 +1,6 @@
 interface IQueryService {
 
-    searchWhoisObjects(qp: QueryParameters): ng.IHttpPromise<IWhoisResponseModel>;
+    searchWhoisObjects(qp: QueryParameters, offset: number): ng.IHttpPromise<IWhoisResponseModel>;
 
     buildPermalink(qp: QueryParameters): string;
 
@@ -19,6 +19,8 @@ class QueryService implements IQueryService {
 
     public static $inject = ["$http", "$q"];
 
+    public static readonly PAGE_SIZE = 20;
+
     private static accumulate(resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>,
                               acc: { data: IWhoisResponseModel}) {
         if (resp.data.objects) {
@@ -34,7 +36,7 @@ class QueryService implements IQueryService {
                 private $q: ng.IQService) {
     }
 
-    public searchWhoisObjects(qp: QueryParameters): ng.IHttpPromise<IWhoisResponseModel> {
+    public searchWhoisObjects(qp: QueryParameters, offset: number): ng.IHttpPromise<IWhoisResponseModel> {
         const typeFilter = qp.types ? Object.keys(qp.types).filter((type) => qp.types[type]).join(",") : "";
         const inverseFilter = qp.inverse ? Object.keys(qp.inverse).filter((inv) => qp.inverse[inv]).join(",") : "";
         const config: angular.IRequestShortcutConfig = {};
@@ -66,6 +68,10 @@ class QueryService implements IQueryService {
         config.params.flags = qp.source === "GRS" ? flags ? ["resource", flags] : ["resource"] : flags;
 
         const acc = angular.copy(EMPTY_MODEL);
+
+        // paging:
+        config.params.offset = offset;
+        config.params.limit = QueryService.PAGE_SIZE;
 
         return config.params["query-string"]
 

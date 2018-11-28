@@ -68,7 +68,7 @@ describe('The query pagina', function () {
         page.byId('search:types:6').click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        expect(page.resultsSection.getAttribute('innerHTML')).toContain('?source=apnic&amp;key=ORG-IANA1-RIPE&amp;type=organisation');
+        expect(page.resultsSection.getAttribute('innerHTML')).toContain('?source=RIPE&amp;key=ORG-IANA1-RIPE&amp;type=organisation');
     });
 
     it('should be specified ripe stat link', function () {

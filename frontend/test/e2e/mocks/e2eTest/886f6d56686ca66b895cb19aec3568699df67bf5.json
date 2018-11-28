@@ -1,0 +1,157 @@
+{
+  "requestUrl": "/api/whois/search?abuse-contact=true&flags=rB&ignore404=true&limit=20&managed-attributes=true&offset=0&query-string=223.0.0.0&resource-holder=true&type-filter=INETNUM",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "service": {
+      "name": "search"
+    },
+    "parameters": {
+      "inverse-lookup": {},
+      "type-filters": {
+        "type-filter": [
+          {
+            "id": "INETNUM"
+          }
+        ]
+      },
+      "flags": {
+        "flag": [
+          {
+            "value": "no-referenced"
+          },
+          {
+            "value": "no-filtering"
+          }
+        ]
+      },
+      "query-strings": {
+        "query-string": [
+          {
+            "value": "223.0.0.0"
+          }
+        ]
+      },
+      "sources": {}
+    },
+    "objects": {
+      "object": [
+        {
+          "type": "inetnum",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/223.0.0.0 - 223.255.255.255"
+          },
+          "source": {
+            "id": "ripe"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "inetnum",
+                "value": "223.0.0.0 - 223.255.255.255"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "inetnum",
+                "value": "223.0.0.0 - 223.255.255.255",
+                "managed": true
+              },
+              {
+                "name": "netname",
+                "value": "NON-RIPE-NCC-MANAGED-ADDRESS-BLOCK",
+                "managed": true
+              },
+              {
+                "name": "descr",
+                "value": "IPv4 address block not managed by the RIPE NCC"
+              },
+              {
+                "name": "remarks",
+                "value": "------------------------------------------------------"
+              },
+              {
+                "name": "country",
+                "value": "EU",
+                "comment": "Country is really world wide"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/IANA1-RIPE"
+                },
+                "name": "admin-c",
+                "value": "IANA1-RIPE",
+                "referenced-type": "role"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-IANA1-RIPE"
+                },
+                "name": "org",
+                "value": "ORG-IANA1-RIPE",
+                "referenced-type": "organisation",
+                "managed": true
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/IANA1-RIPE"
+                },
+                "name": "tech-c",
+                "value": "IANA1-RIPE",
+                "referenced-type": "role"
+              },
+              {
+                "name": "status",
+                "value": "ALLOCATED UNSPECIFIED",
+                "managed": true
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                },
+                "name": "mnt-by",
+                "value": "RIPE-NCC-HM-MNT",
+                "referenced-type": "mntner",
+                "managed": true
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+                },
+                "name": "mnt-lower",
+                "value": "RIPE-NCC-HM-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "created",
+                "value": "2014-11-07T14:15:07Z"
+              },
+              {
+                "name": "last-modified",
+                "value": "2018-09-04T13:31:34Z"
+              },
+              {
+                "name": "source",
+                "value": "RIPE",
+                "managed": true
+              }
+            ]
+          },
+          "managed": true
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "type": "locator",
+      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}
