@@ -102,7 +102,7 @@ class UserInfoService {
     public setSelectedOrganisation(selected: any) {
         this.selectedOrganisation = selected;
         this.$cookies.put("activeMembershipId",
-            selected.membershipId != null ? selected.membershipId : "org:" + selected.orgObjectId,
+            selected.membershipId !== null ? selected.membershipId : "org:" + selected.orgObjectId,
             {path: "/", domain: ".ripe.net", secure: true});
         localStorage.removeItem("selectedOrg");
     }

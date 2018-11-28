@@ -32,6 +32,7 @@ class ResourcesController {
     private isShowingSponsored = false;
     private activeSponsoredTab = 0;
     private lastTab: string;
+    private showAlerts: boolean = true;
 
     constructor(private $location: angular.ILocationService,
                 private $log: angular.ILogService,
@@ -41,7 +42,9 @@ class ResourcesController {
                 private $q: ng.IQService,
                 private resourcesDataService: IResourcesDataService,
                 private userInfoService: UserInfoService) {
+    }
 
+    public $onInit() {
         this.isShowingSponsored = typeof this.$state.params.sponsored === "string" ?
             this.$state.params.sponsored === "true" : this.$state.params.sponsored;
         this.activeSponsoredTab = this.isShowingSponsored ? 1 : 0;
@@ -60,9 +63,10 @@ class ResourcesController {
             default:
                 this.typeIndex = 0;
         }
+        this.showAlerts = !this.isShowingSponsored && this.lastTab === "inetnum";
 
         // Callbacks
-        $scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
+        this.$scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.selectedOrg = selected;
             // go back to the start "My Resources" page
             this.isShowingSponsored = false;
@@ -73,18 +77,24 @@ class ResourcesController {
     }
 
     public tabClicked(tabName: string) {
-        this.lastTab = tabName;
-        this.$location.search({type: tabName, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
+        if (this.lastTab !== tabName) {
+            this.lastTab = tabName;
+            this.$location.search({type: tabName, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
+        }
     }
 
     public sponsoredResourcesTabClicked() {
-        this.isShowingSponsored = true;
-        this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
+        if (!this.isShowingSponsored) {
+            this.isShowingSponsored = true;
+            this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
+        }
     }
 
     public resourcesTabClicked() {
-        this.isShowingSponsored = false;
-        this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
+        if (this.isShowingSponsored) {
+            this.isShowingSponsored = false;
+            this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
+        }
     }
 
     public refreshPage() {
@@ -103,7 +113,7 @@ class ResourcesController {
     }
 
     private isUserInfoRegistration(arg: any): arg is IUserInfoRegistration {
-        return arg.membershipId !== undefined;
+        return !!arg && !!arg.membershipId;
     }
 
     private showTheIpAnalyserBanner(ipanalyserRedirect: boolean) {
