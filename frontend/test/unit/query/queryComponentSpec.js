@@ -204,7 +204,8 @@ describe('The QueryComponent', function () {
                 },
                 buildPermalink: function () {
                     return "";
-                }
+                },
+                PAGE_SIZE: 20
             };
         });
 

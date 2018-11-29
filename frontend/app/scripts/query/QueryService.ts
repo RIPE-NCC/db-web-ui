@@ -1,5 +1,7 @@
 interface IQueryService {
 
+    PAGE_SIZE: number;
+
     searchWhoisObjects(qp: QueryParameters, offset: number): ng.IHttpPromise<IWhoisResponseModel>;
 
     buildPermalink(qp: QueryParameters): string;
@@ -17,9 +19,9 @@ const EMPTY_MODEL: { data: IWhoisResponseModel} = {
 
 class QueryService implements IQueryService {
 
-    public static $inject = ["$http", "$q"];
+    public PAGE_SIZE: number = 20;
 
-    public static readonly PAGE_SIZE = 20;
+    public static $inject = ["$http", "$q"];
 
     private static accumulate(resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>,
                               acc: { data: IWhoisResponseModel}) {
@@ -71,7 +73,7 @@ class QueryService implements IQueryService {
 
         // paging:
         config.params.offset = offset;
-        config.params.limit = QueryService.PAGE_SIZE;
+        config.params.limit = this.PAGE_SIZE;
 
         return config.params["query-string"]
 

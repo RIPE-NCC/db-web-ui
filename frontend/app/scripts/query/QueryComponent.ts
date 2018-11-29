@@ -153,7 +153,7 @@ class QueryController {
 
     public lastResultOnScreen() {
         if (this.showScroller && this.results) {
-            this.offset += QueryService.PAGE_SIZE;
+            this.offset += this.service.PAGE_SIZE;
             this.doSearch();
         }
     }
@@ -238,7 +238,7 @@ class QueryController {
         if (this.offset === 0) {
             this.gotoAnchor();
         }
-        this.showScroller = response.data.objects.object.length === QueryService.PAGE_SIZE;
+        this.showScroller = response.data.objects.object.length === this.service.PAGE_SIZE;
     }
 
     private handleWhoisSearchError(response: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) {
