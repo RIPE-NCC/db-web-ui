@@ -89,6 +89,40 @@ describe('The query pagina', function () {
         expect(urlRoute).toEqual('https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb');
     });
 
+    it('should show object banner with text - No abuse contact found', function () {
+        page.inpQueryString.sendKeys('193.0.0.0');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        // ripe stat link for should contain inetnum
+        expect(page.lookupHeader.isPresent()).toEqual(true);
+        expect(page.lookupHeader.getText()).toContain('No abuse contact found');
+    });
+
+    it('should show object banner with text - No abuse contact found', function () {
+        page.inpQueryString.sendKeys('193.201.0.0');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        expect(page.lookupHeader.isPresent()).toEqual(true);
+        expect(page.lookupHeader.getText()).toContain('Responsible organisation: WITBE NET S.A.');
+        expect(page.lookupHeaderEmailLink.get(0).getAttribute('href')).toContain('?source=ripe&key=ORG-WA9-RIPE&type=organisation');
+        expect(page.lookupHeader.getText()).toContain('Abuse contact info: lir@witbe.net');
+        expect(page.lookupHeaderEmailLink.get(1).getAttribute('href')).toContain('?source=ripe&key=AR15400-RIPE&type=role');
+    });
+
+    it('should show checkbox - Highlight RIPE NCC managed values', function () {
+        page.inpQueryString.sendKeys('193.201.0.0');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        expect(page.ripeManagedAttributesLabel.getText()).toContain('Highlight RIPE NCC managed values');
+        // unselect
+        page.ripeManagedAttributesCheckbox.click();
+        expect(page.showRipeManagedAttrSelected.isPresent()).toEqual(false);
+        // select
+        page.ripeManagedAttributesCheckbox.click();
+        expect(page.showRipeManagedAttrSelected.isPresent()).toEqual(true);
+
+    });
+
     it('should be able to show out of region route from ripe db', function () {
         page.inpQueryString.sendKeys('211.43.192.0');
         page.scrollIntoView(page.btnSubmitQuery);
@@ -117,10 +151,17 @@ describe('The query pagina', function () {
 
     it('should contain ripe-nonauth for source in link on attribute value', function () {
         page.inpQueryString.sendKeys('211.43.192.0');
-        page.scrollIntoView(page.inpDontRetrieveRelated);
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(2, 0).getAttribute('href')).toContain('?source=ripe-nonauth&key=211.43.192.0/19AS9777&type=route');
+    });
+
+    it('should contain date in proper format', function () {
+        page.inpQueryString.sendKeys('211.43.192.0');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        expect(page.getAttributeValueFromWhoisObjectOnQueryPage(2, 5).getText()).toContain('1970-01-01T00:00:00Z');
+        expect(page.getAttributeValueFromWhoisObjectOnQueryPage(2, 6).getText()).toContain('2018-07-23T13:00:20Z');
     });
 
     it('should be able to show out of region route from ripe db without related objects', function () {

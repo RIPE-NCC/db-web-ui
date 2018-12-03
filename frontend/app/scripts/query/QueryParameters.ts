@@ -176,13 +176,13 @@ class QueryParameters {
         };
     }
 
-    public asLocationSearchParams() {
+    public asLocationSearchParams(): IQueryState {
         return {
-            bflag: this.showFullObjectDetails,
-            dflag: this.reverseDomain || undefined,
+            bflag: this.showFullObjectDetails.toString(),
+            dflag: this.reverseDomain.toString() || undefined,
             hierarchyFlag: QueryParameters.shortHierarchyFlagToLong(this.hierarchy) || undefined,
             inverse: QueryParameters.convertMapOfBoolsToList(this.inverse).join(";") || undefined,
-            rflag: this.doNotRetrieveRelatedObjects || undefined,
+            rflag: this.doNotRetrieveRelatedObjects.toString() || undefined,
             searchtext: this.queryText && this.queryText.trim() || "",
             source: this.source,
             types: QueryParameters.convertMapOfBoolsToList(this.types).join(";") || undefined,

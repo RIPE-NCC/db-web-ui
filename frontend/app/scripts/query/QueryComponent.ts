@@ -90,17 +90,20 @@ class QueryController {
         this.qp.showFullObjectDetails = this.flagToBoolean(this.$stateParams.bflag, true); // -B
         this.qp.doNotRetrieveRelatedObjects = this.flagToBoolean(this.$stateParams.rflag, false); // -r
         this.qp.queryText = (this.$stateParams.searchtext || "").trim();
+        // on page refresh or in case of bookmarked page
         if (this.qp.queryText) {
             this.doSearch();
         }
     }
 
     public submitSearchForm() {
-        this.$location.search(this.qp.asLocationSearchParams());
-        this.clearResults();
-        this.doSearch();
-        // remove previous anchor from hash
-        this.setActiveAnchor("");
+        const formQueryParam = this.qp.asLocationSearchParams();
+        this.$location.search(formQueryParam);
+        // when query param doesn't change $location doesn't make search
+        if (this.equalsQueryParameters(formQueryParam, this.$stateParams)) {
+            this.clearResults();
+            this.doSearch();
+        }
     }
 
     public updateClicked(model: IWhoisObjectModel): void {
@@ -270,6 +273,24 @@ class QueryController {
             return def;
         }
         return flag.toLowerCase() === "true";
+    }
+
+    private equalsQueryParameters(formQueryParam: IQueryState, stateParams: IQueryState): boolean {
+        return stateParams
+            && formQueryParam.source === stateParams.source
+            && this.equalsItemsInString(formQueryParam.types, stateParams.types)
+            && this.equalsItemsInString(formQueryParam.inverse, stateParams.inverse)
+            && formQueryParam.hierarchyFlag === this.$stateParams.hierarchyFlag
+            && formQueryParam.dflag === this.$stateParams.dflag
+            && formQueryParam.bflag === this.$stateParams.bflag
+            && formQueryParam.rflag === this.$stateParams.rflag
+            && formQueryParam.searchtext === this.$stateParams.searchtext;
+    }
+
+    private equalsItemsInString(formQueryParamItems: string, stateParamItems: string): boolean {
+        const listFormItems = formQueryParamItems ? formQueryParamItems.split(";") : formQueryParamItems;
+        const listStateItems = stateParamItems ? stateParamItems.split(";") : stateParamItems;
+        return _.difference(listFormItems, listStateItems).length === 0;
     }
 
     private gotoAnchor() {

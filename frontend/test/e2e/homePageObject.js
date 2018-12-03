@@ -181,8 +181,11 @@ module.exports = {
     // Whois Object Viewer / lookup
     lookupPageViewer: element(by.css('whois-object-viewer')),
     lookupPageObjectLi: element(by.css('whois-object-viewer')).all(by.css('li')),
-    lookupHeader: element(by.css('lookup')).element(by.css('.lookupheader')),
-    ripeManagedAttributesCheckbox: element(by.css('whois-object-viewer')).element(by.css('.checkbox')),
+    lookupHeader: element(by.css('lookup')).all(by.css('.lookupheader')).get(0),
+    lookupHeaderEmailLink: element(by.css('lookup')).element(by.css('.lookupheader')).all(by.css('span a')),
+    showRipeManagedAttrSelected: element(by.css('lookup')).element(by.css('.showripemanaged')),
+    ripeManagedAttributesLabel: element(by.css('whois-object-viewer')).element(by.css('.checkbox')),
+    ripeManagedAttributesCheckbox: element(by.model('$ctrl.showRipeManagedAttrs')),
     btnRipeStat: element(by.css('whois-object-viewer')).element(by.css('.ripe-stat-button')),
     lookupLinkToXmlJSON: element(by.id('resultsSection')).element(by.css('.resultlinks')).all(by.css('a')),
 

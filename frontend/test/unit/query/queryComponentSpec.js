@@ -73,6 +73,7 @@ describe('The QueryComponent', function () {
         });
 
         it('should parse the options into the form', function () {
+            calledApply = 0;
             var ctrl = $componentController('query', {
                 $stateParams: sp,
                 QueryService: queryService
@@ -88,9 +89,11 @@ describe('The QueryComponent', function () {
             expect(ctrl.whoisCliQuery()).toEqual("-T inetnum,inet6num -xd 193.0.0.0");
             // ctrl.doSearch();
             expect(ctrl.results.length).toEqual(4);
+            expect(calledApply).toEqual(1);
         });
 
         it('should handle an empty search string', function () {
+            calledApply = 0;
             sp.searchtext = '';
             sp.dflag = "";
             var ctrl = $componentController('query', {
@@ -109,6 +112,7 @@ describe('The QueryComponent', function () {
 
             ctrl.doSearch();
             expect(ctrl.results.length).toEqual(0);
+            expect(calledApply).toEqual(0);
         });
 
         it('should handle empty params', function () {
@@ -119,6 +123,9 @@ describe('The QueryComponent', function () {
             sp.rflag = 'true';
             sp.dflag = 'false';
             sp.source = 'GRS';
+
+            calledApply = 0;
+
             var ctrl = $componentController('query', {
                 $stateParams: sp,
                 QueryService: queryService
@@ -133,8 +140,8 @@ describe('The QueryComponent', function () {
             expect(ctrl.qp.source).toEqual("GRS");
             expect(ctrl.whoisCliQuery().trim()).toEqual("-Br --resource 193.0.0.0");
 
-            // ctrl.doSearch();
             expect(ctrl.results.length).toEqual(4);
+            expect(calledApply).toEqual(1);
         });
 
         it('should handle empty flags', function () {
@@ -289,8 +296,10 @@ describe('The QueryComponent', function () {
             }
         };
 
+        var calledApply = 0;
         var queryService = {
             searchWhoisObjects: function () {
+                calledApply++;
                 return {
                     then: function (successFunc, errorFunc) {
                         errorFunc(errorResponse);
@@ -326,6 +335,7 @@ describe('The QueryComponent', function () {
             expect(ctrl.formatError(ctrl.errorMessages[1])).toEqual("So Goodbye, Yellow Brick Road");
             expect(ctrl.formatError(ctrl.errorMessages[2])).toEqual("Goodbye, cruel world!");
             expect(ctrl.formatError(ctrl.errorMessages[3])).toEqual("Broken message");
+            expect(calledApply).toEqual(1);
         });
     });
 });

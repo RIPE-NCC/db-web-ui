@@ -18,7 +18,7 @@ describe('The lookup page', function () {
         expect(page.lookupPageObjectLi.count()).toEqual(25);
         expect(page.lookupHeader.isPresent()).toEqual(true);
         expect(page.lookupHeader.getText()).toContain('Responsible organisation: Internet Assigned Numbers Authority');
-        expect(page.ripeManagedAttributesCheckbox.getText()).toContain('Highlight RIPE NCC managed values');
+        expect(page.ripeManagedAttributesLabel.getText()).toContain('Highlight RIPE NCC managed values');
 
         page.scrollIntoView(page.byId('showEntireObjectInViewer'));
         page.byId('showEntireObjectInViewer').click();
