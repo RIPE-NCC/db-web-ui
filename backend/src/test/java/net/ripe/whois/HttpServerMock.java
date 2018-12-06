@@ -1,6 +1,7 @@
 package net.ripe.whois;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.NetworkConnector;
 import org.eclipse.jetty.server.Server;
@@ -10,13 +11,16 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
+import org.xml.sax.InputSource;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.HttpHeaders;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -114,11 +118,31 @@ public class HttpServerMock {
         private void handleResponse(final HttpMethod method, final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
             final String mockResponse = responseMap.remove(request.getRequestURI());
             if (mockResponse != null) {
-                response.setHeader(HttpHeaders.CONTENT_TYPE, "application/xml;charset=UTF-8");
+                String responseType = getResponseType(mockResponse);
+                if (responseType != null)
+                    response.setHeader(HttpHeaders.CONTENT_TYPE, responseType);
+
                 response.getWriter().write(mockResponse);
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.format("no mocked response found for %s: %s", method, request.getRequestURI()));
             }
+        }
+
+        private String getResponseType(String message) {
+            try {
+                new ObjectMapper().readTree(message);
+                return "application/json;charset=UTF-8";
+            } catch (IOException e) {
+                LOGGER.info("Message is not valid JSON.");
+            }
+
+            try {
+                DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(message)));
+                return "application/xml;charset=UTF-8";
+            } catch (Exception e) {
+                LOGGER.info("Message is not valid XML.");
+            }
+            return null;
         }
 
 

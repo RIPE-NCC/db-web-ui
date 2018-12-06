@@ -30,7 +30,7 @@ public class ResourceTicketService {
     }
 
     @Cacheable("net.ripe.whois.web.api.baapps.ResourceTicketService")
-    public ResourceTicketMap getTicketsForMember(final String memberId) throws JSONException {
+    public ResourceTicketMap getTicketsForMember(final long memberId) throws JSONException {
         final String jsonTickets = baAppsService.getResourceTickets(memberId);
         final JSONObject content = new JSONObject(jsonTickets).getJSONObject("response").getJSONObject("content");
         final ResourceTicketMap map = new ResourceTicketMap();

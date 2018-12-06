@@ -4,6 +4,7 @@ import com.google.common.collect.Maps;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.db.whois.api.rest.domain.WhoisResources;
 import net.ripe.db.whois.common.rpsl.AttributeType;
+import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
 
 @Service
 public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceBase {
@@ -98,12 +102,6 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         return variables;
     }
 
-    private MultiValueMap<String, String> withHeaders(final String accept) {
-        final MultiValueMap<String, String> headers = new HttpHeaders();
-        headers.set("Accept", accept);
-        return headers;
-    }
-
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) {
         final URI uri = composeWhoisUrl(request);
         LOGGER.info("Calling WhoisInternalService {}", uri);
@@ -113,6 +111,23 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
                 HttpMethod.valueOf(request.getMethod().toUpperCase()),
                 new HttpEntity<>(body, headers),
                 String.class), LOGGER);
+    }
+
+    public UserInfoResponse getUserInfo(String crowdToken) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Cookie",CROWD_TOKEN_KEY + "=" + crowdToken);
+        final URI uri = whoisInternalProxy.composeProxyUrl("api/user/info", apiUrl, apiKey);
+        LOGGER.info("Calling Whois InternalService to retrieve user info {}", uri);
+        try {
+            return restTemplate.exchange(uri, HttpMethod.GET,
+                new HttpEntity<>("", httpHeaders), UserInfoResponse.class).getBody();
+        } catch (HttpClientErrorException e) {
+            LOGGER.warn("Failed to retrieve user info from whois internal {}", e.getMessage());
+            throw new RestClientException(e.getStatusCode().value(), e.getStatusCode().getReasonPhrase());
+        } catch (Exception e){
+            LOGGER.warn("Exception: Failed to parse user info from whois internal {}", e.getMessage());
+            throw new RestClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
+        }
     }
 
     public ResponseEntity<byte[]> bypassFile(final HttpServletRequest request, final String body, final HttpHeaders headers) {

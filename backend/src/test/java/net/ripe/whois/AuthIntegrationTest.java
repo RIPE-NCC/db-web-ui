@@ -7,58 +7,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.io.FileNotFoundException;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
 
 public class AuthIntegrationTest extends AbstractIntegrationTest {
 
-    private static final String LIRS_MOCK = "{" +
-            "\"response\":{" +
-            "\"status\":200," +
-            "\"message\":\"OK\"," +
-            "\"pageNumber\":1," +
-            "\"pageSize\":1," +
-            "\"pageCount\":1," +
-            "\"startIndex\":1," +
-            "\"totalSize\":1," +
-            "\"links\":[]," +
-            "\"results\":[{\"membershipId\":7347," +
-            "\"regId\":\"zz.example\"," +
-            "\"organisationname\":\"Internet Provider BV\"," +
-            "\"serviceLevel\":\"NORMAL\"," +
-            "\"orgId\":\"ORG-EIP1-RIPE\"," +
-            "\"billingPhase\":0}," +
-            "{\"membershipId\":3629," +
-            "\"regId\":\"nl.surfnet\"," +
-            "\"organisationname\":\"SURFnet bv\"," +
-            "\"serviceLevel\":\"NORMAL\"," +
-            "\"orgId\":\"ORG-Sb3-RIPE\"," +
-            "\"billingPhase\":0}," +
-            "{\"membershipId\":2176," +
-            "\"regId\":\"eu.ntteurope\"," +
-            "\"organisationname\":\"NTT Europe Limited\"," +
-            "\"serviceLevel\":\"NORMAL\"," +
-            "\"orgId\":\"ORG-NEL1-RIPE\"," +
-            "\"billingPhase\":0}," +
-            "{\"membershipId\":869," +
-            "\"regId\":\"ch.unisource\"," +
-            "\"organisationname\":\"Swisscom (Switzerland) Ltd\"," +
-            "\"serviceLevel\":\"NORMAL\"," +
-            "\"orgId\":\"ORG-SI1-RIPE\"," +
-            "\"billingPhase\":0}," +
-            "{\"membershipId\":4517," +
-            "\"regId\":\"at.aconet\"," +
-            "\"organisationname\":\"ACONET\"," +
-            "\"serviceLevel\":\"NORMAL\"," +
-            "\"orgId\":\"ORG-AA1-RIPE\"," +
-            "\"billingPhase\":0}," +
-            "{\"membershipId\":16372," +
-            "\"regId\":\"nl.a2b-internet\"," +
-            "\"organisationname\":\"A2B IP B.V.\"," +
-            "\"serviceLevel\":\"NORMAL\"," +
-            "\"orgId\":\"ORG-AIbi1-RIPE\"," +
-            "\"billingPhase\":0}]}}";
 
     private static final String RESOURCES_MOCK = "{\n" +
             "  \"response\":{\n" +
@@ -217,7 +173,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
                         "</whois-resources>");
 
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", "crowd.token_key=aabbccdd");
+        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
 
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners", HttpMethod.GET, requestEntity, String.class);
@@ -235,7 +191,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
     @Test
     public void get_maintainers_invalid_cookie() {
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", "crowd.token_key=invalid");
+        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=invalid");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
 
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners", HttpMethod.GET, requestEntity, String.class);
@@ -244,12 +200,12 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
     }
 
     @Test
-    public void get_resource_tickets() {
-        mock("/authorisation-service/v2/notification/account/aabbccdd/member",LIRS_MOCK);
+    public void get_resource_tickets() throws FileNotFoundException {
+        mock("/api/user/info", getResource("mock/user-info.json"));
         mock("/resource-services/member-resources/7347", RESOURCES_MOCK);
 
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", "crowd.token_key=aabbccdd");
+        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-EIP1-RIPE/94.126.32.0/20", HttpMethod.GET, requestEntity, String.class);
         assertThat(response.getBody(), is(
@@ -260,11 +216,11 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void syncupdate_no_object() {
-        mock("/authorisation-service/v2/notification/account/aabbccdd/member",LIRS_MOCK);
+        mock("/api/user/info", getResource("mock/user-info.json"));
         mock("/resource-services/member-resources/7347", RESOURCES_MOCK);
 
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", "crowd.token_key=aabbccdd");
+        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-EIP1-RIPE/94.126.32.0/20", HttpMethod.GET, requestEntity, String.class);
         assertThat(response.getBody(), is(

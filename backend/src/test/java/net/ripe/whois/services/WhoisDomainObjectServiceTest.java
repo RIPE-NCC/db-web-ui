@@ -3,6 +3,7 @@ package net.ripe.whois.services;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.ripe.whois.AbstractIntegrationTest;
+import net.ripe.whois.CrowdTokenFilter;
 import net.ripe.whois.web.api.whois.domain.NameValuePair;
 import net.ripe.whois.web.api.whois.domain.WhoisWebDTO;
 import org.junit.Test;
@@ -26,7 +27,7 @@ public class WhoisDomainObjectServiceTest extends AbstractIntegrationTest {
     @Test
     public void create_domain_object() {
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", "crowd.token_key=aabbccdd");
+        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
 
         final WhoisWebDTO dto = new WhoisWebDTO();
         dto.passwords = Lists.newArrayList("test");

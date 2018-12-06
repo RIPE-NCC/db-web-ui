@@ -1,8 +1,12 @@
 package net.ripe.whois.services;
 
 import net.ripe.db.whois.api.rest.client.RestClientException;
+import net.ripe.whois.AbstractIntegrationTest;
+import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.client.MockRestServiceServer;
@@ -82,14 +86,17 @@ public class WhoisInternalServiceTest {
     private static final UUID USER_UUID = UUID.randomUUID();
     private static final String API_KEY = "DB-WHOIS-d5395e7fbf8d";
     public static final String URL = "/api/user/" + USER_UUID + "/maintainers?apiKey=" + API_KEY;
-
+    private static final String CROWD_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
 
     private final RestTemplate restTemplate = new RestTemplate();
-    private final WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("/");
+    private final WhoisInternalProxy whoisInternalProxy = new WhoisInternalProxy("");
 
     private final WhoisInternalService whoisInternalService = new WhoisInternalService(restTemplate, whoisInternalProxy, MOCK_WHOIS_INTERNAL_URL, API_KEY);
 
     private MockRestServiceServer mockServer;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -142,6 +149,43 @@ public class WhoisInternalServiceTest {
         } catch (RestClientException exc) {
             assertEquals(1, exc.getErrorMessages().size());
             assertEquals("Error", exc.getErrorMessages().get(0).getSeverity());
+        }
+    }
+
+    @Test
+    public void shouldRetrieveUserInfo(){
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?apiKey="+API_KEY))
+            .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
+                .body(AbstractIntegrationTest.getResource("mock/user-info.json")));
+
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(CROWD_TOKEN);
+
+        assertEquals("test@ripe.net", userInfoResponse.user.username);
+    }
+
+    @Test
+    public void shouldThrowExceptionUserInfoError(){
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?apiKey="+API_KEY))
+            .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
+
+        try{
+            whoisInternalService.getUserInfo(CROWD_TOKEN);
+        }catch (RestClientException e){
+            assertEquals(500, e.getStatus());
+            assertEquals("Internal server error", e.getErrorMessages().stream().findFirst().get().getText());
+        }
+    }
+
+    @Test
+    public void shouldThrowExceptionUserInfoErrorUnAuthorized(){
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?apiKey="+API_KEY))
+            .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
+
+        try{
+            whoisInternalService.getUserInfo(CROWD_TOKEN);
+        }catch (RestClientException e){
+            assertEquals(401, e.getStatus());
+            assertEquals("Unauthorized", e.getErrorMessages().stream().findFirst().get().getText());
         }
     }
 }

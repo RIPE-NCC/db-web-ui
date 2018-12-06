@@ -19,6 +19,12 @@ public class WhoisInternalProxy implements ExchangeErrorHandler, WhoisServiceBas
     }
 
     URI composeProxyUrl(final String requestURI,
+                        final String apiUrl,
+                        final String apiKey) {
+        return composeProxyUrl(requestURI, "", "", apiUrl, apiKey, false);
+    }
+
+    URI composeProxyUrl(final String requestURI,
                         final String requestQueryString,
                         final String pathToReplace,
                         final String apiUrl,

@@ -27,42 +27,11 @@ public class BaAppsServiceTest {
         mockServer = MockRestServiceServer.createServer(restTemplate);
     }
 
-    private final static String crowdToken = "snfkvjnfkjvnsdnc";
-
-    @Test
-    public void shouldReturnLirsForMembers() {
-        String json = "{ \"id\": \"ORG-BLA\"}";
-
-        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/authorisation-service/v2/notification/account/" + crowdToken + "/member?service-level=NORMAL,PENDING_CLOSURE"))
-                .andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
-
-        assertEquals(json, baAppsService.getLirs(crowdToken));
-    }
-
-    @Test
-    public void shouldReturnLirsForRipeDbOrgs() {
-        String json = "{ \"id\": \"ORG-BLA\"}";
-
-        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/authorisation-service/v2/notification/account/" + crowdToken + "/ripe-db-orgs"))
-                .andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
-
-        assertEquals(json, baAppsService.getOrganisations(crowdToken));
-    }
-
-
-    @Test(expected = RestClientException.class)
-    public void shouldCrashToReturnLirsForMembers() {
-        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/authorisation-service/v2/notification/account/" + crowdToken + "/member?service-level=NORMAL,PENDING_CLOSURE"))
-                .andRespond(withServerError());
-
-        baAppsService.getLirs(crowdToken);
-    }
-
     @Test
     public void findTicketsForAGivenMember() {
-        String orgId = "ABC";
+        long orgId = 12345L;
         String json = "{\"tickets\":{\"94.126.32.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"94.126.32.0/21\"}]}}";
-        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/resource-services/member-resources/ABC?api-key=APIKEY-BAAPPS")).andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
+        mockServer.expect(requestTo(MOCK_BA_APPS_URL + "/resource-services/member-resources/"+orgId+"?api-key=APIKEY-BAAPPS")).andRespond(withSuccess(json, MediaType.APPLICATION_JSON));
         assertEquals(json, baAppsService.getResourceTickets(orgId));
     }
 }

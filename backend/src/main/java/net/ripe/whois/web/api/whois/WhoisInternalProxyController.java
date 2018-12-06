@@ -1,13 +1,17 @@
 package net.ripe.whois.web.api.whois;
 
+import com.google.common.base.Strings;
+import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.web.api.ApiController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,6 +23,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+
+import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
 
 @RestController
 @RequestMapping("/api/whois-internal")
@@ -67,8 +73,22 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
+    @RequestMapping(value = "/api/user/info", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> whoisInternalUserInfo(@CookieValue(value = CROWD_TOKEN_KEY, required=false) final String crowdToken) {
+
+        if (Strings.isNullOrEmpty(crowdToken)){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        try{
+            return ResponseEntity.ok().body(whoisInternalService.getUserInfo(crowdToken));
+        } catch (RestClientException re){
+            return new ResponseEntity<>(re.getMessage(), HttpStatus.valueOf(re.getStatus()));
+        }
+    }
+
     @RequestMapping(value = "/api/user/**")
-    public ResponseEntity<String> whoisInternalUserInfo(
+    public ResponseEntity<String> whoisInternalUserProxy(
             final HttpServletRequest request,
             @Nullable @RequestBody(required = false) final String body,
             @RequestHeader final HttpHeaders headers) {
@@ -89,8 +109,12 @@ public class WhoisInternalProxyController extends ApiController {
                                                  @Nullable @RequestBody(required = false) final String body,
                                                  @RequestHeader final HttpHeaders headers) {
         LOGGER.info("Proxy call from db web ui {}", request.getRequestURI());
+        return whoisInternalService.bypass(request, body, cleanHeaders(headers));
+    }
+
+    private HttpHeaders cleanHeaders(final HttpHeaders headers){
         headers.set(com.google.common.net.HttpHeaders.CONNECTION, "Close");
         removeUnnecessaryHeaders(headers);
-        return whoisInternalService.bypass(request, body, headers);
+        return headers;
     }
 }

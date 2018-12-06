@@ -1,5 +1,6 @@
 package net.ripe.whois.web.api.user;
 
+import com.google.common.base.Strings;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
 import net.ripe.whois.services.crowd.CrowdClient;
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
+
 
 @RestController
 @RequestMapping("/api/user")
@@ -36,7 +39,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getMaintainersCompact(@CookieValue(value = "crowd.token_key", required = true) final String crowdToken) {
+    public ResponseEntity getMaintainersCompact(@CookieValue(value = CROWD_TOKEN_KEY, required = true) final String crowdToken) {
 
         try {
             final UserSession userSession = crowdClient.getUserSession(crowdToken);
@@ -59,12 +62,12 @@ public class UserController {
     }
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getUserInfo(@CookieValue(value = "crowd.token_key", required = false) final String crowdToken) {
+    public ResponseEntity getUserInfo(@CookieValue(value = CROWD_TOKEN_KEY, required = false) final String crowdToken) {
         try {
-            if( crowdToken == null) {
-                // force authentication error instead of bad request
-                throw new CrowdClientException("Missing crowd cookie");
+            if (Strings.isNullOrEmpty(crowdToken)){
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
+
             final UserSession userSession = crowdClient.getUserSession(crowdToken);
             final String uuid = crowdClient.getUuid(userSession.getUsername());
             userSession.setUuid(uuid);

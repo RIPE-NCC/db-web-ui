@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
+
 @RestController
 @RequestMapping("/api/dns")
 @SuppressWarnings("UnusedDeclaration")
@@ -37,7 +39,7 @@ public class DnsCheckerController {
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
-    public ResponseEntity<Response> status(@CookieValue(value = "crowd.token_key") final String crowdToken,
+    public ResponseEntity<Response> status(@CookieValue(value = CROWD_TOKEN_KEY) final String crowdToken,
                                          @RequestParam(value = "ns") final String inNs,
                                          @RequestParam(value = "record") final String inRecord) {
 
