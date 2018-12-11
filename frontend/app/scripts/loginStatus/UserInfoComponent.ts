@@ -27,7 +27,7 @@ class UserInfoController {
                 RIPE.usermail = userInfo.user.username;
                 RIPE.usermenu = {
                     "User details": [["Profile", this.properties.LOGIN_URL + "/profile"],
-                            ["Logout", this.properties.LOGIN_URL + "/logout"]],
+                            ["Logout", this.properties.LOGOUT_URL]],
                 };
                 RIPE.userimg = this.properties.LOGIN_URL + "/picture/" + userInfo.user.uuid;
                 RIPE.user = {

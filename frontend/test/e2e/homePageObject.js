@@ -136,12 +136,17 @@ module.exports = {
     modalFooter: element(by.css('[uib-modal-window]')).element(by.css('.modal-footer')),
     modalSplashBtn: element(by.id('modal-splash-button')),
     modalSplashText: element(by.css('[uib-modal-window]')).element(by.css('h1')),
-
     orgSelector: element(by.id('organisation-selector')),
+
     orgSelectorOptions: element(by.id('organisation-selector')).all(by.css('small')),
     orgSelectorOptions0: element(by.id('ui-select-choices-row-0-0')),
     orgSelectorOptions1: element(by.id('ui-select-choices-row-0-1')),
     orgSelectorOptions2: element(by.id('ui-select-choices-row-0-2')),
+
+    // UserInfo component
+    userInfo: element(by.css('user-info')),
+    userInfoMenu: element(by.css('user-info')).element(by.id('loggedin-box')),
+    userInfoLogoutLink: element(by.css('user-info')).element(by.id('loggedin-box')).all(by.css('li')).get(1).element(by.css('a')),
 
     // Lefthand menu items
     topMenuItems: element.all(by.css('.toplevel li.child')),

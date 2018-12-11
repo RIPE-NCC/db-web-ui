@@ -40,6 +40,8 @@ public class AngularConstantsController {
     private String ripeSource;
     @Value("${crowd.login.url}")
     private String crowdLoginUrl;
+    @Value("${crowd.logout.url}")
+    private String crowdLogoutUrl;
     @Value("${crowd.access.url}")
     private String crowdAccessUrl;
     @Value("${portal.url}")
@@ -121,6 +123,7 @@ public class AngularConstantsController {
             "        BUILD_TAG: '" + getImplementationVersion() + "',\n" +
             "        LOGIN_URL: '" + crowdLoginUrl + "',\n" +
             "        ACCESS_URL: '" + crowdAccessUrl + "',\n" +
+            "        LOGOUT_URL: '" + crowdLogoutUrl + "',\n" +
             "        PORTAL_URL: '" + portalUrl + "',\n" +
             "        BANNER: '" + frontendBanner + "',\n" +
             "        GTM_ID: '" + frontendGtmId + "',\n" +

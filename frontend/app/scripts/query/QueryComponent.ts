@@ -14,6 +14,7 @@ interface IProperties {
     REST_SEARCH_URL: string;
     SOURCE: string;
     LOGIN_URL: string;
+    LOGOUT_URL: string;
     BUILD_TAG: string;
     PORTAL_URL: string;
 

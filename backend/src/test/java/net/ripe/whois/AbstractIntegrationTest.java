@@ -58,6 +58,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("portal.url", getMockServerUrl());
         System.setProperty("crowd.access.url", getMockServerUrl());
         System.setProperty("crowd.login.url", getMockServerUrl());
+        System.setProperty("crowd.logout.url", getMockServerUrl());
         System.setProperty("crowd.rest.url", getMockServerUrl());
         System.setProperty("rest.api.ripeUrl", getMockServerUrl());
         System.setProperty("dns.checker.url", getMockServerUrl());
