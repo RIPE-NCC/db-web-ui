@@ -66,7 +66,6 @@ describe('The create domain screen', function () {
     it('should show a domain creation form for IPv6 which rejects invalid nameservers', function () {
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
-        //page.scrollIntoView(page.inpPrefix);
         page.inpPrefix.sendKeys('2001:db8::/48');
 
         //browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
@@ -146,4 +145,24 @@ describe('The create domain screen', function () {
         expect(page.successMessage.getText()).toContain('object(s) have been successfully created');
     });
 
+
+    it('should show error messages for invalid prefix', function () {
+        page.scrollIntoView(page.modalSplashBtn);
+        page.modalSplashBtn.click();
+        browser.wait(function () {
+            return browser.isElementPresent(page.inpPrefix);
+        }, 5000);
+        page.inpPrefix.sendKeys('wrong-prefix\t');
+        browser.wait(function () {
+            return browser.isElementPresent(page.prefixErrMsg);
+        }, 5000);
+        expect(page.prefixErrMsg.getText()).toContain("Invalid prefix notation");
+        page.inpPrefix.clear();
+        page.inpPrefix.sendKeys('212.17.110.0/25\t');
+        browser.wait(function () {
+            return browser.isElementPresent(page.prefixErrMsgLink);
+        }, 5000);
+        expect(page.prefixErrMsg.getText()).toContain("Please use the Syncupdates page to create a domain object smaller than /24");
+        expect(page.prefixErrMsgLink.getAttribute('href')).toContain("#/syncupdates");
+    });
 });

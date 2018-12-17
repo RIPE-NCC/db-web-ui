@@ -235,7 +235,12 @@ class AttributeMetadataService {
         }
 
         attribute.$$info = "";
-        attribute.$$error = "Invalid prefix notation";
+        const cidrAddress = this.PrefixService.getAddress(attribute.value);
+        if (cidrAddress instanceof Address4 && cidrAddress.subnetMask > 24) {
+            attribute.$$error = "Please use the <a target='_blank' href='#/syncupdates'>Syncupdates page</a> to create a domain object smaller than /24";
+        } else {
+            attribute.$$error = "Invalid prefix notation";
+        }
         return true;
     }
 

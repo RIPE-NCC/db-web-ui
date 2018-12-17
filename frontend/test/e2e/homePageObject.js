@@ -91,6 +91,8 @@ module.exports = {
     inpStatus: element(by.id('createForm')).element(by.name('status')),
     inpStatusLink: element(by.id('createForm')).element(by.name('status')),
     inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('.ui-select-choices-group')).all(by.css('.ui-select-choices-row')),
+    prefixErrMsg: element(by.id('createForm')).element(by.css('.text-error')),
+    prefixErrMsgLink: element(by.id('createForm')).element(by.css('.text-error')).element(by.css('a')),
     inpPrefix: element(by.id('createForm')).element(by.name('prefix$0')),
     inpNserver1: element(by.id('createForm')).element(by.name('nserver$1')),
     inpNserver2: element(by.id('createForm')).element(by.name('nserver$2')),

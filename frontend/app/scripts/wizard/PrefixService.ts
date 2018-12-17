@@ -155,8 +155,6 @@ class PrefixService {
         return this.$http.get("api/whois/domain-objects/" + source + "/status");
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     private _isValidIp4Cidr(address: any) {
         // check the subnet mask was provided
         if (!address.parsedSubnet) {
