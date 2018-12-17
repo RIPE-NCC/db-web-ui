@@ -145,6 +145,19 @@ describe('The create domain screen', function () {
         expect(page.successMessage.getText()).toContain('object(s) have been successfully created');
     });
 
+    it('should show error message with link for existing prefix', function () {
+        page.scrollIntoView(page.modalSplashBtn);
+        page.modalSplashBtn.click();
+        browser.wait(function () {
+            return browser.isElementPresent(page.inpPrefix);
+        }, 5000);
+        page.inpPrefix.sendKeys('193.193.200.0/24\t');
+        browser.wait(function () {
+            return browser.isElementPresent(page.prefixErrMsg);
+        }, 5000);
+        expect(page.prefixErrMsg.getText()).toContain("Domain(s) already exist under this prefix");
+        expect(page.prefixErrMsgLink.getAttribute('href')).toContain("query?bflag=true&dflag=true&hierarchyFlag=exact&rflag=true&searchtext=193.193.200.0/24&source=RIPE&types=domain");
+    });
 
     it('should show error messages for invalid prefix', function () {
         page.scrollIntoView(page.modalSplashBtn);

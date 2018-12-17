@@ -1,6 +1,6 @@
 class AttributeMetadataService {
 
-    public static $inject = ["$rootScope", "JsUtilService", "PrefixService", "WhoisMetaService", "MntnerService"];
+    public static $inject = ["$rootScope", "JsUtilService", "PrefixService", "WhoisMetaService", "MntnerService", "$location"];
     public hostnameRe = /^[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+/;
     // Notes on metadata structure:
     //
@@ -54,7 +54,8 @@ class AttributeMetadataService {
                 private jsUtils: JsUtilService,
                 public PrefixService: PrefixService,
                 private WhoisMetaService: WhoisMetaService,
-                private MntnerService: MntnerService) {
+                private MntnerService: MntnerService,
+                private $location: ng.ILocationService) {
         this.objectMetadata = this.makeObjectMetadata();
     }
 
@@ -171,6 +172,14 @@ class AttributeMetadataService {
         return false;
     }
 
+    public setLinkToQueryPage(flag: string, prefix: string): string {
+        if (prefix !== "") {
+            const link = this.$location.absUrl().split("#")[0] + `#/query?bflag=true&dflag=true&hierarchyFlag=${flag}&rflag=true&searchtext=${prefix}&source=RIPE&types=domain`
+            return `Domain(s) <a href=${link} target='_blank'>already exist</a> under this prefix`;
+        }
+        return prefix;
+    }
+
     public domainsAlreadyExist = (objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) => {
         if (!attribute.value) {
             attribute.$$info = "";
@@ -178,31 +187,40 @@ class AttributeMetadataService {
             return true;
         }
         const existing = this.existingDomains[attribute.value];
-        if (angular.isNumber(existing)) {
-            if (existing) {
+        if (existing && angular.isNumber(existing.domainsInTheWay)) {
+            if (existing.hierarchyFlag) {
                 attribute.$$info = "";
-                attribute.$$error = "Domains already exist under this prefix";
+                attribute.$$error = this.setLinkToQueryPage(existing.hierarchyFlag, attribute.value);
             } else {
                 attribute.$$info = "Prefix looks OK";
                 attribute.$$error = "";
             }
-            return existing;
+            return !!existing.hierarchyFlag;
         }
         const doCall = () => {
             // otherwise find the domains and put them in the cache
             this.PrefixService.findExistingDomainsForPrefix(attribute.value)
                 .then((results) => {
                     let domainsInTheWay = 0;
+                    let hierarchyFlag: string;
                     _.forEach(results, (result: any) => {
                         if (result && result.data && result.data.objects) {
                             domainsInTheWay += result.data.objects.object.length;
+                            hierarchyFlag = result.config.params.flags === "drx" ? "exact" : "all-more";
                         }
                     });
-                    this.existingDomains[attribute.value] = domainsInTheWay;
+                    this.existingDomains[attribute.value] = {
+                        domainsInTheWay,
+                        hierarchyFlag,
+                    };
                     // let the evaluation engine know that we"ve got a new value
                     this.$rootScope.$broadcast("attribute-state-changed", attribute);
                 }, () => {
-                    this.existingDomains[attribute.value] = 0;
+                    const domainsInTheWay = 0;
+                    this.existingDomains[attribute.value] = {
+                        domainsInTheWay,
+                        undefined,
+                    };
                 });
         };
         if (this.existingDomainTo) {

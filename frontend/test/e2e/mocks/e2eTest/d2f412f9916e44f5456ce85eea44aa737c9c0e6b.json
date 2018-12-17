@@ -1,0 +1,139 @@
+{
+  "requestUrl": "/api/rest/search?flags=drx&ignore404=true&query-string=193.193.200.0%2F24&type-filter=domain",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "service": {
+      "name": "search"
+    },
+    "parameters": {
+      "inverse-lookup": {},
+      "type-filters": {
+        "type-filter": [
+          {
+            "id": "domain"
+          }
+        ]
+      },
+      "flags": {
+        "flag": [
+          {
+            "value": "reverse-domain"
+          },
+          {
+            "value": "no-referenced"
+          },
+          {
+            "value": "exact"
+          }
+        ]
+      },
+      "query-strings": {
+        "query-string": [
+          {
+            "value": "193.193.200.0/24"
+          }
+        ]
+      },
+      "sources": {}
+    },
+    "objects": {
+      "object": [
+        {
+          "type": "domain",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/ripe/domain/200.193.193.in-addr.arpa"
+          },
+          "source": {
+            "id": "ripe"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "domain",
+                "value": "200.193.193.in-addr.arpa"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "domain",
+                "value": "200.193.193.in-addr.arpa"
+              },
+              {
+                "name": "descr",
+                "value": "Splitblock-200"
+              },
+              {
+                "name": "descr",
+                "value": "Lucky Line, Ltd."
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/LNN1-RIPE"
+                },
+                "name": "admin-c",
+                "value": "LNN1-RIPE",
+                "referenced-type": "role"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/LNN1-RIPE"
+                },
+                "name": "tech-c",
+                "value": "LNN1-RIPE",
+                "referenced-type": "role"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/role/LNN1-RIPE"
+                },
+                "name": "zone-c",
+                "value": "LNN1-RIPE",
+                "referenced-type": "role"
+              },
+              {
+                "name": "nserver",
+                "value": "ns.lucky.net"
+              },
+              {
+                "name": "nserver",
+                "value": "ns.gu.kiev.ua"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/AS3254-MNT"
+                },
+                "name": "mnt-by",
+                "value": "AS3254-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "created",
+                "value": "1970-01-01T00:00:00Z"
+              },
+              {
+                "name": "last-modified",
+                "value": "2011-02-04T10:33:38Z"
+              },
+              {
+                "name": "source",
+                "value": "RIPE"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "type": "locator",
+      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}
