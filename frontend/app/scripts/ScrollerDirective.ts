@@ -37,7 +37,7 @@ class ScrollerDirective implements angular.IDirective {
                 return;
             }
             const raw = element[0];
-            const nearly = raw.getBoundingClientRect().top <
+            const nearly = raw.getBoundingClientRect().top > 0 && raw.getBoundingClientRect().top <
                 document.documentElement.clientHeight + document.body.scrollTop;
             if (nearly) {
                 if (to) {
