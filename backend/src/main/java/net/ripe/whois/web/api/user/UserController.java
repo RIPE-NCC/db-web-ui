@@ -1,11 +1,8 @@
 package net.ripe.whois.web.api.user;
 
-import com.google.common.base.Strings;
 import net.ripe.db.whois.api.rest.client.RestClientException;
 import net.ripe.whois.services.WhoisInternalService;
-import net.ripe.whois.services.crowd.CrowdClient;
-import net.ripe.whois.services.crowd.CrowdClientException;
-import net.ripe.whois.services.crowd.UserSession;
+import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,33 +16,29 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
-
 
 @RestController
 @RequestMapping("/api/user")
 @SuppressWarnings("UnusedDeclaration")
 public class UserController {
 
-    private final CrowdClient crowdClient;
     private final WhoisInternalService whoisInternalService;
 
     @Autowired
-    public UserController(final CrowdClient crowdClient, final WhoisInternalService whoisInternalService) {
-        this.crowdClient = crowdClient;
+    public UserController(final WhoisInternalService whoisInternalService) {
         this.whoisInternalService = whoisInternalService;
     }
 
     @RequestMapping(value = "/mntners", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getMaintainersCompact(@CookieValue(value = CROWD_TOKEN_KEY, required = true) final String crowdToken) {
 
-        try {
-            final UserSession userSession = crowdClient.getUserSession(crowdToken);
-            final UUID uuid = UUID.fromString(crowdClient.getUuid(userSession.getUsername()));
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(crowdToken);
 
-            final List<Map<String,Object>> response = whoisInternalService.getMaintainers(uuid);
+        try {
+            final List<Map<String,Object>> response = whoisInternalService
+                .getMaintainers(userInfoResponse.user.uuid);
 
             // Make sure essentials content-type is set
             final MultiValueMap<String, String> headers = new HttpHeaders();
@@ -53,8 +46,6 @@ public class UserController {
 
             return new ResponseEntity<>(response, headers, HttpStatus.OK);
 
-        } catch (CrowdClientException e) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         }  catch (RestClientException e) {
             // No error message in response
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -63,23 +54,7 @@ public class UserController {
 
     @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getUserInfo(@CookieValue(value = CROWD_TOKEN_KEY, required = false) final String crowdToken) {
-        try {
-            if (Strings.isNullOrEmpty(crowdToken)){
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            }
-
-            final UserSession userSession = crowdClient.getUserSession(crowdToken);
-            final String uuid = crowdClient.getUuid(userSession.getUsername());
-            userSession.setUuid(uuid);
-
-            return new ResponseEntity<>(userSession, HttpStatus.OK);
-
-        } catch (CrowdClientException e) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
-        }  catch (RestClientException e) {
-            // No error message in response
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return new ResponseEntity<>(whoisInternalService.getUserInfo(crowdToken), HttpStatus.OK);
     }
 }
 

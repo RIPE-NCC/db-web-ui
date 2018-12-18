@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.ws.rs.core.MediaType;
 import java.io.FileNotFoundException;
 
 import static org.hamcrest.Matchers.is;
@@ -146,7 +147,8 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void get_maintainers_success() {
-        mock("/api/user/fd2ca42b-b997-475a-886b-ae410d1c5969/maintainers",
+        mock("/api/user/info", getResource("mock/user-info.json"));
+        mock("/api/user/7bc1fcd3-cba2-4fa1-b9d9-215caa9e3346/maintainers",
                 "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                         "<whois-resources xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n" +
                         "<objects>\n" +
@@ -170,10 +172,10 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
                         "    </attributes>\n" +
                         "</object>\n" +
                         "</objects>\n" +
-                        "</whois-resources>");
+                        "</whois-resources>", MediaType.APPLICATION_XML, HttpStatus.OK.value());
 
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
+        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=" + CROWD_COOKIE_VALUE);
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
 
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners", HttpMethod.GET, requestEntity, String.class);
@@ -190,22 +192,26 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
 
     @Test
     public void get_maintainers_invalid_cookie() {
+        mock("/api/user/info", "", MediaType.APPLICATION_JSON, HttpStatus.UNAUTHORIZED.value());
         final HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=invalid");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
 
-        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners", HttpMethod.GET, requestEntity, String.class);
+        final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/user/mntners",
+            HttpMethod.GET,
+            requestEntity,
+            String.class);
 
         assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
     }
 
     @Test
-    public void get_resource_tickets() throws FileNotFoundException {
+    public void get_resource_tickets() {
         mock("/api/user/info", getResource("mock/user-info.json"));
         mock("/resource-services/member-resources/7347", RESOURCES_MOCK);
 
         final HttpHeaders requestHeaders = new HttpHeaders();
-        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
+        requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=" + CROWD_COOKIE_VALUE);
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-EIP1-RIPE/94.126.32.0/20", HttpMethod.GET, requestEntity, String.class);
         assertThat(response.getBody(), is(

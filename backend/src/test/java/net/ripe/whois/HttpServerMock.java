@@ -1,7 +1,6 @@
 package net.ripe.whois;
 
-
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.NetworkConnector;
 import org.eclipse.jetty.server.Server;
@@ -11,17 +10,16 @@ import org.eclipse.jetty.webapp.WebAppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
-import org.xml.sax.InputSource;
+import org.springframework.http.HttpStatus;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.core.HttpHeaders;
-import javax.xml.parsers.DocumentBuilderFactory;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class HttpServerMock {
@@ -89,7 +87,7 @@ public class HttpServerMock {
 
     private static class MockServlet extends HttpServlet {
 
-        private final Map<String, String> responseMap = new ConcurrentHashMap();
+        private final Map<String, Stack<Mock>> responseMap = new ConcurrentHashMap();
 
         public void deploy(final WebAppContext context) {
             context.addServlet(new ServletHolder("mock servlet", this), "/*");
@@ -116,43 +114,52 @@ public class HttpServerMock {
         }
 
         private void handleResponse(final HttpMethod method, final HttpServletRequest request, final HttpServletResponse response) throws ServletException, IOException {
-            final String mockResponse = responseMap.remove(request.getRequestURI());
-            if (mockResponse != null) {
-                String responseType = getResponseType(mockResponse);
-                if (responseType != null)
-                    response.setHeader(HttpHeaders.CONTENT_TYPE, responseType);
 
-                response.getWriter().write(mockResponse);
-            } else {
+            Stack<Mock> mockResponse = responseMap.get(request.getRequestURI());
+            if (mockResponse == null || mockResponse.isEmpty()) {
+                LOGGER.warn("Mock not found for {}", request.getRequestURI());
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, String.format("no mocked response found for %s: %s", method, request.getRequestURI()));
+                return;
             }
+
+            Mock mock = mockResponse.pop();
+
+            response.addHeader(HttpHeader.CONTENT_TYPE.toString(), mock.contentType);
+            response.setStatus(mock.responseStatus);
+            response.getWriter().write(mock.responseBody);
         }
 
-        private String getResponseType(String message) {
-            try {
-                new ObjectMapper().readTree(message);
-                return "application/json;charset=UTF-8";
-            } catch (IOException e) {
-                LOGGER.info("Message is not valid JSON.");
-            }
-
-            try {
-                DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(new StringReader(message)));
-                return "application/xml;charset=UTF-8";
-            } catch (Exception e) {
-                LOGGER.info("Message is not valid XML.");
-            }
-            return null;
+        public void mock(final String uri, final String responseBody) {
+            responseMap.computeIfAbsent(uri, s -> new Stack<>())
+                .push(new Mock(responseBody, MediaType.APPLICATION_JSON, HttpStatus.OK.value()));
         }
 
-
-        public void mock(final String uri, final String response) {
-            responseMap.put(uri, response);
+        public void mock(final String key, final String responseBody, final String contentType, final int responseStatus) {
+            responseMap.computeIfAbsent(key, s -> new Stack<>())
+                .push(new Mock(responseBody, contentType, responseStatus));
         }
     }
 
     public void mock(final String uri, final String response) {
         this.mockServlet.mock(uri, response);
+    }
+
+    public void mock(final String pathAndQuery, final String responseBody, final String contentType, final int responseStatusCode, final String method) {
+        final String key = pathAndQuery + (method == null ? "" : method.toLowerCase());
+        this.mockServlet.mock(key, responseBody, contentType, responseStatusCode);
+    }
+
+    private static class Mock {
+
+        private final String responseBody;
+        private final String contentType;
+        private final int responseStatus;
+
+        public Mock(final String responseBody, final String contentType, final int responseStatus) {
+            this.responseBody = responseBody;
+            this.contentType = contentType;
+            this.responseStatus = responseStatus;
+        }
     }
 
 }

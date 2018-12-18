@@ -1,38 +1,27 @@
 package net.ripe.whois.services.crowd;
 
+import net.ripe.whois.services.WhoisInternalService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 
-// TODO: [ES] be consistent in caching Crowd calls, we should cache globally (refactor CrowdClient).
-// TODO: However we should also handle cache invalidation (the logout link in the browser should be handled by us).
 @Component
-@CacheConfig
 public class CachingCrowdSessionChecker {
     private static final Logger LOGGER = LoggerFactory.getLogger(CachingCrowdSessionChecker.class);
 
-    private final CrowdClient crowdClient;
+    private final WhoisInternalService whoisInternalService;
 
     @Autowired
-    public CachingCrowdSessionChecker(final CrowdClient crowdClient) {
-        this.crowdClient = crowdClient;
+    public CachingCrowdSessionChecker(final WhoisInternalService whoisInternalService) {
+        this.whoisInternalService = whoisInternalService;
     }
 
     @Cacheable("net.ripe.whois.crowdSessions")
-    public boolean isAuthenticated(final String crowdToken) {
-        try {
-            UserSession userSession = crowdClient.getUserSession(crowdToken);
-            LOGGER.debug("Found user session for token {}: {}", crowdToken, userSession);
-            return true;
-        } catch (CrowdClientException exc) {
-            LOGGER.debug("Error getting user session for token {}: {}", crowdToken, exc.getMessage());
-        }
-
-        return false;
+    public boolean hasActiveToken(final String crowdToken) {
+        return whoisInternalService.getActiveToken(crowdToken);
     }
 
     @CacheEvict("net.ripe.whois.crowdSessions")
@@ -42,6 +31,7 @@ public class CachingCrowdSessionChecker {
 
     @CacheEvict(value = "net.ripe.whois.crowdSessions", allEntries = true)
     private void markAllNotAuthenticated() {
+
         LOGGER.debug("markAllAuthenticated:{}");
     }
 }

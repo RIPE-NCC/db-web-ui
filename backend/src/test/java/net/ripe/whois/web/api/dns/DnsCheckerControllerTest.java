@@ -1,10 +1,13 @@
 package net.ripe.whois.web.api.dns;
 
-import net.ripe.whois.services.crowd.CrowdClient;
-import net.ripe.whois.services.crowd.CrowdClientException;
-import net.ripe.whois.services.crowd.UserSession;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.ripe.db.whois.api.rest.client.RestClientException;
+import net.ripe.whois.services.WhoisInternalService;
+import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -12,8 +15,10 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.io.IOException;
 import java.util.Optional;
 
+import static net.ripe.whois.AbstractIntegrationTest.getResource;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
@@ -26,18 +31,19 @@ public class DnsCheckerControllerTest {
     private static final String CROWD_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
 
     @Mock
-    private CrowdClient crowdClient;
-    @Mock
-    private UserSession userSession;
+    private WhoisInternalService whoisInternalService;
     @Mock
     private DnsClient dnsClient;
     @InjectMocks
     private DnsCheckerController subject;
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Before
-    public void setup() {
-        when(crowdClient.getUserSession(CROWD_TOKEN)).thenReturn(userSession);
-        when(userSession.isActive()).thenReturn(true);
+    public void setup() throws IOException {
+        when(whoisInternalService.getUserInfo(CROWD_TOKEN)).thenReturn(new ObjectMapper()
+            .readValue(getResource("mock/user-info.json"), UserInfoResponse.class));
         when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenReturn(Optional.empty());
     }
 
@@ -52,22 +58,9 @@ public class DnsCheckerControllerTest {
 
     @Test
     public void inactive_crowd_session() {
-        when(userSession.isActive()).thenReturn(false);
-
-        final ResponseEntity<DnsCheckerController.Response> response = subject.status(CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
-
-        assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
-        assertThat(response.getBody(), is(nullValue()));
-    }
-
-    @Test
-    public void invalid_crowd_session() {
-        when(crowdClient.getUserSession(CROWD_TOKEN)).thenThrow(new CrowdClientException("invalid"));
-
-        final ResponseEntity<DnsCheckerController.Response> response = subject.status(CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
-
-        assertThat(response.getStatusCode(), is(HttpStatus.UNAUTHORIZED));
-        assertThat(response.getBody(), is(nullValue()));
+        when(whoisInternalService.getUserInfo(CROWD_TOKEN)).thenThrow(new RestClientException(401, "Unauthorized"));
+        thrown.expect(RestClientException.class);
+        subject.status(CROWD_TOKEN, "ns.ripe.net", "1.2.3.4.in-addr.arpa");
     }
 
     @Test

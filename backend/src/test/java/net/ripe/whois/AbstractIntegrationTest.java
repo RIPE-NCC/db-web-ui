@@ -3,7 +3,6 @@ package net.ripe.whois;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
 
 /**
  * Base integration testing class for db-web-ui.
@@ -31,8 +29,6 @@ import java.nio.charset.Charset;
 public abstract class AbstractIntegrationTest {
 
     protected static final String CROWD_COOKIE_VALUE = "aabbccdd";
-    protected static final String CROWD_SESSION_PATH = "/rest/usermanagement/1/session";
-    protected static final String CROWD_USER_ATTRIBUTE_PATH = "/rest/usermanagement/1/user/attribute";
 
     @Autowired
     protected Environment environment;
@@ -59,11 +55,8 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("crowd.access.url", getMockServerUrl());
         System.setProperty("crowd.login.url", getMockServerUrl());
         System.setProperty("crowd.logout.url", getMockServerUrl());
-        System.setProperty("crowd.rest.url", getMockServerUrl());
         System.setProperty("rest.api.ripeUrl", getMockServerUrl());
         System.setProperty("dns.checker.url", getMockServerUrl());
-        System.setProperty("crowd.rest.user", "username");
-        System.setProperty("crowd.rest.password", "password");
         System.setProperty("server.contextPath", "/db-web-ui");
         System.setProperty("internal.api.url", getMockServerUrl());
         System.setProperty("internal.api.key", "123");
@@ -97,14 +90,6 @@ public abstract class AbstractIntegrationTest {
         httpServerMock.stop();
     }
 
-    @Before
-    public void setup() {
-        mockCrowdSession();
-        mockCrowdUser();
-    }
-
-    // helper methods
-
     protected int getLocalServerPort() {
         return this.localServerPort;
     }
@@ -113,42 +98,12 @@ public abstract class AbstractIntegrationTest {
         httpServerMock.mock(uri, response);
     }
 
+    public void mock(final String pathAndQuery, final String responseBody, final String contentType, final int responseStatusCode) {
+        httpServerMock.mock(pathAndQuery, responseBody, contentType, responseStatusCode, null);
+    }
+
     protected static String getMockServerUrl() {
         return String.format("http://localhost:%d", httpServerMock.getPort());
-    }
-
-    protected void mockCrowdSession() {
-        mock(String.format("%s/%s", CROWD_SESSION_PATH, CROWD_COOKIE_VALUE),
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                        "<session expand=\"user\">" +
-                        "<token>ayGWmmTmYLZlxKY4E1U7Xw00</token>" +
-                        "<user name=\"bad@ripe.net\">" +
-                        "<link href=\"http://localhost/crowd/rest/usermanagement/1/user?username=bad@ripe.net\" rel=\"self\"/>" +
-                        "<display-name>bad@ripe.net</display-name>" +
-                        "<email>bad@ripe.net</email>" +
-                        "<first-name>Bad</first-name>" +
-                        "<last-name>Wolf</last-name>" +
-                        "<active>true</active>" +
-                        "</user>" +
-                        "<created-date>2016-03-22T16:50:55.295+01:00</created-date>" +
-                        "<expiry-date>2016-03-22T20:50:55.295+01:00</expiry-date>" +
-                        "</session>");
-    }
-
-    protected void mockCrowdUser() {
-        mock(String.format("%s", CROWD_USER_ATTRIBUTE_PATH),
-                "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n" +
-                        "<attributes>" +
-                        "<attribute name=\"requiresPasswordChange\">" +
-                        "\t<link href=\"http://localhost/rest/usermanagement/1/user/attribute?username=bad@ripe.net&amp;attributename=requiresPasswordChange\" rel=\"self\"/>" +
-                        "\t<values><value>false</value></values>" +
-                        "</attribute>" +
-                        "<attribute name=\"invalidPasswordAttempts\"><values><value>0</value></values></attribute>" +
-                        "<attribute name=\"passwordLastChanged\"><values><value>1454499154894</value></values></attribute>" +
-                        "<attribute name=\"lastActive\"><values><value>1458661855295</value></values></attribute>" +
-                        "<attribute name=\"lastAuthenticated\"><values><value>1458661855294</value></values></attribute>" +
-                        "<attribute name=\"uuid\"><values><value>fd2ca42b-b997-475a-886b-ae410d1c5969</value></values></attribute>" +
-                        "</attributes>");
     }
 
     public static String getResource(final String resource) {

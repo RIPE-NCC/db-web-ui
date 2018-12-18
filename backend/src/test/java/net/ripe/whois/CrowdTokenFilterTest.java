@@ -2,7 +2,6 @@ package net.ripe.whois;
 
 import net.ripe.whois.services.crowd.CachingCrowdSessionChecker;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -27,7 +26,6 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -81,7 +79,7 @@ public class CrowdTokenFilterTest {
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
-        verify(crowdSessionChecker, never()).isAuthenticated(anyString());
+        verify(crowdSessionChecker, never()).hasActiveToken(anyString());
 
         assertThat(response.getStatus(), is(302));
         assertThat(response.getHeader("Location"), is("https://access.url?originalUrl=http://localhost/doit"));
@@ -91,7 +89,7 @@ public class CrowdTokenFilterTest {
     public void response_302_if_expired_crowd_cookie_present() throws Exception {
         request.setCookies(new Cookie(CrowdTokenFilter.CROWD_TOKEN_KEY, "value"));
 
-        when(crowdSessionChecker.isAuthenticated("value")).thenReturn(false);
+        when(crowdSessionChecker.hasActiveToken("value")).thenReturn(false);
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
@@ -103,27 +101,11 @@ public class CrowdTokenFilterTest {
     public void proceed_if_valid_crowd_cookie_present() throws Exception {
         request.setCookies(new Cookie(CrowdTokenFilter.CROWD_TOKEN_KEY, "value"));
 
-        when(crowdSessionChecker.isAuthenticated("value")).thenReturn(true);
+        when(crowdSessionChecker.hasActiveToken("value")).thenReturn(true);
 
         crowdInterceptor.doFilter(request, response, filterChain);
 
         verify(filterChain).doFilter(request, response);
-    }
-
-    @Test
-    @Ignore
-    public void no_call_to_crowd_for_second_lookup() throws Exception {
-        request.setCookies(new Cookie(CrowdTokenFilter.CROWD_TOKEN_KEY, "value"));
-
-        when(crowdSessionChecker.isAuthenticated("value")).thenReturn(true);
-
-        for (int i = 0; i < 10; i++) {
-            crowdInterceptor.doFilter(request, response, filterChain);
-        }
-
-        verify(filterChain, times(10)).doFilter(request, response);
-        // TODO: Mokito reports this one to be called 10 times
-        verify(crowdSessionChecker, times(1)).isAuthenticated("value");
     }
 
     @Test

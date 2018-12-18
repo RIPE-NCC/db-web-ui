@@ -22,7 +22,6 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-
 public class WhoisInternalServiceTest {
 
     private static final String VALID_XML_RESPONSE = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>" +
@@ -108,7 +107,7 @@ public class WhoisInternalServiceTest {
         mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL))
             .andRespond(withSuccess(VALID_XML_RESPONSE, MediaType.APPLICATION_XML));
 
-        whoisInternalService.getMaintainers(USER_UUID);
+        whoisInternalService.getMaintainers(USER_UUID.toString());
 
         mockServer.verify();
     }
@@ -118,7 +117,7 @@ public class WhoisInternalServiceTest {
         mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + URL))
                 .andRespond(withSuccess(VALID_XML_RESPONSE, MediaType.APPLICATION_XML));
 
-        List<Map<String, Object>> response = whoisInternalService.getMaintainers(USER_UUID);
+        List<Map<String, Object>> response = whoisInternalService.getMaintainers(USER_UUID.toString());
 
         mockServer.verify();
 
@@ -144,7 +143,7 @@ public class WhoisInternalServiceTest {
                 .andRespond(withStatus(HttpStatus.NOT_FOUND).contentType(MediaType.APPLICATION_XML).body(ERROR_XML_RESPONSE));
 
         try {
-            whoisInternalService.getMaintainers(USER_UUID);
+            whoisInternalService.getMaintainers(USER_UUID.toString());
             fail("Should not be reached");
         } catch (RestClientException exc) {
             assertEquals(1, exc.getErrorMessages().size());
@@ -185,7 +184,7 @@ public class WhoisInternalServiceTest {
             whoisInternalService.getUserInfo(CROWD_TOKEN);
         }catch (RestClientException e){
             assertEquals(401, e.getStatus());
-            assertEquals("Unauthorized", e.getErrorMessages().stream().findFirst().get().getText());
+            assertEquals("", e.getErrorMessages().stream().findFirst().get().getText());
         }
     }
 }

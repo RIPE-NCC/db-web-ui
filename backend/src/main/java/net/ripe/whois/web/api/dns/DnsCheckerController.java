@@ -2,8 +2,8 @@ package net.ripe.whois.web.api.dns;
 
 import com.github.jgonian.ipmath.Ipv4;
 import com.github.jgonian.ipmath.Ipv6;
-import net.ripe.whois.services.crowd.CrowdClient;
-import net.ripe.whois.services.crowd.CrowdClientException;
+import net.ripe.whois.services.WhoisInternalService;
+import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +27,14 @@ import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
 public class DnsCheckerController {
     private final static Logger LOGGER = LoggerFactory.getLogger(DnsCheckerController.class);
 
-    private final CrowdClient crowdClient;
+    private final WhoisInternalService whoisInternalService;
     private final DnsClient dnsClient;
 
     private static final Pattern INVALID_INPUT = Pattern.compile("[^a-zA-Z0-9\\\\.:-]");
 
     @Autowired
-    public DnsCheckerController(final CrowdClient crowdClient, final DnsClient dnsClient) {
-        this.crowdClient = crowdClient;
+    public DnsCheckerController(final WhoisInternalService whoisInternalService, final DnsClient dnsClient) {
+        this.whoisInternalService = whoisInternalService;
         this.dnsClient = dnsClient;
     }
 
@@ -43,14 +43,8 @@ public class DnsCheckerController {
                                          @RequestParam(value = "ns") final String inNs,
                                          @RequestParam(value = "record") final String inRecord) {
 
-        try {
-            if (crowdToken == null || !crowdClient.getUserSession(crowdToken).isActive()) {
-                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-            }
-        } catch (CrowdClientException e) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
+        UserInfoResponse userInfoResponse = whoisInternalService.getUserInfo(crowdToken);
+        LOGGER.info("DNS check for user {}", userInfoResponse.user.username);
         // tidy up a bit
         final String ns = inNs.trim();
         final String record = inRecord.trim();

@@ -15,7 +15,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,7 +24,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
@@ -53,7 +51,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         this.apiUrl = apiUrl;
     }
 
-    public List<Map<String,Object>> getMaintainers(final UUID uuid) {
+    public List<Map<String,Object>> getMaintainers(final String uuid) {
 
         // fetch as xml
         final ResponseEntity<WhoisResources> response;
@@ -94,7 +92,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
 
     }
 
-    private HashMap<String, Object> withParams(final UUID uuid) {
+    private HashMap<String, Object> withParams(final String uuid) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("apiUrl", apiUrl);
         variables.put("apiKey", apiKey);
@@ -123,10 +121,24 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
                 new HttpEntity<>("", httpHeaders), UserInfoResponse.class).getBody();
         } catch (HttpClientErrorException e) {
             LOGGER.warn("Failed to retrieve user info from whois internal {}", e.getMessage());
-            throw new RestClientException(e.getStatusCode().value(), e.getStatusCode().getReasonPhrase());
+            throw new RestClientException(e.getStatusCode().value(), "");
         } catch (Exception e){
             LOGGER.warn("Exception: Failed to parse user info from whois internal {}", e.getMessage());
             throw new RestClientException(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal server error");
+        }
+    }
+
+    public boolean getActiveToken(String crowdToken) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Cookie",CROWD_TOKEN_KEY + "=" + crowdToken);
+        final URI uri = whoisInternalProxy.composeProxyUrl("api/user/active", apiUrl, apiKey);
+        LOGGER.info("Calling Whois InternalService to retrieve user active {}", uri);
+        try {
+            return restTemplate.exchange(uri, HttpMethod.GET,
+                new HttpEntity<>("", httpHeaders), Boolean.class).getBody();
+        } catch (Exception e){
+            LOGGER.warn("Exception: Failed to parse user active from whois internal {}", e.getMessage());
+            return false;
         }
     }
 

@@ -48,6 +48,7 @@ public class BaAppsService implements ExchangeErrorHandler {
 
         String url = baAppsUrl + "/resource-services/member-resources/{memberId}?api-key={apiKey}";
         try {
+            LOGGER.info("Calling {} with memberId {}", url, memberId);
             final ResponseEntity<String> response = restTemplate.exchange(
                     url,
                     HttpMethod.GET,
