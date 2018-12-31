@@ -47,34 +47,34 @@ class CreateModifyController {
     public MODIFY_OPERATION = "Modify";
     public PENDING_OPERATION = "Pending";
 
-    constructor(private $scope: angular.IScope,
-                private $stateParams: ng.ui.IStateParamsService,
-                private $state: ng.ui.IStateService,
-                private $anchorScroll: ng.IAnchorScrollService,
-                private $location: angular.ILocationService,
-                private $log: angular.ILogService,
-                private $window: any,
-                private $q: ng.IQService,
-                private $sce: any,
-                private $document: angular.IDocumentService,
-                private WhoisResources: WhoisResources,
-                private WhoisMetaService: WhoisMetaService,
-                private MessageStore: MessageStore,
-                private CredentialsService: CredentialsService,
-                private RestService: RestService,
-                private ModalService: ModalService,
-                private MntnerService: MntnerService,
-                private AlertService: AlertService,
-                private ErrorReporterService: ErrorReporterService,
-                private LinkService: LinkService,
-                private ResourceStatus: ResourceStatus,
-                private WebUpdatesCommonsService: WebUpdatesCommonsService,
-                private OrganisationHelperService: OrganisationHelperService,
-                private PreferenceService: PreferenceService,
-                private EnumService: EnumService,
-                private CharsetToolsService: CharsetToolsService,
-                private ScreenLogicInterceptorService: ScreenLogicInterceptorService,
-                private ObjectUtilService: ObjectUtilService) {
+    constructor(public $scope: angular.IScope,
+                public $stateParams: ng.ui.IStateParamsService,
+                public $state: ng.ui.IStateService,
+                public $anchorScroll: ng.IAnchorScrollService,
+                public $location: angular.ILocationService,
+                public $log: angular.ILogService,
+                public $window: any,
+                public $q: ng.IQService,
+                public $sce: any,
+                public $document: angular.IDocumentService,
+                public WhoisResources: WhoisResources,
+                public WhoisMetaService: WhoisMetaService,
+                public MessageStore: MessageStore,
+                public CredentialsService: CredentialsService,
+                public RestService: RestService,
+                public ModalService: ModalService,
+                public MntnerService: MntnerService,
+                public AlertService: AlertService,
+                public ErrorReporterService: ErrorReporterService,
+                public LinkService: LinkService,
+                public ResourceStatus: ResourceStatus,
+                public WebUpdatesCommonsService: WebUpdatesCommonsService,
+                public OrganisationHelperService: OrganisationHelperService,
+                public PreferenceService: PreferenceService,
+                public EnumService: EnumService,
+                public CharsetToolsService: CharsetToolsService,
+                public ScreenLogicInterceptorService: ScreenLogicInterceptorService,
+                public ObjectUtilService: ObjectUtilService) {
 
         this.optionList = {status: []};
 
@@ -968,7 +968,7 @@ class CreateModifyController {
         }
     }
 
-    private navigateAway() {
+    private navigateAway = () => {
         if (this.operation === "Modify") {
             this.WebUpdatesCommonsService.navigateToDisplay(this.source, this.objectType, this.name, undefined);
         } else {
