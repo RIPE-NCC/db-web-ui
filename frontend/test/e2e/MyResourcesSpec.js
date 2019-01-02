@@ -53,7 +53,7 @@ describe('My resources', function () {
         page.scrollIntoView(page.orgSelector);
         page.orgSelector.click();
         // switch selected org to Viollier AG
-        page.orgSelectorOptions2.click();
+        page.orgSelectorOptions3.click();
         page.scrollIntoView(page.tabsMySponsoredResources);
         expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('My Resources');
         page.scrollIntoView(page.orgSelector);
@@ -77,7 +77,7 @@ describe('My resources', function () {
     it('should hide ... button for selected not LIR organisation', function () {
         page.orgSelector.click();
         //selected Swi Rop Gonggrijp - ORG
-        page.orgSelectorOptions1.click();
+        page.orgSelectorOptions2.click();
         expect(page.btnTransfer.isPresent()).toEqual(false);
         //selected SURFnet bv - LIR
         page.orgSelector.click();

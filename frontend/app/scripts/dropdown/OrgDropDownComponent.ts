@@ -17,6 +17,7 @@ class OrgDropDownController {
     public $onInit(): void {
         this.trainingEnv = this.EnvironmentStatus.isTrainingEnv();
         const orgs: IUserInfoOrganisation[] = [];
+        const members: IUserInfoOrganisation[] = [];
         this.UserInfoService.getUserOrgsAndRoles()
             .then((userInfo: IUserInfoResponseData): void => {
                 if (!userInfo) {
@@ -26,16 +27,15 @@ class OrgDropDownController {
                     for (const org of userInfo.organisations) {
                         orgs.push(org);
                     }
+                    this.sortOrganisations(orgs);
                 }
                 if (angular.isArray(userInfo.members)) {
                     for (const org of userInfo.members) {
-                        orgs.push(org);
+                        members.push(org);
                     }
+                    this.sortOrganisations(members);
                 }
-                orgs.sort((o1, o2) => {
-                    return o1.organisationName.localeCompare(o2.organisationName);
-                });
-                this.organisations = orgs;
+                this.organisations = members.concat(orgs);
                 this.UserInfoService.getSelectedOrganisation().then((org) => {
                     if (this.selectedOrg !== org) {
                         this.$rootScope.$broadcast("selected-org-changed", org);
@@ -53,6 +53,11 @@ class OrgDropDownController {
         this.UserInfoService.setSelectedOrganisation(this.selectedOrg);
     }
 
+    private sortOrganisations(orgs: IUserInfoOrganisation[]): IUserInfoOrganisation[] {
+        return orgs.sort((o1, o2) => {
+            return o1.organisationName.localeCompare(o2.organisationName);
+        });
+    }
 }
 
 angular.module("dbWebApp")

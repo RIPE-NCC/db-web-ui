@@ -144,6 +144,7 @@ module.exports = {
     orgSelectorOptions0: element(by.id('ui-select-choices-row-0-0')),
     orgSelectorOptions1: element(by.id('ui-select-choices-row-0-1')),
     orgSelectorOptions2: element(by.id('ui-select-choices-row-0-2')),
+    orgSelectorOptions3: element(by.id('ui-select-choices-row-0-3')),
 
     // UserInfo component
     userInfo: element(by.css('user-info')),
