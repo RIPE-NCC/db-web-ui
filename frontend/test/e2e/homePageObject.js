@@ -76,6 +76,8 @@ module.exports = {
     inpOrganisation: element(by.id('createForm')).element(by.name('organisation')),
     inpOrgType: element(by.id('createForm')).element(by.name('org-type')),
     inpAddress: element(by.id('createForm')).all(by.name('address')).get(0),
+    inpPhone: element(by.id('createForm')).element(by.name('phone')),
+    inpFax: element(by.id('createForm')).element(by.name('fax-no')),
     inpEmail: element(by.id('createForm')).element(by.name('e-mail')),
     inpNetname: element(by.id('createForm')).element(by.name('netname')),
     inpAssignmentSize: element(by.id('createForm')).element(by.name('assignment-size')),
@@ -132,14 +134,18 @@ module.exports = {
     modalInpPassword: element(by.css('[uib-modal-window]')).element(by.model('$ctrl.selected.password')),
     modalInpAssociate: element(by.css('[uib-modal-window]')).element(by.model('$ctrl.selected.associate')),
     modalOrg: element(by.css('[uib-modal-window]')).element(by.css("option[label='org']")),
+    modalAddress: element(by.css('[uib-modal-window]')).element(by.css("option[label='address']")),
     modalBtnSubmit: element(by.css('[uib-modal-window]')).element(by.css('button[type=submit]')),
     modalClose: element(by.css('[uib-modal-window]')).element(by.css('.modal-header')).element(by.css('.close')),
     modalBody: element(by.css('[uib-modal-window]')).element(by.css('.modal-body')),
     modalFooter: element(by.css('[uib-modal-window]')).element(by.css('.modal-footer')),
     modalSplashBtn: element(by.id('modal-splash-button')),
     modalSplashText: element(by.css('[uib-modal-window]')).element(by.css('h1')),
-    orgSelector: element(by.id('organisation-selector')),
+    modalHeader: element(by.css('[uib-modal-window]')).element(by.css('.modal-header')),
+    modalEditAttrPanel1: element(by.css('[uib-modal-window]')).element(by.css('.modal-panel')).all(by.css('div')).get(0),
+    modalEditAttrPanel2: element(by.css('[uib-modal-window]')).element(by.css('.modal-panel')).all(by.css('div')).get(1),
 
+    orgSelector: element(by.id('organisation-selector')),
     orgSelectorOptions: element(by.id('organisation-selector')).all(by.css('small')),
     orgSelectorOptions0: element(by.id('ui-select-choices-row-0-0')),
     orgSelectorOptions1: element(by.id('ui-select-choices-row-0-1')),
@@ -256,6 +262,10 @@ module.exports = {
 
     btnAddAnAttribute: function(attribute) {
         return attribute.element(by.xpath('../../..')).element(by.css('.fa.fa-plus'));
+    },
+
+    btnEditAnAttribute: function(attribute) {
+        return attribute.element(by.xpath('..')).element(by.css('.fa.fa-pencil'));
     },
 
     btnRemoveAttribute: function(attribute) {

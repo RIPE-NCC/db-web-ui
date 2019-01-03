@@ -1,0 +1,56 @@
+<div ng-if="$ctrl.attr.name === 'address'" class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="$ctrl.cancel()"></i>
+        <h5 class="modal-title" id="commonModalLabel">Updating address information</h5>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p>My organisation’s legal address has changed</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    ng-click="$ctrl.goToOrgaAddressEditor()">Select</button>
+        </div>
+        <div>
+            <p>My organisation’s postal address has changed</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    ng-click="$ctrl.goToAccountAddressEditor()">Select</button>
+        </div>
+    </div>
+</div>
+<div ng-if="$ctrl.attr.name === 'org-name'" class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="$ctrl.cancel()"></i>
+        <h5 class="modal-title">Updating legal information</h5>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p>My organisation’s legal name has changed; no other legal entity is involved</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    ng-click="$ctrl.goToOrgNameEditor()">Select</button>
+        </div>
+        <div>
+            <p>The business structure of my organisation has changed (for example due to a merger or acquisition)</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    ng-click="$ctrl.goToAccountOrgNameEditor()">Select</button>
+        </div>
+    </div>
+</div>
+<div ng-if="$ctrl.isModalContactField()" class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close" data-dismiss="modal" aria-label="Close" ng-click="$ctrl.cancel()"></i>
+        <h5 class="modal-title">Updating contact information</h5>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p ng-if="$ctrl.attr.name === 'phone'">My organisation’s telephone number has changed</p>
+            <p ng-if="$ctrl.attr.name === 'fax-no'">My organisation’s fax number has changed</p>
+            <p ng-if="$ctrl.attr.name === 'e-mail'">My organisation’s email address has changed</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    ng-click="$ctrl.goToAccountContactInfoEditor()">Update</button>
+        </div>
+    </div>
+</div>

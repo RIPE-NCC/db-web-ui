@@ -147,10 +147,9 @@
                         </a>
                     </li>
                     <li ng-if="attribute.$$meta.$$isLir">
-                        <a title="Request to update" class="btn btn-default ga-edit-attr" ng-if="attribute.name === 'org-name'" target="_blank" href="https://my.ripe.net/#/update-registry">
-                            <span class="fa fa-pencil"></span>
-                        </a>
-                        <a title="Edit in LIR portal" class="btn btn-default ga-edit-attr" ng-if="attribute.name !== 'org-name'" target="_blank" href="https://lirportal.ripe.net/general/">
+                        <a title="Request to update" class="btn btn-default ga-edit-attr"
+                           ng-if="$ctrl.showPencile(attribute.name)"
+                           ng-click="$ctrl.displayEditAttributeDialog(attribute)">
                             <span class="fa fa-pencil"></span>
                         </a>
                     </li>

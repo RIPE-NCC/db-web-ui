@@ -126,6 +126,21 @@ class ModalService {
         return deferredObject.promise;
     }
 
+    public openEditAttributeModal(attr: IAttributeModel) {
+        this.$log.debug("openEditAttributeModal for items", attr);
+        return this.$modal.open({
+            animation: false,
+            component: "modalEditAttribute",
+            keyboard: false,
+            resolve: {
+                attr() {
+                    return attr;
+                },
+            },
+            windowClass: "edit",
+        }).result;
+    }
+
     public openMd5Modal() {
         const deferredObject = this.$q.defer();
 

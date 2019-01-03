@@ -266,7 +266,7 @@ class WhoisMetaService {
                 {name: "org-type", mandatory: true, multiple: false, refs: this.refs},
                 {name: "descr", mandatory: false, multiple: true, refs: this.refs},
                 {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
-                {name: "address", mandatory: true, multiple: true, refs: this.refs},
+                {name: "address", mandatory: true, multiple: false, refs: this.refs},
                 {name: "phone", mandatory: false, multiple: true, refs: this.refs},
                 {name: "fax-no", mandatory: false, multiple: true, refs: this.refs},
                 {name: "e-mail", mandatory: true, multiple: true, refs: this.refs},

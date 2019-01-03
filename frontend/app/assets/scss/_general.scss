@@ -150,6 +150,23 @@ ul.radio {
         }
     }
 }
+// TODO TEST IE
+.modal.edit .modal-dialog {
+    width: fit-content;
+
+    .modal-panel {
+        display: inline-block;
+        div {
+            background-color: $grey;
+            border: solid 0.1rem $dark-grey;
+            text-align: center;
+            padding: 20px;
+            margin: 5px;
+            float: left;
+            max-width: 280px;
+        }
+    }
+}
 
 #portal-columns.no-pad-top {
     @extend %no-pad-top;

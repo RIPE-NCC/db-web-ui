@@ -454,6 +454,10 @@ class CreateModifyController {
             });
     }
 
+    public displayEditAttributeDialog(attr: IAttributeModel) {
+        this.ModalService.openEditAttributeModal(attr);
+    }
+
     public addSelectedAttribute(selectedAttributeType: string, attr: IAttributeModel) {
         const attrs = this.attributes.addAttributeAfter(selectedAttributeType, attr);
         this.attributes = this.WhoisResources.wrapAndEnrichAttributes(this.objectType, attrs);
@@ -933,6 +937,11 @@ class CreateModifyController {
             mntner.mine = !!this.MntnerService.isMntnerOnlist(this.maintainers.sso, mntner);
             return mntner;
         });
+    }
+
+    private showPencile(attrName: string): boolean {
+        const modalContactFields = ["address", "org-name", "phone", "fax-no", "e-mail"];
+        return modalContactFields.indexOf(attrName) > -1;
     }
 
     private refreshObjectIfNeeded(associationResp: any) {
