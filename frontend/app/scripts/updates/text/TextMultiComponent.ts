@@ -39,7 +39,7 @@ class TextMultiController {
                 public $log: angular.ILogService,
                 public $q: ng.IQService,
                 public $window: any,
-                public WhoisResources: WhoisResources,
+                public WhoisResourcesService: WhoisResources,
                 public WhoisMetaService: WhoisMetaService,
                 public RestService: RestService,
                 public AlertService: AlertService,
@@ -88,10 +88,6 @@ class TextMultiController {
         this.$log.debug("parsed rpsl:" + JSON.stringify(parsedObjs));
         this.textMode = false;
         this.objects.objects = this.verify(this.objects.source, this.objects.rpsl, parsedObjs);
-    }
-
-    public isWebMode() {
-        return this.textMode === false;
     }
 
     public setTextMode() {
@@ -148,9 +144,9 @@ class TextMultiController {
         } else {
             this.setStatus(object, undefined, "Start " + this.determineAction(object));
             this.performAction(this.objects.source, object)
-                .then((whoisResources: any) => {
-                        object.name = whoisResources.getPrimaryKey();
-                        object.attributes = whoisResources.getAttributes();
+                .then((whoisResources: IWhoisResponseModel) => {
+                        object.name = this.WhoisResourcesService.getPrimaryKey(whoisResources)();
+                        object.attributes = this.WhoisResourcesService.getAttributes(whoisResources)();
                         const obj = {
                             attributes: object.attributes,
                             deleteReason: object.deleteReason,
@@ -163,8 +159,8 @@ class TextMultiController {
                         }
                         object.textupdatesUrl = undefined;
                         object.errors = [];
-                        object.warnings = whoisResources.getAllWarnings();
-                        object.infos = whoisResources.getAllInfos();
+                        object.warnings = this.WhoisResourcesService.getAllWarnings(whoisResources)();
+                        object.infos = this.WhoisResourcesService.getAllInfos(whoisResources)();
 
                         this.markActionCompleted(object, this.determineAction(object) + " success", true);
 
@@ -220,7 +216,7 @@ class TextMultiController {
                 this.markActionCompleted(object, "syntax error");
             } else {
                 // determine primary key pf object
-                object.attributes = this.WhoisResources.wrapAndEnrichAttributes(object.type, attrs);
+                object.attributes = this.WhoisResourcesService.wrapAndEnrichAttributes(object.type, attrs);
                 object.name = this.getPkey(object.type, object.attributes);
 
                 // find out if this object has AUTO-keys
@@ -331,7 +327,7 @@ class TextMultiController {
             } else if (object.exists === false) {
 
                 this.RestService.createObject(source, object.type,
-                    this.WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
+                    this.WhoisResourcesService.turnAttrsIntoWhoisObject(object.attributes),
                     object.passwords, object.override, true)
                     .then((result: any) => {
 
@@ -356,7 +352,7 @@ class TextMultiController {
 
             } else {
                 this.RestService.modifyObject(source, object.type, object.name,
-                    this.WhoisResources.turnAttrsIntoWhoisObject(object.attributes),
+                    this.WhoisResourcesService.turnAttrsIntoWhoisObject(object.attributes),
                     object.passwords, object.override, true)
                     .then((result) => {
                         this.setStatus(object, true, "Modify success");
@@ -434,7 +430,7 @@ class TextMultiController {
         }
     }
 
-    private determineAction(obj: any) {
+    private determineAction = (obj: any) => {
         return !_.isUndefined(obj.deleteReason) ? "delete" : obj.exists === true ? "modify" : "create";
     }
 
@@ -443,7 +439,7 @@ class TextMultiController {
         this.$log.debug("initializeActionCounter:" + this.actionsPending);
     }
 
-    private markActionCompleted(object: any, action: any, rewriteRpsl: boolean = false) {
+    private markActionCompleted(object: any, action: any, rewriteRpsl?: boolean) {
         this.actionsPending--;
         this.$log.debug("mark " + this.determineAction(object) + "-" + object.type + "-" + object.name +
             " action completed for " + this.determineAction(object) + ": " + this.actionsPending);

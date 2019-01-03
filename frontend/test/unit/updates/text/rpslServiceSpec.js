@@ -79,8 +79,8 @@ describe('textUpdates: RpslService', function () {
         expect(objs).toEqual([
             {
                 attributes: [
-                    {name: 'person', value: undefined, comment: undefined},
-                    {name: 'phone', value: '         +316', comment: 'My comment'},
+                    {name: 'person', value: '', comment: undefined},
+                    {name: 'phone', value: '         +316 # My comment', comment: undefined},
                     {name: 'address', value: '       Singel', comment: undefined}
                 ],
                 deleteReason: undefined,
@@ -98,7 +98,7 @@ describe('textUpdates: RpslService', function () {
         expect(objs).toEqual([
             {
                 attributes: [
-                    {name: 'person', value: '   Me', comment: 'hoi'}
+                    {name: 'person', value: '   Me     #hoi', comment: undefined}
                 ],
                 deleteReason: undefined,
                 passwords:[],
@@ -123,7 +123,7 @@ describe('textUpdates: RpslService', function () {
         var objs = $RpslService.fromRpsl(rpsl);
 
         expect(objs[0].attributes).toEqual([
-            {name: 'person', value: undefined, comment: undefined}
+            {name: 'person', value: '', comment: undefined}
         ]);
     });
 
@@ -144,7 +144,7 @@ describe('textUpdates: RpslService', function () {
         var objs = $RpslService.fromRpsl(rpsl);
 
         expect(objs[0].attributes).toEqual([
-            {name: 'person', value: undefined, comment: 'A comment'}
+            {name: 'person', value: ' # A comment', comment: undefined}
         ]);
     });
 
@@ -172,7 +172,7 @@ describe('textUpdates: RpslService', function () {
         expect(objs[0]).toEqual(
             {
                 attributes: [
-                    {name: 'person', value: undefined, comment: 'hoi'},
+                    {name: 'person', value: '        #hoi', comment: undefined},
                     {name: 'phone', value: '         +316', comment: undefined}
                 ],
                 deleteReason: undefined,
@@ -184,7 +184,7 @@ describe('textUpdates: RpslService', function () {
         expect(objs[1]).toEqual(
             {
                 attributes: [
-                    {name: 'address', value: '       Singel', comment: 'My comment'}
+                    {name: 'address', value: '       Singel # My comment', comment: undefined}
                 ],
                 deleteReason: undefined,
                 passwords: [],
@@ -201,7 +201,7 @@ describe('textUpdates: RpslService', function () {
         var objs = $RpslService.fromRpsl(rpsl);
 
         expect(objs[0].attributes).toEqual([
-            {name: 'person', value: ' value  1 more value 2', comment: 'comment 1 and more comment'}
+            {name: 'person', value: ' value  1# comment 1 more value 2 # and more comment', comment: undefined}
         ]);
     });
 
@@ -213,7 +213,7 @@ describe('textUpdates: RpslService', function () {
         var objs = $RpslService.fromRpsl(rpsl);
 
         expect(objs[0].attributes).toEqual([
-            {name: 'person', value: ' value  1\tmore value 2', comment: 'more comment'}
+            {name: 'person', value: ' value  1\tmore value 2 # more comment', comment: undefined}
         ]);
     });
 
@@ -226,7 +226,7 @@ describe('textUpdates: RpslService', function () {
         var objs = $RpslService.fromRpsl(rpsl);
 
         expect(objs[0].attributes).toEqual([
-            {name: 'person', value: ' value  1+more value 2', comment: 'second comment'}
+            {name: 'person', value: ' value  1+more value 2 # second comment', comment: undefined}
         ]);
     });
 
@@ -243,9 +243,9 @@ describe('textUpdates: RpslService', function () {
         var objs = $RpslService.fromRpsl(rpsl);
 
         expect(objs[0].attributes).toEqual([
-            {name: 'person',  value: undefined,                                            comment: undefined},
-            {name: 'address', value: '       Singel   Amsterdam\tNederland++++Europa', comment: 'part 1 part 2 part 4'},
-            {name: 'phone',   value: '         +316',                                      comment: 'ok'},
+            {name: 'person',  value: '',                                            comment: undefined},
+            {name: 'address', value: '       Singel # part 1   Amsterdam # part 2\tNederland++  # part 4++Europa', comment: undefined},
+            {name: 'phone',   value: '         +316 #ok',                                      comment: undefined},
         ]);
 
     });

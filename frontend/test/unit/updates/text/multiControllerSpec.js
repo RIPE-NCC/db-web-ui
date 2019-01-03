@@ -326,7 +326,6 @@ describe('textUpdates: TextMultiComponent', function () {
             errors:[]
         });
         $httpBackend.expectPOST('api/whois/RIPE/person?unformatted=true').respond(successResponse);
-        // spyOn(SerialExecutor, 'execute').and.callFake(function() { return $q.defer().promise; });
         $ctrl.submit();
         $httpBackend.flush();
 

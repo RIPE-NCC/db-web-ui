@@ -13,7 +13,7 @@ class RpslService {
         let spacing: number = 0;
 
         // If the first attribute of an object has no value, we are composing a new template.
-        // In tghis case we should using padding (max 15 spaces)
+        // In this case we should using padding (max 15 spaces)
         // otherwise we will inherit existing formatting
         const f = _.first(obj.attributes);
         if (!_.isUndefined(f)) {
@@ -92,7 +92,7 @@ class RpslService {
     private _stripDuplicates(array: string[]) {
 
         const uniqued = _.uniq(_.clone(array));
-        // don"t copy into a new pointer, but leave existibg pointer in tact
+        // don't copy into a new pointer, but leave existing pointer in tact
         while (array.length) {
             array.pop();
         }
@@ -155,35 +155,19 @@ class RpslService {
             // extract the value and comment
             if (keyWithRest.length > 1) {
                 _.each(rest.split("\n"), (item) => {
-                    const trimmed = _.trim(item);
-
-                    if (!_.isEmpty(trimmed)) {
-                        if (item.indexOf("#") < 0) { // no comment
-                            // keep left spacing for value
-                            values.push(_.trimRight(item));
-                        } else if (_.startsWith(trimmed, "#")) { // only comment
-                            // trim comment
-                            comments.push(_.trim(trimmed.substring(1)));
-                        } else { // both value and comment
-                            const valueWithComment = item.split("#");
-                            // keep left spacing for value
-                            values.push(_.trimRight(valueWithComment[0]));
-                            // trim comment
-                            comments.push(_.trim(valueWithComment[1]));
-                        }
-                    }
+                    values.push(_.trimRight(item));
                 });
             }
-            attr =  {
-                comment: this._undefinedForEmpty(this._concatenate(comments, " ")),
+            attr = {
+                comment: this._concatenate(comments, " "),
                 name: key,
-                value: this._undefinedForEmpty(this._concatenate(values, "")),
+                value: this._concatenate(values, ""),
             };
         }
         return attr;
     }
 
-    private _concatenate(array: string[], separator: string) {
+    private _concatenate(array: string[], separator: string): string {
         return _.reduce(array, (combined, item) => {
             if (!_.isUndefined(item)) {
                 return combined + separator + item;
@@ -196,13 +180,6 @@ class RpslService {
             return false;
         }
         return c.toLowerCase() !== c.toUpperCase();
-    }
-
-    private _undefinedForEmpty(value: any): any {
-        if (_.isUndefined(value) || _.isEmpty(_.trim(value))) {
-            return undefined;
-        }
-        return value;
     }
 }
 
