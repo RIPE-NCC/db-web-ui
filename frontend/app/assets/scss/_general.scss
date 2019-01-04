@@ -150,9 +150,15 @@ ul.radio {
         }
     }
 }
-// TODO TEST IE
+// firefox without this leave previous modal
+.modal.in .modal-dialog {
+    transform: none;
+}
+
 .modal.edit .modal-dialog {
-    width: fit-content;
+    .modal-content {
+        display: table;
+    }
 
     .modal-panel {
         display: inline-block;
@@ -160,10 +166,13 @@ ul.radio {
             background-color: $grey;
             border: solid 0.1rem $dark-grey;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             margin: 5px;
             float: left;
-            max-width: 280px;
+            max-width: 275px;
+            .blue-button {
+                margin: 0 0 0 .3em;
+            }
         }
     }
 }
