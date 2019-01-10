@@ -42,6 +42,8 @@ public class LeftMenuConfiguration {
     private String databaseSyncupdatesUrl;
     @Value("${database.create.url}")
     private String databaseCreateUrl;
+    @Value("${open.acquisition.url:}") //we need it to be #/open-lir-org-change
+    private String openAcquisitionUrl;
 
     public String getLirAccountDetailsUrl() {
         return lirAccountDetailsUrl;
@@ -109,5 +111,9 @@ public class LeftMenuConfiguration {
 
     public String getDatabaseCreateUrl() {
         return databaseCreateUrl;
+    }
+
+    public String getOpenAcquisitionUrl() {
+        return openAcquisitionUrl;
     }
 }

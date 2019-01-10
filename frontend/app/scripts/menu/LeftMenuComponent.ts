@@ -15,6 +15,7 @@ class LeftMenuController {
         certification: boolean;
         general: boolean;
         generalMeeting: boolean;
+        guest: boolean;
         myResources: boolean;
         testRcEnv: boolean;
         ticketing: boolean;
@@ -26,6 +27,7 @@ class LeftMenuController {
         certification: false,
         general: false,
         generalMeeting: false,
+        guest: false,
         myResources: false,
         testRcEnv: false,
         ticketing: false,
@@ -78,6 +80,9 @@ class LeftMenuController {
                         break;
                     case "generalMeeting":
                         this.show.generalMeeting = true;
+                        break;
+                    case "guest":
+                        this.show.guest = true;
                         break;
                     case "myResources":
                         this.show.myResources = true;
