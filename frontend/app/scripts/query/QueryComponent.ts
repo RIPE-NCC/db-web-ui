@@ -26,6 +26,7 @@ interface IProperties {
     LIR_TICKETS_URL: string;
     LIR_TRAINING_URL: string;
     LIR_API_ACCESS_KEYS_URL: string;
+    OPEN_ACQUISITION_URL: string;
 
     REQUEST_RESOURCES_URL: string;
     REQUEST_TRANSFER_URL: string;
