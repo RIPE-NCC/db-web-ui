@@ -104,7 +104,11 @@ class ResourcesController {
                 this.fetchResourcesAndPopulatePage();
             });
         } else {
-            this.fetchResourcesAndPopulatePage();
+            if (this.selectedOrg.roles.indexOf("guest") > -1) {
+                this.$state.transitionTo("query");
+            } else {
+                this.fetchResourcesAndPopulatePage();
+            }
         }
     }
 
