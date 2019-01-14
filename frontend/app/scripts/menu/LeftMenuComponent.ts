@@ -55,7 +55,7 @@ class LeftMenuController {
         this.$scope.$on("selected-org-changed", (event: angular.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.show.admin = this.show.general = this.show.billing
                 = this.show.generalMeeting = this.show.ticketing = this.show.certification
-                = this.show.myResources = false;
+                = this.show.myResources = this.show.guest = false;
 
             // Only temporary for the test environment
             this.show.testRcEnv = this.EnvironmentStatus.isTestRcEnv();
