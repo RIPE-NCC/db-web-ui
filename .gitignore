@@ -1,11 +1,29 @@
 ######################
 # Project Specific
 ######################
+
+# backend
 backend/src/main/webapp
 backend/target/
-sit/target/
-.idea/
 backend/src/main/resources/menu.properties
+
+# frontend
+frontend/target/
+frontend/tmp/
+frontend/.tscache/
+frontend/node_modules/
+frontend/bower_components/
+frontend/dist/
+frontend/instrumented/
+frontend/reports/
+frontend/.baseDir.ts
+frontend/!test/lib/*.jar
+frontend/tscommand-*.tmp.txt
+frontend/package-lock.json
+frontend/webpack-dist/
+
+# root
+sit/target/
 README.html
 
 ######################
@@ -43,6 +61,7 @@ local.properties
 *.ipr
 *.ids
 *.orig
+.idea/
 
 ######################
 # Maven
