@@ -49,5 +49,5 @@ angular.module("webUpdates").component("modalMd5Password", {
         resolve: "=",
     },
     controller: ModalMd5PasswordComponent,
-    templateUrl: "scripts/updates/web/modalMd5Password.html",
+    templateUrl: "./modalMd5Password.html",
 });

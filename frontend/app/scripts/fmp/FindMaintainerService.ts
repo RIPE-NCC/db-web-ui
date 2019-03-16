@@ -1,3 +1,11 @@
+interface IFindMaintainer {
+    maintainerKey: string;
+    selectedMaintainer: IWhoisObjectModel;
+    email: string;
+    mntnerFound: boolean;
+    expired: boolean;
+}
+
 interface IFindMaintainerService {
     search(maintainerKey: string): ng.IPromise<any>;
     sendMail(mntKey: string): ng.IPromise<any>;
@@ -17,7 +25,7 @@ class FindMaintainerService implements IFindMaintainerService {
             .then((result: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>) => {
                 return this.validate(maintainerKey)
                     .then((validationResult: ng.IHttpPromiseCallbackArg<{expired: boolean}>) => {
-                        return new FoundMaintainer(maintainerKey,
+                        return this.getFoundMaintainer(maintainerKey,
                             result.data.objects.object[0],
                             validationResult.data.expired);
                 }, (error: any) => this.$q.reject("switchToManualResetProcess"));
@@ -34,6 +42,19 @@ class FindMaintainerService implements IFindMaintainerService {
     public sendMail(mntKey: string): ng.IPromise<any> {
         this.$log.info("Posting data to url {} with object {}.", this.API_BASE_URL, mntKey);
         return this.$http.post(this.API_BASE_URL + mntKey + "/emaillink.json", {maintainerKey: mntKey});
+    }
+
+    private getFoundMaintainer(maintainerKey: string, selectedMaintainer: IWhoisObjectModel, expired: boolean): IFindMaintainer {
+        const email = selectedMaintainer.attributes.attribute
+            .filter((attr) => attr.name.toLocaleLowerCase() === "upd-to")[0]
+            .value;
+        return {
+            maintainerKey,
+            selectedMaintainer,
+            email,
+            mntnerFound: true,
+            expired,
+        };
     }
 
     private find(maintainerKey: string): ng.IPromise<any> {

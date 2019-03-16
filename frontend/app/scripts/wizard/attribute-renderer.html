@@ -1,0 +1,48 @@
+<div ng-include="$ctrl.widgetHtml" ng-class="{'has-error':($ctrl.attribute.$$invalid && $ctrl.attribute.value)}"></div>
+
+<div class="text field-description" uib-collapse="!$ctrl.isHelpShown">
+    <strong>Description</strong><br>
+    <attr-info object-type="$ctrl.objectType" description="$ctrl.attribute.name"></attr-info>
+    <br>
+    <strong>Syntax</strong><br>
+    <attr-info object-type="$ctrl.objectType" syntax="$ctrl.attribute.name"></attr-info>
+</div>
+
+<ul class="input-group-btn">
+    <li ng-if="$ctrl.canBeAdded($ctrl.objectType, $ctrl.attributes, $ctrl.attribute)">
+        <a class="btn btn-default ga-add-dup"
+           title="Add another attribute of this type"
+           ng-click="$ctrl.duplicateAttribute($ctrl.objectType, $ctrl.attributes, $ctrl.attribute)">
+            <span class="fa fa-arrow-down"></span>
+        </a>
+    </li>
+    <li ng-if="$ctrl.canAddExtraAttributes($ctrl.objectType)">
+        <a class="btn btn-default ga-add-attr"
+           title="Add any attribute (opens dialog)"
+           ng-click="$ctrl.displayAddAttributeDialog($ctrl.objectType, $ctrl.attributes, $ctrl.attribute)">
+            <span class="fa fa-plus"></span>
+        </a>
+    </li>
+    <li ng-if="!$ctrl.attribute.$$disable && $ctrl.canBeRemoved($ctrl.objectType, $ctrl.attributes, $ctrl.attribute)">
+        <a class="btn btn-default ga-del-attr"
+           title="Remove current attribute"
+           ng-click="$ctrl.removeAttribute($ctrl.objectType, $ctrl.attributes, $ctrl.attribute)">
+            <span class="fa fa-trash"></span>
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-default ga-add-dup"
+           title="Create new role to use as abuse-c"
+           ng-click="$ctrl.createRoleForAbuseCAttribute($ctrl.attributes)"
+           ng-show="$ctrl.shouldShowBellIcon($ctrl.attribute, $ctrl.objectType)">
+            <span class="fa fa-bell-o"></span>
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-default ga-help-attr"
+           ng-click="$ctrl.toggleHelp()"
+           ng-if="$ctrl.attribute.name !== 'reverse-zone'">
+            <span class="fa fa-question"></span>
+        </a>
+    </li>
+</ul>

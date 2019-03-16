@@ -307,7 +307,7 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/../frontend/dist</directory>
+                                    <directory>${basedir}/../frontend/webpack-dist</directory>
                                     <excludes>
                                         <exclude>scripts/app.constants.js</exclude>
                                     </excludes>
@@ -351,7 +351,7 @@
                         <contextPath>/db-web-ui</contextPath>
                         <jettyEnvXml>${basedir}/src/test/resources/jetty/jetty-env.xml</jettyEnvXml>
                         <resourceBases>
-                            <resourceBase>${basedir}/../frontend/dist</resourceBase>
+                            <resourceBase>${basedir}/../frontend/webpack-dist</resourceBase>
                         </resourceBases>
                     </webAppConfig>
                 </configuration>

@@ -1,0 +1,21 @@
+// @ts-ignore
+import "ui-select/dist/select.css";
+import "angular-loading-bar/build/loading-bar.css";
+import "select2/select2.css";
+
+import "angular";
+import "angular-animate";
+import "angular-cookies";
+import "angular-diff-match-patch";
+import "angular-loading-bar";
+import "angular-resource";
+import "angular-sanitize";
+import "angular-ui-bootstrap";
+import "angular-ui-router";
+import "angulartics";
+import "angulartics-google-tag-manager";
+import "crypto-js";
+import "ip-address";
+import "lodash";
+import "moment";
+import "ui-select";

@@ -27,5 +27,5 @@ angular.module("dbWebApp").component("fullTextResultSummary", {
         tabledata: "<",
     },
     controller: FullTextResultSummaryController,
-    templateUrl: "scripts/fulltextsearch/full-text-result-summary.html",
+    templateUrl: "./full-text-result-summary.html",
 });

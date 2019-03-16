@@ -2,10 +2,12 @@ interface IErrorMessageModel {
     attribute?: IAttributeModel;
     severity?: string;
     text?: string;
-    args?: [{
-        value: string;
-    }];
+    args?: IErrorMessageArgValueModel[];
     plainText?: string;
+}
+
+interface IErrorMessageArgValueModel {
+    value: string;
 }
 
 interface IWhoisLinkModel {
@@ -31,6 +33,7 @@ interface IAttributeModel {
         $$multiple?: boolean,
         $$primaryKey?: boolean,
         $$refs?: string[],
+        $$searchable?: boolean,
         $$isEnum?: boolean,
         $$isLir?: boolean,
         $$disable?: boolean,

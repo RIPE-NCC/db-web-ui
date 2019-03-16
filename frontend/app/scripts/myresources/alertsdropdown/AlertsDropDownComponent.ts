@@ -70,6 +70,6 @@ class AlertsDropDownController {
 
 angular.module("dbWebApp").component("alertsDropDown", {
     controller: AlertsDropDownController,
-    templateUrl: "scripts/myresources/alertsdropdown/alerts-drop-down.html",
+    templateUrl: "./alerts-drop-down.html",
 });
 

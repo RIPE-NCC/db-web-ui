@@ -163,7 +163,11 @@ class FullTextSearchController {
 
 angular
     .module("dbWebApp")
+    // sanitize image too
+    .config(["$compileProvider", ($compileProvider: any) => {
+            $compileProvider.imgSrcSanitizationWhitelist("\b\B");
+        }])
     .component("fullTextSearch", {
         controller: FullTextSearchController,
-        templateUrl: "scripts/fulltextsearch/full-text-search.html",
+        templateUrl: "./full-text-search.html",
     });

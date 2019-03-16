@@ -1,0 +1,12 @@
+<div class="resources-ip-usage">
+    <p ng-if="$ctrl.type === 'inetnum' && !$ctrl.sponsored">
+    <span>Total allocated: {{$ctrl.total}}</span>
+        <span>Total allocated used: {{$ctrl.used}}</span>
+        <span>Total allocated free: {{$ctrl.free}}</span>
+    </p>
+    <p ng-if="$ctrl.type === 'inet6num' && !$ctrl.sponsored">
+    <span>Total allocated subnets: {{$ctrl.ipv6CalcTotal}}</span>
+        <span>Total allocated subnets used: {{$ctrl.ipv6CalcUsed}}</span>
+        <span>Total allocated subnets free: {{$ctrl.ipv6CalcFree}}</span>
+    </p>
+</div>

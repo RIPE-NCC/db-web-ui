@@ -63,5 +63,5 @@ class SelectController {
 angular.module("webUpdates")
     .component("selectComponent", {
         controller: SelectController,
-        templateUrl: "scripts/updates/web/select.html",
+        templateUrl: "./select.html",
     });

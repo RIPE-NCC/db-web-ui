@@ -92,5 +92,5 @@ class DisplayPersonMntnerPairController {
 angular.module("webUpdates")
     .component("displayPersonMntnerPairComponent", {
         controller: DisplayPersonMntnerPairController,
-        templateUrl: "scripts/updates/web/displayPersonMntnerPair.html",
+        templateUrl: "./displayPersonMntnerPair.html",
     });

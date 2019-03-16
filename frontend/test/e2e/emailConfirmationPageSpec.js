@@ -11,7 +11,7 @@ describe('Email Confirmation Page', function () {
         browser.get(browser.baseUrl + '#/confirmEmail?t=SUCCESS-TOKEN');
         expect(page.checkImg.isPresent()).toEqual(true);
         expect(page.emailConfirmationMsg.isPresent()).toEqual(true);
-        expect(page.emailConfirmationMsg.getText()).toContain('Thank you! This email has now been validated and we will close the ticket soon. No further action is required.');
+        expect(page.emailConfirmationMsg.getText()).toContain('Thank you! This email has now been validated. No further action is required.');
     });
     it('should show unsuccessful validation page', function () {
         browser.get(browser.baseUrl + '#/confirmEmail?t=FAILED-TOKEN-EXPIRATION-DATE');

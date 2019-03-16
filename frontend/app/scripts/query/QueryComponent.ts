@@ -50,6 +50,7 @@ class QueryController {
         "Properties",
         "QueryService",
         "$anchorScroll",
+        "QueryParameters",
     ];
 
     public qp: QueryParameters;
@@ -58,6 +59,9 @@ class QueryController {
     public showScroller = false;
     public results: IWhoisObjectModel[];
     public errorMessages: IErrorMessageModel[];
+
+    public showTemplatePanel: boolean;
+    public queriedTemplateObject: ITemplateTerm;
 
     public link: {
         json: string;
@@ -71,9 +75,10 @@ class QueryController {
                 private $stateParams: IQueryState,
                 private properties: IProperties,
                 private service: IQueryService,
-                private $anchorScroll: ng.IAnchorScrollService) {
+                private $anchorScroll: ng.IAnchorScrollService,
+                private QueryParameters: QueryParameters) {
 
-        this.qp = new QueryParameters();
+        this.qp = QueryParameters;
         this.qp.source = this.$stateParams.source || this.properties.SOURCE;
         this.link = {
             json: "",
@@ -147,13 +152,18 @@ class QueryController {
             return;
         }
 
-        this.service
-            .searchWhoisObjects(cleanQp, this.offset)
-            .then(
-                (response) => {
-                    this.handleWhoisSearch(response);
+        if (this.qp.isQueriedTemplate()) {
+            this.showTemplatePanel = issues.errors.length === 0;
+            this.queriedTemplateObject = cleanQp.queriedTemplateObject;
+        } else {
+            this.service
+                .searchWhoisObjects(cleanQp, this.offset)
+                .then(
+                    (response) => {
+                        this.handleWhoisSearch(response);
                     },
-                (error) => this.handleWhoisSearchError(error));
+                    (error) => this.handleWhoisSearchError(error));
+        }
     }
 
     public lastResultOnScreen() {
@@ -170,6 +180,9 @@ class QueryController {
         const qpClean = angular.copy(this.qp);
         if (qpClean.validate().errors.length > 0) {
             return " ";
+        }
+        if (qpClean.isQueriedTemplate()) {
+            return qpClean.queryText;
         }
         const q = [];
         const invs = qpClean.inverseAsList().join(",");
@@ -311,5 +324,5 @@ class QueryController {
 
 angular.module("dbWebApp").component("query", {
     controller: QueryController,
-    templateUrl: "scripts/query/query.html",
+    templateUrl: "./query.html",
 });

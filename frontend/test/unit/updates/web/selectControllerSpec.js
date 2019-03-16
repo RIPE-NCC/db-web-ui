@@ -88,7 +88,6 @@ describe('webUpdates: SelectController', function () {
 
         // person-mntnr pair is default selection (top of the drop down list)
         $ctrl.navigateToCreate();
-        // FIXME [IS]
         $httpBackend.flush();
 
         expect($ctrl.$state.current.name).toBe('webupdates.createPersonMntnerPair');

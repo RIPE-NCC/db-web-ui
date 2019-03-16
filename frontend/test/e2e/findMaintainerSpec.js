@@ -14,7 +14,7 @@ describe('Find Maintainer', function () {
         browser.get(browser.baseUrl + '#/fmp/');
     });
 
-    it('Should load the page with the search form', function () {
+    it('should load the page with the search form', function () {
         expect(page.findMaintainerForm.isPresent()).toEqual(true);
         expect(page.searchMaintainer.isPresent()).toEqual(true);
         expect(page.searchMaintainer.getText()).toEqual('Search');
@@ -24,7 +24,7 @@ describe('Find Maintainer', function () {
         expect(page.maintainerContainer.isPresent()).toEqual(false);
     });
 
-    it('Should load the maintainer into page after search', function () {
+    it('should load the maintainer into page after search', function () {
         expect(page.maintainerContainer.isPresent()).toEqual(false);
         page.scrollIntoView(page.findMaintainerForm);
         page.inputMaintainer.clear().sendKeys('shryane-mnt');
@@ -44,7 +44,7 @@ describe('Find Maintainer', function () {
         expect(maintainerContainer).toContain('I do not have access to eshryane@ripe.net. Take me to the manual recovery process');
     });
 
-    it('Should hide previous error alert after maintainer was found', function () {
+    it('should hide previous error alert after maintainer was found', function () {
         expect(page.maintainerContainer.isPresent()).toEqual(false);
         page.scrollIntoView(page.findMaintainerForm);
         page.inputMaintainer.clear().sendKeys('svonja');

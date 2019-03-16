@@ -459,5 +459,5 @@ class TextMultiController {
 angular.module("textUpdates")
     .component("textMulti", {
         controller: TextMultiController,
-        templateUrl: "scripts/updates/text/multi.html",
+        templateUrl: "./multi.html",
     });

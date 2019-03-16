@@ -657,10 +657,9 @@ describe('dbWebApp: WhoisResources', function () {
         expect(addableAttrs[4].name).toBe('org');
         expect(addableAttrs[5].name).toBe('remarks');
         expect(addableAttrs[6].name).toBe('notify');
-        expect(addableAttrs[7].name).toBe('abuse-mailbox');
-        expect(addableAttrs[8].name).toBe('mnt-by');
-        expect(addableAttrs[9].name).toBe('created');
-        expect(addableAttrs.length).toBe(10);
+        expect(addableAttrs[7].name).toBe('mnt-by');
+        expect(addableAttrs[8].name).toBe('created');
+        expect(addableAttrs.length).toBe(9);
     });
 
     it('detact if an attribute can be removed', function () {

@@ -83,7 +83,7 @@
                        attributetransformer
                        uib-typeahead="value.key as value.readableName for value in $ctrl.referenceAutocomplete(attribute, $viewValue)"
                        typeahead-min-length="2"
-                       ng-disabled="attribute.$$meta.$$disable || attribute.$$meta.$$isLir"
+                       ng-disabled="attribute.$$meta.$$disable"
                        autocomplete="off"
                 >
 
@@ -98,7 +98,7 @@
                      </ui-select-choices>
                  </ui-select>
             </span>
-                <span ng-if="attribute.$$meta.$$isEnum && attribute.name === 'status'">
+            <span ng-if="attribute.$$meta.$$isEnum && attribute.name === 'status'">
                  <ui-select name="{{attribute.name}}"
                             ng-model="attribute.value"
                             ng-disabled="attribute.$$meta.$$disable"

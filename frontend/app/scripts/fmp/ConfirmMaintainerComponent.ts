@@ -108,5 +108,5 @@ class ConfirmMaintainerController {
 angular.module("fmp")
     .component("confirmMaintainer", {
         controller: ConfirmMaintainerController,
-        templateUrl: "scripts/fmp/confirmMaintainer.html",
+        templateUrl: "./confirmMaintainer.html",
     });

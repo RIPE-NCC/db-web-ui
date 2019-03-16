@@ -8,13 +8,11 @@ class UserInfoController {
         "$log",
         "UserInfoService",
         "Properties",
-        "ERROR_EVENTS",
     ];
 
     constructor(private $log: angular.ILogService,
                 private userInfoService: UserInfoService,
-                private properties: IProperties,
-                private ERROR_EVENTS: any) {
+                private properties: IProperties) {
 
         this.initialize();
     }
@@ -35,12 +33,17 @@ class UserInfoController {
                     email: userInfo.user.username,
                     fullName: userInfo.user.displayName,
                 };
-                init_sso_nav();
-                init_user_menu();
-                display_user_menu();
+                this.initLoggedIn();
             }, (error: Error): void => {
                 this.$log.debug("Login error");
             });
+    }
+
+    private initLoggedIn(): void {
+        angular.element(document.querySelector("#loggedin .profile, #loggedin a.active")).unbind("click");
+        init_user_menu();
+        display_user_menu();
+        init_sso_nav();
     }
 
 }
@@ -48,5 +51,5 @@ class UserInfoController {
 angular.module("loginStatus")
     .component("userInfo", {
         controller: UserInfoController,
-        templateUrl: "scripts/loginStatus/user-info.html",
+        templateUrl: "./user-info.html",
     });

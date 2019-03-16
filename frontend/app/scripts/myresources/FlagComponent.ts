@@ -32,5 +32,5 @@ angular.module("dbWebApp").component("flag", {
         tooltip: "<",
     },
     controller: FlagController,
-    templateUrl: "scripts/myresources/flag.html",
+    templateUrl: "./flag.html",
 });

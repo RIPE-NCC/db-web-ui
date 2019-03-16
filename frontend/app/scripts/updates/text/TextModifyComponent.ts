@@ -239,5 +239,5 @@ class TextModifyController {
 angular.module("textUpdates")
     .component("textModify", {
         controller: TextModifyController,
-        templateUrl: "scripts/updates/text/modify.html",
+        templateUrl: "./modify.html",
     });

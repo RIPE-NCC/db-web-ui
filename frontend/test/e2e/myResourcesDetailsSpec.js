@@ -275,11 +275,11 @@ describe('My Resources detail', function () {
             expect(attributes.get(6).getText()).toMatch(/status: *OTHER/);
             expect(attributes.get(11).getText()).toMatch(/source: *RIPE-NONAUTH/);
             expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(0).getAttribute('href')).toContain('?source=ripe-nonauth&key=AS36867&type=aut-num');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(3).getAttribute('href')).toContain('?source=RIPE&key=ORG-Sb3-RIPE&type=organisation');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(4).getAttribute('href')).toContain('?source=RIPE&key=SNS1-RIPE&type=role');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(5).getAttribute('href')).toContain('?source=RIPE&key=JK9622-RIPE&type=person');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(7).getAttribute('href')).toContain('?source=RIPE&key=KOKONET-MNT&type=mntner');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(8).getAttribute('href')).toContain('?source=RIPE&key=RIPE-NCC-RPSL-MNT&type=mntner');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(3).getAttribute('href')).toContain('?source=ripe-nonauth&key=ORG-Sb3-RIPE&type=organisation');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(4).getAttribute('href')).toContain('?source=ripe-nonauth&key=SNS1-RIPE&type=role');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(5).getAttribute('href')).toContain('?source=ripe-nonauth&key=JK9622-RIPE&type=person');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(7).getAttribute('href')).toContain('?source=ripe-nonauth&key=KOKONET-MNT&type=mntner');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(8).getAttribute('href')).toContain('?source=ripe-nonauth&key=RIPE-NCC-RPSL-MNT&type=mntner');
         });
 
         it('should edit and update out of region aut-num', function () {

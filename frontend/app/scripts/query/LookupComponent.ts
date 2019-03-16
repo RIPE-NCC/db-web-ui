@@ -26,5 +26,5 @@ angular.module("dbWebApp").component("lookup", {
         updateClicked: "&?",
     },
     controller: LookupController,
-    templateUrl: "scripts/query/lookup.html",
+    templateUrl: "./lookup.html",
 });

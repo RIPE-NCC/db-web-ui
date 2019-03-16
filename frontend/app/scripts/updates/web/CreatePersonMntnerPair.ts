@@ -165,5 +165,5 @@ class CreatePersonMntnerPairController {
 angular.module("webUpdates")
     .component("createPersonMntnerPair", {
         controller: CreatePersonMntnerPairController,
-        templateUrl: "scripts/updates/web/createPersonMntnerPair.html",
+        templateUrl: "./createPersonMntnerPair.html",
     });

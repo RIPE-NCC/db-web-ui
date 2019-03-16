@@ -56,5 +56,5 @@ angular.module("dbWebApp")
             resolve: "=",
         },
         controller: ModalDomainCreationWaitCotroller,
-        templateUrl: "scripts/wizard/modal-domain-creation-wait.html",
+        templateUrl: "./modal-domain-creation-wait.html",
     });

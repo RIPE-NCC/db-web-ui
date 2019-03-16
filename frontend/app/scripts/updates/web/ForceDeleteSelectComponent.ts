@@ -1,6 +1,6 @@
 class ForceDeleteSelectController {
 
-    public static $inject = ["$stateParams", "$state", "Properties", "$log", "AlertService"];
+    public static $inject = ["$stateParams", "$state", "Properties", "$log", "AlertService", "STATE"];
 
     public objectTypes: string[] = ["inetnum", "inet6num", "route", "route6", "domain"];
     public selected: any;
@@ -9,7 +9,8 @@ class ForceDeleteSelectController {
                 public $state: ng.ui.IStateService,
                 public Properties: IProperties,
                 public $log: angular.ILogService,
-                public AlertService: AlertService) {
+                public AlertService: AlertService,
+                public STATE: any) {
 
         this.AlertService.clearErrors();
         this.selected = {
@@ -20,7 +21,7 @@ class ForceDeleteSelectController {
     }
 
     public navigateToForceDelete() {
-        return this.$state.transitionTo(STATE.FORCE_DELETE, {
+        return this.$state.transitionTo(this.STATE.FORCE_DELETE, {
             name: this.selected.name,
             objectType: this.selected.objectType,
             source: this.selected.source,
@@ -35,5 +36,5 @@ class ForceDeleteSelectController {
 angular.module("webUpdates")
     .component("forceDeleteSelect", {
         controller: ForceDeleteSelectController,
-        templateUrl: "scripts/updates/web/forceDeleteSelect.html",
+        templateUrl: "./forceDeleteSelect.html",
     });

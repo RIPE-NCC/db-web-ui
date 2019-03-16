@@ -7,5 +7,5 @@ class AlertController {
 
 angular.module("dbWebApp").component("alerts", {
     controller: AlertController,
-    templateUrl: "scripts/alerts.html",
+    templateUrl: "./alerts.html",
 });

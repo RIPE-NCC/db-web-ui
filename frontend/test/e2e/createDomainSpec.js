@@ -66,18 +66,16 @@ describe('The create domain screen', function () {
     it('should show a domain creation form for IPv6 which rejects invalid nameservers', function () {
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
+        page.scrollIntoView(page.inpPrefix);
         page.inpPrefix.sendKeys('2001:db8::/48');
 
-        //browser.driver.wait(protractor.until.elementIsVisible(page.inpNserver1));
         browser.wait(until.visibilityOf(page.inpNserver1), 5000, 'waited too long');
 
         page.inpNserver1.sendKeys('ns1.xs4all.nl');
         page.inpNserver2.sendKeys('nsXXX.xs4all.nl');
         var liContainer = page.inpNserver2.element(by.xpath('..'));
 
-        browser.wait(function () {
-            return browser.isElementPresent(liContainer.element(by.css('.text-error')));
-        }, 5000);
+        browser.wait(until.visibilityOf(liContainer.element(by.css('.text-error'))), 5000, 'waited too long');
 
         expect(liContainer.getAttribute('class')).toContain('has-error');
         expect(page.inpAdminC4.isDisplayed()).toEqual(false);
@@ -86,9 +84,7 @@ describe('The create domain screen', function () {
 
         page.inpNserver2.clear();
         page.inpNserver2.sendKeys('ns2.xs4all.nl');
-        browser.wait(function () {
-            return browser.isElementPresent(liContainer.element(by.css('.text-info')));
-        }, 5000);
+        browser.wait(until.visibilityOf(liContainer.element(by.css('.text-info'))), 5000, 'waited too long');
 
         expect(liContainer.getText()).toContain('0.8.b.d.0.1.0.0.2.ip6.arpa');
         expect(liContainer.getAttribute('class')).not.toContain('has-error');
@@ -98,10 +94,10 @@ describe('The create domain screen', function () {
         expect(page.inpZoneC6.isDisplayed()).toEqual(true);
 
         // User changes his mind!
+        page.inpPrefix.clear();
         page.inpPrefix.sendKeys('212.17.110.0/23');
-        browser.wait(function () {
-            return browser.isElementPresent(liContainer.element(by.css('.text-info')));
-        }, 5000);
+
+        browser.wait(until.visibilityOf(liContainer.element(by.css('.text-info'))), 5000, 'waited too long');
         expect(liContainer.getText()).not.toContain('0.8.b.d.0.1.0.0.2.ip6.arpa');
 
     });

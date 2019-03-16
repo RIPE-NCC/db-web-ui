@@ -49,7 +49,7 @@ describe('Modifying an organisation', function () {
             page.btnEditAnAttribute(page.inpOrgName).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual('Updating legal information');
-            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation’s legal name has changed; no other legal entity is involved');
+            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation\'s legal name has changed; no other legal entity is involved');
             expect(page.modalEditAttrPanel2.getText()).toContain('The business structure of my organisation has changed (for example due to a merger or acquisition)');
         });
 
@@ -58,8 +58,8 @@ describe('Modifying an organisation', function () {
             page.btnEditAnAttribute(page.inpAddress).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual('Updating address information');
-            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation’s legal address has changed');
-            expect(page.modalEditAttrPanel2.getText()).toContain('My organisation’s postal address has changed');
+            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation\'s legal address has changed');
+            expect(page.modalEditAttrPanel2.getText()).toContain('My organisation\'s postal address has changed');
         });
 
         it('should open modal edit attribute on click on pen button contact information', function () {
@@ -67,22 +67,37 @@ describe('Modifying an organisation', function () {
             page.btnEditAnAttribute(page.inpPhone).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual('Updating contact information');
-            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation’s telephone number has changed');
+            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation\'s telephone number has changed');
             page.modalClose.click();
             page.scrollIntoView(page.inpFax);
             page.btnEditAnAttribute(page.inpFax).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual('Updating contact information');
-            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation’s fax number has changed');
+            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation\'s fax number has changed');
             page.modalClose.click();
             page.scrollIntoView(page.inpEmail);
             page.btnEditAnAttribute(page.inpEmail).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual('Updating contact information');
-            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation’s email address has changed');
+            expect(page.modalEditAttrPanel1.getText()).toContain('My organisation\'s email address has changed');
             page.modalClose.click();
         });
 
+        it('should not contain remove (trush) button next to abuse-c in case of LIR organisation', function () {
+            page.scrollIntoView(page.inpAbuseC);
+            expect(page.btnRemoveAttributeCreatModifyPage(page.inpAbuseC).isPresent()).toBeFalsy();
+        });
     });
 
+    describe('which is an OTHER type', function () {
+
+        beforeEach(function () {
+            browser.get(browser.baseUrl + '#/webupdates/modify/ripe/organisation/ORG-ADNL2-RIPE');
+        });
+
+        it('should contain remove (trush) button next to abuse-c in case of LIR organisation', function () {
+            page.scrollIntoView(page.inpAbuseC);
+            expect(page.btnRemoveAttributeCreatModifyPage(page.inpAbuseC).isPresent()).toBeTruthy();
+        });
+    });
 });

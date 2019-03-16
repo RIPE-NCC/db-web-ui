@@ -1,5 +1,3 @@
-const SIZE: string[] = ["", "K", "M", "G", "T"];
-
 class IpUsageController {
 
     // Inputs
@@ -13,14 +11,12 @@ class IpUsageController {
     public ipv6CalcUsed: string;
     public ipv6CalcFree: string;
 
+    constructor(private IpUsageService: IpUsageService) {}
+
     public $onChanges(): void {
-        this.usage.free = this.calcFreeSpace();
+        this.usage.free = this.IpUsageService.calcFreeSpace(this.usage.total, this.usage.used);
         this.calcPercentage();
         this.calcValueForIPv6();
-    }
-
-    private calcFreeSpace(): number {
-        return this.usage.total - this.usage.used;
     }
 
     private calcPercentage() {
@@ -32,21 +28,9 @@ class IpUsageController {
         if (!this.usage) {
             return;
         }
-        this.ipv6CalcTotal = this.calcShorterValue(this.usage.total);
-        this.ipv6CalcUsed = this.calcShorterValue(this.usage.used);
-        this.ipv6CalcFree = this.calcShorterValue(this.usage.free);
-    }
-
-    private calcShorterValue(value: number): string {
-        if (value === undefined) {
-            return "";
-        }
-        let counter = 0;
-        while (value >= 1024) {
-            value = value / 1024;
-            counter++;
-        }
-        return Math.round(value) + SIZE[counter];
+        this.ipv6CalcTotal = this.IpUsageService.calcShorterValue(this.usage.total);
+        this.ipv6CalcUsed = this.IpUsageService.calcShorterValue(this.usage.used);
+        this.ipv6CalcFree = this.IpUsageService.calcShorterValue(this.usage.free);
     }
 }
 
@@ -56,5 +40,5 @@ angular.module("dbWebApp").component("ipUsage", {
         usage: "<",
     },
     controller: IpUsageController,
-    templateUrl: "scripts/myresources/ip-usage.html",
+    templateUrl: "./ip-usage.html",
 });

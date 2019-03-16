@@ -80,16 +80,13 @@
                             <directory>${basedir}/backend/src/main/webapp</directory>
                         </fileset>
                         <fileset>
-                            <directory>${basedir}/frontend/bower_components</directory>
-                        </fileset>
-                        <fileset>
-                            <directory>${basedir}/frontend/dist</directory>
-                        </fileset>
-                        <fileset>
-                            <directory>${basedir}/frontend/reports</directory>
-                        </fileset>
-                        <fileset>
                             <directory>${basedir}/frontend/node_modules</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/frontend/node</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/frontend/webpack-dist</directory>
                         </fileset>
                         <fileset>
                             <directory>${basedir}/frontend</directory>

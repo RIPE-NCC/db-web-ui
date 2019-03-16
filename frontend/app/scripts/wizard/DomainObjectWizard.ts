@@ -236,5 +236,5 @@ class DomainObjectWizardController {
 angular.module("dbWebApp")
     .component("domainObjectWizard", {
         controller: DomainObjectWizardController,
-        templateUrl: "scripts/wizard/domain-object-wizard.html",
+        templateUrl: "./domain-object-wizard.html",
     });

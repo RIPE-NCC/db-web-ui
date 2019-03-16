@@ -49,7 +49,7 @@ describe('The inetnum editor', function () {
         page.inpCountryList.get(2).click();
         page.inpAdminC.sendKeys('aa1-ripe');
         page.inpTechC.sendKeys('aa1-ripe');
-
+        page.inpAdminC.click();
         page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
         page.inpStatusLink.click(); // click on dropdown to populate it.
         expect(page.inpStatusList.count()).toBe(3);
@@ -81,7 +81,7 @@ describe('The inetnum editor', function () {
         page.inpCountryList.get(2).click();
         page.inpAdminC.sendKeys('aa1-ripe');
         page.inpTechC.sendKeys('aa1-ripe');
-
+        page.inpAdminC.click();
         page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
         page.inpStatusLink.click(); // click on dropdown to populate it.
         expect(page.inpStatusList.count()).toBe(3);

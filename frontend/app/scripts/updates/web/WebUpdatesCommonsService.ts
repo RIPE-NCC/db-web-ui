@@ -12,7 +12,8 @@ interface IAuthParams {
 }
 
 class WebUpdatesCommonsService {
-    public static $inject = ["$state", "$log", "WhoisResources", "CredentialsService", "AlertService", "MntnerService", "ModalService", "Properties"];
+
+    public static $inject = ["$state", "$log", "WhoisResources", "CredentialsService", "AlertService", "MntnerService", "ModalService", "STATE", "Properties"];
 
     constructor(private $state: ng.ui.IStateService,
                 private $log: angular.ILogService,
@@ -21,6 +22,7 @@ class WebUpdatesCommonsService {
                 private AlertService: AlertService,
                 private MntnerService: MntnerService,
                 private ModalService: ModalService,
+                private STATE: any,
                 private Properties: IProperties) {
 
     }
@@ -76,7 +78,7 @@ class WebUpdatesCommonsService {
     }
 
     public navigateToDisplay(objectSource: string, objectType: string, objectName: string, operation: string) {
-        this.$state.transitionTo(STATE.DISPLAY, {
+        this.$state.transitionTo(this.STATE.DISPLAY, {
             method: operation,
             name: objectName,
             objectType,
@@ -85,7 +87,7 @@ class WebUpdatesCommonsService {
     }
 
     public navigateToEdit(objectSource: string, objectType: string, objectName: string, operation: string) {
-        this.$state.transitionTo(STATE.MODIFY, {
+        this.$state.transitionTo(this.STATE.MODIFY, {
             method: operation,
             name: objectName,
             objectType,
@@ -94,7 +96,7 @@ class WebUpdatesCommonsService {
     }
 
     public navigateToDelete(objectSource: string, objectType: string, objectName: string, onCancel: string) {
-        this.$state.transitionTo(STATE.DELETE, {
+        this.$state.transitionTo(this.STATE.DELETE, {
             name: objectName,
             objectType,
             onCancel,
@@ -106,7 +108,7 @@ class WebUpdatesCommonsService {
         parser.href = attribute.link.href;
         const parts = parser.pathname.split("/");
 
-        return this.$state.href(STATE.DISPLAY, {
+        return this.$state.href(this.STATE.DISPLAY, {
             name: _.last(parts),
             objectType: attribute["referenced-type"],
             source: this.Properties.SOURCE,

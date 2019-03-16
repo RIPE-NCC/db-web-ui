@@ -90,6 +90,7 @@ module.exports = {
     inpInetnum: element(by.id('createForm')).element(by.name('inetnum')),
     inpInet6num: element(by.id('createForm')).element(by.name('inet6num')),
     inpMaintainer: element(by.id('selectMaintainerDropdown')),
+    inpAuth: element(by.id('createForm')).all(by.name('auth')),
     inpStatus: element(by.id('createForm')).element(by.name('status')),
     inpStatusLink: element(by.id('createForm')).element(by.name('status')),
     inpStatusList: element(by.id('createForm')).element(by.name('status')).element(by.css('.ui-select-choices-group')).all(by.css('.ui-select-choices-row')),
@@ -113,6 +114,7 @@ module.exports = {
 
     inpAdminC: element(by.id('createForm')).element(by.name('admin-c')),
     inpTechC: element(by.id('createForm')).element(by.name('tech-c')),
+    inpTechCList: element(by.id('createForm')).element(by.name('tech-c')).element(by.css('ul')).all(by.css('li')),
     inpCountry: element(by.id('createForm')).element(by.name('country')),
     inpCountryList: element(by.id('createForm')).element(by.name('country')).element(by.css('.ui-select-choices-group')).all(by.css('.ui-select-choices-row')),
     btnSubmitForm: element(by.id('btnSubmitCreate')),
@@ -165,6 +167,7 @@ module.exports = {
 
     // My resources
     myResources: element(by.css('.my-resources')),
+    resourcesIpUsage: element(by.css('.my-resources')).element(by.css('.resources-ip-usage')).all(by.css('span')),
     myResourcesTabs: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).all(by.css('.nav-item')),
     myResourcesActiveTabLabel: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).element(by.css('.nav-item.active')),
     myResourcesActiveTabContent: element(by.css('.my-resources')).element(by.id('ipv4-ipv6-asn-tabs')).element(by.css('.tab-pane.active')),
@@ -216,15 +219,17 @@ module.exports = {
 
     // Query page
     inpQueryString: element(by.model('$ctrl.qp.queryText')),
+    inpTelnetQuery: element(by.name('searchform')).element(by.css('pre')),
     inpShowFullDetails: element(by.model('$ctrl.qp.showFullObjectDetails')),
     inpDontRetrieveRelated: element(by.model('$ctrl.qp.doNotRetrieveRelatedObjects')),
     btnSubmitQuery: element(by.name('searchform')).element(by.css('button.blue-button')),
     resultsSection: element(by.id('resultsSection')),
     searchResults: element(by.id('resultsSection')).all(by.css('lookup')),
     queryParamTabs: element(by.name('searchform')).element(by.css('.nav.nav-tabs')).all(by.css('li')),
+    templateSearchResults: element(by.id('templateResultsSection')).element(by.css('pre')),
 
     // Syncupdate page
-    inpSyncupdateString: element(by.model('$ctrl.rpslObject')),
+    inpSyncupdateString: element(by.id('rpslTextArea')),
     viewSyncupdateString: element(by.id('updateResultPreview')),
     btnUpdate: element(by.name('btnSyncupdate')),
     btnSwitchSyncupdates: element(by.name('btnSwitchSyncupdates')),
@@ -264,12 +269,16 @@ module.exports = {
         return attribute.element(by.xpath('../../..')).element(by.css('.fa.fa-plus'));
     },
 
+    btnRemoveAttribute: function(attribute) {
+        return attribute.element(by.xpath('../../..')).element(by.css('.fa.fa-trash'));
+    },
+
     btnEditAnAttribute: function(attribute) {
         return attribute.element(by.xpath('..')).element(by.css('.fa.fa-pencil'));
     },
 
-    btnRemoveAttribute: function(attribute) {
-        return attribute.element(by.xpath('../../..')).element(by.css('.fa.fa-trash'));
+    btnRemoveAttributeCreatModifyPage: function(attribute) {
+        return attribute.element(by.xpath('..')).element(by.css('.fa.fa-trash'));
     },
 
     getTableCell: function (tableElement, rowIndex, colIndex) {
@@ -309,6 +318,14 @@ module.exports = {
 
     getAttributeHrefFromWhoisObjectOnLookupPage: function(attributeNumber) {
         return this.lookupPageObjectLi.get(attributeNumber).element(by.css('a'));
+    },
+
+    getAttributeFromWhoisObjectOnLookupPage: function(attributeNumber) {
+        return this.lookupPageObjectLi.get(attributeNumber);
+    },
+
+    getCommentFromWhoisObjectAttributeOnLookupPage: function(attributeNumber) {
+        return this.lookupPageObjectLi.get(attributeNumber).all(by.css('span')).get(1);
     },
 
     /**

@@ -60,5 +60,5 @@ class DeleteController {
 angular.module("webUpdates")
     .component("deleteComponent", {
         controller: DeleteController,
-        templateUrl: "scripts/updates/web/delete.html",
+        templateUrl: "./delete.html",
     });

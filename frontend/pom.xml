@@ -15,25 +15,38 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.github.trecloux</groupId>
-                <artifactId>yeoman-maven-plugin</artifactId>
-                <version>0.4</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.3.2</version>
                 <executions>
                     <execution>
-                        <id>run-frontend-build</id>
-                        <phase>generate-resources</phase>
+                        <id>npm install (initialize)</id>
                         <goals>
-                            <goal>build</goal>
+                            <goal>exec</goal>
                         </goals>
+                        <phase>generate-resources</phase>
                         <configuration>
-                            <buildTool>grunt</buildTool>
-                            <buildArgs>build --force --no-color</buildArgs>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>npm run build-aot (compile)</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>generate-resources</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build-aot</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <yeomanProjectDirectory>${project.basedir}</yeomanProjectDirectory>
-                </configuration>
             </plugin>
         </plugins>
     </build>

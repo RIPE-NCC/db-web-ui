@@ -14,26 +14,46 @@
                 "type": "INETNUM",
                 "resource": "194.104.0.0 - 194.104.0.255",
                 "status": "ASSIGNED PI",
-                "netname": "SN-IP"
+                "netname": "SN-IP",
+                "usage": {
+                    "total": 256,
+                    "used": 0,
+                    "blockSize": 32
+                }
             },
             {
                 "type": "INETNUM",
                 "resource": "194.171.0.0 - 194.171.255.255",
                 "status": "ALLOCATED PA",
-                "netname": "NL-SURFNET-950612"
+                "netname": "NL-SURFNET-950612",
+                "usage": {
+                    "total": 1024,
+                    "used": 0,
+                    "blockSize": 32
+                }
             },
             {
                 "type": "INETNUM",
                 "resource": "195.169.0.0 - 195.169.255.255",
                 "status": "ALLOCATED PA",
-                "netname": "NL-SURFNET-970616"
+                "netname": "NL-SURFNET-970616",
+                "usage": {
+                    "total": 2048,
+                    "used": 2048,
+                    "blockSize": 32
+                }
             },
             {
                 "type": "INETNUM",
                 "resource": "192.87.0.0 - 192.87.255.255",
                 "status": "LEGACY",
                 "netname": "NL-SURFNET-20030715",
-                "sponsored": true
+                "sponsored": true,
+                "usage": {
+                    "total": 2048,
+                    "used": 2048,
+                    "blockSize": 32
+                }
             }
         ]
     },

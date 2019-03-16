@@ -124,5 +124,5 @@ class DisplayComponent {
 angular.module("webUpdates")
     .component("displayComponent", {
         controller: DisplayComponent,
-        templateUrl: "scripts/updates/web/display.html",
+        templateUrl: "./display.html",
     });

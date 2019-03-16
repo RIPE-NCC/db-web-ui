@@ -60,5 +60,5 @@ class ForgotMaintainerPasswordController {
 
 angular.module("fmp").component("fmp", {
     controller: ForgotMaintainerPasswordController,
-    templateUrl: "scripts/fmp/forgotMaintainerPassword.html",
+    templateUrl: "./forgotMaintainerPassword.html",
 });

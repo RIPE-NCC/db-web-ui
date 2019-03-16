@@ -1,5 +1,3 @@
-/*global angular, CryptoJS*/
-/*jslint bitwise: true*/
 class CryptService {
 
     private b64t: string = "./0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
@@ -39,7 +37,6 @@ class CryptService {
             ii >>= 1;
         }
 
-        // @ts-ignore
         finalb = CryptoJS.MD5(ctx);
 
         for (let i = 0; i < this.rounds; i++) {
@@ -93,7 +90,7 @@ class CryptService {
         wordArray.words[(wordArray.sigBytes + offset) >>> 2] |= value << (24 - ((wordArray.sigBytes + offset) % 4) * 8);
     }
 
-    private _copyBytes(wordArray: string[], offset: number, length: number) {
+    private _copyBytes(wordArray: any, offset: number, length: number) {
         // @ts-ignore
         const result = CryptoJS.lib.WordArray.create();
 

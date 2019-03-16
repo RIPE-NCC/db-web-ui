@@ -180,5 +180,5 @@ class CreateSelfMaintainedMaintainerController {
 angular.module("webUpdates")
     .component("createSelfMaintainedMaintainerComponent", {
         controller: CreateSelfMaintainedMaintainerController,
-        templateUrl: "scripts/updates/web/createSelfMaintainedMaintainer.html",
+        templateUrl: "./createSelfMaintainedMaintainer.html",
     });

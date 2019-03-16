@@ -68,7 +68,26 @@ describe('The query pagina', function () {
         page.byId('search:types:6').click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        expect(page.resultsSection.getAttribute('innerHTML')).toContain('?source=RIPE&amp;key=ORG-IANA1-RIPE&amp;type=organisation');
+        expect(page.resultsSection.getAttribute('innerHTML')).toContain('?source=ripe&amp;key=ORG-IANA1-RIPE&amp;type=organisation');
+    });
+
+    it('should search by inverse lookup abuse-c', function () {
+        page.inpQueryString.sendKeys('ACRO862-RIPE');
+        page.scrollIntoView(page.inpDontRetrieveRelated);
+        page.inpDontRetrieveRelated.click();
+        page.queryParamTabs.get(1).click();
+        page.scrollIntoView(page.byId('search:types:11')); // organisation
+        page.byId('search:types:11').click();
+        page.queryParamTabs.get(3).click();
+        page.scrollIntoView(page.byId('search:inverseLookup:0')); // organisation
+        page.byId('search:inverseLookup:0').click();
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        expect(page.searchResults.count()).toEqual(1);
+        let whoisObject = page.getWhoisObjectViewerOnQueryPage(0);
+        expect(whoisObject.isPresent()).toEqual(true);
+        expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 1).getText()).toEqual('Aloses Telekom Hizm. San. ve Tic. Ltd. Sti.');
+        expect(page.inpTelnetQuery.getText()).toContain("-i abuse-c -T organisation -Br ACRO862-RIPE");
     });
 
     it('should be specified ripe stat link', function () {
@@ -175,9 +194,9 @@ describe('The query pagina', function () {
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
         expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(0, 0).getAttribute('href')).toContain('?source=ripe-nonauth&key=AS9777&type=aut-num');
-        expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(0, 9).getAttribute('href')).toContain('?source=RIPE&key=JYH3-RIPE&type=person');
-        expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(0, 10).getAttribute('href')).toContain('?source=RIPE&key=SDH19-RIPE&type=person');
-        expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(0, 18).getAttribute('href')).toContain('?source=RIPE&key=AS4663-RIPE-MNT&type=mntner');
+        expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(0, 9).getAttribute('href')).toContain('?source=ripe-nonauth&key=JYH3-RIPE&type=person');
+        expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(0, 10).getAttribute('href')).toContain('?source=ripe-nonauth&key=SDH19-RIPE&type=person');
+        expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(0, 18).getAttribute('href')).toContain('?source=ripe-nonauth&key=AS4663-RIPE-MNT&type=mntner');
         expect(page.inpQueryString.getAttribute('value')).toEqual('AS9777');
         expect(page.getRipeStateFromWhoisObjectOnQueryPage(0).getAttribute('href')).toEqual('https://stat.ripe.net/AS9777?sourceapp=ripedb');
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 21).getText()).toEqual('RIPE-NONAUTH');
@@ -187,4 +206,49 @@ describe('The query pagina', function () {
         expect(page.lookupLinkToXmlJSON.get(2).getAttribute('href')).toContain('.json?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE');
     });
 
+    // TEMPLATE QUERY -t or --template
+    it('should be able to search --template using the text box', function () {
+        page.inpQueryString.sendKeys('-t person\n');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        page.scrollIntoView(page.templateSearchResults);
+        expect(page.inpQueryString.getAttribute('value')).toEqual('-t person');
+        expect(page.inpTelnetQuery.getText()).toEqual('-t person');
+        expect(page.templateSearchResults.getText()).toEqual(
+            'person:         [mandatory]  [single]     [lookup key]\n' +
+            'address:        [mandatory]  [multiple]   [ ]\n' +
+            'phone:          [mandatory]  [multiple]   [ ]\n' +
+            'fax-no:         [optional]   [multiple]   [ ]\n' +
+            'e-mail:         [optional]   [multiple]   [lookup key]\n' +
+            'org:            [optional]   [multiple]   [inverse key]\n' +
+            'nic-hdl:        [mandatory]  [single]     [primary/lookup key]\n' +
+            'remarks:        [optional]   [multiple]   [ ]\n' +
+            'notify:         [optional]   [multiple]   [inverse key]\n' +
+            'mnt-by:         [mandatory]  [multiple]   [inverse key]\n' +
+            'created:        [generated]  [single]     [ ]\n' +
+            'last-modified:  [generated]  [single]     [ ]\n' +
+            'source:         [mandatory]  [single]     [ ]');
+    });
+
+    it('should not show template panel in case of error query', function () {
+        page.inpQueryString.sendKeys('something -t notExistingObjectType inet6num\n');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        expect(page.templateSearchResults.isPresent()).toBeFalsy();
+        expect(page.inpTelnetQuery.getText()).toEqual(' ');
+    });
+
+    it('should be able to search --verbose using the text box', function () {
+        page.inpQueryString.sendKeys('-t aut-num\n');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        page.scrollIntoView(page.templateSearchResults);
+        expect(page.inpQueryString.getAttribute('value')).toEqual('-t aut-num');
+        expect(page.inpTelnetQuery.getText()).toEqual('-t aut-num');
+        expect(page.templateSearchResults.getText()).toContain('The aut-num class:');
+        expect(page.templateSearchResults.getText()).toContain('An object of the aut-num class is a database representation of');
+        expect(page.templateSearchResults.getText()).toContain('A descriptive name associated with an AS.');
+        expect(page.templateSearchResults.getText()).toContain('any as-any rs-any peeras and or not atomic from to at');
+        expect(page.templateSearchResults.getText()).toContain('registry name must be a letter or a digit.');
+    });
 });

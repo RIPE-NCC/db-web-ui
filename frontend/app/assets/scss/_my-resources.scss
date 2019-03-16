@@ -7,7 +7,7 @@
 
 .nav-tabs {
     border-bottom: 0;
-    margin-top: 20px;
+    margin-top: 5px;
     ul {
         @extend %width-100;
         li {
@@ -167,6 +167,15 @@ ul.attrblock {
 
 whois-object > section {
     margin-bottom: 41px;
+}
+
+.resources-ip-usage {
+    color: $dark-grey-cr;
+    font-size: 12px;
+    height: 22px;
+    span {
+        margin-right: 15px;
+    }
 }
 
 ip-usage {

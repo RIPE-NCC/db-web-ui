@@ -16,5 +16,5 @@ angular.module("dbWebApp").component("transferDropDown", {
         sponsoredMenu: "<",
     },
     controller: TransferDropDownController,
-    templateUrl: "scripts/transferdropdown/transfer-drop-down.html",
+    templateUrl: "./transfer-drop-down.html",
 });

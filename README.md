@@ -4,7 +4,7 @@ README for db-web-ui
 
 Links
 -----
-* [Bamboo 🔗](http://bamboo.ripe.net/browse/DB-WUI)
+* [Bamboo 🔗](https://bamboo.ripe.net/browse/DB-DBHWEB)
 * [BitBucket 🔗](https://bitbucket.ripe.net/projects/SWE/repos/db-web-ui/browse)
 * [Environments (Marvin) 🔗](https://marvin.ripe.net/display/db/DB+Environments)
 * [Sonar 🔗](http://db-tools-1:9000/dashboard/index/15937)
@@ -15,9 +15,6 @@ Pre-requisites
 -----------------
 * maven (v3.0+)
 * npm
-* grunt (install with ```npm install -g grunt```)
-* bower (install with ```npm install -g bower```)
-* compass (ruby, install with ```gem install compass```)
 
 Build on Local Machine
 -----------------------
@@ -29,13 +26,13 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 
 * first build (see above)
 
-* map ```127.0.0.1``` to ```localhost.ripe.net``` in your local hosts file
+* map `127.0.0.1` to `localhost.ripe.net` in your local hosts file
 
-* cd into the ```backend``` sub folder
+* cd into the `backend` sub folder
 
-* execute  (using the Jetty Maven Plugin): ```mvn jetty:run```
+* execute  (using the Jetty Maven Plugin): `mvn jetty:run`
 
-* or (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Drun.profiles=local```     
+* or (using the Spring Boot Maven Plugin) execute: `mvn spring-boot:run -Drun.profiles=local`     
 
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
@@ -52,36 +49,52 @@ Add the "-Dspring.profiles.active=<ENV>" to the JVM args of the application serv
 
 Valid profile names are dev, prepdev, rc and prod.
 
-Properties are read from the /config/application-<ENV>.properties file on the classpath.
+Properties are read from the /config/application-`<ENV>`.properties file on the classpath.
 
-Use Grunt
----------
-* _no args_<br>
-  Does a JSHint report for on all the JS files in the app
-* ```serve```<br>
-  NOTE: doesn't work yet because Grunt can't negotiate with the https server -- partly due to a bug in a bug in
-  a grunt dependency. Starts a server on port 9080 which connects to a live backend. 
-* ```test```<br>
-  [Unit test coverage 🔗](frontend/reports/unittest-coverage/lcov-report/index.html) is available locally 
-* ```watch:dist```<br>
-  Use this along with ```mvn spring-boot:run```. It watches the JS and HTML files for changes and redeploys them
-  when they've changed. In detail: the watch task is triggered by changes in the file system. Depending on the
-  change it detects, watch will run the appropriate Grunt task and put the result in the ```webapp``` directory
-  just like ```grunt build``` would.
-* ```e2e-test```<br>
-  Runs the Protractor tests on port 9002. These are the same tests as the e2e-coverage target but they run without
-  coverage so they are quicker.
-* ```e2e-no-test```<br>
+Frontend
+--------
+
+### Build
+
+* `npm run build`<br>
+  webpack build Just-in-Time (JIT), used for local development.
+* `npm run build-aot`<br>
+  webpack build Ahead-of-Time (AOT), which compiles app at build time, used for deployments.
+  * `npm run serve`<br>
+  Use this along with ```mvn spring-boot:run```. It watches the TypeScript and HTML files for changes and redeploys them
+  when they've changed. In detail: the watch task is triggered by changes in the file system. 
+
+### Test
+
+* `npm run test`<br>
+  Running Karma unit tests locally
+* `npm run test-remote` _(used on bamboo)_<br>
+  Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub`
+* `npm run test-ng2`<br>
+  Running Karma unit tests locally for Angular 6+ with coverage
+  - [Angular Unit test coverage 🔗](frontend/reports/unittest-coverage/index.html) is available locally 
+* `npm run test-ng2-remote` _(used on bamboo)_<br>
+  Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub` for Angular 6+ with coverage
+* `npm run e2e`<br>
+  Runs the Protractor tests on port 9002 without coverage so they are quicker.
+* `npm run e2e-remote` _(used on bamboo)_<br>
+  Runs the Protractor tests in selenium. 
+  _End where e2e test runned on bamboo can be seen in screenshots http://193.0.2.222:4444/wd/hub/static/resource/hub.html_ 
+* `npm run e2e-no-test`<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
-  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks
-* ```e2e-coverage```<br>
+  when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks. <br />
+  _To be able to run e2e-no-test locally (http://localhost:9002/db-web-ui/#) with logged in user you will have to check <br />
+  `hostname -s` and then resulted host name (for example laptop-123456.local) add<br /> 
+  `127.0.0.1       laptop-123456.local` in you host file<br />
+  `sudo vi /etc/hosts`_  
+#### TODO
   Runs the Protractor tests and shows coverage stats in two ways:
   - a text summary in the console
   - [a detailed html report 🔗](frontend/reports/e2e-coverage/lcov-report/index.html)
   - N.B. this task is designed to run on db-tools-1 only -- it won't work locally unless you change the line
    containing the reference to db-tools-1 in protractor-e2e-coverage.conf.js
   - [see the coverage results on SonarQube 🔗](http://db-tools-1.ripe.net:9000/dashboard/index/net.ripe.db:db-web-ui-ng)
-
+ 
 Testing
 -------------------
 Login to the DEV or PREPDEV environments using the SSO username db-staff@ripe.net / password dbstaffsso.
@@ -169,7 +182,7 @@ Open a terminal and cd into the `frontend/app` directory, then type these comman
 Protractor
 ----------
 
-Tip: If you want run just one test then write ```fit``` (for 'focus it') instead of ```it```: i.e. ```fit(```*description*, *function*```);```
+Tip: If you want run just one test then write `fit` (for 'focus it') instead of `it`: i.e. `fit(*description*, *function*);`
 
 
 ##### Notes on matchers
@@ -190,3 +203,10 @@ expect(mixed).toEqual(mixed);
 expect(mixed).toMatch(pattern);
 ```
 
+Sitespeed
+----------
+
+Sitespeed.io is a set of Open Source tools that makes it easy to monitor and measure the performance of your web site. 
+Use sitespeed Docker container to get an environment with Firefox, Chrome, XVFB and sitespeed.io up
+
+` docker run --shm-size=1g --rm -v "$(pwd)":/sitespeed.io sitespeedio/sitespeed.io:7.7.3 https://prepdev.db.ripe.net/db-web-ui/ `

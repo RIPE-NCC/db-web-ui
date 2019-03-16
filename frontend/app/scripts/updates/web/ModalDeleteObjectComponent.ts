@@ -153,5 +153,5 @@ angular.module("webUpdates")
             resolve: "=",
         },
         controller: ModalDeleteObjectController,
-        templateUrl: "scripts/updates/web/modalDeleteObject.html",
+        templateUrl: "./modalDeleteObject.html",
     });

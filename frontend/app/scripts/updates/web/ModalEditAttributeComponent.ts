@@ -65,5 +65,5 @@ angular.module("webUpdates")
             resolve: "=",
         },
         controller: ModalEditAttributeController,
-        templateUrl: "scripts/updates/web/modalEditAttribute.html",
+        templateUrl: "./modalEditAttribute.html",
     });

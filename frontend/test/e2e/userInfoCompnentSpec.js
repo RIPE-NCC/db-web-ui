@@ -18,7 +18,7 @@ describe('The user info component', function () {
         expect(page.userInfo.isPresent()).toEqual(true);
         page.userInfo.click();
         expect(page.userInfoMenu.isDisplayed()).toEqual(true);
-        // https://access.prepdev.ripe.net/logout?originalUrl=http://localhost:9002/#/query
+
         expect(page.userInfoLogoutLink.getAttribute('href')).toContain("https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/#query");
     });
 

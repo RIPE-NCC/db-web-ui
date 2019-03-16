@@ -5,20 +5,13 @@
 describe('The domain wizard', function () {
 
     var $scope, $state, $stateParams, $httpBackend, $window;
-    var MessageStore;
-    var WhoisResources;
-    var CredentialsService;
-    var MntnerService;
-    var ModalService;
     var AttributeMetadataService;
-    var $q;
     var $ctrl;
 
     beforeEach(module('dbWebApp'));
 
-    beforeEach(inject(function (_$componentController_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_, _$window_, _MessageStore_,
-                                _WhoisResources_, _CredentialsService_, _MntnerService_, _ModalService_, _$q_, _PreferenceService_,
-                                _AttributeMetadataService_) {
+    beforeEach(inject(function (_$componentController_, _$rootScope_, _$state_, _$stateParams_, _$httpBackend_,
+                                _PreferenceService_, _AttributeMetadataService_) {
 
         $scope = _$rootScope_.$new();
         $state = _$state_;
@@ -29,22 +22,19 @@ describe('The domain wizard', function () {
                 return true;
             }
         };
-        MessageStore = _MessageStore_;
-        WhoisResources = _WhoisResources_;
-        CredentialsService = _CredentialsService_;
-        MntnerService = _MntnerService_;
-        ModalService = _ModalService_;
         AttributeMetadataService = _AttributeMetadataService_;
         $stateParams.objectType = 'prefix';
         _PreferenceService_.isTextMode = function () {
             return false;
         };
-        $q = _$q_;
+
+        var ModalService = {
+            openDomainWizardSplash: function () { }
+        };
 
         $ctrl = _$componentController_('domainObjectWizard', {
-            $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window, AttributeMetadataService: AttributeMetadataService
+            $scope: $scope, $state: $state, $stateParams: $stateParams, $window: $window, AttributeMetadataService: AttributeMetadataService, ModalService: ModalService
         });
-        $httpBackend.whenGET(/.*\.html/).respond(200);
     }));
 
     afterEach(function () {
@@ -53,7 +43,6 @@ describe('The domain wizard', function () {
     });
 
     it('should create the right attributes', function () {
-        $httpBackend.flush();
         expect($ctrl.attributes.length).toEqual(9);
         var attrName = [
             'prefix',

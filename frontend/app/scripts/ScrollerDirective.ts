@@ -1,5 +1,5 @@
 interface IScrollerDirectiveScope extends angular.IScope {
-    almostOnScreen(): void;
+    almostOnScreen(): boolean;
 }
 
 class ScrollerDirective implements angular.IDirective {
@@ -22,7 +22,7 @@ class ScrollerDirective implements angular.IDirective {
     public scope = {
         almostOnScreen: "&scroller",
     };
-    public templateUrl = "scripts/loading-indicator.html";
+    public template = "<loading-indicator></loading-indicator>";
 
     private handle: any;
 

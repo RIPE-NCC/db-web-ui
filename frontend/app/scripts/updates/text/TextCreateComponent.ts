@@ -256,5 +256,5 @@ class TextCreateController {
 angular.module("textUpdates")
     .component("textCreate", {
         controller: TextCreateController,
-        templateUrl: "scripts/updates/text/create.html",
+        templateUrl: "./create.html",
     });

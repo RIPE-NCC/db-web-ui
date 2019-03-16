@@ -1,13 +1,15 @@
 class NameFormatterController {
 
+    public static $inject = ["IpAddressService"];
+
     public formatted: string;
     public name: string;
     public type: string;
 
-    constructor() {
+    constructor(private IpAddressService: IpAddressService) {
         this.formatted =
             typeof this.type === "string" && this.type.toUpperCase() === "INETNUM"
-                ? new IpAddressService().formatAsPrefix(this.name)
+                ? IpAddressService.formatAsPrefix(this.name)
                 : this.name || "";
     }
 

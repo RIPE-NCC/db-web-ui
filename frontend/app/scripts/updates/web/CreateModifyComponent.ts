@@ -14,7 +14,7 @@ class CreateModifyController {
         "$document", "WhoisResources", "WhoisMetaService", "MessageStore", "CredentialsService", "RestService", "ModalService",
         "MntnerService", "AlertService", "ErrorReporterService", "LinkService", "ResourceStatus",
         "WebUpdatesCommonsService", "OrganisationHelperService", "PreferenceService", "EnumService", "CharsetToolsService",
-        "ScreenLogicInterceptorService", "ObjectUtilService"];
+        "ScreenLogicInterceptorService", "ObjectUtilService", "STATE"];
 
     public optionList: IOptionList = {status: []};
     // public optionList: any;
@@ -74,7 +74,8 @@ class CreateModifyController {
                 public EnumService: EnumService,
                 public CharsetToolsService: CharsetToolsService,
                 public ScreenLogicInterceptorService: ScreenLogicInterceptorService,
-                public ObjectUtilService: ObjectUtilService) {
+                public ObjectUtilService: ObjectUtilService,
+                public STATE: any) {
 
         this.optionList = {status: []};
 
@@ -270,12 +271,12 @@ class CreateModifyController {
         // need to typed characters
         this.RestService.autocomplete("mnt-by", query, true, ["auth"])
             .then((data: any[]) => {
-                // mark new
-                this.maintainers.alternatives = this.MntnerService.stripNccMntners(
-                    this.MntnerService.enrichWithNewStatus(this.maintainers.objectOriginal,
-                    this.filterAutocompleteMntners(this.enrichWithMine(data))), true);
-            },
-        );
+                    // mark new
+                    this.maintainers.alternatives = this.MntnerService.stripNccMntners(
+                        this.MntnerService.enrichWithNewStatus(this.maintainers.objectOriginal,
+                            this.filterAutocompleteMntners(this.enrichWithMine(data))), true);
+                },
+            );
     }
 
     // change to private
@@ -351,6 +352,7 @@ class CreateModifyController {
             return [];
         }
     }
+
     // should be private
     public filterBasedOnAttr(suggestions: string, attrName: string) {
         return _.filter(suggestions, (item) => {
@@ -480,7 +482,7 @@ class CreateModifyController {
     }
 
     public deleteObject() {
-        this.WebUpdatesCommonsService.navigateToDelete(this.source, this.objectType, this.name, STATE.MODIFY);
+        this.WebUpdatesCommonsService.navigateToDelete(this.source, this.objectType, this.name, this.STATE.MODIFY);
     }
 
     public submit() {
@@ -600,6 +602,7 @@ class CreateModifyController {
             });
         }
     }
+
 // FIXME SHOULD BE private
     public splitAttrsCommentsFromValue() {
         for (const attribute of this.attributes) {
@@ -777,7 +780,8 @@ class CreateModifyController {
         this.restCallInProgress = true;
         this.$q.all({
             mntners: this.RestService.fetchMntnersForSSOAccount(),
-            objectToModify: this.RestService.fetchObject(this.source, this.objectType, this.name, password)})
+            objectToModify: this.RestService.fetchObject(this.source, this.objectType, this.name, password),
+        })
             .then((results: any) => {
                 this.restCallInProgress = false;
                 this.$log.debug("[createModifyController] object to modify: " + JSON.stringify(results.objectToModify));
@@ -956,21 +960,21 @@ class CreateModifyController {
                 this.restCallInProgress = true;
                 this.RestService.fetchObject(this.source, this.objectType, this.name, password)
                     .then((result: any) => {
-                        this.restCallInProgress = false;
+                            this.restCallInProgress = false;
 
-                        this.attributes = result.getAttributes();
+                            this.attributes = result.getAttributes();
 
-                        // save object for later diff in display-screen
-                        this.MessageStore.add("DIFF", _.cloneDeep(this.attributes));
+                            // save object for later diff in display-screen
+                            this.MessageStore.add("DIFF", _.cloneDeep(this.attributes));
 
-                        this.$log.debug("sso-ntners:" + JSON.stringify(this.maintainers.sso));
-                        this.$log.debug("objectMaintainers:" + JSON.stringify(this.maintainers.object));
+                            this.$log.debug("sso-ntners:" + JSON.stringify(this.maintainers.sso));
+                            this.$log.debug("objectMaintainers:" + JSON.stringify(this.maintainers.object));
 
-                    }, () => {
-                        this.restCallInProgress = false;
-                        // ignore
-                    },
-                );
+                        }, () => {
+                            this.restCallInProgress = false;
+                            // ignore
+                        },
+                    );
             }
             this.maintainers.objectOriginal = this.extractEnrichMntnersFromObject(this.attributes);
             this.maintainers.object = this.extractEnrichMntnersFromObject(this.attributes);
@@ -1005,9 +1009,8 @@ class CreateModifyController {
         this.refreshObjectIfNeeded(associationResp);
     }
 }
-
 angular.module("webUpdates")
-    .component("createModify", {
-        controller: CreateModifyController,
-        templateUrl: "scripts/updates/web/createModify.html",
-    });
+        .component("createModify", {
+            controller: CreateModifyController,
+            templateUrl: "./createModify.html",
+        });

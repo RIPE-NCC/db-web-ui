@@ -12,5 +12,5 @@ class MailSentController {
 angular.module("fmp")
     .component("mailSent", {
         controller: MailSentController,
-        templateUrl: "scripts/fmp/mailSent.html",
+        templateUrl: "./mailSent.html",
     });

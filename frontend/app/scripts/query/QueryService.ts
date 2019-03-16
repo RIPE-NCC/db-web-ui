@@ -19,9 +19,7 @@ const EMPTY_MODEL: { data: IWhoisResponseModel} = {
 
 class QueryService implements IQueryService {
 
-    public PAGE_SIZE: number = 20;
-
-    public static $inject = ["$http", "$q"];
+    public static $inject = ["$http", "$q", "QueryParameters"];
 
     private static accumulate(resp: ng.IHttpPromiseCallbackArg<IWhoisResponseModel>,
                               acc: { data: IWhoisResponseModel}) {
@@ -34,8 +32,19 @@ class QueryService implements IQueryService {
         }
     }
 
+    public PAGE_SIZE: number = 20;
+
     constructor(private $http: angular.IHttpService,
-                private $q: ng.IQService) {
+                private $q: ng.IQService,
+                private queryParameters: QueryParameters) {
+    }
+
+    public searchTemplate(objectType: string): ng.IHttpPromise<string> {
+        return this.$http.get<string>(`api/metadata/templates/${objectType}`);
+    }
+
+    public searchVerbose(objectType: string): ng.IHttpPromise<string> {
+        return this.$http.get<string>(`api/metadata/verboses/${objectType}`);
     }
 
     public searchWhoisObjects(qp: QueryParameters, offset: number): ng.IHttpPromise<IWhoisResponseModel> {
@@ -126,7 +135,7 @@ class QueryService implements IQueryService {
             linkParts.push("types=" + typs.join(";"));
         }
         if (qp.hierarchy) {
-            const longFlag = QueryParameters.shortHierarchyFlagToLong(qp.hierarchy);
+            const longFlag = this.queryParameters.shortHierarchyFlagToLong(qp.hierarchy);
             if (longFlag) {
                 linkParts.push("hierarchyFlag=" + longFlag);
             }
@@ -164,7 +173,7 @@ class QueryService implements IQueryService {
             }
         }
         if (qp.hierarchy) {
-            const f = QueryParameters.shortHierarchyFlagToLong(qp.hierarchy);
+            const f = this.queryParameters.shortHierarchyFlagToLong(qp.hierarchy);
             if (f) {
                 linkParts.push("flags=" + f);
             }

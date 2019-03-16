@@ -109,5 +109,5 @@ class FindMaintainerController {
 
 angular.module("fmp").component("findMaintainer", {
     controller: FindMaintainerController,
-    templateUrl: "scripts/fmp/findMaintainer.html",
+    templateUrl: "./findMaintainer.html",
 });

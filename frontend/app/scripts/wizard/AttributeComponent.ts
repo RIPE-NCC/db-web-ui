@@ -343,5 +343,5 @@ angular.module("dbWebApp")
             source: "=",
         },
         controller: AttributeController,
-        templateUrl: "scripts/whoisObject/attribute-renderer.html",
+        templateUrl: "./attribute-renderer.html",
 });

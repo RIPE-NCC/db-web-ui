@@ -43,7 +43,6 @@ class LeftMenuController {
                 public properties: IProperties,
                 public $window: any,
                 public $location: ng.ILocationService) {
-
         $window.init_portlet_menu();
         this.activeUrl = this.$location.path();
         this.isDbMenuActive();
@@ -116,5 +115,5 @@ class LeftMenuController {
 angular.module("dbWebApp")
     .component("leftMenu", {
         controller: LeftMenuController,
-        templateUrl: "scripts/menu/left-hand-menu.html",
+        templateUrl: "./left-hand-menu.html",
     });

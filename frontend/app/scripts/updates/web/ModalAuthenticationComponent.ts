@@ -137,5 +137,5 @@ angular.module("webUpdates")
             resolve: "=",
         },
         controller: ModalAuthenticationController,
-        templateUrl: "scripts/updates/web/modalAuthentication.html",
+        templateUrl: "./modalAuthentication.html",
     });

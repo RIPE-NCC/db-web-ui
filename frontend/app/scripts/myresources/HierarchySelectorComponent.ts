@@ -67,5 +67,5 @@ angular.module("dbWebApp").component("hierarchySelector", {
         resource: "<",
     },
     controller: HierarchySelectorController,
-    templateUrl: "scripts/myresources/hierarchy-selector.html",
+    templateUrl: "./hierarchy-selector.html",
 });

@@ -58,5 +58,5 @@ class LookupSingleObjectController {
 angular.module("dbWebApp")
     .component("lookupSingle", {
         controller: LookupSingleObjectController,
-        templateUrl: "scripts/query/lookup-single.html",
+        templateUrl: "./lookup-single.html",
     });

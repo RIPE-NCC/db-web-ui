@@ -344,5 +344,5 @@ angular.module("dbWebApp").component("maintainersEditor", {
         updateMntnersClbk: "&?",
     },
     controller: MaintainersEditorController,
-    templateUrl: "scripts/whoisObject/maintainers-editor.html",
+    templateUrl: "./maintainers-editor.html",
 });

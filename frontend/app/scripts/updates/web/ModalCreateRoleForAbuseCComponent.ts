@@ -107,5 +107,5 @@ angular.module("dbWebApp")
             resolve: "=",
         },
         controller: ModalCreateRoleForAbuseCCotroller,
-        templateUrl: "scripts/updates/web/modalCreateRoleForAbuseC.html",
+        templateUrl: "./modalCreateRoleForAbuseC.html",
     });

@@ -25,5 +25,5 @@ angular.module("textUpdates")
             resolve: "=",
         },
         controller: TextMultiDecisionModalController,
-        templateUrl: "scripts/updates/text/multiDecisionModal.html",
+        templateUrl: "./multiDecisionModal.html",
 });

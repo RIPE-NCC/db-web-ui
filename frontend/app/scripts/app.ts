@@ -4,24 +4,23 @@ class PageController {
 }
 
 angular.module("dbWebApp", [
-    "ui.router",
-    "angular-loading-bar",
-    "ngAnimate",
-    "ngResource",
-    "ngSanitize",
-    "angulartics",
-    "angulartics.google.tagmanager",
-    "diff-match-patch",
-    "ui.bootstrap",
-    "ui.select",
-    "ngCookies",
-    "updates",
-    "webUpdates",
-    "textUpdates",
-    "fmp",
-    "loginStatus",
-])
-
+        "ui.router",
+        "angular-loading-bar",
+        "ngAnimate",
+        "ngResource",
+        "ngSanitize",
+        "angulartics",
+        "angulartics.google.tagmanager",
+        "diff-match-patch",
+        "ui.bootstrap",
+        "ui.select",
+        "ngCookies",
+        "updates",
+        "webUpdates",
+        "textUpdates",
+        "fmp",
+        "loginStatus",
+    ])
     .config(["$stateProvider", "$logProvider", "$httpProvider", "Properties",
         ($stateProvider: ng.ui.IStateProvider, $logProvider: angular.ILogProvider, $httpProvider: ng.IHttpProvider, Properties: any) => {
 
@@ -29,11 +28,11 @@ angular.module("dbWebApp", [
             $logProvider.debugEnabled(["local", "dev", "prepdev"].indexOf(Properties.ENV) > -1);
             $stateProvider
                 .state("error", {
-                    templateUrl: "scripts/views/error.html",
+                    templateUrl: "./views/error.html",
                     url: "/public/error",
                 })
                 .state("notFound", {
-                    templateUrl: "scripts/views/notFound.html",
+                    templateUrl: "./views/notFound.html",
                     url: "/public/not-found",
                 })
                 .state("confirmEmail", {
@@ -88,6 +87,5 @@ angular.module("dbWebApp", [
                 $log.info("Force crowd login:" + crowdUrl);
                 $window.location.href = crowdUrl;
             };
-
-        }])
+    }])
     .controller("PageController", ["Properties", PageController]);

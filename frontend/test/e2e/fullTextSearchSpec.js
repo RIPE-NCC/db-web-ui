@@ -52,4 +52,12 @@ describe('The full text search', function () {
         expect(page.fullTextSearchResults.count()).toEqual(0);
     });
 
+    it('should sanitized img and script tag - XSS attack', function () {
+        page.byId('fullTextSearchInput').sendKeys('Jamesits');
+        page.byId('fullTextSearchButton').click();
+        expect(page.fullTextSearchResults.get(0).getText()).not.toContain("img");
+        expect(page.fullTextSearchResults.get(0).getText()).not.toContain("script");
+
+    });
+
 });

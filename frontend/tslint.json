@@ -3,7 +3,8 @@
   "rules": {
     "max-line-length": {
       "options": [180]
-    }
+    },
+    "no-submodule-imports": false
   },
   "jsRules": {
     "max-line-length": {

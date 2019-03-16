@@ -27,11 +27,11 @@ class ResourcesController {
     public fail: boolean;
     public showIpAnalyserRedirectBanner: boolean = true;
     public isRedirectedFromIpAnalyser: boolean = false;
+    public lastTab: string;
 
     private hasSponsoredResources = false;
-    private isShowingSponsored = false;
+    private isShowingSponsored: boolean = false;
     private activeSponsoredTab = 0;
-    private lastTab: string;
     private showAlerts: boolean = true;
 
     constructor(private $location: angular.ILocationService,
@@ -192,5 +192,5 @@ angular
     .module("dbWebApp")
     .component("resources", {
         controller: ResourcesController,
-        templateUrl: "scripts/myresources/resources.html",
+        templateUrl: "./resources.html",
     });

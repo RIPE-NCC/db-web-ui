@@ -14,5 +14,5 @@ class SsoAddedComponent {
 angular.module("fmp")
     .component("ssoAdded", {
         controller: SsoAddedComponent,
-        templateUrl: "scripts/fmp/ssoAdded.html",
+        templateUrl: "./ssoAdded.html",
     });

@@ -338,4 +338,42 @@ describe('The QueryComponent', function () {
             expect(calledApply).toEqual(1);
         });
     });
+
+    describe('with a --template query', function () {
+
+        it('should not show error or warning messages', function () {
+            var ctrl = $componentController('query', {
+                $stateParams: { searchtext: " 193.0.0.0 -t aut-num" }
+            });
+            expect(ctrl.offset).toEqual(0);
+            expect(ctrl.qp.showFullObjectDetails).toEqual(true);
+            expect(ctrl.qp.reverseDomain).toEqual(false);
+            expect(ctrl.qp.doNotRetrieveRelatedObjects).toEqual(false);
+            expect(ctrl.qp.source).toEqual("RIPE");
+            expect(ctrl.qp.types).toEqual({});
+            expect(ctrl.qp.inverse).toEqual({});
+            expect(ctrl.whoisCliQuery()).toEqual("-t aut-num");
+
+            ctrl.doSearch();
+            expect(ctrl.errorMessages.length).toEqual(0);
+        });
+
+        it('should show error messages', function () {
+            var ctrl = $componentController('query', {
+                $stateParams: { searchtext: "blah blah --template zzz inetnum" }
+            });
+            expect(ctrl.offset).toEqual(0);
+            expect(ctrl.qp.showFullObjectDetails).toEqual(true);
+            expect(ctrl.qp.reverseDomain).toEqual(false);
+            expect(ctrl.qp.doNotRetrieveRelatedObjects).toEqual(false);
+            expect(ctrl.qp.source).toEqual("RIPE");
+            expect(ctrl.qp.types).toEqual({});
+            expect(ctrl.qp.inverse).toEqual({});
+            expect(ctrl.whoisCliQuery()).toEqual(" ");
+
+            ctrl.doSearch();
+            expect(ctrl.errorMessages.length).toEqual(1);
+            expect(ctrl.formatError(ctrl.errorMessages[0])).toEqual("Unknown object type \"zzz\".");
+        });
+    });
 });

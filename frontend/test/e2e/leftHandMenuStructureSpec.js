@@ -265,7 +265,7 @@ describe('The left hand menu structure depend on logged in user role', function 
         page.topMenuItems.get(0).click();
         expect(page.myLirMenuItems.count()).toEqual(9);
         page.myLirMenuItems.get(8).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('Request Acquisition');
+            expect(text).toBe('Request Update');
         });
         expect(page.myLirMenuItems.get(0).isDisplayed()).toEqual(false);
         expect(page.myLirMenuItems.get(1).isDisplayed()).toEqual(false);

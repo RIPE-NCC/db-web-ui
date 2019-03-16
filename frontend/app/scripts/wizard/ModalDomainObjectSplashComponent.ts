@@ -27,5 +27,5 @@ angular.module("dbWebApp")
             resolve: "=",
         },
         controller: ModalDomainObjectSplashCotroller,
-        templateUrl: "scripts/wizard/modal-domain-object-splash.html",
+        templateUrl: "./modal-domain-object-splash.html",
     });

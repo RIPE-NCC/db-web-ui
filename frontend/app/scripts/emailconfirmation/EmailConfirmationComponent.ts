@@ -22,5 +22,5 @@ class EmailConfirmationController {
 
 angular.module("dbWebApp").component("emailConfirmation", {
     controller: EmailConfirmationController,
-    templateUrl: "scripts/emailconfirmation/emailConfirm.html",
+    templateUrl: "./emailConfirm.html",
 });

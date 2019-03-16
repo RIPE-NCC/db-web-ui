@@ -122,7 +122,6 @@ describe('textUpdates: TextCreateComponent', function () {
             'NIC-HDL:       AUTO-1\n' +
             'remarks:       \n' +
             'notify:        \n' +
-            'abuse-mailbox: \n' +
             'MNT-BY:        \n' +
             'SOURCE:        RIPE\n');
     });

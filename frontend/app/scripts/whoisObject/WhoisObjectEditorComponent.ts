@@ -135,5 +135,5 @@ angular.module("dbWebApp").component("whoisObjectEditor", {
         updateClicked: "&?",
     },
     controller: WhoisObjectEditorController,
-    templateUrl: "scripts/whoisObject/whois-object-editor.html",
+    templateUrl: "./whois-object-editor.html",
 });

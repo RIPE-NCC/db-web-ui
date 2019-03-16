@@ -276,8 +276,8 @@ class RestService {
         };
 
         this.$http(req).then((result: any) => {
-            this.$log.debug("associateSSOMntner success:" + angular.toJson(result));
-            deferredObject.resolve(this.WhoisResources.wrapSuccess(result));
+            this.$log.debug("associateSSOMntner success:" + angular.toJson(result.data));
+            deferredObject.resolve(this.WhoisResources.wrapSuccess(result.data));
         }, (error: any) => {
             this.$log.error("associateSSOMntner error:" + angular.toJson(error));
             deferredObject.reject(this.WhoisResources.wrapError(error));

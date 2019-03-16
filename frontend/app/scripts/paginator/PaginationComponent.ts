@@ -75,5 +75,5 @@ angular.module("dbWebApp").component("paginator", {
         resultsPerPage: "<",
     },
     controller: PaginationController,
-    templateUrl: "scripts/paginator/paginator.html",
+    templateUrl: "./paginator.html",
 });

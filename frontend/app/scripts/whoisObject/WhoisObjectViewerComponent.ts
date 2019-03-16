@@ -90,5 +90,5 @@ angular.module("dbWebApp").component("whoisObjectViewer", {
         updateClicked: "&?",
     },
     controller: WhoisObjectViewerController,
-    templateUrl: "scripts/whoisObject/whois-object-viewer.html",
+    templateUrl: "./whois-object-viewer.html",
 });

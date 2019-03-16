@@ -34,5 +34,5 @@ class RequireLoginController {
 
 angular.module("fmp").component("requireLogin", {
     controller: RequireLoginController,
-    templateUrl: "scripts/fmp/requireLogin.html",
+    templateUrl: "./requireLogin.html",
 });

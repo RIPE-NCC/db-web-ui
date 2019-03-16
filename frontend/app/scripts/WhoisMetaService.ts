@@ -319,7 +319,6 @@ class WhoisMetaService {
                 {name: "nic-hdl", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
                 {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
                 {name: "notify", mandatory: false, multiple: true, refs: this.refs},
-                {name: "abuse-mailbox", mandatory: false, multiple: true, refs: this.refs},
                 {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
                 {name: "created", mandatory: false, multiple: false, refs: this.refs},
                 {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
@@ -532,6 +531,10 @@ class WhoisMetaService {
 
     public getObjectTypesMap() {
         return this.objectTypesMap;
+    }
+
+    public isExistingObjectTypes(objectType: string): boolean {
+        return this.objectTypesMap[objectType] !== undefined;
     }
 
     public enrichAttributesWithMetaInfo(objectTypeName: string, attrs: IAttributeModel[]) {

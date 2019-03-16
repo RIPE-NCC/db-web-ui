@@ -52,5 +52,5 @@ class TextMultiDecisionController {
 angular.module("textUpdates")
     .component("textMultiDecision", {
         controller: TextMultiDecisionController,
-        templateUrl: "scripts/updates/text/multiDecision.html",
+        templateUrl: "./multiDecision.html",
     });

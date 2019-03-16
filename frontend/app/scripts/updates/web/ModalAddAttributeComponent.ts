@@ -31,5 +31,5 @@ angular.module("webUpdates")
             resolve: "=",
         },
         controller: ModalAddAttributeController,
-        templateUrl: "scripts/updates/web/modalAddAttribute.html",
+        templateUrl: "./modalAddAttribute.html",
     });

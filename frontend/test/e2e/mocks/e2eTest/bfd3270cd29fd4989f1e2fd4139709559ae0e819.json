@@ -1,0 +1,8 @@
+{
+  "requestUrl": "/api/metadata/templates/person",
+  "contentType": "text/plain",
+  "statusCode": 200,
+  "data":
+    "person:         [mandatory]  [single]     [lookup key]\naddress:        [mandatory]  [multiple]   [ ]\nphone:          [mandatory]  [multiple]   [ ]\nfax-no:         [optional]   [multiple]   [ ]\ne-mail:         [optional]   [multiple]   [lookup key]\norg:            [optional]   [multiple]   [inverse key]\nnic-hdl:        [mandatory]  [single]     [primary/lookup key]\nremarks:        [optional]   [multiple]   [ ]\nnotify:         [optional]   [multiple]   [inverse key]\nmnt-by:         [mandatory]  [multiple]   [inverse key]\ncreated:        [generated]  [single]     [ ]\nlast-modified:  [generated]  [single]     [ ]\nsource:         [mandatory]  [single]     [ ]\n"
+
+}

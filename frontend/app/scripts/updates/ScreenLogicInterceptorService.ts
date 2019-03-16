@@ -280,11 +280,11 @@ class ScreenLogicInterceptorService {
 
         if (method === "Modify" && orgType.value === "LIR") {
             _.forEach(attributes, (attr) => {
-                if (["address", "phone", "fax-no", "e-mail", "org-name", "mnt-by"].indexOf(attr.name) > -1) {
+                if (["address", "phone", "fax-no", "e-mail", "org-name", "mnt-by", "abuse-c"].indexOf(attr.name) > -1) {
                     attr.$$meta.$$isLir = true;
                 }
 
-                if (["org", "abuse-mailbox"].indexOf(attr.name) > -1) {
+                if (["address", "phone", "fax-no", "e-mail", "org-name", "mnt-by", "org", "abuse-mailbox"].indexOf(attr.name) > -1) {
                     attr.$$meta.$$disable = true;
                 }
             });
