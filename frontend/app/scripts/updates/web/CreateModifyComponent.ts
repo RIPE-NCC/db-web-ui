@@ -41,7 +41,7 @@ class CreateModifyController {
     public inetnumParentAuthError: boolean = false;
     public attributes: any;
     public roleForAbuseC: any;
-    public personRe: RegExp = new RegExp(/^[A-Z][A-Z0-9\\.`"_-]{0,63}(?: [A-Z0-9\\.`"_-]{1,64}){0,9}$/i);
+    public personRe: RegExp = new RegExp(/^[A-Z][A-Z0-9\\.`'_-]{0,63}(?: [A-Z0-9\\.`'_-]{1,64}){0,9}$/i);
 
     public CREATE_OPERATION = "Create";
     public MODIFY_OPERATION = "Modify";
@@ -183,7 +183,7 @@ class CreateModifyController {
         // (https://www.pivotaltracker.com/story/show/118090295)
 
         // first check if the user needs some auth...
-        if (parent.attributes) {
+        if (parent && parent.attributes) {
             const parentObject = this.WhoisResources.wrapAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
             this.MntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name)

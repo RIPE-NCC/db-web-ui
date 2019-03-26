@@ -77,7 +77,8 @@ angular.module("dbWebApp", [
                 $log.error("Authentication error");
                 const url = $location.absUrl();
                 // TODO check how to handle this
-                if (url.indexOf("myresources") > -1  || url.indexOf("wizard") > -1 || url.indexOf("modify") > -1 || url.indexOf("create") > -1 || url.indexOf("fmp") > -1) {
+                if (url.indexOf("myresources") > -1  || url.indexOf("wizard") > -1
+                    || url.indexOf("modify") > -1 || url.indexOf("fmp") > -1) {
                     redirectToLogin(url);
                 }
             });
