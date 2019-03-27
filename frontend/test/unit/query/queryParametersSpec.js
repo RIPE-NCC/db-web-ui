@@ -255,5 +255,21 @@ describe('QueryParameters', function () {
         expect(validationIssues.errors[0]).toContain("Invalid option supplied.");
         expect(qp.queryText).toEqual("");
     });
+
+    it('should parse --resource flags', function () {
+
+        qp.queryText = " -B --one-more --resource -r -d worlddomination";
+
+        var validationIssues = qp.validate();
+        expect(validationIssues.errors.length).toEqual(0);
+        expect(validationIssues.warnings.length).toEqual(0);
+
+        expect(qp.queryText).toEqual("worlddomination");
+        expect(qp.showFullObjectDetails).toEqual(true);
+        expect(qp.reverseDomain).toEqual(true);
+        expect(qp.doNotRetrieveRelatedObjects).toEqual(true);
+        expect(qp.source).toEqual("GRS");
+        expect(qp.hierarchy).toEqual("m");
+    });
 });
 

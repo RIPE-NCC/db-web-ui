@@ -109,10 +109,7 @@ class QueryParameters {
                                 }
                             }
                         } else if (item === "--resource") {
-                            if (this.source === "GRS") {
-                                warnings.push("Option: --resource is not supported in the web forms and will be ignored.");
-                            }
-                            // this.source = "GRS";
+                            this.source = "GRS";
                         } else if (item === "--no-referenced") {
                             this.doNotRetrieveRelatedObjects = true;
                         } else if (item === "--reverse-domain") {

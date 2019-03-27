@@ -208,8 +208,11 @@ class QueryController {
         if (flags) {
             q.push(" -" + flags);
         }
+        this.qp.source = qpClean.source;
         if (qpClean.source === "GRS") {
             q.push(" --resource");
+        } else {
+            q.filter((term: string) => !term.endsWith("--resource"));
         }
         q.push(" " + qpClean.queryText);
         return q.join("").trim();

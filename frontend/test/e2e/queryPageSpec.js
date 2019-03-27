@@ -251,4 +251,14 @@ describe('The query pagina', function () {
         expect(page.templateSearchResults.getText()).toContain('any as-any rs-any peeras and or not atomic from to at');
         expect(page.templateSearchResults.getText()).toContain('registry name must be a letter or a digit.');
     });
+
+    //--resource in query
+    it('should be able to search --resource (source=GRS) using the text box', function () {
+        page.inpQueryString.sendKeys('1.1.1.1 --resource\n');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        expect(page.inpQueryString.getAttribute('value')).toEqual('1.1.1.1 --resource');
+        expect(page.inpTelnetQuery.getText()).toEqual('-B --resource 1.1.1.1');
+        expect(page.searchResults.count()).toEqual(3);
+    });
 });
