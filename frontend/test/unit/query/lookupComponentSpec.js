@@ -215,9 +215,9 @@ describe('LookupComponent', function () {
 
         it('with abuse headers and highlighted RIPE attributes', function () {
             var ctrl = $componentController('lookup', {}, {ngModel: mockResponse.singleResult.objects.object[0]});
-            expect(ctrl.show.abuseContactFound).toEqual(false);
-            expect(ctrl.show.header).toEqual(true);
-            expect(ctrl.show.resourceHolderFound).toEqual(true);
+            expect(ctrl.abuseContactFound).toEqual(false);
+            expect(ctrl.header).toEqual(true);
+            expect(ctrl.resourceHolderFound).toEqual(true);
         });
 
     });

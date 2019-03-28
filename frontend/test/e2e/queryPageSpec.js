@@ -84,7 +84,7 @@ describe('The query pagina', function () {
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(1);
-        let whoisObject = page.getWhoisObjectViewerOnQueryPage(0);
+        var whoisObject = page.getWhoisObjectViewerOnQueryPage(0);
         expect(whoisObject.isPresent()).toEqual(true);
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 1).getText()).toEqual('Aloses Telekom Hizm. San. ve Tic. Ltd. Sti.');
         expect(page.inpTelnetQuery.getText()).toContain("-i abuse-c -T organisation -Br ACRO862-RIPE");
@@ -95,16 +95,16 @@ describe('The query pagina', function () {
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         // ripe stat link for should contain inetnum
-        let ripeStateButtonInetnum = page.getRipeStateFromWhoisObjectOnQueryPage(0);
+        var ripeStateButtonInetnum = page.getRipeStateFromWhoisObjectOnQueryPage(0);
         page.scrollIntoView(ripeStateButtonInetnum);
         expect(ripeStateButtonInetnum.isPresent()).toEqual(true);
-        let urlInet = ripeStateButtonInetnum.getAttribute('href');
+        var urlInet = ripeStateButtonInetnum.getAttribute('href');
         expect(urlInet).toEqual('https://stat.ripe.net/193.0.0.0%20-%20193.0.0.63?sourceapp=ripedb');
         // link for route(6) should contain just route value without AS
-        let ripeStateButtonRoute = page.getRipeStateFromWhoisObjectOnQueryPage(3);
+        var ripeStateButtonRoute = page.getRipeStateFromWhoisObjectOnQueryPage(3);
         page.scrollIntoView(ripeStateButtonRoute);
         expect(ripeStateButtonRoute.isPresent()).toEqual(true);
-        let urlRoute = ripeStateButtonRoute.getAttribute('href');
+        var urlRoute = ripeStateButtonRoute.getAttribute('href');
         expect(urlRoute).toEqual('https://stat.ripe.net/193.0.0.0/21?sourceapp=ripedb');
     });
 
@@ -117,7 +117,7 @@ describe('The query pagina', function () {
         expect(page.lookupHeader.getText()).toContain('No abuse contact found');
     });
 
-    it('should show object banner with text - No abuse contact found', function () {
+    it('should show object banner with abuse contact info', function () {
         page.inpQueryString.sendKeys('193.201.0.0');
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
@@ -126,6 +126,26 @@ describe('The query pagina', function () {
         expect(page.lookupHeaderEmailLink.get(0).getAttribute('href')).toContain('?source=ripe&key=ORG-WA9-RIPE&type=organisation');
         expect(page.lookupHeader.getText()).toContain('Abuse contact info: lir@witbe.net');
         expect(page.lookupHeaderEmailLink.get(1).getAttribute('href')).toContain('?source=ripe&key=AR15400-RIPE&type=role');
+    });
+
+    it('should show object banner with suspected abuse contact info', function () {
+        page.inpQueryString.sendKeys('223.0.0.0');
+        // -- just to use same mock
+        page.scrollIntoView(page.inpDontRetrieveRelated);
+        page.inpDontRetrieveRelated.click();
+        page.queryParamTabs.get(1).click();
+        page.scrollIntoView(page.byId('search:types:6'));
+        page.byId('search:types:6').click();
+        page.scrollIntoView(page.btnSubmitQuery);
+        // --
+        page.btnSubmitQuery.click();
+        expect(page.lookupHeader.isPresent()).toEqual(true);
+        expect(page.lookupHeader.getText()).toContain('Responsible organisation: TEST ORG');
+        expect(page.lookupHeaderEmailLink.get(0).getAttribute('href')).toContain('?source=ripe&key=ORG-TEST1-RIPE&type=organisation');
+        expect(page.lookupHeader.getText()).toContain('Abuse contact info: abuse-c@test.net');
+        expect(page.lookupHeaderEmailLink.get(1).getAttribute('href')).toContain('?source=ripe&key=ABUSE-C-RIPE&type=role');
+        expect(page.lookupHeader.getText()).toContain('Abuse-mailbox validation failed. Please refer to ORG-TEST2-RIPE for further information.');
+        expect(page.lookupHeaderEmailLink.get(2).getAttribute('href')).toContain('?source=ripe&key=ORG-TEST2-RIPE&type=organisation');
     });
 
     it('should show checkbox - Highlight RIPE NCC managed values', function () {
@@ -147,7 +167,7 @@ describe('The query pagina', function () {
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(3);
-        let nonRipeWhoisObject = page.getWhoisObjectViewerOnQueryPage(2);
+        var nonRipeWhoisObject = page.getWhoisObjectViewerOnQueryPage(2);
         expect(nonRipeWhoisObject.isPresent()).toEqual(true);
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(2, 7).getText()).toEqual('RIPE-NONAUTH');
         expect(page.inpQueryString.getAttribute('value')).toEqual('211.43.192.0');

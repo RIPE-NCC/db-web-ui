@@ -6,17 +6,16 @@ class LookupController {
 
     public ngModel: IWhoisObjectModel;
     public updateClicked: () => void;
-    public show = {
-        abuseContactFound: false,
-        header: false,
-        resourceHolderFound: false,
-    };
+    public abuseContactFound = false;
+    public abuseContactSuspected = false;
+    public header = false;
+    public resourceHolderFound = false;
 
     constructor(public properties: { [key: string]: string }) {
-        // [Etch] should use the flags from the request -- don't do it like this...
-        this.show.header = !!(this.ngModel["resource-holder"] || this.ngModel["abuse-contact"]);
-        this.show.abuseContactFound = !!this.ngModel["abuse-contact"];
-        this.show.resourceHolderFound = !!this.ngModel["resource-holder"];
+        this.header = !!(this.ngModel["resource-holder"] || this.ngModel["abuse-contact"]);
+        this.abuseContactFound = !!this.ngModel["abuse-contact"];
+        this.abuseContactSuspected = this.abuseContactFound && this.ngModel["abuse-contact"].suspect;
+        this.resourceHolderFound = !!this.ngModel["resource-holder"];
     }
 }
 

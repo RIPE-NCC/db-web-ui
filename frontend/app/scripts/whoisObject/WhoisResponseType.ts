@@ -57,7 +57,15 @@ interface IWhoisObjectModel {
     attributes: {
         attribute: IAttributeModel[];
     };
+    "abuse-contact"? : IAbuseCModel;
     managed?: boolean;
+}
+
+interface IAbuseCModel {
+    "key" : string,
+    "email" : string,
+    "suspect"? : boolean,
+    "org-id"? : string
 }
 
 interface IWhoisResponseModel {

@@ -145,6 +145,16 @@
               }
             ]
           },
+          "resource-holder": {
+            "key": "ORG-TEST1-RIPE",
+            "name": "TEST ORG"
+          },
+          "abuse-contact": {
+            "key": "ABUSE-C-RIPE",
+            "email": "abuse-c@test.net",
+            "suspect": true,
+            "org-id": "ORG-TEST2-RIPE"
+          },
           "managed": true
         }
       ]
