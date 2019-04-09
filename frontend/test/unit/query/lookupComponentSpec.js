@@ -4,6 +4,39 @@
 describe('LookupComponent', function () {
 
     var $componentController;
+    beforeEach(module('dbWebApp'));
+
+    beforeEach(inject(function (_$componentController_) {
+        $componentController = _$componentController_;
+    }));
+
+    describe('shows an object', function () {
+
+        it('with abuse headers and highlighted RIPE attributes', function () {
+            var ctrl = $componentController('lookup', {}, {ngModel: mockResponse.singleResult.objects.object[0]});
+            expect(ctrl.abuseContactFound).toEqual(false);
+            expect(ctrl.header).toEqual(true);
+            expect(ctrl.resourceHolderFound).toEqual(true);
+        });
+
+        it("with abuse headers but with suspected org-id", function () {
+            var ctrl = $componentController("lookup", {}, {ngModel: mockAbuseCResponse.objects.object[0]});
+            expect(ctrl.abuseContactFound).toEqual(true);
+            expect(ctrl.header).toEqual(true);
+            expect(ctrl.abuseContactSuspected).toEqual(true);
+            expect(ctrl.ngModel["abuse-contact"]["org-id"] !== "").toEqual(true);
+        });
+
+        it("with abuse headers but without suspected org-id", function () {
+            mockAbuseCResponse.objects.object[0]["abuse-contact"]["org-id"] = "";
+            var ctrl = $componentController("lookup", {}, {ngModel: mockAbuseCResponse.objects.object[0]});
+            expect(ctrl.abuseContactFound).toEqual(true);
+            expect(ctrl.header).toEqual(true);
+            expect(ctrl.abuseContactSuspected).toEqual(true);
+            expect(ctrl.ngModel["abuse-contact"]["org-id"] !== "").toEqual(false);
+        });
+
+    });
     var mockResponse = {
         singleResult: {
             "service": {
@@ -205,22 +238,126 @@ describe('LookupComponent', function () {
         }
     };
 
-    beforeEach(module('dbWebApp'));
-
-    beforeEach(inject(function (_$componentController_) {
-        $componentController = _$componentController_;
-    }));
-
-    describe('shows an object', function () {
-
-        it('with abuse headers and highlighted RIPE attributes', function () {
-            var ctrl = $componentController('lookup', {}, {ngModel: mockResponse.singleResult.objects.object[0]});
-            expect(ctrl.abuseContactFound).toEqual(false);
-            expect(ctrl.header).toEqual(true);
-            expect(ctrl.resourceHolderFound).toEqual(true);
-        });
-
-    });
-
+    var mockAbuseCResponse = {
+        objects: {
+            object: [
+                {
+                    type: "inetnum",
+                    link: {
+                        type: "locator",
+                        "href": "http://rest-prepdev.db.ripe.net/ripe/inetnum/24.132.74.0 - 24.132.77.255"
+                    },
+                    source: {
+                        id: "ripe"
+                    },
+                    "primary-key": {
+                        attribute: [
+                            {
+                                name: "inetnum",
+                                value: "24.132.74.0 - 24.132.77.255"
+                            }
+                        ]
+                    },
+                    attributes: {
+                        attribute: [
+                            {
+                                name: "inetnum",
+                                value: "24.132.74.0 - 24.132.77.255"
+                            },
+                            {
+                                name: "netname",
+                                value: "VODA-ZIGGO"
+                            },
+                            {
+                                name: "descr",
+                                value: "CPE Customers NL"
+                            },
+                            {
+                                name: "country",
+                                value: "NL"
+                            },
+                            {
+                                "link": {
+                                    type: "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                                },
+                                name: "admin-c",
+                                value: "LGI-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                "link": {
+                                    type: "locator",
+                                    "href": "http://rest-prepdev.db.ripe.net/ripe/role/LGI-RIPE"
+                                },
+                                name: "tech-c",
+                                value: "LGI-RIPE",
+                                "referenced-type": "role"
+                            },
+                            {
+                                name: "status",
+                                value: "ASSIGNED PA"
+                            },
+                            {
+                                name: "remarks",
+                                value: "Contact abuse@ziggo.nl concerning criminal"
+                            },
+                            {
+                                name: "remarks",
+                                value: "activities like spam, hacks, portscans"
+                            },
+                            {
+                                name: "notify",
+                                value: "***@chello.at"
+                            },
+                            {
+                                link: {
+                                    type: "locator",
+                                    href: "http://rest-prepdev.db.ripe.net/ripe/mntner/ZIGGO-SERVICES-MNT"
+                                },
+                                name: "mnt-by",
+                                value: "ZIGGO-SERVICES-MNT",
+                                "referenced-type": "mntner"
+                            },
+                            {
+                                name: "created",
+                                value: "2008-12-02T10:26:51Z"
+                            },
+                            {
+                                name: "last-modified",
+                                value: "2017-12-06T14:29:33Z"
+                            },
+                            {
+                                name: "source",
+                                value: "RIPE"
+                            }
+                        ]
+                    },
+                    tags: {
+                        tag: [
+                            {
+                                id: "RIPE-USER-RESOURCE"
+                            }
+                        ]
+                    },
+                    "resource-holder": {
+                        key: "ORG-CB6-RIPE",
+                        name: "Ziggo Services B.V."
+                    },
+                    "abuse-contact": {
+                        key: "UNA7-RIPE",
+                        email: "abuse@ziggo.nl",
+                        suspect: true,
+                        "org-id": "ORG-CB6-RIPE"
+                    },
+                    managed: false
+                }
+            ]
+        },
+        "terms-and-conditions": {
+            type: "locator",
+            href: "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    };
 });
 

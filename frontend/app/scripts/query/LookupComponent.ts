@@ -8,6 +8,7 @@ class LookupController {
     public updateClicked: () => void;
     public abuseContactFound = false;
     public abuseContactSuspected = false;
+    public abuseContactSuspectedWithoutOrgid: boolean = false;
     public header = false;
     public resourceHolderFound = false;
 
@@ -15,6 +16,8 @@ class LookupController {
         this.header = !!(this.ngModel["resource-holder"] || this.ngModel["abuse-contact"]);
         this.abuseContactFound = !!this.ngModel["abuse-contact"];
         this.abuseContactSuspected = this.abuseContactFound && this.ngModel["abuse-contact"].suspect;
+        this.abuseContactSuspectedWithoutOrgid = this.abuseContactSuspected
+            && (!this.ngModel["abuse-contact"]["org-id"] || this.ngModel["abuse-contact"]["org-id"] === "");
         this.resourceHolderFound = !!this.ngModel["resource-holder"];
     }
 }
