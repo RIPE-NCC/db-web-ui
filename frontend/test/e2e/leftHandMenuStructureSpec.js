@@ -70,48 +70,48 @@ describe('The left hand menu structure depend on logged in user role', function 
         expect(page.topMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
         page.topMenuItems.get(0).all(by.css('a')).first().getText().then(function(text) {
-            expect(text).toBe('My LIR');
+            expect(text).toBe('My Account');
         });
         page.topMenuItems.get(1).all(by.css('a')).first().getText().then(function(text) {
             expect(text).toBe('Resources');
         });
 
-        /* My LIR structure of menu items
-            LIR Account Details
-            Billing Details
+        /* My Account structure of menu items
+            Account Overview
+            Billing
             Request Update
-            GM Preferences
-            User Accounts
-            My Tickets
-            My Training
-            API Access Keys
+            Users
+            Tickets
+            Training
+            API Keys
+            General Meeting
          */
         page.scrollIntoView(page.topMenuItems.get(0));
         page.topMenuItems.get(0).click();
         expect(page.myLirMenuItems.count()).toEqual(9);
         page.myLirMenuItems.get(0).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('LIR Account Details');
+            expect(text).toBe('Account Overview');
         });
         page.myLirMenuItems.get(1).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('Billing Details');
+            expect(text).toBe('Billing');
         });
         page.myLirMenuItems.get(2).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('Request Update');
         });
         page.myLirMenuItems.get(3).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('GM Preferences');
+            expect(text).toBe('Users');
         });
         page.myLirMenuItems.get(4).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('User Accounts');
+            expect(text).toBe('Tickets');
         });
         page.myLirMenuItems.get(5).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('My Tickets');
+            expect(text).toBe('Training');
         });
         page.myLirMenuItems.get(6).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('My Training');
+            expect(text).toBe('API Keys');
         });
         page.myLirMenuItems.get(7).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('API Access Keys');
+            expect(text).toBe('General Meeting');
         });
 
         /* Resource structure of menu items
@@ -154,29 +154,29 @@ describe('The left hand menu structure depend on logged in user role', function 
         expect(page.topMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
         page.topMenuItems.get(0).all(by.css('a')).first().getText().then(function(text) {
-            expect(text).toBe('My LIR');
+            expect(text).toBe('My Account');
         });
         page.topMenuItems.get(1).all(by.css('a')).first().getText().then(function(text) {
             expect(text).toBe('Resources');
         });
 
-        /* My LIR structure of menu items
-            Billing Details
-            User Accounts
+        /* My Account structure of menu items
+            Billing
+            Users
          */
         page.topMenuItems.get(0).click();
         expect(page.myLirMenuItems.count()).toEqual(9);
         expect(page.myLirMenuItems.get(0).isDisplayed()).toEqual(false);
         expect(page.myLirMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.myLirMenuItems.get(2).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(3).isDisplayed()).toEqual(false);
-        expect(page.myLirMenuItems.get(4).isDisplayed()).toEqual(true);
+        expect(page.myLirMenuItems.get(3).isDisplayed()).toEqual(true);
+        expect(page.myLirMenuItems.get(4).isDisplayed()).toEqual(false);
         expect(page.myLirMenuItems.get(5).isDisplayed()).toEqual(false);
         page.myLirMenuItems.get(1).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('Billing Details');
+            expect(text).toBe('Billing');
         });
-        page.myLirMenuItems.get(4).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('User Accounts');
+        page.myLirMenuItems.get(3).element(by.css('a')).getText().then(function(text) {
+            expect(text).toBe('Users');
         });
 
         /* Resource structure of menu items
@@ -275,7 +275,7 @@ describe('The left hand menu structure depend on logged in user role', function 
         expect(page.topMenuItems.get(1).isDisplayed()).toEqual(false);
         expect(page.topMenuItems.get(2).isDisplayed()).toEqual(true);
         page.topMenuItems.get(0).all(by.css('a')).first().getText().then(function(text) {
-            expect(text).toBe('My LIR');
+            expect(text).toBe('My Account');
         });
 
         /* Resource structure of menu items

@@ -4,32 +4,32 @@
             <li class="child" ng-class="{active: $ctrl.selected.lir}" ng-show="!$ctrl.show.testRcEnv && !$ctrl.show.trainingEnv && ($ctrl.show.admin || $ctrl.show.general || $ctrl.show.billing || $ctrl.show.generalMeeting || $ctrl.show.ticketing || $ctrl.show.guest)">
                 <a href="">
                     <i title="Open sub-menu" class="fa fa-angle-right"></i>
-                    My LIR
+                    My Account
                 </a>
                 <ul class="level2">
                     <li ng-show="$ctrl.show.admin || $ctrl.show.general">
-                        <a class="menuItem" href="{{$ctrl.properties.LIR_ACCOUNT_DETAILS_URL}}">LIR Account Details</a>
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_ACCOUNT_DETAILS_URL}}">Account Overview</a>
                     </li>
                     <li ng-show="$ctrl.show.billing">
-                        <a class="menuItem" href="{{$ctrl.properties.LIR_BILLING_DETAILS_URL}}">Billing Details</a>
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_BILLING_DETAILS_URL}}">Billing</a>
                     </li>
                     <li ng-show="$ctrl.show.admin || $ctrl.show.general">
                         <a class="menuItem" href="{{$ctrl.properties.REQUEST_UPDATE_URL}}">Request Update</a>
                     </li>
-                    <li ng-show="$ctrl.show.generalMeeting">
-                        <a class="menuItem" href="{{$ctrl.properties.LIR_GENERAL_MEETING_URL}}">GM Preferences</a>
-                    </li>
                     <li ng-show="$ctrl.show.admin || $ctrl.show.general || $ctrl.show.billing">
-                        <a class="menuItem" href="{{$ctrl.properties.LIR_USER_ACCOUNTS_URL}}">User Accounts</a>
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_USER_ACCOUNTS_URL}}">Users</a>
                     </li>
                     <li ng-show="$ctrl.show.ticketing">
-                        <a class="menuItem" href="{{$ctrl.properties.LIR_TICKETS_URL}}">My Tickets</a>
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_TICKETS_URL}}">Tickets</a>
                     </li>
                     <li ng-show="$ctrl.show.admin || $ctrl.show.general">
-                        <a class="menuItem" href="{{$ctrl.properties.LIR_TRAINING_URL}}">My Training</a>
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_TRAINING_URL}}">Training</a>
                     </li>
                     <li ng-show="$ctrl.show.admin">
-                        <a class="menuItem" href="{{$ctrl.properties.LIR_API_ACCESS_KEYS_URL}}">API Access Keys</a>
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_API_ACCESS_KEYS_URL}}">API Keys</a>
+                    </li>
+                    <li ng-show="$ctrl.show.generalMeeting">
+                        <a class="menuItem" href="{{$ctrl.properties.LIR_GENERAL_MEETING_URL}}">General Meeting</a>
                     </li>
                     <li ng-show="$ctrl.show.guest">
                         <a class="menuItem" href="{{$ctrl.properties.OPEN_ACQUISITION_URL}}">Request Update</a>
