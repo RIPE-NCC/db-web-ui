@@ -43,7 +43,10 @@
                 </a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem" ng-class="{current: $ctrl.activeUrl.indexOf('/myresources/') > -1}" href="{{$ctrl.properties.MY_RESOURCES_URL}}">My Resources</a>
+                        <a class="menuItem" ng-class="{current: $ctrl.selectMyResourceMenuItem}" href="{{$ctrl.properties.MY_RESOURCES_URL}}">My Resources</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" ng-class="{current: $ctrl.selectSponsoredMenuItem}" href="{{$ctrl.properties.MY_RESOURCES_URL}}?sponsored">Sponsored Resources</a>
                     </li>
                     <li ng-show="($ctrl.show.admin || $ctrl.show.general) && !$ctrl.show.testRcEnv">
                         <a class="menuItem" href="{{$ctrl.properties.REQUEST_RESOURCES_URL}}">Request Resources</a>

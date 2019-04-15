@@ -36,6 +36,8 @@ class LeftMenuController {
     };
 
     public dbMenuIsActive: boolean;
+    public selectMyResourceMenuItem: boolean;
+    public selectSponsoredMenuItem: boolean;
 
     constructor(public $rootScope: angular.IRootScopeService,
                 public $scope: angular.IScope,
@@ -49,6 +51,7 @@ class LeftMenuController {
 
         this.$rootScope.$on("$stateChangeSuccess", (event: angular.IAngularEvent, toState: any) => {
             this.activeUrl = toState.url;
+            this.isResourceOrSponsoredMenuActive();
             this.isDbMenuActive();
         });
         this.$scope.$on("selected-org-changed", (event: angular.IAngularEvent, selected: IUserInfoOrganisation) => {
@@ -110,6 +113,13 @@ class LeftMenuController {
             this.activeUrl.indexOf("/syncupdates") > -1;
     }
 
+    private isResourceOrSponsoredMenuActive() {
+        this.selectMyResourceMenuItem = this.$location.absUrl().indexOf('/myresources/') > -1
+            && (this.$location.absUrl().indexOf('sponsored') === -1
+                || this.$location.absUrl().indexOf('sponsored=false') > -1);
+        this.selectSponsoredMenuItem = this.$location.absUrl().indexOf('/myresources/') > -1
+            && !this.selectMyResourceMenuItem;
+    }
 }
 
 angular.module("dbWebApp")

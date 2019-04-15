@@ -7,7 +7,7 @@
     </div>
     <uib-tabset class="resources-sponsored-tabs" active="$ctrl.activeSponsoredTab">
         <uib-tab index="0" heading="My Resources" select="$ctrl.resourcesTabClicked()"></uib-tab>
-        <uib-tab ng-if="$ctrl.hasSponsoredResources" index="1" heading="Sponsored Resources" select="$ctrl.sponsoredResourcesTabClicked()"></uib-tab>
+        <uib-tab index="1" heading="Sponsored Resources" select="$ctrl.sponsoredResourcesTabClicked()"></uib-tab>
     </uib-tabset>
     <transfer-drop-down ng-if="$ctrl.isMemberOrg()" sponsored-menu="$ctrl.isShowingSponsored"></transfer-drop-down>
     <alerts-drop-down ng-if="$ctrl.showAlerts"></alerts-drop-down>

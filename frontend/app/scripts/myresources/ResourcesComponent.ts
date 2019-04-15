@@ -29,7 +29,6 @@ class ResourcesController {
     public isRedirectedFromIpAnalyser: boolean = false;
     public lastTab: string;
 
-    private hasSponsoredResources = false;
     private isShowingSponsored: boolean = false;
     private activeSponsoredTab = 0;
     private showAlerts: boolean = true;
@@ -69,11 +68,8 @@ class ResourcesController {
         this.$scope.$on("selected-org-changed", (event: ng.IAngularEvent, selected: IUserInfoOrganisation) => {
             this.selectedOrg = selected;
             // go back to the start "My Resources" page
-            this.isShowingSponsored = false;
-            this.activeSponsoredTab = 0;
             this.refreshPage();
         });
-
     }
 
     public tabClicked(tabName: string) {
@@ -88,6 +84,7 @@ class ResourcesController {
             this.isShowingSponsored = true;
             this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
         }
+        this.$scope.$broadcast("$stateChangeSuccess", this.$state);
     }
 
     public resourcesTabClicked() {
@@ -95,6 +92,7 @@ class ResourcesController {
             this.isShowingSponsored = false;
             this.$location.search({type: this.lastTab, sponsored: this.isShowingSponsored, ipanalyserRedirect: "" + this.isRedirectedFromIpAnalyser });
         }
+        this.$scope.$broadcast("$stateChangeSuccess", this.$state);
     }
 
     public refreshPage() {
@@ -158,10 +156,6 @@ class ResourcesController {
             .then((response: ng.IHttpPromiseCallbackArg<IResourceOverviewResponseModel>) => {
                 this.$timeout.cancel(promise);
                 this.loading = false;
-                this.hasSponsoredResources = response.data.stats && (
-                    response.data.stats.numSponsoredInetnums +
-                    response.data.stats.numSponsoredInet6nums +
-                    response.data.stats.numSponsoredAutnums) > 0;
                 switch (this.lastTab) {
                     case "inetnum":
                         this.ipv4Resources = response.data.resources;

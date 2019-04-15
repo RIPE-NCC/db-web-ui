@@ -116,26 +116,30 @@ describe('The left hand menu structure depend on logged in user role', function 
 
         /* Resource structure of menu items
             My Resources
+            Sponsored Resources
             Request Resources
             Request Transfer
             IPv4 Transfer Listing Service
             RPKI Dashboard
          */
         page.topMenuItems.get(1).click();
-        expect(page.resourcesMenuItems.count()).toEqual(5);
+        expect(page.resourcesMenuItems.count()).toEqual(6);
         page.resourcesMenuItems.get(0).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('My Resources');
         });
         page.resourcesMenuItems.get(1).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('Request Resources');
+            expect(text).toBe('Sponsored Resources');
         });
         page.resourcesMenuItems.get(2).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('Request Transfer');
+            expect(text).toBe('Request Resources');
         });
         page.resourcesMenuItems.get(3).element(by.css('a')).getText().then(function(text) {
-            expect(text).toBe('IPv4 Transfer Listing Service');
+            expect(text).toBe('Request Transfer');
         });
         page.resourcesMenuItems.get(4).element(by.css('a')).getText().then(function(text) {
+            expect(text).toBe('IPv4 Transfer Listing Service');
+        });
+        page.resourcesMenuItems.get(5).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('RPKI Dashboard');
         });
 
@@ -177,16 +181,21 @@ describe('The left hand menu structure depend on logged in user role', function 
 
         /* Resource structure of menu items
             My Resources
+            Sponsored Resources
          */
         page.topMenuItems.get(1).click();
-        expect(page.resourcesMenuItems.count()).toEqual(5);
+        expect(page.resourcesMenuItems.count()).toEqual(6);
         expect(page.resourcesMenuItems.get(0).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(false);
+        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.resourcesMenuItems.get(2).isDisplayed()).toEqual(false);
         expect(page.resourcesMenuItems.get(3).isDisplayed()).toEqual(false);
         expect(page.resourcesMenuItems.get(4).isDisplayed()).toEqual(false);
+        expect(page.resourcesMenuItems.get(5).isDisplayed()).toEqual(false);
         page.resourcesMenuItems.get(0).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('My Resources');
+        });
+        page.resourcesMenuItems.get(1).element(by.css('a')).getText().then(function(text) {
+            expect(text).toBe('Sponsored Resources');
         });
 
         expectRipeDatabaseMenuItemWithAllSubItems();
@@ -205,17 +214,22 @@ describe('The left hand menu structure depend on logged in user role', function 
 
         /* Resource structure of menu items
             My Resources
+            Sponsored Resources
          */
         page.topMenuItems.get(1).click();
-        expect(page.resourcesMenuItems.count()).toEqual(5);
+        expect(page.resourcesMenuItems.count()).toEqual(6);
         page.resourcesMenuItems.get(0).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('My Resources');
         });
+        page.resourcesMenuItems.get(1).element(by.css('a')).getText().then(function(text) {
+            expect(text).toBe('Sponsored Resources');
+        });
         expect(page.resourcesMenuItems.get(0).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(false);
+        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.resourcesMenuItems.get(2).isDisplayed()).toEqual(false);
         expect(page.resourcesMenuItems.get(3).isDisplayed()).toEqual(false);
         expect(page.resourcesMenuItems.get(4).isDisplayed()).toEqual(false);
+        expect(page.resourcesMenuItems.get(5).isDisplayed()).toEqual(false);
 
         expectRipeDatabaseMenuItemWithAllSubItems();
     });
@@ -233,17 +247,22 @@ describe('The left hand menu structure depend on logged in user role', function 
 
         /* Resource structure of menu items
             My Resources
+            Sponsored Resources
          */
         page.topMenuItems.get(1).click();
-        expect(page.resourcesMenuItems.count()).toEqual(5);
+        expect(page.resourcesMenuItems.count()).toEqual(6);
         page.resourcesMenuItems.get(0).element(by.css('a')).getText().then(function(text) {
             expect(text).toBe('My Resources');
         });
+        page.resourcesMenuItems.get(1).element(by.css('a')).getText().then(function(text) {
+            expect(text).toBe('Sponsored Resources');
+        });
         expect(page.resourcesMenuItems.get(0).isDisplayed()).toEqual(true);
-        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(false);
+        expect(page.resourcesMenuItems.get(1).isDisplayed()).toEqual(true);
         expect(page.resourcesMenuItems.get(2).isDisplayed()).toEqual(false);
         expect(page.resourcesMenuItems.get(3).isDisplayed()).toEqual(false);
         expect(page.resourcesMenuItems.get(4).isDisplayed()).toEqual(false);
+        expect(page.resourcesMenuItems.get(5).isDisplayed()).toEqual(false);
 
         expectRipeDatabaseMenuItemWithAllSubItems();
     });
