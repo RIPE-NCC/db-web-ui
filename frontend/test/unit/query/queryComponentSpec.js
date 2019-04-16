@@ -20,9 +20,9 @@ describe('The QueryComponent', function () {
             ctrl.doSearch();
             expect(ctrl.results.length).toEqual(0);
             expect(ctrl.offset).toEqual(0);
-            expect(ctrl.qp.showFullObjectDetails).toEqual(true);
+            expect(ctrl.qp.showFullObjectDetails).toEqual(false);
             expect(ctrl.qp.reverseDomain).toEqual(false);
-            expect(ctrl.qp.doNotRetrieveRelatedObjects).toEqual(false);
+            expect(ctrl.qp.doNotRetrieveRelatedObjects).toEqual(true);
             expect(ctrl.qp.source).toEqual("RIPE");
             expect(ctrl.qp.types).toEqual({});
             expect(ctrl.qp.inverse).toEqual({});
@@ -346,9 +346,9 @@ describe('The QueryComponent', function () {
                 $stateParams: { searchtext: " 193.0.0.0 -t aut-num" }
             });
             expect(ctrl.offset).toEqual(0);
-            expect(ctrl.qp.showFullObjectDetails).toEqual(true);
+            expect(ctrl.qp.showFullObjectDetails).toEqual(false);
             expect(ctrl.qp.reverseDomain).toEqual(false);
-            expect(ctrl.qp.doNotRetrieveRelatedObjects).toEqual(false);
+            expect(ctrl.qp.doNotRetrieveRelatedObjects).toEqual(true);
             expect(ctrl.qp.source).toEqual("RIPE");
             expect(ctrl.qp.types).toEqual({});
             expect(ctrl.qp.inverse).toEqual({});
@@ -363,9 +363,9 @@ describe('The QueryComponent', function () {
                 $stateParams: { searchtext: "blah blah --template zzz inetnum" }
             });
             expect(ctrl.offset).toEqual(0);
-            expect(ctrl.qp.showFullObjectDetails).toEqual(true);
+            expect(ctrl.qp.showFullObjectDetails).toEqual(false);
             expect(ctrl.qp.reverseDomain).toEqual(false);
-            expect(ctrl.qp.doNotRetrieveRelatedObjects).toEqual(false);
+            expect(ctrl.qp.doNotRetrieveRelatedObjects).toEqual(true);
             expect(ctrl.qp.source).toEqual("RIPE");
             expect(ctrl.qp.types).toEqual({});
             expect(ctrl.qp.inverse).toEqual({});

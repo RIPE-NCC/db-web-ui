@@ -27,6 +27,8 @@ describe('The query pagina', function () {
 
     it('should be able to search using the text box', function () {
         page.inpQueryString.sendKeys('193.0.0.0\n'); // press 'enter' for a laugh
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         page.scrollIntoView(page.resultsSection);
@@ -36,6 +38,8 @@ describe('The query pagina', function () {
 
     it('should be able to search using the text box and a type checkbox', function () {
         page.inpQueryString.sendKeys('193.0.0.0');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
         page.inpDontRetrieveRelated.click();
         page.queryParamTabs.get(1).click();
@@ -49,8 +53,8 @@ describe('The query pagina', function () {
 
     it('should be able to have source dynamic', function () {
         page.inpQueryString.sendKeys('193.0.0.0');
+        page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.inpDontRetrieveRelated.click();
         page.queryParamTabs.get(1).click();
         page.scrollIntoView(page.byId('search:types:6'));
         page.byId('search:types:6').click();
@@ -61,8 +65,8 @@ describe('The query pagina', function () {
 
     it('should be able to have source dynamic', function () {
         page.inpQueryString.sendKeys('223.0.0.0');
+        page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.inpDontRetrieveRelated.click();
         page.queryParamTabs.get(1).click();
         page.scrollIntoView(page.byId('search:types:6'));
         page.byId('search:types:6').click();
@@ -73,8 +77,8 @@ describe('The query pagina', function () {
 
     it('should search by inverse lookup abuse-c', function () {
         page.inpQueryString.sendKeys('ACRO862-RIPE');
+        page.inpShowFullDetails.click();
         page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.inpDontRetrieveRelated.click();
         page.queryParamTabs.get(1).click();
         page.scrollIntoView(page.byId('search:types:11')); // organisation
         page.byId('search:types:11').click();
@@ -92,6 +96,8 @@ describe('The query pagina', function () {
 
     it('should be specified ripe stat link', function () {
         page.inpQueryString.sendKeys('193.0.0.0');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         // ripe stat link for should contain inetnum
@@ -110,6 +116,8 @@ describe('The query pagina', function () {
 
     it('should show object banner with text - No abuse contact found', function () {
         page.inpQueryString.sendKeys('193.0.0.0');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         // ripe stat link for should contain inetnum
@@ -119,6 +127,8 @@ describe('The query pagina', function () {
 
     it('should show object banner with abuse contact info', function () {
         page.inpQueryString.sendKeys('193.201.0.0');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.lookupHeader.isPresent()).toEqual(true);
@@ -130,9 +140,8 @@ describe('The query pagina', function () {
 
     it('should show object banner with suspected abuse contact info', function () {
         page.inpQueryString.sendKeys('223.0.0.0');
+        page.inpShowFullDetails.click();
         // -- just to use same mock
-        page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.inpDontRetrieveRelated.click();
         page.queryParamTabs.get(1).click();
         page.scrollIntoView(page.byId('search:types:6'));
         page.byId('search:types:6').click();
@@ -150,6 +159,8 @@ describe('The query pagina', function () {
 
     it('should show checkbox - Highlight RIPE NCC managed values', function () {
         page.inpQueryString.sendKeys('193.201.0.0');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.ripeManagedAttributesLabel.getText()).toContain('Highlight RIPE NCC managed values');
@@ -164,6 +175,8 @@ describe('The query pagina', function () {
 
     it('should be able to show out of region route from ripe db', function () {
         page.inpQueryString.sendKeys('211.43.192.0');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.searchResults.count()).toEqual(3);
@@ -175,8 +188,7 @@ describe('The query pagina', function () {
 
     it('should be able to show out of region route from ripe db without related objects', function () {
         page.inpQueryString.sendKeys('211.43.192.0');
-        page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.inpDontRetrieveRelated.click();
+        page.inpShowFullDetails.click();
         page.queryParamTabs.get(1).click();
         page.scrollIntoView(page.byId('search:types:17'));
         page.byId('search:types:17').click();
@@ -190,6 +202,8 @@ describe('The query pagina', function () {
 
     it('should contain ripe-nonauth for source in link on attribute value', function () {
         page.inpQueryString.sendKeys('211.43.192.0');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(2, 0).getAttribute('href')).toContain('?source=ripe-nonauth&key=211.43.192.0/19AS9777&type=route');
@@ -197,6 +211,8 @@ describe('The query pagina', function () {
 
     it('should contain date in proper format', function () {
         page.inpQueryString.sendKeys('211.43.192.0');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(2, 5).getText()).toContain('1970-01-01T00:00:00Z');
@@ -205,8 +221,7 @@ describe('The query pagina', function () {
 
     it('should be able to show out of region route from ripe db without related objects', function () {
         page.inpQueryString.sendKeys('AS9777');
-        page.scrollIntoView(page.inpDontRetrieveRelated);
-        page.inpDontRetrieveRelated.click();
+        page.inpShowFullDetails.click();
         page.queryParamTabs.get(1).click();
         page.scrollIntoView(page.byId('search:types:2'));
         page.byId('search:types:2').click();
@@ -275,6 +290,8 @@ describe('The query pagina', function () {
     //--resource in query
     it('should be able to search --resource (source=GRS) using the text box', function () {
         page.inpQueryString.sendKeys('1.1.1.1 --resource\n');
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
         expect(page.inpQueryString.getAttribute('value')).toEqual('1.1.1.1 --resource');

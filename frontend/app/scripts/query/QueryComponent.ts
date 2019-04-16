@@ -94,8 +94,8 @@ class QueryController {
             : {};
         this.qp.hierarchy = QueryParameters.longHierarchyFlagToShort(this.$stateParams.hierarchyFlag);
         this.qp.reverseDomain = this.flagToBoolean(this.$stateParams.dflag, false); // -d
-        this.qp.showFullObjectDetails = this.flagToBoolean(this.$stateParams.bflag, true); // -B
-        this.qp.doNotRetrieveRelatedObjects = this.flagToBoolean(this.$stateParams.rflag, false); // -r
+        this.qp.showFullObjectDetails = this.flagToBoolean(this.$stateParams.bflag, false); // -B
+        this.qp.doNotRetrieveRelatedObjects = this.flagToBoolean(this.$stateParams.rflag, true); // -r
         this.qp.queryText = (this.$stateParams.searchtext || "").trim();
         // on page refresh or in case of bookmarked page
         if (this.qp.queryText) {
