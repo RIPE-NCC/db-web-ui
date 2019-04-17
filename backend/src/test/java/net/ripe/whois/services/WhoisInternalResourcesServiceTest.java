@@ -48,7 +48,7 @@ public class WhoisInternalResourcesServiceTest {
         when(request.getRequestURI()).thenReturn(CONTEXT_PATH + "/api/random");
         when(request.getMethod()).thenReturn(HttpMethod.GET.name());
         mockServer.expect(
-                requestTo(String.format("%s/api/random?apiKey=%s", API_URL, API_KEY)))
+                requestTo(String.format("%s/api/random", API_URL)))
             .andRespond(
                 withSuccess("{}", MediaType.APPLICATION_JSON));
 
@@ -62,7 +62,7 @@ public class WhoisInternalResourcesServiceTest {
         when(request.getRequestURI()).thenReturn(CONTEXT_PATH + "/api/random");
         when(request.getMethod()).thenReturn(HttpMethod.GET.name());
         mockServer.expect(
-                requestTo(String.format("%s/api/random?apiKey=%s", API_URL, API_KEY)))
+                requestTo(String.format("%s/api/random", API_URL)))
                 .andRespond(
                         withServerError());
 

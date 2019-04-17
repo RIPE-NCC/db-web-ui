@@ -46,7 +46,7 @@ public class BaAppsService implements ExchangeErrorHandler {
      */
     public String getResourceTickets(long memberId) {
 
-        String url = baAppsUrl + "/resource-services/member-resources/{memberId}?api-key={apiKey}";
+        String url = baAppsUrl + "/resource-services/member-resources/{memberId}";
         try {
             LOGGER.info("Calling {} with memberId {}", url, memberId);
             final ResponseEntity<String> response = restTemplate.exchange(
@@ -54,7 +54,7 @@ public class BaAppsService implements ExchangeErrorHandler {
                     HttpMethod.GET,
                     new HttpEntity<String>(withHeaders(MediaType.APPLICATION_JSON_VALUE)),
                     String.class,
-                    memberId, apiKey);
+                    memberId);
             if (response.getStatusCode() != HttpStatus.OK) {
                 throw new RestClientException(response.getStatusCode().value(), "Unable to get resource tickets");
             }
@@ -68,6 +68,7 @@ public class BaAppsService implements ExchangeErrorHandler {
     private MultiValueMap<String, String> withHeaders(final String accept) {
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set("Accept", accept);
+        headers.set("X-API_KEY", apiKey);
         return headers;
     }
 

@@ -15,10 +15,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("/db-web-ui/api/whois-internal/api/user/info",
             "",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "DB-WHOIS-d5395e7fbf8d");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals("https://test.whois.ripe.net/api/user/info?apiKey=DB-WHOIS-d5395e7fbf8d", uri.toString());
+        assertEquals("https://test.whois.ripe.net/api/user/info", uri.toString());
     }
 
     @Test
@@ -28,10 +27,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("/db-web-ui/api/whois-internal/api/user/info",
             "v=1&v=2",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "DB-WHOIS-d5395e7fbf8d");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals("https://test.whois.ripe.net/api/user/info?v=1&v=2&apiKey=DB-WHOIS-d5395e7fbf8d", uri.toString());
+        assertEquals("https://test.whois.ripe.net/api/user/info?v=1&v=2", uri.toString());
     }
 
     @Test
@@ -41,10 +39,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("/db-web-ui/api/whois-internal/api/resources/ipanalyser/ipv4.json",
             "org-id=ORG-CSL9",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "DB-WHOIS-d5395e7fbf8d");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/ipanalyser/ipv4.json?org-id=ORG-CSL9&apiKey=DB-WHOIS-d5395e7fbf8d", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/ipanalyser/ipv4.json?org-id=ORG-CSL9", uri.toString());
     }
 
     @Test
@@ -54,10 +51,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal../fmp-int/auditlog",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldReturnUrlWithoutBacklash");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal../fmp-int/auditlog?value=tpolychnia@ripe.net&apiKey=TEST-shouldReturnUrlWithoutBacklash", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
     }
 
     @Test
@@ -67,10 +63,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal....//fmp-int/auditlog",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldReturnUrlWithoutDoubleBacklash");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal..../fmp-int/auditlog?value=tpolychnia@ripe.net&apiKey=TEST-shouldReturnUrlWithoutDoubleBacklash", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal..../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
     }
 
     @Test
@@ -80,10 +75,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal......///fmp-int/auditlog",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldReturnUrlWithoutTripleBacklash");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal....../fmp-int/auditlog?value=tpolychnia@ripe.net&apiKey=TEST-shouldReturnUrlWithoutTripleBacklash", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal....../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
     }
 
     @Test
@@ -93,10 +87,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/../fmp-int/auditlog",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldReturnUrlWith2Dots");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/../fmp-int/auditlog?value=tpolychnia@ripe.net&apiKey=TEST-shouldReturnUrlWith2Dots", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/../fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
     }
 
     @Test
@@ -106,10 +99,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal./fmp-int/auditlog",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldReturnUrlWithoutSingleBacklash");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal./fmp-int/auditlog?value=tpolychnia@ripe.net&apiKey=TEST-shouldReturnUrlWithoutSingleBacklash", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal./fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
     }
 
     @Test
@@ -118,10 +110,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldThrowErrorOnSpecialCharacters");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog?value=tpolychnia@ripe.net&apiKey=TEST-shouldThrowErrorOnSpecialCharacters", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog?value=tpolychnia@ripe.net", uri.toString());
     }
 
     @Test
@@ -130,10 +121,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog/<script>alert('Hi');</script>",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldRemoveNormaliseUrlWithHtml");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog/%3Cscript%3Ealert('Hi');%3C/script%3E?value=tpolychnia@ripe.net&apiKey=TEST-shouldRemoveNormaliseUrlWithHtml", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog/%3Cscript%3Ealert('Hi');%3C/script%3E?value=tpolychnia@ripe.net", uri.toString());
     }
 
     @Test
@@ -142,10 +132,9 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/resources//api/whois-internal··/fmp-int/auditlog/select from 1 on 1",
             "value=tpolychnia@ripe.net",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldRemoveNormaliseUrlWithSQL");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog/select%20from%201%20on%201?value=tpolychnia@ripe.net&apiKey=TEST-shouldRemoveNormaliseUrlWithSQL", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/resources/api/whois-internal··/fmp-int/auditlog/select%20from%201%20on%201?value=tpolychnia@ripe.net", uri.toString());
     }
 
     @Test
@@ -155,9 +144,8 @@ public class WhoisInternalProxyTest {
         URI uri = whoisInternalProxy.composeProxyUrl("//db-web-ui/api/whois-internal/api/..//resources//api/whois-internal../fmp-int/auditlog/select",
             "id=2 and 1=2",
             "/api/whois-internal",
-            HTTPS_TEST_WHOIS_RIPE_NET,
-            "TEST-shouldRemoveAnyInjections");
+            HTTPS_TEST_WHOIS_RIPE_NET);
 
-        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/../resources/api/whois-internal../fmp-int/auditlog/select?id=2%20and%201=2&apiKey=TEST-shouldRemoveAnyInjections", uri.toString());
+        assertEquals(HTTPS_TEST_WHOIS_RIPE_NET + "/api/../resources/api/whois-internal../fmp-int/auditlog/select?id=2%20and%201=2", uri.toString());
     }
 }

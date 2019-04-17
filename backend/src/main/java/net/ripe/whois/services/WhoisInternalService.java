@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
@@ -56,9 +57,9 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         // fetch as xml
         final ResponseEntity<WhoisResources> response;
         try {
-            response = restTemplate.exchange("{apiUrl}/api/user/{uuid}/maintainers?apiKey={apiKey}",
+            response = restTemplate.exchange("{apiUrl}/api/user/{uuid}/maintainers",
                 HttpMethod.GET,
-                getRequestEntity(),
+                getRequestEntity(Optional.of(apiKey)),
                 WhoisResources.class,
                 withParams(uuid));
 
@@ -95,12 +96,12 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     private HashMap<String, Object> withParams(final String uuid) {
         final HashMap<String, Object> variables = Maps.newHashMap();
         variables.put("apiUrl", apiUrl);
-        variables.put("apiKey", apiKey);
         variables.put("uuid", uuid);
         return variables;
     }
 
     public ResponseEntity<String> bypass(final HttpServletRequest request, final String body, final HttpHeaders headers) {
+        headers.set(API_KEY_HEADER, apiKey);
         final URI uri = composeWhoisUrl(request);
         LOGGER.info("Calling WhoisInternalService {}", uri);
         return handleErrors(() ->
@@ -114,7 +115,8 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     public UserInfoResponse getUserInfo(String crowdToken) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Cookie",CROWD_TOKEN_KEY + "=" + crowdToken);
-        final URI uri = whoisInternalProxy.composeProxyUrl("api/user/info", apiUrl, apiKey);
+        httpHeaders.set(API_KEY_HEADER, apiKey);
+        final URI uri = whoisInternalProxy.composeProxyUrl("api/user/info", apiUrl);
         LOGGER.info("Calling Whois InternalService to retrieve user info {}", uri);
         try {
             return restTemplate.exchange(uri, HttpMethod.GET,
@@ -131,7 +133,8 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     public boolean getActiveToken(String crowdToken) {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Cookie",CROWD_TOKEN_KEY + "=" + crowdToken);
-        final URI uri = whoisInternalProxy.composeProxyUrl("api/user/active", apiUrl, apiKey);
+        httpHeaders.add(API_KEY_HEADER, apiKey);
+        final URI uri = whoisInternalProxy.composeProxyUrl("api/user/active", apiUrl);
         LOGGER.info("Calling Whois InternalService to retrieve user active {}", uri);
         try {
             return restTemplate.exchange(uri, HttpMethod.GET,
@@ -143,6 +146,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
     }
 
     public ResponseEntity<byte[]> bypassFile(final HttpServletRequest request, final String body, final HttpHeaders headers) {
+        headers.set(API_KEY_HEADER, apiKey);
         final URI uri = composeWhoisUrl(request);
         LOGGER.info("Calling WhoisInternalService {}", uri);
         return restTemplate.exchange(
@@ -157,7 +161,6 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
             request.getQueryString(),
             "/api/whois-internal",
             apiUrl,
-            apiKey,
             true);
     }
 

@@ -19,30 +19,26 @@ public class WhoisInternalProxy implements ExchangeErrorHandler, WhoisServiceBas
     }
 
     URI composeProxyUrl(final String requestURI,
-                        final String apiUrl,
-                        final String apiKey) {
-        return composeProxyUrl(requestURI, "", "", apiUrl, apiKey, false);
+                        final String apiUrl) {
+        return composeProxyUrl(requestURI, "", "", apiUrl, false);
+    }
+
+    URI composeProxyUrl(final String requestURI,
+                        final String requestQueryString,
+                        final String pathToReplace,
+                        final String apiUrl) {
+        return composeProxyUrl(requestURI, requestQueryString, pathToReplace, apiUrl, false);
     }
 
     URI composeProxyUrl(final String requestURI,
                         final String requestQueryString,
                         final String pathToReplace,
                         final String apiUrl,
-                        final String apiKey) {
-        return composeProxyUrl(requestURI, requestQueryString, pathToReplace, apiUrl, apiKey, false);
-    }
-
-    URI composeProxyUrl(final String requestURI,
-                        final String requestQueryString,
-                        final String pathToReplace,
-                        final String apiUrl,
-                        final String apiKey,
                         final Boolean encoded) {
         try {
             return UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .path(replacePathAndNormalise(requestURI, pathToReplace))
                 .replaceQuery(requestQueryString)
-                .queryParam("apiKey", apiKey)
                 .build(encoded).toUri();
         } catch (Exception e) {
             throw new IllegalStateException("Invalid URI " + requestURI, e);

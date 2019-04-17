@@ -7,16 +7,16 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
 public interface WhoisServiceBase {
+
+    String API_KEY_HEADER = "X-Api-Key";
 
     @Deprecated
     default String getObjectSinglePrimaryKey(final WhoisObject obj) {
@@ -36,9 +36,10 @@ public interface WhoisServiceBase {
     }
 
     @Nonnull
-    default HttpEntity<String> getRequestEntity() {
+    default HttpEntity<String> getRequestEntity(final Optional<String> apiKey) {
         final MultiValueMap<String, String> headers = new HttpHeaders();
         headers.set("Accept", MediaType.APPLICATION_XML_VALUE);
-        return new HttpEntity<String>(headers);
+        apiKey.ifPresent(key -> headers.set(API_KEY_HEADER, key));
+        return new HttpEntity<>(headers);
     }
 }

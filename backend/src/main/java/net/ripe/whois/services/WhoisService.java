@@ -29,6 +29,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -83,7 +84,7 @@ public class WhoisService implements ExchangeErrorHandler, WhoisServiceBase {
         try {
             response = restTemplate.exchange(uri,
                     HttpMethod.GET,
-                    getRequestEntity(),
+                    getRequestEntity(Optional.empty()),
                     WhoisResources.class);
 
             if (response.getStatusCode() != HttpStatus.OK) {

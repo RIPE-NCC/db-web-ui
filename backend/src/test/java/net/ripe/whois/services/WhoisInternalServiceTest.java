@@ -84,7 +84,7 @@ public class WhoisInternalServiceTest {
     private static final String MOCK_WHOIS_INTERNAL_URL = "http://localhost:8089";
     private static final UUID USER_UUID = UUID.randomUUID();
     private static final String API_KEY = "DB-WHOIS-d5395e7fbf8d";
-    public static final String URL = "/api/user/" + USER_UUID + "/maintainers?apiKey=" + API_KEY;
+    public static final String URL = "/api/user/" + USER_UUID + "/maintainers";
     private static final String CROWD_TOKEN = "rRrR5L8b9zksKdrl6r1zYg00";
 
     private final RestTemplate restTemplate = new RestTemplate();
@@ -153,7 +153,7 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldRetrieveUserInfo(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?apiKey="+API_KEY))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info"))
             .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON)
                 .body(AbstractIntegrationTest.getResource("mock/user-info.json")));
 
@@ -164,7 +164,7 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldThrowExceptionUserInfoError(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?apiKey="+API_KEY))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info"))
             .andRespond(withStatus(HttpStatus.INTERNAL_SERVER_ERROR));
 
         try{
@@ -177,7 +177,7 @@ public class WhoisInternalServiceTest {
 
     @Test
     public void shouldThrowExceptionUserInfoErrorUnAuthorized(){
-        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info?apiKey="+API_KEY))
+        mockServer.expect(requestTo(MOCK_WHOIS_INTERNAL_URL + "/api/user/info"))
             .andRespond(withStatus(HttpStatus.UNAUTHORIZED));
 
         try{

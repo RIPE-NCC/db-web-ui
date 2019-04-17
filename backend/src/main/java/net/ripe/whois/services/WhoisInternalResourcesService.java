@@ -55,14 +55,14 @@ public class WhoisInternalResourcesService implements ExchangeErrorHandler {
             request.getRequestURI(),
             request.getQueryString(),
             "",
-            apiUrl,
-            apiKey);
+            apiUrl);
     }
 
     private HttpEntity<?> withEntity(final HttpHeaders headers, final String body) {
         if (!headers.containsKey(HttpHeaders.ACCEPT)) {
             headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON);
         }
+        headers.set("X-API_KEY", apiKey);
         return StringUtils.isNotBlank(body) ? new HttpEntity<>(body, headers) : new HttpEntity<>(headers);
     }
 }
