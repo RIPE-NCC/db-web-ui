@@ -14,7 +14,7 @@
             <i>{{ "msg.noAbuseContactFound.text" | label }}</i>
         </span>
         <br />
-        <span ng-if="$ctrl.abuseContactSuspected">Abuse-mailbox validation failed. <span ng-if="!$ctrl.abuseContactSuspectedWithoutOrgid">Please refer to <a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source={{ $ctrl.ngModel['source'].id }}&key={{ $ctrl.ngModel['abuse-contact']['org-id'] }}&type=organisation">{{ $ctrl.ngModel['abuse-contact']['org-id'] }}</a> for further information.</span></span>
+        <span ng-if="$ctrl.abuseContactSuspected && !$ctrl.abuseContactSuspectedWithoutOrgid">Abuse-mailbox validation failed. Please refer to <a href="{{ $ctrl.properties.OBJECT_LOOKUP_URL }}?source={{ $ctrl.ngModel['source'].id }}&key={{ $ctrl.ngModel['abuse-contact']['org-id'] }}&type=organisation">{{ $ctrl.ngModel['abuse-contact']['org-id'] }}</a> for further information.</span>
     </div>
     <whois-object-viewer
         ng-cloak
