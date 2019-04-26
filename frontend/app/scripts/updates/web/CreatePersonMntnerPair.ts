@@ -8,6 +8,7 @@ class CreatePersonMntnerPairController {
     public personAttributes: any;
     public mntnerAttributes: any;
     public objectType: string;
+    public personRe: RegExp = new RegExp(/^[A-Z][A-Z0-9\\.`'_-]{0,63}(?: [A-Z0-9\\.`'_-]{1,64}){0,9}$/i);
 
     constructor(private $state: ng.ui.IStateService,
                 private $log: angular.ILogService,
@@ -106,6 +107,10 @@ class CreatePersonMntnerPairController {
 
     private fieldVisited(objectName: string, attr: IAttributeModel) {
         this.$log.info("fieldVisited:" + JSON.stringify(attr));
+        if (attr.name === "person") {
+            attr.$$error = (!attr.value || this.personRe.exec(attr.value)) ? "" : "Input contains unsupported characters.";
+            attr.$$invalid = !!attr.$$error;
+        }
         if (attr.$$meta.$$primaryKey === true) {
             attr.$$error = "";
             this.RestService.autocomplete(attr.name, attr.value, true, []).then((data: any) => {

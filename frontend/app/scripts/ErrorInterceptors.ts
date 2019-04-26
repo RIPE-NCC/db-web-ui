@@ -82,6 +82,19 @@ class ErrorInterceptorService {
     }
 }
 
+class HeadersInterceptorService {
+
+    public request = (config: any) => {
+        if(config.url.indexOf('/templates') !== -1 || config.url.indexOf('/verboses') !== -1) {
+            return config;
+        }
+        config.headers.Accept= 'application/json; charset=utf-8';
+        return config;
+    }
+
+
+}
+
 angular.module("dbWebApp")
     .constant("ERROR_EVENTS", {
         authenticationError: "authentication-error",
@@ -91,6 +104,8 @@ angular.module("dbWebApp")
         stateTransitionError: "$stateChangeError",
     })
     .service("ErrorInterceptor",  ErrorInterceptorService)
+    .service("HeadersInterceptor",  HeadersInterceptorService)
     .config(($httpProvider: ng.IHttpProvider) => {
         $httpProvider.interceptors.push("ErrorInterceptor");
+        $httpProvider.interceptors.push("HeadersInterceptor");
     });

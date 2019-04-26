@@ -108,6 +108,9 @@ module.exports = {
     inpCertif: element(by.id('createForm')).element(by.name('certif')),
     inpErrorCertif: element(by.id('createForm')).element(by.id('anchor-certif')),
     btnAbuseCBell: element(by.id('createRoleForAbuseCAttribute')),
+    //CreatePersonMntnerPair page
+    inpMntner: element(by.id('createForm')).element(by.name('mntner')),
+    inpPerson: element(by.id('createForm')).element(by.name('person')),
 
     inpAutnum: element(by.id('createForm')).element(by.name('aut-num')),
     inpAsName: element(by.id('createForm')).element(by.name('as-name')),
