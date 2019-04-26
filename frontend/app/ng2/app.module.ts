@@ -3,8 +3,8 @@ import {NgModule} from "@angular/core";
 import {FormsModule} from "@angular/forms";
 import {BrowserModule} from "@angular/platform-browser";
 import {UpgradeModule} from "@angular/upgrade/static";
+import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
 import {AppComponent} from "./app.component";
-import {Labels} from "./label.constants";
 import {SyncupdatesComponent} from "./syncupdates/syncupdates.component";
 import {SyncupdatesService} from "./syncupdates/syncupdates.service";
 
@@ -30,6 +30,7 @@ export function getLog(i: any) {
         FormsModule,
         UpgradeModule,
         HttpClientModule,
+        LoadingBarHttpClientModule
     ],
     declarations: [
         AppComponent,

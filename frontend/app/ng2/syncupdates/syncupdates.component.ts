@@ -12,6 +12,7 @@ export class SyncupdatesComponent {
     public updateResponse: string;
     public errorMessages: string;
 
+    public isUpdating: boolean = false;
     public msgRipeTAndCSubmitlinkText: string;
 
     constructor(
@@ -32,18 +33,19 @@ export class SyncupdatesComponent {
         if (!this.rpslObject) {
             return;
         }
-
+        this.isUpdating = true;
         this.syncupdatesService.update(this.rpslObject)
-            .subscribe(
-                (response: any) => {
-                    this.updateResponse = response;
-                    this.$location.hash("anchorScroll");
-                    this.$anchorScroll();
+            .subscribe((response: any) => {
+                        this.updateResponse = response;
+                        this.$location.hash("anchorScroll");
+                        this.$anchorScroll();
+                    console.log("reject", response);
                     },
-                (error: any) => this.errorMessages = error
-                .catch((reject: any) => {
-                    this.$log.info("reject", reject);
-                }),
+                    (error: any) => {
+                        this.errorMessages = error;
+                        console.log("reject", error);
+                    },
+                    () => this.isUpdating = false
             );
     }
 

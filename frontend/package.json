@@ -84,6 +84,8 @@
     "@angular/platform-browser-dynamic": "6.1.10",
     "@angular/router": "6.1.10",
     "@angular/upgrade": "6.1.10",
+    "@ngx-loading-bar/core": "4.2.0",
+    "@ngx-loading-bar/http-client": "4.2.0",
     "@types/crypto-js": "3.1.43",
     "@types/node": "6.0.45",
     "angular": "1.5.11",
