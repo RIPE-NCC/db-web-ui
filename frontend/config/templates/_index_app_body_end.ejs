@@ -27,16 +27,6 @@
             event.api.setValue('email', RIPE.usermail);
             event.api.setValue('customData', "db-web-ui-" + angular.element(document).injector().get('Properties').BUILD_TAG);
         });
-
-        api.on("submit", function(event) {
-            console.log("submit", event);
-            var url = "https://usersnap.com/a/#/company/pollscreen/" + event.sessionId;
-        });
-
-
-        api.on("error", function(event) {
-            console.log("error", event);
-        });
     }
 </script>
 <script src="//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad" async />
