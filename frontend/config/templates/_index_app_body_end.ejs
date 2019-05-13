@@ -8,28 +8,27 @@
                     defaultValue: '',
                     label: 'Your message',
                     required: true,
-                    multiline: true,
+                    multiline: true
                 },
                 email: {
-                    defaultValue: '',
+                    defaultValue: RIPE.usermail,
                     label: 'Your E-mail',
-                    required: true,
-                },
+                    required: true
+                }
             },
             button: {
               icon: null,
               label: 'Report a Bug',
-              position: 'bottomRight',
-            },
+              position: 'bottomRight'
+            }
         });
 
         api.on("open", function(event) {
-            event.api.setValue('email', RIPE.usermail);
             event.api.setValue('customData', "db-web-ui-" + angular.element(document).injector().get('Properties').BUILD_TAG);
         });
     }
 </script>
-<script src="//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad" async />
+<script src="//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad" async ></script>
 <!--  Webupdates specific body-end start -->
 <script type="text/javascript">
 angular.element(document).ready(function() {
