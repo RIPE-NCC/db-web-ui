@@ -10,7 +10,7 @@ angular.module("dbWebApp", [
         "ngResource",
         "ngSanitize",
         "angulartics",
-        "angulartics.google.tagmanager",
+        "angulartics.piwik",
         "diff-match-patch",
         "ui.bootstrap",
         "ui.select",

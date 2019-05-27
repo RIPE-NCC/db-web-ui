@@ -38,6 +38,8 @@ public class AngularConstantsController {
     private String environment;
     @Value("${rest.api.ripeSource}")
     private String ripeSource;
+    @Value("${frontend.matomo.id}")
+    private String frontendMatomoId;
     @Value("${crowd.login.url}")
     private String crowdLoginUrl;
     @Value("${crowd.logout.url}")
@@ -119,6 +121,7 @@ public class AngularConstantsController {
             "        ENV: '" + environment + "',\n" +
             "        SOURCE: '" + ripeSource + "',\n" +
             "        BUILD_TAG: '" + getImplementationVersion() + "',\n" +
+            "        MATOMO_ID: '" + frontendMatomoId + "',\n" +
             "        LOGIN_URL: '" + crowdLoginUrl + "',\n" +
             "        ACCESS_URL: '" + crowdAccessUrl + "',\n" +
             "        LOGOUT_URL: '" + crowdLogoutUrl + "',\n" +

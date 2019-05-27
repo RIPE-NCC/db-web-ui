@@ -13,7 +13,7 @@ import "angular-sanitize";
 import "angular-ui-bootstrap";
 import "angular-ui-router";
 import "angulartics";
-import "angulartics-google-tag-manager";
+import "angulartics-piwik";
 import "crypto-js";
 import "ip-address";
 import "lodash";

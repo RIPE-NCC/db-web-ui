@@ -9,4 +9,5 @@ angular.module("dbWebApp")
         LOGOUT_URL: "https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/#query",
         PORTAL_URL: "https://my.prepdev.ripe.net/",
         BANNER: "Welcome to the DEV Environment of the RIPE Database.",
+        MATOMO_ID: "BuGxbMDR_dev_0ae7dee0ac65f70a4e8cf1b8"
     });

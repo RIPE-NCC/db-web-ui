@@ -29,5 +29,15 @@
     }
 </script>
 <script src="//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad" async ></script>
-<!--  Webupdates specific body-end start -->
-<!--  Webupdates specific body-end end -->
+<!-- Matomo Tag Manager -->
+<script type="text/javascript">
+    var matomoContainerId = angular.element(document).injector().get('Properties').MATOMO_ID;
+    var _mtm = _mtm || [];
+    _mtm.push({'mtm.startTime': (new Date().getTime()), 'event': 'mtm.Start'});
+    var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    g.type='text/javascript';
+    g.async=true; g.defer=true;
+    g.src="https://www-analytics.ripe.net/js/container_" + matomoContainerId + ".js";
+    s.parentNode.insertBefore(g,s);
+</script>
+<!-- End Matomo Tag Manager -->
