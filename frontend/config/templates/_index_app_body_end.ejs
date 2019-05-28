@@ -1,4 +1,5 @@
 <!-- Usersnap widget: always on -->
+<button id="usersnapButton" style="position: fixed; bottom: 0; right: 26px; height: 35px; width: 117px; background: rgb(8, 0, 55); border-color: rgba(255, 255, 255, 0.5); border-style: solid solid none; border-width: 1px; color: rgb(255, 255, 255); border-radius: 5px 5px 0px 0px;" onclick="useUsersnap();">Report a Bug</button>
 <script>
     window.onUsersnapLoad = function(api) {
         window.Usersnap = api;
@@ -16,19 +17,24 @@
                     required: true
                 }
             },
-            button: {
-              icon: null,
-              label: 'Report a Bug',
-              position: 'bottomRight'
-            }
+            button: null
         });
-
+        api.open();
         api.on("open", function(event) {
             event.api.setValue('customData', "db-web-ui-" + angular.element(document).injector().get('Properties').BUILD_TAG);
         });
+    };
+    function useUsersnap() {
+        if (window.Usersnap) {
+            window.Usersnap.open()
+        } else {
+            var script = document.createElement("script");
+            script.async = 1;
+            script.src = "//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad";
+            document.getElementsByTagName("head")[0].appendChild(script);
+        }
     }
 </script>
-<script src="//api.usersnap.com/load/b175ab64-1ecd-40a6-b5e3-ff8a1516fe6f.js?onload=onUsersnapLoad" async ></script>
 <!-- Matomo Tag Manager -->
 <script type="text/javascript">
     var matomoContainerId = angular.element(document).injector().get('Properties').MATOMO_ID;
