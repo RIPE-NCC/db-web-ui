@@ -33,6 +33,7 @@
     "connect-prism": "1.0.17",
     "copy-webpack-plugin": "4.6.0",
     "css-loader": "1.0.0",
+    "ejs": "2.7.1",
     "ejs-compiled-loader": "1.1.0",
     "ejs-loader": "0.3.1",
     "extract-loader": "3.1.0",
