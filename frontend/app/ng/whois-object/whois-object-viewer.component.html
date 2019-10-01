@@ -1,0 +1,27 @@
+<div class="checkbox" *ngIf="show.ripeManagedToggleControl">
+    <label>
+        <input name="showRipeManagedAttrs" type="checkbox" [checked]="showRipeManagedAttrs"
+               (change)="showRipeManagedAttrs = !showRipeManagedAttrs"> {{ "lookup.ripeManagedValuesCheckbox.text" | label }}
+    </label>
+</div>
+<div class="viewerbuttons">
+    <a [routerLink]="['/webupdates/modify', ngModel.source.id, ngModel.type, objectPrimaryKey]" class="tag-link" *ngIf="show.loginLink">
+        <span>Login to update </span>
+        <i class="fa fa-database"></i>
+    </a>
+    <a class="blue-button" (click)="emitUpdateClicked()" *ngIf="show.updateButton">{{ "lookup.updateObjectButton.text" | label }}</a>
+    <a class="grey-button ripe-stat-button" href="https://stat.ripe.net/{{ripeStatLink}}?sourceapp=ripedb" *ngIf="show.ripeStatButton" target="_newtab">
+        {{ "lookup.ripestatLink.text" | label }}
+        <i class="fa fa-external-link"></i>
+    </a>
+</div>
+<pre><ul [ngClass]="{showripemanaged: showRipeManagedAttrs}"><li
+        *ngFor="let attr of ngModel.attributes.attribute | slice:0:nrLinesToShow; index as i;"
+        [ngClass]="{ ripemanaged: attr.managed }">{{ attr.name }}:{{ padding(attr) }}<a
+        *ngIf="attr.link?.type === 'locator'" [routerLink]="['/lookup']" [queryParams]="getLocalLinksQueryParams(attr)">{{ attr.value }}</a><a
+        *ngIf="attr.name === pkLink" [routerLink]="['/lookup']" [queryParams]="getPkLinksQueryParams()">{{ attr.value }}</a><span
+        *ngIf="attr.link?.type !== 'locator' && attr.name !== pkLink">{{ attr.value }}{{ attr.comment === 'Filtered' ? '# Filtered' : ''}}</span><span
+        *ngIf="attr.comment && attr.comment !== 'Filtered'">{{(!attr.value || attr.value === '')? '' :' '}}# {{attr.comment}}</span></li></ul></pre>
+<div class="pull-right">
+    <div *ngIf="showMoreButton" id="showEntireObjectInViewer" class="grey-button show-more" (click)="clickShowMoreLines()">{{ 'lookup.showAllObjectButton.text' | label }}</div>
+</div>

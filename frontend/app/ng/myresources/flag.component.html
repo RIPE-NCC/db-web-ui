@@ -1,0 +1,10 @@
+<span (mouseover)="in()" (mouseleave)="out()">
+    <span class="flag"
+          #popover="ngbPopover"
+          *ngIf="text"
+          [ngbPopover]="tooltip"
+          placement="bottom"
+          triggers="mouseenter:mouseleave"
+          [class.open]="popover.isOpen()">
+    {{ text }}</span>
+</span>

@@ -1,0 +1,661 @@
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {CreateModifyComponent} from "../../../../app/ng/updates/web/create-modify.component";
+import {SharedModule} from "../../../../app/ng/shared/shared.module";
+import {CoreModule} from "../../../../app/ng/core/core.module";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {PrefixService} from "../../../../app/ng/domainobject/prefix.service";
+import {ResourceStatusService} from "../../../../app/ng/myresources/resource-status.service";
+import {WebUpdatesCommonsService} from "../../../../app/ng/updates/web/web-updates-commons.service";
+import {PropertiesService} from "../../../../app/ng/properties.service";
+import {OrganisationHelperService} from "../../../../app/ng/updates/web/organisation-helper.service";
+import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
+import {RestService} from "../../../../app/ng/updates/rest.service";
+import {MessageStoreService} from "../../../../app/ng/updates/message-store.service";
+import {MntnerService} from "../../../../app/ng/updates/mntner.service";
+import {ErrorReporterService} from "../../../../app/ng/updates/error-reporter.service";
+import {LinkService} from "../../../../app/ng/updates/link.service";
+import {PreferenceService} from "../../../../app/ng/updates/preference.service";
+import {CookieService} from "ngx-cookie-service";
+import {EnumService} from "../../../../app/ng/updates/web/enum.service";
+import {CharsetToolsService} from "../../../../app/ng/updates/charset-tools.service";
+import {ScreenLogicInterceptorService} from "../../../../app/ng/updates/screen-logic-interceptor.service";
+import {Location} from "@angular/common";
+import {ActivatedRoute, Router} from "@angular/router";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {of} from "rxjs";
+import {AttributeSharedService} from "../../../../app/ng/attribute/attribute-shared.service";
+import {AttributeMetadataService} from "../../../../app/ng/attribute/attribute-metadata.service";
+
+const ORG_MOCK = {
+    "type": "organisation",
+    "link": {
+        "type": "locator",
+        "href": "http://rest-prepdev.db.ripe.net/ripe/organisation/ORG-UA300-RIPE"
+    },
+    "source": {
+        "id": "ripe"
+    },
+    "primary-key": {
+        "attribute": [{
+            "name": "organisation",
+            "value": "ORG-UA300-RIPE"
+        }]
+    },
+    "attributes": {
+        "attribute": [{
+            "name": "organisation",
+            "value": "ORG-UA300-RIPE"
+        }, {
+            "name": "org-name",
+            "value": "uhuuu"
+        }, {
+            "name": "org-type",
+            "value": "OTHER"
+        }, {
+            "name": "address",
+            "value": "Singel 258"
+        }, {
+            "name": "e-mail",
+            "value": "tdacruzper@ripe.net"
+        }, {
+            "link": {
+                "type": "locator",
+                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT"
+            },
+            "name": "mnt-ref",
+            "value": "IS-NET-MNT",
+            "referenced-type": "mntner"
+        }, {
+            "link": {
+                "type": "locator",
+                "href": "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST-MNT"
+            },
+            "name": "mnt-by",
+            "value": "TEST-MNT",
+            "referenced-type": "mntner"
+        }, {
+            "name": "created",
+            "value": "2015-12-02T14:01:06Z"
+        }, {
+            "name": "last-modified",
+            "value": "2015-12-02T14:01:06Z"
+        }, {
+            "name": "source",
+            "value": "RIPE"
+        }]
+    }
+};
+
+const ROLE_OBJ = [{
+    "name": "role",
+    "value": "some role"
+}, {
+    "name": "address",
+    "value": "Singel 258"
+}, {
+    "name": "e-mail",
+    "value": "fdsd@sdfsd.com"
+}, {
+    "name": "abuse-mailbox",
+    "value": "fdsd@sdfsd.com"
+}, {
+    "name": "nic-hdl",
+    "value": "SR11027-RIPE"
+}, {
+    "link": {
+        "type": "locator",
+        "href": "http://rest-dev.db.ripe.net/ripe/mntner/MNT-THINK"
+    },
+    "name": "mnt-by",
+    "value": "MNT-THINK",
+    "referenced-type": "mntner"
+}, {
+    "name": "created",
+    "value": "2015-12-04T15:12:10Z"
+}, {
+    "name": "last-modified",
+    "value": "2015-12-04T15:12:10Z"
+}, {
+    "name": "source",
+    "value": "RIPE"
+}];
+
+describe("CreateModifyComponent with modifying test cases", () => {
+    let httpMock: HttpTestingController;
+    let fixture: ComponentFixture<CreateModifyComponent>;
+    let component: CreateModifyComponent;
+    let routerMock: any;
+    let modalMock: any;
+
+    beforeEach(() => {
+        modalMock = jasmine.createSpyObj("NgbModal", ["open"]);
+        routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
+        TestBed.configureTestingModule({
+            imports: [
+                SharedModule,
+                CoreModule,
+                NgSelectModule,
+                HttpClientTestingModule],
+            declarations: [CreateModifyComponent],
+            providers: [
+                PrefixService,
+                ResourceStatusService,
+                WebUpdatesCommonsService,
+                PropertiesService,
+                OrganisationHelperService,
+                WhoisResourcesService,
+                WhoisMetaService,
+                AttributeSharedService,
+                AttributeMetadataService,
+                RestService,
+                MessageStoreService,
+                MntnerService,
+                ErrorReporterService,
+                LinkService,
+                PreferenceService,
+                CookieService,
+                EnumService,
+                CharsetToolsService,
+                ScreenLogicInterceptorService,
+                { provide: Location, useValue: {path: () => ("")}},
+                { provide: Router, useValue: routerMock},
+                { provide: ActivatedRoute, useValue: {snapshot: {paramMap: {},
+                            queryParamMap: {has: (param: string) => (!!component.activatedRoute.snapshot.queryParamMap[param])}}}},
+                { provide: NgbModal, useValue: modalMock}
+            ],
+        });
+        httpMock = TestBed.get(HttpTestingController);
+        fixture = TestBed.createComponent(CreateModifyComponent);
+    });
+
+    afterEach(function () {
+        httpMock.verify();
+    });
+
+    describe("init with success", () => {
+        const OBJECT_TYPE = "as-block";
+        const SOURCE = "RIPE";
+        const NAME = "MY-AS-BLOCK";
+
+        beforeEach(async () => {
+            TestBed.get(ActivatedRoute).snapshot.paramMap = {
+                source: SOURCE,
+                objectType: OBJECT_TYPE,
+                objectName: NAME,
+                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
+                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
+            };
+            component = fixture.componentInstance;
+            component.credentialsService.setCredentials("TEST-MNT", "@123");
+            fixture.detectChanges();
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
+                            {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
+                            {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW", "SSO"], mine: true}
+                        ]);
+            httpMock.expectOne({method: "GET", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123&unfiltered=true"})
+                .flush({objects: {
+                                    object: [{
+                                        "primary-key": {attribute: [{name: "as-block", value: "MY-AS-BLOCK"}]},
+                                        attributes: {
+                                            attribute: [
+                                                {name: "as-block", value: "MY-AS-BLOCK"},
+                                                {name: "mnt-by", value: "TEST-MNT"},
+                                                {name: "source", value: "RIPE"}
+                                            ]
+                                        }
+                                    }]
+                                }
+                            });
+             httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
+                .flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW", "SSO"]}]);
+             await fixture.whenStable();
+        });
+
+        it("should get objectType from url", () => {
+            expect(component.objectType).toBe(OBJECT_TYPE);
+        });
+
+        it("should get source from url", () => {
+            expect(component.source).toBe(SOURCE);
+        });
+
+        it("should get name from url", () => {
+            expect(component.name).toBe(NAME);
+        });
+
+        it("should populate mntner data", () => {
+            expect(component.maintainers.sso.length).toBe(2);
+            expect(component.maintainers.objectOriginal.length).toBe(1);
+            expect(component.maintainers.object.length).toBe(1);
+
+            expect(component.maintainers.sso[0].key).toEqual("TEST-MNT");
+            expect(component.maintainers.sso[0].type).toEqual("mntner");
+            expect(component.maintainers.object[0].auth).toEqual(["MD5-PW", "SSO"]);
+            expect(component.maintainers.object[0].mine).toEqual(true);
+
+            expect(component.maintainers.objectOriginal[0].key).toEqual("TEST-MNT");
+
+            expect(component.maintainers.object[0].key).toEqual("TEST-MNT");
+            expect(component.maintainers.object[0].type).toEqual("mntner");
+            expect(component.maintainers.object[0].mine).toEqual(true);
+            expect(component.maintainers.object[0].isNew).toEqual(false);
+            expect(component.maintainers.object[0].auth).toEqual(["MD5-PW", "SSO"]);
+
+        });
+
+        it("should populate the ui based on object-type meta model and source", () => {
+            const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName");
+
+            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toBeUndefined();
+            expect(component.attributes.getSingleAttributeOnName("as-block").value).toEqual(NAME);
+
+            expect(component.attributes.getAllAttributesOnName("mnt-by")[0].$$error).toBeUndefined();
+            expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual("TEST-MNT");
+
+            expect(component.attributes.getAllAttributesOnName("source")[0].$$error).toBeUndefined();
+            expect(component.attributes.getSingleAttributeOnName("source").value).toEqual("RIPE");
+
+            expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
+        });
+
+
+        it("should display field specific errors upon submit click on form with missing values", () => {
+            const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName");
+
+            component.attributes.setSingleAttributeOnName("as-block", null);
+
+            component.submit();
+            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toEqual("Mandatory attribute not set");
+            expect(component.attributes.getSingleAttributeOnName("as-block").value).toBeNull();
+
+            expect(component.attributes.getAllAttributesOnName("mnt-by")[0].$$error).toBeUndefined();
+            expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual("TEST-MNT");
+
+            expect(component.attributes.getSingleAttributeOnName("source").$$error).toBeUndefined();
+            expect(component.attributes.getSingleAttributeOnName("source").value).toEqual("RIPE");
+
+            expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
+        });
+
+        it("should handle success put upon submit click when form is complete", () => {
+            component.attributes.setSingleAttributeOnName("changed", "dummy@ripe.net");
+            component.submit();
+            fixture.detectChanges();
+            httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123"})
+                .flush({objects: {
+                        object: [
+                            {
+                                "primary-key": {attribute: [{name: "as-block", value: "MY-AS-BLOCK"}]},
+                                attributes: {
+                                    attribute: [
+                                        {name: "as-block", value: "MY-AS-BLOCK"},
+                                        {name: "mnt-by", value: "TEST-MNT"},
+                                        {name: "source", value: "RIPE"}
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                });
+
+            const resp = component.messageStoreService.get("MY-AS-BLOCK");
+            expect(resp.getPrimaryKey()).toEqual("MY-AS-BLOCK");
+            const attrs = component.whoisResourcesService.wrapAttributes(resp.getAttributes());
+            expect(attrs.getSingleAttributeOnName("as-block").value).toEqual("MY-AS-BLOCK");
+            expect(attrs.getAllAttributesOnName("mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(attrs.getSingleAttributeOnName("source").value).toEqual("RIPE");
+
+            expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/as-block/MY-AS-BLOCK?method=Modify");
+        });
+
+
+        it("should handle error post upon submit click when form is complete", async () => {
+            const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName");
+            component.attributes.setSingleAttributeOnName("as-block", "A");
+            component.submit();
+            await fixture.whenStable();
+
+            httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123"})
+                .flush({objects: {
+                        object: [
+                            {
+                                "primary-key": {attribute: [{name: "as-block", value: "MY-AS-BLOCK"}]},
+                                attributes: {
+                                    attribute: [
+                                        {name: "as-block", value: "MY-AS-BLOCK"},
+                                        {name: "mnt-by", value: "TEST-MNT"},
+                                        {name: "source", value: "RIPE"}
+                                    ]
+                                }
+                            }
+                        ]
+                    },
+                    errormessages: {
+                        errormessage: [
+                            {
+                                severity: "Error",
+                                text: "Unrecognized source: %s",
+                                "args": [{value: "INVALID_SOURCE"}]
+                            },
+                            {
+                                severity: "Warning",
+                                text: "Not authenticated"
+                            }, {
+                                severity: "Error",
+                                attribute: {
+                                    name: "as-block",
+                                    value: "MY-AS-BLOCK"
+                                },
+                                text: "\"%s\" is not valid for this object type",
+                                args: [{value: "MY-AS-BLOCK"}]
+                            }
+                        ]
+                    }
+                }, {status: 400, statusText: "error"});
+
+            await fixture.whenStable();
+            expect(component.alertService.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+            expect(component.alertService.warnings[0].plainText).toEqual("Not authenticated");
+            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toEqual("\"MY-AS-BLOCK\" is not valid for this object type");
+
+            expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
+
+        });
+
+        it("should duplicate attribute", () => {
+            expect(component.attributes.length).toEqual(3);
+
+            component.duplicateAttribute(component.attributes[1]);
+
+            expect(component.attributes.length).toEqual(4);
+            expect(component.attributes[2].name).toEqual(component.attributes[1].name);
+            expect(component.attributes[2].value).toEqual(undefined);
+        });
+
+        it("should remove attribute", () => {
+            expect(component.attributes.length).toEqual(3);
+
+            component.removeAttribute(component.attributes[1]);
+
+            expect(component.attributes.length).toEqual(2);
+            expect(component.attributes[1].name).toEqual("source");
+            expect(component.attributes[1].value).toEqual("RIPE");
+
+        });
+
+        it("should transition to display state if cancel is pressed", () => {
+            spyOn(window, "confirm").and.returnValue(true);
+            component.cancel();
+            expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/as-block/MY-AS-BLOCK");
+        });
+    });
+
+    describe("init with failures", () => {
+        const OBJECT_TYPE = "as-block";
+        const SOURCE = "RIPE";
+        const NAME = "MY-AS-BLOCK";
+
+        beforeEach(async () => {
+            TestBed.get(ActivatedRoute).snapshot.paramMap = {
+                source: SOURCE,
+                objectType: OBJECT_TYPE,
+                objectName: NAME,
+                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
+                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
+            };
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+        });
+
+        it("should report error when fetching sso maintainers fails", () => {
+            getObject();
+            failToGetSsoMaintainers();
+
+            expect(component.alertService.hasErrors()).toBe(true);
+            expect(component.alertService.errors[0].plainText).toEqual("Error fetching maintainers associated with this SSO account");
+        });
+
+        it("should report error when fetching object fails", () => {
+
+            getSsoMaintainers();
+            getObjectWithError();
+
+            expect(component.alertService.hasWarnings()).toBe(true);
+            expect(component.alertService.warnings[0].plainText).toEqual("Not authenticated");
+        });
+
+        it("should report error when fetching maintainer details fails", async () => {
+
+            getSsoMaintainers();
+            getObject();
+            failToGetMaintainerDetails();
+            await fixture.whenStable();
+            expect(component.alertService.hasErrors()).toBe(true);
+            expect(component.alertService.errors[0].plainText).toEqual("Error fetching maintainer details");
+        });
+
+        function getSsoMaintainers() {
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
+                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
+                {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW"], mine: true}
+            ]);
+        }
+
+        function failToGetSsoMaintainers() {
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush({ },{status: 404, statusText: "error"});
+        }
+
+        function getObject() {
+            httpMock.expectOne({method: "GET", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true"})
+                .flush({
+                    objects: {
+                        object: [{
+                            "primary-key": {attribute: [{name: "as-block", value: "MY-AS-BLOCK"}]},
+                            attributes: {
+                                attribute: [
+                                    {name: "as-block", value: "MY-AS-BLOCK"},
+                                    {name: "mnt-by", value: "TEST3-MNT"},
+                                    {name: "source", value: "RIPE"}
+                                ]
+                            }
+                        }]
+                    }
+                });
+        }
+
+        function getObjectWithError() {
+            httpMock.expectOne({method: "GET", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true"})
+                .flush({ errormessages: {
+                                errormessage: [
+                                    {
+                                        severity: "Warning",
+                                        text: "Not authenticated"
+                                    }
+                                ]
+                            }
+                        }, {status: 404, statusText: "error"});
+
+        }
+
+        function failToGetMaintainerDetails() {
+            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT"})
+                .flush({}, {status: 404, statusText: "error"});
+        }
+    });
+
+    describe("ask for password before modify object with non-sso maintainer with password", () => {
+
+        const OBJECT_TYPE = "as-block";
+        const SOURCE = "RIPE";
+        const NAME = "MY-AS-BLOCK";
+
+        beforeEach(async () => {
+            TestBed.get(ActivatedRoute).snapshot.paramMap = {
+                source: SOURCE,
+                objectType: OBJECT_TYPE,
+                objectName: NAME,
+                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
+                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
+            };
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
+                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true}
+            ]);
+            httpMock.expectOne({method: "GET", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true"})
+                .flush({objects: {
+                        object: [{
+                            "primary-key": {attribute: [{name: "as-block", value: "MY-AS-BLOCK"}]},
+                            attributes: {
+                                attribute: [
+                                    {name: "as-block", value: "MY-AS-BLOCK"},
+                                    {name: "mnt-by", value: "TEST3-MNT"},
+                                    {name: "source", value: "RIPE"}
+                                ]
+                            }
+                        }]}
+                });
+            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST3-MNT"})
+                .flush([{key: "TEST3-MNT", type: "mntner", auth: ["MD5-PW"]}]);
+            await fixture.whenStable();
+        });
+
+        it("should ask for password before modify object with non-sso maintainer with password.", () => {
+            modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
+            expect(modalMock.open).toHaveBeenCalled();
+        });
+
+    });
+
+    describe("should be able to handle escape objected with slash", () => {
+        const SOURCE = "RIPE";
+        const OBJECT_TYPE = "route";
+        const NAME = "12.235.32.0%2f19AS1680";
+
+        beforeEach(async () => {
+            TestBed.get(ActivatedRoute).snapshot.paramMap = {
+                source: SOURCE,
+                objectType: OBJECT_TYPE,
+                objectName: NAME,
+                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
+                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
+            };
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
+                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true}
+            ]);
+            httpMock.expectOne({method: "GET", url: "api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true"})
+                .flush({objects: {
+                        object: [{
+                            "primary-key": {attribute: [{name: "route", value: "12.235.32.0/19AS1680"}]},
+                            attributes: {
+                                attribute: [
+                                    {name: "route", value: "12.235.32.0/19AS1680"},
+                                    {name: "mnt-by", value: "TEST-MNT"},
+                                    {name: "source", value: "RIPE"}
+                                ]
+                            }
+                        }]
+                    }});
+            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
+                .flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW"]}]);
+            await fixture.whenStable();
+        });
+    });
+
+    describe("for organisation", () => {
+        const OBJECT_TYPE = "organisation";
+        const SOURCE = "RIPE";
+        const NAME = "ORG-UA300-RIPE";
+
+        beforeEach(async () => {
+            TestBed.get(ActivatedRoute).snapshot.paramMap = {
+                source: SOURCE,
+                objectType: OBJECT_TYPE,
+                objectName: NAME,
+                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
+                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
+            };
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
+                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
+                {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW", "SSO"], mine: true}
+            ]);
+            httpMock.expectOne({method: "GET", url: `api/whois/RIPE/${OBJECT_TYPE}/${NAME}?unfiltered=true`})
+                .flush({
+                    objects: {
+                        object: [ORG_MOCK]
+                    },
+                    "terms-and-conditions": {
+                        type: "locator",
+                        href: "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+                    }
+                });
+            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
+                .flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW", "SSO"]}]);
+            await fixture.whenStable();
+        });
+
+        it("should populate abuse-c with new role\'s nic-hdl", async () => {
+            component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
+            modalMock.open.and.returnValue({componentInstance: {}, result: of(ROLE_OBJ).toPromise()});
+            const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c")
+            component.createRoleForAbuseCAttribute(attrAbuseC);
+            await fixture.whenStable();
+            expect(component.attributes.getSingleAttributeOnName("abuse-c").value).toBe("SR11027-RIPE");
+        });
+
+        it("should populate component.roleForAbuseC", async () => {
+            component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
+            modalMock.open.and.returnValue({componentInstance: {}, result: of(ROLE_OBJ).toPromise()});
+            const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c")
+            component.createRoleForAbuseCAttribute(attrAbuseC);
+            await fixture.whenStable();
+            expect(component.roleForAbuseC).toBeDefined();
+        });
+
+        it("should show LIR orgs with certain attributes disabled", () => {
+            expect();
+        });
+
+    });
+
+    describe("for LIR organisation", () => {
+        const OBJECT_TYPE = "organisation";
+        const SOURCE = "RIPE";
+        const NAME = "ORG-UA300-RIPE";
+
+        beforeEach(async () => {
+            TestBed.get(ActivatedRoute).snapshot.paramMap = {
+                source: SOURCE,
+                objectType: OBJECT_TYPE,
+                objectName: NAME,
+                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
+                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
+            };
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
+                {key: "TEST-MNT", type: "mntner", auth: ["SSO"], mine: true},
+                {key: "TESTSSO-MNT", type: "mntner", auth: ["MD5-PW", "SSO"], mine: true}
+            ]);
+            httpMock.expectOne({method: "GET", url: `api/whois/RIPE/${OBJECT_TYPE}/${NAME}?unfiltered=true`})
+                .flush({
+                    objects: {
+                        object: [ORG_MOCK]
+                    },
+                    "terms-and-conditions": {
+                        type: "locator",
+                        href: "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+                    }
+                });
+            httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"})
+                .flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW", "SSO"]}]);
+            await fixture.whenStable();
+        });
+    });
+});

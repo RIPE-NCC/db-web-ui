@@ -1,0 +1,34 @@
+<button id="btnSwitchToWebCreate"
+        class="blue-button pull-right ga-text-createobj-switch-mode"
+        style="border:0;"
+        (click)="switchToWebMode()">
+    <span class="fa fa-bars"></span> Create in single lines
+</button>
+<div>
+    <h1>Create &quot;{{object.type}}&quot; object</h1>
+
+    <alerts></alerts>
+
+    <form id="textCreateForm">
+
+        <div class="form-group">
+            <label for="createRpsl">RPSL to create single object</label>
+            <textarea id="createRpsl"
+                      name="createRpsl"
+                      class="form-control"
+                      rows="20"
+                      [(ngModel)]="object.rpsl"
+                      style="font-family:monospace;"></textarea>
+            <section class="supporting-text">
+                <p>You can optionally use the <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</p>
+                <p>By submitting this form you explicitly express your agreement with the <a href="https://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+            </section>
+
+            <input type="submit" (click)="submit()" [disabled]="restCallInProgress"
+                   class="blue-button pull-right ga-text-createobj-create" value="Submit"/>
+
+            <button (click)="cancel()" class="blue-button pull-right ga-text-createobj-cancel" style="border:0;">Cancel</button>
+
+        </div>
+    </form>
+</div>

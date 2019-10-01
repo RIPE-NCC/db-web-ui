@@ -1,0 +1,259 @@
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
+import {of} from "rxjs";
+import {FormsModule} from "@angular/forms";
+import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
+import {SelectComponent} from "../../../../app/ng/updates/web/select.component";
+import {UserInfoService} from "../../../../app/ng/userinfo/user-info.service";
+import {CookieService} from "ngx-cookie-service";
+import {PropertiesService} from "../../../../app/ng/properties.service";
+
+describe('SelectController', function () {
+    const OBJECT_TYPE = 'as-set';
+    const SOURCE = 'RIPE';
+
+    let httpMock: HttpTestingController;
+    let componentFixture: ComponentFixture<SelectComponent>;
+    let component: SelectComponent;
+    let paramMapMock: ParamMap;
+    let queryParamMock: ParamMap;
+    let preferencesServiceMock: any;
+    let routerMock: any;
+    let modalMock: any;
+
+    const whoisMetaServiceMock = {
+                objectTypesMap: {
+                    "inetnum": {
+                        attributes: [
+                            {name: "inetnum", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
+                            {name: "netname", mandatory: true, multiple: false, refs: this.refs},
+                            {name: "descr", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "country", mandatory: true, multiple: true, refs: this.refs, isEnum: true},
+                            {name: "geoloc", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "language", mandatory: false, multiple: true, refs: this.refs, isEnum: true},
+                            {name: "org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
+                            {name: "sponsoring-org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
+                            {name: "admin-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "tech-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "abuse-c", mandatory: false, multiple: false, refs: ["ROLE"]},
+                            {name: "status", mandatory: true, multiple: false, refs: this.refs, isEnum: true},
+                            {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "notify", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-lower", mandatory: false, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-domains", mandatory: false, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-routes", mandatory: false, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-irt", mandatory: false, multiple: true, refs: ["IRT"]},
+                            {name: "created", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "source", mandatory: true, multiple: false, refs: this.refs},
+                        ],
+                        // description: undefined,
+                        name: "inetnum"
+                    },
+                    "inet6num": {
+                        attributes: [
+                            {name: "inet6num", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
+                            {name: "netname", mandatory: true, multiple: false, refs: this.refs},
+                            {name: "descr", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "country", mandatory: true, multiple: true, refs: this.refs, isEnum: true},
+                            {name: "geoloc", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "language", mandatory: false, multiple: true, refs: this.refs, isEnum: true},
+                            {name: "org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
+                            {name: "sponsoring-org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
+                            {name: "admin-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "tech-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "abuse-c", mandatory: false, multiple: false, refs: ["ROLE"]},
+                            {name: "status", mandatory: true, multiple: false, refs: this.refs, isEnum: true},
+                            {name: "assignment-size", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "notify", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-lower", mandatory: false, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-routes", mandatory: false, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-domains", mandatory: false, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-irt", mandatory: false, multiple: true, refs: ["IRT"]},
+                            {name: "created", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "source", mandatory: true, multiple: false, refs: this.refs},
+                        ],
+                        // description: undefined,
+                        name: "inet6num"
+                    },
+                    "domain": {
+                        attributes: [
+                            {name: "domain", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
+                            {name: "descr", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "org", mandatory: false, multiple: true, refs: ["ORGANISATION"]},
+                            {name: "admin-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "tech-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "zone-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "nserver", mandatory: true, multiple: true, refs: this.refs},
+                            {name: "ds-rdata", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "notify", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
+                            {name: "created", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "source", mandatory: true, multiple: false, refs: this.refs},
+                        ],
+                        // description: undefined,
+                        name: "domain"
+                    },
+                    "aut-num": {
+                        attributes: [
+                            {name: "aut-num", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
+                            {name: "as-name", mandatory: true, multiple: false, refs: this.refs, searchable: true},
+                            {name: "descr", mandatory: false, multiple: true, refs: this.refs, searchable: true},
+                            {name: "member-of", mandatory: false, multiple: true, refs: ["AS-SET", "ROUTE-SET", "RTR-SET"]},
+                            {name: "import-via", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "import", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "mp-import", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "export-via", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "export", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "mp-export", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "default", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "mp-default", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
+                            {name: "sponsoring-org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
+                            {name: "admin-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "tech-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
+                            {name: "abuse-c", mandatory: false, multiple: false, refs: ["ROLE"]},
+                            {name: "status", mandatory: false, multiple: false, refs: this.refs, isEnum: true},
+                            {name: "notify", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "mnt-lower", mandatory: false, multiple: true, refs: ["MNTNER"]},
+                            {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
+                            {name: "created", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
+                            {name: "source", mandatory: true, multiple: false, refs: this.refs},
+                        ],
+                        // description: undefined,
+                        name: "aut-num"
+                    }
+                },
+                getObjectTypes: function () {
+                    var keys = [];
+                    for (var key in this.objectTypesMap) {
+                        keys.push(key);
+                    }
+                    return keys;
+                }
+            };
+
+    beforeEach(() => {
+        paramMapMock = convertToParamMap({});
+        queryParamMock = convertToParamMap({});
+        preferencesServiceMock = jasmine.createSpyObj("PreferenceService", ["isTextMode", "setTextMode", "isWebMode", "setWebMode"]);
+        routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
+        modalMock = jasmine.createSpyObj("NgbModal", ["open"]);
+        modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
+
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule, FormsModule],
+            declarations: [SelectComponent],
+            providers: [
+                {provide: WhoisMetaService, useValue: whoisMetaServiceMock},
+                UserInfoService,
+                CookieService,
+                PropertiesService,
+                {provide: Router, useValue: routerMock},
+                {
+                    provide: ActivatedRoute, useValue: {
+                        snapshot: {
+                            paramMap: paramMapMock,
+                            queryParamMap: queryParamMock,
+                        }
+                    }
+                }
+
+            ],
+        });
+        httpMock = TestBed.get(HttpTestingController);
+        componentFixture = TestBed.createComponent(SelectComponent);
+        component = componentFixture.componentInstance;
+    });
+
+    afterEach(function() {
+       httpMock.verify();
+    });
+
+    it('should navigate to crowd if currently logged out', async () => {
+        componentFixture.detectChanges();
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush('', {statusText: "error", status: 401})
+        await componentFixture.whenStable();
+        expect(component.loggedIn).toBeUndefined();
+
+        component.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
+
+        component.navigateToCreate();
+
+        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, component.selected.objectType]);
+        // Note that the  error-interceptor is responsible for flagging redirect to crowd
+    });
+
+
+    it('should navigate to create screen when logged in', async () => {
+        componentFixture.detectChanges();
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({ user: {
+                username:'test@ripe.net',
+                displayName:'Test User',
+                uuid:'aaaa-bbbb-cccc-dddd',
+                active:true}
+            });
+        await componentFixture.whenStable();
+
+        expect(component.loggedIn).toBe(true);
+
+        component.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
+
+        component.navigateToCreate();
+
+        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, component.selected.objectType]);
+    });
+
+    it('should navigate to create person maintainer screen when logged in and selected', async () => {
+        componentFixture.detectChanges();
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({ user: {
+                username:'test@ripe.net',
+                displayName:'Test User',
+                uuid:'aaaa-bbbb-cccc-dddd',
+                active:true}
+        });
+        await componentFixture.whenStable();
+
+        expect(component.loggedIn).toBe(true);
+
+        // role-mntnr pair is default selection (top of the drop down list)
+        component.navigateToCreate();
+        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, 'role', 'self']);
+    });
+
+    it('should navigate to create self maintained mntner screen when logged in', async () => {
+        componentFixture.detectChanges();
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({
+                user: {
+                    username: 'test@ripe.net',
+                    displayName: 'Test User',
+                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    active: true
+                }
+            }
+        );
+
+        await componentFixture.whenStable();
+        expect(component.loggedIn).toBe(true);
+
+        component.selected = {
+            source: SOURCE,
+            objectType: 'mntner'
+        };
+
+        component.navigateToCreate();
+
+        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, 'mntner', 'self']);
+        expect(component.selected.source).toBe(SOURCE);
+    });
+
+});

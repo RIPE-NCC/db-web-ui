@@ -94,6 +94,31 @@ describe('The query pagina', function () {
         expect(page.inpTelnetQuery.getText()).toContain("-i abuse-c -T organisation -Br ACRO862-RIPE");
     });
 
+    it('should have selected No hierarchy flag by default on hierarchy tab', () => {
+        // click on Hierarchy flags tab
+        page.queryParamTabs.get(2).click();
+        expect(page.byId('ngb-tab-2-panel').isDisplayed()).toBeTruthy();
+        expect(page.byId("all").isSelected()).toBeTruthy();
+        expect(page.byName("hierarchyD").isEnabled()).toBeFalsy();
+    });
+
+    it('should display selected option in telnet query view only when query string exist', () => {
+        page.inpQueryString.sendKeys('193.0.0.0');
+        // click on Hierarchy flags tab
+        page.queryParamTabs.get(2).click();
+        expect(page.byId('ngb-tab-2-panel').isDisplayed()).toBeTruthy();
+        page.byId("one-more").click();
+        expect(page.byId("one-more").isSelected()).toBeTruthy();
+        expect(page.byName("hierarchyD").isEnabled()).toBeTruthy();
+        expect(page.inpTelnetQuery.getText()).toContain("-mr 193.0.0.0");
+        page.scrollIntoView(page.inpTelnetQuery);
+        page.byName("hierarchyD").click();
+        expect(page.inpTelnetQuery.getText()).toContain("-mdr 193.0.0.0");
+        page.byId("exact").click();
+        expect(page.byId("exact").isSelected()).toBeTruthy();
+        expect(page.inpTelnetQuery.getText()).toContain("-xdr 193.0.0.0");
+    });
+
     it('should be specified ripe stat link', function () {
         page.inpQueryString.sendKeys('193.0.0.0');
         page.inpShowFullDetails.click();
@@ -163,6 +188,7 @@ describe('The query pagina', function () {
         page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
+        page.scrollIntoView(page.ripeManagedAttributesLabel);
         expect(page.ripeManagedAttributesLabel.getText()).toContain('Highlight RIPE NCC managed values');
         // unselect
         page.ripeManagedAttributesCheckbox.click();
@@ -206,7 +232,7 @@ describe('The query pagina', function () {
         page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(2, 0).getAttribute('href')).toContain('?source=ripe-nonauth&key=211.43.192.0/19AS9777&type=route');
+        expect(page.getAttributeHrefFromWhoisObjectOnQueryPage(2, 0).getAttribute('href')).toContain('?source=ripe-nonauth&key=211.43.192.0%2F19AS9777&type=route');
     });
 
     it('should contain date in proper format', function () {
@@ -287,14 +313,33 @@ describe('The query pagina', function () {
         expect(page.templateSearchResults.getText()).toContain('registry name must be a letter or a digit.');
     });
 
-    //--resource in query
-    it('should be able to search --resource (source=GRS) using the text box', function () {
-        page.inpQueryString.sendKeys('1.1.1.1 --resource\n');
+    it('should hide template search result after new query is triggered', function () {
+        page.inpQueryString.sendKeys('-t aut-num\n');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        page.scrollIntoView(page.templateSearchResults);
+        expect(page.inpQueryString.getAttribute('value')).toEqual('-t aut-num');
+        expect(page.inpTelnetQuery.getText()).toEqual('-t aut-num');
+        expect(page.templateSearchResults.isDisplayed()).toEqual(true);
+        expect(page.resultsSection.isDisplayed()).toEqual(false);
+        page.inpQueryString.clear();
+        page.inpQueryString.sendKeys('211.43.192.0');
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
         page.btnSubmitQuery.click();
-        expect(page.inpQueryString.getAttribute('value')).toEqual('1.1.1.1 --resource');
+        expect(page.templateSearchResults.isPresent()).toEqual(false);
+        expect(page.resultsSection.isDisplayed()).toEqual(true);
+    });
+
+    //--resource in query
+    it('should be able to search --resource (source=GRS) using the text box', function () {
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
+        page.inpQueryString.sendKeys('1.1.1.1 --resource\n');
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        // expect(page.inpQueryString.getAttribute('value')).toEqual('1.1.1.1 --resource');
         expect(page.inpTelnetQuery.getText()).toEqual('-B --resource 1.1.1.1');
         expect(page.searchResults.count()).toEqual(3);
     });

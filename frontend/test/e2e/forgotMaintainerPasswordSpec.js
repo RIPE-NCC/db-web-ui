@@ -14,7 +14,7 @@ describe('Forgot Maintainer Password', function () {
         browser.get(browser.baseUrl + '#/fmp/change-auth?mntnerKey=TEST-MNT&voluntary=true');
     });
 
-    it('Should load the page with the form', function () {
+    it('should load the page with the form', function () {
         expect(page.fmpForm.isPresent()).toEqual(true);
         expect(page.fmpReason.isPresent()).toEqual(true);
         expect(page.fmpEmail.isPresent()).toEqual(true);
@@ -22,7 +22,7 @@ describe('Forgot Maintainer Password', function () {
         expect(page.fmpForm.getText()).toContain('Please give us some information about your request to recover access to the MNTNER object TEST-MNT');
     });
 
-    it('Validate the form', function () {
+    it('should validate the form', function () {
         page.scrollIntoView(page.fmpNext);
         page.fmpNext.click();
         expect(page.fmpForm.getText()).toContain('Reason is required.');
@@ -35,7 +35,7 @@ describe('Forgot Maintainer Password', function () {
         page.fmpNext.click();
     });
 
-    it('Go to next page, and generate PDF link', function () {
+    it('should go to next page, and generate PDF link', function () {
         page.scrollIntoView(page.fmpNext);
         page.fmpReason.clear().sendKeys('just because');
         page.fmpEmail.clear().sendKeys('person@ripe.net');

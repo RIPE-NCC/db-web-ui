@@ -1,0 +1,105 @@
+<section class="resource-intro">
+    <h1>
+        <name-formatter *ngIf="resource?.resource" [name]="resource.resource"
+                        [type]="resource.type"></name-formatter>
+    </h1>
+    <div class="flags-container">
+        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.type" [text]="f.value"></flag>
+    </div>
+</section>
+<section class="back-to-my-resources">
+    <hierarchy-selector
+        *ngIf="resource"
+        [resource]="resource">
+    </hierarchy-selector>
+</section>
+<ip-usage *ngIf="showUsage" [type]="objectType" [usage]="resource.usage"></ip-usage>
+
+<section class="db-object" id="editortop">
+    <h2>Object in RIPE Database</h2>
+    <div id="alert-danger" class="alert alert-danger" *ngIf="errors?.length">
+        <p *ngFor="let error of errors">
+            <span [innerHTML]="error"></span>
+        </p>
+    </div>
+    <div id="alert-success" class="alert alert-success" *ngIf="successes?.length">
+        <p *ngFor="let success of successes">
+            <span [innerHTML]="success"></span>
+        </p>
+    </div>
+    <div class="alert alert-warning" *ngIf="warnings?.length">
+        <p *ngFor="let warning of warnings">
+            <span [innerHTML]="warning"></span>
+        </p>
+    </div>
+    <div class="alert alert-info" *ngIf="infos?.length">
+        <p *ngFor="let info of infos">
+            <span [innerHTML]="info"></span>
+        </p>
+    </div>
+    <div *ngIf="whoisObject">
+        <whois-object-viewer *ngIf="!isEditing"
+                [ng-model]="whoisObject"
+                (update-clicked)="showObjectEditor()"></whois-object-viewer>
+        <maintainers-editor [ng-model]="whoisObject"
+                            *ngIf="isEditing"
+                            (authentication-failed-clbk)="hideObjectEditor()"></maintainers-editor>
+        <whois-object-editor [ng-model]="whoisObject"
+                             [on-resource-page]="isEditing"
+                             *ngIf="isEditing"
+                             (cancel-clicked)="hideObjectEditor()"
+                             (update-clicked)="updateButtonClicked($event)"></whois-object-editor>
+    </div>
+</section>
+
+<section class="more-specifics" *ngIf="canHaveMoreSpecifics">
+    <h2>More specifics</h2>
+    <div class="prefix-filter" *ngIf="moreSpecifics.resources.length > 0">
+        <div class="input-group">
+            <input type="text"
+                   id="ipFilter"
+                   name="ipFilter"
+                   class="form-control"
+                   placeholder="Search for prefix"
+                   [(ngModel)]="ipFilter"
+                   (input)="applyFilter()">
+            <span class="input-group-btn" [hidden]="!ipFilter">
+                <button type="button"
+                        class="btn"
+                        id="clearButton"
+                        (click)="ipFilter = ''; applyFilter();">
+                    <span class="fa fa-times"></span>
+                  </button>
+            </span>
+        </div>
+        <span *ngIf="ipFilter" class="pull-right">
+            Showing {{moreSpecifics.filteredSize }} out of {{moreSpecifics.totalNumberOfResources}}
+        </span>
+        <span *ngIf="ipFilter === null || ipFilter === ''" class="pull-right">
+            Total more specifics: {{moreSpecifics.totalNumberOfResources}}
+        </span>
+    </div>
+    <table class="table table-bordered table-body-borderless resources table-striped"
+           *ngIf="moreSpecifics.resources.length">
+        <thead>
+        <tr>
+            <th>Internet number resource</th>
+            <th>Status</th>
+            <th>Netname</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let resource of moreSpecifics.resources | slice:0:nrMoreSpecificsToShow; index as i;">
+            <td><a (click)="showDetail(resource)">
+                <name-formatter [name]="resource.resource" [type]="resource.type"></name-formatter>
+            </a></td>
+            <td>{{ resource.status }}</td>
+            <td>{{ resource.netname }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p *ngIf="showScroller" scroller (onScroll)="almostOnScreen()"></p>
+    <div class="alert alert-warning" *ngIf="moreSpecifics.resources.length === 0">
+        No more specific objects exist.
+    </div>
+</section>

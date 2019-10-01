@@ -1,0 +1,17 @@
+<div *ngIf="alertsService.hasErrors()" class="alert-expired alert alert-danger">
+    <p *ngFor="let error of alertsService.errors">
+        <span [innerHTML]="error.plainText"></span>
+    </p>
+</div>
+
+<div *ngIf="alertsService.hasWarnings()" class="alert alert-warning">
+    <p *ngFor="let warning of alertsService.warnings">
+        <span [innerHTML]="warning.plainText"></span>
+    </p>
+</div>
+
+<div *ngIf="alertsService.hasInfos()" class="alert alert-info">
+    <p *ngFor="let info of alertsService.infos">
+        <span [innerHTML]="info.plainText"></span>
+    </p>
+</div>

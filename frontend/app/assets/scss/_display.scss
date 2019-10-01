@@ -41,27 +41,43 @@ pre.textdiff {
     font: {
         size: 14px;
     }
-    > div {
-        padding: 5px 10px;
-        &.ins {
-            background-color: #E2F3E3;
-            span {
-                color: #437446;
-            }
-        }
-        &.del {
-            background-color: #F3E2E2;
-            span {
-                color: #AF3F3F;
-            }
-        }
-        &:first-child {
-            padding-top: 10px;
-        }
-        &:last-child {
-            padding-bottom: 10px;
-        }
-    }
+	line-height: 1.5em;
+	div {
+		line-height: 1.5em;
+		display: inline-block;
+		width: 100%;
+		> div {
+			padding: 5px 10px;
+			&.ins {
+				background-color: #E2F3E3;
+				color: #437446;
+				padding: 5px 2px;
+				ins {
+					color: #333;
+					text-decoration: none !important;
+				}
+			}
+			&.del {
+				background-color: #F3E2E2;
+				color: #AF3F3F;
+				padding: 5px 2px;
+				del {
+					color: #333;
+					text-decoration: none !important;
+				}
+			}
+		}
+		> span {
+			line-height: 2em;
+			padding: 0 29px;
+			display: block;
+		}
+		> span.equal {
+
+		}
+	}
+
+
 }
 
 section.centered {

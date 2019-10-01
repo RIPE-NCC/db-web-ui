@@ -1,0 +1,37 @@
+<div>
+
+    <h1>Force delete {{object.type}} {{object.name}}</h1>
+
+
+    <section>
+        <div class="alert alert-info">
+            Force delete allows you to delete inet(6)num, route(6) and domain objects by using the maintainer of a covering address space object,
+            instead of the maintainer of the object itself. This means the "mnt-lower:" of an allocation or the "mnt-by:" of a provider
+            independent (PI) or anycast assignment each have the authority to force delete any more specific or related object.
+        </div>
+    </section>
+
+    <alerts></alerts>
+
+    <section class="inner-container">
+        <br/>
+        <strong>Object to be deleted</strong>
+        <br/><br/>
+        <table class="success-fields grey">
+            <tr *ngFor="let attribute of object.attributes">
+                <td width="20%">
+                    <label>{{attribute.name}}:</label>
+                </td>
+                <td>
+                    <p> {{attribute.value}}</p>
+                </td>
+            </tr>
+        </table>
+
+        <span>
+            <input type="submit" (click)="forceDelete()" [disabled]="!isFormValid() || restCallInProgress" class="red-button pull-right ga-forcedeleteobj-forcedelete" value="Force delete this object" />
+            <button (click)="cancel()" class="blue-button pull-right ga-forcedeleteobj-cancel" style="border:0;">Cancel</button>
+        </span>
+
+    </section>
+</div>

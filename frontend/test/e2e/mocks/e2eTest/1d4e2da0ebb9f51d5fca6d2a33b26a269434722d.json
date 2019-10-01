@@ -1,0 +1,12 @@
+{
+  "requestUrl": "/api/whois/autocomplete?from=AUT-NUM&like=AS9777&select=aut-num&select=as-name&select=descr&where=aut-num&where=as-name&where=descr",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": [ {
+    "key" : "AS9777",
+    "type" : "aut-num",
+    "descr" : [ "NPIX Powered by IBR", "+82-2-3461-7670(Ext 135)" ],
+    "as-name" : "NPIX-AS",
+    "aut-num" : "AS9777"
+  } ]
+}

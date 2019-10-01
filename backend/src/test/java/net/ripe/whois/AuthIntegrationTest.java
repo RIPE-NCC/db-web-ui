@@ -214,6 +214,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
         requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=" + CROWD_COOKIE_VALUE);
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-EIP1-RIPE/94.126.32.0/20", HttpMethod.GET, requestEntity, String.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(
                 "{\"tickets\":{\"94.126.32.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"94.126.32.0/21\"}]}}"));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -229,6 +230,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
         requestHeaders.add("Cookie", CrowdTokenFilter.CROWD_TOKEN_KEY + "=aabbccdd");
         final HttpEntity requestEntity = new HttpEntity<>(null, requestHeaders);
         final ResponseEntity<String> response = restTemplate.exchange("http://localhost:" + getLocalServerPort() + "/db-web-ui/api/ba-apps/resources/ORG-EIP1-RIPE/94.126.32.0/20", HttpMethod.GET, requestEntity, String.class);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(
                 "{\"tickets\":{\"94.126.32.0/20\":[{\"number\":\"NCC#201001020304\",\"date\":\"2008-09-15\",\"resource\":\"94.126.32.0/21\"}]}}"));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

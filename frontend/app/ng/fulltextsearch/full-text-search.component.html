@@ -1,0 +1,101 @@
+<section>
+    <h1>RIPE Database Text Search</h1>
+    <p>This service allows searches over the full text of the RIPE Database object data.</p>
+    <p>The search is done on object text without regard for any relationships.
+        Multiple search terms should be separated with a space.
+    </p>
+</section>
+<section>
+    <form class="grey padding margin-bottom" style="overflow:auto" (submit)="searchClicked()">
+        <div class="alert alert-warning" *ngIf="showError">
+            <span [innerHTML]="showError | label"></span>
+        </div>
+        <input id="fullTextSearchInput" name="ftquery" type="text" class="form-control" [(ngModel)]="ftquery" placeholder="Search term">
+        <div class="margin-bottom margin-top" (click)="toggleSearchMode()" id="fullTextAdvanceModeLink">
+            <i class="fa fa-plus-square"></i>
+            <a class="padding-left link-pointer">{{ advancedSearch && "Basic" || "Advanced" }} Search</a>
+        </div>
+
+        <div *ngIf="advancedSearch">
+            <table class="table-radio">
+                <tbody>
+                <tr>
+                    <td>
+                        <input name="all" type="radio" id="fullTextAdvancedTypeAll" value="all"
+                               [(ngModel)]="advmode">
+                        <label for="fullTextAdvancedTypeAll">&nbsp;All</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="any" type="radio" id="fullTextAdvancedTypeAny" value="any"
+                               [(ngModel)]="advmode">
+                        <label for="fullTextAdvancedTypeAny">&nbsp;Any</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input name="exact" type="radio" id="fullTextAdvancedTypeExact" value="exact"
+                               [(ngModel)]="advmode">
+                        <label for="fullTextAdvancedTypeExact">&nbsp;Exact Match</label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="clearfix">
+                <div class="col-md-6 form-group">
+                    <label for="selectedObjectTypes">Search only within the following objects: </label>
+                    <select id="selectedObjectTypes"
+                            name="selectedObjectTypes"
+                            class="form-control"
+                            multiple
+                            size="{{objectTypes.length}}"
+                            (change)="objectTypeChanged()"
+                            [(ngModel)]="selectedObjectTypes">
+                        <option *ngFor="let o of objectTypes" [value]="o">{{o}}</option>
+                    </select>
+                    <span class="small link-pointer">
+                        <a (click)="selectAll()">Select all</a> |
+                        <a (click)="selectNone()">Select none</a>
+                    </span>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label for="home_search:advancedSearch:selectFieldType">Search within the following fields: </label>
+                    <help-marker [label-key]="'fullText.attributeHelpText.title'"></help-marker>
+                    <select id="home_search:advancedSearch:selectFieldType"
+                            name="selectedAttrs"
+                            class="form-control"
+                            multiple
+                            [disabled]="!selectedObjectTypes || selectedObjectTypes.length < 1"
+                            size="{{ objectTypes.length }}"
+                            [(ngModel)]="selectedAttrs">
+                        <option *ngFor="let a of selectableAttributes" [value]="a">{{a}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button id="fullTextSearchButton" type="submit" class="blue-button pull-right">Search</button>
+        <div class="help-block small">
+            <span [innerHTML]="'msg.ripeTandCSubmitLink.text' | label"></span>
+        </div>
+    </form>
+</section>
+<section *ngIf="results && !showError">
+    <div class="grey padding" id="resultsAnchor">
+        <h2>Search results</h2>
+        <div class="alert alert-info small">
+            <span [innerHTML]="'msg.searchResultsFullTextTandCLink.text' | label"></span>
+        </div>
+        <full-text-result-summary *ngIf="resultSummary" [tabledata]="resultSummary" (rowClicked)="addObjectToFilter($event)"></full-text-result-summary>
+        <paginator *ngIf="results" [pages]="navbarSyncArray" [active-page]="activePage" [num-results]="numResults" [results-per-page]="numResultsPerPage" (pageClicked)="pageClicked($event)"></paginator>
+        <div class="padding">
+            <div class="margin-bottom grey-border-top padding-top results" *ngFor="let result of results">
+                <div><a [routerLink]="['/lookup']" [queryParams]="{ source: properties.SOURCE, type: result.name, key: result.lookupKey}" target="_blank">{{ result.name }}: {{ result.lookupKey }}</a></div>
+                <span class="small" *ngFor="let hl of result.hls; let i = index;">
+                    <span *ngIf="i !== 0">, </span>{{ hl.name }}=<span [innerHTML]="hl.value | sanitizeImgHtml"></span>
+                </span>
+            </div>
+        </div>
+        <paginator [pages]="navbarSyncArray" [active-page]="activePage" [num-results]="numResults" [results-per-page]="numResultsPerPage" (pageClicked)="pageClicked($event)"></paginator>
+    </div>
+</section>

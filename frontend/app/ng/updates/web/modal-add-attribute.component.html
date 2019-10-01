@@ -1,0 +1,14 @@
+<div class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close" aria-label="Close" (click)="cancel()"></i>
+        <h5 class="modal-title" id="commonModalLabel">Choose attribute to insert</h5>
+    </div>
+    <div class="modal-body margin-left">
+        <select [(ngModel)]="selected" class="form-control select-height">
+            <option [attr.label]="attr.name" *ngFor="let attr of items | filteroutAttributeByName: ['mnt-by', 'sponsoring-org']" [ngValue]="attr">{{attr.name}}</option>
+        </select>
+    </div>
+    <div class="modal-footer">
+        <button type="submit" class="blue-button ga-attr-popup-btn" data-dismiss="modal" (click)="ok()">Add</button>
+    </div>
+</div>

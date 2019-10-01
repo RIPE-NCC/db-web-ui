@@ -1,0 +1,32 @@
+<div *ngIf="type === 'inetnum'">
+    <div class="usage-status-box">
+        <p class="box-title" title="Total address space">Total address space</p>
+        <p class="box-value">{{usage.total | number:"1.0-0"}}</p>
+    </div>
+    <div class="usage-status-box">
+        <p class="box-title">Used</p>
+        <p class="box-value">{{usage.used | number:"1.0-0"}}</p>
+        <p class="box-statistic">{{percentageUsed | number:"1.0-0"}}%</p>
+    </div>
+    <div class="usage-status-box">
+        <p class="box-title">Free </p>
+        <p class="box-value">{{usage.free | number:"1.0-0"}}</p>
+        <p class="box-statistic">{{percentageFree | number:"1.0-0"}}%</p>
+    </div>
+</div>
+<div *ngIf="type === 'inet6num'">
+    <div class="usage-status-box">
+        <p class="box-title">Total subnets (/{{usage.blockSize | number:"1.0-0"}})</p>
+        <p class="box-value">{{ipv6CalcTotal}}</p>
+    </div>
+    <div class="usage-status-box">
+        <p class="box-title">Used subnets (/{{usage.blockSize | number:"1.0-0"}})</p>
+        <p class="box-value">{{ipv6CalcUsed}}</p>
+        <p class="box-statistic">{{percentageUsed | number:"1.0-0"}}%</p>
+    </div>
+    <div class="usage-status-box">
+        <p class="box-title">Free subnets (/{{usage.blockSize | number:"1.0-0"}})</p>
+        <p class="box-value">{{ipv6CalcFree}}</p>
+        <p class="box-statistic">{{percentageFree | number:"0.0-0"}}%</p>
+    </div>
+</div>

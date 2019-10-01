@@ -42,7 +42,9 @@ public class CustomCacheFilter implements Filter {
             response.setHeader("Cache-Control", "public,max-age="+MAX_AGE_IN_SECONDS+",s-maxage="+MAX_AGE_IN_SECONDS);
         } else {
             LOGGER.debug("Not adding cache control to '{}'", request.getRequestURL());
-            response.setHeader("Cache-Control", "no-cache");
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Expires", "0");
         }
         chain.doFilter(req, res);
     }

@@ -140,12 +140,12 @@ describe('webupdates homepage', function() {
         expect(page.heading.getText()).toEqual('Create "rtr-set" object');
     });
 
-    it('should navigate to create person maintainer pair screen when selected', function() {
+    it('should navigate to create role maintainer pair screen when selected', function() {
         expect(page.selectForm.isPresent()).toEqual(true);
-        page.selectObjectType('person and maintainer pair').click();
+        page.selectObjectType('role and maintainer pair').click();
         page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
-        expect(page.heading.getText()).toEqual('Create person and maintainer pair');
+        expect(page.heading.getText()).toEqual('Create role and maintainer pair');
     });
 
 });

@@ -1,0 +1,56 @@
+<div *ngIf="attr.name === 'address'" class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close" aria-label="Close" (click)="cancel()"></i>
+        <h5 class="modal-title" id="commonModalLabel">Updating address information</h5>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p>My organisation&apos;s legal address has changed</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    (click)="goToOrgaAddressEditor()">Select</button>
+        </div>
+        <div>
+            <p>My organisation&apos;s postal address has changed</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    (click)="goToAccountAddressEditor()">Select</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="attr.name === 'org-name'" class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close" aria-label="Close" (click)="cancel()"></i>
+        <h5 class="modal-title">Updating legal information</h5>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p>My organisation&apos;s legal name has changed; no other legal entity is involved</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    (click)="goToOrgNameEditor()">Select</button>
+        </div>
+        <div>
+            <p>The business structure of my organisation has changed (for example due to a merger or acquisition)</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    (click)="goToAccountOrgNameEditor()">Select</button>
+        </div>
+    </div>
+</div>
+<div *ngIf="isModalContactField()" class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close" aria-label="Close" (click)="cancel()"></i>
+        <h5 class="modal-title">Updating contact information</h5>
+    </div>
+    <div class="modal-body modal-panel">
+        <div>
+            <p *ngIf="attr.name === 'phone'">My organisation&apos;s telephone number has changed</p>
+            <p *ngIf="attr.name === 'fax-no'">My organisation&apos;s fax number has changed</p>
+            <p *ngIf="attr.name === 'e-mail'">My organisation&apos;s email address has changed</p>
+            <button type="submit" class="blue-button ga-attr-popup-btn"
+                    data-dismiss="modal"
+                    (click)="goToAccountContactInfoEditor()">Update</button>
+        </div>
+    </div>
+</div>

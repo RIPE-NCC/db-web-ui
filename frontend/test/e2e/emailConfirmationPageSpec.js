@@ -1,5 +1,8 @@
 /*global beforeEach, browser, by, describe, element, expect, it, require */
 
+// Local requires
+var page = require('./homePageObject');
+
 /*
  * Tests...
  */
@@ -20,6 +23,3 @@ describe('Email Confirmation Page', function () {
         expect(page.emailConfirmationMsg.getText()).toContain('Sorry, this link is not valid anymore.');
     });
 });
-
-// Local requires
-var page = require('./homePageObject');

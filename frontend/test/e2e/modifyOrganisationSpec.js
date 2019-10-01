@@ -15,7 +15,7 @@ describe('Modifying an organisation', function () {
 
         it('should show the mnt-by field as read-only', function () {
             expect(page.inpMaintainer.isPresent()).toEqual(true);
-            expect(page.inpMaintainer.getAttribute('disabled')).toBeTruthy();
+            expect(page.inpMntnerBox.getAttribute('ng-reflect-is-disabled')).toBeTruthy();
         });
 
         it('should show the remarks field starting with hash (#)', function () {
@@ -98,6 +98,15 @@ describe('Modifying an organisation', function () {
         it('should contain remove (trush) button next to abuse-c in case of LIR organisation', function () {
             page.scrollIntoView(page.inpAbuseC);
             expect(page.btnRemoveAttributeCreatModifyPage(page.inpAbuseC).isPresent()).toBeTruthy();
+        });
+
+
+        it('should remove comment after address change and comment was removed', function () {
+            expect(page.inpAddress.getAttribute('value')).toEqual('7465 Mission George Road San Diego, CA92120 # comment address');
+            page.inpAddress.clear();
+            page.inpAddress.sendKeys('New address without comment');
+            expect(page.inpAddress.getAttribute('value')).toEqual('New address without comment');
+            expect(page.inpAddress.getAttribute('value')).not.toContain('#');
         });
     });
 });

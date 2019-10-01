@@ -11,7 +11,7 @@ describe('Modifying an inet6num', function () {
     describe('which is an allocation', function () {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inet6num/2001:999:2000::/36');
+            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inet6num/2001:999:2000::%2F36');
             expect(page.modalBtnSubmit.isPresent()).toEqual(true);
             expect(page.modalInpMaintainer.getText()).toEqual('XS4ALL-MNT');
             page.modalInpAssociate.click();
@@ -21,8 +21,9 @@ describe('Modifying an inet6num', function () {
 
         it('should show input controls in the correct disabled or enabled state', function() {
             expect(page.inpMntnerBox.isPresent()).toEqual(true);
-            expect(page.inpMntnerBox.getAttribute('disabled')).toBeTruthy();
-            expect(page.inpMntnerBox.getText()).toBe('XS4ALL-MNT RIPE-NCC-HM-MNT');
+            expect(page.inpMntnerBox.getAttribute('ng-reflect-is-disabled')).toBeTruthy();
+            expect(page.inpMntnerBox.getText()).toContain('XS4ALL-MNT');
+            expect(page.inpMntnerBox.getText()).toContain('RIPE-NCC-HM-MNT');
             expect(page.inpNetname.isPresent()).toEqual(true);
             expect(page.inpNetname.getAttribute('disabled')).toBeTruthy();
             expect(page.inpAssignmentSize.isPresent()).toEqual(true);
@@ -35,7 +36,7 @@ describe('Modifying an inet6num', function () {
     describe('which is an assignment', function () {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inet6num/2001:998:2000::/36');
+            browser.get(browser.baseUrl + '#/webupdates/modify/RIPE/inet6num/2001:998:2000::%2F36');
             expect(page.modalBtnSubmit.isPresent()).toEqual(true);
             expect(page.modalInpMaintainer.getText()).toEqual('XS4ALL-MNT');
             page.modalInpAssociate.click();
@@ -46,8 +47,9 @@ describe('Modifying an inet6num', function () {
         it('should show input controls in the correct disabled or enabled state', function() {
             // maintainer input is enabled
             expect(page.inpMntnerBox.isPresent()).toEqual(true);
-            expect(page.inpMntnerBox.getAttribute('disabled')).toBeFalsy();
-            expect(page.inpMntnerBox.getText()).toContain('XS4ALL-MNT RIPE-NCC-END-MNT');
+            expect(page.inpMntnerBox.getAttribute('ng-reflect-is-disabled')).toBe('false');
+            expect(page.inpMntnerBox.getText()).toContain('XS4ALL-MNT');
+            expect(page.inpMntnerBox.getText()).toContain('RIPE-NCC-END-MNT');
             // should NOT show netname as read-only
             expect(page.inpNetname.isPresent()).toEqual(true);
             expect(page.inpNetname.getAttribute('disabled')).toBeFalsy();

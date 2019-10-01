@@ -2,7 +2,6 @@
 
 // Local requires
 var page = require('./homePageObject');
-
 /*
  * Tests...
  */
@@ -18,6 +17,14 @@ describe('The full text search', function () {
         page.byId('fullTextSearchButton').click();
         expect(page.fullTextSearchResults.count()).toEqual(7);
         expect(page.byId('fullTextSearchInput').getAttribute('value')).toEqual('193.0.0.0');
+    });
+
+    it('should warrning message when no results of search', function () {
+        page.byId('fullTextSearchInput').sendKeys('nemam');
+        page.byId('fullTextSearchButton').click();
+        expect(page.warningAlert.isPresent()).toBeTruthy();
+        expect(page.warningAlert.getText())
+            .toEqual("No results were found for your search. Your search details may be too selective.");
     });
 
     it('should be able to add a filter by clicking on summary', function () {
@@ -55,9 +62,8 @@ describe('The full text search', function () {
     it('should sanitized img and script tag - XSS attack', function () {
         page.byId('fullTextSearchInput').sendKeys('Jamesits');
         page.byId('fullTextSearchButton').click();
-        expect(page.fullTextSearchResults.get(0).getText()).not.toContain("img");
+        expect(page.fullTextSearchResults.get(0).getText()).not.toContain("<img");
         expect(page.fullTextSearchResults.get(0).getText()).not.toContain("script");
-
     });
 
 });

@@ -1,0 +1,15 @@
+<div>
+    <span class="title" (click)="showDetail()">
+        <name-formatter [name]="item.resource" [type]="item.type"></name-formatter>
+        <span class="fa fa-chevron-right pull-right"></span>
+    </span>
+    <p class="org-name" *ngIf="item.orgName">{{ item.orgName }}</p>
+    <div class="flags-container">
+        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text"></flag>
+    </div>
+    <div *ngIf="showProgressbar" class="progressbar-container"
+         [ngbTooltip]="'Usage as per RIPE policies: '+ (usedPercentage | number:'1.0-0') +'%'"
+         placement="top">
+        <ngb-progressbar max="100" [value]=usedPercentage></ngb-progressbar>
+    </div>
+</div>

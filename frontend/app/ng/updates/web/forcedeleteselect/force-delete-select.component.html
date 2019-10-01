@@ -1,0 +1,31 @@
+<div>
+
+    <h1>Specify object you want to force delete</h1>
+
+    <alerts></alerts>
+    <section>
+        <div>
+            <label for="forceDeleteSelect">Object type</label>
+            <select id="forceDeleteSelect"
+                    [ngModel]="selected.objectType"
+                    [required]="true">
+                <option *ngFor="let objectType of objectTypes" label="{{objectType}}" value="{{objectType}}" class="form-control select-height">{{objectType}}</option>
+            </select>
+            <br/>
+            <label>Object key to be deleted with force
+<!--            <span *ngIf="attribute.$$error" class="text-error">{{attribute.$$error}}</span>-->
+                <input type="text"
+                       name="key"
+                       ngModel="selected.name"
+                       required="true"
+                       class="form-control"
+                       autocomplete="off">
+            </label>
+        </div>
+    </section>
+
+    <section>
+        <br/>
+        <input type="submit" (click)="navigateToForceDelete()" [disabled]="!isFormValid()" class="blue-button pull-right ga-createobj-create" value="Force delete">
+    </section>
+</div>

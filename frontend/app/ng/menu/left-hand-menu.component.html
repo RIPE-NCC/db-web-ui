@@ -1,0 +1,91 @@
+<!--  Webupdates specific menu start -->
+<div class="portlet navigation margin-bottom menu-override">
+        <ul class="toplevel">
+            <li class="child" [hidden]="!(!show.testRcEnv && !show.trainingEnv && (show.admin || show.general || show.billing || show.generalMeeting || show.ticketing || show.guest))">
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    My Account
+                </a>
+                <ul class="level2">
+                    <li [hidden]="!(show.admin || show.general)">
+                        <a class="menuItem" href="{{properties.LIR_ACCOUNT_DETAILS_URL}}">Account Overview</a>
+                    </li>
+                    <li [hidden]="!show.billing">
+                        <a class="menuItem" href="{{properties.LIR_BILLING_DETAILS_URL}}">Billing</a>
+                    </li>
+                    <li [hidden]="!(show.admin || show.general)">
+                        <a class="menuItem" href="{{properties.REQUEST_UPDATE_URL}}">Request Update</a>
+                    </li>
+                    <li [hidden]="!(show.admin || show.general || show.billing)">
+                        <a class="menuItem" href="{{properties.LIR_USER_ACCOUNTS_URL}}">Users</a>
+                    </li>
+                    <li [hidden]="!show.ticketing">
+                        <a class="menuItem" href="{{properties.LIR_TICKETS_URL}}">Tickets</a>
+                    </li>
+                    <li [hidden]="!(show.admin || show.general)">
+                        <a class="menuItem" href="{{properties.LIR_TRAINING_URL}}">Training</a>
+                    </li>
+                    <li [hidden]="!show.admin">
+                        <a class="menuItem" href="{{properties.LIR_API_ACCESS_KEYS_URL}}">API Keys</a>
+                    </li>
+                    <li [hidden]="!show.generalMeeting">
+                        <a class="menuItem" href="{{properties.LIR_GENERAL_MEETING_URL}}">General Meeting</a>
+                    </li>
+                    <li [hidden]="!show.guest">
+                        <a class="menuItem" href="{{properties.OPEN_ACQUISITION_URL}}">Request Update</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child" [class.active]="activeUrl.indexOf('/myresources/') > -1" [hidden]="show.trainingEnv || show.guest">
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    Resources
+                </a>
+                <ul class="level2">
+                    <li>
+                        <a class="menuItem" [ngClass]="{current: selectMyResourceMenuItem}" href="{{properties.MY_RESOURCES_URL}}">My Resources</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" [ngClass]="{current: selectSponsoredMenuItem}" href="{{properties.MY_RESOURCES_URL}}?sponsored=true">Sponsored Resources</a>
+                    </li>
+                    <li [hidden]="!((show.admin || show.general) && !show.testRcEnv)">
+                        <a class="menuItem" href="{{properties.REQUEST_RESOURCES_URL}}">Request Resources</a>
+                    </li>
+                    <li [hidden]="!((show.admin || show.general) && !show.testRcEnv)">
+                        <a class="menuItem" href="{{properties.REQUEST_TRANSFER_URL}}">Request Transfer</a>
+                    </li>
+                    <li [hidden]="!((show.admin || show.general) && !show.testRcEnv)">
+                        <a class="menuItem" href="{{properties.IPV4_TRANSFER_LISTING_URL}}">IPv4 Transfer Listing Service</a>
+                    </li>
+                    <li [hidden]="!(show.certification && !show.testRcEnv)">
+                        <a class="menuItem" href="{{properties.RPKI_DASHBOARD_URL}}">RPKI Dashboard</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="child" [ngClass]="{'active': dbMenuIsActive}">
+                <a href="">
+                    <i title="Open sub-menu" class="fa fa-angle-right"></i>
+                    RIPE Database
+                </a>
+                <ul class="level2">
+                    <li>
+                        <a class="menuItem" href="#/query" [ngClass]="{current: activeUrl.indexOf('/query') > -1 || activeUrl.indexOf('/lookup') > -1}">Query the RIPE Database</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="{{properties.DATABASE_FULL_TEXT_SEARCH_URL}}" [ngClass]="{current: activeUrl.indexOf('/fulltextsearch') > -1}">Full Text Search</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" href="{{properties.DATABASE_SYNCUPDATES_URL}}" [ngClass]="{current: activeUrl.indexOf('/multi') > -1 || activeUrl.indexOf('/syncupdates') > -1}">Syncupdates</a>
+                    </li>
+                    <li>
+                        <a class="menuItem" [ngClass]="{current: activeUrl.indexOf('/wizard') > -1 || activeUrl.indexOf('/select') > -1 || activeUrl.indexOf('/create') > -1 || activeUrl.indexOf('/modify') > -1 || activeUrl.indexOf('/display') > -1 || activeUrl === '/'}"
+                           href="{{properties.DATABASE_CREATE_URL}}">Create an Object</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+<div>
+    <div class="portlet margin-bottom grey grey-border"></div>
+</div>
+<!--  Webupdates specific menu end -->

@@ -37,7 +37,7 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', function () {
         page.inpDescrCreateForm.sendKeys("update");
         page.scrollIntoView(page.btnSubmitModify);
         page.btnSubmitModify.click();
-        expect(browser.getCurrentUrl()).toContain('#/webupdates/display/ripe/route/211.43.192.0%252F19AS9777?method=Modify');
+        expect(browser.getCurrentUrl()).toContain('#/webupdates/display/RIPE/route/211.43.192.0%2F19AS9777?method=Modify');
         expect(page.successMessage.getText()).toEqual('Your object has been successfully modified');
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
     });
@@ -47,14 +47,22 @@ describe('Modifying a resource for a NONAUTH-RIPE route object', function () {
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
         expect(page.modal.isPresent()).toBe(false);
-        page.scrollIntoView(page.inpDescrCreateForm);
+        // page.scrollIntoView(page.inpDescrCreateForm);
         page.scrollIntoView(page.btnDeleteObject);
         page.btnDeleteObject.click();
-        expect(browser.getCurrentUrl()).toContain('#/webupdates/delete/ripe/route/211.43.192.0%252F19AS9777?onCancel=webupdates.modify');
+        expect(browser.getCurrentUrl()).toContain('#/webupdates/delete/ripe/route/211.43.192.0%2F19AS9777?onCancel=webupdates%2Fmodify');
         expect(page.modal.isPresent()).toEqual(true);
         page.btnConfirmDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(false);
         expect(page.infoMessage.getText()).toEqual('The following object(s) have been successfully deleted');
     });
 
+    it('should allow force delete on modal-authentication window and navigate to forceDelete', function () {
+        expect(page.modal.isPresent()).toEqual(true);
+        page.modalInpPassword.sendKeys('AS4663-RIPE-MNT');
+        page.modalInpAssociate.click();
+        page.modalForceDelete.click();
+        expect(browser.getCurrentUrl()).toContain('#/forceDelete/ripe/route/211.43.192.0%2F19AS9777');
+        expect(page.modal.isPresent()).toEqual(false);
+    });
 });

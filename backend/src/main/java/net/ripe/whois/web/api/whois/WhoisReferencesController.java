@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 
 @RestController
 @RequestMapping("/api/references")
@@ -43,18 +42,11 @@ public class WhoisReferencesController extends ApiController {
                                          @RequestParam(value = "limit", required = false) Integer limit,
                                          @RequestHeader final HttpHeaders headers) throws URISyntaxException, UnsupportedEncodingException {
 
-        /*
-         * TODO [MG]:
-         * Looks like RequestMapping cannot handle path parameters that contain a single-escaped forward-slash (so containing '%2F').
-         * Using double url-encoding (into %252F) the RequestMapping-pattern is being matched and this method is being called
-         * As a consequence we have to decode the parameter before passing it on to whois
-         */
-        final String decodedName = URLDecoder.decode(name, "UTF-8");
-        LOGGER.debug("search {} {} {}->{}", source, objectType, name, decodedName);
+        LOGGER.debug("search {} {} {}->{}", source, objectType, name, name);
 
         removeUnnecessaryHeaders(headers);
 
-        return whoisReferencesService.getReferences(source, objectType, decodedName, limit, headers);
+        return whoisReferencesService.getReferences(source, objectType, name, limit, headers);
     }
 
     @RequestMapping(value = "/{source}", method = RequestMethod.POST)

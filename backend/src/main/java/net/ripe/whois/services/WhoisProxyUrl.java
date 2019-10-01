@@ -14,7 +14,7 @@ public class WhoisProxyUrl implements ExchangeErrorHandler, WhoisServiceBase {
 
     @Autowired
     public WhoisProxyUrl(
-            @Value("${server.contextPath}") final String contextPath) {
+            @Value("${server.servlet.context-path}") final String contextPath) {
         this.contextPath = contextPath;
     }
 

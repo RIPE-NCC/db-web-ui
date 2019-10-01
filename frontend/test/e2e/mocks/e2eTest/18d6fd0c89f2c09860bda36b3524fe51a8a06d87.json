@@ -1,0 +1,9 @@
+{
+  "requestUrl": "/api/whois/autocomplete?extended=true&field=route&query=211.43.192.0/19",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": [{
+       "key" : "211.43.192.0/19AS9777",
+       "type" : "route"
+    }]
+}

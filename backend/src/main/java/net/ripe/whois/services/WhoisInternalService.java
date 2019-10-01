@@ -57,7 +57,7 @@ public class WhoisInternalService implements ExchangeErrorHandler, WhoisServiceB
         // fetch as xml
         final ResponseEntity<WhoisResources> response;
         try {
-            response = restTemplate.exchange("{apiUrl}/api/user/{uuid}/maintainers",
+            response = restTemplate.exchange(this.apiUrl+"/api/user/{uuid}/maintainers",
                 HttpMethod.GET,
                 getRequestEntity(Optional.of(apiKey)),
                 WhoisResources.class,

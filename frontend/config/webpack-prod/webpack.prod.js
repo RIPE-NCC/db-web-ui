@@ -1,6 +1,5 @@
 const webpack = require('webpack');
 const helpers = require('../helpers');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
@@ -22,9 +21,7 @@ module.exports = {
     entry: {
         'polyfills': './app/polyfills.ts',
         'vendor': './app/vendor-aot.ts',
-        'vendorjs': './app/vendor-js.ts',
-        'ng2': './app/main-aot.ts',
-        'ng1': './app/index.ts'
+        'ng': './app/main-aot.ts',
     },
     mode: ENV,
     output: {
@@ -96,32 +93,11 @@ module.exports = {
             inject: false,
             chunksSortMode: helpers.sortChunk([
                 'library.shared',
-                'vendorjs',
                 'vendor',
-                'ng1',
                 'polyfills',
-                'ng2',
+                'ng',
             ])
         }),
-        new CopyWebpackPlugin([
-            // copy the files that are not template and webpack doesn't know about them (without app on destination)
-            {
-                from: './app/scripts/whoisObject/attribute-reverse-zones.html',
-                to: './scripts/whoisObject/attribute-reverse-zones.html'
-            },
-            {
-                from: './app/scripts/whoisObject/attribute.html',
-                to: './scripts/whoisObject/attribute.html'
-            },
-            // copy all html files to let CrowdTokenFilter do its job
-            {
-                from: './app/scripts/**/*.html',
-                to: './scripts/',
-                transformPath (targetPath, absolutePath) {
-                    return targetPath.replace('scripts/app/scripts', 'scripts');
-                }
-            }
-        ]),
         new webpack.DefinePlugin({
             'process.env': {
                 'ENV': JSON.stringify(ENV)
@@ -131,7 +107,6 @@ module.exports = {
             filename: '[name].[contenthash].css'
         }),
         new webpack.ProvidePlugin({
-            diff_match_patch: 'diff-match-patch',
             CryptoJS: 'crypto-js',
             moment: 'moment',
             Address4: ['ip-address', 'Address4'],
@@ -139,7 +114,7 @@ module.exports = {
         }),
         new AngularCompilerPlugin({
             tsConfigPath: './tsconfig.aot.json',
-            entryModule: './app/ng2/app.module#AppModule',
+            entryModule: './app/ng/app.module#AppModule',
             sourceMap: false,
             skipCodeGeneration: false
         }),

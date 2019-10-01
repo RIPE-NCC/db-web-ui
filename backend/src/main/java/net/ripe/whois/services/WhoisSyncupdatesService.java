@@ -1,6 +1,5 @@
 package net.ripe.whois.services;
 
-import org.apache.commons.io.Charsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriTemplate;
 
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 
@@ -51,7 +51,7 @@ public class WhoisSyncupdatesService implements ExchangeErrorHandler {
         }
 
         proxyHeaders.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-        proxyHeaders.setAcceptCharset(Collections.singletonList(Charsets.UTF_8));
+        proxyHeaders.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
         proxyHeaders.setAccept(Collections.singletonList(MediaType.TEXT_PLAIN));
         proxyHeaders.set(HttpHeaders.ACCEPT_ENCODING, "identity");
 

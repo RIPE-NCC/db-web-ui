@@ -154,7 +154,7 @@ ul.radio {
     transform: none;
 }
 
-.modal.edit .modal-dialog {
+.modal-edit-attr {
     .modal-content {
         display: table;
     }
@@ -248,6 +248,7 @@ section .resultlinks {
 }
 .generic-drop-down {
     button#single-button {
+        height: 36px;
         padding: 0px 10px;
         position: relative;
         > span {
@@ -260,7 +261,7 @@ section .resultlinks {
         }
     }
     ul.dropdown-menu {
-        width: auto;
+        width: fit-content;
         padding: 0 !important;
         li {
             a:hover {
@@ -273,7 +274,6 @@ section .resultlinks {
 .bell-drop-down {
     @extend .generic-drop-down;
     button#grey-bell-button {
-        height: 33px;
         &.grey-button{
            .fa-bell-o {
                 color: $dark-grey-cr;
@@ -284,7 +284,6 @@ section .resultlinks {
 
     }
     button#red-bell-button {
-        height: 33px;
         &.red-button {
             background-color: #f1dede;
             border: solid 0.1rem $light-red;

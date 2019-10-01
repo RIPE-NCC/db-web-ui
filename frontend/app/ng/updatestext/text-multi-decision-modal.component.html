@@ -1,0 +1,16 @@
+<div class="modal-content no-rounded">
+    <div class="modal-header">
+        <i class="fa fa-close close ga-multiobj-choose-none" aria-label="Close" (click)="cancel()"></i>
+        <h5 class="modal-title" >New version of syncupdates</h5>
+    </div>
+    <div class="modal-body">
+        <p>
+            We have created a new, more user-friendly version of syncupdates. Woud you like to try it?
+        </p>
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="blue-button ga-md5-popup-btn ga-multiobj-choose-poor" data-dismiss="modal" (click)="onRichClicked()" value="Try new"/>
+        <input type="submit" class="blue-button ga-md5-popup-btn ga-multiobj-choose-rich" data-dismiss="modal" (click)="onPoorClicked()" value="Use old" />
+    </div>
+</div>
+

@@ -1,0 +1,78 @@
+<alerts></alerts>
+
+<div id="createForm">
+    <section class="visible-field-form">
+        <h1>Create {{objectType}} and maintainer pair</h1>
+
+        <ul class="form-fields appeared-fields">
+
+            <li *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName: ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']">
+                <label>{{attribute.name}}</label>
+                <span *ngIf="attribute.$$error" class="text-error">
+                    <span [innerHTML]="attribute.$$error"></span>
+                </span>
+                <input type="text"
+                       [attr.name]="attribute.name"
+                       [(ngModel)]="attribute.value"
+                       class="form-control"
+                       placeholder="{{attribute.$$meta?.$$short}}"
+                       autocomplete="off"
+                       [required]="attribute.$$meta?.$$mandatory"
+                       (blur)="fieldVisited(attribute)">
+                <div class="text field-description" [ngbCollapse]="!showMntAttrsHelp[attribute.name]">
+                    <strong>Description</strong><br>
+                    <span [innerHTML]="getAttributeDescription('mntner')"></span><br>
+                    <strong>Syntax</strong><br>
+                    <span [innerHTML]="getAttributeSyntax('mntner')"></span>
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a class="btn btn-default ga-help-attr"
+                           (click)="showMntAttrsHelp[attribute.name] = !showMntAttrsHelp[attribute.name]">
+                            <span class="fa fa-question"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName: ['nic-hdl', 'mnt-by', 'source']">
+                <label>{{attribute.name}}</label>
+                <span id="create-person-link" *ngIf="attribute.name === objectType" class="text-note">
+                    <b>Switch to <a [routerLink]="['/webupdates/create', source, linkToRoleOrPerson, 'self']">{{linkToRoleOrPerson}}</a></b>
+                </span>
+                <span *ngIf="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
+                <input type="text"
+                       [attr.name]="attribute.name"
+                       [(ngModel)]="attribute.value"
+                       class="form-control"
+                       placeholder="{{attribute.$$meta?.$$short}}"
+                       autocomplete="off"
+                       [required]="attribute.$$meta?.$$mandatory"
+                       (blur)="fieldVisited(attribute)">
+                <div class="text field-description" [ngbCollapse]="!showAttrsHelp[attribute.name]">
+                    <strong>Description</strong><br>
+                    <span [innerHTML]="getAttributeDescription(attribute.name)"></span><br>
+                    <strong>Syntax</strong><br>
+                    <span [innerHTML]="getAttributeSyntax(attribute.name)"></span>
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a class="btn btn-default ga-help-attr"
+                           (click)="showAttrsHelp[attribute.name] = !showAttrsHelp[attribute.name]">
+                            <span class="fa fa-question"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <section class="supporting-text">
+            <p>By submitting this form you explicitly express your agreement with the <a
+                    href="https://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms
+                and Conditions</a></p>
+        </section>
+
+        <input type="submit" (click)="submit()" [disabled]="(!isFormValid() || submitInProgress)"
+               class="blue-button pull-right ga-createobj-create" value="Submit" id="btnSubmitCreate"/>
+        <button (click)="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
+    </section>
+</div>

@@ -29,7 +29,7 @@ ul.form-fields {
         @media (min-width:1157px) and (max-width:1263px){
             top: 27px;
         }
-		z-index: 2;
+		z-index: 0;
 		> li {
 			display: inline-block !important;
 			margin-bottom: 0 !important;
@@ -204,7 +204,7 @@ ul.form-fields {
     border-radius: 0;
 }
 
-.text-error, .text-info {
+.text-error, .text-info, .text-note {
 	@extend %float-r;
 }
 

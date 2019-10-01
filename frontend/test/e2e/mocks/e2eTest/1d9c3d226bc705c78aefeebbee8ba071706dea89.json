@@ -1,0 +1,15 @@
+{
+  "data": [
+    {
+      "key": "LG1-RIPE",
+      "type": "person",
+      "nic-hdl": "LG1-RIPE",
+      "role": null,
+      "abuse-mailbox": [],
+      "person": "Name Removed"
+    }
+  ],
+  "requestUrl": "/api/whois/autocomplete?from=PERSON&from=ROLE&like=LG1-RIPE&select=person&select=nic-hdl&select=role&select=abuse-mailbox&where=person&where=nic-hdl&where=role&where=abuse-mailbox",
+  "contentType": "application/javascript",
+  "statusCode": 200
+}

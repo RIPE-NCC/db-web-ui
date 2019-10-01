@@ -17,9 +17,7 @@
                 cursor: pointer;
                 &:hover {
                 }
-            }
-            &.active {
-                > a, > a:focus, > a:hover {
+                &.active, &.active:focus, &.active:hover {
                     @extend %active-state;
                 }
             }
@@ -42,18 +40,18 @@
                 padding-left: 10px;
                 padding-right: 0;
             }
-            &.active {
-                a, a:hover, a:focus {
-                    border: none;
-                    color: $black;
-                }
-            }
+
             a {
                 color: #C1C1C1;
                 text-decoration: none;
                 padding: 0;
                 &:hover {
                     color: $link;
+                }
+                &.active, &.active:hover, &.active:focus {
+                    border: none;
+                    color: $black;
+                    background-color: transparent;
                 }
             }
         }
@@ -109,6 +107,7 @@ div.resource-list {
             margin: 0;
         }
         div.progress-bar {
+            min-width: 0;
             background-image: none;
             background-color: #44465D !important;
             box-shadow: none;

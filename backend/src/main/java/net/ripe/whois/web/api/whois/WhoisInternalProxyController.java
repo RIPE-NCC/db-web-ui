@@ -13,6 +13,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -104,12 +105,22 @@ public class WhoisInternalProxyController extends ApiController {
         return proxyRestCalls(request, body, headers);
     }
 
+    @PostMapping(path = "/api/mntner-pair/**")
+    public ResponseEntity<String> whoisInternalCreateMntnerPair(
+                final HttpServletRequest request,
+            @Nullable @RequestBody(required = false) final String body,
+            @RequestHeader final HttpHeaders headers) {
+        return proxyRestCalls(request, body, headers);
+    }
+
     // call backend (do not map arbitrary user-supplied paths directly!)
     private ResponseEntity<String> proxyRestCalls(final HttpServletRequest request,
                                                  @Nullable @RequestBody(required = false) final String body,
                                                  @RequestHeader final HttpHeaders headers) {
         LOGGER.info("Proxy call from db web ui {}", request.getRequestURI());
-        return whoisInternalService.bypass(request, body, cleanHeaders(headers));
+        // can't return the original response as it can container wrong headers for HTTP2
+        ResponseEntity<String> response = whoisInternalService.bypass(request, body, cleanHeaders(headers));
+        return new ResponseEntity<>(response.getBody(), response.getStatusCode());
     }
 
     private HttpHeaders cleanHeaders(final HttpHeaders headers){

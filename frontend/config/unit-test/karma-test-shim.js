@@ -10,12 +10,16 @@ require('zone.js/dist/sync-test');
 require('zone.js/dist/jasmine-patch');
 require('zone.js/dist/async-test');
 require('zone.js/dist/fake-async-test');
-
+require('ip-address/dist/ip-address-globals');
 
 var testing = require('@angular/core/testing');
 var browser = require('@angular/platform-browser-dynamic/testing');
 
+// functions coming from template.ejs, needed for unit test
+loadMatomo = (id) => {};
+loadUsersnap = (id) => {};
+
 testing.TestBed.initTestEnvironment(browser.BrowserDynamicTestingModule, browser.platformBrowserDynamicTesting());
 
-var appContext = require.context('../../test/unit/syncupdates', true, /\.spec\.ts/);
+var appContext = require.context('../../test/unit/', true, /\.spec\.ts/);
 appContext.keys().forEach(appContext);

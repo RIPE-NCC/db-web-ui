@@ -1,0 +1,408 @@
+import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {FormsModule} from "@angular/forms";
+import {SharedModule} from "../../../../app/ng/shared/shared.module";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {RestService} from "../../../../app/ng/updates/rest.service";
+import {Router} from "@angular/router";
+import {ModalDeleteObjectComponent} from "../../../../app/ng/updates/web/modal-delete-object.component";
+import {of, throwError} from "rxjs";
+import {CredentialsService} from "../../../../app/ng/shared/credentials.service";
+
+const objectType = "mntner";
+const name = "TEST-MNT";
+const source = "RIPE";
+const ON_CANCEL: string = "modify";
+
+let restServiceMock: any;
+let httpMock: HttpTestingController;
+let componentFixture: ComponentFixture<ModalDeleteObjectComponent>;
+let modalDeleteObjectComponent: ModalDeleteObjectComponent;
+let modalMock: any;
+let routerMock: any;
+
+describe("primitives of modalDeleteObject", () => {
+
+    beforeEach(() => {
+        modalMock = jasmine.createSpyObj("NgbActiveModal", ["close", "dismiss"]);
+        routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
+        restServiceMock = jasmine.createSpyObj("RestService", ["getReferences"]);
+        restServiceMock.getReferences.and.returnValue(of({objectType: "mntner", primaryKey: "TEST-MNT"}).toPromise());
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule, FormsModule, SharedModule],
+            declarations: [ModalDeleteObjectComponent],
+            providers: [
+                {provide: NgbActiveModal, useValue: modalMock},
+                {provide: RestService, useValue: restServiceMock},
+                {provide: Router, useValue: routerMock},
+            ],
+        });
+        httpMock = TestBed.get(HttpTestingController);
+        componentFixture = TestBed.createComponent(ModalDeleteObjectComponent);
+        modalDeleteObjectComponent = componentFixture.componentInstance;
+        modalDeleteObjectComponent.inputData = {
+            name: name,
+            objectType: objectType,
+            onCancelPath: ON_CANCEL,
+            source: source,
+        };
+        componentFixture.detectChanges();
+    });
+
+    afterEach(() => {
+      httpMock.verify();
+    });
+
+    it("should compare objects", () => {
+        const ref = {objectType: "mntner", primaryKey: "TEST-MNT"};
+        expect(modalDeleteObjectComponent.isEqualTo("mntner", "TEST-MNT", ref)).toEqual(true);
+        expect(modalDeleteObjectComponent.isEqualTo("person", "TEST-MNT", ref)).toEqual(false);
+        expect(modalDeleteObjectComponent.isEqualTo("mntner", "TEST2-MNT", ref)).toEqual(false);
+    });
+
+    it("should compare objects with composite primary keys", () => {
+        const ref = {objectType: "route", primaryKey: "193.0.0.0/21AS3333"};
+        expect(modalDeleteObjectComponent.isEqualTo("route", "193.0.0.0/21AS3333", ref)).toEqual(true);
+        expect(modalDeleteObjectComponent.isEqualTo("person", "193.0.0.0/21AS3333", ref)).toEqual(false);
+        expect(modalDeleteObjectComponent.isEqualTo("route", "xyz", ref)).toEqual(false);
+    });
+
+    it("should be able to compose display url for object", () => {
+        const ref = {objectType: "mntner", primaryKey: "TEST-MNT"};
+        expect(modalDeleteObjectComponent.displayUrl(ref)).toEqual("#/webupdates/display/RIPE/mntner/TEST-MNT");
+    });
+
+    it("should be able to compose display url for object with slash", () => {
+        const ref = {objectType: "route", primaryKey: "193.0.0.0/21AS3333"};
+        expect(modalDeleteObjectComponent.displayUrl(ref)).toEqual("#/webupdates/display/RIPE/route/193.0.0.0%2F21AS3333");
+    });
+
+    it("should allow deletion of unreferenced object: undefined refs", () => {
+        const refs = {objectType: "mntner", primaryKey: "TEST-MNT"};
+        expect(modalDeleteObjectComponent.isDeletable(refs)).toBe(true);
+    });
+
+    it("should allow deletion of unreferenced object: empty refs", () => {
+        const empty: any[] = [];
+        const refs = {objectType: "route", primaryKey: "193.0.0.0/21AS3333", incoming: empty, outgoing: empty};
+        expect(modalDeleteObjectComponent.isDeletable(refs)).toBe(true);
+    });
+
+    it("should allow deletion of self-referenced object", () => {
+        const empty: any[] = [];
+        const refs = {
+            objectType: "mntner", primaryKey: "TEST-MNT",
+            incoming: [{objectType: "mntner", primaryKey: "TEST-MNT"}], outgoing: empty
+        };
+        expect(modalDeleteObjectComponent.isDeletable(refs)).toBe(true);
+    });
+
+    it("should allow deletion of simple mntner-person pair", () => {
+        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_TEST_MNT)).toBe(true);
+    });
+
+    it("should allow deletion of simple person-mntner pair", () => {
+        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_TEST_PERSON)).toBe(true);
+    });
+
+    it("should not allow deletion of object with other incoming refs", () => {
+        expect(modalDeleteObjectComponent.isDeletable(REFS_FOR_UNDELETEABLE_OBJECTS)).toBe(false);
+    });
+
+    it("should detect that object has no () incoming refs", () => {
+        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", [])).toBe(false);
+    });
+
+    it("should detect that object has no () incoming refs", () => {
+        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", [{objectType: "mntner", primaryKey: "TEST-MNT"}])).toBe(false);
+    });
+
+    it("should detect that object has incoming refs", () => {
+        expect(modalDeleteObjectComponent.hasNonSelfIncomingRefs("mntner", "TEST-MNT", REFS_FOR_TEST_MNT.incoming)).toBe(true);
+    });
+});
+
+
+describe("ModalDeleteObjectComponent undeletable object", () => {
+
+    beforeEach(() => {
+        modalMock = jasmine.createSpyObj("NgbActiveModal", ["close", "dismiss"]);
+        routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
+        restServiceMock = jasmine.createSpyObj("RestService", ["getReferences", "deleteObject"]);
+        restServiceMock.deleteObject.and.returnValue(of({}).toPromise());
+        restServiceMock.getReferences.and.returnValue(of(REFS_FOR_UNDELETEABLE_OBJECTS).toPromise());
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule, FormsModule, SharedModule],
+            declarations: [ModalDeleteObjectComponent],
+            providers: [
+                {provide: NgbActiveModal, useValue: modalMock},
+                {provide: RestService, useValue: restServiceMock},
+                {provide: Router, useValue: routerMock},
+            ],
+        });
+        httpMock = TestBed.get(HttpTestingController);
+        componentFixture = TestBed.createComponent(ModalDeleteObjectComponent);
+        modalDeleteObjectComponent = componentFixture.componentInstance;
+        modalDeleteObjectComponent.inputData = {
+            name: name,
+            objectType: objectType,
+            onCancelPath: ON_CANCEL,
+            source: source,
+        };
+        componentFixture.detectChanges();
+    });
+
+    afterEach(() => {
+      httpMock.verify();
+    });
+
+    it("should query for last object revision references", () => {
+        expect(restServiceMock.getReferences).toHaveBeenCalledWith(source, objectType, name, modalDeleteObjectComponent.MAX_REFS_TO_SHOW.toString());
+    });
+
+    it("should select referencesInfo if any", async () => {
+        await componentFixture.whenStable();
+
+        expect(modalDeleteObjectComponent.incomingReferences.length).toEqual(1);
+        expect(modalDeleteObjectComponent.incomingReferences[0].objectType).toEqual("person");
+        expect(modalDeleteObjectComponent.incomingReferences[0].primaryKey).toEqual("ME-RIPE");
+    });
+
+    it("should decide that object cannot be deleted ", async () => {
+        await componentFixture.whenStable();
+        expect(modalDeleteObjectComponent.canBeDeleted).toBe(false);
+    });
+
+    it("should not call delete endpoint", async () => {
+
+        modalDeleteObjectComponent.reason = "some reason";
+
+        restServiceMock.deleteObject.and.callThrough();
+
+        modalDeleteObjectComponent.delete();
+        await componentFixture.whenStable();
+
+        expect(restServiceMock.deleteObject).not.toHaveBeenCalled();
+    });
+
+    it("should close the modal and return to modify when canceled", async () => {
+        modalDeleteObjectComponent.inputData.onCancelPath = "webupdates/modify";
+        modalDeleteObjectComponent.cancel();
+        expect(modalMock.close).toHaveBeenCalled();
+        expect(routerMock.navigate).toHaveBeenCalled();
+        expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/modify", source, objectType, name]);
+    });
+
+    it("should close the modal and return to force delete when canceled", async () => {
+        modalDeleteObjectComponent.inputData.onCancelPath = "forceDelete";
+        modalDeleteObjectComponent.cancel();
+        expect(modalMock.close).toHaveBeenCalled();
+        expect(routerMock.navigate).toHaveBeenCalledWith(["forceDelete", source, objectType, name]);
+    });
+
+});
+
+
+describe("ModalDeleteObjectComponent deleteable object ", () => {
+
+    let credentialsServiceMock: any;
+
+    beforeEach(() => {
+        modalMock = jasmine.createSpyObj("NgbActiveModal", ["close", "dismiss"]);
+        routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
+        restServiceMock = jasmine.createSpyObj("RestService", ["getReferences", "deleteObject"]);
+        restServiceMock.deleteObject.and.returnValue(of({}));
+        restServiceMock.getReferences.and.returnValue(of(REFS_FOR_TEST_MNT).toPromise());
+        credentialsServiceMock = jasmine.createSpyObj("CredentialsService", ["hasCredentials", "getCredentials"]);
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule, FormsModule, SharedModule],
+            declarations: [ModalDeleteObjectComponent],
+            providers: [
+                {provide: NgbActiveModal, useValue: modalMock},
+                {provide: RestService, useValue: restServiceMock},
+                {provide: CredentialsService, useValue: credentialsServiceMock},
+                {provide: Router, useValue: routerMock},
+            ],
+        });
+        httpMock = TestBed.get(HttpTestingController);
+        componentFixture = TestBed.createComponent(ModalDeleteObjectComponent);
+        modalDeleteObjectComponent = componentFixture.componentInstance;
+        modalDeleteObjectComponent.inputData = {
+            name: name,
+            objectType: objectType,
+            onCancelPath: ON_CANCEL,
+            source: source,
+        };
+        componentFixture.detectChanges();
+    });
+
+    afterEach(() => {
+        httpMock.verify();
+    });
+
+    it("should query for last object revision references", () => {
+        expect(restServiceMock.getReferences).toHaveBeenCalledWith(source, objectType, name, modalDeleteObjectComponent.MAX_REFS_TO_SHOW.toString());
+    });
+
+    it("should select referencesInfo if any", async () => {
+        await componentFixture.whenStable();
+
+        expect(modalDeleteObjectComponent.incomingReferences.length).toEqual(2);
+        expect(modalDeleteObjectComponent.incomingReferences[0].objectType).toEqual("mntner");
+        expect(modalDeleteObjectComponent.incomingReferences[0].primaryKey).toEqual("TEST-MNT");
+        expect(modalDeleteObjectComponent.incomingReferences[1].objectType).toEqual("person");
+        expect(modalDeleteObjectComponent.incomingReferences[1].primaryKey).toEqual("ME-RIPE");
+    });
+
+    it("should decide that object can be deleted ", async () => {
+        await componentFixture.whenStable();
+        expect(modalDeleteObjectComponent.canBeDeleted).toBe(true);
+    });
+
+    it("should call delete endpoint without password and close modal", async () => {
+        await componentFixture.whenStable();
+
+        modalDeleteObjectComponent.reason = "some reason";
+
+        modalDeleteObjectComponent.delete();
+
+        expect(restServiceMock.deleteObject).toHaveBeenCalledWith(source, objectType, name, modalDeleteObjectComponent.reason, true, undefined);
+        expect(modalMock.close).toHaveBeenCalled();
+    });
+
+    it("should call delete endpoint with password and close modal", async () => {
+        await componentFixture.whenStable();
+
+
+        modalDeleteObjectComponent.reason = "some reason";
+
+        credentialsServiceMock.hasCredentials.and.returnValue(true);
+        credentialsServiceMock.getCredentials.and.returnValue({mntner: "TEST-MNT", successfulPassword: "secret"});
+
+        modalDeleteObjectComponent.delete();
+
+        expect(restServiceMock.deleteObject).toHaveBeenCalledWith(source, objectType, name, modalDeleteObjectComponent.reason, true, "secret");
+        expect(modalMock.close).toHaveBeenCalled();
+    });
+
+    it("should dismiss modal after error deleting object", async () => {
+        await componentFixture.whenStable();
+
+        restServiceMock.deleteObject.and.returnValue(throwError({data: "error"}));
+        modalDeleteObjectComponent.delete();
+
+        expect(modalMock.dismiss).toHaveBeenCalledWith({data: "error"});
+    });
+
+    it("should redirect to success delete page after delete object", async () => {
+        await componentFixture.whenStable();
+
+        restServiceMock.deleteObject.and.returnValue(of({data: "error"}));
+
+        modalDeleteObjectComponent.delete();
+
+        expect(modalMock.close).toHaveBeenCalled();
+    });
+});
+
+
+describe("ModalDeleteObjectComponent loading references failures ", () => {
+
+
+    beforeEach(() => {
+        modalMock = jasmine.createSpyObj("NgbActiveModal", ["close", "dismiss"]);
+        routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
+        restServiceMock = jasmine.createSpyObj("RestService", ["getReferences"]);
+        restServiceMock.getReferences.and.returnValue(throwError({data: "error"}).toPromise());
+        TestBed.configureTestingModule({
+            imports: [HttpClientTestingModule, FormsModule, SharedModule],
+            declarations: [ModalDeleteObjectComponent],
+            providers: [
+                {provide: NgbActiveModal, useValue: modalMock},
+                {provide: RestService, useValue: restServiceMock},
+                {provide: Router, useValue: routerMock},
+            ],
+        });
+        httpMock = TestBed.get(HttpTestingController);
+        componentFixture = TestBed.createComponent(ModalDeleteObjectComponent);
+        modalDeleteObjectComponent = componentFixture.componentInstance;
+        modalDeleteObjectComponent.inputData = {
+            name: name,
+            objectType: objectType,
+            onCancelPath: ON_CANCEL,
+            source: source,
+        };
+        componentFixture.detectChanges();
+    });
+
+    afterEach(() => {
+        httpMock.verify();
+    });
+
+    it("should dismiss modal after error getting object references", async () => {
+        await componentFixture.whenStable();
+
+        expect(modalMock.dismiss).toHaveBeenCalledWith("error");
+    });
+
+});
+
+const REFS_FOR_UNDELETEABLE_OBJECTS = {
+    "primaryKey": "TEST-MNT",
+    "objectType": "mntner",
+    "incoming": [{
+        "primaryKey": "ME-RIPE",
+        "objectType": "person",
+        "incoming": [
+            {
+                "primaryKey": "TEST-MNT",
+                "objectType": "mntner"
+            },
+            {
+                "primaryKey": "OWNER-MNT",
+                "objectType": "mntner"
+            }
+        ],
+        // @ts-ignore
+        "outgoing": []
+    }],
+    // @ts-ignore
+    "outgoing": []
+};
+
+const REFS_FOR_TEST_MNT = {
+    "primaryKey": "TEST-MNT",
+    "objectType": "mntner",
+    "incoming": [{
+        "primaryKey": "TEST-MNT",
+        "objectType": "mntner"
+    }, {
+        "primaryKey": "ME-RIPE",
+        "objectType": "person",
+        "incoming": [{
+            "primaryKey": "TEST-MNT",
+            "objectType": "mntner"
+        }],
+        // @ts-ignore
+        "outgoing": []
+    }],
+    // @ts-ignore
+    "outgoing": []
+};
+
+const REFS_FOR_TEST_PERSON = {
+    "primaryKey": "ME-RIPE",
+    "objectType": "person",
+    "incoming": [{
+        "primaryKey": "TEST-MNT",
+        "objectType": "mntner",
+        "incoming": [{
+            "primaryKey": "ME-RIPE",
+            "objectType": "person"
+        }],
+        // @ts-ignore
+        "outgoing": []
+    }],
+    // @ts-ignore
+    "outgoing": []
+};
