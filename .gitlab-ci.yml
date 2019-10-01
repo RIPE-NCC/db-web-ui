@@ -1,10 +1,13 @@
-image: maven:latest
+image: maven:3.6-jdk-8
+
+services:
+  - name: node:5.5.1
 
 #variables:
 #  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
 #  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
-before_script:
-  - npm install
+#before_script:
+#  - npm install
 
 cache:
   paths:
