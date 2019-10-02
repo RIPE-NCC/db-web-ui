@@ -8,6 +8,11 @@ before_script:
 # SB: yuck.. surely there must be a better way to install npm:
   - curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
 
+stages:
+  - build
+  - karma-test
+  - e2e-test
+
 cache:
   paths:
     - .m2/repository
@@ -24,12 +29,12 @@ build:
         - backend/target/surefire-reports/TEST-*.xml
         - backend/target/failsafe-reports/TEST-*.xml
 
-karma-test:
-  stage: test
+karma:
+  stage: karma-test
   script:
     - cd frontend && npm run test-remote
 
-e2e-test:
-  stage: test
+e2e:
+  stage: e2e-test
   script:
     - cd frontend && npm run e2e-remote
