@@ -2,7 +2,7 @@ image: maven:3.6-jdk-8
 
 variables:
 #  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
-  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
 before_script:
 # SB: yuck.. surely there must be a better way to install npm:
@@ -10,17 +10,26 @@ before_script:
 
 cache:
   paths:
-    - .m2/repository/
+    - .m2/repository
     - backend/target/
     - frontend/node_modules/
 
 build:
   stage: build
   script:
-    - mvn $MAVEN_CLI_OPTS compile
+    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -Dimplementation-version=${CI_COMMIT_SHORT_SHA}
+  artifacts:
+    reports:
+      junit:
+        - backend/target/surefire-reports/TEST-*.xml
+        - backend/target/failsafe-reports/TEST-*.xml
 
-test:
-  stage: test
+karma-test:
+  stage: karma test
   script:
-    - mvn $MAVEN_CLI_OPTS test
+    - cd frontend && npm run test-remote
 
+e2e-test:
+  stage: e2e-test
+  script:
+    - cd frontend && npm run e2e-remote
