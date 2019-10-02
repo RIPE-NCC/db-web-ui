@@ -1,7 +1,7 @@
 // Local requires
 var page = require('./homePageObject');
 
-fdescribe('Resources, update object', () => {
+describe('Resources, update object', () => {
 
     beforeEach(() => {
         browser.get(browser.baseUrl);
