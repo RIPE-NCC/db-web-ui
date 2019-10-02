@@ -25,11 +25,11 @@ build:
         - backend/target/failsafe-reports/TEST-*.xml
 
 karma-test:
-  stage: karma test
+  stage: test
   script:
     - cd frontend && npm run test-remote
 
 e2e-test:
-  stage: e2e-test
+  stage: test
   script:
     - cd frontend && npm run e2e-remote
