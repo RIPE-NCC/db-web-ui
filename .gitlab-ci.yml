@@ -1,12 +1,14 @@
 image: maven:3.6-jdk-8
+# image: db-web-ui-build:1
 
 variables:
 #  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
 before_script:
-# SB: yuck.. surely there must be a better way to install npm:
+# TODO: this will be moved into db-web-ui-build docker image
   - curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
+# END TODO
 
 stages:
   - build
@@ -31,10 +33,48 @@ build:
 
 karma:
   stage: karma-test
+# TODO: this will be moved into db-web-ui-build docker image
+  before_script:
+    - apt-get update && apt-get install -y \
+    software-properties-common \
+    unzip \
+    curl \
+    xvfb 
+    - curl https://dl-ssl.google.com/linux/linux_signing_key.pub -o /tmp/google.pub \
+    && cat /tmp/google.pub | apt-key add -; rm /tmp/google.pub \
+    && echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google.list \
+    && mkdir -p /usr/share/desktop-directories \
+    && apt-get -y update && apt-get install -y google-chrome-stable
+    - dpkg-divert --add --rename --divert /opt/google/chrome/google-chrome.real /opt/google/chrome/google-chrome \
+    && echo "#!/bin/bash\nexec /opt/google/chrome/google-chrome.real --no-sandbox --disable-setuid-sandbox \"\$@\"" > /opt/google/chrome/google-chrome \
+    && chmod 755 /opt/google/chrome/google-chrome
+    - mkdir -p /opt/selenium \
+    && curl http://chromedriver.storage.googleapis.com/2.45/chromedriver_linux64.zip -o /opt/selenium/chromedriver_linux64.zip \
+    && cd /opt/selenium; unzip /opt/selenium/chromedriver_linux64.zip; rm -rf chromedriver_linux64.zip; ln -fs /opt/selenium/chromedriver /usr/local/bin/chromedriver;
+    - wget --no-verbose -O /tmp/geckodriver.tar.gz https://github.com/mozilla/geckodriver/releases/download/v$GECKODRIVER_VERSION/geckodriver-v0.23.0-linux64.tar.gz \
+  && rm -rf /opt/geckodriver \
+  && tar -C /opt -zxf /tmp/geckodriver.tar.gz \
+  && rm /tmp/geckodriver.tar.gz \
+  && mv /opt/geckodriver /opt/geckodriver-0.23.0 \
+  && chmod 755 /opt/geckodriver-0.23.0 \
+  && ln -fs /opt/geckodriver-0.23.0 /usr/bin/geckodriver \
+  && ln -fs /opt/geckodriver-0.23.0 /usr/bin/wires
+    - apt-get update && apt-get install -y \
+    python \
+    python-setuptools \
+    python-pip
+    - pip install selenium
+# END TODO
   script:
-    - cd frontend && npm run test-remote
+    - export DISPLAY=:20
+    - Xvfb :20 -screen 0 1366x768x16 &
+    - mvn install
+    - cd frontend && npm run test
 
 e2e:
   stage: e2e-test
   script:
-    - cd frontend && npm run e2e-remote
+    - export DISPLAY=:20
+    - Xvfb :20 -screen 0 1366x768x16 &
+    - mvn install
+    - cd frontend && npm run e2e
