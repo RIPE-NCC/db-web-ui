@@ -35,6 +35,7 @@ karma:
   stage: karma-test
 # TODO: this will be moved into db-web-ui-build docker image
   before_script:
+    - curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
     - apt-get update && apt-get install -y software-properties-common unzip curl xvfb 
     - curl https://dl-ssl.google.com/linux/linux_signing_key.pub -o /tmp/google.pub && cat /tmp/google.pub | apt-key add -; rm /tmp/google.pub && echo 'deb http://dl.google.com/linux/chrome/deb/ stable main' > /etc/apt/sources.list.d/google.list && mkdir -p /usr/share/desktop-directories && apt-get -y update && apt-get install -y google-chrome-stable
     - dpkg-divert --add --rename --divert /opt/google/chrome/google-chrome.real /opt/google/chrome/google-chrome && echo "#!/bin/bash\nexec /opt/google/chrome/google-chrome.real --no-sandbox --disable-setuid-sandbox \"\$@\"" > /opt/google/chrome/google-chrome && chmod 755 /opt/google/chrome/google-chrome
