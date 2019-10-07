@@ -100,7 +100,7 @@ export class ModalAuthenticationComponent {
                             .then((resp: any) => {
                                 this.selected.item.mine = true;
                                 this.selected.item.auth.push("SSO");
-                                this.credentialsService.removeCredentials(); // because it"s now an sso mntner
+                                this.credentialsService.removeCredentials(); // because it's now an sso mntner
                                 // report success back
                                 this.activeModal.close({$value: {selectedItem: this.selected.item, response: resp}});
                             }, (error: any) => {

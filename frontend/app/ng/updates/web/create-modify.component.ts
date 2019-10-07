@@ -180,7 +180,7 @@ export class CreateModifyComponent {
     }
 
     /*
-     * Select status list for resources based on parent"s status.
+     * Select status list for resources based on parent's status.
      */
     public resourceParentFound(parent: any) {
         // get the list of available statuses for the parent

@@ -14,7 +14,7 @@ describe("The aut-num editor", () => {
         page.selectObjectType("aut-num").click();
         page.btnNavigateToCreate.click();
         page.inpAutnum.sendKeys("AS9777");
-        // submit button shouldn"t be available
+        // submit button shouldn't be available
         page.scrollIntoView(page.btnSubmitForm);
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeTruthy();
         page.scrollIntoView(page.inpAsName);

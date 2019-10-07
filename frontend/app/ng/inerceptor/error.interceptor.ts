@@ -118,7 +118,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             // Code added to prevent 500 exploding to the user during autocomplete.
             // The real way to fix it is in Whois, but we"re waiting it to be deployed.
             // NOTE..........
-            // Added code to stop parent lookups from forcing nav to 404.html if they aren"t found.
+            // Added code to stop parent lookups from forcing nav to 404.html if they aren't found.
             if ((this.isServerError(error.status) || this.isNotFoundError(error.status)) && _.startsWith(error.url, "api/whois/autocomplete")) {
                 toBeSwallowed = true;
             }

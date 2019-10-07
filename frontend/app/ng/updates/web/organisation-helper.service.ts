@@ -61,7 +61,7 @@ export class OrganisationHelperService {
             roleForAbuseC = this.whoisResourcesService.wrapAttributes(roleForAbuseC);
             _.forEach(roleForAbuseC.getAllAttributesOnName("mnt-by"), (mnt) => {
                 roleForAbuseC = roleForAbuseC.removeAttribute(mnt);
-                roleForAbuseC = this.whoisResourcesService.wrapAttributes(roleForAbuseC); // I really don"t know when to use the wrappers! ;(
+                roleForAbuseC = this.whoisResourcesService.wrapAttributes(roleForAbuseC); // I really don't know when to use the wrappers! ;(
             });
 
             roleForAbuseC = this.whoisResourcesService.wrapAttributes(roleForAbuseC);

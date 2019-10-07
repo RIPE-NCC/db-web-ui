@@ -18,7 +18,7 @@ export class PrefixService {
      * @returns {boolean}
      */
     public isValidPrefix(str: string): boolean {
-        // here we have a string with a subnet mask, but dno if it"s v4 or v6 yet, so check...
+        // here we have a string with a subnet mask, but dno if it's v4 or v6 yet, so check...
         return this.isValidIpv4Prefix(str) || this.isValidIpv6Prefix(str);
     }
 
@@ -70,7 +70,7 @@ export class PrefixService {
             const ipv4 = new Address4(prefix);
             if (ipv4.isValid()) {
 
-                // It" used to find the array position that starts with 0. That"s why -1.
+                // It" used to find the array position that starts with 0. That's why -1.
                 const fixedOctet = Math.ceil(ipv4.subnetMask / 8) - 1;
 
                 const startOctet = parseInt(ipv4.startAddress().address.split(".")[fixedOctet]);

@@ -195,7 +195,7 @@ export class AttributeRendererComponent {
         }
 
         const cardinality = this.attributeMetadataService.getCardinality(objectType, attribute.name);
-        // check if there"s a limit
+        // check if there's a limit
         if (cardinality.minOccurs < 1) {
             return true;
         }

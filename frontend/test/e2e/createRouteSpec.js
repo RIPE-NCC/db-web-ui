@@ -14,7 +14,7 @@ describe("The route editor", () => {
         page.selectObjectType("route").click();
         page.btnNavigateToCreate.click();
         page.inpRoute.sendKeys("211.43.192.0/19\t");
-        // submit button shouldn"t be available
+        // submit button shouldn't be available
         page.scrollIntoView(page.btnSubmitForm);
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeTruthy();
         page.scrollIntoView(page.inpOrigin);

@@ -6,7 +6,7 @@ export class JsUtilService {
     /**
      * Checks the types of args against an array of expected JS types and throws a
      * TypeError if not. Uses the types returned by JsUtilService.typeOf(obj) rather
-     * than Javascript"s own.
+     * than Javascript's own.
      *
      * @param args JS built-in "arguments"
      * @param types String array of type names returned by typeOf

@@ -140,7 +140,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
             const mySsos = _.map(this.maintainers.sso, "key");
 
-            // NB don"t use the stupid enrichWithSso call cz it"s lame
+            // NB don't use the stupid enrichWithSso call cz it's lame
             const enriched = _.map(mntners, (mntnerAttr: any) => {
                 return {
                     key: mntnerAttr.value,
