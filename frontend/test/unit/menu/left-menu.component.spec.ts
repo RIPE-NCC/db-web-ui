@@ -44,7 +44,7 @@ describe("LeftHandMenuComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it("should show all menu items for a user with all roles", function () {
+    it("should show all menu items for a user with all roles", () => {
         environmentStatusService.isTrainingEnv.and.returnValue(false);
         environmentStatusService.isTestRcEnv.and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg(
@@ -66,7 +66,7 @@ describe("LeftHandMenuComponent", () => {
         expect(component.show.trainingEnv).toBe(false);
     });
 
-    it("should show just Resource/My Resources and RIPE Database for Training environment", function () {
+    it("should show just Resource/My Resources and RIPE Database for Training environment", () => {
         environmentStatusService.isTrainingEnv.and.returnValue(true);
         environmentStatusService.isTestRcEnv.and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg(
@@ -82,7 +82,7 @@ describe("LeftHandMenuComponent", () => {
         expect(component.show.trainingEnv).toBe(true);
     });
 
-    it("should show just Resource/My Resources and RIPE Database for Production Test environment", function () {
+    it("should show just Resource/My Resources and RIPE Database for Production Test environment", () => {
         environmentStatusService.isTrainingEnv.and.returnValue(false);
         environmentStatusService.isTestRcEnv.and.returnValue(true);
         component.orgDropDownSharedService.setSelectedOrg(
@@ -98,7 +98,7 @@ describe("LeftHandMenuComponent", () => {
         expect(component.show.trainingEnv).toBe(false);
     });
 
-    it("should show just Resource/My Resources and RIPE Database for Production Test environment", function () {
+    it("should show just Resource/My Resources and RIPE Database for Production Test environment", () => {
         environmentStatusService.isTrainingEnv.and.returnValue(false);
         environmentStatusService.isTestRcEnv.and.returnValue(true);
         component.orgDropDownSharedService.setSelectedOrg(
@@ -114,7 +114,7 @@ describe("LeftHandMenuComponent", () => {
         expect(component.show.trainingEnv).toBe(false);
     });
 
-    it("should not set anything if user has no roles", function () {
+    it("should not set anything if user has no roles", () => {
         component.orgDropDownSharedService.setSelectedOrg(null);
         expect(component.show.admin).toBe(false);
         expect(component.show.general).toBe(false);
@@ -131,7 +131,7 @@ describe("LeftHandMenuComponent", () => {
         expect(component.show.billing).toBe(false);
     });
 
-    it("should set menu for end user role", function () {
+    it("should set menu for end user role", () => {
         component.orgDropDownSharedService.setSelectedOrg(
             {
                 "orgObjectId": "ORG-OOO2-RIPE",
@@ -147,7 +147,7 @@ describe("LeftHandMenuComponent", () => {
         expect(component.show.billing).toBe(false);
     });
 
-    it("should set menu for user role without lir or organisation", function () {
+    it("should set menu for user role without lir or organisation", () => {
         component.orgDropDownSharedService.setSelectedOrg(
             {}
         );

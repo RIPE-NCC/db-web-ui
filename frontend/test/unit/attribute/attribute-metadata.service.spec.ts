@@ -68,13 +68,13 @@ describe("AttributeMetadataService", () => {
         expect(attributeMetadataService).toBeTruthy();
     });
 
-    it("should not crash", function () {
+    it("should not crash", () => {
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
         expect(!!attributes).toBe(true);
         expect(attributes.length).toBe(9);
     });
 
-    it("should create metadata for NOT co-maintained inetnum object with netname NOT read only", function () {
+    it("should create metadata for NOT co-maintained inetnum object with netname NOT read only", () => {
 
         const attributes = [{name: "mnt-by", value: "SOME-MNT"}];
         const type = "inetnum";
@@ -83,7 +83,7 @@ describe("AttributeMetadataService", () => {
         expect(isReadOnly).toBe(false);
     });
 
-    it("should create metadata for co-maintained inetnum object with netname read only", function () {
+    it("should create metadata for co-maintained inetnum object with netname read only", () => {
 
         const attributes = [{name: "mnt-by", value: "RIPE-NCC-HM-MNT"}];
         const type = "inetnum";
@@ -92,7 +92,7 @@ describe("AttributeMetadataService", () => {
         expect(isReadOnly).toBe(true);
     });
 
-    it("should create metadata for NOT co-maintained inet6num object with netname NOT read only", function () {
+    it("should create metadata for NOT co-maintained inet6num object with netname NOT read only", () => {
 
         const attributes = [{name: "mnt-by", value: "SOME-MNT"}];
         const type = "inet6num";
@@ -101,7 +101,7 @@ describe("AttributeMetadataService", () => {
         expect(isReadOnly).toBe(false);
     });
 
-    it("should create metadata for co-maintained inet6num object with netname read only", function () {
+    it("should create metadata for co-maintained inet6num object with netname read only", () => {
 
         const attributes = [{name: "mnt-by", value: "RIPE-NCC-HM-MNT"}];
         const type = "inet6num";
@@ -181,7 +181,7 @@ describe("AttributeMetadataService", () => {
         expect(isHidden).toBe(false);
     });
 
-    xit("should be able to calculate hidden state of an attribute with dependencies", function() {
+    xit("should be able to calculate hidden state of an attribute with dependencies", () => {
         let isHidden;
         const attributes = attributeMetadataService.determineAttributesForNewObject(objectType);
         let attrPrefix = attributes[0],

@@ -78,7 +78,7 @@ describe("CreateModifyComponent", () => {
         fixture = TestBed.createComponent(CreateModifyComponent);
     });
 
-    afterEach(function () {
+    afterEach(() => {
         httpMock.verify();
     });
 

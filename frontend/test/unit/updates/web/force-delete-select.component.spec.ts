@@ -7,7 +7,7 @@ import {PropertiesService} from "../../../../app/ng/properties.service";
 import {AlertsService} from "../../../../app/ng/shared/alert/alerts.service";
 import {AlertsComponent} from "../../../../app/ng/shared/alert/alerts.component";
 
-describe('ForceDeleteSelectComponent', function () {
+describe("ForceDeleteSelectComponent", () => {
 
     let httpMock: HttpTestingController;
     let fixture: ComponentFixture<ForceDeleteSelectComponent>;
@@ -30,16 +30,16 @@ describe('ForceDeleteSelectComponent', function () {
         component = fixture.componentInstance;
     });
 
-    afterEach(function() {
+    afterEach(() => {
         httpMock.verify();
     });
 
-    it('should navigate to force delete screen', function () {
+    it("should navigate to force delete screen", () => {
         fixture.detectChanges();
         component.selected = {
-            source: 'RIPE',
-            objectType: 'inetnum',
-            name: '127.0.0.1 - 127.0.0.10'
+            source: "RIPE",
+            objectType: "inetnum",
+            name: "127.0.0.1 - 127.0.0.10"
         };
 
         component.navigateToForceDelete();

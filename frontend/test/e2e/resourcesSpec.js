@@ -1,80 +1,73 @@
-/*global beforeEach, browser, by, describe, element, expect, it, require */
-
 // Local requires
-var page = require('./homePageObject');
+const page = require("./homePageObject");
 
-/*
- * Tests...
- */
-describe('Resources', function () {
+describe("Resources", () => {
 
-    'use strict';
-
-    beforeEach(function () {
-        browser.get(browser.baseUrl + '#/myresources/overview');
+    beforeEach(() => {
+        browser.get(browser.baseUrl + "#/myresources/overview");
     });
 
-    it('should show IPv4 resources for an LIR', function () {
+    it("should show IPv4 resources for an LIR", () => {
         expect(page.myResources.isPresent()).toEqual(true);
-        expect(page.myResourcesActiveTabLabel.getText()).toContain('IPv4');
+        expect(page.myResourcesActiveTabLabel.getText()).toContain("IPv4");
         expect(page.myResourcesActiveTabRows.count()).toBe(4);
-        expect(page.myResourcesActiveTabRows.get(0).getText()).toContain('194.104.0.0/24');
-        expect(page.myResourcesActiveTabRows.get(1).getText()).toContain('194.171.0.0/16');
-        expect(page.myResourcesActiveTabRows.get(2).getText()).toContain('195.169.0.0/16');
-        expect(page.myResourcesActiveTabRows.get(3).getText()).toContain('192.87.0.0/16');
+        expect(page.myResourcesActiveTabRows.get(0).getText()).toContain("194.104.0.0/24");
+        expect(page.myResourcesActiveTabRows.get(1).getText()).toContain("194.171.0.0/16");
+        expect(page.myResourcesActiveTabRows.get(2).getText()).toContain("195.169.0.0/16");
+        expect(page.myResourcesActiveTabRows.get(3).getText()).toContain("192.87.0.0/16");
     });
 
-    it('should show progressbar for IPv4 resources with status ALLOCATED PA', function () {
+    it("should show progressbar for IPv4 resources with status ALLOCATED PA", () => {
         expect(page.myResources.isPresent()).toEqual(true);
         expect(page.progressbarFromResourceItem(1).isPresent()).toEqual(true);
     });
 
-    it('should hide progressbar for IPv4 resources with status ASSIGNED PI', function () {
+    it("should hide progressbar for IPv4 resources with status ASSIGNED PI", () => {
         expect(page.myResources.isPresent()).toEqual(true);
         expect(page.progressbarFromResourceItem(0).isPresent()).toEqual(false);
     });
 
-    it('should show sponsored IPv4 resources', function () {
+    it("should show sponsored IPv4 resources", () => {
         page.scrollIntoView(page.tabsMySponsoredResources);
-        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('My Resources');
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("My Resources");
         // switch to Sponsored Resources
         page.tabSponsoredResources.click();
-        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('Sponsored Resources');
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("Sponsored Resources");
         expect(page.myResourcesActiveTabRows.count()).toBe(42);
         // switch back to My Resources
         page.scrollIntoView(page.tabsMySponsoredResources);
         page.tabMyResources.click();
     });
 
-    it('should show always Sponsores Resources tab after switching organisation without sponsored resources', () => {
+    it("should show always Sponsores Resources tab after switching organisation without sponsored resources", () => {
         page.scrollIntoView(page.tabsMySponsoredResources);
         page.tabSponsoredResources.click();
-        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('Sponsored Resources');
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("Sponsored Resources");
         page.scrollIntoView(page.orgSelector);
         page.orgSelector.click();
         // switch selected org to Viollier AG
         page.orgSelectorOptions.get(3).click();
         page.scrollIntoView(page.tabsMySponsoredResources);
-        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain('Sponsored Resources');
+        expect(page.tabsMySponsoredResourcesActiveLabel.getText()).toContain("Sponsored Resources");
         page.scrollIntoView(page.orgSelector);
         page.orgSelector.click();
         // switch back selected org to SURFnet
         page.orgSelectorOptions.get(0).click();
     });
 
-    it('should show menu item Request resources in ... button for selected LIR organisation', function () {
+    it("should show menu item Request resources in ... button for selected LIR organisation", () => {
         expect(page.btnTransfer.isPresent()).toEqual(true);
         page.btnTransfer.click();
-        expect(page.transferMenuItems.get(0).getText()).toContain('Transfer resources');
-        expect(page.transferMenuItems.get(1).getText()).toContain('Request resources');
+        expect(page.transferMenuItems.get(0).getText()).toContain("Transfer resources");
+        expect(page.transferMenuItems.get(1).getText()).toContain("Request resources");
         page.tabSponsoredResources.click();
         expect(page.btnTransfer.isPresent()).toEqual(true);
         page.btnTransfer.click();
-        expect(page.transferMenuItems.get(0).getText()).toContain('Start/stop sponsoring PI resources');
-        expect(page.transferMenuItems.get(1).getText()).toContain('Transfer customer\'s resources');
+        expect(page.transferMenuItems.get(0).getText()).toContain("Start/stop sponsoring PI resources");
+        expect(page.transferMenuItems.get(1).getText()).toContain("Transfer customer\'s resources");
     });
 
-    it('should hide ... button for selected not LIR organisation', function () {
+    it("should hide ... button for selected not LIR organisation", () => {
         page.orgSelector.click();
         //selected Swi Rop Gonggrijp - ORG
         page.orgSelectorOptions.get(2).click();
@@ -86,49 +79,49 @@ describe('Resources', function () {
         expect(page.transferMenuItems.count()).toEqual(2);
     });
 
-    it('should show Create assignment button on My Resources tab', function () {
+    it("should show Create assignment button on My Resources tab", () => {
         expect(page.btnCreateAssignment.isPresent()).toEqual(true);
     });
 
-    it('should navigate to create inetnum page on click button Create assignment', function () {
+    it("should navigate to create inetnum page on click button Create assignment", () => {
         expect(page.btnCreateAssignment.isPresent()).toEqual(true);
         page.btnCreateAssignment.click();
-        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + '#/webupdates/create/RIPE/inetnum');
+        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + "#/webupdates/create/RIPE/inetnum");
     });
 
-    it('should navigate to create inet6num page on click button Create assignment', function () {
+    it("should navigate to create inet6num page on click button Create assignment", () => {
         page.myResourcesTabs.get(1).click();
         expect(page.btnCreateAssignment.isPresent()).toEqual(true);
         page.btnCreateAssignment.click();
-        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + '#/webupdates/create/RIPE/inet6num');
+        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + "#/webupdates/create/RIPE/inet6num");
     });
 
-    it('should not show Create assignment button on ASN tab', function () {
+    it("should not show Create assignment button on ASN tab", () => {
         page.myResourcesTabs.get(2).click();
         expect(page.btnCreateAssignment.isPresent()).toEqual(false);
     });
 
-    it('should not show Create assignment button on Sponsored Resources tab', function () {
+    it("should not show Create assignment button on Sponsored Resources tab", () => {
         page.scrollIntoView(page.tabsMySponsoredResources);
         page.tabSponsoredResources.click();
         expect(page.btnCreateAssignment.isPresent()).toEqual(false);
     });
 
-    it('should show sponsored flag', function () {
-        expect(page.myResourcesActiveTabRows.get(3).all(by.css('flag')).get(2).getText()).toEqual('SPONSORED RESOURCE');
+    it("should show sponsored flag", () => {
+        expect(page.myResourcesActiveTabRows.get(3).all(by.css("flag")).get(2).getText()).toEqual("SPONSORED RESOURCE");
     });
 
-    it('should show out of region (RIPE-NONAUTH) autnum', function () {
+    it("should show out of region (RIPE-NONAUTH) autnum", () => {
         expect(page.myResources.isPresent()).toEqual(true);
         expect(page.myResourcesTabs.count()).toEqual(3);
         page.myResourcesTabs.get(2).click();
-        expect(page.myResourcesActiveTabLabel.getText()).toContain('ASN');
+        expect(page.myResourcesActiveTabLabel.getText()).toContain("ASN");
         expect(page.myResourcesActiveTabRows.count()).toBe(76);
         // RIPE-NONAUTH item - aut-num which is out of region
         expect(page.myResourcesActiveTabRows.get(75).isPresent()).toBeTruthy();
     });
 
-    it('should show ip usage for all IPv4 resources', function () {
+    it("should show ip usage for all IPv4 resources", () => {
         expect(page.resourcesIpUsage.isPresent()).toBeTruthy();
         expect(page.resourcesIpUsage.count()).toEqual(3);
         expect(page.resourcesIpUsage.get(0).getText()).toEqual("Total allocated: 3072");
@@ -136,7 +129,7 @@ describe('Resources', function () {
         expect(page.resourcesIpUsage.get(2).getText()).toEqual("Total allocated free: 1024");
     });
 
-    it('should show ip usage for all IPv6 resources', function () {
+    it("should show ip usage for all IPv6 resources", () => {
         page.myResourcesTabs.get(1).click();
         expect(page.resourcesIpUsage.isPresent()).toBeTruthy();
         expect(page.resourcesIpUsage.count()).toEqual(3);
@@ -145,12 +138,12 @@ describe('Resources', function () {
         expect(page.resourcesIpUsage.get(2).getText()).toEqual("Total allocated subnets free: 64K");
     });
 
-    it('should show ip usage for asn', function () {
+    it("should show ip usage for asn", () => {
         page.myResourcesTabs.get(2).click();
         expect(page.resourcesIpUsage.isPresent()).toBeFalsy();
     });
 
-    it('should not show ip usage for sponsored tabs', function () {
+    it("should not show ip usage for sponsored tabs", () => {
         page.tabSponsoredResources.click();
         page.myResourcesTabs.get(0).click();
         expect(page.resourcesIpUsage.isPresent()).toBeFalsy();

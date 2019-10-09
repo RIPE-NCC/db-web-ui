@@ -1,27 +1,24 @@
-/*global beforeEach, browser, describe, expect, it, require */
-'use strict';
-
 // Local requires
-var page = require('./homePageObject');
+const page = require("./homePageObject");
 
-describe('Resources detail', function () {
+describe("Resources detail", () => {
 
-    beforeEach(function () {
+    beforeEach(() => {
         browser.get(browser.baseUrl);
-        browser.manage().addCookie({name: 'activeMembershipId', value: '3629', path: '/'});
+        browser.manage().addCookie({name: "activeMembershipId", value: "3629", path: "/"});
     });
 
-    describe('for an ASSIGNED PI inetnum', function () {
-        beforeEach(function () {
-            browser.get(browser.baseUrl + '#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
+    describe("for an ASSIGNED PI inetnum", () => {
+        beforeEach(() => {
+            browser.get(browser.baseUrl + "#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
         });
 
-        it('should show whois object attributes', function () {
+        it("should show whois object attributes", () => {
 
-            var whoisObject = page.getWhoisObject();
-            var attributes = whoisObject.attributes();
+            const whoisObject = page.getWhoisObject();
+            const attributes = whoisObject.attributes();
 
-            var showMoreButton = whoisObject.showMoreButton();
+            const showMoreButton = whoisObject.showMoreButton();
             expect(showMoreButton.isPresent()).toEqual(false);
 
             expect(whoisObject.isPresent()).toEqual(true);
@@ -43,99 +40,99 @@ describe('Resources detail', function () {
             expect(attributes.get(12).getText()).toMatch(/last-modified: *2016-04-26T14:28:28Z/);
             expect(attributes.get(13).getText()).toMatch(/source:( *)RIPE/);
 
-            var ripeStatButton = page.getWhoisObject().showRipeStatButton();
+            const ripeStatButton = page.getWhoisObject().showRipeStatButton();
             expect(ripeStatButton.isPresent()).toEqual(true);
-            var url = ripeStatButton.getAttribute('href');
-            expect(url).toEqual('https://stat.ripe.net/192.87.0.0%20-%20192.87.255.255?sourceapp=ripedb');
+            const url = ripeStatButton.getAttribute("href");
+            expect(url).toEqual("https://stat.ripe.net/192.87.0.0%20-%20192.87.255.255?sourceapp=ripedb");
 
             expect(page.moreSpecificsTable.isPresent()).toEqual(true);
             expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
-            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('192.87.0.0/24');
-            expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('LEGACY');
-            expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual('SNET-HOMELAN');
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual("192.87.0.0/24");
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual("LEGACY");
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual("SNET-HOMELAN");
 
-            expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('192.87.1.0/24');
-            expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('LEGACY');
-            expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('NFRA');
+            expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual("192.87.1.0/24");
+            expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual("LEGACY");
+            expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual("NFRA");
 
             expect(page.btn1HierarchySelector.isPresent()).toEqual(true);
             expect(page.btn2HierarchySelector.isPresent()).toEqual(true);
 
-            var firstCellInTable = page.getContentInTableCell(page.getTableCell(page.moreSpecificsTable, 0, 0), 'a');
+            const firstCellInTable = page.getContentInTableCell(page.getTableCell(page.moreSpecificsTable, 0, 0), "a");
             page.scrollIntoView(firstCellInTable);
             firstCellInTable.click();
-            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('192.87.0.80/28');
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual("192.87.0.80/28");
             expect(page.btn1HierarchySelector.isPresent()).toEqual(true);
             expect(page.btn2HierarchySelector.isPresent()).toEqual(true);
 
         });
 
-        it('should not display address usage', function () {
+        it("should not display address usage", () => {
             expect(page.usageStatus.isPresent()).toEqual(false);
         });
 
-        it('should show the remarks field starting with hash (#)', function () {
-            var whoisObject = page.getWhoisObject();
-            var attributes = whoisObject.attributes();
+        it("should show the remarks field starting with hash (#)", () => {
+            const whoisObject = page.getWhoisObject();
+            const attributes = whoisObject.attributes();
             expect(attributes.get(10).getText()).toMatch(/remarks: *# should show remarks starting with hash/);
         });
 
-        it('should show comment behind value starting with hash (#)', function () {
-            var whoisObject = page.getWhoisObject();
-            var attributes = whoisObject.attributes();
+        it("should show comment behind value starting with hash (#)", () => {
+            const whoisObject = page.getWhoisObject();
+            const attributes = whoisObject.attributes();
             expect(attributes.get(2).getText()).toMatch(/descr: *first line of description # comment/);
         });
     });
 
-    describe('for inetnum with flags', function () {
+    describe("for inetnum with flags", () => {
 
-        beforeEach(function () {
-            browser.get(browser.baseUrl + '#/myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false');
+        beforeEach(() => {
+            browser.get(browser.baseUrl + "#/myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false");
         });
 
-        it('should contain 6 flags, 2 tickets and 2 dates', function () {
+        it("should contain 6 flags, 2 tickets and 2 dates", () => {
             expect(page.flagsContainer.isPresent()).toEqual(true);
             expect(page.flags.count()).toEqual(6);
-            expect(page.flags.get(2).getText()).toEqual('2014-03-21');
-            expect(page.flags.get(3).getText()).toEqual('NCC#2014033634');
-            expect(page.flags.get(4).getText()).toEqual('2014-03-21');
-            expect(page.flags.get(5).getText()).toEqual('NCC#2014033636');
+            expect(page.flags.get(2).getText()).toEqual("2014-03-21");
+            expect(page.flags.get(3).getText()).toEqual("NCC#2014033634");
+            expect(page.flags.get(4).getText()).toEqual("2014-03-21");
+            expect(page.flags.get(5).getText()).toEqual("NCC#2014033636");
         });
 
     });
 
-    describe('for inetnum with usage status', function () {
+    describe("for inetnum with usage status", () => {
 
-        beforeEach(function () {
-            browser.get(browser.baseUrl + '#/myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/');
+        beforeEach(() => {
+            browser.get(browser.baseUrl + "#/myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/");
         });
 
-        it('should display address usage', function () {
+        it("should display address usage", () => {
             expect(page.usageStatus.isPresent()).toEqual(true);
             expect(page.usageStatusStatistics.count()).toEqual(2);
-            expect(page.usageStatusStatistics.get(0).getText()).toEqual('80%');
-            expect(page.usageStatusStatistics.get(1).getText()).toEqual('20%');
+            expect(page.usageStatusStatistics.get(0).getText()).toEqual("80%");
+            expect(page.usageStatusStatistics.get(1).getText()).toEqual("20%");
         });
 
-        it('should contain 2 flags, 0 tickets and 0 dates', function () {
+        it("should contain 2 flags, 0 tickets and 0 dates", () => {
             expect(page.flagsContainer.isPresent()).toEqual(true);
             expect(page.flags.count()).toEqual(2);
         });
     });
 
-    describe('for inet6num', function () {
+    describe("for inet6num", () => {
 
-        beforeEach(function () {
-            browser.get(browser.baseUrl + '#/myresources/detail/inet6num/2001:7f8::%2F29/');
+        beforeEach(() => {
+            browser.get(browser.baseUrl + "#/myresources/detail/inet6num/2001:7f8::%2F29/");
         });
 
-        it('should show whois object attributes', function () {
+        it("should show whois object attributes", () => {
 
-            var whoisObject = page.getWhoisObject();
-            var attributes = whoisObject.attributes();
+            const whoisObject = page.getWhoisObject();
+            const attributes = whoisObject.attributes();
 
-            var showMoreButton = whoisObject.showMoreButton();
+            const showMoreButton = whoisObject.showMoreButton();
             expect(showMoreButton.isPresent()).toEqual(false);
 
             expect(whoisObject.isPresent()).toEqual(true);
@@ -152,34 +149,34 @@ describe('Resources detail', function () {
             expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
             // filtering content in table text about number of items in table should change
-            expect(page.numberOfMoreSpecific.getText()).toEqual('Total more specifics:');
-            page.filterOfMoreSpecific.sendKeys('nooo');
-            expect(page.numberOfMoreSpecific.getText()).toEqual('Showing out of');
+            expect(page.numberOfMoreSpecific.getText()).toEqual("Total more specifics:");
+            page.filterOfMoreSpecific.sendKeys("nooo");
+            expect(page.numberOfMoreSpecific.getText()).toEqual("Showing out of");
             page.filterOfMoreSpecific.clear();
 
-            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual('2001:7f8::/48');
-            expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual('ASSIGNED PI');
-            expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual('DE-CIX-IXP-20010913');
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual("2001:7f8::/48");
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual("ASSIGNED PI");
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual("DE-CIX-IXP-20010913");
 
-            expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual('2001:7f8:1::/48');
-            expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual('ASSIGNED PI');
-            expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual('AMS-IX-20010913');
+            expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual("2001:7f8:1::/48");
+            expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual("ASSIGNED PI");
+            expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual("AMS-IX-20010913");
         });
     });
 
 
-    describe('for aut-num with loads of attributes', function () {
+    describe("for aut-num with loads of attributes", () => {
 
-        beforeEach(function () {
-            browser.get(browser.baseUrl + '#/myresources/detail/aut-num/AS204056/');
+        beforeEach(() => {
+            browser.get(browser.baseUrl + "#/myresources/detail/aut-num/AS204056/");
         });
 
-        it('should show a partial view that can be expanded', function () {
+        it("should show a partial view that can be expanded", () => {
 
-            var whoisObject = page.getWhoisObject();
-            var attributes = whoisObject.attributes();
+            const whoisObject = page.getWhoisObject();
+            const attributes = whoisObject.attributes();
 
-            var showMoreButton = whoisObject.showMoreButton();
+            const showMoreButton = whoisObject.showMoreButton();
             expect(showMoreButton.isPresent()).toEqual(true);
 
             expect(whoisObject.isPresent()).toEqual(true);
@@ -247,21 +244,21 @@ describe('Resources detail', function () {
             expect(page.moreSpecificsTable.isPresent()).toEqual(false);
         });
 
-        it('should contain 4 flags, 1 ticket and 1 date', function () {
+        it("should contain 4 flags, 1 ticket and 1 date", () => {
             expect(page.flagsContainer.isPresent()).toEqual(true);
             expect(page.flags.count()).toEqual(4);
-            expect(page.flags.get(2).getText()).toEqual('2017-06-19');
-            expect(page.flags.get(3).getText()).toEqual('NCC#201001020355');
+            expect(page.flags.get(2).getText()).toEqual("2017-06-19");
+            expect(page.flags.get(3).getText()).toEqual("NCC#201001020355");
         });
     });
 
-    describe('for out of region aut-num', function () {
+    describe("for out of region aut-num", () => {
 
-        beforeEach(function () {
-            browser.get(browser.baseUrl + '#/myresources/detail/aut-num/AS36867/');
+        beforeEach(() => {
+            browser.get(browser.baseUrl + "#/myresources/detail/aut-num/AS36867/");
         });
 
-        it('should show out of region aut-num', function () {
+        it("should show out of region aut-num", () => {
             let whoisObject = page.getWhoisObject();
             let attributes = whoisObject.attributes();
             expect(whoisObject.isPresent()).toEqual(true);
@@ -274,23 +271,23 @@ describe('Resources detail', function () {
             expect(attributes.get(5).getText()).toMatch(/tech-c: *JK9622-RIPE/);
             expect(attributes.get(6).getText()).toMatch(/status: *OTHER/);
             expect(attributes.get(11).getText()).toMatch(/source: *RIPE-NONAUTH/);
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(0).getAttribute('href')).toContain('?source=ripe-nonauth&key=AS36867&type=aut-num');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(3).getAttribute('href')).toContain('?source=ripe-nonauth&key=ORG-Sb3-RIPE&type=organisation');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(4).getAttribute('href')).toContain('?source=ripe-nonauth&key=SNS1-RIPE&type=role');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(5).getAttribute('href')).toContain('?source=ripe-nonauth&key=JK9622-RIPE&type=person');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(7).getAttribute('href')).toContain('?source=ripe-nonauth&key=KOKONET-MNT&type=mntner');
-            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(8).getAttribute('href')).toContain('?source=ripe-nonauth&key=RIPE-NCC-RPSL-MNT&type=mntner');
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(0).getAttribute("href")).toContain("?source=ripe-nonauth&key=AS36867&type=aut-num");
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(3).getAttribute("href")).toContain("?source=ripe-nonauth&key=ORG-Sb3-RIPE&type=organisation");
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(4).getAttribute("href")).toContain("?source=ripe-nonauth&key=SNS1-RIPE&type=role");
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(5).getAttribute("href")).toContain("?source=ripe-nonauth&key=JK9622-RIPE&type=person");
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(7).getAttribute("href")).toContain("?source=ripe-nonauth&key=KOKONET-MNT&type=mntner");
+            expect(page.getAttributeHrefFromWhoisObjectOnLookupPage(8).getAttribute("href")).toContain("?source=ripe-nonauth&key=RIPE-NCC-RPSL-MNT&type=mntner");
         });
 
-        it('should edit and update out of region aut-num', function () {
+        it("should edit and update out of region aut-num", () => {
             page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
-            page.modalInpPassword.sendKeys('KOKONET-MNT');
+            page.modalInpPassword.sendKeys("KOKONET-MNT");
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
             expect(page.inpDescr.isPresent()).toBe(true);
             page.scrollIntoView(page.inpDescr);
-            page.inpDescr.sendKeys('Updated test description');
+            page.inpDescr.sendKeys("Updated test description");
             page.scrollIntoView(page.inpDescr);
             page.btnAddAnAttribute(page.inpDescr).click();
             page.scrollIntoView(page.modal);
@@ -301,18 +298,18 @@ describe('Resources detail', function () {
             expect(page.inpDescr2.isPresent()).toBe(false);
 
             // source field should be disabled
-            expect(page.woeSource.getAttribute('disabled')).toBeTruthy();
+            expect(page.woeSource.getAttribute("disabled")).toBeTruthy();
 
             page.scrollIntoView(page.btnSubmitObject);
             page.btnSubmitObject.click();
             expect(page.successMessage.isPresent()).toBe(true);
         });
 
-        it('should contain 2 flags', function () {
+        it("should contain 2 flags", () => {
             expect(page.flagsContainer.isPresent()).toEqual(true);
             expect(page.flags.count()).toEqual(2);
-            expect(page.flags.get(0).getText()).toEqual('OTHER');
-            expect(page.flags.get(1).getText()).toEqual('KOKONET-BGP');
+            expect(page.flags.get(0).getText()).toEqual("OTHER");
+            expect(page.flags.get(1).getText()).toEqual("KOKONET-BGP");
         });
     });
 });

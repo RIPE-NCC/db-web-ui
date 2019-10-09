@@ -33,12 +33,12 @@ describe("QueryService", () => {
         expect(queryService).toBeTruthy();
     });
 
-    it("should not generate a link if there is no text", function () {
+    it("should not generate a link if there is no text", () => {
         expect(queryService.buildPermalink(qp)).toEqual("");
         expect(queryService.buildQueryStringForLink(qp)).toEqual("");
     });
 
-    it("should generate a link for text search", function () {
+    it("should generate a link for text search", () => {
         qp.types = null;
         qp.inverse = null;
         qp.hierarchy = "";
@@ -67,7 +67,7 @@ describe("QueryService", () => {
         expect(queryService.buildQueryStringForLink(qp)).toEqual("query-string=yorkshire&source=TEST");
     });
 
-    it("should generate a link for a text search with options", function () {
+    it("should generate a link for a text search with options", () => {
         qp.queryText = "   yorkshire   ";
         qp.types = {MNTNER: true, ORGANISATION: false, AS_SET: true};
         qp.inverse = {MNT_REF: true, form: false, MNT_BY: true};
@@ -84,7 +84,7 @@ describe("QueryService", () => {
             "flags=no-referenced&flags=no-irt&flags=no-filtering&source=TEST");
     });
 
-    it("should handle multiple search terms", function () {
+    it("should handle multiple search terms", () => {
         qp.queryText = "middlestown;wakefield;yorkshire;horbury;ossett;dewsbury;netherton";
         qp.types = {MNTNER: true, ORGANISATION: false, AS_SET: true};
         qp.inverse = {MNT_REF: true, form: false, MNT_BY: true};

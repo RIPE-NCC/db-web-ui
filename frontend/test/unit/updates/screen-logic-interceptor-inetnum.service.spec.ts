@@ -41,145 +41,145 @@ describe("ScreenLogicInterceptorService InetNum", () => {
         whoisMetaService = TestBed.get(WhoisMetaService);
     });
 
-    it("should disable org attribute from inetnum when status is ASSIGNED PI", function() {
+    it("should disable org attribute from inetnum when status is ASSIGNED PI", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("status", "ASSIGNED PI");
 
-        var attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
-        var orgAttr = attributes.getSingleAttributeOnName("org");
+        const orgAttr = attributes.getSingleAttributeOnName("org");
         expect(orgAttr.$$meta.$$disable).toBe(true);
     });
 
-    it("should not remove sponsoring org from inetnum addable attributes when status is LEGACY", function() {
+    it("should not remove sponsoring org from inetnum addable attributes when status is LEGACY", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("status", "LEGACY");
 
-        var addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
+        const addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
 
-        var filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
+        const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
 
-        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        const sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
-    it("should not remove sponsoring org from inetnum addable attributes when status is ASSIGNED-PI", function() {
+    it("should not remove sponsoring org from inetnum addable attributes when status is ASSIGNED-PI", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("status", "ASSIGNED PI");
 
-        var addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
+        const addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
 
-        var filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
+        const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
 
-        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        const sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
-    it("should not remove sponsoring org from inetnum addable attributes when status is ASSIGNED-ANYCAST", function() {
+    it("should not remove sponsoring org from inetnum addable attributes when status is ASSIGNED-ANYCAST", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("status", "ASSIGNED ANYCAST");
 
-        var addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
+        const addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
 
-        var filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
+        const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
 
-        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        const sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
-    it("should remove sponsoring org from inetnum addable attributes when status is not ASSIGNED-PI or ASSIGNED-ANYCAST", function() {
+    it("should remove sponsoring org from inetnum addable attributes when status is not ASSIGNED-PI or ASSIGNED-ANYCAST", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("status", "ASSIGNED");
 
-        var addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
+        const addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
 
-        var filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
+        const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
 
-        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        const sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
         expect(sponsoringOrgAttr).toBeUndefined();
     });
 
-    it("should not remove sponsoring org from inetnum addable attributes when status is empty", function() {
+    it("should not remove sponsoring org from inetnum addable attributes when status is empty", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("status", "");
 
-        var addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
+        const addableAttributes = _wrap("inetnum", inetNumSubject.getAddableAttributes("inetnum", inetNumSubject));
 
-        var filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
+        const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inetnum", inetNumSubject, addableAttributes);
 
-        var sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        const sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
-    it("should disable mnt-domains with ripe maintainers on modify", function() {
+    it("should disable mnt-domains with ripe maintainers on modify", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject .setSingleAttributeOnName("mnt-domains", "RIPE-NCC-HM-MNT");
 
-        var attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
-        var mntDomains = attributes.getSingleAttributeOnName("mnt-domains");
+        const mntDomains = attributes.getSingleAttributeOnName("mnt-domains");
         expect(mntDomains.$$meta.$$disable).toBe(true);
     });
 
-    it("should NOT disable mnt-domains with non-ripe maintainers on modify", function() {
+    it("should NOT disable mnt-domains with non-ripe maintainers on modify", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("mnt-domains", "NON-RIPE-MNT");
 
-        var attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
-        var mntDomains = attributes.getSingleAttributeOnName("mnt-domains");
+        const mntDomains = attributes.getSingleAttributeOnName("mnt-domains");
         expect(mntDomains.$$meta.$$disable).toBeFalsy();
     });
 
-    it("should disable mnt-lower with ripe maintainers on modify", function() {
+    it("should disable mnt-lower with ripe maintainers on modify", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("mnt-lower", "RIPE-NCC-HM-MNT");
 
-        var attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
-        var mntLower = attributes.getSingleAttributeOnName("mnt-lower");
+        const mntLower = attributes.getSingleAttributeOnName("mnt-lower");
         expect(mntLower.$$meta.$$disable).toBe(true);
     });
 
-    it("should NOT disable mnt-lower with non-ripe maintainers on modify", function() {
+    it("should NOT disable mnt-lower with non-ripe maintainers on modify", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("mnt-lower", "NON-RIPE-MNT");
 
-        var attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
-        var mntLower = attributes.getSingleAttributeOnName("mnt-lower");
+        const mntLower = attributes.getSingleAttributeOnName("mnt-lower");
         expect(mntLower.$$meta.$$disable).toBeFalsy();
     });
 
-    it("should disable mnt-routes with ripe maintainers on modify", function() {
+    it("should disable mnt-routes with ripe maintainers on modify", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("mnt-routes", "RIPE-NCC-HM-MNT");
 
-        var attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
-        var mntLower = attributes.getSingleAttributeOnName("mnt-routes");
+        const mntLower = attributes.getSingleAttributeOnName("mnt-routes");
         expect(mntLower.$$meta.$$disable).toBe(true);
     });
 
-    it("should NOT disable mnt-routes with non-ripe maintainers on modify", function() {
+    it("should NOT disable mnt-routes with non-ripe maintainers on modify", () => {
 
-        var inetNumSubject = _wrap("inetnum", inetNumAttributes);
+        let inetNumSubject = _wrap("inetnum", inetNumAttributes);
         inetNumSubject.setSingleAttributeOnName("mnt-routes", "NON-RIPE-MNT");
 
-        var attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
+        const attributes = interceptor.beforeEdit("Modify", "RIPE", "inetnum", inetNumSubject);
 
-        var mntLower = attributes.getSingleAttributeOnName("mnt-routes");
+        const mntLower = attributes.getSingleAttributeOnName("mnt-routes");
         expect(mntLower.$$meta.$$disable).toBeFalsy();
     });
 

@@ -55,7 +55,7 @@ describe("ScreenLogicInterceptorService", () => {
     });
 
     it("should set default source before-edit any object on Create operation", () => {
-        let before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType('organisation'));
+        let before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
 
         let errors: string[] = [];
         let warnings: string[] = [];

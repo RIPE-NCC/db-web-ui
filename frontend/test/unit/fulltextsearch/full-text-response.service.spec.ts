@@ -17,15 +17,15 @@ describe("FullTextResponseService", () => {
     });
 
     it("should be able to parse an empty Solr response", () => {
-        var result = fullTextResponseService.parseResponse(fts_193001);
+        const result = fullTextResponseService.parseResponse(fts_193001);
         expect(result.details.length).toEqual(0);
         expect(result.summary.length).toEqual(0);
     });
 
     it("should be able to parse a Solr response", () => {
-        var result = fullTextResponseService.parseResponse(fts_193000_2);
+        const result = fullTextResponseService.parseResponse(fts_193000_2);
 
-        var expected = {
+        const expected = {
             names: [
                 "193.0.0.0 - 195.255.255.255",
                 "193.0.0.0 - 193.0.7.255",
@@ -39,15 +39,15 @@ describe("FullTextResponseService", () => {
         expect(result.details.length).toEqual(7);
         expect(result.summary.length).toEqual(4);
 
-        for (var i = 0; i < result.details.length; i++) {
-            var r = result.details[i];
+        for (let i = 0; i < result.details.length; i++) {
+            const r = result.details[i];
             expect(r.value).toEqual(expected.names[i]);
         }
     });
 
     it("should be able to parse a paged response", () => {
-        var result = fullTextResponseService.parseResponse(fts_koko);
-        var expected = {
+        const result = fullTextResponseService.parseResponse(fts_koko);
+        const expected = {
             names: [
                 "2.116.69.224 - 2.116.69.231",
                 "2.112.119.252 - 2.112.119.255",
@@ -63,14 +63,14 @@ describe("FullTextResponseService", () => {
         };
         expect(result.details.length).toEqual(10);
         expect(result.summary.length).toEqual(3);
-        for (var i = 0; i < result.details.length; i++) {
-            var r = result.details[i];
+        for (let i = 0; i < result.details.length; i++) {
+            const r = result.details[i];
             expect(r.value).toEqual(expected.names[i]);
         }
     });
 
     it("should fail gracefully if highlighting is not present", () => {
-        var result;
+        let result;
 
         result = fullTextResponseService.parseResponse(fts_nohighlighting);
         expect(result.details.length).toEqual(0);
@@ -81,9 +81,9 @@ describe("FullTextResponseService", () => {
     });
 
     it("should not show summaries if facets are not present", () => {
-        var data = fts_193000_1;
+        let data = fts_193000_1;
         data.lsts.splice(2, 1);
-        var result = fullTextResponseService.parseResponse(data);
+        const result = fullTextResponseService.parseResponse(data);
         expect(result.details.length).toEqual(7);
         expect(result.summary.length).toEqual(0);
     });
@@ -192,7 +192,7 @@ const fts_193001: any = {
 };
 
 // medium
-var fts_193000_1: any = {
+const fts_193000_1: any = {
     "result": {
         "name": "response",
         "numFound": 7,
@@ -2031,7 +2031,8 @@ var fts_193000_1: any = {
         }
     }]
 };
-var fts_193000_2: any = {
+
+const fts_193000_2: any = {
     "result": {
         "name": "response",
         "numFound": 7,

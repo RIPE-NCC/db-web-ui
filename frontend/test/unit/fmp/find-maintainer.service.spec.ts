@@ -200,7 +200,7 @@ describe("FindMaintainerService", () => {
         req.flush(data, mockErrorResponse);
     });
 
-    it("should report error validating mail", function () {
+    it("should report error validating mail", () => {
         const maintainerKey = "I-AM-MNT";
         const mockErrorResponse = { status: 404, statusText: "Not Found" };
         const data = "unable to send email";
@@ -213,7 +213,7 @@ describe("FindMaintainerService", () => {
         req.flush(data, mockErrorResponse);
     });
 
-    it("should report error email unauthorized", function () {
+    it("should report error email unauthorized", () => {
         const maintainerKey = "I-AM-MNT";
         const mockErrorResponse = { status: 401, statusText: "Unauthorized" };
         const data = "unable to send email";

@@ -94,14 +94,14 @@ describe("CreateModifyComponent for organisation", () => {
         await fixture.whenStable();
     });
 
-    afterEach(function () {
+    afterEach(() => {
         httpMock.verify();
     });
 
     it("should populate abuse-c with new role\'s nic-hdl", async () => {
         component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
         modalMock.open.and.returnValue({componentInstance: {}, result: of(ROLE_OBJ).toPromise()});
-        const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c")
+        const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c");
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
         httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush({});
@@ -111,7 +111,7 @@ describe("CreateModifyComponent for organisation", () => {
     it("should populate component.roleForAbuseC", async () => {
         component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
         modalMock.open.and.returnValue({componentInstance: {}, result: of(ROLE_OBJ).toPromise()});
-        const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c")
+        const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c");
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
         httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush({});

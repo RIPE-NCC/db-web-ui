@@ -905,7 +905,7 @@ export class CreateModifyComponent {
                 this.restCallInProgress = false;
                 try {
                     const whoisResources = error.data;
-                    this.attributes = this.wrapAndEnrichResources(this.objectType, error.data);
+                    this.wrapAndEnrichResources(this.objectType, error.data);
                     this.alertService.setErrors(whoisResources);
                 } catch (e) {
                     console.error("Error fetching sso-mntners for SSO:" + JSON.stringify(error));
@@ -1010,6 +1010,8 @@ export class CreateModifyComponent {
         if (this.operation === "Modify" && this.objectType === "mntner") {
             if (associationResp) {
                 this.wrapAndEnrichResources(this.objectType, associationResp);
+                // save object for later diff in display-screen
+                this.messageStoreService.add("DIFF", this.attributes);
             } else {
                 let password = null;
                 if (this.credentialsService.hasCredentials()) {
@@ -1030,7 +1032,6 @@ export class CreateModifyComponent {
 
                         }, () => {
                             this.restCallInProgress = false;
-                            // ignore
                         },
                     );
             }

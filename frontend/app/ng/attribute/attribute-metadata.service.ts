@@ -341,7 +341,7 @@ export class AttributeMetadataService {
         }
 
         let target;
-        // Evaluate the "invalid"s and return the first true result
+        // Evaluate the "invalid's and return the first true result
         if (this.jsUtils.typeOf(attrMetadata.invalid) === "string") {
             target = _.filter(attributes, (o) => {
                 return o.name === attrMetadata.invalid;

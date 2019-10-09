@@ -41,7 +41,7 @@ describe("WhoisMetaService", () => {
 
     it("should enrich attributes with meta attributes for a given type", () => {
 
-        var attrs = [
+        const attrs = [
             {name: "status", value: "mandatory1value", link: {type: "locator", href: "http://abc.com/here"}},
             {name: "mnt-lower", value: "optional1value", comment: "My comment", "referenced-type": "dummy"}
         ];
@@ -217,7 +217,7 @@ describe("WhoisMetaService", () => {
         expect(whoisMetaService.getMandatoryAttributesOnObjectType("key-cert")).toEqual([
             {
                 name: "key-cert",
-                value: '',
+                value: "",
                 comment: undefined,
                 link: undefined,
                 "referenced-type": undefined,
@@ -226,7 +226,7 @@ describe("WhoisMetaService", () => {
                 }
             }, {
                 name: "certif",
-                value: '',
+                value: "",
                 comment: undefined,
                 link: undefined,
                 "referenced-type": undefined,
@@ -235,7 +235,7 @@ describe("WhoisMetaService", () => {
                 }
             }, {
                 name: "mnt-by",
-                value: '',
+                value: "",
                 comment: undefined,
                 link: undefined,
                 "referenced-type": undefined,
@@ -249,7 +249,7 @@ describe("WhoisMetaService", () => {
                 }
             }, {
                 name: "source",
-                value: '',
+                value: "",
                 comment: undefined,
                 link: undefined,
                 "referenced-type": undefined,
@@ -261,7 +261,7 @@ describe("WhoisMetaService", () => {
     });
 
     it("should return empty array for non existing object type", () => {
-        var mandatoryAttributesOnObjectType = whoisMetaService.getMandatoryAttributesOnObjectType("blablabla");
+        const mandatoryAttributesOnObjectType = whoisMetaService.getMandatoryAttributesOnObjectType("blablabla");
         expect(mandatoryAttributesOnObjectType).toEqual([]);
     });
 

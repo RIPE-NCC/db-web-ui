@@ -1,26 +1,19 @@
-/*global beforeEach, browser, describe, expect, it, require */
-
 // Local requires
-var page = require('./homePageObject');
+const page = require("./homePageObject");
 
-/*
- * Tests...
- */
-describe('The organisation drop-down box', () => {
+describe("The organisation drop-down box", () => {
 
-    'use strict';
-
-    beforeEach(function () {
-        browser.get(browser.baseUrl + '#/myresources/overview');
+    beforeEach(() => {
+        browser.get(browser.baseUrl + "#/myresources/overview");
     });
 
-    it('should be shown when a user has an LIR', () => {
+    it("should be shown when a user has an LIR", () => {
         expect(page.orgSelector.isPresent()).toEqual(true);
         page.orgSelector.click();
         expect (page.orgSelectorOptions.count()).toBe(5);
     });
 
-    it('should be ordered members and the end users organisations sorted alphabetically by name', () => {
+    it("should be ordered members and the end users organisations sorted alphabetically by name", () => {
         page.orgSelector.click();
         expect (page.orgSelectorOptions.isPresent()).toEqual(true);
         // member

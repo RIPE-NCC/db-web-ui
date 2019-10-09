@@ -63,11 +63,11 @@ describe("ModalAuthenticationComponent", () => {
 
     });
 
-    afterEach(function () {
+    afterEach(() => {
         httpMock.verify();
     });
 
-    it("should detect empty password", function () {
+    it("should detect empty password", () => {
         modalAuthenticationComponent.selected.item = {type: "mntner", key: "b-mnt"};
         modalAuthenticationComponent.selected.password = "";
         modalAuthenticationComponent.selected.associate = false;
@@ -103,7 +103,7 @@ describe("ModalAuthenticationComponent", () => {
 
         await componentFixture.whenStable();
 
-        expect(modalAuthenticationComponent.selected.message).toEqual('You have not supplied the correct password for mntner: \'b-mnt\'');
+        expect(modalAuthenticationComponent.selected.message).toEqual("You have not supplied the correct password for mntner: \'b-mnt\'");
     });
 
     it("should close the modal and return selected item when ok", async () => {

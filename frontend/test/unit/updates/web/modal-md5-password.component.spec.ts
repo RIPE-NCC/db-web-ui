@@ -1,12 +1,12 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {FormsModule} from "@angular/forms";
-import {SharedModule} from "../../../../app/ng/shared/shared.module";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
+import {SharedModule} from "../../../../app/ng/shared/shared.module";
 import {CryptService} from "../../../../app/ng/updates/web/crypt.service";
 import {ModalMd5PasswordComponent} from "../../../../app/ng/updates/web/modal-md5-password.component";
 
-describe('ModalMd5PasswordComponent', function () {
+describe("ModalMd5PasswordComponent", () => {
 
     let httpMock: HttpTestingController;
     let componentFixture: ComponentFixture<ModalMd5PasswordComponent>;
@@ -33,33 +33,33 @@ describe('ModalMd5PasswordComponent', function () {
         httpMock.verify()
     });
 
-    it('should close the modal and return selected md5 value when ok', function () {
-        modalMd5PasswordComponent.password = '123';
-        modalMd5PasswordComponent.passwordAgain = '123';
+    it("should close the modal and return selected md5 value when ok", () => {
+        modalMd5PasswordComponent.password = "123";
+        modalMd5PasswordComponent.passwordAgain = "123";
         componentFixture.detectChanges();
         modalMd5PasswordComponent.ok();
         expect(modalMock.close).toHaveBeenCalled( ); // md5 hash is unpredictable
     });
 
-    it('should report error when passwords are empty', function () {
-        modalMd5PasswordComponent.password = '';
-        modalMd5PasswordComponent.passwordAgain = '';
+    it("should report error when passwords are empty", () => {
+        modalMd5PasswordComponent.password = "";
+        modalMd5PasswordComponent.passwordAgain = "";
         componentFixture.detectChanges();
 
         modalMd5PasswordComponent.ok();
-        expect(modalMd5PasswordComponent.authPasswordMessage).toEqual('Password too short!');
+        expect(modalMd5PasswordComponent.authPasswordMessage).toEqual("Password too short!");
     });
 
-    it('should report error when passwords are not equal', function () {
-        modalMd5PasswordComponent.password = '123';
-        modalMd5PasswordComponent.passwordAgain = '1234';
+    it("should report error when passwords are not equal", () => {
+        modalMd5PasswordComponent.password = "123";
+        modalMd5PasswordComponent.passwordAgain = "1234";
         componentFixture.detectChanges();
 
         modalMd5PasswordComponent.ok();
-        expect(modalMd5PasswordComponent.authPasswordMessage).toEqual('Passwords do not match!');
+        expect(modalMd5PasswordComponent.authPasswordMessage).toEqual("Passwords do not match!");
     });
 
-    it('should report error the modal and return error when cancelled', function () {
+    it("should report error the modal and return error when cancelled", () => {
         componentFixture.detectChanges();
 
         modalMd5PasswordComponent.cancel();

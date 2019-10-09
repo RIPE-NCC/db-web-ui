@@ -40,7 +40,7 @@ describe("DomainObjectWizardComponent", () => {
         };
         component.ngOnInit();
         expect(component.attributes.length).toEqual(9);
-        var attrName = [
+        const attrName = [
             "prefix",
             "nserver",
             "nserver",

@@ -1,9 +1,5 @@
-/*global browser, by, element, module, require*/
-'use strict';
-
 // System requires
-var fs = require('fs');
-
+const fs = require('fs');
 
 // abstract writing screen shot to a file
 function writeToDisk(data, filename) {

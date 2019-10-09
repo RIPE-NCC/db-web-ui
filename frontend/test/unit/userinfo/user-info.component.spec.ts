@@ -5,7 +5,7 @@ import {UserInfoComponent} from "../../../app/ng/userinfo/user-info.component";
 import {PropertiesService} from "../../../app/ng/properties.service";
 import {IUserInfoResponseData} from "../../../app/ng/dropdown/org-data-type.model";
 
-declare var RIPE: any;
+declare const RIPE: any;
 
 //FIXME find way to inject RIPE
 xdescribe("UserInfoComponent", () => {

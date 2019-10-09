@@ -1,6 +1,8 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {FormsModule} from "@angular/forms";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {of} from "rxjs";
 import {AlertsComponent} from "../../../../app/ng/shared/alert/alerts.component";
 import {PropertiesService} from "../../../../app/ng/properties.service";
 import {AlertsService} from "../../../../app/ng/shared/alert/alerts.service";
@@ -13,9 +15,6 @@ import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.s
 import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
 import {CredentialsService} from "../../../../app/ng/shared/credentials.service";
 import {PrefixService} from "../../../../app/ng/domainobject/prefix.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {of} from "rxjs";
-
 
 let paramMapMock: ParamMap;
 let queryParamMock: ParamMap;
@@ -45,9 +44,9 @@ const createParams = (source: string, objectType: string, objectName: string) =>
     }
 };
 
-describe('ForceDeleteController', function () {
-    const INETNUM = '111 - 255';
-    const SOURCE = 'RIPE';
+describe("ForceDeleteController", () => {
+    const INETNUM = "111 - 255";
+    const SOURCE = "RIPE";
 
     let objectToDisplay: any;
 
@@ -96,13 +95,13 @@ describe('ForceDeleteController', function () {
             objects: {
                 object: [
                     {
-                        'primary-key': {attribute: [{name: 'inetnum', value: INETNUM}]},
+                        "primary-key": {attribute: [{name: "inetnum", value: INETNUM}]},
                         attributes: {
                             attribute: [
-                                {name: 'inetnum', value: INETNUM},
-                                {name: 'mnt-by', value: 'TEST-MNT'},
-                                {name: 'descr', value: 'description'},
-                                {name: 'source', value: 'RIPE'}
+                                {name: "inetnum", value: INETNUM},
+                                {name: "mnt-by", value: "TEST-MNT"},
+                                {name: "descr", value: "description"},
+                                {name: "source", value: "RIPE"}
                             ]
                         }
                     }
@@ -113,7 +112,7 @@ describe('ForceDeleteController', function () {
         forceDeleteComponent = componentFixture.componentInstance;
     });
 
-    afterEach(function () {
+    afterEach(() => {
         httpMock.verify();
     });
 
@@ -122,63 +121,63 @@ describe('ForceDeleteController', function () {
         await componentFixture.whenStable();
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/inetnum/111%20-%20255?unfiltered=true"}).flush(objectToDisplay);
         httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-            {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
+            {key: "TESTSSO-MNT", type: "mntner", auth: ["SSO"], mine: true}
         ]);
         httpMock.expectOne({ method: "DELETE", url: "api/whois/RIPE/inetnum/111%20-%20255?dry-run=true&reason=dry-run"}).flush(
             {
                 errormessages: {
                     errormessage: [{
-                        severity: 'Error',
-                        text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
+                        severity: "Error",
+                        text: `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`,
                         args: [
-                            {value: 'inetnum'}, {value: '194.219.52.240 - 194.219.52.243'},
-                            {value: 'mnt-by'}, {value: 'TESTSSO-MNT'}
+                            {value: "inetnum"}, {value: "194.219.52.240 - 194.219.52.243"},
+                            {value: "mnt-by"}, {value: "TESTSSO-MNT"}
                         ]
                     }, {
-                        severity: 'Error',
-                        text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
+                        severity: "Error",
+                        text: `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`,
                         args: [
-                            {value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
-                            {value: 'mnt-lower'}, {value: 'TEST1-MNT'}
+                            {value: "inetnum"}, {value: "194.219.0.0 - 194.219.255.255"},
+                            {value: "mnt-lower"}, {value: "TEST1-MNT"}
                         ]
                     }, {
-                        severity: 'Error',
-                        text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
-                        args: [{value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
-                            {value: 'mnt-by'}, {value: 'RIPE-NCC-HM-MNT, TEST2-MNT'}
+                        severity: "Error",
+                        text: `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`,
+                        args: [{value: "inetnum"}, {value: "194.219.0.0 - 194.219.255.255"},
+                            {value: "mnt-by"}, {value: "RIPE-NCC-HM-MNT, TEST2-MNT"}
                         ]
                     }, {
-                        severity: 'Info',
-                        text: 'Dry-run performed, no changes to the database have been made'
+                        severity: "Info",
+                        text: "Dry-run performed, no changes to the database have been made"
                     }]
                 }
             });
         await componentFixture.whenStable();
     };
 
-    it('should get objectType, source and name from url', async () => {
+    it("should get objectType, source and name from url", async () => {
         createParams(SOURCE, "inetnum", "111%20-%20255");
         componentFixture.detectChanges();
 
         await expectHttpCalls();
 
-        expect(forceDeleteComponent.object.type).toBe('inetnum');
+        expect(forceDeleteComponent.object.type).toBe("inetnum");
         expect(forceDeleteComponent.object.source).toBe(SOURCE);
         expect(forceDeleteComponent.object.name).toBe(INETNUM);
     });
 
-    it('should populate the ui with attributes', async () => {
+    it("should populate the ui with attributes", async () => {
         createParams(SOURCE, "inetnum", "111%20-%20255");
         componentFixture.detectChanges();
 
         await expectHttpCalls();
 
-        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName('inetnum').value).toBe(INETNUM);
-        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName('descr').value).toEqual('description');
-        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName("inetnum").value).toBe(INETNUM);
+        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName("descr").value).toEqual("description");
+        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
     });
 
-    it('should transition to display state if cancel is pressed', async () => {
+    it("should transition to display state if cancel is pressed", async () => {
         createParams(SOURCE, "inetnum", "111%20-%20255");
         componentFixture.detectChanges();
 
@@ -189,31 +188,31 @@ describe('ForceDeleteController', function () {
         expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/inetnum/111%20-%20255");
     });
 
-    it('should have errors on wrong type', function () {
+    it("should have errors on wrong type", () => {
         createParams(SOURCE, "mntner", "TPOLYCHNIA-MNT");
         componentFixture.detectChanges();
 
         expect(forceDeleteComponent.alertService.getErrors()[0].plainText)
-            .toBe('Only inetnum, inet6num, route, route6, domain object types are force-deletable');
+            .toBe("Only inetnum, inet6num, route, route6, domain object types are force-deletable");
     });
 
 
-    it('should show error on missing object key', function () {
+    it("should show error on missing object key", () => {
         createParams(SOURCE, "inetnum", undefined);
         componentFixture.detectChanges();
 
-        expect(forceDeleteComponent.alertService.getErrors()[0].plainText).toBe('Object key is missing');
+        expect(forceDeleteComponent.alertService.getErrors()[0].plainText).toBe("Object key is missing");
     });
 
-    it('should show error on missing source', function () {
+    it("should show error on missing source", () => {
         createParams(undefined, "inetnum", "asdf");
         componentFixture.detectChanges();
 
-        expect(forceDeleteComponent.alertService.getErrors()[0].plainText).toBe('Source is missing');
+        expect(forceDeleteComponent.alertService.getErrors()[0].plainText).toBe("Source is missing");
     });
 
 
-    it('should go to delete controler on reclaim', async () => {
+    it("should go to delete controler on reclaim", async () => {
         createParams(SOURCE, "inetnum", "111%20-%20255");
         componentFixture.detectChanges();
 
@@ -225,11 +224,11 @@ describe('ForceDeleteController', function () {
 
 });
 
-describe('ForceDeleteController should be able to handle escape objected with slash', function () {
+describe("ForceDeleteController should be able to handle escape objected with slash", () => {
 
-    const NAME = '12.235.32.0%2F19AS1680';
-    const SOURCE = 'RIPE';
-    const OBJECT_TYPE = 'route';
+    const NAME = "12.235.32.0%2F19AS1680";
+    const SOURCE = "RIPE";
+    const OBJECT_TYPE = "route";
 
     let httpMock: HttpTestingController;
     let componentFixture: ComponentFixture<ForceDeleteComponent>;
@@ -278,27 +277,27 @@ describe('ForceDeleteController should be able to handle escape objected with sl
         forceDeleteComponent = componentFixture.componentInstance;
     });
 
-    it('should get parameters from url', async () => {
+    it("should get parameters from url", async () => {
         createParams(SOURCE, OBJECT_TYPE, NAME);
         componentFixture.detectChanges();
 
         await componentFixture.whenStable();
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true"}).flush(objectToDisplay);
         httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-            {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
+            {key: "TESTSSO-MNT", type: "mntner", auth: ["SSO"], mine: true}
         ]);
         httpMock.expectOne({method: "DELETE", url: "api/whois/RIPE/route/12.235.32.0%2F19AS1680?dry-run=true&reason=dry-run"}).flush(dryRunDeleteFailure, {statusText: "error", status: 403});
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush([{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}]);
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-MNT"}).flush([{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}]);
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST2-MNT"}).flush([{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}]);
+        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW"]}]);
+        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-MNT"}).flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW"]}]);
+        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST2-MNT"}).flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW"]}]);
         await componentFixture.whenStable();
 
         expect(forceDeleteComponent.object.source).toBe(SOURCE);
-        expect(forceDeleteComponent.object.type).toBe('route');
-        expect(forceDeleteComponent.object.name).toBe('12.235.32.0/19AS1680');
+        expect(forceDeleteComponent.object.type).toBe("route");
+        expect(forceDeleteComponent.object.name).toBe("12.235.32.0/19AS1680");
     });
 
-    it('should present auth popup', async () => {
+    it("should present auth popup", async () => {
         createParams(SOURCE, OBJECT_TYPE, NAME);
         componentFixture.detectChanges();
 
@@ -306,13 +305,13 @@ describe('ForceDeleteController should be able to handle escape objected with sl
 
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true"}).flush(objectToDisplay);
         httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-            {key: 'TESTSSO-MNT', type: 'mntner', auth: ['SSO'], mine: true}
+            {key: "TESTSSO-MNT", type: "mntner", auth: ["SSO"], mine: true}
         ]);
 
         httpMock.expectOne({method: "DELETE", url: "api/whois/RIPE/route/12.235.32.0%2F19AS1680?dry-run=true&reason=dry-run"}).flush(dryRunDeleteFailure, {statusText: "error", status: 403});
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush([{key: 'TEST-MNT', type: 'mntner', auth: ['MD5-PW']}]);
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-MNT"}).flush([{key: 'TEST1-MNT', type: 'mntner', auth: ['MD5-PW']}]);
-        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST2-MNT"}).flush([{key: 'TEST2-MNT', type: 'mntner', auth: ['MD5-PW']}]);
+        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush([{key: "TEST-MNT", type: "mntner", auth: ["MD5-PW"]}]);
+        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST1-MNT"}).flush([{key: "TEST1-MNT", type: "mntner", auth: ["MD5-PW"]}]);
+        httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST2-MNT"}).flush([{key: "TEST2-MNT", type: "mntner", auth: ["MD5-PW"]}]);
         await componentFixture.whenStable();
 
         forceDeleteComponent.forceDelete();
@@ -327,12 +326,12 @@ describe('ForceDeleteController should be able to handle escape objected with sl
         objects: {
             object: [
                 {
-                    'primary-key': {attribute: [{name: 'route', value: '12.235.32.0/19AS1680'}]},
+                    "primary-key": {attribute: [{name: "route", value: "12.235.32.0/19AS1680"}]},
                     attributes: {
                         attribute: [
-                            {name: 'route', value: '12.235.32.0/19AS1680'},
-                            {name: 'mnt-by', value: 'TEST-MNT'},
-                            {name: 'source', value: 'RIPE'}
+                            {name: "route", value: "12.235.32.0/19AS1680"},
+                            {name: "mnt-by", value: "TEST-MNT"},
+                            {name: "source", value: "RIPE"}
                         ]
                     }
                 }
@@ -345,38 +344,33 @@ describe('ForceDeleteController should be able to handle escape objected with sl
         errormessages: {
             errormessage: [
                 {
-                    severity: 'Error',
-                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
+                    severity: "Error",
+                    text: `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`,
                     args: [
-                        {value: 'inetnum'}, {value: '194.219.52.240 - 194.219.52.243'},
-                        {value: 'mnt-by'}, {value: 'TEST-MNT'}
+                        {value: "inetnum"}, {value: "194.219.52.240 - 194.219.52.243"},
+                        {value: "mnt-by"}, {value: "TEST-MNT"}
                     ]
                 },
                 {
-                    severity: 'Error',
-                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
+                    severity: "Error",
+                    text: `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`,
                     args: [
-                        {value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
-                        {value: 'mnt-lower'}, {value: 'TEST1-MNT'}
+                        {value: "inetnum"}, {value: "194.219.0.0 - 194.219.255.255"},
+                        {value: "mnt-lower"}, {value: "TEST1-MNT"}
                     ]
                 },
                 {
-                    severity: 'Error',
-                    text: 'Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s',
-                    args: [{value: 'inetnum'}, {value: '194.219.0.0 - 194.219.255.255'},
-                        {value: 'mnt-by'}, {value: 'RIPE-NCC-HM-MNT, TEST2-MNT'}
+                    severity: "Error",
+                    text: `Authorisation for [%s] %s failed\nusing "%s:"\nnot authenticated by: %s`,
+                    args: [{value: "inetnum"}, {value: "194.219.0.0 - 194.219.255.255"},
+                        {value: "mnt-by"}, {value: "RIPE-NCC-HM-MNT, TEST2-MNT"}
                     ]
                 },
                 {
-                    severity: 'Info',
-                    text: 'Dry-run performed, no changes to the database have been made'
+                    severity: "Info",
+                    text: "Dry-run performed, no changes to the database have been made"
                 }
             ]
         }
-
     };
-
-
 });
-
-

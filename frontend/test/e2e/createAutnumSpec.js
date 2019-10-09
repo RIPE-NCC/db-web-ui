@@ -1,9 +1,6 @@
 // Local requires
-var page = require("./homePageObject");
+const page = require("./homePageObject");
 
-/*
- * Tests...
- */
 describe("The aut-num editor", () => {
 
     beforeEach(() => {

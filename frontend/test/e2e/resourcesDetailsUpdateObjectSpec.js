@@ -1,25 +1,25 @@
 // Local requires
-var page = require('./homePageObject');
+const page = require("./homePageObject");
 
-describe('Resources, update object', () => {
+describe("Resources, update object", () => {
 
     beforeEach(() => {
         browser.get(browser.baseUrl);
-        browser.manage().addCookie({name: 'activeMembershipId', value: '3629', path: '/'});
-        browser.get(browser.baseUrl + '#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/');
+        browser.manage().addCookie({name: "activeMembershipId", value: "3629", path: "/"});
+        browser.get(browser.baseUrl + "#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
     });
 
-    it('should allow editing of the object', () => {
+    it("should allow editing of the object", () => {
 
         page.scrollIntoView(page.btnUpdateObjectButton);
         page.btnUpdateObjectButton.click();
-        page.modalInpPassword.sendKeys('TPOL888-MNT');
+        page.modalInpPassword.sendKeys("TPOL888-MNT");
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
         expect(page.modal.isPresent()).toBe(false);
         expect(page.inpDescr.isPresent()).toBe(true);
         page.scrollIntoView(page.inpDescr);
-        page.inpDescr.sendKeys('Updated test description');
+        page.inpDescr.sendKeys("Updated test description");
 
         page.scrollIntoView(page.inpDescr);
         page.btnAddAnAttribute(page.inpDescr).click();
@@ -35,33 +35,33 @@ describe('Resources, update object', () => {
         expect(page.successMessage.isPresent()).toBe(true);
     });
 
-    describe('not comaintained by ripe', () =>  {
+    describe("not comaintained by ripe", () =>  {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + '#/myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false');
+            browser.get(browser.baseUrl + "#/myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false");
         });
 
-        it('should edit netname', function () {
+        it("should edit netname", function () {
             page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
-            page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
+            page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
             expect(page.modal.isPresent()).toBe(false);
 
             // ensure netname is editable and edit it
-            expect(page.woeNetname.getAttribute('disabled')).toBeFalsy();
+            expect(page.woeNetname.getAttribute("disabled")).toBeFalsy();
             page.woeNetname.clear();
-            page.woeNetname.sendKeys('some netname');
+            page.woeNetname.sendKeys("some netname");
 
             // and check the value has changed correctly
-            expect(page.woeNetname.getAttribute('value')).toBe('some netname');
+            expect(page.woeNetname.getAttribute("value")).toBe("some netname");
         });
 
-        it('should add org attribute', () => {
+        it("should add org attribute", () => {
             page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
-            page.modalInpPassword.sendKeys('TPOLYCHNIA4-MNT');
+            page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
             expect(page.modal.isPresent()).toBe(false);
@@ -77,17 +77,17 @@ describe('Resources, update object', () => {
 
     });
 
-    it('should allow the user to add abuse-c', () => {
+    it("should allow the user to add abuse-c", () => {
         page.scrollIntoView(page.btnUpdateObjectButton);
         page.btnUpdateObjectButton.click();
-        page.modalInpPassword.sendKeys('TPOL888-MNT');
+        page.modalInpPassword.sendKeys("TPOL888-MNT");
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
 
         page.scrollIntoView(page.inpDescr);
         page.btnAddAnAttribute(page.inpDescr).click();
         page.scrollIntoView(page.modal);
-        expect(page.selectFromList(page.modalAttributeList, 'no-such-attribute').isPresent()).toEqual(false);
-        expect(page.selectFromList(page.modalAttributeList, 'abuse-c').isPresent()).toEqual(true);
+        expect(page.selectFromList(page.modalAttributeList, "no-such-attribute").isPresent()).toEqual(false);
+        expect(page.selectFromList(page.modalAttributeList, "abuse-c").isPresent()).toEqual(true);
     });
 });

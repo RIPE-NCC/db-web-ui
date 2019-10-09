@@ -47,7 +47,7 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
-        var after = interceptor.beforeEdit("Create", "RIPE", "person", before, errors, warnings, infos);
+        const after = interceptor.beforeEdit("Create", "RIPE", "person", before, errors, warnings, infos);
 
         const nicHdle = after.getAllAttributesOnName("nic-hdl");
         expect(nicHdle.length).toEqual(1);
@@ -56,13 +56,13 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
     });
 
     it("should NOT set default nic-ndl before-edit person on Modify operation", () => {
-        var personSubject = _wrap("person", personAttributes);
+        let personSubject = _wrap("person", personAttributes);
         personSubject.setSingleAttributeOnName("nic-hdl", "SOME_NIC");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
-        var after = interceptor.beforeEdit("Modify", "RIPE", "person", personSubject, errors, warnings, infos);
+        const after = interceptor.beforeEdit("Modify", "RIPE", "person", personSubject, errors, warnings, infos);
 
         const nicHdle = after.getAllAttributesOnName("nic-hdl");
         expect(nicHdle.length).toEqual(1);
@@ -72,12 +72,12 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
     });
 
     it("should set default nic-ndl before-edit role on Create operation", () => {
-        var before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("role"));
+        const before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("role"));
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
-        var after = interceptor.beforeEdit("Create", "RIPE", "role", before, errors, warnings, infos);
+        const after = interceptor.beforeEdit("Create", "RIPE", "role", before, errors, warnings, infos);
 
         const nicHdle = after.getAllAttributesOnName("nic-hdl");
         expect(nicHdle.length).toEqual(1);
@@ -87,13 +87,13 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
     });
 
     it("should NOT set default nic-ndl before-edit role on Modify operation", () => {
-        var roleSubject = _wrap("person", roleAttributes);
+        const roleSubject = _wrap("person", roleAttributes);
         roleSubject.setSingleAttributeOnName("nic-hdl", "SOME_NIC");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
-        var after = interceptor.beforeEdit("Modify", "RIPE", "person", roleSubject, errors, warnings, infos);
+        const after = interceptor.beforeEdit("Modify", "RIPE", "person", roleSubject, errors, warnings, infos);
 
         const nicHdle = after.getAllAttributesOnName("nic-hdl");
         expect(nicHdle.length).toEqual(1);
@@ -106,50 +106,50 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
         return whoisResourcesService.wrapAndEnrichAttributes(type, attrs);
     };
 
-    var personAttributes = [{
-        name :"person",
-        value :"Name Removed"
-    }, {
-        name :"address",
-        value :"The Netherlands"
-    }, {
-        name :"phone",
-        value :"+31 20 ... ...."
-    }, {
-        name :"e-mail",
-        value :"****@ripe.net"
-    }, {
-        name :"mnt-by",
-        value :"aardvark-mnt"
-    }, {
-        name :"nic-hdl",
-        value :"DW-RIPE"
-    }, {
-        name :"source",
-        value :"RIPE"
-    } ];
+    const personAttributes = [{
+            name :"person",
+            value :"Name Removed"
+        }, {
+            name :"address",
+            value :"The Netherlands"
+        }, {
+            name :"phone",
+            value :"+31 20 ... ...."
+        }, {
+            name :"e-mail",
+            value :"****@ripe.net"
+        }, {
+            name :"mnt-by",
+            value :"aardvark-mnt"
+        }, {
+            name :"nic-hdl",
+            value :"DW-RIPE"
+        }, {
+            name :"source",
+            value :"RIPE"
+        } ];
 
-    var roleAttributes = [{
-        name :"role",
-        value :"Name Removed"
-    }, {
-        name :"address",
-        value :"The Netherlands"
-    }, {
-        name :"phone",
-        value :"+31 20 ... ...."
-    }, {
-        name :"e-mail",
-        value :"****@ripe.net"
-    }, {
-        name :"mnt-by",
-        value :"aardvark-mnt"
-    }, {
-        name :"nic-hdl",
-        value :"DW-RIPE"
-    }, {
-        name :"source",
-        value :"RIPE"
-    } ];
+    const roleAttributes = [{
+            name :"role",
+            value :"Name Removed"
+        }, {
+            name :"address",
+            value :"The Netherlands"
+        }, {
+            name :"phone",
+            value :"+31 20 ... ...."
+        }, {
+            name :"e-mail",
+            value :"****@ripe.net"
+        }, {
+            name :"mnt-by",
+            value :"aardvark-mnt"
+        }, {
+            name :"nic-hdl",
+            value :"DW-RIPE"
+        }, {
+            name :"source",
+            value :"RIPE"
+        } ];
 
 });

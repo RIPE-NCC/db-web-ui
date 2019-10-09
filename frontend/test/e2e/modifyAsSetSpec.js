@@ -1,15 +1,9 @@
-/*global beforeEach, browser, describe, expect, it, require */
-var page = require('./homePageObject');
+const page = require("./homePageObject");
 
-describe('Deleting an as-set', function () {
+describe("Deleting an as-set", () => {
 
-    'use strict';
-
-    beforeEach(function () {
-    });
-
-    it('should properly close the reason modal', function () {
-        browser.get(browser.baseUrl + '#/webupdates/modify/ripe/as-set/AS196613%253AAS-TEST');
+    it("should properly close the reason modal", () => {
+        browser.get(browser.baseUrl + "#/webupdates/modify/ripe/as-set/AS196613%253AAS-TEST");
         page.scrollIntoView(page.btnDeleteObject);
         page.btnDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(true);

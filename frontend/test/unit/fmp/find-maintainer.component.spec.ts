@@ -37,7 +37,7 @@ describe("FindMaintainerComponent", () => {
         component = fixture.componentInstance;
     });
 
-    describe("Testing logged in user", function () {
+    describe("Testing logged in user", () => {
 
         beforeEach(() => {
             userInfoService.getLoggedInUser.and.returnValue(of(200));

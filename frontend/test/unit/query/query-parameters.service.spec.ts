@@ -250,17 +250,17 @@ describe("QueryParameters", () => {
 
         qp.queryText = "-t inetnum --template person something";
 
-        var validationIssues = queryParametersService.validate(qp);
+        let validationIssues = queryParametersService.validate(qp);
 
         expect(validationIssues.warnings.length).toEqual(1);
         expect(validationIssues.warnings[0]).toContain("The flag \"-t\" cannot be used multiple times.");
 
         qp.queryText = "-t --template";
 
-        var validationIssues = queryParametersService.validate(qp);
+        let validationIssuesError = queryParametersService.validate(qp);
 
-        expect(validationIssues.errors.length).toEqual(1);
-        expect(validationIssues.errors[0]).toContain("Unknown object type \"--template\".");
+        expect(validationIssuesError.errors.length).toEqual(1);
+        expect(validationIssuesError.errors[0]).toContain("Unknown object type \"--template\".");
         expect(qp.queryText).toEqual("");
     });
 

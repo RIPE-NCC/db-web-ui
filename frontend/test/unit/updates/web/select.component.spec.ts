@@ -1,17 +1,17 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
-import {of} from "rxjs";
 import {FormsModule} from "@angular/forms";
+import {CookieService} from "ngx-cookie-service";
+import {of} from "rxjs";
 import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
 import {SelectComponent} from "../../../../app/ng/updates/web/select.component";
 import {UserInfoService} from "../../../../app/ng/userinfo/user-info.service";
-import {CookieService} from "ngx-cookie-service";
 import {PropertiesService} from "../../../../app/ng/properties.service";
 
-describe('SelectController', function () {
-    const OBJECT_TYPE = 'as-set';
-    const SOURCE = 'RIPE';
+describe("SelectController", () => {
+    const OBJECT_TYPE = "as-set";
+    const SOURCE = "RIPE";
 
     let httpMock: HttpTestingController;
     let componentFixture: ComponentFixture<SelectComponent>;
@@ -133,9 +133,9 @@ describe('SelectController', function () {
                         name: "aut-num"
                     }
                 },
-                getObjectTypes: function () {
-                    var keys = [];
-                    for (var key in this.objectTypesMap) {
+                getObjectTypes: () => {
+                    let keys = [];
+                    for (let key in this.objectTypesMap) {
                         keys.push(key);
                     }
                     return keys;
@@ -175,13 +175,13 @@ describe('SelectController', function () {
         component = componentFixture.componentInstance;
     });
 
-    afterEach(function() {
+    afterEach(() => {
        httpMock.verify();
     });
 
-    it('should navigate to crowd if currently logged out', async () => {
+    it("should navigate to crowd if currently logged out", async () => {
         componentFixture.detectChanges();
-        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush('', {statusText: "error", status: 401})
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush("", {statusText: "error", status: 401})
         await componentFixture.whenStable();
         expect(component.loggedIn).toBeUndefined();
 
@@ -189,17 +189,17 @@ describe('SelectController', function () {
 
         component.navigateToCreate();
 
-        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, component.selected.objectType]);
+        expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/create", component.selected.source, component.selected.objectType]);
         // Note that the  error-interceptor is responsible for flagging redirect to crowd
     });
 
 
-    it('should navigate to create screen when logged in', async () => {
+    it("should navigate to create screen when logged in", async () => {
         componentFixture.detectChanges();
         httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({ user: {
-                username:'test@ripe.net',
-                displayName:'Test User',
-                uuid:'aaaa-bbbb-cccc-dddd',
+                username:"test@ripe.net",
+                displayName:"Test User",
+                uuid:"aaaa-bbbb-cccc-dddd",
                 active:true}
             });
         await componentFixture.whenStable();
@@ -210,15 +210,15 @@ describe('SelectController', function () {
 
         component.navigateToCreate();
 
-        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, component.selected.objectType]);
+        expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/create", component.selected.source, component.selected.objectType]);
     });
 
-    it('should navigate to create person maintainer screen when logged in and selected', async () => {
+    it("should navigate to create person maintainer screen when logged in and selected", async () => {
         componentFixture.detectChanges();
         httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({ user: {
-                username:'test@ripe.net',
-                displayName:'Test User',
-                uuid:'aaaa-bbbb-cccc-dddd',
+                username:"test@ripe.net",
+                displayName:"Test User",
+                uuid:"aaaa-bbbb-cccc-dddd",
                 active:true}
         });
         await componentFixture.whenStable();
@@ -227,16 +227,16 @@ describe('SelectController', function () {
 
         // role-mntnr pair is default selection (top of the drop down list)
         component.navigateToCreate();
-        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, 'role', 'self']);
+        expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/create", component.selected.source, "role", "self"]);
     });
 
-    it('should navigate to create self maintained mntner screen when logged in', async () => {
+    it("should navigate to create self maintained mntner screen when logged in", async () => {
         componentFixture.detectChanges();
         httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({
                 user: {
-                    username: 'test@ripe.net',
-                    displayName: 'Test User',
-                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    username: "test@ripe.net",
+                    displayName: "Test User",
+                    uuid: "aaaa-bbbb-cccc-dddd",
                     active: true
                 }
             }
@@ -247,12 +247,12 @@ describe('SelectController', function () {
 
         component.selected = {
             source: SOURCE,
-            objectType: 'mntner'
+            objectType: "mntner"
         };
 
         component.navigateToCreate();
 
-        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/create', component.selected.source, 'mntner', 'self']);
+        expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/create", component.selected.source, "mntner", "self"]);
         expect(component.selected.source).toBe(SOURCE);
     });
 

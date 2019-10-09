@@ -344,7 +344,7 @@ describe("TextCreateComponent", () => {
         expect(routerMock.navigate).not.toHaveBeenCalled();
     });
 
-    var person_correct =
+    const person_correct =
         "person:        Tester X\n" +
         "address:       Singel, Amsterdam\n" +
         "phone:         +316\n" +

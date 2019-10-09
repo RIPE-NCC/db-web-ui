@@ -25,7 +25,7 @@ import {SerialExecutorService} from "../../../app/ng/updatestext/serial-executor
 import {PropertiesService} from "../../../app/ng/properties.service";
 import {AutoKeyLogicService} from "../../../app/ng/updatestext/auto-key-logic.service";
 
-describe('TextMultiComponent', function () {
+describe("TextMultiComponent", () => {
     let httpMock: HttpTestingController;
     let componentFixture: ComponentFixture<TextMultiComponent>;
     let paramMapMock: ParamMap;
@@ -85,38 +85,38 @@ describe('TextMultiComponent', function () {
         textMultiComponent = componentFixture.componentInstance;
     });
 
-    afterEach(function () {
+    afterEach(() => {
         httpMock.verify();
     });
 
-    it('should switch to switch to pre-view when rpsl objects are found', function () {
+    it("should switch to switch to pre-view when rpsl objects are found", () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = true;
-        textMultiComponent.objects.rpsl = 'person: test person\n';
+        textMultiComponent.objects.rpsl = "person: test person\n";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.textMode).toBe(false);
     });
 
-    it('should not switch to switch to pre-view when no rpsl objects where found', function () {
+    it("should not switch to switch to pre-view when no rpsl objects where found", () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = true;
-        textMultiComponent.objects.rpsl = '';
+        textMultiComponent.objects.rpsl = "";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.textMode).toBe(true);
-        expect(textMultiComponent.alertService.getErrors()[0].plainText).toEqual('No valid RPSL found');
+        expect(textMultiComponent.alertService.getErrors()[0].plainText).toEqual("No valid RPSL found");
     });
 
-    it('should switch back to text-view', function () {
+    it("should switch back to text-view", () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = false;
-        textMultiComponent.objects.rpsl = 'I don\'t care';
+        textMultiComponent.objects.rpsl = "I don\'t care";
         textMultiComponent.objects.objects = [{}, {}, {}];
 
         textMultiComponent.setTextMode();
@@ -125,88 +125,88 @@ describe('TextMultiComponent', function () {
         expect(textMultiComponent.objects.objects.length).toBe(0);
     });
 
-    it('should extract the rpsl, type and name for each object indepent of capitalisation', function () {
+    it("should extract the rpsl, type and name for each object indepent of capitalisation", () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = false;
         textMultiComponent.objects.rpsl =
-            'person: Me\n' +
-            '\n' +
-            'MNTNER: Him\n';
+            "person: Me\n" +
+            "\n" +
+            "MNTNER: Him\n";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.objects.objects.length).toBe(2);
 
-        expect(textMultiComponent.objects.objects[0].type).toBe('person');
+        expect(textMultiComponent.objects.objects[0].type).toBe("person");
         expect(textMultiComponent.objects.objects[0].name).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].rpsl).toBe('person: Me\n');
+        expect(textMultiComponent.objects.objects[0].rpsl).toBe("person: Me\n");
 
-        expect(textMultiComponent.objects.objects[1].type).toBe('mntner');
+        expect(textMultiComponent.objects.objects[1].type).toBe("mntner");
         expect(textMultiComponent.objects.objects[1].name).toBeUndefined();
-        expect(textMultiComponent.objects.objects[1].rpsl).toBe('mntner: Him\n');
+        expect(textMultiComponent.objects.objects[1].rpsl).toBe("mntner: Him\n");
     });
 
-    it('should report a syntactically invalid object: unknown attribute', function () {
+    it("should report a syntactically invalid object: unknown attribute", () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = false;
         textMultiComponent.objects.rpsl =
-            'person: Me\n' +
-            'bibaboe: xyz\n';
+            "person: Me\n" +
+            "bibaboe: xyz\n";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.objects.objects.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].type).toBe('person');
+        expect(textMultiComponent.objects.objects[0].type).toBe("person");
         expect(textMultiComponent.objects.objects[0].name).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].status).toBe('Invalid syntax');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Invalid syntax");
         expect(textMultiComponent.objects.objects[0].success).toBe(false);
 
         expect(textMultiComponent.objects.objects[0].errors.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].errors[0].plainText).toBe('bibaboe: Unknown attribute');
+        expect(textMultiComponent.objects.objects[0].errors[0].plainText).toBe("bibaboe: Unknown attribute");
     });
 
-    it('should report a syntactically invalid objec: missing mandatory attribute', function () {
+    it("should report a syntactically invalid objec: missing mandatory attribute", () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = false;
         textMultiComponent.objects.rpsl =
-            'person: Me Me\n' +
-            'address: xyz\n' +
-            'phone:+316\n' +
-            'mnt-by: TEST-MMT';
+            "person: Me Me\n" +
+            "address: xyz\n" +
+            "phone:+316\n" +
+            "mnt-by: TEST-MMT";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.objects.objects.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].type).toBe('person');
+        expect(textMultiComponent.objects.objects[0].type).toBe("person");
         expect(textMultiComponent.objects.objects[0].name).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].status).toBe('Invalid syntax');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Invalid syntax");
         expect(textMultiComponent.objects.objects[0].success).toBe(false);
 
         expect(textMultiComponent.objects.objects[0].errors.length).toBe(2);
-        expect(textMultiComponent.objects.objects[0].errors[0].plainText).toBe('nic-hdl: Missing mandatory attribute');
-        expect(textMultiComponent.objects.objects[0].errors[1].plainText).toBe('source: Missing mandatory attribute');
+        expect(textMultiComponent.objects.objects[0].errors[0].plainText).toBe("nic-hdl: Missing mandatory attribute");
+        expect(textMultiComponent.objects.objects[0].errors[1].plainText).toBe("source: Missing mandatory attribute");
     });
 
-    it('should determine the action for a non existing valid "AUTO-1"-object without a fetch', async () => {
+    it("should determine the action for a non existing valid 'AUTO-1'-object without a fetch", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = false;
         textMultiComponent.objects.rpsl =
-            'person: Me Me\n' +
-            'address: xyz\n' +
-            'phone:+316\n' +
-            'nic-hdl: AUTO-1\n' +
-            'mnt-by: TEST-MMT\n' +
-            'source: RIPE\n';
+            "person: Me Me\n" +
+            "address: xyz\n" +
+            "phone:+316\n" +
+            "nic-hdl: AUTO-1\n" +
+            "mnt-by: TEST-MMT\n" +
+            "source: RIPE\n";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.objects.objects.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].type).toBe('person');
-        expect(textMultiComponent.objects.objects[0].name).toBe('AUTO-1');
+        expect(textMultiComponent.objects.objects[0].type).toBe("person");
+        expect(textMultiComponent.objects.objects[0].name).toBe("AUTO-1");
         expect(textMultiComponent.objects.objects[0].errors.length).toBe(0);
 
         // Not expect fetch returning 404: help this system to resolve the promise
@@ -214,31 +214,31 @@ describe('TextMultiComponent', function () {
 
 
         expect(textMultiComponent.objects.objects[0].success).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].status).toBe('Object does not yet exist');
-        expect(textMultiComponent.objects.objects[0].action).toBe('create');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Object does not yet exist");
+        expect(textMultiComponent.objects.objects[0].action).toBe("create");
         expect(textMultiComponent.objects.objects[0].displayUrl).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBe('#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20AUTO-1%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
+        expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBe("#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20AUTO-1%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A");
 
     });
 
-    it('should determine the action for a pre-existing valid object (uses fetch)', async () => {
+    it("should determine the action for a pre-existing valid object (uses fetch)", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = false;
         textMultiComponent.objects.rpsl =
-            'person: Me Me\n' +
-            'address: xyz\n' +
-            'phone:+316\n' +
-            'nic-hdl: MM1-RIPE\n' +
-            'mnt-by: TEST-MMT\n' +
-            'source: RIPE\n';
+            "person: Me Me\n" +
+            "address: xyz\n" +
+            "phone:+316\n" +
+            "nic-hdl: MM1-RIPE\n" +
+            "mnt-by: TEST-MMT\n" +
+            "source: RIPE\n";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.objects.objects.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].type).toBe('person');
-        expect(textMultiComponent.objects.objects[0].name).toBe('MM1-RIPE');
-        expect(textMultiComponent.objects.objects[0].status).toBe('Fetching');
+        expect(textMultiComponent.objects.objects[0].type).toBe("person");
+        expect(textMultiComponent.objects.objects[0].name).toBe("MM1-RIPE");
+        expect(textMultiComponent.objects.objects[0].status).toBe("Fetching");
         expect(textMultiComponent.objects.objects[0].errors.length).toBe(0);
 
         // expect fetch returning 404
@@ -248,31 +248,31 @@ describe('TextMultiComponent', function () {
 
         expect(textMultiComponent.objects.objects[0].rpslOriginal).toBeDefined();
         expect(textMultiComponent.objects.objects[0].success).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].action).toBe('modify');
-        expect(textMultiComponent.objects.objects[0].displayUrl).toBe('#/webupdates/display/RIPE/person/MM1-RIPE');
-        expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBe('#/textupdates/modify/RIPE/person/MM1-RIPE?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
-        expect(textMultiComponent.objects.objects[0].status).toBe('Object exists');
+        expect(textMultiComponent.objects.objects[0].action).toBe("modify");
+        expect(textMultiComponent.objects.objects[0].displayUrl).toBe("#/webupdates/display/RIPE/person/MM1-RIPE");
+        expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBe("#/textupdates/modify/RIPE/person/MM1-RIPE?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20xyz%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A");
+        expect(textMultiComponent.objects.objects[0].status).toBe("Object exists");
 
     });
 
-    it('should mark object as failed when non 404 is returned', async () => {
+    it("should mark object as failed when non 404 is returned", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = false;
         textMultiComponent.objects.rpsl =
-            'person: Me Me\n' +
-            'address: xyz\n' +
-            'phone:+316\n' +
-            'nic-hdl: MM1-RIPE\n' +
-            'mnt-by: TEST-MMT\n' +
-            'source: RIPE\n';
+            "person: Me Me\n" +
+            "address: xyz\n" +
+            "phone:+316\n" +
+            "nic-hdl: MM1-RIPE\n" +
+            "mnt-by: TEST-MMT\n" +
+            "source: RIPE\n";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.objects.objects.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].type).toBe('person');
-        expect(textMultiComponent.objects.objects[0].name).toBe('MM1-RIPE');
-        expect(textMultiComponent.objects.objects[0].status).toBe('Fetching');
+        expect(textMultiComponent.objects.objects[0].type).toBe("person");
+        expect(textMultiComponent.objects.objects[0].name).toBe("MM1-RIPE");
+        expect(textMultiComponent.objects.objects[0].status).toBe("Fetching");
         expect(textMultiComponent.objects.objects[0].errors.length).toBe(0);
 
         // Non 404
@@ -283,32 +283,32 @@ describe('TextMultiComponent', function () {
         expect(textMultiComponent.objects.objects[0].rpslOriginal).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].success).toBe(false);
         expect(textMultiComponent.objects.objects[0].exists).toBe(undefined);
-        expect(textMultiComponent.objects.objects[0].action).toBe('create');
+        expect(textMultiComponent.objects.objects[0].action).toBe("create");
         expect(textMultiComponent.objects.objects[0].displayUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].status).toBe('Error fetching');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Error fetching");
         expect(textMultiComponent.objects.objects[0].errors.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].errors[0].plainText).toBe('Not authenticated');
+        expect(textMultiComponent.objects.objects[0].errors[0].plainText).toBe("Not authenticated");
     });
 
-    it('should determine the action for non-existing valid object (uses fetch)', async () => {
+    it("should determine the action for non-existing valid object (uses fetch)", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.textMode = false;
         textMultiComponent.objects.rpsl =
-            'person: Me Me\n' +
-            'address: Amsterdam\n' +
-            'phone:+316\n' +
-            'nic-hdl: MM1-RIPE\n' +
-            'mnt-by: TEST-MMT\n' +
-            'source: RIPE\n';
+            "person: Me Me\n" +
+            "address: Amsterdam\n" +
+            "phone:+316\n" +
+            "nic-hdl: MM1-RIPE\n" +
+            "mnt-by: TEST-MMT\n" +
+            "source: RIPE\n";
 
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.objects.objects.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].type).toBe('person');
-        expect(textMultiComponent.objects.objects[0].name).toBe('MM1-RIPE');
-        expect(textMultiComponent.objects.objects[0].status).toBe('Fetching');
+        expect(textMultiComponent.objects.objects[0].type).toBe("person");
+        expect(textMultiComponent.objects.objects[0].name).toBe("MM1-RIPE");
+        expect(textMultiComponent.objects.objects[0].status).toBe("Fetching");
         expect(textMultiComponent.objects.objects[0].errors.length).toBe(0);
 
         await componentFixture.whenStable();
@@ -317,21 +317,21 @@ describe('TextMultiComponent', function () {
 
         expect(textMultiComponent.objects.objects[0].rpslOriginal).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].success).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].action).toBe('create');
+        expect(textMultiComponent.objects.objects[0].action).toBe("create");
         expect(textMultiComponent.objects.objects[0].displayUrl).toBeUndefined();
-        expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBe('#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20Amsterdam%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A');
-        expect(textMultiComponent.objects.objects[0].status).toBe('Object does not yet exist');
+        expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBe("#/textupdates/create/RIPE/person?noRedirect=true&rpsl=person%3A%20Me%20Me%0Aaddress%3A%20Amsterdam%0Aphone%3A%2B316%0Anic-hdl%3A%20MM1-RIPE%0Amnt-by%3A%20TEST-MMT%0Asource%3A%20RIPE%0A");
+        expect(textMultiComponent.objects.objects[0].status).toBe("Object does not yet exist");
     });
 
-    it('should not perform an update for syntactically failed objects', function () {
+    it("should not perform an update for syntactically failed objects", () => {
         componentFixture.detectChanges();
 
         textMultiComponent.objects.objects = [];
         textMultiComponent.objects.objects.push({
             action: undefined,
-            type: 'person',
+            type: "person",
             name: undefined,
-            status: 'Invalid syntax',
+            status: "Invalid syntax",
             success: false,
             errors: [{},{},{}]
         });
@@ -341,16 +341,16 @@ describe('TextMultiComponent', function () {
         // No update performed
     });
 
-    it('should perform a create for non-existing objects', async () => {
+    it("should perform a create for non-existing objects", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.objects.objects = [];
         textMultiComponent.objects.objects.push({
-            action: 'create',
+            action: "create",
             exists:false,
-            type: 'person',
-            name: 'AUTO-1',
-            attributes: whoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
+            type: "person",
+            name: "AUTO-1",
+            attributes: whoisResources.wrapAndEnrichAttributes("person", [ {name: "person", value: "Me Me"}, {name:"nic-hdl", value:"AUTO-1"}]),
             success: undefined,
             errors:[]
         });
@@ -360,33 +360,33 @@ describe('TextMultiComponent', function () {
         httpMock.expectOne({method: "POST", url: "api/whois/RIPE/person?unformatted=true" }).flush(successResponse);
         await componentFixture.whenStable();
 
-        expect(textMultiComponent.objects.objects[0].status).toBe('Create success');
-        expect(textMultiComponent.objects.objects[0].displayUrl).toBe('#/webupdates/display/RIPE/person/MM1-RIPE');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Create success");
+        expect(textMultiComponent.objects.objects[0].displayUrl).toBe("#/webupdates/display/RIPE/person/MM1-RIPE");
         expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBeUndefined();
         // verify RPSL is rewritten to prevent second create
         expect(textMultiComponent.objects.objects[0].rpsl).toBe(
-            'person:Me Me\n'+
-            'address:Amsterdam\n'+
-            'phone:+316\n'+
-            'nic-hdl:MM1-RIPE\n'+
-            'mnt-by:TEST-MNT\n'+
-            'created:2015-12-28T09:10:20Z\n'+
-            'last-modified:2015-12-28T09:12:25Z\n'+
-            'source:RIPE\n');
+            "person:Me Me\n"+
+            "address:Amsterdam\n"+
+            "phone:+316\n"+
+            "nic-hdl:MM1-RIPE\n"+
+            "mnt-by:TEST-MNT\n"+
+            "created:2015-12-28T09:10:20Z\n"+
+            "last-modified:2015-12-28T09:12:25Z\n"+
+            "source:RIPE\n");
         expect(textMultiComponent.objects.objects[0].showDiff).toBeFalsy();
 
     });
 
-    it('should report an error upon create-failure', async () => {
+    it("should report an error upon create-failure", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.objects.objects = [];
         textMultiComponent.objects.objects.push({
-            action: 'create',
+            action: "create",
             exists: false,
-            type: 'person',
-            name: 'AUTO-1',
-            attributes: whoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'AUTO-1'}]),
+            type: "person",
+            name: "AUTO-1",
+            attributes: whoisResources.wrapAndEnrichAttributes("person", [ {name: "person", value: "Me Me"}, {name:"nic-hdl", value:"AUTO-1"}]),
             success: undefined,
             errors:[]
         });
@@ -395,24 +395,24 @@ describe('TextMultiComponent', function () {
         httpMock.expectOne({method: "POST", url: "api/whois/RIPE/person?unformatted=true" }).flush(errorResponse, {status: 400, statusText: "bad"});
         await componentFixture.whenStable();
 
-        expect(textMultiComponent.objects.objects[0].status).toBe('Create error');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Create error");
         expect(textMultiComponent.objects.objects[0].displayUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].errors.length).toBe(1);
-        expect(textMultiComponent.objects.objects[0].errors[0].plainText).toBe('Not authenticated');
+        expect(textMultiComponent.objects.objects[0].errors[0].plainText).toBe("Not authenticated");
         expect(textMultiComponent.objects.objects[0].showDiff).toBeFalsy();
 
     });
 
-    it('should perform a modify for existing objects', async () => {
+    it("should perform a modify for existing objects", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.objects.objects = [];
         textMultiComponent.objects.objects.push({
-            action: 'modify',
-            type: 'person',
-            name: 'MM1-RIPE',
-            attributes: whoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
+            action: "modify",
+            type: "person",
+            name: "MM1-RIPE",
+            attributes: whoisResources.wrapAndEnrichAttributes("person", [ {name: "person", value: "Me Me"}, {name:"nic-hdl", value:"MM1-RIPE"}]),
             success: undefined,
             errors:[]
         });
@@ -422,30 +422,30 @@ describe('TextMultiComponent', function () {
         httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/person/MM1-RIPE?unformatted=true" }).flush(successResponse);
         await componentFixture.whenStable();
 
-        expect(textMultiComponent.objects.objects[0].status).toBe('Modify success');
-        expect(textMultiComponent.objects.objects[0].displayUrl).toBe('#/webupdates/display/RIPE/person/MM1-RIPE');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Modify success");
+        expect(textMultiComponent.objects.objects[0].displayUrl).toBe("#/webupdates/display/RIPE/person/MM1-RIPE");
         expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].showDiff).toBe(true);
         expect(textMultiComponent.objects.objects[0].rpsl).toBe(
-            'person:Me Me\n'+
-            'address:Amsterdam\n'+
-            'phone:+316\n'+
-            'nic-hdl:MM1-RIPE\n'+
-            'mnt-by:TEST-MNT\n'+
-            'created:2015-12-28T09:10:20Z\n'+
-            'last-modified:2015-12-28T09:12:25Z\n'+
-            'source:RIPE\n');
+            "person:Me Me\n"+
+            "address:Amsterdam\n"+
+            "phone:+316\n"+
+            "nic-hdl:MM1-RIPE\n"+
+            "mnt-by:TEST-MNT\n"+
+            "created:2015-12-28T09:10:20Z\n"+
+            "last-modified:2015-12-28T09:12:25Z\n"+
+            "source:RIPE\n");
     });
 
-    it('should report an error upon modify-failure', async () => {
+    it("should report an error upon modify-failure", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.objects.objects = [];
         textMultiComponent.objects.objects.push( {
-            action: 'modify',
-            type: 'person',
-            name: 'MM1-RIPE',
-            attributes: whoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
+            action: "modify",
+            type: "person",
+            name: "MM1-RIPE",
+            attributes: whoisResources.wrapAndEnrichAttributes("person", [ {name: "person", value: "Me Me"}, {name:"nic-hdl", value:"MM1-RIPE"}]),
             success: undefined,
             errors:[]
         });
@@ -455,7 +455,7 @@ describe('TextMultiComponent', function () {
         httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/person/MM1-RIPE?unformatted=true" }).flush(errorResponse, {status: 403, statusText: "bad"});
         await componentFixture.whenStable();
 
-        expect(textMultiComponent.objects.objects[0].status).toBe('Modify error');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Modify error");
         expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].displayUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].showDiff).toBeFalsy();
@@ -463,18 +463,18 @@ describe('TextMultiComponent', function () {
     });
 
 
-    it('should perform a delete for existing object', async () => {
+    it("should perform a delete for existing object", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.objects.objects = [];
         textMultiComponent.objects.objects.push({
-            action: 'modify',
-            type: 'person',
-            name: 'MM1-RIPE',
-            attributes: whoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
+            action: "modify",
+            type: "person",
+            name: "MM1-RIPE",
+            attributes: whoisResources.wrapAndEnrichAttributes("person", [ {name: "person", value: "Me Me"}, {name:"nic-hdl", value:"MM1-RIPE"}]),
             success: undefined,
-            deleteReason:'just because',
-            passwords:['secret'],
+            deleteReason:"just because",
+            passwords:["secret"],
             errors:[]
         });
 
@@ -483,35 +483,35 @@ describe('TextMultiComponent', function () {
         httpMock.expectOne({method: "DELETE", url: "api/whois/RIPE/person/MM1-RIPE?dry-run=false&reason=just%20because&password=secret" }).flush(successResponse);
         await componentFixture.whenStable();
 
-        expect(textMultiComponent.objects.objects[0].status).toBe('Delete success');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Delete success");
         expect(textMultiComponent.objects.objects[0].displayUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].showDiff).toBeFalsy();
         expect(textMultiComponent.objects.objects[0].rpsl).toBe(
-            'person:Me Me\n'+
-            'address:Amsterdam\n'+
-            'phone:+316\n'+
-            'nic-hdl:MM1-RIPE\n'+
-            'mnt-by:TEST-MNT\n'+
-            'created:2015-12-28T09:10:20Z\n'+
-            'last-modified:2015-12-28T09:12:25Z\n'+
-            'source:RIPE\n' +
-            'delete:just because\n' +
-            'password:secret\n');
+            "person:Me Me\n"+
+            "address:Amsterdam\n"+
+            "phone:+316\n"+
+            "nic-hdl:MM1-RIPE\n"+
+            "mnt-by:TEST-MNT\n"+
+            "created:2015-12-28T09:10:20Z\n"+
+            "last-modified:2015-12-28T09:12:25Z\n"+
+            "source:RIPE\n" +
+            "delete:just because\n" +
+            "password:secret\n");
     });
 
-    it('should report an error upon delete-failure', async () => {
+    it("should report an error upon delete-failure", async () => {
         componentFixture.detectChanges();
 
         textMultiComponent.objects.objects = [];
         textMultiComponent.objects.objects.push( {
-            action: 'modify',
-            type: 'person',
-            name: 'MM1-RIPE',
-            attributes: whoisResources.wrapAndEnrichAttributes('person', [ {name: 'person', value: 'Me Me'}, {name:'nic-hdl', value:'MM1-RIPE'}]),
+            action: "modify",
+            type: "person",
+            name: "MM1-RIPE",
+            attributes: whoisResources.wrapAndEnrichAttributes("person", [ {name: "person", value: "Me Me"}, {name:"nic-hdl", value:"MM1-RIPE"}]),
             success: undefined,
-            deleteReason:'just because',
-            passwords:['secret'],
+            deleteReason:"just because",
+            passwords:["secret"],
             errors:[]
         });
         textMultiComponent.submit();
@@ -519,7 +519,7 @@ describe('TextMultiComponent', function () {
         httpMock.expectOne({method: "DELETE", url: "api/whois/RIPE/person/MM1-RIPE?dry-run=false&reason=just%20because&password=secret" }).flush(errorResponse, {status: 403, statusText: "bad"});
         await componentFixture.whenStable();
 
-        expect(textMultiComponent.objects.objects[0].status).toBe('Delete error');
+        expect(textMultiComponent.objects.objects[0].status).toBe("Delete error");
         expect(textMultiComponent.objects.objects[0].textupdatesUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].displayUrl).toBeUndefined();
         expect(textMultiComponent.objects.objects[0].showDiff).toBeFalsy();
@@ -530,7 +530,7 @@ describe('TextMultiComponent', function () {
     const errorResponse = {
         errormessages: {
             errormessage: [
-                {severity: 'Error', text: 'Not authenticated'}
+                {severity: "Error", text: "Not authenticated"}
             ]
         }
     };
@@ -539,17 +539,17 @@ describe('TextMultiComponent', function () {
         objects: {
             object: [
                 {
-                    'primary-key': {attribute: [{name: 'nic-hdl', value: 'MM1-RIPE'}]},
+                    "primary-key": {attribute: [{name: "nic-hdl", value: "MM1-RIPE"}]},
                     attributes: {
                         attribute: [
-                            {name: 'person',  value: 'Me Me'},
-                            {name: 'address', value: 'Amsterdam'},
-                            {name: 'phone',   value: '+316'},
-                            {name: 'nic-hdl', value: 'MM1-RIPE'},
-                            {name: 'mnt-by',  value: 'TEST-MNT'},
-                            {name: 'created',  value: '2015-12-28T09:10:20Z'},
-                            {name: 'last-modified',  value: '2015-12-28T09:12:25Z'},
-                            {name: 'source',  value: 'RIPE'}
+                            {name: "person",  value: "Me Me"},
+                            {name: "address", value: "Amsterdam"},
+                            {name: "phone",   value: "+316"},
+                            {name: "nic-hdl", value: "MM1-RIPE"},
+                            {name: "mnt-by",  value: "TEST-MNT"},
+                            {name: "created",  value: "2015-12-28T09:10:20Z"},
+                            {name: "last-modified",  value: "2015-12-28T09:12:25Z"},
+                            {name: "source",  value: "RIPE"}
                         ]
                     }
                 }

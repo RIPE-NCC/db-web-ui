@@ -28,10 +28,10 @@ describe("DisplayComponent", () => {
     let routerMock: any;
     let messageStoreServiceMock: any;
 
-    const OBJECT_TYPE = 'as-block';
-    const SOURCE = 'RIPE';
-    const OBJECT_NAME = 'MY-AS-BLOCK';
-    const MNTNER = 'TEST-MNT';
+    const OBJECT_TYPE = "as-block";
+    const SOURCE = "RIPE";
+    const OBJECT_NAME = "MY-AS-BLOCK";
+    const MNTNER = "TEST-MNT";
 
     beforeEach(() => {
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
@@ -70,12 +70,12 @@ describe("DisplayComponent", () => {
             objects: {
                 object: [
                     {
-                        'primary-key': {attribute: [{name: 'as-block', value: OBJECT_NAME}]},
+                        "primary-key": {attribute: [{name: "as-block", value: OBJECT_NAME}]},
                         attributes: {
                             attribute: [
-                                {name: 'as-block', value: OBJECT_NAME},
-                                {name: 'mnt-by', value: MNTNER},
-                                {name: 'source', value: SOURCE}
+                                {name: "as-block", value: OBJECT_NAME},
+                                {name: "mnt-by", value: MNTNER},
+                                {name: "source", value: SOURCE}
                             ]
                         }
                     }
@@ -84,7 +84,7 @@ describe("DisplayComponent", () => {
         });
     });
 
-    afterEach(function () {
+    afterEach(() => {
         httpMock.verify();
     });
 
@@ -93,10 +93,10 @@ describe("DisplayComponent", () => {
         if (withFlush) {
             request.flush({
                 user: {
-                    username: 'test@ripe.net',
-                    displayName: 'Test User',
+                    username: "test@ripe.net",
+                    displayName: "Test User",
                     expiryDate: [2015, 9, 9, 14, 9, 27, 863],
-                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    uuid: "aaaa-bbbb-cccc-dddd",
                     active: true
                 }
             });
@@ -108,7 +108,7 @@ describe("DisplayComponent", () => {
         expect(component).toBeTruthy();
     });
 
-    it('should get source from url', async () => {
+    it("should get source from url", async () => {
         messageStoreServiceMock.get.and.returnValue(objectToDisplay);
         fixture.detectChanges();
 
@@ -116,7 +116,7 @@ describe("DisplayComponent", () => {
         expect(component.objectSource).toBe(SOURCE);
     });
 
-    it('should get objectType from url', () => {
+    it("should get objectType from url", () => {
         messageStoreServiceMock.get.and.returnValue(objectToDisplay);
         fixture.detectChanges();
 
@@ -124,7 +124,7 @@ describe("DisplayComponent", () => {
         expect(component.objectType).toBe(OBJECT_TYPE);
     });
 
-    it('should get objectName from url', () => {
+    it("should get objectName from url", () => {
         messageStoreServiceMock.get.and.returnValue(objectToDisplay);
 
         fixture.detectChanges();
@@ -133,7 +133,7 @@ describe("DisplayComponent", () => {
         expect(component.objectName).toBe(OBJECT_NAME);
     });
 
-    it('should detect logged in', async () => {
+    it("should detect logged in", async () => {
         messageStoreServiceMock.get.and.returnValue(objectToDisplay);
 
         fixture.detectChanges();
@@ -143,23 +143,23 @@ describe("DisplayComponent", () => {
         expect(component.loggedIn).toBe(true);
     });
 
-    it('should populate the ui from message-store', () => {
+    it("should populate the ui from message-store", () => {
         messageStoreServiceMock.get.and.returnValue(objectToDisplay);
         fixture.detectChanges();
 
         expectUserInfo(true);
 
-        expect(component.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
-        expect(component.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect(component.attributes.getSingleAttributeOnName("as-block").value).toBe(OBJECT_NAME);
+        expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER);
+        expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
 
         // FIXME ?
-        // expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/select']);
-        // expect($state.current.name).toBe('webupdates.select');
+        // expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/select"]);
+        // expect($state.current.name).toBe("webupdates.select");
 
     });
 
-    it('should populate the ui from rest ok', () => {
+    it("should populate the ui from rest ok", () => {
         // no objects in message store
         fixture.detectChanges();
 
@@ -170,16 +170,16 @@ describe("DisplayComponent", () => {
             url: "api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true"
         }).flush(objectToDisplay);
 
-        expect(component.attributes.getSingleAttributeOnName('as-block').value).toBe(OBJECT_NAME);
-        expect(component.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect(component.attributes.getSingleAttributeOnName("as-block").value).toBe(OBJECT_NAME);
+        expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER);
+        expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
 
         // FIXME ?
-        // expect($state.current.name).toBe('webupdates.select');
-        // expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/select']);
+        // expect($state.current.name).toBe("webupdates.select");
+        // expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/select"]);
     });
 
-    it('should populate the ui from rest failure', () => {
+    it("should populate the ui from rest failure", () => {
         // no objects in message store
         fixture.detectChanges();
 
@@ -189,29 +189,29 @@ describe("DisplayComponent", () => {
             errormessages: {
                 errormessage: [
                     {
-                        severity: 'Error',
-                        text: 'Unrecognized source: %s',
-                        'args': [{value: 'INVALID_SOURCE'}]
+                        severity: "Error",
+                        text: "Unrecognized source: %s",
+                        "args": [{value: "INVALID_SOURCE"}]
                     },
                     {
-                        severity: 'Warning',
-                        text: 'Not authenticated'
+                        severity: "Warning",
+                        text: "Not authenticated"
                     }
                 ]
             }
         }, {status: 403, statusText: "error"});
 
 
-        expect(component.alertService.getErrors()[0].plainText).toEqual('Unrecognized source: INVALID_SOURCE');
-        expect(component.alertService.getWarnings()[0].plainText).toEqual('Not authenticated');
+        expect(component.alertService.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+        expect(component.alertService.getWarnings()[0].plainText).toEqual("Not authenticated");
 
         // FIXME ?
-        // expect($state.current.name).toBe('webupdates.select');
-        // expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/select']);
+        // expect($state.current.name).toBe("webupdates.select");
+        // expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/select"]);
 
     });
 
-    it('should navigate to select screen', () => {
+    it("should navigate to select screen", () => {
         messageStoreServiceMock.get.and.returnValue(objectToDisplay);
         fixture.detectChanges();
 
@@ -219,10 +219,10 @@ describe("DisplayComponent", () => {
         expectUserInfo(true);
 
         component.navigateToSelect();
-        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/select']);
+        expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/select"]);
     });
 
-    it('should navigate to modify screen', () => {
+    it("should navigate to modify screen", () => {
         messageStoreServiceMock.get.and.returnValue(objectToDisplay);
         fixture.detectChanges();
 
@@ -234,7 +234,7 @@ describe("DisplayComponent", () => {
 
 });
 
-describe('DisplayComponent with object containing slash', function () {
+describe("DisplayComponent with object containing slash", () => {
 
     let httpMock: HttpTestingController;
     let component: DisplayComponent;
@@ -243,10 +243,10 @@ describe('DisplayComponent with object containing slash', function () {
     let routerMock: any;
     let messageStoreServiceMock: any;
 
-    const SOURCE = 'RIPE';
-    const OBJECT_TYPE = 'route';
-    const OBJECT_NAME = '212.235.32.0/19AS1680';
-    const MNTNER = 'TEST-MNT';
+    const SOURCE = "RIPE";
+    const OBJECT_TYPE = "route";
+    const OBJECT_NAME = "212.235.32.0/19AS1680";
+    const MNTNER = "TEST-MNT";
 
     beforeEach(() => {
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
@@ -285,12 +285,12 @@ describe('DisplayComponent with object containing slash', function () {
             objects: {
                 object: [
                     {
-                        'primary-key': {attribute: [{name: 'as-block', value: OBJECT_NAME}]},
+                        "primary-key": {attribute: [{name: "as-block", value: OBJECT_NAME}]},
                         attributes: {
                             attribute: [
-                                {name: 'route', value: OBJECT_NAME},
-                                {name: 'mnt-by', value: MNTNER},
-                                {name: 'source', value: SOURCE}
+                                {name: "route", value: OBJECT_NAME},
+                                {name: "mnt-by", value: MNTNER},
+                                {name: "source", value: SOURCE}
                             ]
                         }
                     }
@@ -299,7 +299,7 @@ describe('DisplayComponent with object containing slash', function () {
         });
     });
 
-    afterEach(function () {
+    afterEach(() => {
         httpMock.verify();
     });
 
@@ -308,16 +308,16 @@ describe('DisplayComponent with object containing slash', function () {
         if (withFlush) {
             request.flush({
                 user: {
-                    username: 'test@ripe.net',
-                    displayName: 'Test User',
-                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    username: "test@ripe.net",
+                    displayName: "Test User",
+                    uuid: "aaaa-bbbb-cccc-dddd",
                     active: true
                 }
             });
         }
     };
 
-    it('should populate the ui from rest ok', function () {
+    it("should populate the ui from rest ok", () => {
         // no objects in message store
         fixture.detectChanges();
 
@@ -328,12 +328,12 @@ describe('DisplayComponent with object containing slash', function () {
             url: "api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true"
         }).flush(objectToDisplay);
 
-        expect(component.attributes.getSingleAttributeOnName('route').value).toBe(OBJECT_NAME);
-        expect(component.attributes.getAllAttributesOnName('mnt-by')[0].value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect(component.attributes.getSingleAttributeOnName("route").value).toBe(OBJECT_NAME);
+        expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER);
+        expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
     });
 
-    it('should navigate to modify', function () {
+    it("should navigate to modify", () => {
         // no objects in message store
         fixture.detectChanges();
 
@@ -349,7 +349,7 @@ describe('DisplayComponent with object containing slash', function () {
         expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/modify/${SOURCE}/${OBJECT_TYPE}/${encodeURIComponent(OBJECT_NAME)}`);
     });
 
-    it('should navigate to select', function () {
+    it("should navigate to select", () => {
         // no objects in message store
         fixture.detectChanges();
 
@@ -361,12 +361,12 @@ describe('DisplayComponent with object containing slash', function () {
         }).flush(objectToDisplay);
 
         component.navigateToSelect();
-        expect(routerMock.navigate).toHaveBeenCalledWith(['webupdates/select']);
+        expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/select"]);
     });
 
 });
 
-describe('DisplayComponent for RIPE-NONAUTH aut-num object', function () {
+describe("DisplayComponent for RIPE-NONAUTH aut-num object", () => {
 
     let httpMock: HttpTestingController;
     let component: DisplayComponent;
@@ -376,11 +376,11 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', function () {
     let modalMock: any;
     let messageStoreServiceMock: any;
 
-    const SOURCE = 'RIPE-NONAUTH';
-    const OBJECT_TYPE = 'aut-num';
-    const OBJECT_NAME = 'AS9777';
-    const MNTNER = 'TEST-MNT';
-    const ADMINC = 'JYH3-RIPE';
+    const SOURCE = "RIPE-NONAUTH";
+    const OBJECT_TYPE = "aut-num";
+    const OBJECT_NAME = "AS9777";
+    const MNTNER = "TEST-MNT";
+    const ADMINC = "JYH3-RIPE";
 
     beforeEach(() => {
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
@@ -419,27 +419,27 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', function () {
             objects: {
                 object: [
                     {
-                        'primary-key': {attribute: [{name: OBJECT_TYPE, value: OBJECT_NAME}]},
+                        "primary-key": {attribute: [{name: OBJECT_TYPE, value: OBJECT_NAME}]},
                         attributes: {
                             attribute: [
-                                {name: 'aut-num', value: OBJECT_NAME},
+                                {name: "aut-num", value: OBJECT_NAME},
                                 {
-                                    name: 'mnt-by', value: MNTNER, "referenced-type": "mntner",
+                                    name: "mnt-by", value: MNTNER, "referenced-type": "mntner",
                                     link:
                                         {
-                                            href: 'http://rest-prepdev.db.ripe.net/ripe/mnt-by/TEST-MNT',
-                                            type: 'locator'
+                                            href: "http://rest-prepdev.db.ripe.net/ripe/mnt-by/TEST-MNT",
+                                            type: "locator"
                                         },
                                 },
                                 {
-                                    name: 'admin-c', value: ADMINC, "referenced-type": "person",
+                                    name: "admin-c", value: ADMINC, "referenced-type": "person",
                                     link:
                                         {
-                                            href: 'http://rest-prepdev.db.ripe.net/ripe/person/JYH3-RIPE',
-                                            type: 'locator'
+                                            href: "http://rest-prepdev.db.ripe.net/ripe/person/JYH3-RIPE",
+                                            type: "locator"
                                         },
                                 },
-                                {name: 'source', value: SOURCE}
+                                {name: "source", value: SOURCE}
                             ]
                         }
                     }
@@ -448,7 +448,7 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', function () {
         });
     });
 
-    afterEach(function () {
+    afterEach(() => {
        httpMock.verify();
     });
 
@@ -457,9 +457,9 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', function () {
         if (withFlush) {
             request.flush({
                 user: {
-                    username: 'test@ripe.net',
-                    displayName: 'Test User',
-                    uuid: 'aaaa-bbbb-cccc-dddd',
+                    username: "test@ripe.net",
+                    displayName: "Test User",
+                    uuid: "aaaa-bbbb-cccc-dddd",
                     active: true
                 }
             });
@@ -467,7 +467,7 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', function () {
     };
 
 
-    it('should add uiHref to attributes with link', function () {
+    it("should add uiHref to attributes with link", () => {
         // no objects in message store
         fixture.detectChanges();
 
@@ -475,12 +475,12 @@ describe('DisplayComponent for RIPE-NONAUTH aut-num object', function () {
 
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE-NONAUTH/aut-num/AS9777?unfiltered=true"}).flush(objectToDisplay);
 
-        expect(component.attributes.getSingleAttributeOnName('aut-num').value).toBe(OBJECT_NAME);
-        expect(component.attributes.getSingleAttributeOnName('mnt-by').value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName('mnt-by').link.uiHref).toEqual('#/webupdates/display/RIPE/mntner/TEST-MNT');
-        expect(component.attributes.getSingleAttributeOnName('admin-c').value).toBe(ADMINC);
-        expect(component.attributes.getSingleAttributeOnName('admin-c').link.uiHref).toBe('#/webupdates/display/RIPE/person/JYH3-RIPE');
-        expect(component.attributes.getSingleAttributeOnName('source').value).toEqual(SOURCE);
+        expect(component.attributes.getSingleAttributeOnName("aut-num").value).toBe(OBJECT_NAME);
+        expect(component.attributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER);
+        expect(component.attributes.getSingleAttributeOnName("mnt-by").link.uiHref).toEqual("#/webupdates/display/RIPE/mntner/TEST-MNT");
+        expect(component.attributes.getSingleAttributeOnName("admin-c").value).toBe(ADMINC);
+        expect(component.attributes.getSingleAttributeOnName("admin-c").link.uiHref).toBe("#/webupdates/display/RIPE/person/JYH3-RIPE");
+        expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
 
     });
 

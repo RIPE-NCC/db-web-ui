@@ -557,10 +557,10 @@ describe("WhoisResourcesService", () => {
         expect(attrs[0].value).toEqual("a");
 
         expect(attrs[1].name).toEqual("mnt-by");
-        expect(attrs[1].value).toEqual('');
+        expect(attrs[1].value).toEqual("");
 
         expect(attrs[2].name).toEqual("source");
-        expect(attrs[2].value).toEqual('');
+        expect(attrs[2].value).toEqual("");
     });
 
     it("should accept a correct object", () => {
@@ -708,7 +708,7 @@ describe("WhoisResourcesService", () => {
         expect(result[0].value).toEqual("a");
         expect(result[1].value).toEqual("c");
         expect(result[2].value).toBeNull();
-        expect(result[3].value).toEqual('');
+        expect(result[3].value).toEqual("");
         expect(result[4].value).toEqual("d");
     });
 
@@ -775,7 +775,7 @@ describe("WhoisResourcesService", () => {
         expect(attrs[0].value).toEqual("a");
         expect(attrs[1].value).toEqual("b");
         expect(attrs[2].name).toEqual("mnt-by");
-        expect(attrs[2].value).toEqual('');
+        expect(attrs[2].value).toEqual("");
         expect(attrs[3].value).toEqual("c");
     });
 

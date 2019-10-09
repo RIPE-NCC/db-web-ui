@@ -141,7 +141,7 @@ export class PrefixService {
                 .set("ignore404", String(true))
                 .set("query-string", prefixStr)
                 .set("type-filter", "domain");
-            return this.http.get("api/rest/search", {params, observe: 'response'})
+            return this.http.get("api/rest/search", {params, observe: "response"})
                 .pipe(catchError(err => of({})));
         };
         return zip(createRequest("drx"), createRequest("drM"))
