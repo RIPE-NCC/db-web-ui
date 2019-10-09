@@ -54,7 +54,9 @@ e2e:
 deploy-dev:
   stage: deploy
   before_script:
-    - echo $DB_OPERATIONAL_DEPLOY_KEY>/root/id_ed25519
+    - mkdir -p /root/.ssh
+    - echo $DB_OPERATIONAL_DEPLOY_KEY>/root/.ssh/id_ed25519
+    - echo "[gitlab.ripe.net]:222,[2001:67c:2e8:102::a66:32]:222 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMM+GGEPyTV2NQ5nE2t0z8UmVjlAmnVG7Tfi9WlmOXvPcRyevuFLGtyp/f0632uYSaDoPLlvgwr/Yiw8ZwvzW54=">>/root/.ssh/known_hosts
   script:
     - export
     - git clone ssh://git@gitlab.ripe.net:222/sbuskens/db-operational.git
