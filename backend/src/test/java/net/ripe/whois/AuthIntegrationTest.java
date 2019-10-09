@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import javax.ws.rs.core.MediaType;
-import java.io.FileNotFoundException;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -25,7 +24,7 @@ public class AuthIntegrationTest extends AbstractIntegrationTest {
             "    \"links\":[\n" +
             "      {\n" +
             "        \"rel\":\"self\",\n" +
-            "        \"href\":\"/resource-services/member-resources/7347?api-key=BAD-RPKI-NgdS7lro3hhnsEKV\"\n" +
+            "        \"href\":\"/resource-services/member-resources/7347?api-key=BAD-RPKI-TEST\"\n" +
             "      }\n" +
             "    ],\n" +
             "    \"content\":{\n" +
