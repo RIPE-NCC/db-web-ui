@@ -53,8 +53,9 @@ e2e:
 
 deploy-dev:
   stage: deploy
+  before_script:
+    - echo $DB_OPERATIONAL_DEPLOY_KEY>/root/id_ed25519
   script:
     - export
-    - echo DB_OPERATIONAL_DEPLOY_TOKEN=$DB_OPERATIONAL_DEPLOY_TOKEN
-    - git clone https://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
+    - git clone ssh://git@gitlab.ripe.net:222/sbuskens/db-operational.git
 
