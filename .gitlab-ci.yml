@@ -7,9 +7,9 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
 stages:
-#  - build
-#  - karma-test
-#  - e2e-test
+  - build
+  - karma-test
+  - e2e-test
   - deploy
 
 cache:
@@ -31,6 +31,7 @@ build:
       junit:
         - backend/target/surefire-reports/TEST-*.xml
         - backend/target/failsafe-reports/TEST-*.xml
+  when: manual
 
 karma:
   stage: karma-test
