@@ -7,9 +7,10 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
 
 stages:
-  - build
-  - karma-test
-  - e2e-test
+#  - build
+#  - karma-test
+#  - e2e-test
+  - deploy
 
 cache:
   paths:
@@ -17,13 +18,12 @@ cache:
     - backend/target/
     - frontend/node_modules/
 
-before_script:
-# TODO: this will be moved into db-web-ui-build docker image
-  - curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
-# END TODO
-
 build:
   stage: build
+  before_script:
+    # TODO: this will be moved into db-web-ui-build docker image
+    - curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
+    # END TODO
   script:
     - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -Dimplementation-version=${CI_COMMIT_SHORT_SHA}
   artifacts:
@@ -49,4 +49,11 @@ e2e:
     - mvn install
     - cd frontend && npm run e2e
   when: manual
+
+deploy-dev:
+  stage: deploy
+  script:
+    - export
+    - echo $DB_OPERATIONAL_DEPLOY_TOKEN=DB_OPERATIONAL_DEPLOY_TOKEN
+    - https://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
 
