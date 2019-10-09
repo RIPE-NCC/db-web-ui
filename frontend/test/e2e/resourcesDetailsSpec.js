@@ -49,10 +49,13 @@ describe("Resources detail", () => {
             expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
             expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual("192.87.0.0/24");
+            // contain href in a tag what guarantees option "Open in new tab" in context menu
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.0.255/false");
             expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual("LEGACY");
             expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual("SNET-HOMELAN");
 
             expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual("192.87.1.0/24");
+            expect(page.getTableCell(page.moreSpecificsTable, 1, 0).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/inetnum/192.87.1.0%20-%20192.87.1.255/false");
             expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual("LEGACY");
             expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual("NFRA");
 

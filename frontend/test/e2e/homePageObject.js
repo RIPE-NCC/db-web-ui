@@ -296,7 +296,6 @@ module.exports = {
 
     getTableCell: function (tableElement, rowIndex, colIndex) {
         return tableElement.element(by.css('tbody')).all(by.css('tr')).get(rowIndex).all(by.css('td')).get(colIndex);
-        // return tableElement.element(by.css('tbody tr:nth-child('+rowIndex+') td:nth-child('+colIndex+')'));
     },
 
     getListItem: function (list, index) {

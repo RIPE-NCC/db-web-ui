@@ -1,8 +1,8 @@
 <div>
-    <span class="title" (click)="showDetail()">
+    <a class="title" [routerLink]="['/myresources/detail', item.type, item.resource, sponsored]">
         <name-formatter [name]="item.resource" [type]="item.type"></name-formatter>
         <span class="fa fa-chevron-right pull-right"></span>
-    </span>
+    </a>
     <p class="org-name" *ngIf="item.orgName">{{ item.orgName }}</p>
     <div class="flags-container">
         <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text"></flag>

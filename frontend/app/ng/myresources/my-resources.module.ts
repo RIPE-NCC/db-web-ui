@@ -17,13 +17,15 @@ import {ResourcesComponent} from "./resources.component";
 import {AlertsDropDownComponent} from "./alertsdropdown/alerts-drop-down.component";
 import {ResourceStatusService} from "./resource-status.service";
 import {TransferDropDownComponent} from "./transferdropdown/transfer-drop-down.component";
+import {RouterModule} from "@angular/router";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         SharedModule,
-        WhoisObjectModule
+        WhoisObjectModule,
+        RouterModule
     ],
     declarations: [
         AlertsDropDownComponent,

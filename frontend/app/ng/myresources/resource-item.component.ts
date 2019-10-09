@@ -65,8 +65,4 @@ export class ResourceItemComponent {
             });
         }
     }
-
-    public showDetail() {
-        this.router.navigate(['myresources/detail/', this.item.type, this.item.resource, this.sponsored]);
-    }
 }

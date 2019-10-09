@@ -12,9 +12,14 @@ describe("Resources", () => {
         expect(page.myResourcesActiveTabLabel.getText()).toContain("IPv4");
         expect(page.myResourcesActiveTabRows.count()).toBe(4);
         expect(page.myResourcesActiveTabRows.get(0).getText()).toContain("194.104.0.0/24");
+        // contain href in a tag what guarantees option "Open in new tab" in context menu
+        expect(page.myResourcesActiveTabRows.get(0).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/INETNUM/194.104.0.0%20-%20194.104.0.255/false");
         expect(page.myResourcesActiveTabRows.get(1).getText()).toContain("194.171.0.0/16");
+        expect(page.myResourcesActiveTabRows.get(1).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/INETNUM/194.171.0.0%20-%20194.171.255.255/false");
         expect(page.myResourcesActiveTabRows.get(2).getText()).toContain("195.169.0.0/16");
+        expect(page.myResourcesActiveTabRows.get(2).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/INETNUM/195.169.0.0%20-%20195.169.255.255/false");
         expect(page.myResourcesActiveTabRows.get(3).getText()).toContain("192.87.0.0/16");
+        expect(page.myResourcesActiveTabRows.get(3).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/INETNUM/192.87.0.0%20-%20192.87.255.255/false");
     });
 
     it("should show progressbar for IPv4 resources with status ALLOCATED PA", () => {

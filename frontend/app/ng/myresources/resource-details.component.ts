@@ -202,10 +202,6 @@ export class ResourceDetailsComponent {
         this.isEditing = false;
     }
 
-    public showDetail(resource: IResourceModel): void {
-        this.router.navigate(["myresources/detail", resource.type, encodeURIComponent(resource.resource), this.sponsored]);
-    }
-
     /**
      * Called by 'scroller' directive.
      */

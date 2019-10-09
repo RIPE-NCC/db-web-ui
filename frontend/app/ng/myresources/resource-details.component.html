@@ -90,7 +90,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let resource of moreSpecifics.resources | slice:0:nrMoreSpecificsToShow; index as i;">
-            <td><a (click)="showDetail(resource)">
+            <td><a [routerLink]="['/myresources/detail', resource.type, resource.resource, sponsored]">
                 <name-formatter [name]="resource.resource" [type]="resource.type"></name-formatter>
             </a></td>
             <td>{{ resource.status }}</td>
