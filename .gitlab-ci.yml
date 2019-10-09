@@ -55,6 +55,6 @@ deploy-dev:
   stage: deploy
   script:
     - export
-    - echo $DB_OPERATIONAL_DEPLOY_TOKEN=DB_OPERATIONAL_DEPLOY_TOKEN
-    - https://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
+    - echo DB_OPERATIONAL_DEPLOY_TOKEN=$DB_OPERATIONAL_DEPLOY_TOKEN
+    - git clone https://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
 
