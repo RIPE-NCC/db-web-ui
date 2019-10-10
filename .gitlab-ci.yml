@@ -59,6 +59,7 @@ deploy-dev:
     - cat /root/.ssh/id_ed25519
     - chmod 400 /root/.ssh/id_ed25519
     - echo "[gitlab.ripe.net]:222,[2001:67c:2e8:102::a66:32]:222 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMM+GGEPyTV2NQ5nE2t0z8UmVjlAmnVG7Tfi9WlmOXvPcRyevuFLGtyp/f0632uYSaDoPLlvgwr/Yiw8ZwvzW54=">>/root/.ssh/known_hosts
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ripe.net/sbuskens/db-operational.git”.insteadOf git@gitlab.ripe.net:sbuskens/db-operational.git
   script:
     - export
 #    - git clone ssh://git@gitlab.ripe.net:222/sbuskens/db-operational.git
