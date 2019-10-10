@@ -1,0 +1,68 @@
+image: maven:3.6-jdk-8
+# TODO: this image is needed for karma and e2e build
+# image: db-web-ui-build:1
+
+variables:
+#  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+
+stages:
+  - build
+  - karma-test
+  - e2e-test
+  - deploy
+
+cache:
+  paths:
+    - .m2/repository
+    - backend/target/
+    - frontend/node_modules/
+
+build:
+  stage: build
+  before_script:
+    # TODO: this will be moved into db-web-ui-build docker image
+    - curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
+    # END TODO
+  script:
+    - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -Dimplementation-version=${CI_COMMIT_SHA}
+  artifacts:
+    reports:
+      junit:
+        - backend/target/surefire-reports/TEST-*.xml
+        - backend/target/failsafe-reports/TEST-*.xml
+
+karma:
+  stage: karma-test
+  script:
+    - export DISPLAY=:20
+    - Xvfb :20 -screen 0 1366x768x16 &
+    - mvn install
+    - cd frontend && npm run test
+  when: manual
+
+e2e:
+  stage: e2e-test
+  script:
+    - export DISPLAY=:20
+    - Xvfb :20 -screen 0 1366x768x16 &
+    - mvn install
+    - cd frontend && npm run e2e
+  when: manual
+
+deploy-dev:
+  stage: deploy
+#  before_script:
+#    - mkdir -p /root/.ssh
+#    - echo $DB_OPERATIONAL_DEPLOY_KEY>/root/.ssh/id_ed25519
+#    - cat /root/.ssh/id_ed25519
+#    - chmod 400 /root/.ssh/id_ed25519
+#    - echo "[gitlab.ripe.net]:222,[2001:67c:2e8:102::a66:32]:222 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMM+GGEPyTV2NQ5nE2t0z8UmVjlAmnVG7Tfi9WlmOXvPcRyevuFLGtyp/f0632uYSaDoPLlvgwr/Yiw8ZwvzW54=">>/root/.ssh/known_hosts
+#    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.ripe.net/sbuskens/db-operational.git".insteadOf git@gitlab.ripe.net:sbuskens/db-operational.git
+  script:
+    - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
+    - cp backend/target/backend-$CI_COMMIT_SHA.jar db-operational/deployment/db-web-ui-spring-$CI_COMMIT_SHA.jar
+    - cd db-operational/deployment
+    - ./stage.sh -p db-web-ui -e dev db-web-ui-spring-$CI_COMMIT_SHA.jar
+    - ./sync.sh -p db-web-ui -e dev
+    - bash ./deploy.sh -p db-web-ui -e dev
