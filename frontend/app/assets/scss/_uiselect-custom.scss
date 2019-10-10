@@ -1,10 +1,10 @@
 // Maintainer selection
-.ui-select-choices-group {
+.ng-dropdown-panel { //
     max-height: none !important;
     overflow-x: auto !important;
-    .ui-select-choices-row {
+    .ng-dropdown-panel-items {
 		border-bottom: 1px solid #EAEAEA !important;
-		.ui-select-choices-row-inner {
+		.ng-option {
 			padding: 10px 8px;
 			div.option {
 				span.auth {
@@ -38,8 +38,12 @@
 }
 
 // Selected maintainer items
-.ui-select-match {
-	.ui-select-match-item {
+#selectMaintainerDropdown {
+	// hide x - clear all, which is by default on ng-select component
+	.ng-clear-wrapper {
+		visibility: hidden;
+	}
+	.default {
 		background: #3BBFC0;
 		color: #fff;
 		border-radius: 3px;
@@ -48,13 +52,19 @@
 		text-shadow: none;
 		border: 1px solid #1E8D8D;
 		margin: 0 1px 3px !important;
+		padding-left: 5px;
 		.close {
 			color: #fff;
+			font-size: 19px;
 			opacity: 1;
 			text-shadow: none;
-			padding: 2px;
+			padding-right: 5px;
+			padding-left: 5px;
 			border-left: 1px solid #1E8D8D;
-			margin-left: 5px;
+			margin-left: 2px;
+			&:hover {
+				background: #3BBFC0;
+			}
 		}
         .fa-lock {
             color: #fff;
@@ -62,18 +72,64 @@
             text-shadow: none;
             padding: 2px;
             border-left: 1px solid #777;
-            padding-left: 5px;
+            padding-left: 2px;
+        }
+		.fa-star {
+            color: #fff;
+            opacity: 1;
+            text-shadow: none;
+            padding-right: 2px;
         }
 		&.existing {
     		background-color: #26A6A7;
 		}
-		&.select-locked {
-		    background-color: grey;
-		    border: 1px solid #777;
-		}
+	}
+	.select-locked {
+		background-color: grey !important;
+		border: 1px solid #777 !important;
+		padding-right: 5px;
 	}
 	.btn-primary {
 		background: #2EB1B2;
+	}
+}
+
+// Selected AdminC
+#adminCDropdown {
+	// hide x - clear all, which is by default on ng-select component
+	.ng-clear-wrapper {
+		visibility: hidden;
+	}
+	outline: none;
+	.ng-value {
+		background: #3BBFC0;
+		color: #fff;
+		border-radius: 3px;
+		background-image: none;
+		box-shadow: none;
+		text-shadow: none;
+		border: 1px solid #1E8D8D;
+		margin: 0 1px 3px !important;
+		padding-left: 5px;
+
+		.close {
+			color: #fff;
+			font-size: 19px;
+			opacity: 1;
+			text-shadow: none;
+			padding-right: 5px;
+			padding-left: 5px;
+			border-left: 1px solid #1E8D8D;
+			margin-left: 2px;
+
+			&:hover {
+				background: #3BBFC0;
+			}
+		}
+
+		.btn-primary {
+			background: #2EB1B2;
+		}
 	}
 }
 
@@ -157,51 +213,35 @@ ul.dropdown-menu {
 #organisation-selector {
     display: inline-block;
     width: 250px !important;
-	a.select2-choice {
+	div.ng-select-container {
         @extend %brd;
         background: none;
         border-radius: 0;
-        span.ui-select-toggle {
-            border-left: none;
-            background: #fff;
-            background-image: none;
-        }
+		min-height: 26px;
+		height: 26px !important;
+		&.ng-select-focused {
+			box-shadow: none;
+		}
     }
-    div.ui-select-dropdown {
+	.ng-dropdown-panel {
         @extend %brd;
         border-radius: 0;
         box-shadow: none;
         border-top: 0;
-        div.search-container {
-            margin-top: 5px;
-            input.ui-select-search {
-                @extend %brd;
-                padding: 0 20px 0 5px;
-            }
-        }
-        ul.ui-select-choices {
+        div.ng-dropdown-panel-items {
             padding: 0;
             outline: none;
-            li.ui-select-choices-group {
-                > ul {
-                    li {
-                        div.ui-select-choices-row-inner {
-                            padding: 5px;
-                            small {
-                                color: $dark-grey-cr;
-                            }
-                        }
-                        &.select2-highlighted {
-                            background-color: $dark-blue;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    &.select2-container-active {
-        a.select2-choice {
-            box-shadow: none;
+			.ng-option {
+				padding: 5px;
+				white-space: normal;
+				small {
+					color: $dark-grey-cr;
+				}
+				&.ng-option-selected {
+					color: white;
+					background-color: $dark-blue;
+				}
+			}
         }
     }
 }

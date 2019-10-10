@@ -3,7 +3,8 @@ package net.ripe.whois.services;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.runners.MockitoJUnitRunner;
+
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -52,7 +53,7 @@ public class WhoisRestServiceTest {
     public void should_encode_query_parameters() throws Exception {
         when(request.getRequestURI()).thenReturn("/api/rest/fulltextsearch/select");
         when(request.getQueryString()).thenReturn("q=<svg+onload=\"alert('XSS')\">");
-        when(request.getMethod()).thenReturn(HttpMethod.GET.name());
+//        when(request.getMethod()).thenReturn(HttpMethod.GET.name());
         subject.bypass(request, body, httpHeaders);
     }
 }

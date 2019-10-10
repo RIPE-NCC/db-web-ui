@@ -11,6 +11,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriTemplate;
 
 import javax.annotation.Nullable;
@@ -33,15 +34,11 @@ public class WhoisReferencesService implements ExchangeErrorHandler {
     }
 
     public ResponseEntity<String> getReferences(String source, String objectType, String objectName, Integer limit, HttpHeaders headers) {
-        final HashMap<String, Object> variables = Maps.newHashMap();
-        variables.put("url", referencesApiUrl);
-        variables.put("source", source);
-        variables.put("object-type", objectType);
-        variables.put("name", objectName);
-        variables.put("limit", limit != null ? limit : MAX_RESULT_NUMBER);
-
-        final URI uri = new UriTemplate("{url}/{source}/{object-type}/{name}?limit={limit}").expand(variables);
-
+        final URI uri = UriComponentsBuilder
+                .fromUriString(String.format("%s/%s/%s/%s?limit=%s", referencesApiUrl, source, objectType, objectName, limit != null ? limit : MAX_RESULT_NUMBER))
+                .build(true)
+                .encode()
+                .toUri();
         LOGGER.debug("Performing fetch {}", uri);
 
         return handleErrors(() -> restTemplate.exchange(uri,

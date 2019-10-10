@@ -1,0 +1,84 @@
+<alerts></alerts>
+<div id="createForm">
+    <h1>Create "mntner" object</h1>
+    <section class="form-fields maintainer-fields">
+        <strong>Please select your administrative contact before creating the shared maintainer object</strong>
+        <article class="maintainer-icons">
+            <span class="fa fa-search maintainer-search-icon"></span>
+            <a (click)="isAdminCHelpShown = !isAdminCHelpShown" class="btn btn-default ga-help-attr maintainer-help" id="admincHelp">
+                <span class="fa fa-question"></span>
+            </a>
+        </article>
+        <ng-select id="adminCDropdown"
+                   name="adminCDropdown"
+                   bindLabel="key"
+                   [multiple]="true"
+                   [items]="adminC.alternatives"
+                   [(ngModel)]="adminC.object"
+                   [hideSelected]="true"
+                   (search)="adminCAutocomplete($event.term)"
+                   (add)="onAdminCAdded($event)">
+            <ng-template ng-label-tmp let-admin="item" let-clear="clear">
+                <div>
+                    {{ admin.key }}
+                    <span class="ng-value-icon close right" aria-hidden="true"
+                          (click)="onAdminCRemoved(admin);clear(admin)">×</span>
+                </div>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item">
+                <span class="title">{{item.key}} - <b>{{item.person}} {{item.role}}</b></span>
+            </ng-template>
+        </ng-select>
+        <div [ngbCollapse]="!isAdminCHelpShown" class="text field-description">
+            <strong>Description</strong><br>
+            {{admincDescription}}<br>
+            <strong>Syntax</strong><br>
+            <span [innerHTML]="admincSyntax"></span>
+            </div>
+        <div *ngIf="!hasAdminC()">
+            <strong>Don't have an administrative contact? <a id="linkToCreatePair" href="#/webupdates/create/{{source}}/person/self">Create maintainer and person pair</a></strong>
+        </div>
+    </section>
+
+    <section class="visible-field-form" [hidden]="!hasAdminC()">
+
+        <ul class="form-fields appeared-fields">
+
+            <li *ngFor="let attribute of maintainerAttributes | filteroutAttributeByName: ['mnt-by', 'source', 'upd-to', 'auth', 'admin-c']" class="form-group input-group">
+                <label>{{attribute.name}}</label>
+
+                <span *ngIf="attribute.$$error" class="text-error">
+                    <span [innerHTML]="attribute.$$error"></span>
+                </span>
+
+                <input type="text"
+                       [attr.name]="attribute.name"
+                       class="form-control"
+                       placeholder="{{attribute.$$meta.$$short}}"
+                       autocomplete="off"
+                       [(ngModel)]="attribute.value"
+                       [required]="attribute.$$meta.$$mandatory"
+                       (blur)="fieldVisited(attribute)">
+                <div class="text field-description" [ngbCollapse]="!showAttrsHelp[attribute.name]">
+                    <strong>Description</strong><br>
+                    <span [innerHTML]="getAttributeDescription('mntner')"></span><br>
+                    <strong>Syntax</strong><br>
+                    <span [innerHTML]="getAttributeSyntax('mntner')"></span>
+                </div>
+                <ul class="input-group-btn">
+                    <li>
+                        <a id="help" class="btn btn-default ga-help-attr" (click)="showAttrsHelp[attribute.name] = !showAttrsHelp[attribute.name]">
+                            <span class="fa fa-question" ></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <section class="supporting-text">
+            <p>By submitting this form you explicitly express your agreement with the <a
+                href="https://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+        </section>
+        <input type="submit" (click)="submit()" [disabled]="!isFormValid() || submitInProgress" class="blue-button pull-right ga-createobj-create" value="Submit" />
+        <button (click)="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
+    </section>
+</div>

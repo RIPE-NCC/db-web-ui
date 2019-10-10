@@ -1,0 +1,400 @@
+{
+  "requestUrl": "/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=resource&flags=B&offset=0&limit=20&query-string=1.1.1.1",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "service": {
+      "name": "search"
+    },
+    "parameters": {
+      "inverse-lookup": {},
+      "type-filters": {},
+      "flags": {
+        "flag": [
+          {
+            "value": "no-filtering"
+          },
+          {
+            "value": "resource"
+          }
+        ]
+      },
+      "query-strings": {
+        "query-string": [
+          {
+            "value": "1.1.1.1"
+          }
+        ]
+      },
+      "sources": {}
+    },
+    "objects": {
+      "object": [
+        {
+          "type": "inetnum",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/apnic-grs/inetnum/1.1.1.0 - 1.1.1.255"
+          },
+          "source": {
+            "id": "apnic-grs"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "inetnum",
+                "value": "1.1.1.0 - 1.1.1.255"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "inetnum",
+                "value": "1.1.1.0 - 1.1.1.255"
+              },
+              {
+                "name": "netname",
+                "value": "APNIC-LABS"
+              },
+              {
+                "name": "descr",
+                "value": "APNIC and Cloudflare DNS Resolver project"
+              },
+              {
+                "name": "descr",
+                "value": "Routed globally by AS13335/Cloudflare"
+              },
+              {
+                "name": "descr",
+                "value": "Research prefix for APNIC Labs"
+              },
+              {
+                "name": "country",
+                "value": "AU"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/apnic-grs/organisation/ORG-ARAD1-AP"
+                },
+                "name": "org",
+                "value": "ORG-ARAD1-AP",
+                "referenced-type": "organisation"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/apnic-grs/person/DUMY-RIPE"
+                },
+                "name": "admin-c",
+                "value": "DUMY-RIPE",
+                "referenced-type": "person"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/apnic-grs/person/DUMY-RIPE"
+                },
+                "name": "tech-c",
+                "value": "DUMY-RIPE",
+                "referenced-type": "person"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/apnic-grs/mntner/APNIC-HM"
+                },
+                "name": "mnt-by",
+                "value": "APNIC-HM",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/apnic-grs/mntner/MAINT-AU-APNIC-GM85-AP"
+                },
+                "name": "mnt-routes",
+                "value": "MAINT-AU-APNIC-GM85-AP",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/apnic-grs/irt/IRT-APNICRANDNET-AU"
+                },
+                "name": "mnt-irt",
+                "value": "IRT-APNICRANDNET-AU",
+                "referenced-type": "irt"
+              },
+              {
+                "name": "status",
+                "value": "ASSIGNED PORTABLE"
+              },
+              {
+                "name": "remarks",
+                "value": "---------------"
+              },
+              {
+                "name": "remarks",
+                "value": "All Cloudflare abuse reporting can be done via"
+              },
+              {
+                "name": "remarks",
+                "value": "resolver-abuse@cloudflare.com"
+              },
+              {
+                "name": "remarks",
+                "value": "---------------"
+              },
+              {
+                "name": "last-modified",
+                "value": "2018-03-30T01:51:28Z"
+              },
+              {
+                "name": "source",
+                "value": "APNIC-GRS"
+              },
+              {
+                "name": "remarks",
+                "value": "****************************"
+              },
+              {
+                "name": "remarks",
+                "value": "* THIS OBJECT IS MODIFIED"
+              },
+              {
+                "name": "remarks",
+                "value": "* Please note that all data that is generally regarded as personal"
+              },
+              {
+                "name": "remarks",
+                "value": "* data has been removed from this object."
+              },
+              {
+                "name": "remarks",
+                "value": "* To view the original object, please query the APNIC Database at:"
+              },
+              {
+                "name": "remarks",
+                "value": "* http://www.apnic.net/"
+              },
+              {
+                "name": "remarks",
+                "value": "****************************"
+              }
+            ]
+          },
+          "tags": {
+            "tag": [
+              {
+                "id": "APNIC-REGISTRY-RESOURCE"
+              }
+            ]
+          },
+          "resource-holder": {
+            "key": "ORG-ARAD1-AP",
+            "name": "APNIC Research and Development"
+          },
+          "managed": false
+        },
+        {
+          "type": "route",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/apnic-grs/route/1.1.1.0/24AS13335"
+          },
+          "source": {
+            "id": "apnic-grs"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "route",
+                "value": "1.1.1.0/24"
+              },
+              {
+                "name": "origin",
+                "value": "AS13335"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "route",
+                "value": "1.1.1.0/24"
+              },
+              {
+                "name": "origin",
+                "value": "AS13335"
+              },
+              {
+                "name": "descr",
+                "value": "APNIC Research and Development 6 Cordelia St"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/apnic-grs/mntner/MAINT-AU-APNIC-GM85-AP"
+                },
+                "name": "mnt-by",
+                "value": "MAINT-AU-APNIC-GM85-AP",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "last-modified",
+                "value": "2018-03-16T16:58:06Z"
+              },
+              {
+                "name": "source",
+                "value": "APNIC-GRS"
+              },
+              {
+                "name": "remarks",
+                "value": "****************************"
+              },
+              {
+                "name": "remarks",
+                "value": "* THIS OBJECT IS MODIFIED"
+              },
+              {
+                "name": "remarks",
+                "value": "* Please note that all data that is generally regarded as personal"
+              },
+              {
+                "name": "remarks",
+                "value": "* data has been removed from this object."
+              },
+              {
+                "name": "remarks",
+                "value": "* To view the original object, please query the APNIC Database at:"
+              },
+              {
+                "name": "remarks",
+                "value": "* http://www.apnic.net/"
+              },
+              {
+                "name": "remarks",
+                "value": "****************************"
+              }
+            ]
+          },
+          "managed": false
+        },
+        {
+          "type": "route",
+          "link": {
+            "type": "locator",
+            "href": "http://rest-prepdev.db.ripe.net/radb-grs/route/1.0.0.0/8AS64050"
+          },
+          "source": {
+            "id": "radb-grs"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "route",
+                "value": "1.0.0.0/8"
+              },
+              {
+                "name": "origin",
+                "value": "AS64050"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "route",
+                "value": "1.0.0.0/8"
+              },
+              {
+                "name": "descr",
+                "value": "BGP-NET-1-0-0-0-8"
+              },
+              {
+                "name": "origin",
+                "value": "AS64050"
+              },
+              {
+                "name": "remarks",
+                "value": "This route object was created because"
+              },
+              {
+                "name": "remarks",
+                "value": "some BGPNET peers filter based on these objects"
+              },
+              {
+                "name": "remarks",
+                "value": "and this route may be rejected"
+              },
+              {
+                "name": "remarks",
+                "value": "if this object is not created."
+              },
+              {
+                "name": "remarks",
+                "value": "Please contact irr@bgp.net if you have any"
+              },
+              {
+                "name": "remarks",
+                "value": "questions regarding this object."
+              },
+              {
+                "name": "notify",
+                "value": "irr@bgp.net"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest-prepdev.db.ripe.net/radb-grs/mntner/MAINT-AS64050"
+                },
+                "name": "mnt-by",
+                "value": "MAINT-AS64050",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "source",
+                "value": "RADB-GRS"
+              },
+              {
+                "name": "remarks",
+                "value": "****************************"
+              },
+              {
+                "name": "remarks",
+                "value": "* THIS OBJECT IS MODIFIED"
+              },
+              {
+                "name": "remarks",
+                "value": "* Please note that all data that is generally regarded as personal"
+              },
+              {
+                "name": "remarks",
+                "value": "* data has been removed from this object."
+              },
+              {
+                "name": "remarks",
+                "value": "* To view the original object, please query the RADB Database at:"
+              },
+              {
+                "name": "remarks",
+                "value": "* http://www.radb.net/"
+              },
+              {
+                "name": "remarks",
+                "value": "****************************"
+              }
+            ]
+          },
+          "managed": false
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "type": "locator",
+      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}

@@ -7,7 +7,7 @@ module.exports = function (config) {
         frameworks: ['jasmine'],
         // list of files / patterns to load in the browser
         files: [
-            {pattern: './karma-test-shim.js', watch: false}
+            {pattern: './karma-test-shim.js', watch: false},
         ],
         exclude: [],
         // preprocess matching files before serving them to the browser
@@ -26,7 +26,7 @@ module.exports = function (config) {
         reporters: ['progress', 'coverage', 'remap-coverage'],
         colors: true,
         logLevel: config.LOG_INFO,
-        singleRun: true,
+        singleRun: false,
         browsers: ['Chrome'],
         concurrency: Infinity,
         coverageReporter: {
@@ -36,6 +36,6 @@ module.exports = function (config) {
             'text-summary': null,
             json: './reports/coverage.json',
             html: './reports/unittest-coverage'
-        },
+        }
     })
 };

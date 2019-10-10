@@ -1,0 +1,39 @@
+
+<button id="btnSwitchToTextModify"
+        class="blue-button pull-right ga-text-modifyobj-switch-mode"
+        style="border:0;"
+        (click)="switchToWebMode()">
+    <span class="fa fa-bars"></span> Edit in single lines
+</button>
+
+<div>
+    <h1>Modify &quot;{{object.type}}&quot; object</h1>
+
+    <alerts></alerts>
+
+    <form id="textModifyForm">
+
+        <div class="form-group">
+            <label for="modifyRpsl">RPSL to modify a single object</label>
+            <textarea id="modifyRpsl"
+                      name="modifyRpsl"
+                      class="form-control"
+                      rows="20"
+                      [(ngModel)]="object.rpsl"
+                      style="font-family:monospace;"></textarea>
+
+            <section class="supporting-text">
+                <p>You can optionally use <strong>password:</strong>-attribute to prevent an interactive password popup or to provide multiple passwords.</p>
+                <p>By submitting this form you explicitly express your agreement with the <a
+                    href="https://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
+            </section>
+
+            <input type="submit" (click)="submit()" class="blue-button pull-right ga-text-modifyobj-modify" value="Submit"/>
+
+            <button (click)="cancel()" class="blue-button pull-right ga-text-modifyobj-cancel" style="border:0;"> Cancel </button>
+
+            <button (click)="deleteObject()" class="red-button pull-left ga-text-deleteobj-create" style="border:0; margin: 0;">Delete this object</button>
+
+        </div>
+    </form>
+</div>

@@ -1,0 +1,107 @@
+{
+  "requestUrl": "/api/rest/fulltextsearch/select?facet=true&format=xml&hl=true&q=(nemam)&start=0&wt=json",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "result": {
+      "name": "response",
+      "numFound": 0,
+      "start": 0
+    },
+    "lsts": [
+      {
+        "lst": {
+          "name": "responseHeader",
+          "ints": [
+            {
+              "int": {
+                "name": "status",
+                "value": "0"
+              }
+            },
+            {
+              "int": {
+                "name": "QTime",
+                "value": "43"
+              }
+            }
+          ],
+          "lsts": [
+            {
+              "lst": {
+                "name": "params",
+                "strs": [
+                  {
+                    "str": {
+                      "name": "q",
+                      "value": "(nemam)"
+                    }
+                  },
+                  {
+                    "str": {
+                      "name": "rows",
+                      "value": "10"
+                    }
+                  },
+                  {
+                    "str": {
+                      "name": "start",
+                      "value": "0"
+                    }
+                  },
+                  {
+                    "str": {
+                      "name": "hl",
+                      "value": "true"
+                    }
+                  },
+                  {
+                    "str": {
+                      "name": "hl.simple.pre",
+                      "value": "<b>"
+                    }
+                  },
+                  {
+                    "str": {
+                      "name": "hl.simple.post",
+                      "value": "</b>"
+                    }
+                  },
+                  {
+                    "str": {
+                      "name": "wt",
+                      "value": "json"
+                    }
+                  },
+                  {
+                    "str": {
+                      "name": "facet",
+                      "value": "true"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "lst": {
+          "name": "highlighting"
+        }
+      },
+      {
+        "lst": {
+          "name": "facet_counts",
+          "lsts": [
+            {
+              "lst": {
+                "name": "facet_fields"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

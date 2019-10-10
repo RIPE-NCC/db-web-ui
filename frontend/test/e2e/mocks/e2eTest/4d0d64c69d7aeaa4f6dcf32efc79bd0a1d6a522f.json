@@ -1,0 +1,6 @@
+{
+  "data": [],
+  "statusCode": 200,
+  "contentType": "application/json",
+  "requestUrl": "/api/whois/autocomplete?extended=true&field=inetnum&query=213.159.160.0-213.159.190.255"
+}

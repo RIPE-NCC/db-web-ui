@@ -1,0 +1,98 @@
+<div [ngClass]="{'has-error': (attribute.value && attribute.$$invalid)}">
+    <attribute-reverse-zones *ngIf="widgetReverseZone; else attributeComponent" [attribute]="attribute"></attribute-reverse-zones>
+</div>
+<div class="text field-description" [ngbCollapse]="!isHelpShown">
+    <strong>Description</strong><br>
+    <attr-info [object-type]="objectType" [description]="attribute.name"></attr-info>
+    <br>
+    <strong>Syntax</strong><br>
+    <attr-info [object-type]="objectType" [syntax]="attribute.name"></attr-info>
+</div>
+
+<ul class="input-group-btn">
+    <li *ngIf="canBeAdded(objectType, attributes, attribute)">
+        <a class="btn btn-default ga-add-dup"
+           title="Add another attribute of this type"
+           (click)="duplicateAttribute(objectType, attributes, attribute)">
+            <span class="fa fa-arrow-down"></span>
+        </a>
+    </li>
+    <li *ngIf="canAddExtraAttributes(objectType)">
+        <a class="btn btn-default ga-add-attr"
+           title="Add any attribute (opens dialog)"
+           (click)="displayAddAttributeDialog(objectType, attributes, attribute)">
+            <span class="fa fa-plus"></span>
+        </a>
+    </li>
+    <li *ngIf="!attribute.$$disable && canBeRemoved(objectType, attributes, attribute)">
+        <a class="btn btn-default ga-del-attr"
+           title="Remove current attribute"
+           (click)="removeAttribute(objectType, attributes, attribute)">
+            <span class="fa fa-trash"></span>
+        </a>
+    </li>
+    <li *ngIf="shouldShowBellIcon(attribute, objectType)">
+        <a class="btn btn-default ga-add-dup"
+           title="Create new role to use as abuse-c"
+           (click)="createRoleForAbuseCAttribute()">
+            <span class="fa fa-bell-o"></span>
+        </a>
+    </li>
+    <li>
+        <a class="btn btn-default ga-help-attr"
+           (click)="toggleHelp()"
+           *ngIf="attribute.name !== 'reverse-zone'">
+            <span class="fa fa-question"></span>
+        </a>
+    </li>
+</ul>
+
+<ng-template #attributeComponent>
+    <label>{{attribute.name}}</label>
+    <div *ngIf="attribute.$$error">
+        <span class="text-error" [innerHTML]="attribute.$$error"></span>
+    </div>
+    <div *ngIf="attribute.$$info">
+        <span class="text-info" [innerHTML]="attribute.$$info"></span>
+    </div>
+    <div *ngIf="attribute.$$success">
+        <span class="text-success" [innerHTML]="attribute.$$success"></span>
+    </div>
+
+    <!-- This is for not enums -->
+    <input *ngIf="!isStaticList && isDinamicList"
+           type="text"
+           [attr.name]="attribute.name + '$' + idx"
+           class="form-control"
+           placeholder="{{getAttributeShortDescription(attribute.name)}}"
+           autocomplete="off"
+           [(ngModel)]="attribute.value"
+           [required]="attribute.$$meta?.$$mandatory"
+           [disabled]="attribute.$$disable"
+           (blur)="valueTypeAheadChanged(objectType, attribute.name, attributes)"
+           [ngbTypeahead]="autocompleteList(objectType, attributes, attribute)"
+           [resultFormatter]="autocompleteAttributeRFormatter"
+           [inputFormatter]="autocompleteAttributeIFormatter">
+    <input *ngIf="(!isStaticList && !isDinamicList) ||  attribute.name === 'status'"
+           type="text"
+           [attr.name]="attribute.name + '$' + idx"
+           class="form-control"
+           placeholder="{{getAttributeShortDescription(attribute.name)}}"
+           autocomplete="off"
+           [(ngModel)]="attribute.value"
+           [required]="attribute.$$meta?.$$mandatory"
+           [disabled]="attribute.$$disable"
+           (change)="valueChanged(objectType, attributes)">
+    <ng-select *ngIf="isStaticList && attribute.name !== 'status'"
+            [attr.name]="attribute.name"
+            [items]="staticList"
+            bindLabel="key"
+            bindValue="key"
+            placeholder="{{getAttributeShortDescription(attribute.name)}}"
+            [disabled]="attribute.$$meta?.$$disable"
+            [(ngModel)]="attribute.value">
+        <ng-template ng-option-tmp let-item="item" let-search="searchTerm">
+            <div [innerHTML]="displayEnumValue(item)" [ngOptionHighlight]="search">{{item.key}}</div>
+        </ng-template>
+    </ng-select>
+</ng-template>

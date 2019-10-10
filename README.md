@@ -30,12 +30,11 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 
 * cd into the `backend` sub folder
 
-* execute  (using the Jetty Maven Plugin): `mvn jetty:run`
+* execute (using the Spring Boot Maven Plugin) execute: ```mvn spring-boot:run -Dspring-boot.run.profiles=local```     
 
-* or (using the Spring Boot Maven Plugin) execute: `mvn spring-boot:run -Drun.profiles=local`     
+* or Right click on ```/backend/src/main/java/net/ripe/whois/Application.java run in intellij, make sure to add -Dspring.profiles.active=local```
 
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
-
 
 Deployment
 -------------------
@@ -67,13 +66,9 @@ Frontend
 ### Test
 
 * `npm run test`<br>
-  Running Karma unit tests locally
-* `npm run test-remote` _(used on bamboo)_<br>
-  Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub`
-* `npm run test-ng2`<br>
   Running Karma unit tests locally for Angular 6+ with coverage
   - [Angular Unit test coverage 🔗](frontend/reports/unittest-coverage/index.html) is available locally 
-* `npm run test-ng2-remote` _(used on bamboo)_<br>
+* `npm run test-remote` _(used on bamboo)_<br>
   Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub` for Angular 6+ with coverage
 * `npm run e2e`<br>
   Runs the Protractor tests on port 9002 without coverage so they are quicker.
@@ -114,19 +109,10 @@ IntelliJ Preferences
                         * Project SDK: 1.8
                         * Language level: 1.8
 * Languages & Frameworks
-	* JavaScript
-	    * Bower
-	        * Bower executable (wherever you installed bower)
-	        * bower.json (specify frontend/bower.json) 
-		* Code Quality Tools
-			* ESLint: Enable
-		* Libraries
-		    * Add... (specify frontend/bower_components/angular/angular.js)
     * TypeScript
         * Use TypeScript Service
-* Plugins
-    * Install JetBrains plugins...
-        * AngularJS
+        * Code Quality Tools
+        		* TSLint: Enable
 
 Architecture
 ------------
@@ -155,10 +141,11 @@ Responsibilities of java-proxy: Non-functionals only
 Things every db-web-ui developer should know
 --------------------------------------------
 
-* Must read: https://github.com/johnpapa/angular-styleguide/tree/master/a1
-* This chap knows a thing or two about Angular: Ben Nadel www.bennadel.com
+* Must read: https://blog.angularindepth.com/the-best-way-to-unsubscribe-rxjs-observable-in-the-angular-applications-d8f9aa42f6a0
+* Style guide: https://v7.angular.io/guide/styleguide
+* Native Angular component used in this project: https://ng-bootstrap.github.io/#/getting-started
+* RxJS operators with clear explanations and executable examples: https://www.learnrxjs.io/ 
 * Use the Mozilla Developer Network (MDN) for JS specs — NOT W3Schools
-* https://www.airpair.com/angularjs/posts/top-10-mistakes-angularjs-developers-make
 
 
 HOWTOs
@@ -210,3 +197,8 @@ Sitespeed.io is a set of Open Source tools that makes it easy to monitor and mea
 Use sitespeed Docker container to get an environment with Firefox, Chrome, XVFB and sitespeed.io up
 
 ` docker run --shm-size=1g --rm -v "$(pwd)":/sitespeed.io sitespeedio/sitespeed.io:7.7.3 https://prepdev.db.ripe.net/db-web-ui/ `
+
+Matomo (ex. Piwik)
+------------------
+
+https://matomo.ripe.net/  

@@ -1,0 +1,11 @@
+<button type="button" class="grey-button dropdown-button" data-toggle="dropdown" *ngIf="parents?.length > 0">
+    <span class="fa fa-sitemap"></span>
+</button>
+<button type="button" class="grey-button" (click)="showTopLevelResources()"><i class="fa fa-chevron-left"></i> Back to my resources</button>
+<ul class="dropdown-list" *ngIf="parents?.length > 0">
+    <li *ngFor="let p of parents">
+        <a (click)="takeMeBackHome(p)">
+            <name-formatter [name]="p" [type]="resource.type"></name-formatter>
+        </a>
+    </li>
+</ul>

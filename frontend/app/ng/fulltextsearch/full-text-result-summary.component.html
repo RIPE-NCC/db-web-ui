@@ -1,0 +1,14 @@
+<table class="table table-hover table-condensed full-text-result-summary" *ngIf="tabledata.length > 0">
+    <thead>
+    <tr>
+        <th>Number of results - all object types</th>
+        <th><span class="pull-right">{{ total | number }}</span></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let td of tabledata" (click)="emitRowClicked({type:td})">
+        <td>{{ td.name }}</td>
+        <td><span class="pull-right">{{ td.value | number }}</span></td>
+    </tr>
+    </tbody>
+</table>

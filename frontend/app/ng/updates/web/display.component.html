@@ -1,0 +1,36 @@
+<div *ngIf="isCreateOrModify()" class="alert alert-success">
+    <p>Your object has been successfully {{getOperationName()}}</p>
+</div>
+
+<alerts></alerts>
+
+<h1>{{objectType}} &quot;{{objectName}}&quot;</h1>
+
+<section class="inner-container">
+    <table class="success-fields grey" *ngIf="!isDiff()">
+        <tr *ngFor="let attribute of attributes">
+            <td width="20%">
+                <label>{{attribute.name}}:</label>
+            </td>
+            <td>
+                <p [hidden]="attribute.link">
+                        {{attribute.value | sanitizeImgHtml}}
+                </p>
+                <p [hidden]="!attribute.link">
+                        <a [href]="attribute.link?.uiHref">{{attribute.value}}</a>
+                </p>
+                <div [hidden]="!attribute.$$error">
+    	            <span>{{attribute.$$error}}</span>
+    	            <i class="fa fa-info-circle"></i>
+    	        </div>
+            </td>
+        </tr>
+    </table>
+
+    <pre *ngIf="isDiff()" lineDiff [left]="before | sanitizeImgHtml" [right]="after | sanitizeImgHtml" class="textdiff"></pre>
+
+    <button (click)="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
+    <span [hidden]="!modifyButtonToBeShown()">
+        <button (click)="navigateToModify()"  class="blue-button pull-right ga-createobj-modifyobj">{{loggedIn ? 'Modify' : 'Login to modify'}}</button>
+    </span>
+</section>

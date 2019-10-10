@@ -18,6 +18,10 @@ module.exports = {
                 loader: 'html-loader'
             },
             {
+                test: /\.(png|svg|gif)$/,
+                loader: 'url-loader?limit=25000'
+            },
+            {
                 enforce: 'post',
                 test: /\.ts$/,
                 loader: 'istanbul-instrumenter-loader',

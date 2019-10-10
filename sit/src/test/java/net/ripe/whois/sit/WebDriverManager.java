@@ -63,16 +63,16 @@ class WebDriverManager {
 
         switch (browserName) {
             case CHROME:
-                ChromeDriverManager.getInstance().setup();
+                ChromeDriverManager.chromedriver().setup();
                 return new ChromeDriver();
             case FIREFOX:
-                FirefoxDriverManager.getInstance().setup();
+                FirefoxDriverManager.firefoxdriver().setup();
                 return new FirefoxDriver();
             case IE:
-                InternetExplorerDriverManager.getInstance().setup();
+                InternetExplorerDriverManager.iedriver().setup();
                 return new InternetExplorerDriver();
             case EDGE:
-                EdgeDriverManager.getInstance().setup();
+                EdgeDriverManager.edgedriver().setup();
                 return new EdgeDriver();
             default:
                 throw new IllegalStateException("not supported");

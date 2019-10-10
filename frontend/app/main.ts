@@ -1,11 +1,7 @@
-import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
-import {UpgradeModule} from "@angular/upgrade/static";
-import {downgradeItem} from "./downgrades";
-import {AppModule} from "./ng2/app.module";
+// styles
+import "./assets/scss/main.scss";
 
-platformBrowserDynamic().bootstrapModule(AppModule).then((platformRef) => {
-    // upgrades & downgrades
-    downgradeItem();
-    const upgrade = platformRef.injector.get(UpgradeModule) as UpgradeModule;
-    upgrade.bootstrap(document.documentElement, ["dbWebApp"]);
-});
+import {platformBrowserDynamic} from "@angular/platform-browser-dynamic";
+import {AppModule} from "./ng/app.module";
+
+platformBrowserDynamic().bootstrapModule(AppModule).catch(err => console.log(err));

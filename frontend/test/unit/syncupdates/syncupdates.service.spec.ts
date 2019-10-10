@@ -1,16 +1,15 @@
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { TestBed } from "@angular/core/testing";
-import { AppModule} from "../../../app/ng2/app.module";
-import { SyncupdatesService} from "../../../app/ng2/syncupdates/syncupdates.service";
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
+import { SyncupdatesService} from "../../../app/ng/syncupdates/syncupdates.service";
 
-describe("dbWebApp: SyncupdatesService", () => {
+describe("SyncupdatesService", () => {
 
     let httpMock: HttpTestingController;
     let service: SyncupdatesService;
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [AppModule, HttpClientTestingModule],
+            imports: [HttpClientTestingModule],
             providers: [SyncupdatesService],
         });
         httpMock = TestBed.get(HttpTestingController);

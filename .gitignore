@@ -3,7 +3,6 @@
 ######################
 
 # backend
-backend/src/main/webapp
 backend/target/
 backend/src/main/resources/menu.properties
 

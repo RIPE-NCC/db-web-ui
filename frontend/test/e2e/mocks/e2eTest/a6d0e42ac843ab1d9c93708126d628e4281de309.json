@@ -108,8 +108,8 @@
                 ]
             }
         },
-        "resources": [],
-        "totalNumberOfResources": 0,
+        "resources": [{"usage": {"total": 1, "used": 0, "blockSize": 48}}],
+        "totalNumberOfResources": 2,
         "filteredSize": 0,
         "pageSize": 0
     },

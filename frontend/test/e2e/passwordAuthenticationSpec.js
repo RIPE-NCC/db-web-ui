@@ -1,38 +1,25 @@
-/*global beforeEach, browser, describe, expect, it, require */
-
-'use strict';
-
 // Local requires
-var page = require('./homePageObject');
+const page = require("./homePageObject");
 
-/*
- * Tests...
- */
-describe('The password authentication dialogue', function () {
+describe("The password authentication dialogue", () => {
 
-    beforeEach(function () {
-        browser.get('#/webupdates/modify/ripe/aut-num/AS9191');
+    beforeEach(() => {
+        browser.get("#/webupdates/modify/ripe/aut-num/AS9191");
     });
 
-    // [IS] FIXME
-    xit('should show a single modal which asks for a password', function () {
+    it("should show a single modal which asks for a password", () => {
         expect(page.modalBtnSubmit.isPresent()).toEqual(true);
-        expect(page.modalInpMaintainer.getText()).toEqual('NEWNET-MNT');
+        expect(page.modalInpMaintainer.getText()).toEqual("NEWNET-MNT");
         page.modalInpAssociate.click();
-        page.modalInpPassword.sendKeys('NEWNET-MNT');
+        page.modalInpPassword.sendKeys("NEWNET-MNT");
         page.modalBtnSubmit.click();
 
-        // i'm unhappy with this test. it should be able to detect if an element is visible or not
+        // i"m unhappy with this test. it should be able to detect if an element is visible or not
         expect(page.allObjectRows.count()).toEqual(395);
         expect(page.allObjectRows.get(394).isPresent()).toEqual(true);
-        expect(page.allObjectRows.get(2).isDisplayed()).toEqual(true);
-        expect(page.allObjectRows.get(394).isDisplayed()).toEqual(true);
+        expect(page.allObjectRows.get(0).isDisplayed()).toEqual(true);
+        expect(page.allObjectRows.get(387).isDisplayed()).toEqual(true);
         page.scrollIntoView(page.btnDeleteObject);
-        expect(page.allObjectRows.get(2).isDisplayed()).toEqual(true);
-        expect(page.allObjectRows.get(394).isDisplayed()).toEqual(true);
-        expect(page.allObjectRows.get(794).isDisplayed()).toEqual(true);
-        expect(page.allObjectRows.get(794).isPresent()).toEqual(true);
-        expect(page.allObjectRows.count()).toEqual(795);
     });
 
 });

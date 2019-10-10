@@ -9,7 +9,6 @@ import org.springframework.boot.Banner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
@@ -24,7 +23,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.Filter;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -36,7 +34,6 @@ import java.util.concurrent.Executor;
 public class Application implements AsyncConfigurer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Application.class);
-    private static final String WEB_SESSION_ID_NAME = "sessionid-db-web-ui";
 
     private final Environment environment;
     private final CrowdTokenFilter crowdTokenFilter;
@@ -73,13 +70,10 @@ public class Application implements AsyncConfigurer {
      * Initializes whois_webui.
      * <p/>
      * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
-     * <p/>
-     * <p>
-     * You can find more information on how profiles work with JHipster on <a href="http://jhipster.github.io/profiles.html">http://jhipster.github.io/profiles.html</a>.
      * </p>
      */
     @PostConstruct
-    public void initApplication() throws IOException {
+    public void initApplication() {
         if (environment.getActiveProfiles().length == 0) {
             LOGGER.error("No Spring profile configured, exiting");
             throw new IllegalStateException("No Spring profile configured");
@@ -144,11 +138,4 @@ public class Application implements AsyncConfigurer {
         return new SimpleAsyncUncaughtExceptionHandler();
     }
 
-    @Bean
-    public ServletContextInitializer initializer() {
-        return servletContext -> {
-            servletContext.setInitParameter("org.eclipse.jetty.servlet.SessionCookie", WEB_SESSION_ID_NAME);
-            servletContext.setInitParameter("org.eclipse.jetty.servlet.SessionIdPathParameterName", WEB_SESSION_ID_NAME);
-        };
-    }
 }

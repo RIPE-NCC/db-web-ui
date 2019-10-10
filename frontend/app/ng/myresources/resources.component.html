@@ -1,0 +1,68 @@
+<section class="my-resources">
+    <div class="alert alert-success alert-dismissible" *ngIf="showIpAnalyserRedirectBanner">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      Looking for analytics on your IP resource allocation and/or assignments? You can find this now in “My Resources”.
+    </div>
+    <ngb-tabset class="resources-sponsored-tabs" [activeId]=activeSponsoredTab.toString()>
+        <ngb-tab id="0">
+            <ng-template ngbTabTitle>
+                <div (click)="resourcesTabClicked()">My Resources</div>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="1">
+            <ng-template ngbTabTitle>
+                <div (click)="sponsoredResourcesTabClicked()">Sponsored Resources</div>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+
+    <a class="blue-button btn-group pull-right" *ngIf="!this.isShowingSponsored && lastTab !== 'aut-num'" (click)="navigateToCreateAssignments()">{{ "resource.createAssignment.text" | label }}</a>
+    <transfer-drop-down *ngIf="isMemberOrg()" [sponsored-menu]="isShowingSponsored"></transfer-drop-down>
+    <alerts-drop-down *ngIf="showAlerts"></alerts-drop-down>
+    <ip-usage-of-all-resources [resources]="lastTab === 'inetnum' ? ipv4Resources : ipv6Resources"
+                               [type]="lastTab"
+                               [sponsored]="isShowingSponsored">
+    </ip-usage-of-all-resources>
+    <ngb-tabset id="ipv4-ipv6-asn-tabs" class="nav-tabs" [activeId]="lastTab" (tabChange)="tabClicked($event)">
+        <ngb-tab id="inetnum" title="IPv4">
+            <ng-template ngbTabContent>
+                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
+                <div class="resource-list" *ngFor="let resource of ipv4Resources">
+                    <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
+                </div>
+                <p class="resource-page-message"
+                   *ngIf="loading === false && ipv4Resources.length === 0">
+                    {{ reason.toString() }}
+                    <button *ngIf="fail" (click)="refreshPage()" class="fa fa-refresh"></button>
+                </p>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="inet6num" title="IPv6">
+            <ng-template ngbTabContent>
+                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
+                <div class="resource-list" *ngFor="let resource of ipv6Resources">
+                    <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
+                </div>
+                <p class="resource-page-message"
+                   *ngIf="loading === false && ipv6Resources.length === 0">
+                    {{ reason.toString() }}
+                    <button *ngIf="fail" (click)="refreshPage()" class="fa fa-refresh"></button>
+                </p>
+            </ng-template>
+        </ngb-tab>
+        <ngb-tab id="aut-num" title="ASN">
+            <ng-template ngbTabContent>
+                <loading-indicator class="resource-page-message" *ngIf="loading"></loading-indicator>
+                <div class="resource-list" *ngFor="let resource of asnResources">
+                    <resource-item [item]="resource" [sponsored]="isShowingSponsored"></resource-item>
+                </div>
+                <p class="resource-page-message" *ngIf="loading === false && asnResources.length === 0">
+                    {{ reason.toString() }}
+                    <button *ngIf="fail" (click)="refreshPage()" class="fa fa-refresh"></button>
+                </p>
+            </ng-template>
+        </ngb-tab>
+    </ngb-tabset>
+</section>

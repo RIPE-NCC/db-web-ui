@@ -1,0 +1,84 @@
+{
+  "requestUrl": "/api/whois/RIPE/mntner/KOKONET-MNT?password=KOKONET-MNT&unfiltered=true",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {"objects":{"object":[ {
+            "type" : "mntner",
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/KOKONET-MNT"
+            },
+            "source" : {
+              "id" : "ripe"
+            },
+            "primary-key" : {
+              "attribute" : [ {
+                "name" : "mntner",
+                "value" : "KOKONET-MNT"
+              } ]
+            },
+            "attributes" : {
+              "attribute" : [ {
+                "name" : "mntner",
+                "value" : "KOKONET-MNT"
+              }, {
+                "name" : "auth",
+                "value" : "MD5-PW $1$HzV/b27F$WR3KF1.f4NCa6zhDu92Nd1"
+              }, {
+                "name" : "descr",
+                "value" : "Kokonet Maintainer Object."
+              }, {
+                "link" : {
+                  "type" : "locator",
+                  "href" : "http://rest-prepdev.db.ripe.net/ripe/person/CB4255-RIPE"
+                },
+                "name" : "admin-c",
+                "value" : "CB4255-RIPE",
+                "referenced-type" : "person"
+              }, {
+                "link" : {
+                  "type" : "locator",
+                  "href" : "http://rest-prepdev.db.ripe.net/ripe/person/CB4255-RIPE"
+                },
+                "name" : "tech-c",
+                "value" : "CB4255-RIPE",
+                "referenced-type" : "person"
+              }, {
+                "name" : "upd-to",
+                "value" : "***@seychelles.sc"
+              }, {
+                "name" : "mnt-nfy",
+                "value" : "***@seychelles.sc"
+              }, {
+                "name" : "remarks",
+                "value" : "MD5 passwords older than November 2011 were removed from this maintainer, see: https://www.ripe.net/removed2011pw"
+              }, {
+                "name" : "notify",
+                "value" : "***@seychelles.sc"
+              }, {
+                "link" : {
+                  "type" : "locator",
+                  "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/KOKONET-MNT"
+                },
+                "name" : "mnt-by",
+                "value" : "KOKONET-MNT",
+                "referenced-type" : "mntner"
+              }, {
+                "name" : "created",
+                "value" : "2005-07-23T12:54:05Z"
+              }, {
+                "name" : "last-modified",
+                "value" : "2008-01-07T10:15:00Z"
+              }, {
+                "name" : "source",
+                "value" : "RIPE"
+              } ]
+            }
+          } ]
+          },
+          "terms-and-conditions" : {
+          "type" : "locator",
+          "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+          }
+          }
+}

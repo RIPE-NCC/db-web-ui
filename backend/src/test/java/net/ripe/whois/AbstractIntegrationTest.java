@@ -57,7 +57,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("crowd.logout.url", getMockServerUrl());
         System.setProperty("rest.api.ripeUrl", getMockServerUrl());
         System.setProperty("dns.checker.url", getMockServerUrl());
-        System.setProperty("server.contextPath", "/db-web-ui");
+        System.setProperty("server.servlet.context-path", "/db-web-ui");
         System.setProperty("internal.api.url", getMockServerUrl());
         System.setProperty("internal.api.key", "123");
         System.setProperty("ba-apps.api.key", "OMG");

@@ -1,10 +1,9 @@
 /* Extended CSS */
 @import 'extend.scss';
-
 /* Generic CSS */
 @import 'general.scss';
 @import 'paginator.scss';
-
+@import 'full-text-search.scss';
 /* View based CSS */
 @import 'create-obj.scss';
 @import 'datatables.scss';
@@ -12,10 +11,74 @@
 @import 'multisync.scss';
 @import 'my-resources.scss';
 @import 'whois-object.scss';
-
 /* Module based CSS */
 @import 'uiselect-custom.scss';
 @import 'bootstrap-custom.scss';
-
 /* Custom directives */
 @import 'flag.scss';
+@import 'forgot-maintainer-password.scss';
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+//this is needed until we migrate to bootstrap4
+.popover {
+  display: block !important;
+
+  .popover-body {
+    padding: 9px 14px;
+  }
+}
+
+.tooltip {
+  &.show {
+    opacity: 1;
+  }
+}
+
+.fade {
+  &.show {
+    opacity: 1;
+  }
+}
+
+.modal-backdrop.show {
+  opacity: .5;
+}
+
+.modal.show .modal-dialog {
+  -webkit-transform: translate(0, 0);
+  transform: translate(0, 0);
+}
+
+ngb-typeahead-window.dropdown-menu {
+  width: 100%;
+  overflow: auto;
+  max-height: 300px;
+
+  button.dropdown-item {
+    width: 100%;
+    text-align: left;
+    display: block;
+    border: none;
+    background-color: transparent;
+    padding: 10px 8px;
+    border-bottom: 1px solid #EAEAEA !important;
+    &:hover, &:focus {
+
+    }
+
+    &.active {
+      background: #F5FFFF none !important;
+    }
+  }
+
+}
+[hidden] {
+  display: none !important;
+}
+
+#portal-columns #content .grey .nav-tabs li a.active {
+  color: #ff9600;
+  cursor: default;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}

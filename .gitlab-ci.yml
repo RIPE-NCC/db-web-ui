@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 image: maven:3.6-jdk-8
 # TODO: this image is needed for karma and e2e build
 # image: db-web-ui-build:1
@@ -66,4 +67,26 @@ deploy-dev:
 #    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/sbuskens/db-operational.git
     - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
     - ls -la db-operational
+=======
+image: maven:latest
+
+#variables:
+#  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+#  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository"
+
+cache:
+  paths:
+    - .m2/repository/
+    - target/
+
+build:
+  stage: build
+  script:
+    - mvn $MAVEN_CLI_OPTS compile
+
+test:
+  stage: test
+  script:
+    - mvn $MAVEN_CLI_OPTS test
+>>>>>>> 04bfb38609f81846b6f2788627d0af5194afc066
 

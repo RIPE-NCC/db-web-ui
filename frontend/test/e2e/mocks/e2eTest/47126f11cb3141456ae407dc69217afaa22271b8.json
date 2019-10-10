@@ -1,6 +1,0 @@
-{
-  "data": [],
-  "statusCode": 200,
-  "contentType": "application/json",
-  "requestUrl": "/api/whois/hierarchy/parents-of?key=2001:7f8::%2F29&org=ORG-Sb3-RIPE&type=inet6num"
-}

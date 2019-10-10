@@ -1,0 +1,77 @@
+<h1>Forgot maintainer password</h1>
+
+<div *ngIf="errors.length > 0" class="alert-expired alert alert-danger">
+    <p *ngFor="let error of errors">
+        <span [innerHTML]="error"></span>
+    </p>
+</div>
+
+<div *ngIf="warnings.length > 0" class="alert alert-warning">
+    <p *ngFor="let warning of warnings">
+        <span [innerHTML]="warning"></span>
+    </p>
+</div>
+
+<div>
+    <form id="find-maintainer" class="padding grey ga-forgotpass-findmnt-form" (ngSubmit)="selectMaintainer(maintainerKey)">
+        <label>Please enter your <span class="mntner">MNTNER</span> name:</label>
+        <div class="input-group">
+            <input type="text" class="searchField form-control" name="maintainerKey" [(ngModel)]="maintainerKey" autofocus required />
+            <span class="input-group-btn">
+                <button id="search-maintainer" class="btn blue-button ga-forgotpass-findmnt-search">Search</button>
+            </span>
+        </div>
+        <div class="margin-top clearfix">
+            <button id="search-cancel" name="cancelButton" class="blue-button pull-right"
+                    (click)="cancel()">Cancel
+            </button>
+        </div>
+    </form>
+
+    <div id="maintainer-container" *ngIf="foundMaintainer?.mntnerFound === true">
+        <div class="alert alert-warning">Please check that this is the correct object before proceeding.</div>
+        <section>
+            <h2>Maintainer Object</h2>
+            <div class="margin-top grey padding">
+                <table class="success-fields grey">
+                    <tr *ngFor="let attribute of foundMaintainer.selectedMaintainer.attributes.attribute">
+                        <td width="20%"><label>{{attribute.name}}:</label></td>
+                        <td> {{attribute.value}}</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+
+        <div class="grey-border margin-bottom margin-top"></div>
+        <div>
+            <div class="alert alert-info">An email containing further instructions will be sent to the address
+                {{foundMaintainer.email}}.
+            </div>
+
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label for="goThrough" class="col-sm-7 control-label">I have access to {{foundMaintainer.email}}. Take
+                        me to
+                        the
+                        automated recovery process</label>
+                    <div class="col-sm-3">
+                        <input id="goThrough" type="button" name="hasAccessButton" value="GO"
+                               (click)="validateEmail()" class="blue-button"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="manual" class="col-sm-7 control-label">I do not have access to {{foundMaintainer.email}}. Take
+                        me to
+                        the manual recovery process</label>
+                    <div class="col-sm-3">
+                        <input id="manual" type="button" name="hasAccessButton" value="GO"
+                               (click)="switchToManualResetProcess(foundMaintainer.maintainerKey)"
+                               class="blue-button"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

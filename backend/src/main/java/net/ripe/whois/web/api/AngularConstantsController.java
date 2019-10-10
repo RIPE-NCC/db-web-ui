@@ -1,5 +1,6 @@
 package net.ripe.whois.web.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,11 +20,13 @@ import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import static javax.ws.rs.core.HttpHeaders.CACHE_CONTROL;
-import static org.terracotta.modules.ehcache.ToolkitInstanceFactoryImpl.LOGGER;
 
 /**
- * This class serves up a configuration file (/scripts/app.constants.js) to the Angular web front end.
+ * This class serves up a configuration file in json format to the Angular web front end.
  * <p>
  * It parses an inline template (below) and resolves properties from the active Spring profile.
  */
@@ -31,6 +34,8 @@ import static org.terracotta.modules.ehcache.ToolkitInstanceFactoryImpl.LOGGER;
 @RequestMapping("/")
 @SuppressWarnings("UnusedDeclaration")
 public class AngularConstantsController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AngularConstantsController.class);
 
     @Value("${whois.version.display.text:UNKNOWN}")
     private String whoisVersionDisplayText;
@@ -59,7 +64,7 @@ public class AngularConstantsController {
     @Value("${syncupdates.api.url}")
     private String syncupdatesApiUrl;
 
-    private String appConstantsJsContents;
+    private AppConstants appConstants;
 
     private final LeftMenuConfiguration leftMenuConfiguration;
 
@@ -70,15 +75,15 @@ public class AngularConstantsController {
 
     @PostConstruct
     private void init() {
-        appConstantsJsContents = generateContents();
+        appConstants = generateConstants();
     }
 
-    @RequestMapping(value = "/scripts/app.constants.js", method = RequestMethod.GET, produces = "application/javascript")
+    @RequestMapping(value = "/app.constants.json", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
-    public ResponseEntity<String> getAppConstantsJs(HttpServletResponse response) {
+    public ResponseEntity getAppConstantsJs(HttpServletResponse response) {
         response.setHeader(CACHE_CONTROL, "no-cache"); // deliberately overrides CacheFilter
 
-        return new ResponseEntity<>(appConstantsJsContents, HttpStatus.OK);
+        return new ResponseEntity<>(appConstants, HttpStatus.OK);
     }
 
     /**
@@ -114,42 +119,229 @@ public class AngularConstantsController {
         return "SNAPSHOT";
     }
 
-    private String generateContents() {
-        String builder = "'use strict';\n\n" +
-            "angular.module('dbWebApp')\n" +
-            "    .constant('Properties', {\n" +
-            "        ENV: '" + environment + "',\n" +
-            "        SOURCE: '" + ripeSource + "',\n" +
-            "        BUILD_TAG: '" + getImplementationVersion() + "',\n" +
-            "        MATOMO_ID: '" + frontendMatomoId + "',\n" +
-            "        LOGIN_URL: '" + crowdLoginUrl + "',\n" +
-            "        ACCESS_URL: '" + crowdAccessUrl + "',\n" +
-            "        LOGOUT_URL: '" + crowdLogoutUrl + "',\n" +
-            "        PORTAL_URL: '" + portalUrl + "',\n" +
-            "        BANNER: '" + frontendBanner + "',\n" +
-            "        LIR_ACCOUNT_DETAILS_URL: '" + leftMenuConfiguration.getLirAccountDetailsUrl() + "',\n" +
-            "        LIR_BILLING_DETAILS_URL: '" + leftMenuConfiguration.getLirBillingDetailsUrl() + "',\n" +
-            "        LIR_GENERAL_MEETING_URL: '" + leftMenuConfiguration.getLirGeneralMeetingUrl() + "',\n" +
-            "        LIR_USER_ACCOUNTS_URL: '" + leftMenuConfiguration.getLirUserAccountsUrl() + "',\n" +
-            "        LIR_TICKETS_URL: '" + leftMenuConfiguration.getLirTicketsUrl() + "',\n" +
-            "        LIR_TRAINING_URL: '" + leftMenuConfiguration.getLirTrainingUrl() + "',\n" +
-            "        LIR_API_ACCESS_KEYS_URL: '" + leftMenuConfiguration.getLirApiAccessKeysUrl() + "',\n" +
-            "        MY_RESOURCES_URL: '" + leftMenuConfiguration.getMyResourcesUrl() + "',\n" +
-            "        REQUEST_RESOURCES_URL: '" + leftMenuConfiguration.getRequestResourcesUrl() + "',\n" +
-            "        REQUEST_UPDATE_URL: '" + leftMenuConfiguration.getRequestUpdateUrl() + "',\n" +
-            "        OPEN_ACQUISITION_URL: '" + leftMenuConfiguration.getOpenAcquisitionUrl() + "',\n" +
-            "        REQUEST_TRANSFER_URL: '" + leftMenuConfiguration.getRequestTransferUrl() + "',\n" +
-            "        IPV4_TRANSFER_LISTING_URL: '" + leftMenuConfiguration.getIpv4TransferListingServiceUrl() + "',\n" +
-            "        RPKI_DASHBOARD_URL: '" + leftMenuConfiguration.getRpkiDashboardUrl() + "',\n" +
-            "        DATABASE_QUERY_URL: '" + leftMenuConfiguration.getDatabaseQueryUrl() + "',\n" +
-            "        DATABASE_FULL_TEXT_SEARCH_URL: '" + leftMenuConfiguration.getDatabaseFullTextSearchUrl() + "',\n" +
-            "        DATABASE_SYNCUPDATES_URL: '" + leftMenuConfiguration.getDatabaseSyncupdatesUrl() + "',\n" +
-            "        DATABASE_CREATE_URL: '" + leftMenuConfiguration.getDatabaseCreateUrl() + "',\n" +
-            "        OBJECT_LOOKUP_URL: '" + objectLookupUrl + "',\n" +
-            "        REST_SEARCH_URL: '" + restSearchUrl + "',\n" +
-            "        QUERY_PAGE_LINK_TO_OTHER_DB: '" + queryPageLinkToOtherDb + "',\n" +
-            "        WHOIS_VERSION_DISPLAY_TEXT: '" + whoisVersionDisplayText + "'\n" +
-            "    })\n";
-        return builder;
+    private AppConstants generateConstants() {
+        final AppConstants constants = new AppConstants();
+        constants.setEnvironment(environment);
+        constants.setSource(ripeSource);
+        constants.setBuild_tag(getImplementationVersion());
+        constants.setLogin_url(crowdLoginUrl);
+        constants.setAccess_url(crowdAccessUrl);
+        constants.setLogout_url(crowdLogoutUrl);
+        constants.setPortal_url(portalUrl);
+        constants.setBanner(frontendBanner);
+        constants.setMatomo_id(frontendMatomoId);
+        constants.setLir_account_details_url(leftMenuConfiguration.getLirAccountDetailsUrl());
+        constants.setLir_billing_details_url(leftMenuConfiguration.getLirBillingDetailsUrl());
+        constants.setLir_general_meeting_url(leftMenuConfiguration.getLirGeneralMeetingUrl());
+        constants.setLir_user_accounts_url(leftMenuConfiguration.getLirUserAccountsUrl());
+        constants.setLir_tickets_url(leftMenuConfiguration.getLirTicketsUrl());
+        constants.setLir_training_url(leftMenuConfiguration.getLirTrainingUrl());
+        constants.setLir_api_access_keys_url(leftMenuConfiguration.getLirApiAccessKeysUrl());
+        constants.setMy_resources_url(leftMenuConfiguration.getMyResourcesUrl());
+        constants.setRequest_resources_url(leftMenuConfiguration.getRequestResourcesUrl());
+        constants.setRequest_update_url(leftMenuConfiguration.getRequestUpdateUrl());
+        constants.setOpen_acquisition_url(leftMenuConfiguration.getOpenAcquisitionUrl());
+        constants.setRequest_transfer_url(leftMenuConfiguration.getRequestTransferUrl());
+        constants.setIpv4_transfer_listing_url(leftMenuConfiguration.getIpv4TransferListingServiceUrl());
+        constants.setRpki_dashboard_url(leftMenuConfiguration.getRpkiDashboardUrl());
+        constants.setDatabase_query_url(leftMenuConfiguration.getDatabaseQueryUrl());
+        constants.setDatabase_full_text_search_url(leftMenuConfiguration.getDatabaseFullTextSearchUrl());
+        constants.setDatabase_syncupdates_url(leftMenuConfiguration.getDatabaseSyncupdatesUrl());
+        constants.setDatabase_create_url(leftMenuConfiguration.getDatabaseCreateUrl());
+        constants.setObject_lookup_url(objectLookupUrl);
+        constants.setRest_search_url(restSearchUrl);
+        constants.setQuery_page_link_to_other_db(queryPageLinkToOtherDb);
+        constants.setWhois_version_display_text(whoisVersionDisplayText);
+        return constants;
+    }
+
+    public class AppConstants {
+        @JsonProperty("ENV")
+        private String environment;
+        @JsonProperty("SOURCE")
+        private String source;
+        @JsonProperty("BUILD_TAG")
+        private String build_tag;
+        @JsonProperty("LOGIN_URL")
+        private String login_url;
+        @JsonProperty("ACCESS_URL")
+        private String access_url;
+        @JsonProperty("LOGOUT_URL")
+        private String logout_url;
+        @JsonProperty("PORTAL_URL")
+        private String portal_url;
+        @JsonProperty("BANNER")
+        private String banner;
+        @JsonProperty("MATOMO_ID")
+        private String frontendMatomoId;
+        @JsonProperty("LIR_ACCOUNT_DETAILS_URL")
+        private String lir_account_details_url;
+        @JsonProperty("LIR_BILLING_DETAILS_URL")
+        private String lir_billing_details_url;
+        @JsonProperty("LIR_GENERAL_MEETING_URL")
+        private String lir_general_meeting_url;
+        @JsonProperty("LIR_USER_ACCOUNTS_URL")
+        private String lir_user_accounts_url;
+        @JsonProperty("LIR_TICKETS_URL")
+        private String lir_tickets_url;
+        @JsonProperty("LIR_TRAINING_URL")
+        private String lir_training_url;
+        @JsonProperty("LIR_API_ACCESS_KEYS_URL")
+        private String lir_api_access_keys_url;
+        @JsonProperty("MY_RESOURCES_URL")
+        private String my_resources_url;
+        @JsonProperty("REQUEST_RESOURCES_URL")
+        private String request_resources_url;
+        @JsonProperty("REQUEST_UPDATE_URL")
+        private String request_update_url;
+        @JsonProperty("OPEN_ACQUISITION_URL")
+        private String open_acquisition_url;
+        @JsonProperty("REQUEST_TRANSFER_URL")
+        private String request_transfer_url;
+        @JsonProperty("IPV4_TRANSFER_LISTING_URL")
+        private String ipv4_transfer_listing_url;
+        @JsonProperty("RPKI_DASHBOARD_URL")
+        private String rpki_dashboard_url;
+        @JsonProperty("DATABASE_QUERY_URL")
+        private String database_query_url;
+        @JsonProperty("DATABASE_FULL_TEXT_SEARCH_URL")
+        private String database_full_text_search_url;
+        @JsonProperty("DATABASE_SYNCUPDATES_URL")
+        private String database_syncupdates_url;
+        @JsonProperty("DATABASE_CREATE_URL")
+        private String database_create_url;
+        @JsonProperty("OBJECT_LOOKUP_URL")
+        private String object_lookup_url;
+        @JsonProperty("REST_SEARCH_URL")
+        private String rest_search_url;
+        @JsonProperty("QUERY_PAGE_LINK_TO_OTHER_DB")
+        private String query_page_link_to_other_db;
+        @JsonProperty("WHOIS_VERSION_DISPLAY_TEXT")
+        private String whois_version_display_text;
+
+
+        public void setEnvironment(String environment) {
+            this.environment = environment;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
+        }
+
+        public void setBuild_tag(String build_tag) {
+            this.build_tag = build_tag;
+        }
+
+        public void setLogin_url(String login_url) {
+            this.login_url = login_url;
+        }
+
+        public void setAccess_url(String access_url) {
+            this.access_url = access_url;
+        }
+
+        public void setLogout_url(String logout_url) {
+            this.logout_url = logout_url;
+        }
+
+        public void setPortal_url(String portal_url) {
+            this.portal_url = portal_url;
+        }
+
+        public void setBanner(String banner) {
+            this.banner = banner;
+        }
+
+        public void setMatomo_id(String matomo_id) {
+            this.frontendMatomoId = matomo_id;
+        }
+
+        public void setLir_account_details_url(String lir_account_details_url) {
+            this.lir_account_details_url = lir_account_details_url;
+        }
+
+        public void setLir_billing_details_url(String lir_billing_details_url) {
+            this.lir_billing_details_url = lir_billing_details_url;
+        }
+
+        public void setLir_general_meeting_url(String lir_general_meeting_url) {
+            this.lir_general_meeting_url = lir_general_meeting_url;
+        }
+
+        public void setLir_user_accounts_url(String lir_user_accounts_url) {
+            this.lir_user_accounts_url = lir_user_accounts_url;
+        }
+
+        public void setLir_tickets_url(String lir_tickets_url) {
+            this.lir_tickets_url = lir_tickets_url;
+        }
+
+        public void setLir_training_url(String lir_training_url) {
+            this.lir_training_url = lir_training_url;
+        }
+
+        public void setLir_api_access_keys_url(String lir_api_access_keys_url) {
+            this.lir_api_access_keys_url = lir_api_access_keys_url;
+        }
+
+        public void setMy_resources_url(String my_resources_url) {
+            this.my_resources_url = my_resources_url;
+        }
+
+        public void setRequest_resources_url(String request_resources_url) {
+            this.request_resources_url = request_resources_url;
+        }
+
+        public void setRequest_update_url(String request_update_url) {
+            this.request_update_url = request_update_url;
+        }
+
+        public void setOpen_acquisition_url(String open_acquisition_url) {
+            this.open_acquisition_url = open_acquisition_url;
+        }
+
+        public void setRequest_transfer_url(String request_transfer_url) {
+            this.request_transfer_url = request_transfer_url;
+        }
+
+        public void setIpv4_transfer_listing_url(String ipv4_transfer_listing_url) {
+            this.ipv4_transfer_listing_url = ipv4_transfer_listing_url;
+        }
+
+        public void setRpki_dashboard_url(String rpki_dashboard_url) {
+            this.rpki_dashboard_url = rpki_dashboard_url;
+        }
+
+        public void setDatabase_query_url(String database_query_url) {
+            this.database_query_url = database_query_url;
+        }
+
+        public void setDatabase_full_text_search_url(String database_full_text_search_url) {
+            this.database_full_text_search_url = database_full_text_search_url;
+        }
+
+        public void setDatabase_syncupdates_url(String database_syncupdates_url) {
+            this.database_syncupdates_url = database_syncupdates_url;
+        }
+
+        public void setDatabase_create_url(String database_create_url) {
+            this.database_create_url = database_create_url;
+        }
+
+        public void setObject_lookup_url(String object_lookup_url) {
+            this.object_lookup_url = object_lookup_url;
+        }
+
+        public void setRest_search_url(String rest_search_url) {
+            this.rest_search_url = rest_search_url;
+        }
+
+        public void setQuery_page_link_to_other_db(String query_page_link_to_other_db) {
+            this.query_page_link_to_other_db = query_page_link_to_other_db;
+        }
+
+        public void setWhois_version_display_text(String whois_version_display_text) {
+            this.whois_version_display_text = whois_version_display_text;
+        }
     }
 }

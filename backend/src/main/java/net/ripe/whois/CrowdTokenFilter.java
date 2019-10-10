@@ -19,7 +19,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 @Component
 public class CrowdTokenFilter implements Filter {
@@ -27,30 +26,12 @@ public class CrowdTokenFilter implements Filter {
 
     public static final String CROWD_TOKEN_KEY = "crowd.token_key";
     private static final String[] UNPROTECTED_URLS = {
-            ".*/alertsDirective.html",
+            ".*/alerts.component.html",
             ".*/api/.*", /* let rest-operation itself decide about authentication */
             ".*/db-web-ui/",
-            ".*/dropdown/org-drop-down.html",
-            ".*/fmp/findMaintainer.html",
-            ".*/fmp/forgotMaintainerPassword.html",
-            ".*/fmp/requireLogin.html",
-            ".*/fulltextsearch/full-text-result-summary.html",
-            ".*/fulltextsearch/full-text-search.html",
-            ".*/index.html",
-            ".*/loadingindicator/loading-indicator.html",
-            ".*/match-multiple.tpl.html",
-            ".*/paginator/*.html",
-            ".*/query/*.*",
-            ".*/select-multiple.tpl.html",
-            ".*/updates/web/display.html",
-            ".*/updates/web/select.html",
-            ".*/views/error.html",
-            ".*/whoisObject/whois-object-viewer.html",
-            ".*/syncupdates/syncupdates.component.html",
-            ".*/updates/text/multi.html",
-            ".*/menu/left-hand-menu.html",
-            ".*/loginStatus/user-info.html",
-            ".*/emailconfirmation/emailConfirm.html",
+            ".*/db-web-ui/index.html",
+            // these calls are only made in non-aot mode
+            ".*/ng/.*.html",
     };
 
     private final String crowdLoginUrl;
@@ -85,6 +66,7 @@ public class CrowdTokenFilter implements Filter {
     private boolean isStaticResource(HttpServletRequest request) {
         return (request.getRequestURI().endsWith(".css") ||
                 request.getRequestURI().endsWith(".js") ||
+                request.getRequestURI().endsWith(".json") ||
                 request.getRequestURI().endsWith(".js.map") ||
                 //request.getRequestURI().endsWith(".html") ||
                 request.getRequestURI().endsWith(".png"));
@@ -139,7 +121,7 @@ public class CrowdTokenFilter implements Filter {
     private String encodeQueryParam(final String param) {
         try {
             return UriUtils.encodeQueryParam(param, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
+        } catch (IllegalArgumentException e) {
             throw new IllegalStateException(e);
         }
     }

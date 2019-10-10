@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -23,10 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.net.InetAddress;
-import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 import java.util.List;
 
@@ -40,7 +37,6 @@ import static org.springframework.http.HttpStatus.PARTIAL_CONTENT;
 public class WhoisDomainObjectController extends ApiController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WhoisDomainObjectController.class);
-    private static final String NAME_SESSIONID_USED_FOR_STICKINESS = "JSESSIONID";
 
     private final BatchUpdateSession batchUpdateSession;
 
@@ -57,11 +53,13 @@ public class WhoisDomainObjectController extends ApiController {
 
         switch (batchUpdateSession.getStatus()) {
             case DONE:
-                return batchUpdateSession.getResponse();
+                // can't return the original response as it can container wrong headers for HTTP2
+                ResponseEntity response = batchUpdateSession.getResponse();
+                return new ResponseEntity<>(response.getBody(), response.getStatusCode());
             case WAITING_FOR_RESPONSE:
-                return new ResponseEntity(PARTIAL_CONTENT);
+                return new ResponseEntity<>(PARTIAL_CONTENT);
             default: // case IDLE:
-                return new ResponseEntity(NO_CONTENT);
+                return new ResponseEntity<>(NO_CONTENT);
         }
     }
 
@@ -85,30 +83,11 @@ public class WhoisDomainObjectController extends ApiController {
     @RequestMapping(value = "/{source}", method = RequestMethod.POST)
     public ResponseEntity create(
             final HttpServletResponse response,
-            @CookieValue(value = NAME_SESSIONID_USED_FOR_STICKINESS, required = false) final String cookieUsedForStickinessOnly,
             @RequestBody final WhoisWebDTO dto,
             @PathVariable final String source,
-            @RequestHeader final HttpHeaders headers) throws URISyntaxException {
+            @RequestHeader final HttpHeaders headers) {
 
         LOGGER.debug("create domain objects {}", source);
-
-        if (StringUtils.isEmpty(cookieUsedForStickinessOnly)) {
-            /*
-            This is a hacky way of telling our proxy server (apache) which host processed a request.
-            The proxy is currently configured to provide sticky sessions for the host specified in
-            a cookie named 'JSESSIONID'. This app also maintains HTTP sessions but the name of its session
-            ID is deliberately changed to Application.WEB_SESSION_ID_NAME. This avoids session collisions
-            with the 'old' DbWebApp query application. We should remove this hack when each app is
-            deployed to its own server with its own proxy config.
-            */
-            final String sessionId = "routebackto." + getHostname();
-            final Cookie stickyCookie = new Cookie(NAME_SESSIONID_USED_FOR_STICKINESS, sessionId);
-            stickyCookie.setSecure(true);
-            stickyCookie.setPath("/");
-
-            LOGGER.debug("setting {} (routing cookie) to: {}", NAME_SESSIONID_USED_FOR_STICKINESS, sessionId);
-            response.addCookie(stickyCookie);
-        }
 
         if (batchUpdateSession.getStatus() == WAITING_FOR_RESPONSE) {
             return new ResponseEntity<>("Still busy processing a previous request!", HttpStatus.TOO_MANY_REQUESTS);

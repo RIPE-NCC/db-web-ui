@@ -31,12 +31,17 @@ whois-object-viewer {
 .viewerbuttons {
     position: absolute;
     right: 37px;
-    background: white;
-    border-color: white;
+    border-color: #ffffff03;
     border-width: 0 0 6px 2px;
     border-style: solid;
 }
 
 .showripemanaged > .ripemanaged {
     background: #d1effe;
+}
+
+@media screen and (max-width: 700px) {
+    .viewerbuttons {
+        position: inherit !important;
+    }
 }
