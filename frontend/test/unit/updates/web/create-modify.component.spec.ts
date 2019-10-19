@@ -2,6 +2,8 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
+import {By} from "@angular/platform-browser";
+import {DebugElement} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {CookieService} from "ngx-cookie-service";
@@ -524,7 +526,53 @@ describe("CreateModifyComponent", () => {
         it("should redirect to 404 page", () => {
             expect(routerMock.navigate).toHaveBeenCalledWith(["not-found"]);
         });
+    });
 
+    describe("init route object type", () => {
+        const SOURCE = "RIPE";
+        const OBJECT_TYPE = "route";
+
+        beforeEach(async () => {
+            TestBed.get(ActivatedRoute).snapshot.paramMap = {
+                source: SOURCE, objectType: OBJECT_TYPE,
+                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
+                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
+            };
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush(USER_WITH_MORE_ASSOCIATED_MNT_MOCK);
+            fixture.detectChanges();
+            await fixture.whenStable();
+        });
+
+        it("should remove mnt-by on backspace one by one", () => {
+            const BACKSPACE_KEYCODE = 8;
+            spyOn(component, "onMntnerRemoved").and.callThrough();
+            expect(component.maintainers.sso.length).toBe(4); // 4 associated maintainer
+            expect(component.maintainers.object.length).toBe(4);
+            expect(component.attributes.length).toBe(8);
+            fixture.detectChanges();
+            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(4);
+            const mntInput = fixture.debugElement.query(By.css("ng-select"));
+            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
+            expect(component.onMntnerRemoved).toHaveBeenCalled(); //method which remove mnt-by from attributes
+            fixture.detectChanges();
+            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(3);
+            expect(component.attributes.length).toBe(7);
+            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
+            fixture.detectChanges();
+            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(2);
+            expect(component.attributes.length).toBe(6);
+        });
+
+        function triggerKeyDownEvent(element: DebugElement, which: number, key = ''): void {
+            element.triggerEventHandler('keydown', {
+                which: which,
+                key: key,
+                preventDefault: () => {
+                },
+            });
+        }
     });
 });
 
@@ -533,6 +581,12 @@ const USER_MAINTAINERS_MOCK = [
 ];
 const USER_RIPE_NCC_MNT_MOCK = [
     {"mine": true, "type": "mntner", "auth": ["SSO"], "key": "RIPE-NCC-MNT"}
+];
+const USER_WITH_MORE_ASSOCIATED_MNT_MOCK = [
+    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO"], "key": "TE-MNT"},
+    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO", "PGPKEY-261AA554", "PGPKEY-F91A0E57"], "key": "MAINT-AFILIAS"},
+    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO"], "key": "BBC-MNT"},
+    {"mine": true, "type": "mntner", "auth": ["SSO"], "key": "TEST-MNT"}
 ];
 
 const WHOIS_OBJECT_WITH_ERRORS_MOCK = {
