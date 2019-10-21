@@ -56,7 +56,8 @@ deploy-dev:
     - mkdir -p ~/.ssh
     - touch ~/.ssh/known_hosts
     - echo "hanwoo ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF7cYDwUkK9kDLAVRd7VRONIuXHcmRSRMxdWGbJX6sO8f4ONQlhv0a2+tUoLnw6CushdRDZxICh3NqL5dlwwNRI=">>~/.ssh/known_hosts
-    - ssh -vvvv hanwoo.ripe.net
+    - cat /root/.ssh/known_hosts
+    - ssh -v hanwoo.ripe.net
   script:
     - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
     - cp backend/target/backend-$CI_COMMIT_SHA.jar db-operational/deployment/db-web-ui-spring-$CI_COMMIT_SHA.jar
