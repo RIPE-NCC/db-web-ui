@@ -134,10 +134,10 @@ describe("The create domain screen", () => {
         page.inpZoneC6.sendKeys("\t");
 
         browser.wait(() => {
-            return browser.isElementPresent(page.btnSubmitForm);
+            return browser.isElementPresent(page.btnSubmitObject);
         }, 5000);
-        page.scrollIntoView(page.btnSubmitForm);
-        page.btnSubmitForm.click();
+        page.scrollIntoView(page.btnSubmitObject);
+        page.btnSubmitObject.click();
 
         // FIXME
         // expect(page.modal.isPresent()).toEqual(true);

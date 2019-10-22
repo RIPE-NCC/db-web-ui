@@ -79,19 +79,11 @@ export class WhoisObjectEditorComponent implements OnInit {
     }
 
     public btnSubmitClicked() {
-        this.removeEmptyAttributes();
+        if (this.objectType !== "domain" && this.objectType !== "prefix") {
+            this.removeEmptyAttributes();
+        }
         this.updateClicked.emit(this.ngModel);
     }
-    //
-    // public removeAttribute({objectType, attribute}: any) {
-    //     const foundIdx = _.findIndex(this.attributes, (attr: IAttributeModel) => {
-    //         return attr.name === attribute.name && attr.value === attribute.value;
-    //     });
-    //     if (foundIdx > -1) {
-    //         this.attributes.splice(foundIdx, 1);
-    //         this.attributeMetadataService.enrich(objectType, this.attributes);
-    //     }
-    // }
 
     private removeEmptyAttributes() {
         // find indexes of empty attributes, highest index first

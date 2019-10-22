@@ -177,7 +177,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         return idx !== -1;
     }
 
-    private submitButtonClicked() {
+    public submitButtonClicked() {
 
         if (this.containsInvalidValues(this.attributes)) {
             return;

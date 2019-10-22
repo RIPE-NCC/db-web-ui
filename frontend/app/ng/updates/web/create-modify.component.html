@@ -46,7 +46,7 @@
                     <span class="fa fa-lock" *ngIf="!isRemovable(mntner.key) || isLirObject()"></span>
                     <span class="ng-value-icon close right" aria-hidden="true"
                           *ngIf="showMntCloseButton(mntner)"
-                          (click)="onMntnerRemoved(mntner);clear(mntner)">×</span>
+                          (click)="clear(mntner)">×</span>
                 </div>
             </ng-template>
             <ng-template ng-option-tmp let-mntner="item">
