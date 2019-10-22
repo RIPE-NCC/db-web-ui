@@ -55,7 +55,8 @@ deploy-dev:
   before_script:
     - mkdir -p /root/.ssh
     - touch /root/.ssh/known_hosts
-    - echo "hanwoo.ripe.net ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF7cYDwUkK9kDLAVRd7VRONIuXHcmRSRMxdWGbJX6sO8f4ONQlhv0a2+tUoLnw6CushdRDZxICh3NqL5dlwwNRI=">>/root/.ssh/known_hosts
+    #- echo "hanwoo.ripe.net ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF7cYDwUkK9kDLAVRd7VRONIuXHcmRSRMxdWGbJX6sO8f4ONQlhv0a2+tUoLnw6CushdRDZxICh3NqL5dlwwNRI=">>/root/.ssh/known_hosts
+    - ssh-keyscan hanwoo.ripe.net 2>&1 >>/root/.ssh/known_hosts
     - echo "search ripe.net">>/etc/resolv.conf
     - echo $DBASE_SSH_KEY
     - cat $DBASE_SSH_KEY
