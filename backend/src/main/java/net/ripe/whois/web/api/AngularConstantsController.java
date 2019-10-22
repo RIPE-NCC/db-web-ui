@@ -2,6 +2,8 @@ package net.ripe.whois.web.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -19,9 +21,6 @@ import java.util.Enumeration;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import static javax.ws.rs.core.HttpHeaders.CACHE_CONTROL;
 
@@ -41,9 +40,9 @@ public class AngularConstantsController {
     private String whoisVersionDisplayText;
     @Value("${spring.profiles.active}")
     private String environment;
-    @Value("${rest.api.ripeSource}")
+    @Value("${rest.api.ripeSource:RIPE}")
     private String ripeSource;
-    @Value("${frontend.matomo.id}")
+    @Value("${frontend.matomo.id:}")
     private String frontendMatomoId;
     @Value("${crowd.login.url}")
     private String crowdLoginUrl;
