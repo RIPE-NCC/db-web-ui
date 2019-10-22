@@ -54,6 +54,8 @@ e2e:
 deploy-dev:
   stage: deploy
   before_script:
+    - apt-get update
+    - apt-get -y install dnsutils
     - mkdir -p /root/.ssh
     - touch /root/.ssh/known_hosts
     - ssh-keyscan hanwoo.ripe.net 2>&1 >>/root/.ssh/known_hosts
