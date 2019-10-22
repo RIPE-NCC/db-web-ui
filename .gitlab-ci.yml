@@ -57,8 +57,10 @@ deploy-dev:
     - touch /root/.ssh/known_hosts
     - echo "hanwoo.ripe.net ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBF7cYDwUkK9kDLAVRd7VRONIuXHcmRSRMxdWGbJX6sO8f4ONQlhv0a2+tUoLnw6CushdRDZxICh3NqL5dlwwNRI=">>/root/.ssh/known_hosts
     - echo "search ripe.net">>/etc/resolv.conf
-    - echo $DBASE_SSH_KEY>/root/.ssh/id_ed25519
-    - chmod 600 /root/.ssh/id_ed25519
+    - echo $DBASE_SSH_KEY
+    - cat $DBASE_SSH_KEY
+    - chmod 600 $DBASE_SSH_KEY
+    - ssh -i $DBASE_SSH_KEY -4 -vvvv dbase@hanwoo.ripe.net
   script:
     - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
     - cp backend/target/backend-$CI_COMMIT_SHA.jar db-operational/deployment/db-web-ui-spring-$CI_COMMIT_SHA.jar
