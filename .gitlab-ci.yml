@@ -28,6 +28,8 @@ build:
   script:
     - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -Dversion=${CI_COMMIT_SHA}
   artifacts:
+    paths:
+      - backend/target/backend*.jar
     reports:
       junit:
         - backend/target/surefire-reports/TEST-*.xml
