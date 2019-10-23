@@ -13,7 +13,7 @@ stages:
   - deploy
 
 cache:
-  #key: ${CI_COMMIT_REF_SLUG}
+  key: ${CI_JOB_NAME}
   paths:
     - .m2/repository
     - backend/target/
@@ -53,7 +53,7 @@ e2e:
     - cd frontend && npm run e2e
   when: manual
 
-deploy-dev:
+.deploy_template: &deploy_env
   stage: deploy
   before_script:
     - apt-get update
@@ -69,6 +69,19 @@ deploy-dev:
     - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
     - cp backend/target/backend-$CI_COMMIT_SHA.jar db-operational/deployment/db-web-ui-spring-$CI_COMMIT_SHA.jar
     - cd db-operational/deployment
-    - ./stage.sh -p db-web-ui -e dev db-web-ui-spring-$CI_COMMIT_SHA.jar
-    - ./sync.sh -p db-web-ui -e dev
-    - bash ./deploy.sh -p db-web-ui -e dev
+    - ./stage.sh -p db-web-ui -e $CI_ENVIRONMENT_NAME db-web-ui-spring-$CI_COMMIT_SHA.jar
+    - ./sync.sh -p db-web-ui -e $CI_ENVIRONMENT_NAME
+    - bash ./deploy.sh -p db-web-ui -e $CI_ENVIRONMENT_NAME
+
+deploy_dev:
+  <<: *deploy_env
+  environment:
+    name: dev
+  when: manual
+
+deploy_prepdev:
+  <<: *deploy_env
+  environment:
+    name: prepdev
+  when: manual
+
