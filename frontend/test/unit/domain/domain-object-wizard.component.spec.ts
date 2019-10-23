@@ -5,6 +5,7 @@ import {DomainObjectWizardComponent} from "../../../app/ng/domainobject/domain-o
 import {JsUtilService} from "../../../app/ng/core/js-utils.service";
 import {PropertiesService} from "../../../app/ng/properties.service";
 import {DomainObjectModule} from "../../../app/ng/domainobject/domain-object.module";
+import {WINDOW} from "../../../app/ng/core/window.service";
 
 describe("DomainObjectWizardComponent", () => {
 
@@ -21,6 +22,7 @@ describe("DomainObjectWizardComponent", () => {
                 { provide: Location, useValue: {}},
                 { provide: ActivatedRoute, useValue: {snapshot: {paramMap: {objectType: "domain", get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param])}}}},
                 { provide: Router, useValue: {navigate:() => {}}},
+                { provide: WINDOW, useValue: {}},
                 PropertiesService
             ]
         });

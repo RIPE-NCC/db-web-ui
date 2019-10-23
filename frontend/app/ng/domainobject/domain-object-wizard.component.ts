@@ -1,7 +1,8 @@
-import {Component, OnDestroy, OnInit} from "@angular/core";
+import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {WINDOW} from "../core/window.service";
 import {JsUtilService} from "../core/js-utils.service";
 import {RestService} from "../updates/rest.service";
 import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
@@ -55,7 +56,8 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public subscription: any;
     public subscriptionDomaiPrefix: any;
 
-    constructor(private jsUtils: JsUtilService,
+    constructor(@Inject(WINDOW) private window: any,
+                private jsUtils: JsUtilService,
                 private modalService: NgbModal,
                 private restService: RestService,
                 private attributeMetadataService: AttributeMetadataService,
@@ -223,6 +225,12 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
                 });
                 }
             );
+    }
+
+    public cancel() {
+        if (this.window.confirm("You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.")) {
+            this.router.navigate(["webupdates/select"]);
+        }
     }
 
     private flattenStructure(attributes: any) {

@@ -15,7 +15,8 @@
         <whois-object-editor
             [ng-model]="domainObject"
             [on-resource-page]="!containsInvalidValues() && !alreadySubmited"
-            (update-clicked)="submitButtonClicked()">
+            (update-clicked)="submitButtonClicked()"
+            (cancel-clicked)="cancel()">
         </whois-object-editor>
     </section>
 </div>
