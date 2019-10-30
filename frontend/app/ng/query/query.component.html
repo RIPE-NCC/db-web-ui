@@ -208,8 +208,7 @@
                                 <div class="radio">
                                     <label for="exact">
                                         <input id="exact" type="radio" name="hierarchy" value="x" [(ngModel)]="qp.hierarchy">
-                                        <code>x</code> - Requests that only an exact match on a prefix be performed. If
-                                        no exact match is found no objects are returned.
+                                        <code>x</code> - Requests that only an exact match on a prefix be performed. If no exact match is found no objects are returned.
                                     </label>
                                 </div>
                                 <br>
@@ -218,8 +217,7 @@
                                         <input type="checkbox" name="hierarchyD" value="d" [(ngModel)]="qp.reverseDomain"
                                                [disabled]="!qp.hierarchy">
                                         <p [ngClass]="{'text-muted': !qp.hierarchy}">
-                                            <code>d</code> - When used with a hierarchical flags (like --one-less), both
-                                            address and route object types and domain objecttypes are returned.
+                                            <code>d</code> - When used with a hierarchical flags (like --one-less), both address and route object types and domain object types are returned.
                                         </p>
                                     </label>
                                 </div>
