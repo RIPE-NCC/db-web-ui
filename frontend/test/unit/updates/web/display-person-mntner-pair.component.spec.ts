@@ -1,13 +1,13 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
-import {AlertsComponent} from "../../../../app/ng/shared/alert/alerts.component";
-import {DisplayMntnerPairComponent} from "../../../../app/ng/updates/web/display-mntner-pair.component";
-import {MessageStoreService} from "../../../../app/ng/updates/message-store.service";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
-import {AlertsService} from "../../../../app/ng/shared/alert/alerts.service";
+import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
+import {DisplayMntnerPairComponent} from "../../../../src/app/updates/web/display-mntner-pair.component";
+import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
+import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
 
 describe("displayPairComponent", () => {
 

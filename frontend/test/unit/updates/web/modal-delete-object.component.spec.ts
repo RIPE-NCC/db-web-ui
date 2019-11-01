@@ -1,13 +1,13 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {FormsModule} from "@angular/forms";
-import {SharedModule} from "../../../../app/ng/shared/shared.module";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {RestService} from "../../../../app/ng/updates/rest.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
 import {Router} from "@angular/router";
-import {ModalDeleteObjectComponent} from "../../../../app/ng/updates/web/modal-delete-object.component";
+import {ModalDeleteObjectComponent} from "../../../../src/app/updates/web/modal-delete-object.component";
 import {of, throwError} from "rxjs";
-import {CredentialsService} from "../../../../app/ng/shared/credentials.service";
+import {CredentialsService} from "../../../../src/app/shared/credentials.service";
 
 const objectType = "mntner";
 const name = "TEST-MNT";

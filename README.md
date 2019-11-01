@@ -19,10 +19,11 @@ Pre-requisites
 Build on Local Machine
 -----------------------
 
-    % mvn verify
+    mvn clean install
 
 Start Full Development Server (Frontend + Backend) on Local Machine
 -------------------------------------------------------------------
+> Every small change to be visible in browser you have to run `mvn clean install` otherwise change wont be visible in browser 
 
 * first build (see above)
 
@@ -36,12 +37,6 @@ Start Full Development Server (Frontend + Backend) on Local Machine
 
 * access the app at: https://localhost.ripe.net:8443/db-web-ui/
 
-Deployment
--------------------
-To create a war use:
-
-    % mvn package
-
 Runtime
 -------------------
 Add the "-Dspring.profiles.active=<ENV>" to the JVM args of the application server.
@@ -52,14 +47,15 @@ Properties are read from the /config/application-`<ENV>`.properties file on the 
 
 Frontend
 --------
+> Open a terminal and cd into the `frontend`
 
 ### Build
 
+* `npm run build-dev`<br>
+  webpack build Just-in-Time (JIT), used for local development. This build will include source-map - TypeScript code in browser for debugging. 
 * `npm run build`<br>
-  webpack build Just-in-Time (JIT), used for local development.
-* `npm run build-aot`<br>
   webpack build Ahead-of-Time (AOT), which compiles app at build time, used for deployments.
-  * `npm run serve`<br>
+* `npm run start`<br>
   Use this along with ```mvn spring-boot:run```. It watches the TypeScript and HTML files for changes and redeploys them
   when they've changed. In detail: the watch task is triggered by changes in the file system. 
 
@@ -75,7 +71,7 @@ Frontend
 * `npm run e2e-remote` _(used on bamboo)_<br>
   Runs the Protractor tests in selenium. 
   _End where e2e test runned on bamboo can be seen in screenshots http://193.0.2.222:4444/wd/hub/static/resource/hub.html_ 
-* `npm run e2e-no-test`<br>
+* `npm run start-mock`<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
   when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks. <br />
   _To be able to run e2e-no-test locally (http://localhost:9002/db-web-ui/#) with logged in user you will have to check <br />
@@ -99,7 +95,8 @@ IntelliJ Preferences
 * Editor
 	* File Types
 		* Ignore Files and Folders
-			* Add: node_modules
+			* node_modules
+			* dist
 	* Code Style
 		* Use single class import (do not allow .* asterisk imports)
 
@@ -142,7 +139,7 @@ Things every db-web-ui developer should know
 --------------------------------------------
 
 * Must read: https://blog.angularindepth.com/the-best-way-to-unsubscribe-rxjs-observable-in-the-angular-applications-d8f9aa42f6a0
-* Style guide: https://v7.angular.io/guide/styleguide
+* Style guide: https://angular.io/guide/styleguide
 * Native Angular component used in this project: https://ng-bootstrap.github.io/#/getting-started
 * RxJS operators with clear explanations and executable examples: https://www.learnrxjs.io/ 
 * Use the Mozilla Developer Network (MDN) for JS specs — NOT W3Schools
@@ -202,3 +199,6 @@ Matomo (ex. Piwik)
 ------------------
 
 https://matomo.ripe.net/  
+
+Debug tool <br />
+https://apps.db.ripe.net/db-web-ui/?mtmPreviewMode=BuGxbMDR#/webupdates/select

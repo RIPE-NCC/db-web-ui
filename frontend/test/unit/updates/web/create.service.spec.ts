@@ -2,9 +2,9 @@ import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Router} from "@angular/router";
 import {of} from "rxjs";
-import {CreateService} from "../../../../app/ng/updates/web/create.service";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
+import {CreateService} from "../../../../src/app/updates/web/create.service";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
 
 describe("CreateService", () => {
 

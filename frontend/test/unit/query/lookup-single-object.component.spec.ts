@@ -1,13 +1,13 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {convertToParamMap} from "@angular/router";
 import {of, throwError} from "rxjs";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {LookupSingleObjectComponent} from "../../../app/ng/query/lookup-single-object.component";
-import {LookupComponent} from "../../../app/ng/query/lookup.component";
-import {WhoisObjectViewerComponent} from "../../../app/ng/whois-object/whois-object-viewer.component";
-import {LookupService} from "../../../app/ng/query/lookup.service";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {LookupSingleObjectComponent} from "../../../src/app/query/lookup-single-object.component";
+import {LookupComponent} from "../../../src/app/query/lookup.component";
+import {WhoisObjectViewerComponent} from "../../../src/app/whois-object/whois-object-viewer.component";
+import {LookupService} from "../../../src/app/query/lookup.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {PropertiesService} from "../../../app/ng/properties.service";
+import {PropertiesService} from "../../../src/app/properties.service";
 import {RouterTestingModule} from "@angular/router/testing";
 
 describe("LookupSingleObjectComponent", () => {

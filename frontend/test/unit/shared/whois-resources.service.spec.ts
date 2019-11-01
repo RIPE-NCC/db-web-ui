@@ -1,7 +1,8 @@
 import {TestBed} from "@angular/core/testing";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {WhoisResourcesService} from "../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
+import * as _ from "lodash";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 
 describe("WhoisResourcesService", () => {
 

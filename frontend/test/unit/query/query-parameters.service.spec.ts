@@ -1,7 +1,7 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {TestBed} from "@angular/core/testing";
-import {IQueryParameters, QueryParametersService} from "../../../app/ng/query/query-parameters.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
+import {IQueryParameters, QueryParametersService} from "../../../src/app/query/query-parameters.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 
 describe("QueryParameters", () => {
 

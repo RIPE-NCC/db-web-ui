@@ -3,18 +3,18 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {FormsModule} from "@angular/forms";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of} from "rxjs";
-import {AlertsComponent} from "../../../../app/ng/shared/alert/alerts.component";
-import {PropertiesService} from "../../../../app/ng/properties.service";
-import {AlertsService} from "../../../../app/ng/shared/alert/alerts.service";
+import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
+import {PropertiesService} from "../../../../src/app/properties.service";
+import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
-import {ForceDeleteComponent} from "../../../../app/ng/updates/web/forcedelete/force-delete.component";
-import {MntnerService} from "../../../../app/ng/updates/mntner.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
-import {WebUpdatesCommonsService} from "../../../../app/ng/updates/web/web-updates-commons.service";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
-import {CredentialsService} from "../../../../app/ng/shared/credentials.service";
-import {PrefixService} from "../../../../app/ng/domainobject/prefix.service";
+import {ForceDeleteComponent} from "../../../../src/app/updates/web/forcedelete/force-delete.component";
+import {MntnerService} from "../../../../src/app/updates/mntner.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
+import {WebUpdatesCommonsService} from "../../../../src/app/updates/web/web-updates-commons.service";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
+import {CredentialsService} from "../../../../src/app/shared/credentials.service";
+import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
 
 let paramMapMock: ParamMap;
 let queryParamMock: ParamMap;
@@ -55,7 +55,6 @@ describe("ForceDeleteController", () => {
     let forceDeleteComponent: ForceDeleteComponent;
     let routerMock: any;
     let credentialsServiceMock: any;
-
 
     beforeEach(() => {
         paramMapMock = convertToParamMap({});

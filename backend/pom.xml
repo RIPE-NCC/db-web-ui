@@ -31,7 +31,7 @@
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
         <!-- keep spring-boot.version in sync with parent pom -->
-        <spring-boot.version>2.1.7.RELEASE</spring-boot.version>
+        <spring-boot.version>2.1.8.RELEASE</spring-boot.version>
         <whois.version>1.92.8</whois.version>
     </properties>
 
@@ -278,7 +278,6 @@
     </dependencies>
 
     <build>
-        <finalName>${artifactId}-${version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -296,7 +295,7 @@
                         <configuration>
                             <resources>
                                 <resource>
-                                    <directory>${basedir}/../frontend/webpack-dist</directory>
+                                    <directory>${basedir}/../frontend/dist</directory>
                                 </resource>
                             </resources>
                             <outputDirectory>${project.build.outputDirectory}/static</outputDirectory>

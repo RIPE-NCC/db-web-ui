@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
-import {MessageStoreService} from "../../../app/ng/updates/message-store.service";
-import {UpdatesModule} from "../../../app/ng/updates/update.module";
+import {MessageStoreService} from "../../../src/app/updates/message-store.service";
+import {UpdatesModule} from "../../../src/app/updates/update.module";
 
 describe("MessageStoreService", () => {
 

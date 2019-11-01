@@ -1,7 +1,7 @@
 import {TestBed} from "@angular/core/testing";
-import {CharsetToolsService} from "../../../app/ng/updates/charset-tools.service";
-import {UpdatesModule} from "../../../app/ng/updates/update.module";
-import {IAttributeModel} from "../../../app/ng/shared/whois-response-type.model";
+import {CharsetToolsService} from "../../../src/app/updates/charset-tools.service";
+import {UpdatesModule} from "../../../src/app/updates/update.module";
+import {IAttributeModel} from "../../../src/app/shared/whois-response-type.model";
 
 describe("updates: CharsetToolsService", () => {
 

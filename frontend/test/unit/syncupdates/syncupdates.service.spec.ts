@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { SyncupdatesService} from "../../../app/ng/syncupdates/syncupdates.service";
+import { SyncupdatesService} from "../../../src/app/syncupdates/syncupdates.service";
 
 describe("SyncupdatesService", () => {
 

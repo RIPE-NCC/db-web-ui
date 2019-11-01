@@ -2,10 +2,10 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {FormsModule} from "@angular/forms";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {SharedModule} from "../../../../app/ng/shared/shared.module";
-import {ModalEditAttributeComponent} from "../../../../app/ng/updates/web/modal-edit-attribute.component";
-import {PropertiesService} from "../../../../app/ng/properties.service";
-import {WINDOW} from "../../../../app/ng/core/window.service";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
+import {ModalEditAttributeComponent} from "../../../../src/app/updates/web/modal-edit-attribute.component";
+import {PropertiesService} from "../../../../src/app/properties.service";
+import {WINDOW} from "../../../../src/app/core/window.service";
 
 describe("ModalEditAttributeController", () => {
 

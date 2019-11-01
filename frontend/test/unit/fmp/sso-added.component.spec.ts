@@ -1,8 +1,8 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute} from "@angular/router";
-import {SsoAddedComponent} from "../../../app/ng/fmp/sso-added.component";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../app/ng/core/core.module";
+import {SsoAddedComponent} from "../../../src/app/fmp/sso-added.component";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../src/app/core/core.module";
 
 describe("SsoAddedComponent", () => {
     let component: SsoAddedComponent;

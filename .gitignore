@@ -8,18 +8,24 @@ backend/src/main/resources/menu.properties
 
 # frontend
 frontend/target/
+# compiled output
 frontend/tmp/
-frontend/.tscache/
-frontend/node_modules/
-frontend/bower_components/
 frontend/dist/
+frontend/out-tsc/
+frontend/.tscache/
+# dependencies
+frontend/node_modules/
 frontend/instrumented/
-frontend/reports/
 frontend/.baseDir.ts
 frontend/!test/lib/*.jar
 frontend/tscommand-*.tmp.txt
 frontend/package-lock.json
-frontend/webpack-dist/
+
+reports
+
+# profiling files
+frontend/chrome-profiler-events*.json
+frontend/speed-measure-plugin*.json
 
 # root
 sit/target/

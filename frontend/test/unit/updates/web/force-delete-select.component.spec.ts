@@ -2,10 +2,10 @@ import {HttpClientTestingModule, HttpTestingController} from "@angular/common/ht
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
-import {ForceDeleteSelectComponent} from "../../../../app/ng/updates/web/forcedeleteselect/force-delete-select.component";
-import {PropertiesService} from "../../../../app/ng/properties.service";
-import {AlertsService} from "../../../../app/ng/shared/alert/alerts.service";
-import {AlertsComponent} from "../../../../app/ng/shared/alert/alerts.component";
+import {ForceDeleteSelectComponent} from "../../../../src/app/updates/web/forcedeleteselect/force-delete-select.component";
+import {PropertiesService} from "../../../../src/app/properties.service";
+import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
+import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
 
 describe("ForceDeleteSelectComponent", () => {
 

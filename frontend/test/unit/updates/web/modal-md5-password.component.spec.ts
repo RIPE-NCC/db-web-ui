@@ -2,9 +2,9 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {FormsModule} from "@angular/forms";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {SharedModule} from "../../../../app/ng/shared/shared.module";
-import {CryptService} from "../../../../app/ng/updates/web/crypt.service";
-import {ModalMd5PasswordComponent} from "../../../../app/ng/updates/web/modal-md5-password.component";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
+import {CryptService} from "../../../../src/app/updates/web/crypt.service";
+import {ModalMd5PasswordComponent} from "../../../../src/app/updates/web/modal-md5-password.component";
 
 describe("ModalMd5PasswordComponent", () => {
 

@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
-import {CredentialsService} from "../../../app/ng/shared/credentials.service";
-import {UpdatesModule} from "../../../app/ng/updates/update.module";
+import {CredentialsService} from "../../../src/app/shared/credentials.service";
+import {UpdatesModule} from "../../../src/app/updates/update.module";
 
 describe("CredentialsService", () => {
 

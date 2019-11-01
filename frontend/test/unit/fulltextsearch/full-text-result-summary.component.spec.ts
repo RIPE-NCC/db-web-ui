@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {SimpleChange} from "@angular/core";
 import {By} from "@angular/platform-browser";
-import {FullTextResultSummaryComponent} from "../../../app/ng/fulltextsearch/full-text-result-summary.component";
+import {FullTextResultSummaryComponent} from "../../../src/app/fulltextsearch/full-text-result-summary.component";
 
 describe("FullTextResultSummaryComponent", () => {
 

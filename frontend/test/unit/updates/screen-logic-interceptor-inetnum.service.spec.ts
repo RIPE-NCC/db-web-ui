@@ -1,14 +1,15 @@
 import {TestBed} from "@angular/core/testing";
 import {Router} from "@angular/router";
 import {of} from "rxjs";
-import {IAttributeModel} from "../../../app/ng/shared/whois-response-type.model";
-import {ScreenLogicInterceptorService} from "../../../app/ng/updates/screen-logic-interceptor.service";
-import {WhoisResourcesService} from "../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
-import {UpdatesModule} from "../../../app/ng/updates/update.module";
-import {MessageStoreService} from "../../../app/ng/updates/message-store.service";
-import {LinkService} from "../../../app/ng/updates/link.service";
-import {MntnerService} from "../../../app/ng/updates/mntner.service";
+import * as _ from "lodash";
+import {IAttributeModel} from "../../../src/app/shared/whois-response-type.model";
+import {ScreenLogicInterceptorService} from "../../../src/app/updates/screen-logic-interceptor.service";
+import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
+import {UpdatesModule} from "../../../src/app/updates/update.module";
+import {MessageStoreService} from "../../../src/app/updates/message-store.service";
+import {LinkService} from "../../../src/app/updates/link.service";
+import {MntnerService} from "../../../src/app/updates/mntner.service";
 
 describe("ScreenLogicInterceptorService InetNum", () => {
 

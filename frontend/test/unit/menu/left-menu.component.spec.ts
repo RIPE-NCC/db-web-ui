@@ -2,12 +2,12 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Location} from "@angular/common";
 import {Router} from "@angular/router";
 import {of} from "rxjs";
-import {IpUsageService} from "../../../app/ng/myresources/ip-usage.service";
-import {LeftHandMenuComponent} from "../../../app/ng/menu/left-hand-menu.component";
-import {EnvironmentStatusService} from "../../../app/ng/shared/environment-status.service";
-import {PropertiesService} from "../../../app/ng/properties.service";
-import {WINDOW_PROVIDERS} from "../../../app/ng/core/window.service";
-import {OrgDropDownSharedService} from "../../../app/ng/dropdown/org-drop-down-shared.service";
+import {IpUsageService} from "../../../src/app/myresources/ip-usage.service";
+import {LeftHandMenuComponent} from "../../../src/app/menu/left-hand-menu.component";
+import {EnvironmentStatusService} from "../../../src/app/shared/environment-status.service";
+import {PropertiesService} from "../../../src/app/properties.service";
+import {WINDOW_PROVIDERS} from "../../../src/app/core/window.service";
+import {OrgDropDownSharedService} from "../../../src/app/dropdown/org-drop-down-shared.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe("LeftHandMenuComponent", () => {

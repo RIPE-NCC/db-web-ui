@@ -2,14 +2,14 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
 import {of} from "rxjs";
-import {FullTextSearchComponent} from "../../../app/ng/fulltextsearch/full-text-search.component";
-import {FullTextSearchService} from "../../../app/ng/fulltextsearch/full-text-search.service";
-import {FullTextResponseService} from "../../../app/ng/fulltextsearch/full-text-response.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
-import {FullTextResultSummaryComponent} from "../../../app/ng/fulltextsearch/full-text-result-summary.component";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../app/ng/core/core.module";
-import {PropertiesService} from "../../../app/ng/properties.service";
+import {FullTextSearchComponent} from "../../../src/app/fulltextsearch/full-text-search.component";
+import {FullTextSearchService} from "../../../src/app/fulltextsearch/full-text-search.service";
+import {FullTextResponseService} from "../../../src/app/fulltextsearch/full-text-response.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
+import {FullTextResultSummaryComponent} from "../../../src/app/fulltextsearch/full-text-result-summary.component";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../src/app/core/core.module";
+import {PropertiesService} from "../../../src/app/properties.service";
 
 describe("FullTextSearchComponent", () => {
 

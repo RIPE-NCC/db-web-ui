@@ -1,13 +1,14 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Location} from "@angular/common";
-import {AttributeMetadataService} from "../../../app/ng/attribute/attribute-metadata.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
-import {MntnerService} from "../../../app/ng/updates/mntner.service";
-import {JsUtilService} from "../../../app/ng/core/js-utils.service";
-import {AttributeModule} from "../../../app/ng/attribute/attribute.module";
-import {PrefixService} from "../../../app/ng/domainobject/prefix.service";
-import {IAttributeModel} from "../../../app/ng/shared/whois-response-type.model";
+import * as _ from "lodash";
+import {AttributeMetadataService} from "../../../src/app/attribute/attribute-metadata.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
+import {MntnerService} from "../../../src/app/updates/mntner.service";
+import {JsUtilService} from "../../../src/app/core/js-utils.service";
+import {AttributeModule} from "../../../src/app/attribute/attribute.module";
+import {PrefixService} from "../../../src/app/domainobject/prefix.service";
+import {IAttributeModel} from "../../../src/app/shared/whois-response-type.model";
 
 describe("AttributeMetadataService", () => {
 

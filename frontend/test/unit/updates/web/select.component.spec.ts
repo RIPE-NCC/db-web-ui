@@ -4,10 +4,10 @@ import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/rout
 import {FormsModule} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
-import {SelectComponent} from "../../../../app/ng/updates/web/select.component";
-import {UserInfoService} from "../../../../app/ng/userinfo/user-info.service";
-import {PropertiesService} from "../../../../app/ng/properties.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
+import {SelectComponent} from "../../../../src/app/updates/web/select.component";
+import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
+import {PropertiesService} from "../../../../src/app/properties.service";
 
 describe("SelectController", () => {
     const OBJECT_TYPE = "as-set";
@@ -21,121 +21,122 @@ describe("SelectController", () => {
     let preferencesServiceMock: any;
     let routerMock: any;
     let modalMock: any;
+    let refs: string[] = [];
 
     const whoisMetaServiceMock = {
                 objectTypesMap: {
                     "inetnum": {
                         attributes: [
-                            {name: "inetnum", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
-                            {name: "netname", mandatory: true, multiple: false, refs: this.refs},
-                            {name: "descr", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "country", mandatory: true, multiple: true, refs: this.refs, isEnum: true},
-                            {name: "geoloc", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "language", mandatory: false, multiple: true, refs: this.refs, isEnum: true},
+                            {name: "inetnum", mandatory: true, multiple: false, primaryKey: true, refs: refs},
+                            {name: "netname", mandatory: true, multiple: false, refs: refs},
+                            {name: "descr", mandatory: false, multiple: true, refs: refs},
+                            {name: "country", mandatory: true, multiple: true, refs: refs, isEnum: true},
+                            {name: "geoloc", mandatory: false, multiple: false, refs: refs},
+                            {name: "language", mandatory: false, multiple: true, refs: refs, isEnum: true},
                             {name: "org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
                             {name: "sponsoring-org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
                             {name: "admin-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
                             {name: "tech-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
                             {name: "abuse-c", mandatory: false, multiple: false, refs: ["ROLE"]},
-                            {name: "status", mandatory: true, multiple: false, refs: this.refs, isEnum: true},
-                            {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "notify", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "status", mandatory: true, multiple: false, refs: refs, isEnum: true},
+                            {name: "remarks", mandatory: false, multiple: true, refs: refs},
+                            {name: "notify", mandatory: false, multiple: true, refs: refs},
                             {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-lower", mandatory: false, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-domains", mandatory: false, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-routes", mandatory: false, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-irt", mandatory: false, multiple: true, refs: ["IRT"]},
-                            {name: "created", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "source", mandatory: true, multiple: false, refs: this.refs},
+                            {name: "created", mandatory: false, multiple: false, refs: refs},
+                            {name: "last-modified", mandatory: false, multiple: false, refs: refs},
+                            {name: "source", mandatory: true, multiple: false, refs: refs},
                         ],
                         // description: undefined,
                         name: "inetnum"
                     },
                     "inet6num": {
                         attributes: [
-                            {name: "inet6num", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
-                            {name: "netname", mandatory: true, multiple: false, refs: this.refs},
-                            {name: "descr", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "country", mandatory: true, multiple: true, refs: this.refs, isEnum: true},
-                            {name: "geoloc", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "language", mandatory: false, multiple: true, refs: this.refs, isEnum: true},
+                            {name: "inet6num", mandatory: true, multiple: false, primaryKey: true, refs: refs},
+                            {name: "netname", mandatory: true, multiple: false, refs: refs},
+                            {name: "descr", mandatory: false, multiple: true, refs: refs},
+                            {name: "country", mandatory: true, multiple: true, refs: refs, isEnum: true},
+                            {name: "geoloc", mandatory: false, multiple: false, refs: refs},
+                            {name: "language", mandatory: false, multiple: true, refs: refs, isEnum: true},
                             {name: "org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
                             {name: "sponsoring-org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
                             {name: "admin-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
                             {name: "tech-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
                             {name: "abuse-c", mandatory: false, multiple: false, refs: ["ROLE"]},
-                            {name: "status", mandatory: true, multiple: false, refs: this.refs, isEnum: true},
-                            {name: "assignment-size", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "notify", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "status", mandatory: true, multiple: false, refs: refs, isEnum: true},
+                            {name: "assignment-size", mandatory: false, multiple: false, refs: refs},
+                            {name: "remarks", mandatory: false, multiple: true, refs: refs},
+                            {name: "notify", mandatory: false, multiple: true, refs: refs},
                             {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-lower", mandatory: false, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-routes", mandatory: false, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-domains", mandatory: false, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-irt", mandatory: false, multiple: true, refs: ["IRT"]},
-                            {name: "created", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "source", mandatory: true, multiple: false, refs: this.refs},
+                            {name: "created", mandatory: false, multiple: false, refs: refs},
+                            {name: "last-modified", mandatory: false, multiple: false, refs: refs},
+                            {name: "source", mandatory: true, multiple: false, refs: refs},
                         ],
                         // description: undefined,
                         name: "inet6num"
                     },
                     "domain": {
                         attributes: [
-                            {name: "domain", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
-                            {name: "descr", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "domain", mandatory: true, multiple: false, primaryKey: true, refs: refs},
+                            {name: "descr", mandatory: false, multiple: true, refs: refs},
                             {name: "org", mandatory: false, multiple: true, refs: ["ORGANISATION"]},
                             {name: "admin-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
                             {name: "tech-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
                             {name: "zone-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
-                            {name: "nserver", mandatory: true, multiple: true, refs: this.refs},
-                            {name: "ds-rdata", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "notify", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "nserver", mandatory: true, multiple: true, refs: refs},
+                            {name: "ds-rdata", mandatory: false, multiple: true, refs: refs},
+                            {name: "remarks", mandatory: false, multiple: true, refs: refs},
+                            {name: "notify", mandatory: false, multiple: true, refs: refs},
                             {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
-                            {name: "created", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "source", mandatory: true, multiple: false, refs: this.refs},
+                            {name: "created", mandatory: false, multiple: false, refs: refs},
+                            {name: "last-modified", mandatory: false, multiple: false, refs: refs},
+                            {name: "source", mandatory: true, multiple: false, refs: refs},
                         ],
                         // description: undefined,
                         name: "domain"
                     },
                     "aut-num": {
                         attributes: [
-                            {name: "aut-num", mandatory: true, multiple: false, primaryKey: true, refs: this.refs},
-                            {name: "as-name", mandatory: true, multiple: false, refs: this.refs, searchable: true},
-                            {name: "descr", mandatory: false, multiple: true, refs: this.refs, searchable: true},
+                            {name: "aut-num", mandatory: true, multiple: false, primaryKey: true, refs: refs},
+                            {name: "as-name", mandatory: true, multiple: false, refs: refs, searchable: true},
+                            {name: "descr", mandatory: false, multiple: true, refs: refs, searchable: true},
                             {name: "member-of", mandatory: false, multiple: true, refs: ["AS-SET", "ROUTE-SET", "RTR-SET"]},
-                            {name: "import-via", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "import", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "mp-import", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "export-via", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "export", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "mp-export", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "default", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "mp-default", mandatory: false, multiple: true, refs: this.refs},
-                            {name: "remarks", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "import-via", mandatory: false, multiple: true, refs: refs},
+                            {name: "import", mandatory: false, multiple: true, refs: refs},
+                            {name: "mp-import", mandatory: false, multiple: true, refs: refs},
+                            {name: "export-via", mandatory: false, multiple: true, refs: refs},
+                            {name: "export", mandatory: false, multiple: true, refs: refs},
+                            {name: "mp-export", mandatory: false, multiple: true, refs: refs},
+                            {name: "default", mandatory: false, multiple: true, refs: refs},
+                            {name: "mp-default", mandatory: false, multiple: true, refs: refs},
+                            {name: "remarks", mandatory: false, multiple: true, refs: refs},
                             {name: "org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
                             {name: "sponsoring-org", mandatory: false, multiple: false, refs: ["ORGANISATION"]},
                             {name: "admin-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
                             {name: "tech-c", mandatory: true, multiple: true, refs: ["PERSON", "ROLE"]},
                             {name: "abuse-c", mandatory: false, multiple: false, refs: ["ROLE"]},
-                            {name: "status", mandatory: false, multiple: false, refs: this.refs, isEnum: true},
-                            {name: "notify", mandatory: false, multiple: true, refs: this.refs},
+                            {name: "status", mandatory: false, multiple: false, refs: refs, isEnum: true},
+                            {name: "notify", mandatory: false, multiple: true, refs: refs},
                             {name: "mnt-lower", mandatory: false, multiple: true, refs: ["MNTNER"]},
                             {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
-                            {name: "created", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},
-                            {name: "source", mandatory: true, multiple: false, refs: this.refs},
+                            {name: "created", mandatory: false, multiple: false, refs: refs},
+                            {name: "last-modified", mandatory: false, multiple: false, refs: refs},
+                            {name: "source", mandatory: true, multiple: false, refs: refs},
                         ],
                         // description: undefined,
                         name: "aut-num"
                     }
                 },
                 getObjectTypes: () => {
-                    let keys = [];
-                    for (let key in this.objectTypesMap) {
+                    let keys: string[] = [];
+                    for (let key in whoisMetaServiceMock.objectTypesMap) {
                         keys.push(key);
                     }
                     return keys;

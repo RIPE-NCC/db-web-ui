@@ -6,29 +6,30 @@ import {By} from "@angular/platform-browser";
 import {DebugElement} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgSelectModule} from "@ng-select/ng-select";
+import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
-import {CreateModifyComponent} from "../../../../app/ng/updates/web/create-modify.component";
-import {SharedModule} from "../../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../../app/ng/core/core.module";
-import {PrefixService} from "../../../../app/ng/domainobject/prefix.service";
-import {ResourceStatusService} from "../../../../app/ng/myresources/resource-status.service";
-import {WebUpdatesCommonsService} from "../../../../app/ng/updates/web/web-updates-commons.service";
-import {PropertiesService} from "../../../../app/ng/properties.service";
-import {OrganisationHelperService} from "../../../../app/ng/updates/web/organisation-helper.service";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
-import {MessageStoreService} from "../../../../app/ng/updates/message-store.service";
-import {MntnerService} from "../../../../app/ng/updates/mntner.service";
-import {ErrorReporterService} from "../../../../app/ng/updates/error-reporter.service";
-import {LinkService} from "../../../../app/ng/updates/link.service";
-import {PreferenceService} from "../../../../app/ng/updates/preference.service";
-import {EnumService} from "../../../../app/ng/updates/web/enum.service";
-import {CharsetToolsService} from "../../../../app/ng/updates/charset-tools.service";
-import {ScreenLogicInterceptorService} from "../../../../app/ng/updates/screen-logic-interceptor.service";
-import {AttributeMetadataService} from "../../../../app/ng/attribute/attribute-metadata.service";
-import {AttributeSharedService} from "../../../../app/ng/attribute/attribute-shared.service";
+import {CreateModifyComponent} from "../../../../src/app/updates/web/create-modify.component";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../../src/app/core/core.module";
+import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
+import {ResourceStatusService} from "../../../../src/app/myresources/resource-status.service";
+import {WebUpdatesCommonsService} from "../../../../src/app/updates/web/web-updates-commons.service";
+import {PropertiesService} from "../../../../src/app/properties.service";
+import {OrganisationHelperService} from "../../../../src/app/updates/web/organisation-helper.service";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
+import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
+import {MntnerService} from "../../../../src/app/updates/mntner.service";
+import {ErrorReporterService} from "../../../../src/app/updates/error-reporter.service";
+import {LinkService} from "../../../../src/app/updates/link.service";
+import {PreferenceService} from "../../../../src/app/updates/preference.service";
+import {EnumService} from "../../../../src/app/updates/web/enum.service";
+import {CharsetToolsService} from "../../../../src/app/updates/charset-tools.service";
+import {ScreenLogicInterceptorService} from "../../../../src/app/updates/screen-logic-interceptor.service";
+import {AttributeMetadataService} from "../../../../src/app/attribute/attribute-metadata.service";
+import {AttributeSharedService} from "../../../../src/app/attribute/attribute-shared.service";
 
 describe("CreateModifyComponent", () => {
 
@@ -46,6 +47,7 @@ describe("CreateModifyComponent", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
+                NgOptionHighlightModule,
                 HttpClientTestingModule],
             declarations: [CreateModifyComponent],
             providers: [

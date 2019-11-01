@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {RpslService} from "../../../app/ng/updatestext/rpsl.service";
+import {RpslService} from "../../../src/app/updatestext/rpsl.service";
 
 describe("RpslService", () => {
 

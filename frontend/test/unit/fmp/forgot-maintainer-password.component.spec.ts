@@ -1,10 +1,10 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {of, throwError} from "rxjs";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../app/ng/core/core.module";
-import {ForgotMaintainerPasswordService} from "../../../app/ng/fmp/forgot-maintainer-password.service";
-import {ForgotMaintainerPasswordComponent} from "../../../app/ng/fmp/forgot-maintainer-password.component";
-import {UserInfoService} from "../../../app/ng/userinfo/user-info.service";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../src/app/core/core.module";
+import {ForgotMaintainerPasswordService} from "../../../src/app/fmp/forgot-maintainer-password.service";
+import {ForgotMaintainerPasswordComponent} from "../../../src/app/fmp/forgot-maintainer-password.component";
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
 
 describe("ForgotMaintainerPasswordComponent", () => {

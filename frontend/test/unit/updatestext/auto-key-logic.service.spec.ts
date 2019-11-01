@@ -1,6 +1,6 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {TestBed} from "@angular/core/testing";
-import {AutoKeyLogicService} from "../../../app/ng/updatestext/auto-key-logic.service";
+import {AutoKeyLogicService} from "../../../src/app/updatestext/auto-key-logic.service";
 
 describe("AutoKeyLogicService", () => {
 

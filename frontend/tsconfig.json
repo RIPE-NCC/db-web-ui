@@ -1,36 +1,34 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "allowJs": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": ["es2015", "dom"],
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "noImplicitAny": true,
-    "outDir": "./tmp",
-    "rootDir": "./app",
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
     "sourceMap": true,
-    "inlineSources": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "target": "es5"
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+//    "types": [
+//      "angular",
+//      "angular-cookies",
+//      "angular-ui-router",
+//      "lodash",
+//      "moment",
+//      "node"
+//    ]
   },
-  "typeRoots": [
-    "./node_modules/@types"
-  ],
-  "types": [
-    "angular",
-    "angular-cookies",
-    "angular-ui-router",
-    "lodash",
-    "moment"
-  ],
-  "include": [
-    "./app/**/*.js",
-    "./app/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "app/main-aot.ts"
-  ]
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true
+  }
 }

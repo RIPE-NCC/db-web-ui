@@ -1,9 +1,9 @@
 import {async, ComponentFixture, TestBed} from "@angular/core/testing";
 import {of, throwError} from "rxjs";
-import {UserInfoService} from "../../../app/ng/userinfo/user-info.service";
-import {UserInfoComponent} from "../../../app/ng/userinfo/user-info.component";
-import {PropertiesService} from "../../../app/ng/properties.service";
-import {IUserInfoResponseData} from "../../../app/ng/dropdown/org-data-type.model";
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
+import {UserInfoComponent} from "../../../src/app/userinfo/user-info.component";
+import {PropertiesService} from "../../../src/app/properties.service";
+import {IUserInfoResponseData} from "../../../src/app/dropdown/org-data-type.model";
 
 declare const RIPE: any;
 

@@ -5,18 +5,18 @@ import {Router} from "@angular/router";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {of} from "rxjs";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {AttributeMetadataService} from "../../../app/ng/attribute/attribute-metadata.service";
-import {MessageStoreService} from "../../../app/ng/updates/message-store.service";
-import {MntnerService} from "../../../app/ng/updates/mntner.service";
-import {RestService} from "../../../app/ng/updates/rest.service"
-import {PropertiesService} from "../../../app/ng/properties.service";
-import {PrefixService} from "../../../app/ng/domainobject/prefix.service";
-import {MaintainersEditorComponent} from "../../../app/ng/whois-object/maintainers-editor.component";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../app/ng/core/core.module";
-import {AttributeInfoComponent} from "../../../app/ng/attribute/attr-info.component";
-import {AttributeSharedService} from "../../../app/ng/attribute/attribute-shared.service";
-import {WebUpdatesCommonsService} from "../../../app/ng/updates/web/web-updates-commons.service";
+import {AttributeMetadataService} from "../../../src/app/attribute/attribute-metadata.service";
+import {MessageStoreService} from "../../../src/app/updates/message-store.service";
+import {MntnerService} from "../../../src/app/updates/mntner.service";
+import {RestService} from "../../../src/app/updates/rest.service"
+import {PropertiesService} from "../../../src/app/properties.service";
+import {PrefixService} from "../../../src/app/domainobject/prefix.service";
+import {MaintainersEditorComponent} from "../../../src/app/whois-object/maintainers-editor.component";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../src/app/core/core.module";
+import {AttributeInfoComponent} from "../../../src/app/attribute/attr-info.component";
+import {AttributeSharedService} from "../../../src/app/attribute/attribute-shared.service";
+import {WebUpdatesCommonsService} from "../../../src/app/updates/web/web-updates-commons.service";
 
 describe("MaintainersEditorComponent", () => {
 

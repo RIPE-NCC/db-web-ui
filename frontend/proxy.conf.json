@@ -1,0 +1,10 @@
+{
+  "/db-web-ui/api": {
+    "target": "https://localhost:8443",
+    "logLevel": "debug",
+    "secure": false,
+    "pathRewrite": {
+      "^/db-web-ui/api": "/db-web-ui/api"
+    }
+  }
+}

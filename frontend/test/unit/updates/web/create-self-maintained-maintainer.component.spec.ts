@@ -1,19 +1,20 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {SharedModule} from "../../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../../app/ng/core/core.module";
-import {NgSelectModule} from "@ng-select/ng-select";
-import {PropertiesService} from "../../../../app/ng/properties.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
-import {MessageStoreService} from "../../../../app/ng/updates/message-store.service";
-import {ErrorReporterService} from "../../../../app/ng/updates/error-reporter.service";
-import {LinkService} from "../../../../app/ng/updates/link.service";
-import {CookieService} from "ngx-cookie-service";
-import {UserInfoService} from "../../../../app/ng/userinfo/user-info.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {CreateSelfMaintainedMaintainerComponent} from "../../../../app/ng/updates/web/create-self-maintained-maintainer.component";
-import {of, throwError} from "rxjs";
 import {Location} from "@angular/common";
+import {ActivatedRoute, Router} from "@angular/router";
+import {of, throwError} from "rxjs";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
+import {CookieService} from "ngx-cookie-service";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../../src/app/core/core.module";
+import {PropertiesService} from "../../../../src/app/properties.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
+import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
+import {ErrorReporterService} from "../../../../src/app/updates/error-reporter.service";
+import {LinkService} from "../../../../src/app/updates/link.service";
+import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
+import {CreateSelfMaintainedMaintainerComponent} from "../../../../src/app/updates/web/create-self-maintained-maintainer.component";
 
 describe("CreateSelfMaintainedMaintainerComponent", () => {
 
@@ -32,6 +33,7 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
+                NgOptionHighlightModule,
                 HttpClientTestingModule],
             declarations: [CreateSelfMaintainedMaintainerComponent],
             providers: [

@@ -5,13 +5,13 @@ import {Router} from "@angular/router";
 import {RouterModule} from "@angular/router";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {CookieService} from "ngx-cookie-service";
-import {SharedModule} from "../../../../app/ng/shared/shared.module";
-import {ModalAuthenticationComponent} from "../../../../app/ng/updates/web/modal-authentication.component";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
-import {UserInfoService} from "../../../../app/ng/userinfo/user-info.service";
-import {CredentialsService} from "../../../../app/ng/shared/credentials.service";
-import {PropertiesService} from "../../../../app/ng/properties.service";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
+import {ModalAuthenticationComponent} from "../../../../src/app/updates/web/modal-authentication.component";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
+import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
+import {CredentialsService} from "../../../../src/app/shared/credentials.service";
+import {PropertiesService} from "../../../../src/app/properties.service";
 
 describe("ModalAuthenticationComponent", () => {
 

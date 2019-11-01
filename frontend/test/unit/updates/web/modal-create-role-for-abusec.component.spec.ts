@@ -4,13 +4,13 @@ import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 import {of} from "rxjs";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
-import {CredentialsService} from "../../../../app/ng/shared/credentials.service";
-import {ModalCreateRoleForAbuseCComponent} from "../../../../app/ng/updates/web/modal-create-role-for-abusec.component";
-import {MntnerService} from "../../../../app/ng/updates/mntner.service";
-import {PrefixService} from "../../../../app/ng/domainobject/prefix.service";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
+import {CredentialsService} from "../../../../src/app/shared/credentials.service";
+import {ModalCreateRoleForAbuseCComponent} from "../../../../src/app/updates/web/modal-create-role-for-abusec.component";
+import {MntnerService} from "../../../../src/app/updates/mntner.service";
+import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
 
 describe("ModalCreateRoleForAbuseCComponent", () => {
 

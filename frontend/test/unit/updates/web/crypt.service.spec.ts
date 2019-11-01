@@ -1,5 +1,5 @@
 import {TestBed} from "@angular/core/testing";
-import {CryptService} from "../../../../app/ng/updates/web/crypt.service";
+import {CryptService} from "../../../../src/app/updates/web/crypt.service";
 
 describe("CryptService", () => {
 

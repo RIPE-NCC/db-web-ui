@@ -1,8 +1,8 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {SimpleChange} from "@angular/core";
-import {IpUsageService} from "../../../app/ng/myresources/ip-usage.service";
-import {IpUsageOfAllResourcesComponent} from "../../../app/ng/myresources/ip-usage-of-all-resources.component";
-import {ResourceStatusService} from "../../../app/ng/myresources/resource-status.service";
+import {IpUsageService} from "../../../src/app/myresources/ip-usage.service";
+import {IpUsageOfAllResourcesComponent} from "../../../src/app/myresources/ip-usage-of-all-resources.component";
+import {ResourceStatusService} from "../../../src/app/myresources/resource-status.service";
 
 const ipv4Resources =
         [{

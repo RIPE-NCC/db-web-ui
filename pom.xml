@@ -6,7 +6,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
         <!-- keep version in sync with spring-boot.version in backend pom -->
-        <version>2.1.7.RELEASE</version>
+        <version>2.1.8.RELEASE</version>
         <relativePath />
     </parent>
 
@@ -68,7 +68,7 @@
                 <executions>
                     <execution>
                         <!-- do not run by default -->
-                        <id>not-by-default</id>
+                        <id>not-by-defau>lt</id>
                         <phase>not-by-default</phase>
                         <goals>
                             <goal>aggregate</goal>
@@ -90,7 +90,7 @@
                             <directory>${basedir}/frontend/node</directory>
                         </fileset>
                         <fileset>
-                            <directory>${basedir}/frontend/webpack-dist</directory>
+                            <directory>${basedir}/frontend/dist</directory>
                         </fileset>
                         <fileset>
                             <directory>${basedir}/frontend</directory>
