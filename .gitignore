@@ -28,6 +28,7 @@ frontend/chrome-profiler-events*.json
 frontend/speed-measure-plugin*.json
 
 # root
+reports/
 sit/target/
 README.html
 
