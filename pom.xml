@@ -32,7 +32,7 @@
     </licenses>
 
     <prerequisites>
-        <maven>3.0.0</maven>
+        <maven>3.6.2</maven>
     </prerequisites>
 
     <scm>

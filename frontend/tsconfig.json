@@ -17,15 +17,7 @@
     "lib": [
       "es2018",
       "dom"
-    ],
-//    "types": [
-//      "angular",
-//      "angular-cookies",
-//      "angular-ui-router",
-//      "lodash",
-//      "moment",
-//      "node"
-//    ]
+    ]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
