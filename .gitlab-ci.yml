@@ -1,4 +1,4 @@
-image: docker-registry.ripe.net/sbuskens/db-web-ui/db-web-ui-build:latest
+image: db-web-ui-build
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=/cache/maven.repository
