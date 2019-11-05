@@ -5,14 +5,12 @@ variables:
 
 stages:
   - build
-  - karma-test
-  - e2e-test
+  - test
   - deploy
 
 cache:
   key: ${CI_JOB_NAME}
   paths:
-    - .m2/repository
     - backend/target/
     - frontend/node_modules/
 
@@ -29,7 +27,7 @@ build:
         - backend/target/failsafe-reports/TEST-*.xml
 
 karma:
-  stage: karma-test
+  stage: test
   script:
     - export DISPLAY=:20
     - Xvfb :20 -screen 0 1366x768x16 &
@@ -38,7 +36,7 @@ karma:
   #when: manual
 
 e2e:
-  stage: e2e-test
+  stage: test
   script:
     - export DISPLAY=:20
     - Xvfb :20 -screen 0 1366x768x16 &
