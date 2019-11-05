@@ -30,7 +30,7 @@ karma:
   stage: test
   script:
     - export DISPLAY=:20
-    - Xvfb :20 -screen 0 1366x768x16 &
+    - Xvfb :20 -screen 0 1920x1080x16 &
     - mvn install
     - cd frontend && npm run test
   #when: manual
@@ -39,7 +39,7 @@ e2e:
   stage: test
   script:
     - export DISPLAY=:20
-    - Xvfb :20 -screen 0 1366x768x16 &
+    - Xvfb :20 -screen 0 1920x1080x16 &
     - mvn install
     - cd frontend && npm run e2e
   #when: manual
