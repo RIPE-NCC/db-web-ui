@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {LookupService} from "./lookup.service";
 import {PropertiesService} from "../properties.service";
+import {IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
 
 @Component({
     selector: "lookup-single",
@@ -41,7 +42,7 @@ export class LookupSingleObjectComponent implements OnDestroy {
     private init() {
         try {
             this.lookupService.lookupWhoisObject({source: this.source, type: this.objectType, key: this.objectName})
-                .then((response: any) => {
+                .subscribe((response: any) => {
                     if (response &&
                         response.objects &&
                         response.objects.object &&
@@ -53,8 +54,14 @@ export class LookupSingleObjectComponent implements OnDestroy {
                             "type:", this.objectType,
                             "name:", this.objectName);
                     }
-                }, error =>
-                    this.error = "An error occurred looking for " + this.objectType + " " + this.objectName);
+                }, (() => {
+                    this.error = "An error occurred looking for " + this.objectType + " " + this.objectName;
+                    // reload page in case in query params source was NONAUTH and object doesn't exist in mirror database
+                    if (this.source !== this.properties.SOURCE) {
+                        this.goToLookup();
+                        this.error += " Page will load same object in RIPE source."
+                    }
+                }));
         } catch (e) {
             this.error = "An error occurred looking for " + this.objectType + " " + this.objectName;
         }
@@ -62,5 +69,10 @@ export class LookupSingleObjectComponent implements OnDestroy {
 
     public goToUpdate() {
         this.router.navigate(["webupdates/modify", this.source, this.objectType, this.objectName]);
+    }
+
+    public goToLookup() {
+        const queryParam = {source: this.properties.SOURCE, type: this.objectType, key: this.objectName};
+        this.router.navigate(["lookup"], {queryParams: queryParam});
     }
 }
