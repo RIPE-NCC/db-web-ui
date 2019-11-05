@@ -1,9 +1,6 @@
-image: maven:3.6-jdk-8
-# TODO: this image is needed for karma and e2e build
-# image: db-web-ui-build:1
+image: docker-registry.ripe.net/sbuskens/db-web-ui/db-web-ui-build:latest
 
 variables:
-#  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: -Dmaven.repo.local=/cache/maven.repository
 
 stages:
@@ -21,10 +18,6 @@ cache:
 
 build:
   stage: build
-  before_script:
-    # TODO: this will be moved into db-web-ui-build docker image
-    - curl -sL https://deb.nodesource.com/setup_8.x | bash - && apt-get install -yq nodejs build-essential
-    # END TODO
   script:
     - mvn $MAVEN_OPTS $MAVEN_CLI_OPTS clean package -Dversion=${CI_COMMIT_SHA}
   artifacts:
@@ -42,7 +35,7 @@ karma:
     - Xvfb :20 -screen 0 1366x768x16 &
     - mvn install
     - cd frontend && npm run test
-  when: manual
+  #when: manual
 
 e2e:
   stage: e2e-test
@@ -51,7 +44,7 @@ e2e:
     - Xvfb :20 -screen 0 1366x768x16 &
     - mvn install
     - cd frontend && npm run e2e
-  when: manual
+  #when: manual
 
 .deploy_template: &deploy_env
   stage: deploy
