@@ -1,14 +1,15 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {NgSelectModule} from "@ng-select/ng-select";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../app/ng/core/core.module";
-import {WhoisObjectViewerComponent} from "../../../app/ng/whois-object/whois-object-viewer.component";
-import {AttributeModule} from "../../../app/ng/attribute/attribute.module";
-import {PropertiesService} from "../../../app/ng/properties.service";
 import {RouterTestingModule} from "@angular/router/testing";
-import {UserInfoService} from "../../../app/ng/userinfo/user-info.service";
+import {NgSelectModule} from "@ng-select/ng-select";
+import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../src/app/core/core.module";
+import {WhoisObjectViewerComponent} from "../../../src/app/whois-object/whois-object-viewer.component";
+import {AttributeModule} from "../../../src/app/attribute/attribute.module";
+import {PropertiesService} from "../../../src/app/properties.service";
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 
 describe("WhoisObjectViewerComponent", () => {
 
@@ -22,6 +23,7 @@ describe("WhoisObjectViewerComponent", () => {
                     SharedModule,
                     CoreModule,
                     NgSelectModule,
+                    NgOptionHighlightModule,
                     AttributeModule,
                     RouterTestingModule],
                 declarations: [
@@ -65,6 +67,7 @@ describe("WhoisObjectViewerComponent", () => {
                     SharedModule,
                     CoreModule,
                     NgSelectModule,
+                    NgOptionHighlightModule,
                     AttributeModule,
                     RouterTestingModule],
                 declarations: [

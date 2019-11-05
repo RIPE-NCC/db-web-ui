@@ -1,8 +1,8 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MailSentComponent} from "../../../app/ng/fmp/mail-sent.component";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../app/ng/core/core.module";
+import {MailSentComponent} from "../../../src/app/fmp/mail-sent.component";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../src/app/core/core.module";
 
 describe("MailSentComponent", () => {
     let component: MailSentComponent;

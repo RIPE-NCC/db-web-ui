@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
-import {MyResourcesModule} from "../../../app/ng/myresources/my-resources.module";
-import {MoreSpecificsService} from "../../../app/ng/myresources/more-specifics.service";
+import {MyResourcesModule} from "../../../src/app/myresources/my-resources.module";
+import {MoreSpecificsService} from "../../../src/app/myresources/more-specifics.service";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 
 describe("MoreSpecificsService", () => {

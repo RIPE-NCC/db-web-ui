@@ -6,7 +6,7 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
         <!-- keep version in sync with spring-boot.version in backend pom -->
-        <version>2.1.7.RELEASE</version>
+        <version>2.2.0.RELEASE</version>
         <relativePath />
     </parent>
 
@@ -32,7 +32,7 @@
     </licenses>
 
     <prerequisites>
-        <maven>3.0.0</maven>
+        <maven>3.6.2</maven>
     </prerequisites>
 
     <scm>
@@ -64,11 +64,11 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>5.0.0</version>
+                <version>5.2.2</version>
                 <executions>
                     <execution>
                         <!-- do not run by default -->
-                        <id>not-by-default</id>
+                        <id>not-by-defau>lt</id>
                         <phase>not-by-default</phase>
                         <goals>
                             <goal>aggregate</goal>
@@ -90,7 +90,7 @@
                             <directory>${basedir}/frontend/node</directory>
                         </fileset>
                         <fileset>
-                            <directory>${basedir}/frontend/webpack-dist</directory>
+                            <directory>${basedir}/frontend/dist</directory>
                         </fileset>
                         <fileset>
                             <directory>${basedir}/frontend</directory>

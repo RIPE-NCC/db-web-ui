@@ -1,14 +1,15 @@
 import {TestBed} from "@angular/core/testing";
 import {of} from "rxjs";
 import {Router} from "@angular/router";
-import {CredentialsService} from "../../../app/ng/shared/credentials.service";
-import {MntnerService} from "../../../app/ng/updates/mntner.service";
-import {UpdatesModule} from "../../../app/ng/updates/update.module";
-import {IMntByModel} from "../../../app/ng/shared/whois-response-type.model";
-import {RestService} from "../../../app/ng/updates/rest.service";
-import {WhoisResourcesService} from "../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
-import {PrefixService} from "../../../app/ng/domainobject/prefix.service";
+import {CredentialsService} from "../../../src/app/shared/credentials.service";
+import {MntnerService} from "../../../src/app/updates/mntner.service";
+import {UpdatesModule} from "../../../src/app/updates/update.module";
+import {IMntByModel} from "../../../src/app/shared/whois-response-type.model";
+import {RestService} from "../../../src/app/updates/rest.service";
+import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
+import {PrefixService} from "../../../src/app/domainobject/prefix.service";
+import * as _ from "lodash";
 
 describe("MntnerService", () => {
     let mntnerService: MntnerService;

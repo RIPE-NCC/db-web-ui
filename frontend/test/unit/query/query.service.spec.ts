@@ -1,8 +1,8 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
-import {QueryService} from "../../../app/ng/query/query.service";
-import {IQueryParameters, QueryParametersService} from "../../../app/ng/query/query-parameters.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
+import {QueryService} from "../../../src/app/query/query.service";
+import {IQueryParameters, QueryParametersService} from "../../../src/app/query/query-parameters.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 
 describe("QueryService", () => {
 

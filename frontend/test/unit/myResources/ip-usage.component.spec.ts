@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {SimpleChange} from "@angular/core";
-import {IpUsageComponent} from "../../../app/ng/myresources/ip-usage.component";
-import {IpUsageService} from "../../../app/ng/myresources/ip-usage.service";
+import {IpUsageComponent} from "../../../src/app/myresources/ip-usage.component";
+import {IpUsageService} from "../../../src/app/myresources/ip-usage.service";
 
 describe("IpUsageComponent", () => {
     let component: IpUsageComponent;

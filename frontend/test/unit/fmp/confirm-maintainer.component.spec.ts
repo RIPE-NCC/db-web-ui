@@ -2,10 +2,10 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {By} from "@angular/platform-browser";
 import {ActivatedRoute, Router} from "@angular/router";
 import {of, throwError} from "rxjs";
-import {EmailLinkService} from "../../../app/ng/fmp/email-link.services";
-import {AlertsService} from "../../../app/ng/shared/alert/alerts.service";
-import {ConfirmMaintainerComponent} from "../../../app/ng/fmp/confirm-maintainer.component";
-import {AlertsComponent} from "../../../app/ng/shared/alert/alerts.component";
+import {EmailLinkService} from "../../../src/app/fmp/email-link.services";
+import {AlertsService} from "../../../src/app/shared/alert/alerts.service";
+import {ConfirmMaintainerComponent} from "../../../src/app/fmp/confirm-maintainer.component";
+import {AlertsComponent} from "../../../src/app/shared/alert/alerts.component";
 
 describe("ConfirmMaintainerComponent", () => {
     let component: ConfirmMaintainerComponent;

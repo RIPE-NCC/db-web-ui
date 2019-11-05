@@ -1,7 +1,7 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {MyResourcesModule} from "../../../app/ng/myresources/my-resources.module";
-import {ResourcesDataService} from "../../../app/ng/myresources/resources-data.service";
+import {MyResourcesModule} from "../../../src/app/myresources/my-resources.module";
+import {ResourcesDataService} from "../../../src/app/myresources/resources-data.service";
 
 describe("ResourcesDataService", () => {
     let resourcesDataService: ResourcesDataService;

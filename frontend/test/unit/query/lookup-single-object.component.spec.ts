@@ -1,14 +1,16 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {convertToParamMap} from "@angular/router";
 import {of, throwError} from "rxjs";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {LookupSingleObjectComponent} from "../../../app/ng/query/lookup-single-object.component";
-import {LookupComponent} from "../../../app/ng/query/lookup.component";
-import {WhoisObjectViewerComponent} from "../../../app/ng/whois-object/whois-object-viewer.component";
-import {LookupService} from "../../../app/ng/query/lookup.service";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {PropertiesService} from "../../../app/ng/properties.service";
 import {RouterTestingModule} from "@angular/router/testing";
+import {CookieService} from "ngx-cookie-service";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {LookupSingleObjectComponent} from "../../../src/app/query/lookup-single-object.component";
+import {LookupComponent} from "../../../src/app/query/lookup.component";
+import {WhoisObjectViewerComponent} from "../../../src/app/whois-object/whois-object-viewer.component";
+import {LookupService} from "../../../src/app/query/lookup.service";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {PropertiesService} from "../../../src/app/properties.service";
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 
 describe("LookupSingleObjectComponent", () => {
 
@@ -31,6 +33,8 @@ describe("LookupSingleObjectComponent", () => {
             ],
             providers: [
                 PropertiesService,
+                UserInfoService,
+                CookieService,
                 { provide: LookupService, useValue: lookupServiceSpy},
             ]
         });
@@ -41,7 +45,6 @@ describe("LookupSingleObjectComponent", () => {
         fixture = TestBed.createComponent(LookupSingleObjectComponent);
         component = fixture.componentInstance;
         spyOn(component.router, "navigate");
-
     });
 
     it("should create", () => {
@@ -51,7 +54,7 @@ describe("LookupSingleObjectComponent", () => {
     describe("should shows an object", () => {
 
         it("all lovely and that", async() => {
-            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse.singleResult).toPromise());
+            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse.singleResult));
             component.activatedRoute.queryParams = of({
                 source: "useTheSource",
                 type: "thetype",
@@ -67,7 +70,7 @@ describe("LookupSingleObjectComponent", () => {
         });
 
         it("but not when the params are empty", async() => {
-            lookupService.lookupWhoisObject.and.returnValue(throwError("That just won't do.").toPromise());
+            lookupService.lookupWhoisObject.and.returnValue(throwError("That just won't do."));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
                 has: (hash: string) => (true)
@@ -79,7 +82,7 @@ describe("LookupSingleObjectComponent", () => {
         });
 
         it("but not when the response is empty", async() => {
-            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse).toPromise());
+            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse));
             component.activatedRoute.queryParams = of({
                 source: "useTheSource",
                 type: "thetype",
@@ -94,7 +97,7 @@ describe("LookupSingleObjectComponent", () => {
 
         it("but not when there is more than one result", async() => {
             //@ts-ignore
-            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse.wakefield).toPromise());
+            lookupService.lookupWhoisObject.and.returnValue(of(mockResponse.wakefield));
             // @ts-ignore
             component.activatedRoute.snapshot = { queryParamMap: convertToParamMap({
                 source: "useTheSource",
@@ -107,7 +110,23 @@ describe("LookupSingleObjectComponent", () => {
             await fixture.whenStable();
             expect(component.whoisResponse).toBeFalsy();
         });
+
+        it("with RIPE source even if specifed is NONAUTH, because object actualy exist in RIPE source", async() => {
+            lookupService.lookupWhoisObject.and.returnValue(throwError(mockErrorNonauth));
+            component.activatedRoute.queryParams = of({
+                get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
+                has: (hash: string) => (true)
+            });
+            fixture.detectChanges();
+            await fixture.whenStable();
+            expect(component.whoisResponse).toBeFalsy();
+            expect(component.error).toBeTruthy();
+            // this will reload page with source=RIPE because with NONAUTH object didn't exist
+            expect(component.router.navigate).toHaveBeenCalledWith(["lookup"],
+                {queryParams: {source: component.properties.SOURCE, type: component.objectType, key: component.objectName}});
+        });
     });
+
     const mockResponse = {
         yorkshire: {
             "service": {
@@ -859,5 +878,25 @@ describe("LookupSingleObjectComponent", () => {
         }
     };
 
+    const mockErrorNonauth = {
+        "link": {
+            "type": "locator",
+            "href": "http://wagyu.prepdev.ripe.net:1080/ripe-nonauth/role/YELP1-RIPE?abuse-contact=true&managed-attributes=true&resource-holder=true&unfiltered=true"
+        },
+        "errormessages": {
+            "errormessage": [{
+                "severity": "Error",
+                "text": "ERROR:101: no entries found\n\nNo entries found in source %s.\n",
+                "args": [
+                    {
+                        "value": "RIPE-NONAUTH"
+                    }]
+            }]
+        },
+        "terms-and-conditions": {
+            "type": "locator",
+            "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+        }
+    }
 });
 

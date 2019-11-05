@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {FindMaintainerService} from "../../../app/ng/fmp/find-maintainer.service";
+import {FindMaintainerService} from "../../../src/app/fmp/find-maintainer.service";
 
 describe("FindMaintainerService", () => {
 
@@ -141,6 +141,19 @@ describe("FindMaintainerService", () => {
         const req = httpMock.expectOne({method: "GET", url: "api/whois-internal/api/fmp-pub/mntner/I-AM-MNT"});
         expect(req.request.method).toBe("GET");
         req.flush(data, mockErrorResponse);
+    });
+
+    it("should return error that MNT is synchronized with organisation in LIR Portal", (done) => {
+        const maintainerKey = "SHRYANE-MNT";
+        const mockErrorResponse = { status: 403, error: "SHRYANE-MNT is synchronized with organisation ORG-BAd1-RIPE in LIR Portal.", statusText: "OK" };
+        findMaintainerService.search(maintainerKey)
+            .subscribe((res: any) => {},(error: any) => {
+                expect(error.error).toBe("SHRYANE-MNT is synchronized with organisation ORG-BAd1-RIPE in LIR Portal.");
+                done();
+            });
+        const req = httpMock.expectOne({method: "GET", url: "api/whois-internal/api/fmp-pub/mntner/SHRYANE-MNT"});
+        expect(req.request.method).toBe("GET");
+        req.flush(mockErrorResponse, mockErrorResponse);
     });
 
     it("should return error for validating email", (done) => {

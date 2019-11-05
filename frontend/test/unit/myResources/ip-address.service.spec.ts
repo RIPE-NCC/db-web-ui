@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
-import {IpAddressService} from "../../../app/ng/myresources/ip-address.service";
-import {MyResourcesModule} from "../../../app/ng/myresources/my-resources.module";
+import {IpAddressService} from "../../../src/app/myresources/ip-address.service";
+import {MyResourcesModule} from "../../../src/app/myresources/my-resources.module";
 
 describe("IpAddressService", () => {
 

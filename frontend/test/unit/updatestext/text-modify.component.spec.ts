@@ -5,21 +5,22 @@ import {FormsModule} from "@angular/forms";
 import {Location} from "@angular/common";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of} from "rxjs";
-import {TextModifyComponent} from "../../../app/ng/updatestext/text-modify.component";
-import {AlertsComponent} from "../../../app/ng/shared/alert/alerts.component";
-import {PreferenceService} from "../../../app/ng/updates/preference.service";
-import {WhoisResourcesService} from "../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
-import {RestService} from "../../../app/ng/updates/rest.service";
-import {AlertsService} from "../../../app/ng/shared/alert/alerts.service";
-import {ErrorReporterService} from "../../../app/ng/updates/error-reporter.service";
-import {MessageStoreService} from "../../../app/ng/updates/message-store.service";
-import {RpslService} from "../../../app/ng/updatestext/rpsl.service";
-import {MntnerService} from "../../../app/ng/updates/mntner.service";
-import {TextCommonsService} from "../../../app/ng/updatestext/text-commons.service";
-import {CredentialsService} from "../../../app/ng/shared/credentials.service";
-import {PrefixService} from "../../../app/ng/domainobject/prefix.service";
-import {WINDOW} from "../../../app/ng/core/window.service";
+import * as _ from "lodash";
+import {TextModifyComponent} from "../../../src/app/updatestext/text-modify.component";
+import {AlertsComponent} from "../../../src/app/shared/alert/alerts.component";
+import {PreferenceService} from "../../../src/app/updates/preference.service";
+import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
+import {RestService} from "../../../src/app/updates/rest.service";
+import {AlertsService} from "../../../src/app/shared/alert/alerts.service";
+import {ErrorReporterService} from "../../../src/app/updates/error-reporter.service";
+import {MessageStoreService} from "../../../src/app/updates/message-store.service";
+import {RpslService} from "../../../src/app/updatestext/rpsl.service";
+import {MntnerService} from "../../../src/app/updates/mntner.service";
+import {TextCommonsService} from "../../../src/app/updatestext/text-commons.service";
+import {CredentialsService} from "../../../src/app/shared/credentials.service";
+import {PrefixService} from "../../../src/app/domainobject/prefix.service";
+import {WINDOW} from "../../../src/app/core/window.service";
 
 describe("TextModifyComponent", () => {
 
@@ -44,7 +45,6 @@ describe("TextModifyComponent", () => {
         "mnt-by:TEST-MNT\n" +
         "last-modified: 2012-02-27T10:11:12Z\n"+
         "source:RIPE\n";
-
 
     const testPersonRpslScreen =
         "person:test person\n" +
@@ -95,7 +95,6 @@ describe("TextModifyComponent", () => {
             declarations: [TextModifyComponent, AlertsComponent],
             providers: [
                 {provide: PreferenceService, useValue: preferencesServiceMock},
-
                 WhoisResourcesService,
                 WhoisMetaService,
                 RestService,
@@ -108,18 +107,15 @@ describe("TextModifyComponent", () => {
                 {provide: CredentialsService, useValue: credentialsServiceMock},
                 PrefixService,
                 {provide: NgbModal, useValue: modalMock},
-                { provide: Location, useValue: {path: () => ""}},
+                {provide: Location, useValue: {path: () => ""}},
                 {provide: WINDOW, useValue: {}},
                 {provide: Router, useValue: routerMock},
-                {
-                    provide: ActivatedRoute, useValue: {
-                        snapshot: {
-                            paramMap: paramMapMock,
-                            queryParamMap: queryParamMock,
-                        }
+                {provide: ActivatedRoute, useValue: {
+                    snapshot: {
+                        paramMap: paramMapMock,
+                        queryParamMap: queryParamMock,
                     }
-                }
-
+                }}
             ],
         });
         httpMock = TestBed.get(HttpTestingController);
@@ -147,7 +143,6 @@ describe("TextModifyComponent", () => {
             queryParamHasSpy.withArgs("rpsl").and.returnValue(false);
         }
     };
-
 
     it("should get parameters from url", async () => {
         createParams();
@@ -308,7 +303,6 @@ describe("TextModifyComponent", () => {
         textModifyComponent.submit();
         await componentFixture.whenStable();
 
-
         httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/route/12.235.32.0/19AS1680?unformatted=true"}).flush(routeJSON);
         await componentFixture.whenStable();
         expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/RIPE/route/12.235.32.0%2F19AS1680?method=Modify`);
@@ -421,7 +415,7 @@ describe("TextModifyComponent", () => {
     });
 
     it("should extract password from rpsl", async () => {
-        modalMock.open.and.returnValue({componentInstance: {}, result: of({selectedItem:{key:"TEST-MNT", name:"mntner", mine:true}}).toPromise()});
+        modalMock.open.and.returnValue({componentInstance: {}, result: of({$value: {selectedItem:{key:"TEST-MNT", name:"mntner", mine:true}}}).toPromise()});
         createParams();
         componentFixture.detectChanges();
 
@@ -460,7 +454,7 @@ describe("TextModifyComponent", () => {
     });
 
     it("should re-fetch maintainer after authentication", async () => {
-        modalMock.open.and.returnValue({componentInstance: {}, result: of({selectedItem:{key:"TEST-MNT", name:"mntner", mine:true}}).toPromise()});
+        modalMock.open.and.returnValue({componentInstance: {}, result: of({$value: {selectedItem:{key:"TEST-MNT", name:"mntner", mine:true}}}).toPromise()});
 
         createParams("mntner", "TEST-MNT");
         componentFixture.detectChanges();

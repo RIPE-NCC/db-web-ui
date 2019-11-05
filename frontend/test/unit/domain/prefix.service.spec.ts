@@ -1,6 +1,6 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {TestBed} from "@angular/core/testing";
-import {PrefixService} from "../../../app/ng/domainobject/prefix.service";
+import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 
 describe("PrefixService", () => {
 

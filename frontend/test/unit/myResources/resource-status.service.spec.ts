@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
-import {MyResourcesModule} from "../../../app/ng/myresources/my-resources.module";
-import {ResourceStatusService} from "../../../app/ng/myresources/resource-status.service";
+import {MyResourcesModule} from "../../../src/app/myresources/my-resources.module";
+import {ResourceStatusService} from "../../../src/app/myresources/resource-status.service";
 
 describe("ResourceStatusService", () => {
 

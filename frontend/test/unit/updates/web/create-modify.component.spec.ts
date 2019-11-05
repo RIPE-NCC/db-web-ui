@@ -2,31 +2,34 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
+import {By} from "@angular/platform-browser";
+import {DebugElement} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {NgSelectModule} from "@ng-select/ng-select";
+import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
-import {CreateModifyComponent} from "../../../../app/ng/updates/web/create-modify.component";
-import {SharedModule} from "../../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../../app/ng/core/core.module";
-import {PrefixService} from "../../../../app/ng/domainobject/prefix.service";
-import {ResourceStatusService} from "../../../../app/ng/myresources/resource-status.service";
-import {WebUpdatesCommonsService} from "../../../../app/ng/updates/web/web-updates-commons.service";
-import {PropertiesService} from "../../../../app/ng/properties.service";
-import {OrganisationHelperService} from "../../../../app/ng/updates/web/organisation-helper.service";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
-import {MessageStoreService} from "../../../../app/ng/updates/message-store.service";
-import {MntnerService} from "../../../../app/ng/updates/mntner.service";
-import {ErrorReporterService} from "../../../../app/ng/updates/error-reporter.service";
-import {LinkService} from "../../../../app/ng/updates/link.service";
-import {PreferenceService} from "../../../../app/ng/updates/preference.service";
-import {EnumService} from "../../../../app/ng/updates/web/enum.service";
-import {CharsetToolsService} from "../../../../app/ng/updates/charset-tools.service";
-import {ScreenLogicInterceptorService} from "../../../../app/ng/updates/screen-logic-interceptor.service";
-import {AttributeMetadataService} from "../../../../app/ng/attribute/attribute-metadata.service";
-import {AttributeSharedService} from "../../../../app/ng/attribute/attribute-shared.service";
+import {CreateModifyComponent} from "../../../../src/app/updates/web/create-modify.component";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../../src/app/core/core.module";
+import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
+import {ResourceStatusService} from "../../../../src/app/myresources/resource-status.service";
+import {WebUpdatesCommonsService} from "../../../../src/app/updates/web/web-updates-commons.service";
+import {PropertiesService} from "../../../../src/app/properties.service";
+import {OrganisationHelperService} from "../../../../src/app/updates/web/organisation-helper.service";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
+import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
+import {MntnerService} from "../../../../src/app/updates/mntner.service";
+import {ErrorReporterService} from "../../../../src/app/updates/error-reporter.service";
+import {LinkService} from "../../../../src/app/updates/link.service";
+import {PreferenceService} from "../../../../src/app/updates/preference.service";
+import {EnumService} from "../../../../src/app/updates/web/enum.service";
+import {CharsetToolsService} from "../../../../src/app/updates/charset-tools.service";
+import {ScreenLogicInterceptorService} from "../../../../src/app/updates/screen-logic-interceptor.service";
+import {AttributeMetadataService} from "../../../../src/app/attribute/attribute-metadata.service";
+import {AttributeSharedService} from "../../../../src/app/attribute/attribute-shared.service";
 
 describe("CreateModifyComponent", () => {
 
@@ -44,6 +47,7 @@ describe("CreateModifyComponent", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
+                NgOptionHighlightModule,
                 HttpClientTestingModule],
             declarations: [CreateModifyComponent],
             providers: [
@@ -524,7 +528,53 @@ describe("CreateModifyComponent", () => {
         it("should redirect to 404 page", () => {
             expect(routerMock.navigate).toHaveBeenCalledWith(["not-found"]);
         });
+    });
 
+    describe("init route object type", () => {
+        const SOURCE = "RIPE";
+        const OBJECT_TYPE = "route";
+
+        beforeEach(async () => {
+            TestBed.get(ActivatedRoute).snapshot.paramMap = {
+                source: SOURCE, objectType: OBJECT_TYPE,
+                get: (param: string) => (component.activatedRoute.snapshot.paramMap[param]),
+                has: (param: string) => (!!component.activatedRoute.snapshot.paramMap[param])
+            };
+            component = fixture.componentInstance;
+            fixture.detectChanges();
+            httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush(USER_WITH_MORE_ASSOCIATED_MNT_MOCK);
+            fixture.detectChanges();
+            await fixture.whenStable();
+        });
+
+        it("should remove mnt-by on backspace one by one", () => {
+            const BACKSPACE_KEYCODE = 8;
+            spyOn(component, "onMntnerRemoved").and.callThrough();
+            expect(component.maintainers.sso.length).toBe(4); // 4 associated maintainer
+            expect(component.maintainers.object.length).toBe(4);
+            expect(component.attributes.length).toBe(8);
+            fixture.detectChanges();
+            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(4);
+            const mntInput = fixture.debugElement.query(By.css("ng-select"));
+            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
+            expect(component.onMntnerRemoved).toHaveBeenCalled(); //method which remove mnt-by from attributes
+            fixture.detectChanges();
+            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(3);
+            expect(component.attributes.length).toBe(7);
+            triggerKeyDownEvent(mntInput, BACKSPACE_KEYCODE);
+            fixture.detectChanges();
+            expect(fixture.debugElement.queryAll(By.css("#selectMaintainerDropdown .ng-value")).length).toBe(2);
+            expect(component.attributes.length).toBe(6);
+        });
+
+        function triggerKeyDownEvent(element: DebugElement, which: number, key = ''): void {
+            element.triggerEventHandler('keydown', {
+                which: which,
+                key: key,
+                preventDefault: () => {
+                },
+            });
+        }
     });
 });
 
@@ -533,6 +583,12 @@ const USER_MAINTAINERS_MOCK = [
 ];
 const USER_RIPE_NCC_MNT_MOCK = [
     {"mine": true, "type": "mntner", "auth": ["SSO"], "key": "RIPE-NCC-MNT"}
+];
+const USER_WITH_MORE_ASSOCIATED_MNT_MOCK = [
+    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO"], "key": "TE-MNT"},
+    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO", "PGPKEY-261AA554", "PGPKEY-F91A0E57"], "key": "MAINT-AFILIAS"},
+    {"mine": true, "type": "mntner", "auth": ["MD5-PW", "SSO"], "key": "BBC-MNT"},
+    {"mine": true, "type": "mntner", "auth": ["SSO"], "key": "TEST-MNT"}
 ];
 
 const WHOIS_OBJECT_WITH_ERRORS_MOCK = {

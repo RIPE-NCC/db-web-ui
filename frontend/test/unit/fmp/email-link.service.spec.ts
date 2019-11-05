@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {EmailLinkService} from "../../../app/ng/fmp/email-link.services";
+import {EmailLinkService} from "../../../src/app/fmp/email-link.services";
 
 describe("EmailLinkService", () => {
 

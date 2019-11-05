@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute, Router} from "@angular/router";
-import {RequireLoginComponent} from "../../../app/ng/fmp/require-login.component";
-import {PropertiesService} from "../../../app/ng/properties.service";
+import {RequireLoginComponent} from "../../../src/app/fmp/require-login.component";
+import {PropertiesService} from "../../../src/app/properties.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe("RequireLoginComponent", () => {

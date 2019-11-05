@@ -15,6 +15,8 @@ import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.ehcache.EhCacheManagerFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.AbstractEnvironment;
+import org.springframework.core.env.EnumerablePropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -27,6 +29,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
+import java.util.stream.StreamSupport;
 
 @SpringBootApplication(scanBasePackages = {"net.ripe.whois"})
 @EnableCaching
@@ -85,12 +88,8 @@ public class Application implements AsyncConfigurer {
         }
 
         LOGGER.info("\n\nRunning with Spring profile : {}\n\n", environment.getActiveProfiles()[0]);
-        LOGGER.info("rest.api.ripeUrl:           {}", environment.getProperty("rest.api.ripeUrl"));
-        LOGGER.info("internal.api.url:           {}", environment.getProperty("internal.api.url"));
-        LOGGER.info("internal.api.key:           {}", environment.getProperty("internal.api.key"));
-        LOGGER.info("ba-apps.api.url:            {}", environment.getProperty("ba-apps.api.url"));
-        LOGGER.info("ba-apps.api.key:            {}", environment.getProperty("ba-apps.api.key"));
-        LOGGER.info("syncupdates.api.url         {}", environment.getProperty("syncupdates.api.url"));
+
+        logProperties();
     }
 
     @Bean
@@ -136,6 +135,24 @@ public class Application implements AsyncConfigurer {
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return new SimpleAsyncUncaughtExceptionHandler();
+    }
+
+    private void logProperties() {
+        StreamSupport.stream(((AbstractEnvironment) environment).getPropertySources().spliterator(), false)
+            .filter(propertySource -> (propertySource instanceof EnumerablePropertySource))
+            .map(propertySource -> ((EnumerablePropertySource)propertySource).getPropertyNames())
+            .flatMap(Arrays::stream)
+            .distinct()
+            .sorted()
+            .forEach(key -> LOGGER.info("\t{}: {}", key, filterSensitiveValue(key, environment.getProperty(key))));
+    }
+
+    private String filterSensitiveValue(final String key, final String value) {
+        if (key.endsWith("password") || key.endsWith("key")) {
+            return "********";
+        } else {
+            return value;
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 import {TestBed} from "@angular/core/testing";
-import {LinkService} from "../../../app/ng/updates/link.service";
-import {UpdatesModule} from "../../../app/ng/updates/update.module";
+import * as _ from "lodash";
+import {LinkService} from "../../../src/app/updates/link.service";
+import {UpdatesModule} from "../../../src/app/updates/update.module";
 
 describe("LinkService", () => {
 

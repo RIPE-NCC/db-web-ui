@@ -42,7 +42,7 @@ public class WhoisDomainObjectServiceTest extends AbstractIntegrationTest {
         final ResponseEntity<String> response = restTemplate.exchange(createDomainUri(), HttpMethod.POST, requestEntity, String.class);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getHeaders().get("Set-Cookie").get(0), containsString("JSESSIONID"));
+        assertThat(response.getHeaders().get("Set-Cookie").get(0), containsString("DBSESSIONID"));
     }
 
     // helper methods

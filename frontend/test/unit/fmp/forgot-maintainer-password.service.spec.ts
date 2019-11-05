@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {ForgotMaintainerPasswordService} from "../../../app/ng/fmp/forgot-maintainer-password.service";
+import {ForgotMaintainerPasswordService} from "../../../src/app/fmp/forgot-maintainer-password.service";
 
 describe("ForgotMaintainerPasswordService", () => {
 

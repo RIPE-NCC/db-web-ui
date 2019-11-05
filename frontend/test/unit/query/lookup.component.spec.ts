@@ -1,11 +1,11 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
-import {LookupComponent} from "../../../app/ng/query/lookup.component";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {WhoisObjectViewerComponent} from "../../../app/ng/whois-object/whois-object-viewer.component";
-import {UserInfoService} from "../../../app/ng/userinfo/user-info.service";
-import {PropertiesService} from "../../../app/ng/properties.service";
+import {LookupComponent} from "../../../src/app/query/lookup.component";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {WhoisObjectViewerComponent} from "../../../src/app/whois-object/whois-object-viewer.component";
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
+import {PropertiesService} from "../../../src/app/properties.service";
 import {of} from "rxjs";
 import {SimpleChange} from "@angular/core";
 

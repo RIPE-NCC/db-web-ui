@@ -3,10 +3,10 @@ import {async, ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute} from "@angular/router";
 import {of} from "rxjs";
 
-import {EmailConfirmationComponent} from "../../../app/ng/emailconfirmation/email-confirmation.component";
-import {EmailConfirmationService} from "../../../app/ng/emailconfirmation/email-confirmation.service";
-import {LoadingIndicatorComponent} from "../../../app/ng/shared/loading-indicator/loading-indicator.component";
-import {UserInfoService} from "../../../app/ng/userinfo/user-info.service";
+import {EmailConfirmationComponent} from "../../../src/app/emailconfirmation/email-confirmation.component";
+import {EmailConfirmationService} from "../../../src/app/emailconfirmation/email-confirmation.service";
+import {LoadingIndicatorComponent} from "../../../src/app/shared/loading-indicator/loading-indicator.component";
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 
 describe("Testing EmailConfirmation with logged in user", () => {
     const url = "api/whois-internal/api/abuse-validation/validate-token?token=123456789012345678";

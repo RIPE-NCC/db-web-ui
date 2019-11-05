@@ -5,21 +5,22 @@ import {Location} from "@angular/common";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of} from "rxjs";
-import {TextCreateComponent} from "../../../app/ng/updatestext/text-create.component";
-import {PreferenceService} from "../../../app/ng/updates/preference.service";
-import {MntnerService} from "../../../app/ng/updates/mntner.service";
-import {AlertsComponent} from "../../../app/ng/shared/alert/alerts.component";
-import {WINDOW} from "../../../app/ng/core/window.service";
-import {WhoisResourcesService} from "../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../app/ng/shared/whois-meta.service";
-import {RestService} from "../../../app/ng/updates/rest.service";
-import {AlertsService} from "../../../app/ng/shared/alert/alerts.service";
-import {ErrorReporterService} from "../../../app/ng/updates/error-reporter.service";
-import {MessageStoreService} from "../../../app/ng/updates/message-store.service";
-import {RpslService} from "../../../app/ng/updatestext/rpsl.service";
-import {TextCommonsService} from "../../../app/ng/updatestext/text-commons.service";
-import {CredentialsService} from "../../../app/ng/shared/credentials.service";
-import {PrefixService} from "../../../app/ng/domainobject/prefix.service";
+import * as _ from "lodash";
+import {TextCreateComponent} from "../../../src/app/updatestext/text-create.component";
+import {PreferenceService} from "../../../src/app/updates/preference.service";
+import {MntnerService} from "../../../src/app/updates/mntner.service";
+import {AlertsComponent} from "../../../src/app/shared/alert/alerts.component";
+import {WINDOW} from "../../../src/app/core/window.service";
+import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
+import {RestService} from "../../../src/app/updates/rest.service";
+import {AlertsService} from "../../../src/app/shared/alert/alerts.service";
+import {ErrorReporterService} from "../../../src/app/updates/error-reporter.service";
+import {MessageStoreService} from "../../../src/app/updates/message-store.service";
+import {RpslService} from "../../../src/app/updatestext/rpsl.service";
+import {TextCommonsService} from "../../../src/app/updatestext/text-commons.service";
+import {CredentialsService} from "../../../src/app/shared/credentials.service";
+import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 
 describe("TextCreateComponent", () => {
 

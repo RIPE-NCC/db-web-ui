@@ -1,10 +1,11 @@
 import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {Router} from "@angular/router";
-import {OrganisationHelperService} from "../../../../app/ng/updates/web/organisation-helper.service";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
+import * as _ from "lodash";
+import {OrganisationHelperService} from "../../../../src/app/updates/web/organisation-helper.service";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
 
 describe("OrganisationHelperService", () => {
 

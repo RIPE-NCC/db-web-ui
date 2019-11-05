@@ -1,23 +1,23 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
-import {DisplayComponent} from "../../../../app/ng/updates/web/display.component";
-import {MessageStoreService} from "../../../../app/ng/updates/message-store.service";
-import {WhoisResourcesService} from "../../../../app/ng/shared/whois-resources.service";
-import {MntnerService} from "../../../../app/ng/updates/mntner.service";
-import {CredentialsService} from "../../../../app/ng/shared/credentials.service";
+import {DisplayComponent} from "../../../../src/app/updates/web/display.component";
+import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {MntnerService} from "../../../../src/app/updates/mntner.service";
+import {CredentialsService} from "../../../../src/app/shared/credentials.service";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
-import {AlertsComponent} from "../../../../app/ng/shared/alert/alerts.component";
+import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
 import {DiffMatchPatchModule} from "ng-diff-match-patch";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {WhoisMetaService} from "../../../../app/ng/shared/whois-meta.service";
-import {RestService} from "../../../../app/ng/updates/rest.service";
-import {AlertsService} from "../../../../app/ng/shared/alert/alerts.service";
-import {UserInfoService} from "../../../../app/ng/userinfo/user-info.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
+import {RestService} from "../../../../src/app/updates/rest.service";
+import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
+import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
 import {CookieService} from "ngx-cookie-service";
-import {WebUpdatesCommonsService} from "../../../../app/ng/updates/web/web-updates-commons.service";
-import {PrefixService} from "../../../../app/ng/domainobject/prefix.service";
-import {PropertiesService} from "../../../../app/ng/properties.service";
+import {WebUpdatesCommonsService} from "../../../../src/app/updates/web/web-updates-commons.service";
+import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
+import {PropertiesService} from "../../../../src/app/properties.service";
 import {of} from "rxjs";
-import {SanitizeImgHtmlPipe} from "../../../../app/ng/shared/sanitize-img-html.pipe";
+import {SanitizeImgHtmlPipe} from "../../../../src/app/shared/sanitize-img-html.pipe";
 
 describe("DisplayComponent", () => {
 

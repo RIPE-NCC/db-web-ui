@@ -1,8 +1,8 @@
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {TestBed} from "@angular/core/testing";
 import {CookieService} from "ngx-cookie-service";
-import {IUserInfoOrganisation, IUserInfoRegistration, IUserInfoResponseData} from "../../../app/ng/dropdown/org-data-type.model";
-import {UserInfoService} from "../../../app/ng/userinfo/user-info.service";
+import {IUserInfoOrganisation, IUserInfoRegistration, IUserInfoResponseData} from "../../../src/app/dropdown/org-data-type.model";
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 
 describe("UserInfoService", () => {
 

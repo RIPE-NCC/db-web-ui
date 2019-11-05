@@ -1,18 +1,19 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Location} from "@angular/common";
 import {NgSelectModule} from "@ng-select/ng-select";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {CoreModule} from "../../../app/ng/core/core.module";
-import {WhoisObjectEditorComponent} from "../../../app/ng/whois-object/whois-object-editor.component";
-import {AttributeMetadataService} from "../../../app/ng/attribute/attribute-metadata.service";
-import {MessageStoreService} from "../../../app/ng/updates/message-store.service";
-import {AttributeModule} from "../../../app/ng/attribute/attribute.module";
-import {MntnerService} from "../../../app/ng/updates/mntner.service";
-import {RestService} from "../../../app/ng/updates/rest.service";
-import {CharsetToolsService} from "../../../app/ng/updates/charset-tools.service";
-import {EnumService} from "../../../app/ng/updates/web/enum.service";
-import {PropertiesService} from "../../../app/ng/properties.service";
-import {PrefixService} from "../../../app/ng/domainobject/prefix.service";
+import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {CoreModule} from "../../../src/app/core/core.module";
+import {WhoisObjectEditorComponent} from "../../../src/app/whois-object/whois-object-editor.component";
+import {AttributeMetadataService} from "../../../src/app/attribute/attribute-metadata.service";
+import {MessageStoreService} from "../../../src/app/updates/message-store.service";
+import {AttributeModule} from "../../../src/app/attribute/attribute.module";
+import {MntnerService} from "../../../src/app/updates/mntner.service";
+import {RestService} from "../../../src/app/updates/rest.service";
+import {CharsetToolsService} from "../../../src/app/updates/charset-tools.service";
+import {EnumService} from "../../../src/app/updates/web/enum.service";
+import {PropertiesService} from "../../../src/app/properties.service";
+import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 
 function modifyinetnum() {
     return {
@@ -45,6 +46,7 @@ describe("WhoisObjectEditorComponent", () => {
                 SharedModule,
                 CoreModule,
                 NgSelectModule,
+                NgOptionHighlightModule,
                 AttributeModule],
             declarations: [
                 WhoisObjectEditorComponent

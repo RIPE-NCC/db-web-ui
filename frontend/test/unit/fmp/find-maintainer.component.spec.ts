@@ -1,12 +1,12 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Router} from "@angular/router";
 import {of, throwError} from "rxjs";
-import {FindMaintainerComponent} from "../../../app/ng/fmp/find-maintainer.component";
-import {FindMaintainerService} from "../../../app/ng/fmp/find-maintainer.service";
-import {WINDOW_PROVIDERS} from "../../../app/ng/core/window.service";
-import {CoreModule} from "../../../app/ng/core/core.module";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
-import {UserInfoService} from "../../../app/ng/userinfo/user-info.service";
+import {FindMaintainerComponent} from "../../../src/app/fmp/find-maintainer.component";
+import {FindMaintainerService} from "../../../src/app/fmp/find-maintainer.service";
+import {WINDOW_PROVIDERS} from "../../../src/app/core/window.service";
+import {CoreModule} from "../../../src/app/core/core.module";
+import {SharedModule} from "../../../src/app/shared/shared.module";
+import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 
 describe("FindMaintainerComponent", () => {
 

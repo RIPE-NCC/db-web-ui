@@ -2,8 +2,8 @@ import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Router} from "@angular/router";
 import {of} from "rxjs";
-import {RestService} from "../../../app/ng/updates/rest.service";
-import {SharedModule} from "../../../app/ng/shared/shared.module";
+import {RestService} from "../../../src/app/updates/rest.service";
+import {SharedModule} from "../../../src/app/shared/shared.module";
 
 describe("RestService", () => {
 
