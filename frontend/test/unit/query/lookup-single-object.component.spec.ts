@@ -78,7 +78,6 @@ describe("LookupSingleObjectComponent", () => {
             fixture.detectChanges();
             await fixture.whenStable();
             expect(component.whoisResponse).toBeFalsy();
-            expect(component.error).toBeTruthy();
         });
 
         it("but not when the response is empty", async() => {
@@ -104,7 +103,7 @@ describe("LookupSingleObjectComponent", () => {
                 type: "thetype",
                 key: "thekey",
                 get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
-                has: (hash: string) => (true)
+                has: (hash: string) => true
             })};
             fixture.detectChanges();
             await fixture.whenStable();
@@ -115,12 +114,11 @@ describe("LookupSingleObjectComponent", () => {
             lookupService.lookupWhoisObject.and.returnValue(throwError(mockErrorNonauth));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
-                has: (hash: string) => (true)
+                has: (hash: string) => true
             });
             fixture.detectChanges();
             await fixture.whenStable();
             expect(component.whoisResponse).toBeFalsy();
-            expect(component.error).toBeTruthy();
             // this will reload page with source=RIPE because with NONAUTH object didn't exist
             expect(component.router.navigate).toHaveBeenCalledWith(["lookup"],
                 {queryParams: {source: component.properties.SOURCE, type: component.objectType, key: component.objectName}});
