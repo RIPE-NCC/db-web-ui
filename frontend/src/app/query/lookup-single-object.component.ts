@@ -55,11 +55,11 @@ export class LookupSingleObjectComponent implements OnDestroy {
                             "name:", this.objectName);
                     }
                 }, (() => {
-                    this.error = "An error occurred looking for " + this.objectType + " " + this.objectName;
                     // reload page in case in query params source was NONAUTH and object doesn't exist in mirror database
                     if (this.source !== this.properties.SOURCE) {
                         this.goToLookup();
-                        this.error += " Page will load same object in RIPE source."
+                    } else {
+                        this.error = "An error occurred looking for " + this.objectType + " " + this.objectName;
                     }
                 }));
         } catch (e) {
