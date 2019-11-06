@@ -278,6 +278,7 @@
     </dependencies>
 
     <build>
+        <finalName>${artifactId}-${version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

@@ -13,7 +13,7 @@ exports.config = {
   ],
   capabilities: {
     'browserName': 'chrome',
-    'chromeOptions': {'args': ['--window-size=1690,1000', '--disable-extensions']}
+    'chromeOptions': {'args': ['--disable-extensions', '--window-size=1920,1080']}
   },
   directConnect: true,
   framework: 'jasmine',
