@@ -66,6 +66,7 @@ describe("The inetnum editor", () => {
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
         expect(page.modalBody.getText()).toContain("You have not supplied the correct password for mntner");
+        browser.wait(browser.isElementPresent(page.modalClose), 1000, "waited too long");
         page.scrollIntoView(page.modalClose);
         page.modalClose.click();
         expect(page.modal.isPresent()).toBe(false);
