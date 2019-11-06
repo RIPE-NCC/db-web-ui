@@ -51,8 +51,8 @@ describe("Modifying an organisation", () => {
             expect(page.modalEditAttrPanel2.getText()).toContain("The business structure of my organisation has changed (for example due to a merger or acquisition)");
         });
 
-        it("should open modal edit attribute on click on pen button address", () => {
-            page.scrollIntoView(page.inpAddress);
+        fit("should open modal edit attribute on click on pen button address", () => {
+            // page.scrollIntoView(page.inpAddress);
             page.btnEditAnAttribute(page.inpAddress).click();
             expect(page.modal.isPresent()).toEqual(true);
             expect(page.modalHeader.getText()).toEqual("Updating address information");

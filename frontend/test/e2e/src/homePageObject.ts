@@ -134,7 +134,6 @@ module.exports = {
     btnSubmitModify: element(by.id("btnSubmitModify")),
 
     displayPanel: element(by.css("section.inner-container")),
-    // btnModify: element(by.css("section.inner-container")).element(by.css("span[ng-show]")).element(by.css("button[ng-click]")),
     btnModify: element(by.css("section.inner-container")).element(by.css("button.ga-createobj-modifyobj")),
     btnAddAttribute: element(by.id("createForm")).element(by.css(".attr-0")).element(by.css(".fa.fa-plus")),
     allObjectRows: element(by.id("createForm")).element(by.css("section.visible-field-form")).element(by.css("ul.appeared-fields")).all(by.css("li")),

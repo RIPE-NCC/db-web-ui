@@ -56,7 +56,7 @@ describe("The inetnum editor", () => {
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeFalsy();
     });
 
-    it("should ask for authentication of parent inetnum and handle a bad password properly", () => {
+    fit("should ask for authentication of parent inetnum and handle a bad password properly", () => {
         page.selectObjectType("inetnum").click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys("213.159.160.0-213.159.190.255");
@@ -66,7 +66,6 @@ describe("The inetnum editor", () => {
         page.modalInpAssociate.click();
         page.modalBtnSubmit.click();
         expect(page.modalBody.getText()).toContain("You have not supplied the correct password for mntner");
-        browser.wait(browser.isElementPresent(page.modalClose), 1000, "waited too long");
         page.scrollIntoView(page.modalClose);
         page.modalClose.click();
         expect(page.modal.isPresent()).toBe(false);
