@@ -8,7 +8,7 @@
     "start-mock": "ng run frontend:serve-mock:local",
     "build": "ng build --configuration=production",
     "build-dev": "ng build --configuration=local",
-    "test": "ng test --configuration=local",
+    "test": "ng test --configuration=local --watch=false",
     "test-remote": "ng test --configuration=remote --watch=false",
     "lint": "ng lint",
     "e2e": "ng e2e --configuration=local",
