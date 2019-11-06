@@ -188,7 +188,6 @@
             "remote": {
               "protractorConfig": "test/e2e/protractor.remote.conf.js",
               "devServerTarget":  "frontend:serve-mock:remote"
-
             }
           }
         }
