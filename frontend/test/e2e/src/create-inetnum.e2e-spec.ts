@@ -56,7 +56,7 @@ describe("The inetnum editor", () => {
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeFalsy();
     });
 
-    fit("should ask for authentication of parent inetnum and handle a bad password properly", () => {
+    it("should ask for authentication of parent inetnum and handle a bad password properly", () => {
         page.selectObjectType("inetnum").click();
         page.btnNavigateToCreate.click();
         page.inpInetnum.sendKeys("213.159.160.0-213.159.190.255");
