@@ -76,3 +76,20 @@ deploy_prepdev:
     name: prepdev
   when: manual
 
+deploy_rc:
+  <<: *deploy_env
+  environment:
+    name: rc
+  when: manual
+
+deploy_test:
+  <<: *deploy_env
+  environment:
+    name: test
+  when: manual
+
+deploy_prod:
+  <<: *deploy_env
+  environment:
+    name: prod
+  when: manual
