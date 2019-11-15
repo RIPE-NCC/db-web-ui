@@ -41,12 +41,14 @@ export class ResourcesComponent implements OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
         this.orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
-            this.selectedOrg = selected;
-            // go back to the start "My Resources" page
-            this.refreshPage();
+            if (this.selectedOrg.orgObjectId !== selected.orgObjectId) {
+                this.selectedOrg = selected;
+                // go back to the start "My Resources" page
+                this.refreshPage();
+            }
         });
         this.subscription = this.activatedRoute.queryParams.subscribe((params => {
-            this.ngOnInit();
+            this.init();
         }));
     }
 
@@ -56,7 +58,7 @@ export class ResourcesComponent implements OnDestroy {
         }
     }
 
-    public ngOnInit() {
+    public init() {
         this.isShowingSponsored = this.activatedRoute.snapshot.queryParamMap.get("sponsored") === "true";
         this.activeSponsoredTab = this.isShowingSponsored ? 1 : 0;
 
