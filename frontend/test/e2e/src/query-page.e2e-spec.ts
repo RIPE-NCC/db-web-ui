@@ -270,6 +270,7 @@ describe("The query pagina", () => {
     it("should be able to show out of region route from ripe db without related objects", () => {
         page.inpQueryString.sendKeys("AS9777");
         page.inpShowFullDetails.click();
+        page.scrollIntoView(page.queryParamTabs.get(1));
         page.queryParamTabs.get(1).click();
         page.scrollIntoView(page.byId("search:types:2"));
         page.byId("search:types:2").click();

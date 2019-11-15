@@ -38,6 +38,15 @@
       ],
       "type": "mntner",
       "key": "EU-IBM-NIC-MNT"
+    },
+    {
+      "mine": true,
+      "auth": [
+        "MD5-PW",
+        "SSO"
+      ],
+      "type": "mntner",
+      "key": "IPACCT-MNT"
     }
   ],
   "statusCode": 200,
