@@ -31,7 +31,7 @@
             <span class="fa fa-trash"></span>
         </a>
     </li>
-    <li *ngIf="shouldShowBellIcon(attribute, objectType)">
+    <li *ngIf="shouldShowBellIcon(attribute)">
         <a class="btn btn-default ga-add-dup"
            title="Create new role to use as abuse-c"
            (click)="createRoleForAbuseCAttribute()">

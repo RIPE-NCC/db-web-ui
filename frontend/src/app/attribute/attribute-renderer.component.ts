@@ -115,8 +115,8 @@ export class AttributeRendererComponent {
     }
 
     // Should show bell icon for abuse-c in case value is not specified and objectType is organisation
-    public shouldShowBellIcon(attribute: IAttributeModel, objectType: string) {
-        return attribute.name === "abuse-c" && !attribute.value && objectType === "organisation";
+    public shouldShowBellIcon(attribute: IAttributeModel) {
+        return attribute.name === "abuse-c" && !attribute.value;
     }
 
     // Same like in createModify

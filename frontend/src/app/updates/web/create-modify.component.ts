@@ -226,8 +226,8 @@ export class CreateModifyComponent {
      * Methods called from the html-template
      */
     // Should show bell icon for abuse-c in case value is not specified and objectType is organisation
-    public shouldShowBellIcon(attribute: any, objectType: string) {
-        return attribute.name === "abuse-c" && !attribute.value && objectType === "organisation";
+    public shouldShowBellIcon(attribute: any) {
+        return attribute.name === "abuse-c" && !attribute.value;
     }
 
     public createRoleForAbuseCAttribute(abuseAttr: any) {
