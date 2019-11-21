@@ -204,7 +204,7 @@ export class CreateModifyComponent {
 
         // first check if the user needs some auth...
         if (parent && parent.attributes) {
-            const parentObject = this.whoisResourcesService.wrapAttributes(parent.attributes.attribute);
+            const parentObject = this.whoisResourcesService.validateAttributes(parent.attributes.attribute);
             this.restCallInProgress = true;
             this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.maintainers.sso, this.operation, this.source, this.objectType, this.name)
                 .then(() => {
@@ -245,7 +245,8 @@ export class CreateModifyComponent {
         modalRef.componentInstance.inputData = inputData;
         modalRef.result.then((roleAttrs: any) => {
             this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes("role", roleAttrs);
-            this.attributes.setSingleAttributeOnName("abuse-c", this.roleForAbuseC.getSingleAttributeOnName("nic-hdl").value);
+            const nicHdl =  this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, "nic-hdl").value;
+            this.attributes = this.whoisResourcesService.setSingleAttributeOnName(this.attributes, "abuse-c", nicHdl);
             abuseAttr.$$success = "Role object for abuse-c successfully created";
         }, (error: any) => {
             if (error !== "cancel") { // dismissing modal will hit this function with the string "cancel" in error arg
@@ -466,13 +467,8 @@ export class CreateModifyComponent {
         return _.trim(input).toUpperCase();
     }
 
-    // should be private
-    public hasMntners() {
-        return this.maintainers.object.length > 0;
-    }
-
     public canAttributeBeDuplicated(attr: IAttributeModel) {
-        return this.attributes.canAttributeBeDuplicated(attr) && !attr.$$meta.$$isLir && !attr.$$meta.$$disable;
+        return this.whoisResourcesService.canAttributeBeDuplicated(attr) && !attr.$$meta.$$isLir && !attr.$$meta.$$disable;
     }
 
     public duplicateAttribute(attr: IAttributeModel) {
@@ -499,15 +495,15 @@ export class CreateModifyComponent {
     }
 
     public canAttributeBeRemoved(attr: any) {
-        return this.attributes.canAttributeBeRemoved(attr) && !attr.$$meta.$$isLir && !attr.$$meta.$$disable;
+        return this.whoisResourcesService.canAttributeBeRemoved(this.attributes, attr) && !attr.$$meta.$$isLir && !attr.$$meta.$$disable;
     }
 
     public removeAttribute(attr: any) {
-        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes.removeAttribute(attr));
+        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.whoisResourcesService.removeAttribute(this.attributes, attr));
     }
 
     public displayAddAttributeDialog(attr: any) {
-        let originalAddableAttributes = this.attributes.getAddableAttributes(this.objectType, this.attributes);
+        let originalAddableAttributes = this.whoisResourcesService.getAddableAttributes(this.attributes, this.objectType, this.attributes);
         originalAddableAttributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, originalAddableAttributes);
 
         const addableAttributes = _.filter(
@@ -534,8 +530,8 @@ export class CreateModifyComponent {
         }, (error) => console.log("openEditAttributeModal completed with:", error));
     }
 
-    public addSelectedAttribute(selectedAttributeType: string, attr: IAttributeModel) {
-        const attrs = this.attributes.addAttributeAfter(selectedAttributeType, attr);
+    public addSelectedAttribute(selectedAttributeType: IAttributeModel, attr: IAttributeModel) {
+        const attrs = this.whoisResourcesService.addAttributeAfter(this.attributes, selectedAttributeType, attr);
         this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, attrs);
     }
 
@@ -565,22 +561,21 @@ export class CreateModifyComponent {
 
     public submit() {
 
-        const onSubmitSuccess = (resp: any) => {
+        const onSubmitSuccess = (whoisResources: any) => {
             this.restCallInProgress = false;
 
-            const whoisResources = resp;
-
             // Post-process attribute after submit-success using screen-logic-interceptor
-            if (this.interceptOnSubmitSuccess(this.operation, whoisResources.getAttributes()) === false) {
+            if (this.interceptOnSubmitSuccess(this.operation, this.whoisResourcesService.getAttributes(whoisResources)) === false) {
 
                 // It's ok to just let it happen or fail.
                 this.organisationHelperService.updateAbuseC(this.source, this.objectType, this.roleForAbuseC, this.attributes);
 
+                const primaryKey = this.whoisResourcesService.getPrimaryKey(whoisResources);
                 // stick created object in temporary store, so display-screen can fetch it from here
-                this.messageStoreService.add(whoisResources.getPrimaryKey(), whoisResources);
+                this.messageStoreService.add(primaryKey, whoisResources);
 
                 // make transition to next display screen
-                this.webUpdatesCommonsService.navigateToDisplay(this.source.toUpperCase(), this.objectType, whoisResources.getPrimaryKey(), this.operation);
+                this.webUpdatesCommonsService.navigateToDisplay(this.source.toUpperCase(), this.objectType, primaryKey, this.operation);
             }
         };
 
@@ -592,7 +587,7 @@ export class CreateModifyComponent {
             const infoMessages: string[] = [];
 
             this.restCallInProgress = false;
-            this.attributes = whoisResources.getAttributes();
+            this.attributes = this.whoisResourcesService.getAttributes(whoisResources);
 
             // This interceptor allows us to convert error into success
             // This could change in the future
@@ -605,7 +600,8 @@ export class CreateModifyComponent {
             if (intercepted) {
                 this.loadAlerts(errorMessages, warningMessages, infoMessages);
                 /* Instruct downstream screen (typically display screen) that object is in pending state */
-                this.webUpdatesCommonsService.navigateToDisplay(this.source, this.objectType, whoisResources.getPrimaryKey(), this.PENDING_OPERATION);
+                this.webUpdatesCommonsService.navigateToDisplay(this.source, this.objectType,
+                    this.whoisResourcesService.getPrimaryKey(whoisResources), this.PENDING_OPERATION);
             } else {
                 this.validateForm();
                 const firstErr = this.alertService.populateFieldSpecificErrors(this.objectType, this.attributes, whoisResources);
@@ -720,7 +716,7 @@ export class CreateModifyComponent {
 
 
     public isFormValid() {
-        return !this.inetnumParentAuthError && this.attributes.validateWithoutSettingErrors();
+        return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
     }
 
     public setVisibilityAttrsHelp(attributeName: string) {
@@ -764,7 +760,7 @@ export class CreateModifyComponent {
                     });
 
                     attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType,
-                        this.attributes.addAttrsSorted("mnt-by", mntnerAttrs));
+                        this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", mntnerAttrs));
 
                     // Post-process atttributes before showing using screen-logic-interceptor
                     this.attributes = this.interceptBeforeEdit(this.CREATE_OPERATION, attributes);
@@ -859,7 +855,7 @@ export class CreateModifyComponent {
                 console.debug("maintainers.sso:" + JSON.stringify(this.maintainers.sso));
 
                 // store object to modify
-                this.attributes = objectToModifyResponse.getAttributes();
+                this.attributes = this.whoisResourcesService.getAttributes(objectToModifyResponse);
                 this.attributeMetadataService.enrich(this.objectType, this.attributes);
 
                 // Create empty attribute with warning for each missing mandatory attribute
@@ -869,7 +865,7 @@ export class CreateModifyComponent {
                 this.messageStoreService.add("DIFF", _.cloneDeep(this.attributes));
 
                 // prevent warning upon modify with last-modified
-                this.attributes.removeAttributeWithName("last-modified");
+                this.whoisResourcesService.removeAttributeWithName(this.attributes, "last-modified");
 
                 // this is where we must authenticate against
                 this.maintainers.objectOriginal = this.extractEnrichMntnersFromObject(this.attributes);
@@ -923,18 +919,18 @@ export class CreateModifyComponent {
     }
 
     private insertMissingMandatoryAttributes() {
-        const missingMandatories = this.attributes.getMissingMandatoryAttributes(this.objectType);
+        const missingMandatories = this.whoisResourcesService.getMissingMandatoryAttributes(this.attributes, this.objectType);
         if (missingMandatories.length > 0) {
             _.each(missingMandatories, (item) => {
                 this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType,
-                    this.attributes.addMissingMandatoryAttribute(this.objectType, item));
+                    this.whoisResourcesService.addMissingMandatoryAttribute(this.attributes, this.objectType, item));
             });
             this.validateForm();
         }
     }
 
     private copyAddedMntnerToAttributes(mntnerName: string) {
-        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes.addAttrsSorted("mnt-by", [
+        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.whoisResourcesService.addAttrsSorted(this.attributes, "mnt-by", [
             {name: "mnt-by", value: mntnerName},
         ]));
     }
@@ -981,7 +977,8 @@ export class CreateModifyComponent {
     }
 
     private validateForm() {
-        return this.attributes.validate() && this.organisationHelperService.validateAbuseC(this.objectType, this.attributes);
+        return this.whoisResourcesService.validate(this.attributes)
+            && this.organisationHelperService.validateAbuseC(this.objectType, this.attributes);
     }
 
     private hasErrors() {
@@ -989,13 +986,13 @@ export class CreateModifyComponent {
     }
 
     private stripNulls() {
-        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.attributes.removeNullAttributes());
+        this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType, this.whoisResourcesService.removeNullAttributes(this.attributes));
     }
 
     private wrapAndEnrichResources(objectType: string, resp: any) {
-        const whoisResources = this.whoisResourcesService.wrapWhoisResources(resp);
+        const whoisResources = this.whoisResourcesService.validateWhoisResources(resp);
         if (whoisResources) {
-            this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
+            this.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(objectType, this.whoisResourcesService.getAttributes(whoisResources));
         }
         return whoisResources;
     }
@@ -1029,7 +1026,7 @@ export class CreateModifyComponent {
                     .subscribe((result: any) => {
                             this.restCallInProgress = false;
 
-                            this.attributes = result.getAttributes();
+                            this.attributes = this.whoisResourcesService.getAttributes(result);
 
                             // save object for later diff in display-screen
                             this.messageStoreService.add("DIFF", _.cloneDeep(this.attributes));

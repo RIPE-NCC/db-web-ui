@@ -43,14 +43,14 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
     });
 
     it("should set default nic-ndl before-edit person on Create operation", () => {
-        const before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("person"));
+        const before = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("person"));
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "person", before, errors, warnings, infos);
 
-        const nicHdle = after.getAllAttributesOnName("nic-hdl");
+        const nicHdle = whoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual("nic-hdl");
         expect(nicHdle[0].value).toEqual("AUTO-1");
@@ -58,14 +58,14 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
 
     it("should NOT set default nic-ndl before-edit person on Modify operation", () => {
         let personSubject = _wrap("person", personAttributes);
-        personSubject.setSingleAttributeOnName("nic-hdl", "SOME_NIC");
+        whoisResourcesService.setSingleAttributeOnName(personSubject, "nic-hdl", "SOME_NIC");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "person", personSubject, errors, warnings, infos);
 
-        const nicHdle = after.getAllAttributesOnName("nic-hdl");
+        const nicHdle = whoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual("nic-hdl");
         expect(nicHdle[0].value).toEqual("SOME_NIC");
@@ -73,14 +73,14 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
     });
 
     it("should set default nic-ndl before-edit role on Create operation", () => {
-        const before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("role"));
+        const before = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("role"));
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "role", before, errors, warnings, infos);
 
-        const nicHdle = after.getAllAttributesOnName("nic-hdl");
+        const nicHdle = whoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual("nic-hdl");
         expect(nicHdle[0].value).toEqual("AUTO-1");
@@ -89,14 +89,14 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
 
     it("should NOT set default nic-ndl before-edit role on Modify operation", () => {
         const roleSubject = _wrap("person", roleAttributes);
-        roleSubject.setSingleAttributeOnName("nic-hdl", "SOME_NIC");
+        whoisResourcesService.setSingleAttributeOnName(roleSubject, "nic-hdl", "SOME_NIC");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "person", roleSubject, errors, warnings, infos);
 
-        const nicHdle = after.getAllAttributesOnName("nic-hdl");
+        const nicHdle = whoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual("nic-hdl");
         expect(nicHdle[0].value).toEqual("SOME_NIC");

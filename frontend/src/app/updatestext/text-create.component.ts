@@ -122,7 +122,7 @@ export class TextCreateComponent {
                         if (result && result.objects && _.isArray(result.objects.object)) {
                             parent = result.objects.object[0];
                             if (parent.attributes && _.isArray(parent.attributes.attribute)) {
-                                const parentObject = this.whoisResourcesService.wrapAttributes(parent.attributes.attribute);
+                                const parentObject = parent.attributes.attribute;
                                 this.mntnerService.getAuthForObjectIfNeeded(parentObject, this.mntners.sso, "Modify", sourceAttr.value.trim(), inetnumAttr.name, this.name)
                                     .then(() => {
                                         this.doCreate(attributes, inetnumAttr.name);
@@ -220,7 +220,7 @@ export class TextCreateComponent {
         const mntnersAsAttrs = _.map(mntners, (item: any) => {
             return {name: "mnt-by", value: item.key};
         });
-        const attrsWithMntners = attributes.addAttrsSorted("mnt-by", mntnersAsAttrs);
+        const attrsWithMntners = this.whoisResourcesService.addAttrsSorted(attributes, "mnt-by", mntnersAsAttrs);
 
         // strip mnt-by without value from attributes
         return _.filter(attrsWithMntners, (item: any) => {
@@ -234,17 +234,18 @@ export class TextCreateComponent {
         // rest-POST to server
         this.restCallInProgress = true;
         this.restService.createObject(this.object.source, objectType, this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), combinedPaswords, this.override, true)
-            .subscribe((result: any) => {
+            .subscribe((whoisResources: any) => {
                 this.restCallInProgress = false;
-                const whoisResources = result;
-                this.messageStoreService.add(whoisResources.getPrimaryKey(), whoisResources);
-                this.textCommonsService.navigateToDisplayPage(this.object.source, objectType, whoisResources.getPrimaryKey(), "Create");
+                const primaryKey = this.whoisResourcesService.getPrimaryKey(whoisResources);
+                this.messageStoreService.add(primaryKey, whoisResources);
+                this.textCommonsService.navigateToDisplayPage(this.object.source, objectType, primaryKey, "Create");
             }, (error: any) => {
                 this.restCallInProgress = false;
                 const whoisResources = error.data;
                 this.alertService.setAllErrors(whoisResources);
-                if (!_.isEmpty(whoisResources.getAttributes())) {
-                    this.errorReporterService.log("TextCreate", objectType, this.alertService.getErrors(), whoisResources.getAttributes());
+                const attributes = this.whoisResourcesService.getAttributes(whoisResources);
+                if (!_.isEmpty(attributes)) {
+                    this.errorReporterService.log("TextCreate", objectType, this.alertService.getErrors(), attributes);
                 }
             },
         );

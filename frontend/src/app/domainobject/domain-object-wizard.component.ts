@@ -277,7 +277,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     private createDomainsFailed(response: any) {
         this.restCallInProgress = false;
         this.errors = _.filter(response.error.errormessages.errormessage, (errorMessage: any) => {
-            errorMessage.plainText = this.whoisResourcesServices.readableError(response.error)(errorMessage);
+            errorMessage.plainText = this.whoisResourcesServices.readableError(response.error, errorMessage);
             return errorMessage.severity === "Error";
         });
 

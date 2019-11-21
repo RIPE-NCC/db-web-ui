@@ -23,18 +23,18 @@ export class TextCommonsService {
                 private mntnerService: MntnerService,
                 private modalService: NgbModal) {
     }
-    // TODO CHANGE ANY INTO IAttributeModel[]
-    public enrichWithDefaults(objectSource: string, objectType: string, attributes: any) {
+
+    public enrichWithDefaults(objectSource: string, objectType: string, attributes: IAttributeModel[]) {
         // This does only add value if attribute exist
-        attributes.setSingleAttributeOnName("source", objectSource);
-        attributes.setSingleAttributeOnName("nic-hdl", "AUTO-1");
-        attributes.setSingleAttributeOnName("organisation", "AUTO-1");
-        attributes.setSingleAttributeOnName("org-type", "OTHER"); // other org-types only settable with override
+        this.whoisResourcesService.setSingleAttributeOnName(attributes, "source", objectSource);
+        this.whoisResourcesService.setSingleAttributeOnName(attributes, "nic-hdl", "AUTO-1");
+        this.whoisResourcesService.setSingleAttributeOnName(attributes, "organisation", "AUTO-1");
+        this.whoisResourcesService.setSingleAttributeOnName(attributes, "org-type", "OTHER"); // other org-types only settable with override
 
         // Remove unneeded optional attrs
-        attributes.removeAttributeWithName("created");
-        attributes.removeAttributeWithName("last-modified");
-        attributes.removeAttributeWithName("changed");
+        this.whoisResourcesService.removeAttributeWithName(attributes, "created");
+        this.whoisResourcesService.removeAttributeWithName(attributes, "last-modified");
+        this.whoisResourcesService.removeAttributeWithName(attributes, "changed");
     }
 
     public validate(objectType: string, attributes: IAttributeModel[], errors?: any) {
@@ -70,7 +70,7 @@ export class TextCommonsService {
         });
 
         const enrichedAttributes = this.whoisResourcesService.wrapAndEnrichAttributes(objectType, attributes);
-        if (!enrichedAttributes.validate()) {
+        if (!this.whoisResourcesService.validate(enrichedAttributes)) {
             _.each(enrichedAttributes, (item) => {
                 if (item.$$error) {
                     // Note: keep it lower-case to be consistent with server-side error reports
@@ -113,7 +113,7 @@ export class TextCommonsService {
     }
 
     public stripEmptyAttributes(attributes: any) {
-        return attributes.removeNullAttributes();
+        return this.whoisResourcesService.removeNullAttributes(attributes);
     }
 
     public navigateToDisplayPage(source: string, objectType: string, objectName: string, operation: string) {
@@ -125,7 +125,7 @@ export class TextCommonsService {
     }
 
     public uncapitalize(attributes: IAttributeModel[]) {
-        return this.whoisResourcesService.wrapAttributes(
+        return this.whoisResourcesService.validateAttributes(
             _.map(attributes, (attr) => {
                 attr.name = attr.name.toLowerCase();
                 return attr;
@@ -200,7 +200,7 @@ export class TextCommonsService {
     }
 
     private _getObjectMntners(attributes: any) {
-        return _.map(attributes.getAllAttributesWithValueOnName("mnt-by"), (objMntner: any) => {
+        return _.map(this.whoisResourcesService.getAllAttributesWithValueOnName(attributes, "mnt-by"), (objMntner: any) => {
             // Notes:
             // - RPSL attribute values can contain leading and trailing spaces, so the must be trimmed
             // - Assume maintainers have md5-password, so prevent unmodifyable error

@@ -135,9 +135,9 @@ describe("CreateModifyComponent", () => {
         it("should populate the ui based on object-type meta model and source", () => {
             const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName")
 
-            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toBeUndefined();
-            expect(component.attributes.getAllAttributesWithValueOnName("mnt-by")[0].value).toEqual("TEST-MNT");
-            expect(component.attributes.getSingleAttributeOnName("source").value).toEqual("RIPE");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toBeUndefined();
+            expect(component.whoisResourcesService.getAllAttributesWithValueOnName(component.attributes, "mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual("RIPE");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
         });
@@ -147,10 +147,10 @@ describe("CreateModifyComponent", () => {
             const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName");
 
             component.submit();
-            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toEqual("Mandatory attribute not set");
-            expect(component.attributes.getSingleAttributeOnName("as-block").value).toEqual("");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toEqual("");
 
-            expect(component.attributes.getSingleAttributeOnName("source").value).toEqual("RIPE");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual("RIPE");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
 
@@ -175,18 +175,18 @@ describe("CreateModifyComponent", () => {
             };
 
             component.credentialsService.setCredentials("TEST-MNT", "@123");
-            component.attributes.setSingleAttributeOnName("as-block", "A");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "A");
             component.submit();
 
             httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block?password=@123"}).flush(DUMMY_RESPONSE);
             fixture.detectChanges();
 
             const resp = component.messageStoreService.get("MY-AS-BLOCK");
-            expect(resp.getPrimaryKey()).toEqual("MY-AS-BLOCK");
-            const attrs = component.whoisResourcesService.wrapAttributes(resp.getAttributes());
-            expect(attrs.getSingleAttributeOnName("as-block").value).toEqual("MY-AS-BLOCK");
-            expect(attrs.getAllAttributesOnName("mnt-by")[0].value).toEqual("TEST-MNT");
-            expect(attrs.getSingleAttributeOnName("source").value).toEqual("RIPE");
+            expect(component.whoisResourcesService.getPrimaryKey(resp)).toEqual("MY-AS-BLOCK");
+            const attrs = component.whoisResourcesService.validateAttributes(component.whoisResourcesService.getAttributes(resp));
+            expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "as-block").value).toEqual("MY-AS-BLOCK");
+            expect(component.whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "source").value).toEqual("RIPE");
 
             await fixture.whenStable();
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/as-block/MY-AS-BLOCK?method=Create");
@@ -196,7 +196,7 @@ describe("CreateModifyComponent", () => {
         it("should handle error post upon submit click when form is complete", async () => {
             const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName");
 
-            component.attributes.setSingleAttributeOnName("as-block", "A");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "A");
             component.submit();
 
             httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block"}).flush(WHOIS_OBJECT_WITH_ERRORS_MOCK, {status: 400, statusText: "error"});
@@ -204,13 +204,13 @@ describe("CreateModifyComponent", () => {
 
             expect(component.alertService.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
             expect(component.alertService.warnings[0].plainText).toEqual("Not authenticated");
-            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toEqual("\'MY-AS-BLOCK\' is not valid for this object type");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("\'MY-AS-BLOCK\' is not valid for this object type");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
         });
 
         it("should reload defaults after error", async () => {
-            component.attributes.setSingleAttributeOnName("as-block", "A");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "A");
             component.submit();
 
             httpMock.expectOne({method: "POST", url: "api/whois/RIPE/as-block"}).flush(WHOIS_OBJECT_WITH_ERRORS_MOCK, {status: 400, statusText: "error"});
@@ -218,9 +218,9 @@ describe("CreateModifyComponent", () => {
 
             expect(component.alertService.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
             expect(component.alertService.warnings[0].plainText).toEqual("Not authenticated");
-            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toEqual("\'MY-AS-BLOCK\' is not valid for this object type");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("\'MY-AS-BLOCK\' is not valid for this object type");
 
-            expect(component.attributes.getSingleAttributeOnName("source").$$meta.$$disable).toEqual(true);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").$$meta.$$disable).toEqual(true);
         });
 
 
@@ -285,7 +285,7 @@ describe("CreateModifyComponent", () => {
                     ]
                 }
             };
-            component.attributes.setSingleAttributeOnName("as-block", "MY-AS-BLOCK");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "MY-AS-BLOCK");
             component.maintainers.object = [
                 {"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"},
                 {"mine":false,"type":"mntner","auth":["SSO"],"key":"TEST-MNT-1"}
@@ -343,8 +343,8 @@ describe("CreateModifyComponent", () => {
                     ]
                 }
             };
-            component.attributes.setSingleAttributeOnName("as-block", "MY-AS-BLOCK");
-            component.attributes.addAttrsSorted("mnt-by", ["TEST-MNT-1"]);
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "MY-AS-BLOCK");
+            component.whoisResourcesService.addAttrsSorted(component.attributes, "mnt-by", [{name: "TEST-MNT-1"}]);
 
             component.maintainers.object = [
                 {"mine":true,"type":"mntner","auth":["SSO"],"key":"TEST-MNT"},
@@ -367,7 +367,7 @@ describe("CreateModifyComponent", () => {
 
             component.onMntnerRemoved(component.maintainers.object[0]);
 
-            expect(component.attributes.getSingleAttributeOnName("mnt-by").value).toEqual("");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "mnt-by").value).toEqual("");
 
         });
 
@@ -454,11 +454,11 @@ describe("CreateModifyComponent", () => {
                             args: [{value: "route"}, {value: "193.0.7.231/32AS1299"}]
                         }
                     ]}};
-            component.attributes.setSingleAttributeOnName("route", "193.0.7.231/32");
-            component.attributes.setSingleAttributeOnName("descr", "My descr");
-            component.attributes.setSingleAttributeOnName("origin", "AS1299");
-            component.attributes.setSingleAttributeOnName("mnt-by", "RIPE-NCC-MNT");
-            component.attributes.setSingleAttributeOnName("source", "RIPE");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "route", "193.0.7.231/32");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "descr", "My descr");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "origin", "AS1299");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "mnt-by", "RIPE-NCC-MNT");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "source", "RIPE");
 
             component.submit();
 
@@ -467,13 +467,13 @@ describe("CreateModifyComponent", () => {
 
             const resp = component.messageStoreService.get("193.0.7.231/32AS1299");
 
-            expect(resp.getPrimaryKey()).toEqual("193.0.7.231/32AS1299");
-            let attrs = component.whoisResourcesService.wrapAttributes(resp.getAttributes());
-            expect(attrs.getSingleAttributeOnName("route").value).toEqual("193.0.7.231/32");
-            expect(attrs.getSingleAttributeOnName("origin").value).toEqual("AS1299");
-            expect(attrs.getSingleAttributeOnName("descr").value).toEqual("My descr");
-            expect(attrs.getAllAttributesOnName("mnt-by")[0].value).toEqual("RIPE-NCC-MNT");
-            expect(attrs.getSingleAttributeOnName("source").value).toEqual("RIPE");
+            expect(component.whoisResourcesService.getPrimaryKey(resp)).toEqual("193.0.7.231/32AS1299");
+            let attrs = component.whoisResourcesService.getAttributes(resp);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "route").value).toEqual("193.0.7.231/32");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "origin").value).toEqual("AS1299");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "descr").value).toEqual("My descr");
+            expect(component.whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("RIPE-NCC-MNT");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "source").value).toEqual("RIPE");
             expect(resp.errormessages.errormessage[0].severity).toEqual("Info");
             expect(resp.errormessages.errormessage[0].text).toEqual(
                 "Your object is still pending authorisation by a maintainer of the <strong>aut-num</strong> object " +

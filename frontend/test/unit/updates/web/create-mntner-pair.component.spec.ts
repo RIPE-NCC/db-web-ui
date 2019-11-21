@@ -110,10 +110,10 @@ describe("CreateMntnerPairComponent", () => {
 
             component.submit();
 
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("person").$$error).toEqual("Mandatory attribute not set");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("address").$$error).toEqual("Mandatory attribute not set");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("phone").$$error).toEqual("Mandatory attribute not set");
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "person").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "address").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "phone").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").$$error).toEqual("Mandatory attribute not set");
 
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(routerMock.navigate).not.toHaveBeenCalled();
@@ -126,40 +126,40 @@ describe("CreateMntnerPairComponent", () => {
             component.submit();
             await fixture.whenStable();
 
-            component.objectTypeAttributes.setSingleAttributeOnName("person", PERSON_NAME);
-            component.objectTypeAttributes.setSingleAttributeOnName("phone", "+316");
-            component.objectTypeAttributes.setSingleAttributeOnName("address", "home");
-            component.mntnerAttributes.setSingleAttributeOnName("mntner", MNTNER_NAME);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "person", PERSON_NAME);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "phone", "+316");
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "address", "home");
+            component.whoisResourcesService.setSingleAttributeOnName(component.mntnerAttributes, "mntner", MNTNER_NAME);
 
             component.submit();
             fixture.detectChanges();
 
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("person").value).toBe(PERSON_NAME);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("phone").value).toBe("+316");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("address").value).toBe("home");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("nic-hdl").value).toEqual("AUTO-1");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER_NAME);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes,"person").value).toBe(PERSON_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes,"phone").value).toBe("+316");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes,"address").value).toBe("home");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes,"nic-hdl").value).toEqual("AUTO-1");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes,"mnt-by").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes,"source").value).toEqual(SOURCE);
 
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").value).toEqual(MNTNER_NAME);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("admin-c").value).toEqual("AUTO-1");
-            expect(component.mntnerAttributes.getSingleAttributeOnName("auth").value).toEqual("SSO " + SSO_EMAIL);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("upd-to").value).toEqual(SSO_EMAIL);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER_NAME);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "admin-c").value).toEqual("AUTO-1");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "auth").value).toEqual("SSO " + SSO_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "upd-to").value).toEqual(SSO_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mnt-by").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "source").value).toEqual(SOURCE);
 
             httpMock.expectOne({method: "POST", url: "api/whois-internal/api/mntner-pair/RIPE/person"})
-                .flush(component.whoisResourcesService.wrapWhoisResources(PERSON_MNTNER_PAIR_DUMMY));
+                .flush(component.whoisResourcesService.validateWhoisResources(PERSON_MNTNER_PAIR_DUMMY));
             await fixture.whenStable();
 
-            const cachedPerson = component.whoisResourcesService.wrapWhoisResources(component.messageStoreService.get(PERSON_UID));
-            const personAttrs = component.whoisResourcesService.wrapAttributes(cachedPerson.getAttributes());
-            expect(personAttrs.getSingleAttributeOnName("person").value).toEqual(PERSON_NAME);
-            expect(personAttrs.getSingleAttributeOnName("nic-hdl").value).toEqual(PERSON_UID);
+            const cachedPerson = component.whoisResourcesService.validateWhoisResources(component.messageStoreService.get(PERSON_UID));
+            const personAttrs = component.whoisResourcesService.getAttributes(cachedPerson);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(personAttrs, "person").value).toEqual(PERSON_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(personAttrs, "nic-hdl").value).toEqual(PERSON_UID);
 
-            const cachedMntner = component.whoisResourcesService.wrapWhoisResources(component.messageStoreService.get(MNTNER_NAME));
-            const mntnerAttrs = component.whoisResourcesService.wrapAttributes(cachedMntner.getAttributes());
-            expect(mntnerAttrs.getSingleAttributeOnName("mntner").value).toEqual(MNTNER_NAME);
+            const cachedMntner = component.messageStoreService.get(MNTNER_NAME);
+            const mntnerAttrs = component.whoisResourcesService.getAttributes(cachedMntner);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(mntnerAttrs, "mntner").value).toEqual(MNTNER_NAME);
 
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/person/tt-ripe/mntner/aardvark-mnt");
         });
@@ -171,27 +171,27 @@ describe("CreateMntnerPairComponent", () => {
             component.submit();
             await fixture.whenStable();
 
-            component.objectTypeAttributes.setSingleAttributeOnName("person", "Titus Tester");
-            component.objectTypeAttributes.setSingleAttributeOnName("phone", "+316");
-            component.objectTypeAttributes.setSingleAttributeOnName("address", "home");
-            component.mntnerAttributes.setSingleAttributeOnName("mntner", MNTNER_NAME);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "person", "Titus Tester");
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "phone", "+316");
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "address", "home");
+            component.whoisResourcesService.setSingleAttributeOnName(component.mntnerAttributes, "mntner", MNTNER_NAME);
 
             component.submit();
 
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("person").value).toBe(PERSON_NAME);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("nic-hdl").value).toEqual("AUTO-1");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER_NAME);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "person").value).toBe(PERSON_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "nic-hdl").value).toEqual("AUTO-1");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "mnt-by").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "source").value).toEqual(SOURCE);
 
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").value).toEqual(MNTNER_NAME);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("auth").value).toEqual("SSO " + SSO_EMAIL);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("admin-c").value).toEqual("AUTO-1");
-            expect(component.mntnerAttributes.getSingleAttributeOnName("upd-to").value).toEqual(SSO_EMAIL);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER_NAME);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "auth").value).toEqual("SSO " + SSO_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "admin-c").value).toEqual("AUTO-1");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "upd-to").value).toEqual(SSO_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mnt-by").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "source").value).toEqual(SOURCE);
 
             httpMock.expectOne({method: "POST", url: "api/whois-internal/api/mntner-pair/" + SOURCE + "/person"})
-                .flush(component.whoisResourcesService.wrapWhoisResources(WHOIS_OBJECT_WITHE_ERRORS_DUMMY), {
+                .flush(component.whoisResourcesService.validateWhoisResources(WHOIS_OBJECT_WITHE_ERRORS_DUMMY), {
                     status: 400,
                     statusText: "error"
                 });
@@ -200,7 +200,7 @@ describe("CreateMntnerPairComponent", () => {
 
             expect(component.alertService.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
             expect(component.alertService.getWarnings()[0].plainText).toEqual("Not authenticated");
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").$$error).toEqual(`"${MNTNER_NAME}" is not valid for this object type`);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").$$error).toEqual(`"${MNTNER_NAME}" is not valid for this object type`);
         });
     });
 
@@ -280,10 +280,10 @@ describe("CreateMntnerPairComponent", () => {
 
             component.submit();
 
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("role").$$error).toEqual("Mandatory attribute not set");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("address").$$error).toEqual("Mandatory attribute not set");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("e-mail").$$error).toEqual("Mandatory attribute not set");
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "role").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "address").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "e-mail").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").$$error).toEqual("Mandatory attribute not set");
 
             expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
             expect(routerMock.navigate).not.toHaveBeenCalled();
@@ -296,40 +296,40 @@ describe("CreateMntnerPairComponent", () => {
             component.submit();
             await fixture.whenStable();
 
-            component.objectTypeAttributes.setSingleAttributeOnName("role", ROLE_NAME);
-            component.objectTypeAttributes.setSingleAttributeOnName("e-mail", ROLE_EMAIL);
-            component.objectTypeAttributes.setSingleAttributeOnName("address", "Amsterdam");
-            component.mntnerAttributes.setSingleAttributeOnName("mntner", MNTNER_NAME);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "role", ROLE_NAME);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "e-mail", ROLE_EMAIL);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "address", "Amsterdam");
+            component.whoisResourcesService.setSingleAttributeOnName(component.mntnerAttributes, "mntner", MNTNER_NAME);
 
             component.submit();
             await fixture.detectChanges();
 
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("role").value).toBe(ROLE_NAME);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("e-mail").value).toBe(ROLE_EMAIL);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("address").value).toBe("Amsterdam");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("nic-hdl").value).toEqual("AUTO-1");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER_NAME);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "role").value).toBe(ROLE_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "e-mail").value).toBe(ROLE_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "address").value).toBe("Amsterdam");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "nic-hdl").value).toEqual("AUTO-1");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "mnt-by").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "source").value).toEqual(SOURCE);
 
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").value).toEqual(MNTNER_NAME);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("admin-c").value).toEqual("AUTO-1");
-            expect(component.mntnerAttributes.getSingleAttributeOnName("auth").value).toEqual("SSO " + SSO_EMAIL);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("upd-to").value).toEqual(SSO_EMAIL);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER_NAME);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "admin-c").value).toEqual("AUTO-1");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "auth").value).toEqual("SSO " + SSO_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "upd-to").value).toEqual(SSO_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mnt-by").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "source").value).toEqual(SOURCE);
 
             httpMock.expectOne({method: "POST", url: "api/whois-internal/api/mntner-pair/RIPE/role"})
-                .flush(component.whoisResourcesService.wrapWhoisResources(ROLE_MNTNER_PAIR_DUMMY));
+                .flush(component.whoisResourcesService.validateWhoisResources(ROLE_MNTNER_PAIR_DUMMY));
             await fixture.whenStable();
 
-            const cachedPerson = component.whoisResourcesService.wrapWhoisResources(component.messageStoreService.get("RA9858-RIPE"));
-            const roleAttrs = component.whoisResourcesService.wrapAttributes(cachedPerson.getAttributes());
-            expect(roleAttrs.getSingleAttributeOnName("role").value).toEqual(ROLE_NAME);
-            expect(roleAttrs.getSingleAttributeOnName("nic-hdl").value).toEqual("RA9858-RIPE");
+            const cachedPerson = component.messageStoreService.get("RA9858-RIPE");
+            const roleAttrs = component.whoisResourcesService.getAttributes(cachedPerson);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(roleAttrs, "role").value).toEqual(ROLE_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(roleAttrs, "nic-hdl").value).toEqual("RA9858-RIPE");
 
-            const cachedMntner = component.whoisResourcesService.wrapWhoisResources(component.messageStoreService.get(MNTNER_NAME));
-            const mntnerAttrs = component.whoisResourcesService.wrapAttributes(cachedMntner.getAttributes());
-            expect(mntnerAttrs.getSingleAttributeOnName("mntner").value).toEqual(MNTNER_NAME);
+            const cachedMntner = component.messageStoreService.get(MNTNER_NAME);
+            const mntnerAttrs = component.whoisResourcesService.getAttributes(cachedMntner);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(mntnerAttrs, "mntner").value).toEqual(MNTNER_NAME);
 
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/role/RA9858-RIPE/mntner/aardvark-mnt");
         });
@@ -341,27 +341,27 @@ describe("CreateMntnerPairComponent", () => {
             component.submit();
             await fixture.whenStable();
 
-            component.objectTypeAttributes.setSingleAttributeOnName("role", ROLE_NAME);
-            component.objectTypeAttributes.setSingleAttributeOnName("e-mail", ROLE_EMAIL);
-            component.objectTypeAttributes.setSingleAttributeOnName("address", "Amsterdam");
-            component.mntnerAttributes.setSingleAttributeOnName("mntner", MNTNER_NAME);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "role", ROLE_NAME);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "e-mail", ROLE_EMAIL);
+            component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "address", "Amsterdam");
+            component.whoisResourcesService.setSingleAttributeOnName(component.mntnerAttributes,"mntner", MNTNER_NAME);
 
             component.submit();
 
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("role").value).toBe(ROLE_NAME);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("nic-hdl").value).toEqual("AUTO-1");
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER_NAME);
-            expect(component.objectTypeAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "role").value).toBe(ROLE_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "nic-hdl").value).toEqual("AUTO-1");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "mnt-by").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "source").value).toEqual(SOURCE);
 
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").value).toEqual(MNTNER_NAME);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("auth").value).toEqual("SSO " + SSO_EMAIL);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("admin-c").value).toEqual("AUTO-1");
-            expect(component.mntnerAttributes.getSingleAttributeOnName("upd-to").value).toEqual(SSO_EMAIL);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER_NAME);
-            expect(component.mntnerAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "auth").value).toEqual("SSO " + SSO_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "admin-c").value).toEqual("AUTO-1");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "upd-to").value).toEqual(SSO_EMAIL);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mnt-by").value).toEqual(MNTNER_NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "source").value).toEqual(SOURCE);
 
             httpMock.expectOne({method: "POST", url: "api/whois-internal/api/mntner-pair/" + SOURCE + "/role"})
-                .flush(component.whoisResourcesService.wrapWhoisResources(WHOIS_OBJECT_WITHE_ERRORS_DUMMY), {
+                .flush(component.whoisResourcesService.validateWhoisResources(WHOIS_OBJECT_WITHE_ERRORS_DUMMY), {
                     status: 400,
                     statusText: "error"
                 });
@@ -370,7 +370,7 @@ describe("CreateMntnerPairComponent", () => {
 
             expect(component.alertService.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
             expect(component.alertService.getWarnings()[0].plainText).toEqual("Not authenticated");
-            expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").$$error).toEqual(`"${MNTNER_NAME}" is not valid for this object type`);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").$$error).toEqual(`"${MNTNER_NAME}" is not valid for this object type`);
         });
     });
 

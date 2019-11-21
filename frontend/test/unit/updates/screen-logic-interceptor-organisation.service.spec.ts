@@ -43,14 +43,14 @@ describe("ScreenLogicInterceptorService Organisation", () => {
     });
 
     it("should set default organisation before-edit organisation on Create operation", () => {
-        const before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
+        const before = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
 
-        const organisation = after.getAllAttributesOnName("organisation");
+        const organisation = whoisResourcesService.getAllAttributesOnName(after, "organisation");
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual("organisation");
         expect(organisation[0].value).toEqual("AUTO-1");
@@ -59,14 +59,14 @@ describe("ScreenLogicInterceptorService Organisation", () => {
 
     it("should NOT set default organisation before-edit organisation on Modify operation", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("organisation", "SOME_ORG");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "organisation", "SOME_ORG");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const organisation = after.getAllAttributesOnName("organisation");
+        const organisation = whoisResourcesService.getAllAttributesOnName(after, "organisation");
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual("organisation");
         expect(organisation[0].value).toEqual("SOME_ORG");
@@ -74,14 +74,14 @@ describe("ScreenLogicInterceptorService Organisation", () => {
     });
 
     it("should set default org-type before-edit organisation on Create operation", () => {
-        const before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
+        const before = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
 
-        const orgType = after.getAllAttributesOnName("org-type");
+        const orgType = whoisResourcesService.getAllAttributesOnName(after, "org-type");
         expect(orgType.length).toEqual(1);
         expect(orgType[0].name).toEqual("org-type");
         expect(orgType[0].value).toEqual("OTHER");
@@ -91,14 +91,14 @@ describe("ScreenLogicInterceptorService Organisation", () => {
 
     it("should NOT set default org-type before-edit organisation on Modify operation", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "SOME_ORG_TYPE");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "SOME_ORG_TYPE");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const orgType = after.getAllAttributesOnName("org-type");
+        const orgType = whoisResourcesService.getAllAttributesOnName(after, "org-type");
         expect(orgType.length).toEqual(1);
         expect(orgType[0].name).toEqual("org-type");
         expect(orgType[0].value).toEqual("SOME_ORG_TYPE");
@@ -107,14 +107,14 @@ describe("ScreenLogicInterceptorService Organisation", () => {
     });
 
     it("should add empty abuse-c by default organisation before-edit organisation on Create operation", () => {
-        const before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
+        const before = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
 
-        const abuseC = after.getAllAttributesOnName("abuse-c");
+        const abuseC = whoisResourcesService.getAllAttributesOnName(after, "abuse-c");
         expect(abuseC.length).toEqual(1);
         expect(abuseC[0].name).toEqual("abuse-c");
         expect(abuseC[0].value).toEqual("");
@@ -129,11 +129,11 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const abuseC = after.getAllAttributesOnName("abuse-c");
+        const abuseC = whoisResourcesService.getAllAttributesOnName(after, "abuse-c");
         expect(abuseC.length).toEqual(1);
         expect(abuseC[0].name).toEqual("abuse-c");
         expect(abuseC[0].value).toEqual("");
-        expect(abuseC[0].$$meta.$$missing).toBe(true);
+        // expect(abuseC[0].$$meta.$$missing).toBe(true);
         expect(warnings.length).toEqual(1);
         expect(warnings[0]).toContain("<p>There is currently no abuse contact set up for your organisation, which is required under");
         expect(warnings[0]).toContain(`<a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>`);
@@ -156,15 +156,15 @@ describe("ScreenLogicInterceptorService Organisation", () => {
     });
 
     it("should NOT add empty abuse-c if it exists for default organisation before-edit organisation on Create operation", () => {
-        const before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
+        const before = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after0 = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
-        after0.setSingleAttributeOnName("abuse-c", "bogus abuse-c string");
+        whoisResourcesService.setSingleAttributeOnName(after0, "abuse-c", "bogus abuse-c string");
         const after1 = interceptor.beforeEdit("Create", "RIPE", "organisation", after0, errors, warnings, infos);
 
-        const abuseC = after1.getAllAttributesOnName("abuse-c");
+        const abuseC = whoisResourcesService.getAllAttributesOnName(after1, "abuse-c");
         expect(abuseC.length).toEqual(1);
         expect(abuseC[0].name).toEqual("abuse-c");
         expect(abuseC[0].value).toEqual("bogus abuse-c string");
@@ -173,14 +173,14 @@ describe("ScreenLogicInterceptorService Organisation", () => {
 
     it("should flag as LIR attribute all mnt-by before-edit organisation on Modify operation for LIRs", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "LIR");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "LIR");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const mntByList = after.getAllAttributesOnName("mnt-by");
+        const mntByList = whoisResourcesService.getAllAttributesOnName(after, "mnt-by");
         expect(mntByList.length).toEqual(2);
         expect(mntByList[0].$$meta.$$isLir).toBe(true);
         expect(mntByList[1].$$meta.$$isLir).toBe(true);
@@ -189,14 +189,14 @@ describe("ScreenLogicInterceptorService Organisation", () => {
 
     it("should NOT flag as LIR attribute any mnt-by before-edit organisation on Modify operation for non-LIRs", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "OTHER");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "OTHER");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const mntByList = after.getAllAttributesOnName("mnt-by");
+        const mntByList = whoisResourcesService.getAllAttributesOnName(after, "mnt-by");
         expect(mntByList.length).toEqual(2);
         expect(mntByList[0].$$meta.$$isLir).toBeUndefined();
         expect(mntByList[1].$$meta.$$isLir).toBeUndefined();
@@ -205,174 +205,174 @@ describe("ScreenLogicInterceptorService Organisation", () => {
 
     it("should flag address, phone, fax-no, e-mail and org-name as LIR attribute on Modify operation for LIRs", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "LIR");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "LIR");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const address = after.getAllAttributesOnName("address");
+        const address = whoisResourcesService.getAllAttributesOnName(after, "address");
         expect(address.length).toEqual(1);
         expect(address[0].$$meta.$$isLir).toBe(true);
 
-        const phone = after.getAllAttributesOnName("phone");
+        const phone = whoisResourcesService.getAllAttributesOnName(after, "phone");
         expect(phone.length).toEqual(1);
         expect(phone[0].$$meta.$$isLir).toBe(true);
 
-        const faxNumber = after.getAllAttributesOnName("fax-no");
+        const faxNumber = whoisResourcesService.getAllAttributesOnName(after, "fax-no");
         expect(faxNumber.length).toEqual(1);
         expect(faxNumber[0].$$meta.$$isLir).toBe(true);
 
-        const email = after.getAllAttributesOnName("e-mail");
+        const email = whoisResourcesService.getAllAttributesOnName(after, "e-mail");
         expect(email.length).toEqual(1);
         expect(email[0].$$meta.$$isLir).toBe(true);
 
-        const orgName = after.getAllAttributesOnName("org-name");
+        const orgName = whoisResourcesService.getAllAttributesOnName(after, "org-name");
         expect(orgName.length).toEqual(1);
         expect(orgName[0].$$meta.$$isLir).toBe(true);
     });
 
     it("should NOT flag address, phone, fax-no, e-mail and org-name as LIR attribute on Modify operation for non-LIRs", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "OTHER");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "OTHER");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const address = after.getAllAttributesOnName("address");
+        const address = whoisResourcesService.getAllAttributesOnName(after, "address");
         expect(address.length).toEqual(1);
         expect(address[0].$$meta.$$isLir).toBeUndefined();
 
-        const phone = after.getAllAttributesOnName("phone");
+        const phone = whoisResourcesService.getAllAttributesOnName(after, "phone");
         expect(phone.length).toEqual(1);
         expect(phone[0].$$meta.$$isLir).toBeUndefined();
 
-        const faxNumber = after.getAllAttributesOnName("fax-no");
+        const faxNumber = whoisResourcesService.getAllAttributesOnName(after, "fax-no");
         expect(faxNumber.length).toEqual(1);
         expect(faxNumber[0].$$meta.$$isLir).toBeUndefined();
 
-        const email = after.getAllAttributesOnName("e-mail");
+        const email = whoisResourcesService.getAllAttributesOnName(after, "e-mail");
         expect(email.length).toEqual(1);
         expect(email[0].$$meta.$$isLir).toBeUndefined();
 
-        const orgName = after.getAllAttributesOnName("org-name");
+        const orgName = whoisResourcesService.getAllAttributesOnName(after, "org-name");
         expect(orgName.length).toEqual(1);
         expect(orgName[0].$$meta.$$isLir).toBeUndefined();
     });
 
     it("should disable org on Modify operation for LIRs", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "LIR");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "LIR");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const orgAttr = after.getAllAttributesOnName("org");
+        const orgAttr = whoisResourcesService.getAllAttributesOnName(after, "org");
         expect(orgAttr.length).toEqual(1);
         expect(orgAttr[0].$$meta.$$disable).toBe(true);
     });
 
     it("should NOT disable org on Modify operation for non-LIRs", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "OTHER");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "OTHER");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const orgAttr = after.getAllAttributesOnName("org");
+        const orgAttr = whoisResourcesService.getAllAttributesOnName(after, "org");
         expect(orgAttr.length).toEqual(1);
         expect(orgAttr[0].$$meta.$$disable).toBeUndefined();
 
     });
 
     it("should NOT disable mnt-by before-edit organisation on Create operation", () => {
-        const before = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
+        const before = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
 
-        const mntByList = after.getAllAttributesOnName("mnt-by");
+        const mntByList = whoisResourcesService.getAllAttributesOnName(after, "mnt-by");
         expect(mntByList[0].$$meta.$$disable).toBeUndefined();
     });
 
     it("should remove abuse-mailbox from organisation addable attributes when it is an LIR on Modify", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "LIR");
-        const addableAttributes = _wrap("organisation", organisationSubject.getAddableAttributes("organisation", organisationSubject));
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "LIR");
+        const addableAttributes = _wrap("organisation", whoisResourcesService.getAddableAttributes(organisationSubject, "organisation", organisationSubject));
 
         const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "organisation", organisationSubject, addableAttributes);
 
-        const abuseMailbox = filteredAddableAttributes.getSingleAttributeOnName("abuse-mailbox");
+        const abuseMailbox = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "abuse-mailbox");
         expect(abuseMailbox).toBeUndefined();
     });
 
     it("should remove org from organisation addable attributes when it is an LIR on Modify", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "LIR");
-        const addableAttributes = _wrap("organisation", organisationSubject.getAddableAttributes("organisation", organisationSubject));
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "LIR");
+        const addableAttributes = _wrap("organisation", whoisResourcesService.getAddableAttributes(organisationSubject, "organisation", organisationSubject));
 
         const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "organisation", organisationSubject, addableAttributes);
 
-        const orgAttr = filteredAddableAttributes.getSingleAttributeOnName("org");
+        const orgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "org");
         expect(orgAttr).toBeUndefined();
     });
 
     it("should NOT remove org from organisation addable attributes when it is an NON-LIR on Modify", () => {
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("org-type", "OTHER");
-        const addableAttributes = _wrap("organisation", organisationSubject.getAddableAttributes("organisation", organisationSubject));
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "OTHER");
+        const addableAttributes = _wrap("organisation", whoisResourcesService.getAddableAttributes(organisationSubject, "organisation", organisationSubject));
 
         const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "organisation", organisationSubject, addableAttributes);
 
-        const orgAttr = filteredAddableAttributes.getSingleAttributeOnName("org");
+        const orgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "org");
         expect(orgAttr).not.toBeUndefined();
     });
 
     it("should NOT remove org from organisation addable attributes when it action is not Modify", () => {
-        const organisationSubject = whoisResourcesService.wrapAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
-        organisationSubject.setSingleAttributeOnName("org-type", "LIR");
-        const addableAttributes = _wrap("organisation", organisationSubject.getAddableAttributes("organisation", organisationSubject));
+        const organisationSubject = whoisResourcesService.validateAttributes(whoisMetaService.getMandatoryAttributesOnObjectType("organisation"));
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "org-type", "LIR");
+        const addableAttributes = _wrap("organisation", whoisResourcesService.getAddableAttributes(organisationSubject, "organisation", organisationSubject));
 
         const filteredAddableAttributes = interceptor.beforeAddAttribute("Create", "RIPE", "organisation", organisationSubject, addableAttributes);
 
-        const orgAttr = filteredAddableAttributes.getSingleAttributeOnName("org");
+        const orgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "org");
         expect(orgAttr).not.toBeUndefined();
     });
 
     it("should disable mnt-ref with ripe maintainers on modify", () => {
 
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("mnt-ref", "RIPE-NCC-HM-MNT");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "mnt-ref", "RIPE-NCC-HM-MNT");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const mntRef = attributes.getSingleAttributeOnName("mnt-ref");
+        const mntRef = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-ref");
         expect(mntRef.$$meta.$$disable).toBe(true);
     });
 
     it("should NOT disable mnt-ref with non-ripe maintainers on modify", () => {
 
         const organisationSubject = _wrap("organisation", organisationAttributes);
-        organisationSubject.setSingleAttributeOnName("mnt-ref", "NON-RIPE-MNT");
+        whoisResourcesService.setSingleAttributeOnName(organisationSubject, "mnt-ref", "NON-RIPE-MNT");
 
         let errors: string[] = [];
         let warnings: string[] = [];
         let infos: string[] = [];
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const mntRef = attributes.getSingleAttributeOnName("mnt-ref");
+        const mntRef = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-ref");
         expect(mntRef.$$meta.$$disable).toBeFalsy();
     });
 

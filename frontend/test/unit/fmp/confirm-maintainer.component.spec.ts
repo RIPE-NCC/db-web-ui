@@ -6,6 +6,8 @@ import {EmailLinkService} from "../../../src/app/fmp/email-link.services";
 import {AlertsService} from "../../../src/app/shared/alert/alerts.service";
 import {ConfirmMaintainerComponent} from "../../../src/app/fmp/confirm-maintainer.component";
 import {AlertsComponent} from "../../../src/app/shared/alert/alerts.component";
+import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 
 describe("ConfirmMaintainerComponent", () => {
     let component: ConfirmMaintainerComponent;
@@ -21,6 +23,8 @@ describe("ConfirmMaintainerComponent", () => {
             ],
             providers: [
                 AlertsService,
+                WhoisMetaService,
+                WhoisResourcesService,
                 { provide: EmailLinkService, useValue: mockEmailLinkService},
                 { provide: ActivatedRoute, useValue: {snapshot: {queryParams: {}}}},
                 { provide: Router, useValue: {navigate:() => {}}},

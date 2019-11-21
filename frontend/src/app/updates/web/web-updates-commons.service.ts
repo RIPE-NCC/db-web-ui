@@ -84,7 +84,7 @@ export class WebUpdatesCommonsService {
         const parser = document.createElement("a");
         return _.map(attributes, (attribute: any) => {
             if (!_.isUndefined(attribute.link)) {
-                attribute.link.uiHref = this._displayUrl(parser, attribute, objectSource);
+                attribute.link.href = this._displayUrl(parser, attribute, objectSource);
             }
             return attribute;
         });

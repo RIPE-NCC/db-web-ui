@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import * as _ from "lodash";
-import {IAttributeModel, IErrorMessageModel} from "../../shared/whois-response-type.model";
+import {IAttributeModel, IErrorMessageModel, IWhoisResponseModel} from "../../shared/whois-response-type.model";
+import {WhoisResourcesService} from "../whois-resources.service";
 
 @Injectable()
 export class AlertsService {
@@ -9,7 +10,7 @@ export class AlertsService {
     public warnings: IErrorMessageModel[] = [];
     public infos: IErrorMessageModel[] = [];
 
-    constructor() {
+    constructor(public whoisResourcesService: WhoisResourcesService) {
         this.hasErrors();
         this.hasWarnings();
         this.hasInfos();
@@ -46,25 +47,25 @@ export class AlertsService {
     }
 
     // TODO change to WhoisResources after converting js to ts
-    public setErrors(whoisResources: any) {
-        this.errors = whoisResources.getGlobalErrors();
-        this.warnings = whoisResources.getGlobalWarnings();
-        this.infos = whoisResources.getGlobalInfos();
+    public setErrors(whoisResources: IWhoisResponseModel) {
+        this.errors = this.whoisResourcesService.getGlobalErrors(whoisResources);
+        this.warnings = this.whoisResourcesService.getGlobalWarnings(whoisResources);
+        this.infos = this.whoisResourcesService.getGlobalInfos(whoisResources);
     }
 
-    public setAllErrors(whoisResources: any) {
-        this.errors = whoisResources.getAllErrors();
-        this.warnings = whoisResources.getAllWarnings();
-        this.infos = whoisResources.getAllInfos();
+    public setAllErrors(whoisResources: IWhoisResponseModel) {
+        this.errors = this.whoisResourcesService.getAllErrors(whoisResources);
+        this.warnings = this.whoisResourcesService.getAllWarnings(whoisResources);
+        this.infos = this.whoisResourcesService.getAllInfos(whoisResources);
     }
 
-    public addErrors(whoisResources: any) {
+    public addErrors(whoisResources: IWhoisResponseModel) {
         if (_.isUndefined(whoisResources)) {
             console.error("AlertService.addErrors: undefined input");
         } else {
-            this.errors = this.errors.concat(whoisResources.getGlobalErrors());
-            this.warnings = this.warnings.concat(whoisResources.getGlobalWarnings());
-            this.infos = this.infos.concat(whoisResources.getGlobalInfos());
+            this.errors = this.errors.concat(this.whoisResourcesService.getGlobalErrors(whoisResources));
+            this.warnings = this.warnings.concat(this.whoisResourcesService.getGlobalWarnings(whoisResources));
+            this.infos = this.infos.concat(this.whoisResourcesService.getGlobalInfos(whoisResources));
         }
     }
 
@@ -102,12 +103,12 @@ export class AlertsService {
         this.infos.push({plainText: errorMsg});
     }
 
-    public populateFieldSpecificErrors(objectType: string, attrs: IAttributeModel[], whoisResources: any) {
+    public populateFieldSpecificErrors(objectType: string, attrs: IAttributeModel[], whoisResources: IWhoisResponseModel) {
         let firstAttrError: string;
         _.each(attrs, (attr: IAttributeModel) => {
             // keep existing error messages
             if (!attr.$$error) {
-                const errors = whoisResources.getErrorsOnAttribute(attr.name, attr.value);
+                const errors = this.whoisResourcesService.getErrorsOnAttribute(whoisResources, attr.name, attr.value);
                 if (errors && errors.length > 0) {
                     attr.$$error = errors[0].plainText;
                     if (!firstAttrError) {
@@ -120,8 +121,8 @@ export class AlertsService {
     }
 
     public showWhoisResourceErrors(objectType: string, error: any) {
-        this.errors = error.getGlobalErrors();
-        this.warnings = error.getGlobalWarnings();
-        this.infos = error.getGlobalInfos();
+        this.errors = this.whoisResourcesService.getGlobalErrors(error);
+        this.warnings = this.whoisResourcesService.getGlobalWarnings(error);
+        this.infos = this.whoisResourcesService.getGlobalInfos(error);
     }
 }

@@ -45,153 +45,153 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
     it("should disable org attribute from inet6num when status is ASSIGNED PI", () =>  {
 
         let inet6NumSubject = _wrap("inet6num", inet6NumAttributes);
-        inet6NumSubject.setSingleAttributeOnName("status", "ASSIGNED PI");
+        whoisResourcesService.setSingleAttributeOnName(inet6NumSubject, "status", "ASSIGNED PI");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inet6NumSubject);
 
-        const orgAttr = attributes.getSingleAttributeOnName("org");
+        const orgAttr = whoisResourcesService.getSingleAttributeOnName(attributes, "org");
         expect(orgAttr.$$meta.$$disable).toBe(true);
     });
 
     it("should disable netname attribute from inet6num when status is ALLOCATED PA, ALLOCATED UNSPECIFIED or ALLOCATED-BY-RIR", () =>  {
 
         let inet6NumSubject = _wrap("inet6num", inet6NumAttributes);
-        inet6NumSubject.setSingleAttributeOnName("status", "ALLOCATED PA");
+        whoisResourcesService.setSingleAttributeOnName(inet6NumSubject, "status", "ALLOCATED PA");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inet6NumSubject);
 
-        const netnameAttr = attributes.getSingleAttributeOnName("netname");
+        const netnameAttr = whoisResourcesService.getSingleAttributeOnName(attributes, "netname");
         expect(netnameAttr.$$meta.$$disable).toBe(true);
     });
 
     it("should not remove sponsoring org from inet6num addable attributes when status is LEGACY", () =>  {
 
         let inet6NumSubject = _wrap("inet6num", inet6NumAttributes);
-        inet6NumSubject.setSingleAttributeOnName("status", "LEGACY");
+        whoisResourcesService.setSingleAttributeOnName(inet6NumSubject, "status", "LEGACY");
 
-        const addableAttributes = _wrap("inet6num", inet6NumSubject.getAddableAttributes("inet6num", inet6NumSubject));
+        const addableAttributes = _wrap("inet6num", whoisResourcesService.getAddableAttributes(inet6NumSubject, "inet6num", inet6NumSubject));
 
         const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inet6num", inet6NumSubject, addableAttributes);
 
-        const sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        const sponsoringOrgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "sponsoring-org");
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
     it("should not remove sponsoring org from inet6num addable attributes when status is ASSIGNED-PI", () =>  {
 
         let inet6NumSubject = _wrap("inet6num", inet6NumAttributes);
-        inet6NumSubject.setSingleAttributeOnName("status", "ASSIGNED PI");
+        whoisResourcesService.setSingleAttributeOnName(inet6NumSubject, "status", "ASSIGNED PI");
 
-        const addableAttributes = _wrap("inet6num", inet6NumSubject.getAddableAttributes("inet6num", inet6NumSubject));
+        const addableAttributes = _wrap("inet6num", whoisResourcesService.getAddableAttributes(inet6NumSubject, "inet6num", inet6NumSubject));
 
         const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inet6num", inet6NumSubject, addableAttributes);
 
-        const sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        const sponsoringOrgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "sponsoring-org");
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
     it("should not remove sponsoring org from inet6num addable attributes when status is ASSIGNED-ANYCAST", () =>  {
 
         let inet6NumSubject = _wrap("inet6num", inet6NumAttributes);
-        inet6NumSubject.setSingleAttributeOnName("status", "ASSIGNED ANYCAST");
+        whoisResourcesService.setSingleAttributeOnName(inet6NumSubject, "status", "ASSIGNED ANYCAST");
 
-        const addableAttributes = _wrap("inet6num", inet6NumSubject.getAddableAttributes("inet6num", inet6NumSubject));
+        const addableAttributes = _wrap("inet6num", whoisResourcesService.getAddableAttributes(inet6NumSubject, "inet6num", inet6NumSubject));
 
         const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inet6num", inet6NumSubject, addableAttributes);
 
-        const sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        const sponsoringOrgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "sponsoring-org");
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
     it("should remove sponsoring org from inet6num addable attributes when status is not ASSIGNED-PI or ASSIGNED-ANYCAST", () =>  {
 
         let inet6NumSubject = _wrap("inet6num", inet6NumAttributes);
-        inet6NumSubject.setSingleAttributeOnName("status", "ASSIGNED");
+        whoisResourcesService.setSingleAttributeOnName(inet6NumSubject, "status", "ASSIGNED");
 
-        let addableAttributes = _wrap("inet6num", inet6NumSubject.getAddableAttributes("inet6num", inet6NumSubject));
+        let addableAttributes = _wrap("inet6num", whoisResourcesService.getAddableAttributes(inet6NumSubject, "inet6num", inet6NumSubject));
 
         const filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inet6num", inet6NumSubject, addableAttributes);
 
-        let sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        let sponsoringOrgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "sponsoring-org");
         expect(sponsoringOrgAttr).toBeUndefined();
     });
 
     it("should not remove sponsoring org from inet6num addable attributes when status is empty", () =>  {
 
         let inet6NumSubject = _wrap("inet6num", inet6NumAttributes);
-        inet6NumSubject.setSingleAttributeOnName("status", "");
+        whoisResourcesService.setSingleAttributeOnName(inet6NumSubject, "status", "");
 
-        const addableAttributes = _wrap("inet6num", inet6NumSubject.getAddableAttributes("inet6num", inet6NumSubject));
+        const addableAttributes = _wrap("inet6num", whoisResourcesService.getAddableAttributes(inet6NumSubject, "inet6num", inet6NumSubject));
 
         let filteredAddableAttributes = interceptor.beforeAddAttribute("Modify", "RIPE", "inet6num", inet6NumSubject, addableAttributes);
 
-        let sponsoringOrgAttr = filteredAddableAttributes.getSingleAttributeOnName("sponsoring-org");
+        let sponsoringOrgAttr = whoisResourcesService.getSingleAttributeOnName(filteredAddableAttributes, "sponsoring-org");
         expect(sponsoringOrgAttr).not.toBeUndefined();
     });
 
     it("should disable mnt-domains with ripe maintainers on modify", () =>  {
 
         let inetNumSubject = _wrap("inet6num", inet6NumAttributes);
-        inetNumSubject .setSingleAttributeOnName("mnt-domains", "RIPE-NCC-HM-MNT");
+        whoisResourcesService.setSingleAttributeOnName(inetNumSubject, "mnt-domains", "RIPE-NCC-HM-MNT");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
-        let mntDomains = attributes.getSingleAttributeOnName("mnt-domains");
+        let mntDomains = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-domains");
         expect(mntDomains.$$meta.$$disable).toBe(true);
     });
 
     it("should NOT disable mnt-domains with non-ripe maintainers on modify", () =>  {
 
         let inetNumSubject = _wrap("inet6num", inet6NumAttributes);
-        inetNumSubject.setSingleAttributeOnName("mnt-domains", "NON-RIPE-MNT");
+        whoisResourcesService.setSingleAttributeOnName(inetNumSubject, "mnt-domains", "NON-RIPE-MNT");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
-        let mntDomains = attributes.getSingleAttributeOnName("mnt-domains");
+        let mntDomains = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-domains");
         expect(mntDomains.$$meta.$$disable).toBeFalsy();
     });
 
     it("should disable mnt-lower with ripe maintainers on modify", () =>  {
 
         let inetNumSubject = _wrap("inet6num", inet6NumAttributes);
-        inetNumSubject.setSingleAttributeOnName("mnt-lower", "RIPE-NCC-HM-MNT");
+        whoisResourcesService.setSingleAttributeOnName(inetNumSubject, "mnt-lower", "RIPE-NCC-HM-MNT");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
-        let mntLower = attributes.getSingleAttributeOnName("mnt-lower");
+        let mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-lower");
         expect(mntLower.$$meta.$$disable).toBe(true);
     });
 
     it("should NOT disable mnt-lower with non-ripe maintainers on modify", () =>  {
 
         let inetNumSubject = _wrap("inet6num", inet6NumAttributes);
-        inetNumSubject.setSingleAttributeOnName("mnt-lower", "NON-RIPE-MNT");
+        whoisResourcesService.setSingleAttributeOnName(inetNumSubject, "mnt-lower", "NON-RIPE-MNT");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
-        let mntLower = attributes.getSingleAttributeOnName("mnt-lower");
+        let mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-lower");
         expect(mntLower.$$meta.$$disable).toBeFalsy();
     });
 
     it("should disable mnt-routes with ripe maintainers on modify", () =>  {
 
         let inetNumSubject = _wrap("inet6num", inet6NumAttributes);
-        inetNumSubject.setSingleAttributeOnName("mnt-routes", "RIPE-NCC-HM-MNT");
+        whoisResourcesService.setSingleAttributeOnName(inetNumSubject, "mnt-routes", "RIPE-NCC-HM-MNT");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
-        let mntLower = attributes.getSingleAttributeOnName("mnt-routes");
+        let mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-routes");
         expect(mntLower.$$meta.$$disable).toBe(true);
     });
 
     it("should NOT disable mnt-routes with non-ripe maintainers on modify", () =>  {
 
         let inetNumSubject = _wrap("inet6num", inet6NumAttributes);
-        inetNumSubject.setSingleAttributeOnName("mnt-routes", "NON-RIPE-MNT");
+        whoisResourcesService.setSingleAttributeOnName(inetNumSubject, "mnt-routes", "NON-RIPE-MNT");
 
         const attributes = interceptor.beforeEdit("Modify", "RIPE", "inet6num", inetNumSubject);
 
-        let mntLower = attributes.getSingleAttributeOnName("mnt-routes");
+        let mntLower = whoisResourcesService.getSingleAttributeOnName(attributes, "mnt-routes");
         expect(mntLower.$$meta.$$disable).toBeFalsy();
     });
 

@@ -250,14 +250,14 @@ describe("CreateModifyComponent with modifying test cases", () => {
         it("should populate the ui based on object-type meta model and source", () => {
             const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName");
 
-            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toBeUndefined();
-            expect(component.attributes.getSingleAttributeOnName("as-block").value).toEqual(NAME);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toBeUndefined();
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toEqual(NAME);
 
-            expect(component.attributes.getAllAttributesOnName("mnt-by")[0].$$error).toBeUndefined();
-            expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].$$error).toBeUndefined();
+            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual("TEST-MNT");
 
-            expect(component.attributes.getAllAttributesOnName("source")[0].$$error).toBeUndefined();
-            expect(component.attributes.getSingleAttributeOnName("source").value).toEqual("RIPE");
+            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "source")[0].$$error).toBeUndefined();
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual("RIPE");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
         });
@@ -266,23 +266,23 @@ describe("CreateModifyComponent with modifying test cases", () => {
         it("should display field specific errors upon submit click on form with missing values", () => {
             const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName");
 
-            component.attributes.setSingleAttributeOnName("as-block", null);
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", null);
 
             component.submit();
-            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toEqual("Mandatory attribute not set");
-            expect(component.attributes.getSingleAttributeOnName("as-block").value).toBeNull();
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("Mandatory attribute not set");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toBeNull();
 
-            expect(component.attributes.getAllAttributesOnName("mnt-by")[0].$$error).toBeUndefined();
-            expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].$$error).toBeUndefined();
+            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual("TEST-MNT");
 
-            expect(component.attributes.getSingleAttributeOnName("source").$$error).toBeUndefined();
-            expect(component.attributes.getSingleAttributeOnName("source").value).toEqual("RIPE");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").$$error).toBeUndefined();
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual("RIPE");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
         });
 
         it("should handle success put upon submit click when form is complete", () => {
-            component.attributes.setSingleAttributeOnName("changed", "dummy@ripe.net");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "changed", "dummy@ripe.net");
             component.submit();
             fixture.detectChanges();
             httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/as-block/MY-AS-BLOCK?password=@123"})
@@ -303,11 +303,11 @@ describe("CreateModifyComponent with modifying test cases", () => {
                 });
 
             const resp = component.messageStoreService.get("MY-AS-BLOCK");
-            expect(resp.getPrimaryKey()).toEqual("MY-AS-BLOCK");
-            const attrs = component.whoisResourcesService.wrapAttributes(resp.getAttributes());
-            expect(attrs.getSingleAttributeOnName("as-block").value).toEqual("MY-AS-BLOCK");
-            expect(attrs.getAllAttributesOnName("mnt-by")[0].value).toEqual("TEST-MNT");
-            expect(attrs.getSingleAttributeOnName("source").value).toEqual("RIPE");
+            expect(component.whoisResourcesService.getPrimaryKey(resp)).toEqual("MY-AS-BLOCK");
+            const attrs = component.whoisResourcesService.getAttributes(resp);
+            expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "as-block").value).toEqual("MY-AS-BLOCK");
+            expect(component.whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "source").value).toEqual("RIPE");
 
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/as-block/MY-AS-BLOCK?method=Modify");
         });
@@ -315,7 +315,7 @@ describe("CreateModifyComponent with modifying test cases", () => {
 
         it("should handle error post upon submit click when form is complete", async () => {
             const stateBefore = component.activatedRoute.snapshot.paramMap.get("objectName");
-            component.attributes.setSingleAttributeOnName("as-block", "A");
+            component.whoisResourcesService.setSingleAttributeOnName(component.attributes, "as-block", "A");
             component.submit();
             await fixture.whenStable();
 
@@ -360,7 +360,7 @@ describe("CreateModifyComponent with modifying test cases", () => {
             await fixture.whenStable();
             expect(component.alertService.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
             expect(component.alertService.warnings[0].plainText).toEqual("Not authenticated");
-            expect(component.attributes.getSingleAttributeOnName("as-block").$$error).toEqual("\"MY-AS-BLOCK\" is not valid for this object type");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("\"MY-AS-BLOCK\" is not valid for this object type");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
 
@@ -605,16 +605,16 @@ describe("CreateModifyComponent with modifying test cases", () => {
         it("should populate abuse-c with new role\'s nic-hdl", async () => {
             component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
             modalMock.open.and.returnValue({componentInstance: {}, result: of(ROLE_OBJ).toPromise()});
-            const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c")
+            const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c")
             component.createRoleForAbuseCAttribute(attrAbuseC);
             await fixture.whenStable();
-            expect(component.attributes.getSingleAttributeOnName("abuse-c").value).toBe("SR11027-RIPE");
+            expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c").value).toBe("SR11027-RIPE");
         });
 
         it("should populate component.roleForAbuseC", async () => {
             component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
             modalMock.open.and.returnValue({componentInstance: {}, result: of(ROLE_OBJ).toPromise()});
-            const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c")
+            const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c")
             component.createRoleForAbuseCAttribute(attrAbuseC);
             await fixture.whenStable();
             expect(component.roleForAbuseC).toBeDefined();

@@ -162,7 +162,7 @@ export class RestService {
             .pipe(
                 map((result: any) => {
                     console.debug("fetchObject success:" + JSON.stringify(result));
-                    const primaryKey = this.whoisResourcesService.wrapSuccess(result).getPrimaryKey();
+                    const primaryKey = this.whoisResourcesService.getPrimaryKey(this.whoisResourcesService.wrapSuccess(result));
                     if (_.isEqual(objectName, primaryKey)) {
                         return this.whoisResourcesService.wrapSuccess(result);
                     } else {

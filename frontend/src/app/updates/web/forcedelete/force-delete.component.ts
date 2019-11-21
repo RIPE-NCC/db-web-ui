@@ -172,12 +172,11 @@ export class ForceDeleteComponent {
                 catchError((error: any) => {
                     this.restCallInProgress = false;
                     // we expect an error: from the error we except auth candidates
-                    const whoisResources = this.whoisResourcesService.wrapWhoisResources(error.data);
-                    if (whoisResources.getRequiresAdminRightFromError()) {
+                    if (this.whoisResourcesService.getRequiresAdminRightFromError(error.data)) {
                         return throwError("Deleting this object requires administrative authorisation")
                     } else {
                         // strip RIPE-NCC- mntners
-                        let authCandidates = whoisResources.getAuthenticationCandidatesFromError();
+                        let authCandidates = this.whoisResourcesService.getAuthenticationCandidatesFromError(error.data);
                         authCandidates = _.filter(authCandidates, (mntner: string) => !(_.startsWith(mntner, "RIPE-NCC-")));
                         return of(_.map(authCandidates, (item: string) => _.trim(item)));
                     }
@@ -186,9 +185,9 @@ export class ForceDeleteComponent {
     }
 
     private wrapAndEnrichResources(objectType: string, resp: any) {
-        const whoisResources = this.whoisResourcesService.wrapWhoisResources(resp);
+        const whoisResources = this.whoisResourcesService.validateWhoisResources(resp);
         if (whoisResources) {
-            this.object.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(objectType, whoisResources.getAttributes());
+            this.object.attributes = this.whoisResourcesService.wrapAndEnrichAttributes(objectType, this.whoisResourcesService.getAttributes(whoisResources));
         }
         return whoisResources;
     }

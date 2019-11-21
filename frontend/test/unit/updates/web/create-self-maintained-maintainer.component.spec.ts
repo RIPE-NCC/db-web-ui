@@ -70,39 +70,39 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
 
     it("should load the maintainer attributes", async () => {
         await fixture.whenStable();
-        expect(component.maintainerAttributes.getSingleAttributeOnName("upd-to").value).toEqual("tdacruzper@ripe.net");
-        expect(component.maintainerAttributes.getSingleAttributeOnName("auth").value).toEqual("SSO tdacruzper@ripe.net");
-        expect(component.maintainerAttributes.getSingleAttributeOnName("source").value).toEqual("RIPE");
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "upd-to").value).toEqual("tdacruzper@ripe.net");
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "auth").value).toEqual("SSO tdacruzper@ripe.net");
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "source").value).toEqual("RIPE");
     });
 
     it("should add admin-c to the maintainer attributes", async () => {
         await fixture.whenStable();
         component.onAdminCAdded({key: "some-admin-c"});
 
-        component.maintainerAttributes = component.maintainerAttributes.removeNullAttributes();
-        component.maintainerAttributes = component.whoisResourcesService.wrapAttributes(component.maintainerAttributes);
+        component.maintainerAttributes = component.whoisResourcesService.removeNullAttributes(component.maintainerAttributes);
+        component.maintainerAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
 
-        expect(component.maintainerAttributes.getSingleAttributeOnName("admin-c").value).toEqual("some-admin-c");
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "admin-c").value).toEqual("some-admin-c");
     });
 
     it("should remove admin-c from the maintainer attributes", () => {
-        component.maintainerAttributes.getSingleAttributeOnName("admin-c").value = "first-admin";
-        component.maintainerAttributes = component.maintainerAttributes.addAttributeAfterType({
-            name: "admin-c",
+        component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "admin-c").value = "first-admin";
+        component.maintainerAttributes = component.whoisResourcesService.addAttributeAfterType(component.maintainerAttributes,
+            {name: "admin-c",
             value: "some-admin-c"
         }, {name: "admin-c"});
 
         component.onAdminCRemoved({key: "first-admin"});
-        component.maintainerAttributes = component.whoisResourcesService.wrapAttributes(component.maintainerAttributes);
 
-        expect(component.maintainerAttributes.getSingleAttributeOnName("admin-c").value).toEqual("some-admin-c");
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "admin-c").value).toEqual("some-admin-c");
     });
 
     it("should set default upd-to info for the self maintained maintainer when submitting", async () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
 
-        const updTo = component.whoisResourcesService.wrapAttributes(component.maintainerAttributes).getSingleAttributeOnName("upd-to");
+        const validatedAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
+        const updTo = component.whoisResourcesService.getSingleAttributeOnName(validatedAttributes, "upd-to");
 
         component.submit();
         await fixture.whenStable();
@@ -118,7 +118,8 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
 
-        const updTo = component.whoisResourcesService.wrapAttributes(component.maintainerAttributes).getSingleAttributeOnName("auth");
+        const validateAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
+        const updTo = component.whoisResourcesService.getSingleAttributeOnName(validateAttributes, "auth");
 
         component.submit();
         await fixture.whenStable();
@@ -129,9 +130,10 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
     it("should set mntner value to mnt-by for the self maintained maintainer when submitting", async () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
-
-        component.whoisResourcesService.wrapAttributes(component.maintainerAttributes).setSingleAttributeOnName("mntner", "SOME-MNT");
-        const mntBy = component.whoisResourcesService.wrapAttributes(component.maintainerAttributes).getSingleAttributeOnName("mnt-by");
+        let mntAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
+        component.whoisResourcesService.setSingleAttributeOnName(mntAttributes, "mntner", "SOME-MNT");
+        mntAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
+        const mntBy = component.whoisResourcesService.getSingleAttributeOnName(mntAttributes, "mnt-by");
 
         component.submit();
         await fixture.whenStable();
@@ -142,8 +144,8 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
     it("should set source from the params when submitting", async () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
-
-        const updTo = component.whoisResourcesService.wrapAttributes(component.maintainerAttributes).getSingleAttributeOnName("source");
+        const validateAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
+        const updTo = component.whoisResourcesService.getSingleAttributeOnName(validateAttributes, "source");
 
         component.submit();
         await fixture.whenStable();
@@ -166,7 +168,7 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
 
     it("should redirect to display page after creating a maintainer", async () => {
         spyOn(component.messageStoreService, "add");
-        const whoisResources = component.whoisResourcesService.wrapWhoisResources(CREATE_RESPONSE);
+        const whoisResources = component.whoisResourcesService.validateWhoisResources(CREATE_RESPONSE);
         restServiceMock.createObject.and.returnValue(of(whoisResources));
 
         fillForm();
@@ -179,7 +181,7 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
     });
 
     it("should not post if invalid attributes", () => {
-        component.maintainerAttributes = component.whoisResourcesService.wrapAttributes(
+        component.maintainerAttributes = component.whoisResourcesService.validateAttributes(
             component.whoisMetaService.enrichAttributesWithMetaInfo("mntner",
                 component.whoisMetaService.getMandatoryAttributesOnObjectType("mntner")
             )
@@ -201,10 +203,10 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
     });
 
     function fillForm() {
-        let wrapAttributes = component.whoisResourcesService.wrapAttributes(component.maintainerAttributes);
-        wrapAttributes.setSingleAttributeOnName("mntner", "SOME-MNT");
-        wrapAttributes.setSingleAttributeOnName("descr", "uhuuuuuu");
-        wrapAttributes.setSingleAttributeOnName("admin-c", "SOME-ADM");
+        let wrapAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
+        component.whoisResourcesService.setSingleAttributeOnName(wrapAttributes, "mntner", "SOME-MNT");
+        component.whoisResourcesService.setSingleAttributeOnName(wrapAttributes, "descr", "uhuuuuuu");
+        component.whoisResourcesService.setSingleAttributeOnName(wrapAttributes, "admin-c", "SOME-ADM");
     }
 });
 

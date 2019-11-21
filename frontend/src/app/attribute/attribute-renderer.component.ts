@@ -135,7 +135,7 @@ export class AttributeRendererComponent {
         modalRef.componentInstance.inputData = inputData;
         modalRef.result.then((roleAttrs: any) => {
             this.roleForAbuseC = this.whoisResourcesService.wrapAndEnrichAttributes("role", roleAttrs);
-            this.attribute.value = this.roleForAbuseC.getSingleAttributeOnName("nic-hdl").value;
+            this.attribute.value = this.whoisResourcesService.getSingleAttributeOnName(this.roleForAbuseC, "nic-hdl").value;
             this.attribute.$$success = "Role object for abuse-c successfully created";
         }, (error: any) => {
             if (error !== "cancel") { // dismissing modal will hit this function with the string "cancel" in error arg

@@ -119,12 +119,12 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should detect invalid whoisressources", () => {
-        expect(whoisResourcesService.wrapWhoisResources(null)).toBeUndefined();
-        expect(whoisResourcesService.wrapWhoisResources("garbage")).toBeUndefined();
-        expect(whoisResourcesService.wrapWhoisResources({otherField: "hi", otherRef: {number: 4}})).toBeUndefined();
+        expect(whoisResourcesService.validateWhoisResources(null)).toBeUndefined();
+        expect(whoisResourcesService.validateWhoisResources("garbage")).toBeUndefined();
+        expect(whoisResourcesService.validateWhoisResources({otherField: "hi", otherRef: {number: 4}})).toBeUndefined();
 
-        expect(whoisResourcesService.wrapWhoisResources({objects: {object: []}})).toBeDefined();
-        expect(whoisResourcesService.wrapWhoisResources({
+        expect(whoisResourcesService.validateWhoisResources({objects: {object: []}})).toBeDefined();
+        expect(whoisResourcesService.validateWhoisResources({
             errormessages: {
                 errormessage: [{
                     severity: "Warning",
@@ -198,7 +198,7 @@ describe("WhoisResourcesService", () => {
 
     it("should peel errors out of a whoisresources error response", () => {
 
-        const errorResponse = whoisResourcesService.wrapWhoisResources({
+        const errorResponse = whoisResourcesService.validateWhoisResources({
             errormessages: {
                 objects: {
                     object: [
@@ -234,7 +234,7 @@ describe("WhoisResourcesService", () => {
         });
         expect(errorResponse).toBeDefined();
 
-        expect(errorResponse.getGlobalErrors(errorResponse)).toEqual([
+        expect(whoisResourcesService.getGlobalErrors(errorResponse)).toEqual([
             {
                 severity: "Error",
                 text: "Unrecognized source: %s",
@@ -243,20 +243,20 @@ describe("WhoisResourcesService", () => {
             }
         ]);
 
-        expect(errorResponse.getGlobalWarnings()).toEqual([
+        expect(whoisResourcesService.getGlobalWarnings(errorResponse)).toEqual([
             {severity: "Warning", text: "Not authenticated", plainText: "Not authenticated"}
         ]);
 
-        expect(errorResponse.readableError(errorResponse.errormessages.errormessage[0])).toEqual(
+        expect(whoisResourcesService.readableError(errorResponse, errorResponse.errormessages.errormessage[0])).toEqual(
             "Unrecognized source: INVALID_SOURCE"
         );
 
-        expect(errorResponse.readableError(errorResponse.errormessages.errormessage[1])).toEqual(
+        expect(whoisResourcesService.readableError(errorResponse, errorResponse.errormessages.errormessage[1])).toEqual(
             "Not authenticated"
         );
 
         // has second %s withoutv second arg
-        expect(errorResponse.readableError({
+        expect(whoisResourcesService.readableError(errorResponse, {
             severity: "Error",
             text: "Unrecognized source: %s %s",
             args: [{value: "INVALID_SOURCE"}]
@@ -264,7 +264,7 @@ describe("WhoisResourcesService", () => {
             "Unrecognized source: INVALID_SOURCE %s"
         );
 
-        expect(errorResponse.getErrorsOnAttribute("admin-c", "XYZ")).toEqual([
+        expect(whoisResourcesService.getErrorsOnAttribute(errorResponse, "admin-c", "XYZ")).toEqual([
             {
                 severity: "Error",
                 attribute: {
@@ -277,14 +277,14 @@ describe("WhoisResourcesService", () => {
             }
         ]);
 
-        expect(errorResponse.getAttributes()).toEqual([])
+        expect(whoisResourcesService.getAttributes(errorResponse)).toEqual([])
 
-        expect(errorResponse.getPrimaryKey()).toEqual(undefined);
+        expect(whoisResourcesService.getPrimaryKey(errorResponse)).toEqual(undefined);
 
     });
 
     it("should extract authentication candidates from error resp", () => {
-        const errorResponse = whoisResourcesService.wrapWhoisResources({
+        const errorResponse = whoisResourcesService.validateWhoisResources({
             errormessages: {
                 errormessage: [
                     {
@@ -319,14 +319,14 @@ describe("WhoisResourcesService", () => {
         });
         expect(errorResponse).toBeDefined();
 
-        expect(errorResponse.getAuthenticationCandidatesFromError()).toEqual(
+        expect(whoisResourcesService.getAuthenticationCandidatesFromError(errorResponse)).toEqual(
             ["TPOLYCHNIA4-MNT", "FORTHNETGR-MNT", "RIPE-NCC-HM-MNT", " AARDVARK-MNT"]
         );
     });
 
     it("should interact with whoisresources success-response", () => {
 
-        const successResponse = whoisResourcesService.wrapWhoisResources({
+        const successResponse = whoisResourcesService.validateWhoisResources({
             link: {
                 type: "locator",
                 href: "http://localhost.dev.ripe.net:8443/RIPE/person"
@@ -381,45 +381,45 @@ describe("WhoisResourcesService", () => {
 
         expect(successResponse).toBeDefined();
 
-        expect(successResponse.getGlobalErrors()).toEqual([]);
+        expect(whoisResourcesService.getGlobalErrors(successResponse)).toEqual([]);
 
-        expect(successResponse.getGlobalWarnings()).toEqual([]);
+        expect(whoisResourcesService.getGlobalWarnings(successResponse)).toEqual([]);
 
-        expect(successResponse.getAttributes()).toEqual([
+        expect(whoisResourcesService.getAttributes(successResponse)).toEqual([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: "b"},
             {name: "source", value: "c"}
         ]);
 
-        expect(successResponse.getPrimaryKey()).toEqual("MG20276-RIPEXYZ");
+        expect(whoisResourcesService.getPrimaryKey(successResponse)).toEqual("MG20276-RIPEXYZ");
 
     });
 
     it("should read from attributes", () => {
 
-        expect(whoisResourcesService.wrapAttributes(null)).toEqual([]);
+        expect(whoisResourcesService.validateAttributes(null)).toEqual([]);
 
-        const whoisAttributes = whoisResourcesService.wrapAttributes([
+        const whoisAttributes = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: null},
             {name: "mnt-by", value: "c"},
             {name: "source", value: "d"}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName("source")).toEqual(
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source")).toEqual(
             {name: "source", value: "d"}
         );
 
-        expect(whoisAttributes.getSingleAttributeOnName("non-existing")).toEqual(undefined);
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "non-existing")).toEqual(undefined);
 
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")).toEqual([
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")).toEqual([
             {name: "mnt-by", value: null},
             {name: "mnt-by", value: "c"}
         ]);
 
-        expect(whoisAttributes.getAllAttributesOnName("non-existing")).toEqual([]);
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "non-existing")).toEqual([]);
 
-        expect(whoisAttributes.getAllAttributesWithValueOnName("mnt-by")).toEqual([
+        expect(whoisResourcesService.getAllAttributesWithValueOnName(whoisAttributes, "mnt-by")).toEqual([
             {name: "mnt-by", value: "c"}
         ]);
 
@@ -427,76 +427,76 @@ describe("WhoisResourcesService", () => {
 
     it("should adjust attributes", () => {
 
-        const whoisAttributes = whoisResourcesService.wrapAttributes([
+        const whoisAttributes = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: null},
             {name: "mnt-by", value: "c"},
             {name: "source", value: "d"}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName("as-block").value).toEqual("a");
-        expect(whoisAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")[1].value).toEqual("c");
-        expect(whoisAttributes.getSingleAttributeOnName("source").value).toEqual("d");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes,"as-block").value).toEqual("a");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "mnt-by").value).toEqual(null);
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes,  "mnt-by")[0].value).toEqual(null);
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes,  "mnt-by")[1].value).toEqual("c");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source").value).toEqual("d");
 
         // has side effects
-        expect(whoisAttributes.setSingleAttributeOnName("source", "RIPE")).toEqual([
+        expect(whoisResourcesService.setSingleAttributeOnName(whoisAttributes, "source", "RIPE")).toEqual([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: null},
             {name: "mnt-by", value: "c"},
             {name: "source", value: "RIPE"}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName("as-block").value).toEqual("a");
-        expect(whoisAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")[1].value).toEqual("c");
-        expect(whoisAttributes.getSingleAttributeOnName("source").value).toEqual("RIPE");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "as-block").value).toEqual("a");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "mnt-by").value).toEqual(null);
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual(null);
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source").value).toEqual("RIPE");
 
     });
 
     it("should adjust attributes", () => {
 
-        const whoisAttributes = whoisResourcesService.wrapAttributes([
+        const whoisAttributes = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: null},
             {name: "mnt-by", value: "c"},
             {name: "source", value: "d"}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName("as-block").value).toEqual("a");
-        expect(whoisAttributes.getSingleAttributeOnName("mnt-by").value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(null);
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")[1].value).toEqual("c");
-        expect(whoisAttributes.getSingleAttributeOnName("source").value).toEqual("d");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "as-block").value).toEqual("a");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "mnt-by").value).toEqual(null);
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual(null);
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source").value).toEqual("d");
 
         // has side effects
-        expect(whoisAttributes.setSingleAttributeOnName("mnt-by", "TEST-MNT")).toEqual([
+        expect(whoisResourcesService.setSingleAttributeOnName(whoisAttributes, "mnt-by", "TEST-MNT")).toEqual([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: "TEST-MNT"},
             {name: "mnt-by", value: "c"},
             {name: "source", value: "d"}
         ]);
 
-        expect(whoisAttributes.getSingleAttributeOnName("as-block").value).toEqual("a");
-        expect(whoisAttributes.getSingleAttributeOnName("mnt-by").value).toEqual("TEST-MNT");
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")[0].value).toEqual("TEST-MNT");
-        expect(whoisAttributes.getAllAttributesOnName("mnt-by")[1].value).toEqual("c");
-        expect(whoisAttributes.getSingleAttributeOnName("source").value).toEqual("d");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "as-block").value).toEqual("a");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "mnt-by").value).toEqual("TEST-MNT");
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual("TEST-MNT");
+        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source").value).toEqual("d");
 
     });
 
     it("should merge two attribute lists", () => {
 
-        const whoisAttributesWithMeta = whoisResourcesService.wrapAttributes([
+        const whoisAttributesWithMeta = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$idx: 0}},
             {name: "mnt-by", value: "b", $$meta: {$$idx: 1}},
             {name: "source", value: "d", $$meta: {$$idx: 2}}
         ]);
 
         // has side effectts
-        expect(whoisAttributesWithMeta.addAttrsSorted("mnt-by",
+        expect(whoisResourcesService.addAttrsSorted(whoisAttributesWithMeta, "mnt-by",
             [{name: "mnt-by", value: "c"}]
         )).toEqual([
             {name: "as-block", value: "a", $$meta: {$$idx: 0}},
@@ -507,24 +507,24 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should add an attribute after", () => {
-        const whoisAttributes = whoisResourcesService.wrapAttributes([
+        const whoisAttributes = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: "c"},
             {name: "source", value: "d"}
         ]);
-        const after = whoisAttributes.addAttributeAfter({name: "remarks"}, whoisAttributes[0]);
+        const after = whoisResourcesService.addAttributeAfter(whoisAttributes, {name: "remarks"}, whoisAttributes[0]);
         expect(after[1].name).toEqual("remarks");
     });
 
     it("should merge two attribute lists: no existing field", () => {
 
-        const whoisAttributesWithMeta = whoisResourcesService.wrapAttributes([
+        const whoisAttributesWithMeta = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$idx: 0}},
             {name: "source", value: "d", $$meta: {$$idx: 2}},
         ]);
 
         // has side effectts
-        expect(whoisAttributesWithMeta.addAttrsSorted("mnt-by",
+        expect(whoisResourcesService.addAttrsSorted(whoisAttributesWithMeta, "mnt-by",
             [{name: "mnt-by", value: "c"}]
         )).toEqual([
             {name: "as-block", value: "a", $$meta: {$$idx: 0}},
@@ -534,23 +534,24 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should detect missing mandatory attribute", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
         ]);
 
-        const missingMandatories = attrs.getMissingMandatoryAttributes("as-block");
+        const missingMandatories = whoisResourcesService.getMissingMandatoryAttributes(attrs, "as-block");
         expect(missingMandatories.length).toEqual(2);
         expect(missingMandatories[0].name).toEqual("mnt-by");
         expect(missingMandatories[1].name).toEqual("source");
     });
 
     it("should add missing mandatory attribute", () => {
-        let attrs = whoisResourcesService.wrapAttributes([
+        let attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
         ]);
 
-        _.each(attrs.getMissingMandatoryAttributes("as-block"), (item) => {
-            attrs = whoisResourcesService.wrapAttributes(attrs.addMissingMandatoryAttribute("as-block", item));
+        _.each(whoisResourcesService.getMissingMandatoryAttributes(attrs, "as-block"), (item) => {
+            const allAttributes = whoisResourcesService.addMissingMandatoryAttribute(attrs, "as-block", item);
+            attrs = whoisResourcesService.validateAttributes(allAttributes);
         });
 
         expect(attrs.length).toEqual(3);
@@ -565,86 +566,86 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should accept a correct object", () => {
-        let attrs = whoisResourcesService.wrapAttributes([
+        let attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
             {name: "mnt-by", value: "c", $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: "mnt-by", value: "e", $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: "source", value: "d", $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
-        expect(attrs.validateWithoutSettingErrors()).toEqual(true);
+        expect(whoisResourcesService.validateWithoutSettingErrors(attrs)).toEqual(true);
 
-        expect(attrs.validate()).toEqual(true);
-        expect(attrs.getSingleAttributeOnName("as-block").$$error).toEqual(undefined);
-        expect(attrs.getAllAttributesOnName("mnt-by")[0].$$error).toEqual(undefined);
-        expect(attrs.getAllAttributesOnName("mnt-by")[1].$$error).toEqual(undefined);
-        expect(attrs.getSingleAttributeOnName("source").$$error).toEqual(undefined);
+        expect(whoisResourcesService.validate(attrs)).toEqual(true);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs, "as-block").$$error).toEqual(undefined);
+        expect(whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].$$error).toEqual(undefined);
+        expect(whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[1].$$error).toEqual(undefined);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs, "source").$$error).toEqual(undefined);
     });
 
     it("should accept a correct object with second multiple null", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
             {name: "mnt-by", value: "c", $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: "mnt-by", value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: "source", value: "d", $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
-        expect(attrs.validateWithoutSettingErrors()).toEqual(true);
+        expect(whoisResourcesService.validateWithoutSettingErrors(attrs)).toEqual(true);
 
-        expect(attrs.validate()).toEqual(true);
-        expect(attrs.getSingleAttributeOnName("as-block").$$error).toEqual(undefined);
-        expect(attrs.getAllAttributesOnName("mnt-by")[0].$$error).toEqual(undefined);
-        expect(attrs.getAllAttributesOnName("mnt-by")[1].$$error).toEqual(undefined);
-        expect(attrs.getSingleAttributeOnName("source").$$error).toEqual(undefined);
+        expect(whoisResourcesService.validate(attrs)).toEqual(true);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs,"as-block").$$error).toEqual(undefined);
+        expect(whoisResourcesService.getAllAttributesOnName(attrs,"mnt-by")[0].$$error).toEqual(undefined);
+        expect(whoisResourcesService.getAllAttributesOnName(attrs,"mnt-by")[1].$$error).toEqual(undefined);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs,"source").$$error).toEqual(undefined);
     });
 
     it("should detect missing single mandatory attribute", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: null, $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
             {name: "mnt-by", value: "c", $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: "mnt-by", value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: "source", value: "d", $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
-        expect(attrs.validateWithoutSettingErrors()).toEqual(false);
+        expect(whoisResourcesService.validateWithoutSettingErrors(attrs)).toEqual(false);
 
-        expect(attrs.validate()).toEqual(false);
-        expect(attrs.getSingleAttributeOnName("as-block").$$error).toEqual("Mandatory attribute not set");
-        expect(attrs.getSingleAttributeOnName("mnt-by").$$error).toEqual(undefined);
-        expect(attrs.getSingleAttributeOnName("source").$$error).toEqual(undefined);
+        expect(whoisResourcesService.validate(attrs)).toEqual(false);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs, "as-block").$$error).toEqual("Mandatory attribute not set");
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs, "mnt-by").$$error).toEqual(undefined);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs, "source").$$error).toEqual(undefined);
     });
 
     it("should detect missing multiple mandatory attribute", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
             {name: "mnt-by", value: null, $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: "source", value: "d", $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
 
-        expect(attrs.validateWithoutSettingErrors()).toEqual(false);
+        expect(whoisResourcesService.validateWithoutSettingErrors(attrs)).toEqual(false);
 
-        expect(attrs.validate()).toEqual(false);
-        expect(attrs.getSingleAttributeOnName("as-block").$$error).toEqual(undefined);
-        expect(attrs.getSingleAttributeOnName("mnt-by").$$error).toEqual("Mandatory attribute not set");
-        expect(attrs.getSingleAttributeOnName("source").$$error).toEqual(undefined);
+        expect(whoisResourcesService.validate(attrs)).toEqual(false);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs, "as-block").$$error).toEqual(undefined);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs, "mnt-by").$$error).toEqual("Mandatory attribute not set");
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs, "source").$$error).toEqual(undefined);
     });
 
     it("should detect missing multiple mandatory attribute", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$error: "my error", $$meta: {$$idx: 0, $$mandatory: true, $$multiple: false}},
             {name: "mnt-by", value: null, $$error: "my error", $$meta: {$$idx: 1, $$mandatory: true, $$multiple: true}},
             {name: "source", value: "d", $$error: "my error", $$meta: {$$idx: 2, $$mandatory: true, $$multiple: false}},
         ]);
-        expect(attrs.getSingleAttributeOnName("mnt-by").$$error).toEqual("my error");
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs,"mnt-by").$$error).toEqual("my error");
 
-        attrs.clearErrors();
-        expect(attrs.getSingleAttributeOnName("as-block").$$error).toEqual(undefined);
-        expect(attrs.getSingleAttributeOnName("mnt-by").$$error).toEqual(undefined);
-        expect(attrs.getSingleAttributeOnName("source").$$error).toEqual(undefined);
+        whoisResourcesService.clearErrors(attrs);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs,"as-block").$$error).toEqual(undefined);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs,"mnt-by").$$error).toEqual(undefined);
+        expect(whoisResourcesService.getSingleAttributeOnName(attrs,"source").$$error).toEqual(undefined);
     });
 
     it("should detact if an attribute can be added", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "person", value: "a", $$meta: {$$mandatory: true, $$multiple: false}},
             {name: "address", value: "b", $$meta: {$$mandatory: true, $$multiple: true}},
             {name: "address", value: "c", $$meta: {$$mandatory: true, $$multiple: true}},
@@ -653,7 +654,7 @@ describe("WhoisResourcesService", () => {
             {name: "source", value: "g", $$meta: {$$mandatory: true, $$multiple: false}},
         ]);
 
-        const addableAttrs = attrs.getAddableAttributes("person", attrs);
+        const addableAttrs = whoisResourcesService.getAddableAttributes(attrs, "person", attrs);
         expect(addableAttrs[0].name).toBe("address");
         expect(addableAttrs[1].name).toBe("phone");
         expect(addableAttrs[2].name).toBe("fax-no");
@@ -667,7 +668,7 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should detact if an attribute can be removed", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "person", value: "a", $$meta: {$$mandatory: true, $$multiple: false}},
             {name: "address", value: "a", $$meta: {$$mandatory: true, $$multiple: true}},
             {name: "address", value: "a", $$meta: {$$mandatory: true, $$multiple: true}},
@@ -677,24 +678,24 @@ describe("WhoisResourcesService", () => {
             {name: "source", value: "g", $$meta: {$$mandatory: true, $$multiple: false}},
         ]);
 
-        expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName("person"))).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"person"))).toBe(false);
 
-        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName("address")[0])).toBe(true);
-        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName("address")[1])).toBe(true);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getAllAttributesOnName(attrs, "address")[0])).toBe(true);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getAllAttributesOnName(attrs, "address")[1])).toBe(true);
 
-        expect(attrs.canAttributeBeRemoved(attrs.getAllAttributesOnName("phone")[0])).toBe(false);
-        expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName("nic-hdl"))).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getAllAttributesOnName(attrs, "phone")[0])).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"nic-hdl"))).toBe(false);
 
-        expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName("last-modified"))).toBe(true);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"last-modified"))).toBe(true);
 
-        expect(attrs.canAttributeBeRemoved(attrs.getSingleAttributeOnName("source"))).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"source"))).toBe(false);
 
 
     });
 
 
     it("should allow certain attrs to be empty but remove all others", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a"},
             {name: "address", value: "c"},
             {name: "address", value: null},
@@ -703,7 +704,7 @@ describe("WhoisResourcesService", () => {
             {name: "source", value: "d"}
         ]);
 
-        const result = attrs.removeNullAttributes();
+        const result = whoisResourcesService.removeNullAttributes(attrs);
 
         expect(result.length).toEqual(5);
         expect(result[0].value).toEqual("a");
@@ -714,13 +715,13 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should remove an attribute", () => {
-        let attrs = whoisResourcesService.wrapAttributes([
+        let attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: "b"},
             {name: "source", value: "c"},
         ]);
 
-        attrs = attrs.removeAttribute(attrs[1]);
+        attrs = whoisResourcesService.removeAttribute(attrs, attrs[1]);
 
         expect(attrs.length).toEqual(2);
         expect(attrs[0].value).toEqual("a");
@@ -728,13 +729,13 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should remove null attributes", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a"},
             {name: "mnt-by", value: null},
             {name: "source", value: "c"},
         ]);
 
-        const result = attrs.removeNullAttributes();
+        const result = whoisResourcesService.removeNullAttributes(attrs);
 
         expect(result.length).toEqual(2);
         expect(result[0].value).toEqual("a");
@@ -742,35 +743,35 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should remove a null valued attribute", () => {
-        let attrs = whoisResourcesService.wrapAttributes([
+        let attrs = whoisResourcesService.validateAttributes([
             {name: "mnt-by", value: null},
             {name: "source", value: "c"},
         ]);
 
-        attrs = attrs.removeAttribute(attrs[0]);
+        attrs = whoisResourcesService.removeAttribute(attrs, attrs[0]);
 
         expect(attrs.length).toEqual(1);
     });
 
     it("should remove an undefined valued attribute", () => {
-        let attrs = whoisResourcesService.wrapAttributes([
+        let attrs = whoisResourcesService.validateAttributes([
             {name: "mnt-by"},
             {name: "source", value: "c"},
         ]);
 
-        attrs = attrs.removeAttribute(attrs[0]);
+        attrs = whoisResourcesService.removeAttribute(attrs, attrs[0]);
 
         expect(attrs.length).toEqual(1);
     });
 
     it("should duplicate an attribute", () => {
-        let attrs = whoisResourcesService.wrapAttributes([
+        let attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$mandatory: true, $$multiple: false}},
             {name: "mnt-by", value: "b", $$meta: {$$mandatory: true, $$multiple: true}},
             {name: "source", value: "c", $$meta: {$$mandatory: true, $$multiple: false}}
         ]);
 
-        attrs = attrs.duplicateAttribute(attrs[1]);
+        attrs = whoisResourcesService.duplicateAttribute(attrs, attrs[1]);
 
         expect(attrs.length).toEqual(4);
         expect(attrs[0].value).toEqual("a");
@@ -781,20 +782,20 @@ describe("WhoisResourcesService", () => {
     });
 
     it("should plaintext version of attributes", () => {
-        const attrs = whoisResourcesService.wrapAttributes([
+        const attrs = whoisResourcesService.validateAttributes([
             {name: "as-block", value: "a", $$meta: {$$mandatory: true, $$multiple: false}},
             {name: "mnt-by", value: "b", $$meta: {$$mandatory: true, $$multiple: true}},
             {name: "source", value: "c", $$meta: {$$mandatory: true, $$multiple: false}}
         ]);
 
-        expect(attrs.toPlaintext()).toEqual(
+        expect(whoisResourcesService.toPlaintext(attrs)).toEqual(
             "as-block:            a\n" +
             "mnt-by:              b\n" +
             "source:              c\n");
     });
 
     it("should plaintext version of object", () => {
-        const resources = whoisResourcesService.wrapWhoisResources({
+        const resources = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -835,7 +836,8 @@ describe("WhoisResourcesService", () => {
             }
         });
 
-        expect(whoisResourcesService.wrapAttributes(resources.getAttributes()).toPlaintext()).toEqual(
+        const validatedAttributes = whoisResourcesService.validateAttributes(whoisResourcesService.getAttributes(resources));
+        expect(whoisResourcesService.toPlaintext(validatedAttributes)).toEqual(
             "person:              Test Person\n" +
             "nic-hdl:             MG20276-RIPE\n" +
             "source:              RIPE\n");
@@ -854,7 +856,7 @@ describe("WhoisResourcesService", () => {
             {name: "mnt-by", value: "TEST-MNT"},
             {name: "source", value: "RIPE"}
         ];
-        const resources = whoisResourcesService.wrapWhoisResources({
+        const resources = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {attributes: {attribute: personAttrs}},

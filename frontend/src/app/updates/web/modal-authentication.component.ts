@@ -77,7 +77,7 @@ export class ModalAuthenticationComponent {
             .then((result: any) => {
                 const whoisResources = result;
 
-                if (whoisResources.isFiltered()) {
+                if (this.whoisResourcesService.isFiltered(whoisResources)) {
                     this.selected.message =
                         "You have not supplied the correct password for mntner: \'" + this.selected.item.key + "\'";
                     return;
@@ -90,13 +90,14 @@ export class ModalAuthenticationComponent {
                     if (this.selected.associate && ssoUserName) {
 
                         // append auth-md5 attribute
-                        const attributes = this.whoisResourcesService.wrapAttributes(whoisResources.getAttributes()).addAttributeAfterType({
+                        const attributes = this.whoisResourcesService.addAttributeAfterType(
+                            this.whoisResourcesService.getAttributes(whoisResources), {
                             name: "auth",
                             value: "SSO " + ssoUserName,
                         }, {name: "auth"});
 
                         // do adjust the maintainer
-                        this.restService.associateSSOMntner(whoisResources.getSource(), "mntner", this.selected.item.key,
+                        this.restService.associateSSOMntner(this.whoisResourcesService.getSource(whoisResources), "mntner", this.selected.item.key,
                             this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), this.selected.password)
                             .then((resp: any) => {
                                 this.selected.item.mine = true;
@@ -118,9 +119,8 @@ export class ModalAuthenticationComponent {
             }, (error: any) => {
                 console.error("Authentication error:" + error);
 
-                const whoisResources = this.whoisResourcesService.wrapWhoisResources(error.data);
-                if (!_.isUndefined(whoisResources)) {
-                    this.selected.message = _.reduce(whoisResources.getGlobalErrors(), (total, msg) => {
+                if (!_.isUndefined(error.data)) {
+                    this.selected.message = _.reduce(this.whoisResourcesService.getGlobalErrors(error.data), (total, msg) => {
                         return total + "\n" + msg;
                     });
                 } else {

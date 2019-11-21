@@ -67,23 +67,23 @@ export class DisplayComponent {
         // fetch just created object from temporary store
         const cached = this.messageStoreService.get(this.objectName);
         if (!_.isUndefined(cached)) {
-            const whoisResources = this.whoisResourcesService.wrapWhoisResources(cached);
-            this.attributes = this.whoisResourcesService.wrapAttributes(whoisResources.getAttributes());
+            const whoisResources = this.whoisResourcesService.validateWhoisResources(cached);
+            this.attributes = this.whoisResourcesService.getAttributes(whoisResources);
             this.alertService.populateFieldSpecificErrors(this.objectType, this.attributes, cached);
             this.alertService.setErrors(whoisResources);
 
             if (this.method === "Modify") {
-                const diff = this.whoisResourcesService.wrapAttributes(this.messageStoreService.get("DIFF"));
+                const diff = this.whoisResourcesService.validateAttributes(this.messageStoreService.get("DIFF"));
                 if (!_.isUndefined(diff)) {
-                    this.before = diff.toPlaintext();
-                    this.after = this.attributes.toPlaintext();
+                    this.before = this.whoisResourcesService.toPlaintext(diff);
+                    this.after = this.whoisResourcesService.toPlaintext(this.attributes);
                 }
             }
             this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
         } else {
             this.restService.fetchObject(this.objectSource, this.objectType, this.objectName, null, null)
                 .subscribe((resp: any) => {
-                    this.attributes = resp.getAttributes();
+                    this.attributes = this.whoisResourcesService.getAttributes(resp);
                     this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
                     this.alertService.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
                     this.alertService.setErrors(resp);

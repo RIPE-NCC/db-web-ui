@@ -103,17 +103,17 @@ describe("CreateModifyComponent for organisation", () => {
     it("should populate abuse-c with new role\'s nic-hdl", async () => {
         component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
         modalMock.open.and.returnValue({componentInstance: {}, result: of(ROLE_OBJ).toPromise()});
-        const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c");
+        const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c");
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
         httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush({});
-        expect(component.attributes.getSingleAttributeOnName("abuse-c").value).toBe("SR11027-RIPE");
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c").value).toBe("SR11027-RIPE");
     });
 
     it("should populate component.roleForAbuseC", async () => {
         component.attributes = component.organisationHelperService.addAbuseC(component.objectType, component.attributes);
         modalMock.open.and.returnValue({componentInstance: {}, result: of(ROLE_OBJ).toPromise()});
-        const attrAbuseC = component.attributes.getSingleAttributeOnName("abuse-c");
+        const attrAbuseC = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "abuse-c");
         component.createRoleForAbuseCAttribute(attrAbuseC);
         await fixture.whenStable();
         httpMock.expectOne({method: "GET", url: "api/whois/autocomplete?attribute=auth&extended=true&field=mntner&query=TEST-MNT"}).flush({});
@@ -121,8 +121,8 @@ describe("CreateModifyComponent for organisation", () => {
     });
 
     it("should use the helper to update role for abuse-c", async () => {
-        component.attributes = component.attributes.addAttributeAfterType({name: "abuse-c", value: "some abuse-c"}, {name: "e-mail"});
-        component.attributes = component.whoisResourcesService.wrapAttributes(
+        component.attributes = component.whoisResourcesService.addAttributeAfterType(component.attributes, {name: "abuse-c", value: "some abuse-c"}, {name: "e-mail"});
+        component.attributes = component.whoisResourcesService.validateAttributes(
             component.whoisMetaService.enrichAttributesWithMetaInfo(component.objectType, component.attributes )
         );
         await fixture.whenStable();

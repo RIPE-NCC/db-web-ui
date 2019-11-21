@@ -49,7 +49,8 @@ export class OrganisationHelperService {
 
         if (objectType === "organisation") {
             attributes = this.whoisResourcesService.wrapAndEnrichAttributes(objectType, attributes);
-            const attrs = attributes.addAttributeAfter({name: "abuse-c", value: ""}, attributes.getSingleAttributeOnName("e-mail"));
+            const email = this.whoisResourcesService.getSingleAttributeOnName(attributes, "e-mail");
+            const attrs = this.whoisResourcesService.addAttributeAfter(attributes, {name: "abuse-c", value: ""}, email);
             return this.whoisResourcesService.wrapAndEnrichAttributes(objectType, attrs);
         } else {
             return attributes;
@@ -59,21 +60,21 @@ export class OrganisationHelperService {
     public updateAbuseC(source: string, objectType: string, roleForAbuseC: any, organisationAttributes: any, passwords?: any) {
         if (objectType === "organisation" && roleForAbuseC) {
 
-            roleForAbuseC = this.whoisResourcesService.wrapAttributes(roleForAbuseC);
-            _.forEach(roleForAbuseC.getAllAttributesOnName("mnt-by"), (mnt) => {
-                roleForAbuseC = roleForAbuseC.removeAttribute(mnt);
-                roleForAbuseC = this.whoisResourcesService.wrapAttributes(roleForAbuseC); // I really don't know when to use the wrappers! ;(
+            roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
+            _.forEach(this.whoisResourcesService.getAllAttributesOnName(roleForAbuseC, "mnt-by"), (mnt) => {
+                roleForAbuseC = this.whoisResourcesService.removeAttribute(roleForAbuseC, mnt);
+                roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC); // I really don't know when to use the wrappers! ;(
             });
 
-            roleForAbuseC = this.whoisResourcesService.wrapAttributes(roleForAbuseC);
-            _.forEach(organisationAttributes.getAllAttributesOnName("mnt-by"), (mnt) => {
-                roleForAbuseC = roleForAbuseC.addAttributeAfterType({name: "mnt-by", value: mnt.value}, {name: "nic-hdl"});
-                roleForAbuseC = this.whoisResourcesService.wrapAttributes(roleForAbuseC);
+            roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
+            _.forEach(this.whoisResourcesService.getAllAttributesOnName(organisationAttributes, "mnt-by"), (mnt) => {
+                roleForAbuseC = this.whoisResourcesService.addAttributeAfterType(roleForAbuseC, {name: "mnt-by", value: mnt.value}, {name: "nic-hdl"});
+                roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
             });
 
-            roleForAbuseC.setSingleAttributeOnName("address", organisationAttributes.getSingleAttributeOnName("address").value);
+            roleForAbuseC = this.whoisResourcesService.setSingleAttributeOnName(roleForAbuseC,"address", this.whoisResourcesService.getSingleAttributeOnName(organisationAttributes,"address").value);
 
-            this.restService.modifyObject(source, "role", roleForAbuseC.getSingleAttributeOnName("nic-hdl").value,
+            this.restService.modifyObject(source, "role", this.whoisResourcesService.getSingleAttributeOnName(roleForAbuseC, "nic-hdl").value,
                 this.whoisResourcesService.turnAttrsIntoWhoisObject(roleForAbuseC), passwords)
                 .subscribe(() => {}, () => {});
         }

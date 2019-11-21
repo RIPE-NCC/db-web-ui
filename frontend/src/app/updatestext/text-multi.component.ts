@@ -156,8 +156,8 @@ export class TextMultiComponent {
             this.setStatus(object, undefined, "Start " + this.determineAction(object));
             return this.performAction(this.objects.source, object)
                 .then((whoisResources: IWhoisResponseModel) => {
-                        object.name = this.whoisResourcesService.getPrimaryKey(whoisResources)();
-                        object.attributes = this.whoisResourcesService.getAttributes(whoisResources)();
+                        object.name = this.whoisResourcesService.getPrimaryKey(whoisResources);
+                        object.attributes = this.whoisResourcesService.getAttributes(whoisResources);
                         const obj = {
                             attributes: object.attributes,
                             deleteReason: object.deleteReason,
@@ -170,17 +170,17 @@ export class TextMultiComponent {
                         }
                         object.textupdatesUrl = undefined;
                         object.errors = [];
-                        object.warnings = this.whoisResourcesService.getAllWarnings(whoisResources)();
-                        object.infos = this.whoisResourcesService.getAllInfos(whoisResources)();
+                        object.warnings = this.whoisResourcesService.getAllWarnings(whoisResources);
+                        object.infos = this.whoisResourcesService.getAllInfos(whoisResources);
 
                         this.markActionCompleted(object, this.determineAction(object) + " success", true);
 
                         return object;
                     }, (whoisResources: any) => {
                         if (!_.isUndefined(whoisResources)) {
-                            object.errors = whoisResources.getAllErrors();
-                            object.warnings = whoisResources.getAllWarnings();
-                            object.infos = whoisResources.getAllInfos();
+                            object.errors = this.whoisResourcesService.getAllErrors(whoisResources);
+                            object.warnings = this.whoisResourcesService.getAllWarnings(whoisResources);
+                            object.infos = this.whoisResourcesService.getAllInfos(whoisResources);
                         }
 
                         this.markActionCompleted(object, this.determineAction(object) + " failed", true);
@@ -274,7 +274,7 @@ export class TextMultiComponent {
                     map((result: any) => {
                         console.debug("Successfully fetched object " + object.name);
                         // store original value to make diff-view later
-                        object.rpslOriginal = this.rpslService.toRpsl({attributes: result.getAttributes()});
+                        object.rpslOriginal = this.rpslService.toRpsl({attributes: this.whoisResourcesService.getAttributes(result)});
                         return true
                     }),
                     catchError((error: any, caught: Observable<any>) => {
@@ -283,7 +283,7 @@ export class TextMultiComponent {
                         if (error.status === 404) {
                             return of(false);
                         } else {
-                            return throwError(error.data.getAllErrors());
+                            return throwError(this.whoisResourcesService.getAllErrors(error.data));
                         }
                     })).toPromise();
         }
@@ -324,8 +324,8 @@ export class TextMultiComponent {
                         catchError((error: any, caught: Observable<any>) => {
                             this.setStatus(object, false, "Delete error");
 
-                            if (!_.isEmpty(error.data.getAttributes())) {
-                                this.errorReporterService.log("MultiDelete", object.type, this.alertService.getErrors(), error.data.getAttributes());
+                            if (!_.isEmpty(this.whoisResourcesService.getAttributes(error.data))) {
+                                this.errorReporterService.log("MultiDelete", object.type, this.alertService.getErrors(), this.whoisResourcesService.getAttributes(error.data));
                             }
                             return throwError(error.data);
                         })).toPromise();
@@ -340,15 +340,15 @@ export class TextMultiComponent {
 
                             // Associate generated value for auto-key so that next object with auto- can be substituted
                             _.each(autoAttrs, (attr) => {
-                                this.autoKeyLogicService.registerAutoKeyValue(attr, result.getAttributes());
+                                this.autoKeyLogicService.registerAutoKeyValue(attr, this.whoisResourcesService.getAttributes(result));
                             });
                             return result
                         }),
                         catchError((error: any, caught: Observable<any>) => {
                             this.setStatus(object, false, "Create error");
-
-                            if (!_.isEmpty(error.data.getAttributes())) {
-                                this.errorReporterService.log("MultiCreate", object.type, this.alertService.getErrors(), error.data.getAttributes());
+                            const errorDataAttributes = this.whoisResourcesService.getAttributes(error.data);
+                            if (!_.isEmpty(errorDataAttributes)) {
+                                this.errorReporterService.log("MultiCreate", object.type, this.alertService.getErrors(), errorDataAttributes);
                             }
                             return throwError(error.data);
                         })).toPromise();
@@ -364,8 +364,9 @@ export class TextMultiComponent {
                         catchError((error: any, caught: Observable<any>) => {
                             this.setStatus(object, false, "Modify error");
 
-                            if (!_.isEmpty(error.data.getAttributes())) {
-                                this.errorReporterService.log("MultiModify", object.type, this.alertService.getErrors(), error.data.getAttributes());
+                            const errorDataAttributes = this.whoisResourcesService.getAttributes(error.data)
+                            if (!_.isEmpty(errorDataAttributes)) {
+                                this.errorReporterService.log("MultiModify", object.type, this.alertService.getErrors(), errorDataAttributes);
                             }
                             return throwError(error.data);
                         })).toPromise();
@@ -403,7 +404,7 @@ export class TextMultiComponent {
 
         let pkey = "";
         _.each(pkeyAttrs, (pkeyAttr) => {
-            const attr = attributes.getSingleAttributeOnName(pkeyAttr.name);
+            const attr = this.whoisResourcesService.getSingleAttributeOnName(attributes, pkeyAttr.name);
             if (!_.isUndefined(attr) && !_.isEmpty(attr.name)) {
                 pkey = pkey.concat(_.trim(attr.value));
             }

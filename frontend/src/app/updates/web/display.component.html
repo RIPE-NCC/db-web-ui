@@ -17,7 +17,7 @@
                         {{attribute.value | sanitizeImgHtml}}
                 </p>
                 <p [hidden]="!attribute.link">
-                        <a [href]="attribute.link?.uiHref">{{attribute.value}}</a>
+                        <a [href]="attribute.link?.href">{{attribute.value}}</a>
                 </p>
                 <div [hidden]="!attribute.$$error">
     	            <span>{{attribute.$$error}}</span>

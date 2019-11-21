@@ -24,6 +24,7 @@ describe("displayPairComponent", () => {
     let messageStoreServiceMock: any;
     let personToDisplay: any;
     let mntnerToDisplay: any;
+    let whoisResourcesService: WhoisResourcesService;
 
     beforeEach(() => {
         paramMapMock = convertToParamMap({source: SOURCE, person: PERSON_NAME, mntner: MNTNER_NAME});
@@ -56,8 +57,8 @@ describe("displayPairComponent", () => {
         httpMock = TestBed.get(HttpTestingController);
         fixture = TestBed.createComponent(DisplayMntnerPairComponent);
         component = fixture.componentInstance;
-        const whois = TestBed.get(WhoisResourcesService);
-        personToDisplay = whois.wrapWhoisResources({
+        whoisResourcesService = TestBed.get(WhoisResourcesService);
+        personToDisplay = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -73,7 +74,7 @@ describe("displayPairComponent", () => {
                 ]
             }
         });
-        mntnerToDisplay = whois.wrapWhoisResources({
+        mntnerToDisplay = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -115,20 +116,20 @@ describe("displayPairComponent", () => {
         fixture.detectChanges();
 
         // @ts-ignore
-        expect(component.objectTypeAttributes.getSingleAttributeOnName("person").value).toBe(PERSON_NAME);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "person").value).toBe(PERSON_NAME);
         // @ts-ignore
-        expect(component.objectTypeAttributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER_NAME);
+        expect(whoisResourcesService.getAllAttributesOnName(component.objectTypeAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
         // @ts-ignore
-        expect(component.objectTypeAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "source").value).toEqual(SOURCE);
 
         // @ts-ignore
-        expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").value).toBe(MNTNER_NAME);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").value).toBe(MNTNER_NAME);
         // @ts-ignore
-        expect(component.mntnerAttributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER_NAME);
+        expect(whoisResourcesService.getAllAttributesOnName(component.mntnerAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
         // @ts-ignore
-        expect(component.mntnerAttributes.getSingleAttributeOnName("admin-c").value).toEqual(PERSON_NAME);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "admin-c").value).toEqual(PERSON_NAME);
         // @ts-ignore
-        expect(component.mntnerAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "source").value).toEqual(SOURCE);
 
         expect(routerMock.navigate).not.toHaveBeenCalled();
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
@@ -142,20 +143,20 @@ describe("displayPairComponent", () => {
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true"}).flush(mntnerToDisplay);
 
         // @ts-ignore
-        expect(component.objectTypeAttributes.getSingleAttributeOnName("person").value).toBe(PERSON_NAME);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "person").value).toBe(PERSON_NAME);
         // @ts-ignore
-        expect(component.objectTypeAttributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER_NAME);
+        expect(whoisResourcesService.getAllAttributesOnName(component.objectTypeAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
         // @ts-ignore
-        expect(component.objectTypeAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "source").value).toEqual(SOURCE);
 
         // @ts-ignore
-        expect(component.mntnerAttributes.getSingleAttributeOnName("mntner").value).toBe(MNTNER_NAME);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").value).toBe(MNTNER_NAME);
         // @ts-ignore
-        expect(component.mntnerAttributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER_NAME);
+        expect(whoisResourcesService.getAllAttributesOnName(component.mntnerAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
         // @ts-ignore
-        expect(component.mntnerAttributes.getSingleAttributeOnName("admin-c").value).toEqual(PERSON_NAME);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "admin-c").value).toEqual(PERSON_NAME);
         // @ts-ignore
-        expect(component.mntnerAttributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+        expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "source").value).toEqual(SOURCE);
 
         expect(routerMock.navigate).not.toHaveBeenCalled();
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();

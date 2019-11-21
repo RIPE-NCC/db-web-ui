@@ -55,6 +55,7 @@ describe("ForceDeleteController", () => {
     let forceDeleteComponent: ForceDeleteComponent;
     let routerMock: any;
     let credentialsServiceMock: any;
+    let whoisResourcesService: WhoisResourcesService;
 
     beforeEach(() => {
         paramMapMock = convertToParamMap({});
@@ -64,6 +65,7 @@ describe("ForceDeleteController", () => {
         credentialsServiceMock.hasCredentials.and.returnValue(true);
         credentialsServiceMock.getCredentials.and.returnValue({mntner: "TEST-MNT", successfulPassword: "@123"});
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
+
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule, FormsModule],
             declarations: [ForceDeleteComponent, AlertsComponent],
@@ -89,8 +91,8 @@ describe("ForceDeleteController", () => {
             ],
         });
         httpMock = TestBed.get(HttpTestingController);
-        const whoisResourcesService = TestBed.get(WhoisResourcesService);
-        objectToDisplay = whoisResourcesService.wrapWhoisResources({
+        whoisResourcesService = TestBed.get(WhoisResourcesService);
+        objectToDisplay = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -171,9 +173,9 @@ describe("ForceDeleteController", () => {
 
         await expectHttpCalls();
 
-        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName("inetnum").value).toBe(INETNUM);
-        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName("descr").value).toEqual("description");
-        expect(forceDeleteComponent.object.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+        expect(whoisResourcesService.getSingleAttributeOnName(forceDeleteComponent.object.attributes, "inetnum").value).toBe(INETNUM);
+        expect(whoisResourcesService.getSingleAttributeOnName(forceDeleteComponent.object.attributes, "descr").value).toEqual("description");
+        expect(whoisResourcesService.getSingleAttributeOnName(forceDeleteComponent.object.attributes, "source").value).toEqual(SOURCE);
     });
 
     it("should transition to display state if cancel is pressed", async () => {

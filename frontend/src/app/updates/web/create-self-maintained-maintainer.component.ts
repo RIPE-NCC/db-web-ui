@@ -55,7 +55,7 @@ export class CreateSelfMaintainedMaintainerComponent {
 
         const paramMap = this.activatedRoute.snapshot.paramMap;
         this.source = paramMap.get("source");
-        this.maintainerAttributes.setSingleAttributeOnName("source", this.source);
+        this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"source", this.source);
 
         this.showAttrsHelp = this.maintainerAttributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
 
@@ -69,8 +69,8 @@ export class CreateSelfMaintainedMaintainerComponent {
         // kick off ajax-call to fetch email address of logged-in user
         this.userInfoService.getUserOrgsAndRoles()
             .subscribe((result: any) => {
-                this.maintainerAttributes.setSingleAttributeOnName("upd-to", result.user.username);
-                this.maintainerAttributes.setSingleAttributeOnName("auth", "SSO " + result.user.username);
+                this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"upd-to", result.user.username);
+                this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"auth", "SSO " + result.user.username);
             }, () => {
                 this.alertService.setGlobalError("Error fetching SSO information");
             },
@@ -82,8 +82,8 @@ export class CreateSelfMaintainedMaintainerComponent {
 
         console.info("submit attrs:" + JSON.stringify(this.maintainerAttributes));
 
-        this.maintainerAttributes.clearErrors();
-        if (!this.maintainerAttributes.validate()) {
+        this.whoisResourcesService.clearErrors(this.maintainerAttributes);
+        if (!this.whoisResourcesService.validate(this.maintainerAttributes)) {
             this.errorReporterService.log("Create", this.MNT_TYPE, this.alertService.getErrors(), this.maintainerAttributes);
         } else {
             this.createObject();
@@ -92,7 +92,7 @@ export class CreateSelfMaintainedMaintainerComponent {
 
     public isFormValid() {
         this.populateMissingAttributes();
-        return this.maintainerAttributes.validateWithoutSettingErrors();
+        return this.whoisResourcesService.validateWithoutSettingErrors(this.maintainerAttributes);
     }
 
     public cancel() {
@@ -133,9 +133,9 @@ export class CreateSelfMaintainedMaintainerComponent {
 
     public onAdminCAdded(item: any) {
         console.debug("onAdminCAdded:" + JSON.stringify(item));
-        this.maintainerAttributes = this.maintainerAttributes.addAttributeAfterType({name: "admin-c", value: item.key}, {name: "admin-c"});
+        this.maintainerAttributes = this.whoisResourcesService.addAttributeAfterType(this.maintainerAttributes, {name: "admin-c", value: item.key}, {name: "admin-c"});
         this.maintainerAttributes = this.whoisMetaService.enrichAttributesWithMetaInfo(this.MNT_TYPE, this.maintainerAttributes);
-        this.maintainerAttributes = this.whoisResourcesService.wrapAttributes(this.maintainerAttributes);
+        this.maintainerAttributes = this.whoisResourcesService.validateAttributes(this.maintainerAttributes);
     }
 
     public onAdminCRemoved(item: any) {
@@ -158,7 +158,7 @@ export class CreateSelfMaintainedMaintainerComponent {
     }
 
     private createObject() {
-        this.maintainerAttributes = this.maintainerAttributes.removeNullAttributes();
+        this.maintainerAttributes = this.whoisResourcesService.removeNullAttributes(this.maintainerAttributes);
 
         const obj = this.whoisResourcesService.turnAttrsIntoWhoisObject(this.maintainerAttributes);
 
@@ -167,7 +167,7 @@ export class CreateSelfMaintainedMaintainerComponent {
             .subscribe((resp: any) => {
                     this.submitInProgress = false;
 
-                    const primaryKey = resp.getPrimaryKey();
+                    const primaryKey = this.whoisResourcesService.getPrimaryKey(resp);
                     this.messageStoreService.add(primaryKey, resp);
                     this.router.navigateByUrl(`webupdates/display/${this.source}/${this.MNT_TYPE}/${primaryKey}`);
                 }, (error: any) => {
@@ -181,10 +181,10 @@ export class CreateSelfMaintainedMaintainerComponent {
     }
 
     private populateMissingAttributes() {
-        this.maintainerAttributes = this.whoisResourcesService.wrapAttributes(this.maintainerAttributes);
+        this.maintainerAttributes = this.whoisResourcesService.validateAttributes(this.maintainerAttributes);
 
-        const mntner = this.maintainerAttributes.getSingleAttributeOnName(this.MNT_TYPE);
-        this.maintainerAttributes.setSingleAttributeOnName("mnt-by", mntner.value);
+        const mntner = this.whoisResourcesService.getSingleAttributeOnName(this.maintainerAttributes, this.MNT_TYPE);
+        this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"mnt-by", mntner.value);
     }
 
     private stripAlreadySelected(adminC: any) {

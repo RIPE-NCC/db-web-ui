@@ -55,28 +55,28 @@ export class ModalCreateRoleForAbuseCComponent {
             ModalCreateRoleForAbuseCComponent.NEW_ROLE_TEMPLATE,
         );
 
-        attributes.setSingleAttributeOnName("abuse-mailbox", this.email);
-        attributes.setSingleAttributeOnName("e-mail", this.email);
-        attributes.setSingleAttributeOnName("source", this.inputData.source);
+        attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, "abuse-mailbox", this.email);
+        attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, "e-mail", this.email);
+        attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, "source", this.inputData.source);
 
-        attributes = this.whoisResourcesService.wrapAttributes(attributes);
+        attributes = this.whoisResourcesService.validateAttributes(attributes);
         this.inputData.maintainers.forEach((mnt: any) => {
             // remove mnt - for which on backend fail creating role
             if (typeof mnt.value === "string" && !this.mntnerService.isNccMntner(mnt.value)) {
-                attributes = attributes.addAttributeAfterType({
+                attributes = this.whoisResourcesService.addAttributeAfterType(attributes, {
                     name: "mnt-by",
                     value: mnt.value,
                 }, {name: "mnt-by"});
-                attributes = this.whoisResourcesService.wrapAttributes(attributes);
+                attributes = this.whoisResourcesService.validateAttributes(attributes);
             }
         });
 
-        attributes = this.whoisResourcesService.wrapAndEnrichAttributes("role", attributes.removeNullAttributes());
+        attributes = this.whoisResourcesService.wrapAndEnrichAttributes("role", this.whoisResourcesService.removeNullAttributes(attributes));
         const resp = this.restService.createObject(this.inputData.source, "role",
                         this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), this.inputData.passwords)
             .subscribe((response: any) => {
                 const whoisResources = response;
-                this.activeModal.close(whoisResources.getAttributes());
+                this.activeModal.close(this.whoisResourcesService.getAttributes(whoisResources));
             },
             (error: any) => {
                 return this.activeModal.dismiss(error);

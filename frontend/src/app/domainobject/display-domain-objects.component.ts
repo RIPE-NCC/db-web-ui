@@ -26,7 +26,7 @@ export class DisplayDomainObjectsComponent {
         const result = this.messageStoreService.get("result");
         this.prefix = result.prefix;
 
-        const whoisResources = this.whoisResourcesService.wrapWhoisResources(result.whoisResources);
+        const whoisResources = this.whoisResourcesService.validateWhoisResources(result.whoisResources);
         this.objects = whoisResources.objects.object;
 
         this.alertService.clearErrors();

@@ -113,17 +113,18 @@ export class TextModifyComponent {
                     this.whoisResourcesService.turnAttrsIntoWhoisObject(attributes), combinedPasswords, this.override, true)
                     .subscribe((whoisResources: any) => {
                         this.restCallInProgress = false;
-
-                        this.messageStoreService.add(whoisResources.getPrimaryKey(), whoisResources);
-                        this.navigateToDisplayPage(this.object.source, this.object.type, whoisResources.getPrimaryKey(), "Modify");
+                        const primaryKey = this.whoisResourcesService.getPrimaryKey(whoisResources);
+                        this.messageStoreService.add(primaryKey, whoisResources);
+                        this.navigateToDisplayPage(this.object.source, this.object.type, primaryKey, "Modify");
 
                     }, (errorWhoisResources: any) => {
                         this.restCallInProgress = false;
 
                         const whoisResources = errorWhoisResources.data;
                         this.alertService.setAllErrors(whoisResources);
-                        if (!_.isEmpty(whoisResources.getAttributes())) {
-                            this.errorReporterService.log("TextModify", this.object.type, this.alertService.getErrors(), whoisResources.getAttributes());
+                        const attributes = this.whoisResourcesService.getAttributes(whoisResources);
+                        if (!_.isEmpty(attributes)) {
+                            this.errorReporterService.log("TextModify", this.object.type, this.alertService.getErrors(), attributes);
                         }
                     },
                 );
@@ -194,14 +195,14 @@ export class TextModifyComponent {
     private handleFetchResponse(objectToModify: any) {
         console.debug("[textModifyController] object to modify: " + JSON.stringify(objectToModify));
         // Extract attributes from response
-        const attributes = objectToModify.getAttributes();
+        const attributes = this.whoisResourcesService.getAttributes(objectToModify);
 
         // Needed by display screen
         this.messageStoreService.add("DIFF", _.cloneDeep(attributes));
 
         // prevent created and last-modfied to be in
-        attributes.removeAttributeWithName("created");
-        attributes.removeAttributeWithName("last-modified");
+        this.whoisResourcesService.removeAttributeWithName(attributes, "created");
+        this.whoisResourcesService.removeAttributeWithName(attributes, "last-modified");
 
         const obj = {
             attributes,

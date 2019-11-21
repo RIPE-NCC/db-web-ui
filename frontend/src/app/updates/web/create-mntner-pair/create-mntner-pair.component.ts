@@ -62,21 +62,21 @@ export class CreateMntnerPairComponent {
         this.linkToRoleOrPerson = this.isObjectTypeRole() ? "person" : "role";
         this.objectTypeAttributes = this.whoisResourcesService.wrapAndEnrichAttributes(this.objectType,
             this.whoisMetaService.getMandatoryAttributesOnObjectType(this.objectType));
-        this.objectTypeAttributes.setSingleAttributeOnName("nic-hdl", "AUTO-1");
-        this.objectTypeAttributes.setSingleAttributeOnName("source", this.source);
+        this.objectTypeAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.objectTypeAttributes, "nic-hdl", "AUTO-1");
+        this.objectTypeAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.objectTypeAttributes, "source", this.source);
         this.showAttrsHelp = this.objectTypeAttributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
 
         this.mntnerAttributes = this.whoisResourcesService.wrapAndEnrichAttributes("mntner",
             this.whoisMetaService.getMandatoryAttributesOnObjectType("mntner"));
-        this.mntnerAttributes.setSingleAttributeOnName("admin-c", "AUTO-1");
-        this.mntnerAttributes.setSingleAttributeOnName("source", this.source);
+        this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, "admin-c", "AUTO-1");
+        this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, "source", this.source);
         this.showMntAttrsHelp = this.mntnerAttributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
 
         // kick off ajax-call to fetch email address of logged-in user
         this.userInfoService.getUserOrgsAndRoles()
             .subscribe((result: IUserInfoResponseData) => {
-                this.mntnerAttributes.setSingleAttributeOnName("auth", "SSO " + result.user.username);
-                this.mntnerAttributes.setSingleAttributeOnName("upd-to", result.user.username);
+                this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, "auth", "SSO " + result.user.username);
+                this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, "upd-to", result.user.username);
             }, () => {
                 this.alertService.setGlobalError("Error fetching SSO information");
             },
@@ -89,10 +89,10 @@ export class CreateMntnerPairComponent {
 
         this.populateMissingAttributes();
 
-        const mntner = this.mntnerAttributes.getSingleAttributeOnName("mntner");
+        const mntner = this.whoisResourcesService.getSingleAttributeOnName(this.mntnerAttributes, "mntner");
         if (!_.isUndefined(mntner.value)) {
-            this.objectTypeAttributes.setSingleAttributeOnName("mnt-by", mntner.value);
-            this.mntnerAttributes.setSingleAttributeOnName("mnt-by", mntner.value);
+            this.objectTypeAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.objectTypeAttributes, "mnt-by", mntner.value);
+            this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, "mnt-by", mntner.value);
         }
 
         if (!this.validateForm()) {
@@ -108,10 +108,10 @@ export class CreateMntnerPairComponent {
     }
 
     private populateMissingAttributes() {
-        const mntner = this.mntnerAttributes.getSingleAttributeOnName("mntner");
+        const mntner = this.whoisResourcesService.getSingleAttributeOnName(this.mntnerAttributes, "mntner");
         if (!_.isUndefined(mntner.value)) {
-            this.objectTypeAttributes.setSingleAttributeOnName("mnt-by", mntner.value);
-            this.mntnerAttributes.setSingleAttributeOnName("mnt-by", mntner.value);
+            this.objectTypeAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.objectTypeAttributes, "mnt-by", mntner.value);
+            this.mntnerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.mntnerAttributes, "mnt-by", mntner.value);
         }
     }
 
@@ -204,15 +204,15 @@ export class CreateMntnerPairComponent {
     }
 
     private validateForm() {
-        const roleValid = this.objectTypeAttributes.validate();
-        const mntnerValid = this.mntnerAttributes.validate();
+        const roleValid = this.whoisResourcesService.validate(this.objectTypeAttributes);
+        const mntnerValid = this.whoisResourcesService.validate(this.mntnerAttributes);
         return roleValid && mntnerValid;
     }
 
     public isFormValid() {
         this.populateMissingAttributes();
-        const roleValid = this.objectTypeAttributes.validateWithoutSettingErrors();
-        const mntnerValid = this.mntnerAttributes.validateWithoutSettingErrors();
+        const roleValid = this.whoisResourcesService.validateWithoutSettingErrors(this.objectTypeAttributes);
+        const mntnerValid = this.whoisResourcesService.validateWithoutSettingErrors(this.mntnerAttributes);
         return roleValid && mntnerValid;
     }
 
@@ -238,7 +238,8 @@ export class CreateMntnerPairComponent {
         let uid;
         const attrs = this.whoisResourcesService.getAttributesForObjectOfType(whoisResources, objectType);
         if (attrs.length > 0) {
-            uid = this.whoisResourcesService.wrapAttributes(attrs).getSingleAttributeOnName(keyFieldName).value;
+            const attr = this.whoisResourcesService.validateAttributes(attrs);
+            uid = this.whoisResourcesService.getSingleAttributeOnName(attr, keyFieldName).value;
             this.messageStoreService.add(uid, this.whoisResourcesService.turnAttrsIntoWhoisObject(attrs));
         }
         return uid;

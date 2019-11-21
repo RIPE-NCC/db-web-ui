@@ -5,6 +5,7 @@ import {MessageStoreService} from "./message-store.service";
 import {MntnerService} from "./mntner.service";
 import {IAttributeModel} from "../shared/whois-response-type.model";
 import {OrganisationHelperService} from "./web/organisation-helper.service";
+import {WhoisResourcesService} from "../shared/whois-resources.service";
 
 @Injectable()
 export class ScreenLogicInterceptorService {
@@ -15,6 +16,7 @@ export class ScreenLogicInterceptorService {
     constructor(private organisationHelperService: OrganisationHelperService,
                 private messageStore: MessageStoreService,
                 private mntnerService: MntnerService,
+                private whoisResourcesService: WhoisResourcesService,
                 private linkService: LinkService) {
         // TODO: start
         // Move the following stuff from Create-modify-controller:
@@ -190,7 +192,7 @@ export class ScreenLogicInterceptorService {
                 afterEdit: undefined,
                 afterSubmitError: (method: string, source: string, objectType: string, status: number, whoisResources: any,
                                    errors: string[], warnings: string[], infos: string[]) => {
-                    return this._handlePendingAuthenticationError(method, source, objectType, status, whoisResources, errors, warnings, infos);
+                    return this.handlePendingAuthenticationError(source, status, whoisResources);
                 },
                 afterSubmitSuccess: undefined,
                 beforeAddAttribute: undefined,
@@ -207,7 +209,7 @@ export class ScreenLogicInterceptorService {
                 afterEdit: undefined,
                 afterSubmitError: (method: string, source: string, objectType: string, status: number, whoisResources: any,
                                    errors: string[], warnings: string[], infos: string[]) => {
-                    return this._handlePendingAuthenticationError(method, source, objectType, status, whoisResources, errors, warnings, infos);
+                    return this.handlePendingAuthenticationError(source, status, whoisResources);
                 },
                 afterSubmitSuccess: undefined,
                 beforeAddAttribute: undefined,
@@ -268,13 +270,13 @@ export class ScreenLogicInterceptorService {
 
     private _loadPersonRoleDefaults(method: string, attributes: any) {
         if (method === "Create") {
-            attributes.setSingleAttributeOnName("nic-hdl", "AUTO-1");
+            this.whoisResourcesService.setSingleAttributeOnName(attributes, "nic-hdl", "AUTO-1");
         }
         return attributes;
     }
 
     private _checkLirAttributes(method: string, attributes: any,) {
-        const orgType = attributes.getSingleAttributeOnName("org-type");
+        const orgType = this.whoisResourcesService.getSingleAttributeOnName(attributes, "org-type");
 
         if (method === "Modify" && orgType.value === "LIR") {
             _.forEach(attributes, (attr) => {
@@ -294,30 +296,31 @@ export class ScreenLogicInterceptorService {
             if (!this.organisationHelperService.containsAbuseC(attributes)) {
                 attributes = this.organisationHelperService.addAbuseC(objectType, attributes);
             }
-            attributes.setSingleAttributeOnName("organisation", "AUTO-1");
-            attributes.setSingleAttributeOnName("org-type", "OTHER");
+            attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, "organisation", "AUTO-1");
+            attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, "org-type", "OTHER");
         }
 
         if (method === "Modify" && !this.organisationHelperService.containsAbuseC(attributes)) {
             attributes = this.organisationHelperService.addAbuseC(objectType, attributes);
-            attributes.getSingleAttributeOnName("abuse-c").$$meta.$$missing = true;
+            let abuseC = this.whoisResourcesService.getSingleAttributeOnName(attributes, "abuse-c");
+            // abuseC.$$meta.$$missing = true;
             warnings.push(`<p>There is currently no abuse contact set up for your organisation, which is required under
                 <a href="https://www.ripe.net/manage-ips-and-asns/resource-management/abuse-c-information" target="_blank">policy 2011-06</a>.</p>
                 <p>Please specify the abuse-c attribute below.</p>`);
         }
 
-        attributes.getSingleAttributeOnName("org-type").$$meta.$$disable = true;
+        this.whoisResourcesService.getSingleAttributeOnName(attributes, "org-type").$$meta.$$disable = true;
         return attributes;
     }
 
     private removeAbuseMailBoxOrgAndAddressIfLIR(method: string, source: string, objectType: string, objectAttributes: any, addableAttributes: any) {
-        const orgType = objectAttributes.getSingleAttributeOnName("org-type");
+        const orgType = this.whoisResourcesService.getSingleAttributeOnName(objectAttributes, "org-type");
 
-        addableAttributes.removeAttributeWithName("abuse-mailbox");
+        this.whoisResourcesService.removeAttributeWithName(addableAttributes, "abuse-mailbox");
 
         if (method === "Modify" && orgType.value === "LIR") {
-            addableAttributes.removeAttributeWithName("org");
-            addableAttributes.removeAttributeWithName("address");
+            this.whoisResourcesService.removeAttributeWithName(addableAttributes, "org");
+            this.whoisResourcesService.removeAttributeWithName(addableAttributes, "address");
         }
 
         return addableAttributes;
@@ -338,7 +341,7 @@ export class ScreenLogicInterceptorService {
 
     private _disableRipeMntIfModifying(method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) {
         const disable = (type: string) => {
-            _.forEach(attributes.getAllAttributesOnName(type), (attr) => {
+            _.forEach(this.whoisResourcesService.getAllAttributesOnName(attributes, type), (attr) => {
                 attr.$$meta.$$disable = this.mntnerService.isNccMntner(attr.value);
             });
         };
@@ -355,18 +358,18 @@ export class ScreenLogicInterceptorService {
 
     private _loadGenericDefaultValues(method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) {
         if (method === "Create") {
-            attributes.setSingleAttributeOnName("source", source);
+            attributes = this.whoisResourcesService.setSingleAttributeOnName(attributes, "source", source);
         }
-        attributes.getSingleAttributeOnName("source").$$meta.$$disable = true;
+        this.whoisResourcesService.getSingleAttributeOnName(attributes, "source").$$meta.$$disable = true;
         return attributes;
     }
 
     // https://www.ripe.net/participate/policies/proposals/2012-08
     private _removeSponsoringOrgIfNeeded(method: string, source: string, objectType: string, objectAttributes: any, addableAttributes: any) {
-        const statusAttr = objectAttributes.getSingleAttributeOnName("status");
+        const statusAttr = this.whoisResourcesService.getSingleAttributeOnName(objectAttributes, "status");
 
         if (statusAttr && !_.isEmpty(statusAttr.value) && statusAttr.value !== "ASSIGNED PI" && statusAttr.value !== "ASSIGNED ANYCAST" && statusAttr.value !== "LEGACY") {
-            addableAttributes.removeAttributeWithName("sponsoring-org");
+            this.whoisResourcesService.removeAttributeWithName(addableAttributes, "sponsoring-org");
         }
 
         return addableAttributes;
@@ -374,7 +377,7 @@ export class ScreenLogicInterceptorService {
 
     private _disableStatusIfModifying(method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) {
         if (method === "Modify") {
-            const statusAttr = attributes.getSingleAttributeOnName("status");
+            const statusAttr = this.whoisResourcesService.getSingleAttributeOnName(attributes, "status");
 
             if (statusAttr.value !== "NOT-SET") {
                 statusAttr.$$meta.$$disable = true;
@@ -384,16 +387,16 @@ export class ScreenLogicInterceptorService {
 
     private _disableRipeMntnrAttributes(attributes: any) {
         // if any of the maintainers is a ripe maintainer then some attributes are read-only
-        if (_.findIndex(attributes.getAllAttributesOnName("mnt-by"), (mntBy: any) => {
+        if (_.findIndex(this.whoisResourcesService.getAllAttributesOnName(attributes, "mnt-by"), (mntBy: any) => {
             return this.mntnerService.isNccMntner(mntBy.value);
         }) < 0) { // findIndex returns -1 if not found
             return;
         }
-        let attr = attributes.getSingleAttributeOnName("sponsoring-org");
+        let attr = this.whoisResourcesService.getSingleAttributeOnName(attributes, "sponsoring-org");
         if (attr) {
             attr.$$meta.$$disable = true;
         }
-        attr = attributes.getSingleAttributeOnName("org");
+        attr = this.whoisResourcesService.getSingleAttributeOnName(attributes, "org");
         if (attr) {
             attr.$$meta.$$disable = true;
         }
@@ -402,8 +405,8 @@ export class ScreenLogicInterceptorService {
     private disableNetnameAttribute(attributes: any) {
         const allocationStatuses = ["ALLOCATED PA", "ALLOCATED UNSPECIFIED", "ALLOCATED-BY-RIR"];
 
-        if (_.includes(allocationStatuses, attributes.getSingleAttributeOnName("status").value)) {
-            const netnameAttr = attributes.getSingleAttributeOnName("netname");
+        if (_.includes(allocationStatuses, this.whoisResourcesService.getSingleAttributeOnName(attributes, "status").value)) {
+            const netnameAttr = this.whoisResourcesService.getSingleAttributeOnName(attributes, "netname");
             if (netnameAttr) {
                 netnameAttr.$$meta.$$disable = true;
             }
@@ -411,16 +414,16 @@ export class ScreenLogicInterceptorService {
     }
 
     private disableAssignmentAttributes(attributes: any) {
-        const assSizeAttr = attributes.getSingleAttributeOnName("assignment-size");
+        const assSizeAttr = this.whoisResourcesService.getSingleAttributeOnName(attributes, "assignment-size");
         if (assSizeAttr) {
             assSizeAttr.$$meta.$$disable = true;
         }
     }
 
     private _disableOrgWhenStatusIsAssignedPI(attributes: any) {
-        const statusAttr = attributes.getSingleAttributeOnName("status");
+        const statusAttr = this.whoisResourcesService.getSingleAttributeOnName(attributes, "status");
         if (statusAttr && statusAttr.value === "ASSIGNED PI") {
-            const org = attributes.getSingleAttributeOnName("org");
+            const org = this.whoisResourcesService.getSingleAttributeOnName(attributes, "org");
             if (org) {
                 org.$$meta.$$disable = true;
             }
@@ -428,11 +431,10 @@ export class ScreenLogicInterceptorService {
         return attributes;
     }
 
-    private _handlePendingAuthenticationError(method: string, source: string, objectType: string, status: number,
-                                              whoisResources: any, errors: string[], warnings: string[], infos: string[]) {
+    private handlePendingAuthenticationError(source: string, status: number, whoisResources: any) {
         if (this._isPendingAuthenticationError(status, whoisResources)) {
 
-            this.messageStore.add(whoisResources.getPrimaryKey(), this._composePendingResponse(whoisResources, source));
+            this.messageStore.add(this.whoisResourcesService.getPrimaryKey(whoisResources), this._composePendingResponse(whoisResources, source));
             return true;
 
         }

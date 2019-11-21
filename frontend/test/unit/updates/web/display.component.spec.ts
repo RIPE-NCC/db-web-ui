@@ -1,23 +1,24 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
+import {ActivatedRoute, Router} from "@angular/router";
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {DiffMatchPatchModule} from "ng-diff-match-patch";
+import {CookieService} from "ngx-cookie-service";
+import {of} from "rxjs";
 import {DisplayComponent} from "../../../../src/app/updates/web/display.component";
 import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
 import {MntnerService} from "../../../../src/app/updates/mntner.service";
 import {CredentialsService} from "../../../../src/app/shared/credentials.service";
-import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
 import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
-import {DiffMatchPatchModule} from "ng-diff-match-patch";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
 import {RestService} from "../../../../src/app/updates/rest.service";
 import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
 import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
-import {CookieService} from "ngx-cookie-service";
 import {WebUpdatesCommonsService} from "../../../../src/app/updates/web/web-updates-commons.service";
 import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
 import {PropertiesService} from "../../../../src/app/properties.service";
-import {of} from "rxjs";
 import {SanitizeImgHtmlPipe} from "../../../../src/app/shared/sanitize-img-html.pipe";
+import {IAttributeModel} from "../../../../src/app/shared/whois-response-type.model";
 
 describe("DisplayComponent", () => {
 
@@ -66,7 +67,7 @@ describe("DisplayComponent", () => {
         httpMock = TestBed.get(HttpTestingController);
         fixture = TestBed.createComponent(DisplayComponent);
         component = fixture.componentInstance;
-        objectToDisplay = component.whoisResourcesService.wrapWhoisResources({
+        objectToDisplay = component.whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -149,9 +150,9 @@ describe("DisplayComponent", () => {
 
         expectUserInfo(true);
 
-        expect(component.attributes.getSingleAttributeOnName("as-block").value).toBe(OBJECT_NAME);
-        expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toBe(OBJECT_NAME);
+        expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual(SOURCE);
 
         // FIXME ?
         // expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/select"]);
@@ -170,9 +171,9 @@ describe("DisplayComponent", () => {
             url: "api/whois/RIPE/as-block/MY-AS-BLOCK?unfiltered=true"
         }).flush(objectToDisplay);
 
-        expect(component.attributes.getSingleAttributeOnName("as-block").value).toBe(OBJECT_NAME);
-        expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toBe(OBJECT_NAME);
+        expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual(SOURCE);
 
         // FIXME ?
         // expect($state.current.name).toBe("webupdates.select");
@@ -281,7 +282,7 @@ describe("DisplayComponent with object containing slash", () => {
         httpMock = TestBed.get(HttpTestingController);
         fixture = TestBed.createComponent(DisplayComponent);
         component = fixture.componentInstance;
-        objectToDisplay = component.whoisResourcesService.wrapWhoisResources({
+        objectToDisplay = component.whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -328,9 +329,9 @@ describe("DisplayComponent with object containing slash", () => {
             url: "api/whois/RIPE/route/212.235.32.0%2F19AS1680?unfiltered=true"
         }).flush(objectToDisplay);
 
-        expect(component.attributes.getSingleAttributeOnName("route").value).toBe(OBJECT_NAME);
-        expect(component.attributes.getAllAttributesOnName("mnt-by")[0].value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "route").value).toBe(OBJECT_NAME);
+        expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual(SOURCE);
     });
 
     it("should navigate to modify", () => {
@@ -415,7 +416,7 @@ describe("DisplayComponent for RIPE-NONAUTH aut-num object", () => {
         httpMock = TestBed.get(HttpTestingController);
         fixture = TestBed.createComponent(DisplayComponent);
         component = fixture.componentInstance;
-        objectToDisplay = component.whoisResourcesService.wrapWhoisResources({
+        objectToDisplay = component.whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -467,7 +468,7 @@ describe("DisplayComponent for RIPE-NONAUTH aut-num object", () => {
     };
 
 
-    it("should add uiHref to attributes with link", () => {
+    it("should add href to attributes with link", () => {
         // no objects in message store
         fixture.detectChanges();
 
@@ -475,13 +476,13 @@ describe("DisplayComponent for RIPE-NONAUTH aut-num object", () => {
 
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE-NONAUTH/aut-num/AS9777?unfiltered=true"}).flush(objectToDisplay);
 
-        expect(component.attributes.getSingleAttributeOnName("aut-num").value).toBe(OBJECT_NAME);
-        expect(component.attributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName("mnt-by").link.uiHref).toEqual("webupdates/display/RIPE/mntner/TEST-MNT");
-        expect(component.attributes.getSingleAttributeOnName("admin-c").value).toBe(ADMINC);
-        expect(component.attributes.getSingleAttributeOnName("admin-c").link.uiHref).toBe("webupdates/display/RIPE/person/JYH3-RIPE");
-        expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
-
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "aut-num").value).toBe(OBJECT_NAME);
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "mnt-by").value).toEqual(MNTNER);
+        const attrMnt: IAttributeModel = component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "mnt-by");
+        expect(attrMnt.link.href).toEqual("webupdates/display/RIPE/mntner/TEST-MNT");
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "admin-c").value).toBe(ADMINC);
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "admin-c").link.href).toBe("webupdates/display/RIPE/person/JYH3-RIPE");
+        expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual(SOURCE);
     });
 
 });

@@ -25,7 +25,7 @@ describe("DeleteController", () => {
     let modalMock: any;
     let paramMapMock: ParamMap;
     let queryParamMock: ParamMap;
-    let whois: WhoisResourcesService;
+    let whoisResourcesService: WhoisResourcesService;
 
     beforeEach(() => {
         paramMapMock = convertToParamMap({source: SOURCE, objectType: OBJECT_TYPE, objectName: "AS1 - AS2"});
@@ -56,9 +56,9 @@ describe("DeleteController", () => {
         httpMock = TestBed.get(HttpTestingController);
         fixture = TestBed.createComponent(DeleteComponent);
         component = fixture.componentInstance;
-        whois = TestBed.get(WhoisResourcesService);
+        whoisResourcesService = TestBed.get(WhoisResourcesService);
 
-        objectToDisplay = whois.wrapWhoisResources({
+        objectToDisplay = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -75,7 +75,7 @@ describe("DeleteController", () => {
             }
         });
 
-        multipleObjectsToDisplay = whois.wrapWhoisResources({
+        multipleObjectsToDisplay = whoisResourcesService.validateWhoisResources({
             objects: {
                 object: [
                     {
@@ -160,7 +160,7 @@ describe("DeleteController", () => {
             data: whoisObjectWithErrors
         };
 
-        modalMock.open.and.returnValue({componentInstance: {}, result: throwError(whois.wrapError(error)).toPromise()});
+        modalMock.open.and.returnValue({componentInstance: {}, result: throwError(whoisResourcesService.wrapError(error)).toPromise()});
         fixture.detectChanges();
 
         await fixture.whenStable();
@@ -181,7 +181,7 @@ describe("DeleteController", () => {
             data: "just text"
         };
 
-        modalMock.open.and.returnValue({componentInstance: {}, result: throwError(whois.wrapError(error)).toPromise()});
+        modalMock.open.and.returnValue({componentInstance: {}, result: throwError(whoisResourcesService.wrapError(error)).toPromise()});
         fixture.detectChanges();
         await fixture.whenStable();
 
@@ -203,8 +203,8 @@ describe("DeleteController", () => {
 
         expect(component.deletedObjects.length).toBe(1);
 
-        const whoisobject = whois.wrapAttributes(component.deletedObjects[0].attributes.attribute);
-        expect(whoisobject.getSingleAttributeOnName("as-block").value).toBe("AS1 - AS2");
+        const whoisobject = whoisResourcesService.validateAttributes(component.deletedObjects[0].attributes.attribute);
+        expect(whoisResourcesService.getSingleAttributeOnName(whoisobject, "as-block").value).toBe("AS1 - AS2");
 
         expect(routerMock.navigate).not.toHaveBeenCalled();
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
@@ -218,11 +218,11 @@ describe("DeleteController", () => {
 
         expect(component.deletedObjects.length).toBe(2);
 
-        const asblock1 = whois.wrapAttributes(component.deletedObjects[0].attributes.attribute);
-        const asblock2 = whois.wrapAttributes(component.deletedObjects[1].attributes.attribute);
+        const asblock1 = whoisResourcesService.validateAttributes(component.deletedObjects[0].attributes.attribute);
+        const asblock2 = whoisResourcesService.validateAttributes(component.deletedObjects[1].attributes.attribute);
 
-        expect(asblock1.getSingleAttributeOnName("as-block").value).toBe("AS1 - AS2");
-        expect(asblock2.getSingleAttributeOnName("as-block").value).toBe("AS10 - AS20");
+        expect(whoisResourcesService.getSingleAttributeOnName(asblock1, "as-block").value).toBe("AS1 - AS2");
+        expect(whoisResourcesService.getSingleAttributeOnName(asblock2, "as-block").value).toBe("AS10 - AS20");
 
         expect(routerMock.navigate).not.toHaveBeenCalled();
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();

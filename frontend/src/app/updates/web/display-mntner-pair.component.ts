@@ -39,13 +39,13 @@ export class DisplayMntnerPairComponent {
         // fetch just created object from temporary store
         const cachedPersonObject = this.messageStoreService.get(this.objectTypeName);
         if (cachedPersonObject) {
-            const whoisResources = this.whoisResourcesService.wrapWhoisResources(cachedPersonObject);
-            this.objectTypeAttributes = this.whoisResourcesService.wrapAttributes(whoisResources.getAttributes());
+            const whoisResources = this.whoisResourcesService.validateWhoisResources(cachedPersonObject);
+            this.objectTypeAttributes = this.whoisResourcesService.getAttributes(whoisResources);
             console.debug("Got person from cache:" + JSON.stringify(this.objectTypeAttributes));
         } else {
             this.restService.fetchObject(this.objectSource, this.objectType, this.objectTypeName, null, null)
                 .subscribe((resp: any) => {
-                    this.objectTypeAttributes = resp.getAttributes();
+                    this.objectTypeAttributes = this.whoisResourcesService.getAttributes(resp);
                     this.alertService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, resp);
                     this.alertService.addErrors(resp);
                 }, (error: any) => {
@@ -56,13 +56,13 @@ export class DisplayMntnerPairComponent {
 
         const cachedMntnerObject = this.messageStoreService.get(this.mntnerName);
         if (cachedMntnerObject) {
-            const whoisResources = this.whoisResourcesService.wrapWhoisResources(cachedMntnerObject);
-            this.mntnerAttributes = this.whoisResourcesService.wrapAttributes(whoisResources.getAttributes());
+            const whoisResources = this.whoisResourcesService.validateWhoisResources(cachedMntnerObject);
+            this.mntnerAttributes = this.whoisResourcesService.getAttributes(whoisResources);
             console.debug("Got mntner from cache:" + JSON.stringify(this.mntnerAttributes));
         } else {
             this.restService.fetchObject(this.objectSource, "mntner", this.mntnerName, null, null)
                 .subscribe((resp: any) => {
-                    this.mntnerAttributes = resp.getAttributes();
+                    this.mntnerAttributes = this.whoisResourcesService.getAttributes(resp);
                     this.alertService.populateFieldSpecificErrors("mntner", this.mntnerAttributes, resp);
                     this.alertService.addErrors(resp);
                 }, (error: any) => {

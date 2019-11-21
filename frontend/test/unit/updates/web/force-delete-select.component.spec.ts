@@ -6,6 +6,8 @@ import {ForceDeleteSelectComponent} from "../../../../src/app/updates/web/forced
 import {PropertiesService} from "../../../../src/app/properties.service";
 import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
 import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
+import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
+import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
 
 describe("ForceDeleteSelectComponent", () => {
 
@@ -22,6 +24,8 @@ describe("ForceDeleteSelectComponent", () => {
             providers: [
                 PropertiesService,
                 AlertsService,
+                WhoisMetaService,
+                WhoisResourcesService,
                 {provide: Router, useValue: routerMock},
             ],
         });
