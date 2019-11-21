@@ -17,7 +17,7 @@ import {ResourcesComponent} from "./resources.component";
 import {AlertsDropDownComponent} from "./alertsdropdown/alerts-drop-down.component";
 import {ResourceStatusService} from "./resource-status.service";
 import {TransferDropDownComponent} from "./transferdropdown/transfer-drop-down.component";
-import {RouterModule} from "@angular/router";
+import {AppRoutingModule} from "../app-routing.module";
 
 @NgModule({
     imports: [
@@ -25,7 +25,7 @@ import {RouterModule} from "@angular/router";
         FormsModule,
         SharedModule,
         WhoisObjectModule,
-        RouterModule
+        AppRoutingModule
     ],
     declarations: [
         AlertsDropDownComponent,
@@ -36,7 +36,7 @@ import {RouterModule} from "@angular/router";
         IpUsageOfAllResourcesComponent,
         ResourceDetailsComponent,
         ResourceItemComponent,
-        ResourcesComponent,
+        ResourcesComponent
     ],
     providers: [
         IpAddressService,

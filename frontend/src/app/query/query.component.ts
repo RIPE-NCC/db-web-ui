@@ -237,7 +237,7 @@ export class QueryComponent {
         this.queryParametersService.validate(cleanQp);
         const jsonQueryString = this.queryService.buildQueryStringForLink(cleanQp);
         if (jsonQueryString) {
-            this.link.perma = "#/query?" + this.queryService.buildPermalink(cleanQp);
+            this.link.perma = "query?" + this.queryService.buildPermalink(cleanQp);
             this.link.json = this.properties.REST_SEARCH_URL + "search.json?" + jsonQueryString;
             this.link.xml = this.properties.REST_SEARCH_URL + "search.xml?" + jsonQueryString;
         } else {

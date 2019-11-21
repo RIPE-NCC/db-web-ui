@@ -13,10 +13,10 @@ describe("The CreateSelfMntnerComponent", () => {
         page.selectObjectType("mntner").click();
         page.btnNavigateToCreate.click();
         expect(page.linkToCreatePair.isPresent()).toBeTruthy();
-        expect(browser.getCurrentUrl()).toContain("#/webupdates/create/RIPE/mntner/self");
+        expect(browser.getCurrentUrl()).toContain("webupdates/create/RIPE/mntner/self");
         page.linkToCreatePair.click();
         browser.wait(browser.isElementPresent(page.inpMntner), 1000, "waited too long");
-        expect(browser.getCurrentUrl()).toContain("#/webupdates/create/RIPE/person/self");
+        expect(browser.getCurrentUrl()).toContain("webupdates/create/RIPE/person/self");
     });
 
     it("should suggest adminC after entering letters", () => {
@@ -43,11 +43,11 @@ describe("The CreateSelfMntnerComponent", () => {
     });
 
     it("should navigate to create self maintainer page on click on button Create Shared Maintainer", () => {
-        browser.get(browser.baseUrl + "#/webupdates/display/RIPE/person/ES13374-RIPE/mntner/ESMA-MNT");
+        browser.get(browser.baseUrl + "webupdates/display/RIPE/person/ES13374-RIPE/mntner/ESMA-MNT");
         expect(page.btnCreateSharedMaintainer.isPresent()).toEqual(true);
         page.scrollIntoView(page.btnCreateSharedMaintainer);
         page.btnCreateSharedMaintainer.click();
-        expect(browser.getCurrentUrl()).toContain("#/webupdates/create/RIPE/mntner/self?admin=ES13374-RIPE");
+        expect(browser.getCurrentUrl()).toContain("webupdates/create/RIPE/mntner/self?admin=ES13374-RIPE");
         expect(page.inpMntner.isDisplayed()).toBeTruthy();
         expect(page.selectAdminC.getText()).toContain("ES13374-RIPE");
     });

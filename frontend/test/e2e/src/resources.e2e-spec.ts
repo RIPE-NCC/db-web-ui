@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Resources", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/myresources/overview");
+        browser.get(browser.baseUrl + "myresources/overview");
     });
 
     it("should show IPv4 resources for an LIR", () => {
@@ -14,13 +14,13 @@ describe("Resources", () => {
         expect(page.myResourcesActiveTabRows.count()).toBe(4);
         expect(page.myResourcesActiveTabRows.get(0).getText()).toContain("194.104.0.0/24");
         // contain href in a tag what guarantees option "Open in new tab" in context menu
-        expect(page.myResourcesActiveTabRows.get(0).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/INETNUM/194.104.0.0%20-%20194.104.0.255/false");
+        expect(page.myResourcesActiveTabRows.get(0).element(by.css("a")).getAttribute("href")).toContain("myresources/detail/INETNUM/194.104.0.0%20-%20194.104.0.255/false");
         expect(page.myResourcesActiveTabRows.get(1).getText()).toContain("194.171.0.0/16");
-        expect(page.myResourcesActiveTabRows.get(1).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/INETNUM/194.171.0.0%20-%20194.171.255.255/false");
+        expect(page.myResourcesActiveTabRows.get(1).element(by.css("a")).getAttribute("href")).toContain("myresources/detail/INETNUM/194.171.0.0%20-%20194.171.255.255/false");
         expect(page.myResourcesActiveTabRows.get(2).getText()).toContain("195.169.0.0/16");
-        expect(page.myResourcesActiveTabRows.get(2).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/INETNUM/195.169.0.0%20-%20195.169.255.255/false");
+        expect(page.myResourcesActiveTabRows.get(2).element(by.css("a")).getAttribute("href")).toContain("myresources/detail/INETNUM/195.169.0.0%20-%20195.169.255.255/false");
         expect(page.myResourcesActiveTabRows.get(3).getText()).toContain("192.87.0.0/16");
-        expect(page.myResourcesActiveTabRows.get(3).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/INETNUM/192.87.0.0%20-%20192.87.255.255/false");
+        expect(page.myResourcesActiveTabRows.get(3).element(by.css("a")).getAttribute("href")).toContain("myresources/detail/INETNUM/192.87.0.0%20-%20192.87.255.255/false");
     });
 
     it("should show progressbar for IPv4 resources with status ALLOCATED PA", () => {
@@ -92,14 +92,14 @@ describe("Resources", () => {
     it("should navigate to create inetnum page on click button Create assignment", () => {
         expect(page.btnCreateAssignment.isPresent()).toEqual(true);
         page.btnCreateAssignment.click();
-        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + "#/webupdates/create/RIPE/inetnum");
+        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + "webupdates/create/RIPE/inetnum");
     });
 
     it("should navigate to create inet6num page on click button Create assignment", () => {
         page.myResourcesTabs.get(1).click();
         expect(page.btnCreateAssignment.isPresent()).toEqual(true);
         page.btnCreateAssignment.click();
-        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + "#/webupdates/create/RIPE/inet6num");
+        expect(browser.getCurrentUrl()).toEqual(browser.baseUrl + "webupdates/create/RIPE/inet6num");
     });
 
     it("should not show Create assignment button on ASN tab", () => {

@@ -1,6 +1,7 @@
 import {TestBed} from "@angular/core/testing";
 import {MyResourcesModule} from "../../../src/app/myresources/my-resources.module";
 import {ResourceStatusService} from "../../../src/app/myresources/resource-status.service";
+import {AppModule} from "../../../src/app/app.module";
 
 describe("ResourceStatusService", () => {
 
@@ -8,7 +9,10 @@ describe("ResourceStatusService", () => {
     
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [MyResourcesModule],
+            imports: [
+                MyResourcesModule,
+                AppModule
+            ],
             providers: [
                 ResourceStatusService
             ],

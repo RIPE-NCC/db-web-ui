@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Modifying an maintainer", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/webupdates/modify/RIPE/mntner/SHRYANE-MNT");
+        browser.get(browser.baseUrl + "webupdates/modify/RIPE/mntner/SHRYANE-MNT");
     });
 
     it("should unfiltered auth after associate maintainer", () => {

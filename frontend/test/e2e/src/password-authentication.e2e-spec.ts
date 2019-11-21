@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The password authentication dialogue", () => {
 
     beforeEach(() => {
-        browser.get("#/webupdates/modify/ripe/aut-num/AS9191");
+        browser.get("webupdates/modify/ripe/aut-num/AS9191");
     });
 
     it("should show a single modal which asks for a password", () => {

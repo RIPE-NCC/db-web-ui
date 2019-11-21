@@ -11,7 +11,7 @@ describe("The inetnum editor", () => {
     /*
 
      VERSION BUILD=844 RECORDER=CR
-     URL GOTO=http://localhost.ripe.net:9002/#/webupdates/create/RIPE/inetnum
+     URL GOTO=http://localhost.ripe.net:9002/webupdates/create/RIPE/inetnum
      TAG POS=1 TYPE=INPUT:TEXT FORM=ID:createForm ATTR=NAME:inetnum CONTENT=213.159.160.0-213.159.190.255
      SET !ENCRYPTION NO
      TAG POS=1 TYPE=INPUT:PASSWORD FORM=NAME:NoFormName ATTR=* CONTENT=ERICSSON-MNT

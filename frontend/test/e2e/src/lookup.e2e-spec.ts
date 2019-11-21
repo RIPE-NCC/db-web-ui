@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The lookup page", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/lookup?source=RIPE&type=inetnum&key=193.0.0.0%20-%20193.0.0.63");
+        browser.get(browser.baseUrl + "lookup?source=RIPE&type=inetnum&key=193.0.0.0%20-%20193.0.0.63");
     });
 
     it("should be able to show an object", () => {
@@ -42,7 +42,7 @@ describe("The lookup page", () => {
 describe("The lookup page for organisation", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/lookup?source=RIPE&type=organisation&key=ORG-RIEN1-RIPE");
+        browser.get(browser.baseUrl + "lookup?source=RIPE&type=organisation&key=ORG-RIEN1-RIPE");
     });
 
     it("should show not filtered object", () => {
@@ -59,7 +59,7 @@ describe("The lookup page for organisation", () => {
 describe("The lookup page with out of region object from ripe db", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/lookup?source=ripe&key=211.43.192.0%2F19AS9777&type=route");
+        browser.get(browser.baseUrl + "lookup?source=ripe&key=211.43.192.0%2F19AS9777&type=route");
     });
 
     it("should be able to show an out of region object from ripe db", () => {

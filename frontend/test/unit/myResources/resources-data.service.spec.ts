@@ -2,6 +2,7 @@ import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {MyResourcesModule} from "../../../src/app/myresources/my-resources.module";
 import {ResourcesDataService} from "../../../src/app/myresources/resources-data.service";
+import {AppModule} from "../../../src/app/app.module";
 
 describe("ResourcesDataService", () => {
     let resourcesDataService: ResourcesDataService;
@@ -9,7 +10,11 @@ describe("ResourcesDataService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, MyResourcesModule],
+            imports: [
+                HttpClientTestingModule,
+                MyResourcesModule,
+                AppModule
+            ],
             providers: [
                 ResourcesDataService,
                 { provide: "$log", useValue: {info: () => {}}}

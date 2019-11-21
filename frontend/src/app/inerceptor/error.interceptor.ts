@@ -24,7 +24,6 @@ export class ErrorInterceptor implements HttpInterceptor {
             .pipe(
                 catchError((err: HttpErrorResponse) => {
                     if (!this.mustErrorBeSwallowed(err)) {
-                        // if (err instanceof HttpErrorResponse) {
                         switch (err.status) {
                             case 500: {
                                 this.router.navigate(["error"]);
@@ -66,7 +65,6 @@ export class ErrorInterceptor implements HttpInterceptor {
             || err.url.indexOf("fmp") > -1) {
             this.redirectToLogin();
         }
-
     }
 
     private redirectToLogin() {

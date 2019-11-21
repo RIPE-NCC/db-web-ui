@@ -20,8 +20,8 @@ export class RequireLoginComponent {
 
     private getLoginUrl(): string {
         return this.properties.LOGIN_URL +
-            "?originalUrl=" + encodeURIComponent(location.href.split("#")[0] +
-                "#/fmp/" + this.getReturnUrlForForgotMaintainerPassword());
+            "?originalUrl=" + encodeURIComponent(location.origin +
+                "/db-web-ui/fmp/" + this.getReturnUrlForForgotMaintainerPassword());
     }
 
     private getReturnUrlForForgotMaintainerPassword() {

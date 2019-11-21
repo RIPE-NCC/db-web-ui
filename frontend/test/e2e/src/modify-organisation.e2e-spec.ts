@@ -7,7 +7,7 @@ describe("Modifying an organisation", () => {
     describe("which is an LIR", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/webupdates/modify/RIPE/organisation/ORG-AGNS1-RIPE");
+            browser.get(browser.baseUrl + "webupdates/modify/RIPE/organisation/ORG-AGNS1-RIPE");
         });
 
         it("should show the mnt-by field as read-only", () => {
@@ -90,7 +90,7 @@ describe("Modifying an organisation", () => {
     describe("which is an OTHER type", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/webupdates/modify/ripe/organisation/ORG-ADNL2-RIPE");
+            browser.get(browser.baseUrl + "webupdates/modify/ripe/organisation/ORG-ADNL2-RIPE");
         });
 
         it("should contain remove (trush) button next to abuse-c in case of LIR organisation", () => {

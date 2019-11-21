@@ -7,7 +7,7 @@ describe("Modifying an inet6num", () => {
     describe("which is an allocation", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/webupdates/modify/RIPE/inet6num/2001:999:2000::%2F36");
+            browser.get(browser.baseUrl + "webupdates/modify/RIPE/inet6num/2001:999:2000::%2F36");
             expect(page.modalBtnSubmit.isPresent()).toEqual(true);
             expect(page.modalInpMaintainer.getText()).toEqual("XS4ALL-MNT");
             page.modalInpAssociate.click();
@@ -32,7 +32,7 @@ describe("Modifying an inet6num", () => {
     describe("which is an assignment", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/webupdates/modify/RIPE/inet6num/2001:998:2000::%2F36");
+            browser.get(browser.baseUrl + "webupdates/modify/RIPE/inet6num/2001:998:2000::%2F36");
             expect(page.modalBtnSubmit.isPresent()).toEqual(true);
             expect(page.modalInpMaintainer.getText()).toEqual("XS4ALL-MNT");
             page.modalInpAssociate.click();
@@ -59,7 +59,7 @@ describe("Modifying an inet6num", () => {
     describe("which is an allocated by lir", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/webupdates/modify/RIPE/inet6num/2002:998:2000::%2F36");
+            browser.get(browser.baseUrl + "webupdates/modify/RIPE/inet6num/2002:998:2000::%2F36");
             expect(page.modalBtnSubmit.isPresent()).toEqual(true);
             expect(page.modalInpMaintainer.getText()).toEqual("XS4ALL-MNT");
             page.modalInpAssociate.click();

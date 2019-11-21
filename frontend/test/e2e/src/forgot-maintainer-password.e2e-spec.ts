@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Forgot Maintainer Password", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/fmp/change-auth?mntnerKey=TEST-MNT&voluntary=true");
+        browser.get(browser.baseUrl + "fmp/change-auth?mntnerKey=TEST-MNT&voluntary=true");
     });
 
     it("should load the page with the form", () => {

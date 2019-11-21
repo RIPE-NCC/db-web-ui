@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/webupdates/modify/ripe/route/211.43.192.0%252F19AS9777");
+        browser.get(browser.baseUrl + "webupdates/modify/ripe/route/211.43.192.0%252F19AS9777");
     });
 
     it("should show out of region route object", () => {
@@ -31,7 +31,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         page.inpDescrCreateForm.sendKeys("update");
         page.scrollIntoView(page.btnSubmitModify);
         page.btnSubmitModify.click();
-        expect(browser.getCurrentUrl()).toContain("#/webupdates/display/RIPE/route/211.43.192.0%2F19AS9777?method=Modify");
+        expect(browser.getCurrentUrl()).toContain("webupdates/display/RIPE/route/211.43.192.0%2F19AS9777?method=Modify");
         expect(page.successMessage.getText()).toEqual("Your object has been successfully modified");
         expect(page.displayPanel.isDisplayed()).toBeTruthy();
     });
@@ -44,7 +44,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         // page.scrollIntoView(page.inpDescrCreateForm);
         page.scrollIntoView(page.btnDeleteObject);
         page.btnDeleteObject.click();
-        expect(browser.getCurrentUrl()).toContain("#/webupdates/delete/ripe/route/211.43.192.0%2F19AS9777?onCancel=webupdates%2Fmodify");
+        expect(browser.getCurrentUrl()).toContain("webupdates/delete/ripe/route/211.43.192.0%2F19AS9777?onCancel=webupdates%2Fmodify");
         expect(page.modal.isPresent()).toEqual(true);
         page.btnConfirmDeleteObject.click();
         expect(page.modal.isPresent()).toEqual(false);
@@ -56,7 +56,7 @@ describe("Modifying a resource for a NONAUTH-RIPE route object", () => {
         page.modalInpPassword.sendKeys("AS4663-RIPE-MNT");
         page.modalInpAssociate.click();
         page.modalForceDelete.click();
-        expect(browser.getCurrentUrl()).toContain("#/forceDelete/ripe/route/211.43.192.0%2F19AS9777");
+        expect(browser.getCurrentUrl()).toContain("forceDelete/ripe/route/211.43.192.0%2F19AS9777");
         expect(page.modal.isPresent()).toEqual(false);
     });
 });

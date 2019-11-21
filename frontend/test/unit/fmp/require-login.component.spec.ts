@@ -39,9 +39,9 @@ describe("RequireLoginComponent", () => {
                 has: (param: string) => (false)
             };
             mockLocation.search.and.returnValue({});
-            mockLocation.absUrl.and.returnValue("http://server/#/fmp/requireLogin");
+            mockLocation.absUrl.and.returnValue("http://server/fmp/requireLogin");
             fixture.detectChanges();
-            const expectedUrl = encodeURIComponent(window.location.href+"#/fmp/");
+            const expectedUrl = encodeURIComponent(window.location.origin+"/db-web-ui/fmp/");
             expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
         });
 
@@ -50,7 +50,7 @@ describe("RequireLoginComponent", () => {
                 has: (param: string) => (false)
             };
             fixture.detectChanges();
-            const expectedUrl = encodeURIComponent(window.location.href+"#/fmp/");
+            const expectedUrl = encodeURIComponent(window.location.origin+"/db-web-ui/fmp/");
             expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
         });
 
@@ -60,7 +60,7 @@ describe("RequireLoginComponent", () => {
                 has: (param: string) => (true)
             };
             fixture.detectChanges();
-            const expectedUrl = encodeURIComponent(window.location.href+"#/fmp/change-auth?mntnerKey=mnt-key&voluntary=true");
+            const expectedUrl = encodeURIComponent(window.location.origin+"/db-web-ui/fmp/change-auth?mntnerKey=mnt-key&voluntary=true");
             expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
         });
 
@@ -70,7 +70,7 @@ describe("RequireLoginComponent", () => {
                 has: (param: string) => (true)
             };
             fixture.detectChanges();
-            const expectedUrl = encodeURIComponent(window.location.href+"#/fmp/change-auth?mntnerKey=mnt-key&voluntary=false");
+            const expectedUrl = encodeURIComponent(window.location.origin+"/db-web-ui/fmp/change-auth?mntnerKey=mnt-key&voluntary=false");
             expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
         });
 
@@ -80,7 +80,7 @@ describe("RequireLoginComponent", () => {
                 has: (param: string) => (true)
             };
             fixture.detectChanges();
-            const expectedUrl = encodeURIComponent(window.location.href+"#/fmp/change-auth?mntnerKey=mnt-key&voluntary=false");
+            const expectedUrl = encodeURIComponent(window.location.origin+"/db-web-ui/fmp/change-auth?mntnerKey=mnt-key&voluntary=false");
             expect(component.loginUrl).toBe(`https://access.prepdev.ripe.net/?originalUrl=${expectedUrl}`);
         });
     });

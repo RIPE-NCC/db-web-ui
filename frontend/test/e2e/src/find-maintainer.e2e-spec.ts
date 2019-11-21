@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("Find Maintainer", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/fmp/");
+        browser.get(browser.baseUrl + "fmp/");
     });
 
     it("should load the page with the search form", () => {

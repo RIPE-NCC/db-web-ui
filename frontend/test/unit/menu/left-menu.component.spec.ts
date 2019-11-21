@@ -1,14 +1,13 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {Location} from "@angular/common";
-import {Router} from "@angular/router";
-import {of} from "rxjs";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {RouterTestingModule} from "@angular/router/testing";
 import {IpUsageService} from "../../../src/app/myresources/ip-usage.service";
 import {LeftHandMenuComponent} from "../../../src/app/menu/left-hand-menu.component";
 import {EnvironmentStatusService} from "../../../src/app/shared/environment-status.service";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {WINDOW_PROVIDERS} from "../../../src/app/core/window.service";
 import {OrgDropDownSharedService} from "../../../src/app/dropdown/org-drop-down-shared.service";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe("LeftHandMenuComponent", () => {
 
@@ -19,7 +18,9 @@ describe("LeftHandMenuComponent", () => {
     environmentStatusService = jasmine.createSpyObj("EnvironmentStatusService", ["isTrainingEnv", "isTestRcEnv"]);
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule],
+            imports: [
+                HttpClientTestingModule,
+                RouterTestingModule],
             declarations: [
                 LeftHandMenuComponent,
             ],
@@ -29,8 +30,7 @@ describe("LeftHandMenuComponent", () => {
                 WINDOW_PROVIDERS,
                 OrgDropDownSharedService,
                 { provide: EnvironmentStatusService, useValue: environmentStatusService},
-                { provide: Location, useValue: {}},
-                { provide: Router, useValue: {navigate:() => {}, events: of()}}
+                { provide: Location, useValue: {}}
             ]
         });
     });

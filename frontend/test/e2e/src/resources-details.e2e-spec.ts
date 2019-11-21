@@ -11,7 +11,7 @@ describe("Resources detail", () => {
 
     describe("for an ASSIGNED PI inetnum", () => {
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
+            browser.get(browser.baseUrl + "myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
         });
 
         it("should show whois object attributes", () => {
@@ -51,12 +51,12 @@ describe("Resources detail", () => {
 
             expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual("192.87.0.0/24");
             // contain href in a tag what guarantees option "Open in new tab" in context menu
-            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.0.255/false");
+            expect(page.getTableCell(page.moreSpecificsTable, 0, 0).element(by.css("a")).getAttribute("href")).toContain("myresources/detail/inetnum/192.87.0.0%20-%20192.87.0.255/false");
             expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual("LEGACY");
             expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual("SNET-HOMELAN");
 
             expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual("192.87.1.0/24");
-            expect(page.getTableCell(page.moreSpecificsTable, 1, 0).element(by.css("a")).getAttribute("href")).toContain("#/myresources/detail/inetnum/192.87.1.0%20-%20192.87.1.255/false");
+            expect(page.getTableCell(page.moreSpecificsTable, 1, 0).element(by.css("a")).getAttribute("href")).toContain("myresources/detail/inetnum/192.87.1.0%20-%20192.87.1.255/false");
             expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual("LEGACY");
             expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual("NFRA");
 
@@ -92,7 +92,7 @@ describe("Resources detail", () => {
     describe("for inetnum with flags", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false");
+            browser.get(browser.baseUrl + "myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false");
         });
 
         it("should contain 6 flags, 2 tickets and 2 dates", () => {
@@ -109,7 +109,7 @@ describe("Resources detail", () => {
     describe("for inetnum with usage status", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/");
+            browser.get(browser.baseUrl + "myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/");
         });
 
         it("should display address usage", () => {
@@ -128,7 +128,7 @@ describe("Resources detail", () => {
     describe("for inet6num", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/myresources/detail/inet6num/2001:7f8::%2F29/");
+            browser.get(browser.baseUrl + "myresources/detail/inet6num/2001:7f8::%2F29/");
         });
 
         it("should show whois object attributes", () => {
@@ -172,7 +172,7 @@ describe("Resources detail", () => {
     describe("for aut-num with loads of attributes", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/myresources/detail/aut-num/AS204056/");
+            browser.get(browser.baseUrl + "myresources/detail/aut-num/AS204056/");
         });
 
         it("should show a partial view that can be expanded", () => {
@@ -259,7 +259,7 @@ describe("Resources detail", () => {
     describe("for out of region aut-num", () => {
 
         beforeEach(() => {
-            browser.get(browser.baseUrl + "#/myresources/detail/aut-num/AS36867/");
+            browser.get(browser.baseUrl + "myresources/detail/aut-num/AS36867/");
         });
 
         it("should show out of region aut-num", () => {

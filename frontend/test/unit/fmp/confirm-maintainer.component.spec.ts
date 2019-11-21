@@ -158,7 +158,7 @@ describe("ConfirmMaintainerComponent", () => {
 
         expect(component.alertsService.getErrors().length).toBe(0);
         expect(component.alertsService.getWarnings()[0].plainText)
-            .toBe(`Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner <a href="#/webupdates/modify/RIPE/mntner/maintainer">here</a>.`);
+            .toBe(`Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner <a href="webupdates/modify/RIPE/mntner/maintainer">here</a>.`);
         expect(component.alertsService.getInfos().length).toBe(0);
     });
 

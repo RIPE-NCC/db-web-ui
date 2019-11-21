@@ -11,6 +11,7 @@ import {MaintainersEditorComponent} from "./maintainers-editor.component";
 import {UserInfoService} from "../userinfo/user-info.service";
 import {WebUpdatesCommonsService} from "../updates/web/web-updates-commons.service";
 import {UpdatesModule} from "../updates/update.module";
+import {AppRoutingModule} from "../app-routing.module";
 
 @NgModule({
     imports: [
@@ -20,7 +21,7 @@ import {UpdatesModule} from "../updates/update.module";
         AttributeModule,
         NgSelectModule,
         UpdatesModule,
-        RouterModule
+        AppRoutingModule
     ],
     declarations: [
         WhoisObjectViewerComponent,

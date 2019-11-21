@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The syncupdates page", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/syncupdates");
+        browser.get(browser.baseUrl + "syncupdates");
     });
 
     it("should not show preview section if is empty object", () => {
@@ -37,7 +37,7 @@ describe("The syncupdates page", () => {
     it("should open beta syncupdate", () => {
         page.scrollIntoView(page.btnSwitchSyncupdates);
         page.btnSwitchSyncupdates.click();
-        expect(browser.getCurrentUrl()).toContain("#/textupdates/multi");
+        expect(browser.getCurrentUrl()).toContain("textupdates/multi");
     });
 
 });

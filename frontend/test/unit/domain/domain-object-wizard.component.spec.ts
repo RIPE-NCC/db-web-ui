@@ -7,6 +7,8 @@ import {JsUtilService} from "../../../src/app/core/js-utils.service";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {DomainObjectModule} from "../../../src/app/domainobject/domain-object.module";
 import {WINDOW} from "../../../src/app/core/window.service";
+import {RouterTestingModule} from "@angular/router/testing";
+import {AppModule} from "../../../src/app/app.module";
 
 describe("DomainObjectWizardComponent", () => {
 
@@ -16,7 +18,9 @@ describe("DomainObjectWizardComponent", () => {
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
-                DomainObjectModule
+                DomainObjectModule,
+                RouterTestingModule,
+                AppModule
             ],
             providers: [
                 JsUtilService,

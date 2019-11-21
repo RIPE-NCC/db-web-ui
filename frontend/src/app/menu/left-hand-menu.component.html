@@ -43,10 +43,10 @@
                 </a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem" [ngClass]="{current: selectMyResourceMenuItem}" href="{{properties.MY_RESOURCES_URL}}">My Resources</a>
+                        <a class="menuItem" [ngClass]="{current: selectMyResourceMenuItem}" [routerLink]="properties.MY_RESOURCES_URL">My Resources</a>
                     </li>
                     <li>
-                        <a class="menuItem" [ngClass]="{current: selectSponsoredMenuItem}" href="{{properties.MY_RESOURCES_URL}}?sponsored=true">Sponsored Resources</a>
+                        <a class="menuItem" [ngClass]="{current: selectSponsoredMenuItem}" [routerLink]="properties.MY_RESOURCES_URL" [queryParams]="{sponsored: true}">Sponsored Resources</a>
                     </li>
                     <li [hidden]="!((show.admin || show.general) && !show.testRcEnv)">
                         <a class="menuItem" href="{{properties.REQUEST_RESOURCES_URL}}">Request Resources</a>
@@ -69,17 +69,17 @@
                 </a>
                 <ul class="level2">
                     <li>
-                        <a class="menuItem" href="#/query" [ngClass]="{current: activeUrl.indexOf('/query') > -1 || activeUrl.indexOf('/lookup') > -1}">Query the RIPE Database</a>
+                        <a class="menuItem" [routerLink]="properties.DATABASE_QUERY_URL" [ngClass]="{current: activeUrl.indexOf('/query') > -1 || activeUrl.indexOf('/lookup') > -1}">Query the RIPE Database</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="{{properties.DATABASE_FULL_TEXT_SEARCH_URL}}" [ngClass]="{current: activeUrl.indexOf('/fulltextsearch') > -1}">Full Text Search</a>
+                        <a class="menuItem" [routerLink]="properties.DATABASE_FULL_TEXT_SEARCH_URL" [ngClass]="{current: activeUrl.indexOf('/fulltextsearch') > -1}">Full Text Search</a>
                     </li>
                     <li>
-                        <a class="menuItem" href="{{properties.DATABASE_SYNCUPDATES_URL}}" [ngClass]="{current: activeUrl.indexOf('/multi') > -1 || activeUrl.indexOf('/syncupdates') > -1}">Syncupdates</a>
+                        <a class="menuItem" [routerLink]="properties.DATABASE_SYNCUPDATES_URL" [ngClass]="{current: activeUrl.indexOf('/multi') > -1 || activeUrl.indexOf('/syncupdates') > -1}">Syncupdates</a>
                     </li>
                     <li>
                         <a class="menuItem" [ngClass]="{current: activeUrl.indexOf('/wizard') > -1 || activeUrl.indexOf('/select') > -1 || activeUrl.indexOf('/create') > -1 || activeUrl.indexOf('/modify') > -1 || activeUrl.indexOf('/display') > -1 || activeUrl === '/'}"
-                           href="{{properties.DATABASE_CREATE_URL}}">Create an Object</a>
+                                [routerLink]="properties.DATABASE_CREATE_URL">Create an Object</a>
                     </li>
                 </ul>
             </li>

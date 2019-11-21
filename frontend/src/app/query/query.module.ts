@@ -11,6 +11,7 @@ import {QueryParametersService} from "./query-parameters.service";
 import {TemplateComponent} from "./template-component/template.component";
 import {QueryService} from "./query.service";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
+import {AppRoutingModule} from "../app-routing.module";
 
 @NgModule({
     imports: [
@@ -18,7 +19,7 @@ import {WhoisObjectModule} from "../whois-object/whois-object.module";
         FormsModule,
         SharedModule,
         WhoisObjectModule,
-        RouterModule
+        AppRoutingModule
     ],
     declarations: [
         LookupComponent,

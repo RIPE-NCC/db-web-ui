@@ -11,11 +11,11 @@ describe("The CreateMntnerPairComponent", () => {
     it("should switch to person maintainer pair page on click on person link", () => {
         page.selectObjectType("role and maintainer pair").click();
         page.btnNavigateToCreate.click();
-        expect(browser.getCurrentUrl()).toContain("#/webupdates/create/RIPE/role/self");
+        expect(browser.getCurrentUrl()).toContain("webupdates/create/RIPE/role/self");
         page.switchToPersonObject.click();
-        expect(browser.getCurrentUrl()).toContain("#/webupdates/create/RIPE/person/self");
+        expect(browser.getCurrentUrl()).toContain("webupdates/create/RIPE/person/self");
         page.switchToPersonObject.click();
-        expect(browser.getCurrentUrl()).toContain("#/webupdates/create/RIPE/role/self");
+        expect(browser.getCurrentUrl()).toContain("webupdates/create/RIPE/role/self");
     });
 
     it("should show syntax error over person field", () => {

@@ -477,9 +477,9 @@ describe("DisplayComponent for RIPE-NONAUTH aut-num object", () => {
 
         expect(component.attributes.getSingleAttributeOnName("aut-num").value).toBe(OBJECT_NAME);
         expect(component.attributes.getSingleAttributeOnName("mnt-by").value).toEqual(MNTNER);
-        expect(component.attributes.getSingleAttributeOnName("mnt-by").link.uiHref).toEqual("#/webupdates/display/RIPE/mntner/TEST-MNT");
+        expect(component.attributes.getSingleAttributeOnName("mnt-by").link.uiHref).toEqual("webupdates/display/RIPE/mntner/TEST-MNT");
         expect(component.attributes.getSingleAttributeOnName("admin-c").value).toBe(ADMINC);
-        expect(component.attributes.getSingleAttributeOnName("admin-c").link.uiHref).toBe("#/webupdates/display/RIPE/person/JYH3-RIPE");
+        expect(component.attributes.getSingleAttributeOnName("admin-c").link.uiHref).toBe("webupdates/display/RIPE/person/JYH3-RIPE");
         expect(component.attributes.getSingleAttributeOnName("source").value).toEqual(SOURCE);
 
     });

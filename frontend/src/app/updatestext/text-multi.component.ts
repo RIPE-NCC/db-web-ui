@@ -1,8 +1,8 @@
-import {Component, Inject} from "@angular/core";
+import {Component} from "@angular/core";
 import {catchError, map} from "rxjs/operators";
 import {Observable, of, throwError} from "rxjs";
 import * as _ from "lodash";
-import {WINDOW} from "../core/window.service";
+import {Router} from "@angular/router";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {RestService} from "../updates/rest.service";
 import {AlertsService} from "../shared/alert/alerts.service";
@@ -52,7 +52,7 @@ export class TextMultiComponent {
     public override: string;
     public passwords: string;
 
-    constructor(@Inject(WINDOW) private window: any,
+    constructor(private router: Router,
                 public whoisResourcesService: WhoisResourcesService,
                 public whoisMetaService: WhoisMetaService,
                 public restService: RestService,
@@ -134,7 +134,7 @@ export class TextMultiComponent {
 
     public useOld() {
         this.preferenceService.setPoorSyncupdatesMode();
-        this.window.location.href = this.properties.DATABASE_SYNCUPDATES_URL;
+        this.router.navigate([this.properties.DATABASE_SYNCUPDATES_URL]);
     }
 
     public submit() {
@@ -415,7 +415,7 @@ export class TextMultiComponent {
         if (_.isUndefined(object.name)) {
             return undefined;
         }
-        return `#/webupdates/display/${source}/${object.type}/${encodeURIComponent(object.name)}`;
+        return `webupdates/display/${source}/${object.type}/${encodeURIComponent(object.name)}`;
     }
 
     private asTextUpdatesLink(source: string, object: any) {
@@ -424,9 +424,9 @@ export class TextMultiComponent {
             suffix = suffix.concat("&rpsl=" + encodeURIComponent(object.rpsl));
         }
         if (object.exists === true) {
-            return "#/textupdates/modify/" + source + "/" + object.type + "/" + object.name + suffix;
+            return "textupdates/modify/" + source + "/" + object.type + "/" + object.name + suffix;
         } else {
-            return "#/textupdates/create/" + source + "/" + object.type + suffix;
+            return "textupdates/create/" + source + "/" + object.type + suffix;
         }
     }
 

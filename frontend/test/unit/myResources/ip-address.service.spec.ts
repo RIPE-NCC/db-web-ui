@@ -1,6 +1,7 @@
 import {TestBed} from "@angular/core/testing";
 import {IpAddressService} from "../../../src/app/myresources/ip-address.service";
 import {MyResourcesModule} from "../../../src/app/myresources/my-resources.module";
+import {AppModule} from "../../../src/app/app.module";
 
 describe("IpAddressService", () => {
 
@@ -8,7 +9,10 @@ describe("IpAddressService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [MyResourcesModule],
+            imports: [
+                MyResourcesModule,
+                AppModule
+            ],
             providers: [
                 IpAddressService
             ],

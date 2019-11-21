@@ -98,7 +98,7 @@ export class ConfirmMaintainerComponent {
     }
 
     public makeModificationUrl(key: string) {
-        return `#/webupdates/modify/RIPE/mntner/${key}`;
+        return `webupdates/modify/RIPE/mntner/${key}`;
     }
 
     private navigateToSsoAdded(mntnerKey: string, user: any) {

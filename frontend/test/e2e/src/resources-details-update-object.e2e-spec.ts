@@ -7,7 +7,7 @@ describe("Resources, update object", () => {
     beforeEach(() => {
         browser.get(browser.baseUrl);
         browser.manage().addCookie({name: "activeMembershipId", value: "3629", path: "/"});
-        browser.get(browser.baseUrl + "#/myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
+        browser.get(browser.baseUrl + "myresources/detail/inetnum/192.87.0.0%20-%20192.87.255.255/");
     });
 
     it("should allow editing of the object", () => {
@@ -39,7 +39,7 @@ describe("Resources, update object", () => {
     describe("not comaintained by ripe", () =>  {
 
         beforeEach(function () {
-            browser.get(browser.baseUrl + "#/myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false");
+            browser.get(browser.baseUrl + "myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false");
         });
 
         it("should edit netname", function () {

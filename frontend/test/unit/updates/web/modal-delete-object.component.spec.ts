@@ -69,12 +69,12 @@ describe("primitives of modalDeleteObject", () => {
 
     it("should be able to compose display url for object", () => {
         const ref = {objectType: "mntner", primaryKey: "TEST-MNT"};
-        expect(modalDeleteObjectComponent.displayUrl(ref)).toEqual("#/webupdates/display/RIPE/mntner/TEST-MNT");
+        expect(modalDeleteObjectComponent.displayUrl(ref)).toEqual("webupdates/display/RIPE/mntner/TEST-MNT");
     });
 
     it("should be able to compose display url for object with slash", () => {
         const ref = {objectType: "route", primaryKey: "193.0.0.0/21AS3333"};
-        expect(modalDeleteObjectComponent.displayUrl(ref)).toEqual("#/webupdates/display/RIPE/route/193.0.0.0%2F21AS3333");
+        expect(modalDeleteObjectComponent.displayUrl(ref)).toEqual("webupdates/display/RIPE/route/193.0.0.0%2F21AS3333");
     });
 
     it("should allow deletion of unreferenced object: undefined refs", () => {

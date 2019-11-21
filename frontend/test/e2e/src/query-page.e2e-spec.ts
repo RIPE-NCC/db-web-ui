@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The query pagina", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/query");
+        browser.get(browser.baseUrl + "query");
     });
 
     it("should have all its bits on the screen somewhere", () => {

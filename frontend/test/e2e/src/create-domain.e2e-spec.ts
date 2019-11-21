@@ -181,6 +181,6 @@ describe("The create domain screen", () => {
             return browser.isElementPresent(page.prefixErrMsgLink);
         }, 5000);
         expect(page.prefixErrMsg.getText()).toContain("Please use the Syncupdates page to create a domain object smaller than /24");
-        expect(page.prefixErrMsgLink.getAttribute("href")).toContain("#/syncupdates");
+        expect(page.prefixErrMsgLink.getAttribute("href")).toContain("syncupdates");
     });
 });

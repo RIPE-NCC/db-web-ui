@@ -29,6 +29,16 @@ public class CrowdTokenFilter implements Filter {
             ".*/alerts.component.html",
             ".*/api/.*", /* let rest-operation itself decide about authentication */
             ".*/db-web-ui/",
+            // on refresh page to not redirect to login page
+            ".*/db-web-ui/webupdates/select",
+            ".*/db-web-ui/query",
+            ".*/db-web-ui/fulltextsearch",
+            ".*/db-web-ui/syncupdates",
+            ".*/db-web-ui/lookup",
+            ".*/db-web-ui/fmp",
+            ".*/db-web-ui/fmp/requireLogin",
+            ".*/db-web-ui/error",
+            ".*/db-web-ui/not-found",
             ".*/db-web-ui/index.html",
             // these calls are only made in non-aot mode
             ".*/ng/.*.html",

@@ -33,7 +33,8 @@ describe("displayPairComponent", () => {
         TestBed.configureTestingModule({
             imports: [HttpClientTestingModule],
             declarations: [
-                DisplayMntnerPairComponent, AlertsComponent
+                DisplayMntnerPairComponent,
+                AlertsComponent
             ],
             providers: [
                 WhoisResourcesService,

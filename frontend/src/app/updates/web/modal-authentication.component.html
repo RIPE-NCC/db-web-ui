@@ -40,7 +40,7 @@
                 <li>
                     <div>
                         <label class="pull-left">Provide the password for the selected maintainer</label>
-                        <a class="forgot-password pull-right" [href]="'/db-web-ui/#/fmp/'" (click)="cancel()">Forgotten MNTNER password?</a>
+                        <a class="forgot-password pull-right" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Forgotten MNTNER password?</a>
                     </div>
                     <input type="password" class="form-control" [(ngModel)]="selected.password" required="true" name="passwordAuth" />
                 </li>
@@ -56,14 +56,14 @@
             The following maintainers are used to protect this object, but are not eligible to be used here:
             <br>
             <span *ngFor="let mnt of resolve.mntnersWithoutPassword; let last = last">
-                <a href="#/webupdates/display/{{resolve.source}}/mntner/{{mnt.key}}" target="_blank">
+                <a href="webupdates/display/{{resolve.source}}/mntner/{{mnt.key}}" target="_blank">
                     {{mnt.key}}
                 </a> <span *ngIf="!last">,</span>
             </span>
             <br/>
             <a href="https://www.ripe.net/manage-ips-and-asns/db/support/security/protecting-data#solving-authentication-problems" taget="_blank">Learn more.</a>
             <br/>
-            <a class="forgot-password" [href]="'/db-web-ui/#/fmp/'" (click)="cancel()">Recover Maintainer Access</a>
+            <a class="forgot-password" [href]="'/db-web-ui/fmp/'" (click)="cancel()">Recover Maintainer Access</a>
         </div>
     </div>
 

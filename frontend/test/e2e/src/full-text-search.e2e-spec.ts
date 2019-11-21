@@ -5,7 +5,7 @@ const page = require("./homePageObject");
 describe("The full text search", () => {
 
     beforeEach(() => {
-        browser.get(browser.baseUrl + "#/fulltextsearch");
+        browser.get(browser.baseUrl + "fulltextsearch");
     });
 
     it("should be able to search using the text box", () => {

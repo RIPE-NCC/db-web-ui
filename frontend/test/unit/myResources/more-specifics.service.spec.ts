@@ -1,7 +1,8 @@
 import {TestBed} from "@angular/core/testing";
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {MyResourcesModule} from "../../../src/app/myresources/my-resources.module";
 import {MoreSpecificsService} from "../../../src/app/myresources/more-specifics.service";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {AppModule} from "../../../src/app/app.module";
 
 describe("MoreSpecificsService", () => {
 
@@ -10,7 +11,11 @@ describe("MoreSpecificsService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, MyResourcesModule],
+            imports: [
+                HttpClientTestingModule,
+                MyResourcesModule,
+                AppModule
+            ],
             providers: [
                 MoreSpecificsService
             ],

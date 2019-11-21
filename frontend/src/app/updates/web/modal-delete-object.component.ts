@@ -82,7 +82,7 @@ export class ModalDeleteObjectComponent {
     }
 
     public displayUrl(ref: any) {
-        return `#/webupdates/display/${this.inputData.source}/${ref.objectType}/${encodeURIComponent(ref.primaryKey)}`;
+        return `webupdates/display/${this.inputData.source}/${ref.objectType}/${encodeURIComponent(ref.primaryKey)}`;
     }
 
     public isDeletable(parent: any) {

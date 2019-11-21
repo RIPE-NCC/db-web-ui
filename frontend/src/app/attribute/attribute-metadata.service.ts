@@ -186,7 +186,7 @@ export class AttributeMetadataService {
 
     public setLinkToQueryPage(flag: string, prefix: string): string {
         if (prefix !== "") {
-            const link = `#/query?bflag=true&dflag=true&hierarchyFlag=${flag}&rflag=true&searchtext=${prefix}&source=RIPE&types=domain`
+            const link = `query?bflag=true&dflag=true&hierarchyFlag=${flag}&rflag=true&searchtext=${prefix}&source=RIPE&types=domain`
             return `Domain(s) <a href="${link}" target='_blank'>already exist</a> under this prefix`;
         }
         return prefix;
@@ -280,7 +280,7 @@ export class AttributeMetadataService {
         attribute.$$info = "";
         const cidrAddress = this.prefixService.getAddress(attribute.value);
         if (cidrAddress instanceof Address4 && cidrAddress.subnetMask > 24) {
-            attribute.$$error = "Please use the <a target='_blank' href='#/syncupdates'>Syncupdates page</a> to create a domain object smaller than /24";
+            attribute.$$error = "Please use the <a target='_blank' href='syncupdates'>Syncupdates page</a> to create a domain object smaller than /24";
         } else {
             attribute.$$error = "Invalid prefix notation";
         }

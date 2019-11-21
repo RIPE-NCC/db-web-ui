@@ -109,6 +109,6 @@ export class WebUpdatesCommonsService {
     private _displayUrl(parser: any, attribute: IAttributeModel, objectSource: string) {
         parser.href = attribute.link.href;
         const parts = parser.pathname.split("/");
-        return `#/webupdates/display/${this.properties.SOURCE}/${attribute["referenced-type"]}/${_.last(parts)}`;
+        return `webupdates/display/${this.properties.SOURCE}/${attribute["referenced-type"]}/${_.last(parts)}`;
     }
 }

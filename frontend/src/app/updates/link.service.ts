@@ -6,7 +6,7 @@ export class LinkService {
 
     public getLink(source: string, type: string, name: string) {
         return [
-            "<a target=\"_blank\" href=\"#/webupdates/display/",
+            "<a target=\"_blank\" href=\"webupdates/display/",
             source,
             "/",
             type,
@@ -18,7 +18,7 @@ export class LinkService {
     }
 
     public getModifyUrl(source: string, type: string, name: string) {
-        return "#/webupdates/display/" + source + "/" + type + "/" + encodeURIComponent(name);
+        return "webupdates/display/" + source + "/" + type + "/" + encodeURIComponent(name);
     }
 
     public getModifyLink(source: string, type: string, name: string) {

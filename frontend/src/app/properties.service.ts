@@ -10,10 +10,10 @@ export class PropertiesService {
     public ACCESS_URL = "https://access.prepdev.ripe.net?originalUrl=https://localhost.ripe.net:8443/db-web-ui/";
     public BANNER = "Welcome to the localhost version of the RIPE Database.";
     public BUILD_TAG = "SNAPSHOT";
-    public DATABASE_CREATE_URL = "#/webupdates/select";
-    public DATABASE_FULL_TEXT_SEARCH_URL = "#/fulltextsearch";
-    public DATABASE_QUERY_URL = "#/query";
-    public DATABASE_SYNCUPDATES_URL = "#/syncupdates";
+    public DATABASE_CREATE_URL = "webupdates/select";
+    public DATABASE_FULL_TEXT_SEARCH_URL = "fulltextsearch";
+    public DATABASE_QUERY_URL = "query";
+    public DATABASE_SYNCUPDATES_URL = "syncupdates";
     public ENV = "local";
     public MATOMO_ID = "BuGxbMDR_dev_0ae7dee0ac65f70a4e8cf1b8";
     public IPV4_TRANSFER_LISTING_URL = "";
@@ -25,9 +25,9 @@ export class PropertiesService {
     public LIR_TRAINING_URL = "";
     public LIR_USER_ACCOUNTS_URL = "";
     public LOGIN_URL = "https://access.prepdev.ripe.net/";
-    public LOGOUT_URL = "https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/#query";
-    public MY_RESOURCES_URL = "#/myresources/overview";
-    public OBJECT_LOOKUP_URL = "#/lookup";
+    public LOGOUT_URL = "https://access.prepdev.ripe.net/logout?originalUrl=https://localhost.ripe.net:8443/db-web-ui/query";
+    public MY_RESOURCES_URL = "myresources/overview";
+    public OBJECT_LOOKUP_URL = "lookup";
     public OPEN_ACQUISITION_URL = "";
     public PORTAL_URL = "https://my.prepdev.ripe.net/";
     public QUERY_PAGE_LINK_TO_OTHER_DB = "";

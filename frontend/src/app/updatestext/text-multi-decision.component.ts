@@ -1,6 +1,6 @@
-import {Component, Inject} from "@angular/core";
+import {Component} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {WINDOW} from "../core/window.service";
+import {Router} from "@angular/router";
 import {PreferenceService} from "../updates/preference.service";
 import {PropertiesService} from "../properties.service";
 
@@ -10,7 +10,7 @@ import {PropertiesService} from "../properties.service";
 })
 export class TextMultiDecisionComponent {
 
-    constructor(@Inject(WINDOW) private window: any,
+    constructor(private router: Router,
                 private modalService: NgbModal,
                 public preferenceService: PreferenceService,
                 public properties: PropertiesService) {
@@ -47,11 +47,11 @@ export class TextMultiDecisionComponent {
 
     private navigateToNew() {
         this.preferenceService.setRichSyncupdatesMode();
-        this.window.location.href = "#/textupdates/multi";
+        this.router.navigate(["textupdates/multi"]);
     }
 
     private navigateToOld() {
         this.preferenceService.setPoorSyncupdatesMode();
-        this.window.location.href = this.properties.DATABASE_SYNCUPDATES_URL;
+        this.router.navigate([this.properties.DATABASE_SYNCUPDATES_URL]);
     }
 }
