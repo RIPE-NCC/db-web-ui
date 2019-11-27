@@ -123,8 +123,7 @@
           "options": {
             "browserTarget": "frontend:build",
             "proxyConfig": "proxy.conf.json",
-            "disableHostCheck": true,
-            "port": 9002
+            "disableHostCheck": true
           },
           "configurations": {
             "production": {
