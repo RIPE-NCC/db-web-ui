@@ -31,6 +31,8 @@ public class CrowdTokenFilter implements Filter {
             ".*/db-web-ui/",
             // on refresh page to not redirect to login page
             ".*/db-web-ui/webupdates/select",
+            ".*/db-web-ui/webupdates/display",
+            ".*/db-web-ui/forceDelete",
             ".*/db-web-ui/query",
             ".*/db-web-ui/fulltextsearch",
             ".*/db-web-ui/syncupdates",

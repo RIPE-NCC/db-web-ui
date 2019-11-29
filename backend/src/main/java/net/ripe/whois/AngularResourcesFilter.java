@@ -44,6 +44,7 @@ public class AngularResourcesFilter implements Filter {
                 uri.startsWith("/lookup") ||
                 uri.startsWith("/textupdates") ||
                 uri.startsWith("/fmp") ||
+                uri.startsWith("/forceDelete") ||
                 uri.startsWith("/error") ||
                 uri.startsWith("/not-found");
     }
