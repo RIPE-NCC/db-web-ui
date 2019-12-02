@@ -63,7 +63,7 @@ export class ModalAuthenticationComponent {
         this.activeModal.dismiss(reason);
     }
 
-    public ok() {
+    public submit() {
 
         if (this.selected.password.length === 0 && this.selected.item) {
             this.selected.message = "Password for mntner: \'" + this.selected.item.key + "\'" + " too short";
@@ -107,6 +107,11 @@ export class ModalAuthenticationComponent {
                                 this.activeModal.close({$value: {selectedItem: this.selected.item, response: resp}});
                             }, (error: any) => {
                                 console.error("Association error:" + error);
+                                if (!_.isUndefined(error.error) && !_.isUndefined(error.error.errormessages)
+                                    && !_.isUndefined(error.error.errormessages.errormessage[0])) {
+                                    this.selected.message = error.error.errormessages.errormessage[0].text;
+                                    return;
+                                }
                                 // remove modal anyway
                                 this.activeModal.close({$value: {selectedItem: this.selected.item}})
                             });

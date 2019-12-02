@@ -71,7 +71,7 @@ describe("ModalAuthenticationComponent", () => {
         modalAuthenticationComponent.selected.item = {type: "mntner", key: "b-mnt"};
         modalAuthenticationComponent.selected.password = "";
         modalAuthenticationComponent.selected.associate = false;
-        modalAuthenticationComponent.ok();
+        modalAuthenticationComponent.submit();
 
         expect(modalAuthenticationComponent.selected.message).toEqual("Password for mntner: \'b-mnt\' too short");
     });
@@ -81,7 +81,7 @@ describe("ModalAuthenticationComponent", () => {
         modalAuthenticationComponent.selected.password = "secret";
         modalAuthenticationComponent.selected.associate = false;
 
-        modalAuthenticationComponent.ok();
+        modalAuthenticationComponent.submit();
 
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/b-mnt?password=secret&unfiltered=true"}).flush({
             objects: {
@@ -111,7 +111,7 @@ describe("ModalAuthenticationComponent", () => {
         modalAuthenticationComponent.selected.password = "secret";
         modalAuthenticationComponent.selected.associate = false;
 
-        modalAuthenticationComponent.ok();
+        modalAuthenticationComponent.submit();
 
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/b-mnt?password=secret&unfiltered=true"}).flush({
             objects: {
@@ -152,7 +152,7 @@ describe("ModalAuthenticationComponent", () => {
         modalAuthenticationComponent.selected.password = "secret";
         modalAuthenticationComponent.selected.associate = true;
 
-        modalAuthenticationComponent.ok();
+        modalAuthenticationComponent.submit();
 
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/b-mnt?password=secret&unfiltered=true"}).flush({
             objects: {
@@ -213,6 +213,58 @@ describe("ModalAuthenticationComponent", () => {
                 response: jasmine.any(Object)
             }
         });
+    });
+
+    it("should show error message from backend in case of association error", async () => {
+        modalAuthenticationComponent.selected.item = {type: "mntner", key: "b-mnt"};
+        modalAuthenticationComponent.selected.password = "secret";
+        modalAuthenticationComponent.selected.associate = true;
+
+        modalAuthenticationComponent.submit();
+        httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/b-mnt?password=secret&unfiltered=true"}).flush({
+            objects: {
+                object: [
+                    {
+                        source: {id: "RIPE"},
+                        "primary-key": {attribute: [{name: "mntner", value: "b-mnt"}]},
+                        attributes: {
+                            attribute: [
+                                {name: "mntner", value: "b-mnt"},
+                                {name: "mnt-by", value: "b-mnt"},
+                                {name: "source", value: "RIPE"}
+                            ]
+                        }
+                    }
+                ]
+            }
+        });
+
+        await componentFixture.whenStable();
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({
+            user: {
+                "username": "dummy@ripe.net",
+                "displayName": "Test User",
+                "uuid": "aaaa-bbbb-cccc-dddd",
+                "active": "true"
+            }
+        });
+        await componentFixture.whenStable();
+
+        httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/mntner/b-mnt?password=secret"}).flush({
+            errormessages : {
+                errormessage : [ {
+                    severity : "Error",
+                    text : "Value cannot have a comment in auth: PGPKEY-5E5E8986 # LIR # LIR [key-cert] [locator: http://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-5E5E8986]"
+                } ]
+            },
+            "terms-and-conditions" : {
+                type : "locator",
+                href : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+            }}, {status: 400, statusText: "bad request"});
+        await componentFixture.whenStable();
+
+        expect(modalMock.close).not.toHaveBeenCalledWith();
+        expect(modalAuthenticationComponent.selected.message).toEqual("Value cannot have a comment in auth: PGPKEY-5E5E8986 # LIR # LIR [key-cert] [locator: http://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-5E5E8986]");
     });
 
     it("should close the modal and return error when canceled", () => {
