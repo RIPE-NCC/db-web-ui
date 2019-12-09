@@ -199,6 +199,10 @@ export class CreateMntnerPairComponent {
         }
     }
 
+    public setVisibilityMntAttrsHelp(attributeName: string) {
+        this.showMntAttrsHelp[attributeName] = !this.showMntAttrsHelp[attributeName]
+    }
+
     public setVisibilityAttrsHelp(attributeName: string) {
         this.showAttrsHelp[attributeName] = !this.showAttrsHelp[attributeName]
     }

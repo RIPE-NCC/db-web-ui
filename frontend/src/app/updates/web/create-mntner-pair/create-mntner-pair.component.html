@@ -27,7 +27,7 @@
                 </div>
                 <ul class="input-group-btn">
                     <li>
-                        <a class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name)">
+                        <a class="btn btn-default ga-help-attr" (click)="setVisibilityMntAttrsHelp(attribute.name)">
                             <span class="fa fa-question"></span>
                         </a>
                     </li>
@@ -37,7 +37,7 @@
             <li *ngFor="let attribute of objectTypeAttributes | filteroutAttributeByName: ['nic-hdl', 'mnt-by', 'source']">
                 <label>{{attribute.name}}</label>
                 <span id="create-person-link" *ngIf="attribute.name === objectType" class="text-note">
-                    <b>Switch to <a [routerLink]="['/webupdates/create', source, linkToRoleOrPerson, 'self']">{{linkToRoleOrPerson}}</a></b>
+                    <strong>Switch to <a [routerLink]="['/webupdates/create', source, linkToRoleOrPerson, 'self']">{{linkToRoleOrPerson}}</a></strong>
                 </span>
                 <span *ngIf="attribute.$$error" class="text-error">{{attribute.$$error}}</span>
                 <input type="text"
@@ -56,8 +56,7 @@
                 </div>
                 <ul class="input-group-btn">
                     <li>
-                        <a class="btn btn-default ga-help-attr"
-                           (click)="setVisibilityAttrsHelp(attribute.name)">
+                        <a class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name)">
                             <span class="fa fa-question"></span>
                         </a>
                     </li>
