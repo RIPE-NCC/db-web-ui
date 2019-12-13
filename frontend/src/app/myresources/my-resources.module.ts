@@ -3,10 +3,10 @@ import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../shared/shared.module";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
-import {FlagComponent} from "./flag.component";
+import {FlagComponent} from "./flag/flag.component";
 import {HierarchySelectorComponent} from "./hierarchy-selector.component";
 import {ResourcesDataService} from "./resources-data.service";
-import {MoreSpecificsService} from "./more-specifics.service";
+import {MoreSpecificsService} from "./morespecifics/more-specifics.service";
 import {IpAddressService} from "./ip-address.service";
 import {IpUsageService} from "./ip-usage.service";
 import {IpUsageComponent} from "./ip-usage.component";
@@ -18,6 +18,9 @@ import {AlertsDropDownComponent} from "./alertsdropdown/alerts-drop-down.compone
 import {ResourceStatusService} from "./resource-status.service";
 import {TransferDropDownComponent} from "./transferdropdown/transfer-drop-down.component";
 import {AppRoutingModule} from "../app-routing.module";
+import {AssociatedObjectsComponent} from "./associatedobjects/associated-objects.component";
+import {AssociatedObjectsService} from "./associatedobjects/associated-objects.service";
+import {MoreSpecificsComponent} from "./morespecifics/more-specifics.component";
 
 @NgModule({
     imports: [
@@ -36,14 +39,17 @@ import {AppRoutingModule} from "../app-routing.module";
         IpUsageOfAllResourcesComponent,
         ResourceDetailsComponent,
         ResourceItemComponent,
-        ResourcesComponent
+        ResourcesComponent,
+        MoreSpecificsComponent,
+        AssociatedObjectsComponent
     ],
     providers: [
         IpAddressService,
         MoreSpecificsService,
         IpUsageService,
         ResourceStatusService,
-        ResourcesDataService
+        ResourcesDataService,
+        AssociatedObjectsService
     ],
     entryComponents: [
         AlertsDropDownComponent,

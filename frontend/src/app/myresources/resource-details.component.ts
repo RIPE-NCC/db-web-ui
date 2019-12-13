@@ -1,11 +1,8 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Location} from "@angular/common";
 import {CookieService} from "ngx-cookie-service";
-import {IMoreSpecificsApiResult, MoreSpecificsService} from "./more-specifics.service";
-import {IResourceDetailsResponseModel, IResourceModel, IResourceTickets} from "./resource-type.model";
+import {IResourceDetailsResponseModel, IResourceTickets} from "./resource-type.model";
 import {ResourcesDataService} from "./resources-data.service";
-import {IpAddressService} from "./ip-address.service";
 import {MntnerService} from "../updates/mntner.service";
 import {Labels} from "../label.constants";
 import {ResourceStatusService} from "./resource-status.service";
@@ -20,28 +17,17 @@ import {
 } from "../shared/whois-response-type.model";
 import {IUserInfoOrganisation, IUserInfoRegistration} from "../dropdown/org-data-type.model";
 import {PropertiesService} from "../properties.service";
-
-interface IResourceDetailsControllerState {
-    params: {
-        ipanalyserRedirect: boolean;
-        objectName: string;
-        objectType: string;
-        sponsored: boolean;
-    };
-}
+import {IFlag} from "./flag/flag.component";
 
 @Component({
     selector: "resource-details",
     templateUrl: "./resource-details.component.html",
 })
-export class ResourceDetailsComponent {
+export class ResourceDetailsComponent implements OnDestroy {
 
     public whoisObject: IWhoisObjectModel;
-    public moreSpecifics: IMoreSpecificsApiResult;
     public resource: any;
-    public flags: any[] = [];
-    public canHaveMoreSpecifics: boolean;
-    public nrMoreSpecificsToShow: number = 50;
+    public flags: IFlag[] = [];
     public show: {
         editor: boolean;
         viewer: boolean;
@@ -55,33 +41,25 @@ export class ResourceDetailsComponent {
     public infos: string[];
     public successes: string[];
 
-    public showScroller = true;
     public sponsored = false;
     public isEditing = false;
     public ipanalyserRedirect = false;
 
-    public ipFilter: string = null;
-
     private orgId: string;
-    private objectName: string;
+    public objectName: string;
     public objectType: string;
 
-    private lastPage: number;
-    private MAGIC = 100; // number of items per page on server
-    private filterDebouncer: any = null;
     private source: string;
     private subscriptions: any[] = [];
 
     constructor(private cookies: CookieService,
                 private credentialsService: CredentialsService,
                 private mntnerService: MntnerService,
-                private moreSpecificsService: MoreSpecificsService,
                 private properties: PropertiesService,
                 private resourceStatusService: ResourceStatusService,
                 private resourcesDataService: ResourcesDataService,
                 private restService: RestService,
                 private orgDropDownSharedService: OrgDropDownSharedService,
-                private location: Location,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
         const orgSubs = orgDropDownSharedService.selectedOrgChanged$.subscribe((selected: IUserInfoOrganisation) => {
@@ -121,9 +99,6 @@ export class ResourceDetailsComponent {
         this.objectType = paramMap.get("objectType").toLowerCase();
         this.sponsored = paramMap.get("sponsored") === "true";
 
-        this.canHaveMoreSpecifics = false;
-        this.lastPage = -1;
-        this.getResourcesFromBackEnd();
         this.resourcesDataService.fetchResource(this.objectName, this.objectType)
             .subscribe((response: IResourceDetailsResponseModel) => {
                 this.whoisObject = response.object;
@@ -165,6 +140,14 @@ export class ResourceDetailsComponent {
                     this.addFlag(Labels["flag.sponsored.text"],
                         Labels["flag.sponsored.title"], "orange");
                 }
+                if (this.resource.iRR) {
+                    this.addFlag(Labels["flag.iRR.text"],
+                        Labels["flag.iRR.title"], "green");
+                }
+                if (this.resource.rDNS) {
+                    this.addFlag(Labels["flag.rDNS.text"],
+                        Labels["flag.rDNS.title"], "green");
+                }
             });
     }
 
@@ -201,40 +184,6 @@ export class ResourceDetailsComponent {
     public hideObjectEditor(): void {
         this.resetMessages();
         this.isEditing = false;
-    }
-
-    /**
-     * Called by 'scroller' directive.
-     */
-    public almostOnScreen(): void {
-        if (this.nrMoreSpecificsToShow < this.moreSpecifics.resources.length) {
-            this.nrMoreSpecificsToShow += 50;
-        } else if (this.moreSpecifics.resources.length < this.moreSpecifics.filteredSize) {
-            // resources still left on server? which ones? Use some magic!!!
-            const pageNr = Math.ceil(this.moreSpecifics.resources.length / this.MAGIC);
-            this.getResourcesFromBackEnd(pageNr, this.ipFilter);
-            this.nrMoreSpecificsToShow += 50;
-        }
-        this.calcScroller();
-    }
-
-    public applyFilter() {
-        if (this.filterDebouncer) {
-            clearTimeout(this.filterDebouncer);
-        }
-        this.filterDebouncer = setTimeout(() => {
-            this.lastPage = -1;
-            this.getResourcesFromBackEnd(0, this.ipFilter);
-        },400);
-    }
-
-    public isValidPrefix(maybePrefix: string): boolean {
-        if (!maybePrefix) {
-            return false;
-        }
-        return IpAddressService.isValidV4(maybePrefix)
-            || IpAddressService.isValidRange(maybePrefix)
-            || IpAddressService.isValidV6(maybePrefix);
     }
 
     private clearAlertMessages() {
@@ -310,58 +259,25 @@ export class ResourceDetailsComponent {
         });
     }
 
-    private getResourcesFromBackEnd(pageNr = 0, ipFilter = "") {
-        if (pageNr <= this.lastPage) {
-            // ignore requests for pages that we've done, or that we're are already fetching.
-            return;
-        }
-        if (this.location.path().indexOf("/myresources/detail") < 0) {
-            this.lastPage = -1;
-            this.showScroller = false;
-            return;
-        }
-        this.lastPage = pageNr;
-        if (this.objectType === "inetnum" || this.objectType === "inet6num") {
-            this.moreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter)
-                .subscribe((response: IMoreSpecificsApiResult) => {
-
-                    // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
-                    // response sizes and work out how they fit with this lot.
-                    if (pageNr === 0) {
-                        this.moreSpecifics = response;
-                    } else {
-                        this.moreSpecifics.resources = this.moreSpecifics.resources.concat(response.resources);
-                    }
-                    this.canHaveMoreSpecifics = true;
-                    this.calcScroller();
-                }, () => {
-                    this.calcScroller();
-                });
-        }
-    }
-
-    private calcScroller(): void {
-        if (!this.moreSpecifics) {
-            return;
-        }
-        this.showScroller = this.nrMoreSpecificsToShow < this.moreSpecifics.filteredSize;
-        // FIXME
-        setTimeout(() => {
-            // this.$scope.$apply();
-        }, 10);
-    }
-
     private addFlag(textOnFlag: string, tooltip: string, colour?: string) {
-        const flag = {
+        const flag: IFlag = {
             colour,
-            type: tooltip,
-            value: textOnFlag,
+            tooltip,
+            text: textOnFlag,
         };
         if (tooltip === "status") {
             this.flags.unshift(flag);
         } else {
             this.flags.push(flag);
         }
+    }
+
+    // Flags iRR and rDNS have to be last flags
+    private moveFlagsIRRNRDNSOnEnd() {
+        const indexIRRFlag = this.flags.findIndex(flag => flag.text === Labels["flag.iRR.text"]);
+        this.flags = this.flags.concat(this.flags.splice(indexIRRFlag,1));
+        const indexRDNSFlag = this.flags.findIndex(flag => flag.text === Labels["flag.rDNS.text"]);
+        this.flags = this.flags.concat(this.flags.splice(indexRDNSFlag,1));
     }
 
     private getTicketsAndDates() {
@@ -372,6 +288,7 @@ export class ResourceDetailsComponent {
                         this.addFlag(ticket.date, "Issue date for " + ticket.resource);
                         this.addFlag(ticket.number, "Ticket number for " + ticket.resource);
                     }
+                    this.moveFlagsIRRNRDNSOnEnd();
                 }
             });
     }

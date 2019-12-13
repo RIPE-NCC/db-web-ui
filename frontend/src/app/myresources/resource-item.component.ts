@@ -2,6 +2,7 @@ import {Component, Input} from "@angular/core";
 import {Router} from "@angular/router";
 import {ResourceStatusService} from "./resource-status.service";
 import {Labels} from "../label.constants";
+import {IFlag} from "./flag/flag.component";
 
 @Component({
     selector: "resource-item",
@@ -10,18 +11,14 @@ import {Labels} from "../label.constants";
 export class ResourceItemComponent {
 
     @Input()
-    public item: any;//IResourceScreenItem;
+    public item: any; // IResourceScreenItem;
     @Input()
     public sponsored: boolean;
     public ipanalyserRedirect: boolean;
     public usedPercentage: number;
     public showProgressbar: boolean;
 
-    public flags: Array<{
-        colour?: string;
-        text: string;
-        tooltip: string;
-    }> = [];
+    public flags: Array<IFlag> = [];
 
     constructor(private router: Router,
                 private resourceStatusService: ResourceStatusService) {
@@ -62,6 +59,20 @@ export class ResourceItemComponent {
                 colour: "orange",
                 text: Labels["flag.sponsored.text"],
                 tooltip: Labels["flag.sponsored.title"],
+            });
+        }
+        if (this.item.iRR) {
+            this.flags.push({
+                colour: "green",
+                text: Labels["flag.iRR.text"],
+                tooltip: Labels["flag.iRR.title"],
+            });
+        }
+        if (this.item.rDNS) {
+            this.flags.push({
+                colour: "green",
+                text: Labels["flag.rDNS.text"],
+                tooltip: Labels["flag.rDNS.title"],
             });
         }
     }

@@ -64,8 +64,8 @@ export class ResourcesComponent implements OnDestroy {
 
         this.showTheIpAnalyserBanner(this.activatedRoute.snapshot.queryParamMap.get("ipanalyserRedirect") === "true");
 
-        this.refreshPage();
         this.lastTab = this.activatedRoute.snapshot.queryParamMap.get("type") || "inetnum";
+        this.refreshPage();
         this.showAlerts = !this.isShowingSponsored && this.lastTab === "inetnum";
     }
 

@@ -13,6 +13,7 @@ import {LabelPipe} from "./label.pipe";
 import {PaginationComponent} from "./paginator/pagination.component";
 import {LoadingIndicatorComponent} from "./loading-indicator/loading-indicator.component";
 import {ScrollerDirective} from "./scroller.directive";
+import {TableScrollerDirective} from "./table-scroller.directive";
 import {NameFormatterComponent} from "./name-formatter.component";
 import {EnvironmentStatusService} from "./environment-status.service";
 import {SubmittingAgreementComponent} from "./submitting-agreement.component";
@@ -33,6 +34,7 @@ import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
         HelpMarkerComponent,
         LabelPipe,
         ScrollerDirective,
+        TableScrollerDirective,
         LoadingIndicatorComponent,
         NameFormatterComponent,
         SubmittingAgreementComponent,
@@ -69,7 +71,8 @@ import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
         FilteroutAttributeByNamePipe,
         AttributeTransformerDirective,
         SanitizeImgHtmlPipe,
-        NgbModule
+        NgbModule,
+        TableScrollerDirective
     ]
 })
 export class SharedModule {

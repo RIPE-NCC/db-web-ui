@@ -15,6 +15,8 @@
                 "resource": "194.104.0.0 - 194.104.0.255",
                 "status": "ASSIGNED PI",
                 "netname": "SN-IP",
+                "iRR": true,
+                "rDNS": true,
                 "usage": {
                     "total": 256,
                     "used": 0,
@@ -26,6 +28,8 @@
                 "resource": "194.171.0.0 - 194.171.255.255",
                 "status": "ALLOCATED PA",
                 "netname": "NL-SURFNET-950612",
+                "iRR": false,
+                "rDNS": true,
                 "usage": {
                     "total": 1024,
                     "used": 0,
@@ -37,6 +41,8 @@
                 "resource": "195.169.0.0 - 195.169.255.255",
                 "status": "ALLOCATED PA",
                 "netname": "NL-SURFNET-970616",
+                "iRR": true,
+                "rDNS": false,
                 "usage": {
                     "total": 2048,
                     "used": 2048,
@@ -49,6 +55,8 @@
                 "status": "LEGACY",
                 "netname": "NL-SURFNET-20030715",
                 "sponsored": true,
+                "iRR": false,
+                "rDNS": false,
                 "usage": {
                     "total": 2048,
                     "used": 2048,

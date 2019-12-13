@@ -95,13 +95,44 @@ describe("Resources detail", () => {
             browser.get(browser.baseUrl + "myresources/detail/inetnum/185.51.48.0%20-%20185.51.55.255/false");
         });
 
-        it("should contain 6 flags, 2 tickets and 2 dates", () => {
+        it("should contain 8 flags, 2 tickets and 2 dates", () => {
             expect(page.flagsContainer.isPresent()).toEqual(true);
-            expect(page.flags.count()).toEqual(6);
+            expect(page.flags.count()).toEqual(8);
             expect(page.flags.get(2).getText()).toEqual("2014-03-21");
             expect(page.flags.get(3).getText()).toEqual("NCC#2014033634");
             expect(page.flags.get(4).getText()).toEqual("2014-03-21");
             expect(page.flags.get(5).getText()).toEqual("NCC#2014033636");
+            expect(page.flags.get(6).getText()).toEqual("IRR");
+            expect(page.flags.get(7).getText()).toEqual("RDNS");
+        });
+
+        it("should contain Associated Route Objects table", () => {
+            expect(page.associatedRouteObjectsTable.isPresent()).toEqual(true);
+            expect(page.associatedRouteObjectsTableRows.count()).toEqual(3);
+
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 0, 0).getText()).toEqual("AS8100");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 0, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=AS8100&type=aut-num");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 0, 1).getText()).toEqual("185.51.49.0/24");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 1, 0).getText()).toEqual("AS41108");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 1, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=AS41108&type=aut-num");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 1, 1).getText()).toEqual("185.51.50.0/24");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 2, 0).getText()).toEqual("AS41108");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 2, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=AS41108&type=aut-num");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 2, 1).getText()).toEqual("185.51.51.0");
+        });
+
+        it("should contain Associated Domain Objects table", () => {
+            expect(page.associatedDomainObjectsTable.isPresent()).toEqual(true);
+            expect(page.associatedDomainObjectsTableRows.count()).toEqual(3);
+
+            expect(page.getTableCell(page.associatedDomainObjectsTable, 0, 0).getText()).toEqual("49.51.185.in-addr.arpa");
+            expect(page.getTableCell(page.associatedDomainObjectsTable, 0, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=49.51.185.in-addr.arpa&type=domain");
+            expect(page.getTableCell(page.associatedDomainObjectsTable, 0, 1).getText()).toEqual("Manage");
+            expect(page.getTableCell(page.associatedDomainObjectsTable, 0, 1).element(by.css("a")).getAttribute("href")).toContain("webupdates/modify/RIPE/domain/49.51.185.in-addr.arpa");
+            expect(page.getTableCell(page.associatedDomainObjectsTable, 1, 0).getText()).toEqual("50.51.185.in-addr.arpa");
+            expect(page.getTableCell(page.associatedDomainObjectsTable, 1, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=50.51.185.in-addr.arpa&type=domain");
+            expect(page.getTableCell(page.associatedDomainObjectsTable, 2, 0).getText()).toEqual("51.51.185.in-addr.arpa");
+            expect(page.getTableCell(page.associatedDomainObjectsTable, 2, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=51.51.185.in-addr.arpa&type=domain");
         });
 
     });
@@ -248,11 +279,30 @@ describe("Resources detail", () => {
             expect(page.moreSpecificsTable.isPresent()).toEqual(false);
         });
 
-        it("should contain 4 flags, 1 ticket and 1 date", () => {
+        it("should contain 4 flags, 1 ticket and 1 date, and IRR and RDNS should be on end", () => {
             expect(page.flagsContainer.isPresent()).toEqual(true);
-            expect(page.flags.count()).toEqual(4);
+            expect(page.flags.count()).toEqual(6);
             expect(page.flags.get(2).getText()).toEqual("2017-06-19");
             expect(page.flags.get(3).getText()).toEqual("NCC#201001020355");
+            expect(page.flags.get(4).getText()).toEqual("IRR");
+            expect(page.flags.get(5).getText()).toEqual("RDNS");
+        });
+
+        it("should contain Associated Route Objects table", () => {
+            expect(page.associatedRouteObjectsTable.isPresent()).toEqual(true);
+            expect(page.associatedRouteObjectsTableRows.count()).toEqual(6);
+
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 0, 0).getText()).toEqual("AS204056");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 0, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=AS204056&type=aut-num");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 0, 1).getText()).toEqual("131.115.0.0/16");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 0, 2).getText()).toEqual("Manage");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 0, 2).element(by.css("a")).getAttribute("href")).toContain("webupdates/modify/RIPE/associated-route/131.115.0.0%2F16AS204056");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 2, 0).getText()).toEqual("AS204056");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 2, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=AS204056&type=aut-num");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 2, 1).getText()).toEqual("192.43.165.0/24");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 5, 0).getText()).toEqual("AS204056");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 5, 0).element(by.css("a")).getAttribute("href")).toContain("lookup?source=RIPE&key=AS204056&type=aut-num");
+            expect(page.getTableCell(page.associatedRouteObjectsTable, 5, 1).getText()).toEqual("192.150.84.0/24");
         });
     });
 

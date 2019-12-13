@@ -1,0 +1,30 @@
+{
+  "requestUrl": "/db-web-ui/api/whois-internal/api/resources/inetnum/185.51.48.0%20-%20185.51.55.255/associated-domain-objects.json?filter=&page=0",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "associatedObjects": [
+      {
+        "type": "associated-domain",
+        "associatedResource": "185.51.48.0 - 185.51.55.255",
+        "relatedResourceType": "inetnum",
+        "domain": "49.51.185.in-addr.arpa"
+      },
+      {
+        "type": "associated-domain",
+        "associatedResource": "185.51.48.0 - 185.51.55.255",
+        "relatedResourceType": "inetnum",
+        "domain": "50.51.185.in-addr.arpa"
+      },
+      {
+        "type": "associated-domain",
+        "associatedResource": "185.51.48.0 - 185.51.55.255",
+        "relatedResourceType": "inetnum",
+        "domain": "51.51.185.in-addr.arpa"
+      }
+    ],
+    "totalNumberOfResources": 3,
+    "filteredSize": 3,
+    "pageSize": 3
+  }
+}

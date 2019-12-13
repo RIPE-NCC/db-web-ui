@@ -193,9 +193,17 @@ module.exports = {
     btnCreateAssignment: element(by.css(".my-resources")).element(by.css("a.blue-button")),
     transferMenuItems: element(by.css(".my-resources")).element(by.css("transfer-drop-down")).all(by.css("li")),
 
-    // More specifics page
+    // More specifics table
     moreSpecificsTable: element(by.css("section.more-specifics table")),
-    moreSpecificsTableRows: element(by.css("table")).element(by.css("tbody")).all(by.css("tr")),
+    moreSpecificsTableRows: element(by.css("section.more-specifics table")).element(by.css("tbody")).all(by.css("tr")),
+
+    // Associated Route Objects table
+    associatedRouteObjectsTable: element(by.id("associated-route-objects")).element(by.css("table")),
+    associatedRouteObjectsTableRows: element(by.id("associated-route-objects")).element(by.css("table")).element(by.css("tbody")).all(by.css("tr")),
+
+    // Associated Domain Objects table
+    associatedDomainObjectsTable: element(by.id("associated-domain-objects")).element(by.css("table")),
+    associatedDomainObjectsTableRows: element(by.id("associated-domain-objects")).element(by.css("table")).element(by.css("tbody")).all(by.css("tr")),
 
     usageStatus: element(by.css("ip-usage")),
     usageStatusStatistics: element(by.css("ip-usage")).all(by.css(".box-statistic")),

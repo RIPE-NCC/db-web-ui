@@ -117,6 +117,14 @@ describe("Resources", () => {
         expect(page.myResourcesActiveTabRows.get(3).all(by.css("flag")).get(2).getText()).toEqual("SPONSORED RESOURCE");
     });
 
+    it("should show IRR and RDNS flags", () => {
+        expect(page.myResourcesActiveTabRows.get(0).all(by.css("flag")).get(2).getText()).toEqual("IRR");
+        browser.actions().mouseMove(page.myResourcesActiveTabRows.get(0).all(by.css("flag")).get(2)).perform();
+        expect(page.myResourcesActiveTabRows.get(0).all(by.css("flag")).get(3).getText()).toEqual("RDNS");
+        expect(page.myResourcesActiveTabRows.get(1).all(by.css("flag")).get(2).getText()).toEqual("RDNS");
+        expect(page.myResourcesActiveTabRows.get(2).all(by.css("flag")).get(2).getText()).toEqual("IRR");
+    });
+
     it("should show out of region (RIPE-NONAUTH) autnum", () => {
         expect(page.myResources.isPresent()).toEqual(true);
         expect(page.myResourcesTabs.count()).toEqual(3);

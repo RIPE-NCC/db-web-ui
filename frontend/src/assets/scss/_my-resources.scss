@@ -117,10 +117,69 @@ div.resource-list {
     }
 }
 
-
+@mixin tableCell($widz) {
+    width: $widz;
+    text-align: left;
+    display: inline-block;
+}
 
 table.resources > thead > tr {
     background-color: $brd-color;
+}
+
+table.resources {
+    thead {
+        display: block;
+        tr {
+            width: 100%;
+            display: block;
+            th {
+                &.w20 {
+                    @include tableCell(20%);
+                }
+                &.w30 {
+                    @include tableCell(30%);
+                }
+                &.w40 {
+                    @include tableCell(40%);
+                }
+                &.w50 {
+                    @include tableCell(50%);
+                }
+                &.w60 {
+                    @include tableCell(60%);
+                }
+            }
+        }
+    }
+    tbody {
+        display: block;
+        overflow-y: auto;
+        tr {
+            width: 100%;
+            display: block;
+            td {
+                &.w20 {
+                    @include tableCell(20%);
+                }
+                &.w30 {
+                    @include tableCell(30%);
+                }
+                &.w40 {
+                    @include tableCell(40%);
+                }
+                &.w50 {
+                    @include tableCell(50%);
+                }
+                &.w60 {
+                    @include tableCell(60%);
+                }
+                &.right {
+                    text-align: right;
+                }
+            }
+        }
+    }
 }
 
 table.table-body-borderless > tbody > tr > td,
@@ -299,4 +358,8 @@ section.db-object {
 section.more-specifics {
     @extend %float-l;
     @extend %width-100;
+}
+section.associated-objects {
+  @extend %float-l;
+  @extend %width-100;
 }

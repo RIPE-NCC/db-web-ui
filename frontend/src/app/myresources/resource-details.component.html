@@ -4,7 +4,7 @@
                         [type]="resource.type"></name-formatter>
     </h1>
     <div class="flags-container">
-        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.type" [text]="f.value"></flag>
+        <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text"></flag>
     </div>
 </section>
 <section class="back-to-my-resources">
@@ -49,57 +49,21 @@
                              *ngIf="isEditing"
                              (cancel-clicked)="hideObjectEditor()"
                              (update-clicked)="updateButtonClicked($event)"></whois-object-editor>
+
     </div>
 </section>
 
-<section class="more-specifics" *ngIf="canHaveMoreSpecifics">
-    <h2>More specifics</h2>
-    <div class="prefix-filter" *ngIf="moreSpecifics.resources.length > 0">
-        <div class="input-group">
-            <input type="text"
-                   id="ipFilter"
-                   name="ipFilter"
-                   class="form-control"
-                   placeholder="Search for prefix"
-                   [(ngModel)]="ipFilter"
-                   (input)="applyFilter()">
-            <span class="input-group-btn" [hidden]="!ipFilter">
-                <button type="button"
-                        class="btn"
-                        id="clearButton"
-                        (click)="ipFilter = ''; applyFilter();">
-                    <span class="fa fa-times"></span>
-                  </button>
-            </span>
-        </div>
-        <span *ngIf="ipFilter" class="pull-right">
-            Showing {{moreSpecifics.filteredSize }} out of {{moreSpecifics.totalNumberOfResources}}
-        </span>
-        <span *ngIf="ipFilter === null || ipFilter === ''" class="pull-right">
-            Total more specifics: {{moreSpecifics.totalNumberOfResources}}
-        </span>
-    </div>
-    <table class="table table-bordered table-body-borderless resources table-striped"
-           *ngIf="moreSpecifics.resources.length">
-        <thead>
-        <tr>
-            <th>Internet number resource</th>
-            <th>Status</th>
-            <th>Netname</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let resource of moreSpecifics.resources | slice:0:nrMoreSpecificsToShow; index as i;">
-            <td><a [routerLink]="['/myresources/detail', resource.type, resource.resource, sponsored]">
-                <name-formatter [name]="resource.resource" [type]="resource.type"></name-formatter>
-            </a></td>
-            <td>{{ resource.status }}</td>
-            <td>{{ resource.netname }}</td>
-        </tr>
-        </tbody>
-    </table>
-    <p *ngIf="showScroller" scroller (onScroll)="almostOnScreen()"></p>
-    <div class="alert alert-warning" *ngIf="moreSpecifics.resources.length === 0">
-        No more specific objects exist.
-    </div>
-</section>
+<more-specifics [objectType]="objectType"
+               [objectName]="objectName"
+               [sponsored]="sponsored"></more-specifics>
+
+<associated-objects id="associated-route-objects" *ngIf="resource?.iRR"
+                    title="Associated Route Objects"
+                    associatedType="route"
+                    [objectType]="objectType"
+                    [objectName]="objectName"></associated-objects>
+<associated-objects id="associated-domain-objects" *ngIf="resource?.rDNS"
+                    title="Associated Domain Objects"
+                    associatedType="domain"
+                    [objectType]="objectType"
+                    [objectName]="objectName"></associated-objects>

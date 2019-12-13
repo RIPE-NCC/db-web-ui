@@ -1,5 +1,11 @@
 import {Component, Input} from "@angular/core";
 
+export interface IFlag {
+    colour?: string;
+    text: string;
+    tooltip: string;
+}
+
 @Component({
     selector: "flag",
     templateUrl: "./flag.component.html",

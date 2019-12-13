@@ -1,4 +1,4 @@
-import {IMoreSpecificResource} from "./more-specifics.service";
+import {IMoreSpecificResource} from "./morespecifics/more-specifics.service";
 import {IWhoisObjectModel} from "../shared/whois-response-type.model";
 
 export interface IResourceModel {
@@ -78,6 +78,8 @@ export interface IResourceScreenItem {
     sponsoredByOther: boolean;
     sponsored: boolean;
     ipanalyserRedirect: boolean;
+    iRR?: boolean; // any related route(6)
+    rDNS?: boolean; // any related domain object's
 }
 
 export interface IResourceDetailsResponseModel {
@@ -88,6 +90,8 @@ export interface IResourceDetailsResponseModel {
     notUnderContract?: boolean;
     sponsoredByOther?: boolean;
     sponsored?: boolean;
+    iRR?: boolean; // any related route(6)
+    rDNS?: boolean; // any related domain object's
 }
 
 export interface IIpv4Analysis {

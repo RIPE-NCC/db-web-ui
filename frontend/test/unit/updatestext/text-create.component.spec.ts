@@ -47,7 +47,6 @@ describe("TextCreateComponent", () => {
             declarations: [TextCreateComponent, AlertsComponent],
             providers: [
                 {provide: PreferenceService, useValue: preferencesServiceMock},
-
                 WhoisResourcesService,
                 WhoisMetaService,
                 RestService,
@@ -59,7 +58,7 @@ describe("TextCreateComponent", () => {
                 TextCommonsService,
                 CredentialsService,
                 PrefixService,
-                { provide: Location, useValue: {path: () => ""}},
+                {provide: Location, useValue: {path: () => ""}},
                 {provide: NgbModal, useValue: modalMock},
 
                 {provide: WINDOW, useValue: {}},

@@ -131,6 +131,8 @@
         "resource": "185.51.48.0 - 185.51.55.255",
         "status": "ALLOCATED PA",
         "type": "inetnum",
+        "iRR": true,
+        "rDNS": true,
         "netname": "NL-A2B-INTERNET-20140321",
         "usage": {
           "total": 2048,

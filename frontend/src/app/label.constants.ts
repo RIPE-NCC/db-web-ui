@@ -5,6 +5,10 @@ export const Labels = {
     "flag.otherSponsor.title": "Sponsored by another LIR",
     "flag.sponsored.text": "Sponsored resource",
     "flag.sponsored.title": "Sponsored resource",
+    "flag.iRR.text": "IRR",
+    "flag.iRR.title": "Related route(6) object(s) found",
+    "flag.rDNS.text": "rDNS",
+    "flag.rDNS.title": "Related domain object(s) found",
 
     "fullText.attributeHelpText.title": "Only objects where search string is contained within specified fields are returned in result set, but all attributes containing the search string within those objects are reported",
     "fullText.emptyQueryText.text": "Empty query - please specify at least one character",
