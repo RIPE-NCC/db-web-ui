@@ -209,6 +209,22 @@ describe("QueryParameters", () => {
 
     });
 
+    it("should handle type spcified with Tflag", () => {
+
+        qp.queryText = "-Tmntner,organisation shryane-mnt";
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(0);
+        expect(validationIssues.warnings.length).toEqual(0);
+        expect(qp.queryText).toEqual("shryane-mnt");
+        expect(qp.types).toEqual({MNTNER: true, ORGANISATION: true});
+
+        qp.queryText = "-T mntner,organisation shryane-mnt";
+
+        queryParametersService.validate(qp);
+        expect(qp.types).toEqual({MNTNER: true, ORGANISATION: true});
+    });
+
     it("should report error for quering with template flag not existing object", () => {
 
         qp.queryText = " -B  --no-referenced -if mnt-by --inverse person -t --reverse-domain --no-filtering --select-types aut-num";
@@ -283,7 +299,7 @@ describe("QueryParameters", () => {
         expect(qp.queryText).toEqual("");
     });
 
-    it("should parse --resource flags", () => {
+    it("should parse --resource flag", () => {
 
         qp.queryText = " -B --one-more --resource -r -d worlddomination";
 
@@ -297,5 +313,69 @@ describe("QueryParameters", () => {
         expect(qp.doNotRetrieveRelatedObjects).toEqual(true);
         expect(qp.source).toEqual("GRS");
         expect(qp.hierarchy).toEqual("m");
+    });
+
+    it("should parse --sources flag", () => {
+
+        qp.queryText = "1.2.3.4 --sources RIPE,ARIN-GRS";
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(0);
+        expect(validationIssues.warnings.length).toEqual(0);
+
+        expect(qp.queryText).toEqual("1.2.3.4");
+        expect(qp.source).toEqual("RIPE,ARIN-GRS");
+    });
+
+    it("should parse --sources flag unconditionally of the position in the query", () => {
+
+        qp.queryText = "--sources ARIN-GRS 1.2.3.4";
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(0);
+        expect(validationIssues.warnings.length).toEqual(0);
+
+        expect(qp.queryText).toEqual("1.2.3.4");
+        expect(qp.source).toEqual("ARIN-GRS");
+    });
+
+    it("should report missing search term when just sources are queried", () => {
+
+        qp.queryText = "--sources RIPE,APNIC";
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(1);
+        expect(validationIssues.errors[0]).toEqual("No search term provided");
+        expect(validationIssues.warnings.length).toEqual(0);
+    });
+
+    it("should not allow sources and resource flag together in same query", () => {
+
+        qp.queryText = "--resource --sources ARIN-GRS,RIPE 1.2.3.4";
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(1);
+        expect(validationIssues.errors[0]).toEqual("The flags \"--resource\" and \"-s, --sources\" cannot be used together.");
+        expect(validationIssues.warnings.length).toEqual(0);
+
+        qp.queryText = "--resource -s ARIN-GRS,RIPE 1.2.3.4";
+
+        validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors[0]).toEqual("The flags \"--resource\" and \"-s, --sources\" cannot be used together.");
+
+        qp.queryText = "--sources ARIN-GRS,RIPE --resource 1.2.3.4";
+
+        validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors[0]).toEqual("The flags \"--resource\" and \"-s, --sources\" cannot be used together.");
+    });
+
+    it("should report missing sources in query queried", () => {
+
+        qp.queryText = "1.2.3.4 --sources";
+
+        let validationIssues = queryParametersService.validate(qp);
+        expect(validationIssues.errors.length).toEqual(1);
+        expect(validationIssues.errors[0]).toEqual("Source specified without value");
+        expect(validationIssues.warnings.length).toEqual(0);
     });
 });

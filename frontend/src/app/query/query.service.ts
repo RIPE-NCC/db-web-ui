@@ -59,6 +59,8 @@ export class QueryService {
 
         if (qp.source === "GRS") {
             params = params.set("flags", "resource");
+        } else {
+            qp.source.split(/,/).forEach(s => params = params.append("source", s))
         }
 
         // calculate the flags
@@ -98,7 +100,6 @@ export class QueryService {
                 5),
                 reduce((acc, result) => this.accumulate(result, acc), acc)
             );
-
     }
 
     public buildPermalink(qp: IQueryParameters): string {
@@ -126,8 +127,8 @@ export class QueryService {
             linkParts.push("dflag=true");
         }
         linkParts.push("rflag=" + qp.doNotRetrieveRelatedObjects);
-        if (qp.source) {
-            linkParts.push("source=" + qp.source);
+        if (!_.isUndefined(qp.source)) {
+            qp.source.split(/,/).forEach(s => linkParts.push("source=" + s));
         }
         linkParts.push("bflag=" + qp.showFullObjectDetails);
         return linkParts.join("&");
@@ -168,8 +169,8 @@ export class QueryService {
         if (qp.showFullObjectDetails) {
             linkParts.push("flags=no-filtering");
         }
-        if (qp.source) {
-            linkParts.push("source=" + qp.source);
+        if (!_.isUndefined(qp.source)) {
+            qp.source.split(/,/).forEach(s => linkParts.push("source=" + s));
         }
 
         return linkParts.join("&");

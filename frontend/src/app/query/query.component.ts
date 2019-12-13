@@ -6,7 +6,7 @@ import {IQueryParameters, ITemplateTerm, QueryParametersService} from "./query-p
 import {QueryService} from "./query.service";
 import {PropertiesService} from "../properties.service";
 
-interface IQueryState {
+export interface IQueryState {
     source: string;
     searchtext: string;
     inverse: string;
@@ -66,7 +66,8 @@ export class QueryComponent {
 
     public init() {
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
-        this.qp.source = queryParamMap.get("source") || this.properties.SOURCE;
+        this.qp.source = queryParamMap.has("source") ? queryParamMap.getAll("source").join(",")
+            : this.properties.SOURCE;
         this.link = {
             json: "",
             perma: "",
@@ -92,7 +93,7 @@ export class QueryComponent {
     }
 
     public submitSearchForm() {
-        const formQueryParam = QueryParametersService.asLocationSearchParams(this.qp);
+        const formQueryParam = this.queryParametersService.asLocationSearchParams(this.qp);
         // when query param doesn't change $location doesn't make search
         const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
         if (this.equalsQueryParameters(formQueryParam, queryParamMap)) {
@@ -198,11 +199,15 @@ export class QueryComponent {
         if (flags) {
             q.push(" -" + flags);
         }
-        // this.qp.source = qpClean.source;
         if (qpClean.source === "GRS") {
             q.push(" --resource");
         } else {
             q.filter((term: string) => !term.endsWith("--resource"));
+        }
+        const containMoreSources = qpClean.source.includes(",");
+        const notRipeSource = !qpClean.source.includes("RIPE")
+        if (qpClean.source !== "GRS" && (containMoreSources || notRipeSource)){
+            q.push(` --sources ${qpClean.source}`);
         }
         q.push(" " + qpClean.queryText);
         return q.join("").trim();
@@ -282,7 +287,7 @@ export class QueryComponent {
 
     private equalsQueryParameters(formQueryParam: IQueryState, paramMap: ParamMap): boolean {
         return paramMap
-            && (formQueryParam.source || null) === paramMap.get("source")
+            && (formQueryParam.source || null) === paramMap.getAll("source").join(",")
             && this.equalsItemsInString(formQueryParam.types, paramMap.get("types"))
             && this.equalsItemsInString(formQueryParam.inverse, paramMap.get("inverse"))
             && (formQueryParam.hierarchyFlag || null) === paramMap.get("hierarchyFlag")
@@ -300,13 +305,21 @@ export class QueryComponent {
 
     private gotoAnchor() {
         if (this.errorMessages && this.errorMessages.length > 0) {
-            this.setActiveAnchor("anchorTop");
+            QueryComponent.setActiveAnchor("anchorTop");
         } else {
-            this.setActiveAnchor("resultsSection");
+            QueryComponent.setActiveAnchor("resultsSection");
         }
     }
 
-    private setActiveAnchor(id: string) {
+    private static setActiveAnchor(id: string) {
         document.querySelector(`#${id}`).scrollIntoView();
+    }
+
+    // source in IQueryParameters after switching to Set<string> this method will be useless, currently like this
+    // because of IE
+    private setUniqueSource(source: string) {
+        if (!this.qp.source.includes(source)) {
+            this.qp.source = this.qp.source.length > 0 ? `,${source}`: source;
+        }
     }
 }

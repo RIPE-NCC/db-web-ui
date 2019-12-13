@@ -232,7 +232,7 @@ describe("QueryComponent", () => {
             expect(component.qp.types).toEqual({INETNUM: true, INET6NUM: true});
             expect(component.qp.inverse).toEqual({});
             expect(component.qp.source).toEqual("TEST");
-            expect(component.whoisCliQuery()).toEqual("-T inetnum,inet6num -xd 193.0.0.0");
+            expect(component.whoisCliQuery()).toEqual("-T inetnum,inet6num -xd --sources TEST 193.0.0.0");
             expect(component.results.length).toEqual(4);
             expect(queryService.searchWhoisObjects).toHaveBeenCalledTimes(1);
         });
@@ -444,7 +444,7 @@ describe("QueryComponent", () => {
             expect(component.qp.types).toEqual({INETNUM: true, INET6NUM: true});
             expect(component.qp.inverse).toEqual({MNTNER: true});
             expect(component.qp.source).toEqual("TEST");
-            expect(component.whoisCliQuery()).toEqual("-i mntner -T inetnum,inet6num -ld 193.0.0.0");
+            expect(component.whoisCliQuery()).toEqual("-i mntner -T inetnum,inet6num -ld --sources TEST 193.0.0.0");
 
             expect(component.errorMessages.length).toEqual(4);
             expect(component.formatError(component.errorMessages[0])).toEqual("Goodbye,<br>and thanks for all the fish");
@@ -487,7 +487,7 @@ describe("QueryComponent", () => {
                 has: (param: string) => (!!component.activatedRoute.snapshot.queryParamMap[param])
             })};
             component.init();
-            fixture.detectChanges();
+            // fixture.detectChanges();
             expect(component.offset).toEqual(0);
             expect(component.qp.showFullObjectDetails).toEqual(false);
             expect(component.qp.reverseDomain).toEqual(false);

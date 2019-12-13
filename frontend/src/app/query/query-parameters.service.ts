@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
+import {IQueryState} from "./query.component";
 
 export interface ITemplateTerm {
     templateType: string; // any from allowedTemplateQueries
@@ -16,6 +17,7 @@ export interface IQueryParameters {
     reverseDomain: boolean,
     doNotRetrieveRelatedObjects: boolean,
     showFullObjectDetails: boolean,
+    // TODO Replace source with Set type asap IE allow it
     source: string
 }
 
@@ -48,7 +50,7 @@ export class QueryParametersService {
         }
     }
 
-    public static asLocationSearchParams(queryParams: IQueryParameters): any {
+    public asLocationSearchParams(queryParams: IQueryParameters): IQueryState {
         return {
             bflag: queryParams.showFullObjectDetails.toString(),
             dflag: queryParams.reverseDomain.toString() || undefined,
@@ -131,12 +133,13 @@ export class QueryParametersService {
 
         let invOptionPos = -1;
         let typeOptionPos = -1;
+        let sourcesPos = -1;
         let addedInvalidOptionWarning = false; // Only shown once
         let addedHierarchyWarning = false; // Only shown once
         const terms: string[] = queryParams.queryText
             .split(/ +/)
             .map((item: string) => item.trim())
-            .filter((item: string, idx: number) => item.length)
+            .filter((item: string) => item.length)
             .map((item: string, idx: number): string => {
                 if (item.indexOf("--") === 0) {
                     // parse long option
@@ -153,6 +156,8 @@ export class QueryParametersService {
                         }
                     } else if (item === "--resource") {
                         queryParams.source = "GRS";
+                    } else if (item === "--sources") {
+                        sourcesPos = idx + 1;
                     } else if (item === "--no-referenced") {
                         queryParams.doNotRetrieveRelatedObjects = true;
                     } else if (item === "--reverse-domain") {
@@ -174,7 +179,7 @@ export class QueryParametersService {
                     }
                 } else if (item.indexOf("-") === 0 && item.length > 1) {
                     const opts = item.substring(1);
-                    for (let i = opts.length - 1; i >= 0; i--) {
+                    for (let i = 0; i < opts.length; i++) {
                         // parse short options
                         if (hierarchyFlagMap[opts[i]]) {
                             if (!queryParams.hierarchy) {
@@ -195,7 +200,15 @@ export class QueryParametersService {
                         } else if (opts[i] === "i") {
                             invOptionPos = idx + 1;
                         } else if (opts[i] === "T") {
-                            typeOptionPos = idx + 1;
+                            // -Tmntner, case without space
+                            if (i+1 < opts.length) {
+                                this.setType(opts.substring(1), queryParams);
+                                break;
+                            } else {
+                                typeOptionPos = idx + 1;
+                            }
+                        } else if (opts[i] === "s") {
+                            sourcesPos = idx + 1;
                         } else if (!addedInvalidOptionWarning) {
                             addedInvalidOptionWarning = true;
                             errors.push("ERROR:111: invalid option supplied<br>" +
@@ -203,7 +216,7 @@ export class QueryParametersService {
                         }
                     }
                 } else {
-                    // either it's an inverse or a type or the search term
+                    // either it's an source, an inverse or a type or the search term
                     if (idx === invOptionPos) {
                         // inverse option spec
                         const invs = item.split(";")
@@ -214,14 +227,11 @@ export class QueryParametersService {
                             queryParams.inverse[mapKey] = true;
                         });
                         invOptionPos = -1;
+                    } else if (idx === sourcesPos) {
+                        queryParams.source = item;
+                        sourcesPos = -1;
                     } else if (idx === typeOptionPos) {
-                        const types = item.split(";")
-                            .map((term) => term.trim())
-                            .filter((term) => term.length);
-                        types.forEach((type) => {
-                            const mapKey = type.toUpperCase().replace(/-/g, "_");
-                            queryParams.types[mapKey] = true;
-                        });
+                        this.setType(item, queryParams);
                         typeOptionPos = -1;
                     } else {
                         return item;
@@ -246,10 +256,27 @@ export class QueryParametersService {
         if (typeOptionPos !== -1) {
             errors.push("Object type flag specified without value");
         }
+        if (sourcesPos !== -1) {
+            errors.push("Source specified without value");
+        }
+        if ((queryParams.queryText.indexOf("-s") > -1 || queryParams.queryText.indexOf("--sources") > -1) && queryParams.queryText.indexOf("--resource") > -1) {
+            errors.push(`The flags "--resource" and "-s, --sources" cannot be used together.`);
+        }
         queryParams.queryText = terms.filter((term) => term.length).join(" ").trim();
         if (!queryParams.queryText) {
             errors.push("No search term provided");
         }
         return {errors, warnings};
+    }
+
+    private setType(item: string, queryParams: IQueryParameters) {
+        console.log("", )
+        const types = item.split(/[;|,]/)
+            .map((term) => term.trim())
+            .filter((term) => term.length);
+        types.forEach((type) => {
+            const mapKey = type.toUpperCase().replace(/-/g, "_");
+            queryParams.types[mapKey] = true;
+        });
     }
 }

@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import * as _ from "lodash";
-import {IAttributeModel, IErrorMessageModel, IWhoisResponseModel} from "../../shared/whois-response-type.model";
+import {IAttributeModel, IErrorMessageModel, IWhoisResponseModel} from "../whois-response-type.model";
 import {WhoisResourcesService} from "../whois-resources.service";
 
 @Injectable()

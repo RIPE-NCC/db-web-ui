@@ -21,7 +21,7 @@ describe("The query pagina", () => {
     });
 
     it("should be able to search using the text box", () => {
-        page.inpQueryString.sendKeys("193.0.0.0\n"); // press "enter" for a laugh
+        page.inpQueryString.sendKeys("193.0.0.0"); // press "enter" for a laugh
         page.inpShowFullDetails.click();
         page.inpDontRetrieveRelated.click();
         page.scrollIntoView(page.btnSubmitQuery);
