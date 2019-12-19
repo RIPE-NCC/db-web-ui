@@ -122,6 +122,12 @@ ul.form-fields {
 			}
 			span.text-error {
 				@extend %float-r;
+				display: inline-block;
+				width: 70%;
+				text-align: right;
+				white-space: nowrap;
+				overflow: hidden !important;
+				text-overflow: ellipsis;
 			}
 			span.text-info {
 				@extend %float-r;
@@ -204,7 +210,12 @@ ul.form-fields {
     border-radius: 0;
 }
 
-.text-error, .text-info, .text-note {
+.text-error, .text-info {
+	@extend %float-r;
+}
+
+.text-note {
+	margin-left: 5px;
 	@extend %float-r;
 }
 

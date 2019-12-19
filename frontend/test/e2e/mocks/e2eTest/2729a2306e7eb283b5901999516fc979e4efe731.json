@@ -1,0 +1,6 @@
+{
+  "requestUrl": "/db-web-ui/api/whois/autocomplete?extended=true&field=mntner&query=%3Cimg%20src=%27https://www.yarrah.com/en/wp-content/uploads/sites/10/2019/01/Puppy-aanschaffen-header-800x600.png%27/%3E",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": []
+}

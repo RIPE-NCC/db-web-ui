@@ -72,7 +72,7 @@
 
                 <label>{{attribute.name}}</label>
                 <span id="anchor-{{attribute.name}}" *ngIf="attribute.$$error" class="text-error">
-                    <span [innerHTML]="attribute.$$error"></span>
+                    <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
                 <span *ngIf="attribute.$$success" class="text-success">{{attribute.$$success}}</span>
 

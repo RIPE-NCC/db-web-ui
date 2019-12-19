@@ -6,8 +6,8 @@ import {NgSelectModule} from "@ng-select/ng-select";
 import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {LoadingBarHttpClientModule} from "@ngx-loading-bar/http-client";
 
-import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";
+import {AppRoutingModule} from "./app-routing.module";
+import {AppComponent} from "./app.component";
 import {NotFoundPageComponent} from "./errorpages/not-found-page.component";
 import {ErrorPageComponent} from "./errorpages/error-page.component";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";

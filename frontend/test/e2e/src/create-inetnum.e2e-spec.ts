@@ -8,26 +8,6 @@ describe("The inetnum editor", () => {
         browser.get(browser.baseUrl);
     });
 
-    /*
-
-     VERSION BUILD=844 RECORDER=CR
-     URL GOTO=http://localhost.ripe.net:9002/webupdates/create/RIPE/inetnum
-     TAG POS=1 TYPE=INPUT:TEXT FORM=ID:createForm ATTR=NAME:inetnum CONTENT=213.159.160.0-213.159.190.255
-     SET !ENCRYPTION NO
-     TAG POS=1 TYPE=INPUT:PASSWORD FORM=NAME:NoFormName ATTR=* CONTENT=ERICSSON-MNT
-     TAG POS=1 TYPE=INPUT:CHECKBOX FORM=NAME:NoFormName ATTR=ID:associate CONTENT=NO
-     TAG POS=3 TYPE=INPUT:SUBMIT FORM=NAME:NoFormName ATTR=*
-     TAG POS=1 TYPE=INPUT:TEXT FORM=ID:createForm ATTR=NAME:netname CONTENT=bogus-netname1
-     TAG POS=1 TYPE=INPUT:TEXT FORM=ID:createForm ATTR=NAME:admin-c CONTENT=aa1-ripe
-     TAG POS=1 TYPE=INPUT:TEXT FORM=ID:createForm ATTR=NAME:tech-c CONTENT=aa1-ripe
-     TAG POS=2 TYPE=SPAN ATTR=TXT:Specifies<SP>the<SP>kind<SP>of<SP>resource.
-     TAG POS=2 TYPE=DIV ATTR=TXT:ASSIGNED<SP>PA
-     TAG POS=2 TYPE=SPAN ATTR=TXT:Identifies<SP>the<SP>country<SP>as<SP>a<SP>two-letter<SP>ISO*
-     TAG POS=4 TYPE=INPUT:TEXT FORM=ID:createForm ATTR=* CONTENT=nl
-     TAG POS=1 TYPE=INPUT:SUBMIT FORM=ID:createForm ATTR=*
-     TAG POS=2 TYPE=DIV ATTR=TXT:Netherlands<SP>[NL]
-
-     */
     it("should ask for authentication of parent inetnum", () => {
         page.selectObjectType("inetnum").click();
         page.btnNavigateToCreate.click();
@@ -107,5 +87,29 @@ describe("The inetnum editor", () => {
         expect(page.inpStatusList.count()).toBe(2);
         expect(page.inpStatusList.get(0).getText()).toEqual("AGGREGATED-BY-LIR");
         expect(page.inpStatusList.get(1).getText()).toEqual("ASSIGNED");
+    });
+
+    it("should sanitized img and script tag - XSS attack", () => {
+        page.selectObjectType("inetnum").click();
+        page.btnNavigateToCreate.click();
+        page.inpInetnum.sendKeys("<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>");
+        page.scrollIntoView(page.inpNetname);
+        page.inpNetname.click();
+        page.inpNetname.sendKeys("<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>");
+        page.scrollIntoView(page.inpCountry); // let's have a look at that link
+        page.inpCountry.click();
+        page.inpCountryList.get(2).click();
+        page.inpAdminC.sendKeys("<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>");
+        page.inpTechC.sendKeys("<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>");
+        page.inpAdminC.click();
+        page.scrollIntoView(page.inpStatusLink); // let's have a look at that link
+        page.inpStatusLink.click(); // click on dropdown to populate it.
+        page.inpStatusList.get(0).click();
+        page.btnSubmitForm.click();
+        browser.wait(function () {
+            return browser.isElementPresent(page.prefixErrMsg);
+        }, 5000);
+        expect(page.prefixErrMsg.getText()).not.toContain("<img");
+        expect(page.prefixErrMsg.getText()).toContain("Syntax error in img src=");
     });
 });

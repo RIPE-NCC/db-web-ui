@@ -49,7 +49,6 @@ import {CreateService} from "./web/create.service";
         RouterModule
     ],
     declarations: [
-        //web
         DisplayComponent,
         DisplayMntnerPairComponent,
         SelectComponent,

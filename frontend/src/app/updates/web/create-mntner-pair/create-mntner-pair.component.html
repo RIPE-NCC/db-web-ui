@@ -9,7 +9,7 @@
             <li *ngFor="let attribute of mntnerAttributes | filteroutAttributeByName: ['descr', 'admin-c', 'upd-to', 'auth', 'mnt-by', 'source']">
                 <label>{{attribute.name}}</label>
                 <span *ngIf="attribute.$$error" class="text-error">
-                    <span [innerHTML]="attribute.$$error"></span>
+                    <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
                 <input type="text"
                        [attr.name]="attribute.name"

@@ -57,7 +57,7 @@ Frontend
   webpack build Ahead-of-Time (AOT), which compiles app at build time, used for deployments.
 * `npm run start`<br>
   Use this along with ```mvn spring-boot:run```. It watches the TypeScript and HTML files for changes and redeploys them
-  when they've changed. In detail: the watch task is triggered by changes in the file system. Access application on https://localhost.ripe.net:4200/db-web-ui/
+  when they've changed. In detail: the watch task is triggered by changes in the file system. Access application on https://localhost.ripe.net:4200/db-web-ui/ (port changes after logging, so pay attention to return it to 4200)
 
 ### Test
 

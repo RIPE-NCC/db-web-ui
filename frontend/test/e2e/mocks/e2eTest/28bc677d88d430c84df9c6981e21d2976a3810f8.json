@@ -1,0 +1,108 @@
+{
+  "requestUrl": "/db-web-ui/api/whois/RIPE/inetnum",
+  "contentType": "application/javascript",
+  "statusCode": 400,
+  "data": {
+    "link" : {
+      "type" : "locator",
+      "href" : "http://wagyu.prepdev.ripe.net:1080/RIPE/inetnum"
+    },
+    "objects" : {
+      "object" : [ {
+        "type" : "inetnum",
+        "link" : {
+          "type" : "locator",
+          "href" : "http://rest-prepdev.db.ripe.net/ripe/inetnum/<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        },
+        "source" : {
+          "id" : "ripe"
+        },
+        "primary-key" : {
+          "attribute" : [ {
+            "name" : "inetnum",
+            "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+          } ]
+        },
+        "attributes" : {
+          "attribute" : [ {
+            "name" : "inetnum",
+            "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+          }, {
+            "name" : "netname",
+            "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+          }, {
+            "name" : "country",
+            "value" : "AF"
+          }, {
+            "name" : "admin-c",
+            "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+          }, {
+            "name" : "tech-c",
+            "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+          }, {
+            "name" : "status",
+            "value" : "ALLOCATED PA"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/TEST2-MNT"
+            },
+            "name" : "mnt-by",
+            "value" : "TEST2-MNT",
+            "referenced-type" : "mntner"
+          }, {
+            "name" : "source",
+            "value" : "RIPE"
+          } ]
+        }
+      } ]
+    },
+    "errormessages" : {
+      "errormessage" : [ {
+        "severity" : "Error",
+        "attribute" : {
+          "name" : "inetnum",
+          "value" : "        <img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        },
+        "text" : "Syntax error in %s",
+        "args" : [ {
+          "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        } ]
+      }, {
+        "severity" : "Error",
+        "attribute" : {
+          "name" : "netname",
+          "value" : "        <img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        },
+        "text" : "Syntax error in %s",
+        "args" : [ {
+          "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        } ]
+      }, {
+        "severity" : "Error",
+        "attribute" : {
+          "name" : "admin-c",
+          "value" : "        <img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        },
+        "text" : "Syntax error in %s",
+        "args" : [ {
+          "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        } ]
+      }, {
+        "severity" : "Error",
+        "attribute" : {
+          "name" : "tech-c",
+          "value" : "         <img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        },
+        "text" : "Syntax error in %s",
+        "args" : [ {
+          "value" : "<img src='https://cdn.theatlantic.com/assets/media/img/photo/2019/03/national-puppy-day-photos/p15_1335849737/main_900.jpg?1553363469'/>"
+        } ]
+      } ]
+    },
+    "terms-and-conditions" : {
+      "type" : "locator",
+      "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}
