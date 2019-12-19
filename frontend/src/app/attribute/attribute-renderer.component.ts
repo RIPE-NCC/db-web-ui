@@ -86,9 +86,7 @@ export class AttributeRendererComponent {
     }
 
     public duplicateAttribute(objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) {
-        if (this.canBeAdded(objectType, attributes, attribute)) {
-            this.addAttr(attributes, attribute, attribute.name);
-        }
+        this.addAttr(attributes, attribute, attribute.name);
     }
 
     public displayAddAttributeDialog(objectType: string, attributes: IAttributeModel[], attribute: IAttributeModel) {
@@ -248,10 +246,9 @@ export class AttributeRendererComponent {
         }
     }
 
-    public valueTypeAheadChanged(objectType: string, attributeNAme: string, attributes: IAttributeModel[]) {
-        const attribute = attributes[attributes.findIndex(a => a.name === attributeNAme)];
-        attribute.value = attribute.value.key;
-        this.attributeMetadataService.enrich(objectType, attributes);
+    public valueTypeAheadChanged(objectType: string, attribute: IAttributeModel) {
+        attribute.value = attribute.value.key ? attribute.value.key : attribute.value;
+        this.attributeMetadataService.enrich(objectType, this.attributes);
     }
 
     public valueChanged(objectType: string, attributes: IAttributeModel[]) {

@@ -14,7 +14,7 @@
     <section class="visible-field-form">
         <whois-object-editor
             [ng-model]="domainObject"
-            [on-resource-page]="!containsInvalidValues() && !alreadySubmited"
+            [disable-submit]="containsInvalidValues() || alreadySubmited"
             (update-clicked)="submitButtonClicked()"
             (cancel-clicked)="cancel()">
         </whois-object-editor>

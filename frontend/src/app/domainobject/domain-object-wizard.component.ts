@@ -18,6 +18,7 @@ import {ModalDomainCreationWaitComponent} from "./modal-domain-creation-wait.com
 import {AttributeSharedService} from "../attribute/attribute-shared.service";
 import {IAuthParams, WebUpdatesCommonsService} from "../updates/web/web-updates-commons.service";
 import {IMaintainers} from "../updates/web/create-modify.component";
+import {IAttributeModel} from "../shared/whois-response-type.model";
 
 interface IDomainObject {
     attributes: {
@@ -37,7 +38,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public objectType: string;
     //TODO check if make sense to convert to IWhoisObjectModel
     public domainObject: IDomainObject;
-    public attributes: any;
+    public attributes: IAttributeModel[];
     public source: string;
     public errors: any[];
     public name: string;
@@ -170,19 +171,13 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         this.maintainers = maintainers;
     }
 
-    public containsInvalidValues(attributes?: any) {
-        if (_.isUndefined(attributes)) {
-            attributes = this.attributes;
-        }
-        const idx = _.findIndex(attributes, (attr: any) => {
-            return attr.$$invalid;
-        });
-        return idx !== -1;
+    public containsInvalidValues() {
+        return this.attributes.findIndex(attr => attr.$$invalid) > -1;
     }
 
     public submitButtonClicked() {
 
-        if (this.containsInvalidValues(this.attributes)) {
+        if (this.containsInvalidValues()) {
             return;
         }
 

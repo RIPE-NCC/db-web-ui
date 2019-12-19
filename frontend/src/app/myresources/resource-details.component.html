@@ -45,7 +45,7 @@
                             *ngIf="isEditing"
                             (authentication-failed-clbk)="hideObjectEditor()"></maintainers-editor>
         <whois-object-editor [ng-model]="whoisObject"
-                             [on-resource-page]="isEditing"
+                             [disable-submit]="!isEditing"
                              *ngIf="isEditing"
                              (cancel-clicked)="hideObjectEditor()"
                              (update-clicked)="updateButtonClicked($event)"></whois-object-editor>

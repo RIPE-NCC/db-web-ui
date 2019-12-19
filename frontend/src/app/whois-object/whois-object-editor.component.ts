@@ -13,8 +13,8 @@ export class WhoisObjectEditorComponent implements OnInit {
 
     @Input("ng-model")
     public ngModel: IWhoisObjectModel;
-    @Input("on-resource-page")
-    public onResourcePage?: boolean;
+    @Input("disable-submit")
+    public disableSubmit?: boolean;
 
     public objectName: string;
     public objectType: string;

@@ -69,7 +69,7 @@
            [(ngModel)]="attribute.value"
            [required]="attribute.$$meta?.$$mandatory"
            [disabled]="attribute.$$disable"
-           (blur)="valueTypeAheadChanged(objectType, attribute.name, attributes)"
+           (blur)="valueTypeAheadChanged(objectType, attribute)"
            [ngbTypeahead]="autocompleteList(objectType, attributes, attribute)"
            [resultFormatter]="autocompleteAttributeRFormatter"
            [inputFormatter]="autocompleteAttributeIFormatter">
