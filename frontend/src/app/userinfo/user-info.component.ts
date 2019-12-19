@@ -17,28 +17,35 @@ export class UserInfoComponent {
 
     constructor(private userInfoService: UserInfoService,
                 public properties: PropertiesService) {
+        this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
+            this.initUserInfo(userInfo);
+        });
     }
 
     public ngOnInit() {
         console.debug("Using login-url:" + this.properties.LOGIN_URL);
         this.userInfoService.getUserOrgsAndRoles()
             .subscribe((userInfo: IUserInfoResponseData): void => {
-                RIPE.username = userInfo.user.displayName;
-                RIPE.usermail = userInfo.user.username;
-                RIPE.usermenu = {
-                    "User details": [["Profile", this.properties.LOGIN_URL + "/profile"],
-                        ["Logout", this.properties.LOGOUT_URL]],
-                };
-                RIPE.userimg = this.properties.LOGIN_URL + "/picture/" + userInfo.user.uuid;
-                RIPE.user = {
-                    buildTag: this.properties.BUILD_TAG,
-                    email: userInfo.user.username,
-                    fullName: userInfo.user.displayName,
-                };
-                this.initLoggedIn();
-            }, (error: Error): void => {
+                this.initUserInfo(userInfo);
+            }, (): void => {
                 console.debug("Login error");
             });
+    }
+
+    private initUserInfo(userInfo: IUserInfoResponseData) {
+        RIPE.username = userInfo.user.displayName;
+        RIPE.usermail = userInfo.user.username;
+        RIPE.usermenu = {
+            "User details": [["Profile", this.properties.LOGIN_URL + "/profile"],
+                ["Logout", this.properties.LOGOUT_URL]],
+        };
+        RIPE.userimg = this.properties.LOGIN_URL + "/picture/" + userInfo.user.uuid;
+        RIPE.user = {
+            buildTag: this.properties.BUILD_TAG,
+            email: userInfo.user.username,
+            fullName: userInfo.user.displayName,
+        };
+        this.initLoggedIn();
     }
 
     private initLoggedIn(): void {

@@ -12,7 +12,8 @@ export class UserInfoService {
     private userInfo: IUserInfoResponseData;
     private loggedInUser: IUserInfo;
     private selectedOrganisation: IUserInfoOrganisation;
-    public userLoggedIn$: EventEmitter<IUserInfo>;
+    public userLoggedIn$: EventEmitter<IUserInfoResponseData>;
+    public alreadyWaitingResponse: boolean = false;
 
     constructor(private http: HttpClient,
                 private cookies: CookieService) {
@@ -31,7 +32,6 @@ export class UserInfoService {
                 .pipe(
                     map((response: IUserInfo) => {
                         this.loggedInUser = response;
-                        this.userLoggedIn$.emit(response);
                         return this.loggedInUser;
                     }),
                     catchError((error: any) => {
@@ -42,18 +42,21 @@ export class UserInfoService {
     }
 
     public getUserOrgsAndRoles(): Observable<IUserInfoResponseData> {
-        if (this.userInfo) {
+        if (this.userInfo || this.alreadyWaitingResponse) {
             return of(this.userInfo);
         } else {
+            this.alreadyWaitingResponse = true;
             return this.http.get("api/whois-internal/api/user/info")
                 .pipe(
                     timeout(30000),
                     map((response: IUserInfoResponseData) => {
+                        this.alreadyWaitingResponse = false;
                         this.userInfo = response;
-                        this.userLoggedIn$.emit(response.user);
+                        this.userLoggedIn$.emit(response);
                         return this.userInfo;
                     }),
                     catchError((error: any, caught: Observable<any>) => {
+                        this.alreadyWaitingResponse = false;
                         console.error("authenticate error:" + JSON.stringify(error));
                         return throwError(error);
                     }));

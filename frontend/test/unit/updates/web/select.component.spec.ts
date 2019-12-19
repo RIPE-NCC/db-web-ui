@@ -180,10 +180,9 @@ describe("SelectController", () => {
        httpMock.verify();
     });
 
-    it("should navigate to crowd if currently logged out", async () => {
+    it("should navigate to crowd if currently logged out", () => {
         componentFixture.detectChanges();
-        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush("", {statusText: "error", status: 401})
-        await componentFixture.whenStable();
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush("", {statusText: "error", status: 401});
         expect(component.loggedIn).toBeUndefined();
 
         component.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
@@ -195,7 +194,7 @@ describe("SelectController", () => {
     });
 
 
-    it("should navigate to create screen when logged in", async () => {
+    it("should navigate to create screen when logged in", () => {
         componentFixture.detectChanges();
         httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({ user: {
                 username:"test@ripe.net",
@@ -203,8 +202,6 @@ describe("SelectController", () => {
                 uuid:"aaaa-bbbb-cccc-dddd",
                 active:true}
             });
-        await componentFixture.whenStable();
-
         expect(component.loggedIn).toBe(true);
 
         component.selected.objectType = OBJECT_TYPE; // simulate select as-set in drop down
@@ -214,7 +211,7 @@ describe("SelectController", () => {
         expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/create", component.selected.source, component.selected.objectType]);
     });
 
-    it("should navigate to create person maintainer screen when logged in and selected", async () => {
+    it("should navigate to create person maintainer screen when logged in and selected", () => {
         componentFixture.detectChanges();
         httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({ user: {
                 username:"test@ripe.net",
@@ -222,7 +219,6 @@ describe("SelectController", () => {
                 uuid:"aaaa-bbbb-cccc-dddd",
                 active:true}
         });
-        await componentFixture.whenStable();
 
         expect(component.loggedIn).toBe(true);
 
@@ -231,7 +227,7 @@ describe("SelectController", () => {
         expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/create", component.selected.source, "role", "self"]);
     });
 
-    it("should navigate to create self maintained mntner screen when logged in", async () => {
+    it("should navigate to create self maintained mntner screen when logged in", () => {
         componentFixture.detectChanges();
         httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({
                 user: {
@@ -243,7 +239,6 @@ describe("SelectController", () => {
             }
         );
 
-        await componentFixture.whenStable();
         expect(component.loggedIn).toBe(true);
 
         component.selected = {

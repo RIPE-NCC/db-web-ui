@@ -68,15 +68,13 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         httpMock.verify();
     });
 
-    it("should load the maintainer attributes", async () => {
-        await fixture.whenStable();
+    it("should load the maintainer attributes", () => {
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "upd-to").value).toEqual("tdacruzper@ripe.net");
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "auth").value).toEqual("SSO tdacruzper@ripe.net");
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "source").value).toEqual("RIPE");
     });
 
-    it("should add admin-c to the maintainer attributes", async () => {
-        await fixture.whenStable();
+    it("should add admin-c to the maintainer attributes", () => {
         component.onAdminCAdded({key: "some-admin-c"});
 
         component.maintainerAttributes = component.whoisResourcesService.removeNullAttributes(component.maintainerAttributes);
@@ -97,7 +95,7 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.maintainerAttributes, "admin-c").value).toEqual("some-admin-c");
     });
 
-    it("should set default upd-to info for the self maintained maintainer when submitting", async () => {
+    it("should set default upd-to info for the self maintained maintainer when submitting", () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
 
@@ -105,7 +103,6 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         const updTo = component.whoisResourcesService.getSingleAttributeOnName(validatedAttributes, "upd-to");
 
         component.submit();
-        await fixture.whenStable();
 
         expect(updTo.value).toEqual("tdacruzper@ripe.net");
 
@@ -114,7 +111,7 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         expect(restServiceMock.createObject).toHaveBeenCalled();
     });
 
-    it("should set default auth info for the self maintained maintainer when submitting", async () => {
+    it("should set default auth info for the self maintained maintainer when submitting", () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
 
@@ -122,12 +119,11 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         const updTo = component.whoisResourcesService.getSingleAttributeOnName(validateAttributes, "auth");
 
         component.submit();
-        await fixture.whenStable();
 
         expect(updTo.value).toEqual("SSO tdacruzper@ripe.net");
     });
 
-    it("should set mntner value to mnt-by for the self maintained maintainer when submitting", async () => {
+    it("should set mntner value to mnt-by for the self maintained maintainer when submitting", () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
         let mntAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
@@ -136,29 +132,26 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         const mntBy = component.whoisResourcesService.getSingleAttributeOnName(mntAttributes, "mnt-by");
 
         component.submit();
-        await fixture.whenStable();
 
         expect(mntBy.value).toEqual("SOME-MNT");
     });
 
-    it("should set source from the params when submitting", async () => {
+    it("should set source from the params when submitting", () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
         const validateAttributes = component.whoisResourcesService.validateAttributes(component.maintainerAttributes);
         const updTo = component.whoisResourcesService.getSingleAttributeOnName(validateAttributes, "source");
 
         component.submit();
-        await fixture.whenStable();
 
         expect(updTo.value).toEqual(SOURCE);
     });
 
-    it("should create the maintainer", async () => {
+    it("should create the maintainer", () => {
         restServiceMock.createObject.and.returnValue(of({getAttributes: () => {}, getPrimaryKey: () => ""}));
         fillForm();
 
         component.submit();
-        await fixture.whenStable();
 
         const obj = component.whoisResourcesService.turnAttrsIntoWhoisObject(component.maintainerAttributes);
         expect(restServiceMock.createObject.calls.argsFor(0)[0]).toEqual(SOURCE);
@@ -166,7 +159,7 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         expect(restServiceMock.createObject.calls.argsFor(0)[2]).toEqual(obj);
     });
 
-    it("should redirect to display page after creating a maintainer", async () => {
+    it("should redirect to display page after creating a maintainer", () => {
         spyOn(component.messageStoreService, "add");
         const whoisResources = component.whoisResourcesService.validateWhoisResources(CREATE_RESPONSE);
         restServiceMock.createObject.and.returnValue(of(whoisResources));
@@ -174,7 +167,6 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         fillForm();
 
         component.submit();
-        await fixture.whenStable();
 
         expect(component.messageStoreService.add).toHaveBeenCalledWith("test-mnt", whoisResources);
         expect(routerMock.navigateByUrl).toHaveBeenCalledWith(`webupdates/display/${SOURCE}/mntner/test-mnt`);
@@ -189,14 +181,13 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
         component.submit();
     });
 
-    it("should display error if create the maintainer fails", async () => {
+    it("should display error if create the maintainer fails", () => {
         spyOn(component.alertService, "populateFieldSpecificErrors");
         spyOn(component.alertService, "showWhoisResourceErrors");
         fillForm();
         restServiceMock.createObject.and.returnValue(throwError(ERROR_RESPONSE));
 
         component.submit();
-        await fixture.whenStable();
 
         expect(component.alertService.populateFieldSpecificErrors).toHaveBeenCalledWith("mntner", component.maintainerAttributes, ERROR_RESPONSE.data);
         expect(component.alertService.showWhoisResourceErrors).toHaveBeenCalledWith("mntner", ERROR_RESPONSE.data);

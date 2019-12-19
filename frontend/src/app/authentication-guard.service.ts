@@ -17,7 +17,7 @@ export class AuthenticationGuard implements CanActivate {
         return this.userInfoService.getLoggedInUser()
             .pipe(
                 map((userInfo: IUserInfo) => true),
-                catchError(error => {
+                catchError(() => {
                         this.redirectToLogin(state.url);
                         return of(false);
                     }

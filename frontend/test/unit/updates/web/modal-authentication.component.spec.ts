@@ -140,7 +140,6 @@ describe("ModalAuthenticationComponent", () => {
                 "active": "true"
             }
         });
-        await componentFixture.whenStable();
 
         expect(credentialsServiceMock.setCredentials).toHaveBeenCalledWith("b-mnt", "secret");
 
@@ -182,7 +181,7 @@ describe("ModalAuthenticationComponent", () => {
                 "active": "true"
             }
         });
-        await componentFixture.whenStable();
+
         const resp = {
             objects: {
                 object: [
@@ -248,7 +247,6 @@ describe("ModalAuthenticationComponent", () => {
                 "active": "true"
             }
         });
-        await componentFixture.whenStable();
 
         httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/mntner/b-mnt?password=secret"}).flush({
             errormessages : {

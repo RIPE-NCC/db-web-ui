@@ -83,18 +83,16 @@ describe("CreateMntnerPairComponent", () => {
             httpMock.verify();
         });
 
-        it("should extract data from url", async () => {
+        it("should extract data from url", () => {
             httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"})
                 .flush(USER_INFO_DATA_DUMMY);
-            await fixture.whenStable();
 
             expect(component.source).toBe(SOURCE);
         });
 
-        it("should be able to handle failing user-info-service", async () => {
+        it("should be able to handle failing user-info-service", () => {
             httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"})
                 .flush(WHOIS_OBJECT_WITHE_ERRORS_DUMMY, {status: 403, statusText: "error"});
-            await fixture.whenStable();
 
             component.submit();
 
@@ -124,7 +122,6 @@ describe("CreateMntnerPairComponent", () => {
                 .flush(USER_INFO_DATA_DUMMY);
 
             component.submit();
-            await fixture.whenStable();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "person", PERSON_NAME);
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "phone", "+316");
@@ -169,7 +166,6 @@ describe("CreateMntnerPairComponent", () => {
                 .flush(USER_INFO_DATA_DUMMY);
 
             component.submit();
-            await fixture.whenStable();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "person", "Titus Tester");
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "phone", "+316");
@@ -253,18 +249,16 @@ describe("CreateMntnerPairComponent", () => {
             httpMock.verify();
         });
 
-        it("should extract data from url", async () => {
+        it("should extract data from url", () => {
             httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"})
                 .flush(USER_INFO_DATA_DUMMY);
-            await fixture.whenStable();
 
             expect(component.source).toBe(SOURCE);
         });
 
-        it("should be able to handle failing user-info-service", async () => {
+        it("should be able to handle failing user-info-service", () => {
             httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"})
                 .flush(WHOIS_OBJECT_WITHE_ERRORS_DUMMY, {status: 403, statusText: "error"});
-            await fixture.whenStable();
 
             component.submit();
 
@@ -294,7 +288,6 @@ describe("CreateMntnerPairComponent", () => {
                 .flush(USER_INFO_DATA_DUMMY);
 
             component.submit();
-            await fixture.whenStable();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "role", ROLE_NAME);
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "e-mail", ROLE_EMAIL);
@@ -339,7 +332,6 @@ describe("CreateMntnerPairComponent", () => {
                 .flush(USER_INFO_DATA_DUMMY);
 
             component.submit();
-            await fixture.whenStable();
 
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "role", ROLE_NAME);
             component.whoisResourcesService.setSingleAttributeOnName(component.objectTypeAttributes, "e-mail", ROLE_EMAIL);
