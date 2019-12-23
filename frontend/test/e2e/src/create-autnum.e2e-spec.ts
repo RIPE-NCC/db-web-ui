@@ -41,7 +41,7 @@ describe("The aut-num editor", () => {
         // submit button should be available
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeFalsy();
         page.btnSubmitForm.click();
-        page.scrollIntoView(page.errorAlert);
+        // should auto scroll to error message above field with error
         expect(page.errorAlert.getText()).toEqual(`Authorisation for [as-block] AS19400 - AS20479 failed using "mnt-by:" not authenticated by: RIPE-DBM-MNT\nCannot create out of region aut-num objects`);
     });
 

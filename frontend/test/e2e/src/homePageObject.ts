@@ -106,7 +106,7 @@ module.exports = {
     inpRemarks: element(by.id("createForm")).element(by.name("remarks")),
     inpDescrCreateForm: element(by.id("createForm")).element(by.name("descr")),
     inpCertif: element(by.id("createForm")).element(by.name("certif")),
-    inpErrorCertif: element(by.id("createForm")).element(by.id("anchor-certif")),
+    inpErrorCertif: element(by.id("createForm")).element(by.css("#anchor-certif ~ .text-error")),
     autocompletePopup: element(by.css("button ngb-highlight .ngb-highlight")),
     btnAbuseCBell: element(by.id("createRoleForAbuseCAttribute")),
     //create-person-mntner-pair page

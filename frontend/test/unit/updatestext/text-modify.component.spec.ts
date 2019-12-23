@@ -279,7 +279,6 @@ describe("TextModifyComponent", () => {
             auth: ["SSO"],
             mine: true
         }]);
-        //                    api/whois/RIPE/route/12.235.32.0%252F19AS1680?unfiltered=true&unformatted=true
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/route/12.235.32.0%2F19AS1680?unfiltered=true&unformatted=true"}).flush(routeJSON);
         await componentFixture.whenStable();
 

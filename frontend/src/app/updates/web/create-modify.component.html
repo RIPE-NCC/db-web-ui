@@ -70,8 +70,8 @@
         <ul class="form-fields appeared-fields">
             <li class="attr-{{idx}}" *ngFor="let attribute of attributes | filteroutAttributeByName: ['mnt-by', 'last-modified', 'created'] | slice:0:nrAttributesToRender; index as idx;">
 
-                <label>{{attribute.name}}</label>
-                <span id="anchor-{{attribute.name}}" *ngIf="attribute.$$error" class="text-error">
+                <label id="anchor-{{attribute.name}}" >{{attribute.name}}</label>
+                <span *ngIf="attribute.$$error" class="text-error">
                     <span [innerHTML]="attribute.$$error | sanitizeImgHtml"></span>
                 </span>
                 <span *ngIf="attribute.$$success" class="text-success">{{attribute.$$success}}</span>

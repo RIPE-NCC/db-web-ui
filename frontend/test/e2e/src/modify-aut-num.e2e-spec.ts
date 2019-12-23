@@ -1,4 +1,4 @@
-import {browser} from "protractor";
+import {browser, protractor} from "protractor";
 
 const page = require("./homePageObject");
 
@@ -23,7 +23,5 @@ describe("Modifying an aut-num", () => {
             expect(page.selectFromList(page.modalAttributeList, "descr").isPresent()).toEqual(true);
             expect(page.selectFromList(page.modalAttributeList, "sponsoring-org").isPresent()).toEqual(false);
         });
-
     });
-
 });
