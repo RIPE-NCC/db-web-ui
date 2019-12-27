@@ -1,0 +1,175 @@
+{
+  "requestUrl": "/db-web-ui/api/whois/search?abuse-contact=true&ignore404=true&managed-attributes=true&resource-holder=true&flags=B&offset=0&limit=20&query-string=193.201.0.0",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "service": {
+      "name": "search"
+    },
+    "parameters": {
+      "inverse-lookup": {},
+      "type-filters": {},
+      "flags": {
+        "flag": [
+          {
+            "value": "no-filtering"
+          }
+        ]
+      },
+      "query-strings": {
+        "query-string": [
+          {
+            "value": "193.201.0.0"
+          }
+        ]
+      },
+      "sources": {}
+    },
+    "objects": {
+      "object": [
+        {
+          "type": "inetnum",
+          "link": {
+            "type": "locator",
+            "href": "http://rest.db.ripe.net/ripe/inetnum/193.201.0.0 - 193.201.7.255"
+          },
+          "source": {
+            "id": "ripe"
+          },
+          "primary-key": {
+            "attribute": [
+              {
+                "name": "inetnum",
+                "value": "193.201.0.0 - 193.201.7.255"
+              }
+            ]
+          },
+          "attributes": {
+            "attribute": [
+              {
+                "name": "inetnum",
+                "value": "193.201.0.0 - 193.201.7.255",
+                "managed": true
+              },
+              {
+                "name": "netname",
+                "value": "WITBE"
+              },
+              {
+                "name": "descr",
+                "value": "Witbe International Measurement Network"
+              },
+              {
+                "name": "country",
+                "value": "FR"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest.db.ripe.net/ripe/organisation/ORG-WA9-RIPE"
+                },
+                "name": "org",
+                "value": "ORG-WA9-RIPE",
+                "referenced-type": "organisation",
+                "managed": true
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest.db.ripe.net/ripe/person/PR12-RIPE"
+                },
+                "name": "admin-c",
+                "value": "PR12-RIPE",
+                "referenced-type": "person"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest.db.ripe.net/ripe/person/PR12-RIPE"
+                },
+                "name": "tech-c",
+                "value": "PR12-RIPE",
+                "referenced-type": "person"
+              },
+              {
+                "name": "status",
+                "value": "ASSIGNED PI",
+                "managed": true
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest.db.ripe.net/ripe/mntner/RIPE-NCC-END-MNT"
+                },
+                "name": "mnt-by",
+                "value": "RIPE-NCC-END-MNT",
+                "referenced-type": "mntner",
+                "managed": true
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest.db.ripe.net/ripe/mntner/WITBE-MNT"
+                },
+                "name": "mnt-by",
+                "value": "WITBE-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest.db.ripe.net/ripe/mntner/WITBE-MNT"
+                },
+                "name": "mnt-routes",
+                "value": "WITBE-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "link": {
+                  "type": "locator",
+                  "href": "http://rest.db.ripe.net/ripe/mntner/WITBE-MNT"
+                },
+                "name": "mnt-domains",
+                "value": "WITBE-MNT",
+                "referenced-type": "mntner"
+              },
+              {
+                "name": "created",
+                "value": "2011-07-18T10:46:33Z"
+              },
+              {
+                "name": "last-modified",
+                "value": "2016-04-14T08:09:17Z"
+              },
+              {
+                "name": "source",
+                "value": "RIPE",
+                "managed": true
+              }
+            ]
+          },
+          "tags": {
+            "tag": [
+              {
+                "id": "RIPE-REGISTRY-RESOURCE"
+              }
+            ]
+          },
+          "resource-holder": {
+            "key": "ORG-WA9-RIPE",
+            "name": "WITBE NET S.A."
+          },
+          "abuse-contact": {
+            "key": "AR15400-RIPE",
+            "email": "lir@witbe.net"
+          },
+          "managed": true
+        }
+      ]
+    },
+    "terms-and-conditions": {
+      "type": "locator",
+      "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}

@@ -270,7 +270,6 @@ export class QueryParametersService {
     }
 
     private setType(item: string, queryParams: IQueryParameters) {
-        console.log("", )
         const types = item.split(/[;|,]/)
             .map((term) => term.trim())
             .filter((term) => term.length);

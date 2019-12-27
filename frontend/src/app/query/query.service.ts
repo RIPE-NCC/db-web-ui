@@ -59,7 +59,7 @@ export class QueryService {
 
         if (qp.source === "GRS") {
             params = params.set("flags", "resource");
-        } else {
+        } else if (qp.source !== "RIPE" && qp.source !== "RIPE-NONAUTH") {
             qp.source.split(/,/).forEach(s => params = params.append("source", s))
         }
 

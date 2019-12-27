@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnDestroy} from "@angular/core";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import * as _ from "lodash";
 import {IErrorMessageModel, IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
@@ -21,7 +21,7 @@ export interface IQueryState {
     selector: "query",
     templateUrl: "./query.component.html",
 })
-export class QueryComponent {
+export class QueryComponent implements OnDestroy {
 
     public offset = 0;
     public showScroller = false;
@@ -205,7 +205,7 @@ export class QueryComponent {
             q.filter((term: string) => !term.endsWith("--resource"));
         }
         const containMoreSources = qpClean.source.includes(",");
-        const notRipeSource = !qpClean.source.includes("RIPE")
+        const notRipeSource = !qpClean.source.includes("RIPE") || !qpClean.source.includes("RIPE-NONAUTH");
         if (qpClean.source !== "GRS" && (containMoreSources || notRipeSource)){
             q.push(` --sources ${qpClean.source}`);
         }
@@ -313,13 +313,5 @@ export class QueryComponent {
 
     private static setActiveAnchor(id: string) {
         document.querySelector(`#${id}`).scrollIntoView();
-    }
-
-    // source in IQueryParameters after switching to Set<string> this method will be useless, currently like this
-    // because of IE
-    private setUniqueSource(source: string) {
-        if (!this.qp.source.includes(source)) {
-            this.qp.source = this.qp.source.length > 0 ? `,${source}`: source;
-        }
     }
 }

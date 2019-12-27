@@ -86,7 +86,7 @@ describe("The query pagina", () => {
         const whoisObject = page.getWhoisObjectViewerOnQueryPage(0);
         expect(whoisObject.isPresent()).toEqual(true);
         expect(page.getAttributeValueFromWhoisObjectOnQueryPage(0, 1).getText()).toEqual("Aloses Telekom Hizm. San. ve Tic. Ltd. Sti.");
-        expect(page.inpTelnetQuery.getText()).toContain("-i abuse-c -T organisation -Br ACRO862-RIPE");
+        expect(page.inpTelnetQuery.getText()).toContain("-i abuse-c -T organisation -Br --sources RIPE ACRO862-RIPE");
     });
 
     it("should have selected No hierarchy flag by default on hierarchy tab", () => {
@@ -130,13 +130,13 @@ describe("The query pagina", () => {
         page.byId("one-more").click();
         expect(page.byId("one-more").isSelected()).toBeTruthy();
         expect(page.byName("hierarchyD").isEnabled()).toBeTruthy();
-        expect(page.inpTelnetQuery.getText()).toContain("-mr 193.0.0.0");
+        expect(page.inpTelnetQuery.getText()).toContain("-mr --sources RIPE 193.0.0.0");
         page.scrollIntoView(page.inpTelnetQuery);
         page.byName("hierarchyD").click();
-        expect(page.inpTelnetQuery.getText()).toContain("-mdr 193.0.0.0");
+        expect(page.inpTelnetQuery.getText()).toContain("-mdr --sources RIPE 193.0.0.0");
         page.byId("exact").click();
         expect(page.byId("exact").isSelected()).toBeTruthy();
-        expect(page.inpTelnetQuery.getText()).toContain("-xdr 193.0.0.0");
+        expect(page.inpTelnetQuery.getText()).toContain("-xdr --sources RIPE 193.0.0.0");
     });
 
     it("should be specified ripe stat link", () => {
