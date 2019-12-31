@@ -114,7 +114,7 @@
                         </ng-template>
                     </ng-select>
                 </span>
-                <div class="text field-description" [ngbCollapse]="!showAttrsHelp[attribute.name]">
+                <div class="text field-description" [ngbCollapse]="!showAttrsHelp[attribute.$$id]">
                     <strong>Description</strong><br>
                     <span [innerHTML]="getAttributeDescription(attribute.name)"></span><br>
                     <strong>Syntax</strong><br>
@@ -159,7 +159,7 @@
                         </a>
                     </li>
                     <li>
-                        <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name)" >
+                        <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.$$id)" >
                             <span class="fa fa-question"></span>
                         </a>
                     </li>

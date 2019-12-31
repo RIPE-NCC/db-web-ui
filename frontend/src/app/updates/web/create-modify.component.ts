@@ -158,7 +158,7 @@ export class CreateModifyComponent {
 
             this.fetchDataForModify();
         }
-        this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({[attr.name]: true}));
+        this.showAttrsHelp = this.attributes.map((attr: IAttributeModel) => ({[attr.$$id]: true}));
     }
 
     /*
@@ -719,8 +719,8 @@ export class CreateModifyComponent {
         return !this.inetnumParentAuthError && this.whoisResourcesService.validateWithoutSettingErrors(this.attributes);
     }
 
-    public setVisibilityAttrsHelp(attributeName: string) {
-        this.showAttrsHelp[attributeName] = !this.showAttrsHelp[attributeName]
+    public setVisibilityAttrsHelp(attributeId: string) {
+        this.showAttrsHelp[attributeId] = !this.showAttrsHelp[attributeId]
     }
 
     /*
