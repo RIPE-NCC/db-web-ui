@@ -21,7 +21,7 @@ import {AppRoutingModule} from "../app-routing.module";
         AttributeModule,
         NgSelectModule,
         UpdatesModule,
-        AppRoutingModule
+        RouterModule
     ],
     declarations: [
         WhoisObjectViewerComponent,

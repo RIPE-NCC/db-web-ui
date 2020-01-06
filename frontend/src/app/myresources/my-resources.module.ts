@@ -1,6 +1,7 @@
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {RouterModule} from "@angular/router";
 import {SharedModule} from "../shared/shared.module";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
 import {FlagComponent} from "./flag/flag.component";
@@ -17,7 +18,6 @@ import {ResourcesComponent} from "./resources.component";
 import {AlertsDropDownComponent} from "./alertsdropdown/alerts-drop-down.component";
 import {ResourceStatusService} from "./resource-status.service";
 import {TransferDropDownComponent} from "./transferdropdown/transfer-drop-down.component";
-import {AppRoutingModule} from "../app-routing.module";
 import {AssociatedObjectsComponent} from "./associatedobjects/associated-objects.component";
 import {AssociatedObjectsService} from "./associatedobjects/associated-objects.service";
 import {MoreSpecificsComponent} from "./morespecifics/more-specifics.component";
@@ -28,7 +28,7 @@ import {MoreSpecificsComponent} from "./morespecifics/more-specifics.component";
         FormsModule,
         SharedModule,
         WhoisObjectModule,
-        AppRoutingModule
+        RouterModule
     ],
     declarations: [
         AlertsDropDownComponent,
