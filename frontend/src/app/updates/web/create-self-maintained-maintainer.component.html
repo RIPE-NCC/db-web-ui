@@ -74,10 +74,7 @@
                 </ul>
             </li>
         </ul>
-        <section class="supporting-text">
-            <p>By submitting this form you explicitly express your agreement with the <a
-                href="https://www.ripe.net/db/support/db-terms-conditions.html" target="_blank">RIPE Database Terms and Conditions</a></p>
-        </section>
+        <submitting-agreement></submitting-agreement>
         <input type="submit" (click)="submit()" [disabled]="!isFormValid() || submitInProgress" class="blue-button pull-right ga-createobj-create" value="Submit" />
         <button (click)="cancel()" class="blue-button pull-right ga-createobj-create" style="border:0;">Cancel</button>
     </section>

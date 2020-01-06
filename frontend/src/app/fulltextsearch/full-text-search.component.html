@@ -75,9 +75,7 @@
             </div>
         </div>
         <button id="fullTextSearchButton" type="submit" class="blue-button pull-right">Search</button>
-        <div class="help-block small">
-            <span [innerHTML]="'msg.ripeTandCSubmitLink.text' | label"></span>
-        </div>
+        <submitting-agreement></submitting-agreement>
     </form>
 </section>
 <section *ngIf="results && !showError">
