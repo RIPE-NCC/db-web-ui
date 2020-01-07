@@ -7,12 +7,10 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of} from "rxjs";
 import * as _ from "lodash";
 import {TextModifyComponent} from "../../../src/app/updatestext/text-modify.component";
-import {AlertsComponent} from "../../../src/app/shared/alert/alerts.component";
 import {PreferenceService} from "../../../src/app/updates/preference.service";
 import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 import {RestService} from "../../../src/app/updates/rest.service";
-import {AlertsService} from "../../../src/app/shared/alert/alerts.service";
 import {ErrorReporterService} from "../../../src/app/updates/error-reporter.service";
 import {MessageStoreService} from "../../../src/app/updates/message-store.service";
 import {RpslService} from "../../../src/app/updatestext/rpsl.service";
@@ -21,6 +19,7 @@ import {TextCommonsService} from "../../../src/app/updatestext/text-commons.serv
 import {CredentialsService} from "../../../src/app/shared/credentials.service";
 import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 import {WINDOW} from "../../../src/app/core/window.service";
+import {SharedModule} from "../../../src/app/shared/shared.module";
 
 describe("TextModifyComponent", () => {
 
@@ -91,14 +90,13 @@ describe("TextModifyComponent", () => {
         modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
         credentialsServiceMock = jasmine.createSpyObj("CredentialsService", ["hasCredentials", "getCredentials"]);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule],
-            declarations: [TextModifyComponent, AlertsComponent],
+            imports: [HttpClientTestingModule, FormsModule, SharedModule],
+            declarations: [TextModifyComponent],
             providers: [
                 {provide: PreferenceService, useValue: preferencesServiceMock},
                 WhoisResourcesService,
                 WhoisMetaService,
                 RestService,
-                AlertsService,
                 ErrorReporterService,
                 MessageStoreService,
                 RpslService,

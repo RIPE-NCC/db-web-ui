@@ -9,18 +9,17 @@ import * as _ from "lodash";
 import {TextCreateComponent} from "../../../src/app/updatestext/text-create.component";
 import {PreferenceService} from "../../../src/app/updates/preference.service";
 import {MntnerService} from "../../../src/app/updates/mntner.service";
-import {AlertsComponent} from "../../../src/app/shared/alert/alerts.component";
 import {WINDOW} from "../../../src/app/core/window.service";
 import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 import {RestService} from "../../../src/app/updates/rest.service";
-import {AlertsService} from "../../../src/app/shared/alert/alerts.service";
 import {ErrorReporterService} from "../../../src/app/updates/error-reporter.service";
 import {MessageStoreService} from "../../../src/app/updates/message-store.service";
 import {RpslService} from "../../../src/app/updatestext/rpsl.service";
 import {TextCommonsService} from "../../../src/app/updatestext/text-commons.service";
 import {CredentialsService} from "../../../src/app/shared/credentials.service";
 import {PrefixService} from "../../../src/app/domainobject/prefix.service";
+import {SharedModule} from "../../../src/app/shared/shared.module";
 
 describe("TextCreateComponent", () => {
 
@@ -43,14 +42,14 @@ describe("TextCreateComponent", () => {
         modalMock = jasmine.createSpyObj("NgbModal", ["open"]);
         modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, FormsModule],
-            declarations: [TextCreateComponent, AlertsComponent],
+            imports: [HttpClientTestingModule, FormsModule, SharedModule],
+            declarations: [TextCreateComponent],
             providers: [
                 {provide: PreferenceService, useValue: preferencesServiceMock},
                 WhoisResourcesService,
                 WhoisMetaService,
                 RestService,
-                AlertsService,
+                // AlertsService,
                 ErrorReporterService,
                 MessageStoreService,
                 RpslService,
