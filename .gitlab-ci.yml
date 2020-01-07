@@ -82,6 +82,12 @@ deploy_rc:
     name: rc
   when: manual
 
+deploy_training:
+  <<: *deploy_env
+  environment:
+    name: training
+  when: manual
+
 deploy_test:
   <<: *deploy_env
   environment:
