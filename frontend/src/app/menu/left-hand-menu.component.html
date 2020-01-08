@@ -36,7 +36,7 @@
                     </li>
                 </ul>
             </li>
-            <li class="child" [class.active]="activeUrl.indexOf('/myresources/') > -1" [hidden]="show.trainingEnv || show.guest">
+            <li class="child" [ngClass]="{'active': activeUrl.indexOf('/myresources/') > -1}" [hidden]="show.trainingEnv || show.guest">
                 <a href="">
                     <i title="Open sub-menu" class="fa fa-angle-right"></i>
                     Resources

@@ -265,7 +265,7 @@ describe("The left hand menu structure depend on logged in user role", () => {
         expectRipeDatabaseMenuItemWithAllSubItems();
     });
 
-    it("Should show menu structure for a guest user", () => {
+    it("should show menu structure for a guest user", () => {
         changeJsonResponsFile(userInfoFile, userGuest);
         browser.get(browser.baseUrl);
         expect(page.topMenuItems.count()).toEqual(3);

@@ -11,7 +11,6 @@ export class EnvironmentStatusService {
 
     public isTestRcEnv(): boolean {
         const host = window.location.host;
-        console.log("checking", host);
         return host.indexOf("apps-test.db.ripe.net") > -1
             || host.indexOf("rc.db.ripe.net") > -1;
     }

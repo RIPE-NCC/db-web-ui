@@ -110,6 +110,8 @@ export class LeftHandMenuComponent {
         this.window.init_portlet_menu();
         this.activeUrl = this.location.path();
         this.isDbMenuActive();
+        this.show.testRcEnv = this.environmentStatusService.isTestRcEnv();
+        this.show.trainingEnv = this.environmentStatusService.isTrainingEnv();
     }
 
     public ngOnDestroy() {
