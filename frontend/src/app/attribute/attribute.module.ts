@@ -6,7 +6,6 @@ import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {SharedModule} from "../shared/shared.module";
 import {AttributeRendererComponent} from "./attribute-renderer.component";
 import {AttributeReverseZonesComponent} from "./attribute-reverse-zones.component";
-import {AttributeInfoComponent} from "./attr-info.component";
 import {AttributeMetadataService} from "./attribute-metadata.service";
 import {AttributeSharedService} from "./attribute-shared.service";
 
@@ -20,8 +19,7 @@ import {AttributeSharedService} from "./attribute-shared.service";
     ],
     declarations: [
         AttributeReverseZonesComponent,
-        AttributeRendererComponent,
-        AttributeInfoComponent
+        AttributeRendererComponent
     ],
     providers: [
         AttributeMetadataService,
@@ -29,12 +27,10 @@ import {AttributeSharedService} from "./attribute-shared.service";
     ],
     entryComponents: [
         AttributeReverseZonesComponent,
-        AttributeRendererComponent,
-        AttributeInfoComponent
+        AttributeRendererComponent
     ],
     exports: [
-        AttributeRendererComponent,
-        AttributeInfoComponent
+        AttributeRendererComponent
     ]
 })
 export class AttributeModule {

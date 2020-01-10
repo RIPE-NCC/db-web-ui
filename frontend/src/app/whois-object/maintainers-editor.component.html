@@ -39,10 +39,5 @@
             </div>
         </ng-template>
     </ng-select>
-    <div [ngbCollapse]="!isMntHelpShown" class="text field-description">
-        <strong>Description</strong><br>
-        <attr-info [object-type]="'mntner'" [description]="'mnt-by'"></attr-info><br>
-        <strong>Syntax</strong><br>
-        <attr-info [object-type]="'mntner'" [syntax]="'mnt-by'"></attr-info>
-    </div>
+    <description-syntax [showComponent]="isMntHelpShown" [objectType]="'mntner'" [attrName]="'mnt-by'"></description-syntax>
 </section>

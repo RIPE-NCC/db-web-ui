@@ -21,6 +21,8 @@ import {FilteroutAttributeByNamePipe} from "./filterout-attribute-by-name.pipe";
 import {FilteroutAttributeByHiddenPipe} from "./filterout-attribute-by-hidden.pipe";
 import {AttributeTransformerDirective} from "./attribute-transformer.directive";
 import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
+import {DescriptionSyntaxComponent} from "./descriptionsyntax/description-syntax.component";
+import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
 
 @NgModule({
     imports: [
@@ -38,6 +40,8 @@ import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
         LoadingIndicatorComponent,
         NameFormatterComponent,
         SubmittingAgreementComponent,
+        AttributeInfoComponent,
+        DescriptionSyntaxComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
         AttributeTransformerDirective,
@@ -67,6 +71,8 @@ import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
         LoadingIndicatorComponent,
         NameFormatterComponent,
         SubmittingAgreementComponent,
+        AttributeInfoComponent,
+        DescriptionSyntaxComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
         AttributeTransformerDirective,

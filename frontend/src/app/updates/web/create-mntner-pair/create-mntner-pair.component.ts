@@ -226,14 +226,6 @@ export class CreateMntnerPairComponent {
         }
     }
 
-    public getAttributeDescription(attrName: string) {
-        return this.whoisMetaService.getAttributeDescription(this.objectType, attrName);
-    }
-
-    public getAttributeSyntax(attrName: string) {
-        return this.whoisMetaService.getAttributeSyntax(this.objectType, attrName);
-    }
-
     private navigateToDisplayPage(source: string, roleName: string, mntnerName: string) {
         this.router.navigateByUrl(`webupdates/display/${source}/${this.objectType}/${roleName}/mntner/${mntnerName}`);
     }

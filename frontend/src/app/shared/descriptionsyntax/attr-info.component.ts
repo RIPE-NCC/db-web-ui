@@ -1,9 +1,9 @@
 import {Component, Input} from "@angular/core";
-import {WhoisMetaService} from "../shared/whois-meta.service";
+import {WhoisMetaService} from "../whois-meta.service";
 
 @Component({
     selector: "attr-info",
-    template: `<div [innerHTML]="text"></div>`,
+    template: `<span [innerHTML]="text"></span>`,
 })
 export class AttributeInfoComponent {
 

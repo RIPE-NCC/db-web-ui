@@ -1,13 +1,7 @@
 <div [ngClass]="{'has-error': (attribute.value && attribute.$$invalid)}">
     <attribute-reverse-zones *ngIf="widgetReverseZone; else attributeComponent" [attribute]="attribute"></attribute-reverse-zones>
 </div>
-<div class="text field-description" [ngbCollapse]="!isHelpShown">
-    <strong>Description</strong><br>
-    <attr-info [object-type]="objectType" [description]="attribute.name"></attr-info>
-    <br>
-    <strong>Syntax</strong><br>
-    <attr-info [object-type]="objectType" [syntax]="attribute.name"></attr-info>
-</div>
+<description-syntax [showComponent]="isHelpShown" [objectType]="objectType" [attrName]="attribute.name"></description-syntax>
 
 <ul class="input-group-btn">
     <li *ngIf="canBeAdded(objectType, attributes, attribute)">

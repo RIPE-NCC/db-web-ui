@@ -29,12 +29,7 @@
                 <span class="title">{{item.key}} - <b>{{item.person}} {{item.role}}</b></span>
             </ng-template>
         </ng-select>
-        <div [ngbCollapse]="!isAdminCHelpShown" class="text field-description">
-            <strong>Description</strong><br>
-            {{admincDescription}}<br>
-            <strong>Syntax</strong><br>
-            <span [innerHTML]="admincSyntax"></span>
-            </div>
+        <description-syntax [showComponent]="isAdminCHelpShown" [objectType]="objectType" [attrName]="'admin-c'"></description-syntax>
         <div *ngIf="!hasAdminC()">
             <strong>Don't have an administrative contact? <a id="linkToCreatePair" href="webupdates/create/{{source}}/person/self">Create maintainer and person pair</a></strong>
         </div>
@@ -59,12 +54,7 @@
                        [(ngModel)]="attribute.value"
                        [required]="attribute.$$meta.$$mandatory"
                        (blur)="fieldVisited(attribute)">
-                <div class="text field-description" [ngbCollapse]="!showAttrsHelp[attribute.name]">
-                    <strong>Description</strong><br>
-                    <span [innerHTML]="getAttributeDescription('mntner')"></span><br>
-                    <strong>Syntax</strong><br>
-                    <span [innerHTML]="getAttributeSyntax('mntner')"></span>
-                </div>
+                <description-syntax [showComponent]="showAttrsHelp[attribute.name]" [objectType]="objectType" [attrName]="'mntner'"></description-syntax>
                 <ul class="input-group-btn">
                     <li>
                         <a id="help" class="btn btn-default ga-help-attr" (click)="setVisibilityAttrsHelp(attribute.name)">

@@ -14,7 +14,6 @@ import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 import {MaintainersEditorComponent} from "../../../src/app/whois-object/maintainers-editor.component";
 import {SharedModule} from "../../../src/app/shared/shared.module";
 import {CoreModule} from "../../../src/app/core/core.module";
-import {AttributeInfoComponent} from "../../../src/app/attribute/attr-info.component";
 import {AttributeSharedService} from "../../../src/app/attribute/attribute-shared.service";
 import {WebUpdatesCommonsService} from "../../../src/app/updates/web/web-updates-commons.service";
 
@@ -32,8 +31,7 @@ describe("MaintainersEditorComponent", () => {
                 NgSelectModule,
                 HttpClientTestingModule],
             declarations: [
-                MaintainersEditorComponent,
-                AttributeInfoComponent
+                MaintainersEditorComponent
             ],
             providers: [
                 AttributeSharedService,

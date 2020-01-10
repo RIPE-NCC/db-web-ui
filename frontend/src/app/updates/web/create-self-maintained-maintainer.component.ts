@@ -17,8 +17,6 @@ import {IAttributeModel} from "../../shared/whois-response-type.model";
 })
 export class CreateSelfMaintainedMaintainerComponent {
     public submitInProgress: boolean = false;
-    public admincDescription: any;
-    public admincSyntax: any;
     public adminC: any;
     // public uiSelectTemplateReady: any;
     public maintainerAttributes: any;
@@ -42,9 +40,6 @@ export class CreateSelfMaintainedMaintainerComponent {
 
     public ngOnInit() {
         this.alertService.clearErrors();
-
-        this.admincDescription = this.whoisMetaService.getAttributeDescription(this.objectType, "admin-c");
-        this.admincSyntax = this.whoisMetaService.getAttributeSyntax(this.objectType, "admin-c");
 
         this.adminC = {
             alternatives: [],
@@ -143,14 +138,6 @@ export class CreateSelfMaintainedMaintainerComponent {
         _.remove(this.maintainerAttributes, (i: any) => {
             return i.name === "admin-c" && i.value === item.key;
         });
-    }
-
-    public getAttributeDescription(attrName: string) {
-        return this.whoisMetaService.getAttributeDescription(this.objectType, attrName);
-    }
-
-    public getAttributeSyntax(attrName: string) {
-        return this.whoisMetaService.getAttributeSyntax(this.objectType, attrName);
     }
 
     public setVisibilityAttrsHelp(attributeName: string) {

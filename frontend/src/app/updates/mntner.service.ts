@@ -49,7 +49,7 @@ export class MntnerService {
                     return {key: mntner.value};
                 });
 
-                // check if we"ve already got a passwd
+                // check if we've already got a passwd
                 const alreadyAuthed = _.findIndex(parentMntners, (parentMnt) => {
                     return this.credentialsService.getCredentials() && this.credentialsService.getCredentials().mntner === parentMnt.key;
                 });

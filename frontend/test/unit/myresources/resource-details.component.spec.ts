@@ -19,7 +19,6 @@ import {MaintainersEditorComponent} from "../../../src/app/whois-object/maintain
 import {WhoisObjectEditorComponent} from "../../../src/app/whois-object/whois-object-editor.component";
 import {AttributeRendererComponent} from "../../../src/app/attribute/attribute-renderer.component";
 import {CoreModule} from "../../../src/app/core/core.module";
-import {AttributeInfoComponent} from "../../../src/app/attribute/attr-info.component";
 import {AttributeReverseZonesComponent} from "../../../src/app/attribute/attribute-reverse-zones.component";
 import {MntnerService} from "../../../src/app/updates/mntner.service";
 import {RestService} from "../../../src/app/updates/rest.service";
@@ -71,7 +70,6 @@ describe("ResourceDetailsComponent", () => {
                 WhoisObjectEditorComponent,
                 MaintainersEditorComponent,
                 AttributeRendererComponent,
-                AttributeInfoComponent,
                 AttributeReverseZonesComponent
             ],
             providers: [

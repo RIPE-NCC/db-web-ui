@@ -113,7 +113,7 @@ module.exports = {
     selectAdminC: element(by.id("createForm")).element(by.css(".ng-value")).element(by.css("div")),
     inpMntner: element(by.id("createForm")).element(by.name("mntner")),
     inpMntnerQuestionMark: element(by.css("#createForm [name='mntner'] ~ ul .ga-help-attr")),
-    inpMntnerDescription: element(by.css("#createForm [name='mntner'] ~ .field-description")),
+    inpMntnerDescription: element(by.css("#createForm [name='mntner'] ~ description-syntax .field-description")),
     inpPerson: element(by.id("createForm")).element(by.name("person")),
     //create-mntner page
     inpAdminCDropdown: element(by.id("createForm")).element(by.name("adminCDropdown")).element(by.css("input")),

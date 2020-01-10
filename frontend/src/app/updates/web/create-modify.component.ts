@@ -678,14 +678,6 @@ export class CreateModifyComponent {
         return this.whoisMetaService.getAttributeShortDescription(this.objectType, attrName);
     }
 
-    public getAttributeDescription(attrName: string) {
-        return this.whoisMetaService.getAttributeDescription(this.objectType, attrName);
-    }
-
-    public getAttributeSyntax(attrName: string) {
-        return this.whoisMetaService.getAttributeSyntax(this.objectType, attrName);
-    }
-
     public isLirObject() {
         return ObjectUtilService.isLirObject(this.attributes);
     }

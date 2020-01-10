@@ -10,6 +10,7 @@ describe("The user info component", () => {
 
     it("should redirect to query page after Logout", () => {
         expect(page.userInfoMenu.isDisplayed()).toEqual(false);
+        page.scrollIntoView(page.userInfo);
         expect(page.userInfo.isPresent()).toEqual(true);
         page.userInfo.click();
         expect(page.userInfoMenu.isDisplayed()).toEqual(true);
