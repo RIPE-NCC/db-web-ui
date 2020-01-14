@@ -15,7 +15,7 @@ import {MessageStoreService} from "./message-store.service";
 import {MntnerService} from "./mntner.service";
 import {RestService} from "./rest.service";
 import {ScreenLogicInterceptorService} from "./screen-logic-interceptor.service";
-import {HeaderInterceptor} from "../inerceptor/header.interceptor";
+import {HeaderInterceptor} from "../interceptor/header.interceptor";
 import {SharedModule} from "../shared/shared.module";
 import {EnumService} from "./web/enum.service";
 import {DisplayComponent} from "./web/display.component";

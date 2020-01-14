@@ -26,11 +26,11 @@ import {UserInfoModule} from "./userinfo/user-info.module";
 import {SyncupdatesService} from "./syncupdates/syncupdates.service";
 import {EmailConfirmationService} from "./emailconfirmation/email-confirmation.service";
 import {OrgDropDownSharedService} from "./dropdown/org-drop-down-shared.service";
-import {MetaDataCleanerInterceptor} from "./inerceptor/meta-data-cleaner.interceptor";
-import {HeaderInterceptor} from "./inerceptor/header.interceptor";
+import {MetaDataCleanerInterceptor} from "./interceptor/meta-data-cleaner.interceptor";
+import {HeaderInterceptor} from "./interceptor/header.interceptor";
 import {SyncupdatesComponent} from "./syncupdates/syncupdates.component";
 import {EmailConfirmationComponent} from "./emailconfirmation/email-confirmation.component";
-import {ErrorInterceptor} from "./inerceptor/error.interceptor";
+import {ErrorInterceptor} from "./interceptor/error.interceptor";
 import {PropertiesService} from "./properties.service";
 import {AuthenticationGuard} from "./authentication-guard.service";
 
