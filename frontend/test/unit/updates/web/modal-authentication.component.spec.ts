@@ -265,6 +265,67 @@ describe("ModalAuthenticationComponent", () => {
         expect(modalAuthenticationComponent.selected.message).toEqual("Value cannot have a comment in auth: PGPKEY-5E5E8986 # LIR # LIR [key-cert] [locator: http://rest-prepdev.db.ripe.net/ripe/key-cert/PGPKEY-5E5E8986]");
     });
 
+    it("should formate error message from backend in case of association error", async () => {
+        modalAuthenticationComponent.selected.item = {type: "mntner", key: "RENATER-MNT"};
+        modalAuthenticationComponent.selected.password = "RENATER-MNT";
+        modalAuthenticationComponent.selected.associate = true;
+
+        modalAuthenticationComponent.submit();
+        httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/RENATER-MNT?password=RENATER-MNT&unfiltered=true"}).flush({
+            objects: {
+                object: [
+                    {
+                        source: {id: "RIPE"},
+                        "primary-key": {attribute: [{name: "mntner", value: "b-mnt"}]},
+                        attributes: {
+                            attribute: [
+                                {name: "mntner", value: "RENATER-MNT"},
+                                {name: "auth", value: "MD5-PW BLAH1BLAH2BLAH3"},
+                                {name: "auth", value: "SSO dummy@ripe.net"},
+                                {link: {
+                                    type: "locator",
+                                    href: "https://rest-prepdev.db.ripe.net/ripe/mntner/AS1717-MNT"},
+                                    name: "mnt-by", value: "AS1717-MNT", "referenced-type": "mntner"},
+                                {name: "source", value : "RIPE"}
+                            ]
+                        }
+                    }
+                ]
+            }
+        });
+
+        await componentFixture.whenStable();
+        httpMock.expectOne({method: "GET", url: "api/whois-internal/api/user/info"}).flush({
+            user: {
+                "username": "dummy@ripe.net",
+                "displayName": "Test User",
+                "uuid": "aaaa-bbbb-cccc-dddd",
+                "active": "true"
+            }
+        });
+
+        httpMock.expectOne({method: "PUT", url: "api/whois/RIPE/mntner/RENATER-MNT?password=RENATER-MNT"}).flush({
+            errormessages: {
+                errormessage: [ {
+                    severity: "Error",
+                    text: "Authorisation for [%s] %s failed\nusing \"%s:\"\nnot authenticated by: %s",
+                    args: [
+                        {value: "mntner"},
+                        {value: "RENATER-MNT"},
+                        {value: "mnt-by"},
+                        {value: "AS1717-MNT"}]
+                }]
+            },
+            "terms-and-conditions" : {
+                type : "locator",
+                href : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+            }}, {status: 401, statusText: "Unauthorized"});
+        await componentFixture.whenStable();
+
+        expect(modalMock.close).not.toHaveBeenCalledWith();
+        expect(modalAuthenticationComponent.selected.message).toEqual("Authorisation for [mntner] RENATER-MNT failed\nusing \"mnt-by:\"\nnot authenticated by: AS1717-MNT");
+    });
+
     it("should close the modal and return error when canceled", () => {
         modalAuthenticationComponent.cancel();
         expect(modalMock.dismiss).toHaveBeenCalled();

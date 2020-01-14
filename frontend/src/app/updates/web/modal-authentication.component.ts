@@ -106,10 +106,12 @@ export class ModalAuthenticationComponent {
                                 // report success back
                                 this.activeModal.close({$value: {selectedItem: this.selected.item, response: resp}});
                             }, (error: any) => {
-                                console.error("Association error:" + error);
                                 if (!_.isUndefined(error.error) && !_.isUndefined(error.error.errormessages)
                                     && !_.isUndefined(error.error.errormessages.errormessage[0])) {
-                                    this.selected.message = error.error.errormessages.errormessage[0].text;
+                                    const errorMsg = error.error.errormessages.errormessage[0];
+                                    this.selected.message = error.status === 401
+                                        ? WhoisResourcesService.readableError(errorMsg)
+                                        : errorMsg.text;
                                     return;
                                 }
                                 // remove modal anyway

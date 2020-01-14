@@ -247,16 +247,16 @@ describe("WhoisResourcesService", () => {
             {severity: "Warning", text: "Not authenticated", plainText: "Not authenticated"}
         ]);
 
-        expect(whoisResourcesService.readableError(errorResponse, errorResponse.errormessages.errormessage[0])).toEqual(
+        expect(WhoisResourcesService.readableError(errorResponse.errormessages.errormessage[0])).toEqual(
             "Unrecognized source: INVALID_SOURCE"
         );
 
-        expect(whoisResourcesService.readableError(errorResponse, errorResponse.errormessages.errormessage[1])).toEqual(
+        expect(WhoisResourcesService.readableError(errorResponse.errormessages.errormessage[1])).toEqual(
             "Not authenticated"
         );
 
         // has second %s withoutv second arg
-        expect(whoisResourcesService.readableError(errorResponse, {
+        expect(WhoisResourcesService.readableError({
             severity: "Error",
             text: "Unrecognized source: %s %s",
             args: [{value: "INVALID_SOURCE"}]

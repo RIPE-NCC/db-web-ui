@@ -18,6 +18,7 @@ import {
 import {IUserInfoOrganisation, IUserInfoRegistration} from "../dropdown/org-data-type.model";
 import {PropertiesService} from "../properties.service";
 import {IFlag} from "./flag/flag.component";
+import {WhoisResourcesService} from "../shared/whois-resources.service";
 
 @Component({
     selector: "resource-details",
@@ -220,15 +221,15 @@ export class ResourceDetailsComponent implements OnDestroy {
 
         this.errors = whoisResources.errormessages.errormessage
             .filter((e) => !e.attribute && e.severity.toLocaleLowerCase() === "error")
-            .map((e) => this.getErrorText(e));
+            .map((e) => WhoisResourcesService.readableError(e));
 
         this.warnings = whoisResources.errormessages.errormessage
             .filter((e) => e.severity.toLocaleLowerCase() === "warning")
-            .map((e) => this.getErrorText(e));
+            .map((e) => WhoisResourcesService.readableError(e));
 
         this.infos = whoisResources.errormessages.errormessage
             .filter((e) => e.severity.toLocaleLowerCase() === "info")
-            .map((e) => this.getErrorText(e));
+            .map((e) => WhoisResourcesService.readableError(e));
     }
 
     private onSubmitError(whoisResources: {data: IWhoisResponseModel}): void {
@@ -237,26 +238,13 @@ export class ResourceDetailsComponent implements OnDestroy {
             const attribute = this.whoisObject.attributes.attribute
                 .find((a) => a.name === e.attribute.name && a.value === e.attribute.value,
             );
-            attribute.$$error = this.getErrorText(e);
+            attribute.$$error = WhoisResourcesService.readableError(e);
         });
         this.loadMessages(whoisResources.data);
         if (this.errors.length === 0) {
             this.errors = ["Your object NOT updated, please review issues below"];
         }
         document.querySelector("#editortop").scrollIntoView();
-    }
-
-    private getErrorText(error: IErrorMessageModel): string {
-        let idx = 0;
-        return error.text.replace(/%s/g, (match) => {
-            if (error.args.length - 1 >= idx) {
-                const arg = error.args[idx].value;
-                idx++;
-                return arg;
-            } else {
-                return match;
-            }
-        });
     }
 
     private addFlag(textOnFlag: string, tooltip: string, colour?: string) {

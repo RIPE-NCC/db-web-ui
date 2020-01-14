@@ -154,9 +154,9 @@ export class WhoisResourcesService {
         };
     }
 
-    public readableError(whoisResponse: IWhoisResponseModel, errorMessage: IErrorMessageModel) {
+    public static readableError(errorMessage: IErrorMessageModel) {
         let idx = 0;
-        return errorMessage.text.replace(/%s/g, (match: any) => {
+        return errorMessage.text.replace(/%s/g, (match) => {
             if (errorMessage.args.length - 1 >= idx) {
                 const arg = errorMessage.args[idx].value;
                 idx++;
@@ -173,7 +173,7 @@ export class WhoisResourcesService {
         }
         return whoisResponse.errormessages.errormessage
             .filter((errorMessage: any) => {
-                errorMessage.plainText = this.readableError(whoisResponse, errorMessage);
+                errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Error" && !errorMessage.attribute;
             });
     }
@@ -185,7 +185,7 @@ export class WhoisResourcesService {
         return whoisResponse.errormessages.errormessage
         // FIXME ANY TYPE
             .filter((errorMessage: any) => {
-                errorMessage.plainText = this.readableError(whoisResponse, errorMessage);
+                errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Warning" && !errorMessage.attribute;
             });
     }
@@ -197,7 +197,7 @@ export class WhoisResourcesService {
         return whoisResponse.errormessages.errormessage
         // FIXME ANY TYPE
             .filter((errorMessage: any) => {
-                errorMessage.plainText = this.readableError(whoisResponse, errorMessage);
+                errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Info" && !errorMessage.attribute;
             });
     }
@@ -208,7 +208,7 @@ export class WhoisResourcesService {
         }
         return whoisResponse.errormessages.errormessage
             .filter((errorMessage: any) => {
-                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + this.readableError(whoisResponse, errorMessage);
+                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) + WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Error";
             });
     }
@@ -220,7 +220,7 @@ export class WhoisResourcesService {
         return whoisResponse.errormessages.errormessage
         // FIXME ANY TYPE
             .filter((errorMessage: any) => {
-                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) +  this.readableError(whoisResponse, errorMessage);
+                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) +  WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Warning";
             });
     }
@@ -231,7 +231,7 @@ export class WhoisResourcesService {
         }
         return whoisResponse.errormessages.errormessage
             .filter((errorMessage: any) => {
-                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) +  this.readableError(whoisResponse, errorMessage);
+                errorMessage.plainText = WhoisResourcesService.getRelatedAttribute(errorMessage) +  WhoisResourcesService.readableError(errorMessage);
                 return errorMessage.severity === "Info";
             });
     }
@@ -249,7 +249,7 @@ export class WhoisResourcesService {
         return whoisResponse.errormessages.errormessage
             .filter((errorMessage: any) => {
                 if (errorMessage.attribute) {
-                    errorMessage.plainText = this.readableError(whoisResponse, errorMessage);
+                    errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
                     return errorMessage.attribute.name === attributeName && errorMessage.attribute.value.trim() === attributeValue;
                 }
                 return false;
