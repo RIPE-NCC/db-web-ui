@@ -64,7 +64,6 @@ export class WhoisMetaService {
                 {name: "abuse-c", mandatory: false, multiple: false, refs: ["ROLE"]},
                 {name: "status", mandatory: false, multiple: false, refs: this.refs, isEnum: true},
                 {name: "notify", mandatory: false, multiple: true, refs: this.refs},
-                {name: "mnt-lower", mandatory: false, multiple: true, refs: ["MNTNER"]},
                 {name: "mnt-by", mandatory: true, multiple: true, refs: ["MNTNER"]},
                 {name: "created", mandatory: false, multiple: false, refs: this.refs},
                 {name: "last-modified", mandatory: false, multiple: false, refs: this.refs},

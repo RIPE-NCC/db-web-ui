@@ -231,7 +231,7 @@ module.exports = {
     inpDescr2: element(by.css("whois-object-editor")).element(by.name("abuse-c$3")),
     woeNetname: element(by.css("whois-object-editor")).element(by.name("netname$1")),
     woeOrg: element(by.css("whois-object-editor")).element(by.name("org$1")),
-    woeSource: element(by.css("whois-object-editor")).element(by.name("source$8")),
+    woeSource: element(by.css("whois-object-editor")).element(by.name("source$7")),
     woeBtnAddAttribute: element(by.css("whois-object-editor")).all(by.css(".fa.fa-plus")).first(),
     btnSubmitObject: element(by.css("whois-object-editor")).element(by.css(".blue-button")),
     successMessage: element(by.css(".alert-success")),

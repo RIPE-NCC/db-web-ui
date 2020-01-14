@@ -79,15 +79,6 @@
             "referenced-type": "mntner"
           },
           {
-            "link": {
-              "type": "locator",
-              "href": "http://rest-dev.db.ripe.net/ripe-nonauth/mntner/RIPE-NCC-RPSL-MNT"
-            },
-            "name": "mnt-lower",
-            "value": "RIPE-NCC-RPSL-MNT",
-            "referenced-type": "mntner"
-          },
-          {
             "name": "created",
             "value": "2005-08-26T10:56:16Z"
           },
