@@ -390,7 +390,7 @@ describe("CreateModifyComponent with modifying test cases", () => {
         it("should transition to display state if cancel is pressed", () => {
             spyOn(window, "confirm").and.returnValue(true);
             component.cancel();
-            expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/as-block/MY-AS-BLOCK");
+            expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
         });
     });
 

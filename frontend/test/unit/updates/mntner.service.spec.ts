@@ -140,7 +140,7 @@ describe("MntnerService", () => {
         expect(enriched[1].isNew).toBe(true);
     });
 
-    fit("should need authentication for SSO mntner", () => {
+    it("should need authentication for SSO mntner", () => {
         const ssoMntners = [
             {type: "mntner", key: "A-MNT", mine: true, auth: ["SSO"]},
             {type: "mntner", key: "B-MNT", mine: true, auth: ["MD5-PW"]},
