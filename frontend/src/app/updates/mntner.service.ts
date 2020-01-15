@@ -202,7 +202,7 @@ export class MntnerService {
 
     public enrichWithSsoStatus(ssoMntners: IMntByModel[], mntners: IMntByModel[]): IMntByModel[] {
         return _.map(mntners, (mntner: IMntByModel) => {
-            mntner.mine = !!this.isMntnerOnlist(ssoMntners, mntner);
+            mntner.mine = this.isMntnerOnlist(ssoMntners, mntner);
             return mntner;
         });
     }
@@ -217,12 +217,12 @@ export class MntnerService {
     public enrichWithMine = (ssoMntners: IMntByModel[], mntners: IMntByModel[]) => this.enrichWithSsoStatus(ssoMntners, mntners);
 
     public needsPasswordAuthentication(ssoMntners: IMntByModel[], originalObjectMntners: IMntByModel[], objectMntners: IMntByModel[]): boolean {
-        let input = originalObjectMntners;
         if (originalObjectMntners.length === 0) {
             // it is a create
-            input = objectMntners;
+            originalObjectMntners = objectMntners.filter(mnt => !this.isMntnerOnlist(ssoMntners, mnt));
+            // filter out sso maintainers from objectMaintainers, so we can made check just on originalMainatiners
         }
-        const mntners = this.enrichWithSsoStatus(ssoMntners, input);
+        const mntners = this.enrichWithSsoStatus(ssoMntners, originalObjectMntners);
 
         if (mntners.length === 0) {
             console.debug("needsPasswordAuthentication: no: No mntners left to authenticate against");
@@ -235,12 +235,12 @@ export class MntnerService {
             return false;
         }
 
-        if (this.oneOfOriginalMntnersIsMine(mntners)) {
+        if (this.oneOfOriginalMntnersIsMine(originalObjectMntners)) {
             console.debug("needsPasswordAuthentication: no: One of selected mntners is mine");
             return false;
         }
 
-        if (this.oneOfOriginalMntnersHasCredential(mntners)) {
+        if (this.oneOfOriginalMntnersHasCredential(originalObjectMntners)) {
             console.debug("needsPasswordAuthentication: no: One of selected mntners has credentials");
             return false;
         }

@@ -268,9 +268,6 @@ export class CreateModifyComponent {
             this.performAuthentication();
             return;
         }
-
-        console.debug("onMntnerAdded:" + JSON.stringify(item) + " object mntners now:" + JSON.stringify(this.maintainers.object));
-        console.debug("onMntnerAdded: attributes" + JSON.stringify(this.attributes));
     }
 
     public showMntCloseButton(mntner: IMntByModel): boolean {
@@ -670,7 +667,7 @@ export class CreateModifyComponent {
 
     public cancel() {
         if (this.window.confirm("You still have unsaved changes.\n\nPress OK to continue, or Cancel to stay on the current page.")) {
-            this.navigateAway();
+            this.router.navigate(["webupdates/select"]);
         }
     }
 
@@ -1003,7 +1000,7 @@ export class CreateModifyComponent {
     }
 
     private refreshObjectIfNeeded(associationResp: any) {
-        if (this.operation === "Modify" && this.objectType === "mntner") {
+        if (this.operation === this.MODIFY_OPERATION && this.objectType === "mntner") {
             if (associationResp) {
                 this.wrapAndEnrichResources(this.objectType, associationResp);
                 // save object for later diff in display-screen
@@ -1037,10 +1034,8 @@ export class CreateModifyComponent {
     }
 
     private navigateAway = () => {
-        if (this.operation === "Modify") {
+        if (this.operation === this.MODIFY_OPERATION) {
             this.webUpdatesCommonsService.navigateToDisplay(this.source, this.objectType, this.name, undefined);
-        } else {
-            this.router.navigate(["webupdates/select"]);
         }
     };
 

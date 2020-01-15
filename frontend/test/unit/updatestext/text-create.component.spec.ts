@@ -373,7 +373,8 @@ describe("TextCreateComponent", () => {
 
 
         httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-            {"key": "TEST-MNT", "type": "mntner", "auth": ["SSO"], "mine": true}
+            {"key": "TEST-MNT", "type": "mntner", "auth": ["SSO"], "mine": true},
+            {"key": "GROL129-MNT", "type": "mntner", "auth": ["SSO"], "mine": true}
         ]);
 
         await componentFixture.whenStable();
@@ -490,7 +491,8 @@ describe("TextCreateComponent", () => {
         componentFixture.detectChanges();
 
         httpMock.expectOne({method: "GET", url: "api/user/mntners"}).flush([
-            {"key": "TEST-MNT", "type": "mntner", "auth": ["SSO"], "mine": true}
+            {"key": "TEST-MNT", "type": "mntner", "auth": ["SSO"], "mine": true},
+            {"key": "GROL129-MNT", "type": "mntner", "auth": ["SSO"], "mine": true}
         ]);
 
         await componentFixture.whenStable();
@@ -539,7 +541,6 @@ describe("TextCreateComponent", () => {
             },
         }, {statusText: "bad request", status: 400});
 
-
         expect(textCreateComponent.alertService.getErrors().length).toEqual(2);
         const plaintextErrors = _.map(textCreateComponent.alertService.getErrors(), (item) => ({plainText: item.plainText}));
         expect(plaintextErrors).toEqual([
@@ -557,6 +558,5 @@ describe("TextCreateComponent", () => {
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();
         expect(routerMock.navigate).not.toHaveBeenCalled();
         expect(modalMock.open).not.toHaveBeenCalled();
-
     });
 });

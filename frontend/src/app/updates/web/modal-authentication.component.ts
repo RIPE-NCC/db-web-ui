@@ -18,6 +18,7 @@ export interface IModalAuthentication {
     source: string;
 }
 
+// https://www.ripe.net/support/training/material/bgp-operations-and-security-training-course/route-object-creation-flowchart.pdf
 @Component({
     selector: "modal-authentication",
     templateUrl: "./modal-authentication.component.html",
