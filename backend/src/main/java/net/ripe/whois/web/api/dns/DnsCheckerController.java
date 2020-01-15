@@ -7,6 +7,7 @@ import net.ripe.whois.web.api.whois.domain.UserInfoResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -27,15 +28,23 @@ import static net.ripe.whois.CrowdTokenFilter.CROWD_TOKEN_KEY;
 public class DnsCheckerController {
     private final static Logger LOGGER = LoggerFactory.getLogger(DnsCheckerController.class);
 
+    private final boolean skipDnsCheck;
+
     private final WhoisInternalService whoisInternalService;
     private final DnsClient dnsClient;
 
     private static final Pattern INVALID_INPUT = Pattern.compile("[^a-zA-Z0-9\\\\.:-]");
 
     @Autowired
-    public DnsCheckerController(final WhoisInternalService whoisInternalService, final DnsClient dnsClient) {
+    public DnsCheckerController(final WhoisInternalService whoisInternalService,
+                                final DnsClient dnsClient,
+                                @Value("${skip.dns.check:false}") final boolean skipDnsCheck) {
         this.whoisInternalService = whoisInternalService;
         this.dnsClient = dnsClient;
+        this.skipDnsCheck = skipDnsCheck;
+        if (skipDnsCheck) {
+            LOGGER.info("DNS check is disabled");
+        }
     }
 
     @RequestMapping(value = "/status", method = RequestMethod.GET)
@@ -57,9 +66,11 @@ public class DnsCheckerController {
             return new ResponseEntity<>(new Response(ns, -1, "Could not resolve " + ns), HttpStatus.OK);
         }
 
-        final Optional<String> errorMessage = dnsClient.checkDnsConfig(ns, record);
-        if (errorMessage.isPresent()) {
-            return new ResponseEntity<>(new Response(ns, -1, errorMessage.get()) , HttpStatus.OK);
+        if (!skipDnsCheck) {
+            final Optional<String> errorMessage = dnsClient.checkDnsConfig(ns, record);
+            if (errorMessage.isPresent()) {
+                return new ResponseEntity<>(new Response(ns, -1, errorMessage.get()), HttpStatus.OK);
+            }
         }
 
         LOGGER.info("Success DNS check for {}", ns);

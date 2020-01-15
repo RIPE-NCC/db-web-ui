@@ -9,7 +9,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
@@ -20,9 +19,9 @@ import java.util.Optional;
 
 import static net.ripe.whois.AbstractIntegrationTest.getResource;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,7 +33,7 @@ public class DnsCheckerControllerTest {
     private WhoisInternalService whoisInternalService;
     @Mock
     private DnsClient dnsClient;
-    @InjectMocks
+
     private DnsCheckerController subject;
 
     @Rule
@@ -42,6 +41,7 @@ public class DnsCheckerControllerTest {
 
     @Before
     public void setup() throws IOException {
+        subject = new DnsCheckerController(whoisInternalService, dnsClient, false);
         when(whoisInternalService.getUserInfo(CROWD_TOKEN)).thenReturn(new ObjectMapper()
             .readValue(getResource("mock/user-info.json"), UserInfoResponse.class));
         when(dnsClient.checkDnsConfig(any(String.class), any(String.class))).thenReturn(Optional.empty());
@@ -97,7 +97,8 @@ public class DnsCheckerControllerTest {
         assertThat(response.getBody().getNs(), is("{invalid}"));
     }
 
-    @Test public void nameserver_invalid() {
+    @Test
+    public void nameserver_invalid() {
         ResponseEntity<DnsCheckerController.Response> response = subject.status(CROWD_TOKEN, "1.2.3.4", "1.2.3.4.in-addr.arpa");
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -107,6 +108,20 @@ public class DnsCheckerControllerTest {
 
         response = subject.status(CROWD_TOKEN, "::0", "1.2.3.4.in-addr.arpa");
         assertThat(response.getBody().getMessage(), is("Could not resolve ::0"));
+    }
+
+    @Test
+    public void dns_check_disabled() {
+
+        DnsCheckerController controllerWithDnsCheckDisabled = new DnsCheckerController(whoisInternalService, dnsClient, true);
+
+        ResponseEntity<DnsCheckerController.Response> response = controllerWithDnsCheckDisabled.status(CROWD_TOKEN, "ns.example.net", "1.2.3.4.in-addr.arpa");
+
+        assertThat(response.getBody().getMessage(), is("Server is authoritative for 1.2.3.4.in-addr.arpa"));
+        assertThat(response.getBody().getCode(), is(0));
+        assertThat(response.getBody().getNs(), is("ns.example.net"));
+
+        verifyNoInteractions(dnsClient);
     }
 
 }
