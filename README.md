@@ -52,9 +52,11 @@ Frontend
 ### Build
 
 * `npm run build-dev`<br>
-  webpack build Just-in-Time (JIT), used for local development. This build will include source-map - TypeScript code in browser for debugging. 
+  webpack build Just-in-Time (JIT), used for local development. This build will include source-map - TypeScript code in browser for debugging.
+   
 * `npm run build`<br>
   webpack build Ahead-of-Time (AOT), which compiles app at build time, used for deployments.
+  
 * `npm run start`<br>
   Use this along with ```mvn spring-boot:run```. It watches the TypeScript and HTML files for changes and redeploys them
   when they've changed. In detail: the watch task is triggered by changes in the file system. Access application on https://localhost.ripe.net:4200/db-web-ui/ (port changes after logging, so pay attention to return it to 4200)
@@ -63,14 +65,18 @@ Frontend
 
 * `npm run test`<br>
   Running Karma unit tests locally for Angular 6+ with coverage
-  - [Angular Unit test coverage 🔗](frontend/reports/unittest-coverage/index.html) is available locally 
+  - [Angular Unit test coverage 🔗](frontend/reports/unittest-coverage/index.html) is available locally
+   
 * `npm run test-remote` _(used on bamboo)_<br>
   Running Karma unit tests remotely in selenium chrome on `193.0.2.222:4444/wd/hub` for Angular 6+ with coverage
+  
 * `npm run e2e`<br>
   Runs the Protractor tests on port 9002 without coverage so they are quicker.
+  
 * `npm run e2e-remote` _(used on bamboo)_<br>
   Runs the Protractor tests in selenium. 
-  _End where e2e test runned on bamboo can be seen in screenshots http://193.0.2.222:4444/wd/hub/static/resource/hub.html_ 
+  _End where e2e test runned on bamboo can be seen in screenshots http://193.0.2.222:4444/wd/hub/static/resource/hub.html_
+   
 * `npm run start-mock`<br>
   Starts a server with the same configuration as the E2E tests, except the tests are not run. Use this configuration
   when you want to see the page as Protractor sees them - useful for fault finding and setting up mocks. <br />
