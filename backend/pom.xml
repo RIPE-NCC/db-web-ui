@@ -18,16 +18,16 @@
         <commons-io.version>2.6</commons-io.version>
         <commons-ip-math.version>1.32</commons-ip-math.version>
         <dnsjava.version>2.1.9</dnsjava.version>
-        <freemarker.version>2.3.28</freemarker.version>
-        <google-guava-version>28.1-jre</google-guava-version>
-        <jackson.version>2.10.0</jackson.version>
+        <freemarker.version>2.3.29</freemarker.version>
+        <google-guava-version>28.2-jre</google-guava-version>
+        <jackson.version>2.10.1</jackson.version>
         <javax.inject.version>1</javax.inject.version>
         <json-path.version>2.4.0</json-path.version>
-        <maven-enforcer-plugin.version>3.0.0-M3</maven-enforcer-plugin.version>
-        <maven-sortpom-plugin.version>3.0.0-M3</maven-sortpom-plugin.version>
+        <maven-enforcer-plugin.version>3.0.0-M4</maven-enforcer-plugin.version>
+        <maven-sortpom-plugin.version>3.0.0-M4</maven-sortpom-plugin.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
         <maven.plugins.version>3.1.1</maven.plugins.version>
-        <reflection.version>0.9.11</reflection.version>
+        <reflection.version>0.9.12</reflection.version>
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
         <!-- keep spring-boot.version in sync with parent pom -->
