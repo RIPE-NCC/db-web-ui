@@ -100,7 +100,8 @@ export class TextCommonsService {
             if (_.isEmpty(passwords) && _.isUndefined(override)) {
                 // show password popup if needed
                 const objectMntners = this._getObjectMntners(attributes);
-                if (this.mntnerService.needsPasswordAuthentication(ssoMaintainers, [], objectMntners)) {
+                const originalMntners = method === "Create" ? [] : objectMntners;
+                if (this.mntnerService.needsPasswordAuthentication(ssoMaintainers, originalMntners, objectMntners)) {
                     needsAuth = true;
                     return this.performAuthentication(method, objectSource, objectType, objectName, ssoMaintainers, objectMntners, ObjectUtilService.isLirObject(attributes));
                 }
