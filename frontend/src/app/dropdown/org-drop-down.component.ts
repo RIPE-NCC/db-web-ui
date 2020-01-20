@@ -17,7 +17,6 @@ export class OrgDropDownComponent {
     public trainingEnv: boolean;
 
     constructor(private userInfoService: UserInfoService,
-                private environmentStatus: EnvironmentStatusService,
                 private orgDropDownSharedService: OrgDropDownSharedService) {
         this.userInfoService.userLoggedIn$.subscribe((userInfo: IUserInfoResponseData) => {
             this.initOrgsAndMemebers(userInfo);
@@ -25,7 +24,7 @@ export class OrgDropDownComponent {
     }
 
     public ngOnInit() {
-        this.trainingEnv = this.environmentStatus.isTrainingEnv();
+        this.trainingEnv = EnvironmentStatusService.isTrainingEnv();
         this.userInfoService.getUserOrgsAndRoles()
             .subscribe((userInfo: IUserInfoResponseData): void => {
                 if (!userInfo) {

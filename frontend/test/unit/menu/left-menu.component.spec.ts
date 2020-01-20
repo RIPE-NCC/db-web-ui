@@ -13,9 +13,7 @@ describe("LeftHandMenuComponent", () => {
 
     let component: LeftHandMenuComponent;
     let fixture: ComponentFixture<LeftHandMenuComponent>;
-    let environmentStatusService: any;
 
-    environmentStatusService = jasmine.createSpyObj("EnvironmentStatusService", ["isTrainingEnv", "isTestRcEnv"]);
     beforeEach(() => {
         TestBed.configureTestingModule({
             imports: [
@@ -29,7 +27,6 @@ describe("LeftHandMenuComponent", () => {
                 PropertiesService,
                 WINDOW_PROVIDERS,
                 OrgDropDownSharedService,
-                { provide: EnvironmentStatusService, useValue: environmentStatusService},
                 { provide: Location, useValue: {}}
             ]
         });
@@ -45,8 +42,8 @@ describe("LeftHandMenuComponent", () => {
     });
 
     it("should show all menu items for a user with all roles", () => {
-        environmentStatusService.isTrainingEnv.and.returnValue(false);
-        environmentStatusService.isTestRcEnv.and.returnValue(false);
+        spyOn(EnvironmentStatusService, "isTrainingEnv").and.returnValue(false);
+        spyOn(EnvironmentStatusService, "isTestRcEnv").and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg(
             {
                 "membershipId": 7347,
@@ -67,8 +64,8 @@ describe("LeftHandMenuComponent", () => {
     });
 
     it("should show just Resource/My Resources and RIPE Database for Training environment", () => {
-        environmentStatusService.isTrainingEnv.and.returnValue(true);
-        environmentStatusService.isTestRcEnv.and.returnValue(false);
+        spyOn(EnvironmentStatusService, "isTrainingEnv").and.returnValue(true);
+        spyOn(EnvironmentStatusService, "isTestRcEnv").and.returnValue(false);
         component.orgDropDownSharedService.setSelectedOrg(
             {
                 "membershipId": 7347,
@@ -83,8 +80,8 @@ describe("LeftHandMenuComponent", () => {
     });
 
     it("should show just Resource/My Resources and RIPE Database for Production Test environment", () => {
-        environmentStatusService.isTrainingEnv.and.returnValue(false);
-        environmentStatusService.isTestRcEnv.and.returnValue(true);
+        spyOn(EnvironmentStatusService, "isTrainingEnv").and.returnValue(false);
+        spyOn(EnvironmentStatusService, "isTestRcEnv").and.returnValue(true);
         component.orgDropDownSharedService.setSelectedOrg(
             {
                 "membershipId": 7347,
@@ -99,8 +96,8 @@ describe("LeftHandMenuComponent", () => {
     });
 
     it("should show just Resource/My Resources and RIPE Database for Production Test environment", () => {
-        environmentStatusService.isTrainingEnv.and.returnValue(false);
-        environmentStatusService.isTestRcEnv.and.returnValue(true);
+        spyOn(EnvironmentStatusService, "isTrainingEnv").and.returnValue(false);
+        spyOn(EnvironmentStatusService, "isTestRcEnv").and.returnValue(true);
         component.orgDropDownSharedService.setSelectedOrg(
             {
                 "membershipId": 7347,

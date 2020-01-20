@@ -48,8 +48,7 @@ export class LeftHandMenuComponent {
 
     private navigationEnd: Subscription;
 
-    constructor(public environmentStatusService: EnvironmentStatusService,
-                public properties: PropertiesService,
+    constructor(public properties: PropertiesService,
                 @Inject(WINDOW) private window: any,
                 public orgDropDownSharedService: OrgDropDownSharedService,
                 private location: Location,
@@ -67,8 +66,8 @@ export class LeftHandMenuComponent {
                 = this.show.myResources = this.show.guest = false;
 
             // Only temporary for the test environment
-            this.show.testRcEnv = this.environmentStatusService.isTestRcEnv();
-            this.show.trainingEnv = this.environmentStatusService.isTrainingEnv();
+            this.show.testRcEnv = EnvironmentStatusService.isTestRcEnv();
+            this.show.trainingEnv = EnvironmentStatusService.isTrainingEnv();
 
             if (!selected || !selected.roles) {
                 return;
@@ -110,8 +109,8 @@ export class LeftHandMenuComponent {
         this.window.init_portlet_menu();
         this.activeUrl = this.location.path();
         this.isDbMenuActive();
-        this.show.testRcEnv = this.environmentStatusService.isTestRcEnv();
-        this.show.trainingEnv = this.environmentStatusService.isTrainingEnv();
+        this.show.testRcEnv = EnvironmentStatusService.isTestRcEnv();
+        this.show.trainingEnv = EnvironmentStatusService.isTrainingEnv();
     }
 
     public ngOnDestroy() {

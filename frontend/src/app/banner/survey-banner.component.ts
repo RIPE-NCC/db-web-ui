@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
+import {EnvironmentStatusService} from "../shared/environment-status.service";
 
 @Component({
     selector: "survey-banner",
@@ -17,7 +18,8 @@ export class SurveyBannerComponent {
     constructor(private cookies: CookieService) {}
 
     public ngOnInit() {
-        this.closedSurvey = this.cookies.get("survey") === "closed";
+        // don't show survey in case it was closed or on training environment
+        this.closedSurvey = this.cookies.get("survey") === "closed" || EnvironmentStatusService.isTrainingEnv();
     }
 
     public closeAlert() {
