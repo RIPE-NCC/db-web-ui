@@ -235,7 +235,7 @@ module.exports = {
     woeBtnAddAttribute: element(by.css("whois-object-editor")).all(by.css(".fa.fa-plus")).first(),
     btnSubmitObject: element(by.css("whois-object-editor")).element(by.css(".blue-button")),
     successMessage: element(by.css(".alert-success")),
-    infoMessage: element(by.css(".alert-info")),
+    infoMessage: element(by.id("alert-info")),
 
     // Query page
     inpQueryString: element(by.name("qp.queryText")),

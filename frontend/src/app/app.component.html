@@ -816,11 +816,8 @@
 <main class="container-fluid">
   <div class="container box-shadow clearfix" id="portal-columns">
 
-    <p id="envbanner" class="envbanner alert orangebackground" style="text-align: center"
-       *ngIf="properties.BANNER">
-      <span id="envBannerId" style="text-transform: uppercase">{{ properties.ENV }}</span><br>
-      {{ properties.BANNER }}
-    </p>
+    <banner *ngIf="properties.BANNER" [title]="properties.ENV" [textMessage]="properties.BANNER"></banner>
+    <survey-banner></survey-banner>
     <div id="portal-breadcrumbs">
       <span id="breadcrumbs-you-are-here">You are here: </span>
       <span id="breadcrumbs-home">

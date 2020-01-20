@@ -33,12 +33,16 @@ import {EmailConfirmationComponent} from "./emailconfirmation/email-confirmation
 import {ErrorInterceptor} from "./interceptor/error.interceptor";
 import {PropertiesService} from "./properties.service";
 import {AuthenticationGuard} from "./authentication-guard.service";
+import {BannerComponent} from "./banner/banner.component";
+import {SurveyBannerComponent} from "./banner/survey-banner.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     SyncupdatesComponent,
     EmailConfirmationComponent,
+    BannerComponent,
+    SurveyBannerComponent,
     OrgDropDownComponent,
     LeftHandMenuComponent,
     ErrorPageComponent,

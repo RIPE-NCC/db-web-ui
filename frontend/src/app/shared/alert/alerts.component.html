@@ -10,7 +10,7 @@
     </p>
 </div>
 
-<div *ngIf="alertsService.hasInfos()" class="alert alert-info">
+<div *ngIf="alertsService.hasInfos()" class="alert alert-info" id="alert-info">
     <p *ngFor="let info of alertsService.infos">
         <span [innerHTML]="info.plainText"></span>
     </p>
