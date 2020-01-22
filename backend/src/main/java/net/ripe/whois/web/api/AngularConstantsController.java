@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.info.BuildProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,10 +67,12 @@ public class AngularConstantsController {
     private AppConstants appConstants;
 
     private final LeftMenuConfiguration leftMenuConfiguration;
+    private BuildProperties buildProperties;
 
     @Autowired
-    public AngularConstantsController(final LeftMenuConfiguration leftMenuConfiguration) {
+    public AngularConstantsController(final LeftMenuConfiguration leftMenuConfiguration, BuildProperties buildProperties) {
         this.leftMenuConfiguration = leftMenuConfiguration;
+        this.buildProperties = buildProperties;
     }
 
     @PostConstruct
@@ -151,6 +154,7 @@ public class AngularConstantsController {
         constants.setRest_search_url(restSearchUrl);
         constants.setQuery_page_link_to_other_db(queryPageLinkToOtherDb);
         constants.setWhois_version_display_text(whoisVersionDisplayText);
+        constants.setDb_web_ui_build_time(buildProperties.getTime().toString());
         return constants;
     }
 
@@ -217,7 +221,8 @@ public class AngularConstantsController {
         private String query_page_link_to_other_db;
         @JsonProperty("WHOIS_VERSION_DISPLAY_TEXT")
         private String whois_version_display_text;
-
+        @JsonProperty("DB_WEB_UI_BUILD_TIME")
+        private String db_web_ui_build_time;
 
         public void setEnvironment(String environment) {
             this.environment = environment;
@@ -341,6 +346,10 @@ public class AngularConstantsController {
 
         public void setWhois_version_display_text(String whois_version_display_text) {
             this.whois_version_display_text = whois_version_display_text;
+        }
+
+        public void setDb_web_ui_build_time(String db_web_ui_build_time) {
+            this.db_web_ui_build_time = db_web_ui_build_time;
         }
     }
 }

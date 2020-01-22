@@ -35,6 +35,7 @@ import {PropertiesService} from "./properties.service";
 import {AuthenticationGuard} from "./authentication-guard.service";
 import {BannerComponent} from "./banner/banner.component";
 import {SurveyBannerComponent} from "./banner/survey-banner.component";
+import {VersionComponent} from "./version/version.component";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {SurveyBannerComponent} from "./banner/survey-banner.component";
     OrgDropDownComponent,
     LeftHandMenuComponent,
     ErrorPageComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    VersionComponent
   ],
   imports: [
     BrowserModule,
