@@ -35,7 +35,6 @@ import {PropertiesService} from "./properties.service";
 import {AuthenticationGuard} from "./authentication-guard.service";
 import {BannerComponent} from "./banner/banner.component";
 import {SurveyBannerComponent} from "./banner/survey-banner.component";
-import {VersionComponent} from "./version/version.component";
 
 @NgModule({
   declarations: [
@@ -47,8 +46,7 @@ import {VersionComponent} from "./version/version.component";
     OrgDropDownComponent,
     LeftHandMenuComponent,
     ErrorPageComponent,
-    NotFoundPageComponent,
-    VersionComponent
+    NotFoundPageComponent
   ],
   imports: [
     BrowserModule,
@@ -76,10 +74,10 @@ import {VersionComponent} from "./version/version.component";
     EmailConfirmationService,
     OrgDropDownSharedService,
     PropertiesService,
-    {provide: APP_INITIALIZER, useFactory: (propertiesService: PropertiesService) => () => propertiesService.load(), deps: [PropertiesService], multi: true },
-    {provide: HTTP_INTERCEPTORS, useClass: MetaDataCleanerInterceptor, multi: true },
-    {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    {provide: APP_INITIALIZER, useFactory: (propertiesService: PropertiesService) => () => propertiesService.load(), deps: [PropertiesService], multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: MetaDataCleanerInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

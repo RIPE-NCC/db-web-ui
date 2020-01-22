@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {LookupService} from "./lookup.service";
 import {PropertiesService} from "../properties.service";
-import {IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
+import {IVersion} from "../shared/whois-response-type.model";
 
 @Component({
     selector: "lookup-single",
@@ -13,6 +13,7 @@ export class LookupSingleObjectComponent implements OnDestroy {
 
     public whoisResponse: any;
     public error: string;
+    public whoisVersion: IVersion;
 
     public source: string;
     public objectType: string;
@@ -54,6 +55,7 @@ export class LookupSingleObjectComponent implements OnDestroy {
                             "type:", this.objectType,
                             "name:", this.objectName);
                     }
+                    this.whoisVersion = response.version;
                 }, (() => {
                     // reload page in case in query params source was NONAUTH and object doesn't exist in mirror database
                     if (this.source !== this.properties.SOURCE) {

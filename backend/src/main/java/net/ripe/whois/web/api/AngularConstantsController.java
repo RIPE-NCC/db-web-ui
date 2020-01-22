@@ -37,8 +37,6 @@ public class AngularConstantsController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AngularConstantsController.class);
 
-    @Value("${whois.version.display.text:UNKNOWN}")
-    private String whoisVersionDisplayText;
     @Value("${spring.profiles.active}")
     private String environment;
     @Value("${rest.api.ripeSource:RIPE}")
@@ -153,7 +151,6 @@ public class AngularConstantsController {
         constants.setObject_lookup_url(objectLookupUrl);
         constants.setRest_search_url(restSearchUrl);
         constants.setQuery_page_link_to_other_db(queryPageLinkToOtherDb);
-        constants.setWhois_version_display_text(whoisVersionDisplayText);
         constants.setDb_web_ui_build_time(buildProperties.getTime().toString());
         return constants;
     }
@@ -219,8 +216,6 @@ public class AngularConstantsController {
         private String rest_search_url;
         @JsonProperty("QUERY_PAGE_LINK_TO_OTHER_DB")
         private String query_page_link_to_other_db;
-        @JsonProperty("WHOIS_VERSION_DISPLAY_TEXT")
-        private String whois_version_display_text;
         @JsonProperty("DB_WEB_UI_BUILD_TIME")
         private String db_web_ui_build_time;
 
@@ -342,10 +337,6 @@ public class AngularConstantsController {
 
         public void setQuery_page_link_to_other_db(String query_page_link_to_other_db) {
             this.query_page_link_to_other_db = query_page_link_to_other_db;
-        }
-
-        public void setWhois_version_display_text(String whois_version_display_text) {
-            this.whois_version_display_text = whois_version_display_text;
         }
 
         public void setDb_web_ui_build_time(String db_web_ui_build_time) {

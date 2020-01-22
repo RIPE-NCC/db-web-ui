@@ -37,7 +37,6 @@ export class PropertiesService {
     public REST_SEARCH_URL = "https://rest-prepdev.db.ripe.net/";
     public RPKI_DASHBOARD_URL = "";
     public SOURCE = "RIPE";
-    public WHOIS_VERSION_DISPLAY_TEXT = "1.2.3.4";
     public DB_WEB_UI_BUILD_TIME = "00:00";
 
     constructor(private httpClient: HttpClient) { }
@@ -75,7 +74,6 @@ export class PropertiesService {
                         this.RPKI_DASHBOARD_URL = response.RPKI_DASHBOARD_URL;
                         this.REST_SEARCH_URL = response.REST_SEARCH_URL;
                         this.QUERY_PAGE_LINK_TO_OTHER_DB = response.QUERY_PAGE_LINK_TO_OTHER_DB;
-                        this.WHOIS_VERSION_DISPLAY_TEXT = response.WHOIS_VERSION_DISPLAY_TEXT;
                         this.DB_WEB_UI_BUILD_TIME = response.DB_WEB_UI_BUILD_TIME;
 
                         this.injectProperties();

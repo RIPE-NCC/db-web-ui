@@ -23,6 +23,8 @@ import {AttributeTransformerDirective} from "./attribute-transformer.directive";
 import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
 import {DescriptionSyntaxComponent} from "./descriptionsyntax/description-syntax.component";
 import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
+import {WebAppVersionComponent} from "../version/web-app-version.component";
+import {WhoisVersionComponent} from "../version/whois-version.component";
 
 @NgModule({
     imports: [
@@ -45,7 +47,9 @@ import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
         AttributeTransformerDirective,
-        SanitizeImgHtmlPipe
+        SanitizeImgHtmlPipe,
+        WebAppVersionComponent,
+        WhoisVersionComponent
     ],
     providers: [
         CredentialsService,
@@ -78,7 +82,9 @@ import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
         AttributeTransformerDirective,
         SanitizeImgHtmlPipe,
         NgbModule,
-        TableScrollerDirective
+        TableScrollerDirective,
+        WhoisVersionComponent,
+        WebAppVersionComponent
     ]
 })
 export class SharedModule {

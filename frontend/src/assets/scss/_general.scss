@@ -240,7 +240,11 @@ div.registry-selector-container {
 
 div.db-version-footer {
     @extend %clear-b;
-    margin: 20px 12px 12px 0;
+    // margin: 20px 12px 12px 0;
+    margin-left: 26px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
 section .resultlinks {
