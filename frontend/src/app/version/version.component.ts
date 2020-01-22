@@ -9,7 +9,7 @@ import {PropertiesService} from "../properties.service";
 })
 export class VersionComponent implements OnInit {
 
-  constructor(private properties: PropertiesService) { }
+  constructor(public properties: PropertiesService) { }
 
   ngOnInit() {
   }
