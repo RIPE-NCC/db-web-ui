@@ -5,7 +5,7 @@ import {EnvironmentStatusService} from "../shared/environment-status.service";
 @Component({
     selector: "web-app-version",
     template: `
-        <div class="db-version-footer text-muted">
+        <div class="text-muted">
             <span *ngIf="trainingEnv">RIPE Database Web Application: {{properties.DB_WEB_UI_BUILD_TIME}} </span>
         </div>`
 })
