@@ -1,10 +1,12 @@
-import {Component, EventEmitter, Output} from "@angular/core";
+import {Component} from "@angular/core";
 
 @Component({
     selector: "submitting-agreement",
-    template: `<section class="supporting-text">
-        <span [innerHTML]="'msg.ripeTandCSubmitLink.text' | label"></span>
-    </section>`,
+    template: `<div class="help-block small">
+                    <section class="supporting-text">
+                         <span [innerHTML]="'msg.ripeTandCSubmitLink.text' | label"></span>
+                    </section>
+               </div>`,
 })
 export class SubmittingAgreementComponent {
 }

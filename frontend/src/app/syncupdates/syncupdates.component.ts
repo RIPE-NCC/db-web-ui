@@ -1,7 +1,6 @@
 import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import {PreferenceService} from "../updates/preference.service";
-import {Labels} from "../label.constants";
 import {SyncupdatesService} from "./syncupdates.service";
 
 @Component({
@@ -15,13 +14,11 @@ export class SyncupdatesComponent {
     public errorMessages: string;
 
     public isUpdating: boolean = false;
-    public msgRipeTAndCSubmitlinkText: string;
 
     constructor(
         private router: Router,
         private preferenceService: PreferenceService,
         private syncupdatesService: SyncupdatesService) {
-        this.msgRipeTAndCSubmitlinkText = Labels["msg.ripeTandCSubmitLink.text"];
     }
 
     public update() {
