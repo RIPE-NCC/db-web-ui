@@ -250,6 +250,11 @@
     "terms-and-conditions": {
       "type": "locator",
       "href": "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    },
+    "version" : {
+      "version" : "1.97-SNAPSHOT",
+      "timestamp" : "2020-01-22T18:22:13Z",
+      "commit-id" : "0e58632"
     }
   }
 }

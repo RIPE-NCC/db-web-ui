@@ -37,6 +37,11 @@ describe("The lookup page", () => {
         expect(page.getAttributeFromWhoisObjectOnLookupPage(25).getText()).toContain("notify");
         expect(page.getAttributeFromWhoisObjectOnLookupPage(25).getText()).toContain("***@ripe.net");
     });
+
+    it("should show version of whois after searching", () => {
+        page.scrollIntoView(page.whoisVersion);
+        expect(page.whoisVersion.getText()).toEqual("RIPE Database Software Version 1.97-SNAPSHOT");
+    });
 });
 
 describe("The lookup page for organisation", () => {
@@ -53,6 +58,11 @@ describe("The lookup page for organisation", () => {
         expect(page.getAttributeFromWhoisObjectOnLookupPage(10).getText()).toContain("***@ripe.net");
         expect(page.getAttributeFromWhoisObjectOnLookupPage(15).getText()).toContain("notify");
         expect(page.getAttributeFromWhoisObjectOnLookupPage(15).getText()).toContain("***@ripe.net");
+    });
+
+    it("should show version of whois after searching", () => {
+        page.scrollIntoView(page.whoisVersion);
+        expect(page.whoisVersion.getText()).toEqual("RIPE Database Software Version 1.97-SNAPSHOT");
     });
 });
 
@@ -76,5 +86,10 @@ describe("The lookup page with out of region object from ripe db", () => {
         expect(page.getAttributeFromWhoisObjectOnLookupPage(6).getText()).toContain("# comment");
         expect(page.getAttributeFromWhoisObjectOnLookupPage(7).getText()).toContain("notify");
         expect(page.getAttributeFromWhoisObjectOnLookupPage(7).getText()).toContain("***@npix.net");
+    });
+
+    it("should show version of whois after searching", () => {
+        page.scrollIntoView(page.whoisVersion);
+        expect(page.whoisVersion.getText()).toEqual("RIPE Database Software Version 1.97-SNAPSHOT");
     });
 });

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import {WebAppVersionComponent} from "../../../src/app/version/web-app-version.component";
 
-describe("VersionComponent", () => {
+describe("WebAppVersionComponent", () => {
   let component: WebAppVersionComponent;
   let fixture: ComponentFixture<WebAppVersionComponent>;
 
