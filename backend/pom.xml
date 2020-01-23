@@ -31,7 +31,7 @@
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
         <!-- keep spring-boot.version in sync with parent pom -->
-        <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.3.RELEASE</spring-boot.version>
         <whois.version>1.96</whois.version>
     </properties>
 
