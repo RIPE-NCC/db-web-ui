@@ -83,6 +83,7 @@ public abstract class AbstractIntegrationTest {
         System.setProperty("object.lookup.url", "lookup");
         System.setProperty("database.syncupdates.url", "syncupdates");
         System.setProperty("database.create.url", "webupdates/select");
+        System.setProperty("spring.profiles.active", "test");
     }
 
     @AfterClass
