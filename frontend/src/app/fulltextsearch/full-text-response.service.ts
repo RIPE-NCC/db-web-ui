@@ -55,12 +55,11 @@ export class FullTextResponseService {
     }
 
     public getVersionFromResponse(response: ISearchResponseModel): IVersion {
-        let version: IVersion = {
-            version: undefined,
-            timestamp: undefined};
+        let version: IVersion;
         response.lsts.forEach((lst: ILstObj) => {
             if (lst.lst.name === "version") {
-                const s = lst.lst.strs.forEach(str => {
+                version = {version: undefined, timestamp: undefined};
+                lst.lst.strs.forEach(str => {
                     if (str.str.name === "version") {
                         version.version = str.str.value;
                     }
