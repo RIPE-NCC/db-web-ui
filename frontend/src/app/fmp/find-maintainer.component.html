@@ -1,16 +1,6 @@
 <h1>Forgot maintainer password</h1>
 
-<div *ngIf="errors.length > 0" class="alert-expired alert alert-danger">
-    <p *ngFor="let error of errors">
-        <span [innerHTML]="error"></span>
-    </p>
-</div>
-
-<div *ngIf="warnings.length > 0" class="alert alert-warning">
-    <p *ngFor="let warning of warnings">
-        <span [innerHTML]="warning"></span>
-    </p>
-</div>
+<alerts></alerts>
 
 <div>
     <form id="find-maintainer" class="padding grey ga-forgotpass-findmnt-form" (ngSubmit)="selectMaintainer(maintainerKey)">

@@ -1,15 +1,15 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "lodash";
 import {RestService} from "../rest.service";
 import {WhoisResourcesService} from "../../shared/whois-resources.service";
 import {WhoisMetaService} from "../../shared/whois-meta.service";
-import {AlertsService} from "../../shared/alert/alerts.service";
 import {UserInfoService} from "../../userinfo/user-info.service";
 import {MessageStoreService} from "../message-store.service";
 import {ErrorReporterService} from "../error-reporter.service";
 import {LinkService} from "../link.service";
 import {IAttributeModel} from "../../shared/whois-response-type.model";
+import {AlertsComponent} from "../../shared/alert/alerts.component";
 
 @Component({
     selector: "create-self-maintained-maintainer",
@@ -18,7 +18,6 @@ import {IAttributeModel} from "../../shared/whois-response-type.model";
 export class CreateSelfMaintainedMaintainerComponent {
     public submitInProgress: boolean = false;
     public adminC: any;
-    // public uiSelectTemplateReady: any;
     public maintainerAttributes: any;
     public objectType: string;
     public source: string;
@@ -26,9 +25,11 @@ export class CreateSelfMaintainedMaintainerComponent {
     public showAttrsHelp: [];
     private readonly MNT_TYPE: string = "mntner";
 
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
+
     constructor(public whoisResourcesService: WhoisResourcesService,
                 public whoisMetaService: WhoisMetaService,
-                public alertService: AlertsService,
                 private userInfoService: UserInfoService,
                 private restService: RestService,
                 public messageStoreService: MessageStoreService,
@@ -39,7 +40,7 @@ export class CreateSelfMaintainedMaintainerComponent {
     }
 
     public ngOnInit() {
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         this.adminC = {
             alternatives: [],
@@ -67,7 +68,7 @@ export class CreateSelfMaintainedMaintainerComponent {
                 this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"upd-to", result.user.username);
                 this.maintainerAttributes = this.whoisResourcesService.setSingleAttributeOnName(this.maintainerAttributes,"auth", "SSO " + result.user.username);
             }, () => {
-                this.alertService.setGlobalError("Error fetching SSO information");
+                this.alertsComponent.setGlobalError("Error fetching SSO information");
             },
         );
     }
@@ -79,7 +80,7 @@ export class CreateSelfMaintainedMaintainerComponent {
 
         this.whoisResourcesService.clearErrors(this.maintainerAttributes);
         if (!this.whoisResourcesService.validate(this.maintainerAttributes)) {
-            this.errorReporterService.log("Create", this.MNT_TYPE, this.alertService.getErrors(), this.maintainerAttributes);
+            this.errorReporterService.log("Create", this.MNT_TYPE, this.alertsComponent.getErrors(), this.maintainerAttributes);
         } else {
             this.createObject();
         }
@@ -160,9 +161,9 @@ export class CreateSelfMaintainedMaintainerComponent {
                 }, (error: any) => {
                     this.submitInProgress = false;
 
-                    this.alertService.populateFieldSpecificErrors(this.MNT_TYPE, this.maintainerAttributes, error.data);
-                    this.alertService.showWhoisResourceErrors(this.MNT_TYPE, error.data);
-                    this.errorReporterService.log("Create", this.MNT_TYPE, this.alertService.getErrors(), this.maintainerAttributes);
+                    this.alertsComponent.populateFieldSpecificErrors(this.MNT_TYPE, this.maintainerAttributes, error.data);
+                    this.alertsComponent.setErrors(error.data);
+                    this.errorReporterService.log("Create", this.MNT_TYPE, this.alertsComponent.getErrors(), this.maintainerAttributes);
                 },
             );
     }

@@ -1,4 +1,4 @@
-import {Component, Inject, OnDestroy, OnInit} from "@angular/core";
+import {Component, Inject, OnDestroy, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Location} from "@angular/common";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -19,6 +19,7 @@ import {AttributeSharedService} from "../attribute/attribute-shared.service";
 import {IAuthParams, WebUpdatesCommonsService} from "../updates/web/web-updates-commons.service";
 import {IMaintainers} from "../updates/web/create-modify.component";
 import {IAttributeModel} from "../shared/whois-response-type.model";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 interface IDomainObject {
     attributes: {
@@ -40,7 +41,6 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public domainObject: IDomainObject;
     public attributes: IAttributeModel[];
     public source: string;
-    public errors: any[];
     public name: string;
     public operation: any;
 
@@ -57,6 +57,9 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
     public alreadySubmited: boolean = false;
     public subscription: any;
     public subscriptionDomaiPrefix: any;
+
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
 
     constructor(@Inject(WINDOW) private window: any,
                 private jsUtils: JsUtilService,
@@ -161,7 +164,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
                             this.performAuthentication(this.maintainers);
                         }
                     }, () => {
-                        this.errors = [{plainText: "Error fetching maintainers associated with this SSO account"}];
+                        this.alertsComponent.addGlobalError("Error fetching maintainers associated with this SSO account");
                     });
             });
         });
@@ -193,7 +196,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
         this.alreadySubmited = true;
 
         // close the alert message
-        this.errors = [];
+        this.alertsComponent.clearErrors();
 
         const data = {
             attributes: flattenedAttributes,
@@ -259,7 +262,7 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private showCreatedDomains(resp: any) {
         this.restCallInProgress = false;
-        this.errors = [];
+        this.alertsComponent.clearErrors();
         const prefix = _.find(this.attributes, (attr: any) => {
             return attr.name === "prefix";
         });
@@ -271,13 +274,9 @@ export class DomainObjectWizardComponent implements OnInit, OnDestroy {
 
     private createDomainsFailed(response: any) {
         this.restCallInProgress = false;
-        this.errors = _.filter(response.error.errormessages.errormessage, (errorMessage: any) => {
-            errorMessage.plainText = WhoisResourcesService.readableError(errorMessage);
-            return errorMessage.severity === "Error";
-        });
-
-        if (!_.isEmpty(this.errors)) {
-            this.errorReporterService.log("DomainWizard", "domain", this.errors);
+        this.alertsComponent.addErrors(response.error);
+        if (!_.isEmpty(this.alertsComponent.getErrors())) {
+            this.errorReporterService.log("DomainWizard", "domain", this.alertsComponent.getErrors());
         }
         document.querySelector("#domainerrors").scrollIntoView();
     }

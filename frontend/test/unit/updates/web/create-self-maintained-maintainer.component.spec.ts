@@ -182,15 +182,15 @@ describe("CreateSelfMaintainedMaintainerComponent", () => {
     });
 
     it("should display error if create the maintainer fails", () => {
-        spyOn(component.alertService, "populateFieldSpecificErrors");
-        spyOn(component.alertService, "showWhoisResourceErrors");
+        spyOn(component.alertsComponent, "populateFieldSpecificErrors");
+        spyOn(component.alertsComponent, "setErrors");
         fillForm();
         restServiceMock.createObject.and.returnValue(throwError(ERROR_RESPONSE));
 
         component.submit();
 
-        expect(component.alertService.populateFieldSpecificErrors).toHaveBeenCalledWith("mntner", component.maintainerAttributes, ERROR_RESPONSE.data);
-        expect(component.alertService.showWhoisResourceErrors).toHaveBeenCalledWith("mntner", ERROR_RESPONSE.data);
+        expect(component.alertsComponent.populateFieldSpecificErrors).toHaveBeenCalledWith("mntner", component.maintainerAttributes, ERROR_RESPONSE.data);
+        expect(component.alertsComponent.setErrors).toHaveBeenCalledWith(ERROR_RESPONSE.data);
     });
 
     function fillForm() {

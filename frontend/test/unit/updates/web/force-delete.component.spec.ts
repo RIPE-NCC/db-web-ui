@@ -193,7 +193,7 @@ describe("ForceDeleteController", () => {
         createParams(SOURCE, "mntner", "TPOLYCHNIA-MNT");
         componentFixture.detectChanges();
 
-        expect(forceDeleteComponent.alertService.getErrors()[0].plainText)
+        expect(forceDeleteComponent.alertsComponent.getErrors()[0].plainText)
             .toBe("Only inetnum, inet6num, route, route6, domain object types are force-deletable");
     });
 
@@ -202,14 +202,14 @@ describe("ForceDeleteController", () => {
         createParams(SOURCE, "inetnum", undefined);
         componentFixture.detectChanges();
 
-        expect(forceDeleteComponent.alertService.getErrors()[0].plainText).toBe("Object key is missing");
+        expect(forceDeleteComponent.alertsComponent.getErrors()[0].plainText).toBe("Object key is missing");
     });
 
     it("should show error on missing source", () => {
         createParams(undefined, "inetnum", "asdf");
         componentFixture.detectChanges();
 
-        expect(forceDeleteComponent.alertService.getErrors()[0].plainText).toBe("Source is missing");
+        expect(forceDeleteComponent.alertsComponent.getErrors()[0].plainText).toBe("Source is missing");
     });
 
 

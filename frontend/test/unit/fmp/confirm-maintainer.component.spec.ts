@@ -61,10 +61,10 @@ describe("ConfirmMaintainerComponent", () => {
         expect(component.user).toBe("user");
 
         expect(alertsComponent.length).toBe(1);
-        expect(component.alertsService.hasErrors()).toBeFalsy();
-        expect(component.alertsService.hasWarnings()).toBeFalsy();
-        expect(component.alertsService.hasInfos()).toBeTruthy();
-        expect(component.alertsService.getInfos()[0].plainText).toBe("You are logged in with the RIPE NCC Access account user");
+        expect(component.alertsComponent.hasErrors()).toBeFalsy();
+        expect(component.alertsComponent.hasWarnings()).toBeFalsy();
+        expect(component.alertsComponent.hasInfos()).toBeTruthy();
+        expect(component.alertsComponent.getInfos()[0].plainText).toBe("You are logged in with the RIPE NCC Access account user");
     });
 
     it("should throw an error if hash is not found", () => {
@@ -73,8 +73,8 @@ describe("ConfirmMaintainerComponent", () => {
             has:(hash: string) => (false)
         };
         fixture.detectChanges();
-        expect(component.alertsService.getErrors().length).toBe(1);
-        expect(component.alertsService.getErrors()[0].plainText).toBe("No hash passed along");
+        expect(component.alertsComponent.getErrors().length).toBe(1);
+        expect(component.alertsComponent.getErrors()[0].plainText).toBe("No hash passed along");
     });
 
     it("should redirect to legacy on invalid hash", () => {
@@ -89,9 +89,9 @@ describe("ConfirmMaintainerComponent", () => {
 
         const alertsComponent = fixture.debugElement.queryAll(By.directive(AlertsComponent));
         expect(alertsComponent.length).toBe(1);
-        expect(component.alertsService.getErrors()[0].plainText).toContain("Error fetching email-link");
-        expect(component.alertsService.hasWarnings()).toBeFalsy();
-        expect(component.alertsService.hasInfos()).toBeFalsy();
+        expect(component.alertsComponent.getErrors()[0].plainText).toContain("Error fetching email-link");
+        expect(component.alertsComponent.hasWarnings()).toBeFalsy();
+        expect(component.alertsComponent.hasInfos()).toBeFalsy();
     });
 
     it("should redirect to legacy on expired hash", () => {
@@ -108,9 +108,9 @@ describe("ConfirmMaintainerComponent", () => {
         mockEmailLinkService.get.and.returnValue(of(response));
         component.ngOnInit();
         fixture.detectChanges();
-        expect(component.alertsService.getErrors().length).toBe(0);
-        expect(component.alertsService.getWarnings()[0].plainText).toBe("Your link has expired");
-        expect(component.alertsService.getInfos().length).toBe(0);
+        expect(component.alertsComponent.getErrors().length).toBe(0);
+        expect(component.alertsComponent.getWarnings()[0].plainText).toBe("Your link has expired");
+        expect(component.alertsComponent.getInfos().length).toBe(0);
     });
 
     it("should parse correctly a date in the future", () => {
@@ -133,10 +133,10 @@ describe("ConfirmMaintainerComponent", () => {
         expect(component.email).toBe("a@b.c");
         expect(component.user).toBe("user");
 
-        expect(component.alertsService.getErrors().length).toBe(0);
-        expect(component.alertsService.getWarnings().length).toBe(0);
-        expect(component.alertsService.getInfos().length).toBe(1);
-        expect(component.alertsService.getInfos()[0].plainText).toBe("You are logged in with the RIPE NCC Access account user");
+        expect(component.alertsComponent.getErrors().length).toBe(0);
+        expect(component.alertsComponent.getWarnings().length).toBe(0);
+        expect(component.alertsComponent.getInfos().length).toBe(1);
+        expect(component.alertsComponent.getInfos()[0].plainText).toBe("You are logged in with the RIPE NCC Access account user");
     });
 
     it("should inform user mntner already associated with current user", () => {
@@ -160,10 +160,10 @@ describe("ConfirmMaintainerComponent", () => {
         expect(component.email).toBe("a@b.c");
         expect(component.user).toBe("user");
 
-        expect(component.alertsService.getErrors().length).toBe(0);
-        expect(component.alertsService.getWarnings()[0].plainText)
+        expect(component.alertsComponent.getErrors().length).toBe(0);
+        expect(component.alertsComponent.getWarnings()[0].plainText)
             .toBe(`Your RIPE NCC Access account is already associated with this mntner. You can modify this mntner <a href="webupdates/modify/RIPE/mntner/maintainer">here</a>.`);
-        expect(component.alertsService.getInfos().length).toBe(0);
+        expect(component.alertsComponent.getInfos().length).toBe(0);
     });
 
     it("should return message if associate is cancelled", () => {
@@ -173,7 +173,7 @@ describe("ConfirmMaintainerComponent", () => {
             has:(hash: string) => (true)
         };
         component.cancelAssociate();
-        expect(component.alertsService.getWarnings()[0].plainText).toBe(`<p>No changes were made to the <span class="mntner">MNTNER</span> object .</p><p>If you wish to add a different RIPE NCC Access account to your <strong>MNTNER</strong> object:<ol><li>Sign out of RIPE NCC Access.</li><li>Sign back in to RIPE NCC Access with the account you wish to use.</li><li>Click on the link in the instruction email again.</li></ol>`);
+        expect(component.alertsComponent.getWarnings()[0].plainText).toBe(`<p>No changes were made to the <span class="mntner">MNTNER</span> object .</p><p>If you wish to add a different RIPE NCC Access account to your <strong>MNTNER</strong> object:<ol><li>Sign out of RIPE NCC Access.</li><li>Sign back in to RIPE NCC Access with the account you wish to use.</li><li>Click on the link in the instruction email again.</li></ol>`);
     });
 
     it("should return message that linking account with mntner has succeeded", () => {
@@ -225,7 +225,7 @@ describe("ConfirmMaintainerComponent", () => {
         fixture.detectChanges();
         component.associate();
 
-        expect(component.alertsService.getErrors()[0].plainText).toBe(
+        expect(component.alertsComponent.getErrors()[0].plainText).toBe(
             `<p>An error occurred while adding the RIPE NCC Access account to the <span class="mntner">MNTNER</span> object.</p>`+
              `<p>No changes were made to the <span class="mntner">MNTNER</span> object maintainer.</p>` +
              `<p>If this error continues, please contact us at <a href="mailto:ripe-dbm@ripe.net">ripe-dbm@ripe.net</a> for assistance.</p>`
@@ -251,6 +251,6 @@ describe("ConfirmMaintainerComponent", () => {
         fixture.detectChanges();
 
         component.associate();
-        expect(component.alertsService.getErrors()[0].plainText).toBe("already contains SSO");
+        expect(component.alertsComponent.getErrors()[0].plainText).toBe("already contains SSO");
     });
 });

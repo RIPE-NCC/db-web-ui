@@ -1,16 +1,17 @@
-import {Component} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {WhoisResourcesService} from "../../shared/whois-resources.service";
 import {MessageStoreService} from "../message-store.service";
 import {RestService} from "../rest.service";
 import {AlertsService} from "../../shared/alert/alerts.service";
 import {IAttributeModel} from "../../shared/whois-response-type.model";
+import {AlertsComponent} from "../../shared/alert/alerts.component";
 
 @Component({
     selector: "display-mntner-pair",
     templateUrl: "./display-mntner-pair.component.html",
 })
-export class DisplayMntnerPairComponent {
+export class DisplayMntnerPairComponent implements OnInit {
 
     public objectSource: string;
     public objectType: string;
@@ -19,16 +20,16 @@ export class DisplayMntnerPairComponent {
     public objectTypeAttributes: IAttributeModel[];
     public mntnerAttributes: IAttributeModel[];
 
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
+
     constructor(private whoisResourcesService: WhoisResourcesService,
                 private messageStoreService: MessageStoreService,
                 private restService: RestService,
-                public alertService: AlertsService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {}
 
     public ngOnInit() {
-        this.alertService.clearErrors();
-
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
         this.objectSource = paramMap.get("source");
@@ -46,11 +47,11 @@ export class DisplayMntnerPairComponent {
             this.restService.fetchObject(this.objectSource, this.objectType, this.objectTypeName, null, null)
                 .subscribe((resp: any) => {
                     this.objectTypeAttributes = this.whoisResourcesService.getAttributes(resp);
-                    this.alertService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, resp);
-                    this.alertService.addErrors(resp);
+                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, resp);
+                    this.alertsComponent.addErrors(resp);
                 }, (error: any) => {
-                    this.alertService.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, error.data);
-                    this.alertService.addErrors(error.data);
+                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.objectTypeAttributes, error.data);
+                    this.alertsComponent.addErrors(error.data);
                 });
         }
 
@@ -63,11 +64,11 @@ export class DisplayMntnerPairComponent {
             this.restService.fetchObject(this.objectSource, "mntner", this.mntnerName, null, null)
                 .subscribe((resp: any) => {
                     this.mntnerAttributes = this.whoisResourcesService.getAttributes(resp);
-                    this.alertService.populateFieldSpecificErrors("mntner", this.mntnerAttributes, resp);
-                    this.alertService.addErrors(resp);
+                    this.alertsComponent.populateFieldSpecificErrors("mntner", this.mntnerAttributes, resp);
+                    this.alertsComponent.addErrors(resp);
                 }, (error: any) => {
-                    this.alertService.populateFieldSpecificErrors("mntner", this.mntnerAttributes, error.data);
-                    this.alertService.addErrors(error.data);
+                    this.alertsComponent.populateFieldSpecificErrors("mntner", this.mntnerAttributes, error.data);
+                    this.alertsComponent.addErrors(error.data);
                 });
         }
     }

@@ -1,13 +1,13 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {combineLatest, Subscription} from "rxjs";
 import * as _ from "lodash";
 import {WhoisResourcesService} from "../../shared/whois-resources.service";
 import {MessageStoreService} from "../message-store.service";
 import {RestService} from "../rest.service";
-import {AlertsService} from "../../shared/alert/alerts.service";
 import {UserInfoService} from "../../userinfo/user-info.service";
 import {WebUpdatesCommonsService} from "./web-updates-commons.service";
+import {AlertsComponent} from "../../shared/alert/alerts.component";
 
 @Component({
     selector: "display",
@@ -26,10 +26,12 @@ export class DisplayComponent {
 
     private subscription: Subscription;
 
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
+
     constructor(public whoisResourcesService: WhoisResourcesService,
                 public messageStoreService: MessageStoreService,
                 private restService: RestService,
-                public alertService: AlertsService,
                 private userInfoService: UserInfoService,
                 private webUpdatesCommonsService: WebUpdatesCommonsService,
                 private activatedRoute: ActivatedRoute,
@@ -50,7 +52,7 @@ export class DisplayComponent {
         }
 
     private init() {
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         /*
          * Start of initialisation phase
@@ -69,8 +71,8 @@ export class DisplayComponent {
         if (!_.isUndefined(cached)) {
             const whoisResources = this.whoisResourcesService.validateWhoisResources(cached);
             this.attributes = this.whoisResourcesService.getAttributes(whoisResources);
-            this.alertService.populateFieldSpecificErrors(this.objectType, this.attributes, cached);
-            this.alertService.setErrors(whoisResources);
+            this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.attributes, cached);
+            this.alertsComponent.setErrors(whoisResources);
 
             if (this.method === "Modify") {
                 const diff = this.whoisResourcesService.validateAttributes(this.messageStoreService.get("DIFF"));
@@ -85,11 +87,11 @@ export class DisplayComponent {
                 .subscribe((resp: any) => {
                     this.attributes = this.whoisResourcesService.getAttributes(resp);
                     this.webUpdatesCommonsService.addLinkToReferenceAttributes(this.attributes, this.objectSource);
-                    this.alertService.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
-                    this.alertService.setErrors(resp);
+                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.attributes, resp);
+                    this.alertsComponent.setErrors(resp);
                 }, (resp: any) => {
-                    this.alertService.populateFieldSpecificErrors(this.objectType, this.attributes, resp.data);
-                    this.alertService.setErrors(resp.data);
+                    this.alertsComponent.populateFieldSpecificErrors(this.objectType, this.attributes, resp.data);
+                    this.alertsComponent.setErrors(resp.data);
                 },
             );
         }
@@ -99,7 +101,7 @@ export class DisplayComponent {
      * Methods called from the html-template
      */
     public modifyButtonToBeShown() {
-        return !this.alertService.hasErrors() && !this.isPending();
+        return this.alertsComponent && !this.alertsComponent.hasErrors() && !this.isPending();
     }
 
     private isPending() {

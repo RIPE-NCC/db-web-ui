@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {forkJoin, of, throwError} from "rxjs";
 import {catchError, flatMap} from "rxjs/operators";
@@ -6,11 +6,11 @@ import * as _ from "lodash";
 import {WhoisResourcesService} from "../../../shared/whois-resources.service";
 import {RestService} from "../../rest.service";
 import {MntnerService} from "../../mntner.service";
-import {AlertsService} from "../../../shared/alert/alerts.service";
 import {STATE} from "../web-updates-state.constants";
 import {IAuthParams, WebUpdatesCommonsService} from "../web-updates-commons.service";
 import {IMaintainers} from "../create-modify.component";
 import {IMntByModel} from "../../../shared/whois-response-type.model";
+import {AlertsComponent} from "../../../shared/alert/alerts.component";
 
 interface IObjectFromParameters {
     attributes: any;
@@ -38,16 +38,18 @@ export class ForceDeleteComponent {
     };
     public restCallInProgress: boolean = false;
 
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
+
     constructor(private whoisResourcesService: WhoisResourcesService,
                 private webUpdatesCommonsService: WebUpdatesCommonsService,
                 private restService: RestService,
                 private mntnerService: MntnerService,
-                public alertService: AlertsService,
                 private activatedRoute: ActivatedRoute) {}
 
     public ngOnInit() {
 
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -64,7 +66,7 @@ export class ForceDeleteComponent {
     }
 
     public isFormValid(): boolean {
-        return !this.alertService.hasErrors();
+        return !this.alertsComponent.hasErrors();
     }
 
     private getNameFromUrl(): string {
@@ -83,17 +85,17 @@ export class ForceDeleteComponent {
                 return str + ", " + n;
             });
 
-            this.alertService.setGlobalError("Only " + typesString + " object types are force-deletable");
+            this.alertsComponent.setGlobalError("Only " + typesString + " object types are force-deletable");
             hasError = true;
         }
 
         if (_.isUndefined(this.object.source)) {
-            this.alertService.setGlobalError("Source is missing");
+            this.alertsComponent.setGlobalError("Source is missing");
             hasError = true;
         }
 
         if (_.isUndefined(this.object.name)) {
-            this.alertService.setGlobalError("Object key is missing");
+            this.alertsComponent.setGlobalError("Object key is missing");
             hasError = true;
         }
 
@@ -141,21 +143,21 @@ export class ForceDeleteComponent {
                             }, (error: any) => {
                                 this.restCallInProgress = false;
                                 console.error("Error fetching mntner details" + JSON.stringify(error));
-                                this.alertService.setGlobalError("Error fetching maintainer details");
+                                this.alertsComponent.setGlobalError("Error fetching maintainer details");
                             });
 
                     }, (errorMsg: any) => {
-                        this.alertService.setGlobalError(errorMsg);
+                        this.alertsComponent.setGlobalError(errorMsg);
                     });
             }, (error) => {
                 this.restCallInProgress = false;
                 if (error && error.data) {
                     console.error("Error fetching object:" + JSON.stringify(error));
                     const whoisResources = this.wrapAndEnrichResources(error.objectType, error.data);
-                    this.alertService.setErrors(whoisResources);
+                    this.alertsComponent.setErrors(whoisResources);
                 } else {
                     console.error("Error fetching mntner information:" + JSON.stringify(error));
-                    this.alertService.setGlobalError("Error fetching maintainers to force delete this object");
+                    this.alertsComponent.setGlobalError("Error fetching maintainers to force delete this object");
                 }
             });
     }

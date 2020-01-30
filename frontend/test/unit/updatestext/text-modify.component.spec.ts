@@ -238,7 +238,7 @@ describe("TextModifyComponent", () => {
         textModifyComponent.submit();
         await componentFixture.whenStable();
 
-        expect(textModifyComponent.alertService.getErrors()).toEqual([
+        expect(textModifyComponent.alertsComponent.getErrors()).toEqual([
             {plainText: "phone: Mandatory attribute not set"},
         ]);
 
@@ -329,7 +329,7 @@ describe("TextModifyComponent", () => {
 
         await componentFixture.whenStable();
 
-        const plaintextErrors = _.map(textModifyComponent.alertService.getErrors(), (item) => ({plainText: item.plainText}));
+        const plaintextErrors = _.map(textModifyComponent.alertsComponent.getErrors(), (item) => ({plainText: item.plainText}));
         expect(plaintextErrors).toEqual([
                 {plainText: "ERROR:101: no entries found\n\nNo entries found in source RIPE.\n"}]
         );
@@ -344,8 +344,8 @@ describe("TextModifyComponent", () => {
 
         await componentFixture.whenStable();
 
-        expect(textModifyComponent.alertService.getErrors().length).toEqual(1);
-        const plaintextErrors = _.map(textModifyComponent.alertService.getErrors(), (item) => ({plainText: item.plainText}));
+        expect(textModifyComponent.alertsComponent.getErrors().length).toEqual(1);
+        const plaintextErrors = _.map(textModifyComponent.alertsComponent.getErrors(), (item) => ({plainText: item.plainText}));
         expect(plaintextErrors).toEqual([
             {plainText: "Error fetching maintainers associated with this SSO account"}
         ]);
@@ -400,8 +400,8 @@ describe("TextModifyComponent", () => {
 
         await componentFixture.whenStable();
 
-        expect(textModifyComponent.alertService.getErrors().length).toEqual(1);
-        const plaintextErrors = _.map(textModifyComponent.alertService.getErrors(), (item) => ({plainText: item.plainText}));
+        expect(textModifyComponent.alertsComponent.getErrors().length).toEqual(1);
+        const plaintextErrors = _.map(textModifyComponent.alertsComponent.getErrors(), (item) => ({plainText: item.plainText}));
         expect(plaintextErrors).toEqual([
             {plainText: `"mnt-ref" is not valid for this object type`}
         ]);

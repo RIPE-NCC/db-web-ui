@@ -9,6 +9,7 @@ export class AlertsService {
     public errors: IErrorMessageModel[] = [];
     public warnings: IErrorMessageModel[] = [];
     public infos: IErrorMessageModel[] = [];
+    public successes: IErrorMessageModel[] = [];
 
     constructor(public whoisResourcesService: WhoisResourcesService) {
         this.hasErrors();
@@ -19,6 +20,7 @@ export class AlertsService {
     public clearErrors() {
         this.errors = [];
         this.warnings = [];
+        this.successes = [];
         this.infos = [];
     }
 
@@ -34,19 +36,10 @@ export class AlertsService {
         return this.infos.length > 0;
     }
 
-    public getErrors() {
-        return this.errors;
+    public hasSuccesses(): boolean {
+        return this.successes.length > 0;
     }
 
-    public getWarnings() {
-        return this.warnings;
-    }
-
-    public getInfos() {
-        return this.infos;
-    }
-
-    // TODO change to WhoisResources after converting js to ts
     public setErrors(whoisResources: IWhoisResponseModel) {
         this.errors = this.whoisResourcesService.getGlobalErrors(whoisResources);
         this.warnings = this.whoisResourcesService.getGlobalWarnings(whoisResources);
@@ -74,29 +67,21 @@ export class AlertsService {
         this.errors.push({plainText: errorMsg});
     }
 
-    public addGlobalWarning(errorMsg: string) {
-        this.warnings.push({plainText: errorMsg});
+    public addGlobalWarning(warningMsg: string) {
+        this.warnings.push({plainText: warningMsg});
     }
 
     public addGlobalError(errorMsg: string) {
         this.errors.push({plainText: errorMsg});
     }
 
-    public setGlobalInfo(errorMsg: string) {
+    public setGlobalInfo(infoMsg: string) {
         this.clearErrors();
-        this.infos.push({plainText: errorMsg});
+        this.infos.push({plainText: infoMsg});
     }
 
-    public setGlobalErrors(errorMsgs: IErrorMessageModel[]) {
-        this.errors = errorMsgs;
-    }
-
-    public setGlobalWarnings(warningMsgs: IErrorMessageModel[]) {
-        this.warnings = warningMsgs;
-    }
-
-    public setGlobalInfos(infoMsgs: IErrorMessageModel[]) {
-        this.infos = infoMsgs;
+    public setGlobalSuccess(successMsg: string) {
+        this.successes.push({plainText: successMsg});
     }
 
     public addGlobalInfo(errorMsg: string) {
@@ -118,11 +103,5 @@ export class AlertsService {
             }
         });
         return firstAttrError;
-    }
-
-    public showWhoisResourceErrors(objectType: string, error: any) {
-        this.errors = this.whoisResourcesService.getGlobalErrors(error);
-        this.warnings = this.whoisResourcesService.getGlobalWarnings(error);
-        this.infos = this.whoisResourcesService.getGlobalInfos(error);
     }
 }

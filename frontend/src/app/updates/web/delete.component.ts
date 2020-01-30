@@ -1,8 +1,8 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AlertsService} from "../../shared/alert/alerts.service";
 import {ModalDeleteObjectComponent} from "./modal-delete-object.component";
+import {AlertsComponent} from "../../shared/alert/alerts.component";
 
 @Component({
     selector: "delete-component",
@@ -17,8 +17,10 @@ export class DeleteComponent {
     public onCancel: string;
     public deletedObjects: any;
 
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
+
     constructor(private modalService: NgbModal,
-                public alertService: AlertsService,
                 private activatedRoute: ActivatedRoute) {
         // this page does not raise a modal for authentication. It can be user directly either
         // if you are logged in and the object has your maintainers or if you have provided password
@@ -29,7 +31,7 @@ export class DeleteComponent {
     public ngOnInit() {
         this.modalInProgress = true;
 
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -60,13 +62,13 @@ export class DeleteComponent {
             this.modalInProgress = false;
             this.deletedObjects = whoisResources.objects.object;
             console.debug("SUCCESS delete object" + JSON.stringify(whoisResources));
-            this.alertService.setGlobalInfo("The following object(s) have been successfully deleted");
+            this.alertsComponent.setGlobalInfo("The following object(s) have been successfully deleted");
         }, (errorResp: any) => {
 
             this.modalInProgress = false;
             console.debug("ERROR deleting object" + JSON.stringify(errorResp));
             if (errorResp.data) {
-                this.alertService.setErrors(errorResp.data);
+                this.alertsComponent.setErrors(errorResp.data);
             }
         });
     }

@@ -1,4 +1,4 @@
-import {Component, Inject} from "@angular/core";
+import {Component, Inject, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {forkJoin} from "rxjs";
 import * as _ from "lodash";
@@ -6,13 +6,13 @@ import {ITextObject} from "./text-create.component";
 import {RestService} from "../updates/rest.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {WINDOW} from "../core/window.service";
-import {AlertsService} from "../shared/alert/alerts.service";
 import {ErrorReporterService} from "../updates/error-reporter.service";
 import {MessageStoreService} from "../updates/message-store.service";
 import {RpslService} from "./rpsl.service";
 import {TextCommonsService} from "./text-commons.service";
 import {CredentialsService} from "../shared/credentials.service";
 import {PreferenceService} from "../updates/preference.service";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({
     selector: "text-modify",
@@ -30,10 +30,12 @@ export class TextModifyComponent {
     public override: string;
     public passwords: string[] = [];
 
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
+
     constructor(@Inject(WINDOW) private window: any,
                 private whoisResourcesService: WhoisResourcesService,
                 private restService: RestService,
-                public alertService: AlertsService,
                 private errorReporterService: ErrorReporterService,
                 private messageStoreService: MessageStoreService,
                 private rpslService: RpslService,
@@ -45,7 +47,7 @@ export class TextModifyComponent {
     }
 
     public ngOnInit() {
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -80,7 +82,7 @@ export class TextModifyComponent {
     public submit() {
         const objects = this.rpslService.fromRpsl(this.object.rpsl);
         if (objects.length > 1) {
-            this.alertService.setGlobalError("Only a single object is allowed");
+            this.alertsComponent.setGlobalError("Only a single object is allowed");
             return;
         }
 
@@ -121,10 +123,10 @@ export class TextModifyComponent {
                         this.restCallInProgress = false;
 
                         const whoisResources = errorWhoisResources.data;
-                        this.alertService.setAllErrors(whoisResources);
+                        this.alertsComponent.setAllErrors(whoisResources);
                         const attributes = this.whoisResourcesService.getAttributes(whoisResources);
                         if (!_.isEmpty(attributes)) {
-                            this.errorReporterService.log("TextModify", this.object.type, this.alertService.getErrors(), attributes);
+                            this.errorReporterService.log("TextModify", this.object.type, this.alertsComponent.getErrors(), attributes);
                         }
                     },
                 );
@@ -184,9 +186,9 @@ export class TextModifyComponent {
             }, (error) => {
                 this.restCallInProgress = false;
                 if (error.data) {
-                    this.alertService.setErrors(error.data);
+                    this.alertsComponent.setErrors(error.data);
                 } else {
-                    this.alertService.setGlobalError("Error fetching maintainers associated with this SSO account");
+                    this.alertsComponent.setGlobalError("Error fetching maintainers associated with this SSO account");
                 }
             },
         );

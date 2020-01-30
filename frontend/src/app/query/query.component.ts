@@ -1,10 +1,11 @@
-import {Component, OnDestroy} from "@angular/core";
+import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import * as _ from "lodash";
 import {IErrorMessageModel, IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
 import {IQueryParameters, ITemplateTerm, QueryParametersService} from "./query-parameters.service";
 import {QueryService} from "./query.service";
 import {PropertiesService} from "../properties.service";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 export interface IQueryState {
     source: string;
@@ -26,7 +27,6 @@ export class QueryComponent implements OnDestroy {
     public offset = 0;
     public showScroller = false;
     public results: IWhoisObjectModel[];
-    public errorMessages: IErrorMessageModel[];
 
     public qp: IQueryParameters;
     public showTemplatePanel: boolean;
@@ -37,6 +37,9 @@ export class QueryComponent implements OnDestroy {
         perma: string;
         xml: string;
     };
+
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
 
     constructor(public properties: PropertiesService,
                 private queryService: QueryService,
@@ -53,7 +56,10 @@ export class QueryComponent implements OnDestroy {
             showFullObjectDetails: false,
             source: ""
         };
-        this.subscription = this.activatedRoute.queryParams.subscribe((params => {
+        this.subscription = this.activatedRoute.queryParams.subscribe((() => {
+            if (this.alertsComponent) {
+                this.alertsComponent.clearErrors();
+            }
             this.init();
         }));
     }
@@ -90,6 +96,11 @@ export class QueryComponent implements OnDestroy {
             this.clearResults();
             this.doSearch();
         }
+        // in case click on lefthand menu, no queryText then refresh result array or hide template panel
+        if (this.qp.queryText === "") {
+            this.clearResults();
+            this.showTemplatePanel = false;
+        }
     }
 
     public submitSearchForm() {
@@ -120,22 +131,22 @@ export class QueryComponent implements OnDestroy {
         }
         const cleanQp = _.cloneDeep(this.qp);
         // Reset on-screen widgets
-        this.errorMessages = [];
+        this.alertsComponent.clearErrors();
 
         const issues = this.queryParametersService.validate(cleanQp);
         for (const msg of issues.warnings) {
-            const err: IErrorMessageModel = {
+            const war: IErrorMessageModel = {
                 severity: "warning",
-                text: msg,
+                plainText: msg,
             };
-            this.errorMessages.push(err);
+            this.alertsComponent.addGlobalWarning(this.formatError(war));
         }
         for (const msg of issues.errors) {
             const err: IErrorMessageModel = {
                 severity: "error",
-                text: msg,
+                plainText: msg,
             };
-            this.errorMessages.push(err);
+            this.alertsComponent.addGlobalError(this.formatError(err));
         }
         if (issues.errors.length) {
             this.gotoAnchor();
@@ -215,10 +226,10 @@ export class QueryComponent implements OnDestroy {
 
     // Move this to a util queryService and test it properly, i.e. with all expected message variants
     public formatError(msg: IErrorMessageModel) {
-        const parts = msg.text.split(/%[a-z]/);
+        const parts = msg.plainText.split(/%[a-z]/);
         const resultArr = [];
         if (parts.length < 2 || parts.length !== msg.args.length + 1) {
-            return msg.text;
+            return msg.plainText;
         }
         resultArr.push(parts[parts.length - 1]);
         for (let i = parts.length - 2; i >= 0; i--) {
@@ -234,10 +245,7 @@ export class QueryComponent implements OnDestroy {
             : response.objects.object;
 
         // multiple term searches can have errors, too
-        const msgs = response.errormessages && response.errormessages.errormessage;
-        if (msgs && msgs.length > 0) {
-            this.errorMessages = msgs;
-        }
+        this.alertsComponent.setAllErrors(response);
         const cleanQp = _.cloneDeep(this.qp);
         this.queryParametersService.validate(cleanQp);
         const jsonQueryString = this.queryService.buildQueryStringForLink(cleanQp);
@@ -256,10 +264,7 @@ export class QueryComponent implements OnDestroy {
 
     private handleWhoisSearchError(response: IWhoisResponseModel) {
         this.results = response.objects ? response.objects.object : [];
-        const msgs = response.errormessages && response.errormessages.errormessage;
-        if (msgs && msgs.length > 0) {
-            this.errorMessages = msgs;
-        }
+        this.alertsComponent.setAllErrors(response);
         this.gotoAnchor();
     }
 
@@ -304,7 +309,7 @@ export class QueryComponent implements OnDestroy {
     }
 
     private gotoAnchor() {
-        if (this.errorMessages && this.errorMessages.length > 0) {
+        if (this.alertsComponent.hasErrors() || this.alertsComponent.hasWarnings()) {
             QueryComponent.setActiveAnchor("anchorTop");
         } else {
             QueryComponent.setActiveAnchor("resultsSection");

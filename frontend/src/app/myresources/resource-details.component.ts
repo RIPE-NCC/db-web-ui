@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from "@angular/core";
+import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {IResourceDetailsResponseModel, IResourceTickets} from "./resource-type.model";
@@ -11,7 +11,6 @@ import {CredentialsService} from "../shared/credentials.service";
 import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 import {
     IAttributeModel,
-    IErrorMessageModel,
     IWhoisObjectModel,
     IWhoisResponseModel
 } from "../shared/whois-response-type.model";
@@ -19,6 +18,7 @@ import {IUserInfoOrganisation, IUserInfoRegistration} from "../dropdown/org-data
 import {PropertiesService} from "../properties.service";
 import {IFlag} from "./flag/flag.component";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({
     selector: "resource-details",
@@ -36,12 +36,6 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     public showUsage: boolean;
 
-    // Shown in alert boxes
-    public errors: string[];
-    public warnings: string[];
-    public infos: string[];
-    public successes: string[];
-
     public sponsored = false;
     public isEditing = false;
     public ipanalyserRedirect = false;
@@ -52,6 +46,9 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     private source: string;
     private subscriptions: any[] = [];
+
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
 
     constructor(private cookies: CookieService,
                 private credentialsService: CredentialsService,
@@ -90,7 +87,9 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     public init() {
         this.flags = [];
-        this.clearAlertMessages();
+        if (this.alertsComponent) {
+            this.alertsComponent.clearErrors();
+        }
         this.show = {
             editor: false,
             viewer: true,
@@ -187,15 +186,8 @@ export class ResourceDetailsComponent implements OnDestroy {
         this.isEditing = false;
     }
 
-    private clearAlertMessages() {
-        this.errors = [];
-        this.warnings = [];
-        this.infos = [];
-        this.successes = [];
-    }
-
     private resetMessages() {
-        this.clearAlertMessages();
+        this.alertsComponent.clearErrors();
         // explicitly clear errors on fields before submitting the form, should probably be done elsewhere
         this.whoisObject.attributes.attribute.forEach((a) => {
             a.$$error = "";
@@ -210,7 +202,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         }
         this.isEditing = false;
         this.loadMessages(whoisResources);
-        this.successes = ["Your object has been successfully updated."];
+        this.alertsComponent.addGlobalSuccesses("Your object has been successfully updated.");
         document.querySelector("#editortop").scrollIntoView();
     }
 
@@ -218,18 +210,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         if (!whoisResources.errormessages || !whoisResources.errormessages.errormessage) {
             return;
         }
-
-        this.errors = whoisResources.errormessages.errormessage
-            .filter((e) => !e.attribute && e.severity.toLocaleLowerCase() === "error")
-            .map((e) => WhoisResourcesService.readableError(e));
-
-        this.warnings = whoisResources.errormessages.errormessage
-            .filter((e) => e.severity.toLocaleLowerCase() === "warning")
-            .map((e) => WhoisResourcesService.readableError(e));
-
-        this.infos = whoisResources.errormessages.errormessage
-            .filter((e) => e.severity.toLocaleLowerCase() === "info")
-            .map((e) => WhoisResourcesService.readableError(e));
+        this.alertsComponent.addErrors(whoisResources);
     }
 
     private onSubmitError(whoisResources: {data: IWhoisResponseModel}): void {
@@ -241,8 +222,8 @@ export class ResourceDetailsComponent implements OnDestroy {
             attribute.$$error = WhoisResourcesService.readableError(e);
         });
         this.loadMessages(whoisResources.data);
-        if (this.errors.length === 0) {
-            this.errors = ["Your object NOT updated, please review issues below"];
+        if (this.alertsComponent.getErrors().length === 0) {
+            this.alertsComponent.addGlobalError("Your object NOT updated, please review issues below");
         }
         document.querySelector("#editortop").scrollIntoView();
     }

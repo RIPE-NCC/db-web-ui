@@ -1,13 +1,12 @@
 import {Injectable} from "@angular/core";
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {isObject} from "util";
 
 @Injectable()
 export class MetaDataCleanerInterceptor implements HttpInterceptor {
 
     public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        if (req.body && isObject(req.body)) {
+        if (req.body && typeof req.body === "object") {
             const newBody = JSON.parse(JSON.stringify(req.body, this.toJsonReplacer));
             const jsonReq: HttpRequest<any> = req.clone({
                 body: newBody,

@@ -358,8 +358,8 @@ describe("CreateModifyComponent with modifying test cases", () => {
                 }, {status: 400, statusText: "error"});
 
             await fixture.whenStable();
-            expect(component.alertService.errors[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
-            expect(component.alertService.warnings[0].plainText).toEqual("Not authenticated");
+            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+            expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("\"MY-AS-BLOCK\" is not valid for this object type");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
@@ -415,8 +415,8 @@ describe("CreateModifyComponent with modifying test cases", () => {
             getObject();
             failToGetSsoMaintainers();
 
-            expect(component.alertService.hasErrors()).toBe(true);
-            expect(component.alertService.errors[0].plainText).toEqual("Error fetching maintainers associated with this SSO account");
+            expect(component.alertsComponent.hasErrors()).toBe(true);
+            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Error fetching maintainers associated with this SSO account");
         });
 
         it("should report error when fetching object fails", () => {
@@ -424,8 +424,8 @@ describe("CreateModifyComponent with modifying test cases", () => {
             getSsoMaintainers();
             getObjectWithError();
 
-            expect(component.alertService.hasWarnings()).toBe(true);
-            expect(component.alertService.warnings[0].plainText).toEqual("Not authenticated");
+            expect(component.alertsComponent.hasWarnings()).toBe(true);
+            expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
         });
 
         it("should report error when fetching maintainer details fails", async () => {
@@ -434,8 +434,8 @@ describe("CreateModifyComponent with modifying test cases", () => {
             getObject();
             failToGetMaintainerDetails();
             await fixture.whenStable();
-            expect(component.alertService.hasErrors()).toBe(true);
-            expect(component.alertService.errors[0].plainText).toEqual("Error fetching maintainer details");
+            expect(component.alertsComponent.hasErrors()).toBe(true);
+            expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Error fetching maintainer details");
         });
 
         function getSsoMaintainers() {
