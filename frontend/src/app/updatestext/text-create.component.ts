@@ -1,4 +1,4 @@
-import {Component, Inject} from "@angular/core";
+import {Component, Inject, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Observable, of} from "rxjs";
 import {catchError, map} from "rxjs/operators";
@@ -7,13 +7,13 @@ import {WINDOW} from "../core/window.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {WhoisMetaService} from "../shared/whois-meta.service";
 import {RestService} from "../updates/rest.service";
-import {AlertsService} from "../shared/alert/alerts.service";
 import {ErrorReporterService} from "../updates/error-reporter.service";
 import {IRpslObject, RpslService} from "./rpsl.service";
 import {TextCommonsService} from "./text-commons.service";
 import {MntnerService} from "../updates/mntner.service";
 import {PreferenceService} from "../updates/preference.service";
 import {MessageStoreService} from "../updates/message-store.service";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 export interface ITextObject {
     rpsl?: any;
@@ -37,11 +37,13 @@ export class TextCreateComponent {
     public override: string;
     public passwords: string[];
 
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
+
     constructor(@Inject(WINDOW) private window: any,
                 public whoisResourcesService: WhoisResourcesService,
                 public whoisMetaService: WhoisMetaService,
                 public restService: RestService,
-                public alertService: AlertsService,
                 public errorReporterService: ErrorReporterService,
                 public messageStoreService: MessageStoreService,
                 public rpslService: RpslService,
@@ -55,7 +57,7 @@ export class TextCreateComponent {
     public ngOnInit() {
         this.restCallInProgress = false;
 
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         // extract parameters from the url
         const paramMap = this.activatedRoute.snapshot.paramMap;
@@ -87,14 +89,14 @@ export class TextCreateComponent {
     }
 
     public submit() {
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         console.debug("rpsl:" + this.object.rpsl);
 
         // parse
         const objects = this.rpslService.fromRpsl(this.object.rpsl);
         if (objects.length > 1) {
-            this.alertService.setGlobalError("Only a single object is allowed");
+            this.alertsComponent.setGlobalError("Only a single object is allowed");
             return;
         }
         this.passwords = objects[0].passwords;
@@ -129,7 +131,7 @@ export class TextCreateComponent {
                                     }, (error: any) => {
                                         this.restCallInProgress = false;
                                         console.error("MntnerService.getAuthForObjectIfNeeded rejected authorisation: ", error);
-                                        this.alertService.addGlobalError("Failed to authenticate parent resource");
+                                        this.alertsComponent.addGlobalError("Failed to authenticate parent resource");
                                     },
                                 );
                             }
@@ -205,7 +207,7 @@ export class TextCreateComponent {
                 catchError((error: any, caught: Observable<any>) => {
                     this.restCallInProgress = false;
                     console.error("Error fetching mntners for SSO:" + JSON.stringify(error));
-                    this.alertService.setGlobalError("Error fetching maintainers associated with this SSO account");
+                    this.alertsComponent.setGlobalError("Error fetching maintainers associated with this SSO account");
                     return of(attributes);
                 })).toPromise();
     }
@@ -242,10 +244,10 @@ export class TextCreateComponent {
             }, (error: any) => {
                 this.restCallInProgress = false;
                 const whoisResources = error.data;
-                this.alertService.setAllErrors(whoisResources);
+                this.alertsComponent.setAllErrors(whoisResources);
                 const attributes = this.whoisResourcesService.getAttributes(whoisResources);
                 if (!_.isEmpty(attributes)) {
-                    this.errorReporterService.log("TextCreate", objectType, this.alertService.getErrors(), attributes);
+                    this.errorReporterService.log("TextCreate", objectType, this.alertsComponent.getErrors(), attributes);
                 }
             },
         );

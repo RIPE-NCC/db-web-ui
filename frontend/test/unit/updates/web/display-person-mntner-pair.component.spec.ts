@@ -184,8 +184,8 @@ describe("displayPairComponent", () => {
 
         httpMock.expectOne({method: "GET", url: "api/whois/RIPE/mntner/aardvark-mnt?unfiltered=true"}).flush(mntnerToDisplay);
 
-        expect(component.alertService.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
-        expect(component.alertService.getWarnings()[0].plainText).toEqual("Not authenticated");
+        expect(component.alertsComponent.getErrors()[0].plainText).toEqual("Unrecognized source: INVALID_SOURCE");
+        expect(component.alertsComponent.getWarnings()[0].plainText).toEqual("Not authenticated");
 
         expect(routerMock.navigate).not.toHaveBeenCalled();
         expect(routerMock.navigateByUrl).not.toHaveBeenCalled();

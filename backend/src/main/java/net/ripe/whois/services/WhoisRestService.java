@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
@@ -26,7 +27,6 @@ public class WhoisRestService implements ExchangeErrorHandler {
     private final RestTemplate restTemplate;
     private final WhoisProxy whoisProxy;
     private final String apiUrl;
-
 
     @Autowired
     public WhoisRestService(
@@ -57,7 +57,7 @@ public class WhoisRestService implements ExchangeErrorHandler {
             (HttpStatusCodeException e) -> {
                 if (e instanceof HttpClientErrorException) {
                     LOGGER.warn("Whois HTTP status {} will be returned as 200", e.getStatusCode());
-                    return new ResponseEntity<>(e.getResponseBodyAsString(), HttpStatus.OK);
+                    return new ResponseEntity<>(UriUtils.encode(e.getResponseBodyAsString(), "UTF-8"), HttpStatus.OK);
                 }
                 // e instanceof HttpServerErrorException
                 return new ResponseEntity<>(e.getResponseBodyAsString(), e.getStatusCode());

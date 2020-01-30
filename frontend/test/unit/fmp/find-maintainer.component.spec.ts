@@ -70,8 +70,8 @@ describe("FindMaintainerComponent", () => {
             expect(component.foundMaintainer.selectedMaintainer.name).toBe("world");
             expect(component.foundMaintainer.email).toBe("test@ripe.net");
 
-            expect(component.errors.length).toBe(0);
-            expect(component.warnings.length).toBe(0);
+            expect(component.alertsComponent.getErrors().length).toBe(0);
+            expect(component.alertsComponent.getWarnings().length).toBe(0);
         });
 
         it("should choose first upd-to address if multiple found", () => {
@@ -104,8 +104,8 @@ describe("FindMaintainerComponent", () => {
             expect(component.foundMaintainer.selectedMaintainer.name).toBe("world");
             expect(component.foundMaintainer.email).toBe("first@ripe.net");
 
-            expect(component.errors.length).toBe(0);
-            expect(component.warnings.length).toBe(0);
+            expect(component.alertsComponent.getErrors().length).toBe(0);
+            expect(component.alertsComponent.getWarnings().length).toBe(0);
         });
 
         it("Validation result expired", () => {
@@ -139,9 +139,9 @@ describe("FindMaintainerComponent", () => {
             expect(component.foundMaintainer.selectedMaintainer.name).toBe("world");
             expect(component.foundMaintainer.email).toBe("first@ripe.net");
 
-            expect(component.errors.length).toBe(0);
-            expect(component.warnings.length).toBe(1);
-            expect(component.warnings[0]).toBe("There is already an open request to reset the password of this maintainer. Proceeding now will cancel the earlier request.");
+            expect(component.alertsComponent.getErrors().length).toBe(0);
+            expect(component.alertsComponent.getWarnings().length).toBe(1);
+            expect(component.alertsComponent.getWarnings()[0].plainText).toBe("There is already an open request to reset the password of this maintainer. Proceeding now will cancel the earlier request.");
         });
 
         it("should not set a maintainer on not found", () => {
@@ -151,9 +151,9 @@ describe("FindMaintainerComponent", () => {
             component.selectMaintainer(maintainerKey);
 
             expect(component.foundMaintainer).toBeUndefined();
-            expect(component.errors.length).toBe(1);
-            expect(component.errors[0]).toBe("The maintainer could not be found.");
-            expect(component.warnings.length).toBe(0);
+            expect(component.alertsComponent.getErrors().length).toBe(1);
+            expect(component.alertsComponent.getErrors()[0].plainText).toBe("The maintainer could not be found.");
+            expect(component.alertsComponent.getWarnings().length).toBe(0);
         });
 
         it("should not set a maintainer Error fetching maintainer", () => {
@@ -164,9 +164,9 @@ describe("FindMaintainerComponent", () => {
 
             expect(component.foundMaintainer).toBeUndefined();
 
-            expect(component.errors.length).toBe(1);
-            expect(component.errors[0]).toBe("Error fetching maintainer.");
-            expect(component.warnings.length).toBe(0);
+            expect(component.alertsComponent.getErrors().length).toBe(1);
+            expect(component.alertsComponent.getErrors()[0].plainText).toBe("Error fetching maintainer.");
+            expect(component.alertsComponent.getWarnings().length).toBe(0);
         });
 
         it("should go to legacy when error validating email", () => {
@@ -177,9 +177,9 @@ describe("FindMaintainerComponent", () => {
             fixture.detectChanges();
 
             expect(component.foundMaintainer).toBeUndefined();
-            expect(component.errors.length).toBe(0);
+            expect(component.alertsComponent.getErrors().length).toBe(0);
 
-            expect(component.warnings.length).toBe(0);
+            expect(component.alertsComponent.getWarnings().length).toBe(0);
             expect(component.router.navigate).toHaveBeenCalledWith(["fmp/forgotMaintainerPassword"],
                 { queryParams: { mntnerKey: "I-AM-NO-MNT", voluntary: false }});
         });
@@ -195,7 +195,7 @@ describe("FindMaintainerComponent", () => {
             component.validateEmail();
             fixture.detectChanges();
 
-            expect(component.errors.length).toBe(0);
+            expect(component.alertsComponent.getErrors().length).toBe(0);
             expect(component.router.navigate).toHaveBeenCalledWith(["fmp/mailSent", "a@b.c"],
                 { queryParams: { maintainerKey: "I-AM-MNT" }});
         });
@@ -207,8 +207,8 @@ describe("FindMaintainerComponent", () => {
             component.validateEmail();
             fixture.detectChanges();
 
-            expect(component.errors.length).toBe(1);
-            expect(component.errors[0]).toBe("Error sending email");
+            expect(component.alertsComponent.getErrors().length).toBe(1);
+            expect(component.alertsComponent.getErrors()[0].plainText).toBe("Error sending email");
             expect(component.router.navigate).toHaveBeenCalledWith(["fmp/forgotMaintainerPassword"],
                 { queryParams: { mntnerKey: "I-AM-MNT", voluntary: false }});
         });
@@ -220,8 +220,8 @@ describe("FindMaintainerComponent", () => {
             component.validateEmail();
             fixture.detectChanges();
 
-            expect(component.errors.length).toBe(1);
-            expect(component.errors[0]).toBe("Error sending email");
+            expect(component.alertsComponent.getErrors().length).toBe(1);
+            expect(component.alertsComponent.getErrors()[0].plainText).toBe("Error sending email");
             expect(component.router.navigate).toHaveBeenCalledWith(["fmp/forgotMaintainerPassword"],
                 { queryParams: { mntnerKey: "I-AM-MNT", voluntary: false }});
 
@@ -233,7 +233,7 @@ describe("FindMaintainerComponent", () => {
             component.validateEmail();
             fixture.detectChanges();
 
-            expect(component.errors.length).toBe(0);
+            expect(component.alertsComponent.getErrors().length).toBe(0);
         });
 
         it("should call history back on cancel Window", () => {

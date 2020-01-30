@@ -1,11 +1,10 @@
-import {Component} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import {catchError, map} from "rxjs/operators";
 import {Observable, of, throwError} from "rxjs";
 import * as _ from "lodash";
 import {Router} from "@angular/router";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {RestService} from "../updates/rest.service";
-import {AlertsService} from "../shared/alert/alerts.service";
 import {ErrorReporterService} from "../updates/error-reporter.service";
 import {RpslService} from "./rpsl.service";
 import {SerialExecutorService} from "./serial-executor.service";
@@ -16,6 +15,7 @@ import {TextCommonsService} from "./text-commons.service";
 import {ITextObject} from "./text-create.component";
 import {IWhoisResponseModel} from "../shared/whois-response-type.model";
 import {PropertiesService} from "../properties.service";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 interface ITextMultiObject {
     deleteReason: string;
@@ -52,11 +52,13 @@ export class TextMultiComponent {
     public override: string;
     public passwords: string;
 
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
+
     constructor(private router: Router,
                 public whoisResourcesService: WhoisResourcesService,
                 public whoisMetaService: WhoisMetaService,
                 public restService: RestService,
-                public alertService: AlertsService,
                 public errorReporterService: ErrorReporterService,
                 public rpslService: RpslService,
                 public textCommonsService: TextCommonsService,
@@ -69,7 +71,7 @@ export class TextMultiComponent {
     public ngOnInit() {
         this.actionsPending = 0;
 
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         // extract parameters from the url
         this.objects.source = this.properties.SOURCE;
@@ -83,18 +85,18 @@ export class TextMultiComponent {
     }
 
     public setWebMode() {
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         console.info("TextMultiController.setWebMode: source" + this.objects.source + ", rpsl:" + this.objects.rpsl);
 
         if (!this.hasValidRpsl()) {
-            this.alertService.setGlobalError("No valid RPSL found");
+            this.alertsComponent.setGlobalError("No valid RPSL found");
             return;
         }
 
         const parsedObjs = this.rpslService.fromRpsl(this.objects.rpsl);
         if (parsedObjs.length === 0) {
-            this.alertService.setGlobalError("No valid RPSL object(s) found");
+            this.alertsComponent.setGlobalError("No valid RPSL object(s) found");
             return;
         }
 
@@ -138,7 +140,7 @@ export class TextMultiComponent {
     }
 
     public submit() {
-        this.alertService.clearErrors();
+        this.alertsComponent.clearErrors();
 
         console.debug("submit:" + JSON.stringify(this.objects.objects));
 
@@ -325,7 +327,7 @@ export class TextMultiComponent {
                             this.setStatus(object, false, "Delete error");
 
                             if (!_.isEmpty(this.whoisResourcesService.getAttributes(error.data))) {
-                                this.errorReporterService.log("MultiDelete", object.type, this.alertService.getErrors(), this.whoisResourcesService.getAttributes(error.data));
+                                this.errorReporterService.log("MultiDelete", object.type, this.alertsComponent.getErrors(), this.whoisResourcesService.getAttributes(error.data));
                             }
                             return throwError(error.data);
                         })).toPromise();
@@ -348,7 +350,7 @@ export class TextMultiComponent {
                             this.setStatus(object, false, "Create error");
                             const errorDataAttributes = this.whoisResourcesService.getAttributes(error.data);
                             if (!_.isEmpty(errorDataAttributes)) {
-                                this.errorReporterService.log("MultiCreate", object.type, this.alertService.getErrors(), errorDataAttributes);
+                                this.errorReporterService.log("MultiCreate", object.type, this.alertsComponent.getErrors(), errorDataAttributes);
                             }
                             return throwError(error.data);
                         })).toPromise();
@@ -364,9 +366,9 @@ export class TextMultiComponent {
                         catchError((error: any, caught: Observable<any>) => {
                             this.setStatus(object, false, "Modify error");
 
-                            const errorDataAttributes = this.whoisResourcesService.getAttributes(error.data)
+                            const errorDataAttributes = this.whoisResourcesService.getAttributes(error.data);
                             if (!_.isEmpty(errorDataAttributes)) {
-                                this.errorReporterService.log("MultiModify", object.type, this.alertService.getErrors(), errorDataAttributes);
+                                this.errorReporterService.log("MultiModify", object.type, this.alertsComponent.getErrors(), errorDataAttributes);
                             }
                             return throwError(error.data);
                         })).toPromise();

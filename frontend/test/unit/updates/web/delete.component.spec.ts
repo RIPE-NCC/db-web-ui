@@ -164,7 +164,7 @@ describe("DeleteController", () => {
         fixture.detectChanges();
 
         await fixture.whenStable();
-        expect(component.alertService.getErrors()).toEqual([{
+        expect(component.alertsComponent.getErrors()).toEqual([{
             severity: "Error",
             text: "Unrecognized source: %s",
             args: [{value: "INVALID_SOURCE"}],
@@ -185,7 +185,7 @@ describe("DeleteController", () => {
         fixture.detectChanges();
         await fixture.whenStable();
 
-        expect(component.alertService.getErrors()).toEqual([{
+        expect(component.alertsComponent.getErrors()).toEqual([{
             severity: "Error",
             text: "Unexpected error: please retry later",
             plainText: "Unexpected error: please retry later"

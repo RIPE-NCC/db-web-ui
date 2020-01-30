@@ -109,7 +109,7 @@ describe("TextMultiComponent", () => {
         textMultiComponent.setWebMode();
 
         expect(textMultiComponent.textMode).toBe(true);
-        expect(textMultiComponent.alertService.getErrors()[0].plainText).toEqual("No valid RPSL found");
+        expect(textMultiComponent.alertsComponent.getErrors()[0].plainText).toEqual("No valid RPSL found");
     });
 
     it("should switch back to text-view", () => {

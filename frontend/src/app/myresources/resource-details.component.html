@@ -17,26 +17,7 @@
 
 <section class="db-object" id="editortop">
     <h2>Object in RIPE Database</h2>
-    <div id="alert-danger" class="alert alert-danger" *ngIf="errors?.length">
-        <p *ngFor="let error of errors">
-            <span [innerHTML]="error"></span>
-        </p>
-    </div>
-    <div id="alert-success" class="alert alert-success" *ngIf="successes?.length">
-        <p *ngFor="let success of successes">
-            <span [innerHTML]="success"></span>
-        </p>
-    </div>
-    <div class="alert alert-warning" *ngIf="warnings?.length">
-        <p *ngFor="let warning of warnings">
-            <span [innerHTML]="warning"></span>
-        </p>
-    </div>
-    <div class="alert alert-info" *ngIf="infos?.length">
-        <p *ngFor="let info of infos">
-            <span [innerHTML]="info"></span>
-        </p>
-    </div>
+    <alerts></alerts>
     <div *ngIf="whoisObject">
         <whois-object-viewer *ngIf="!isEditing"
                 [ng-model]="whoisObject"

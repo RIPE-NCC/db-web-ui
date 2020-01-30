@@ -6,14 +6,7 @@
     <div class="documentDescription"></div>
 </section>
 <section>
-    <div class="dbmessage" *ngIf="errorMessages?.length">
-        <div *ngFor="let msg of errorMessages">
-        <div class="alert"
-             [ngClass]="{ 'alert-warning': msg.severity.toLowerCase() === 'warning', 'alert-danger': msg.severity.toLowerCase() === 'error' }">
-            <div [innerHTML]="formatError(msg)"></div>
-        </div>
-        </div>
-    </div>
+    <alerts></alerts>
     <form name="searchform" class="grey padding margin-bottom ga-dbsearch-form" (ngSubmit)="submitSearchForm()">
         <div>
             <div>

@@ -1,14 +1,10 @@
-import {Component, Inject} from "@angular/core";
+import {Component, Inject, ViewChild} from "@angular/core";
 import {Router} from "@angular/router";
 import * as _ from "lodash";
 import {FindMaintainerService, IFindMaintainer} from "./find-maintainer.service";
 import {WINDOW} from "../core/window.service";
 import {UserInfoService} from "../userinfo/user-info.service";
-
-enum AlertType {
-    Error,
-    Warning,
-}
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({
     selector: "find-maintainer",
@@ -18,8 +14,9 @@ export class FindMaintainerComponent {
 
     public foundMaintainer: IFindMaintainer;
     public maintainerKey: string;
-    public errors: string[] = [];
-    public warnings: string[] = [];
+
+    @ViewChild(AlertsComponent, {static: true})
+    public alertsComponent: AlertsComponent;
 
     constructor(@Inject(WINDOW) private window: any,
                 private findMaintainerService: FindMaintainerService,
@@ -32,22 +29,20 @@ export class FindMaintainerComponent {
     }
 
     public selectMaintainer(maintainerKey: string) {
-        this.clearAllAlerts();
+        this.alertsComponent.clearErrors();
         console.info("Search for mntner " + maintainerKey);
         this.findMaintainerService.search(maintainerKey)
             .subscribe((result: IFindMaintainer) => {
                 this.foundMaintainer = result;
                 if (this.foundMaintainer.expired === false) {
-                    this.addAlert(
-                        "There is already an open request to reset the password of this maintainer. " +
-                        "Proceeding now will cancel the earlier request.", AlertType.Warning);
+                    this.alertsComponent.addGlobalWarning(`There is already an open request to reset the password of this maintainer. Proceeding now will cancel the earlier request.`)
                 }
             }, (error: string) => {
                 if (this.foundMaintainer) { this.foundMaintainer.mntnerFound = false; }
                 if (error === "switchToManualResetProcess") {
                     this.switchToManualResetProcess(maintainerKey, false);
                 } else {
-                    this.addAlert(error, AlertType.Error);
+                    this.alertsComponent.addGlobalError(error);
                 }
             });
     }
@@ -61,9 +56,9 @@ export class FindMaintainerComponent {
                 console.error("Error validating email:" + JSON.stringify(error));
                 if (error.status !== 401 && error.status !== 403) {
                     if (_.isUndefined(error.data)) {
-                        this.addAlert("Error sending email", AlertType.Error);
+                        this.alertsComponent.addGlobalError("Error sending email");
                     } else if (error.data.match(/unable to send email/i)) {
-                        this.addAlert(error.data, AlertType.Error);
+                        this.alertsComponent.addGlobalError(error.data);
                     }
                     this.switchToManualResetProcess(mntKey, false);
                 }
@@ -86,26 +81,5 @@ export class FindMaintainerComponent {
                 () => {
                     return this.router.navigate(["fmp/requireLogin"]);
                 });
-    }
-
-    private addAlert(message: string, type: AlertType, clearAllAlerts: boolean = true) {
-        if (clearAllAlerts) {
-            this.clearAllAlerts();
-        }
-        switch (type) {
-            case AlertType.Error: {
-                this.errors.push(message);
-                break;
-            }
-            case AlertType.Warning: {
-                this.warnings.push(message);
-                break;
-            }
-        }
-    }
-
-    private clearAllAlerts() {
-        this.errors = [];
-        this.warnings = [];
     }
 }

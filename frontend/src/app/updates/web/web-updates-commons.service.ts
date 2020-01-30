@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, ViewChild} from "@angular/core";
 import {Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
