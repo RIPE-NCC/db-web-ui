@@ -34,7 +34,6 @@ import {ErrorInterceptor} from "./interceptor/error.interceptor";
 import {PropertiesService} from "./properties.service";
 import {AuthenticationGuard} from "./authentication-guard.service";
 import {BannerComponent} from "./banner/banner.component";
-import {SurveyBannerComponent} from "./banner/survey-banner.component";
 
 @NgModule({
   declarations: [
@@ -42,7 +41,6 @@ import {SurveyBannerComponent} from "./banner/survey-banner.component";
     SyncupdatesComponent,
     EmailConfirmationComponent,
     BannerComponent,
-    SurveyBannerComponent,
     OrgDropDownComponent,
     LeftHandMenuComponent,
     ErrorPageComponent,
