@@ -7,10 +7,10 @@ import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component
 import {PropertiesService} from "../../../../src/app/properties.service";
 import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
-import {ForceDeleteComponent} from "../../../../src/app/updates/web/forcedelete/force-delete.component";
-import {MntnerService} from "../../../../src/app/updates/mntner.service";
-import {RestService} from "../../../../src/app/updates/rest.service";
-import {WebUpdatesCommonsService} from "../../../../src/app/updates/web/web-updates-commons.service";
+import {ForceDeleteComponent} from "../../../../src/app/updatesweb/forcedelete/force-delete.component";
+import {MntnerService} from "../../../../src/app/updatesweb/mntner.service";
+import {RestService} from "../../../../src/app/updatesweb/rest.service";
+import {WebUpdatesCommonsService} from "../../../../src/app/updatesweb/web-updates-commons.service";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
 import {CredentialsService} from "../../../../src/app/shared/credentials.service";

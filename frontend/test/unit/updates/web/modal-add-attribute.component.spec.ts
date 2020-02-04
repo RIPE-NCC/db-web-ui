@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule} from "@angular/forms";
-import {ModalAddAttributeComponent} from "../../../../src/app/updates/web/modal-add-attribute.component";
+import {ModalAddAttributeComponent} from "../../../../src/app/updatesweb/modal-add-attribute.component";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
 
 describe("ModalAddAttributeComponent", () => {

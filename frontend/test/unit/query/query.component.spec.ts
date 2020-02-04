@@ -6,7 +6,7 @@ import {QueryService} from "../../../src/app/query/query.service";
 import {QueryParametersService} from "../../../src/app/query/query-parameters.service";
 import {CoreModule} from "../../../src/app/core/core.module";
 import {LookupComponent} from "../../../src/app/query/lookup.component";
-import {TemplateComponent} from "../../../src/app/query/template-component/template.component";
+import {TemplateComponent} from "../../../src/app/query/templatecomponent/template.component";
 import {of} from "rxjs/internal/observable/of";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 import {throwError} from "rxjs";

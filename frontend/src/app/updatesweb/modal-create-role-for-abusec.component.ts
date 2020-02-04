@@ -1,9 +1,9 @@
 import {Component, Input} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {WhoisResourcesService} from "../../shared/whois-resources.service";
-import {RestService} from "../rest.service";
-import {MntnerService} from "../mntner.service";
-import {IAttributeModel} from "../../shared/whois-response-type.model";
+import {WhoisResourcesService} from "../shared/whois-resources.service";
+import {RestService} from "./rest.service";
+import {MntnerService} from "./mntner.service";
+import {IAttributeModel} from "../shared/whois-response-type.model";
 
 interface IModalCreateRoleForAbuceC {
     maintainers: any;

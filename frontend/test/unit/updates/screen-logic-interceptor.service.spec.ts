@@ -1,10 +1,10 @@
 import {TestBed} from "@angular/core/testing";
-import {UpdatesModule} from "../../../src/app/updates/update.module";
-import {ScreenLogicInterceptorService} from "../../../src/app/updates/screen-logic-interceptor.service";
-import {LinkService} from "../../../src/app/updates/link.service";
-import {MessageStoreService} from "../../../src/app/updates/message-store.service";
+import {UpdatesWebModule} from "../../../src/app/updatesweb/updateweb.module";
+import {ScreenLogicInterceptorService} from "../../../src/app/updatesweb/screen-logic-interceptor.service";
+import {LinkService} from "../../../src/app/updatesweb/link.service";
+import {MessageStoreService} from "../../../src/app/updatesweb/message-store.service";
 import {CredentialsService} from "../../../src/app/shared/credentials.service";
-import {MntnerService} from "../../../src/app/updates/mntner.service";
+import {MntnerService} from "../../../src/app/updatesweb/mntner.service";
 import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
 import {Router} from "@angular/router";
@@ -27,7 +27,7 @@ describe("ScreenLogicInterceptorService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesModule],
+            imports: [UpdatesWebModule],
             providers: [
                 ScreenLogicInterceptorService,
                 {provide: "$log",  useValue: {info: () => {}, error: () => {} }},

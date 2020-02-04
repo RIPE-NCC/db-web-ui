@@ -2,12 +2,12 @@ import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {combineLatest, Subscription} from "rxjs";
 import * as _ from "lodash";
-import {WhoisResourcesService} from "../../shared/whois-resources.service";
-import {MessageStoreService} from "../message-store.service";
-import {RestService} from "../rest.service";
-import {UserInfoService} from "../../userinfo/user-info.service";
+import {WhoisResourcesService} from "../shared/whois-resources.service";
+import {MessageStoreService} from "./message-store.service";
+import {RestService} from "./rest.service";
+import {UserInfoService} from "../userinfo/user-info.service";
 import {WebUpdatesCommonsService} from "./web-updates-commons.service";
-import {AlertsComponent} from "../../shared/alert/alerts.component";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({
     selector: "display",

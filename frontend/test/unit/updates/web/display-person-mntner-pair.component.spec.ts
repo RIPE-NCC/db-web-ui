@@ -2,11 +2,11 @@ import {HttpClientTestingModule, HttpTestingController} from "@angular/common/ht
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
 import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
-import {DisplayMntnerPairComponent} from "../../../../src/app/updates/web/display-mntner-pair.component";
-import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
+import {DisplayMntnerPairComponent} from "../../../../src/app/updatesweb/display-mntner-pair.component";
+import {MessageStoreService} from "../../../../src/app/updatesweb/message-store.service";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
-import {RestService} from "../../../../src/app/updates/rest.service";
+import {RestService} from "../../../../src/app/updatesweb/rest.service";
 import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
 
 describe("displayPairComponent", () => {

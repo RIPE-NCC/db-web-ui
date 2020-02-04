@@ -9,12 +9,12 @@ import {CookieService} from "ngx-cookie-service";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
 import {CoreModule} from "../../../../src/app/core/core.module";
 import {PropertiesService} from "../../../../src/app/properties.service";
-import {RestService} from "../../../../src/app/updates/rest.service";
-import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
-import {ErrorReporterService} from "../../../../src/app/updates/error-reporter.service";
-import {LinkService} from "../../../../src/app/updates/link.service";
+import {RestService} from "../../../../src/app/updatesweb/rest.service";
+import {MessageStoreService} from "../../../../src/app/updatesweb/message-store.service";
+import {ErrorReporterService} from "../../../../src/app/updatesweb/error-reporter.service";
+import {LinkService} from "../../../../src/app/updatesweb/link.service";
 import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
-import {CreateSelfMaintainedMaintainerComponent} from "../../../../src/app/updates/web/create-self-maintained-maintainer.component";
+import {CreateSelfMaintainedMaintainerComponent} from "../../../../src/app/updatesweb/create-self-maintained-maintainer.component";
 
 describe("CreateSelfMaintainedMaintainerComponent", () => {
 

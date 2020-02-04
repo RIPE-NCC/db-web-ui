@@ -8,7 +8,7 @@ import {AutoKeyLogicService} from "./auto-key-logic.service";
 import {RpslService} from "./rpsl.service";
 import {TextMultiComponent} from "./text-multi.component";
 import {SerialExecutorService} from "./serial-executor.service";
-import {UpdatesModule} from "../updates/update.module";
+import {UpdatesWebModule} from "../updatesweb/updateweb.module";
 import {CoreModule} from "../core/core.module";
 import {TextCommonsService} from "./text-commons.service";
 import {TextCreateComponent} from "./text-create.component";
@@ -24,7 +24,7 @@ import {TextMultiDecisionModalComponent} from "./text-multi-decision-modal.compo
         HttpClientModule,
         SharedModule,
         DiffMatchPatchModule,
-        UpdatesModule
+        UpdatesWebModule
     ],
     declarations: [
         TextMultiComponent,

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import * as _ from "lodash";
-import {MessageStoreService} from "../updates/message-store.service";
+import {MessageStoreService} from "../updatesweb/message-store.service";
 import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
 import {IAttributeModel, IWhoisObjectModel} from "../shared/whois-response-type.model";
 import {PropertiesService} from "../properties.service";

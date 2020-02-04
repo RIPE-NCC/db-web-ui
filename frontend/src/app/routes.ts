@@ -5,13 +5,13 @@ import {ResourcesComponent} from "./myresources/resources.component";
 import {ResourceDetailsComponent} from "./myresources/resource-details.component";
 import {DomainObjectWizardComponent} from "./domainobject/domain-object-wizard.component";
 import {DisplayDomainObjectsComponent} from "./domainobject/display-domain-objects.component";
-import {SelectComponent} from "./updates/web/select.component";
-import {DisplayMntnerPairComponent} from "./updates/web/display-mntner-pair.component";
-import {CreateSelfMaintainedMaintainerComponent} from "./updates/web/create-self-maintained-maintainer.component";
-import {CreateModifyComponent} from "./updates/web/create-modify.component";
-import {DisplayComponent} from "./updates/web/display.component";
-import {ForceDeleteSelectComponent} from "./updates/web/forcedeleteselect/force-delete-select.component";
-import {ForceDeleteComponent} from "./updates/web/forcedelete/force-delete.component";
+import {SelectComponent} from "./updatesweb/select.component";
+import {DisplayMntnerPairComponent} from "./updatesweb/display-mntner-pair.component";
+import {CreateSelfMaintainedMaintainerComponent} from "./updatesweb/create-self-maintained-maintainer.component";
+import {CreateModifyComponent} from "./updatesweb/create-modify.component";
+import {DisplayComponent} from "./updatesweb/display.component";
+import {ForceDeleteSelectComponent} from "./updatesweb/forcedeleteselect/force-delete-select.component";
+import {ForceDeleteComponent} from "./updatesweb/forcedelete/force-delete.component";
 import {LookupSingleObjectComponent} from "./query/lookup-single-object.component";
 import {QueryComponent} from "./query/query.component";
 import {SyncupdatesComponent} from "./syncupdates/syncupdates.component";
@@ -28,8 +28,8 @@ import {EmailConfirmationComponent} from "./emailconfirmation/email-confirmation
 import {AuthenticationGuard} from "./authentication-guard.service";
 import {TextMultiDecisionComponent} from "./updatestext/text-multi-decision.component";
 import {TextMultiComponent} from "./updatestext/text-multi.component";
-import {DeleteComponent} from "./updates/web/delete.component";
-import {CreateMntnerPairComponent} from "./updates/web/create-mntner-pair/create-mntner-pair.component";
+import {DeleteComponent} from "./updatesweb/delete.component";
+import {CreateMntnerPairComponent} from "./updatesweb/createmntnerpair/create-mntner-pair.component";
 
 export const appRoutes: Routes = [
     {path: "myresources/overview", component: ResourcesComponent, canActivate: [AuthenticationGuard]},

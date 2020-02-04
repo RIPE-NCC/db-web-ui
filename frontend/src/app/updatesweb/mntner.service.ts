@@ -7,7 +7,7 @@ import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {WhoisMetaService} from "../shared/whois-meta.service";
 import {IMntByModel} from "../shared/whois-response-type.model";
 import {PrefixService} from "../domainobject/prefix.service";
-import {ModalAuthenticationComponent} from "./web/modal-authentication.component";
+import {ModalAuthenticationComponent} from "./modal-authentication.component";
 
 @Injectable()
 export class MntnerService {

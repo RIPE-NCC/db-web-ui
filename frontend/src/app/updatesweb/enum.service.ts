@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
-import {ResourceStatusService} from "../../myresources/resource-status.service";
-import {IStatusOption} from "../../shared/whois-response-type.model";
+import {ResourceStatusService} from "../myresources/resource-status.service";
+import {IStatusOption} from "../shared/whois-response-type.model";
 
 @Injectable()
 export class EnumService {

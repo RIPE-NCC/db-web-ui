@@ -1,18 +1,18 @@
 import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "lodash";
-import {PropertiesService} from "../../../properties.service";
-import {WhoisResourcesService} from "../../../shared/whois-resources.service";
-import {WhoisMetaService} from "../../../shared/whois-meta.service";
-import {UserInfoService} from "../../../userinfo/user-info.service";
-import {RestService} from "../../rest.service";
-import {MessageStoreService} from "../../message-store.service";
-import {ErrorReporterService} from "../../error-reporter.service";
-import {LinkService} from "../../link.service";
-import {IAttributeModel} from "../../../shared/whois-response-type.model";
-import {IUserInfoResponseData} from "../../../dropdown/org-data-type.model";
+import {PropertiesService} from "../../properties.service";
+import {WhoisResourcesService} from "../../shared/whois-resources.service";
+import {WhoisMetaService} from "../../shared/whois-meta.service";
+import {UserInfoService} from "../../userinfo/user-info.service";
+import {RestService} from "../rest.service";
+import {MessageStoreService} from "../message-store.service";
+import {ErrorReporterService} from "../error-reporter.service";
+import {LinkService} from "../link.service";
+import {IAttributeModel} from "../../shared/whois-response-type.model";
+import {IUserInfoResponseData} from "../../dropdown/org-data-type.model";
 import {CreateService} from "../create.service";
-import {AlertsComponent} from "../../../shared/alert/alerts.component";
+import {AlertsComponent} from "../../shared/alert/alerts.component";
 
 @Component({
     selector: "create-mntner-pair",

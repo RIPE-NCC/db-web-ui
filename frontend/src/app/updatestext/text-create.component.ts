@@ -6,13 +6,13 @@ import * as _ from "lodash";
 import {WINDOW} from "../core/window.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {WhoisMetaService} from "../shared/whois-meta.service";
-import {RestService} from "../updates/rest.service";
-import {ErrorReporterService} from "../updates/error-reporter.service";
+import {RestService} from "../updatesweb/rest.service";
+import {ErrorReporterService} from "../updatesweb/error-reporter.service";
 import {IRpslObject, RpslService} from "./rpsl.service";
 import {TextCommonsService} from "./text-commons.service";
-import {MntnerService} from "../updates/mntner.service";
-import {PreferenceService} from "../updates/preference.service";
-import {MessageStoreService} from "../updates/message-store.service";
+import {MntnerService} from "../updatesweb/mntner.service";
+import {PreferenceService} from "../updatesweb/preference.service";
+import {MessageStoreService} from "../updatesweb/message-store.service";
 import {AlertsComponent} from "../shared/alert/alerts.component";
 
 export interface ITextObject {

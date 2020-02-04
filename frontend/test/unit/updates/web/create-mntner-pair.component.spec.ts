@@ -10,13 +10,13 @@ import {of} from "rxjs";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
 import {CoreModule} from "../../../../src/app/core/core.module";
 import {PropertiesService} from "../../../../src/app/properties.service";
-import {RestService} from "../../../../src/app/updates/rest.service";
-import {MessageStoreService} from "../../../../src/app/updates/message-store.service";
-import {ErrorReporterService} from "../../../../src/app/updates/error-reporter.service";
-import {LinkService} from "../../../../src/app/updates/link.service";
+import {RestService} from "../../../../src/app/updatesweb/rest.service";
+import {MessageStoreService} from "../../../../src/app/updatesweb/message-store.service";
+import {ErrorReporterService} from "../../../../src/app/updatesweb/error-reporter.service";
+import {LinkService} from "../../../../src/app/updatesweb/link.service";
 import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
-import {CreateService} from "../../../../src/app/updates/web/create.service";
-import {CreateMntnerPairComponent} from "../../../../src/app/updates/web/create-mntner-pair/create-mntner-pair.component";
+import {CreateService} from "../../../../src/app/updatesweb/create.service";
+import {CreateMntnerPairComponent} from "../../../../src/app/updatesweb/createmntnerpair/create-mntner-pair.component";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
 
 describe("CreateMntnerPairComponent", () => {

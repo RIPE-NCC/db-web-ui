@@ -3,15 +3,15 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {forkJoin} from "rxjs";
 import * as _ from "lodash";
 import {ITextObject} from "./text-create.component";
-import {RestService} from "../updates/rest.service";
+import {RestService} from "../updatesweb/rest.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {WINDOW} from "../core/window.service";
-import {ErrorReporterService} from "../updates/error-reporter.service";
-import {MessageStoreService} from "../updates/message-store.service";
+import {ErrorReporterService} from "../updatesweb/error-reporter.service";
+import {MessageStoreService} from "../updatesweb/message-store.service";
 import {RpslService} from "./rpsl.service";
 import {TextCommonsService} from "./text-commons.service";
 import {CredentialsService} from "../shared/credentials.service";
-import {PreferenceService} from "../updates/preference.service";
+import {PreferenceService} from "../updatesweb/preference.service";
 import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({

@@ -2,14 +2,14 @@ import {Component, EventEmitter, Input, Output, ViewChild} from "@angular/core";
 import * as _ from "lodash";
 import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
 import {JsUtilService} from "../core/js-utils.service";
-import {RestService} from "../updates/rest.service";
-import {MntnerService} from "../updates/mntner.service";
-import {MessageStoreService} from "../updates/message-store.service";
+import {RestService} from "../updatesweb/rest.service";
+import {MntnerService} from "../updatesweb/mntner.service";
+import {MessageStoreService} from "../updatesweb/message-store.service";
 import {CredentialsService} from "../shared/credentials.service";
 import {IAttributeModel, IMntByModel, IWhoisObjectModel} from "../shared/whois-response-type.model";
-import {IAuthParams, WebUpdatesCommonsService} from "../updates/web/web-updates-commons.service";
-import {IMaintainers} from "../updates/web/create-modify.component";
-import {ObjectUtilService} from "../updates/object-util.service";
+import {IAuthParams, WebUpdatesCommonsService} from "../updatesweb/web-updates-commons.service";
+import {IMaintainers} from "../updatesweb/create-modify.component";
+import {ObjectUtilService} from "../updatesweb/object-util.service";
 import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({

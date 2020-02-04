@@ -5,7 +5,7 @@ import {FormsModule} from "@angular/forms";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
-import {SelectComponent} from "../../../../src/app/updates/web/select.component";
+import {SelectComponent} from "../../../../src/app/updatesweb/select.component";
 import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
 import {PropertiesService} from "../../../../src/app/properties.service";
 

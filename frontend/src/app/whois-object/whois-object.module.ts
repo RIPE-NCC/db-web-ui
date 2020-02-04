@@ -9,9 +9,8 @@ import {WhoisObjectEditorComponent} from "./whois-object-editor.component";
 import {AttributeModule} from "../attribute/attribute.module";
 import {MaintainersEditorComponent} from "./maintainers-editor.component";
 import {UserInfoService} from "../userinfo/user-info.service";
-import {WebUpdatesCommonsService} from "../updates/web/web-updates-commons.service";
-import {UpdatesModule} from "../updates/update.module";
-import {AppRoutingModule} from "../app-routing.module";
+import {WebUpdatesCommonsService} from "../updatesweb/web-updates-commons.service";
+import {UpdatesWebModule} from "../updatesweb/updateweb.module";
 
 @NgModule({
     imports: [
@@ -20,7 +19,7 @@ import {AppRoutingModule} from "../app-routing.module";
         SharedModule,
         AttributeModule,
         NgSelectModule,
-        UpdatesModule,
+        UpdatesWebModule,
         RouterModule
     ],
     declarations: [

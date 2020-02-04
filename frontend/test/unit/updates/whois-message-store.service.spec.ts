@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
-import {MessageStoreService} from "../../../src/app/updates/message-store.service";
-import {UpdatesModule} from "../../../src/app/updates/update.module";
+import {MessageStoreService} from "../../../src/app/updatesweb/message-store.service";
+import {UpdatesWebModule} from "../../../src/app/updatesweb/updateweb.module";
 
 describe("MessageStoreService", () => {
 
@@ -8,7 +8,7 @@ describe("MessageStoreService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesModule],
+            imports: [UpdatesWebModule],
             providers: [
                 MessageStoreService,
             ],

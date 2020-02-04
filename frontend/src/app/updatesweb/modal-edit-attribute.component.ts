@@ -1,8 +1,8 @@
 import {Component, Inject, Input} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {WINDOW} from "../../core/window.service";
-import {IAttributeModel} from "../../shared/whois-response-type.model";
-import {PropertiesService} from "../../properties.service";
+import {WINDOW} from "../core/window.service";
+import {IAttributeModel} from "../shared/whois-response-type.model";
+import {PropertiesService} from "../properties.service";
 
 @Component({
     selector: "modal-edit-attribute",

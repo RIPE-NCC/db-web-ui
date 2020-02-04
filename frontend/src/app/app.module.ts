@@ -12,7 +12,7 @@ import {NotFoundPageComponent} from "./errorpages/not-found-page.component";
 import {ErrorPageComponent} from "./errorpages/error-page.component";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {SharedModule} from "./shared/shared.module";
-import {UpdatesModule} from "./updates/update.module";
+import {UpdatesWebModule} from "./updatesweb/updateweb.module";
 import {UpdatesTextModule} from "./updatestext/update-text.module";
 import {FmpModule} from "./fmp/fmp.module";
 import {FullTextSearchModule} from "./fulltextsearch/full-text-search.module";
@@ -53,7 +53,7 @@ import {BannerComponent} from "./banner/banner.component";
     FormsModule,
     HttpClientModule,
     SharedModule,
-    UpdatesModule,
+    UpdatesWebModule,
     UpdatesTextModule,
     FmpModule,
     FullTextSearchModule,

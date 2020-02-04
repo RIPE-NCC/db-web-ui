@@ -1,15 +1,15 @@
 import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import * as _ from "lodash";
-import {RestService} from "../rest.service";
-import {WhoisResourcesService} from "../../shared/whois-resources.service";
-import {WhoisMetaService} from "../../shared/whois-meta.service";
-import {UserInfoService} from "../../userinfo/user-info.service";
-import {MessageStoreService} from "../message-store.service";
-import {ErrorReporterService} from "../error-reporter.service";
-import {LinkService} from "../link.service";
-import {IAttributeModel} from "../../shared/whois-response-type.model";
-import {AlertsComponent} from "../../shared/alert/alerts.component";
+import {RestService} from "./rest.service";
+import {WhoisResourcesService} from "../shared/whois-resources.service";
+import {WhoisMetaService} from "../shared/whois-meta.service";
+import {UserInfoService} from "../userinfo/user-info.service";
+import {MessageStoreService} from "./message-store.service";
+import {ErrorReporterService} from "./error-reporter.service";
+import {LinkService} from "./link.service";
+import {IAttributeModel} from "../shared/whois-response-type.model";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({
     selector: "create-self-maintained-maintainer",

@@ -2,8 +2,8 @@ import {Component, Input} from "@angular/core";
 import {Router} from "@angular/router";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
-import {RestService} from "../rest.service";
-import {CredentialsService} from "../../shared/credentials.service";
+import {RestService} from "./rest.service";
+import {CredentialsService} from "../shared/credentials.service";
 
 interface IModalDelete {
     name: string;

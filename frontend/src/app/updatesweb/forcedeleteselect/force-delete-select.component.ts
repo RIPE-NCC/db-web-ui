@@ -1,7 +1,7 @@
 import {Component, ViewChild} from "@angular/core";
 import {Router} from "@angular/router";
-import {PropertiesService} from "../../../properties.service";
-import {AlertsComponent} from "../../../shared/alert/alerts.component";
+import {PropertiesService} from "../../properties.service";
+import {AlertsComponent} from "../../shared/alert/alerts.component";
 
 @Component({
     selector: "force-delete-select",

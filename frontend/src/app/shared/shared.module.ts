@@ -11,7 +11,7 @@ import {AlertsComponent} from "./alert/alerts.component";
 import {HelpMarkerComponent} from "./help-marker.component";
 import {LabelPipe} from "./label.pipe";
 import {PaginationComponent} from "./paginator/pagination.component";
-import {LoadingIndicatorComponent} from "./loading-indicator/loading-indicator.component";
+import {LoadingIndicatorComponent} from "./loadingindicator/loading-indicator.component";
 import {ScrollerDirective} from "./scroller.directive";
 import {TableScrollerDirective} from "./table-scroller.directive";
 import {NameFormatterComponent} from "./name-formatter.component";
@@ -19,7 +19,6 @@ import {EnvironmentStatusService} from "./environment-status.service";
 import {SubmittingAgreementComponent} from "./submitting-agreement.component";
 import {FilteroutAttributeByNamePipe} from "./filterout-attribute-by-name.pipe";
 import {FilteroutAttributeByHiddenPipe} from "./filterout-attribute-by-hidden.pipe";
-import {AttributeTransformerDirective} from "./attribute-transformer.directive";
 import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
 import {DescriptionSyntaxComponent} from "./descriptionsyntax/description-syntax.component";
 import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
@@ -44,7 +43,6 @@ import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
         DescriptionSyntaxComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
-        AttributeTransformerDirective,
         SanitizeImgHtmlPipe
     ],
     providers: [
@@ -75,7 +73,6 @@ import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
         DescriptionSyntaxComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
-        AttributeTransformerDirective,
         SanitizeImgHtmlPipe,
         NgbModule,
         TableScrollerDirective
