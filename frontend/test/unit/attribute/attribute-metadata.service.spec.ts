@@ -4,7 +4,7 @@ import {Location} from "@angular/common";
 import * as _ from "lodash";
 import {AttributeMetadataService} from "../../../src/app/attribute/attribute-metadata.service";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
-import {MntnerService} from "../../../src/app/updates/mntner.service";
+import {MntnerService} from "../../../src/app/updatesweb/mntner.service";
 import {JsUtilService} from "../../../src/app/core/js-utils.service";
 import {AttributeModule} from "../../../src/app/attribute/attribute.module";
 import {PrefixService} from "../../../src/app/domainobject/prefix.service";

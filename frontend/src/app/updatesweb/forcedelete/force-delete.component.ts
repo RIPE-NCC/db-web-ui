@@ -3,14 +3,14 @@ import {ActivatedRoute} from "@angular/router";
 import {forkJoin, of, throwError} from "rxjs";
 import {catchError, flatMap} from "rxjs/operators";
 import * as _ from "lodash";
-import {WhoisResourcesService} from "../../../shared/whois-resources.service";
-import {RestService} from "../../rest.service";
-import {MntnerService} from "../../mntner.service";
+import {WhoisResourcesService} from "../../shared/whois-resources.service";
+import {RestService} from "../rest.service";
+import {MntnerService} from "../mntner.service";
 import {STATE} from "../web-updates-state.constants";
 import {IAuthParams, WebUpdatesCommonsService} from "../web-updates-commons.service";
 import {IMaintainers} from "../create-modify.component";
-import {IMntByModel} from "../../../shared/whois-response-type.model";
-import {AlertsComponent} from "../../../shared/alert/alerts.component";
+import {IMntByModel} from "../../shared/whois-response-type.model";
+import {AlertsComponent} from "../../shared/alert/alerts.component";
 
 interface IObjectFromParameters {
     attributes: any;

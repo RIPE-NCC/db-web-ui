@@ -1,6 +1,6 @@
 import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MessageStoreService} from "../updates/message-store.service";
+import {MessageStoreService} from "../updatesweb/message-store.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {AlertsComponent} from "../shared/alert/alerts.component";
 

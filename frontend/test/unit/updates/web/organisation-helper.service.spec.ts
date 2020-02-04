@@ -2,10 +2,10 @@ import {TestBed} from "@angular/core/testing";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {Router} from "@angular/router";
 import * as _ from "lodash";
-import {OrganisationHelperService} from "../../../../src/app/updates/web/organisation-helper.service";
+import {OrganisationHelperService} from "../../../../src/app/updatesweb/organisation-helper.service";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
-import {RestService} from "../../../../src/app/updates/rest.service";
+import {RestService} from "../../../../src/app/updatesweb/rest.service";
 
 describe("OrganisationHelperService", () => {
 

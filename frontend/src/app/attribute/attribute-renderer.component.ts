@@ -4,15 +4,15 @@ import {debounceTime, distinctUntilChanged, map, mergeMap} from "rxjs/operators"
 import {Observable, of} from "rxjs";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
-import {CharsetToolsService} from "../updates/charset-tools.service";
-import {RestService} from "../updates/rest.service";
+import {CharsetToolsService} from "../updatesweb/charset-tools.service";
+import {RestService} from "../updatesweb/rest.service";
 import {CredentialsService} from "../shared/credentials.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
-import {EnumService} from "../updates/web/enum.service";
+import {EnumService} from "../updatesweb/enum.service";
 import {AttributeMetadataService} from "./attribute-metadata.service";
 import {IAttributeModel} from "../shared/whois-response-type.model";
-import {ModalAddAttributeComponent} from "../updates/web/modal-add-attribute.component";
-import {ModalCreateRoleForAbuseCComponent} from "../updates/web/modal-create-role-for-abusec.component";
+import {ModalAddAttributeComponent} from "../updatesweb/modal-add-attribute.component";
+import {ModalCreateRoleForAbuseCComponent} from "../updatesweb/modal-create-role-for-abusec.component";
 
 @Component({
     selector: "attribute-renderer",

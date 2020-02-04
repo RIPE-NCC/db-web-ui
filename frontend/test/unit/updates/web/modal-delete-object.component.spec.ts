@@ -3,9 +3,9 @@ import {HttpClientTestingModule, HttpTestingController} from "@angular/common/ht
 import {FormsModule} from "@angular/forms";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
-import {RestService} from "../../../../src/app/updates/rest.service";
+import {RestService} from "../../../../src/app/updatesweb/rest.service";
 import {Router} from "@angular/router";
-import {ModalDeleteObjectComponent} from "../../../../src/app/updates/web/modal-delete-object.component";
+import {ModalDeleteObjectComponent} from "../../../../src/app/updatesweb/modal-delete-object.component";
 import {of, throwError} from "rxjs";
 import {CredentialsService} from "../../../../src/app/shared/credentials.service";
 

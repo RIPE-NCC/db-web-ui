@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
-import {CharsetToolsService} from "../../../src/app/updates/charset-tools.service";
-import {UpdatesModule} from "../../../src/app/updates/update.module";
+import {CharsetToolsService} from "../../../src/app/updatesweb/charset-tools.service";
+import {UpdatesWebModule} from "../../../src/app/updatesweb/updateweb.module";
 import {IAttributeModel} from "../../../src/app/shared/whois-response-type.model";
 
 describe("updates: CharsetToolsService", () => {
@@ -9,7 +9,7 @@ describe("updates: CharsetToolsService", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesModule],
+            imports: [UpdatesWebModule],
             providers: [
                 CharsetToolsService,
                 { provide: "$log",  useValue: {debug: () => {} } }, // <- just because of testing AbuseCTableComponent here

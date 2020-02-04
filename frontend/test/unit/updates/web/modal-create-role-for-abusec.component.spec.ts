@@ -5,10 +5,10 @@ import {Router} from "@angular/router";
 import {of} from "rxjs";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
-import {RestService} from "../../../../src/app/updates/rest.service";
+import {RestService} from "../../../../src/app/updatesweb/rest.service";
 import {CredentialsService} from "../../../../src/app/shared/credentials.service";
-import {ModalCreateRoleForAbuseCComponent} from "../../../../src/app/updates/web/modal-create-role-for-abusec.component";
-import {MntnerService} from "../../../../src/app/updates/mntner.service";
+import {ModalCreateRoleForAbuseCComponent} from "../../../../src/app/updatesweb/modal-create-role-for-abusec.component";
+import {MntnerService} from "../../../../src/app/updatesweb/mntner.service";
 import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
 

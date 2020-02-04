@@ -2,13 +2,13 @@ import {TestBed} from "@angular/core/testing";
 import {Router} from "@angular/router";
 import {of} from "rxjs";
 import * as _ from "lodash";
-import {ScreenLogicInterceptorService} from "../../../src/app/updates/screen-logic-interceptor.service";
+import {ScreenLogicInterceptorService} from "../../../src/app/updatesweb/screen-logic-interceptor.service";
 import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
-import {UpdatesModule} from "../../../src/app/updates/update.module";
-import {MessageStoreService} from "../../../src/app/updates/message-store.service";
-import {MntnerService} from "../../../src/app/updates/mntner.service";
-import {LinkService} from "../../../src/app/updates/link.service";
+import {UpdatesWebModule} from "../../../src/app/updatesweb/updateweb.module";
+import {MessageStoreService} from "../../../src/app/updatesweb/message-store.service";
+import {MntnerService} from "../../../src/app/updatesweb/mntner.service";
+import {LinkService} from "../../../src/app/updatesweb/link.service";
 import {IAttributeModel} from "../../../src/app/shared/whois-response-type.model";
 
 describe("ScreenLogicInterceptorService Inet6Num", () => {
@@ -25,7 +25,7 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
 
     beforeEach(() => {
         TestBed.configureTestingModule({
-            imports: [UpdatesModule],
+            imports: [UpdatesWebModule],
             providers: [
                 ScreenLogicInterceptorService,
                 MessageStoreService,
@@ -41,7 +41,7 @@ describe("ScreenLogicInterceptorService Inet6Num", () => {
         whoisResourcesService = TestBed.get(WhoisResourcesService);
         whoisMetaService = TestBed.get(WhoisMetaService);
     });
-    
+
     it("should disable org attribute from inet6num when status is ASSIGNED PI", () =>  {
 
         let inet6NumSubject = _wrap("inet6num", inet6NumAttributes);

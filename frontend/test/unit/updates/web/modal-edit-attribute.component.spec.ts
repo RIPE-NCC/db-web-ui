@@ -3,7 +3,7 @@ import {HttpClientTestingModule, HttpTestingController} from "@angular/common/ht
 import {FormsModule} from "@angular/forms";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {SharedModule} from "../../../../src/app/shared/shared.module";
-import {ModalEditAttributeComponent} from "../../../../src/app/updates/web/modal-edit-attribute.component";
+import {ModalEditAttributeComponent} from "../../../../src/app/updatesweb/modal-edit-attribute.component";
 import {PropertiesService} from "../../../../src/app/properties.service";
 import {WINDOW} from "../../../../src/app/core/window.service";
 

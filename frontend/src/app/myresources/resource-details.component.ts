@@ -3,10 +3,10 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
 import {IResourceDetailsResponseModel, IResourceTickets} from "./resource-type.model";
 import {ResourcesDataService} from "./resources-data.service";
-import {MntnerService} from "../updates/mntner.service";
+import {MntnerService} from "../updatesweb/mntner.service";
 import {Labels} from "../label.constants";
 import {ResourceStatusService} from "./resource-status.service";
-import {RestService} from "../updates/rest.service";
+import {RestService} from "../updatesweb/rest.service";
 import {CredentialsService} from "../shared/credentials.service";
 import {OrgDropDownSharedService} from "../dropdown/org-drop-down-shared.service";
 import {

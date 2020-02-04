@@ -20,8 +20,8 @@ import {WhoisObjectEditorComponent} from "../../../src/app/whois-object/whois-ob
 import {AttributeRendererComponent} from "../../../src/app/attribute/attribute-renderer.component";
 import {CoreModule} from "../../../src/app/core/core.module";
 import {AttributeReverseZonesComponent} from "../../../src/app/attribute/attribute-reverse-zones.component";
-import {MntnerService} from "../../../src/app/updates/mntner.service";
-import {RestService} from "../../../src/app/updates/rest.service";
+import {MntnerService} from "../../../src/app/updatesweb/mntner.service";
+import {RestService} from "../../../src/app/updatesweb/rest.service";
 import {MoreSpecificsService} from "../../../src/app/myresources/morespecifics/more-specifics.service";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {ResourcesDataService} from "../../../src/app/myresources/resources-data.service";

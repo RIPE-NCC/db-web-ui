@@ -1,11 +1,10 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {WhoisResourcesService} from "../../shared/whois-resources.service";
-import {MessageStoreService} from "../message-store.service";
-import {RestService} from "../rest.service";
-import {AlertsService} from "../../shared/alert/alerts.service";
-import {IAttributeModel} from "../../shared/whois-response-type.model";
-import {AlertsComponent} from "../../shared/alert/alerts.component";
+import {WhoisResourcesService} from "../shared/whois-resources.service";
+import {MessageStoreService} from "./message-store.service";
+import {RestService} from "./rest.service";
+import {IAttributeModel} from "../shared/whois-response-type.model";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({
     selector: "display-mntner-pair",

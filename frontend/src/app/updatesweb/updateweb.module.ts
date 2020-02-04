@@ -17,25 +17,25 @@ import {RestService} from "./rest.service";
 import {ScreenLogicInterceptorService} from "./screen-logic-interceptor.service";
 import {HeaderInterceptor} from "../interceptor/header.interceptor";
 import {SharedModule} from "../shared/shared.module";
-import {EnumService} from "./web/enum.service";
-import {DisplayComponent} from "./web/display.component";
-import {DisplayMntnerPairComponent} from "./web/display-mntner-pair.component";
-import {SelectComponent} from "./web/select.component";
-import {ForceDeleteComponent} from "./web/forcedelete/force-delete.component";
-import {ForceDeleteSelectComponent} from "./web/forcedeleteselect/force-delete-select.component";
-import {DeleteComponent} from "./web/delete.component";
-import {CryptService} from "./web/crypt.service";
-import {OrganisationHelperService} from "./web/organisation-helper.service";
-import {CreateModifyComponent} from "./web/create-modify.component";
-import {CreateMntnerPairComponent} from "./web/create-mntner-pair/create-mntner-pair.component";
-import {CreateSelfMaintainedMaintainerComponent} from "./web/create-self-maintained-maintainer.component";
-import {ModalAddAttributeComponent} from "./web/modal-add-attribute.component";
-import {ModalAuthenticationComponent} from "./web/modal-authentication.component";
-import {ModalCreateRoleForAbuseCComponent} from "./web/modal-create-role-for-abusec.component";
-import {ModalDeleteObjectComponent} from "./web/modal-delete-object.component";
-import {ModalMd5PasswordComponent} from "./web/modal-md5-password.component";
-import {ModalEditAttributeComponent} from "./web/modal-edit-attribute.component";
-import {CreateService} from "./web/create.service";
+import {EnumService} from "./enum.service";
+import {DisplayComponent} from "./display.component";
+import {DisplayMntnerPairComponent} from "./display-mntner-pair.component";
+import {SelectComponent} from "./select.component";
+import {ForceDeleteComponent} from "./forcedelete/force-delete.component";
+import {ForceDeleteSelectComponent} from "./forcedeleteselect/force-delete-select.component";
+import {DeleteComponent} from "./delete.component";
+import {CryptService} from "./crypt.service";
+import {OrganisationHelperService} from "./organisation-helper.service";
+import {CreateModifyComponent} from "./create-modify.component";
+import {CreateMntnerPairComponent} from "./createmntnerpair/create-mntner-pair.component";
+import {CreateSelfMaintainedMaintainerComponent} from "./create-self-maintained-maintainer.component";
+import {ModalAddAttributeComponent} from "./modal-add-attribute.component";
+import {ModalAuthenticationComponent} from "./modal-authentication.component";
+import {ModalCreateRoleForAbuseCComponent} from "./modal-create-role-for-abusec.component";
+import {ModalDeleteObjectComponent} from "./modal-delete-object.component";
+import {ModalMd5PasswordComponent} from "./modal-md5-password.component";
+import {ModalEditAttributeComponent} from "./modal-edit-attribute.component";
+import {CreateService} from "./create.service";
 
 @NgModule({
     imports: [
@@ -96,5 +96,5 @@ import {CreateService} from "./web/create.service";
         ModalEditAttributeComponent
     ]
 })
-export class UpdatesModule {
+export class UpdatesWebModule {
 }

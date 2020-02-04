@@ -4,7 +4,7 @@ import {LinkService} from "./link.service";
 import {MessageStoreService} from "./message-store.service";
 import {MntnerService} from "./mntner.service";
 import {IAttributeModel} from "../shared/whois-response-type.model";
-import {OrganisationHelperService} from "./web/organisation-helper.service";
+import {OrganisationHelperService} from "./organisation-helper.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 
 @Injectable()

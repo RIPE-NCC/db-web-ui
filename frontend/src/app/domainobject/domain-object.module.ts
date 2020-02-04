@@ -8,7 +8,7 @@ import {WhoisObjectModule} from "../whois-object/whois-object.module";
 import {PrefixService} from "./prefix.service";
 import {ModalDomainObjectSplashComponent} from "./modal-domain-object-splash.component";
 import {ModalDomainCreationWaitComponent} from "./modal-domain-creation-wait.component";
-import {UpdatesModule} from "../updates/update.module";
+import {UpdatesWebModule} from "../updatesweb/updateweb.module";
 
 @NgModule({
     imports: [
@@ -16,7 +16,7 @@ import {UpdatesModule} from "../updates/update.module";
         FormsModule,
         SharedModule,
         WhoisObjectModule,
-        UpdatesModule
+        UpdatesWebModule
     ],
     declarations: [
         DisplayDomainObjectsComponent,

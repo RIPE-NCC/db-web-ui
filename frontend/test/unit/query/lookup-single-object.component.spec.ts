@@ -60,7 +60,7 @@ describe("LookupSingleObjectComponent", () => {
                 type: "thetype",
                 key: "thekey",
                 get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
-                has: (hash: string) => (true)
+                has: (hash: string) => true
             });
             fixture.detectChanges();
             await fixture.whenStable();
@@ -73,7 +73,7 @@ describe("LookupSingleObjectComponent", () => {
             lookupService.lookupWhoisObject.and.returnValue(throwError("That just won't do."));
             component.activatedRoute.queryParams = of({
                 get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
-                has: (hash: string) => (true)
+                has: (hash: string) => true
             });
             fixture.detectChanges();
             await fixture.whenStable();
@@ -87,7 +87,7 @@ describe("LookupSingleObjectComponent", () => {
                 type: "thetype",
                 key: "thekey",
                 get: (param: string) => (component.activatedRoute.snapshot.queryParamMap[param]),
-                has: (hash: string) => (true)
+                has: (hash: string) => true
             });
             fixture.detectChanges();
             await fixture.whenStable();

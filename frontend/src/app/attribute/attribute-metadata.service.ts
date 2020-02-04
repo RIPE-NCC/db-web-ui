@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
-import {MntnerService} from "../updates/mntner.service";
+import {MntnerService} from "../updatesweb/mntner.service";
 import {JsUtilService} from "../core/js-utils.service";
 import {AttributeSharedService} from "./attribute-shared.service";
 import {IAttributeModel} from "../shared/whois-response-type.model";

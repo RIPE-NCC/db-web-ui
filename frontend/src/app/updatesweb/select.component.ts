@@ -1,10 +1,9 @@
 import {Component} from "@angular/core";
 import {Router} from "@angular/router";
 import * as _ from "lodash";
-import {WhoisMetaService} from "../../shared/whois-meta.service";
-import {UserInfoService} from "../../userinfo/user-info.service";
-import {PropertiesService} from "../../properties.service";
-import {IUserInfoResponseData} from "../../dropdown/org-data-type.model";
+import {WhoisMetaService} from "../shared/whois-meta.service";
+import {UserInfoService} from "../userinfo/user-info.service";
+import {PropertiesService} from "../properties.service";
 
 interface ISelectedObjectType {
     objectType: string;

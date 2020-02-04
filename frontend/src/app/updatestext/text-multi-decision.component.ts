@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
-import {PreferenceService} from "../updates/preference.service";
+import {PreferenceService} from "../updatesweb/preference.service";
 import {PropertiesService} from "../properties.service";
 
 @Component({

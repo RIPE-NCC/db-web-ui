@@ -5,11 +5,11 @@ import {of, throwError} from "rxjs";
 import * as _ from "lodash";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {WhoisMetaService} from "../shared/whois-meta.service";
-import {ObjectUtilService} from "../updates/object-util.service";
-import {MntnerService} from "../updates/mntner.service";
+import {ObjectUtilService} from "../updatesweb/object-util.service";
+import {MntnerService} from "../updatesweb/mntner.service";
 import {AlertsService} from "../shared/alert/alerts.service";
 import {CredentialsService} from "../shared/credentials.service";
-import {ModalAuthenticationComponent} from "../updates/web/modal-authentication.component";
+import {ModalAuthenticationComponent} from "../updatesweb/modal-authentication.component";
 import {IAttributeModel, IMntByModel} from "../shared/whois-response-type.model";
 
 @Injectable()

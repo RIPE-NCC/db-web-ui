@@ -2,7 +2,7 @@ import {Component, ViewChild} from "@angular/core";
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ModalDeleteObjectComponent} from "./modal-delete-object.component";
-import {AlertsComponent} from "../../shared/alert/alerts.component";
+import {AlertsComponent} from "../shared/alert/alerts.component";
 
 @Component({
     selector: "delete-component",

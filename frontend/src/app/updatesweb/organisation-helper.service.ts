@@ -1,8 +1,8 @@
 import {Injectable} from "@angular/core";
 import * as _ from "lodash";
-import {WhoisResourcesService} from "../../shared/whois-resources.service";
-import {RestService} from "../rest.service";
-import {IAttributeModel} from "../../shared/whois-response-type.model";
+import {WhoisResourcesService} from "../shared/whois-resources.service";
+import {RestService} from "./rest.service";
+import {IAttributeModel} from "../shared/whois-response-type.model";
 
 @Injectable()
 export class OrganisationHelperService {

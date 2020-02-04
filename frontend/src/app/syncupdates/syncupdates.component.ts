@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 import {Router} from "@angular/router";
-import {PreferenceService} from "../updates/preference.service";
+import {PreferenceService} from "../updatesweb/preference.service";
 import {SyncupdatesService} from "./syncupdates.service";
 
 @Component({

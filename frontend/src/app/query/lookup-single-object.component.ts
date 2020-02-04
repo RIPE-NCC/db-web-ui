@@ -49,13 +49,13 @@ export class LookupSingleObjectComponent implements OnDestroy {
                         response.objects.object &&
                         response.objects.object.length === 1) {
                         this.whoisResponse = response.objects.object[0];
+                        this.whoisVersion = response.version;
                     } else {
                         console.warn(
                             "Expected a single object from query. source:", this.source,
                             "type:", this.objectType,
                             "name:", this.objectName);
                     }
-                    this.whoisVersion = response.version;
                 }, (() => {
                     // reload page in case in query params source was NONAUTH and object doesn't exist in mirror database
                     if (this.source !== this.properties.SOURCE) {

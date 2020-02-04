@@ -6,16 +6,16 @@ import {HttpClientTestingModule, HttpTestingController} from "@angular/common/ht
 import {of} from "rxjs";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {AttributeMetadataService} from "../../../src/app/attribute/attribute-metadata.service";
-import {MessageStoreService} from "../../../src/app/updates/message-store.service";
-import {MntnerService} from "../../../src/app/updates/mntner.service";
-import {RestService} from "../../../src/app/updates/rest.service"
+import {MessageStoreService} from "../../../src/app/updatesweb/message-store.service";
+import {MntnerService} from "../../../src/app/updatesweb/mntner.service";
+import {RestService} from "../../../src/app/updatesweb/rest.service"
 import {PropertiesService} from "../../../src/app/properties.service";
 import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 import {MaintainersEditorComponent} from "../../../src/app/whois-object/maintainers-editor.component";
 import {SharedModule} from "../../../src/app/shared/shared.module";
 import {CoreModule} from "../../../src/app/core/core.module";
 import {AttributeSharedService} from "../../../src/app/attribute/attribute-shared.service";
-import {WebUpdatesCommonsService} from "../../../src/app/updates/web/web-updates-commons.service";
+import {WebUpdatesCommonsService} from "../../../src/app/updatesweb/web-updates-commons.service";
 
 describe("MaintainersEditorComponent", () => {
 

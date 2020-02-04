@@ -1,11 +1,11 @@
 import {Component, Input} from "@angular/core";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
-import {WhoisResourcesService} from "../../shared/whois-resources.service";
-import {RestService} from "../rest.service";
-import {UserInfoService} from "../../userinfo/user-info.service";
-import {CredentialsService} from "../../shared/credentials.service";
-import {PropertiesService} from "../../properties.service";
+import {WhoisResourcesService} from "../shared/whois-resources.service";
+import {RestService} from "./rest.service";
+import {UserInfoService} from "../userinfo/user-info.service";
+import {CredentialsService} from "../shared/credentials.service";
+import {PropertiesService} from "../properties.service";
 
 export interface IModalAuthentication {
     method: any;

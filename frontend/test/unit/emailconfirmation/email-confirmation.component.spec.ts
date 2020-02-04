@@ -5,7 +5,7 @@ import {of} from "rxjs";
 
 import {EmailConfirmationComponent} from "../../../src/app/emailconfirmation/email-confirmation.component";
 import {EmailConfirmationService} from "../../../src/app/emailconfirmation/email-confirmation.service";
-import {LoadingIndicatorComponent} from "../../../src/app/shared/loading-indicator/loading-indicator.component";
+import {LoadingIndicatorComponent} from "../../../src/app/shared/loadingindicator/loading-indicator.component";
 import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 
 describe("Testing EmailConfirmation with logged in user", () => {

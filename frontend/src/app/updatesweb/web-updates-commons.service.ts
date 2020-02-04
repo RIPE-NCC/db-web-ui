@@ -1,13 +1,13 @@
-import {Injectable, ViewChild} from "@angular/core";
+import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
-import {AlertsService} from "../../shared/alert/alerts.service";
-import {MntnerService} from "../mntner.service";
+import {AlertsService} from "../shared/alert/alerts.service";
+import {MntnerService} from "./mntner.service";
 import {IMaintainers} from "./create-modify.component";
 import {ModalAuthenticationComponent} from "./modal-authentication.component";
-import {IAttributeModel} from "../../shared/whois-response-type.model";
-import {PropertiesService} from "../../properties.service";
+import {IAttributeModel} from "../shared/whois-response-type.model";
+import {PropertiesService} from "../properties.service";
 
 export interface IAuthParams {
     maintainers: IMaintainers;

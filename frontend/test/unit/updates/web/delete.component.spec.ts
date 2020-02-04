@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute, convertToParamMap, ParamMap, Router} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {of, throwError} from "rxjs";
-import {DeleteComponent} from "../../../../src/app/updates/web/delete.component";
+import {DeleteComponent} from "../../../../src/app/updatesweb/delete.component";
 import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
 import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";

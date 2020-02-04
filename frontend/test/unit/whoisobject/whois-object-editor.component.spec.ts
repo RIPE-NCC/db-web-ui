@@ -6,12 +6,12 @@ import {SharedModule} from "../../../src/app/shared/shared.module";
 import {CoreModule} from "../../../src/app/core/core.module";
 import {WhoisObjectEditorComponent} from "../../../src/app/whois-object/whois-object-editor.component";
 import {AttributeMetadataService} from "../../../src/app/attribute/attribute-metadata.service";
-import {MessageStoreService} from "../../../src/app/updates/message-store.service";
+import {MessageStoreService} from "../../../src/app/updatesweb/message-store.service";
 import {AttributeModule} from "../../../src/app/attribute/attribute.module";
-import {MntnerService} from "../../../src/app/updates/mntner.service";
-import {RestService} from "../../../src/app/updates/rest.service";
-import {CharsetToolsService} from "../../../src/app/updates/charset-tools.service";
-import {EnumService} from "../../../src/app/updates/web/enum.service";
+import {MntnerService} from "../../../src/app/updatesweb/mntner.service";
+import {RestService} from "../../../src/app/updatesweb/rest.service";
+import {CharsetToolsService} from "../../../src/app/updatesweb/charset-tools.service";
+import {EnumService} from "../../../src/app/updatesweb/enum.service";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {PrefixService} from "../../../src/app/domainobject/prefix.service";
 

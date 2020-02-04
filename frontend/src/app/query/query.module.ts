@@ -8,7 +8,7 @@ import {LookupComponent} from "./lookup.component";
 import {LookupSingleObjectComponent} from "./lookup-single-object.component";
 import {QueryComponent} from "./query.component";
 import {QueryParametersService} from "./query-parameters.service";
-import {TemplateComponent} from "./template-component/template.component";
+import {TemplateComponent} from "./templatecomponent/template.component";
 import {QueryService} from "./query.service";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
 
