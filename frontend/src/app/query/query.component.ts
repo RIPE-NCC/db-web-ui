@@ -132,7 +132,9 @@ export class QueryComponent implements OnDestroy {
         }
         const cleanQp = _.cloneDeep(this.qp);
         // Reset on-screen widgets
-        this.alertsComponent.clearErrors();
+        if (this.alertsComponent) {
+            this.alertsComponent.clearErrors();
+        }
 
         const issues = this.queryParametersService.validate(cleanQp);
         for (const msg of issues.warnings) {
