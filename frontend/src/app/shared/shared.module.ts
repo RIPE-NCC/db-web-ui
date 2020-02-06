@@ -22,12 +22,15 @@ import {FilteroutAttributeByHiddenPipe} from "./filterout-attribute-by-hidden.pi
 import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
 import {DescriptionSyntaxComponent} from "./descriptionsyntax/description-syntax.component";
 import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
+import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
+import {DiffMatchPatchModule} from "ng-diff-match-patch";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        NgbModule
+        NgbModule,
+        DiffMatchPatchModule
     ],
     declarations: [
         AlertsComponent,
@@ -43,7 +46,8 @@ import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
         DescriptionSyntaxComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
-        SanitizeImgHtmlPipe
+        SanitizeImgHtmlPipe,
+        WhoisLineDiffDirective
     ],
     providers: [
         CredentialsService,
@@ -75,7 +79,8 @@ import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
         FilteroutAttributeByNamePipe,
         SanitizeImgHtmlPipe,
         NgbModule,
-        TableScrollerDirective
+        TableScrollerDirective,
+        WhoisLineDiffDirective
     ]
 })
 export class SharedModule {
