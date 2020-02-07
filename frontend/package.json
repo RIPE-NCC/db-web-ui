@@ -35,7 +35,7 @@
     "karma-jasmine": "3.1.0",
     "karma-jasmine-html-reporter": "1.5.2",
     "karma-selenium-launcher": "1.0.1",
-    "protractor": "5.4.3",
+    "protractor": "5.4.2",
     "ts-node": "8.6.2",
     "tslint": "6.0.0",
     "typescript": "3.5.3"
