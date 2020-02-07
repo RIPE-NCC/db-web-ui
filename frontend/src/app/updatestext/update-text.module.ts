@@ -2,7 +2,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {DiffMatchPatchModule} from "ng-diff-match-patch";
 import {SharedModule} from "../shared/shared.module";
 import {AutoKeyLogicService} from "./auto-key-logic.service";
 import {RpslService} from "./rpsl.service";
@@ -23,7 +22,6 @@ import {TextMultiDecisionModalComponent} from "./text-multi-decision-modal.compo
         FormsModule,
         HttpClientModule,
         SharedModule,
-        DiffMatchPatchModule,
         UpdatesWebModule
     ],
     declarations: [

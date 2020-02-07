@@ -80,7 +80,7 @@
                     <tr *ngIf="object.expanded">
                         <td></td>
                         <td colspan="4">
-                            <pre *ngIf="object.showDiff" lineDiff [left]="object.rpslOriginal" [right]="object.rpsl" class="textdiff"  style="font-family:monospace;"></pre>
+                            <pre *ngIf="object.showDiff" whoisLineDiff [left]="object.rpslOriginal" [right]="object.rpsl" class="textdiff"  style="font-family:monospace;"></pre>
                             <pre *ngIf="!object.showDiff" style="font-family:monospace;">{{object.rpsl}}</pre></td>
                         <td style="display: none;"><a *ngIf="object.textupdatesUrl" [href]="object.textupdatesUrl" target="_blank">{{object.action}}single object</a></td>
                     </tr>

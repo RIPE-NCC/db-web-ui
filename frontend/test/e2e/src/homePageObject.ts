@@ -140,6 +140,9 @@ module.exports = {
     btnAddAttribute: element(by.id("createForm")).element(by.css(".attr-0")).element(by.css(".fa.fa-plus")),
     allObjectRows: element(by.id("createForm")).element(by.css("section.visible-field-form")).element(by.css("ul.appeared-fields")).all(by.css("li")),
     btnCreateSharedMaintainer: element(by.css("display-mntner-pair")).all(by.css("button.ga-createobj-modifyobj")).get(0),
+    panelInsTextDiff: element(by.css(".textdiff")).all(by.css(".ins")),
+    panelDelTextDiff: element(by.css(".textdiff")).all(by.css(".del")),
+    panelEqualTextDiff: element(by.css(".textdiff")).element(by.css(".ins")),
 
     modal: element(by.css("ngb-modal-window")),
     modalAttributeList: element(by.css("ngb-modal-window")).element(by.css("select")),

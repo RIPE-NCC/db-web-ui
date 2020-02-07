@@ -4,9 +4,7 @@ import {HttpClientTestingModule, HttpTestingController} from "@angular/common/ht
 import {FormsModule} from "@angular/forms";
 import {Location} from "@angular/common";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {DiffMatchPatchModule} from "ng-diff-match-patch";
 import {of} from "rxjs";
-import {AlertsComponent} from "../../../src/app/shared/alert/alerts.component";
 import {PreferenceService} from "../../../src/app/updatesweb/preference.service";
 import {WhoisResourcesService} from "../../../src/app/shared/whois-resources.service";
 import {WhoisMetaService} from "../../../src/app/shared/whois-meta.service";
@@ -24,6 +22,7 @@ import {TextMultiComponent} from "../../../src/app/updatestext/text-multi.compon
 import {SerialExecutorService} from "../../../src/app/updatestext/serial-executor.service";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {AutoKeyLogicService} from "../../../src/app/updatestext/auto-key-logic.service";
+import {SharedModule} from "../../../src/app/shared/shared.module";
 
 describe("TextMultiComponent", () => {
     let httpMock: HttpTestingController;
@@ -46,8 +45,8 @@ describe("TextMultiComponent", () => {
         modalMock.open.and.returnValue({componentInstance: {}, result: of().toPromise()});
         credentialsServiceMock = jasmine.createSpyObj("CredentialsService", ["hasCredentials", "getCredentials"]);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, DiffMatchPatchModule, FormsModule],
-            declarations: [TextMultiComponent, AlertsComponent],
+            imports: [HttpClientTestingModule, SharedModule, FormsModule],
+            declarations: [TextMultiComponent],
             providers: [
                 {provide: PreferenceService, useValue: preferencesServiceMock},
                 SerialExecutorService,

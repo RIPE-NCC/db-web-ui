@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from "@angular/core/testing";
 import {ActivatedRoute, Router} from "@angular/router";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {DiffMatchPatchModule} from "ng-diff-match-patch";
 import {CookieService} from "ngx-cookie-service";
 import {of} from "rxjs";
 import {DisplayComponent} from "../../../../src/app/updatesweb/display.component";
@@ -9,7 +8,6 @@ import {MessageStoreService} from "../../../../src/app/updatesweb/message-store.
 import {WhoisResourcesService} from "../../../../src/app/shared/whois-resources.service";
 import {MntnerService} from "../../../../src/app/updatesweb/mntner.service";
 import {CredentialsService} from "../../../../src/app/shared/credentials.service";
-import {AlertsComponent} from "../../../../src/app/shared/alert/alerts.component";
 import {WhoisMetaService} from "../../../../src/app/shared/whois-meta.service";
 import {RestService} from "../../../../src/app/updatesweb/rest.service";
 import {AlertsService} from "../../../../src/app/shared/alert/alerts.service";
@@ -17,8 +15,8 @@ import {UserInfoService} from "../../../../src/app/userinfo/user-info.service";
 import {WebUpdatesCommonsService} from "../../../../src/app/updatesweb/web-updates-commons.service";
 import {PrefixService} from "../../../../src/app/domainobject/prefix.service";
 import {PropertiesService} from "../../../../src/app/properties.service";
-import {SanitizeImgHtmlPipe} from "../../../../src/app/shared/sanitize-img-html.pipe";
 import {IAttributeModel} from "../../../../src/app/shared/whois-response-type.model";
+import {SharedModule} from "../../../../src/app/shared/shared.module";
 
 describe("DisplayComponent", () => {
 
@@ -38,10 +36,8 @@ describe("DisplayComponent", () => {
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
         messageStoreServiceMock = jasmine.createSpyObj("MessageStoreService", ["get"]);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, DiffMatchPatchModule],
-            declarations: [
-                DisplayComponent, AlertsComponent, SanitizeImgHtmlPipe
-            ],
+            imports: [HttpClientTestingModule, SharedModule],
+            declarations: [DisplayComponent],
             providers: [
                 CredentialsService,
                 {provide: MessageStoreService, useValue: messageStoreServiceMock},
@@ -253,10 +249,8 @@ describe("DisplayComponent with object containing slash", () => {
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
         messageStoreServiceMock = jasmine.createSpyObj("MessageStoreService", ["get"]);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, DiffMatchPatchModule],
-            declarations: [
-                DisplayComponent, AlertsComponent, SanitizeImgHtmlPipe
-            ],
+            imports: [HttpClientTestingModule, SharedModule],
+            declarations: [DisplayComponent],
             providers: [
                 CredentialsService,
                 {provide: MessageStoreService, useValue: messageStoreServiceMock},
@@ -387,10 +381,8 @@ describe("DisplayComponent for RIPE-NONAUTH aut-num object", () => {
         routerMock = jasmine.createSpyObj("Router", ["navigate", "navigateByUrl"]);
         messageStoreServiceMock = jasmine.createSpyObj("MessageStoreService", ["get"]);
         TestBed.configureTestingModule({
-            imports: [HttpClientTestingModule, DiffMatchPatchModule],
-            declarations: [
-                DisplayComponent, AlertsComponent, SanitizeImgHtmlPipe
-            ],
+            imports: [HttpClientTestingModule, SharedModule],
+            declarations: [DisplayComponent],
             providers: [
                 CredentialsService,
                 {provide: MessageStoreService, useValue: messageStoreServiceMock},

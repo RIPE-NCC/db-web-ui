@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-
+import {DiffMatchPatchModule} from "ng-diff-match-patch";
 import {CredentialsService} from "./credentials.service";
 import {WhoisMetaService} from "./whois-meta.service";
 import {WhoisResourcesService} from "./whois-resources.service";
@@ -24,12 +24,14 @@ import {DescriptionSyntaxComponent} from "./descriptionsyntax/description-syntax
 import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
 import {WebAppVersionComponent} from "../version/web-app-version.component";
 import {WhoisVersionComponent} from "../version/whois-version.component";
+import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
-        NgbModule
+        NgbModule,
+        DiffMatchPatchModule
     ],
     declarations: [
         AlertsComponent,
@@ -47,7 +49,8 @@ import {WhoisVersionComponent} from "../version/whois-version.component";
         FilteroutAttributeByNamePipe,
         SanitizeImgHtmlPipe,
         WebAppVersionComponent,
-        WhoisVersionComponent
+        WhoisVersionComponent,
+        WhoisLineDiffDirective
     ],
     providers: [
         CredentialsService,
@@ -81,7 +84,8 @@ import {WhoisVersionComponent} from "../version/whois-version.component";
         NgbModule,
         TableScrollerDirective,
         WhoisVersionComponent,
-        WebAppVersionComponent
+        WebAppVersionComponent,
+        WhoisLineDiffDirective
     ]
 })
 export class SharedModule {
