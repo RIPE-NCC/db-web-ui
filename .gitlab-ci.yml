@@ -1,4 +1,4 @@
-image: docker-registry.ripe.net/sbuskens/db-web-ui/db-web-ui-build:chrome79-jdk8-maven3.6
+image: docker-registry.ripe.net/sbuskens/db-web-ui/db-web-ui-build:chrome80-jdk8-maven3.6
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=/cache/maven.repository
