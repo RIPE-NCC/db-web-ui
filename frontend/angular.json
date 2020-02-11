@@ -18,7 +18,7 @@
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "customWebpackConfig": {
-              path: "test/e2e/extra-webpack.config.js"
+              "path": "test/e2e/extra-webpack.config.js"
             },
             "outputPath": "dist",
             "index": "src/index.html",
