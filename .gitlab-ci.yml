@@ -1,8 +1,9 @@
 image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:chrome80-jdk8-maven36-node10
 
 variables:
-  MAVEN_OPTS: -Dmaven.repo.local=/cache/maven.repository
-  WHITESOURCE_PRODUCT: "db-web-ui"
+  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+  WHITESOURCE_PRODUCT: "database-team"
+  WHITESOURCE_PROJECT: "db-web-ui"
 
 include:
     - project: 'swe/gitlab-ci'
@@ -18,6 +19,7 @@ cache:
   paths:
     - backend/target/
     - frontend/node_modules/
+    - .m2/repository
 
 build:
   stage: build
