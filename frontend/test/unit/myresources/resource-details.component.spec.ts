@@ -5,14 +5,13 @@ import {ActivatedRoute} from "@angular/router";
 import {NgSelectModule} from "@ng-select/ng-select";
 import {NgOptionHighlightModule} from "@ng-select/ng-option-highlight";
 import {CookieService} from "ngx-cookie-service";
-import {of} from "rxjs";
 import * as _ from "lodash";
 import {ResourceStatusService} from "../../../src/app/myresources/resource-status.service";
 import {FlagComponent} from "../../../src/app/myresources/flag/flag.component";
 import {SharedModule} from "../../../src/app/shared/shared.module";
 import {IpAddressService} from "../../../src/app/myresources/ip-address.service";
 import {ResourceDetailsComponent} from "../../../src/app/myresources/resource-details.component";
-import {HierarchySelectorComponent} from "../../../src/app/myresources/hierarchy-selector.component";
+import {HierarchySelectorComponent} from "../../../src/app/myresources/hierarchyselector/hierarchy-selector.component";
 import {IpUsageComponent} from "../../../src/app/myresources/ip-usage.component";
 import {WhoisObjectViewerComponent} from "../../../src/app/whois-object/whois-object-viewer.component";
 import {MaintainersEditorComponent} from "../../../src/app/whois-object/maintainers-editor.component";
@@ -28,9 +27,10 @@ import {ResourcesDataService} from "../../../src/app/myresources/resources-data.
 import {OrgDropDownSharedService} from "../../../src/app/dropdown/org-drop-down-shared.service";
 import {UserInfoService} from "../../../src/app/userinfo/user-info.service";
 import {IpUsageService} from "../../../src/app/myresources/ip-usage.service";
-import {AssociatedObjectsService} from "../../../src/app/myresources/associatedobjects/associated-objects.service";
 import {AssociatedObjectsComponent} from "../../../src/app/myresources/associatedobjects/associated-objects.component";
 import {MoreSpecificsComponent} from "../../../src/app/myresources/morespecifics/more-specifics.component";
+import {RefreshComponent} from "../../../src/app/myresources/refresh/refresh.component";
+import {HierarchySelectorService} from "../../../src/app/myresources/hierarchyselector/hierarchy-selector.service";
 
 describe("ResourceDetailsComponent", () => {
     let component: ResourceDetailsComponent;
@@ -43,11 +43,11 @@ describe("ResourceDetailsComponent", () => {
         }
     };
 
-  let MockAssociatedService = {
-     getAssociatedRoutes: (objectType : string, objectName : string, page: number, filter: string) => {
-      return of(MOCK_ASSOCIATED_ROUTE_OBJECT);
-    }
-  };
+  // let MockAssociatedService = {
+  //    getAssociatedRoutes: (objectType : string, objectName : string, page: number, filter: string) => {
+  //     return of(MOCK_ASSOCIATED_ROUTE_OBJECT);
+  //   }
+  // };
 
     beforeEach(() => {
         TestBed.configureTestingModule({
@@ -70,11 +70,13 @@ describe("ResourceDetailsComponent", () => {
                 WhoisObjectEditorComponent,
                 MaintainersEditorComponent,
                 AttributeRendererComponent,
-                AttributeReverseZonesComponent
+                AttributeReverseZonesComponent,
+                RefreshComponent
             ],
             providers: [
                 IpAddressService,
                 ResourceStatusService,
+                HierarchySelectorService,
                 { provide: MntnerService, useValue: MockMntnerService},
                 RestService,
                 MoreSpecificsService,
@@ -82,7 +84,7 @@ describe("ResourceDetailsComponent", () => {
                 ResourcesDataService,
                 OrgDropDownSharedService,
                 IpUsageService,
-                { provide: AssociatedObjectsService, useValue: MockAssociatedService},
+                // { provide: AssociatedObjectsService, useValue: MockAssociatedService},
                 UserInfoService,
                 CookieService
             ]
@@ -293,61 +295,6 @@ const MOCK_BA_RESPONSE = {
         ]
     }
 };
-
-const MOCK_USER_INFO = {
-  "user": {
-    "username": "isvonja@ripe.net",
-    "uuid": "nl-test-test-test-es",
-    "active": true,
-    "displayName": "Ivana Svonja"
-  },
-  "organisations": [
-    {
-      "orgObjectId": "ORG-SWEB1-RIPE",
-      "organisationName": "Andreas Schneider",
-      "roles": [
-        "certification",
-        "NON-MEMBER",
-        "myResources"
-      ]
-    }
-  ],
-  "members": [
-    {
-      "membershipId": 1362,
-      "regId": "uk.bbc",
-      "orgObjectId": "ORG-BA34-RIPE",
-      "organisationName": "BBC",
-      "roles": [
-        "admin",
-        "general",
-        "generalMeeting",
-        "resources",
-        "myResources",
-        "certification",
-        "ticketing",
-        "billing",
-        "guestUpdateRequest",
-        "LIR"
-      ]
-    }
-  ]
-};
-
-const MOCK_ASSOCIATED_ROUTE_OBJECT = {
-        "filteredSize": "3",
-        "totalNumberOfResources": "3",
-        "associatedObjects": [
-            {
-                "associatedResourceType": "inetnum",
-                "associatedResource": "212.58.224.0 - 212.58.255.255",
-                "type": "route",
-                "prefix": "212.58.224.0/24",
-                "origin": "AS1234",
-
-            }
-        ]
-    };
 
 const MOCK_AUTNUM = {
     "resources": [

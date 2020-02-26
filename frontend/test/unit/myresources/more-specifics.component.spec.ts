@@ -7,6 +7,7 @@ import {CoreModule} from "../../../src/app/core/core.module";
 import {PropertiesService} from "../../../src/app/properties.service";
 import {MoreSpecificsComponent} from "../../../src/app/myresources/morespecifics/more-specifics.component";
 import {MoreSpecificsService} from "../../../src/app/myresources/morespecifics/more-specifics.service";
+import {RefreshComponent} from "../../../src/app/myresources/refresh/refresh.component";
 
 describe("MoreSpecificsComponent", () => {
     let component: MoreSpecificsComponent;
@@ -23,6 +24,7 @@ describe("MoreSpecificsComponent", () => {
             ],
             declarations: [
                 MoreSpecificsComponent,
+                RefreshComponent
             ],
             providers: [
                 MoreSpecificsService,

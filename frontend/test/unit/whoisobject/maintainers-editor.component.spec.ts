@@ -52,7 +52,7 @@ describe("MaintainersEditorComponent", () => {
 
     it("should remove mnt-by on backspace one by one",  async() => {
         const BACKSPACE_KEYCODE = 8;
-        component.ngModel = NG_MODEL;
+        component.whoisObject = NG_MODEL;
         spyOn(component.restService, "fetchMntnersForSSOAccount")
             .and.returnValue(of(USER_WITH_MORE_ASSOCIATED_MNT_MOCK));
         spyOn(component, "onMntnerRemoved").and.callThrough();

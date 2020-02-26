@@ -38,11 +38,11 @@ describe("Resources, update object", () => {
 
     describe("not comaintained by ripe", () =>  {
 
-        beforeEach(function () {
+        beforeEach(() => {
             browser.get(browser.baseUrl + "myresources/detail/inetnum/3.0.103.0%2520-%25203.0.103.255/false");
         });
 
-        it("should edit netname", function () {
+        it("should edit netname", () => {
             page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
             page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
@@ -76,19 +76,51 @@ describe("Resources, update object", () => {
             expect(page.woeOrg.isPresent()).toBe(true);
         });
 
+        it("should contain delete button for not co-maintained by RIPE-NCC-*-MNT", () => {
+            page.scrollIntoView(page.btnUpdateObjectButton);
+            page.btnUpdateObjectButton.click();
+            page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
+            page.modalInpAssociate.click();
+            page.modalBtnSubmit.click();
+            expect(page.modal.isPresent()).toBe(false);
+
+            expect(page.btnDeleteObjectWhoisEditor.isPresent()).toBe(true);
+        });
+
+        it("should delete resource on click on delete button", () => {
+            page.scrollIntoView(page.btnUpdateObjectButton);
+            page.btnUpdateObjectButton.click();
+            page.modalInpPassword.sendKeys("TPOLYCHNIA4-MNT");
+            page.modalInpAssociate.click();
+            page.modalBtnSubmit.click();
+            page.scrollIntoView(page.btnDeleteObjectWhoisEditor);
+            page.btnDeleteObjectWhoisEditor.click();
+
+            expect(page.modalDeleteObject.isPresent()).toBe(true);
+            page.btnConfirmModalDelete.click();
+            expect(page.modalDeleteObject.isPresent()).toBe(false);
+            expect(browser.getCurrentUrl()).toContain("myresources/detail/inetnum/3.0.103.0%20-%203.0.127.255/false?alertMessage=The%20inetnum%20for%203.0.103.0%20-%203.0.103.255%20has%20been%20deleted");
+            expect(page.infoMessage.isPresent()).toBeTruthy();
+            expect(page.infoMessage.getText())
+                .toEqual("The inetnum for 3.0.103.0 - 3.0.103.255 has been deleted");
+        });
     });
 
-    it("should allow the user to add abuse-c", () => {
-        page.scrollIntoView(page.btnUpdateObjectButton);
-        page.btnUpdateObjectButton.click();
-        page.modalInpPassword.sendKeys("TPOL888-MNT");
-        page.modalInpAssociate.click();
-        page.modalBtnSubmit.click();
+    describe("comaintained by ripe", () =>  {
 
-        page.scrollIntoView(page.inpDescr);
-        page.btnAddAnAttribute(page.inpDescr).click();
-        page.scrollIntoView(page.modal);
-        expect(page.selectFromList(page.modalAttributeList, "no-such-attribute").isPresent()).toEqual(false);
-        expect(page.selectFromList(page.modalAttributeList, "abuse-c").isPresent()).toEqual(true);
+        beforeEach(() => {
+            browser.get(browser.baseUrl + "myresources/detail/inetnum/194.171.0.0%20-%20194.171.255.255/false");
+        });
+
+        it("should not contain delete button for co-maintained by RIPE-NCC-*-MNT", () => {
+            page.scrollIntoView(page.btnUpdateObjectButton);
+            page.btnUpdateObjectButton.click();
+            page.modalInpPassword.sendKeys("TDACRUZPER2-MNT");
+            page.modalInpAssociate.click();
+            page.modalBtnSubmit.click();
+            expect(page.modal.isPresent()).toBe(false);
+
+            expect(page.btnDeleteObjectWhoisEditor.isPresent()).toBe(false);
+        });
     });
 });

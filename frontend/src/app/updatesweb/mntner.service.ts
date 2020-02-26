@@ -43,8 +43,8 @@ export class MntnerService {
 
         return new Promise((resolve: any, reject: any) => {
             if (!this.isSsoAuthorisedForMntByOrLower(whoisObject, ssoAccts)) {
-                const mntByAttrs = this.whoisResourcesService.getAllAttributesOnName(whoisObject, "mnt-by");
-                const mntLowerAttrs = this.whoisResourcesService.getAllAttributesOnName(whoisObject, "mnt-lower");
+                const mntByAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, "mnt-by");
+                const mntLowerAttrs = WhoisResourcesService.getAllAttributesOnName(whoisObject, "mnt-lower");
                 const parentMntners = _.map(mntByAttrs.concat(mntLowerAttrs), (mntner: any) => {
                     return {key: mntner.value};
                 });
@@ -82,8 +82,8 @@ export class MntnerService {
     }
 
     public isSsoAuthorisedForMntByOrLower(object: any, maintainers: IMntByModel[]) {
-        const mntBys = this.whoisResourcesService.getAllAttributesOnName(object, "mnt-by");
-        const mntLowers = this.whoisResourcesService.getAllAttributesOnName(object, "mnt-lower");
+        const mntBys = WhoisResourcesService.getAllAttributesOnName(object, "mnt-by");
+        const mntLowers = WhoisResourcesService.getAllAttributesOnName(object, "mnt-lower");
         const ssoAccts = _.filter(maintainers, (mntner: IMntByModel) => {
             return _.find(mntner.auth, (auth) => {
                 return auth === "SSO";
@@ -331,7 +331,7 @@ export class MntnerService {
                 //     (1) mnt-domains
                 const resourceAttributes = this.whoisResourcesService.getAttributes(wrappedResource);
 
-                const mntDomains = this.whoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-domains");
+                const mntDomains = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-domains");
                 if (mntDomains.length > 0) {
                     return mntHandler(mntDomains);
                 }
@@ -339,7 +339,7 @@ export class MntnerService {
                 // (2) if NOT exact match, then check for mnt-lower
                 const primaryKey = this.whoisResourcesService.getPrimaryKey(wrappedResource);
                 if (!this.prefixService.isExactMatch(prefix, primaryKey)) {
-                    const mntLowers = this.whoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-lower");
+                    const mntLowers = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-lower");
 
                     if (mntLowers.length > 0) {
                         return mntHandler(mntLowers);
@@ -347,7 +347,7 @@ export class MntnerService {
                 }
 
                 // (3) mnt-by
-                const mntBys = this.whoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-by");
+                const mntBys = WhoisResourcesService.getAllAttributesOnName(resourceAttributes, "mnt-by");
                 return mntHandler(mntBys);
             }
         }, () => {

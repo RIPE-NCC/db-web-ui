@@ -188,7 +188,7 @@ describe("ModalDeleteObjectComponent undeletable object", () => {
     it("should close the modal and return to modify when canceled", async () => {
         modalDeleteObjectComponent.inputData.onCancelPath = "webupdates/modify";
         modalDeleteObjectComponent.cancel();
-        expect(modalMock.close).toHaveBeenCalled();
+        expect(modalMock.dismiss).toHaveBeenCalled();
         expect(routerMock.navigate).toHaveBeenCalled();
         expect(routerMock.navigate).toHaveBeenCalledWith(["webupdates/modify", source, objectType, name]);
     });
@@ -196,7 +196,7 @@ describe("ModalDeleteObjectComponent undeletable object", () => {
     it("should close the modal and return to force delete when canceled", async () => {
         modalDeleteObjectComponent.inputData.onCancelPath = "forceDelete";
         modalDeleteObjectComponent.cancel();
-        expect(modalMock.close).toHaveBeenCalled();
+        expect(modalMock.dismiss).toHaveBeenCalled();
         expect(routerMock.navigate).toHaveBeenCalledWith(["forceDelete", source, objectType, name]);
     });
 

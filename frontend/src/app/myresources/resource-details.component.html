@@ -1,7 +1,7 @@
 <section class="resource-intro">
     <h1>
-        <name-formatter *ngIf="resource?.resource" [name]="resource.resource"
-                        [type]="resource.type"></name-formatter>
+        <name-formatter [name]="objectName"
+                        [type]="objectType"></name-formatter>
     </h1>
     <div class="flags-container">
         <flag *ngFor="let f of flags" [ngClass]="f.colour" [tooltip]="f.tooltip" [text]="f.text"></flag>
@@ -18,33 +18,39 @@
 <section class="db-object" id="editortop">
     <h2>Object in RIPE Database</h2>
     <alerts></alerts>
-    <div *ngIf="whoisObject">
+    <loading-indicator class="resource-page-message" *ngIf="loadingResource"></loading-indicator>
+    <div *ngIf="whoisObject && !showRefreshButton && !loadingResource">
         <whois-object-viewer *ngIf="!isEditing"
                 [ng-model]="whoisObject"
                 (update-clicked)="showObjectEditor()"></whois-object-viewer>
-        <maintainers-editor [ng-model]="whoisObject"
+        <maintainers-editor [whois-object]="whoisObject"
                             *ngIf="isEditing"
                             (authentication-failed-clbk)="hideObjectEditor()"></maintainers-editor>
         <whois-object-editor [ng-model]="whoisObject"
                              [disable-submit]="!isEditing"
+                             [deletable]="isDeletable"
                              *ngIf="isEditing"
                              (cancel-clicked)="hideObjectEditor()"
-                             (update-clicked)="updateButtonClicked($event)"></whois-object-editor>
-
+                             (update-clicked)="updateButtonClicked($event)"
+                             (delete-clicked)="deleteClicked($event)"></whois-object-editor>
     </div>
+    <refresh *ngIf="showRefreshButton"
+             reason="There was problem reading resource please try again" (refresh)="init()"></refresh>
 </section>
 
-<more-specifics [objectType]="objectType"
-               [objectName]="objectName"
-               [sponsored]="sponsored"></more-specifics>
+<div *ngIf="!showRefreshButton && !loadingResource">
+    <more-specifics [objectType]="objectType"
+                   [objectName]="objectName"
+                   [sponsored]="sponsored"></more-specifics>
 
-<associated-objects id="associated-route-objects" *ngIf="resource?.iRR"
-                    title="Associated Route Objects"
-                    associatedType="route"
-                    [objectType]="objectType"
-                    [objectName]="objectName"></associated-objects>
-<associated-objects id="associated-domain-objects" *ngIf="resource?.rDNS"
-                    title="Associated Domain Objects"
-                    associatedType="domain"
-                    [objectType]="objectType"
-                    [objectName]="objectName"></associated-objects>
+    <associated-objects id="associated-route-objects" *ngIf="resource?.iRR"
+                        title="Associated Route Objects"
+                        associatedType="route"
+                        [objectType]="objectType"
+                        [objectName]="objectName"></associated-objects>
+    <associated-objects id="associated-domain-objects" *ngIf="resource?.rDNS"
+                        title="Associated Domain Objects"
+                        associatedType="domain"
+                        [objectType]="objectType"
+                        [objectName]="objectName"></associated-objects>
+</div>

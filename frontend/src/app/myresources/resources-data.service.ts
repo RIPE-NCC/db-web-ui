@@ -1,13 +1,12 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {timeout} from "rxjs/operators";
+import {Observable, of, throwError} from "rxjs";
+import {timeout, retryWhen, delay, switchMap} from "rxjs/operators";
 import {IMoreSpecificsApiResult} from "./morespecifics/more-specifics.service";
 import {
     IIpv4Analysis,
     IIPv4ResourcesResponse,
     IIPv6ResourcesResponse,
-    IResourceModel,
     IResourceOverviewResponseModel, IResourceTickets
 } from "./resource-type.model";
 
@@ -15,21 +14,6 @@ import {
 export class ResourcesDataService {
 
     constructor(private http: HttpClient) {
-    }
-
-    public fetchParentResources(resource: IResourceModel, org: string): Observable<string[]> {
-        if (!resource || !resource.resource || !resource.type) {
-            console.error("Not a resource", resource);
-            throw new TypeError("ResourcesDataService.fetchParentResource failed: not a resource");
-        }
-        const type = resource.type;
-        const key = resource.resource;
-        const params = new HttpParams()
-            .set("key", key)
-            .set("org", org)
-            .set("type", type);
-        return this.http.get<string[]>("api/whois/hierarchy/parents-of", {params})
-            .pipe(timeout(10000));
     }
 
     public fetchResource(objectName: string, type: string): Observable<IMoreSpecificsApiResult> {

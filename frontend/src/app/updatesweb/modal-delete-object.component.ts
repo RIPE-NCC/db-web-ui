@@ -1,4 +1,4 @@
-import {Component, Input} from "@angular/core";
+import {Component, Input, OnDestroy} from "@angular/core";
 import {Router} from "@angular/router";
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import * as _ from "lodash";
@@ -8,7 +8,7 @@ import {CredentialsService} from "../shared/credentials.service";
 interface IModalDelete {
     name: string;
     objectType: string;
-    onCancelPath: string;
+    onCancelPath?: string;
     source: string;
 }
 
@@ -16,7 +16,7 @@ interface IModalDelete {
     selector: "modal-delete-object",
     templateUrl: "./modal-delete-object.component.html",
 })
-export class ModalDeleteObjectComponent {
+export class ModalDeleteObjectComponent implements OnDestroy {
 
     public MAX_REFS_TO_SHOW: number = 5;
 
@@ -69,7 +69,7 @@ export class ModalDeleteObjectComponent {
 
     public cancel() {
         this.transitionToState(this.inputData.source, this.inputData.objectType, this.inputData.name, this.inputData.onCancelPath);
-        this.activeModal.close();
+        this.activeModal.dismiss();
         this.isDismissed = false;
     }
     public dismiss() {

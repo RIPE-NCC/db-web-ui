@@ -1,4 +1,4 @@
-import {Component, Input, OnChanges, OnDestroy, SimpleChanges} from "@angular/core";
+import {Component, Input, OnChanges} from "@angular/core";
 import {IMoreSpecificsApiResult, MoreSpecificsService} from "./more-specifics.service";
 import {Location} from "@angular/common";
 
@@ -16,23 +16,22 @@ export class MoreSpecificsComponent implements OnChanges {
     public sponsored: boolean;
 
     public moreSpecifics: IMoreSpecificsApiResult;
-    public canHaveMoreSpecifics: boolean;
     public showScroller = true;
-    public ipFilter: string = null;
+    public ipFilter: string;
     public tableSize: number = 10;
     public tableHeight: number = 0;
     public lastPage: number;
     public MAGIC = 100; // number of items per page on server
     private filterDebouncer: any = null;
+    public loading: boolean = false;
+    public showRefreshButton: boolean = false;
 
     public constructor(private moreSpecificsService: MoreSpecificsService,
-                       private location: Location) {
-
-    }
+                       private location: Location) {}
 
     ngOnChanges() {
-        this.canHaveMoreSpecifics = false;
         this.lastPage = -1;
+        this.showRefreshButton = false;
         this.getResourcesFromBackEnd();
     }
 
@@ -67,7 +66,7 @@ export class MoreSpecificsComponent implements OnChanges {
         },400);
     }
 
-    private getResourcesFromBackEnd(pageNr = 0, ipFilter = "") {
+    private getResourcesFromBackEnd(pageNr: number = 0, ipFilter: string = "") {
         if (pageNr <= this.lastPage) {
             // ignore requests for pages that we've done, or that we're are already fetching.
             return;
@@ -79,9 +78,11 @@ export class MoreSpecificsComponent implements OnChanges {
         }
         this.lastPage = pageNr;
         if (this.objectType === "inetnum" || this.objectType === "inet6num") {
+            this.loading = true;
             this.moreSpecificsService.getSpecifics(this.objectName, this.objectType, pageNr, ipFilter)
                 .subscribe((response: IMoreSpecificsApiResult) => {
-
+                    this.loading = false;
+                    this.showRefreshButton = false;
                     // More MAGIC! assume the next result follow the earlier ones, otherwise we need to track previous
                     // response sizes and work out how they fit with this lot.
                     if (pageNr === 0) {
@@ -89,11 +90,12 @@ export class MoreSpecificsComponent implements OnChanges {
                     } else {
                         this.moreSpecifics.resources = this.moreSpecifics.resources.concat(response.resources);
                     }
-                    this.canHaveMoreSpecifics = true;
                     this.calcScroller();
                     this.updateHeight();
                 }, () => {
                     this.calcScroller();
+                    this.loading = false;
+                    this.showRefreshButton = true;
                 });
         }
     }

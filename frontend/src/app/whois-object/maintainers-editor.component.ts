@@ -18,8 +18,8 @@ import {AlertsComponent} from "../shared/alert/alerts.component";
 })
 export class MaintainersEditorComponent {
 
-    @Input("ng-model")
-    public ngModel: IWhoisObjectModel;
+    @Input("whois-object")
+    public whoisObject: IWhoisObjectModel;
     @Output("authentication-failed-clbk")
     public authenticationFailedClbk = new EventEmitter();
     @Output("update-mntners-clbk")
@@ -57,8 +57,8 @@ export class MaintainersEditorComponent {
     }
 
     public ngOnInit() {
-        this.source = this.ngModel.source.id;
-        this.attributes = this.ngModel.attributes.attribute;
+        this.source = this.whoisObject.source.id;
+        this.attributes = this.whoisObject.attributes.attribute;
         this.objectType = this.attributes[0].name;
         this.objectName = this.attributes[0].value;
 
@@ -89,7 +89,7 @@ export class MaintainersEditorComponent {
             this.performAuthentication();
         }
         this.attributeMetadataService.enrich(this.objectType, this.attributes);
-        this.ngModel.attributes.attribute = this.attributes;
+        this.whoisObject.attributes.attribute = this.attributes;
         this.updateMntnersClbk.emit(this.mntners);
     }
 
@@ -107,7 +107,7 @@ export class MaintainersEditorComponent {
             objectMntBys[0].value = "";
         }
         this.attributeMetadataService.enrich(this.objectType, this.attributes);
-        this.ngModel.attributes.attribute = this.attributes;
+        this.whoisObject.attributes.attribute = this.attributes;
         this.updateMntnersClbk.emit(this.mntners);
     }
 

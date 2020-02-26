@@ -5,7 +5,7 @@ import {RouterModule} from "@angular/router";
 import {SharedModule} from "../shared/shared.module";
 import {WhoisObjectModule} from "../whois-object/whois-object.module";
 import {FlagComponent} from "./flag/flag.component";
-import {HierarchySelectorComponent} from "./hierarchy-selector.component";
+import {HierarchySelectorComponent} from "./hierarchyselector/hierarchy-selector.component";
 import {ResourcesDataService} from "./resources-data.service";
 import {MoreSpecificsService} from "./morespecifics/more-specifics.service";
 import {IpAddressService} from "./ip-address.service";
@@ -21,6 +21,8 @@ import {TransferDropDownComponent} from "./transferdropdown/transfer-drop-down.c
 import {AssociatedObjectsComponent} from "./associatedobjects/associated-objects.component";
 import {AssociatedObjectsService} from "./associatedobjects/associated-objects.service";
 import {MoreSpecificsComponent} from "./morespecifics/more-specifics.component";
+import {HierarchySelectorService} from "./hierarchyselector/hierarchy-selector.service";
+import {RefreshComponent} from "./refresh/refresh.component";
 
 @NgModule({
     imports: [
@@ -41,7 +43,8 @@ import {MoreSpecificsComponent} from "./morespecifics/more-specifics.component";
         ResourceItemComponent,
         ResourcesComponent,
         MoreSpecificsComponent,
-        AssociatedObjectsComponent
+        AssociatedObjectsComponent,
+        RefreshComponent
     ],
     providers: [
         IpAddressService,
@@ -49,6 +52,7 @@ import {MoreSpecificsComponent} from "./morespecifics/more-specifics.component";
         IpUsageService,
         ResourceStatusService,
         ResourcesDataService,
+        HierarchySelectorService,
         AssociatedObjectsService
     ],
     entryComponents: [

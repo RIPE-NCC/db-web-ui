@@ -69,7 +69,6 @@ describe("Resources detail", () => {
             expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual("192.87.0.80/28");
             expect(page.btn1HierarchySelector.isPresent()).toEqual(true);
             expect(page.btn2HierarchySelector.isPresent()).toEqual(true);
-
         });
 
         it("should not display address usage", () => {
@@ -183,12 +182,6 @@ describe("Resources detail", () => {
             expect(page.moreSpecificsTable.isPresent()).toEqual(true);
             expect(page.moreSpecificsTableRows.count()).toEqual(2);
 
-            // filtering content in table text about number of items in table should change
-            expect(page.numberOfMoreSpecific.getText()).toEqual("Total more specifics:");
-            page.filterOfMoreSpecific.sendKeys("nooo");
-            expect(page.numberOfMoreSpecific.getText()).toEqual("Showing out of");
-            page.filterOfMoreSpecific.clear();
-
             expect(page.getTableCell(page.moreSpecificsTable, 0, 0).getText()).toEqual("2001:7f8::/48");
             expect(page.getTableCell(page.moreSpecificsTable, 0, 1).getText()).toEqual("ASSIGNED PI");
             expect(page.getTableCell(page.moreSpecificsTable, 0, 2).getText()).toEqual("DE-CIX-IXP-20010913");
@@ -196,6 +189,12 @@ describe("Resources detail", () => {
             expect(page.getTableCell(page.moreSpecificsTable, 1, 0).getText()).toEqual("2001:7f8:1::/48");
             expect(page.getTableCell(page.moreSpecificsTable, 1, 1).getText()).toEqual("ASSIGNED PI");
             expect(page.getTableCell(page.moreSpecificsTable, 1, 2).getText()).toEqual("AMS-IX-20010913");
+
+            // filtering content in table text about number of items in table should change
+            expect(page.numberOfMoreSpecific.getText()).toEqual("Total more specifics:");
+            page.filterOfMoreSpecific.sendKeys("nooo");
+            expect(page.numberOfMoreSpecific.getText()).toEqual("Showing 0 out of 2");
+            page.filterOfMoreSpecific.clear();
         });
     });
 
@@ -335,6 +334,7 @@ describe("Resources detail", () => {
         it("should edit and update out of region aut-num", () => {
             page.scrollIntoView(page.btnUpdateObjectButton);
             page.btnUpdateObjectButton.click();
+            page.scrollIntoView(page.modalInpPassword);
             page.modalInpPassword.sendKeys("KOKONET-MNT");
             page.modalInpAssociate.click();
             page.modalBtnSubmit.click();
