@@ -1,8 +1,8 @@
 import {Component, Input, OnChanges} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
-import {IResourceModel} from "./resource-type.model";
-import {ResourcesDataService} from "./resources-data.service";
-import {UserInfoService} from "../userinfo/user-info.service";
+import {IResourceModel} from "../resource-type.model";
+import {UserInfoService} from "../../userinfo/user-info.service";
+import {HierarchySelectorService} from "./hierarchy-selector.service";
 
 @Component({
     selector: "hierarchy-selector",
@@ -14,7 +14,7 @@ export class HierarchySelectorComponent implements OnChanges {
     @Input()
     public resource: IResourceModel;
 
-    constructor(private resourcesDataService: ResourcesDataService,
+    constructor(private hierarchySelectorService: HierarchySelectorService,
                 private userInfoService: UserInfoService,
                 private activatedRoute: ActivatedRoute,
                 private router: Router) {
@@ -56,7 +56,7 @@ export class HierarchySelectorComponent implements OnChanges {
     }
 
     private fetchParents(orgId: string): void {
-        this.resourcesDataService.fetchParentResources(this.resource, orgId)
+        this.hierarchySelectorService.fetchParentResources(this.resource, orgId)
             .subscribe((resp: string[]) => {
                 const parents: string[] = resp;
                 this.parents = (parents && parents.length < 1) ? [] : parents;

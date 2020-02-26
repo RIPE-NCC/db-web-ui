@@ -15,6 +15,8 @@ export class WhoisObjectEditorComponent implements OnInit {
     public ngModel: IWhoisObjectModel;
     @Input("disable-submit")
     public disableSubmit?: boolean;
+    @Input("deletable")
+    public deletable?: boolean;
 
     public objectName: string;
     public objectType: string;
@@ -27,6 +29,8 @@ export class WhoisObjectEditorComponent implements OnInit {
     public cancelClicked = new EventEmitter();
     @Output("update-clicked")
     public updateClicked: EventEmitter<IWhoisObjectModel> = new EventEmitter<IWhoisObjectModel>();
+    @Output("delete-clicked")
+    public deleteClicked = new EventEmitter();
 
     private originalAttibutes: IAttributeModel[];
 
@@ -84,6 +88,10 @@ export class WhoisObjectEditorComponent implements OnInit {
             this.removeEmptyAttributes();
         }
         this.updateClicked.emit(this.ngModel);
+    }
+
+    public btnDeleteClicked() {
+        this.deleteClicked.emit(this.ngModel);
     }
 
     private removeEmptyAttributes() {

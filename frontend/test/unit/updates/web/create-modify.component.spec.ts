@@ -185,7 +185,7 @@ describe("CreateModifyComponent", () => {
             expect(component.whoisResourcesService.getPrimaryKey(resp)).toEqual("MY-AS-BLOCK");
             const attrs = component.whoisResourcesService.validateAttributes(component.whoisResourcesService.getAttributes(resp));
             expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "as-block").value).toEqual("MY-AS-BLOCK");
-            expect(component.whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(WhoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("TEST-MNT");
             expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "source").value).toEqual("RIPE");
 
             await fixture.whenStable();
@@ -474,7 +474,7 @@ describe("CreateModifyComponent", () => {
             expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "route").value).toEqual("193.0.7.231/32");
             expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "origin").value).toEqual("AS1299");
             expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "descr").value).toEqual("My descr");
-            expect(component.whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("RIPE-NCC-MNT");
+            expect(WhoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("RIPE-NCC-MNT");
             expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "source").value).toEqual("RIPE");
             expect(resp.errormessages.errormessage[0].severity).toEqual("Info");
             expect(resp.errormessages.errormessage[0].text).toEqual(

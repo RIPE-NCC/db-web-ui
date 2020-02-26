@@ -151,7 +151,6 @@ export class ResourcesComponent implements OnDestroy {
         this.loading = true;
         this.resourcesDataService.fetchResources(this.selectedOrg.orgObjectId, this.lastTab, this.isShowingSponsored)
             .subscribe((response: IResourceOverviewResponseModel) => {
-                // clearTimeout(promise);
                 this.loading = false;
                 switch (this.lastTab) {
                     case "inetnum":

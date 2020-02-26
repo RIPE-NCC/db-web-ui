@@ -50,7 +50,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
 
-        const organisation = whoisResourcesService.getAllAttributesOnName(after, "organisation");
+        const organisation = WhoisResourcesService.getAllAttributesOnName(after, "organisation");
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual("organisation");
         expect(organisation[0].value).toEqual("AUTO-1");
@@ -66,7 +66,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const organisation = whoisResourcesService.getAllAttributesOnName(after, "organisation");
+        const organisation = WhoisResourcesService.getAllAttributesOnName(after, "organisation");
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual("organisation");
         expect(organisation[0].value).toEqual("SOME_ORG");
@@ -81,7 +81,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
 
-        const orgType = whoisResourcesService.getAllAttributesOnName(after, "org-type");
+        const orgType = WhoisResourcesService.getAllAttributesOnName(after, "org-type");
         expect(orgType.length).toEqual(1);
         expect(orgType[0].name).toEqual("org-type");
         expect(orgType[0].value).toEqual("OTHER");
@@ -98,7 +98,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const orgType = whoisResourcesService.getAllAttributesOnName(after, "org-type");
+        const orgType = WhoisResourcesService.getAllAttributesOnName(after, "org-type");
         expect(orgType.length).toEqual(1);
         expect(orgType[0].name).toEqual("org-type");
         expect(orgType[0].value).toEqual("SOME_ORG_TYPE");
@@ -114,7 +114,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
 
-        const abuseC = whoisResourcesService.getAllAttributesOnName(after, "abuse-c");
+        const abuseC = WhoisResourcesService.getAllAttributesOnName(after, "abuse-c");
         expect(abuseC.length).toEqual(1);
         expect(abuseC[0].name).toEqual("abuse-c");
         expect(abuseC[0].value).toEqual("");
@@ -129,7 +129,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const abuseC = whoisResourcesService.getAllAttributesOnName(after, "abuse-c");
+        const abuseC = WhoisResourcesService.getAllAttributesOnName(after, "abuse-c");
         expect(abuseC.length).toEqual(1);
         expect(abuseC[0].name).toEqual("abuse-c");
         expect(abuseC[0].value).toEqual("");
@@ -164,7 +164,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         whoisResourcesService.setSingleAttributeOnName(after0, "abuse-c", "bogus abuse-c string");
         const after1 = interceptor.beforeEdit("Create", "RIPE", "organisation", after0, errors, warnings, infos);
 
-        const abuseC = whoisResourcesService.getAllAttributesOnName(after1, "abuse-c");
+        const abuseC = WhoisResourcesService.getAllAttributesOnName(after1, "abuse-c");
         expect(abuseC.length).toEqual(1);
         expect(abuseC[0].name).toEqual("abuse-c");
         expect(abuseC[0].value).toEqual("bogus abuse-c string");
@@ -180,7 +180,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const mntByList = whoisResourcesService.getAllAttributesOnName(after, "mnt-by");
+        const mntByList = WhoisResourcesService.getAllAttributesOnName(after, "mnt-by");
         expect(mntByList.length).toEqual(2);
         expect(mntByList[0].$$meta.$$isLir).toBe(true);
         expect(mntByList[1].$$meta.$$isLir).toBe(true);
@@ -196,7 +196,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const mntByList = whoisResourcesService.getAllAttributesOnName(after, "mnt-by");
+        const mntByList = WhoisResourcesService.getAllAttributesOnName(after, "mnt-by");
         expect(mntByList.length).toEqual(2);
         expect(mntByList[0].$$meta.$$isLir).toBeUndefined();
         expect(mntByList[1].$$meta.$$isLir).toBeUndefined();
@@ -212,23 +212,23 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const address = whoisResourcesService.getAllAttributesOnName(after, "address");
+        const address = WhoisResourcesService.getAllAttributesOnName(after, "address");
         expect(address.length).toEqual(1);
         expect(address[0].$$meta.$$isLir).toBe(true);
 
-        const phone = whoisResourcesService.getAllAttributesOnName(after, "phone");
+        const phone = WhoisResourcesService.getAllAttributesOnName(after, "phone");
         expect(phone.length).toEqual(1);
         expect(phone[0].$$meta.$$isLir).toBe(true);
 
-        const faxNumber = whoisResourcesService.getAllAttributesOnName(after, "fax-no");
+        const faxNumber = WhoisResourcesService.getAllAttributesOnName(after, "fax-no");
         expect(faxNumber.length).toEqual(1);
         expect(faxNumber[0].$$meta.$$isLir).toBe(true);
 
-        const email = whoisResourcesService.getAllAttributesOnName(after, "e-mail");
+        const email = WhoisResourcesService.getAllAttributesOnName(after, "e-mail");
         expect(email.length).toEqual(1);
         expect(email[0].$$meta.$$isLir).toBe(true);
 
-        const orgName = whoisResourcesService.getAllAttributesOnName(after, "org-name");
+        const orgName = WhoisResourcesService.getAllAttributesOnName(after, "org-name");
         expect(orgName.length).toEqual(1);
         expect(orgName[0].$$meta.$$isLir).toBe(true);
     });
@@ -242,23 +242,23 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const address = whoisResourcesService.getAllAttributesOnName(after, "address");
+        const address = WhoisResourcesService.getAllAttributesOnName(after, "address");
         expect(address.length).toEqual(1);
         expect(address[0].$$meta.$$isLir).toBeUndefined();
 
-        const phone = whoisResourcesService.getAllAttributesOnName(after, "phone");
+        const phone = WhoisResourcesService.getAllAttributesOnName(after, "phone");
         expect(phone.length).toEqual(1);
         expect(phone[0].$$meta.$$isLir).toBeUndefined();
 
-        const faxNumber = whoisResourcesService.getAllAttributesOnName(after, "fax-no");
+        const faxNumber = WhoisResourcesService.getAllAttributesOnName(after, "fax-no");
         expect(faxNumber.length).toEqual(1);
         expect(faxNumber[0].$$meta.$$isLir).toBeUndefined();
 
-        const email = whoisResourcesService.getAllAttributesOnName(after, "e-mail");
+        const email = WhoisResourcesService.getAllAttributesOnName(after, "e-mail");
         expect(email.length).toEqual(1);
         expect(email[0].$$meta.$$isLir).toBeUndefined();
 
-        const orgName = whoisResourcesService.getAllAttributesOnName(after, "org-name");
+        const orgName = WhoisResourcesService.getAllAttributesOnName(after, "org-name");
         expect(orgName.length).toEqual(1);
         expect(orgName[0].$$meta.$$isLir).toBeUndefined();
     });
@@ -272,7 +272,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const orgAttr = whoisResourcesService.getAllAttributesOnName(after, "org");
+        const orgAttr = WhoisResourcesService.getAllAttributesOnName(after, "org");
         expect(orgAttr.length).toEqual(1);
         expect(orgAttr[0].$$meta.$$disable).toBe(true);
     });
@@ -286,7 +286,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "organisation", organisationSubject, errors, warnings, infos);
 
-        const orgAttr = whoisResourcesService.getAllAttributesOnName(after, "org");
+        const orgAttr = WhoisResourcesService.getAllAttributesOnName(after, "org");
         expect(orgAttr.length).toEqual(1);
         expect(orgAttr[0].$$meta.$$disable).toBeUndefined();
 
@@ -300,7 +300,7 @@ describe("ScreenLogicInterceptorService Organisation", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "organisation", before, errors, warnings, infos);
 
-        const mntByList = whoisResourcesService.getAllAttributesOnName(after, "mnt-by");
+        const mntByList = WhoisResourcesService.getAllAttributesOnName(after, "mnt-by");
         expect(mntByList[0].$$meta.$$disable).toBeUndefined();
     });
 
