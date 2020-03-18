@@ -61,13 +61,13 @@ export class OrganisationHelperService {
         if (objectType === "organisation" && roleForAbuseC) {
 
             roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
-            _.forEach(this.whoisResourcesService.getAllAttributesOnName(roleForAbuseC, "mnt-by"), (mnt) => {
+            _.forEach(WhoisResourcesService.getAllAttributesOnName(roleForAbuseC, "mnt-by"), (mnt) => {
                 roleForAbuseC = this.whoisResourcesService.removeAttribute(roleForAbuseC, mnt);
                 roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC); // I really don't know when to use the wrappers! ;(
             });
 
             roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
-            _.forEach(this.whoisResourcesService.getAllAttributesOnName(organisationAttributes, "mnt-by"), (mnt) => {
+            _.forEach(WhoisResourcesService.getAllAttributesOnName(organisationAttributes, "mnt-by"), (mnt) => {
                 roleForAbuseC = this.whoisResourcesService.addAttributeAfterType(roleForAbuseC, {name: "mnt-by", value: mnt.value}, {name: "nic-hdl"});
                 roleForAbuseC = this.whoisResourcesService.validateAttributes(roleForAbuseC);
             });

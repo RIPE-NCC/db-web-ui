@@ -1,6 +1,7 @@
 import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CookieService} from "ngx-cookie-service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {IResourceDetailsResponseModel, IResourceTickets} from "./resource-type.model";
 import {ResourcesDataService} from "./resources-data.service";
 import {MntnerService} from "../updatesweb/mntner.service";
@@ -17,6 +18,8 @@ import {
 import {IUserInfoOrganisation, IUserInfoRegistration} from "../dropdown/org-data-type.model";
 import {PropertiesService} from "../properties.service";
 import {IFlag} from "./flag/flag.component";
+import {ModalDeleteObjectComponent} from "../updatesweb/modal-delete-object.component";
+import {HierarchySelectorService} from "./hierarchyselector/hierarchy-selector.service";
 import {WhoisResourcesService} from "../shared/whois-resources.service";
 import {AlertsComponent} from "../shared/alert/alerts.component";
 
@@ -38,7 +41,10 @@ export class ResourceDetailsComponent implements OnDestroy {
 
     public sponsored = false;
     public isEditing = false;
+    public isDeletable = false;
     public ipanalyserRedirect = false;
+    public loadingResource: boolean = false; // true until resources are loaded to tabs
+    public showRefreshButton: boolean = false;
 
     private orgId: string;
     public objectName: string;
@@ -51,11 +57,13 @@ export class ResourceDetailsComponent implements OnDestroy {
     public alertsComponent: AlertsComponent;
 
     constructor(private cookies: CookieService,
+                private modalService: NgbModal,
                 private credentialsService: CredentialsService,
                 private mntnerService: MntnerService,
                 private properties: PropertiesService,
                 private resourceStatusService: ResourceStatusService,
                 private resourcesDataService: ResourcesDataService,
+                private hierarchySelectorService: HierarchySelectorService,
                 private restService: RestService,
                 private orgDropDownSharedService: OrgDropDownSharedService,
                 private activatedRoute: ActivatedRoute,
@@ -75,6 +83,7 @@ export class ResourceDetailsComponent implements OnDestroy {
         });
         const routeSubs = this.activatedRoute.params.subscribe((() => {
             this.isEditing = false;
+            this.isDeletable = false;
             this.init();
         }));
         this.subscriptions.push(routeSubs);
@@ -98,9 +107,17 @@ export class ResourceDetailsComponent implements OnDestroy {
         this.objectName = decodeURIComponent(paramMap.get("objectName"));
         this.objectType = paramMap.get("objectType").toLowerCase();
         this.sponsored = paramMap.get("sponsored") === "true";
+        const queryParamMap = this.activatedRoute.snapshot.queryParamMap;
+        if (queryParamMap.has("alertMessage")) {
+            this.alertsComponent.addGlobalInfo(queryParamMap.get("alertMessage"));
+        }
+        this.loadingResource = true;
+        this.showRefreshButton = false;
 
         this.resourcesDataService.fetchResource(this.objectName, this.objectType)
             .subscribe((response: IResourceDetailsResponseModel) => {
+                this.loadingResource = false;
+                this.showRefreshButton = false;
                 this.whoisObject = response.object;
                 this.source = this.whoisObject ? this.whoisObject.source.id : this.properties.SOURCE;
                 // should only be one
@@ -148,6 +165,9 @@ export class ResourceDetailsComponent implements OnDestroy {
                     this.addFlag(Labels["flag.rDNS.text"],
                         Labels["flag.rDNS.title"], "green");
                 }
+            }, (error) => {
+                this.loadingResource = false;
+                this.showRefreshButton = true;
             });
     }
 
@@ -178,12 +198,38 @@ export class ResourceDetailsComponent implements OnDestroy {
     public showObjectEditor() {
         this.resetMessages();
         this.isEditing = true;
+        this.isDeletable = this.isDeletableResource();
         document.querySelector("#editortop").scrollIntoView();
     }
 
-    public hideObjectEditor(): void {
+    public hideObjectEditor() {
         this.resetMessages();
         this.isEditing = false;
+        this.isDeletable = false;
+    }
+
+    public isDeletableResource(): boolean {
+        return !this.mntnerService.isComaintained(this.whoisObject.attributes.attribute);
+    }
+
+    public deleteClicked(deletedWhoisObject: any) {
+        const inputData = {
+            name: this.objectName,
+            objectType: this.objectType,
+            onCancelPath: "",
+            source: this.source
+        };
+        const modalRef = this.modalService.open(ModalDeleteObjectComponent);
+        modalRef.componentInstance.inputData = inputData;
+        modalRef.result.then(() => {
+            const parent = this.hierarchySelectorService.getParent(this.objectName);
+            const params = {
+                alertMessage: `The ${this.objectType} for ${this.objectName} has been deleted`,
+            };
+            this.router.navigate(["myresources/detail", this.objectType, parent, this.sponsored], {queryParams: params});
+        }, () => { // dismiss
+            this.router.navigate(["myresources/detail", this.objectType, this.objectName, this.sponsored]);
+        });
     }
 
     private resetMessages() {
@@ -201,6 +247,7 @@ export class ResourceDetailsComponent implements OnDestroy {
             this.whoisObject = results[0];
         }
         this.isEditing = false;
+        this.isDeletable = false;
         this.loadMessages(whoisResources);
         this.alertsComponent.addGlobalSuccesses("Your object has been successfully updated.");
         document.querySelector("#editortop").scrollIntoView();

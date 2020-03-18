@@ -1,7 +1,13 @@
-image: docker-registry.ripe.net/sbuskens/db-web-ui/db-web-ui-build:chrome80-jdk8-maven3.6
+image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:chrome80-jdk8-maven36-node10
 
 variables:
-  MAVEN_OPTS: -Dmaven.repo.local=/cache/maven.repository
+  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+  WHITESOURCE_PRODUCT: "database-team"
+  WHITESOURCE_PROJECT: "db-web-ui"
+
+include:
+    - project: 'swe/gitlab-ci'
+      file: '/templates/whitesource-scanning.yml'
 
 stages:
   - build
@@ -13,6 +19,7 @@ cache:
   paths:
     - backend/target/
     - frontend/node_modules/
+    - .m2/repository
 
 build:
   stage: build
@@ -47,8 +54,6 @@ e2e:
 .deploy_template: &deploy_env
   stage: deploy
   before_script:
-    - apt-get update
-    - apt-get -y install dnsutils
     - mkdir -p /root/.ssh
     - touch /root/.ssh/known_hosts
     - ssh-keyscan hanwoo.ripe.net 2>&1 >>/root/.ssh/known_hosts
@@ -57,7 +62,7 @@ e2e:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\nAddressFamily inet\n\n" > ~/.ssh/config
     - echo "$DBASE_SSH_KEY" | tr -d '\r' | ssh-add -
   script:
-    - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/sbuskens/db-operational.git
+    - git clone http://dbase:$DB_OPERATIONAL_DEPLOY_TOKEN@gitlab.ripe.net/swe-database-team/db-operational.git
     - cp backend/target/backend-$CI_COMMIT_SHA.jar db-operational/deployment/db-web-ui-spring-$CI_COMMIT_SHA.jar
     - cd db-operational/deployment
     - ./stage.sh -p db-web-ui -e $CI_ENVIRONMENT_NAME db-web-ui-spring-$CI_COMMIT_SHA.jar

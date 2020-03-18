@@ -19,6 +19,9 @@
       </li>
   </ul>
   <submitting-agreement></submitting-agreement>
+  <span *ngIf="deletable">
+      <button (click)="btnDeleteClicked()" class="red-button pull-left ga-modifyobj-delete" style="border:0; margin: 0;">Delete this object</button>
+  </span>
   <article class="pull-right">
     <button class="grey-button" (click)="btnCancelClicked()">Cancel</button>
     <button class="blue-button" [disabled]="disableSubmit" (click)="btnSubmitClicked()">Submit</button>

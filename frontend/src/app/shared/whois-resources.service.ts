@@ -104,7 +104,7 @@ export class WhoisResourcesService {
         let status = false;
         if (attr.$$meta.$$mandatory === false) {
             status = true;
-        } else if (attr.$$meta.$$multiple && this.getAllAttributesOnName(attributes, attr.name).length > 1) {
+        } else if (attr.$$meta.$$multiple && WhoisResourcesService.getAllAttributesOnName(attributes, attr.name).length > 1) {
             status = true;
         }
 
@@ -361,7 +361,7 @@ export class WhoisResourcesService {
         return object.attributes.attribute;
     }
 
-    public getAllAttributesOnName(attributes: IAttributeModel[], attributeName: string) {
+    public static getAllAttributesOnName(attributes: IAttributeModel[], attributeName: string) {
         return _.filter(attributes, (attribute) => {
             return attribute.name === attributeName;
         });

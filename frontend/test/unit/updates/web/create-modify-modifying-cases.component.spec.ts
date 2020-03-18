@@ -253,10 +253,10 @@ describe("CreateModifyComponent with modifying test cases", () => {
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toBeUndefined();
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toEqual(NAME);
 
-            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].$$error).toBeUndefined();
-            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(WhoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].$$error).toBeUndefined();
+            expect(WhoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual("TEST-MNT");
 
-            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "source")[0].$$error).toBeUndefined();
+            expect(WhoisResourcesService.getAllAttributesOnName(component.attributes, "source")[0].$$error).toBeUndefined();
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual("RIPE");
 
             expect(component.activatedRoute.snapshot.paramMap.get("objectName")).toBe(stateBefore);
@@ -272,8 +272,8 @@ describe("CreateModifyComponent with modifying test cases", () => {
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").$$error).toEqual("Mandatory attribute not set");
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toBeNull();
 
-            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].$$error).toBeUndefined();
-            expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(WhoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].$$error).toBeUndefined();
+            expect(WhoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual("TEST-MNT");
 
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").$$error).toBeUndefined();
             expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual("RIPE");
@@ -306,7 +306,7 @@ describe("CreateModifyComponent with modifying test cases", () => {
             expect(component.whoisResourcesService.getPrimaryKey(resp)).toEqual("MY-AS-BLOCK");
             const attrs = component.whoisResourcesService.getAttributes(resp);
             expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "as-block").value).toEqual("MY-AS-BLOCK");
-            expect(component.whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("TEST-MNT");
+            expect(WhoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].value).toEqual("TEST-MNT");
             expect(component.whoisResourcesService.getSingleAttributeOnName(attrs, "source").value).toEqual("RIPE");
 
             expect(routerMock.navigateByUrl).toHaveBeenCalledWith("webupdates/display/RIPE/as-block/MY-AS-BLOCK?method=Modify");

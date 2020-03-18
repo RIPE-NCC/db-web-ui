@@ -149,7 +149,7 @@ export class PrefixService {
     }
 
     public getDomainCreationStatus(source: string) {
-        return this.http.get(`api/whois/domain-objects/${source}/status`, { observe: 'response' });
+        return this.http.get(`api/whois/domain-objects/${source}/status`, { observe: "response" });
     }
 
     private isValidIp4Cidr(address: any) {

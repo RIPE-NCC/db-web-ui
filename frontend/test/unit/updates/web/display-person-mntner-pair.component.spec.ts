@@ -118,14 +118,14 @@ describe("displayPairComponent", () => {
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "person").value).toBe(PERSON_NAME);
         // @ts-ignore
-        expect(whoisResourcesService.getAllAttributesOnName(component.objectTypeAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
+        expect(WhoisResourcesService.getAllAttributesOnName(component.objectTypeAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "source").value).toEqual(SOURCE);
 
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").value).toBe(MNTNER_NAME);
         // @ts-ignore
-        expect(whoisResourcesService.getAllAttributesOnName(component.mntnerAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
+        expect(WhoisResourcesService.getAllAttributesOnName(component.mntnerAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "admin-c").value).toEqual(PERSON_NAME);
         // @ts-ignore
@@ -145,14 +145,14 @@ describe("displayPairComponent", () => {
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "person").value).toBe(PERSON_NAME);
         // @ts-ignore
-        expect(whoisResourcesService.getAllAttributesOnName(component.objectTypeAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
+        expect(WhoisResourcesService.getAllAttributesOnName(component.objectTypeAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.objectTypeAttributes, "source").value).toEqual(SOURCE);
 
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "mntner").value).toBe(MNTNER_NAME);
         // @ts-ignore
-        expect(whoisResourcesService.getAllAttributesOnName(component.mntnerAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
+        expect(WhoisResourcesService.getAllAttributesOnName(component.mntnerAttributes, "mnt-by")[0].value).toEqual(MNTNER_NAME);
         // @ts-ignore
         expect(whoisResourcesService.getSingleAttributeOnName(component.mntnerAttributes, "admin-c").value).toEqual(PERSON_NAME);
         // @ts-ignore

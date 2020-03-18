@@ -412,12 +412,12 @@ describe("WhoisResourcesService", () => {
 
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "non-existing")).toEqual(undefined);
 
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")).toEqual([
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")).toEqual([
             {name: "mnt-by", value: null},
             {name: "mnt-by", value: "c"}
         ]);
 
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "non-existing")).toEqual([]);
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes, "non-existing")).toEqual([]);
 
         expect(whoisResourcesService.getAllAttributesWithValueOnName(whoisAttributes, "mnt-by")).toEqual([
             {name: "mnt-by", value: "c"}
@@ -436,8 +436,8 @@ describe("WhoisResourcesService", () => {
 
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes,"as-block").value).toEqual("a");
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "mnt-by").value).toEqual(null);
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes,  "mnt-by")[0].value).toEqual(null);
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes,  "mnt-by")[1].value).toEqual("c");
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes,  "mnt-by")[0].value).toEqual(null);
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes,  "mnt-by")[1].value).toEqual("c");
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source").value).toEqual("d");
 
         // has side effects
@@ -450,8 +450,8 @@ describe("WhoisResourcesService", () => {
 
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "as-block").value).toEqual("a");
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "mnt-by").value).toEqual(null);
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual(null);
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual(null);
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source").value).toEqual("RIPE");
 
     });
@@ -467,8 +467,8 @@ describe("WhoisResourcesService", () => {
 
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "as-block").value).toEqual("a");
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "mnt-by").value).toEqual(null);
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual(null);
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual(null);
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source").value).toEqual("d");
 
         // has side effects
@@ -481,8 +481,8 @@ describe("WhoisResourcesService", () => {
 
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "as-block").value).toEqual("a");
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "mnt-by").value).toEqual("TEST-MNT");
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual("TEST-MNT");
-        expect(whoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[0].value).toEqual("TEST-MNT");
+        expect(WhoisResourcesService.getAllAttributesOnName(whoisAttributes, "mnt-by")[1].value).toEqual("c");
         expect(whoisResourcesService.getSingleAttributeOnName(whoisAttributes, "source").value).toEqual("d");
 
     });
@@ -577,8 +577,8 @@ describe("WhoisResourcesService", () => {
 
         expect(whoisResourcesService.validate(attrs)).toEqual(true);
         expect(whoisResourcesService.getSingleAttributeOnName(attrs, "as-block").$$error).toEqual(undefined);
-        expect(whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].$$error).toEqual(undefined);
-        expect(whoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[1].$$error).toEqual(undefined);
+        expect(WhoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[0].$$error).toEqual(undefined);
+        expect(WhoisResourcesService.getAllAttributesOnName(attrs, "mnt-by")[1].$$error).toEqual(undefined);
         expect(whoisResourcesService.getSingleAttributeOnName(attrs, "source").$$error).toEqual(undefined);
     });
 
@@ -594,8 +594,8 @@ describe("WhoisResourcesService", () => {
 
         expect(whoisResourcesService.validate(attrs)).toEqual(true);
         expect(whoisResourcesService.getSingleAttributeOnName(attrs,"as-block").$$error).toEqual(undefined);
-        expect(whoisResourcesService.getAllAttributesOnName(attrs,"mnt-by")[0].$$error).toEqual(undefined);
-        expect(whoisResourcesService.getAllAttributesOnName(attrs,"mnt-by")[1].$$error).toEqual(undefined);
+        expect(WhoisResourcesService.getAllAttributesOnName(attrs,"mnt-by")[0].$$error).toEqual(undefined);
+        expect(WhoisResourcesService.getAllAttributesOnName(attrs,"mnt-by")[1].$$error).toEqual(undefined);
         expect(whoisResourcesService.getSingleAttributeOnName(attrs,"source").$$error).toEqual(undefined);
     });
 
@@ -680,10 +680,10 @@ describe("WhoisResourcesService", () => {
 
         expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"person"))).toBe(false);
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getAllAttributesOnName(attrs, "address")[0])).toBe(true);
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getAllAttributesOnName(attrs, "address")[1])).toBe(true);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "address")[0])).toBe(true);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "address")[1])).toBe(true);
 
-        expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getAllAttributesOnName(attrs, "phone")[0])).toBe(false);
+        expect(whoisResourcesService.canAttributeBeRemoved(attrs, WhoisResourcesService.getAllAttributesOnName(attrs, "phone")[0])).toBe(false);
         expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"nic-hdl"))).toBe(false);
 
         expect(whoisResourcesService.canAttributeBeRemoved(attrs, whoisResourcesService.getSingleAttributeOnName(attrs,"last-modified"))).toBe(true);

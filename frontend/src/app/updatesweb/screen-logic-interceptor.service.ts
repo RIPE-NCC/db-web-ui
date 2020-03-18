@@ -341,7 +341,7 @@ export class ScreenLogicInterceptorService {
 
     private _disableRipeMntIfModifying(method: string, source: string, objectType: string, attributes: any, errors: string[], warnings: string[], infos: string[]) {
         const disable = (type: string) => {
-            _.forEach(this.whoisResourcesService.getAllAttributesOnName(attributes, type), (attr) => {
+            _.forEach(WhoisResourcesService.getAllAttributesOnName(attributes, type), (attr) => {
                 attr.$$meta.$$disable = this.mntnerService.isNccMntner(attr.value);
             });
         };
@@ -387,7 +387,7 @@ export class ScreenLogicInterceptorService {
 
     private _disableRipeMntnrAttributes(attributes: any) {
         // if any of the maintainers is a ripe maintainer then some attributes are read-only
-        if (_.findIndex(this.whoisResourcesService.getAllAttributesOnName(attributes, "mnt-by"), (mntBy: any) => {
+        if (_.findIndex(WhoisResourcesService.getAllAttributesOnName(attributes, "mnt-by"), (mntBy: any) => {
             return this.mntnerService.isNccMntner(mntBy.value);
         }) < 0) { // findIndex returns -1 if not found
             return;

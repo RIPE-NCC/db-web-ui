@@ -1,0 +1,84 @@
+{
+  "requestUrl": "/db-web-ui/api/whois/RIPE/inetnum/3.0.103.0%20-%203.0.103.255?dry-run=false&reason=I%20don%27t%20need%20this%20object&password=TPOLYCHNIA4-MNT",
+  "contentType": "application/javascript",
+  "statusCode": 200,
+  "data": {
+    "link" : {
+      "type" : "locator",
+      "href" : "http://wagyu.prepdev.ripe.net:1080/RIPE/inetnum/3.0.103.0%20-%203.0.103.255?dry-run=false&reason=I%20don%27t%20need%20this%20object"
+    },
+    "objects" : {
+      "object" : [ {
+        "type" : "inetnum",
+        "link" : {
+          "type" : "locator",
+          "href" : "https://rest-prepdev.db.ripe.net/ripe/inetnum/3.0.103.0 - 3.0.103.255"
+        },
+        "source" : {
+          "id" : "ripe"
+        },
+        "primary-key" : {
+          "attribute" : [ {
+            "name" : "inetnum",
+            "value" : "3.0.103.0 - 3.0.103.255"
+          } ]
+        },
+        "attributes" : {
+          "attribute" : [ {
+            "name" : "inetnum",
+            "value" : "3.0.103.0 - 3.0.103.255"
+          }, {
+            "name" : "netname",
+            "value" : "test-netname"
+          }, {
+            "name" : "country",
+            "value" : "NL"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/person/inty1-ripe"
+            },
+            "name" : "admin-c",
+            "value" : "inty1-ripe",
+            "referenced-type" : "person"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/person/inty1-ripe"
+            },
+            "name" : "tech-c",
+            "value" : "inty1-ripe",
+            "referenced-type" : "person"
+          }, {
+            "name" : "descr",
+            "value" : "testing"
+          }, {
+            "name" : "status",
+            "value" : "ALLOCATED PA"
+          }, {
+            "link" : {
+              "type" : "locator",
+              "href" : "http://rest-prepdev.db.ripe.net/ripe/mntner/RIPE-NCC-HM-MNT"
+            },
+            "name" : "mnt-by",
+            "value" : "TPOLYCHNIA4-MNT",
+            "referenced-type" : "mntner"
+          }, {
+            "name" : "created",
+            "value" : "2016-04-25T12:53:03Z"
+          }, {
+            "name" : "last-modified",
+            "value" : "2017-08-31T15:36:41Z"
+          }, {
+            "name" : "source",
+            "value" : "RIPE"
+          } ]
+        }
+      } ]
+    },
+    "terms-and-conditions" : {
+      "type" : "locator",
+      "href" : "http://www.ripe.net/db/support/db-terms-conditions.pdf"
+    }
+  }
+}

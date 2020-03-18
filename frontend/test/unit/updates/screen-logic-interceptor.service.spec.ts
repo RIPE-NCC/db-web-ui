@@ -65,7 +65,7 @@ describe("ScreenLogicInterceptorService", () => {
         let infos: string[] = [];
         let after = interceptor.beforeEdit("Create", "TEST", "organisation", before, errors, warnings, infos);
 
-        let organisation = whoisResourcesService.getAllAttributesOnName(after, "source");
+        let organisation = WhoisResourcesService.getAllAttributesOnName(after, "source");
         expect(organisation.length).toEqual(1);
         expect(organisation[0].name).toEqual("source");
         expect(organisation[0].value).toEqual("TEST");

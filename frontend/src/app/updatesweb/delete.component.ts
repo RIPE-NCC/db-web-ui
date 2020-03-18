@@ -64,7 +64,6 @@ export class DeleteComponent {
             console.debug("SUCCESS delete object" + JSON.stringify(whoisResources));
             this.alertsComponent.setGlobalInfo("The following object(s) have been successfully deleted");
         }, (errorResp: any) => {
-
             this.modalInProgress = false;
             console.debug("ERROR deleting object" + JSON.stringify(errorResp));
             if (errorResp.data) {

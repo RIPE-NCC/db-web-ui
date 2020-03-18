@@ -50,7 +50,7 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "person", before, errors, warnings, infos);
 
-        const nicHdle = whoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
+        const nicHdle = WhoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual("nic-hdl");
         expect(nicHdle[0].value).toEqual("AUTO-1");
@@ -65,7 +65,7 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "person", personSubject, errors, warnings, infos);
 
-        const nicHdle = whoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
+        const nicHdle = WhoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual("nic-hdl");
         expect(nicHdle[0].value).toEqual("SOME_NIC");
@@ -80,7 +80,7 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Create", "RIPE", "role", before, errors, warnings, infos);
 
-        const nicHdle = whoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
+        const nicHdle = WhoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual("nic-hdl");
         expect(nicHdle[0].value).toEqual("AUTO-1");
@@ -96,7 +96,7 @@ describe("ScreenLogicInterceptorService Person/Role", () => {
         let infos: string[] = [];
         const after = interceptor.beforeEdit("Modify", "RIPE", "person", roleSubject, errors, warnings, infos);
 
-        const nicHdle = whoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
+        const nicHdle = WhoisResourcesService.getAllAttributesOnName(after, "nic-hdl");
         expect(nicHdle.length).toEqual(1);
         expect(nicHdle[0].name).toEqual("nic-hdl");
         expect(nicHdle[0].value).toEqual("SOME_NIC");

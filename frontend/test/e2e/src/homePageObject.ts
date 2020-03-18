@@ -197,8 +197,8 @@ module.exports = {
     transferMenuItems: element(by.css(".my-resources")).element(by.css("transfer-drop-down")).all(by.css("li")),
 
     // More specifics table
-    moreSpecificsTable: element(by.css("section.more-specifics table")),
-    moreSpecificsTableRows: element(by.css("section.more-specifics table")).element(by.css("tbody")).all(by.css("tr")),
+    moreSpecificsTable: element(by.css("more-specifics table")),
+    moreSpecificsTableRows: element(by.css("more-specifics table")).element(by.css("tbody")).all(by.css("tr")),
 
     // Associated Route Objects table
     associatedRouteObjectsTable: element(by.id("associated-route-objects")).element(by.css("table")),
@@ -239,6 +239,9 @@ module.exports = {
     btnSubmitObject: element(by.css("whois-object-editor")).element(by.css(".blue-button")),
     successMessage: element(by.css(".alert-success")),
     infoMessage: element(by.id("alert-info")),
+    btnDeleteObjectWhoisEditor: element(by.css("button.red-button")),
+    modalDeleteObject: element(by.css("modal-delete-object")),
+    btnConfirmModalDelete: element(by.css("modal-delete-object button")),
 
     // Query page
     inpQueryString: element(by.name("qp.queryText")),

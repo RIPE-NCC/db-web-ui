@@ -147,7 +147,7 @@ describe("DisplayComponent", () => {
         expectUserInfo(true);
 
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toBe(OBJECT_NAME);
-        expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
+        expect(WhoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual(SOURCE);
 
         // FIXME ?
@@ -168,7 +168,7 @@ describe("DisplayComponent", () => {
         }).flush(objectToDisplay);
 
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "as-block").value).toBe(OBJECT_NAME);
-        expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
+        expect(WhoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual(SOURCE);
 
         // FIXME ?
@@ -324,7 +324,7 @@ describe("DisplayComponent with object containing slash", () => {
         }).flush(objectToDisplay);
 
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "route").value).toBe(OBJECT_NAME);
-        expect(component.whoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
+        expect(WhoisResourcesService.getAllAttributesOnName(component.attributes, "mnt-by")[0].value).toEqual(MNTNER);
         expect(component.whoisResourcesService.getSingleAttributeOnName(component.attributes, "source").value).toEqual(SOURCE);
     });
 
