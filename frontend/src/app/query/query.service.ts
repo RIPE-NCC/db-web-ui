@@ -23,6 +23,9 @@ export class QueryService {
             acc.errormessages.errormessage =
                 acc.errormessages.errormessage.concat(resp.errormessages.errormessage);
         }
+        if (resp.version) {
+            acc.version = resp.version;
+        }
 
         return acc;
     }

@@ -3,7 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
 import {LookupService} from "./lookup.service";
 import {PropertiesService} from "../properties.service";
-import {IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
+import {IVersion} from "../shared/whois-response-type.model";
 
 @Component({
     selector: "lookup-single",
@@ -13,6 +13,7 @@ export class LookupSingleObjectComponent implements OnDestroy {
 
     public whoisResponse: any;
     public error: string;
+    public whoisVersion: IVersion;
 
     public source: string;
     public objectType: string;
@@ -48,6 +49,7 @@ export class LookupSingleObjectComponent implements OnDestroy {
                         response.objects.object &&
                         response.objects.object.length === 1) {
                         this.whoisResponse = response.objects.object[0];
+                        this.whoisVersion = response.version;
                     } else {
                         console.warn(
                             "Expected a single object from query. source:", this.source,

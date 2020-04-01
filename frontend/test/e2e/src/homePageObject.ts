@@ -284,6 +284,9 @@ module.exports = {
     exclamationImg: element(by.css("email-confirmation")).element(by.css(".fa-exclamation-circle")),
     emailConfirmationMsg: element(by.css("email-confirmation")).element(by.css("h2")),
 
+    whoisVersionTag: element(by.css("whois-version")),
+    whoisVersion: element(by.css("whois-version")).element(by.css("span")),
+
     byId: function(id) {
         return element(by.id(id));
     },

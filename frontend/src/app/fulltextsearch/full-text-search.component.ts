@@ -4,7 +4,7 @@ import {Component} from "@angular/core";
 import * as _ from "lodash";
 import {WhoisMetaService} from "../shared/whois-meta.service";
 import {FullTextResponseService} from "./full-text-response.service";
-import {IAttributeModel} from "../shared/whois-response-type.model";
+import {IAttributeModel, IVersion} from "../shared/whois-response-type.model";
 import {IResultSummary, ISearchResponseModel} from "./types.model";
 import {PropertiesService} from "../properties.service";
 
@@ -22,6 +22,7 @@ export class FullTextSearchComponent {
     public selectedAttrs: string[] = [];
     public resultSummary: IResultSummary[] = [];
     public numResults: number;
+    public whoisVersion: IVersion;
 
     // Out
     public objectTypes: string[];
@@ -127,6 +128,7 @@ export class FullTextSearchComponent {
         this.numResults = resp.result.numFound;
         this.results = responseModel.details;
         this.resultSummary = responseModel.summary;
+        this.whoisVersion = this.fullTextResponseService.getVersionFromResponse(resp);
         if (this.results.length === 0) {
             this.showError = "fullText.emptyRresult.text";
         }

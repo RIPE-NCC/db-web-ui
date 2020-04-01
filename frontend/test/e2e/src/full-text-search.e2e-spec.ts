@@ -66,4 +66,13 @@ describe("The full text search", () => {
         expect(page.fullTextSearchResults.get(0).getText()).not.toContain("script");
     });
 
+    it("should show version of whois after searching", () => {
+        page.byId("fullTextSearchInput").sendKeys("193.0.0.0");
+        page.scrollIntoView(page.byId("fullTextSearchButton"));
+        page.byId("fullTextSearchButton").click();
+        page.scrollIntoView(page.whoisVersion);
+        expect(page.whoisVersionTag.isDisplayed()).toBeTruthy();
+        expect(page.whoisVersion.isDisplayed()).toBeTruthy();
+        expect(page.whoisVersion.getText()).toEqual("RIPE Database Software Version 1.97-SNAPSHOT");
+    });
 });

@@ -1839,6 +1839,26 @@
 				}],
 				"arrs": null
 			}
+		}, {
+			"lst" : {
+				"name" : "version",
+				"strs" : [ {
+					"str" : {
+						"name" : "version",
+						"value" : "1.97-SNAPSHOT"
+					}
+				}, {
+					"str" : {
+						"name" : "timestamp",
+						"value" : "2020-01-22T18:22:13Z"
+					}
+				}, {
+					"str" : {
+						"name" : "commit_id",
+						"value" : "0e58632"
+					}
+				} ]
+			}
 		}]
 	}
 }

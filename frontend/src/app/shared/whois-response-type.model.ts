@@ -67,6 +67,7 @@ export interface IWhoisObjectModel {
     }
     "abuse-contact"? : IAbuseCModel;
     managed?: boolean;
+    version?: IVersion;
 }
 
 interface IAbuseCModel {
@@ -74,6 +75,11 @@ interface IAbuseCModel {
     "email" : string,
     "suspect"? : boolean,
     "org-id"? : string
+}
+
+export interface IVersion {
+    version: string
+    timestamp: string
 }
 
 export interface IWhoisResponseModel {
@@ -99,6 +105,7 @@ export interface IWhoisResponseModel {
         object: IWhoisObjectModel[];
     };
     "terms-and-conditions"?: any;
+    version?: IVersion
 }
 
 export interface IMntByModel {

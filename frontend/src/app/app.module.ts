@@ -72,10 +72,10 @@ import {BannerComponent} from "./banner/banner.component";
     EmailConfirmationService,
     OrgDropDownSharedService,
     PropertiesService,
-    {provide: APP_INITIALIZER, useFactory: (propertiesService: PropertiesService) => () => propertiesService.load(), deps: [PropertiesService], multi: true },
-    {provide: HTTP_INTERCEPTORS, useClass: MetaDataCleanerInterceptor, multi: true },
-    {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true },
-    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    {provide: APP_INITIALIZER, useFactory: (propertiesService: PropertiesService) => () => propertiesService.load(), deps: [PropertiesService], multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: MetaDataCleanerInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: HeaderInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

@@ -23,7 +23,7 @@ interface IDocNvPair {
         strs: IStrNvPair[];
     };
 }
-interface ILstObj {
+export interface ILstObj {
     lst: {
         name: string;
         arrs: IArrNvPair[];

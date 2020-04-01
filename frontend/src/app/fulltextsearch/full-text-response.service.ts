@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import * as _ from "lodash";
-import {IResultSummary, ISearchResponseModel} from "./types.model";
+import {ILstObj, IResultSummary, ISearchResponseModel} from "./types.model";
+import {IVersion} from "../shared/whois-response-type.model";
 
 @Injectable()
 export class FullTextResponseService {
@@ -51,6 +52,24 @@ export class FullTextResponseService {
             }
         }
         return {details: results, summary: resultSummaries};
+    }
+
+    public getVersionFromResponse(response: ISearchResponseModel): IVersion {
+        let version: IVersion;
+        response.lsts.forEach((lst: ILstObj) => {
+            if (lst.lst.name === "version") {
+                version = {version: undefined, timestamp: undefined};
+                lst.lst.strs.forEach(str => {
+                    if (str.str.name === "version") {
+                        version.version = str.str.value;
+                    }
+                    if (str.str.name === "timestamp") {
+                        version.timestamp = str.str.value;
+                    }
+                });
+            }
+        });
+        return version;
     }
 
     private getDocPk(strs: Array<{ str: { name: string; value: string } }>) {

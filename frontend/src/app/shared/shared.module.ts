@@ -2,7 +2,7 @@ import {NgModule} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
-
+import {DiffMatchPatchModule} from "ng-diff-match-patch";
 import {CredentialsService} from "./credentials.service";
 import {WhoisMetaService} from "./whois-meta.service";
 import {WhoisResourcesService} from "./whois-resources.service";
@@ -22,8 +22,9 @@ import {FilteroutAttributeByHiddenPipe} from "./filterout-attribute-by-hidden.pi
 import {SanitizeImgHtmlPipe} from "./sanitize-img-html.pipe";
 import {DescriptionSyntaxComponent} from "./descriptionsyntax/description-syntax.component";
 import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
+import {WebAppVersionComponent} from "../version/web-app-version.component";
+import {WhoisVersionComponent} from "../version/whois-version.component";
 import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
-import {DiffMatchPatchModule} from "ng-diff-match-patch";
 
 @NgModule({
     imports: [
@@ -47,6 +48,8 @@ import {DiffMatchPatchModule} from "ng-diff-match-patch";
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
         SanitizeImgHtmlPipe,
+        WebAppVersionComponent,
+        WhoisVersionComponent,
         WhoisLineDiffDirective
     ],
     providers: [
@@ -80,6 +83,8 @@ import {DiffMatchPatchModule} from "ng-diff-match-patch";
         SanitizeImgHtmlPipe,
         NgbModule,
         TableScrollerDirective,
+        WhoisVersionComponent,
+        WebAppVersionComponent,
         WhoisLineDiffDirective
     ]
 })

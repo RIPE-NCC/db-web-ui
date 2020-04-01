@@ -1,7 +1,7 @@
 import {Component, OnDestroy, ViewChild} from "@angular/core";
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import * as _ from "lodash";
-import {IErrorMessageModel, IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
+import {IErrorMessageModel, IVersion, IWhoisObjectModel, IWhoisResponseModel} from "../shared/whois-response-type.model";
 import {IQueryParameters, ITemplateTerm, QueryParametersService} from "./query-parameters.service";
 import {QueryService} from "./query.service";
 import {PropertiesService} from "../properties.service";
@@ -27,6 +27,7 @@ export class QueryComponent implements OnDestroy {
     public offset = 0;
     public showScroller = false;
     public results: IWhoisObjectModel[];
+    public whoisVersion: IVersion;
 
     public qp: IQueryParameters;
     public showTemplatePanel: boolean;
@@ -162,8 +163,7 @@ export class QueryComponent implements OnDestroy {
             this.showTemplatePanel = false;
             this.queryService
                 .searchWhoisObjects(cleanQp, this.offset)
-                .subscribe(
-                    (response: IWhoisResponseModel) => {
+                .subscribe((response: IWhoisResponseModel) => {
                         this.handleWhoisSearch(response);
                     },
                     (error: IWhoisResponseModel) => this.handleWhoisSearchError(error));
@@ -245,7 +245,7 @@ export class QueryComponent implements OnDestroy {
         this.results = (this.results)
             ? this.results.concat(response.objects.object)
             : response.objects.object;
-
+        this.whoisVersion = response.version;
         // multiple term searches can have errors, too
         this.alertsComponent.setAllErrors(response);
         const cleanQp = _.cloneDeep(this.qp);

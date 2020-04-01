@@ -290,6 +290,21 @@ describe("The query pagina", () => {
         expect(page.lookupLinkToXmlJSON.get(2).getAttribute("href")).toContain(".json?query-string=AS9777&type-filter=aut-num&flags=no-referenced&flags=no-irt&flags=no-filtering&source=RIPE");
     });
 
+    it("should show version of whois after searching", () => {
+        page.scrollIntoView(page.whoisVersionTag);
+        expect(page.whoisVersionTag.isDisplayed()).toBeFalsy();
+        page.scrollIntoView(page.inpQueryString);
+        page.inpQueryString.sendKeys("211.43.192.0");
+        page.inpShowFullDetails.click();
+        page.inpDontRetrieveRelated.click();
+        page.scrollIntoView(page.btnSubmitQuery);
+        page.btnSubmitQuery.click();
+        page.scrollIntoView(page.whoisVersion);
+        expect(page.whoisVersionTag.isDisplayed()).toBeTruthy();
+        expect(page.whoisVersion.isDisplayed()).toBeTruthy();
+        expect(page.whoisVersion.getText()).toEqual("RIPE Database Software Version 1.97-SNAPSHOT");
+    });
+
     // TEMPLATE QUERY -t or --template
     it("should be able to search --template using the text box", () => {
         page.inpQueryString.sendKeys("-t person\n");
