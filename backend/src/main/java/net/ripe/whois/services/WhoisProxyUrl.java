@@ -22,22 +22,10 @@ public class WhoisProxyUrl implements ExchangeErrorHandler, WhoisServiceBase {
                         final String requestQueryString,
                         final String pathToReplace,
                         final String apiUrl) {
-        return composeProxyUrl(requestURI, requestQueryString, pathToReplace, apiUrl, "");
-    }
-
-    URI composeProxyUrl(final String requestURI,
-                        final String requestQueryString,
-                        final String pathToReplace,
-                        final String apiUrl,
-                        final String apiKey) {
         try {
             UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(apiUrl)
                 .path(replacePathAndNormalise(requestURI, pathToReplace))
                 .replaceQuery(requestQueryString);
-
-            if (!apiKey.isEmpty()){
-                uriComponentsBuilder.queryParam("apiKey", apiKey);
-            }
 
             return uriComponentsBuilder.build(true).toUri();
         } catch (Exception e) {

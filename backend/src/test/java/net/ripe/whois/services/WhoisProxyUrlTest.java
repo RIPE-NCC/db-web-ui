@@ -13,10 +13,9 @@ public class WhoisProxyUrlTest {
         URI uri = whoisProxyUrl.composeProxyUrl("/db-web-ui/api/whois-internal/api/user/info",
             "",
             "/api/whois-internal",
-            "https://test.whois.ripe.net",
-            "DB-WHOIS-d5395e7fbf8d");
+            "https://test.whois.ripe.net");
 
-        assertEquals("https://test.whois.ripe.net/api/user/info?apiKey=DB-WHOIS-d5395e7fbf8d", uri.toString());
+        assertEquals("https://test.whois.ripe.net/api/user/info", uri.toString());
     }
 
     @Test
@@ -26,10 +25,9 @@ public class WhoisProxyUrlTest {
         URI uri = whoisProxyUrl.composeProxyUrl("/db-web-ui/api/whois-internal/api/user/info",
             "v=1&v=2",
             "/api/whois-internal",
-            "https://test.whois.ripe.net",
-            "DB-WHOIS-d5395e7fbf8d");
+            "https://test.whois.ripe.net");
 
-        assertEquals("https://test.whois.ripe.net/api/user/info?v=1&v=2&apiKey=DB-WHOIS-d5395e7fbf8d", uri.toString());
+        assertEquals("https://test.whois.ripe.net/api/user/info?v=1&v=2", uri.toString());
     }
 
     @Test
@@ -39,10 +37,9 @@ public class WhoisProxyUrlTest {
         URI uri = whoisProxyUrl.composeProxyUrl("/db-web-ui/api/whois-internal/api/resources/ipanalyser/ipv4.json",
             "org-id=ORG-CSL9",
             "/api/whois-internal",
-            "https://test.whois.ripe.net",
-            "DB-WHOIS-d5395e7fbf8d");
+            "https://test.whois.ripe.net");
 
-        assertEquals("https://test.whois.ripe.net/api/resources/ipanalyser/ipv4.json?org-id=ORG-CSL9&apiKey=DB-WHOIS-d5395e7fbf8d", uri.toString());
+        assertEquals("https://test.whois.ripe.net/api/resources/ipanalyser/ipv4.json?org-id=ORG-CSL9", uri.toString());
     }
 
     @Test
