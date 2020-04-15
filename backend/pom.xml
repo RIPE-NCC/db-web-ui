@@ -31,7 +31,7 @@
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
         <!-- keep spring-boot.version in sync with parent pom -->
-        <spring-boot.version>2.2.2.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
         <whois.version>1.96</whois.version>
     </properties>
 
@@ -274,6 +274,11 @@
             <groupId>com.github.jgonian</groupId>
             <artifactId>commons-ip-math</artifactId>
             <version>${commons-ip-math.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.26</version>
         </dependency>
     </dependencies>
 
