@@ -32,7 +32,7 @@
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
         <!-- keep spring-boot.version in sync with parent pom -->
         <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
-        <whois.version>1.96</whois.version>
+        <whois.version>52ec9c66</whois.version>
     </properties>
 
     <dependencyManagement>
@@ -210,20 +210,12 @@
             <version>${whois.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jul-to-slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -233,20 +225,12 @@
             <version>${whois.version}</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-slf4j-impl</artifactId>
                 </exclusion>
                 <exclusion>
-                    <artifactId>slf4j-api</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>slf4j-log4j12</artifactId>
-                    <groupId>org.slf4j</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jul-to-slf4j</artifactId>
-                    <groupId>org.slf4j</groupId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-core</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
