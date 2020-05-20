@@ -21,7 +21,8 @@ describe("The create domain screen", () => {
         expect(page.inpNserver2.isPresent()).toEqual(false);
         expect(page.inpAdminC4.isPresent()).toEqual(false);
 
-        page.inpPrefix.sendKeys("212.17.110.0/23\t");
+        page.inpPrefix.sendKeys("212.17.110.0/23");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
         browser.wait(until.visibilityOf(page.modalBtnSubmit), 5000, "waited too long");
         page.modalInpAssociate.click();
         page.modalInpPassword.sendKeys("ERICSSON-MNT");
@@ -29,8 +30,10 @@ describe("The create domain screen", () => {
 
         browser.wait(until.visibilityOf(page.inpNserver1), 5000, "waited too long");
 
-        page.inpNserver1.sendKeys("ns1.xs4all.nl\t");
-        page.inpNserver2.sendKeys("nsXXX.xs4all.nl\t");
+        page.inpNserver1.sendKeys("ns1.xs4all.nl");
+        page.inpNserver1.sendKeys(protractor.Key.TAB);
+        page.inpNserver2.sendKeys("nsXXX.xs4all.nl");
+        page.inpNserver2.sendKeys(protractor.Key.TAB);
         const liContainer = page.inpNserver2.element(by.xpath(".."));
 
         browser.wait(() => {
@@ -43,7 +46,8 @@ describe("The create domain screen", () => {
         expect(page.inpZoneC6.isPresent()).toEqual(false);
 
         page.inpNserver2.clear();
-        page.inpNserver2.sendKeys("ns2.xs4all.nl\t");
+        page.inpNserver2.sendKeys("ns2.xs4all.nl");
+        page.inpNserver2.sendKeys(protractor.Key.TAB);
         browser.wait(() => {
             return browser.isElementPresent(liContainer.element(by.css(".text-info")));
         }, 5000);
@@ -60,12 +64,15 @@ describe("The create domain screen", () => {
         page.scrollIntoView(page.modalSplashBtn);
         page.modalSplashBtn.click();
         page.scrollIntoView(page.inpPrefix);
-        page.inpPrefix.sendKeys("2001:db8::/48\t");
+        page.inpPrefix.sendKeys("2001:db8::/48");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
 
         browser.wait(until.visibilityOf(page.inpNserver1), 5000, "waited too long");
 
-        page.inpNserver1.sendKeys("ns1.xs4all.nl\t");
-        page.inpNserver2.sendKeys("nsXXX.xs4all.nl\t");
+        page.inpNserver1.sendKeys("ns1.xs4all.nl");
+        page.inpNserver1.sendKeys(protractor.Key.TAB);
+        page.inpNserver2.sendKeys("nsXXX.xs4all.nl");
+        page.inpNserver2.sendKeys(protractor.Key.TAB);
         const liContainer = page.inpNserver2.element(by.xpath(".."));
 
         browser.wait(until.visibilityOf(liContainer.element(by.css(".text-error"))), 5000, "waited too long");
@@ -76,7 +83,8 @@ describe("The create domain screen", () => {
         expect(page.inpZoneC6.isPresent()).toEqual(false);
 
         page.inpNserver2.clear();
-        page.inpNserver2.sendKeys("ns2.xs4all.nl\t");
+        page.inpNserver2.sendKeys("ns2.xs4all.nl");
+        page.inpNserver2.sendKeys(protractor.Key.TAB);
         browser.wait(until.visibilityOf(liContainer.element(by.css(".text-info"))), 5000, "waited too long");
 
         expect(liContainer.getText()).toContain("0.8.b.d.0.1.0.0.2.ip6.arpa");
@@ -88,7 +96,8 @@ describe("The create domain screen", () => {
 
         // User changes his mind!
         page.inpPrefix.clear();
-        page.inpPrefix.sendKeys("212.17.110.0/23\t");
+        page.inpPrefix.sendKeys("212.17.110.0/23");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
 
         browser.wait(until.visibilityOf(liContainer.element(by.css(".text-info"))), 5000, "waited too long");
         expect(liContainer.getText()).not.toContain("0.8.b.d.0.1.0.0.2.ip6.arpa");
@@ -101,7 +110,8 @@ describe("The create domain screen", () => {
         browser.wait(() => {
             return browser.isElementPresent(page.inpPrefix);
         }, 5000);
-        page.inpPrefix.sendKeys("212.17.110.0/23\t");
+        page.inpPrefix.sendKeys("212.17.110.0/23");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
         browser.wait(() => {
             return browser.isElementPresent(page.modalBtnSubmit);
         }, 5000);
@@ -112,8 +122,10 @@ describe("The create domain screen", () => {
 
         browser.wait(until.visibilityOf(page.inpNserver1), 5000, "waited too long");
 
-        page.inpNserver1.sendKeys("rns1.upc.biz\t");
-        page.inpNserver2.sendKeys("rns2.upc.biz\t");
+        page.inpNserver1.sendKeys("rns1.upc.biz");
+        page.inpNserver1.sendKeys(protractor.Key.TAB);
+        page.inpNserver2.sendKeys("rns2.upc.biz");
+        page.inpNserver2.sendKeys(protractor.Key.TAB);
 
         browser.wait(until.visibilityOf(page.inpAdminC4), 5000, "waited too long");
         expect(page.inpReverseZoneTable.all(by.css("tbody tr")).count()).toEqual(2);
@@ -132,7 +144,7 @@ describe("The create domain screen", () => {
             return browser.isElementPresent(page.autocompletePopup);
         }, 5000);
         page.inpZoneC6.sendKeys(protractor.Key.ENTER);
-        page.inpZoneC6.sendKeys("\t");
+        page.inpZoneC6.sendKeys(protractor.Key.TAB);
 
         browser.wait(() => {
             return browser.isElementPresent(page.btnSubmitObject);
@@ -156,7 +168,8 @@ describe("The create domain screen", () => {
         browser.wait(() => {
             return browser.isElementPresent(page.inpPrefix);
         }, 5000);
-        page.inpPrefix.sendKeys("193.193.200.0/24\t");
+        page.inpPrefix.sendKeys("193.193.200.0/24");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
         browser.wait(() => {
             return browser.isElementPresent(page.prefixErrMsg);
         }, 5000);
@@ -170,13 +183,15 @@ describe("The create domain screen", () => {
         browser.wait(() => {
             return browser.isElementPresent(page.inpPrefix);
         }, 5000);
-        page.inpPrefix.sendKeys("wrong-prefix\t");
+        page.inpPrefix.sendKeys("wrong-prefix");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
         browser.wait(() => {
             return browser.isElementPresent(page.prefixErrMsg);
         }, 5000);
         expect(page.prefixErrMsg.getText()).toContain("Invalid prefix notation");
         page.inpPrefix.clear();
-        page.inpPrefix.sendKeys("212.17.110.0/25\t");
+        page.inpPrefix.sendKeys("212.17.110.0/25");
+        page.inpPrefix.sendKeys(protractor.Key.TAB);
         browser.wait(() => {
             return browser.isElementPresent(page.prefixErrMsgLink);
         }, 5000);

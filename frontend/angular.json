@@ -184,6 +184,10 @@
               "protractorConfig": "test/e2e/protractor.conf.js",
               "devServerTarget":  "frontend:serve-mock:local"
             },
+            "firefox": {
+              "protractorConfig": "test/e2e/protractor.firefox.conf.js",
+              "devServerTarget":  "frontend:serve-mock:local"
+            },
             "remote": {
               "protractorConfig": "test/e2e/protractor.remote.conf.js",
               "devServerTarget":  "frontend:serve-mock:remote"

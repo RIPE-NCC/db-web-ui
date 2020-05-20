@@ -1,4 +1,4 @@
-import {browser} from "protractor";
+import {browser, protractor} from "protractor";
 
 const page = require("./homePageObject");
 
@@ -11,7 +11,8 @@ describe("The route editor", () => {
     it("should create new route object", () => {
         page.selectObjectType("route").click();
         page.btnNavigateToCreate.click();
-        page.inpRoute.sendKeys("211.43.192.0/19\t");
+        page.inpRoute.sendKeys("211.43.192.0/19");
+        page.inpRoute.sendKeys(protractor.Key.TAB);
         // submit button shouldn't be available
         page.scrollIntoView(page.btnSubmitForm);
         expect(page.btnSubmitForm.getAttribute("disabled")).toBeTruthy();
