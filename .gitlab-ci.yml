@@ -1,4 +1,4 @@
-image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:chrome80-jdk8-maven36-node10
+image: $CI_REGISTRY/swe-database-team/gitlab-ci/whois-build:chrome80-ff-jdk8-maven36-node10
 
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
@@ -40,7 +40,6 @@ karma:
     - Xvfb :20 -screen 0 1920x1080x16 &
     - mvn install
     - cd frontend && npm run test
-  #when: manual
 
 e2e:
   stage: test
@@ -49,7 +48,16 @@ e2e:
     - Xvfb :20 -screen 0 1920x1080x16 &
     - mvn install
     - cd frontend && npm run e2e
-  #when: manual
+
+e2e-firefox:
+    stage: test
+    script:
+        - export DISPLAY=:20
+        - Xvfb :20 -screen 0 1920x1080x16 &
+        - mvn install
+        - cd frontend && npm run e2e-firefox
+    # TODO: some tests fail on firefox
+    allow_failure: true
 
 .deploy_template: &deploy_env
   stage: deploy

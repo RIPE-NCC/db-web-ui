@@ -1,4 +1,4 @@
-import {browser} from "protractor";
+import {browser, protractor} from "protractor";
 
 const page = require("./homePageObject");
 
@@ -74,7 +74,8 @@ describe("The inetnum editor", () => {
         page.btnNavigateToCreate.click();
         expect(page.createForm.isPresent()).toEqual(true);
         expect(page.heading.getText()).toEqual(`Create "inet6num" object`);
-        page.inpInet6num.sendKeys("2001:888:2000::/38\t");
+        page.inpInet6num.sendKeys("2001:888:2000::/38");
+        page.inpInet6num.sendKeys(protractor.Key.TAB);
         browser.wait(function () {
             return browser.isElementPresent(page.modalBtnSubmit);
         }, 5000);
