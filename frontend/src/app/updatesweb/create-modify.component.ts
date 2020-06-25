@@ -1006,7 +1006,7 @@ export class CreateModifyComponent {
             if (associationResp) {
                 this.wrapAndEnrichResources(this.objectType, associationResp);
                 // save object for later diff in display-screen
-                this.messageStoreService.add("DIFF", this.attributes);
+                this.messageStoreService.add("DIFF",  _.cloneDeep(this.attributes));
             } else {
                 let password = null;
                 if (this.credentialsService.hasCredentials()) {
