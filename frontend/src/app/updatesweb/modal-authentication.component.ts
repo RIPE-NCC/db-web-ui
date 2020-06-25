@@ -6,6 +6,7 @@ import {RestService} from "./rest.service";
 import {UserInfoService} from "../userinfo/user-info.service";
 import {CredentialsService} from "../shared/credentials.service";
 import {PropertiesService} from "../properties.service";
+import {AttributeMetadataService} from "../attribute/attribute-metadata.service";
 
 export interface IModalAuthentication {
     method: any;
@@ -96,6 +97,8 @@ export class ModalAuthenticationComponent {
                             name: "auth",
                             value: "SSO " + ssoUserName,
                         }, {name: "auth"});
+
+                        AttributeMetadataService.splitAttrsCommentsFromValue(attributes, false);
 
                         // do adjust the maintainer
                         this.restService.associateSSOMntner(this.whoisResourcesService.getSource(whoisResources), "mntner", this.selected.item.key,
