@@ -22,6 +22,7 @@
         <google-guava-version>28.2-jre</google-guava-version>
         <jackson.version>2.10.1</jackson.version>
         <javax.inject.version>1</javax.inject.version>
+        <jodatime.version>2.9.2</jodatime.version>
         <json-path.version>2.4.0</json-path.version>
         <maven-enforcer-plugin.version>3.0.0-M4</maven-enforcer-plugin.version>
         <maven-sortpom-plugin.version>3.0.0-M4</maven-sortpom-plugin.version>
@@ -31,7 +32,7 @@
         <run.addResources>false</run.addResources>
         <sonar-maven-plugin.version>2.7</sonar-maven-plugin.version>
         <!-- keep spring-boot.version in sync with parent pom -->
-        <spring-boot.version>2.2.6.RELEASE</spring-boot.version>
+        <spring-boot.version>2.3.0.RELEASE</spring-boot.version>
         <whois.version>52ec9c66</whois.version>
     </properties>
 
@@ -203,6 +204,7 @@
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
+            <version>${jodatime.version}</version>
         </dependency>
         <dependency>
             <groupId>net.ripe.db</groupId>
