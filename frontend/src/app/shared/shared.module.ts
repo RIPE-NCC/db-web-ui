@@ -25,6 +25,7 @@ import {AttributeInfoComponent} from "./descriptionsyntax/attr-info.component";
 import {WebAppVersionComponent} from "../version/web-app-version.component";
 import {WhoisVersionComponent} from "../version/whois-version.component";
 import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
+import {SanitizeHtmlPipe} from "./sanitize-html.pipe";
 
 @NgModule({
     imports: [
@@ -47,6 +48,7 @@ import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
         DescriptionSyntaxComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
+        SanitizeHtmlPipe,
         SanitizeImgHtmlPipe,
         WebAppVersionComponent,
         WhoisVersionComponent,
@@ -80,6 +82,7 @@ import {WhoisLineDiffDirective} from "./whois-line-diff.directive";
         DescriptionSyntaxComponent,
         FilteroutAttributeByHiddenPipe,
         FilteroutAttributeByNamePipe,
+        SanitizeHtmlPipe,
         SanitizeImgHtmlPipe,
         NgbModule,
         TableScrollerDirective,
