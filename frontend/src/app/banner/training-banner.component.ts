@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, OnChanges, SimpleChanges} from "@angular/core";
 import {CookieService} from "ngx-cookie-service";
 import {UserInfoService} from "../userinfo/user-info.service";
 
@@ -6,7 +6,7 @@ import {UserInfoService} from "../userinfo/user-info.service";
   selector: "training-banner",
   templateUrl: "./training-banner.component.html",
 })
-export class TrainingBannerComponent {
+export class TrainingBannerComponent implements OnChanges {
 
   public closed: boolean;
   public member: boolean;
@@ -19,6 +19,10 @@ export class TrainingBannerComponent {
     this.member = this.isUserMember();
   }
 
+  public ngOnChanges(changes: SimpleChanges) {
+    this.member = this.isUserMember();
+  }
+  
   public closeAlert() {
     this.cookies.set("training-banner", "closed");
   }
