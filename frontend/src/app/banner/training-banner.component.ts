@@ -6,28 +6,26 @@ import {UserInfoService} from "../userinfo/user-info.service";
   selector: "training-banner",
   templateUrl: "./training-banner.component.html",
 })
-export class TrainingBannerComponent implements OnChanges {
+export class TrainingBannerComponent {
 
   public closed: boolean;
   public member: boolean;
 
   constructor(private cookies: CookieService,
-              private userInfoService: UserInfoService) {}
+              private userInfoService: UserInfoService) {
+      this.member = this.isUserMember();
+  }
 
   public ngOnInit() {
     this.closed = this.cookies.get("training-banner") === "closed";
     this.member = this.isUserMember();
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
-    this.member = this.isUserMember();
-  }
-  
   public closeAlert() {
     this.cookies.set("training-banner", "closed");
   }
 
-  private isUserMember() {
+  private isUserMember() : boolean {
     if(!this.userInfoService.isLogedIn()) {
       return false;
     }
