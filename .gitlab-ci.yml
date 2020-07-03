@@ -40,6 +40,8 @@ karma:
     - mvn install
     - cd frontend && npm run test
 
+    allow_failure: true
+
 e2e:
   stage: test
   script:
