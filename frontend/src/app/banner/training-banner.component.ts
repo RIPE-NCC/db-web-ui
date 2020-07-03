@@ -26,18 +26,16 @@ export class TrainingBannerComponent {
   private isUserMember() {
 
     if(!this.userInfoService.isLogedIn()) {
-      console.info("user is not logged in " + this.member);
       this.member = false;
-
+      console.info("user is not logged in " + this.member);
     } else {
       console.info("user is logged in " + this.member);
       this.userInfoService.getSelectedOrganisation()
         .subscribe((selOrg: any) => {
           console.info("result from userinfo service " + selOrg);
-          this.member = selOrg && selOrg.orgObjectId;
+          this.member = selOrg.lir;
+          console.info("is an lir " + this.member);
         });
     }
-
-    console.info("is active member" + this.member);
   }
 }
