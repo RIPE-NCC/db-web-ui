@@ -12,27 +12,32 @@ export class TrainingBannerComponent {
   public member: boolean;
 
   constructor(private cookies: CookieService,
-              private userInfoService: UserInfoService) {
-      this.member = this.isUserMember();
-  }
+              private userInfoService: UserInfoService) {}
 
   public ngOnInit() {
     this.closed = this.cookies.get("training-banner") === "closed";
-    this.member = this.isUserMember();
+    this.isUserMember();
   }
 
   public closeAlert() {
     this.cookies.set("training-banner", "closed");
   }
 
-  private isUserMember() : boolean {
+  private isUserMember() {
+
     if(!this.userInfoService.isLogedIn()) {
-      return false;
+      console.info("user is not logged in " + this.member);
+      this.member = false;
+
+    } else {
+      console.info("user is logged in " + this.member);
+      this.userInfoService.getSelectedOrganisation()
+        .subscribe((selOrg: any) => {
+          console.info("result from userinfo service " + selOrg);
+          this.member = selOrg && selOrg.orgObjectId;
+        });
     }
 
-    this.userInfoService.getSelectedOrganisation()
-      .subscribe((selOrg: any) => {
-        return selOrg && selOrg.orgObjectId;
-      });
+    console.info("is active member" + this.member);
   }
 }
