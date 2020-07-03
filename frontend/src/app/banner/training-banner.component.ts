@@ -27,14 +27,11 @@ export class TrainingBannerComponent {
 
     if(!this.userInfoService.isLogedIn()) {
       this.member = false;
-      console.info("user is not logged in " + this.member);
+
     } else {
-      console.info("user is logged in " + this.member);
       this.userInfoService.getSelectedOrganisation()
         .subscribe((selOrg: any) => {
-          console.info("result from userinfo service " + selOrg);
-          this.member = selOrg.lir;
-          console.info("is an lir " + this.member);
+          this.member = selOrg && selOrg.orgObjectId;
         });
     }
   }
