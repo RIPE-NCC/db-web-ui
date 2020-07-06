@@ -30,7 +30,7 @@ export class TrainingBannerComponent {
     } else {
       this.userInfoService.getSelectedOrganisation()
         .subscribe((selOrg: any) => {
-          this.member = (selOrg && selOrg.orgObjectId && selOrg.roles.indexOf("LIR") > -1) ? true : false;
+          this.member = selOrg && selOrg.orgObjectId && selOrg.roles.indexOf("LIR") > -1;
         });
     }
   }
