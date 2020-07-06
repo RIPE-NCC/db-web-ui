@@ -25,13 +25,18 @@ export class TrainingBannerComponent {
 
   private isUserMember() {
 
-    if(!this.userInfoService.isLogedIn()) {
-      this.member = false;
-    } else {
-      this.userInfoService.getSelectedOrganisation()
-        .subscribe((selOrg: any) => {
-          this.member = selOrg && selOrg.orgObjectId && selOrg.roles.indexOf("LIR") > -1;
-        });
-    }
+    //cannot use this.userInfoService.isLogedIn as it does not work with refresh
+    this.userInfoService.getLoggedInUser()
+      .subscribe((user: any) => {
+
+        if(user) {
+          this.userInfoService.getSelectedOrganisation()
+            .subscribe((selOrg: any) => {
+              this.member = selOrg && selOrg.orgObjectId && selOrg.roles.indexOf("LIR") > -1;
+            });
+        } else {
+          this.member = false;
+        }
+      });
   }
 }
