@@ -16,6 +16,8 @@ import {convertToParamMap} from "@angular/router";
 import {IWhoisResponseModel} from "../../../src/app/shared/whois-response-type.model";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
+import {TrainingBannerComponent} from "../../../src/app/banner/training-banner.component";
+import {CookieService} from "ngx-cookie-service";
 
 const whoisObjectModelMock = {
     "type" : "inetnum",
@@ -144,6 +146,7 @@ describe("QueryComponent", () => {
             imports: [ SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
             declarations: [
                 QueryComponent,
+                TrainingBannerComponent,
                 LookupComponent,
                 TemplateComponent,
                 WhoisObjectViewerComponent,
@@ -153,9 +156,11 @@ describe("QueryComponent", () => {
                 WhoisMetaService,
                 QueryParametersService,
                 PropertiesService,
+                CookieService,
                 { provide: UserInfoService,
                     useValue: {
                         isLogedIn: () => true,
+                        getSelectedOrganisation: () => of(),
                         userLoggedIn$: of()}},
             ]
         });
