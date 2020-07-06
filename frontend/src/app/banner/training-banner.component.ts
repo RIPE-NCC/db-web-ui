@@ -15,23 +15,22 @@ export class TrainingBannerComponent {
               private userInfoService: UserInfoService) {}
 
   public ngOnInit() {
-    this.closed = this.cookies.get("training-banner") === "closed";
+    this.closed = localStorage.getItem("training-banner")  === "closed";
     this.isUserMember();
   }
 
   public closeAlert() {
-    this.cookies.set("training-banner", "closed");
+    localStorage.setItem("training-banner", "closed");
   }
 
   private isUserMember() {
 
     if(!this.userInfoService.isLogedIn()) {
       this.member = false;
-
     } else {
       this.userInfoService.getSelectedOrganisation()
         .subscribe((selOrg: any) => {
-          this.member = selOrg && selOrg.orgObjectId;
+          this.member = (selOrg && selOrg.orgObjectId && selOrg.roles.indexOf("LIR") > -1) ? true : false;
         });
     }
   }
