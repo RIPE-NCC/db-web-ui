@@ -16,7 +16,7 @@ import {convertToParamMap} from "@angular/router";
 import {IWhoisResponseModel} from "../../../src/app/shared/whois-response-type.model";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {RouterTestingModule} from "@angular/router/testing";
-import {TrainingBannerComponent} from "../../../src/app/banner/training-banner.component";
+import {CertificateBannerComponent} from "../../../src/app/banner/certificate-banner.component";
 import {CookieService} from "ngx-cookie-service";
 
 const whoisObjectModelMock = {
@@ -146,7 +146,7 @@ describe("QueryComponent", () => {
             imports: [ SharedModule, CoreModule, HttpClientTestingModule, RouterTestingModule.withRoutes([])],
             declarations: [
                 QueryComponent,
-                TrainingBannerComponent,
+                CertificateBannerComponent,
                 LookupComponent,
                 TemplateComponent,
                 WhoisObjectViewerComponent,
