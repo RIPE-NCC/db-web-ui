@@ -3,10 +3,10 @@ import {CookieService} from "ngx-cookie-service";
 import {UserInfoService} from "../userinfo/user-info.service";
 
 @Component({
-  selector: "training-banner",
-  templateUrl: "./training-banner.component.html",
+  selector: "certificate-banner",
+  templateUrl: "./certificate-banner.component.html",
 })
-export class TrainingBannerComponent {
+export class CertificateBannerComponent {
 
   public closed: boolean;
   public member: boolean;
@@ -15,12 +15,12 @@ export class TrainingBannerComponent {
               private userInfoService: UserInfoService) {}
 
   public ngOnInit() {
-    this.closed = localStorage.getItem("training-banner")  === "closed";
+    this.closed = localStorage.getItem("certificate-banner")  === "closed";
     this.isUserMember();
   }
 
   public closeAlert() {
-    localStorage.setItem("training-banner", "closed");
+    localStorage.setItem("certificate-banner", "closed");
   }
 
   private isUserMember() {
