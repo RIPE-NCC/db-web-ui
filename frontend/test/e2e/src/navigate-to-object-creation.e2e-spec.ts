@@ -27,13 +27,7 @@ describe("webupdates homepage", () => {
         expect(page.heading.getText()).toEqual(`Create "as-set" object`);
     });
 
-    it("should show an editor for aut-num", () => {
-        expect(page.selectForm.isPresent()).toEqual(true);
-        page.selectObjectType("aut-num").click();
-        page.btnNavigateToCreate.click();
-        expect(page.createForm.isPresent()).toEqual(true);
-        expect(page.heading.getText()).toEqual(`Create "aut-num" object`);
-    });
+    // no Create "aut-num" object (only RS can create them)
 
     it("should show an editor for filter-set", () => {
         expect(page.selectForm.isPresent()).toEqual(true);
