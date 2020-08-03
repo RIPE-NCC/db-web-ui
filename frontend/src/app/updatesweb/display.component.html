@@ -27,7 +27,7 @@
         </tr>
     </table>
 
-    <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeImgHtml" [right]="after | sanitizeImgHtml" class="textdiff"></pre>
+    <pre *ngIf="isDiff()" whoisLineDiff [left]="before | sanitizeImgHtml | sanitizeHtml" [right]="after | sanitizeImgHtml | sanitizeHtml" class="textdiff"></pre>
 
     <button (click)="navigateToSelect()" class="blue-button pull-right ga-createobj-backcreate">Back to Create object</button>
     <span [hidden]="!modifyButtonToBeShown()">
